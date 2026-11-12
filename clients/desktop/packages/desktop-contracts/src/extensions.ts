@@ -27,6 +27,7 @@ import { parseAbsolutePath } from './paths'
 import { parseHttpUrl } from './network'
 import { normalizeManifest } from '@kisaki3/extension-distribution/manifest'
 
+/** An exact repository artifact or an explicitly selected local package file. */
 export type ExtensionPackageSource =
   | {
       readonly type: 'repository'
@@ -37,7 +38,11 @@ export type ExtensionPackageSource =
     }
   | { readonly type: 'file'; readonly path: string }
 
-/** A verified prepared repository source retains the exact trust identity used to acquire those bytes. */
+/**
+ * The source retained with a prepared package.
+ *
+ * Repository sources include the exact trust identity used to acquire the bytes.
+ */
 export type PreparedExtensionSource =
   | (Extract<ExtensionPackageSource, { type: 'repository' }> & {
       readonly declaredId: string
@@ -45,6 +50,7 @@ export type PreparedExtensionSource =
     })
   | Extract<ExtensionPackageSource, { type: 'file' }>
 
+/** An extension artifact's version, complete-byte digest and supported target set. */
 export interface ExtensionArtifactIdentity {
   readonly extensionId: string
   readonly version: string
@@ -52,23 +58,31 @@ export interface ExtensionArtifactIdentity {
   readonly targets: readonly ExtensionTarget[]
 }
 
+/** A prepared artifact and the source identity retained for adoption checks. */
 export interface PreparedExtensionUpdate extends ExtensionArtifactIdentity {
   readonly source: PreparedExtensionSource
 }
 
+/** A selected repository artifact that is available for update preparation. */
 export interface ExtensionUpdateCandidate extends ExtensionArtifactIdentity {
   readonly source: Extract<ExtensionPackageSource, { type: 'repository' }>
 }
 
+/** Availability and validation status of the installed package bytes. */
 export type ExtensionPackageState =
   | { readonly status: 'available' | 'missing' }
   | { readonly status: 'invalid'; readonly error: ErrorSummary }
 
+/** The package's compatibility assessment, including unavailable or unmet conditions. */
 export type ExtensionCompatibility =
   | { readonly status: 'compatible' | 'unavailable' }
   | { readonly status: 'incompatible'; readonly issues: readonly CompatibilityIssue[] }
 
-/** Installed package, enabled intent, prepared replacement and compatibility are independent persisted/read facts. */
+/**
+ * Installed extension identity, saved choices, prepared replacement and package assessment.
+ *
+ * Package availability, enabled intent, prepared updates and compatibility remain separate facts.
+ */
 export interface InstalledExtensionSummary {
   readonly id: string
   readonly version: string
@@ -83,71 +97,104 @@ export interface InstalledExtensionSummary {
   readonly compatibility: ExtensionCompatibility
 }
 
+/** An installed extension summary with its manifest when valid package bytes are available. */
 export interface InstalledExtension extends InstalledExtensionSummary {
   readonly manifest: ExtensionManifest | null
 }
 
-/** Business/provider failures do not change activation, and activation failures do not silently clear enabled intent. */
+/**
+ * One extension's current activation phase or activation failure.
+ *
+ * Business failures do not change activation. Activation failures preserve saved enabled intent.
+ */
 export type ExtensionActivation =
   | { readonly status: 'inactive' | 'activating' | 'active' | 'deactivating' }
   | { readonly status: 'failed'; readonly error: ErrorSummary }
 
+/** Current activation state for one extension identity. */
 export interface ExtensionState {
   readonly extensionId: string
   readonly activation: ExtensionActivation
 }
 
+/** The shared extension host's current process-lifecycle state. */
 export type ExtensionRuntimeState =
   | { readonly status: 'stopped' | 'starting' | 'running' | 'stopping' }
   | { readonly status: 'failed'; readonly error: ErrorSummary }
 
+/** A completed activation attempt, identifying the active instance or the actual failure. */
 export type ExtensionActivationResult =
   | { readonly extensionId: string; readonly outcome: 'activated'; readonly instanceId: string }
   | { readonly extensionId: string; readonly outcome: 'failed'; readonly error: ErrorSummary }
 
-/** Installation can be durable even when activation fails; the same complete receipt is legal as a partialResult. */
+/**
+ * Committed installation facts and the separate activation outcome.
+ *
+ * Installation can be durable when activation fails. The complete receipt is also valid as a failed
+ * call's partialResult.
+ */
 export interface ExtensionInstallResult {
   readonly extension: InstalledExtensionSummary
   readonly activation: ExtensionActivation
 }
 
+/** The actual adoption outcome for one exact extension artifact. */
 export type ExtensionAdoptionResult = {
   readonly extensionId: string
   readonly version: string
   readonly sha256: string
 } & ({ readonly outcome: 'adopted' } | { readonly outcome: 'error'; readonly error: ErrorSummary })
 
+/**
+ * Known artifact-adoption and activation outcomes from a shared-host rebuild.
+ *
+ * On interruption, absent items have no reported outcome. Activation attempts may include
+ * extensions outside the update batch.
+ */
 export interface ExtensionApplyUpdatesResult {
   readonly adopted: readonly ExtensionAdoptionResult[]
   readonly activations: readonly ExtensionActivationResult[]
 }
 
+/** An update-check failure scoped to a repository or extension. */
 export type ExtensionUpdateIssue =
   | { readonly repositoryId: string; readonly error: ErrorSummary }
   | { readonly extensionId: string; readonly error: ErrorSummary }
 
+/** Selected update candidates and independently reported source or extension failures. */
 export interface ExtensionCheckUpdatesResult {
   readonly updates: readonly ExtensionUpdateCandidate[]
   readonly issues: readonly ExtensionUpdateIssue[]
 }
 
-/** User-confirmed trust. A response declaring this identity is not authorization to replace the saved trust. */
+/**
+ * User-confirmed repository address, declared identity and pinned public key.
+ *
+ * Remote declarations alone cannot replace the saved trust.
+ */
 export interface ExtensionRepositoryInput {
   readonly url: string
   readonly declaredId: string
   readonly trustedPublicKey: string
 }
 
+/** A saved repository trust binding with its local identity. */
 export interface ExtensionRepository extends ExtensionRepositoryInput {
   readonly id: string
 }
 
+/** Repository configuration changes and optional expected values for those same fields. */
 export interface ExtensionRepositoryUpdate {
   readonly changes: Partial<ExtensionRepositoryInput>
   readonly expected?: Partial<ExtensionRepositoryInput>
 }
 
-/** This is a display projection of verified content; cryptographic verification still uses the original signed bytes. */
+/**
+ * A display projection of verified registry content with its fetch time and response URL.
+ *
+ * Signature verification uses the original JSON values before normalization and known-field
+ * projection.
+ */
 export interface ExtensionRegistrySnapshot {
   readonly registry: RegistryDocument
   /** UTC milliseconds since the Unix epoch. */
@@ -155,112 +202,134 @@ export interface ExtensionRegistrySnapshot {
   readonly responseUrl: string
 }
 
+/** Saved repository trust, the last verified cache and the current refresh error. */
 export interface ExtensionRepositoryState {
   readonly repository: ExtensionRepository
   readonly cached: ExtensionRegistrySnapshot | null
   readonly error: ErrorSummary | null
 }
 
-/** Inspect has not created trust. The native UI must explicitly confirm the returned declared ID and public key. */
+/**
+ * Inspected registry identity and content presented before a trust decision.
+ *
+ * The native management flow requires explicit confirmation of the declared ID and public key.
+ */
 export interface ExtensionRepositoryInspection {
   readonly url: string
   readonly responseUrl: string
   readonly registry: RegistryDocument
 }
 
+/** Native repository inspection, explicit trust management and verified-cache access. */
 export interface ExtensionRepositoriesApi {
   /**
-   * Read configured repository trust, verified cached snapshots and current errors as separate
-   * facts.
+   * Lists saved repository trust, verified cached snapshots and current errors as separate facts.
    */
   list(call?: CallOptions): Promise<readonly ExtensionRepositoryState[]>
 
-  /** Read one configured repository and its last verified cache without refreshing the network. */
+  /**
+   * Reads one repository and its last verified cache without network refresh.
+   *
+   * Returns null when the configured identity is absent.
+   */
   get(repositoryId: string, call?: CallOptions): Promise<ExtensionRepositoryState | null>
 
-  /**
-   * Fetch and inspect the declared registry identity and key without creating trust or changing
-   * repository configuration.
-   */
+  /** Fetches and inspects a registry's declared identity and key before trust is established. */
   inspect(url: string, call?: CallOptions): Promise<ExtensionRepositoryInspection>
 
-  /**
-   * Save the explicitly confirmed repository identity, address and pinned key; remote key
-   * declarations alone do not establish trust.
-   */
+  /** Saves the explicitly confirmed repository identity, address and pinned public key. */
   add(input: ExtensionRepositoryInput, call?: CallOptions): Promise<string>
 
   /**
-   * Compare and save the requested repository configuration changes; any changed trust follows
-   * the explicit native management flow.
+   * Compares and saves the requested repository configuration changes.
+   *
+   * Trust changes follow the explicit native management flow.
    */
   update(repositoryId: string, input: ExtensionRepositoryUpdate, call?: CallOptions): Promise<void>
 
-  /** Unbind and revoke this repository's prepared updates; installed packages, enabled choices and private data remain. */
+  /**
+   * Removes the repository binding and revokes updates prepared through it.
+   *
+   * Installed packages, enabled choices and private data remain.
+   */
   remove(repositoryId: string, call?: CallOptions): Promise<void>
 
   /**
-   * Verify fetched original bytes against the existing pin before replacing the cached snapshot;
-   * failure preserves the last verified content.
+   * Verifies fetched registry JSON against saved trust before replacing the cached snapshot.
+   *
+   * Failure preserves the last verified content.
    */
   refresh(repositoryId: string, call?: CallOptions): Promise<ExtensionRegistrySnapshot>
 
   /**
-   * Subscribe before reading repository state; invalidation does not itself refresh a registry
-   * or install a package.
+   * Subscribes to repository-state invalidation before the caller reads a snapshot.
+   *
+   * Notifications do not initiate registry refresh or package installation.
    */
   onInvalidated(listener: () => void): Disposable
 }
 
+/** Observation and explicit restart of the shared extension host. */
 export interface ExtensionRuntimeApi {
-  /**
-   * Read the actual shared-host state independently of installed packages and each extension's
-   * enabled intent.
-   */
+  /** Reads actual shared-host state independently of installation and enabled intent. */
   getState(call?: CallOptions): Promise<ExtensionRuntimeState>
 
   /**
-   * Deliver current shared-host state and subsequent changes; releasing observation neither
-   * stops nor restarts the host.
+   * Delivers current shared-host state and subsequent changes.
+   *
+   * Disposal releases observation without changing the host lifecycle.
    */
   observe(listener: Listener<ExtensionRuntimeState>): Disposable
 
-  /** Rebuild the shared host using committed versions only; no pending update or old business call is replayed. */
+  /**
+   * Rebuilds the shared host from committed versions and reports activation outcomes.
+   *
+   * Pending updates and old business calls are not replayed.
+   */
   restart(
     call?: CallOptions,
   ): Promise<{ readonly activations: readonly ExtensionActivationResult[] }>
 }
 
-/** Native management only. SDK adapters expose self information and navigation, not this installation/trust authority. */
+/**
+ * Native extension installation, update, activation and repository management.
+ *
+ * SDK adapters expose self information and navigation separately from this management authority.
+ */
 export interface ExtensionsApi {
   readonly repositories: ExtensionRepositoriesApi
   readonly runtime: ExtensionRuntimeApi
 
   /**
-   * Read installed summaries, including saved enabled intent and prepared updates, without
-   * treating them as activation success.
+   * Lists installed summaries with saved enabled intent and prepared updates.
+   *
+   * Those facts do not establish successful activation.
    */
   list(call?: CallOptions): Promise<readonly InstalledExtensionSummary[]>
 
   /**
-   * Read an installed package's available metadata; missing or invalid package bytes do not
-   * fabricate a manifest.
+   * Reads an installed extension and its available metadata, or null when it is absent.
+   *
+   * Missing or invalid package bytes are represented by a null manifest.
    */
   get(extensionId: string, call?: CallOptions): Promise<InstalledExtension | null>
 
-  /**
-   * Read package, compatibility, activation and shared-runtime facts independently for this
-   * installed identity.
-   */
+  /** Reads activation state for an installed identity, or null when it is absent. */
   getState(extensionId: string, call?: CallOptions): Promise<ExtensionState | null>
 
   /**
-   * Deliver current extension state and subsequent changes; observation never enables, activates
-   * or reinstalls the extension.
+   * Delivers current extension activation state and subsequent changes.
+   *
+   * Observation leaves installation and activation decisions unchanged.
    */
   observe(extensionId: string, listener: Listener<ExtensionState | null>): Disposable
 
-  /** Default enabled=true and attempt activation. An already installed ID requires the explicit update flow. */
+  /**
+   * Installs a new extension identity and reports installation and activation separately.
+   *
+   * Enabled defaults to true and requests activation. An installed identity requires the explicit
+   * update flow.
+   */
   install(
     source: ExtensionPackageSource,
     options?: { readonly enabled?: boolean },
@@ -268,20 +337,23 @@ export interface ExtensionsApi {
   ): Promise<ExtensionInstallResult>
 
   /**
-   * Save enabled intent and attempt activation under current compatibility; the returned state
-   * reports actual activation separately.
+   * Saves enabled intent and attempts activation under current compatibility.
+   *
+   * The returned state reports actual activation separately.
    */
   enable(extensionId: string, call?: CallOptions): Promise<ExtensionState>
 
   /**
-   * Save disabled intent and finish this instance's owned cleanup, preserving installed code and
-   * private data.
+   * Saves disabled intent and finishes the instance's owned cleanup.
+   *
+   * Installed code and private data remain.
    */
   disable(extensionId: string, call?: CallOptions): Promise<ExtensionState>
 
   /**
-   * End the actual instance and remove its installed package, handling private data by the
-   * explicit choice; previously adopted library facts remain.
+   * Ends the instance and removes its installed package.
+   *
+   * The explicit privateData choice controls private-data removal; adopted library facts remain.
    */
   uninstall(
     input: { readonly extensionId: string; readonly privateData: 'keep' | 'delete' },
@@ -289,14 +361,16 @@ export interface ExtensionsApi {
   ): Promise<void>
 
   /**
-   * Check each bound trusted source under the extension's compatibility and prerelease policy;
-   * failures remain reported rather than becoming no-update results.
+   * Checks bound trusted sources under each extension's compatibility and prerelease policy.
+   *
+   * Source and extension failures remain reported alongside valid candidates.
    */
   checkUpdates(call?: CallOptions): Promise<ExtensionCheckUpdatesResult>
 
   /**
-   * Download and verify the explicitly selected package without activating it; preparation
-   * failure preserves any previously valid receipt.
+   * Downloads and verifies the selected package for later adoption.
+   *
+   * Preparation does not activate it. Failure preserves any previously valid prepared receipt.
    */
   prepareUpdate(
     extensionId: string,
@@ -304,15 +378,20 @@ export interface ExtensionsApi {
     call?: CallOptions,
   ): Promise<PreparedExtensionUpdate>
 
-  /** Adopt exactly these receipts in one shared-host rebuild, returning actual per-package and activation outcomes. */
+  /**
+   * Adopts the exact supplied receipts in one shared-host rebuild.
+   *
+   * Returns actual per-package adoption and activation outcomes.
+   */
   applyUpdates(
     updates: readonly PreparedExtensionUpdate[],
     call?: CallOptions,
   ): Promise<ExtensionApplyUpdatesResult>
 
   /**
-   * Bind the installed extension to the selected configured repository or none; changing source
-   * revokes updates prepared under the old binding.
+   * Binds an installed extension to a configured repository, or clears that binding.
+   *
+   * Changing the source revokes updates prepared under the previous binding.
    */
   setUpdateSource(
     extensionId: string,
@@ -320,10 +399,7 @@ export interface ExtensionsApi {
     call?: CallOptions,
   ): Promise<void>
 
-  /**
-   * Save this extension's update-selection preference without installing, downgrading or
-   * changing the running version.
-   */
+  /** Saves the extension's prerelease update preference while preserving the installed version. */
   setAllowPrerelease(
     extensionId: string,
     allowPrerelease: boolean,
@@ -331,8 +407,9 @@ export interface ExtensionsApi {
   ): Promise<void>
 
   /**
-   * Subscribe before reading installed-package summaries; runtime observation remains
-   * independently owned.
+   * Subscribes to installed-summary invalidation before the caller reads a snapshot.
+   *
+   * Runtime observation remains independently owned.
    */
   onInvalidated(listener: () => void): Disposable
 }
@@ -443,12 +520,16 @@ const summary = {
   compatibility,
 }
 
-/** Select immutable repository coordinates or one explicit local file; no implicit latest lookup or source guessing. */
+/** Parses exact repository coordinates or an explicit absolute package-file path. */
 export function parseExtensionPackageSource(input: unknown): ExtensionPackageSource {
   return parseValue(source, input, 'Invalid extension package source')
 }
 
-/** Verify internal receipt identity; actual bytes and current repository trust must still be checked at adoption. */
+/**
+ * Parses a prepared receipt and checks that repository coordinates match its artifact.
+ *
+ * Adoption separately checks the actual bytes and current repository trust.
+ */
 export function parsePreparedExtensionUpdate(input: unknown): PreparedExtensionUpdate {
   const value = parseValue(
     v.strictObject({ ...artifact, source: preparedSource }),
@@ -467,7 +548,7 @@ export function parsePreparedExtensionUpdate(input: unknown): PreparedExtensionU
   return value
 }
 
-/** Candidate selection is not preparation; its repository source must still identify the exact selected artifact. */
+/** Parses an update candidate and checks its exact repository artifact identity. */
 export function parseExtensionUpdateCandidate(input: unknown): ExtensionUpdateCandidate {
   const value = parseValue(
     v.strictObject({ ...artifact, source: v.strictObject(repositorySource) }),
@@ -485,7 +566,7 @@ export function parseExtensionUpdateCandidate(input: unknown): ExtensionUpdateCa
   return value
 }
 
-/** Existing missing/invalid installations remain readable instead of being dropped from the list. */
+/** Parses installed facts and checks that a prepared update belongs to the same extension. */
 export function parseInstalledExtensionSummary(input: unknown): InstalledExtensionSummary {
   const value = parseValue(v.strictObject(summary), input, 'Invalid installed extension summary')
   if (value.preparedUpdate && value.preparedUpdate.extensionId !== value.id) {
@@ -495,7 +576,10 @@ export function parseInstalledExtensionSummary(input: unknown): InstalledExtensi
   return value
 }
 
-/** Manifest absence is honest package state, not an empty fabricated manifest. */
+/**
+ * Parses installed details and checks manifest presence, identity and version against package
+ * state.
+ */
 export function parseInstalledExtension(input: unknown): InstalledExtension {
   const value = parseValue(
     v.strictObject({
@@ -527,12 +611,12 @@ export function parseInstalledExtension(input: unknown): InstalledExtension {
   return value
 }
 
-/** Runtime states do not infer installation, compatibility or user intent. */
+/** Parses an extension identity and its activation state. */
 export function parseExtensionState(input: unknown): ExtensionState {
   return parseValue(v.strictObject({ extensionId, activation }), input, 'Invalid extension state')
 }
 
-/** Validate shared-host state independently of package installation, compatibility and individual activation. */
+/** Parses shared-host lifecycle state independently of individual extension activation. */
 export function parseExtensionRuntimeState(input: unknown): ExtensionRuntimeState {
   return parseValue(
     v.variant('status', [
@@ -544,12 +628,12 @@ export function parseExtensionRuntimeState(input: unknown): ExtensionRuntimeStat
   )
 }
 
-/** A shared-host rebuild can include extensions not present in the requested update batch. */
+/** Parses a successful instance identity or a failed activation's safe error. */
 export function parseExtensionActivationResult(input: unknown): ExtensionActivationResult {
   return parseValue(activationResult, input, 'Invalid extension activation result')
 }
 
-/** Keep committed installation facts separate from the actual activation outcome. */
+/** Parses committed installation facts and the separate activation outcome. */
 export function parseExtensionInstallResult(input: unknown): ExtensionInstallResult {
   return parseValue(
     v.strictObject({
@@ -561,7 +645,9 @@ export function parseExtensionInstallResult(input: unknown): ExtensionInstallRes
   )
 }
 
-/** Preserve actual attempted items on interruption; absence does not mean adoption failed or rolled back. */
+/**
+ * Parses known adoption and activation outcomes with distinct extension identities in each list.
+ */
 export function parseExtensionApplyUpdatesResult(input: unknown): ExtensionApplyUpdatesResult {
   const adopted = v.variant('outcome', [
     v.strictObject({ extensionId, version, sha256, outcome: v.literal('adopted') }),
@@ -583,7 +669,7 @@ export function parseExtensionApplyUpdatesResult(input: unknown): ExtensionApply
   )
 }
 
-/** One failed repository does not erase candidates from other successfully checked sources. */
+/** Parses unique update candidates and repository or extension check failures. */
 export function parseExtensionCheckUpdatesResult(input: unknown): ExtensionCheckUpdatesResult {
   return parseValue(
     v.strictObject({
@@ -603,7 +689,7 @@ export function parseExtensionCheckUpdatesResult(input: unknown): ExtensionCheck
   )
 }
 
-/** Native trust writes contain only the explicit URL, declared identity and trusted key, never response display fields. */
+/** Parses explicit repository URL, identity and key fields for a trust-management request. */
 export function parseExtensionRepositoryInput(input: unknown): ExtensionRepositoryInput {
   return parseValue(
     v.strictObject(repositoryEntries),
@@ -612,7 +698,7 @@ export function parseExtensionRepositoryInput(input: unknown): ExtensionReposito
   )
 }
 
-/** Validate changed repository fields and their matching baselines without establishing or replacing trust. */
+/** Parses repository changes and restricts expected values to the changed fields. */
 export function parseExtensionRepositoryUpdate(input: unknown): ExtensionRepositoryUpdate {
   const fields = v.strictObject(optionalFields(repositoryEntries))
   const value = parseValue(
@@ -624,7 +710,11 @@ export function parseExtensionRepositoryUpdate(input: unknown): ExtensionReposit
   return value
 }
 
-/** Parse only the display projection; this does not authenticate an index or establish repository trust. */
+/**
+ * Parses a registry display projection, fetch time and response URL.
+ *
+ * Authentication and trust decisions belong to the repository owner.
+ */
 export function parseExtensionRegistrySnapshot(input: unknown): ExtensionRegistrySnapshot {
   return parseValue(
     v.strictObject({

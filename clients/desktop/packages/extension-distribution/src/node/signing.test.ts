@@ -1,4 +1,4 @@
-/** @fileoverview Verifies original-byte trust boundaries, RFC8785 payloads and resource integrity. */
+/** @fileoverview Verifies registry trust, RFC8785 signing payloads and downloaded-resource integrity. */
 
 import { expect, test } from 'vitest'
 import { createHash, createPublicKey, generateKeyPairSync, verify } from 'node:crypto'
@@ -74,7 +74,7 @@ test('signature verification precedes locale normalization and covers unknown an
     signed.replace('"kept"', '"changed"'),
     signed.replace('./sample.kisx', 'https://example.org/sample.kisx'),
   ]) {
-    expect(() => verifyRegistry(edited, trust)).toThrowError(
+    expect(() => verifyRegistry(edited, trust)).toThrow(
       expect.objectContaining({ code: 'invalid-signature' }),
     )
   }
@@ -99,16 +99,16 @@ test('inspection checks internal consistency but refreshes require the caller-sa
     replacement.privateKey,
   )
 
-  expect(() => verifyRegistry(replaced, trust)).toThrowError(
+  expect(() => verifyRegistry(replaced, trust)).toThrow(
     expect.objectContaining({ code: 'key-mismatch' }),
   )
-  expect(() => verifyRegistry(signed, { ...trust, id: 'another.registry' })).toThrowError(
+  expect(() => verifyRegistry(signed, { ...trust, id: 'another.registry' })).toThrow(
     expect.objectContaining({ code: 'identity-mismatch' }),
   )
   expect(() =>
     signRegistry(JSON.stringify(registry(undefined, keys.publicKey)), replacement.privateKey),
-  ).toThrowError(expect.objectContaining({ code: 'key-mismatch' }))
-  expect(() => inspectRegistry(signed.replace('Sample registry', 'Changed registry'))).toThrowError(
+  ).toThrow(expect.objectContaining({ code: 'key-mismatch' }))
+  expect(() => inspectRegistry(signed.replace('Sample registry', 'Changed registry'))).toThrow(
     expect.objectContaining({ code: 'invalid-signature' }),
   )
 })
@@ -123,7 +123,7 @@ test('equivalent PEM encodings identify the same key but signed declarations kee
   const changed = JSON.parse(signed) as Record<string, unknown>
   changed.publicKey = windowsPem
 
-  expect(() => verifyRegistry(JSON.stringify(changed), trust)).toThrowError(
+  expect(() => verifyRegistry(JSON.stringify(changed), trust)).toThrow(
     expect.objectContaining({ code: 'invalid-signature' }),
   )
 })
@@ -135,12 +135,12 @@ test('non-Ed25519 keys and malformed Base64 are rejected without key material in
     privateKeyEncoding: { type: 'pkcs8', format: 'pem' },
   })
 
-  expect(() => publicKeyFingerprint(rsa.publicKey)).toThrowError(
+  expect(() => publicKeyFingerprint(rsa.publicKey)).toThrow(
     expect.objectContaining({ code: 'invalid-key' }),
   )
   expect(() =>
     signRegistry(JSON.stringify(registry(undefined, rsa.publicKey)), rsa.privateKey),
-  ).toThrowError(expect.objectContaining({ code: 'invalid-key' }))
+  ).toThrow(expect.objectContaining({ code: 'invalid-key' }))
 
   const signed = signRegistry(JSON.stringify(registry(undefined, keys.publicKey)), keys.privateKey)
   const document = JSON.parse(signed) as Record<string, unknown>
@@ -151,7 +151,7 @@ test('non-Ed25519 keys and malformed Base64 are rejected without key material in
     'A'.repeat(88),
     `${'A'.repeat(86)}==\n`,
   ]) {
-    expect(() => verifyRegistry(JSON.stringify({ ...document, signature }), trust)).toThrowError(
+    expect(() => verifyRegistry(JSON.stringify({ ...document, signature }), trust)).toThrow(
       expect.objectContaining({ code: 'invalid-format', path: ['signature'] }),
     )
   }
@@ -163,8 +163,8 @@ test('JSON duplicates and non-JCS values cannot be hidden inside otherwise valid
     const duplicate = signed.replace('{', `{${inserted}`)
     const expected: unknown = expect.objectContaining({ code: 'duplicate-property' })
 
-    expect(() => verifyRegistry(duplicate, trust)).toThrowError(expected)
-    expect(() => signRegistry(duplicate, keys.privateKey)).toThrowError(expected)
+    expect(() => verifyRegistry(duplicate, trust)).toThrow(expected)
+    expect(() => signRegistry(duplicate, keys.privateKey)).toThrow(expected)
   }
 
   for (const inserted of ['"extra":1e400,', '"extra":"\\udfff",', '"\\udfff":1,']) {
@@ -183,7 +183,7 @@ test('unknown prototype-named JSON fields remain signed data without modifying o
   expect(verifyRegistry(signed, trust).id).toBe(trust.id)
   expect(() =>
     verifyRegistry(signed.replace('"constructor": "data"', '"constructor": "changed"'), trust),
-  ).toThrowError(expect.objectContaining({ code: 'invalid-signature' }))
+  ).toThrow(expect.objectContaining({ code: 'invalid-signature' }))
   expect(Object.hasOwn(Object.prototype, 'signature')).toBe(false)
 })
 
@@ -196,14 +196,14 @@ test('resource checks use original bytes and report size before digest mismatche
   }
 
   expect(() => verifyFileBytes(bytes, reference)).not.toThrow()
-  expect(() => verifyFileBytes(bytes.subarray(1), reference)).toThrowError(
+  expect(() => verifyFileBytes(bytes.subarray(1), reference)).toThrow(
     expect.objectContaining({ code: 'integrity-mismatch', path: ['size'] }),
   )
 
   const corrupted = Buffer.from(bytes)
   corrupted[0] = 0
 
-  expect(() => verifyFileBytes(corrupted, reference)).toThrowError(
+  expect(() => verifyFileBytes(corrupted, reference)).toThrow(
     expect.objectContaining({ code: 'integrity-mismatch', path: ['sha256'] }),
   )
 })

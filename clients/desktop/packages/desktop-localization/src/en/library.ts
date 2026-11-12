@@ -1,4 +1,4 @@
-/** @fileoverview Owns English messages for library. */
+/** @fileoverview Defines English names and feedback for library entries and personal records. */
 
 export const libraryMessages = {
   types: {
@@ -10,6 +10,7 @@ export const libraryMessages = {
     person: 'Person',
     organization: 'Organization',
   },
+
   parts: {
     novelVolume: 'Volume',
     comicVolume: 'Volume',
@@ -17,6 +18,7 @@ export const libraryMessages = {
     animeEpisode: 'Episode',
     animeExtra: 'Extra',
   },
+
   status: { planned: 'Planned', active: 'In progress', onHold: 'On hold', unset: 'Not set' },
   selection: '{count, plural, one {# item selected} other {# items selected}}',
   noMatch: 'No matching items in the current visible scope.',

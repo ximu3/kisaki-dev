@@ -1,0 +1,77 @@
+/* Drag-handle states, native preview surfaces and target-edge insertion markers. */
+
+@layer components {
+  :global([data-ui-dragging]) {
+    opacity: 0.4;
+  }
+
+  .preview {
+    box-sizing: border-box;
+    max-width: 18rem;
+    padding: 0.5rem 0.75rem;
+    box-shadow: var(--shadow-raised);
+    font: 0.8125rem var(--font-sans);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .handle {
+    cursor: grab;
+    touch-action: none;
+  }
+  .handle:active {
+    cursor: grabbing;
+  }
+
+  .indicator {
+    --drop-offset: calc(var(--drop-gap) / -2 - 1px);
+    position: absolute;
+    pointer-events: none;
+    background: var(--primary);
+    border-radius: 1px;
+    z-index: 1;
+  }
+  .indicator[data-edge='top'],
+  .indicator[data-edge='bottom'] {
+    height: 2px;
+    left: 0;
+    right: 0;
+  }
+  .indicator[data-edge='top'] {
+    top: var(--drop-offset);
+  }
+  .indicator[data-edge='bottom'] {
+    bottom: var(--drop-offset);
+  }
+
+  .indicator[data-edge='left'],
+  .indicator[data-edge='right'] {
+    width: 2px;
+    top: 0;
+    bottom: 0;
+  }
+  .indicator[data-edge='left'] {
+    left: var(--drop-offset);
+  }
+  .indicator[data-edge='right'] {
+    right: var(--drop-offset);
+  }
+
+  @media (forced-colors: active) {
+    .indicator {
+      background: Highlight;
+    }
+  }
+
+  .feedback {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    clip-path: inset(50%);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}

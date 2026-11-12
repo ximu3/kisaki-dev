@@ -19,26 +19,40 @@ export interface WorkCompletion extends CompletionFields {
   readonly updatedAt: number
 }
 
-/** The only allowed creation precondition is the work's count before any item in this batch is inserted. */
+/**
+ * One completion fact with an optional pre-insertion count comparison.
+ *
+ * Batch baselines use the work's count before any item in that batch is inserted.
+ */
 export interface CompletionCreate extends CompletionFields {
   readonly expected?: { readonly completionCount: number }
 }
 
+/** A completion-creation input paired with its actual owning work for a batch. */
 export interface CompletionCreateItem extends CompletionCreate {
   readonly work: WorkRef
 }
 
+/** Changes to a saved completion's date or note with independent expected values. */
 export interface CompletionUpdate {
   readonly changes: Partial<CompletionFields>
   readonly expected?: Partial<CompletionFields>
 }
 
-/** A scope names actual works or the complete visible library of the selected work media. Empty types/refs mean empty. */
+/**
+ * Actual work identities or the visible library filtered by work kind.
+ *
+ * Explicit empty kind or reference arrays select no works.
+ */
 export type WorkStatisticsScope =
   | { readonly type: 'library'; readonly workTypes?: readonly WorkType[] }
   | { readonly type: 'works'; readonly refs: readonly WorkRef[] }
 
-/** Counts reflect matching records and distinct owners, with unknown dates reported independently in the same work scope. */
+/**
+ * Matching completion counts, distinct work counts and calendar groups.
+ *
+ * Unknown dates are reported independently within the same work scope.
+ */
 export interface CompletionStatistics {
   readonly completionCount: number
   readonly workCount: number
@@ -54,20 +68,23 @@ export interface CompletionStatistics {
   }[]
 }
 
-/** Completion history does not change activities, positions or part marks. Only recordCurrent also clears current status. */
+/**
+ * Saved completion history and explicit recording of current completion.
+ *
+ * History operations preserve activities, positions and part marks. Only recordCurrent operations
+ * also clear current work status.
+ */
 export interface CompletionsApi {
   /**
-   * Read this work's individual completion facts, preserving distinct records even when dates
-   * and notes match.
+   * Lists the work's individual completion facts, retaining separate records with identical values.
    */
   list(work: WorkRef, options: ListOptions, call?: CallOptions): Promise<ListResult<WorkCompletion>>
 
-  /** Read one saved completion fact for the supplied work without changing current status. */
+  /** Reads one completion belonging to the work, returning null when it is absent. */
   get(work: WorkRef, completionId: string, call?: CallOptions): Promise<WorkCompletion | null>
 
   /**
-   * Count records and distinct works within the supplied scope; report unknown dates separately
-   * from calendar groups.
+   * Counts matching records and distinct works, reporting unknown dates outside calendar groups.
    */
   statistics(
     query: {
@@ -79,30 +96,36 @@ export interface CompletionsApi {
   ): Promise<CompletionStatistics>
 
   /**
-   * Commit one explicit historical completion after the optional count comparison; preserve the
-   * work's current status.
+   * Commits one historical completion after the optional count comparison.
+   *
+   * The work's current status remains unchanged.
    */
   create(work: WorkRef, input: CompletionCreate, call?: CallOptions): Promise<string>
 
-  /** Every input is a separate fact, including identical facts for the same work; IDs correspond one-to-one. */
+  /**
+   * Creates a separate completion fact for every input and returns corresponding IDs.
+   *
+   * Identical facts for the same work remain separate records.
+   */
   createMany(
     items: NonEmptyArray<CompletionCreateItem>,
     call?: CallOptions,
   ): Promise<readonly string[]>
 
-  /** Add the supplied fact and clear this work's current status in one transaction. */
+  /** Adds the supplied completion fact and clears the work's current status in one transaction. */
   recordCurrent(work: WorkRef, input: CompletionCreate, call?: CallOptions): Promise<string>
 
-  /** Equivalent duplicate work intents coalesce; contradictory duplicates reject the entire short batch. */
+  /**
+   * Records current completion and clears status for the selected works atomically.
+   *
+   * Equivalent duplicate work intents coalesce; contradictory duplicates reject the batch.
+   */
   recordCurrentMany(
     items: NonEmptyArray<CompletionCreateItem>,
     call?: CallOptions,
   ): Promise<readonly { readonly work: WorkRef; readonly completionId: string }[]>
 
-  /**
-   * Compare and correct only the submitted fact fields, keeping its stable identity and owning
-   * work.
-   */
+  /** Compares and corrects submitted fact fields while preserving identity and owning work. */
   update(
     work: WorkRef,
     completionId: string,
@@ -111,7 +134,7 @@ export interface CompletionsApi {
   ): Promise<void>
 
   /**
-   * Remove this completion fact without rewriting activities, part marks, position or current
+   * Removes one completion fact while preserving activities, part marks, position and current
    * status.
    */
   delete(work: WorkRef, completionId: string, call?: CallOptions): Promise<void>
@@ -124,12 +147,16 @@ const createEntries = {
 
 const itemSchema = v.strictObject({ work: workRefSchema, ...createEntries })
 
-/** Normalize blank notes to null and preserve all other note text; never fill an unknown date with today. */
+/**
+ * Parses a completion fact and optional count baseline.
+ *
+ * Blank notes normalize to null; other note text and unknown dates remain unchanged.
+ */
 export function parseCompletionCreate(input: unknown): CompletionCreate {
   return parseValue(v.strictObject(createEntries), input, 'Invalid completion creation')
 }
 
-/** Validate only the date/note fields actually being saved, using their original values as independent baselines. */
+/** Parses completion field changes and restricts expected values to those same fields. */
 export function parseCompletionUpdate(input: unknown): CompletionUpdate {
   const fields = v.strictObject(optionalFields(completionFieldsSchema.entries))
   const value = parseValue(
@@ -141,7 +168,11 @@ export function parseCompletionUpdate(input: unknown): CompletionUpdate {
   return value
 }
 
-/** Parse independent history facts and require consistent pre-batch counts for every repeated work. No facts are deduplicated. */
+/**
+ * Parses separate history facts and requires consistent pre-batch counts for repeated works.
+ *
+ * Identical facts are retained.
+ */
 export function parseCompletionCreateMany(input: unknown): NonEmptyArray<CompletionCreateItem> {
   const items = parseValue(
     v.tupleWithRest([itemSchema], itemSchema),

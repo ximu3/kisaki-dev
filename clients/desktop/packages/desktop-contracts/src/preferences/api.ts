@@ -44,33 +44,45 @@ import {
 } from './usage'
 import { DesktopError } from '../errors'
 
+/** Interface translation selection and main-window close behavior. */
 export interface GeneralPreferences {
   readonly uiTranslation: UiTranslationRef
   readonly closeMainWindow: 'background' | 'quit'
 }
 
+/** Saved page order and limit for visible navigation entries. */
 export interface NavigationPreferences {
   readonly order: readonly PageRef[]
   readonly visibleLimit: number
 }
 
+/** Library visibility and automatic local-content refresh choices. */
 export interface LibraryPreferences {
   readonly showNsfw: boolean
   readonly autoRefreshHoldings: boolean
 }
 
-/** Application control memory is separate from a complete per-medium configuration. */
+/**
+ * Application-wide remembered volume and mute state.
+ *
+ * Per-medium playback configuration is stored separately.
+ */
 export interface PlaybackPreferences {
   readonly volumePercent: number
   readonly muted: boolean
 }
 
+/** Automatic update checks and prerelease eligibility preferences. */
 export interface UpdatePreferences {
   readonly autoCheck: boolean
   readonly allowPrerelease: boolean
 }
 
-/** Strict complete values used by initialization and explicit defaults. Credentials are read-only state, not plaintext. */
+/**
+ * Complete preference values used for initialization and explicit defaults.
+ *
+ * Credentials appear as opaque saved state rather than plaintext.
+ */
 export interface Preferences {
   readonly general: GeneralPreferences
   readonly appearance: AppearancePreferences
@@ -83,6 +95,12 @@ export interface Preferences {
   readonly updates: UpdatePreferences
 }
 
+/**
+ * Submitted preference fields grouped by their native editing boundaries.
+ *
+ * Credential changes carry protected write values, while other fields use their ordinary value
+ * types.
+ */
 export interface PreferencesChanges {
   readonly general?: Partial<GeneralPreferences>
   readonly appearance?: Partial<AppearancePreferences>
@@ -97,23 +115,36 @@ export interface PreferencesChanges {
   readonly updates?: Partial<UpdatePreferences>
 }
 
-/** Credential baselines compare the state returned by get, not a plaintext secret or a whole-row revision. */
+/**
+ * Original values for comparing submitted preference changes.
+ *
+ * Credential baselines use the opaque state returned by get.
+ */
 export type PreferencesExpected = Omit<PreferencesChanges, 'network'> & {
   readonly network?: Partial<NetworkPreferences>
 }
 
+/** Preference edits with optional original values for optimistic comparison. */
 export interface PreferencesUpdate {
   readonly changes: PreferencesChanges
   readonly expected?: PreferencesExpected
 }
 
-/** Invalid identities/executable definitions remain unavailable; valid sibling ordinary preferences retain their own values. */
+/**
+ * Saved reading preferences with explicit validity for the selected font.
+ *
+ * Valid sibling preferences retain their own values when the font identity is invalid.
+ */
 export type ReadingPreferencesSnapshot = Omit<ReadingPreferences, 'text'> & {
   readonly text: Omit<ReadingPreferences['text'], 'font'> & {
     readonly font: StoredDefinition<ReadingPreferences['text']['font']>
   }
 }
 
+/**
+ * Saved preference projection preserving invalid identities and execution definitions as explicit
+ * states.
+ */
 export type PreferencesSnapshot = Omit<
   Preferences,
   'general' | 'appearance' | 'navigation' | 'usage' | 'shortcuts' | 'network'
@@ -145,13 +176,19 @@ export type PreferencesSnapshot = Omit<
   readonly network: StoredDefinition<NetworkPreferences>
 }
 
+/** Native field-navigation key within comic or novel reading preferences. */
 export type ReadingPreferenceKey =
   | 'flow'
   | 'colors'
   | `pages.${'arrangement' | 'progression' | 'firstPage' | 'fit' | 'autoCrop' | 'brightness' | 'contrast'}`
   | `text.${'pagesPerView' | 'writingMode' | 'font' | 'fontSize' | 'lineHeight' | 'paragraphSpacing' | 'alignment' | 'padding' | 'maxLineLength'}`
 
-/** Navigation identity only; it never authorizes a JSON-path write. Playback volume/mute are deliberately absent. */
+/**
+ * Native preference-field identity for navigation and search.
+ *
+ * These keys grant no arbitrary path-write capability. Playback volume and mute controls
+ * are outside the field catalog.
+ */
 export type PreferenceKey =
   | `general.${keyof GeneralPreferences}`
   | `appearance.${keyof AppearancePreferences}`
@@ -165,7 +202,7 @@ export type PreferenceKey =
   | `network.${keyof NetworkPreferences}`
   | `updates.${keyof UpdatePreferences}`
 
-/** Text comes from the owning native field catalog after localization, shared with preference search. */
+/** Localized native field-catalog entry shared by preference navigation and search. */
 export interface PreferenceField {
   readonly key: PreferenceKey
   readonly name: string
@@ -173,31 +210,34 @@ export interface PreferenceField {
   readonly keywords: readonly string[]
 }
 
+/** Saved preference reads, defaults, atomic edits and field-catalog discovery. */
 export interface PreferencesApi {
   /**
-   * Read the saved configuration snapshot, retaining unavailable identities and invalid
-   * executable definitions as explicit states.
+   * Reads saved preferences with explicit states for invalid identities and execution definitions.
    */
   get(call?: CallOptions): Promise<PreferencesSnapshot>
 
   /**
-   * Read complete defaults for the current application context without modifying saved
-   * preferences or a caller's draft.
+   * Reads complete defaults for the current application context.
+   *
+   * Saved preferences and caller drafts remain unchanged.
    */
   getDefaults(call?: CallOptions): Promise<Preferences>
 
-  /** Compare and commit only submitted fields, all-or-nothing. Runtime adoption is a separate observable result. */
+  /**
+   * Compares and commits submitted fields atomically.
+   *
+   * Runtime adoption is a separate observable result.
+   */
   update(input: PreferencesUpdate, call?: CallOptions): Promise<PreferencesSnapshot>
 
-  /**
-   * Read localized field navigation and search descriptions; field keys do not authorize
-   * arbitrary path writes.
-   */
+  /** Reads localized descriptions for field navigation and preference search. */
   listFields(call?: CallOptions): Promise<readonly PreferenceField[]>
 
   /**
-   * Subscribe before reading preferences; invalidation requests a fresh snapshot without
-   * replacing unsaved edits.
+   * Subscribes to saved-preference invalidation and returns the subscription lifetime.
+   *
+   * Callers subscribe before reading and refresh snapshots while preserving unsaved edits.
    */
   onInvalidated(listener: () => void): Disposable
 }
@@ -322,12 +362,16 @@ export const preferenceKeys: readonly PreferenceKey[] = Object.freeze([
   'updates.allowPrerelease',
 ] as PreferenceKey[])
 
-/** Check a field-navigation reference against the finite current catalog. */
+/** Parses a field-navigation identity from the current native catalog. */
 export function parsePreferenceKey(input: unknown): PreferenceKey {
   return parseValue(v.picklist(preferenceKeys), input, 'Invalid preference field')
 }
 
-/** Validate complete canonical values and optional platform conflict checks. Actual resource existence is checked by its owner. */
+/**
+ * Parses complete preference values and checks shortcut conflicts when a platform is supplied.
+ *
+ * Resource owners check actual referenced-resource existence.
+ */
 export function parsePreferences(input: unknown, platform?: DesktopPlatform): Preferences {
   const value = parseValue(
     v.strictObject({
@@ -351,7 +395,12 @@ export function parsePreferences(input: unknown, platform?: DesktopPlatform): Pr
   return value
 }
 
-/** No arbitrary recursion/paths: only these native groups permit partial changes; identity choices and arrays replace as units. */
+/**
+ * Parses partial edits at declared native field boundaries and checks their baselines.
+ *
+ * Identity choices and arrays replace as whole values. Credential changes require the original
+ * opaque credential state.
+ */
 export function parsePreferencesUpdate(input: unknown): PreferencesUpdate {
   const value = parseValue(
     v.strictObject({

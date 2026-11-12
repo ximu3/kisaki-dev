@@ -32,6 +32,7 @@ export default defineConfig(
       curly: ['error', 'all'],
       'no-nested-ternary': 'error',
       '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/no-deprecated': 'error',
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/no-misused-promises': 'error',

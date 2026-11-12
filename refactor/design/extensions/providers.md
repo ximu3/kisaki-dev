@@ -172,7 +172,7 @@ register 的局部 id 由宿主绑定为 extensionId:localId，name 和可选 de
 search 提供独立的候选浏览。resolve 使用 { entryType, clues, preferredLanguages? } 在一个来源内定位，并单独接收 context。clues 包含当前类型适用的识别字段和 externalIdentities，WorkClues 是其中的作品分支。resolve 可以直接查询、内部搜索或使用真实映射，不要求先调用公开 search，也不要求实现者同时提供浏览搜索。
 
 ```ts
-type ResolveResult =
+type MetadataResolveResult =
   | { type: 'resolved'; record: SourceEntry }
   | { type: 'candidates'; records: SourceEntry[] }
   | { type: 'notFound' }
@@ -252,7 +252,7 @@ await session.read(
 )
 ```
 
-session.read(request, context) 返回 `Promise<MetadataReadResult<T>>`。objects.entry 选择根字段，relatedEntries 按 Entry 类型组织，parts 使用适用的 volume、chapter、episode 或 extra，tags 使用 names 和 nameKey。节点中的 fields 选择普通资料；相关 Entry 与 Part 还可以提供 refs。没有 refs 时，目标来自所请求关系的端点，或能够明确确定的 Entry 范围；依据不足应返回明确错误。空 refs 表示没有字段读取目标，但不影响另行请求的关系。
+session.read(request, context) 返回 `Promise<MetadataReadResult<T>>`。objects.entry 选择根字段，relatedEntries 按 Entry 类型组织，parts 使用适用的 volume、chapter、episode 或 extra。节点中的 fields 选择普通资料；相关 Entry 与 Part 通过 refs 限定字段读取对象，tags 通过 names 按[标签 nameKey 规则](../domains/collections-and-tags.md#tag-fields)限定，纯值函数由 desktop-contracts/library.tagNameKey 提供。未提供对象限定时，目标来自所请求关系的端点，或能够明确确定的 Entry 范围；依据不足应返回明确错误。空 refs 或 names 表示没有普通字段读取目标，不影响另行请求的关系及必要端点。
 
 关系项出现就表示请求该集合。fields: [] 仍要求返回必要端点和维度，省略关系项才表示不读取。读取明确 Part 的字段不要求来源拥有根记录或完整清单；返回清单则必须有真实来源依据。请求不携带本地库 ID、Profile、采用策略或用户记录。
 

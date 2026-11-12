@@ -6,9 +6,9 @@
 
 ## 现行词表与消费验证
 
-2026-11-06，在本机 Windows x64 验证现行 39 项视觉词表、亮暗默认值、纯值规则、普通 CSS 与 Tailwind 映射。`pnpm check` 通过；`pnpm exec turbo run test:consumers --filter=...@kisaki3/desktop-appearance` 完成视觉包及下游桌面合同、本地化包的构建、打包、声明检查和独立消费，三个包分别通过 4、3、3 项用例。
+2026-11-06，在本机 Windows x64 验证现行 43 项视觉词表、亮暗默认值、纯值规则、普通 CSS 与 Tailwind 映射。`pnpm check` 通过；`pnpm exec turbo run test:consumers --filter=...@kisaki3/desktop-appearance` 完成视觉包及下游桌面合同、本地化与 UI 包的构建、打包、声明检查和独立消费，四个包分别通过 4、3、3、10 项用例。
 
-NodeNext 与 Bundler 消费者通过公开类型使用 chrome；浏览器验证 bg-chrome 与 text-chrome-foreground 随运行变量更新，既有亮暗、零圆角、缩放与资源清理检查通过。消费者截图已人工核对。下方历史结果保留各自版本与运行范围。
+NodeNext 与 Bundler 消费者通过公开类型使用 chrome；浏览器验证 bg-chrome 与 text-chrome-foreground 随运行变量更新，既有亮暗、零圆角、缩放与资源清理检查通过。图表词表为 chart-1 至 chart-5，五项 Tailwind 工具类分别随对应主题值更新，UI 图表使用同一套系列色。消费者截图已人工核对。下方历史结果保留各自版本与运行范围。
 
 ## 交付与本机结果
 

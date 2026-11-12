@@ -12,16 +12,22 @@ import { path } from './directories'
 import { identitySchema, identityKey, workRefSchema } from '../catalog'
 import { parseErrorSummary, DesktopError } from '../../errors'
 
-/** Register one known work's real input; a file input never implicitly registers its parent directory. */
+/**
+ * One real file or directory input for a known work.
+ *
+ * File registration does not implicitly register the parent directory.
+ */
 export interface LocalContentInput {
   readonly type: 'directory' | 'file'
   readonly path: string
 }
 
+/** Optional exact external identities to recheck against the fixed work before registration. */
 export interface LocalContentRegistrationOptions {
   readonly expectedIdentities?: NonEmptyArray<ExternalIdentity>
 }
 
+/** Actual new or reused holdings identities and any initial-refresh or incomplete-launch issues. */
 export interface LocalContentRegistrationResult {
   readonly work: WorkRef
   readonly registrations: NonEmptyArray<{
@@ -35,7 +41,11 @@ export interface LocalContentRegistrationResult {
   )[]
 }
 
-/** Results report actual per-file outcomes; unavailable files and invalid matching do not erase already held data. */
+/**
+ * Discovery progress and actual per-file maintenance and recognition outcomes.
+ *
+ * Unavailable files and failed matching retain existing holdings data.
+ */
 export interface HoldingsRefreshResult<T extends FileWorkType = FileWorkType> {
   readonly work: EntryRef<T>
 
@@ -53,7 +63,7 @@ export interface HoldingsRefreshResult<T extends FileWorkType = FileWorkType> {
   }[]
 }
 
-/** Validate one current file or directory input for an already known work, without inspecting the filesystem. */
+/** Parses one file or directory input without inspecting the filesystem. */
 export function parseLocalContentInput(input: unknown): LocalContentInput {
   return parseValue(
     v.strictObject({ type: v.picklist(['directory', 'file']), path }),
@@ -62,7 +72,7 @@ export function parseLocalContentInput(input: unknown): LocalContentInput {
   )
 }
 
-/** Validate a complete, nonempty identity precondition without resolving or rebinding its actual work. */
+/** Parses an optional nonempty, distinct external-identity precondition. */
 export function parseLocalContentRegistrationOptions(
   input: unknown,
 ): LocalContentRegistrationOptions {
@@ -80,7 +90,7 @@ export function parseLocalContentRegistrationOptions(
   )
 }
 
-/** Preserve actual registered/reused identities and post-commit issues without pretending the content is already usable. */
+/** Parses registered or reused identities and issues, checking applicability to the work kind. */
 export function parseLocalContentRegistrationResult(
   input: unknown,
 ): LocalContentRegistrationResult {

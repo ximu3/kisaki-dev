@@ -6,28 +6,44 @@ import { createServer } from 'vite'
 import { rm } from 'node:fs/promises'
 import { isAbsolute, join, relative, sep } from 'node:path'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
+import { containsPath } from '../lib/paths'
 import type { DependencySnapshot } from './dependencies'
 import type { DesktopDependency } from './dependencies'
 import type { ViteDevServer } from 'vite'
 
+/** Client-environment resolver used to inspect the active development dependency graph. */
 type DependencyResolver = ViteDevServer['environments']['client']['pluginContainer']['resolveId']
 
-/** Vite and the dependency copy currently serving this development session. */
+/** Renderer server owning the dependency snapshots adopted by one development session. */
 export interface DevelopmentRenderer {
+  /** Current listening address; refresh can replace it. */
   readonly url: string
-  /** Query the active client resolver for engineering checks, including after restart. */
+  /** Queries the active client resolver, including after Vite restarts. */
   resolveDependency: DependencyResolver
-  /** Take ownership of a complete candidate, refresh documents, then release the previous copy. */
+
+  /**
+   * Takes ownership of a dependency candidate and refreshes documents to use it.
+   *
+   * Ownership transfers even if refresh or cleanup fails. A thrown restart failure restores the
+   * previous snapshot selection; cleanup failure after a successful refresh leaves the new copy
+   * active. Identical content releases the unused candidate.
+   */
   adopt(snapshot: DependencySnapshot): Promise<void>
+
+  /**
+   * Closes Vite before removing the owned snapshot directory.
+   *
+   * Server or filesystem cleanup failures reject the operation.
+   */
   close(): Promise<void>
 }
 
-function contains(parent: string, path: string): boolean {
-  const child = relative(parent, path)
-  return child !== '..' && !child.startsWith(`..${sep}`) && !isAbsolute(child)
-}
-
-/** Start the renderer server; adopted copies are replaced on refresh and released on close(). */
+/**
+ * Starts the renderer development server and manages its dependency snapshots.
+ *
+ * The supplied snapshot directory is exclusively owned and removed on close. A listening failure
+ * closes the created server; the returned handle owns the server and adopted copies.
+ */
 export async function startRenderer(
   sourceRoot: string,
   members: DesktopDependency[],
@@ -49,7 +65,7 @@ export async function startRenderer(
             ({ name }) => specifier === name || specifier.startsWith(`${name}/`),
           )
 
-          if (importer && contains(snapshotDirectory, importer)) {
+          if (importer && containsPath(snapshotDirectory, importer)) {
             // Imports within the current copy use its package context. Installed third-party
             // dependencies retain the original package's pnpm resolution context.
             if (
@@ -68,7 +84,7 @@ export async function startRenderer(
               relative(snapshotDirectory, importer).split(sep)[0]!,
             )
             const owner = members.find(({ name }) =>
-              contains(join(copyDirectory, 'node_modules', name), importer),
+              containsPath(join(copyDirectory, 'node_modules', name), importer),
             )
             if (owner) {
               return this.resolve(source, join(owner.path, 'package.json'), {
@@ -107,12 +123,18 @@ export async function startRenderer(
     let url = initialUrl
 
     return {
+      /** Returns the latest listening address after any server restart. */
       get url() {
         return url
       },
 
+      /** Forwards resolution through the current client environment. */
       resolveDependency: (...args) => server.environments.client.pluginContainer.resolveId(...args),
 
+      /**
+       * Implements {@link DevelopmentRenderer.adopt} with resolver replacement, refresh and copy
+       * cleanup.
+       */
       async adopt(nextSnapshot) {
         if (snapshot?.id === nextSnapshot.id) {
           await rm(nextSnapshot.directory, { recursive: true, force: true })
@@ -148,6 +170,10 @@ export async function startRenderer(
         }
       },
 
+      /**
+       * Implements {@link DevelopmentRenderer.close}, shutting Vite before removing its snapshot
+       * root.
+       */
       async close() {
         await server.close()
         await rm(snapshotDirectory, { recursive: true, force: true })

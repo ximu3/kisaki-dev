@@ -8,7 +8,12 @@ import { entryRefSchema } from '../catalog'
 import { parseValue, unique } from '../../validation'
 import { DesktopError } from '../../errors'
 
-/** A one-read fixed selection. Reversed endpoints select the same closed interval; all ignores collapsed groups. */
+/**
+ * Selection intent resolved into a fixed set in one read.
+ *
+ * Ranges include both endpoints and select the same interval in either direction. The all variant
+ * selects the complete query result regardless of collapsed groups.
+ */
 export type EntrySelection =
   | { readonly type: 'all' }
   | { readonly type: 'range'; readonly anchor: EntryRef; readonly focus: EntryRef }
@@ -19,11 +24,16 @@ export type EntrySelection =
       readonly expandedGroups: readonly EntryGroupKey[]
     }
 
+/** Encodes a group identity for equality and uniqueness checks. */
 function groupKey(group: EntryGroupKey): string {
   return group.type === 'collection' ? JSON.stringify(['collection', group.id]) : 'unclassified'
 }
 
-/** Validate fixed selection intent; actual missing endpoints or unreadable crossed groups become SelectionChanged at execution. */
+/**
+ * Parses selection intent and requires grouped endpoints to name declared expanded groups.
+ *
+ * Execution reports SelectionChanged when endpoints disappear or a crossed group cannot be read.
+ */
 export function parseEntrySelection(input: unknown): EntrySelection {
   const endpoint = v.strictObject({ group: groupSchema, ref: entryRefSchema })
   const value = parseValue(

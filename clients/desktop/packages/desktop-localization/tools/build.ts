@@ -6,7 +6,12 @@ import { runCli } from '@kisaki3/tooling/cli'
 import { replaceOutput } from '@kisaki3/tooling/output'
 import { checkMessageTypes } from './generate-messages'
 
-/** Preserve the previous distribution if any entry, declaration or candidate preparation fails. */
+/**
+ * Checks generated message contracts and builds a complete localization distribution.
+ *
+ * Adopts dist after preparation; stale generated types, build failure or cancellation before
+ * handoff preserve the previous output.
+ */
 export async function buildPackage(signal?: AbortSignal): Promise<void> {
   const project = join(import.meta.dirname, '..')
   await checkMessageTypes()

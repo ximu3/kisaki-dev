@@ -2,7 +2,7 @@
 
 本目录规定 Kisaki 的产品范围、数据模型、接口、运行行为、界面和工程交付。设计正文说明系统应如何工作，[工作包](implementation/work-packages.md)安排实施依赖，[验收标准](verification/acceptance.md)规定完成条件，[实施状态](implementation/status.md)记录实际进度与证据。
 
-简洁、清晰、干净与克制是本目录同等首要的设计标准。所有主题及其限制、验证要求遵守[共用工程规范](design/engineering/conventions.md#quality)，具体产品与技术语义由所属主题定义。
+简洁、清晰、干净与克制是本目录同等首要的设计标准。设计讨论、实施改动与验收均从[全局设计与一致性](design/engineering/conventions.md#global-design)确定粒度和影响范围。所有主题及其限制、验证要求遵守[共用工程规范](design/engineering/conventions.md#quality)，具体产品与技术语义由所属主题定义。
 
 界面与资源的对照工程位于 `F:/project/3/kisaki`。
 
@@ -14,7 +14,7 @@
 
 方案取舍遵守[产品判断原则](design/product.md#judgment)，设计是否足以实施按[设计充分性与实现自由](design/engineering/conventions.md#design-completion)核对。关键业务与公开语义在规格中确定，局部实现选择在明确约束内完成。
 
-当前交付包括 clients/desktop 下的桌面本体、八个公共包、33 项官方扩展及四个[独立技术项目](design/projects/README.md#delivery)。[顶层分组](design/engineering/layout.md#workspace)中的 Web、官网和候选服务端不在当前桌面交付范围内。
+本轮交付范围包括 clients/desktop 下的桌面本体、八个公共包、33 项官方扩展及四个[独立技术项目](design/projects/README.md#delivery)。[顶层分组](design/engineering/layout.md#workspace)中的 Web 客户端、官网和候选服务端留待后续项目。
 
 现有界面与交互体验整体沿用，按规格作局部调整并补充新增能力；组件与内部结构按新架构独立设计，见[现有 UI 保留原则](design/ui/components.md#existing-ui)。
 

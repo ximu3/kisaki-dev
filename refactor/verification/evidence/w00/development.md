@@ -35,4 +35,6 @@ Vite 管理 renderer HMR，Chokidar 管理完整运行时和依赖输入。会�
 
 本机 Windows x64、Node 24.11.1、Electron 45.0.0、Vitest 5.0.5 的类型、lint、格式和 6 项开发回归通过。同次 macOS 运行还保留了取消命令期间的 kill EPERM，未将它改写为取消成功；该观察与上述轮询、测试清理问题分别记录，跨平台复核由对应 PR 保留。
 
+macOS 在 SIGTERM 后探测进程组时可能报告 EPERM。Darwin 查到进程组后会跳过僵尸进程，找不到可发信号的成员时也返回该错误。共用命令运行器遇到这个结果时核对进程表。组内仍有可运行成员时保留原始错误，已退出的成员由系统回收。见 [XNU 进程组信号实现](https://github.com/apple-oss-distributions/xnu/blob/main/bsd/kern/kern_sig.c)。
+
 工作进程的完整有界诊断由测试失败钩子在清理后输出一次，观察记录保存在测试制品中。异常消息说明阶段和退出状态，断言读取捕获的输出。`NODE_DEBUG=kisaki:*` 可显示开发会话、应用及 utility process 的关闭阶段；Node 的进程 exit 与输出流 close 分别记录，依据 [child process 生命周期](https://nodejs.org/api/child_process.html#event-close)。两轮临时重复运行使用 [Vitest repeats](https://vitest.dev/api/test#repeats)，正常与清理失败分别保留，依据 [onTestFinished](https://vitest.dev/api/hooks.html#ontestfinished)。

@@ -1,4 +1,4 @@
-/** @fileoverview Owns English messages for actions. */
+/** @fileoverview Defines English labels for common editing and navigation actions. */
 
 export const actionMessages = {
   save: 'Save',

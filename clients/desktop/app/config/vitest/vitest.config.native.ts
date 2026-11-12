@@ -1,11 +1,8 @@
 import { defineConfig } from 'vitest/config'
-import { readFileSync } from 'node:fs'
+import electronManifest from 'electron/package.json' with { type: 'json' }
 
-const manifest = JSON.parse(
-  readFileSync(new URL('../../package.json', import.meta.url), 'utf8'),
-) as { devDependencies: { electron: string } }
 if (
-  process.versions.electron !== manifest.devDependencies.electron ||
+  process.versions.electron !== electronManifest.version ||
   process.env.ELECTRON_RUN_AS_NODE !== '1' ||
   !(Number(process.versions.napi) >= 8)
 ) {

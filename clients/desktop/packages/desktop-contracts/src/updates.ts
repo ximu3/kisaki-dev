@@ -13,13 +13,13 @@ import {
   parseValue,
   timestamp,
 } from './validation'
-import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
+import { parseApplicationVersion } from './app'
 import { parseHttpUrl } from './network'
 import { parseErrorSummary, DesktopError } from './errors'
 import { parseTaskRunRef } from './tasks'
 import { normalizeLocale, normalizeLocalizedText } from '@kisaki3/extension-distribution/metadata'
 
-/** sha512 uses the updater's canonical Base64 format, never extension-distribution's hexadecimal SHA-256. */
+/** Release artifact address, optional byte size and canonical Base64 SHA-512 digest. */
 export interface ApplicationUpdateFile {
   readonly url: string
   /** File size in bytes; null when release metadata does not provide it. */
@@ -27,10 +27,12 @@ export interface ApplicationUpdateFile {
   readonly sha512: string
 }
 
+/** In-app update artifacts or a manual download destination for the release. */
 export type ApplicationDelivery =
   | { readonly type: 'inApp'; readonly files: readonly ApplicationUpdateFile[] }
   | { readonly type: 'manual'; readonly downloadUrl: string }
 
+/** Desktop release identity, publication time and target-specific delivery information. */
 export interface ApplicationRelease {
   readonly version: string
   readonly tagName: string
@@ -40,13 +42,14 @@ export interface ApplicationRelease {
   readonly delivery: ApplicationDelivery
 }
 
-/** A receipt for verified selected bytes; no preparation directory, Task ID or inferred latest release appears here. */
+/** Receipt identifying the selected desktop update bytes verified during preparation. */
 export interface PreparedApplicationUpdate {
   readonly version: string
   readonly tagName: string
   readonly files: readonly ApplicationUpdateFile[]
 }
 
+/** Localized notes bound to one desktop release version. */
 export interface ApplicationReleaseNotes {
   readonly project: 'desktop'
   readonly version: string
@@ -54,6 +57,7 @@ export interface ApplicationReleaseNotes {
   readonly releaseNotes: LocalizedText
 }
 
+/** Last release-check outcome, including its timestamp or safe failure summary. */
 export type ApplicationUpdateCheck =
   | { readonly status: 'notChecked' }
   | {
@@ -74,6 +78,10 @@ export type ApplicationUpdateCheck =
       readonly error: ErrorSummary
     }
 
+/**
+ * Current check, artifact preparation or installation handoff with an optional managed-task
+ * reference.
+ */
 export type ApplicationUpdateOperation = { readonly taskRef?: TaskRunRef } & (
   | { readonly type: 'checking' }
   | {
@@ -85,6 +93,11 @@ export type ApplicationUpdateOperation = { readonly taskRef?: TaskRunRef } & (
   | { readonly type: 'installing'; readonly prepared: PreparedApplicationUpdate }
 )
 
+/**
+ * Current application version, last check, verified preparation and active update operation.
+ *
+ * Checking or preparing retains independent prior check and preparation facts.
+ */
 export interface ApplicationUpdateState {
   readonly currentVersion: string
   readonly check: ApplicationUpdateCheck
@@ -92,38 +105,49 @@ export interface ApplicationUpdateState {
   readonly operation: ApplicationUpdateOperation | null
 }
 
+/** Desktop release discovery, artifact preparation and explicit installation handoff. */
 export interface UpdatesApi {
-  /** Read release-check, verified preparation and current operation facts independently. */
+  /** Reads release-check, verified-preparation and active-operation facts independently. */
   getState(call?: CallOptions): Promise<ApplicationUpdateState>
 
   /**
-   * Deliver current update state and subsequent changes; ending observation does not cancel
-   * checking, preparation or installation.
+   * Delivers current update state and subsequent changes and returns the observation lifetime.
+   *
+   * Ending observation leaves checking, preparation and installation running.
    */
   observe(listener: Listener<ApplicationUpdateState>): Disposable
 
-  /** Null means a successful check found no newer allowed release; a failed check rejects. */
+  /**
+   * Checks for a newer allowed desktop release.
+   *
+   * A successful check with no candidate returns null; a failed check rejects.
+   */
   check(call?: CallOptions): Promise<ApplicationRelease | null>
 
   /**
-   * Read the selected desktop release's localized notes; unavailable notes do not invalidate its
-   * verified update artifact.
+   * Reads localized notes for the selected desktop release.
+   *
+   * Unavailable notes leave its verified update artifact valid.
    */
   getReleaseNotes(release: ApplicationRelease, call?: CallOptions): Promise<ApplicationReleaseNotes>
 
-  /** Manual carriers reject preparation. A successful receipt means all selected bytes have actually been verified. */
+  /**
+   * Acquires and verifies every selected in-app update artifact before returning a receipt.
+   *
+   * Manual delivery does not support preparation.
+   */
   prepare(release: ApplicationRelease, call?: CallOptions): Promise<PreparedApplicationUpdate>
 
-  /** Resolve only for a completed handoff if the environment survives; successful restart normally ends the old process. */
+  /**
+   * Hands the prepared update to installation and restart.
+   *
+   * The promise resolves after handoff only if the environment survives; successful restart
+   * normally ends the old process.
+   */
   installAndRestart(call?: CallOptions): Promise<void>
 }
 
-const version = v.pipe(
-  v.unknown(),
-  v.transform((value) =>
-    parseExternalValue(parseVersion, value, 'Invalid desktop release version'),
-  ),
-)
+const version = v.pipe(v.unknown(), v.transform(parseApplicationVersion))
 
 const url = v.pipe(v.unknown(), v.transform(parseHttpUrl))
 
@@ -148,18 +172,17 @@ const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
 
 const taskRef = v.exactOptional(v.pipe(v.unknown(), v.transform(parseTaskRunRef)))
 
-/** Accept exactly the desktop release family; unrelated or malformed tags are not desktop candidates. */
+/**
+ * Extracts a valid desktop version from its release tag, returning null for unrelated or malformed
+ * tags.
+ */
 export function getDesktopReleaseVersion(tag: string): string | null {
   if (!tag.startsWith('desktop@')) {
     return null
   }
 
   try {
-    return parseExternalValue(
-      parseVersion,
-      tag.slice('desktop@'.length),
-      'Invalid desktop release tag',
-    )
+    return parseApplicationVersion(tag.slice('desktop@'.length))
   } catch (error) {
     if (error instanceof DesktopError && error.code === 'InvalidInput') {
       return null
@@ -169,7 +192,11 @@ export function getDesktopReleaseVersion(tag: string): string | null {
   }
 }
 
-/** Validate a release's declared version/tag identity and carrier-specific artifact fields. Origin/target support is checked by updates. */
+/**
+ * Parses release metadata and requires the desktop tag to match its version.
+ *
+ * The updates owner checks origin and target support.
+ */
 export function parseApplicationRelease(input: unknown): ApplicationRelease {
   const value = parseValue(
     v.strictObject({
@@ -192,7 +219,11 @@ export function parseApplicationRelease(input: unknown): ApplicationRelease {
   return value
 }
 
-/** A prepared result cannot represent manual delivery or an incomplete file list. */
+/**
+ * Parses a preparation receipt with matching version and tag and a nonempty, unique artifact list.
+ *
+ * Artifact-byte verification belongs to preparation execution.
+ */
 export function parsePreparedApplicationUpdate(input: unknown): PreparedApplicationUpdate {
   const value = parseValue(
     v.strictObject({ version, tagName: text, files }),
@@ -206,7 +237,10 @@ export function parsePreparedApplicationUpdate(input: unknown): PreparedApplicat
   return value
 }
 
-/** Release notes retain the verified desktop/version identity; missing/read failures are not represented by nullable text. */
+/**
+ * Parses and normalizes localized desktop release notes, checking the expected version when
+ * supplied.
+ */
 export function parseApplicationReleaseNotes(
   input: unknown,
   expectedVersion?: string,
@@ -240,7 +274,10 @@ export function parseApplicationReleaseNotes(
   }
 }
 
-/** Checking/preparing does not erase prior check/prepared results; these independent facts remain explicit in each snapshot. */
+/**
+ * Parses independent check, preparation and active-operation state with their associated release
+ * values.
+ */
 export function parseApplicationUpdateState(input: unknown): ApplicationUpdateState {
   return parseValue(
     v.strictObject({

@@ -2,9 +2,9 @@
 
 export type { UiApi } from './api'
 
-export { parseViewDocument } from './views'
+export { parseExtensionViewDocument } from './views'
 export type {
-  ViewDocument,
+  ExtensionViewDocument,
   ViewMethod,
   ViewMethods,
   ViewNotifications,
@@ -12,20 +12,20 @@ export type {
   ViewClientIpc,
   HostView,
   ViewContext,
-  ViewDefinition,
-  DialogsApi,
+  ExtensionViewDefinition,
+  ExtensionDialogsApi,
 } from './views'
 
 export { parsePageRef } from './pages'
-export type { PageRef, PageDefinition, PagesApi } from './pages'
+export type { PageRef, ExtensionPageDefinition, ExtensionPagesApi } from './pages'
 
-export { validateMenuItems } from './menus'
+export { validateExtensionMenuItems } from './menus'
 export type {
-  MenuItemPresentation,
-  MenuFeedback,
-  MenuItem,
-  MenuContextMap,
-  MenusApi,
+  ExtensionMenuItemPresentation,
+  ExtensionMenuFeedback,
+  ExtensionMenuItem,
+  ExtensionMenuContextMap,
+  ExtensionMenusApi,
 } from './menus'
 
 export { parseToastMessage, parseNotificationMessage } from './feedback'
@@ -37,8 +37,8 @@ export type {
   NotificationsApi,
 } from './feedback'
 
-export { parseUiIcon } from './icons'
-export type { UiIcon } from './icons'
+export { parseExtensionUiIcon } from './icons'
+export type { ExtensionUiIcon } from './icons'
 
 export {
   parseEntryIdentifier,

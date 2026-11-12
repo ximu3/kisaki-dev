@@ -1,5 +1,9 @@
 /** @fileoverview Consumes only the packed localization entrypoint and its declared runtime dependencies. */
-import { createTranslator, validateUiTranslation } from '@kisaki3/desktop-localization'
+
+import {
+  createTranslator,
+  validateExtensionUiTranslationDefinition,
+} from '@kisaki3/desktop-localization'
 
 export const summary = {
   english: createTranslator('en')('library.selection', { count: 2 }),
@@ -9,6 +13,10 @@ export const summary = {
     'library.completion.recorded',
     { name: '{literal}' },
   ),
-  locale: validateUiTranslation({ id: 'zh', name: '中文', locale: 'zh-hans-cn', messages: {} })
-    .locale,
+  locale: validateExtensionUiTranslationDefinition({
+    id: 'zh',
+    name: '中文',
+    locale: 'zh-hans-cn',
+    messages: {},
+  }).locale,
 }

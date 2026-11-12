@@ -42,7 +42,7 @@
     "@kisaki3/tooling": "workspace:*",
     "@kisaki3/typescript-config": "workspace:*",
     "@types/node": "catalog:",
-    "electron": "45.0.0",
+    "electron": "catalog:",
     "eslint": "catalog:",
     "jiti": "catalog:",
     "tsdown": "0.23.0",

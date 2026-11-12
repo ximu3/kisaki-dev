@@ -5,6 +5,7 @@
 
 import { copyFile, cp, mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import electronManifest from 'electron/package.json' with { type: 'json' }
 import { appRoot, buildDirectory } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
 import type { DesktopBuild, DesktopTarget } from '../lib/runtime-manifest'
@@ -12,7 +13,13 @@ import { replaceOutput } from '@kisaki3/tooling/output'
 import { runtimeFiles, buildInputIdentity } from './identity'
 import { buildProgram, programNames } from './programs'
 
-/** Assemble a complete target from prepared resources and bindings; replace output after all programs are ready. */
+/**
+ * Assembles a complete desktop runtime from prepared resources and native bindings.
+ *
+ * Requires the target's own runner. Waits for all program compilers, verifies required outputs and
+ * a stable input identity, then adopts the directory and returns its manifest. Preparation failure
+ * or cancellation before handoff preserves the previous runtime.
+ */
 export async function buildDesktop(
   sourceRoot: string,
   target: DesktopTarget,
@@ -37,7 +44,6 @@ export async function buildDesktop(
         homepage: string
         author: { name: string; email: string }
         license: string
-        devDependencies: { electron: string }
       }
 
       const resources = join(appRoot, 'out', 'resources', target)
@@ -107,7 +113,7 @@ export async function buildDesktop(
         buildId,
         target,
         version: manifest.version,
-        electronVersion: manifest.devDependencies.electron,
+        electronVersion: electronManifest.version,
         files,
       }
       if ((await buildInputIdentity({ signal })) !== buildId) {

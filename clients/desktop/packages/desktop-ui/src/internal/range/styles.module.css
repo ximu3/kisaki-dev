@@ -1,0 +1,58 @@
+/* Native ranges keep a stable track and thumb across pointer states. */
+
+@layer components {
+  .range {
+    --range-stop: calc(
+      var(--kui-icon-small) / 2 + (100% - var(--kui-icon-small)) * var(--range-fraction)
+    );
+    --range-fill: var(--primary);
+    --range-direction: to right;
+    appearance: none;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    height: var(--kui-control-height);
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+  .range:dir(rtl) {
+    --range-direction: to left;
+  }
+  .range::-webkit-slider-runnable-track {
+    height: 0.25rem;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(
+      var(--range-direction),
+      var(--range-fill) 0 var(--range-stop),
+      var(--muted) var(--range-stop) 100%
+    );
+  }
+  .range::-webkit-slider-thumb {
+    appearance: none;
+    width: var(--kui-icon-small);
+    height: var(--kui-icon-small);
+    margin-top: calc((0.25rem - var(--kui-icon-small)) / 2);
+    border: 0;
+    border-radius: 50%;
+    background: var(--range-fill);
+  }
+  .range:focus-visible {
+    outline: var(--kui-focus-width) solid var(--ring);
+    outline-offset: 2px;
+  }
+  .range[aria-invalid='true'] {
+    --range-fill: var(--destructive);
+  }
+  .range:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+  @media (forced-colors: active) {
+    .range,
+    .range::-webkit-slider-thumb {
+      appearance: auto;
+    }
+  }
+}

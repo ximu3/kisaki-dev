@@ -2,7 +2,7 @@
 
 import type { ColorScheme, TokenValues } from './tokens'
 
-/** Complete light values; font names do not load or distribute font files. */
+/** Default light appearance branch with CSS font-family stacks. */
 export const light: TokenValues = Object.freeze({
   '--background': 'oklch(0.965 0.005 256)',
   '--foreground': 'oklch(0.21 0.03 260)',
@@ -34,15 +34,20 @@ export const light: TokenValues = Object.freeze({
   '--warning-foreground': 'oklch(0.22 0.03 80)',
   '--border': 'oklch(0.86 0.012 256)',
   '--ring': 'oklch(0.56 0.2 258)',
-  '--chart': 'oklch(0.62 0.11 255)',
+
+  '--chart-1': 'oklch(0.62 0.11 255)',
+  '--chart-2': 'oklch(0.61 0.11 175)',
+  '--chart-3': 'oklch(0.69 0.13 75)',
+  '--chart-4': 'oklch(0.6 0.15 305)',
+  '--chart-5': 'oklch(0.65 0.18 25)',
 
   '--radius': '6px',
   '--shadow-raised':
     '0 1px 2px 0 oklch(0.13 0.02 258 / 0.08), 0 3px 10px -2px oklch(0.13 0.02 258 / 0.1)',
   '--shadow-overlay':
-    'inset 0 1px 0 oklch(1 0 0 / 0.5), inset 0 -1px 0 oklch(0.13 0.02 258 / 0.05), 0 1px 2px 0 oklch(0.13 0.02 258 / 0.1), 0 10px 24px -6px oklch(0.13 0.02 258 / 0.16)',
+    '0 1px 2px 0 oklch(0.13 0.02 258 / 0.1), 0 10px 24px -6px oklch(0.13 0.02 258 / 0.16)',
   '--shadow-modal':
-    'inset 0 1px 0 oklch(1 0 0 / 0.55), inset 0 -1px 0 oklch(0.13 0.02 258 / 0.06), 0 2px 4px 0 oklch(0.13 0.02 258 / 0.1), 0 28px 64px -16px oklch(0.13 0.02 258 / 0.24)',
+    '0 2px 4px 0 oklch(0.13 0.02 258 / 0.1), 0 28px 64px -16px oklch(0.13 0.02 258 / 0.24)',
 
   '--font-sans': "'Noto Sans SC Variable', ui-sans-serif, system-ui, sans-serif",
   '--font-mono':
@@ -53,7 +58,7 @@ export const light: TokenValues = Object.freeze({
   '--text-base-letter-spacing': 'normal',
 })
 
-/** Complete dark values; font names do not load or distribute font files. */
+/** Default dark appearance branch with CSS font-family stacks. */
 export const dark: TokenValues = Object.freeze({
   '--background': 'oklch(0.17 0.015 258)',
   '--foreground': 'oklch(0.9 0.012 256)',
@@ -85,14 +90,17 @@ export const dark: TokenValues = Object.freeze({
   '--warning-foreground': 'oklch(0.22 0.03 80)',
   '--border': 'oklch(0.45 0.02 258 / 0.35)',
   '--ring': 'oklch(0.64 0.17 256)',
-  '--chart': 'oklch(0.7 0.12 255)',
+
+  '--chart-1': 'oklch(0.7 0.12 255)',
+  '--chart-2': 'oklch(0.74 0.12 175)',
+  '--chart-3': 'oklch(0.78 0.13 75)',
+  '--chart-4': 'oklch(0.73 0.14 305)',
+  '--chart-5': 'oklch(0.73 0.16 25)',
 
   '--radius': '6px',
   '--shadow-raised': '0 1px 2px 0 oklch(0 0 0 / 0.35), 0 4px 12px -2px oklch(0 0 0 / 0.4)',
-  '--shadow-overlay':
-    'inset 0 1px 0 oklch(1 0 0 / 0.08), inset 0 -1px 0 oklch(0 0 0 / 0.35), 0 1px 2px 0 oklch(0 0 0 / 0.45), 0 10px 24px -6px oklch(0 0 0 / 0.5)',
-  '--shadow-modal':
-    'inset 0 1px 0 oklch(1 0 0 / 0.1), inset 0 -1px 0 oklch(0 0 0 / 0.4), 0 2px 4px 0 oklch(0 0 0 / 0.5), 0 28px 64px -16px oklch(0 0 0 / 0.65)',
+  '--shadow-overlay': '0 1px 2px 0 oklch(0 0 0 / 0.45), 0 10px 24px -6px oklch(0 0 0 / 0.5)',
+  '--shadow-modal': '0 2px 4px 0 oklch(0 0 0 / 0.5), 0 28px 64px -16px oklch(0 0 0 / 0.65)',
 
   '--font-sans': "'Noto Sans SC Variable', ui-sans-serif, system-ui, sans-serif",
   '--font-mono':
@@ -103,5 +111,5 @@ export const dark: TokenValues = Object.freeze({
   '--text-base-letter-spacing': 'normal',
 })
 
-/** Shared immutable branches. Copy a branch before editing; no host state is read. */
+/** Frozen default branches shared by JavaScript and generated CSS. */
 export const defaults: Readonly<Record<ColorScheme, TokenValues>> = Object.freeze({ light, dark })

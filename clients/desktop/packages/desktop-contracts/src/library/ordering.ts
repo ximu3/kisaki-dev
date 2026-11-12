@@ -4,7 +4,11 @@ import type { NonEmptyArray } from '../operations'
 import * as v from 'valibot'
 import { id, unique, parseValue } from '../validation'
 
-/** A subset permutes only its existing slots; expected always contains the complete original side. */
+/**
+ * A selected subset's new slot order and the complete original-side baseline.
+ *
+ * Only the subset's existing slots are permuted.
+ */
 export interface ReorderInput<T = string> {
   readonly order: NonEmptyArray<T>
   readonly expected: { readonly order: readonly T[] }
@@ -21,7 +25,7 @@ const uniqueIds = v.pipe(
   v.check((items) => unique(items, (item) => item)),
 )
 
-/** Parse a nonempty unique order and the full original sequence; no implicit snapshot is manufactured. */
+/** Parses a nonempty unique requested order and an explicit unique original-order baseline. */
 export function parseReorderInput(input: unknown): ReorderInput {
   return parseValue(
     v.strictObject({
@@ -38,7 +42,7 @@ export function parseReorderInput(input: unknown): ReorderInput {
   )
 }
 
-/** Parse a current-position move and reject a selected anchor. */
+/** Parses a current-position move and rejects an anchor included among the moved identities. */
 export function parseMoveInput(input: unknown): MoveInput {
   return parseValue(
     v.pipe(

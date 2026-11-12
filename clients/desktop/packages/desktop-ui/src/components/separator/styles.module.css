@@ -1,0 +1,19 @@
+/* One logical border paints a divider at fractional desktop scales. */
+
+@layer components {
+  :where(.root) {
+    flex: none;
+    box-sizing: content-box;
+    border: 0;
+  }
+  :where(.root[data-orientation='horizontal']) {
+    block-size: 0;
+    inline-size: 100%;
+    border-block-start: 1px solid var(--border);
+  }
+  :where(.root[data-orientation='vertical']) {
+    inline-size: 0;
+    align-self: stretch;
+    border-inline-start: 1px solid var(--border);
+  }
+}

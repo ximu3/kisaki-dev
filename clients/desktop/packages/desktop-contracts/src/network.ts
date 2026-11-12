@@ -6,18 +6,25 @@ import { parseValue, text, id } from './validation'
 import { DesktopError } from './errors'
 import * as v from 'valibot'
 
-/** A single HTTP/HTTPS/SOCKS5 endpoint; credentials are separate protected values, never URL user information. */
+/**
+ * Single HTTP, HTTPS or SOCKS5 proxy address with an explicit port.
+ *
+ * Credentials are supplied separately as protected values.
+ */
 export type ProxyEndpoint = string
 
+/** Plaintext proxy credentials accepted at the protected native write boundary. */
 export interface ProxyCredentials {
   readonly username: string
   readonly password: string
 }
 
+/** Opaque revision identifying saved proxy credentials in ordinary read projections. */
 export interface ProxyCredentialState {
   readonly revision: string
 }
 
+/** Saved route selection, manual proxy settings and protected-credential revision. */
 export interface NetworkPreferences {
   readonly mode: 'system' | 'direct' | 'manual'
   readonly endpoint: ProxyEndpoint | null
@@ -25,12 +32,18 @@ export interface NetworkPreferences {
   readonly credentials: ProxyCredentialState | null
 }
 
-/** Saved choice and readiness differ; a failed apply prevents networking instead of silently using an old/direct route. */
+/**
+ * Readiness of the host network route after applying saved preferences.
+ *
+ * A failed apply blocks networking instead of silently retaining an old route or switching to
+ * direct access.
+ */
 export type NetworkState =
   | { readonly status: 'ready' }
   | { readonly status: 'applying' }
   | { readonly status: 'failed'; readonly error: ErrorSummary }
 
+/** Host HTTP request options with explicit body encoding, redirect policy and cancellation. */
 export interface NetworkFetchOptions {
   /** Defaults to GET; the caller supplies any method required by its explicitly encoded body. */
   readonly method?: string
@@ -41,7 +54,12 @@ export interface NetworkFetchOptions {
   readonly redirect?: 'follow' | 'error'
 }
 
-/** A single-consumption body. Cancel unused streams to release; no clone and no promise of a native Response instance. */
+/**
+ * HTTP response metadata and a body that can be consumed once.
+ *
+ * Callers cancel unused streams to release them. This surface exposes no clone operation and does
+ * not promise a native Response instance.
+ */
 export interface NetworkResponse {
   readonly url: string
   readonly redirected: boolean
@@ -53,55 +71,56 @@ export interface NetworkResponse {
   readonly body: ReadableStream<Uint8Array> | null
   readonly bodyUsed: boolean
 
-  /** Consume the body once as text; body-stream failures and cancellation reject the read. */
+  /** Consumes the body once as text, rejecting on stream failure or cancellation. */
   text(): Promise<string>
 
   /**
-   * Consume and parse the body once as JSON; invalid JSON and body-stream failures reject the
-   * read.
+   * Consumes the body once and parses JSON, rejecting invalid JSON, stream failure or cancellation.
    */
   json(): Promise<unknown>
 
-  /**
-   * Consume the body once into an owned buffer; body-stream failures and cancellation reject the
-   * read.
-   */
+  /** Consumes the body once into an owned buffer, rejecting on stream failure or cancellation. */
   arrayBuffer(): Promise<ArrayBuffer>
 
-  /**
-   * Consume the body once into owned bytes; body-stream failures and cancellation reject the
-   * read.
-   */
+  /** Consumes the body once into owned bytes, rejecting on stream failure or cancellation. */
   bytes(): Promise<Uint8Array<ArrayBuffer>>
 
-  /** Consume the body once as a Blob; body-stream failures and cancellation reject the read. */
+  /** Consumes the body once as a Blob, rejecting on stream failure or cancellation. */
   blob(): Promise<Blob>
 
   /**
-   * Consume and parse the body once using its content type; unsupported or invalid form data
-   * rejects the read.
+   * Consumes the body once as form data according to its content type.
+   *
+   * Unsupported or invalid form data, stream failure and cancellation reject the read.
    */
   formData(): Promise<FormData>
 }
 
+/** Host HTTP access through the applied route and observation of route readiness. */
 export interface NetworkApi {
-  /** Resolve at response headers. Later cancellation fails outstanding body reads; HTTP error statuses remain normal responses. */
+  /**
+   * Starts an HTTP request and resolves when response headers arrive.
+   *
+   * HTTP error statuses remain normal responses. Later cancellation fails outstanding body reads.
+   */
   fetch(url: string | URL, options?: NetworkFetchOptions): Promise<NetworkResponse>
 
-  /**
-   * Read whether the saved network choice has been adopted; a failed apply remains distinct from
-   * a usable direct route.
-   */
+  /** Reads whether the saved network choice has been applied successfully. */
   getState(): Promise<NetworkState>
 
   /**
-   * Deliver current readiness and subsequent changes; releasing observation does not cancel
-   * requests.
+   * Delivers current readiness and subsequent changes and returns the observation lifetime.
+   *
+   * Releasing observation leaves requests running.
    */
   observe(listener: Listener<NetworkState>): Disposable
 }
 
-/** Validate and canonicalize an absolute HTTP(S) address without changing its encoded path/query or following redirects. */
+/**
+ * Parses and serializes an absolute HTTP(S) URL using the native URL implementation.
+ *
+ * Rejects embedded credentials, surrounding whitespace and control characters.
+ */
 export function parseHttpUrl(input: unknown): string {
   const value = parseValue(text, input, 'Invalid HTTP URL')
   try {
@@ -125,7 +144,11 @@ export function parseHttpUrl(input: unknown): string {
   }
 }
 
-/** Reject PAC expressions, URL credentials, paths and multiple endpoints before any proxy execution. */
+/**
+ * Parses a single supported proxy endpoint and returns its canonical host and explicit port.
+ *
+ * Rejects credentials, resource paths, query strings, fragments and invalid ports.
+ */
 export function parseProxyEndpoint(input: unknown): ProxyEndpoint {
   const value = parseValue(text, input, 'Invalid proxy endpoint')
   try {
@@ -162,7 +185,7 @@ export function parseProxyEndpoint(input: unknown): ProxyEndpoint {
   }
 }
 
-/** Credential content is accepted only by protected native writes and is never part of an ordinary read projection. */
+/** Parses the username and password supplied to a protected proxy-credential write. */
 export function parseProxyCredentials(input: unknown): ProxyCredentials {
   return parseValue(
     v.strictObject({ username: text, password: text }),
@@ -171,7 +194,11 @@ export function parseProxyCredentials(input: unknown): ProxyCredentials {
   )
 }
 
-/** Validate absent credentials or their opaque revision without accepting plaintext or claiming successful decryption. */
+/**
+ * Parses absent credentials or their saved opaque revision.
+ *
+ * The revision exposes no plaintext and does not establish successful decryption.
+ */
 export function parseProxyCredentialState(input: unknown): ProxyCredentialState | null {
   return parseValue(
     v.nullable(v.strictObject({ revision: id })),
@@ -180,7 +207,11 @@ export function parseProxyCredentialState(input: unknown): ProxyCredentialState 
   )
 }
 
-/** Strict complete configuration; manual without an endpoint and unsupported SOCKS5 authentication cannot execute. */
+/**
+ * Parses complete network preferences and checks manual proxy requirements.
+ *
+ * Manual mode requires an endpoint and rejects credentials for SOCKS5 proxies.
+ */
 export function parseNetworkPreferences(input: unknown): NetworkPreferences {
   const value = parseValue(
     v.strictObject({

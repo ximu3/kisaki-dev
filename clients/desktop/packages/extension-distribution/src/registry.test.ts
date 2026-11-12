@@ -50,7 +50,7 @@ test('flat indexes parse all display, release and artifact fields without resolv
 
   const signature = `${'A'.repeat(86)}==`
   expect(parseSignedRegistry(JSON.stringify({ ...input, signature })).signature).toBe(signature)
-  expect(() => parseSignedRegistry(JSON.stringify(input))).toThrowError(
+  expect(() => parseSignedRegistry(JSON.stringify(input))).toThrow(
     expect.objectContaining({ path: ['signature'] }),
   )
 
@@ -62,7 +62,7 @@ test('flat indexes parse all display, release and artifact fields without resolv
   ).toBe(-1)
   expect(() =>
     normalizeRegistry(registry([release('1.0.0', { publishedAt: Number.MAX_SAFE_INTEGER })])),
-  ).toThrowError(expect.objectContaining({ code: 'invalid-format' }))
+  ).toThrow(expect.objectContaining({ code: 'invalid-format' }))
 })
 
 test('malformed references and empty or ambiguous releases fail with field locations', () => {
@@ -78,7 +78,7 @@ test('malformed references and empty or ambiguous releases fail with field locat
   ]) {
     expect(() =>
       normalizeRegistry(registry([release('1.0.0', { artifacts: [artifact(change)] })])),
-    ).toThrowError(expect.objectContaining({ path }))
+    ).toThrow(expect.objectContaining({ path }))
   }
 
   expect(() => normalizeRegistry(registry([release('1.0.0', { artifacts: [] })]))).toThrow(
@@ -87,13 +87,13 @@ test('malformed references and empty or ambiguous releases fail with field locat
   expect(() => normalizeRegistry(registry([]))).toThrow('at least one release')
   expect(() =>
     normalizeRegistry(registry([release('1.0.0', { artifacts: [artifact(), artifact()] })])),
-  ).toThrowError(expect.objectContaining({ code: 'target-conflict' }))
+  ).toThrow(expect.objectContaining({ code: 'target-conflict' }))
 
   for (const releases of [
     [release(), release()],
     [release('1.0.0+one'), release('1.0.0+two')],
   ]) {
-    expect(() => normalizeRegistry(registry(releases))).toThrowError(
+    expect(() => normalizeRegistry(registry(releases))).toThrow(
       expect.objectContaining({ code: 'version-conflict' }),
     )
   }
@@ -148,7 +148,7 @@ test('all targets of a multi-target artifact identify the same exact selection',
   expect(linux.artifact).toBe(windows.artifact)
 
   const ambiguous = { ...extension, releases: [release('1.0.0+one'), release('1.0.0+two')] }
-  expect(() => selectRelease(ambiguous, host)).toThrowError(
+  expect(() => selectRelease(ambiguous, host)).toThrow(
     expect.objectContaining({ code: 'version-conflict' }),
   )
 })
@@ -165,9 +165,9 @@ test('artifact verification compares package facts, not current listing text', (
     manifest({ apiVersionRange: '^2' }),
     manifest({ license: 'MIT' }),
   ]) {
-    expect(() =>
-      assertManifestMatchesArtifact(changed, 'sample', release(), artifact()),
-    ).toThrowError(expect.objectContaining({ code: 'artifact-mismatch' }))
+    expect(() => assertManifestMatchesArtifact(changed, 'sample', release(), artifact())).toThrow(
+      expect.objectContaining({ code: 'artifact-mismatch' }),
+    )
   }
 
   expect(() =>
@@ -176,7 +176,7 @@ test('artifact verification compares package facts, not current listing text', (
       manifest({ targets: ['linux-x64'], license: 'GPL-3.0-only' }),
     ]),
   ).not.toThrow()
-  expect(() => assertCommonMetadata([manifest(), manifest({ name: 'Different' })])).toThrowError(
+  expect(() => assertCommonMetadata([manifest(), manifest({ name: 'Different' })])).toThrow(
     expect.objectContaining({ code: 'artifact-mismatch' }),
   )
 })
@@ -192,7 +192,7 @@ test('retained releases keep bytes, target coverage and original publication fac
   ]) {
     expect(() =>
       assertRegistryUpdate(original, registry([release('1.0.0', { artifacts: [changed] })])),
-    ).toThrowError(expect.objectContaining({ code: 'immutable-release' }))
+    ).toThrow(expect.objectContaining({ code: 'immutable-release' }))
   }
 
   for (const changed of [
@@ -200,7 +200,7 @@ test('retained releases keep bytes, target coverage and original publication fac
     release('1.0.0', { publishedAt: 1 }),
     release('1.0.0', { defaultLocale: 'fr' }),
   ]) {
-    expect(() => assertRegistryUpdate(original, registry([changed]))).toThrowError(
+    expect(() => assertRegistryUpdate(original, registry([changed]))).toThrow(
       expect.objectContaining({ code: 'immutable-release' }),
     )
   }
@@ -242,7 +242,7 @@ test('every nested reference uses the final index response URL and retains its d
       'https://cdn.example.org/index.json',
     ).url,
   ).toBe('https://files.example.org/readme.md')
-  expect(() => resolveFileReference(reference, 'not a URL')).toThrowError(
+  expect(() => resolveFileReference(reference, 'not a URL')).toThrow(
     expect.objectContaining({ code: 'invalid-format' }),
   )
 })

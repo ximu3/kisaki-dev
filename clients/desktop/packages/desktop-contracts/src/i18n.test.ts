@@ -2,7 +2,7 @@
 
 import { expect, test } from 'vitest'
 import { DesktopError } from './errors'
-import { parseMessageCatalog, parseUiTranslationRegistration } from './i18n'
+import { parseMessageCatalog, parseExtensionUiTranslationDefinition } from './i18n'
 
 test('catalogs copy plain data properties and reject invalid groups', () => {
   const source = { domain: { empty: '', future: '{unparsed' } }
@@ -16,6 +16,7 @@ test('catalogs copy plain data properties and reject invalid groups', () => {
   const cycle: Record<string, unknown> = {}
   cycle.child = cycle
   const accessor = {
+    /** Fails if catalog parsing invokes this accessor instead of rejecting it as non-data. */
     get message(): string {
       throw new Error('Catalog parsing invoked a getter')
     },
@@ -33,7 +34,7 @@ test('catalogs copy plain data properties and reject invalid groups', () => {
 })
 
 test('registration canonicalizes the locale and retains unknown product messages', () => {
-  const value = parseUiTranslationRegistration({
+  const value = parseExtensionUiTranslationDefinition({
     id: 'test',
     name: 'Test',
     locale: 'en-us-u-nu-latn',

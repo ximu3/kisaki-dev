@@ -3,22 +3,31 @@
 import type { ChildProcess } from 'node:child_process'
 import type { RpcTransport } from '@kisaki3/desktop-rpc'
 
-/** Report async send failures and disconnects on the specific channel that owns the listeners. */
+/**
+ * Creates an RPC transport for one parent/child JSON IPC channel.
+ *
+ * Send failures and disconnects are reported through the channel's own lifetime callbacks.
+ */
 export function ipcTransport(channel: ChildProcess | NodeJS.Process): RpcTransport {
   let failed: (cause: Error) => void
   let detach: () => void
+
   return {
+    /** Attaches receive and loss listeners to this channel. */
     start(receive, closed) {
       failed = closed
       channel.on('message', receive)
       channel.on('disconnect', closed)
       channel.on('error', closed)
+      /** Removes the message, disconnect and error listeners installed for this transport. */
       detach = () => {
         channel.off('message', receive)
         channel.off('disconnect', closed)
         channel.off('error', closed)
       }
     },
+
+    /** Sends a frame over JSON IPC and reports asynchronous handoff errors. */
     send(frame) {
       channel.send!(frame, undefined, undefined, (error: Error | null) => {
         if (error) {
@@ -26,6 +35,8 @@ export function ipcTransport(channel: ChildProcess | NodeJS.Process): RpcTranspo
         }
       })
     },
+
+    /** Detaches transport listeners and disconnects the channel if it remains connected. */
     close() {
       detach()
       if (channel.connected) {

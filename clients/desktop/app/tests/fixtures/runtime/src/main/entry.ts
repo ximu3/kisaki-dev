@@ -10,12 +10,15 @@ import { loadNative } from '#native'
 
 const debug = debuglog('kisaki:fixture')
 
+/** Reads a named --key=value argument from the fixture command line. */
 const argument = (name: string) =>
   process.argv.find((value) => value.startsWith(`--${name}=`))?.slice(name.length + 3)
+
 const profile = argument('profile')
 if (!profile || !isAbsolute(profile)) {
   throw new Error('The engineering fixture requires an explicit isolated profile')
 }
+
 const kind = argument('window') ?? 'main'
 if (!['main', 'reader', 'player', 'game-panel'].includes(kind)) {
   throw new Error('Unknown fixture entry')
@@ -27,16 +30,23 @@ const runtime = app.isPackaged
 const resources = app.isPackaged
   ? join(process.resourcesPath, 'resources')
   : join(runtime, 'resources')
+
 const browser = join(profile, 'browser')
 mkdirSync(browser, { recursive: true })
 app.setPath('userData', profile)
 app.setPath('sessionData', browser)
 app.setName('Kisaki engineering fixture')
+
 protocol.registerSchemesAsPrivileged([
   { scheme: 'fixture', privileges: { standard: true, secure: true, supportFetchAPI: true } },
 ])
 
-/** Start the runtime after module evaluation so Electron can emit ready normally. */
+/**
+ * Starts the fixture's utility process and selected sandboxed window.
+ *
+ * After loading the renderer, shows the window and notifies a connected parent of the build
+ * identity.
+ */
 async function runFixture(): Promise<void> {
   await app.whenReady()
   loadNative(join(resources, 'native/kisaki-native.node'))
@@ -116,7 +126,8 @@ async function runFixture(): Promise<void> {
   }))
 
   let canQuit = false
-  /** Exercise normal cancellable window close without defining a product shutdown contract. */
+
+  /** Requests a normal, cancellable close of the fixture window. */
   function closeWindow(): void {
     debug('Closing window: destroyed=%s', window.isDestroyed())
     if (!window.isDestroyed()) {
@@ -173,6 +184,7 @@ async function runFixture(): Promise<void> {
   process.send?.({ type: 'fixture-ready', buildId: __KISAKI_BUILD_ID__ })
 }
 
+// Leave module evaluation unblocked so Electron can reach app readiness.
 void runFixture().catch((cause: unknown) => {
   console.error(cause)
   app.exit(1)

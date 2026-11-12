@@ -14,7 +14,7 @@ let directory: string
 let repository: string
 let globalConfig: string
 
-/** Execute Git only in the synthetic repository, returning failures for explicit assertions. */
+/** Runs Git in the synthetic repository and retains nonzero statuses for explicit assertions. */
 function git(args: string[], cwd = repository) {
   const result = spawnSync('git', args, { cwd, encoding: 'utf8', windowsHide: true })
   if (result.error) {

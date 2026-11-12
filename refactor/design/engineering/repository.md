@@ -6,7 +6,7 @@ Kisaki 和四个独立技术项目分别使用项目级临时开发仓库完成�
 
 ## 仓库与包的归属
 
-五个项目的 GitHub 所有者统一为 ximu3，本地仓库直接位于 F:/project 下。kisaki 是统一产品仓库，按 clients/desktop、clients/web、site 和候选 server 区分工程归属，具体布局见[仓库与公开边界](layout.md#workspace)。当前交付仍限于桌面生态与已确定的独立技术项目。官方扩展源码和 registry 纳入 clients/desktop/extensions，各扩展仍独立打包。源码位置、分发目录、Git 身份和 npm 作用域分别说明各自用途。
+五个项目的 GitHub 所有者统一为 ximu3，本地仓库直接位于 F:/project 下。kisaki 是统一产品仓库，按 clients/desktop、clients/web、site 和候选 server 区分工程归属，具体布局见[仓库与公开边界](layout.md#workspace)。本轮交付范围为桌面生态与已确定的独立技术项目。官方扩展源码和 registry 纳入 clients/desktop/extensions，各扩展仍独立打包。源码位置、分发目录、Git 身份和 npm 作用域分别说明各自用途。
 
 | 最终仓库                   | 目标本地目录           | 重建来源                              | 实施动作                                                                                                                 |
 | -------------------------- | ---------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
@@ -214,6 +214,8 @@ Feature request 使用以下字段：
 | Desired outcome（outcome）           | 是   | 用使用者能观察到的结果描述建议           |
 | Examples or alternatives（examples） | 否   | 示例、当前绕行方式、参考产品或补充说明   |
 
-先建立 bug 和 enhancement 标签，再让表单引用。状态使用 issue 的开关和关闭原因，提交者按表单描述现象或期望；维护者根据实际处理情况跟进，问题保持开放直到明确关闭。表单语法见 [Issue Forms](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms)。config.yml 设置 blank_issues_enabled: false，维护者仍可通过 Maintainers only 创建空白 issue；contact_links 指向已有 TG，配置见 [Issue 模板设置](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository)。
+先建立 bug 和 enhancement 标签，再让表单引用。状态使用 issue 的开关和关闭原因，提交者按表单描述现象或期望；维护者根据实际处理情况跟进，问题保持开放直到明确关闭。表单语法见 [Issue Forms](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms)。
+
+config.yml 设置 blank_issues_enabled: false，维护者仍可通过 Maintainers only 创建空白 issue；contact_links 指向已有 TG，配置见 [Issue 模板设置](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository)。
 
 日常交流使用 TG，需要持续跟踪的问题使用 Issues，不要求先到群里咨询。有安全影响的问题可以先联系维护者，再私聊敏感细节；群本身是公开场所，不应张贴凭据。项目不新增 SECURITY.md、专用漏洞表单、响应时限或反馈平台。

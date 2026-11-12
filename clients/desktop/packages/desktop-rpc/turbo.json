@@ -1,0 +1,6 @@
+{
+  "extends": ["//"],
+  "tasks": {
+    "test:consumers": { "dependsOn": ["check:package", "@kisaki3/desktop#prepare:electron"] }
+  }
+}

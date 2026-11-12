@@ -1,4 +1,5 @@
 - Define desktop library values, typed queries, editing baselines, atomic graph inputs, relationships, records and local-content contracts.
+- Provide independent showcase edits and explicit atomic creation batches; onboarding reuses complete section values.
 - Define metadata participation and adoption, scanning, tasks, sessions, resources, views, preferences, application and extension management, and typed fact events.
 - Provide strict native and extension deeplink round trips, versioned development control values, generic message catalogs and translation registration.
 - Keep interface value validation independent from application execution, defaults and localization resources; verify packed NodeNext and browser consumers.

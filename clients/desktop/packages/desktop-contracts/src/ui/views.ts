@@ -7,31 +7,44 @@ import * as v from 'valibot'
 import { parseExternalValue, parseValue } from '../validation'
 import { parsePackagePath } from '@kisaki3/extension-distribution/manifest'
 
-/** root is a controlled package directory ('.' means package root); entry is relative to root and must serve actual HTML. */
-export interface ViewDocument {
+/**
+ * Package-owned HTML document and its controlled resource root.
+ *
+ * A dot selects the package root; entry is relative to that root and must serve actual HTML.
+ */
+export interface ExtensionViewDocument {
   readonly root: string
   readonly entry: string
 }
 
-/** Shared pure method descriptors give each view its own private request/result association; the author validates actual inputs. */
+/**
+ * Pure input and result descriptor for one view-private method.
+ *
+ * The method author validates actual input values.
+ */
 export interface ViewMethod {
   readonly input: unknown
   readonly result: unknown
 }
 
+/** Named input and result descriptors for a view's private request channel. */
 export type ViewMethods = Readonly<Record<string, ViewMethod>>
 
+/** Named payload types for a view's transient notification channel. */
 export type ViewNotifications = Readonly<Record<string, unknown>>
 
+/** Constraint requiring every declared method key to provide an input and result descriptor. */
 export type ViewMethodsConstraint<Methods> = Readonly<Record<keyof Methods, ViewMethod>>
 
+/** Host-side private method registration and notification delivery for one actual view. */
 export interface ViewHostIpc<
   M extends ViewMethodsConstraint<M> = ViewMethods,
   N extends object = ViewNotifications,
 > {
   /**
-   * Register one private method in this actual view and return its removal handle; accepted
-   * calls retain their original implementation.
+   * Registers a private method in this view and returns its removal handle.
+   *
+   * Accepted calls retain the implementation they acquired.
    */
   handle<K extends keyof M & string>(
     name: K,
@@ -42,19 +55,21 @@ export interface ViewHostIpc<
   ): Disposable
 
   /**
-   * Send a transient notification only through this view's channel, without an acknowledgement
-   * or persistent replay.
+   * Sends a transient notification through this view's channel without acknowledgement or
+   * persistent replay.
    */
   send<K extends keyof N & string>(name: K, payload: N[K]): void
 }
 
+/** Document-side private requests and transient notification subscriptions for one actual view. */
 export interface ViewClientIpc<
   M extends ViewMethodsConstraint<M> = ViewMethods,
   N extends object = ViewNotifications,
 > {
   /**
-   * Wait for the named private operation's actual result, failure or cancellation; the transport
-   * does not automatically retry it.
+   * Invokes the named private operation and waits for its actual result, failure or cancellation.
+   *
+   * The transport does not automatically retry the operation.
    */
   invoke<K extends keyof M & string>(
     name: K,
@@ -64,13 +79,18 @@ export interface ViewClientIpc<
   ): Promise<M[K]['result']>
 
   /**
-   * Subscribe to future transient notifications for this actual view; initial business state
-   * must be read explicitly.
+   * Subscribes to future notifications and returns the subscription lifetime.
+   *
+   * Initial business state requires an explicit read.
    */
   on<K extends keyof N & string>(name: K, listener: (payload: N[K]) => void): Disposable
 }
 
-/** Actual release is announced by onDispose. close requests the normal host decision and can be refused by unsaved edits. */
+/**
+ * Host-side handle to an actual extension view and its private channel.
+ *
+ * Close requests may be refused by unsaved edits; onDispose reports actual release.
+ */
 export interface HostView<
   M extends ViewMethodsConstraint<M> = ViewMethods,
   N extends object = ViewNotifications,
@@ -78,58 +98,81 @@ export interface HostView<
   readonly ipc: ViewHostIpc<M, N>
 
   /**
-   * Request the host's normal close decision, including unsaved-change checks; observe onDispose
-   * for actual release.
+   * Requests the host's normal close decision, including unsaved-change checks.
+   *
+   * Actual release is reported through onDispose.
    */
   close(): Promise<void>
 
   /**
-   * Register cleanup for actual view release rather than a close request; removing this callback
-   * does not close the view.
+   * Registers cleanup for actual view release and returns its removal handle.
+   *
+   * Removing the callback leaves the view open.
    */
   onDispose(cleanup: () => void | Promise<void>): Disposable
 }
 
+/** Document-side view resources, coordinated closing and release lifecycle. */
 export interface ViewContext {
   readonly resources: ViewResourcesApi
 
   /**
-   * Request the same host-coordinated close used by the container; refusal preserves the view
-   * and its unsaved state.
+   * Requests the same host-coordinated close used by the container.
+   *
+   * Refusal preserves the view and its unsaved state.
    */
   close(): Promise<void>
 
-  /** Replace the one active close guard; undefined clears it, but a handler must return a real boolean. */
+  /**
+   * Replaces the view's single close guard, or clears it when undefined is supplied.
+   *
+   * The handler returns true to allow closing and false to preserve the view.
+   */
   setCloseGuard(handler: (() => boolean | Promise<boolean>) | undefined): void
 
   /**
-   * Register cleanup for actual document/view release; independent tasks keep their separately
-   * owned lifetime.
+   * Registers cleanup for actual document or view release and returns its removal handle.
+   *
+   * Independent tasks retain their separately owned lifetimes.
    */
   onDispose(cleanup: () => void | Promise<void>): Disposable
 }
 
-export interface ViewDefinition<
+/** Package-owned document, localized title and initialization for each created extension view. */
+export interface ExtensionViewDefinition<
   M extends ViewMethodsConstraint<M> = ViewMethods,
   N extends object = ViewNotifications,
 > {
   readonly title: LocalizedText
-  readonly document: ViewDocument
+  readonly document: ExtensionViewDocument
 
-  /** Run once per newly created actual view; the frontend is connected only after successful setup. */
+  /**
+   * Initializes each newly created view once.
+   *
+   * The frontend connects only after setup succeeds.
+   */
   readonly setup?: (view: HostView<M, N>) => void | Promise<void>
 }
 
-export interface DialogsApi {
-  /** Each call creates an independent view and resolves when interactive, not when the user closes or submits. */
+/** Creation of independent extension views within host-owned dialogs. */
+export interface ExtensionDialogsApi {
+  /**
+   * Creates an independent dialog view and resolves when it becomes interactive.
+   *
+   * User submission and closing happen later through the view's own lifecycle.
+   */
   open<M extends ViewMethodsConstraint<M> = ViewMethods, N extends object = ViewNotifications>(
-    input: ViewDefinition<M, N>,
+    input: ExtensionViewDefinition<M, N>,
     call?: CallOptions,
   ): Promise<HostView<M, N>>
 }
 
-/** Validate a package document; actual containment, symlinks, bytes and MIME are checked by the host. */
-export function parseViewDocument(input: unknown): ViewDocument {
+/**
+ * Parses package-relative document and root paths.
+ *
+ * The host checks actual containment, symlinks, file bytes and MIME type.
+ */
+export function parseExtensionViewDocument(input: unknown): ExtensionViewDocument {
   const path = v.pipe(
     v.unknown(),
     v.transform((value) =>

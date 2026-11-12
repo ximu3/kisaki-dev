@@ -10,7 +10,13 @@ import { runPnpm } from '@kisaki3/tooling/process'
 
 const packageRoot = resolve(import.meta.dirname, '../..')
 
-/** Install the contract package and its packed dependencies for an independent consumer. */
+/**
+ * Creates a file-scoped fixture that installs packed contracts and dependencies in an isolated
+ * consumer.
+ *
+ * Cleanup removes the temporary workspace, and generated imports include every published
+ * declaration entry.
+ */
 export function consumerTest(scenario: 'node' | 'browser') {
   return test.extend('consumerDirectory', { scope: 'file' }, async ({}, { onCleanup }) => {
     const consumerDirectory = await mkdtemp(join(tmpdir(), `kisaki-contracts-${scenario}-`))
@@ -55,7 +61,7 @@ export function consumerTest(scenario: 'node' | 'browser') {
   })
 }
 
-/** Lint the consumer against its own project and installed declarations. */
+/** Lints the consumer using its own type project and installed package declarations. */
 export async function lintConsumer(directory: string): Promise<ESLint.LintResult[]> {
   const lint = new ESLint({
     cwd: directory,

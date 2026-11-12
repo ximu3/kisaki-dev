@@ -1,6 +1,6 @@
 /** @fileoverview Defines the complete, framework-independent visual vocabulary. */
 
-/** Value grammars describe one CSS value, without declarations or resource references. */
+/** The CSS value grammar assigned to one base appearance token. */
 export type TokenKind =
   | 'color'
   | 'radius'
@@ -44,7 +44,12 @@ export const tokens = Object.freeze({
   '--warning-foreground': 'color',
   '--border': 'color',
   '--ring': 'color',
-  '--chart': 'color',
+
+  '--chart-1': 'color',
+  '--chart-2': 'color',
+  '--chart-3': 'color',
+  '--chart-4': 'color',
+  '--chart-5': 'color',
 
   '--radius': 'radius',
   '--shadow-raised': 'shadow',
@@ -59,17 +64,21 @@ export const tokens = Object.freeze({
   '--text-base-letter-spacing': 'letter-spacing',
 } as const satisfies Record<string, TokenKind>)
 
-/** A base token, excluding runtime scale and derived CSS variables. */
+/** Name of a base appearance token; host scale and derived CSS variables have separate owners. */
 export type TokenName = keyof typeof tokens
 
-/** Font slots contain CSS stacks here; desktop resource selections are defined elsewhere. */
+/** Name of a font-family slot whose value is a CSS stack. */
 export type FontTokenName = '--font-sans' | '--font-mono'
 
-/** All visual slots other than the two font stacks. */
+/** Name of a base appearance token other than the two font-family slots. */
 export type VisualTokenName = Exclude<TokenName, FontTokenName>
 
-/** A complete visual branch; parse external strings through the values entry before adoption. */
+/**
+ * A complete read-only CSS-value branch for the base appearance vocabulary.
+ *
+ * External values are parsed through the values entry before adoption.
+ */
 export type TokenValues = Readonly<Record<TokenName, string>>
 
-/** The resolved light or dark branch; system preference resolution belongs to the host. */
+/** Resolved light or dark appearance branch, selected by the host. */
 export type ColorScheme = 'light' | 'dark'

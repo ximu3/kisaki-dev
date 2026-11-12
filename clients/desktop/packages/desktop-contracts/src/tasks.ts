@@ -40,16 +40,22 @@ export const taskRunStatuses = Object.freeze([
   'interrupted',
 ] as const)
 
+/** Managed task lifecycle state from admission through terminal completion. */
 export type TaskRunStatus = (typeof taskRunStatuses)[number]
 
+/** Task outcome whose execution and required cleanup have ended. */
 export type TaskTerminalStatus = 'completed' | 'failed' | 'cancelled' | 'interrupted'
 
-/** Unknown ratios report a phase only. Progress reaching total does not itself finish the task. */
+/**
+ * Current phase or known completed-to-total progress.
+ *
+ * Reaching the total does not itself finish the task.
+ */
 export type TaskProgress =
   | { readonly phase: string }
   | { readonly phase?: string; readonly completed: number; readonly total: number }
 
-/** Lightweight ordered observation; it never retransmits complete input or result documents. */
+/** Lightweight ordered observation of task progress and currently available controls. */
 export interface TaskState {
   readonly taskRunId: string
 
@@ -61,7 +67,11 @@ export interface TaskState {
   readonly canCancel: boolean
 }
 
-/** Recorded input/result are validated JSON snapshots. A failed task can retain a legal result independently of its error. */
+/**
+ * Persisted task description, lifecycle and validated JSON input and result snapshots.
+ *
+ * A failed task may retain a valid partial result independently of its error.
+ */
 export interface TaskRun<Result = JsonValue, Input = JsonValue> {
   readonly id: string
   readonly type: string
@@ -81,14 +91,20 @@ export interface TaskRun<Result = JsonValue, Input = JsonValue> {
   readonly finishedAt: number | null
 }
 
+/** Task-history projection omitting full input and result documents. */
 export type TaskRunSummary = Omit<TaskRun, 'input' | 'result'>
 
+/** Persisted task outcome restricted to a terminal lifecycle state. */
 export type TaskTerminalRun<Result = JsonValue, Input = JsonValue> = Omit<
   TaskRun<Result, Input>,
   'status'
 > & { readonly status: TaskTerminalStatus }
 
-/** Only business code with actual safe checkpoints advertises pause support; histories never store the callback/context. */
+/**
+ * Task admission metadata, optional recorded input and declared pause support.
+ *
+ * History stores data rather than the execution callback or context.
+ */
 export interface TaskDefinition<Input = JsonValue> {
   readonly type: string
   readonly title: string
@@ -98,29 +114,33 @@ export interface TaskDefinition<Input = JsonValue> {
   readonly supportsPause?: boolean
 }
 
-/** Reporting a result is a persistence checkpoint and must be awaited; progress stays a lightweight runtime observation. */
+/**
+ * Managed execution identity, cancellation and business-owned progress and persistence checkpoints.
+ */
 export interface TaskExecutionContext<Result> extends ExecutionContext {
   readonly ref: TaskRunRef
 
   /**
-   * Honor pause and cancellation at a business-owned safe point; do not call while holding a
-   * synchronous database transaction.
+   * Honors pause and cancellation at a business-owned safe point.
+   *
+   * Callers must not wait at a checkpoint while holding a synchronous database transaction.
    */
   checkpoint(): Promise<void>
 
   /**
-   * Publish lightweight current progress without persisting a replacement result or declaring
-   * task completion.
+   * Publishes lightweight progress without replacing the recorded result or declaring completion.
    */
   reportProgress(progress: TaskProgress): void
 
   /**
-   * Persist a validated snapshot of already established business facts; await this checkpoint
-   * and handle persistence failure.
+   * Persists a validated snapshot of established business facts.
+   *
+   * Callers await this checkpoint and handle persistence failure.
    */
   reportResult(result: Result): Promise<void>
 }
 
+/** Task-history filters for type, state, creation interval and search text. */
 export interface TaskQuery {
   readonly types?: readonly string[]
   readonly statuses?: readonly TaskRunStatus[]
@@ -131,17 +151,19 @@ export interface TaskQuery {
   readonly search?: string
 }
 
+/** Type and creation-time filters for terminal task-history cleanup. */
 export interface TaskHistoryFilter {
   readonly types?: readonly string[]
   /** Exclusive creation-time upper bound in UTC milliseconds since the Unix epoch. */
   readonly createdBefore?: number
 }
 
-/** run waits for business and task-owner cleanup. wait observes a managed run without cancelling it when observation is cancelled. */
+/** Managed task execution, lightweight control observation and independent history access. */
 export interface TasksApi {
   /**
-   * Admit and own the callback's real execution through business completion and cleanup;
-   * cancellation preserves established facts and valid partial results.
+   * Admits and owns the callback's execution through business completion and task-owner cleanup.
+   *
+   * Cancellation preserves established facts and valid partial results.
    */
   run<Result, Input = JsonValue>(
     definition: TaskDefinition<Input>,
@@ -149,10 +171,7 @@ export interface TasksApi {
     call?: CallOptions,
   ): Promise<Result>
 
-  /**
-   * Read persisted task summaries under the requested scope without reconstructing live business
-   * execution.
-   */
+  /** Reads an interval of persisted task summaries matching the requested scope. */
   list(
     query: TaskQuery,
     options: ListOptions,
@@ -160,47 +179,59 @@ export interface TasksApi {
   ): Promise<ListResult<TaskRunSummary>>
 
   /**
-   * Read the recorded input, result and error for this task identity; historical results do not
-   * authorize resumption.
+   * Reads recorded input, result and error for a task identity, returning null when absent.
+   *
+   * Historical data does not authorize execution resumption.
    */
   get(ref: TaskRunRef, call?: CallOptions): Promise<TaskRun | null>
 
   /**
-   * Deliver current task control state and subsequent changes; ending observation does not
-   * cancel the execution.
+   * Delivers current task control state and subsequent changes and returns the observation
+   * lifetime.
+   *
+   * Ending observation leaves execution running.
    */
   observe(ref: TaskRunRef, listener: Listener<TaskState>, call?: CallOptions): Promise<Disposable>
 
   /**
-   * Wait for an actual terminal record and return its recorded outcome; cancelling this wait
-   * leaves the managed execution running.
+   * Waits for a terminal record and returns its recorded outcome.
+   *
+   * Cancelling this wait leaves the managed execution running.
    */
   wait(ref: TaskRunRef, call?: CallOptions): Promise<TaskTerminalRun>
 
-  /** Control completion acknowledges the current real state, not immediate business termination. Terminal calls are idempotent. */
+  /**
+   * Requests pause and returns acknowledged control state.
+   *
+   * The task reaches a pause at its safe checkpoint; terminal calls are idempotent.
+   */
   pause(ref: TaskRunRef, call?: CallOptions): Promise<TaskState>
 
   /**
-   * Request resumption from the current pause state and return acknowledged control state; this
-   * does not restart a terminal run.
+   * Requests resumption from pause and returns acknowledged control state.
+   *
+   * Terminal runs remain ended.
    */
   resume(ref: TaskRunRef, call?: CallOptions): Promise<TaskState>
 
   /**
-   * Request cancellation and return actual control state; use wait to observe completed business
-   * cleanup, with terminal control calls idempotent.
+   * Requests cancellation and returns actual control state.
+   *
+   * Callers use wait to observe completed cleanup. Terminal control calls are idempotent.
    */
   cancel(ref: TaskRunRef, call?: CallOptions): Promise<TaskState>
 
   /**
-   * Remove only matching terminal history and return its count; accepted work and domain-owned
-   * reports or recovery records remain intact.
+   * Removes matching terminal task history and returns its count.
+   *
+   * Accepted work and domain-owned reports or recovery records remain intact.
    */
   clearHistory(filter?: TaskHistoryFilter, call?: CallOptions): Promise<number>
 
   /**
-   * Subscribe before reading task history; list invalidation is separate from runtime progress
-   * observation.
+   * Subscribes to task-history invalidation and returns the subscription lifetime.
+   *
+   * Callers subscribe before reading; runtime progress uses separate observation.
    */
   onInvalidated(listener: () => void): Disposable
 }
@@ -217,7 +248,7 @@ const progress = v.union([
   ),
 ])
 
-/** Classify only the real terminal status, never a progress ratio or the availability of a partial result. */
+/** Checks whether a lifecycle status denotes terminal completion. */
 export function isTaskTerminal(status: TaskRunStatus): status is TaskTerminalStatus {
   return (
     status === 'completed' ||
@@ -227,17 +258,19 @@ export function isTaskTerminal(status: TaskRunStatus): status is TaskTerminalSta
   )
 }
 
-/** Validate a task reference without searching history to infer its live execution. */
+/** Parses a managed execution reference without resolving live state or history. */
 export function parseTaskRunRef(input: unknown): TaskRunRef {
   return parseValue(v.strictObject({ taskRunId: id }), input, 'Invalid task reference')
 }
 
-/** Validate progress without manufacturing a percentage when the total is not known. */
+/** Parses a phase or bounded progress ratio while preserving unknown-total reporting. */
 export function parseTaskProgress(input: unknown): TaskProgress {
   return parseValue(progress, input, 'Invalid task progress')
 }
 
-/** Validate lightweight state and reject impossible control affordances for completed or cancelling runs. */
+/**
+ * Parses lightweight state and checks that control affordances are legal for its lifecycle status.
+ */
 export function parseTaskState(input: unknown): TaskState {
   return parseValue(
     v.pipe(
@@ -265,7 +298,11 @@ export function parseTaskState(input: unknown): TaskState {
   )
 }
 
-/** Parse the persisted shape without inventing finishedAt or forcing wall-clock timestamps into monotonic order. */
+/**
+ * Parses persisted task data and preserves nullable lifecycle timestamps.
+ *
+ * Wall-clock values are not forced into monotonic order.
+ */
 export function parseTaskRun(input: unknown): TaskRun {
   return parseValue(
     v.strictObject({
@@ -288,7 +325,7 @@ export function parseTaskRun(input: unknown): TaskRun {
   )
 }
 
-/** Validate an execution descriptor's JSON input before any side effect or initial history registration. */
+/** Parses admission metadata and validates recorded JSON input before execution registration. */
 export function parseTaskDefinition(input: unknown): TaskDefinition {
   return parseValue(
     v.strictObject({
@@ -303,7 +340,9 @@ export function parseTaskDefinition(input: unknown): TaskDefinition {
   )
 }
 
-/** Local task lists preserve explicit empty filters and use a half-open creation-time interval. */
+/**
+ * Parses task filters and a half-open creation-time interval, preserving explicit empty selections.
+ */
 export function parseTaskQuery(input: unknown): TaskQuery {
   return parseValue(
     v.pipe(

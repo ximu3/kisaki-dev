@@ -9,13 +9,18 @@ import { text, id, unique, parseValue, optionalFields, validateExpectedKeys } fr
 import { entryRefSchema, preparedSchema } from './catalog'
 import { DesktopError } from '../errors'
 
-/** The saved article is independent of its associations; body whitespace and empty existing notes are preserved. */
+/**
+ * The independently saved article, title and cover of a note.
+ *
+ * Body whitespace and empty existing notes are preserved.
+ */
 export interface NoteFields {
   readonly title: string | null
   readonly content: string
   readonly primaryImageId: string | null
 }
 
+/** A saved note with stable identity and creation and update times. */
 export interface Note extends NoteFields {
   readonly id: string
   /** UTC milliseconds since the Unix epoch. */
@@ -24,6 +29,7 @@ export interface Note extends NoteFields {
   readonly updatedAt: number
 }
 
+/** Lightweight note display metadata and a body excerpt for listings. */
 export interface NoteSummary {
   readonly id: string
   readonly title: string | null
@@ -35,6 +41,11 @@ export interface NoteSummary {
   readonly updatedAt: number
 }
 
+/**
+ * New note content, initial entry associations and prepared attachment holds.
+ *
+ * Creation requires a title, nonblank body or adopted cover.
+ */
 export interface NoteCreate {
   readonly title?: string | null
   readonly content?: string
@@ -43,13 +54,18 @@ export interface NoteCreate {
   readonly prepared?: readonly PreparedAttachment[]
 }
 
-/** Replacing entries compares this note's complete ordered side only; unmodified associations are not compared. */
+/**
+ * Article-field changes and optional complete entry-association replacement.
+ *
+ * Expected entries compare this note's ordered side; unchanged associations are not compared.
+ */
 export interface NoteUpdate {
   readonly changes: Partial<NoteFields> & { readonly entries?: readonly EntryRef[] }
   readonly expected?: Partial<NoteFields> & { readonly entries?: readonly EntryRef[] }
   readonly prepared?: readonly PreparedAttachment[]
 }
 
+/** Search within the visible library, unassociated notes or one entry's associated notes. */
 export interface NoteQuery {
   readonly scope:
     | { readonly type: 'library' | 'unassociated' }
@@ -57,6 +73,7 @@ export interface NoteQuery {
   readonly search: string
 }
 
+/** Complete note-side entry replacement or disjoint incremental association changes. */
 export type NoteEntryChange =
   | { readonly type: 'replace'; readonly items: readonly EntryRef[] }
   | {
@@ -70,16 +87,15 @@ export type NoteOrderScope =
   | { readonly type: 'note'; readonly noteId: string }
   | { readonly type: 'entry'; readonly entry: EntryRef }
 
+/** Note-entry membership and independently owned order on each association side. */
 export interface NoteEntriesApi {
-  /**
-   * Read the note's associated entry identities in its saved order, independently of entry-side
-   * note order.
-   */
+  /** Lists associated entries in the note's saved order, independently of entry-side note order. */
   list(noteId: string, options: ListOptions, call?: CallOptions): Promise<ListResult<EntryRef>>
 
   /**
-   * Compare and change this note's complete ordered association side atomically; removing
-   * associations does not delete entries.
+   * Compares and changes the note's ordered association side atomically.
+   *
+   * Removing an association preserves its entry.
    */
   applyChanges(
     noteId: string,
@@ -87,45 +103,47 @@ export interface NoteEntriesApi {
     call?: CallOptions,
   ): Promise<void>
 
-  /** Reorder selected slots on the actual note or entry side using its complete baseline. */
+  /** Reorders selected slots on the specified note or entry side against its complete baseline. */
   reorder(scope: NoteOrderScope, input: ReorderInput, call?: CallOptions): Promise<void>
 
   /**
-   * Apply current-position move intent to the supplied side; the opposite side's order stays
-   * unchanged.
+   * Applies current-position move intent to one side while preserving the opposite side's order.
    */
   move(scope: NoteOrderScope, input: MoveInput, call?: CallOptions): Promise<void>
 }
 
-/** A new note must have a title, nonblank body or adopted cover; editor opening and associations alone create nothing. */
+/**
+ * Independent saved notes and their explicit entry associations.
+ *
+ * New notes require meaningful content; editor opening and association choices alone create no
+ * record.
+ */
 export interface NotesApi {
   /**
-   * Read note summaries in the requested association scope; independent unassociated notes
-   * remain valid records.
+   * Lists note summaries in the requested association scope, including independent unassociated
+   * notes.
    */
   list(query: NoteQuery, options: ListOptions, call?: CallOptions): Promise<ListResult<NoteSummary>>
 
   /**
-   * Read the saved article and its metadata without creating a draft or acquiring displayed
-   * attachment resources.
+   * Reads a saved article and metadata, or null when absent, without acquiring attachment
+   * resources.
    */
   get(id: string, call?: CallOptions): Promise<Note | null>
 
-  /**
-   * Commit a meaningful new note, its associations and adopted attachments together; opening an
-   * editor alone creates nothing.
-   */
+  /** Commits a meaningful new note, its associations and adopted attachments together. */
   create(input: NoteCreate, call?: CallOptions): Promise<string>
 
   /**
-   * Compare and commit the changed article fields and any complete association replacement; an
-   * existing empty note remains valid.
+   * Compares and commits article changes and any complete association replacement.
+   *
+   * An existing note may be cleared and remain valid.
    */
   update(id: string, input: NoteUpdate, call?: CallOptions): Promise<void>
 
   /**
-   * Delete the selected notes and their references, preserving associated entries and
-   * independently held attachment bytes.
+   * Deletes selected notes and their references while preserving entries and independently held
+   * bytes.
    */
   delete(ids: string | NonEmptyArray<string>, call?: CallOptions): Promise<void>
 
@@ -141,6 +159,7 @@ const noteFields = {
   primaryImageId: v.nullable(id),
 }
 
+/** Encodes an entry's kind and identity for association comparison. */
 const entryKey = (ref: EntryRef): string => JSON.stringify([ref.type, ref.id])
 
 const entries = v.pipe(
@@ -148,7 +167,11 @@ const entries = v.pipe(
   v.check((refs) => unique(refs, entryKey)),
 )
 
-/** Validate a note creation without trimming the body or treating selected entries as saved content. */
+/**
+ * Parses meaningful new-note input without trimming body content.
+ *
+ * Association choices alone do not satisfy the content requirement.
+ */
 export function parseNoteCreate(input: unknown): NoteCreate {
   const value = parseValue(
     v.strictObject({
@@ -166,7 +189,9 @@ export function parseNoteCreate(input: unknown): NoteCreate {
   return value
 }
 
-/** Existing notes may be cleared. Every compared value must belong to the actual submitted save unit. */
+/**
+ * Parses note changes and expected values for the submitted save units, allowing content clearing.
+ */
 export function parseNoteUpdate(input: unknown): NoteUpdate {
   const fields = v.strictObject(optionalFields({ ...noteFields, entries }))
   const value = parseValue(
@@ -182,7 +207,7 @@ export function parseNoteUpdate(input: unknown): NoteUpdate {
   return value
 }
 
-/** Parse only library/unassociated/actual entry scopes; notes do not associate with Part identities. */
+/** Parses library, unassociated-note or actual-entry query scopes. */
 export function parseNoteQuery(input: unknown): NoteQuery {
   return parseValue(
     v.strictObject({
@@ -197,7 +222,11 @@ export function parseNoteQuery(input: unknown): NoteQuery {
   )
 }
 
-/** Reject empty incremental requests, duplicate identities and contradictory changes on the note side. */
+/**
+ * Parses complete or incremental note-side membership intent.
+ *
+ * Rejects empty incremental requests, duplicate identities and overlapping additions and removals.
+ */
 export function parseNoteEntryChange(input: unknown): NoteEntryChange {
   return parseValue(
     v.union([

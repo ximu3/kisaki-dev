@@ -82,7 +82,7 @@ interface LocalContentRegistrationResult {
 }
 ```
 
-registerLocalContent(work, input, options?, execution?) 返回 Promise<LocalContentRegistrationResult>。work 为明确 WorkRef；input.path 是规范绝对路径；options 只含可选的 expectedIdentities: readonly ExternalIdentity[]，提供时必须非空。execution 使用共同的取消与调用归属合同。scanner 必须传入 AddResult.matchedIdentities；在最终登记事务中核对它们仍全部绑定到同一 work，变化或冲突时失败，不转投另一作品。
+registerLocalContent(work, input, options?, execution?) 返回 Promise<LocalContentRegistrationResult>。work 为明确 WorkRef；input.path 是规范绝对路径；options 只含可选的 expectedIdentities: readonly ExternalIdentity[]，提供时必须非空。execution 使用共同的取消与调用归属合同。scanner 必须传入 IngestAddResult.matchedIdentities；在最终登记事务中核对它们仍全部绑定到同一 work，变化或冲突时失败，不转投另一作品。
 
 | 输入与作品              | 完整登记行为                                                                                                                                                                       |
 | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

@@ -5,12 +5,19 @@ import { parseCompatibility, parseVersion } from './compatibility'
 import type { FieldPath } from './errors'
 import type { ExtensionMetadata } from './metadata'
 import { parseId, parseMetadata } from './metadata'
-import { invalid, optional, parseJson, record, schemaVersion, string } from './validation'
+import {
+  rejectFormat,
+  parseOptionalField,
+  parseJson,
+  parseRecord,
+  parseSchemaVersion,
+  parseString,
+} from './validation'
 
 /** The manifest format version implemented by this package, independent of extension API versions. */
 export const manifestSchemaVersion = 1
 
-/** Complete package facts; the package is independent of any registry, URL or signature. */
+/** Package identity, display metadata, entry point and runtime requirements. */
 export interface ExtensionManifest extends ExtensionMetadata, CompatibilityDeclaration {
   readonly schemaVersion: typeof manifestSchemaVersion
   readonly id: string
@@ -25,11 +32,13 @@ export interface ExtensionManifest extends ExtensionMetadata, CompatibilityDecla
 }
 
 /**
- * Require a slash-separated relative file path without root escapes, drive prefixes or alternate streams.
- * This checks names only; archive readers must also reject links, collisions and non-file entries.
+ * Parses an unambiguous package-relative path with slash-separated segments.
+ *
+ * Rejects root escapes, drive prefixes, alternate streams and control characters. Archive readers
+ * own physical-entry, symlink and collision checks.
  */
 export function parsePackagePath(input: unknown, path: FieldPath = []): string {
-  const value = string(input, path)
+  const value = parseString(input, path)
   const segments = value.split('/')
   if (
     [...value].some(
@@ -38,17 +47,23 @@ export function parsePackagePath(input: unknown, path: FieldPath = []): string {
     /[\\:]/.test(value) ||
     segments.some((segment) => !segment || segment === '.' || segment === '..')
   ) {
-    invalid(path, 'Expected an unambiguous package-relative file path')
+    rejectFormat(path, 'Expected an unambiguous package-relative file path')
   }
+
   return value
 }
 
-/** Validate defined manifest fields and return normalized locales and target order; unknown fields are omitted. */
+/**
+ * Parses defined manifest fields into a normalized value.
+ *
+ * Canonicalizes locale identifiers, sorts targets, preserves display strings and omits unknown
+ * fields.
+ */
 export function normalizeManifest(input: unknown): ExtensionManifest {
-  const value = record(input, [])
+  const value = parseRecord(input, [])
 
   return {
-    schemaVersion: schemaVersion(value.schemaVersion, ['schemaVersion']),
+    schemaVersion: parseSchemaVersion(value.schemaVersion, ['schemaVersion']),
     id: parseId(value.id, ['id']),
     version: parseVersion(value.version, ['version']),
 
@@ -56,13 +71,17 @@ export function normalizeManifest(input: unknown): ExtensionManifest {
     ...parseMetadata(value, []),
 
     entry: parsePackagePath(value.entry, ['entry']),
-    ...optional(value, 'icon', [], parsePackagePath),
-    ...optional(value, 'readme', [], parsePackagePath),
-    ...optional(value, 'license', [], string),
+    ...parseOptionalField(value, 'icon', [], parsePackagePath),
+    ...parseOptionalField(value, 'readme', [], parsePackagePath),
+    ...parseOptionalField(value, 'license', [], parseString),
   }
 }
 
-/** Parse strict JSON before normalizing the manifest; duplicate properties are rejected at every depth. */
+/**
+ * Parses strict JSON and normalizes an extension manifest.
+ *
+ * Rejects duplicate property names at every depth before extracting known fields.
+ */
 export function parseManifest(text: string): ExtensionManifest {
   return normalizeManifest(parseJson(text))
 }

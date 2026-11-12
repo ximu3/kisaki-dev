@@ -8,10 +8,12 @@ import type { ElectronApplication } from '@playwright/test'
 import { mkdtemp, readFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import electronManifest from 'electron/package.json' with { type: 'json' }
 import { buildDirectory } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
 import { electronExecutable } from '../../tools/dev/electron-executable'
 
+/** Engineering fixture renderer and preload entry selected for a desktop test. */
 type WindowKind = 'main' | 'reader' | 'player' | 'game-panel'
 
 /** A completed desktop build launched with a profile owned by this test. */
@@ -37,13 +39,7 @@ export const test = base.extend<DesktopFixtures>({
       target: string
       electronVersion: string
     }
-    const manifest = JSON.parse(
-      await readFile(new URL('../../package.json', import.meta.url), 'utf8'),
-    ) as { devDependencies: { electron: string } }
-    if (
-      build.target !== hostTarget() ||
-      build.electronVersion !== manifest.devDependencies.electron
-    ) {
+    if (build.target !== hostTarget() || build.electronVersion !== electronManifest.version) {
       throw new Error('The test input does not match the selected Electron target')
     }
 

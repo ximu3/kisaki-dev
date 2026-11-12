@@ -8,22 +8,33 @@ import * as v from 'valibot'
 /** Formats of verified prepared bytes; SVG and ICO are converted to PNG before this result is exposed. */
 export type ImageFormat = 'jpeg' | 'png' | 'webp' | 'avif' | 'gif'
 
-/** Dimensions reflect source orientation; frameCount is the actual readable count, one for static images. */
+/** An independently held image preparation with decoded dimensions, format and frame count. */
 export interface PreparedImage extends PreparedAttachment {
   /** Width in pixels after source orientation. */
   readonly width: number
   /** Height in pixels after source orientation. */
   readonly height: number
   readonly format: ImageFormat
+  /** Actual readable frame count; static images have one frame. */
   readonly frameCount: number
 }
 
-/** Crop coordinates address pixels after orientation, flips and clockwise rotation, in that order. */
+/**
+ * A frame selection and ordered image transforms.
+ *
+ * Processing corrects source orientation, applies flips, rotates clockwise and then crops. Crop
+ * coordinates use pixels after the preceding steps.
+ */
 export interface ImageTransform {
+  /** Zero-based frame index, required for animation; static images accept zero or omission. */
   readonly frameIndex?: number
+  /** Whether to flip horizontally before rotation; defaults to false. */
   readonly flipHorizontal?: boolean
+  /** Whether to flip vertically before rotation; defaults to false. */
   readonly flipVertical?: boolean
+  /** Clockwise rotation in finite degrees within [0, 360); defaults to zero. */
   readonly rotationDegrees?: number
+  /** Integer pixel bounds with positive extents, wholly inside the transformed image. */
   readonly crop?: {
     readonly left: number
     readonly top: number
@@ -32,15 +43,25 @@ export interface ImageTransform {
   }
 }
 
-/** Preparation and transformation return independently held results; rejected work preserves the old image. */
+/**
+ * Image preparation and transformation with independent result holds.
+ *
+ * The caller releases each result. Failed work preserves the existing image.
+ */
 export interface ImagesApi {
   /**
-   * Read and verify image bytes, converting supported vector/icon inputs to PNG; return an
-   * independent hold without committing a business reference.
+   * Reads and verifies image bytes, converting supported vector or icon inputs to PNG.
+   *
+   * Returns an independent hold before any business reference is committed.
    */
   prepare(input: FileInput, call?: CallOptions): Promise<PreparedImage>
 
-  /** Animated inputs require an explicit frameIndex; the host verifies frame and final crop bounds. */
+  /**
+   * Transforms held source content into a new static PNG preparation.
+   *
+   * Animated inputs require an explicit frameIndex. The host verifies frame availability and final
+   * crop bounds.
+   */
   transform(
     resource: ReadResourceRef,
     input: ImageTransform,
@@ -48,7 +69,11 @@ export interface ImagesApi {
   ): Promise<PreparedImage>
 }
 
-/** Check transform values without decoding; image-dependent frame and crop limits are checked by the executor. */
+/**
+ * Parses transform values without decoding image content.
+ *
+ * The executor separately checks image-dependent frame and crop bounds.
+ */
 export function parseImageTransform(input: unknown): ImageTransform {
   return parseValue(
     v.strictObject({

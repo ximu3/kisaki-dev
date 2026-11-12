@@ -8,14 +8,18 @@ import type { DirectoryCreateFields } from '../holdings/directories'
 import type { GameLaunchConfigCreate } from '../holdings/game-configuration'
 
 import * as v from 'valibot'
-import { readRecord, parseValue, unique } from '../../validation'
+import { parseRecord, parseValue, unique } from '../../validation'
 import { parseFileCreateFields } from '../holdings/files'
 import { filePartTypes } from '../holdings/associations'
 import { partKey } from './nodes'
 import { parseDirectoryCreateFields } from '../holdings/directories'
 import { parseGameLaunchConfigCreate } from '../holdings/game-configuration'
 
-/** Initial local input has already been resolved; graph commit does not scan, fetch metadata or open content. */
+/**
+ * Resolved initial file input whose part associations can refer to graph-created parts.
+ *
+ * Graph commit does not scan, fetch metadata or open content.
+ */
 export type GraphFileCreate<T extends FileWorkType> = Omit<FileCreateFields<T>, 'associations'> & {
   readonly associations?: readonly {
     readonly part: GraphPartRef<FilePartType<T>>
@@ -23,6 +27,7 @@ export type GraphFileCreate<T extends FileWorkType> = Omit<FileCreateFields<T>, 
   }[]
 }
 
+/** Initial directories, files and game launch configurations attached to graph work references. */
 export interface GraphLocalContent {
   readonly game?: readonly {
     readonly work: GraphEntryRef<'game'>
@@ -49,7 +54,11 @@ export interface GraphLocalContent {
   }[]
 }
 
-/** Parse initial local-content values against the complete create index supplied by the graph owner. */
+/**
+ * Parses optional initial holdings using graph-owner reference schemas.
+ *
+ * Those schemas resolve request-local create keys against the complete create index.
+ */
 export function parseGraphLocalContent(
   input: unknown,
   entryReference: <T extends EntryType>(
@@ -59,8 +68,9 @@ export function parseGraphLocalContent(
     types: readonly T[],
   ) => v.GenericSchema<unknown, GraphPartRef<T>>,
 ): GraphLocalContent | undefined {
+  /** Parses one medium's file fields and distinct graph-local part associations. */
   function parseGraphFile<T extends FileWorkType>(type: T, input: unknown): GraphFileCreate<T> {
-    const source = readRecord(input)
+    const source = parseRecord(input)
     const { associations, ...fields } = source
     const value = parseFileCreateFields(type, fields)
     const part = partReference(filePartTypes[type])
@@ -78,6 +88,7 @@ export function parseGraphLocalContent(
     return { ...value, ...members } as GraphFileCreate<T>
   }
 
+  /** Builds initial directory and file schemas for a file-bearing work kind. */
   function mediaLocal<T extends FileWorkType>(type: T) {
     return v.array(
       v.strictObject({

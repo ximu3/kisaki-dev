@@ -279,7 +279,7 @@ update 和 updateMany 在目标及方式确定后，直接完成获取、对应�
 ## 单项与批量结果
 
 ```ts
-type AddResult =
+type IngestAddResult =
   | {
       outcome: 'added'
       entry: EntryRef
@@ -292,7 +292,7 @@ type AddResult =
       issues: IngestIssue[]
     }
 
-interface UpdateResult {
+interface IngestUpdateResult {
   outcome: 'updated' | 'unchanged'
   target: EntryRef | PartRef
   issues: IngestIssue[]
@@ -352,7 +352,7 @@ desktop-contracts/ingest 定义 IngestIssue，用于报告影响本次请求的�
 
 field 和 relation 从[资料方案固定目录](profiles.md)中选择，并带有对象类别，不能使用任意 JSON 路径。target 表示本地引用，identity 表示来源身份。无法确定完整上下文时，只保留实际已知范围，不生成隐藏定位码。新的问题类型由所属领域明确扩展合同，不使用 unknown 加任意数据兜底。来源名称只用于必要展示，不决定业务分支。
 
-扫描发现、候选 AddResult 和未完成范围由 [ScanResult](../scanner.md#result) 表达，并归 scanner 管理。任务历史按各业务自身的结果合同保存相应快照。
+扫描发现、候选 IngestAddResult 和未完成范围由 [ScanResult](../scanner.md#result) 表达，并归 scanner 管理。任务历史按各业务自身的结果合同保存相应快照。
 
 <a id="organization"></a>
 

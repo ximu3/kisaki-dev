@@ -2,7 +2,7 @@
 
 import { expect, test } from 'vitest'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
-import { createTranslator, validateUiTranslation } from './translate'
+import { createTranslator, validateExtensionUiTranslationDefinition } from './translate'
 
 test('missing leaves use English plural rules while present leaves use the explicit locale', () => {
   const fallback = createTranslator('zh-CN')
@@ -33,8 +33,10 @@ test('same-locale translators and later catalog changes cannot share stale messa
   const catalog = { actions: { save: '保存' } }
   const first = createTranslator('zh-CN', catalog)
   expect(first('actions.save')).toBe('保存')
+
   catalog.actions.save = '存储'
   const second = createTranslator('zh-CN', catalog)
+
   expect(second('actions.save')).toBe('存储')
   expect(first('actions.save')).toBe('保存')
 })
@@ -54,7 +56,7 @@ test('registration rejects the entire catalog for malformed known messages and r
     messages: { actions: { save: '保存' } },
   }
   expect(() =>
-    validateUiTranslation({
+    validateExtensionUiTranslationDefinition({
       ...registration,
       messages: {
         ...registration.messages,
@@ -63,6 +65,9 @@ test('registration rejects the entire catalog for malformed known messages and r
     }),
   ).toThrow(DesktopError)
 
-  const value = validateUiTranslation({ ...registration, messages: { future: '{not current ICU' } })
+  const value = validateExtensionUiTranslationDefinition({
+    ...registration,
+    messages: { future: '{not current ICU' },
+  })
   expect(value.messages).toEqual({ future: '{not current ICU' })
 })

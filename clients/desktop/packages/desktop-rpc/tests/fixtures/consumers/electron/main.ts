@@ -4,7 +4,11 @@ import assert from 'node:assert/strict'
 import { join } from 'node:path'
 import { app, BrowserWindow, MessageChannelMain } from 'electron'
 
-/** Transfer a dedicated port to the loaded document and observe its real channel lifetime. */
+/**
+ * Verifies packed RPC over a transferred port, ending with loss of the actual fixture window.
+ *
+ * Releases the RPC connection on completion or failure; the caller owns the window.
+ */
 async function verifyChannel(window: BrowserWindow): Promise<void> {
   const { RpcConnection } = await import('@kisaki3/desktop-rpc')
   const { port1, port2 } = new MessageChannelMain()
@@ -13,10 +17,12 @@ async function verifyChannel(window: BrowserWindow): Promise<void> {
   const rpc = new RpcConnection(
     {
       start(receive, closed) {
+        /** Forwards Electron port data to the RPC receive callback. */
         const message = (event: Electron.MessageEvent) => receive(event.data)
         port1.on('message', message)
         port1.once('close', closed)
         window.once('closed', closed)
+        /** Removes this fixture's port and window listeners. */
         detach = () => {
           port1.off('message', message)
           port1.off('close', closed)
@@ -43,12 +49,15 @@ async function verifyChannel(window: BrowserWindow): Promise<void> {
   try {
     window.webContents.postMessage('fixture-port', null, [port2])
     assert.equal(await rpc.ready, 'document')
+
     const value = { nested: [false, null, '窓'] }
     assert.deepEqual(await rpc.request('echo', [value]), value)
+
     await assert.rejects(rpc.request('edit', [], { signal: cancel.signal }), {
       code: 'Cancelled',
       message: 'Edit cancelled in document',
     })
+
     await assert.rejects(rpc.request('waitForWindow'), { code: 'ConnectionClosed' })
     assert.equal(window.isDestroyed(), true)
   } finally {
@@ -56,7 +65,7 @@ async function verifyChannel(window: BrowserWindow): Promise<void> {
   }
 }
 
-/** Create the isolated test window and release it on either success or failure. */
+/** Creates the isolated fixture window and releases it after channel checks or failure. */
 async function verifyWindow(): Promise<void> {
   await app.whenReady()
   const window = new BrowserWindow({

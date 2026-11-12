@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os'
 import { buildProgram } from '../../../tools/build/programs'
 
 const paths = vi.hoisted(() => ({ appRoot: '' }))
-// Relocate owned inputs while retaining Vite's actual configuration loader and compiler.
+// The fixture redirects owned inputs while exercising Vite's real loader and compiler.
 vi.mock('../../../tools/lib/paths', () => paths)
 
 test('preload entry changes take effect in a later build within the same process', async () => {

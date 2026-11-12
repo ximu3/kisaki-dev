@@ -6,7 +6,7 @@ import type { ProcessOptions } from '../../src/process'
 
 export * from '../../src/process'
 
-/** Run the real command to closure, then replace its cancellation with a distinct failure. */
+/** Runs the command to closure, then replaces its signal cancellation with a synthetic failure. */
 export async function runPnpm(args: string[], options: ProcessOptions = {}): Promise<void> {
   try {
     await runPnpmCommand(args, options)

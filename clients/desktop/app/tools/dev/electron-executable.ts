@@ -5,7 +5,7 @@
 
 import { createRequire } from 'node:module'
 
-/** Return the executable path exported by the installed Electron package in Node. */
+/** Returns the executable path exported by the installed development Electron package. */
 export function electronExecutable(): string {
   const executable: unknown = createRequire(import.meta.url)('electron')
   if (typeof executable !== 'string') {

@@ -33,8 +33,11 @@ interface MpvSubscription {
 ```ts
 const subscription = await mpv.observeProperty('time-pos', {
   next(state) {
-    if (state.status === 'available') renderPosition(state.value)
-    else clearPosition()
+    if (state.status === 'available') {
+      renderPosition(state.value)
+    } else {
+      clearPosition()
+    }
   },
   error(error) {
     reportObservationFailure(error)
@@ -245,8 +248,11 @@ events 缺省选择上表九项当前普通事件。显式数组只选择列出�
 const logs = await mpv.observeLogs(
   {
     next(record) {
-      if (record.type === 'gap') handleLogGap(record)
-      else consumeDiagnostic(record.prefix, record.level, record.text)
+      if (record.type === 'gap') {
+        handleLogGap(record)
+      } else {
+        consumeDiagnostic(record.prefix, record.level, record.text)
+      }
     },
     error: handleObservationFailure
   },

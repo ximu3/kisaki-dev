@@ -1,4 +1,4 @@
-/** @fileoverview Verifies packed declarations without Node types and real browser/document ICU consumption without polyfills. */
+/** @fileoverview Verifies packed declarations and ICU formatting in browser and iframe consumers. */
 
 import { expect } from 'vitest'
 import { join } from 'node:path'

@@ -13,7 +13,7 @@ import {
 
 import { DesktopError } from '../../../errors'
 
-/** Observe the machine category, preserving unexpected implementation errors instead of treating them as expected rejection. */
+/** Returns an expected DesktopError category while rethrowing unexpected failures. */
 function failureCode(operation: () => unknown): string {
   try {
     operation()

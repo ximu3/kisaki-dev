@@ -1,10 +1,24 @@
 # Kisaki
 
+## 任务入口
+
+沟通默认使用简体中文。
+
+**先建立完整的设计理解。** 开展设计讨论、实施或审阅前，必须全面、深入阅读 `refactor/`，理解整体目标及各部分之间的关系与约束。从 [refactor/README.md](refactor/README.md) 出发，沿目录与交叉引用通读设计、实施和验收要求，结合当前工作包核对职责、依赖、公开合同与交付边界；不能仅凭摘要、关键词检索或局部条文作出判断。
+
+**以现行成熟实践校验方案。** 对技术选择、API 使用、架构与资源边界、交互和可访问性的实质判断，查阅当前官方文档、维护者说明与成熟项目实践，并核实所用版本的实际能力。优先采用能完整满足目标的原生能力、公开 API 和简洁方案，同时审视现行规范与既有实现。现代化最佳实践以目标、支持环境和可验证的结果为依据，具体取舍遵守[判断与取舍](refactor/design/engineering/conventions.md#judgment)。
+
+代码、组织与说明遵守[共用工程规范](refactor/design/engineering/conventions.md)，环境准备、可运行命令和当前源码职责见[当前工程与开发](refactor/implementation/development.md)。
+
 ## 工作原则
 
-**整体判断优先于机械执行。** 要求或方案出现原则、正确性、整体质量或技术实践问题时，按[整体判断](refactor/design/engineering/conventions.md#judgment)审视相关设计，说明依据、影响、选项与建议，由用户决定方向。涉及模型、主要行为、公开合同、架构边界或交付范围的取舍遵守[实施讨论规则](refactor/implementation/work-packages.md#unexpected-issues)；既定合同内的修复与验证由实施者完成。重要判断查阅相关社区、维护者与成熟项目实践，并核对实际工具能力。
+**从全局出发思考、讨论、设计、改动和审阅。** 从完整目标和使用路径找到事实与规则的拥有者，横向比较所有同类对象和入口，统一模型粒度、命名、交互、风格与验证尺度。共有问题在共同拥有层解决，沿全部受影响的消费者落实到终态。差异须能由对象语义、资源归属或运行环境解释。具体判断与审查方法见[全局设计与一致性](refactor/design/engineering/conventions.md#global-design)。
+
+**整体判断优先于机械执行。** 要求或方案出现原则、正确性、整体质量或技术实践问题时，按[整体判断](refactor/design/engineering/conventions.md#judgment)说明依据、影响、选项与建议，由用户决定方向。涉及模型、主要行为、公开合同、架构边界或交付范围的取舍遵守[实施讨论规则](refactor/implementation/work-packages.md#unexpected-issues)。既定合同内的修复与验证由实施者完成。
 
 **简洁、清晰、干净与克制具有同等首要地位。** 设计、实现、审阅和交付都以这四项[共同原则](refactor/design/engineering/conventions.md#quality)为准。
+
+**质量与终态优先于实施成本。** 设计、实现、重构、规范、文档与验证，不以工作量、实施耗时或重做成本降低已确认目标和整体质量，或保留已知问题与不一致。运行性能、资源占用和长期维护复杂度仍按成果质量评估，具体遵守[判断与取舍](refactor/design/engineering/conventions.md#judgment)。
 
 **按终态设计和实现。** 从已确认的目标、合同和资源归属推导方案，现有结构与目标冲突时重做受影响的部分。工作包可以分步实施，交付时正式入口须完整履行承诺，失败与清理也有确定的结果。同类问题在共同拥有层修正，同步受影响的调用方、测试和说明，清理失去用途的旧路径。见[终态与整体一致](refactor/design/engineering/conventions.md#final-state)和[工作包边界](refactor/implementation/work-packages.md#boundary)。
 
@@ -14,15 +28,13 @@
 
 **用干净、直接的正向叙述。** 设计、文档、注释和界面文案围绕读者的任务展开，直接说明采用的做法和实际结果。删去上下文已说清的内容、重复强调和为假想疑问写的排除说明。影响理解、选择或操作的条件、差异和失败后果应就近交代，理解取舍所需的理由与有用的对照应保留。见[写作要求](refactor/design/engineering/documentation.md#writing)和[界面文案](refactor/design/ui/components.md#copy)。
 
-**实施与审阅都要主动核对文件、目录与逻辑分段。** 代码、测试和文档按职责与实际阅读、修改路径组织，名称和层次直接表达边界与协作关系。入口遵循语言和工具的原生规则。普通 TypeScript 多文件主题和成篇文档按主题集中，所需入口与内容放在同一目录，不以同级前缀文件模拟内部层级。用分组和空行区分独立声明、方法职责与流程阶段，同一步骤保持紧凑。收尾时沿正常、失败、取消与清理路径人工审阅，核对[组织与命名](refactor/design/engineering/conventions.md#source-layout)、[导入与公开入口](refactor/design/engineering/conventions.md#module-imports)与[逻辑分段](refactor/design/engineering/conventions.md#logical-sections)。
+**编码风格与逻辑分段是必须落实的可读性要求。** 文件概述后空一行，独立的类型、函数、类和职责不同的声明之间空一行；声明内部、方法和流程按实际职责分组，同一步骤保持紧凑。设计文档及其代码示例遵守同一要求。实施和审阅逐项核对文件入口、声明关系、字段分组，以及正常、失败、取消与清理路径的段落；格式工具通过后仍须人工检查。具体依据见[编码风格与逻辑分段](refactor/design/engineering/conventions.md#logical-sections)，不得用机械增加空行代替职责判断。
 
-## 任务入口与范围
+**注释与说明遵守统一规范。** 文件概述、声明文档、实现注释与配置说明按[注释规范](refactor/design/engineering/conventions.md#comments)维护，清楚表达定位、职责、调用合同和实现依据。覆盖完整、内容准确、风格统一，并与现行设计、类型、实现及公共文档同步；覆盖检查与内容审阅分别完成。
 
-沟通默认使用简体中文。
+**实施与审阅都要主动核对文件与目录。** 代码、测试和文档按职责与实际阅读、修改路径组织，名称和层次直接表达边界与协作关系。入口遵循语言和工具的原生规则。普通 TypeScript 多文件主题和成篇文档按主题集中，所需入口与内容放在同一目录，不以同级前缀文件模拟内部层级。收尾时核对[组织与命名](refactor/design/engineering/conventions.md#source-layout)和[导入与公开入口](refactor/design/engineering/conventions.md#module-imports)。
 
-**开展设计讨论、实施或审阅前，必须全面、深入阅读 `refactor/` 文档，理解整体设计及各部分之间的关系与约束。** 从 [refactor/README.md](refactor/README.md) 出发，沿目录与交叉引用通读设计、实施和验收要求，结合当前工作包核对职责、依赖、公开合同与交付边界；不能仅凭摘要、关键词检索或局部条文作出判断。
-
-代码、组织与说明遵守[共用工程规范](refactor/design/engineering/conventions.md)，环境准备、可运行命令和当前源码职责见[当前工程与开发](refactor/implementation/development.md)。
+## 仓库范围
 
 本仓库维护完整产品设计和已交付工程能力。桌面、八个公共包与 33 项官方扩展的目标归属见工作包。正式项目随所属工作包建立，成篇项目文档由 [W23](refactor/implementation/work-packages.md#w23) 按对象交付；实施期间维护 AGENTS 与 refactor，接口说明和代码注释随实现维护。旧项目仅用于核对已确认的行为与资源保留要求，实现独立设计。
 

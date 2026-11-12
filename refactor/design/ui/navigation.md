@@ -199,7 +199,9 @@ handler 返回 `Promise<void>`，完成表示该链接约定的请求处理已�
 
 授权期间只监听本机回环，结束、取消、超时或实例失效时释放。来源允许动态端口时使用动态端口，要求精确登记时才使用固定地址。固定地址被占用时，在打开浏览器前报告，不把请求交给另一实例或自动切换 scheme。回调绑定发起操作、预期来源和地址，重复、过期或旧操作的回调不能影响新授权。应用重启不继续未完成操作。
 
-公共原生客户端的授权码流程使用 PKCE S256，loopback 不能代替完整保护，见 [RFC8252](https://www.rfc-editor.org/rfc/rfc8252.html#section-7.3)、[Google 桌面客户端](https://developers.google.com/identity/protocols/oauth2/native-app) 和 [RFC9700](https://www.rfc-editor.org/rfc/rfc9700.html#section-2.1.1)。MAL 的固定直连 loopback 与 plain PKCE 是明确兼容例外，不先尝试 S256 再自动降级。MangaDex 个人客户端按[来源认证](../extensions/private-data.md)使用明确方式，主动连接中输入的密码不持久化。
+公共原生客户端的授权码流程使用 PKCE S256，loopback 不能代替完整保护，见 [RFC8252](https://www.rfc-editor.org/rfc/rfc8252.html#section-7.3)、[Google 桌面客户端](https://developers.google.com/identity/protocols/oauth2/native-app) 和 [RFC9700](https://www.rfc-editor.org/rfc/rfc9700.html#section-2.1.1)。
+
+MAL 的固定直连 loopback 与 plain PKCE 是明确兼容例外，不先尝试 S256 再自动降级。MangaDex 个人客户端按[来源认证](../extensions/private-data.md)使用明确方式，主动连接中输入的密码不持久化。
 
 使用 relay 的来源先回到登记的 HTTPS 地址，最后一跳到 Kisaki 时使用 loopback。该要求不限制独立 relay 其他消费者的回调类型。凭据保存和来源兼容验收属于认证合同，普通协议关联与授权分别管理。
 
@@ -235,6 +237,8 @@ preferences.navigation 保存一份完整 order 和 visibleLimit。visibleLimit 
 修改快捷键先进入草稿，保存后更新绑定。冲突需要用户改键或停用，不能按列表顺序决定胜者。录入必须明确开始，期间暂停应用快捷键触发；确认后写入草稿，Escape 取消，独立按钮清除。使用 Electron Accelerator，默认可以使用 CommandOrControl，用户设置保留实际修饰键。
 
 快捷键注册失败时保留选择并显示未生效，用户可修改后重试。冲突检查覆盖动作所有可能重叠的范围，包括游戏尚未开始的情况。按住时是否重复触发由实际动作决定。
+
+冲突比较遵循所用 Electron 版本的[按键映射](https://github.com/electron/electron/blob/v45.0.0/shell/common/keyboard_util.cc)和[Accelerator 解析](https://github.com/electron/electron/blob/v45.0.0/shell/browser/ui/accelerator_util.cc)：Option 与 Alt、Command 与 Super 使用相同修饰位，CommandOrControl 按平台选择；`!`、Plus 等符号包含对应基础键与 Shift。保存的实际写法继续保留，比较时使用解析后的按键身份。
 
 | 场景/动作          | 默认                                       |
 | ------------------ | ------------------------------------------ |

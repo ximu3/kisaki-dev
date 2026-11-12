@@ -9,7 +9,12 @@ import type { EntryRef } from '../catalog'
 import type { EntryProjectionField, EntryListItem } from './projections'
 import type { ErrorSummary } from '../../errors'
 
-/** Parse a same-snapshot interval reply against already parsed query/options; no shortened success is accepted. */
+/**
+ * Parses a list reply against an already parsed query and interval.
+ *
+ * Checks entry types, unique identities and the exact item count implied by total, offset and
+ * limit. An empty set of enabled types requires a zero total.
+ */
 export function parseEntryListResult(
   input: unknown,
   query: EntryQuery,
@@ -45,7 +50,11 @@ export function parseEntryListResult(
   return value
 }
 
-/** Verify the centered interval and the real target at index; null is the sole ordinary no-match result. */
+/**
+ * Parses a locate reply and verifies its centered interval and target at the reported index.
+ *
+ * Null represents a target outside the query result.
+ */
 export function parseEntryLocateResult(
   input: unknown,
   query: EntryQuery,
@@ -86,7 +95,12 @@ export function parseEntryLocateResult(
   return { ...interval, index: value.index, offset }
 }
 
-/** Preserve failed dynamic groups and the independent deduplicated total; group counts cannot be summed into total. */
+/**
+ * Parses unique group results ending with the unclassified group.
+ *
+ * Preserves individual group failures and the independent deduplicated total; overlapping group
+ * counts cannot be summed into that total.
+ */
 export function parseEntryGroupsResult(input: unknown): EntryGroupsResult {
   const key = v.union([
     v.strictObject({ type: v.literal('collection'), id }),
@@ -124,37 +138,48 @@ export function parseEntryGroupsResult(input: unknown): EntryGroupsResult {
   return value
 }
 
-/** Group identity is independent of hidden names and per-view expanded state. */
+/** Group identity independent of its display name and a view's expanded state. */
 export type EntryGroupKey =
   { readonly type: 'collection'; readonly id: string } | { readonly type: 'unclassified' }
 
+/** Requested entry interval, projected fields and optional group restriction. */
 export interface EntryListOptions {
+  /** Zero-based start in the selected result set. */
   readonly offset: number
+  /** Maximum interval length, from 1 through 200. */
   readonly limit: number
   readonly fields?: readonly EntryProjectionField[]
   readonly group?: EntryGroupKey
 }
 
+/** Requested interval size, projected fields and group restriction around a located entry. */
 export interface EntryLocateOptions {
+  /** Maximum interval length, from 1 through 200. */
   readonly limit: number
   readonly fields?: readonly EntryProjectionField[]
   readonly group?: EntryGroupKey
 }
 
+/** Entry interval and complete result count read from one snapshot. */
 export interface EntryListResult {
   readonly items: readonly EntryListItem[]
   readonly total: number
 }
 
+/** Entry interval containing a target and its positions within the complete result set. */
 export interface EntryLocateResult extends EntryListResult {
+  /** Zero-based target position in the complete result set. */
   readonly index: number
+  /** Zero-based position of the first returned item in the complete result set. */
   readonly offset: number
 }
 
+/** One group's matching count or the failure that prevented its evaluation. */
 export type EntryGroupResult =
   | { readonly key: EntryGroupKey; readonly status: 'ready'; readonly count: number }
   | { readonly key: EntryGroupKey; readonly status: 'failed'; readonly error: ErrorSummary }
 
+/** Ordered group results with an independent deduplicated entry total. */
 export interface EntryGroupsResult {
   readonly total: number
   readonly groups: readonly EntryGroupResult[]
@@ -165,7 +190,11 @@ export const groupSchema = v.union([
   v.strictObject({ type: v.literal('unclassified') }),
 ])
 
-/** Parse the interval against a previously parsed query; an unsupported requested column never becomes a null field. */
+/**
+ * Parses an interval and checks requested fields against a previously parsed query.
+ *
+ * A field unsupported by every enabled entry type is rejected.
+ */
 export function parseEntryListOptions(input: unknown, query: EntryQuery): EntryListOptions {
   const value = parseValue(
     v.strictObject({
@@ -180,7 +209,7 @@ export function parseEntryListOptions(input: unknown, query: EntryQuery): EntryL
   return value
 }
 
-/** Locate uses the same projection and group semantics as list, without a caller-supplied offset. */
+/** Parses locate options with the same projection and group rules as a list request. */
 export function parseEntryLocateOptions(input: unknown, query: EntryQuery): EntryLocateOptions {
   const value = parseValue(
     v.strictObject({
@@ -195,7 +224,12 @@ export function parseEntryLocateOptions(input: unknown, query: EntryQuery): Entr
   return value
 }
 
-/** Center the real target when possible and fill the last interval; absent targets must be returned as null instead. */
+/**
+ * Computes an interval offset that centers an existing target when possible and fills the final
+ * interval.
+ *
+ * Rejects an index outside the result set; callers represent an absent target with null.
+ */
 export function entryLocateOffset(index: number, total: number, limit: number): number {
   const value = parseValue(
     v.strictObject({

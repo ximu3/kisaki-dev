@@ -13,7 +13,10 @@ for (const kind of ['main', 'reader', 'player', 'game-panel'] as const) {
 
       const identity = await page.evaluate(async () => {
         const carrier = window as typeof window & {
-          fixture: { identity(): Promise<{ kind: string; buildId: string; workerPid: number }> }
+          fixture: {
+            /** Reads the preload fixture's window, build and worker identities. */
+            identity(): Promise<{ kind: string; buildId: string; workerPid: number }>
+          }
         }
         return carrier.fixture.identity()
       })

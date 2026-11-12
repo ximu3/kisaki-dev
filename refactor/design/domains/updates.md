@@ -16,7 +16,7 @@ updates 负责发现和选择应用发布版本、检查更新、准备下载，
 
 ## 发布发现与制品选择
 
-应用更新只接受精确匹配 desktop@<合法 SemVer> 的标签，发行名遵守[统一规则](../engineering/releases.md#release-identity)。发现过程须处理足够的候选及分页，排除 draft，根据用户偏好筛选预发布，并核对发布元信息。最终从允许范围中选择高于当前版本的最高版本，不隐式降级。GitHub Latest、Atom 的第一项以及同仓其他包或工具的发布时间，都不能决定应用版本。
+应用更新只接受精确匹配 desktop@<桌面发行版本> 的标签，版本与发行名遵守[统一规则](../engineering/releases.md#release-identity)。发现过程须处理足够的候选及分页，排除 draft，根据用户偏好筛选预发布，并核对发布元信息。最终从允许范围中选择高于当前版本的最高版本，不隐式降级。GitHub Latest、Atom 的第一项以及同仓其他包或工具的发布时间，都不能决定应用版本。
 
 候选制品必须匹配系统版本、平台、架构和当前分发载体。inApp 使用已选 release 的准确资产目录与目标通道，交给 electron-updater 的 generic feed，复用其下载、校验、缓存和安装能力。执行器不能再通过 GitHub 自动挑选另一发布族。manual 则提供对应制品的下载入口。不同载体的规则见[构建交付](../engineering/build.md)。
 
@@ -62,7 +62,9 @@ Windows ZIP 始终使用 manual，无论用户采用普通还是便携数据目�
 
 ## 发行说明与验收
 
-getReleaseNotes(release) 根据已经核验的 desktop tag 和官方发布配置生成 `https://dist.kisaki.me/release-notes/<完整 tag>.json`，读取 ApplicationReleaseNotes。结果包含 project、version、defaultLocale 和 releaseNotes: LocalizedText；project 必须为 desktop，version 必须等于本次发布版本。外部 JSON 还须验证语言和正文，不接受 renderer 提供的任意 URL，也不能用同仓公共包的说明代替桌面说明。桌面读取合同归 updates 所有，静态投影遵守[发行规范](../engineering/releases.md#metadata)。
+getReleaseNotes(release) 根据已经核验的 desktop tag 和官方发布配置生成 `https://dist.kisaki.me/release-notes/<完整 tag>.json`，读取 ApplicationReleaseNotes。结果包含 project、version、defaultLocale 和 releaseNotes: LocalizedText；project 必须为 desktop，version 必须等于本次发布版本。
+
+外部 JSON 还须验证语言和正文，不接受 renderer 提供的任意 URL，也不能用同仓公共包的说明代替桌面说明。桌面读取合同归 updates 所有，静态投影遵守[发行规范](../engineering/releases.md#metadata)。
 
 正式发布提供四语说明。说明读取失败时独立显示问题，并允许重试或打开 releaseUrl；这不会清除候选和准备结果，不表示没有更新，也不阻止有效安装包的准备。说明读取不进入 operation，也不建立任务。缓存依据确切版本和 HTTP 校验管理；切换语言只根据当前有效 UI 语言及 defaultLocale 重新选择文本。
 

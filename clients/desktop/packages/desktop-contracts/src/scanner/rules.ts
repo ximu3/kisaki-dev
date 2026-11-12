@@ -1,4 +1,4 @@
-/** @fileoverview Validates and expands native scanner clue rules inside a caller-owned bounded execution unit. */
+/** @fileoverview Defines native scanner clue rules and validates their pattern and template syntax. */
 
 import * as v from 'valibot'
 import { nonemptyText, parseValue, id, text } from '../validation'
@@ -28,7 +28,11 @@ const outputSchema = v.pipe(
   v.check((value) => Object.keys(value).length > 0),
 )
 
-/** Structure-only decoding does not compile user patterns; saving/execution must also use the full isolated validator. */
+/**
+ * Parses extraction-rule structure without compiling its pattern.
+ *
+ * Saving and execution also require the full bounded validator.
+ */
 export function parseClueExtractionRuleShape(input: unknown): ClueExtractionRule {
   return parseValue(
     v.strictObject({
@@ -45,7 +49,12 @@ export function parseClueExtractionRuleShape(input: unknown): ClueExtractionRule
   )
 }
 
-/** Compile and validate all templates, including disabled rules, only within the host's terminable execution unit. */
+/**
+ * Compiles a rule's pattern and validates every template against its named captures, including
+ * disabled rules.
+ *
+ * Callers provide a bounded, terminable execution unit.
+ */
 export function parseClueExtractionRule(input: unknown): ClueExtractionRule {
   const rule = parseClueExtractionRuleShape(input)
   const pattern = inspectTextPattern(rule.pattern, rule.ignoreCase)
@@ -67,7 +76,7 @@ export function parseClueExtractionRule(input: unknown): ClueExtractionRule {
   return rule
 }
 
-/** Templates only target root-work clues; no file rename, local ID, private provider setting or arbitrary object path is permitted. */
+/** Output templates for native root-work names, release-date components and external identities. */
 export interface ClueExtractionOutput {
   readonly name?: string
   readonly originalName?: string
@@ -78,6 +87,9 @@ export interface ClueExtractionOutput {
   }>
 }
 
+/**
+ * Named scanner rule selecting source text, matching a pattern and producing work-clue templates.
+ */
 export interface ClueExtractionRule {
   readonly id: string
   readonly name: string
@@ -90,12 +102,14 @@ export interface ClueExtractionRule {
   readonly output: ClueExtractionOutput
 }
 
+/** Extracted work clues with the matched rule identity and original named captures. */
 export interface ClueExtractionResult {
   readonly clues: WorkClues
   readonly ruleId: string | null
   readonly captures: Readonly<Record<string, string>>
 }
 
+/** Localized rule template copied into an independently identified scanner draft rule. */
 export interface ClueExtractionPreset {
   readonly id: string
   readonly name: LocalizedText

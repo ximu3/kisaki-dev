@@ -13,7 +13,7 @@ import type { DirectoryDiscoveryDefinition } from '../library/holdings/directori
 import type { MetadataInput } from './metadata'
 import type { IngestIssue } from './issues'
 import type { NonEmptyArray } from '../operations'
-import { parseValue, optionalFields, readRecord, unique } from '../validation'
+import { parseValue, optionalFields, parseRecord, unique } from '../validation'
 import * as v from 'valibot'
 import {
   entryTypes,
@@ -31,7 +31,11 @@ import { parseAbsolutePath } from '../paths'
 import { parseMetadataInput } from './metadata'
 import { parseIngestIssue } from './issues'
 
-/** A local candidate is one declared input. Only file-bearing directory inputs can explicitly select a recognition profile. */
+/**
+ * One explicit local file or directory candidate for a work addition.
+ *
+ * Only file-bearing work directories can select a recognition profile.
+ */
 export type IngestLocalContent<T extends WorkType> =
   | { readonly type: 'file'; readonly path: string }
   | ({ readonly type: 'directory'; readonly path: string } & (T extends 'game'
@@ -41,6 +45,11 @@ export type IngestLocalContent<T extends WorkType> =
           readonly recognitionProfileId?: string | null
         }))
 
+/**
+ * Metadata adoption intent for one new entry, with optional initial personal facts.
+ *
+ * Work branches additionally accept local content and usage or completion records.
+ */
 export type IngestAddInput<T extends EntryType = EntryType> = {
   [K in EntryType]: {
     readonly entryType: K
@@ -54,7 +63,13 @@ export type IngestAddInput<T extends EntryType = EntryType> = {
   } & (K extends WorkType ? { readonly localContent?: IngestLocalContent<K> } : object)
 }[T]
 
-export type AddResult<T extends EntryType = EntryType> =
+/**
+ * The created entry or an existing entry matched by complete external identities.
+ *
+ * Issues retain excluded branches or ancillary failures. Name-only similarity cannot produce
+ * alreadyExists.
+ */
+export type IngestAddResult<T extends EntryType = EntryType> =
   | {
       readonly outcome: 'added'
       readonly entry: EntryRef<T>
@@ -67,7 +82,10 @@ export type AddResult<T extends EntryType = EntryType> =
       readonly issues: readonly IngestIssue[]
     }
 
-/** Validate seven closed add branches and explicit work-only local content and personal initial values. */
+/**
+ * Parses an addition with the metadata, local content and personal fields allowed for its entry
+ * type.
+ */
 export function parseIngestAddInput(input: unknown): IngestAddInput {
   const { entryType } = parseValue(v.looseObject({ entryType: v.picklist(entryTypes) }), input)
   const initial = v.strictObject({
@@ -87,7 +105,7 @@ export function parseIngestAddInput(input: unknown): IngestAddInput {
         throw new DesktopError('InvalidInput', 'Only works can register local content')
       }
 
-      const { type: typeInput, ...fields } = readRecord(value)
+      const { type: typeInput, ...fields } = parseRecord(value)
       const type = parseValue(v.picklist(['directory', 'file']), typeInput)
       return type === 'directory'
         ? { type, ...parseDirectoryCreateFields(entryType, fields) }
@@ -115,8 +133,8 @@ export function parseIngestAddInput(input: unknown): IngestAddInput {
   ) as IngestAddInput
 }
 
-/** An existing outcome needs actual nonempty complete identities; same-name suggestions never qualify as alreadyExists. */
-export function parseAddResult(input: unknown): AddResult {
+/** Parses an addition outcome and requires distinct matched identities for alreadyExists. */
+export function parseIngestAddResult(input: unknown): IngestAddResult {
   const issues = v.array(v.pipe(v.unknown(), v.transform(parseIngestIssue)))
   return parseValue(
     v.variant('outcome', [

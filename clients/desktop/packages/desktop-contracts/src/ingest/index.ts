@@ -2,11 +2,11 @@
 
 export { parseMetadataInput, parseMetadataUpdateInput } from './metadata'
 
-export { parseIngestAddInput, parseAddResult } from './add'
+export { parseIngestAddInput, parseIngestAddResult } from './add'
 export {
   parseIngestUpdateItem,
   hasIngestUpdateWork,
-  parseUpdateResult,
+  parseIngestUpdateResult,
   parseIngestUpdateTarget,
 } from './update'
 
@@ -20,7 +20,7 @@ export type { IngestApi, IngestExecutor, IngestBatchResult } from './api'
 
 export type { MetadataInput, MetadataUpdateInput } from './metadata'
 
-export type { IngestLocalContent, IngestAddInput, AddResult } from './add'
+export type { IngestLocalContent, IngestAddInput, IngestAddResult } from './add'
 
 export type {
   PersonAdoptionScope,
@@ -33,5 +33,5 @@ export type {
   IngestUpdateRef,
   IngestUpdateInput,
   IngestUpdateItem,
-  UpdateResult,
+  IngestUpdateResult,
 } from './update'

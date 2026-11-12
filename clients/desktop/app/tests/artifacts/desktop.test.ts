@@ -19,7 +19,11 @@ import { prepareArtifactWorkspace } from '../support/artifact-workspace'
 import type { DesktopBuild } from '../../tools/lib/runtime-manifest'
 import type { DistributionKind, DistributionManifest } from '../../tools/lib/distribution'
 
-/** Wait for process closure, rejecting when the supplied deadline expires. */
+/**
+ * Waits for process closure until the deadline and releases its timer on every outcome.
+ *
+ * Timeout ends the wait; process termination remains the caller's responsibility.
+ */
 async function waitForExit(
   closed: Promise<number | null>,
   timeoutMs: number,
@@ -152,6 +156,7 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     child.once('error', reject)
     child.once('close', (code) => resolveClose(code))
   })
+  /** Requests termination of a running fixture and waits for closure before extraction cleanup. */
   closeApplication = async () => {
     if (child.exitCode === null && child.signalCode === null) {
       child.kill()

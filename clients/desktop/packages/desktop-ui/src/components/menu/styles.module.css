@@ -1,0 +1,62 @@
+/* Menus use real focused buttons inside native top-layer content. */
+
+@layer components {
+  .root {
+    min-width: 10rem;
+  }
+  .items {
+    padding: 0.25rem;
+  }
+
+  .item {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    transition: none;
+  }
+  .item:focus-visible,
+  .item:hover,
+  .item[data-exit-highlight] {
+    background: var(--kui-row-active-background);
+    color: var(--kui-row-active-foreground);
+  }
+  .item:focus-visible {
+    outline: var(--kui-focus-width) solid var(--ring);
+    outline-offset: -2px;
+  }
+  .item:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+  .item[data-destructive] {
+    color: var(--destructive);
+  }
+
+  @media (forced-colors: active) {
+    .item:is(:focus-visible, :hover, [data-exit-highlight]) {
+      color: var(--kui-row-active-foreground);
+      outline-color: HighlightText;
+      /* Keep inline text backplates on the row's system selection surface. */
+      forced-color-adjust: none;
+    }
+  }
+
+  .label {
+    min-width: 0;
+    flex: 1;
+  }
+  .arrow {
+    display: flex;
+    font-size: 1rem;
+    margin-inline-start: auto;
+  }
+  .arrow:dir(rtl) {
+    scale: -1 1;
+  }
+
+  .separator {
+    inline-size: auto;
+    margin: 0.25rem -0.25rem;
+  }
+}

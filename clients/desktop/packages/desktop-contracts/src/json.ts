@@ -1,18 +1,24 @@
 /** @fileoverview Reads strict JSON without duplicate decoded property names or lossy primitive values. */
 
 import { DesktopError } from './errors'
-import { readRecord } from './validation'
+import { parseRecord } from './validation'
 import { visit } from 'jsonc-parser'
 
 /** Plain persisted desktop data. RPC frame values are independently owned by the environment-neutral transport package. */
 export type JsonValue =
   null | boolean | number | string | readonly JsonValue[] | { readonly [key: string]: JsonValue }
 
-/** Validate and copy JSON data without dropping keys, allowing sparse arrays, invoking toJSON or accepting cycles. */
+/**
+ * Validates and copies finite ordinary JSON data.
+ *
+ * Rejects cycles, sparse arrays and unsupported values without invoking toJSON or dropping keys.
+ */
 export function parseJsonValue(input: unknown): JsonValue {
   const holder: Record<string, JsonValue> = { value: null }
 
+  /** A mutable output object or array receiving validated child values. */
   type Container = Record<string, JsonValue> | JsonValue[]
+  /** An iterative traversal step that copies a value or leaves its ancestor scope. */
   type Visit =
     | {
         readonly type: 'value'
@@ -25,10 +31,12 @@ export function parseJsonValue(input: unknown): JsonValue {
   const pending: Visit[] = [{ type: 'value', input, target: holder, key: 'value' }]
   const ancestors = new Set<object>()
 
+  /** Assigns a validated value to an output object's key or an array index. */
   function set(target: Container, key: string | number, value: JsonValue): void {
     ;(target as Record<string | number, JsonValue>)[key] = value
   }
 
+  /** Rejects a value outside the finite ordinary JSON data model. */
   function invalid(): never {
     throw new DesktopError('InvalidInput', 'Expected a finite ordinary JSON value')
   }
@@ -78,7 +86,7 @@ export function parseJsonValue(input: unknown): JsonValue {
         pending.push({ type: 'value', input: value[index], target: output, key: index })
       }
     } else {
-      const entries = Object.entries(readRecord(value))
+      const entries = Object.entries(parseRecord(value))
       if (Object.getOwnPropertyNames(value).length !== entries.length) {
         invalid()
       }
@@ -96,10 +104,15 @@ export function parseJsonValue(input: unknown): JsonValue {
   return holder.value!
 }
 
-/** Parse a complete JSON document as unknown for its owning contract to validate; comments, BOM and duplicates fail. */
+/**
+ * Parses a complete strict JSON document for its owning contract to interpret.
+ *
+ * Rejects comments, a byte-order mark, duplicate decoded property names and nonfinite numbers.
+ */
 export function parseStrictJson(source: string): unknown {
   const objects: Set<string>[] = []
 
+  /** Rejects malformed strict JSON with the shared InvalidInput classification. */
   function invalid(): never {
     throw new DesktopError('InvalidInput', 'Invalid strict JSON document')
   }

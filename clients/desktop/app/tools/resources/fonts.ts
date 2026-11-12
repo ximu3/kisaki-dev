@@ -13,7 +13,12 @@ export interface FontInput {
   files: string[]
 }
 
-/** Copy the selected font files and notices; final resource bytes are inventoried by preparation. */
+/**
+ * Copies selected font files and notices from locked dependencies into the candidate font
+ * directory.
+ *
+ * The caller owns candidate cleanup and inventories the completed resource bytes.
+ */
 export async function copyFonts(fontInputs: FontInput[], output: string): Promise<void> {
   for (const font of fontInputs) {
     const directory = dirname(requireDependency.resolve(`${font.package}/package.json`))

@@ -1,12 +1,16 @@
 /** @fileoverview Defines generic message catalogs, translation registration and effective-language observation. */
 
 import type { CallOptions, Registration, Disposable, Listener } from './operations'
-import { readRecord, parseExternalValue, parseValue, id, nonemptyText } from './validation'
+import { parseRecord, parseExternalValue, parseValue, id, nonemptyText } from './validation'
 import { DesktopError } from './errors'
 import { normalizeLocale, parseId } from '@kisaki3/extension-distribution/metadata'
 import * as v from 'valibot'
 
-/** Groups contain ordinary data objects, leaves are ICU source strings, and individual keys never contain dots. */
+/**
+ * Nested ordinary data groups whose leaves are ICU source strings.
+ *
+ * Individual keys are nonempty path segments without dots; empty message strings remain valid.
+ */
 export interface MessageCatalog {
   readonly [key: string]: string | MessageCatalog
 }
@@ -14,70 +18,91 @@ export interface MessageCatalog {
 /** Canonical Intl-supported baseName; language availability and selection are separate concerns. */
 export type UiLocale = string
 
+/** The stable identity of built-in English or one extension's translation contribution. */
 export type UiTranslationRef =
   | { readonly type: 'builtin'; readonly id: 'en' }
   | { readonly type: 'extension'; readonly extensionId: string; readonly id: string }
 
-/** An extension-local ID is bound to the actual registering owner by the host, never supplied as an extension identity here. */
-export interface UiTranslationRegistration {
+/**
+ * A UI translation catalog contributed under an extension-local identity.
+ *
+ * The host binds its actual registering owner.
+ */
+export interface ExtensionUiTranslationDefinition {
   readonly id: string
   readonly locale: UiLocale
   readonly name: string
   readonly messages: MessageCatalog
 }
 
+/** A translation's stable identity, locale and native display name. */
 export interface UiTranslation {
   readonly ref: UiTranslationRef
   readonly locale: UiLocale
   readonly name: string
 }
 
+/** Translation discovery, instance-owned registration and directory invalidation. */
 export interface UiTranslationsApi {
-  /** Read available translation identities and native display names, including built-in English. */
+  /**
+   * Lists available translation identities and native display names, including built-in English.
+   */
   list(call?: CallOptions): Promise<readonly UiTranslation[]>
 
   /**
-   * Validate known messages against the application's English contract before registering the
-   * supplied catalog for this extension instance; failure preserves existing translations.
+   * Validates known messages against the English contract and registers the instance's catalog.
+   *
+   * Failure preserves existing translations. The returned registration owns removal.
    */
   register(
-    input: UiTranslationRegistration,
+    input: ExtensionUiTranslationDefinition,
     call?: CallOptions,
   ): Promise<Registration<UiTranslationRef & { readonly type: 'extension' }>>
 
   /**
-   * Subscribe to translation-directory invalidation; removal preserves saved selection and lets
-   * effective language fall back.
+   * Subscribes to translation-directory invalidation.
+   *
+   * A removed translation retains its saved selection while effective language follows fallback
+   * rules.
    */
   onInvalidated(listener: () => void): Disposable
 }
 
-/** Actual effective language; a lost translation falls back without changing the saved selection. */
+/**
+ * Synchronous access and change notifications for the effective UI locale.
+ *
+ * Unavailable translations fall back while their saved selection remains unchanged.
+ */
 export interface UiLocaleApi {
-  /**
-   * Read the currently effective locale, including fallback, rather than the saved translation
-   * selection.
-   */
+  /** Reads the effective locale, including any active fallback. */
   get(): UiLocale
 
   /**
-   * Subscribe to changes of effective locale; releasing the listener does not change language or
-   * saved preferences.
+   * Subscribes to effective-locale changes.
+   *
+   * Disposal releases the listener without changing language or saved preferences.
    */
   onChanged(listener: Listener<UiLocale>): Disposable
 }
 
+/** UI translation management and effective-locale observation. */
 export interface I18nApi {
   readonly translations: UiTranslationsApi
   readonly locale: UiLocaleApi
 }
 
-/** Parse the complete catalog shape without interpreting ICU, selecting a language or applying a product baseline. */
+/**
+ * Copies a complete catalog's data-only groups and string leaves.
+ *
+ * Rejects cycles, accessors and invalid path segments. ICU interpretation and product-message
+ * compatibility belong to the localization owner.
+ */
 export function parseMessageCatalog(input: unknown): MessageCatalog {
   const ancestors = new Set<object>()
 
-  function group(value: unknown): MessageCatalog {
-    const record = readRecord(value)
+  /** Copies one message group while tracking ancestor objects to reject cycles. */
+  function parseMessageGroup(value: unknown): MessageCatalog {
+    const record = parseRecord(value)
     if (ancestors.has(record)) {
       throw new DesktopError('InvalidInput', 'Message catalogs cannot contain cycles')
     }
@@ -92,22 +117,22 @@ export function parseMessageCatalog(input: unknown): MessageCatalog {
         throw new DesktopError('InvalidInput', 'Message catalogs require data properties')
       }
       const child: unknown = property.value
-      return [key, typeof child === 'string' ? child : group(child)]
+      return [key, typeof child === 'string' ? child : parseMessageGroup(child)]
     })
 
     ancestors.delete(record)
     return Object.fromEntries(entries)
   }
 
-  return group(input)
+  return parseMessageGroup(input)
 }
 
-/** Parse the shared canonical locale syntax and strip Unicode extension options through the same distribution rule. */
+/** Parses the shared canonical locale syntax and returns its base name without extensions. */
 export function parseUiLocale(input: unknown): UiLocale {
   return new Intl.Locale(parseExternalValue(normalizeLocale, input, 'Invalid UI locale')).baseName
 }
 
-/** Retain the complete stable reference even when its owning extension is unavailable. */
+/** Parses a stable translation identity without resolving owner availability. */
 export function parseUiTranslationRef(input: unknown): UiTranslationRef {
   return parseValue(
     v.variant('type', [
@@ -126,8 +151,14 @@ export function parseUiTranslationRef(input: unknown): UiTranslationRef {
   )
 }
 
-/** Parse registration values; the host additionally checks message compatibility against its localization baseline. */
-export function parseUiTranslationRegistration(input: unknown): UiTranslationRegistration {
+/**
+ * Parses a translation contribution and canonicalizes its locale.
+ *
+ * The host separately checks message compatibility against its localization baseline.
+ */
+export function parseExtensionUiTranslationDefinition(
+  input: unknown,
+): ExtensionUiTranslationDefinition {
   return parseValue(
     v.strictObject({
       id,

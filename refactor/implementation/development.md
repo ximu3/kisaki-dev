@@ -18,12 +18,15 @@
 | `clients/desktop/app/assets`                             | 锁定字体输入与许可、图标源稿                                                     |
 | `clients/desktop/app/tests`                              | 工程用例、隔离载体，以及原生、Electron、开发、制品和性能验证                     |
 | `clients/desktop/packages/desktop-appearance`            | 视觉词表、纯值解析、亮暗默认值、普通 CSS 与可选 Tailwind 映射                    |
+| `clients/desktop/packages/desktop-ui` | Solid 控件、原生表单与反馈、浮层、Toast、Markdown、图表、拖拽和普通 CSS |
 | `clients/desktop/packages/extension-distribution`        | 身份、manifest、registry、本地化、兼容选版、不可变制品规则与 Node 签名           |
 | `clients/desktop/packages/desktop-localization`          | 英语源文、关联消息类型、作者校验与纯格式化                                       |
 | `clients/desktop/packages/desktop-contracts`             | 桌面接口、值约束、规范编码、查询与写入合同、参与接口、会话、管理、深链和开发控制 |
 | `clients/desktop/packages/desktop-rpc`                   | 有限 JSON 帧、握手、双向调用与通知、按调用取消、安全失败和断连清理               |
 
-桌面公共包通过构建后的公开入口交付 ESM、声明和各自资源。包内 `tests/consumers` 使用仓库外的独立工程核对同一 tarball，用例、样板、配置、依赖和报告分别由所属包维护。公开值和消费方式可从源码声明、消费者样板及 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md)、[W03](../verification/evidence/w03/README.md)、[W04](../verification/evidence/w04/README.md) 验证入口查阅。
+桌面公共包通过构建后的公开入口交付 ESM、声明和各自资源。包内 `tests/consumers` 使用仓库外的独立工程核对同一 tarball，用例、样板、配置、依赖和报告分别由所属包维护。公开值和消费方式可从源码声明、消费者样板及 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md)、[W03](../verification/evidence/w03/README.md)、[W04](../verification/evidence/w04/README.md)、[W05](../verification/evidence/w05/README.md) 验证入口查阅。
+
+desktop-ui 从组件家族子路径消费，样式入口为 `/styles.css`，包含 appearance 的普通样式；图表、Markdown 和拖拽按完整能力独立导入。表单的验证与保存、图表统计、正文资源及业务拖拽由宿主拥有。接口和组合示例见包内源码与仓库外消费者样板。`pnpm exec turbo run test:consumers --filter=@kisaki3/desktop-ui` 验证真实 tarball、完整声明、浏览器、Tailwind 和 Electron，报告位于包内 `test-results/consumers`。
 
 desktop-rpc 从包根导出 `RpcConnection`、传输接口和帧合同。接入端绑定实际通道与身份，提供明确的方法表并解析业务值。等待 `ready` 后发起调用，按 `closed` 的结束原因释放所属资源。两个消费者分别通过 Node JSON IPC 和沙箱 Electron 窗口的 MessagePort 运行。Linux 执行消费者套件需要图形会话，CI 使用 Xvfb。
 
@@ -81,13 +84,15 @@ pnpm desktop:package:fixture --target windows-x64
 
 开发监听由 `tools/dev/session` 通过明确的输入和启动回调提供，真实回归在隔离 workspace 内执行。测试临时创建合成依赖，验证构建失败、完整快照交接、HMR、正常退出取消和清理；测试载体的消息不定义产品开发协议。
 
-同一工作副本中，共享输出的构建、运行与打包顺序执行。任务内依赖和合法并行由 Turbo 管理。有限输出位于 `out/<target>`，开发会话位于 `out/development/<target>/session-*`，载体位于 `dist/<target>`。停止相关任务后用 `pnpm run clean` 清理声明输出；资料目录和下载缓存不在其范围内。
+同一工作副本中，共享输出的构建、运行与打包顺序执行。任务内依赖和合法并行由 Turbo 管理。有限输出位于 `out/<target>`，开发会话位于 `out/development/<target>/session-*`，载体位于 `dist/<target>`。停止相关任务后用 `pnpm run clean` 清理声明输出。各项目指定自己的输出目录，工程工具按项目边界执行清理。
 
 <a id="verification"></a>
 
 ## 检查与运行环境
 
-桌面公共包各自提供 build、pack、check:package、test:consumers 及常规检查。`pnpm desktop:packages:pack` 构建并生成各包的 `out/package/package.tgz`；`pnpm desktop:packages:check` 检查这些实际 tarball。`pnpm desktop:test:consumers` 通过 Turbo 调度各包的消费者任务，自动接续构建、一次打包、制品检查和仓库外消费。用例、固定样例和报告分别归各包的 `tests/consumers`、`tests/fixtures/consumers` 和 `test-results/consumers`。该验证独立于普通 check，由桌面 CI 的 Linux x64 目标执行。
+桌面公共包各自提供 build、pack、check:package、test:consumers 及常规检查。`pnpm desktop:packages:pack` 构建并生成各包的 `out/package/package.tgz`；`pnpm desktop:packages:check` 检查这些实际 tarball。`pnpm desktop:test:consumers` 通过 Turbo 调度各包的消费者任务，自动接续构建、一次打包、制品检查和仓库外消费。 UI 与 RPC 消费者共享桌面工程的 `prepare:electron` 前置任务，运行时就绪后并行验证。
+
+用例、固定样例和报告分别归各包的 `tests/consumers`、`tests/fixtures/consumers` 和 `test-results/consumers`。该验证独立于普通 check，由桌面 CI 的 Linux x64 目标执行。普通 CI 将影响分析选中的包传给实际消费者任务；完整检查入口执行全部公共包。
 
 pack 的输入由已声明的 build 依赖，以及包元数据、许可和发行说明组成。公共依赖的产品变化会接续下游消费者验证；测试样板和测试配置仍只影响其所属消费者，不成为下游制品输入。
 
@@ -102,7 +107,11 @@ pack 的输入由已声明的 build 依赖，以及包元数据、许可和发�
 | `pnpm desktop:test:artifacts`   | 先构建并打包工程载体，保留 fuses，从外部观察启动与关闭                       |
 | `pnpm desktop:test:performance` | 先构建，记录 20 次工程载体启动耗时与内存，验证进程退出                       |
 
-浏览器首次准备由所属工程执行：开发回归使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`，公共包消费者使用 `pnpm --filter <包名> exec playwright install chromium`。四个已建立公共包使用同一锁定 Playwright 版本，可复用该版本的浏览器安装。desktop-contracts 和 desktop-localization 的独立消费者同时安装所需公共依赖的实际 tarball，由自身 Turbo 任务准备；尚未公开的依赖通过临时消费者的 pnpm-workspace.yaml 指向这些包，不使用源码别名。Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 AppImage 的 FUSE 条件。Electron Node 模式在启动测试前选定，测试内部不修改 ABI。
+浏览器首次准备由所属工程执行：开发回归使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`，公共包消费者使用 `pnpm --filter <包名> exec playwright install chromium`。已建立的公共包使用同一锁定 Playwright 版本，可复用该版本的浏览器安装。
+
+desktop-contracts 和 desktop-localization 的独立消费者同时安装所需公共依赖的实际 tarball，由自身 Turbo 任务准备；尚未公开的依赖通过临时消费者的 pnpm-workspace.yaml 指向这些包，不使用源码别名。
+
+Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 AppImage 的 FUSE 条件。Electron Node 模式在启动测试前选定，测试内部不修改 ABI。
 
 制品输入用 `KISAKI_ARTIFACT_RECEIPT` 指定，默认 `dist/<target>/artifacts.json`。Windows 使用窗口句柄，macOS 使用已获准的系统辅助功能，Linux X11 使用窗口管理器观察。X11 结果不代表 Wayland 验收。
 

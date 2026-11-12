@@ -25,22 +25,27 @@ import {
   parseUrlReference,
 } from './metadata'
 import {
-  array,
-  invalid,
-  optional,
+  parseArray,
+  rejectFormat,
+  parseOptionalField,
   parseJson,
-  record,
-  schemaVersion,
-  sha256,
-  string,
-  timestamp,
-  unsignedInteger,
+  parseRecord,
+  parseSchemaVersion,
+  parseSha256,
+  parseString,
+  parseTimestamp,
+  parseUnsignedInteger,
 } from './validation'
 
 /** Flat registry format version; independent of package and extension API versions. */
 export const registrySchemaVersion = 1
 
-/** Raw resource bytes, resolved against the final index response URL only after verification. */
+/**
+ * Location and integrity facts for one downloadable resource.
+ *
+ * Raw references preserve signed URL spelling; verified references resolve against the final index
+ * response URL.
+ */
 export interface FileReference {
   readonly url: string
   /** Original byte count, not decoded text length or transfer-encoded length. */
@@ -49,12 +54,18 @@ export interface FileReference {
   readonly sha256: string
 }
 
-/** One complete .kisx shared by its unique target set; conditions and license belong to these bytes. */
+/**
+ * Byte reference and compatibility requirements for one .kisx artifact shared by its target set.
+ */
 export interface RegistryArtifact extends FileReference, CompatibilityDeclaration {
   readonly license?: string
 }
 
-/** One version, with one first-publication timestamp and shared localized release notes. */
+/**
+ * One version's publication facts, localized notes and target-specific artifacts.
+ *
+ * At least one artifact is required, and each target belongs to only one artifact.
+ */
 export interface RegistryRelease {
   readonly version: string
   /** First publication time in UTC milliseconds, unchanged by note corrections. */
@@ -67,7 +78,11 @@ export interface RegistryRelease {
   readonly artifacts: readonly RegistryArtifact[]
 }
 
-/** Current display metadata, derived by the publisher from the highest stable manifest when available. */
+/**
+ * An extension listing with current display metadata and available releases.
+ *
+ * The publisher derives display metadata from the highest stable manifest when one exists.
+ */
 export interface RegistryExtension extends ExtensionMetadata {
   readonly id: string
   readonly icon?: FileReference
@@ -75,7 +90,11 @@ export interface RegistryExtension extends ExtensionMetadata {
   readonly releases: readonly RegistryRelease[]
 }
 
-/** The unsigned business body; unknown JSON fields are permitted and remain inside the signature. */
+/**
+ * Known fields of an unsigned registry document.
+ *
+ * Original JSON may contain additional signed data that this typed projection omits.
+ */
 export interface RegistryDocument {
   readonly schemaVersion: typeof registrySchemaVersion
   readonly id: string
@@ -89,18 +108,22 @@ export interface RegistryDocument {
   readonly extensions: readonly RegistryExtension[]
 }
 
-/** A received signed index. Structural parsing alone does not authenticate it. */
+/** Parsed registry fields and root signature; authentication is a separate operation. */
 export interface SignedRegistry extends RegistryDocument {
   readonly signature: string
 }
 
-/** A concrete chosen artifact; download failures must not trigger implicit reselection. */
+/**
+ * A chosen release and its compatible artifact for the requested host.
+ *
+ * The caller retains this selection while handling download failures.
+ */
 export interface SelectedRelease {
   readonly release: RegistryRelease
   readonly artifact: RegistryArtifact
 }
 
-/** Selection preferences are supplied by the owner, never changed by manual selection. */
+/** Owner-supplied prerelease and version constraints for release selection. */
 export interface ReleaseSelectionOptions {
   /** Defaults to false. This controls extension versions, not host runtime range semantics. */
   readonly allowPrerelease?: boolean
@@ -108,54 +131,70 @@ export interface ReleaseSelectionOptions {
   readonly newerThan?: string
 }
 
-/** Validate a file reference without resolving the signed URL or reading its bytes. */
+/**
+ * Parses a resource locator and original-byte integrity constraints.
+ *
+ * Preserves URL spelling; resolution and byte verification are later consumer operations.
+ */
 export function parseFileReference(input: unknown, path: FieldPath = []): FileReference {
-  const value = record(input, path)
+  const value = parseRecord(input, path)
   return {
     url: parseUrlReference(value.url, [...path, 'url']),
-    size: unsignedInteger(value.size, [...path, 'size']),
-    sha256: sha256(value.sha256, [...path, 'sha256']),
+    size: parseUnsignedInteger(value.size, [...path, 'size']),
+    sha256: parseSha256(value.sha256, [...path, 'sha256']),
   }
 }
 
-/** Check PEM framing in pure code; the Node signing entry also checks the actual Ed25519 key. */
+/**
+ * Validates SPKI PEM framing while preserving its spelling.
+ *
+ * The Node signing entry separately parses the key and requires Ed25519.
+ */
 export function parsePublicKey(input: unknown, path: FieldPath = []): string {
-  const value = string(input, path)
+  const value = parseString(input, path)
   if (
     !/^-----BEGIN PUBLIC KEY-----\r?\n(?:[A-Za-z0-9+/=]+\r?\n)+-----END PUBLIC KEY-----\r?\n?$/.test(
       value,
     )
   ) {
-    invalid(path, 'Expected an SPKI PEM public key')
+    rejectFormat(path, 'Expected an SPKI PEM public key')
   }
+
   return value
 }
 
-/** Require the canonical Base64 representation of a 64-byte Ed25519 signature. */
+/** Parses canonical Base64 for a 64-byte Ed25519 signature. */
 export function parseSignature(input: unknown, path: FieldPath = []): string {
-  const value = string(input, path)
-  if (/^[A-Za-z0-9+/]{85}[AQgw]==$/.exec(value)?.[0] !== value) {
-    invalid(path, 'Expected an Ed25519 Base64 signature')
+  const value = parseString(input, path)
+  if (!/^[A-Za-z0-9+/]{85}[AQgw]==$/.test(value)) {
+    rejectFormat(path, 'Expected an Ed25519 Base64 signature')
   }
+
   return value
 }
 
+/** Parses a .kisx reference, its target and runtime requirements, and its optional license. */
 function parseArtifact(input: unknown, path: FieldPath): RegistryArtifact {
-  const value = record(input, path)
+  const value = parseRecord(input, path)
   return {
     ...parseFileReference(value, path),
     ...parseCompatibility(value, path),
-    ...optional(value, 'license', path, string),
+    ...parseOptionalField(value, 'license', path, parseString),
   }
 }
 
+/**
+ * Parses publication facts and a nonempty artifact set for one release.
+ *
+ * Rejects targets claimed by multiple artifacts. Localized notes use the release's default locale.
+ */
 function parseRelease(input: unknown, path: FieldPath): RegistryRelease {
-  const value = record(input, path)
+  const value = parseRecord(input, path)
   const defaultLocale = normalizeLocale(value.defaultLocale, [...path, 'defaultLocale'])
 
-  const artifacts = array(value.artifacts, [...path, 'artifacts'], parseArtifact)
+  const artifacts = parseArray(value.artifacts, [...path, 'artifacts'], parseArtifact)
   if (!artifacts.length) {
-    invalid([...path, 'artifacts'], 'A release must provide at least one artifact')
+    rejectFormat([...path, 'artifacts'], 'A release must provide at least one artifact')
   }
 
   const targets = new Set<ExtensionTarget>()
@@ -174,35 +213,36 @@ function parseRelease(input: unknown, path: FieldPath): RegistryRelease {
 
   return {
     version: parseVersion(value.version, [...path, 'version']),
-    publishedAt: timestamp(value.publishedAt, [...path, 'publishedAt']),
+    publishedAt: parseTimestamp(value.publishedAt, [...path, 'publishedAt']),
 
     defaultLocale,
-    ...optional(value, 'releaseNotes', path, (text, location) =>
+    ...parseOptionalField(value, 'releaseNotes', path, (text, location) =>
       normalizeLocalizedText(text, defaultLocale, location),
     ),
-    ...optional(value, 'readme', path, parseFileReference),
+    ...parseOptionalField(value, 'readme', path, parseFileReference),
 
     artifacts,
   }
 }
 
+/** Parses current display metadata and a nonempty release list with distinct SemVer precedence. */
 function parseExtension(input: unknown, path: FieldPath): RegistryExtension {
-  const value = record(input, path)
-  const releases = array(value.releases, [...path, 'releases'], parseRelease)
+  const value = parseRecord(input, path)
+  const releases = parseArray(value.releases, [...path, 'releases'], parseRelease)
   if (!releases.length) {
-    invalid([...path, 'releases'], 'An extension must provide at least one release')
+    rejectFormat([...path, 'releases'], 'An extension must provide at least one release')
   }
   assertUniqueVersions(releases, [...path, 'releases'])
 
   return {
     id: parseId(value.id, [...path, 'id']),
     ...parseMetadata(value, path),
-    ...optional(value, 'icon', path, parseFileReference),
+    ...parseOptionalField(value, 'icon', path, parseFileReference),
     releases,
   }
 }
 
-/** Reject ambiguous precedence before filtering by platform or prerelease preference. */
+/** Rejects equal SemVer precedence before platform or prerelease filtering. */
 function assertUniqueVersions(releases: readonly RegistryRelease[], path: FieldPath = []): void {
   const ordered = releases
     .map((release, index) => ({ release, index }))
@@ -220,30 +260,32 @@ function assertUniqueVersions(releases: readonly RegistryRelease[], path: FieldP
 }
 
 /**
- * Validate an unsigned body and normalize its known fields into a fresh value.
- * Unknown fields are not returned; signing must operate on the original JSON, never this projection.
+ * Parses a registry body into a fresh normalized projection of its known fields.
+ *
+ * Rejects duplicate extension IDs and invalid releases. Additional original JSON fields remain
+ * signing data and are omitted from this projection.
  */
 export function normalizeRegistry(input: unknown): RegistryDocument {
-  const value = record(input, [])
+  const value = parseRecord(input, [])
   const defaultLocale = normalizeLocale(value.defaultLocale, ['defaultLocale'])
 
-  const extensions = array(value.extensions, ['extensions'], parseExtension)
+  const extensions = parseArray(value.extensions, ['extensions'], parseExtension)
   const ids = new Set<string>()
   for (const [index, extension] of extensions.entries()) {
     if (ids.has(extension.id)) {
-      invalid(['extensions', index, 'id'], 'Duplicate extension ID')
+      rejectFormat(['extensions', index, 'id'], 'Duplicate extension ID')
     }
     ids.add(extension.id)
   }
 
   return {
-    schemaVersion: schemaVersion(value.schemaVersion, ['schemaVersion']),
+    schemaVersion: parseSchemaVersion(value.schemaVersion, ['schemaVersion']),
     id: parseId(value.id, ['id']),
     publicKey: parsePublicKey(value.publicKey, ['publicKey']),
 
     defaultLocale,
     name: normalizeLocalizedText(value.name, defaultLocale, ['name']),
-    ...optional(value, 'description', [], (text, location) =>
+    ...parseOptionalField(value, 'description', [], (text, location) =>
       normalizeLocalizedText(text, defaultLocale, location),
     ),
 
@@ -251,18 +293,30 @@ export function normalizeRegistry(input: unknown): RegistryDocument {
   }
 }
 
-/** Parse an unsigned authoring document, rejecting duplicate JSON keys before normalization. */
+/**
+ * Parses strict registry JSON and normalizes its unsigned fields.
+ *
+ * Duplicate keys are rejected before known-field extraction.
+ */
 export function parseRegistry(text: string): RegistryDocument {
   return normalizeRegistry(parseJson(text))
 }
 
-/** Parse a signed index's structure only. Authentication requires node/signing with explicit trust. */
+/**
+ * Parses a signed registry's known fields and signature encoding.
+ *
+ * Authentication requires the Node signing entry and caller-supplied trust.
+ */
 export function parseSignedRegistry(text: string): SignedRegistry {
-  const value = record(parseJson(text), [])
+  const value = parseRecord(parseJson(text), [])
   return { ...normalizeRegistry(value), signature: parseSignature(value.signature, ['signature']) }
 }
 
-/** Resolve a verified reference against the final response URL, retaining its byte constraints. */
+/**
+ * Resolves a verified resource URL against the final index response URL.
+ *
+ * Returns a new reference with unchanged size and digest. Failed resolution throws invalid-format.
+ */
 export function resolveFileReference(reference: FileReference, responseUrl: string): FileReference {
   try {
     return { ...reference, url: new URL(reference.url, responseUrl).href }
@@ -276,7 +330,12 @@ export function resolveFileReference(reference: FileReference, responseUrl: stri
   }
 }
 
-/** Select display provenance independently of platform, upload time and installation state. */
+/**
+ * Selects the release that supplies the listing's current display metadata.
+ *
+ * Chooses the highest stable version, or the highest prerelease when none is stable. Platform
+ * compatibility and publication time do not affect this choice. An empty list returns undefined.
+ */
 export function getCurrentRelease(
   releases: readonly RegistryRelease[],
 ): RegistryRelease | undefined {
@@ -288,8 +347,11 @@ export function getCurrentRelease(
 }
 
 /**
- * Choose the highest compatible release, or undefined when no candidate satisfies the conditions.
- * Expects a validated listing; duplicate precedence is still rejected rather than used as a tie-breaker.
+ * Selects the highest compatible release and its matching artifact.
+ *
+ * Requires validated listing and host values, then applies the supplied prerelease and newerThan
+ * constraints. Returns undefined when no candidate qualifies; equal precedence is rejected before
+ * filtering.
  */
 export function selectRelease(
   extension: RegistryExtension,
@@ -322,8 +384,10 @@ export function selectRelease(
 }
 
 /**
- * Check package identity and artifact-specific conditions after the caller verifies its bytes.
- * Display metadata may differ from the current listing. File existence and ESM loading remain caller-owned.
+ * Checks a verified package manifest against its selected release and artifact.
+ *
+ * Compares identity, full version, targets, runtime requirements and license. Listing display text
+ * is independent; archive checks and entry loading belong to the caller.
  */
 export function assertManifestMatchesArtifact(
   manifest: ExtensionManifest,
@@ -354,8 +418,10 @@ export function assertManifestMatchesArtifact(
 }
 
 /**
- * Compare shared display facts of same-version platform packages, excluding artifact-specific conditions.
- * Resource readers separately compare actual icon/readme bytes; a shared path does not prove equal content.
+ * Checks shared identity and display metadata across same-version platform packages.
+ *
+ * Artifact conditions and licenses are compared separately. Resource readers compare icon and
+ * readme bytes; equal paths alone do not establish equal content.
  */
 export function assertCommonMetadata(manifests: readonly ExtensionManifest[]): void {
   const first = manifests[0]
@@ -363,6 +429,7 @@ export function assertCommonMetadata(manifests: readonly ExtensionManifest[]): v
     return
   }
 
+  /** Projects identity and normalized display metadata for cross-platform comparison. */
   const shared = (manifest: ExtensionManifest) => ({
     id: manifest.id,
     version: manifest.version,
@@ -382,8 +449,11 @@ export function assertCommonMetadata(manifests: readonly ExtensionManifest[]): v
 }
 
 /**
- * Reject changed bytes, added targets or changed first-publication facts in retained releases.
- * Deletions, URL relocation and note corrections are allowed. No permanent history is maintained.
+ * Checks retained releases against the preceding registry snapshot.
+ *
+ * Retained versions preserve full identity, publication facts and artifact facts, including
+ * existing target sets. Adding targets to a retained version is rejected. Deletions, URL relocation
+ * and note corrections are allowed.
  */
 export function assertRegistryUpdate(previous: RegistryDocument, next: RegistryDocument): void {
   for (const [extensionIndex, extension] of next.extensions.entries()) {

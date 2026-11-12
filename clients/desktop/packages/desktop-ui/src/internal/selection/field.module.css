@@ -1,0 +1,82 @@
+/* Single and multiple choices share a visible field while chip actions stay separate buttons. */
+
+@layer components {
+  .container {
+    position: relative;
+    display: grid;
+    padding: 0;
+    width: 100%;
+    min-width: 0;
+    min-height: var(--kui-control-height);
+  }
+
+  .trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    box-sizing: border-box;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 0.125rem 0.5rem;
+    padding-inline-end: 0;
+    border: 0;
+    border-radius: inherit;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+  /* The button also receives clicks on the field's perimeter. */
+  .trigger::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+  }
+  .container:has(> .trigger:disabled) {
+    opacity: 0.5;
+  }
+  .trigger:focus-visible {
+    outline: none;
+  }
+  .trigger:disabled {
+    cursor: default;
+  }
+  .value {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .placeholder,
+  .arrow {
+    color: var(--muted-foreground);
+  }
+
+  .trigger:is(:hover, [aria-expanded='true']):not(:disabled) .arrow {
+    color: var(--foreground);
+  }
+  .arrow {
+    display: grid;
+    place-items: center;
+    flex: 0 0 var(--kui-field-affix-width);
+    margin-inline-start: auto;
+    transition: color var(--kui-hover-duration) ease;
+  }
+
+  .submission,
+  .summary {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    border: 0;
+    clip-path: inset(50%);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}

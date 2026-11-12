@@ -26,6 +26,27 @@ test('onboarding requests retain baselines and distinguish atomic data groups fr
 
   expect(parseOnboardingApplyInput(preference)).toEqual(preference)
 
+  const showcase = {
+    group: 'showcase',
+    items: [
+      {
+        itemId: 'collections',
+        expectedHandled: null,
+        input: {
+          name: 'Collections',
+          query: { kind: 'collection', search: '', sort: { type: 'scope' } },
+          layout: 'horizontal',
+          itemSize: 'md',
+          limit: 12,
+          openMode: 'page',
+          isVisible: true,
+        },
+      },
+    ],
+  }
+
+  expect(parseOnboardingApplyInput(showcase)).toEqual(showcase)
+
   expect(() =>
     parseOnboardingApplyInput({
       ...preference,

@@ -7,7 +7,7 @@ use napi_derive::napi;
 use std::io;
 use std::path::Path;
 
-/// Native completion. A missing reason means the system operation succeeded.
+/// Outcome of one native file operation; an absent reason denotes success.
 #[napi(object)]
 pub struct FileOperationResult {
     /// Stable reason consumed by the Node boundary, never parsed from an error message.
@@ -16,6 +16,7 @@ pub struct FileOperationResult {
     pub system_code: Option<i32>,
 }
 
+/// Creates a successful completion with no failure classification or system code.
 fn success() -> FileOperationResult {
     FileOperationResult {
         reason: None,
@@ -23,6 +24,7 @@ fn success() -> FileOperationResult {
     }
 }
 
+/// Creates a classified failure and retains the OS code when one is available.
 fn failure(reason: &str, error: Option<io::Error>) -> FileOperationResult {
     FileOperationResult {
         reason: Some(reason.to_owned()),
@@ -30,13 +32,16 @@ fn failure(reason: &str, error: Option<io::Error>) -> FileOperationResult {
     }
 }
 
+/// Recognizes absolute platform paths that contain no NUL bytes.
 fn valid_path(path: &str) -> bool {
     Path::new(path).is_absolute() && !path.contains('\0')
 }
 
-/// Preserve the system cause while distinguishing a currently missing source from a missing parent.
+/// Classifies a move failure while retaining its original system code.
+///
+/// Ambiguous missing-path errors are classified using the source's current existence.
 fn move_failure(error: io::Error, source: &str) -> FileOperationResult {
-    // Missing target parents use the same system code as missing sources on both platforms.
+    // Distinguishes a missing source from a missing target parent after an ambiguous OS error.
     let missing_reason = || {
         if std::fs::symlink_metadata(source)
             .is_err_and(|error| error.kind() == io::ErrorKind::NotFound)
@@ -69,7 +74,12 @@ fn move_failure(error: io::Error, source: &str) -> FileOperationResult {
     failure(reason, Some(error))
 }
 
-/// Move one path without replacement. Both paths remain owned by the caller.
+/// Moves a checked path atomically without replacing the target.
+///
+/// Both paths are absolute and NUL-free, as checked before queueing the operation.
+///
+/// # Errors
+/// Returns the platform rename error when the operation cannot complete.
 fn move_no_replace_impl(source: &str, target: &str) -> io::Result<()> {
     #[cfg(windows)]
     {
@@ -130,16 +140,20 @@ fn move_no_replace_impl(source: &str, target: &str) -> io::Result<()> {
     }
 }
 
-/// Owns one libuv worker operation; completion is delivered after the system result.
+/// Owned source and target paths for one queued native move.
 pub struct MoveTask {
     source: String,
     target: String,
 }
 
 impl Task for MoveTask {
+    /// Worker completion with a stable reason and optional platform error code.
     type Output = FileOperationResult;
+
+    /// Completion record transferred to the JavaScript promise.
     type JsValue = FileOperationResult;
 
+    /// Executes the move on the worker and classifies its platform result.
     fn compute(&mut self) -> Result<Self::Output> {
         Ok(match move_no_replace_impl(&self.source, &self.target) {
             Ok(()) => success(),
@@ -147,12 +161,19 @@ impl Task for MoveTask {
         })
     }
 
+    /// Delivers the completed worker result to JavaScript.
     fn resolve(&mut self, _env: Env, output: Self::Output) -> Result<Self::JsValue> {
         Ok(output)
     }
 }
 
-/// Queue an atomic same-filesystem move. No cancellation or copy fallback is provided.
+/// Queues an atomic, non-replacing move within one filesystem.
+///
+/// The worker reports platform failures through FileOperationResult. Once queued, the
+/// operation runs to completion; cross-device moves are reported as failures.
+///
+/// # Errors
+/// Returns InvalidArg before queueing if either path is not absolute for the platform or contains NUL.
 #[napi(ts_return_type = "Promise<FileOperationResult>")]
 pub fn move_no_replace(source: String, target: String) -> Result<AsyncTask<MoveTask>> {
     if !valid_path(&source) || !valid_path(&target) {
@@ -165,6 +186,7 @@ pub fn move_no_replace(source: String, target: String) -> Result<AsyncTask<MoveT
     Ok(AsyncTask::new(MoveTask { source, target }))
 }
 
+/// Classifies a synchronization failure and retains its platform error code.
 fn sync_failure(error: io::Error) -> FileOperationResult {
     let reason = match error.kind() {
         io::ErrorKind::NotFound => "pathMissing",
@@ -175,15 +197,22 @@ fn sync_failure(error: io::Error) -> FileOperationResult {
     failure(reason, Some(error))
 }
 
-/// Owns opening, synchronization and closing of exactly one existing regular file.
+/// Owned path for a worker that opens, synchronizes and closes one existing regular file.
 pub struct SyncTask {
     path: String,
 }
 
 impl Task for SyncTask {
+    /// Worker completion with a stable reason and optional platform error code.
     type Output = FileOperationResult;
+
+    /// Completion record transferred to the JavaScript promise.
     type JsValue = FileOperationResult;
 
+    /// Synchronizes the opened regular file and closes its handle before returning the result.
+    ///
+    /// Uses F_FULLFSYNC on macOS and sync_all elsewhere. File and platform failures are
+    /// represented by the completion record.
     fn compute(&mut self) -> Result<Self::Output> {
         let metadata = match std::fs::metadata(&self.path) {
             Ok(value) => value,
@@ -239,12 +268,19 @@ impl Task for SyncTask {
         })
     }
 
+    /// Delivers the completed worker result after its file handle has been released.
     fn resolve(&mut self, _env: Env, output: Self::Output) -> Result<Self::JsValue> {
         Ok(output)
     }
 }
 
-/// Request the platform's specified synchronization on a worker, without creating files.
+/// Queues platform synchronization for an existing regular file.
+///
+/// The worker closes the file handle before delivering its result. Parent-directory
+/// barriers and application transaction policy belong to the caller.
+///
+/// # Errors
+/// Returns InvalidArg before queueing if the path is not absolute for the platform or contains NUL.
 #[napi(ts_return_type = "Promise<FileOperationResult>")]
 pub fn sync_file(path: String) -> Result<AsyncTask<SyncTask>> {
     if !valid_path(&path) {

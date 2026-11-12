@@ -3,7 +3,7 @@
 import * as v from 'valibot'
 import { parseValue } from './validation'
 
-/** A point in the complete source page, with top-left origin and downward positive y. */
+/** A source-page point with coordinates in [0, 1], a top-left origin and downward positive y. */
 export interface NormalizedPoint {
   readonly x: number
   readonly y: number
@@ -15,7 +15,11 @@ export interface NormalizedRect extends NormalizedPoint {
   readonly height: number
 }
 
-/** Clockwise convex vertices, beginning at the topmost then leftmost vertex; not text reading order. */
+/**
+ * A convex source-page quadrilateral in clockwise vertex order.
+ *
+ * The first vertex is topmost, then leftmost; vertex order is independent of text reading order.
+ */
 export type NormalizedQuad = readonly [
   NormalizedPoint,
   NormalizedPoint,
@@ -50,17 +54,21 @@ const quadSchema = v.pipe(
   }),
 )
 
-/** Reject nonfinite or out-of-page coordinates; callers resolve display rounding before submission. */
+/**
+ * Parses finite coordinates within the source page.
+ *
+ * Callers resolve display rounding before submission.
+ */
 export function parseNormalizedPoint(input: unknown): NormalizedPoint {
   return parseValue(pointSchema, input, 'Invalid normalized point')
 }
 
-/** Require positive extents and a wholly contained rectangle without clamping. */
+/** Parses a wholly contained rectangle with positive extents, without clamping. */
 export function parseNormalizedRect(input: unknown): NormalizedRect {
   return parseValue(rectSchema, input, 'Invalid normalized rectangle')
 }
 
-/** Require the canonical start vertex and clockwise, nondegenerate convex shape; preserve fragment order. */
+/** Parses a nondegenerate convex quadrilateral with the canonical start and clockwise order. */
 export function parseNormalizedQuad(input: unknown): NormalizedQuad {
   return parseValue(quadSchema, input, 'Invalid normalized quadrilateral')
 }

@@ -1,4 +1,4 @@
-/** @fileoverview Owns English messages for showcase. */
+/** @fileoverview Defines English names and explanations for built-in showcase presets. */
 
 export const showcaseMessages = {
   presets: {

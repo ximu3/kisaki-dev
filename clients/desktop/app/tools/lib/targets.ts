@@ -15,7 +15,7 @@ export const targetTriples: Record<DesktopTarget, string> = {
   'linux-arm64': 'aarch64-unknown-linux-gnu',
 }
 
-/** Return the target for this process, or throw for an unsupported platform or architecture. */
+/** Returns the target for this process, rejecting unsupported platforms or architectures. */
 export function hostTarget(): DesktopTarget {
   const platforms: Partial<Record<NodeJS.Platform, string>> = {
     win32: 'windows',
@@ -26,10 +26,11 @@ export function hostTarget(): DesktopTarget {
   return parseTarget(`${platform}-${process.arch}`)
 }
 
-/** Validate a user-supplied build target. */
+/** Parses an explicitly selected desktop build target. */
 export function parseTarget(value: string): DesktopTarget {
   if (!Object.hasOwn(targetTriples, value)) {
     throw new Error(`Unsupported desktop target: ${value}`)
   }
+
   return value as DesktopTarget
 }

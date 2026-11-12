@@ -8,6 +8,7 @@ export type {
   Translate,
 } from './contracts.generated'
 export type { MessageCatalog } from '@kisaki3/desktop-contracts/i18n'
+
 export {
   flattenMessages,
   getMessageParameterContract,
@@ -16,4 +17,5 @@ export {
   validateMessageArguments,
 } from './messages'
 export type { MessageArgumentKind, MessageParameterContract, MessageContracts } from './messages'
-export { createTranslator, validateUiTranslation } from './translate'
+
+export { createTranslator, validateExtensionUiTranslationDefinition } from './translate'

@@ -1,0 +1,37 @@
+/* A compact row and trailing mark serve menu actions and selectable options. */
+
+@layer components {
+  .row {
+    --kui-row-active-background: var(--accent);
+    --kui-row-active-foreground: var(--accent-foreground);
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    gap: var(--kui-inline-gap);
+    min-height: var(--kui-control-height);
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font: inherit;
+    font-size: var(--kui-control-font);
+    line-height: var(--kui-control-line);
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .mark {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: var(--kui-icon-size);
+    --kui-glyph-size: calc(var(--kui-icon-size) * 12 / 14);
+    margin-inline-start: auto;
+    color: inherit;
+  }
+
+  @media (forced-colors: active) {
+    .row {
+      --kui-row-active-background: Highlight;
+      --kui-row-active-foreground: HighlightText;
+    }
+  }
+}

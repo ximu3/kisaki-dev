@@ -1,7 +1,11 @@
 /** @fileoverview Checks application release identity and complete prepared-file metadata. */
 
 import { expect, test } from 'vitest'
-import { parseApplicationRelease, parsePreparedApplicationUpdate } from './updates'
+import {
+  parseApplicationRelease,
+  parsePreparedApplicationUpdate,
+  getDesktopReleaseVersion,
+} from './updates'
 import { DesktopError } from './errors'
 
 test('release values retain the desktop family and valid prepared digests', () => {
@@ -14,6 +18,16 @@ test('release values retain the desktop family and valid prepared digests', () =
   }
 
   expect(parseApplicationRelease(release)).toEqual(release)
+
+  expect(getDesktopReleaseVersion('desktop@1.2.0-rc.1')).toBe('1.2.0-rc.1')
+  expect(getDesktopReleaseVersion('desktop@1.2.0+build.7')).toBeNull()
+  expect(() =>
+    parseApplicationRelease({
+      ...release,
+      version: '1.2.0+build.7',
+      tagName: 'desktop@1.2.0+build.7',
+    }),
+  ).toThrow(DesktopError)
 
   expect(() => parseApplicationRelease({ ...release, tagName: 'extension-sdk@1.2.0' })).toThrow(
     DesktopError,

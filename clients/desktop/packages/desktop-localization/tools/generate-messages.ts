@@ -7,7 +7,11 @@ import { englishMessages } from '../src/en/index'
 import { getMessageContracts } from '../src/messages'
 import type { MessageCatalog } from '@kisaki3/desktop-contracts/i18n'
 
-/** Render deterministic declarations; a union of complete call tuples preserves key/argument correlation. */
+/**
+ * Renders deterministic declarations from source ICU argument contracts.
+ *
+ * Complete key/argument tuples preserve the correlation required for each translation call.
+ */
 export function renderMessageTypes(source: MessageCatalog): string {
   const contracts = getMessageContracts(source)
   const lines = Object.entries(contracts).map(([key, parameters]) => {
@@ -23,17 +27,27 @@ export function renderMessageTypes(source: MessageCatalog): string {
 
   return `/** @fileoverview Generated from en/index.ts by generate:messages. Do not edit the call contract independently. */
 
+/** Argument objects keyed by English messages; argument-free calls use the never type. */
 export interface MessageArguments {
 ${lines.join('\n')}
 }
+
+/** Key of one message in the English authoring baseline. */
 export type MessageKey = keyof MessageArguments
+
+/** Correlated key and argument tuples for one complete translation call. */
 export type TranslationCall = { [K in MessageKey]: MessageArguments[K] extends never ? [key: K] : [key: K, values: MessageArguments[K]] }[MessageKey]
-/** Format one typed message call as plain text; tags are literal. */
+
+/** Typed message formatter returning plain text with literal markup. */
 export type Translate = (...args: TranslationCall) => string
 `
 }
 
-/** Reject stale generated declarations without modifying the checked-in source during a normal build. */
+/**
+ * Checks the tracked generated declarations against the English catalog.
+ *
+ * Stale output rejects the build; this check leaves the source file unchanged.
+ */
 export async function checkMessageTypes(): Promise<void> {
   const path = join(import.meta.dirname, '../src/contracts.generated.ts')
   const output = renderMessageTypes(englishMessages)
@@ -42,7 +56,11 @@ export async function checkMessageTypes(): Promise<void> {
   }
 }
 
-/** Replace the generated call contract only after the entire English catalog parses consistently. */
+/**
+ * Regenerates the call contract after the complete English catalog has been validated.
+ *
+ * Checks cancellation before writing the generated source.
+ */
 export async function writeMessageTypes(signal?: AbortSignal): Promise<void> {
   const output = renderMessageTypes(englishMessages)
   signal?.throwIfAborted()

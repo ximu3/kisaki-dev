@@ -2,12 +2,22 @@
 
 import type { RpcFrame } from './frames'
 
-/** The connection owns this transport from start until close. Use a fresh one for each peer lifetime. */
+/** One ordered channel bound to a single peer and owned by its RPC connection. */
 export interface RpcTransport {
-  /** Install listeners before delivering any queued frames. Report channel loss or async send errors via closed. */
+  /**
+   * Installs receive and loss callbacks before delivering queued frames.
+   *
+   * Reports channel loss and asynchronous send failures through closed.
+   */
   start(receive: (input: unknown) => void, closed: (cause?: unknown) => void): void
-  /** Hand off a complete frame in order, or throw if the channel cannot accept it. */
+
+  /** Hands a complete frame to the channel in order, or throws when handoff fails. */
   send(frame: RpcFrame): void
-  /** Remove listeners and release the channel, preserving the order of already handed-off frames and close. */
+
+  /**
+   * Removes listeners and releases the owned channel.
+   *
+   * Preserves ordering between previously handed-off frames and channel closure.
+   */
   close(): void
 }

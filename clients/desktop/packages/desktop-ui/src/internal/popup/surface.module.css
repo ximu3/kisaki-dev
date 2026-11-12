@@ -1,0 +1,132 @@
+/* Text-bearing surfaces fade at their final reading position. */
+
+@layer components {
+  :where(.anchor, .chart) {
+    --kui-frame-enter: var(--kui-anchor-enter);
+    --kui-frame-exit: var(--kui-anchor-exit);
+    --kui-frame-fill: var(--popover);
+    --kui-frame-shadow: var(--shadow-overlay);
+    --kui-frame-radius: var(--radius-md);
+    color: var(--popover-foreground);
+  }
+
+  :where(.modal) {
+    --kui-frame-enter: var(--kui-modal-enter);
+    --kui-frame-exit: var(--kui-modal-exit);
+    --kui-frame-fill: var(--dialog);
+    --kui-frame-shadow: var(--shadow-modal);
+    --kui-frame-radius: var(--radius-lg);
+    color: var(--dialog-foreground);
+  }
+
+  :where(.anchor[role='tooltip'], .chart) {
+    --kui-frame-enter: var(--kui-hint-enter);
+    --kui-frame-exit: var(--kui-hint-exit);
+  }
+
+  :where(.anchor, .modal, .chart) {
+    --kui-frame-time: var(--kui-frame-exit);
+    --kui-frame-ease: var(--kui-exit-ease);
+  }
+
+  :where(.chart) {
+    --kui-chart-opacity: 0;
+  }
+  :where(.chart[data-kui-chart-open]) {
+    --kui-chart-opacity: 1;
+  }
+  :where(.chart:not([data-kui-chart-open])) {
+    interactivity: inert;
+  }
+
+  :where(.anchor, .modal) {
+    box-sizing: border-box;
+    flex-direction: column;
+    padding: 0;
+    overflow: visible;
+    border: 1px solid var(--border);
+    border-radius: var(--kui-frame-radius);
+    background: var(--kui-frame-fill);
+    box-shadow: var(--kui-frame-shadow);
+    opacity: 0;
+    pointer-events: none;
+    interactivity: inert;
+    transition-property: opacity, display, overlay;
+    transition-duration: var(--kui-frame-time);
+    transition-timing-function: var(--kui-frame-ease);
+    transition-behavior: allow-discrete;
+  }
+
+  :where(.viewport) {
+    flex: 1 1 auto;
+    box-sizing: border-box;
+    min-inline-size: 0;
+    min-block-size: 0;
+    overflow: auto;
+    border-radius: max(0px, calc(var(--kui-frame-radius) - 1px));
+  }
+
+  :where(.anchor:popover-open, .modal[open], .chart[data-kui-chart-open]) {
+    --kui-frame-time: var(--kui-frame-enter);
+    --kui-frame-ease: var(--kui-enter-ease);
+  }
+  :where(.anchor:popover-open, .modal[open]) {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+    interactivity: auto;
+  }
+  :where(.anchor:not(:popover-open), .modal:not([open]))::backdrop {
+    pointer-events: none;
+  }
+  :where(.anchor:popover-open[data-measuring]) {
+    opacity: 0;
+    transition: none;
+  }
+  :where(.anchor[data-tooltip-handoff]) {
+    transition: none;
+  }
+
+  @starting-style {
+    :where(.chart[data-kui-chart-open]) {
+      --kui-chart-opacity: 0;
+    }
+    :where(.anchor:popover-open, .modal[open]) {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :where(.anchor, .modal, .chart) {
+      transition: none;
+    }
+  }
+
+  :where(.staticSurface) {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--popover);
+    color: var(--popover-foreground);
+    box-shadow: var(--shadow-overlay);
+  }
+
+  .withClose:has(> .close) {
+    position: relative;
+    box-sizing: border-box;
+    min-block-size: calc(var(--kui-control-height) + 0.75rem);
+    padding-inline-end: calc(var(--kui-control-height) + 0.875rem);
+  }
+  .withClose > .close {
+    position: absolute;
+    inset-block-start: 0.25rem;
+    inset-inline-end: 0.25rem;
+    color: var(--muted-foreground);
+  }
+  .withClose > .close:not(:disabled):hover {
+    background: transparent;
+    color: var(--foreground);
+  }
+  .withClose > .close:focus-visible {
+    outline-offset: -2px;
+  }
+}

@@ -1,0 +1,17 @@
+/* Native-link color, hover underline and visible keyboard focus. */
+
+@layer components {
+  .root {
+    color: var(--primary);
+    text-underline-offset: 3px;
+  }
+
+  .root:hover {
+    text-decoration: underline;
+  }
+  .root:focus-visible {
+    outline: var(--kui-focus-width) solid var(--ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-md);
+  }
+}

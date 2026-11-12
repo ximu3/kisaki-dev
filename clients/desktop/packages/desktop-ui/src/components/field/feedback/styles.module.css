@@ -1,0 +1,51 @@
+/* A stable footer slot keeps action geometry independent of validation text. */
+
+@layer components {
+  .root {
+    flex: 1 1 0;
+    min-width: 0;
+    height: var(--kui-control-height);
+    display: flex;
+    align-items: center;
+    margin-inline-end: auto;
+    color: var(--muted-foreground);
+    font-size: var(--kui-caption-font);
+  }
+
+  .prompt {
+    display: flex;
+    align-items: center;
+    max-width: 100%;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--destructive);
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+  .prompt:focus-visible {
+    outline: var(--kui-focus-width) solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  .message {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .details {
+    --kui-tooltip-padding: 0.625rem 0.75rem;
+  }
+  .details p {
+    margin: 0;
+  }
+  .details p + p {
+    margin-top: 0.25rem;
+  }
+}

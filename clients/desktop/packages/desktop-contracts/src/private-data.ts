@@ -1,4 +1,4 @@
-/** @fileoverview Defines instance-owned private JSON and protected secret storage with per-key atomic comparisons. */
+/** @fileoverview Defines extension-owned private JSON and protected secret storage with per-key atomic comparisons. */
 
 import type { JsonValue } from './json'
 import type { CallOptions } from './operations'
@@ -7,44 +7,57 @@ import { nonemptyText, id, unique, text, parseValue } from './validation'
 import { parseJsonValue } from './json'
 import { DesktopError } from './errors'
 
-/** Value and revision are from one read. Null outside the snapshot means absent; a JSON null value remains present. */
+/**
+ * Private value and revision obtained from one read.
+ *
+ * Null outside this snapshot means absence; a stored JSON null remains present.
+ */
 export interface PrivateValue<T> {
   readonly value: T
   readonly revision: string
 }
 
-/** Omit the comparison for an unconditional write; null requires absence, and a string requires that exact revision. */
+/**
+ * Optional per-key revision precondition.
+ *
+ * Omission permits an unconditional write, null requires absence, and a string requires that exact
+ * revision.
+ */
 export interface PrivateWriteOptions {
   readonly expectedRevision?: string | null
 }
 
-/** One owned key change; expectedRevision follows PrivateWriteOptions and does not lock unrelated keys. */
+/** Set or delete intent for one owned key with an optional revision precondition. */
 export type PrivateMutation<T> = {
   readonly key: string
   readonly expectedRevision?: string | null
 } & ({ readonly type: 'set'; readonly value: T } | { readonly type: 'delete' })
 
+/** Atomic batch of private JSON and secret mutations within the actual owner's namespace. */
 export interface PrivateCommit {
   readonly values?: readonly PrivateMutation<JsonValue>[]
   readonly secrets?: readonly PrivateMutation<string>[]
 }
 
-/** Successful sets get fresh revisions. Deleted/missing keys have null, and unrelated keys are not returned or locked. */
+/**
+ * Post-commit revisions for the submitted keys in each store.
+ *
+ * Sets receive fresh revisions; deleted or absent keys return null. Unrelated keys are omitted.
+ */
 export interface PrivateCommitResult {
   readonly values: Readonly<Record<string, string | null>>
   readonly secrets: Readonly<Record<string, string | null>>
 }
 
+/** Private JSON reads and per-key writes scoped to the actual extension owner. */
 export interface PrivateValuesApi {
-  /**
-   * Read one value and revision from the actual owner's namespace; absence differs from a stored
-   * JSON null.
-   */
+  /** Reads an owned value and revision, distinguishing absence from a stored JSON null. */
   get(key: string, call?: CallOptions): Promise<PrivateValue<JsonValue> | null>
 
   /**
-   * Commit one JSON value and return a fresh revision; a supplied revision is compared
-   * atomically and mismatch preserves the old value.
+   * Commits a JSON value and returns its value with a fresh revision.
+   *
+   * An optional revision is compared atomically; a mismatch preserves the old value.
    */
   set(
     key: string,
@@ -54,29 +67,34 @@ export interface PrivateValuesApi {
   ): Promise<PrivateValue<JsonValue>>
 
   /**
-   * Delete one owned key after its optional revision comparison; an absent key succeeds when no
-   * condition conflicts.
+   * Deletes an owned key after its optional revision comparison.
+   *
+   * An absent key succeeds when no precondition conflicts.
    */
   delete(key: string, options?: PrivateWriteOptions, call?: CallOptions): Promise<void>
 }
 
-/** Only the owning Node instance can read secret text; status does not decrypt or claim remote authentication validity. */
+/**
+ * Protected secret storage scoped to the actual extension owner.
+ *
+ * Only its owning Node instance can read plaintext. Presence and revision reads do not decrypt or
+ * establish remote authentication validity.
+ */
 export interface PrivateSecretsApi {
   /**
-   * Decrypt an owned secret for its Node instance; absence, unavailable protection and
-   * unreadable ciphertext remain distinct.
+   * Decrypts an owned secret for its Node instance.
+   *
+   * Absence, unavailable protection and unreadable ciphertext remain distinct outcomes.
    */
   get(key: string, call?: CallOptions): Promise<PrivateValue<string> | null>
 
-  /**
-   * Read presence and revision without decrypting or claiming that remote authorization is still
-   * valid.
-   */
+  /** Reads secret presence and revision without decrypting its value. */
   getState(key: string, call?: CallOptions): Promise<{ readonly revision: string } | null>
 
   /**
-   * Protect and durably commit the secret with its optional revision comparison; protection
-   * failure preserves the old ciphertext.
+   * Protects and durably commits a secret after its optional revision comparison.
+   *
+   * Protection failure preserves the old ciphertext.
    */
   set(
     key: string,
@@ -86,22 +104,34 @@ export interface PrivateSecretsApi {
   ): Promise<{ readonly revision: string }>
 
   /**
-   * Remove one owned secret after its optional revision comparison; this does not revoke
-   * credentials at the remote provider.
+   * Deletes an owned secret after its optional revision comparison.
+   *
+   * Remote-provider credentials remain unaffected.
    */
   delete(key: string, options?: PrivateWriteOptions, call?: CallOptions): Promise<void>
 }
 
+/** Owner-scoped private stores with atomic commits across JSON values and protected secrets. */
 export interface PrivateStorageApi {
   readonly values: PrivateValuesApi
   readonly secrets: PrivateSecretsApi
 
-  /** Prepare protected bytes before a short all-or-nothing commit; any comparison/protection failure preserves all old keys. */
+  /**
+   * Prepares protected bytes and atomically commits the submitted keys.
+   *
+   * Any protection or revision-comparison failure preserves all previous values.
+   */
   commit(input: PrivateCommit, call?: CallOptions): Promise<PrivateCommitResult>
 }
 
-/** Do not accept an extensionId, transaction callback, undefined value or repeated mutation of the same store/key. */
+/**
+ * Parses a nonempty mutation batch and requires each store's keys to be unique.
+ *
+ * Set values follow their store's JSON or text contract; owner identity comes from the actual
+ * caller.
+ */
 export function parsePrivateCommit(input: unknown): PrivateCommit {
+  /** Creates set and delete schemas sharing a key and optional revision precondition. */
   const mutation = <T extends v.GenericSchema>(value: T) =>
     v.variant('type', [
       v.strictObject({

@@ -10,6 +10,7 @@ import type { IdentificationFields, PartIdentificationFields } from './fields'
 import type { NonEmptyArray } from '../operations'
 import type { MetadataPartKey, MetadataPartType } from './objects'
 
+/** Creates an ordered rule-list schema with nonempty, distinct field selections in each rule. */
 export function rules(fields: readonly string[]) {
   const field = v.picklist(fields)
   return v.array(
@@ -22,7 +23,11 @@ export function rules(fields: readonly string[]) {
   )
 }
 
-/** Part rule fields have one owner; volumeNumberLabel is only a scoped comic-chapter matching input, never metadata. */
+/**
+ * Returns a part kind's original-evidence fields and supported contextual matching fields.
+ *
+ * For comic chapters, volumeNumberLabel is a scoped matching input rather than a metadata field.
+ */
 export function getPartMatchingFields<T extends PartType>(
   type: T,
 ): readonly PartMatchingField<T>[] {
@@ -32,7 +37,11 @@ export function getPartMatchingFields<T extends PartType>(
   ] as PartMatchingField<T>[]
 }
 
-/** Validate root-compatible part slots; missing or empty rule arrays explicitly mean no fallback. */
+/**
+ * Parses fallback rules for part slots compatible with the root kind.
+ *
+ * An omitted or empty rule list means no fallback for that slot.
+ */
 export function parsePartMatchingRules<T extends EntryType>(
   root: T,
   input: unknown,
@@ -50,7 +59,7 @@ export function parsePartMatchingRules<T extends EntryType>(
   ) as PartMatchingRules<T>
 }
 
-/** Validate the profile's entry and root-compatible part fallback lists; there are no processors or inline policies here. */
+/** Parses ordered entry-matching and root-compatible part-matching fallback rules. */
 export function parseMetadataMatchingRules<T extends EntryType>(
   root: T,
   input: unknown,
@@ -74,23 +83,31 @@ export function parseMetadataMatchingRules<T extends EntryType>(
   ) as MetadataMatchingRules<T>
 }
 
+/** Original identification field available for matching an entry kind. */
 export type EntryMatchingField<T extends EntryType> = Extract<keyof IdentificationFields<T>, string>
 
+/** Original or supported contextual field available for matching a part kind. */
 export type PartMatchingField<T extends PartType> =
   | Extract<keyof PartIdentificationFields<T>, string>
   | (T extends 'comicChapter' ? 'volumeNumberLabel' : never)
 
-/** Every field must have an original comparable value. Only zero matches advances to the next ordered fallback rule. */
+/**
+ * Nonempty field combination evaluated as one fallback matching rule.
+ *
+ * Every field requires an original comparable value. Only zero matches advances to the next rule.
+ */
 export interface MatchingRule<Field extends PropertyKey> {
   readonly fields: NonEmptyArray<Field>
 }
 
+/** Ordered fallback rule lists for the root kind's supported part slots. */
 export type PartMatchingRules<T extends EntryType> = {
   readonly [K in MetadataPartKey<T>]?: readonly MatchingRule<
     PartMatchingField<MetadataPartType<T, K>>
   >[]
 }
 
+/** Ordered entry and part fallback rules used while composing a metadata graph. */
 export type MetadataMatchingRules<T extends EntryType> = {
   readonly [K in EntryType]?: readonly MatchingRule<EntryMatchingField<K>>[]
 } & PartMatchingRules<T>

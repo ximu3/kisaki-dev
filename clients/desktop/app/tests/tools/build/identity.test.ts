@@ -16,7 +16,7 @@ let root: string
 const applicationPath = 'clients/desktop/app'
 const packagePath = 'packages/fixture'
 
-/** Write one fixture input without requiring its parent directory to exist already. */
+/** Writes a repository-relative fixture input, creating its parent directory when needed. */
 async function writeInput(path: string, contents: string): Promise<void> {
   const target = join(root, path)
   await mkdir(dirname(target), { recursive: true })

@@ -52,7 +52,7 @@ definition 的规则如下：
 
 引用的资料方案必须存在且类型匹配。配置可以通过 recognizerId 明确选择多个识别器，算法设置由扩展管理。每个识别器取得内容相同的只读基础线索，其结果保留实现归属，不接力改写候选，也不调用所有已注册识别器。作品候选的基础名称提取是扫描配置自身的原生能力，不建立另一套扫描识别方案；已有作品内部的[文件识别方案](file-recognition/README.md#recognition-profiles)由 holdings 管理。
 
-scanner.configs 提供以下管理方法。metadata.profiles 在自己的范围内使用相同的管理语义。
+scanner.configs 提供以下管理方法。metadata.profiles 和文件识别方案在自己的范围内使用相同的管理语义。管理列表展示正式配置，单项表单保存直接完成 create 或 update，列表提供的删除、启停和重排各自提交；关闭列表保留已完成结果。定义内部的规则、条件与有序列表属于该配置草稿，局部字段编辑确认后随配置一起保存，遵守[共同编辑边界](../ui/state.md#editing-units)。
 
 | 方法              | 输入与返回                                                            |
 | ----------------- | --------------------------------------------------------------------- |
@@ -61,9 +61,9 @@ scanner.configs 提供以下管理方法。metadata.profiles 在自己的范围�
 | create(input)     | 返回实际保存的新配置                                                  |
 | update(id, input) | input 包含 changes 与可选 expected；返回修改后的完整配置              |
 | delete(id)        | 完成符合所属业务引用规则的删除，返回 void                             |
-| reorder(input)    | 按排序范围与移动意图完成重排，返回 void                               |
+| reorder(input) | 按完整原顺序基线重排指定配置，返回 void |
 
-配置摘要按人工顺序返回，历史另行分页。身份和时间由本体生成。reorder 接收实际排序范围与移动意图，不允许任意写 sortOrder，也不拿屏幕上的局部数组覆盖完整顺序。
+配置摘要按人工顺序返回，历史另行分页。身份和时间由本体生成。reorder 使用[完整顺序基线与子集槽位](library/write/contracts.md#membership)，不允许任意写 sortOrder，也不拿屏幕上的局部数组覆盖完整顺序。
 
 update 只提交实际 changes。definition 作为整体校验并替换，不执行隐含的深层合并。expected 遵守[字段基线](library/write/README.md)合同。
 
@@ -143,11 +143,11 @@ ScanResult 只由 scanner 定义，包含 discovery 和 candidates。discovery �
 
 discovery.issues 使用 { path, error: ErrorSummary }，记录无法读取的目录或输入。被过滤的路径不生成候选，排除规则保存在配置快照中。
 
-candidates 按稳定路径顺序保存已处理项。每项包含 path、clues，以及 result: AddResult 或 error: ExecutionFailure<AddResult>；clues 尚未取得时为 null。取得 AddResult 后，localContent 按下表表达本地内容的登记结果，与作品新增或已存在的结果分别呈现。
+candidates 按稳定路径顺序保存已处理项。每项包含 path、clues，以及 result: IngestAddResult 或 error: ExecutionFailure<IngestAddResult>；clues 尚未取得时为 null。取得 IngestAddResult 后，localContent 按下表表达本地内容的登记结果，与作品新增或已存在的结果分别呈现。
 
 | localContent.status | 含义与载荷                                                                                      |
 | ------------------- | ----------------------------------------------------------------------------------------------- |
-| included            | 新作品的明确本地登记已随新增提交；首次识别问题仍在 AddResult.issues 中                          |
+| included            | 新作品的明确本地登记已随新增提交；首次识别问题仍在 IngestAddResult.issues 中                          |
 | skipped             | 已有作品且本次选项关闭，没有追加本地内容                                                        |
 | registered          | 已有作品的登记调用完成；result 为 LocalContentRegistrationResult，可包含已存在登记              |
 | failed              | 已有作品的登记失败；error 为 ExecutionFailure<LocalContentRegistrationResult>，保留合法部分结果 |
@@ -265,7 +265,7 @@ interface ClueExtractionRule {
 
 id 是配置内部稳定的规则标识，在新建或采用预设时生成。规则保存在配置数组中，数组位置决定执行顺序，name 用于可编辑的展示名称。
 
-pattern 只保存表达式正文，不含分隔符或 flags。执行固定使用 ECMAScript u，ignoreCase 决定是否加入 i，不使用有状态的 g 或 y。编译时增加不改变捕获编号的整串约束，并允许备选分支回溯到完整匹配。不能只检查首次局部结果的长度；$ 在末尾换行之前命中，也不表示覆盖全文。
+pattern 只保存表达式正文，不含分隔符或 flags。执行固定使用 ECMAScript u，ignoreCase 决定是否加入 i。编译为 `^(?:pattern)$`，不改变捕获编号，并允许备选分支回溯到完整匹配。外层不启用 m，两个锚点直接约束整个输入；不使用有状态的 g 或 y，也不以首次局部匹配的长度代替整串约束。[ECMAScript 锚点语义](https://tc39.es/ecma262/multipage/text-processing.html#sec-compileassertion)
 
 output 只允许名称、原文名、日期分量和完整外部身份这些固定目标。所有叶字符串使用相同的替换模板：普通文字原样输出，`$<name>` 引用名为 name 的捕获组，`$$` 输出一个字面量 `$`。固定值是不含捕获组引用的模板。模板不支持编号捕获引用、整段匹配引用、条件、函数或脚本；需要字面量 `$` 时使用 `$$`。保存时解析正则的命名组声明并核对全部模板引用，未知组名或非法模板直接报错，不能仅运行一次空串来判断。
 

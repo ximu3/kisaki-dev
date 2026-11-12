@@ -27,6 +27,7 @@ test('verification tasks prepare the artifacts they actually consume', async () 
     ),
   ) as { tasks: { taskId: string; dependencies: string[] }[] }
   const dependencies = new Map(plan.tasks.map((task) => [task.taskId, task.dependencies]))
+  /** Checks whether a task transitively depends on a prerequisite in the returned Turbo graph. */
   const reaches = (task: string, prerequisite: string): boolean =>
     (dependencies.get(task) ?? []).some(
       (dependency) => dependency === prerequisite || reaches(dependency, prerequisite),
@@ -71,7 +72,12 @@ test(
       {
         path: 'clients/desktop/packages/desktop-appearance/src/styles.css',
         desktop: [],
-        consumers: ['desktop-appearance', 'desktop-contracts', 'desktop-localization'],
+        consumers: [
+          'desktop-appearance',
+          'desktop-contracts',
+          'desktop-localization',
+          'desktop-ui',
+        ],
       },
       {
         path: 'clients/desktop/packages/desktop-appearance/tests/consumers/node.test.ts',
@@ -111,6 +117,7 @@ test(
       { path: 'clients/desktop/app/tests/e2e/windows.test.ts', desktop: ['test:e2e'] },
       { path: 'clients/desktop/app/tests/tools/dev/session.test.ts', desktop: ['test:dev'] },
       { path: 'clients/desktop/app/tests/support/development/worker.ts', desktop: ['test:dev'] },
+      { path: 'clients/desktop/app/tests/support/fixture-application.ts', desktop: ['test:dev'] },
       {
         path: 'clients/desktop/app/tests/support/window-observation.ts',
         desktop: ['test:artifacts', 'test:dev'],
@@ -130,6 +137,7 @@ test(
         desktop: ['test:artifacts', 'test:dev', 'test:e2e', 'test:native'],
       },
     ]
+
     const members = JSON.parse(
       await readPnpm(['list', '--recursive', '--depth', '-1', '--json'], root),
     ) as { path: string }[]
@@ -155,6 +163,7 @@ test(
       await mkdir(dirname(join(directory, item.path)), { recursive: true })
       await writeFile(join(directory, item.path), 'initial fixture input\n')
     }
+
     await execute('git', ['init', '--initial-branch=main'], options)
     await execute('git', ['add', '.'], options)
     const commit = [
@@ -171,9 +180,11 @@ test(
       'Fixture input',
     ]
     await execute('git', commit, options)
+
     const variables = join(directory, '.local/verification-refs.json')
     await mkdir(dirname(variables), { recursive: true })
     await writeFile(variables, JSON.stringify({ base: 'HEAD^', head: 'HEAD' }))
+
     for (const item of cases) {
       await writeFile(join(directory, item.path), 'changed fixture input\n')
       await execute('git', ['add', item.path], options)
@@ -189,6 +200,7 @@ test(
         ],
         options,
       )
+
       const report = JSON.parse(stdout) as {
         errors?: unknown[]
         data: {

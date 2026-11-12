@@ -18,7 +18,7 @@ import type {
 import type { NonEmptyArray } from '../operations'
 import * as v from 'valibot'
 import { entryRefSchema, identitiesSchema, partRefSchema, workRefSchema } from './catalog'
-import { nonemptyText, text, id, unique, readRecord, parseValue, timestamp } from '../validation'
+import { nonemptyText, text, id, unique, parseRecord, parseValue, timestamp } from '../validation'
 import { partWorkType } from './parts'
 import { DesktopError } from '../errors'
 import {
@@ -28,19 +28,25 @@ import {
   parseStoredWorkRelationBinding,
 } from './relations'
 
-/** Minimal deleted/merged identity explanation; no body, image bytes, personal record or relationship graph is included. */
+/**
+ * Minimal identity and naming context retained for a deleted or merged entry.
+ *
+ * The snapshot excludes body content, image bytes, personal records and relationship graphs.
+ */
 export interface EntryIdentitySnapshot {
   readonly ref: EntryRef
   readonly name: string
   readonly externalIdentities: readonly ExternalIdentity[]
 }
 
+/** Minimal identity, name and external identities retained for a merged part. */
 export interface PartIdentitySnapshot {
   readonly ref: PartRef
   readonly name: string | null
   readonly externalIdentities: readonly ExternalIdentity[]
 }
 
+/** A saved relation identity with its exact typed endpoints and binding. */
 export type RelationIdentitySnapshot =
   | ({ readonly type: 'workCharacter'; readonly id: string } & WorkCharacterBinding)
   | ({ readonly type: 'personWork'; readonly id: string } & PersonWorkBinding)
@@ -51,17 +57,23 @@ export type RelationIdentitySnapshot =
       readonly binding: StoredWorkRelationBinding
     }
 
+/** A changed part paired with the owning work kind allowed for that part. */
 type PartChangeContext = {
   [K in PartType]: { readonly part: PartRef<K>; readonly work: WorkRef<PartWorkType<K>> }
 }[PartType]
 
+/** A changed annotation and its work, with file context for file-based media. */
 type AnnotationChangeContext = {
   [K in WorkType]: { readonly annotationId: string; readonly work: WorkRef<K> } & (K extends 'game'
     ? object
     : { readonly fileId: string | null })
 }[WorkType]
 
-/** Only actual changed identities are included; a file merge retains both the removed and surviving identity. */
+/**
+ * Actual changed holdings identities within one work.
+ *
+ * File merges retain both the removed and surviving identities.
+ */
 export type HoldingsChangeContext = {
   [K in WorkType]: {
     readonly work: WorkRef<K>
@@ -74,6 +86,7 @@ export type HoldingsChangeContext = {
       })
 }[WorkType]
 
+/** One typed saved-fact change within a completed library operation. */
 export type LibraryChange =
   | {
       readonly type: 'entryCreated' | 'entryUpdated' | 'evaluationChanged'
@@ -151,7 +164,11 @@ export type LibraryChange =
   | ({ readonly type: 'holdingsChanged' } & HoldingsChangeContext)
   | { readonly type: 'showcaseChanged'; readonly sectionIds: readonly string[] }
 
-/** One successful complete operation emits its own fact boundary; no-change success emits nothing. */
+/**
+ * The nonempty facts committed by one successful complete library operation.
+ *
+ * Success without changes emits no event. Delivery failure cannot alter committed data.
+ */
 export interface LibraryChanged {
   /** UTC milliseconds since the Unix epoch. */
   readonly committedAt: number
@@ -171,9 +188,15 @@ export const libraryInvalidationAreas = Object.freeze([
   'showcase',
 ] as const)
 
+/** A library read area whose snapshot may need refreshing. */
 export type LibraryInvalidationArea = (typeof libraryInvalidationAreas)[number]
 
-/** Areas may coalesce across operations; they never carry write commands, query snapshots or replacement drafts. */
+/**
+ * Read areas invalidated by library changes.
+ *
+ * Areas may coalesce across operations; this value carries no write command, query snapshot or
+ * editing draft.
+ */
 export interface LibraryInvalidation {
   readonly areas: NonEmptyArray<LibraryInvalidationArea>
 }
@@ -205,6 +228,7 @@ const entries = v.pipe(
   v.check((values) => unique(values, (value) => value.id)),
 )
 
+/** Checks that a part fact uses the work kind allowed by its part type. */
 function assertPartWork(part: PartRef, work: WorkRef): void {
   const type = partWorkType(part.type)
   if (work.type !== type) {
@@ -212,9 +236,9 @@ function assertPartWork(part: PartRef, work: WorkRef): void {
   }
 }
 
-/** A relation fact keeps its real endpoints and role, without exposing arbitrary related objects. */
+/** Parses a relation's identity and exact typed endpoints or stored binding. */
 export function parseRelationIdentitySnapshot(input: unknown): RelationIdentitySnapshot {
-  const { type: typeInput, id: identityInput, ...originalBody } = readRecord(input)
+  const { type: typeInput, id: identityInput, ...originalBody } = parseRecord(input)
   const type = parseValue(
     v.picklist(['workCharacter', 'personWork', 'organizationWork', 'workRelation']),
     typeInput,
@@ -240,7 +264,9 @@ export function parseRelationIdentitySnapshot(input: unknown): RelationIdentityS
   }
 }
 
-/** Validate actual-operation payloads, including media applicability and preserved kind-change/merge identities. */
+/**
+ * Parses a typed change fact and checks media applicability, ownership kinds and merge identities.
+ */
 export function parseLibraryChange(input: unknown): LibraryChange {
   const value = parseValue(
     v.variant('type', [
@@ -403,7 +429,7 @@ export function parseLibraryChange(input: unknown): LibraryChange {
   return value as LibraryChange
 }
 
-/** Require a real changed fact boundary. Delivery failures cannot alter already committed business data. */
+/** Parses a commit timestamp and nonempty set of complete-operation library facts. */
 export function parseLibraryChanged(input: unknown): LibraryChanged {
   const change = v.pipe(v.unknown(), v.transform(parseLibraryChange))
   return parseValue(
@@ -413,7 +439,7 @@ export function parseLibraryChanged(input: unknown): LibraryChanged {
   )
 }
 
-/** Validate a nonempty set of affected read areas, without interpreting it as a business fact or query result. */
+/** Parses a nonempty, distinct set of affected read areas. */
 export function parseLibraryInvalidation(input: unknown): LibraryInvalidation {
   const area = v.picklist(libraryInvalidationAreas)
   return parseValue(

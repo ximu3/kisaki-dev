@@ -1,7 +1,13 @@
 /** @fileoverview Checks consumer-visible correlations and forbidden combinations; the functions are never executed. */
 
 import type { PartialDate } from '@kisaki3/desktop-contracts/date'
-import type { LibraryApi, EntryCreateInput } from '@kisaki3/desktop-contracts/library'
+import type {
+  LibraryApi,
+  EntryCreate,
+  ShowcaseApi,
+  ShowcaseFields,
+  ShowcaseSection,
+} from '@kisaki3/desktop-contracts/library'
 import type { MetadataReadRequest } from '@kisaki3/desktop-contracts/metadata'
 import type {
   AnimeSessionsApi,
@@ -19,16 +25,47 @@ import type { AppApi } from '@kisaki3/desktop-contracts/app'
 import type { PrivateStorageApi } from '@kisaki3/desktop-contracts/private-data'
 import type { ViewClientIpc } from '@kisaki3/desktop-contracts/ui'
 
+/** Consumer method catalog exercising void and required private-call inputs. */
 interface ExampleViewMethods {
   readonly read: { readonly input: void; readonly result: string }
   readonly save: { readonly input: { readonly value: string }; readonly result: void }
 }
 
+/** Consumer notification catalog exercising a typed change payload. */
 interface ExampleViewNotifications {
   readonly changed: { readonly value: string }
 }
 
-/** Named interface contracts work without index signatures; optional and required inputs keep their own call shape. */
+/**
+ * Checks saved section results and explicit creation inputs against the shared showcase and
+ * onboarding types.
+ */
+export async function checkShowcase(showcase: ShowcaseApi, initial: ShowcaseFields): Promise<void> {
+  const created = await showcase.create(initial)
+  const saved = await showcase.update(created.id, {
+    changes: { name: 'Updated section' },
+    expected: { name: created.name },
+  })
+  const section: ShowcaseSection | null = await showcase.get(saved.id)
+  const batch: readonly ShowcaseSection[] = await showcase.createMany([initial, initial])
+
+  await showcase.reorder({
+    order: [saved.id, 'another-section'],
+    expected: { order: ['another-section', 'hidden-section', saved.id] },
+  })
+  await showcase.delete(saved.id)
+
+  const apply: OnboardingApplyInput = {
+    group: 'showcase',
+    items: [{ itemId: 'collections', expectedHandled: null, input: initial }],
+  }
+
+  void section
+  void batch
+  void apply
+}
+
+/** Checks named-interface method catalogs, required inputs and notification payload inference. */
 export function checkViewIpc(
   typed: ViewClientIpc<ExampleViewMethods, ExampleViewNotifications>,
   dynamic: ViewClientIpc,
@@ -46,7 +83,7 @@ export function checkViewIpc(
   void typed.invoke('save')
 }
 
-/** Check actual normal signatures alongside invalid medium, date and event payload combinations. */
+/** Checks accepted API signatures and rejected medium, date and event-payload combinations. */
 export function checkContracts(
   library: LibraryApi,
   sessions: AnimeSessionsApi,
@@ -81,7 +118,7 @@ export function checkContracts(
   // @ts-expect-error: A partial date must retain at least one real component.
   const emptyDate: PartialDate = {}
 
-  const person: EntryCreateInput<'person'> = {
+  const person: EntryCreate<'person'> = {
     type: 'person',
     name: 'Person',
     // @ts-expect-error: A person has no work record.
@@ -104,12 +141,15 @@ export function checkContracts(
   void person
 }
 
-/** Non-executing receivers make cross-field invalidity visible independently of excess-property checking. */
+/**
+ * Receives an opening intent to check structural assignability independently of excess-property
+ * checks.
+ */
 export function acceptOpen(target: DeeplinkOpenTarget): void {
   void target
 }
 
-/** Interaction options belong to individual calls and appear only on supported session operations. */
+/** Checks that per-call interaction options appear only on supported session operations. */
 export function checkInteraction(
   game: GameSessionsApi,
   anime: AnimeSessionsApi,
@@ -126,15 +166,17 @@ export function checkInteraction(
   void context.allowInteraction
 }
 
+/** Receives a committed setting to check its correlated field and persistence scope. */
 export function acceptSetting(setting: SavedPlaybackSetting): void {
   void setting
 }
 
+/** Receives a novel read request to check root-specific part-slot restrictions. */
 export function acceptNovelRead(request: MetadataReadRequest<'novel'>): void {
   void request
 }
 
-/** Check result/intent discriminants and associated native scopes. */
+/** Checks correlated result, intent and native-scope types across consumer entry points. */
 export function checkAssociations(): void {
   const missingFile = {
     workType: 'anime',

@@ -24,7 +24,7 @@ export class DistributionError extends Error {
   readonly code: DistributionErrorCode
   readonly path: FieldPath
 
-  /** Preserve the original failure when converting a parser or cryptographic boundary error. */
+  /** Records a distribution failure with a copied field path and optional local cause. */
   constructor(
     code: DistributionErrorCode,
     message: string,

@@ -28,8 +28,10 @@ export const searchCategories = Object.freeze([
   'preferences',
 ] as const)
 
+/** Native result family selected for one application search request. */
 export type SearchCategory = (typeof searchCategories)[number]
 
+/** Native navigation target kinds permitted in each search category. */
 export interface SearchTargetMap {
   readonly catalog: Extract<SearchTarget, { type: 'entry' | 'part' | 'collection' | 'tag' }>
   readonly notes: Extract<SearchTarget, { type: 'note' }>
@@ -45,16 +47,22 @@ export interface SearchTargetMap {
   readonly preferences: Extract<SearchTarget, { type: 'preference' }>
 }
 
-/** Runtime display resources retain their actual extension owner; search results never hold read-resource leases. */
+/**
+ * Search-result icon supplied by the built-in icon vocabulary or an identified extension resource.
+ *
+ * Results retain the actual extension owner and hold no read-resource leases.
+ */
 export type SearchIcon =
   | { readonly type: 'mdi'; readonly name: string }
   | { readonly type: 'extension'; readonly extensionId: string; readonly path: string }
 
+/** Text query scoped to one native search category. */
 export interface SearchQuery<T extends SearchCategory = SearchCategory> {
   readonly text: string
   readonly category: T
 }
 
+/** Category-specific navigation target with its localized display text and optional imagery. */
 export interface SearchItem<T extends SearchCategory = SearchCategory> {
   readonly target: SearchTargetMap[T]
   readonly title: string
@@ -64,13 +72,20 @@ export interface SearchItem<T extends SearchCategory = SearchCategory> {
   readonly icon: SearchIcon | null
 }
 
+/** Requested search interval and complete matching count for one category. */
 export interface SearchResult<T extends SearchCategory = SearchCategory> {
   readonly items: readonly SearchItem<T>[]
   readonly total: number
 }
 
+/** Bounded application search returning native navigation targets. */
 export interface SearchApi {
-  /** One category per request. Empty text succeeds with zero results; failures never masquerade as an empty search. */
+  /**
+   * Searches one category and returns the requested interval.
+   *
+   * Empty text succeeds with zero results; query failures are reported separately from an empty
+   * result.
+   */
   query<T extends SearchCategory>(
     input: SearchQuery<T>,
     options: ListOptions,
@@ -107,7 +122,11 @@ const icon = v.variant('type', [
   }),
 ])
 
-/** Category/text are mandatory; all is a UI composition, never a query category. */
+/**
+ * Parses required text and one supported search category.
+ *
+ * An all-category view composes separate category requests.
+ */
 export function parseSearchQuery(input: unknown): SearchQuery {
   return parseValue(
     v.strictObject({ text, category: v.picklist(searchCategories) }),
@@ -116,12 +135,16 @@ export function parseSearchQuery(input: unknown): SearchQuery {
   )
 }
 
-/** Validate complete totals and the exact category/target association, without substituting a source/URL for a native target. */
+/** Parses display records and checks their native targets against the requested category. */
 export function parseSearchResult<T extends SearchCategory>(
   category: T,
   input: unknown,
 ): SearchResult<T>
 
+/**
+ * Validates result fields, target-category membership and a total at least as large as the returned
+ * interval.
+ */
 export function parseSearchResult(category: SearchCategory, input: unknown): SearchResult {
   const value = parseValue(
     v.strictObject({
@@ -150,4 +173,5 @@ export function parseSearchResult(category: SearchCategory, input: unknown): Sea
 
   return value
 }
+
 export type { SearchTarget } from './ui/navigation'

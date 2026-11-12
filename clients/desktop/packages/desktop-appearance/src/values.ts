@@ -31,7 +31,7 @@ const colorFunctions = new Set([
   'color',
 ])
 
-/** Reject computations even where the CSS grammar treats their result as a numeric value. */
+/** Checks finite literal components and standard units after CSS grammar matching. */
 function hasLiteralComponents(value: Value): boolean {
   let valid = true
   walk(value, (node) => {
@@ -56,7 +56,11 @@ function hasLiteralComponents(value: Value): boolean {
   return valid
 }
 
-/** A layer's third length is its blur radius; offsets and spread may remain negative. */
+/**
+ * Checks that each shadow layer has a nonnegative blur radius.
+ *
+ * Offsets and spread may be negative.
+ */
 function hasValidShadowBlur(value: Value): boolean {
   let lengthIndex = 0
   for (const node of value.children) {
@@ -74,9 +78,10 @@ function hasValidShadowBlur(value: Value): boolean {
 }
 
 /**
- * Parse one known token into a standalone CSS value, normalizing whitespace and comments.
- * Throws TypeError for an unknown token, wrong value kind, formula, reference or invalid value.
- * Does not resolve fonts, apply styles, convert color spaces or impose a palette.
+ * Parses a known base token into a standalone CSS value.
+ *
+ * Normalizes whitespace and comments. Unknown names, invalid syntax, formulas and references throw
+ * TypeError. Consumers own font resources and style application.
  */
 export function parseTokenValue(name: TokenName, input: unknown): string {
   if (!Object.hasOwn(tokens, name)) {
@@ -114,9 +119,10 @@ export function parseTokenValue(name: TokenName, input: unknown): string {
 }
 
 /**
- * Parse exactly one complete token branch into a new immutable snapshot.
- * Missing or extra keys and invalid values throw TypeError; no defaults are supplied.
- * The input is not modified, and no partially parsed result escapes on failure.
+ * Parses all base tokens into a new frozen appearance branch.
+ *
+ * Missing or extra keys and invalid CSS values throw TypeError. The input is preserved, and a
+ * failed parse delivers no partial branch.
  */
 export function parseTokenValues(input: unknown): TokenValues {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {

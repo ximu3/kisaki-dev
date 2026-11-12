@@ -46,8 +46,9 @@
 
 数据库使用来源所需普通表的结构子集，没有构造 FTS、触发器和全部无关表。这些文件不是 calibre 程序实际导出的完整书库；schema 版本与字段形状用于限定探针，不能据此声称所有 schema 28 数据库已验证。
 
-在仓库根目录依次执行：
+复现时将本主题复制到仓库外的隔离根目录，保留 `refactor/verification/evidence/calibre-importer` 层次。在隔离根安装固定依赖，随后从同一根目录执行；输出留在副本中，当前工作区依赖不代替原核验版本：
 
+    pnpm add --ignore-scripts --save-exact fflate@0.8.3 @xmldom/xmldom@0.8.11
     node refactor/verification/evidence/calibre-importer/build-fixture.mjs node_modules/.pnpm/fflate@0.8.3/node_modules/fflate/esm/index.mjs
     node refactor/verification/evidence/calibre-importer/verify.mjs node_modules/.pnpm/fflate@0.8.3/node_modules/fflate/esm/index.mjs node_modules/.pnpm/@xmldom+xmldom@0.8.11/node_modules/@xmldom/xmldom/lib/index.js
 

@@ -28,7 +28,7 @@ test('a refused quit retains utility processes and normal window close preserves
   const first = controller.states.find((state) => state.state === 'ready')!
   expect(() => process.kill(first.current!.processId, 0)).not.toThrow()
   if (process.platform === 'win32') {
-    // Native observation launches PowerShell; use the same budget as the artifact checks.
+    // Windows observation starts PowerShell and uses the artifact checks' startup budget.
     await expect
       .poll(({ signal }) => hasNativeWindow(first.current!.processId, signal), {
         timeout: 30_000,
@@ -69,6 +69,7 @@ test('a failed runtime build retains the old process and a renamed source hands 
   onTestFinished(() => writeFile(entry, original))
   onTestFinished(() => rm(helper, { force: true }))
   onTestFinished(() => rm(renamed, { force: true }))
+
   await writeFile(helper, "export const value = 'synthetic first generation'\n")
   await writeFile(
     entry,
@@ -122,6 +123,7 @@ test('dependency recovery and renderer updates preserve a usable process', async
       .replace('<main>', '<main data-dependency={label}>'),
   )
   const controller = startDevelopmentController(workspace.app)
+
   const browser = await chromium.launch({ headless: true })
   onTestFinished(() => browser.close())
   await controller.ready
@@ -130,16 +132,19 @@ test('dependency recovery and renderer updates preserve a usable process', async
   await page.goto(new URL('main/index.html', first.rendererUrl!).href)
   await page.getByRole('button', { name: 'Count: 0' }).waitFor()
   await page.getByRole('button').click()
+
   await writeFile(styles, `${originals[0]}\n#root { padding: 73px; }\n`)
   await expect
     .poll(() => page.locator('#root').evaluate((element) => getComputedStyle(element).paddingLeft))
     .toBe('73px')
   expect(await page.getByRole('button', { name: 'Count: 1' }).count()).toBe(1)
+
   await writeFile(dependency, '{')
   await expect
     .poll(() => controller.states.some((state) => state.state === 'failed'), { timeout: 60_000 })
     .toBe(true)
   expect(controller.states.at(-1)?.current?.processId).toBe(first.current!.processId)
+
   const readyBefore = controller.states.filter((state) => state.state === 'ready').length
   await writeFile(dependency, originals[2]!)
   await expect
@@ -148,6 +153,7 @@ test('dependency recovery and renderer updates preserve a usable process', async
     })
     .toBeGreaterThan(readyBefore)
   const recovered = controller.states.filter((state) => state.state === 'ready').at(-1)!
+
   // Recovery may rebuild the runtime; a subsequent dependency-only update must not restart it.
   const readyBeforeUpdate = controller.states.filter((state) => state.state === 'ready').length
   await writeFile(dependency, JSON.stringify({ label: 'updated' }))
@@ -181,7 +187,7 @@ test.each(['cancellation', 'command failure'] as const)(
       'node --import tsx ../../clients/desktop/app/tests/support/preparation-worker.ts'
     await writeFile(manifestPath, JSON.stringify(manifest))
     if (outcome === 'command failure') {
-      // Select the test adapter at the copied package's declared process boundary.
+      // Fault injection is confined to the copied package's declared process entry.
       const toolingManifest = JSON.parse(originalToolingManifest) as {
         exports: Record<string, string>
       }

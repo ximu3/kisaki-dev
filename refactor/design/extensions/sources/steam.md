@@ -80,7 +80,7 @@ GetItems.assets 给出的文件名与 asset_url_format 是实际素材依据；�
 
 账号页配置用户自己的 Web API key 与明确的 SteamID64，允许从标准个人主页链接提取该编号；自定义主页名称只能经 ResolveVanityURL 核对，不能把昵称当编号。页面显示实际取得的账号名称、头像和可读状态，key 由 secrets 保存，页面不回读完整秘密。
 
-本人身份配置和读取验证使用上述 SteamID 与 Web API key。GetPlayerSummaries 核对返回的目标身份，GetOwnedGames 与愿望单接口分别验证读取能力；个人主页公开不保证所有清单可读，配置中的 SteamID 只指定待读取的账号，key 所有者身份需另有依据。
+本人账号由用户在账号页保存的 SteamID64 指定。GetPlayerSummaries 核对返回的目标身份，GetOwnedGames 与愿望单接口分别验证读取能力；个人主页公开不保证所有清单可读。验证结果表达目标身份与可读范围，Web API key 不作为账号归属证明。个人值继续按本次明确选择的采用范围处理。
 
 拥有库和愿望单分别读取并核对可访问范围。GetOwnedGames 使用 include_appinfo、include_played_free_games，显式限定不把家庭共享许可当本人拥有；API 的其他范围开关按其实际意义固定。默认拥有范围不扩展为全部免费游戏、短期访问或所有 App 许可。
 

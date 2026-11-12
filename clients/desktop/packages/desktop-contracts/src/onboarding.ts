@@ -15,7 +15,7 @@ import {
   timestamp,
   parseValue,
   parseDictionary,
-  readRecord,
+  parseRecord,
   text,
 } from './validation'
 import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
@@ -25,7 +25,8 @@ import { parsePreferencesUpdate } from './preferences/api'
 import { parseExtensionPackageSource, parseExtensionRepositoryInput } from './extensions'
 import { parseMetadataProfileCreate } from './metadata/profiles'
 import { parseScanConfigCreate } from './scanner/configs'
-import { parseShowcaseFields, parseShowcaseChanges } from './library/showcase'
+import { parseShowcaseFields } from './library/showcase'
+import { parseApplicationVersion } from './app'
 
 export const onboardingGroups = Object.freeze([
   'preferences',
@@ -35,16 +36,20 @@ export const onboardingGroups = Object.freeze([
   'showcase',
 ] as const)
 
+/** Business-operation group in the native recommendation catalog. */
 export type OnboardingGroup = (typeof onboardingGroups)[number]
 
+/** Reason for presenting guidance: first use, an application update or an explicit revisit. */
 export type OnboardingMode = 'firstUse' | 'update' | 'manual'
 
+/** Durable resource created or installed while applying a recommendation. */
 export type OnboardingResourceRef =
   | { readonly type: 'extension'; readonly extensionId: string }
   | { readonly type: 'metadataProfile'; readonly profileId: string }
   | { readonly type: 'scanConfig'; readonly configId: string }
   | { readonly type: 'showcaseSection'; readonly sectionId: string }
 
+/** Established applied or skipped outcome with its handling time and any created resources. */
 export type OnboardingHandled =
   | {
       readonly outcome: 'skipped'
@@ -58,7 +63,12 @@ export type OnboardingHandled =
       readonly resources: readonly OnboardingResourceRef[]
     }
 
-/** handled keys are stable native catalog identities; deleted/unavailable resources do not erase these historical outcomes. */
+/**
+ * Saved guide-presentation history and per-item handling outcomes.
+ *
+ * Handled keys are stable native catalog identities. Deleted or unavailable resources leave
+ * historical outcomes intact.
+ */
 export interface OnboardingState {
   /** UTC milliseconds since the Unix epoch; null until the guide is actually presented. */
   readonly firstPresentedAt: number | null
@@ -68,6 +78,10 @@ export interface OnboardingState {
   readonly handled: Readonly<Record<string, OnboardingHandled>>
 }
 
+/**
+ * Applicable recommendation with its native identity, current handling state and group-specific
+ * source reference.
+ */
 export type OnboardingItem = {
   readonly itemId: string
   readonly title: string
@@ -79,7 +93,11 @@ export type OnboardingItem = {
   | { readonly group: 'metadataProfiles' | 'showcase'; readonly presetId: string }
 )
 
-/** Explicit confirmation can add a repository before installing its fixed artifact. Existing repositories use their real local ID. */
+/**
+ * Fixed extension artifact source, optionally including a newly confirmed repository.
+ *
+ * Existing repositories are referenced by their actual local IDs.
+ */
 export type OnboardingExtensionSource =
   | ExtensionPackageSource
   | {
@@ -90,6 +108,7 @@ export type OnboardingExtensionSource =
       readonly sha256: string
     }
 
+/** Concrete business input accepted for each recommendation group. */
 export interface OnboardingInputMap {
   readonly preferences: {
     readonly changes: Pick<PreferencesChanges, 'general' | 'appearance'>
@@ -98,16 +117,21 @@ export interface OnboardingInputMap {
   readonly extensions: { readonly source: OnboardingExtensionSource; readonly enabled?: boolean }
   readonly metadataProfiles: MetadataProfileCreate & { readonly isDefault: boolean }
   readonly scanner: ScanConfigCreate
-  readonly showcase: { readonly key: string; readonly data: ShowcaseFields }
+  readonly showcase: ShowcaseFields
 }
 
+/** Recommendation input paired with its original handling state for conflict checks. */
 export interface OnboardingItemInput<G extends OnboardingGroup> {
   readonly itemId: string
   readonly expectedHandled: OnboardingHandled | null
   readonly input: OnboardingInputMap[G]
 }
 
-/** One preferences item; other groups can apply a nonempty ordered selection. No input accepts a script or generic transaction. */
+/**
+ * Ordered recommendation batch submitted to one business group.
+ *
+ * Preferences accepts exactly one item; other groups accept a nonempty selection.
+ */
 export type OnboardingApplyInput = {
   [G in OnboardingGroup]: {
     readonly group: G
@@ -117,11 +141,13 @@ export type OnboardingApplyInput = {
   }
 }[OnboardingGroup]
 
+/** Safe failure summary attributed to installation, commit or runtime activation. */
 export interface OnboardingIssue {
   readonly stage: 'installation' | 'commit' | 'runtime'
   readonly error: ErrorSummary
 }
 
+/** One item's application outcome, retained resources and stage-specific issues. */
 export interface OnboardingItemResult {
   readonly itemId: string
   readonly outcome: 'applied' | 'notApplied' | 'notStarted'
@@ -129,12 +155,18 @@ export interface OnboardingItemResult {
   readonly issues: readonly OnboardingIssue[]
 }
 
-/** A same-database failure rolls back all new resources. An extension failure can retain a committed install even without handled. */
+/**
+ * Per-item outcomes for one recommendation batch.
+ *
+ * Same-database groups commit atomically. Extension installation can remain durable even when its
+ * handling record was not committed.
+ */
 export interface OnboardingApplyResult<G extends OnboardingGroup = OnboardingGroup> {
   readonly group: G
   readonly items: readonly OnboardingItemResult[]
 }
 
+/** Explicit recommendation selection with the handling baselines required to mark it skipped. */
 export interface OnboardingSkipInput {
   readonly items: NonEmptyArray<{
     readonly itemId: string
@@ -142,53 +174,56 @@ export interface OnboardingSkipInput {
   }>
 }
 
+/** Native recommendation discovery, presentation tracking and explicit business adoption. */
 export interface OnboardingApi {
-  /**
-   * Read formal presentation and handling state without marking the guide as shown or completing
-   * recommendations.
-   */
+  /** Reads saved presentation and handling state without changing it. */
   getState(call?: CallOptions): Promise<OnboardingState>
 
-  /**
-   * Read applicable recommendations and their actual handling/resource state for the requested
-   * mode; querying does not apply them.
-   */
+  /** Reads recommendations applicable to the requested mode and their actual handling state. */
   listItems(
     input: { readonly mode: OnboardingMode },
     call?: CallOptions,
   ): Promise<readonly OnboardingItem[]>
 
-  /** Record only after actual presentation; reading state never marks it as shown. */
+  /** Records a guide presentation after it has actually been shown. */
   markPresented(
     input: { readonly mode: OnboardingMode; readonly version: string },
     call?: CallOptions,
   ): Promise<OnboardingState>
 
   /**
-   * Compare handling and business baselines before adoption; same-database groups commit
-   * together, while sequential extension installs preserve established outcomes on later
-   * failure.
+   * Compares handling and business baselines before adopting the selected recommendations.
+   *
+   * Same-database groups commit together. Sequential extension installations preserve established
+   * outcomes when later work fails.
    */
   apply<I extends OnboardingApplyInput>(
     input: I,
     call?: CallOptions,
   ): Promise<OnboardingApplyResult<I['group']>>
 
-  /** Preserve already handled outcomes/times when their explicit baseline still matches; never cancel accepted work. */
+  /**
+   * Marks selected unhandled recommendations as skipped after comparing their baselines.
+   *
+   * Already handled outcomes and timestamps remain unchanged when their baselines match. Skipping
+   * leaves accepted work running.
+   */
   skip(
     input: OnboardingSkipInput,
     call?: CallOptions,
   ): Promise<readonly { readonly itemId: string; readonly handled: OnboardingHandled }[]>
 
   /**
-   * Finish this guide presentation and record first completion when applicable; unfinished
-   * business is not marked successful.
+   * Finishes the guide presentation and records first completion when applicable.
+   *
+   * Unfinished business retains its actual outcome.
    */
   complete(input: { readonly mode: OnboardingMode }, call?: CallOptions): Promise<OnboardingState>
 
   /**
-   * Subscribe to formal onboarding-state changes; notifications never contain or commit the
-   * editor's unsaved inputs.
+   * Subscribes to saved onboarding-state invalidation and returns the subscription lifetime.
+   *
+   * Draft inputs remain owned by their editor.
    */
   onInvalidated(listener: () => void): Disposable
 }
@@ -227,18 +262,22 @@ const issue = v.strictObject({
   error: v.pipe(v.unknown(), v.transform(parseErrorSummary)),
 })
 
-/** Validate one established applied/skipped outcome with its timestamp and actual resource references. */
+/** Parses an established applied or skipped outcome with its timestamp and resource references. */
 export function parseOnboardingHandled(input: unknown): OnboardingHandled {
   return parseValue(handled, input, 'Invalid onboarding handled result')
 }
 
-/** Keep every valid item key, including names normally inherited from Object.prototype. */
+/**
+ * Parses saved presentation and handling state while preserving every valid catalog key.
+ *
+ * Keys matching Object.prototype names remain ordinary own properties.
+ */
 export function parseOnboardingState(input: unknown): OnboardingState {
   return parseValue(
     v.strictObject({
       firstPresentedAt: v.nullable(timestamp),
       firstCompletedAt: v.nullable(timestamp),
-      lastPresentedVersion: v.nullable(version),
+      lastPresentedVersion: v.nullable(v.pipe(v.unknown(), v.transform(parseApplicationVersion))),
       handled: v.pipe(
         v.unknown(),
         v.transform((value) => parseDictionary(id, handled, value)),
@@ -249,6 +288,7 @@ export function parseOnboardingState(input: unknown): OnboardingState {
   )
 }
 
+/** Parses general and appearance edits and requires an original value for every submitted field. */
 function parsePreferenceInput(input: unknown): OnboardingInputMap['preferences'] {
   const groups = v.strictObject({
     general: v.exactOptional(v.unknown()),
@@ -274,11 +314,12 @@ function parsePreferenceInput(input: unknown): OnboardingInputMap['preferences']
   return { changes: value.changes, expected: baseline }
 }
 
+/** Parses a fixed extension source, including a newly confirmed repository when supplied. */
 function parseExtensionInput(input: unknown): OnboardingInputMap['extensions'] {
   const prepared = v.pipe(
     v.unknown(),
     v.transform((raw): OnboardingExtensionSource => {
-      const value = readRecord(raw)
+      const value = parseRecord(raw)
       if (value.type !== 'newRepository') {
         return parseExtensionPackageSource(raw)
       }
@@ -303,6 +344,10 @@ function parseExtensionInput(input: unknown): OnboardingInputMap['extensions'] {
   )
 }
 
+/**
+ * Parses a profile input with an explicit default choice and its required default-selection
+ * baseline.
+ */
 function parseProfileInput(input: unknown): OnboardingInputMap['metadataProfiles'] {
   const value = parseMetadataProfileCreate(input)
   if (value.isDefault === undefined || (value.isDefault && !value.expected)) {
@@ -320,19 +365,20 @@ const inputParsers = {
   extensions: parseExtensionInput,
   metadataProfiles: parseProfileInput,
   scanner: parseScanConfigCreate,
-  showcase: (input: unknown) =>
-    parseValue(
-      v.strictObject({ key: id, data: v.pipe(v.unknown(), v.transform(parseShowcaseFields)) }),
-      input,
-      'Invalid onboarding showcase creation',
-    ),
+  showcase: parseShowcaseFields,
 }
 
-/** Reuse each owner's complete input. Scanner regex validation must run inside its normal bounded terminable validation unit. */
+/**
+ * Parses a recommendation batch using each business owner's input contract.
+ *
+ * Enforces unique item IDs, one preferences item and at most one new default profile per entry
+ * kind. Callers run scanner regex validation in its normal bounded, terminable validation unit.
+ */
 export function parseOnboardingApplyInput(input: unknown): OnboardingApplyInput {
-  const record = readRecord(input)
+  const record = parseRecord(input)
   const group = parseValue(v.picklist(onboardingGroups), record.group)
   const parseInput: (input: unknown) => OnboardingInputMap[OnboardingGroup] = inputParsers[group]
+
   const item = v.strictObject({
     itemId: id,
     expectedHandled,
@@ -349,6 +395,7 @@ export function parseOnboardingApplyInput(input: unknown): OnboardingApplyInput 
     input,
     'Invalid onboarding apply input',
   ) as OnboardingApplyInput
+
   if (value.group === 'preferences' && value.items.length !== 1) {
     throw new DesktopError('InvalidInput', 'Onboarding preferences apply one item')
   }
@@ -364,13 +411,11 @@ export function parseOnboardingApplyInput(input: unknown): OnboardingApplyInput 
       'Only one profile per type can become default in one apply',
     )
   }
-  if (value.group === 'showcase') {
-    parseShowcaseChanges({ create: value.items.map((item) => item.input) })
-  }
+
   return value
 }
 
-/** The real native catalog determines group membership; missing or cross-group item IDs cannot expand the operation. */
+/** Checks that every submitted item belongs to the requested group in the native catalog. */
 export function validateOnboardingItemGroups(
   input: OnboardingApplyInput,
   catalog: readonly Pick<OnboardingItem, 'itemId' | 'group'>[],
@@ -384,7 +429,7 @@ export function validateOnboardingItemGroups(
   }
 }
 
-/** Require distinct explicit recommendation identities and their complete handling baselines before skipping. */
+/** Parses distinct recommendation IDs and their complete handling baselines. */
 export function parseOnboardingSkipInput(input: unknown): OnboardingSkipInput {
   const item = v.strictObject({ itemId: id, expectedHandled })
   return parseValue(
@@ -399,7 +444,11 @@ export function parseOnboardingSkipInput(input: unknown): OnboardingSkipInput {
   )
 }
 
-/** Reject invented resources and partial same-database commits; installation reports alone may retain an unmarked durable package. */
+/**
+ * Parses group outcomes and checks resource-reference kinds, item states and atomicity constraints.
+ *
+ * Only extension reports may retain a durable resource for an item whose handling did not commit.
+ */
 export function parseOnboardingApplyResult(input: unknown): OnboardingApplyResult {
   const value = parseValue(
     v.strictObject({

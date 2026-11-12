@@ -25,7 +25,12 @@ import { getMetadataRelations, metadataRelationFields } from './relations'
 import { parseMetadataMatchingRules } from './matching'
 import { DesktopError } from '../errors'
 
-/** Scalars have no union operation. Ordered processors transform only the selected field after correspondence is fixed. */
+/**
+ * Ordered provider selection and optional processing pipeline for one field.
+ *
+ * Union applies only to collections. Processors transform the selected value after object
+ * correspondence is fixed.
+ */
 export interface MetadataFieldRule<Value> {
   readonly providers: NonEmptyArray<string>
   readonly selection: Value extends readonly unknown[]
@@ -34,12 +39,14 @@ export interface MetadataFieldRule<Value> {
   readonly processors?: readonly string[]
 }
 
+/** Optional selection and processing rules for fields of one entry kind. */
 export type MetadataEntryFieldRules<T extends EntryType> = {
   readonly [F in keyof MetadataEntryFieldValues[T]]?: MetadataFieldRule<
     MetadataEntryFieldValues[T][F]
   >
 }
 
+/** Optional field rules grouped by the root kind's supported part slots. */
 export type MetadataPartFieldRules<T extends EntryType> = {
   readonly [K in MetadataPartKey<T>]?: {
     readonly [F in keyof MetadataPartFieldValues[MetadataPartType<T, K>]]?: MetadataFieldRule<
@@ -48,7 +55,11 @@ export type MetadataPartFieldRules<T extends EntryType> = {
   }
 }
 
-/** Member selection and non-identity attribute selection are independent; attribute providers cannot add members. */
+/**
+ * Provider rules for relation membership and its non-identity attributes.
+ *
+ * Attribute providers enrich selected members and cannot add members.
+ */
 export interface MetadataRelationRule<K extends keyof MetadataRelationAttributeValues> {
   readonly providers: NonEmptyArray<string>
   readonly selection: 'first' | 'firstNonEmpty' | 'union'
@@ -59,7 +70,11 @@ export interface MetadataRelationRule<K extends keyof MetadataRelationAttributeV
   }
 }
 
-/** All four groups are explicit. At least one actual field or membership capability is required for a saved profile. */
+/**
+ * Explicit provider order, matching rules, field rules and relation rules for a metadata profile.
+ *
+ * A saved definition must provide at least one requestable field or membership capability.
+ */
 export interface MetadataProfileDefinition<T extends EntryType = EntryType> {
   readonly providers: readonly string[]
 
@@ -78,7 +93,11 @@ export interface MetadataProfileDefinition<T extends EntryType = EntryType> {
   readonly relations: { readonly [K in MetadataRelationKey<T>]?: MetadataRelationRule<K> }
 }
 
-/** Actual execution fixes a valid definition and language order before asynchronous work; later edits do not alter this snapshot. */
+/**
+ * Valid profile definition and language order captured before asynchronous execution.
+ *
+ * Later profile edits leave accepted operations' snapshots unchanged.
+ */
 export type MetadataProfileSnapshot<T extends EntryType = EntryType> = {
   [K in EntryType]: {
     readonly id: string
@@ -89,16 +108,22 @@ export type MetadataProfileSnapshot<T extends EntryType = EntryType> = {
   }
 }[T]
 
+/**
+ * Saved profile with display metadata, explicit definition validity, default status and ordering.
+ */
 export type MetadataProfile<T extends EntryType = EntryType> = {
   [K in EntryType]: {
     readonly id: string
     readonly name: string
     readonly description: string | null
     readonly entryType: K
+
     readonly preferredLanguages: readonly string[]
     readonly definition: StoredDefinition<MetadataProfileDefinition<K>>
+
     readonly isDefault: boolean
     readonly sortOrder: number
+
     /** UTC milliseconds since the Unix epoch. */
     readonly createdAt: number
     /** UTC milliseconds since the Unix epoch. */
@@ -106,18 +131,24 @@ export type MetadataProfile<T extends EntryType = EntryType> = {
   }
 }[T]
 
+/**
+ * Input for an independent profile with a fixed entry kind and optional default-selection baseline.
+ */
 export type MetadataProfileCreate = {
   [K in EntryType]: {
     readonly name: string
     readonly entryType: K
     readonly description?: string | null
+
     readonly preferredLanguages?: readonly string[]
     readonly definition: MetadataProfileDefinition<K>
+
     readonly isDefault?: boolean
     readonly expected?: { readonly defaultProfileId: string | null }
   }
 }[EntryType]
 
+/** Independently editable profile values, with the full definition treated as one value. */
 export interface MetadataProfileEditableFields<T extends EntryType> {
   readonly name: string
   readonly description: string | null
@@ -126,6 +157,7 @@ export interface MetadataProfileEditableFields<T extends EntryType> {
   readonly isDefault: boolean
 }
 
+/** Profile edits with optional original field values and a contextual default-profile baseline. */
 export type MetadataProfileUpdate<T extends EntryType = EntryType> = {
   [K in EntryType]: {
     readonly changes: Partial<MetadataProfileEditableFields<K>>
@@ -135,7 +167,12 @@ export type MetadataProfileUpdate<T extends EntryType = EntryType> = {
   }
 }[T]
 
-/** Applicable language is a catalog filter, separate from actual preferredLanguages copied into an independent user profile. */
+/**
+ * Localized starting definition for an independent user profile.
+ *
+ * Applicable languages filter the preset catalog; preferredLanguages is the actual execution order
+ * copied into the draft.
+ */
 export type MetadataProfilePreset<T extends EntryType = EntryType> = {
   [K in EntryType]: {
     readonly id: string
@@ -143,15 +180,21 @@ export type MetadataProfilePreset<T extends EntryType = EntryType> = {
     readonly name: LocalizedText
     readonly description: LocalizedText
     readonly applicableLanguages: NonEmptyArray<string> | null
+
     readonly entryType: K
     readonly preferredLanguages: readonly string[]
     readonly definition: MetadataProfileDefinition<K>
   }
 }[T]
 
-/** Deletion rechecks formal references. Copying uses a fresh ordinary create and does not copy default status. */
+/**
+ * Saved profile management, preset discovery and directory invalidation.
+ *
+ * Copying creates an independent profile through the ordinary create operation and leaves default
+ * selection explicit.
+ */
 export interface MetadataProfilesApi {
-  /** Read saved profile summaries in formal order, optionally restricted to one entry type. */
+  /** Reads saved profile summaries in formal order, optionally restricted to one entry kind. */
   list(
     filter?: { readonly entryType?: EntryType },
     call?: CallOptions,
@@ -163,35 +206,35 @@ export interface MetadataProfilesApi {
   >
 
   /**
-   * Read a complete saved profile, preserving unavailable participants and invalid definitions
-   * explicitly.
+   * Reads a complete saved profile, returning null when absent.
+   *
+   * Unavailable participants and invalid definitions remain explicit.
    */
   get(id: string, call?: CallOptions): Promise<MetadataProfile | null>
 
-  /**
-   * Commit an independent complete profile; preset selection or copying does not itself save or
-   * select a default.
-   */
+  /** Commits an independent profile from the supplied definition and explicit default selection. */
   create(input: MetadataProfileCreate, call?: CallOptions): Promise<MetadataProfile>
 
   /**
-   * Compare and commit changed profile fields and complete definition values; already accepted
-   * fetches retain their fixed snapshot.
+   * Compares and commits changed fields and complete definition values.
+   *
+   * Already accepted fetches retain their captured profile snapshots.
    */
   update(id: string, input: MetadataProfileUpdate, call?: CallOptions): Promise<MetadataProfile>
 
   /**
-   * Recheck formal references before removal; do not silently rewrite scanner configurations or
-   * other users of this profile.
+   * Deletes a profile after rechecking formal references.
+   *
+   * Existing references prevent removal and remain available for the caller to resolve.
    */
   delete(id: string, call?: CallOptions): Promise<void>
 
-  /** Reorder selected profiles against the complete order for their entry type. */
+  /** Reorders selected profiles against the complete order for their entry kind. */
   reorder(entryType: EntryType, input: ReorderInput, call?: CallOptions): Promise<void>
 
   /**
-   * Read fixed definitions matching the requested entry type and applicable language for copying
-   * into a draft.
+   * Reads fixed definitions matching the requested entry kind and applicable language for use in
+   * drafts.
    */
   listPresets(
     filter?: { readonly entryType?: EntryType; readonly language?: string },
@@ -199,8 +242,9 @@ export interface MetadataProfilesApi {
   ): Promise<readonly MetadataProfilePreset[]>
 
   /**
-   * Subscribe before reading the saved profile directory; invalidation requests refreshed data
-   * without replacing drafts.
+   * Subscribes to saved-profile directory invalidation and returns the subscription lifetime.
+   *
+   * Callers subscribe before reading, then refresh saved data while preserving drafts.
    */
   onInvalidated(listener: () => void): Disposable
 }
@@ -220,6 +264,7 @@ const collectionFields = new Set([
   'iconImage',
 ])
 
+/** Creates a field-rule schema permitting union only for collection-valued fields. */
 function fieldRule(name: string) {
   return v.strictObject({
     providers: providerIds,
@@ -230,18 +275,28 @@ function fieldRule(name: string) {
   })
 }
 
+/** Creates optional field-rule entries for a supplied metadata vocabulary. */
 function fields(names: readonly string[]) {
   return v.strictObject(
     Object.fromEntries(names.map((name) => [name, v.exactOptional(fieldRule(name))])),
   )
 }
 
-/** Validate every selected rule and provider reference without requiring that the implementation is currently online. */
+/**
+ * Parses a profile definition and checks rules against its selected providers.
+ *
+ * Validation permits currently unavailable implementations so saved definitions can retain their
+ * references.
+ */
 export function parseMetadataProfileDefinition<T extends EntryType>(
   root: T,
   input: unknown,
 ): MetadataProfileDefinition<T>
 
+/**
+ * Builds root-specific rule schemas, checks provider membership and requires a requestable
+ * capability.
+ */
 export function parseMetadataProfileDefinition(
   root: EntryType,
   input: unknown,
@@ -298,6 +353,7 @@ export function parseMetadataProfileDefinition(
   const selected = new Set(value.providers)
   let capabilities = 0
 
+  /** Checks field-rule provider membership and counts each configured field capability. */
   function checkFields(input: object | undefined): void {
     for (const rule of Object.values(input ?? {}) as { providers: readonly string[] }[]) {
       if (rule.providers.some((provider) => !selected.has(provider))) {
@@ -349,7 +405,11 @@ const languages = v.pipe(
   v.transform((values) => [...new Set(values)]),
 )
 
-/** Entry type is fixed at creation, and a default precondition is accepted only when explicitly choosing this default. */
+/**
+ * Parses creation fields and a definition for the selected entry kind.
+ *
+ * A default-profile baseline is accepted only when explicitly selecting the new profile as default.
+ */
 export function parseMetadataProfileCreate(input: unknown): MetadataProfileCreate {
   const { entryType } = parseValue(v.looseObject({ entryType: v.picklist(entryTypes) }), input)
   const value = parseValue(
@@ -375,7 +435,11 @@ export function parseMetadataProfileCreate(input: unknown): MetadataProfileCreat
   return value as MetadataProfileCreate
 }
 
-/** Changes are closed independent fields; definition is one whole value and defaultProfileId is the sole contextual precondition. */
+/**
+ * Parses profile field edits and their baselines, treating definition as one complete value.
+ *
+ * The contextual defaultProfileId baseline requires explicitly selecting this profile as default.
+ */
 export function parseMetadataProfileUpdate<T extends EntryType>(
   entryType: T,
   input: unknown,

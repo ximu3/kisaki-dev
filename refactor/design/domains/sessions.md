@@ -244,7 +244,7 @@ list 返回当前会话，get 返回指定会话或 null。observeAll 先交付�
 
 ### 单调计时与 UTC 区间
 
-每个新活动区间在开始时取得同一次采样的 UTC 毫秒与单调时刻作为锚点。区间内的发生时间使用 `起点 UTC + 单调经过时长`，有效时长只累加已经确认的使用区间；保存 UTC 值时按毫秒取整，单调小数余量留在运行内累计。暂停、缓冲和其他不计时条件继续按各自规则处理，因此有效时长不大于该区间长度。
+每个新活动区间在开始时取得同一次采样的 UTC 毫秒与单调时刻作为锚点。区间内的发生时间使用 `起点 UTC + 单调经过时长`，有效时长只累加已经确认的使用区间；保存 UTC 值和有效时长时按毫秒取整，单调小数余量留在运行内累计。保存的有效时长使用非负安全整数毫秒；暂停、缓冲和其他不计时条件继续按各自规则处理，因此有效时长不大于该区间长度。
 
 在计时状态变化、每次保存检查点和收束前采样两个时钟。当前 UTC 与锚点投影相差超过 1,000 毫秒时，视为本次可观察的系统校时；该内部容差只用于忽略采样和正常微小校准差异，不改变暂离宽限或用户时长设置。单调时刻自身倒退或不可用属于观察中断，不按 UTC 校时续接。
 
@@ -441,7 +441,11 @@ Kana 同样明确文档视图、页面及排版资源的持有和释放。独立
 | sessions.game.captureImage(sessionId)  | gameId、image                           |
 | sessions.anime.captureImage(sessionId) | animeId、fileId、positionSeconds、image |
 
-返回的 image 是 [PreparedImage](attachments.md#images)，表示原始内容已经取得并准备可用。游戏采集实际游戏内容，视频采集当前内容的 SDR 画面和字幕。media 按[截图接入条件](../engineering/integrations.md#screenshot)使用就绪的受管 sRGB GPU 输出、screenshot-sw=no，以及原生 screenshot-raw 的 subtitles 标志与 rgba 格式，核对返回布局和实际 source。只有已验证 GPU 条件中的 source: vo 可以准备图片；software、缺失或未知来源返回 CaptureUnavailable。HDR 片源也须经过正确的 SDR 映射，不能因命令成功而接纳软件回退。应用工具栏、面板及编辑按钮不进入图片。采集不隐含暂停、创建标注或打开编辑器。
+返回的 image 是 [PreparedImage](attachments.md#images)，表示原始内容已经取得并准备可用。游戏采集实际游戏内容，视频采集当前内容的 SDR 画面和字幕。
+
+media 按[截图接入条件](../engineering/integrations.md#screenshot)使用就绪的受管 sRGB GPU 输出、screenshot-sw=no，以及原生 screenshot-raw 的 subtitles 标志与 rgba 格式，核对返回布局和实际 source。只有已验证 GPU 条件中的 source: vo 可以准备图片；software、缺失或未知来源返回 CaptureUnavailable。HDR 片源也须经过正确的 SDR 映射，不能因命令成功而接纳软件回退。
+
+应用工具栏、面板及编辑按钮不进入图片。采集不隐含暂停、创建标注或打开编辑器。
 
 游戏采集遵守[实际窗口与截图规则](games.md#windows)：需要时先恢复最小化目标，确认恢复后的画面可用再取得原图，随后才进行可选裁剪。窗口选择、恢复或采集失败只结束该次操作，不使仍可正常观察的游戏会话中断。
 

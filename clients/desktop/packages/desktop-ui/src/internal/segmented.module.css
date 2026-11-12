@@ -1,0 +1,77 @@
+/* Tabs and value segments share the same compact geometry while retaining distinct semantics. */
+
+@layer components {
+  .group {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.125rem;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0.125rem;
+    border: 0;
+    border-radius: var(--radius-lg);
+    background: var(--muted);
+  }
+  .group[aria-orientation='vertical'] {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: 0;
+    height: 1.5rem;
+    padding: 0 0.625rem;
+    border: 0;
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--muted-foreground);
+    font: inherit;
+    font-size: var(--kui-control-font);
+    line-height: 1;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      background-color var(--kui-feedback-duration) ease,
+      color var(--kui-feedback-duration) ease,
+      box-shadow var(--kui-feedback-duration) ease;
+  }
+  :where(button:not(:disabled)).item:hover,
+  :where(input:not(:disabled)) + .item:hover {
+    color: var(--foreground);
+  }
+  .item[aria-selected='true'],
+  input:checked + .item {
+    background: var(--background);
+    color: var(--foreground);
+    box-shadow: var(--shadow-raised);
+  }
+  .item:focus-visible,
+  input:focus-visible + .item {
+    outline: var(--kui-focus-width) solid var(--ring);
+    outline-offset: -2px;
+  }
+  .item:disabled,
+  input:disabled + .item {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  @media (forced-colors: active) {
+    .item[aria-selected='true'],
+    input:checked + .item {
+      background: Highlight;
+      color: HighlightText;
+      outline-color: HighlightText;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .item {
+      transition: none;
+    }
+  }
+}

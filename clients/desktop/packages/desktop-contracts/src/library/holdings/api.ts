@@ -16,7 +16,11 @@ import type {
 } from './local-content'
 import type { CallOptions } from '../../operations'
 
-/** Four-work registration, media maintenance and game backup are separate capabilities, sharing stable local identities. */
+/**
+ * Local-content registration, file maintenance, usage preferences and game backup capabilities.
+ *
+ * These operations share stable holdings identities while retaining their own execution boundaries.
+ */
 export interface HoldingsApi {
   readonly directories: ContentDirectoriesApi
   readonly files: HeldFilesApi
@@ -30,8 +34,10 @@ export interface HoldingsApi {
   }
 
   /**
-   * Register actual local input for this fixed work, rechecking any identity precondition before
-   * commit; report initial-refresh issues separately from established registrations.
+   * Registers actual local input for a fixed work and rechecks any identity precondition before
+   * commit.
+   *
+   * Initial-refresh issues are reported separately from established registrations.
    */
   registerLocalContent(
     work: WorkRef,
@@ -41,8 +47,9 @@ export interface HoldingsApi {
   ): Promise<LocalContentRegistrationResult>
 
   /**
-   * Complete discovery and maintenance for this work, preserving held data and manual
-   * associations; report actual per-file availability and adoption outcomes.
+   * Completes discovery and maintenance while preserving held data and manual associations.
+   *
+   * Reports actual per-file availability and adoption outcomes.
    */
   refresh<T extends FileWorkType>(
     work: EntryRef<T>,

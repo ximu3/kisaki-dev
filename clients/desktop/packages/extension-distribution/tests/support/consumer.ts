@@ -10,7 +10,12 @@ import { runPnpm } from '@kisaki3/tooling/process'
 
 const packageRoot = resolve(import.meta.dirname, '../..')
 
-/** Create a test API with an on-demand consumer per file, cleaned up even when preparation fails. */
+/**
+ * Creates a file-scoped fixture that installs the checked distribution tarball.
+ *
+ * Registers directory cleanup before preparation, so failed copying or installation uses the same
+ * cleanup path.
+ */
 export function consumerTest(scenario: 'node' | 'browser') {
   return test.extend('consumerDirectory', { scope: 'file' }, async ({}, { onCleanup }) => {
     const consumerDirectory = await mkdtemp(join(tmpdir(), `kisaki-distribution-${scenario}-`))
@@ -35,7 +40,10 @@ export function consumerTest(scenario: 'node' | 'browser') {
   })
 }
 
-/** Apply the repository's typed lint rules after the consumer's own dependencies are installed. */
+/**
+ * Lints consumer sources with the repository's type-aware rules and the consumer's installed
+ * dependencies.
+ */
 export async function lintConsumer(directory: string): Promise<ESLint.LintResult[]> {
   const lint = new ESLint({
     cwd: directory,

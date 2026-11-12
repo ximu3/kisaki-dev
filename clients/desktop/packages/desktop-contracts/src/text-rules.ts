@@ -3,21 +3,23 @@
 import { RegExpParser, visitRegExpAST } from '@eslint-community/regexpp'
 import { DesktopError } from './errors'
 
-/** Whole-string source and canonical named captures; only u and optional i flags are admitted. */
+/** Whole-input regular-expression source, permitted flags and canonical named captures. */
 export interface TextPattern {
   readonly source: string
   readonly flags: 'u' | 'iu'
   readonly captureNames: readonly string[]
 }
 
-/** Templates contain literal text or named captures, never executable expressions. */
+/** Literal text or a named-capture reference in a non-executable replacement template. */
 export type TextTemplatePart =
   | { readonly type: 'text'; readonly value: string }
   | { readonly type: 'capture'; readonly name: string }
 
 /**
- * Parse and compile a user pattern only inside a terminable unit whose budget covers compilation,
- * matching and output expansion. A Promise timeout around main-thread execution is insufficient.
+ * Parses and compiles a user pattern with whole-input anchors and returns its named captures.
+ *
+ * Callers provide a terminable unit whose budget covers compilation, matching and output expansion.
+ * A main-thread Promise timeout cannot enforce that boundary.
  */
 export function inspectTextPattern(pattern: string, ignoreCase: boolean): TextPattern {
   try {
@@ -33,7 +35,7 @@ export function inspectTextPattern(pattern: string, ignoreCase: boolean): TextPa
       },
     })
 
-    const source = `^(?:${pattern})(?![\\s\\S])`
+    const source = `^(?:${pattern})$`
     const flags = ignoreCase ? 'iu' : 'u'
     new RegExp(source, flags)
 
@@ -43,7 +45,11 @@ export function inspectTextPattern(pattern: string, ignoreCase: boolean): TextPa
   }
 }
 
-/** Parse literal text, $$ and $<name>; supplied captureNames also reject undeclared references. */
+/**
+ * Parses literal text, escaped dollars and named-capture references.
+ *
+ * When captureNames is supplied, undeclared references are rejected.
+ */
 export function parseTextTemplate(
   template: string,
   captureNames?: readonly string[],
@@ -51,6 +57,7 @@ export function parseTextTemplate(
   const parts: TextTemplatePart[] = []
   let literal = ''
 
+  /** Appends accumulated literal text as one template part and clears the buffer. */
   function flush(): void {
     if (literal) {
       parts.push({ type: 'text', value: literal })

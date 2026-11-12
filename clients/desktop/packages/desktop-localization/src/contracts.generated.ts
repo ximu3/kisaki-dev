@@ -1,5 +1,6 @@
 /** @fileoverview Generated from en/index.ts by generate:messages. Do not edit the call contract independently. */
 
+/** Argument objects keyed by English messages; argument-free calls use the never type. */
 export interface MessageArguments {
   readonly "actions.save": never
   readonly "actions.cancel": never
@@ -79,7 +80,12 @@ export interface MessageArguments {
   readonly "showcase.presets.collections.name": never
   readonly "showcase.presets.collections.description": never
 }
+
+/** Key of one message in the English authoring baseline. */
 export type MessageKey = keyof MessageArguments
+
+/** Correlated key and argument tuples for one complete translation call. */
 export type TranslationCall = { [K in MessageKey]: MessageArguments[K] extends never ? [key: K] : [key: K, values: MessageArguments[K]] }[MessageKey]
-/** Format one typed message call as plain text; tags are literal. */
+
+/** Typed message formatter returning plain text with literal markup. */
 export type Translate = (...args: TranslationCall) => string

@@ -13,10 +13,17 @@ import { electronExecutable } from '../../../tools/dev/electron-executable'
 import { readPnpm, run } from '@kisaki3/tooling/process'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
-/** Copy the workspace for source-editing tests; close() removes the copy after its session stops. */
+/**
+ * Prepares an isolated source-editing workspace with installed dependencies.
+ *
+ * Uses the existing Electron installation and host native cache as inputs. Preparation failure
+ * removes the copy; after success the caller closes it after all development sessions stop.
+ */
 export async function prepareDevelopmentWorkspace(): Promise<{
   root: string
   app: string
+
+  /** Removes the copied workspace after the caller stops its development sessions. */
   close(): Promise<void>
 }> {
   const temporary = await mkdtemp(join(tmpdir(), 'kisaki-dev-workspace-'))
@@ -85,8 +92,12 @@ export async function prepareDevelopmentWorkspace(): Promise<{
     await writeFile(
       join(fixture, 'build.mjs'),
       `
+/** @fileoverview Builds the synthetic dependency used by development-session tests. */
+
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
+
 const value = JSON.parse(await readFile(new URL('./src/value.json', import.meta.url), 'utf8'))
+
 await mkdir(new URL('./dist/', import.meta.url), { recursive: true })
 await writeFile(new URL('./dist/index.js', import.meta.url), 'export const label = ' + JSON.stringify(value.label))
 `,
@@ -169,6 +180,9 @@ await writeFile(new URL('./dist/index.js', import.meta.url), 'export const label
     return {
       root,
       app,
+      /**
+       * Removes the owned workspace tree with retries for transient filesystem cleanup failures.
+       */
       close: () => rm(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }),
     }
   } catch (cause) {

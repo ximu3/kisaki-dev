@@ -4,9 +4,9 @@
 
 [简洁、清晰、干净与克制](../design/engineering/conventions.md#quality)具有同等首要地位，并与[终态实现与整体一致性](../design/engineering/conventions.md#final-state)共同约束质量判断。先判断机制、限制和验证投入是否必要且相称，再按完整职责与相关场景核对模型、接口、实现、测试和说明；既有规范与检查方式同样接受复核。
 
-[可读性](../design/engineering/conventions.md#readability-principle)同样构成交付门槛。核对代码、模块组织、目录、命名、配置和文档能否支持完整的理解与维护路径：从入口定位拥有者，追踪正常流程及相关失败和收尾，并确定修改影响。自动格式和静态检查提供各自证据，实际可读性由逐项审阅判断。
+[可读性](../design/engineering/conventions.md#readability-principle)同样构成交付门槛。核对代码、模块组织、目录、命名、配置和文档能否支持完整的理解与维护路径：从入口定位拥有者，追踪正常流程及相关失败和收尾，并确定修改影响。[编码风格与逻辑分段](../design/engineering/conventions.md#logical-sections)覆盖源码、测试、工具、配置与设计示例。自动格式和静态检查提供各自证据，实际可读性由逐项审阅判断。
 
-源码审查先核对文件归属、目录层次、拆分依据与跨文件协作，再逐段核对[编码风格](../design/engineering/conventions.md#coding-style)，包括逻辑间距、同层分组、控制流、状态与副作用表达，以及同类实现的一致性。记录实际阅读范围与必要修正，自动格式结果只证明其负责的语法排版。
+审阅按[全局设计与一致性](../design/engineering/conventions.md#global-design)将规格、实现和消费者放在同一条使用路径上核对，比较同类入口的粒度、风格与实际结果。源码审查核对文件归属、目录层次、拆分依据与跨文件协作，再逐段核对[编码风格](../design/engineering/conventions.md#coding-style)、控制流、状态与副作用。记录实际覆盖的范围、必要修正及仍待决定的问题。
 
 <a id="verification-scope"></a>
 
@@ -103,7 +103,9 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | Electron 集成与端到端 | Playwright 的 Electron 能力及真实开发应用      | preload、窗口、进程、协议、生命周期和完整工作流           |
 | 正式制品              | 实际打包应用，普通产品操作与合适的外部验证方式 | 打包路径、原生依赖、fuses、资源、初始化、更新、安装和启动 |
 
-开发 Electron 的 Node 模式只用于不依赖 app 或 BrowserWindow 的原生测试。测试脚本在运行器启动前设置宿主运行条件，按 [Electron Node 模式](https://www.electronjs.org/docs/latest/api/environment-variables#electron_run_as_node)启动匹配版本；fixture 或测试中的环境变量配置不能切换进程 ABI。真正的 Electron API 在实际应用中验证，实例准备与关闭使用现成运行器的 fixture 及所属 tests/support。正式包保留安全 fuses；开发调试入口与正式限制分别处理，不能关闭 fuses 后把测试包当作原样制品。W00 验证所选运行组合并建立可执行的外部或现场验证路径，W20 对最终文件执行并保存结果。
+开发 Electron 的 Node 模式只用于不依赖 app 或 BrowserWindow 的原生测试。测试脚本在运行器启动前设置宿主运行条件，按 [Electron Node 模式](https://www.electronjs.org/docs/latest/api/environment-variables#electron_run_as_node)启动匹配版本；fixture 或测试中的环境变量配置不能切换进程 ABI。
+
+真正的 Electron API 在实际应用中验证，实例准备与关闭使用现成运行器的 fixture 及所属 tests/support。正式包保留安全 fuses；开发调试入口与正式限制分别处理，不能关闭 fuses 后把测试包当作原样制品。W00 验证所选运行组合并建立可执行的外部或现场验证路径，W20 对最终文件执行并保存结果。
 
 公共包与三种作者接入的消费检查见[工程场景](scenarios/engineering.md#public-consumers)；原生库、Kana 和 relay 的专项断言见[独立项目联合交付](scenarios/projects.md)。
 
@@ -138,9 +140,9 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | [A13](scenarios/sessions.md#backups)               | 备份、锁定保留、自动备份、恢复失败和中断都有准确结果，并能按合同恢复。                                                                                                                                                              |
 | [A14](scenarios/library.md#annotations)            | 资产准备、引用提交或清理中任一阶段失败，都不会丢失原引用和用户文件。                                                                                                                                                                |
 | [A15](scenarios/engineering.md#history)            | 长任务在视图离开后继续，取消与终态竞态正确，重启后标记 interrupted。通用历史与业务历史可以独立清理和读取。                                                                                                                          |
-| [A16](scenarios/engineering.md#events)             | 扫描监听、退出备份、应用自动检查和来源自动同步分别由所属功能负责。配置只有一个权威，停止后续触发与取消在途工作分开，停用和退出正确收尾，不重放未知副作用。                                                                          |
+| [A16](scenarios/engineering.md#events)             | 扫描监听、退出备份、应用自动检查、来源清单自动导入及记录自动同步分别由所属功能负责。配置只有一个权威，停止后续触发与取消在途工作分开，停用和退出正确收尾，不重放未知副作用。                                                                          |
 | [A17](scenarios/library.md#merge)                  | 使用中的对象不能合并或删除。没有占用时，合并与删除完整处理全部引用和记录。                                                                                                                                                          |
-| [A18](scenarios/ui.md)                             | 编辑期间的刷新、目标切换、迟到查询和保存冲突都不会覆盖草稿。                                                                                                                                                                        |
+| [A18](scenarios/ui.md) | 编辑期间的刷新、目标切换、迟到查询和保存冲突都不会覆盖草稿。单项保存完成正式提交，管理列表不另设总保存；字段编辑与独立对象遵守[保存边界](scenarios/ui.md#editing-units)。 |
 | [A19](scenarios/ui.md#search)                      | 统计选择器和详情没有循环依赖，虚拟定位、选择、锚点、焦点和筛选正确。                                                                                                                                                                |
 | [A20](scenarios/sessions.md#shutdown)              | 主界面、阅读器、播放器、游戏面板和 Webview 状态隔离，窗口接口与资源范围正确。更新 Dialog 使用主窗口宿主。                                                                                                                           |
 | [A21](scenarios/engineering.md#startup)            | 扩展入口轻量，贡献能够撤销，共享宿主崩溃或重启后旧代回复失效。[扩展 deeplink](scenarios/engineering.md#extension-deeplinks)按真实实例正确登记与交付。安装提交前后中断、激活失败、已准备更新跨重启、目录离线和包丢失都保留准确事实。 |
@@ -216,7 +218,9 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 
 根命令区分全仓任务与 clients/desktop/app 目标。desktop:* 不隐式构建或发布全部 .kisx，build 和 check 根据真实 workspace 依赖图执行，桌面开发入口固定为 desktop:dev。根 tools 处理机械交付工作，clients/desktop/app/tools 处理桌面会话与制品。项目级操作使用 pnpm filter，扩展作者使用 kisx。
 
-工程操作命令落到[app/tools 对应工作流](../design/engineering/layout.md#desktop-tools)，测试命令按[任务分工](../design/engineering/layout.md#test-tasks)直接启动所属运行器和配置。test:e2e 选择应用 tests/e2e，test:artifacts 选择 tests/artifacts；原生与数据库任务在启动前选定匹配宿主。公共包的 check:package 检查自身 tarball 的结构与声明，同包 test:consumers 在 tests/consumers 验证真实仓库外消费，根 desktop:test:consumers 通过 Turbo 调度这些任务及其前置准备。正式 .kisx 的安装与宿主接入由应用 tests/e2e 验证，不能用 tarball 消费替代。
+工程操作命令落到[app/tools 对应工作流](../design/engineering/layout.md#desktop-tools)，测试命令按[任务分工](../design/engineering/layout.md#test-tasks)直接启动所属运行器和配置。test:e2e 选择应用 tests/e2e，test:artifacts 选择 tests/artifacts；原生与数据库任务在启动前选定匹配宿主。
+
+公共包的 check:package 检查自身 tarball 的结构与声明，同包 test:consumers 在 tests/consumers 验证真实仓库外消费，根 desktop:test:consumers 通过 Turbo 调度这些任务及其前置准备。正式 .kisx 的安装与宿主接入由应用 tests/e2e 验证，不能用 tarball 消费替代。
 
 消费者和最终制品任务明确接收待验证文件、版本和构建身份，并核对适用目标，缺失或不匹配时失败。CI 先完成对应构建、打包与适用签名，再执行消费和制品任务，并保存检查与用例的实际结果；测试不重建或替换待发行制品。普通 test 的默认范围与这些任务分别配置，必需但未执行的检查不能计为通过。
 

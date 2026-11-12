@@ -7,7 +7,12 @@ import type { DevelopmentApplication, DevelopmentLaunchOptions } from '../../too
 
 const debug = debuglog('kisaki:fixture-launch')
 
-/** Launch only the engineering carrier; terminate failed startup before returning its error. */
+/**
+ * Launches the engineering carrier and waits for its matching build handshake.
+ *
+ * Owns the startup deadline and cancellation wait, terminating failed startup before rejection.
+ * Returns process controls after readiness; exited also waits for child output streams to close.
+ */
 export async function launchFixtureApplication(
   options: DevelopmentLaunchOptions,
 ): Promise<DevelopmentApplication> {
@@ -39,6 +44,7 @@ export async function launchFixtureApplication(
   )
   void exited.catch(() => undefined)
 
+  /** Sends SIGKILL to a running fixture and waits for process and stream closure. */
   const terminate = async () => {
     if (child.exitCode === null && child.signalCode === null) {
       child.kill('SIGKILL')
@@ -51,6 +57,7 @@ export async function launchFixtureApplication(
   let message: ((value: unknown) => void) | undefined
   try {
     await new Promise<void>((resolve, reject) => {
+      /** Accepts readiness only when the fixture reports the requested build identity. */
       message = (value) => {
         if (
           value &&
@@ -67,6 +74,7 @@ export async function launchFixtureApplication(
       }
 
       child.on('message', message)
+      /** Rejects the startup wait with the caller's cancellation reason. */
       abort = () => reject(options.signal.reason)
       options.signal.addEventListener('abort', abort, { once: true })
       timer = setTimeout(
@@ -100,6 +108,12 @@ export async function launchFixtureApplication(
     pid: child.pid!,
     exited,
     terminate,
+    /**
+     * Requests normal fixture shutdown and waits for exit or an explicit refusal.
+     *
+     * Coalesces concurrent requests and releases the decision listener and deadline on every
+     * outcome. Timeout or IPC failure rejects while process ownership remains with the handle.
+     */
     stop() {
       stopping ??= (async () => {
         if (child.exitCode !== null || child.signalCode !== null) {
@@ -113,6 +127,10 @@ export async function launchFixtureApplication(
           return await Promise.race([
             exited.then(() => 'exited' as const),
             new Promise<'cancelled'>((resolve, reject) => {
+              /**
+               * Recognizes the fixture's explicit cancellation acknowledgement and resolves the
+               * close decision.
+               */
               cancelled = (value) => {
                 if (
                   value &&

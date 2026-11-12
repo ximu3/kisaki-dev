@@ -1,0 +1,44 @@
+/* Disclosure indicator, keyboard focus and expanded-content spacing. */
+
+@layer components {
+  .root {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .summary {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    list-style: none;
+    box-sizing: border-box;
+    min-height: var(--kui-control-height);
+    padding: 0.125rem 0.25rem;
+    cursor: pointer;
+    font-size: var(--kui-control-font);
+    font-weight: 500;
+  }
+  .summary:focus-visible {
+    outline: var(--kui-focus-width) solid var(--ring);
+  }
+
+  .summary::-webkit-details-marker {
+    display: none;
+  }
+  .chevron {
+    flex: none;
+    font-size: 1rem;
+    transition: rotate var(--kui-feedback-duration) ease;
+  }
+  .root[open] .chevron {
+    rotate: 90deg;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .chevron {
+      transition: none;
+    }
+  }
+
+  .content {
+    padding: 0.25rem 0.25rem 0.5rem;
+  }
+}

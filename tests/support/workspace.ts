@@ -4,7 +4,9 @@ import { readFile, readdir } from 'node:fs/promises'
 import { join, relative } from 'node:path'
 import { readPnpm } from '@kisaki3/tooling/process'
 
-/** Enumerate files below the repository root, excluding evidence and generated output. */
+/**
+ * Enumerates maintained files below the repository root, excluding evidence and generated output.
+ */
 export async function maintainedFiles(root: string): Promise<string[]> {
   const ignored = new Set([
     '.git',
@@ -21,7 +23,7 @@ export async function maintainedFiles(root: string): Promise<string[]> {
     'coverage',
   ])
 
-  /** Read this directory and its maintained descendants, propagating enumeration failures. */
+  /** Reads a directory and its maintained descendants, propagating enumeration failures. */
   async function visit(directory: string): Promise<string[]> {
     const result: string[] = []
 
@@ -47,7 +49,11 @@ export async function maintainedFiles(root: string): Promise<string[]> {
   return visit(root)
 }
 
-/** Read pnpm-registered member manifests and their repository-relative directories. */
+/**
+ * Reads member manifests and repository-relative directories from pnpm's workspace listing.
+ *
+ * The root workspace entry is omitted. The enclosing workflow runs through its pnpm project task.
+ */
 export async function workspaceMembers(
   root: string,
 ): Promise<{ directory: string; manifest: Record<string, unknown> }[]> {

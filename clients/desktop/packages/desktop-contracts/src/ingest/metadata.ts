@@ -10,7 +10,12 @@ import { parseMetadataCandidate } from '../metadata/candidates'
 import { parseValue, id } from '../validation'
 import { parseMetadataRelationScopes } from '../metadata/relations'
 
-/** Prepared candidates contain source facts and completeness evidence, never a local patch or writeGraph request. */
+/**
+ * A profile with identification clues or a prepared source candidate for initial adoption.
+ *
+ * Prepared candidates contain source facts and completeness evidence, rather than local graph
+ * patches.
+ */
 export type MetadataInput<T extends EntryType> =
   | { readonly type: 'profile'; readonly profileId: string; readonly clues: IdentificationClues<T> }
   | {
@@ -19,6 +24,12 @@ export type MetadataInput<T extends EntryType> =
       readonly relationScopes?: MetadataRelationScopes<T>
     }
 
+/**
+ * A metadata source for updating a fixed local target.
+ *
+ * Profile clues may be omitted and derived from that target. Prepared input retains a complete
+ * candidate root.
+ */
 export type MetadataUpdateInput<T extends EntryType> =
   | {
       readonly type: 'profile'
@@ -31,12 +42,12 @@ export type MetadataUpdateInput<T extends EntryType> =
       readonly relationScopes?: MetadataRelationScopes<T>
     }
 
-/** Parse a profile/prepared input in the actual root context. Prepared data is a candidate, never a local graph patch. */
+/** Parses a profile or prepared source candidate for the actual root-entry type. */
 export function parseMetadataInput<T extends EntryType>(root: T, input: unknown): MetadataInput<T> {
   return parseMetadataSource(root, input, false) as MetadataInput<T>
 }
 
-/** Update can derive omitted profile clues from the fixed local target; prepared data still has a complete candidate root. */
+/** Parses an update source, allowing profile clues to be derived later from the fixed target. */
 export function parseMetadataUpdateInput<T extends EntryType>(
   root: T,
   input: unknown,
@@ -44,6 +55,7 @@ export function parseMetadataUpdateInput<T extends EntryType>(
   return parseMetadataSource(root, input, true) as MetadataUpdateInput<T>
 }
 
+/** Parses root-specific profile or candidate data with the clue requirements for add or update. */
 function parseMetadataSource(
   root: EntryType,
   input: unknown,

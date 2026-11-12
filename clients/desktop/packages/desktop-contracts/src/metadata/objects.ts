@@ -20,17 +20,20 @@ import {
   parseMetadataPartFields,
 } from './fields'
 
+/** Identity projection shared by parsed source nodes and composed candidate nodes. */
 export interface ParsedNode {
   readonly key: string
   readonly identity?: ExternalIdentity
   readonly externalIdentities?: readonly ExternalIdentity[]
 }
 
+/** Parsed candidate identity with separate original evidence and adoptable field values. */
 interface ParsedCandidateNode extends ParsedNode {
   readonly identification: IdentificationFields<EntryType> | PartIdentificationFields<PartType>
   readonly fields: MetadataEntryFields<EntryType> | MetadataPartFields<PartType>
 }
 
+/** Parsed graph-node groups used for reference and relation validation. */
 export interface ParsedObjects {
   readonly entry?: ParsedNode
   readonly relatedEntries?: Partial<Record<EntryType, readonly ParsedNode[]>>
@@ -38,6 +41,7 @@ export interface ParsedObjects {
   readonly tags?: readonly CandidateTag[]
 }
 
+/** Parsed candidate groups requiring a root with original evidence and composed fields. */
 interface ParsedCandidateObjects extends ParsedObjects {
   readonly entry: ParsedCandidateNode
   readonly relatedEntries?: Partial<Record<EntryType, readonly ParsedCandidateNode[]>>
@@ -50,6 +54,9 @@ const identityEntries = {
   externalIdentities: v.exactOptional(identitiesSchema),
 }
 
+/**
+ * Rejects a node whose additional identities repeat its primary identity, then returns the node.
+ */
 function checkIdentities<T extends ParsedNode>(node: T): T {
   if (
     node.identity &&
@@ -66,6 +73,9 @@ function checkIdentities<T extends ParsedNode>(node: T): T {
   return node
 }
 
+/**
+ * Creates an entry response schema with direct metadata fields and consistent source identities.
+ */
 function sourceEntry(type: EntryType): v.GenericSchema<unknown, ParsedNode> {
   return v.pipe(
     v.strictObject({ ...identityEntries, ...optionalFields(metadataEntryEntries(type)) }),
@@ -73,6 +83,7 @@ function sourceEntry(type: EntryType): v.GenericSchema<unknown, ParsedNode> {
   )
 }
 
+/** Creates a part response schema with direct metadata fields and consistent source identities. */
 function sourcePart(type: PartType): v.GenericSchema<unknown, ParsedNode> {
   return v.pipe(
     v.strictObject({ ...identityEntries, ...optionalFields(metadataPartEntries(type)) }),
@@ -80,6 +91,7 @@ function sourcePart(type: PartType): v.GenericSchema<unknown, ParsedNode> {
   )
 }
 
+/** Creates a composed entry schema separating original identification from adoptable fields. */
 function candidateEntry(type: EntryType): v.GenericSchema<unknown, ParsedCandidateNode> {
   return v.pipe(
     v.strictObject({
@@ -97,6 +109,7 @@ function candidateEntry(type: EntryType): v.GenericSchema<unknown, ParsedCandida
   )
 }
 
+/** Creates a composed part schema separating original identification from adoptable fields. */
 function candidatePart(type: PartType): v.GenericSchema<unknown, ParsedCandidateNode> {
   return v.pipe(
     v.strictObject({
@@ -114,16 +127,21 @@ function candidatePart(type: PartType): v.GenericSchema<unknown, ParsedCandidate
   )
 }
 
+/**
+ * Creates a composed-object schema requiring one root and allowing only root-compatible part slots.
+ */
 export function objectsSchema(
   root: EntryType,
   composed: true,
 ): v.GenericSchema<unknown, ParsedCandidateObjects>
 
+/** Creates a source-response object schema with an optional root and root-compatible part slots. */
 export function objectsSchema(
   root: EntryType,
   composed: false,
 ): v.GenericSchema<unknown, ParsedObjects>
 
+/** Builds source or composed object groups with kind-specific schemas and shared tag values. */
 export function objectsSchema(
   root: EntryType,
   composed: boolean,
@@ -158,6 +176,7 @@ export function objectsSchema(
   })
 }
 
+/** Graph-local tag candidate identified by its name and carrying optional metadata. */
 export interface CandidateTag {
   readonly key: string
   readonly name: string
@@ -165,7 +184,11 @@ export interface CandidateTag {
   readonly isNsfw?: boolean
 }
 
-/** Only these part slots exist in a root context; they do not introduce independent Part search or resolve roots. */
+/**
+ * Part-slot vocabulary and concrete part kinds available under each entry root.
+ *
+ * Parts remain within the root context rather than becoming independent search or resolve roots.
+ */
 export interface MetadataPartKinds {
   readonly game: Readonly<Record<never, never>>
   readonly anime: { readonly episode: 'animeEpisode'; readonly extra: 'animeExtra' }
@@ -176,19 +199,26 @@ export interface MetadataPartKinds {
   readonly organization: Readonly<Record<never, never>>
 }
 
+/** Part-slot name supported by the selected root entry kind. */
 export type MetadataPartKey<T extends EntryType> = keyof MetadataPartKinds[T]
 
+/** Concrete part kind occupying a selected root's part slot. */
 export type MetadataPartType<T extends EntryType, K extends MetadataPartKey<T>> = Extract<
   MetadataPartKinds[T][K],
   PartType
 >
 
+/** Field selection for an object group, optionally narrowed to source identities. */
 export interface ObjectFieldRequest<Field extends PropertyKey> {
   readonly fields: readonly Field[]
   readonly refs?: readonly ExternalIdentity[]
 }
 
-/** Provider values are direct field answers; primary/additional identities are supplied whenever genuinely known. */
+/**
+ * Request-local graph key with source identities supplied when known.
+ *
+ * Additional identities are distinct from the primary identity.
+ */
 export interface MetadataObjectIdentity {
   readonly key: string
   readonly identity?: ExternalIdentity

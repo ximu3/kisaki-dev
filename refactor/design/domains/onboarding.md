@@ -15,16 +15,16 @@ onboarding 在主窗口的分步 Dialog 中呈现推荐，组织用户编辑和�
 | 偏好     | 界面语言、明暗模式、缩放、关闭主窗口后的行为                     | 按系统语言建议具体译本，由用户选用；本体默认主题、system 明暗、100% 缩放及关闭后后台驻留沿正式默认值 |
 | 扩展     | 按资料与平台、迁移导入、语言浏览全部官方扩展                     | 不预选整套资料来源；译本或方案的必要依赖明确列出，经用户采用后加入仓库、安装与激活                   |
 | 资料方案 | 七类、四种语言的完整正式目录，初始按界面语言筛选                 | 不预选创建；用户选择所需类型及版本，明确是否设为该类型默认                                           |
-| 扫描器   | 正常 ScanConfig 创建表单，填写目录、作品类型、资料方案及必要规则 | 不预建空配置；监听默认开启并明确保存后扫描的效果，九项线索提取预设按需选用                           |
+| 扫描器   | 复用 ScanConfig 的字段与校验，填写目录、作品类型、资料方案及必要规则 | 不预建空配置；监听默认开启并明确保存后扫描的效果，九项线索提取预设按需选用                           |
 | 展示柜   | 全部十项正式预设，通过列表及必要说明选择，不提供布局预览         | 默认勾选「最近体验」「合集」「最近加入」并按此排序；前两项横向十二项，最后一项为不限数量网格         |
 
-展示柜将 recently-used-works、collections 和 recently-added-works 按此顺序放入普通草稿，用户可以取消、增加或重排。采用时复用同一份 applyChanges 写入规则，只追加本次新建区块，保留已经存在的区块及其相对顺序。推荐内容是正式预设的副本，不存在首页专属配置。这三个区块共用页面纵向滚动，底部网格按需读取完整范围。
+展示柜将 recently-used-works、collections 和 recently-added-works 按此顺序放入本组待创建配置，用户可以取消选择、增加或重排。采用时复用区块的完整创建规则，只追加本次新建区块，保留已经存在的区块及其相对顺序。推荐内容是正式预设的副本，不存在首页专属配置。这三个区块共用页面纵向滚动，底部网格按需读取完整范围。
 
 系统语言只用于建议具体 UiTranslationRef，偏好步骤只保存用户明确选定的译本。译本和资料方案需要的依赖在所属位置显示，加入官方仓库、安装和激活的必要操作要明确说明。扩展步骤和方案步骤读取同一份真实状态。补齐依赖期间保留选择和草稿，并分别表达未安装、已停用、不兼容、激活失败和需要账号等情况；安装完成不代表授权也已完成。
 
-扫描器直接复用正常的 ScanConfig 表单，要求资料方案存在且类型一致。监听默认开启，保存后先接入监听，再核对已有范围，并合并处理期间发生的变化。引导必须说明这个效果，并分别报告配置创建、监听和实际扫描结果，不另设引导专用的保存行为。
+扫描器复用 ScanConfig 的字段控件与完整校验，要求资料方案存在且类型一致。监听默认开启，正式创建后先接入监听，再核对已有范围，并合并处理期间发生的变化。引导必须说明这个效果，并分别报告配置创建、监听和实际扫描结果。
 
-每组通过“应用并继续”明确提交，当组立即生效。后续步骤失败或用户退出，不回滚已经采用的前几组。最终完成只结束引导并汇总实际成果，不再次应用全部配置。
+每组通过“应用并继续”明确提交，当组立即生效。待采用配置属于这次批量操作的输入，局部字段编辑通过“确定”更新这份输入。已创建成果的后续编辑使用正常单项表单，保存即正式提交，遵守[共同编辑边界](../ui/state.md#editing-units)。后续步骤失败或用户退出，不回滚已经采用的前几组。最终完成只结束引导并汇总实际成果，不再次应用全部配置。
 
 <a id="interaction"></a>
 
@@ -96,7 +96,7 @@ apply 接收 `{ group, items }`，items 是有序、非空且 itemId 不重复�
 | extensions       | 正常安装入口的明确包来源、版本及已经确认的仓库和信任输入；不接受调用脚本或省略信任决定。                                                                                                    |
 | metadataProfiles | 普通 create 的完整输入与显式 isDefault；设为默认时带 expected.defaultProfileId，使用下述同类型默认基线。                                                                                    |
 | scanner          | 普通 ScanConfig create 的完整输入；registerExistingContent 保持正式默认 false，监听与首次核对遵守普通创建规则。                                                                             |
-| showcase         | 普通 applyChanges.create 中的一项完整输入，包含本次唯一草稿 key；只创建新项，按 items 顺序追加，不开放对已有区块的 update、delete 或完整排列替换。                                          |
+| showcase         | 普通 create 的完整 ShowcaseFields；只创建新项，按 items 顺序追加，不开放对已有区块的修改、删除或重排。 |
 
 每个项目只使用自己分支的业务输入，所有未知字段按正式边界校验拒绝；目录身份不能扩大业务操作范围。expectedHandled 只比较该项正式处理记录，业务 expected 仍由所属领域核对，两者均不能由返回当前值后自动刷新来绕过冲突。查询不会推进状态。markPresented 只在引导真正展示后登记；complete 首次完成时写入 firstCompletedAt，不代替业务声明成功。skip 只处理明确未采用的项目，不取消任务。onInvalidated 只通知正式处理状态变化，不传递未提交输入。
 
@@ -125,7 +125,7 @@ onboarding 的完整 apply 拥有本次组合事务，app 只负责注入依赖�
 | preferences 的 writeUpdate       | 校验本次偏好输入和引用；没有网络或安装动作 | 读取相关当前字段、比较 expected、保存修改                                   | 发布偏好失效，所属运行能力采用选择 |
 | metadata.profiles 的 writeCreate | 解释完整定义与来源能力要求                 | 创建方案；isDefault 为 true 时比较当前同类型默认 ID，取消旧默认并设置新默认 | 发布方案变化；不因创建自动获取资料 |
 | scanner.configs 的 writeCreate   | 验证配置、路径及明确的资料方案             | 保存配置及正式引用                                                          | 发布配置变化，再接纳监听与首次核对 |
-| library.showcase 的 writeChanges | 校验实际 create 输入及查询定义             | 复用 applyChanges 规则创建区块，保留当前已有项顺序并追加本次新项            | 发布 showcaseChanged 和读取失效    |
+| library.showcase 的 writeCreate | 校验完整区块配置及查询定义 | 创建区块，保留当前已有项顺序并追加本次新项 | 发布 showcaseChanged 和读取失效 |
 
 这些依赖接收当前事务连接和所属领域的正式输入，只返回实际写入结果与待发布的变化摘要；不自行提交、不嵌套开启事务，也不执行文件 I/O、订阅者、扩展代码或后台任务。正式公开 API 不含这些能力。准备与失败清理仍由原拥有者提供，不能在引导复制字段解释或附件规则。
 
@@ -133,7 +133,9 @@ onboarding 在同一事务写入 `handled[itemId] = { outcome: 'applied', handle
 
 普通配置 create/update 中，`expected: { defaultProfileId?: string | null }` 只用于 metadata.profiles 设置 isDefault 为 true 的操作：比较同类型当前默认的真实 ID，null 表示要求当前无默认；其他修改不接受这个条件。引导表单设默认时必须提供它，一次采用同类型多份默认方案为 InvalidInput。现有来源能力的可用性按正式保存规则判断，不要求引导安装器或网络调用进入事务。
 
-apply 返回 `{ group, items }`，每个结果保留输入顺序，并含 `{ itemId, outcome, resources, issues }`。outcome 为 applied、notApplied 或 notStarted；resources 仅包含已经成立的成果，issues 为 `{ stage: 'installation' | 'commit' | 'runtime', error: ErrorSummary }[]`。成功时全部为 applied，可以有运行问题。完整失败通过 ExecutionFailure<OnboardingApplyResult> 交付已经形成的报告：同库事务失败时全部 notApplied 且没有新资源；扩展安装已成立而标记失败时为 notApplied，但保留 extensionId，后续未执行项为 notStarted。未知的安装提交结果按原安装合同表达，不能伪造资源引用。
+apply 返回 `{ group, items }`，每个结果保留输入顺序，并含 `{ itemId, outcome, resources, issues }`。outcome 为 applied、notApplied 或 notStarted；resources 仅包含已经成立的成果，issues 为 `{ stage: 'installation' | 'commit' | 'runtime', error: ErrorSummary }[]`。成功时全部为 applied，可以有运行问题。
+
+完整失败通过 ExecutionFailure<OnboardingApplyResult> 交付已经形成的报告：同库事务失败时全部 notApplied 且没有新资源；扩展安装已成立而标记失败时为 notApplied，但保留 extensionId，后续未执行项为 notStarted。未知的安装提交结果按原安装合同表达，不能伪造资源引用。
 
 输入或目录归属错误为 InvalidInput；必要资源缺失为 NotFound；handled 或业务基线不符为 Conflict；实际安装、持久化或运行错误由拥有者提供稳定分类。提交前取消不写同库配置；提交后的取消不撤销成果，也不重复创建。skip 接收非空且 itemId 不重复的 items，每项仅含 { itemId, expectedHandled }；在短事务中比较所选项目的处理基线，只将尚未采用的项目记为 skipped。已经 applied 或 skipped 且基线相符的项目保留原结果与时间，无变化不发失效；并发采用使旧基线冲突，不能被 skip 覆盖。
 

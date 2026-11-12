@@ -1,6 +1,6 @@
 /** @fileoverview Owns the versioned development endpoint and immutable build adoption/release values, independently of RPC frames. */
 
-import type { ViewDocument } from './ui/views'
+import type { ExtensionViewDocument } from './ui/views'
 import type { ErrorSummary } from './errors'
 import type { ExtensionActivationResult } from './extensions'
 import type { CallOptions } from './operations'
@@ -12,34 +12,48 @@ import { parseErrorSummary, DesktopError } from './errors'
 import { parseExtensionActivationResult } from './extensions'
 import { parseHttpUrl } from './network'
 import { parseAbsolutePath } from './paths'
-import { parseViewDocument } from './ui/views'
+import { parseExtensionViewDocument } from './ui/views'
+import { parseApplicationVersion } from './app'
 
 export const developmentProtocolId = 'kisaki.development'
 
 export const developmentProtocolVersion = 1
 
-/** Build numbers increase per extension on this connection. Directories stay immutable until their real readers release them. */
+/**
+ * An immutable extension build and its development document mappings.
+ *
+ * Build numbers increase per extension on the connection. Directories remain unchanged until their
+ * actual readers release them.
+ */
 export interface DevelopmentBuild {
   readonly extensionId: string
   readonly buildId: number
   readonly rootPath: string
-  readonly webviews: readonly { readonly document: ViewDocument; readonly url: string }[]
+  readonly webviews: readonly { readonly document: ExtensionViewDocument; readonly url: string }[]
 }
 
+/** An extension build identity scoped to the development connection. */
 export interface DevelopmentBuildRef {
   readonly extensionId: string
   readonly buildId: number
 }
 
+/** The actual adoption outcome for one requested extension build. */
 export type DevelopmentBuildResult = DevelopmentBuildRef &
   (
     | { readonly outcome: 'adopted' }
     | { readonly outcome: 'notAdopted'; readonly error: ErrorSummary }
   )
 
+/** An extension activation outcome reported during development build adoption. */
 export type DevelopmentActivationResult = ExtensionActivationResult
 
-/** Interrupted reports contain only known results. Other affected installed extensions can appear among activation attempts. */
+/**
+ * Build-adoption receipts and shared-host activation outcomes for one batch.
+ *
+ * Interrupted reports contain only known results. Activation attempts can include other affected
+ * installed extensions.
+ */
 export type DevelopmentAdoptionResult = {
   readonly builds: readonly DevelopmentBuildResult[]
   readonly activations: readonly DevelopmentActivationResult[]
@@ -48,34 +62,49 @@ export type DevelopmentAdoptionResult = {
   | { readonly outcome: 'interrupted'; readonly error: ErrorSummary }
 )
 
+/** The application version and build identity accepted during the development handshake. */
 export interface DevelopmentAccepted {
   readonly appVersion: string
   readonly buildId: string
 }
 
+/**
+ * The ready development peer's identity and available extension API version.
+ *
+ * A null apiVersion means the extension API is unavailable; readiness alone does not establish
+ * extension activation.
+ */
 export interface DevelopmentReady extends DevelopmentAccepted {
   readonly apiVersion: string | null
 }
 
+/** The outcome of a development stop request before actual process exit is observed. */
 export type DevelopmentStopResult =
   | { readonly outcome: 'exiting' | 'cancelled' }
   | { readonly outcome: 'failed'; readonly error: ErrorSummary }
 
+/** Development peer readiness, resource release and terminal notifications. */
 export interface DevelopmentNotifications {
   readonly ready: DevelopmentReady
+  /** Builds with no remaining readers, whose directories the development tool can reclaim. */
   readonly buildsReleased: { readonly builds: readonly DevelopmentBuildRef[] }
   readonly exiting: Readonly<Record<string, never>>
   readonly failed: { readonly error: ErrorSummary }
 }
 
+/** Development build adoption and coordinated application shutdown. */
 export interface DevelopmentApi {
-  /** Accept one complete batch at a time, preserving each actual adoption and shared-host activation result. */
+  /** Accepts one complete batch at a time and reports actual adoption and activation outcomes. */
   adoptBuilds(
     builds: readonly DevelopmentBuild[],
     call?: CallOptions,
   ): Promise<DevelopmentAdoptionResult>
 
-  /** Normal user-aware shutdown; cancellation keeps the current application and development resources in use. */
+  /**
+   * Requests normal user-aware shutdown.
+   *
+   * Cancellation keeps the application and its development resources in use.
+   */
   stop(call?: CallOptions): Promise<DevelopmentStopResult>
 }
 
@@ -88,6 +117,8 @@ const version = v.pipe(
   v.unknown(),
   v.transform((value) => parseExternalValue(parseVersion, value, 'Invalid development version')),
 )
+
+const appVersion = v.pipe(v.unknown(), v.transform(parseApplicationVersion))
 
 const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
 
@@ -105,7 +136,11 @@ const buildResult = v.variant('outcome', [
 
 const activation = v.pipe(v.unknown(), v.transform(parseExtensionActivationResult))
 
-/** A loopback name is necessary, not sufficient: the receiving host also verifies this actual session owns the server. */
+/**
+ * Parses a loopback HTTP or HTTPS document URL without a fragment.
+ *
+ * The receiving host separately verifies that the actual session owns the server.
+ */
 export function parseDevelopmentUrl(input: unknown): string {
   const value = parseHttpUrl(input)
   const url = new URL(value)
@@ -123,7 +158,7 @@ export function parseDevelopmentUrl(input: unknown): string {
   return value
 }
 
-/** Reject duplicate document mappings and incomplete directory values before any application-side read. */
+/** Parses a build directory and unique document mappings before application-side reads. */
 export function parseDevelopmentBuild(input: unknown): DevelopmentBuild {
   return parseValue(
     v.strictObject({
@@ -133,7 +168,7 @@ export function parseDevelopmentBuild(input: unknown): DevelopmentBuild {
       webviews: v.pipe(
         v.array(
           v.strictObject({
-            document: v.pipe(v.unknown(), v.transform(parseViewDocument)),
+            document: v.pipe(v.unknown(), v.transform(parseExtensionViewDocument)),
             url: v.pipe(v.unknown(), v.transform(parseDevelopmentUrl)),
           }),
         ),
@@ -145,7 +180,11 @@ export function parseDevelopmentBuild(input: unknown): DevelopmentBuild {
   )
 }
 
-/** A batch has one fixed candidate per extension; monotonicity across batches is checked by the live endpoint. */
+/**
+ * Parses a batch with at most one candidate per extension.
+ *
+ * The live endpoint checks build-number monotonicity across batches.
+ */
 export function parseDevelopmentBuilds(input: unknown): readonly DevelopmentBuild[] {
   return parseValue(
     v.pipe(
@@ -157,25 +196,30 @@ export function parseDevelopmentBuilds(input: unknown): readonly DevelopmentBuil
   )
 }
 
-/** Accepted is handshake identity only; ready separately states whether the actual extension API exists. */
+/** Parses application identity from a development handshake acceptance. */
 export function parseDevelopmentAccepted(input: unknown): DevelopmentAccepted {
   return parseValue(
-    v.strictObject({ appVersion: version, buildId: id }),
+    v.strictObject({ appVersion, buildId: id }),
     input,
     'Invalid development acceptance',
   )
 }
 
-/** Validate the ready peer's build identity and available API version without treating readiness as application activation. */
+/** Parses the ready peer's build identity and nullable extension API version. */
 export function parseDevelopmentReady(input: unknown): DevelopmentReady {
   return parseValue(
-    v.strictObject({ appVersion: version, buildId: id, apiVersion: v.nullable(version) }),
+    v.strictObject({ appVersion, buildId: id, apiVersion: v.nullable(version) }),
     input,
     'Invalid development ready notification',
   )
 }
 
-/** When the batch is supplied, ensure every completed receipt matches its actual candidate and input order. */
+/**
+ * Parses adoption and activation outcomes.
+ *
+ * When requested builds are supplied, receipts must identify those builds in input order. Completed
+ * reports must include every requested build; interrupted reports may contain a subset.
+ */
 export function parseDevelopmentAdoptionResult(
   input: unknown,
   requested?: readonly DevelopmentBuildRef[],
@@ -224,7 +268,7 @@ export function parseDevelopmentAdoptionResult(
   return value
 }
 
-/** A release notification means no reader remains, not merely that a newer build was sent or adopted. */
+/** Parses a release notification with distinct extension-and-build identities. */
 export function parseBuildsReleased(input: unknown): DevelopmentNotifications['buildsReleased'] {
   return parseValue(
     v.strictObject({
@@ -238,7 +282,7 @@ export function parseBuildsReleased(input: unknown): DevelopmentNotifications['b
   )
 }
 
-/** Failed stop requires a safe error; exiting and user cancellation do not pretend the child process has already exited. */
+/** Parses the stop outcome, requiring a safe error when shutdown failed. */
 export function parseDevelopmentStopResult(input: unknown): DevelopmentStopResult {
   return parseValue(
     v.variant('outcome', [

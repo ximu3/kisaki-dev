@@ -100,11 +100,16 @@ get(ref) 返回 EntryDetails 或 null；findByExternalIdentity(identity) 返回 
 
 ```ts
 type Bounds<T> = { min: T; max?: T } | { min?: T; max: T }
+
 type Presence = { op: 'present' } | { op: 'absent' }
+
 type NumberTest = { op: 'range'; bounds: Bounds<number> }
+
 type SetTest<T> =
   { op: 'any' | 'all' | 'none'; values: readonly [T, ...T[]] } | { op: 'empty' | 'notEmpty' }
+
 type EnumTest<T> = { op: 'in' | 'notIn'; values: readonly [T, ...T[]] }
+
 type TextTest = { op: 'equals' | 'contains'; value: string }
 ```
 
@@ -172,7 +177,9 @@ Gender 只包含五个非空分类；联合中的 null 表达未知，不是一�
 | personCharacters     | 人物           | Character 的 EntryRef    | works、workTypes、personRoles、characterRoles、note；只取有角色的工作 |
 | organizationWorks    | 组织           | WorkRef                  | workTypes、organizationRoles、note                                    |
 
-workTypes 是非空 WorkType 数组；works 是非空 WorkRef 数组。各 roles 与 relationTypes 为[关系合同](../../relations.md)相应闭合枚举的非空数组；characterRoles 可以包含 null，表示已有角色关联但未分级。note 为 TextTest 或 Presence。character 为 `{ type: 'none' }`、`{ type: 'any' }` 或 `{ type: 'oneOf', refs: 非空 Character 引用数组 }`，any 表示有角色；只取有角色的分支不接受 none。指定 characterRoles 时也要求同一作品角色关联存在，不能把无角色工作当作未分级角色。参数之间矛盾属于 InvalidInput。
+workTypes 是非空 WorkType 数组；works 是非空 WorkRef 数组。各 roles 与 relationTypes 为[关系合同](../../relations.md)相应闭合枚举的非空数组；characterRoles 可以包含 null，表示已有角色关联但未分级。
+
+note 为 TextTest 或 Presence。character 为 `{ type: 'none' }`、`{ type: 'any' }` 或 `{ type: 'oneOf', refs: 非空 Character 引用数组 }`，any 表示有角色；只取有角色的分支不接受 none。指定 characterRoles 时也要求同一作品角色关联存在，不能把无角色工作当作未分级角色。参数之间矛盾属于 InvalidInput。
 
 在不同 field 中复用 where 的成员，不表示可以把任何成员放进任何分支；表中未列出的键均拒绝。完整目标身份与角色、职责、作品的同项约束仍由所属字段检查。
 

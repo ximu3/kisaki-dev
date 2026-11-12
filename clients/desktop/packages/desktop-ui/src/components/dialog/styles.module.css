@@ -1,0 +1,70 @@
+/* Native modal geometry keeps headings and actions around a scrollable content area. */
+
+@layer components {
+  .root {
+    box-sizing: border-box;
+    width: min(36rem, calc(100vw - 2rem));
+    max-height: calc(100dvh - 2rem);
+    margin: auto;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .root::backdrop {
+    background: transparent;
+  }
+
+  .header {
+    flex: none;
+    overflow-wrap: anywhere;
+    padding: 0.625rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .title {
+    margin: 0;
+    font-size: var(--kui-control-font);
+    font-weight: 600;
+    line-height: var(--kui-control-line);
+  }
+
+  .description {
+    margin: 0.25rem 0 0;
+    color: var(--muted-foreground);
+    font-size: var(--kui-control-font);
+  }
+
+  .body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    padding: 1.25rem;
+  }
+
+  .footer {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .footer > button {
+    flex-shrink: 0;
+  }
+
+  .root[role='alertdialog'] .header,
+  .root[role='alertdialog'] .footer {
+    border: 0;
+  }
+  .root[role='alertdialog'] .header {
+    padding-bottom: 0;
+  }
+  .root[role='alertdialog'] .footer {
+    padding-top: 0;
+    padding-bottom: 0.75rem;
+  }
+}

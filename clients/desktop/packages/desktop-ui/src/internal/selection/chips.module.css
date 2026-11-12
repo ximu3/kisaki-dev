@@ -1,0 +1,98 @@
+/* Compact tag actions overlay the field trigger and scroll on demand. */
+
+@layer components {
+  .chips {
+    position: absolute;
+    inset-block: 1px;
+    inset-inline-start: 0.1875rem;
+    inset-inline-end: calc(var(--kui-field-affix-width) + 0.25rem);
+    pointer-events: none;
+    --edge-size: min(1.125rem, 25%);
+    --start-inset: 0px;
+    --end-inset: 0px;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+  .chips[data-previous] {
+    --start-inset: var(--edge-size);
+  }
+  .chips[data-next] {
+    --end-inset: var(--edge-size);
+  }
+
+  .viewport {
+    clip-path: inset(0 var(--end-inset) 0 var(--start-inset));
+    scroll-padding-inline: var(--start-inset) var(--end-inset);
+    overscroll-behavior-x: contain;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .viewport:dir(rtl) {
+    clip-path: inset(0 var(--start-inset) 0 var(--end-inset));
+  }
+  .track {
+    width: max-content;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .chip {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 0.125rem;
+    min-height: 1lh;
+    padding-inline-start: 0.375rem;
+    border-radius: var(--radius-sm);
+    background: var(--muted);
+    color: var(--foreground);
+    white-space: nowrap;
+  }
+  .chip button,
+  .scroll {
+    display: grid;
+    pointer-events: auto;
+    flex: none;
+    place-items: center;
+    width: 1.125rem;
+    height: 1.125rem;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--muted-foreground);
+    cursor: pointer;
+    --kui-glyph-size: var(--kui-icon-small);
+  }
+  .chip button:hover:not(:disabled),
+  .scroll:hover:not(:disabled) {
+    color: var(--foreground);
+  }
+  .chip button:focus-visible,
+  .scroll:focus-visible {
+    outline: var(--kui-focus-width) solid var(--ring);
+    outline-offset: -2px;
+  }
+  .scroll {
+    position: absolute;
+    inset-block: 0;
+    margin-block: auto;
+    width: var(--edge-size);
+  }
+  .scroll:first-child {
+    inset-inline-start: 0;
+  }
+  .scroll:last-child {
+    inset-inline-end: 0;
+  }
+  .scroll[hidden] {
+    display: none;
+  }
+  .scroll:dir(rtl) svg {
+    scale: -1 1;
+  }
+}

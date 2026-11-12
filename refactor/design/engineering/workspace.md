@@ -21,9 +21,9 @@
 | 编译集成       | 支持 Solid 1 的插件 2.x    | vite-plugin-solid 2.11.14                                                         |
 | 基础控件       | Solid 1.9 与浏览器原生能力 | 按[UI 合同](../ui/package.md)实现并验证                                           |
 | 虚拟列表与网格 | TanStack Virtual 3.x       | Solid 适配 3.13.48 与 core 3.19.6，见[几何边界](../ui/virtualization.md#geometry) |
-| 拖拽排序       | Pragmatic Drag and Drop    | 核心 3.1.0 与辅助包组合见 [拖拽实现](../ui/virtualization.md#dependency)          |
+| 拖拽排序       | Pragmatic Drag and Drop    | 核心与辅助包的固定版本见 [拖拽实现](../ui/virtualization.md#dependency)          |
 
-原生窗口、公共 UI 和官方扩展统一使用 Solid 1.9，并遵守该版本的 API 与 owner 生命周期。应用使用 Vite 8.3.3 和 vite-plugin-solid 2.11.14；公共 Solid 库使用 tsdown 0.23.0，以及 unplugin-solid 2.0.0 提供的公开 Rolldown 接入。unplugin-solid 3.x 不用于 Solid 1.9。
+原生窗口、公共 UI 和官方扩展统一使用 Solid 1.9，并遵守该版本的 API 与 owner 生命周期。应用使用 Vite 8.3.3 和 vite-plugin-solid 2.11.14；公共 Solid 库使用 tsdown 0.23.0，以及 unplugin-solid 1.0.0 提供的公开 Rolldown 接入。unplugin-solid 3.x 不用于 Solid 1.9。
 
 Solid 的活跃属性、快照、派生值和副作用保持区别，不能为统一外观采用会改变其响应性的解构或封装。
 
@@ -182,11 +182,17 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 
 官方扩展的 kisx.config.ts 与 eslint.config.ts 由各自根 tsconfig.json 在 Node 环境共同检查。defineConfig 的实现保持纯粹，不要求消费它的构建配置另建纯环境项目。Node、Webview、共享合同与测试源码按真实运行环境划分配置，只为实际源码建立类型项目。
 
-仓库根 tsconfig.json 以空 files 和 references 组织 config/typescript 中的 tsconfig.tools.json、tsconfig.config.json 和 tsconfig.tests.json，三者均使用 Node 类型与 ES2023 库。需要 DOM 的浏览器回调由实际拥有者的类型项目检查，消费者样板使用各自配置。配置类型项目覆盖根工具入口及 config 中的 TypeScript 配置。Turbo 调度各 workspace 与根 root:typecheck，后者通过 tsc -b 检查这三个项目，增量信息归根 .cache/typescript。共同规则继承 @kisaki3/typescript-config，依赖检查读取根 tsconfig.json 的编译选项，按所属 package.json 的 imports 与 exports 解析模块入口，不另维护私有别名映射。
+仓库根 tsconfig.json 以空 files 和 references 组织 config/typescript 中的 tsconfig.tools.json、tsconfig.config.json 和 tsconfig.tests.json，三者均使用 Node 类型与 ES2023 库。需要 DOM 的浏览器回调由实际拥有者的类型项目检查，消费者样板使用各自配置。
+
+配置类型项目覆盖根工具入口及 config 中的 TypeScript 配置。Turbo 调度各 workspace 与根 root:typecheck，后者通过 tsc -b 检查这三个项目，增量信息归根 .cache/typescript。
+
+共同规则继承 @kisaki3/typescript-config，依赖检查读取根 tsconfig.json 的编译选项，按所属 package.json 的 imports 与 exports 解析模块入口，不另维护私有别名映射。
 
 桌面应用的 tsconfig.json 以空 files 和 references 组织 main、preload、renderer、extension-host、shared、tools 和 tests 七个环境项目。具体配置位于 config/typescript，继续独立限制类型与源码范围；typecheck 使用 tsc -b，增量信息写入应用 .cache/typescript，保持 noEmit。编辑器通过默认入口发现这些项目，结构检查沿实际执行入口和项目引用核对源码覆盖。其余构建和测试配置的归属见[应用布局](layout.md#workspace)。
 
-八个公共包各自通过工程根目录的 tsconfig.json，以空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置；desktop-ui 的 tsdown 配置同样归 Node 工具项目。同包根目录的 tsdown.config.ts 显式读取 config/typescript/tsconfig.lib.json；增量信息写入该包 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](conventions.md#configuration-layout)。
+八个公共包各自通过工程根目录的 tsconfig.json，以空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置；desktop-ui 的 tsdown 配置同样归 Node 工具项目。
+
+同包根目录的 tsdown.config.ts 显式读取 config/typescript/tsconfig.lib.json；增量信息写入该包 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](conventions.md#configuration-layout)。
 
 共享锁文件与工具升级可能扩大验证范围。开发入口按实际目标启动，desktop:dev 只启动桌面及必要依赖；项目脚本执行具体任务，根任务统一调度。版本、发行说明与部署仍按各自发行单位管理，不因一次安装或同仓提交而合并版本。
 
@@ -246,7 +252,9 @@ UI 与其他包遵守同一分工，不另设仅为跳过依赖声明的配置�
 
 使用与 pnpm 内置命令同名的脚本时明确写 pnpm run，例如 pnpm run pack 和 pnpm run clean。
 
-各项目按需要提供 typecheck、lint、test 和 build，根 Turbo 根据实际 manifest 与锁文件中的依赖调度。根任务统一调度 workspace 和已登记的根实际任务；root:lint 只检查根工程，项目 eslint.config.ts 负责自身文件，并以 import.meta.dirname 显式绑定 parserOptions.tsconfigRootDir，使跨项目的暂存文件检查使用同一规则。根 turbo.json 定义共同任务，桌面特有任务由应用 turbo.json 继承并配置。依赖其他项目输出的任务明确声明上游 build；只读取源码的检查登记实际读取的共享输入，不制造空 build。格式检查无需先构建整个仓库。八个公共包各有自己的输出，桌面各程序独立构建，不维护额外的 target JSON 或依赖邻接表，也不把全部监听绑定到单一进程。
+各项目按需要提供 typecheck、lint、test 和 build，根 Turbo 根据实际 manifest 与锁文件中的依赖调度。根任务统一调度 workspace 和已登记的根实际任务；root:lint 只检查根工程，项目 eslint.config.ts 负责自身文件，并以 import.meta.dirname 显式绑定 parserOptions.tsconfigRootDir，使跨项目的暂存文件检查使用同一规则。
+
+根 turbo.json 定义共同任务，桌面特有任务由应用 turbo.json 继承并配置。依赖其他项目输出的任务明确声明上游 build；只读取源码的检查登记实际读取的共享输入，不制造空 build。格式检查无需先构建整个仓库。八个公共包各有自己的输出，桌面各程序独立构建，不维护额外的 target JSON 或依赖邻接表，也不把全部监听绑定到单一进程。
 
 测试任务按[输入与执行阶段](layout.md#test-tasks)声明常规、消费者、端到端和最终制品等范围，项目脚本直接启动对应运行器与配置。独立任务入口用于表达构建依赖、环境和 CI 门槛，不要求对应一个工具模块；工程能力由 tools 实现，测试场景与专用辅助由 tests 拥有。
 
@@ -259,6 +267,8 @@ UI 与其他包遵守同一分工，不另设仅为跳过依赖声明的配置�
 性能采样独立于自动 CI，完整代码检查也不隐含启动采样。有明确性能疑问、相关实现变化或产品验收目标时，由实施者选择对应测量并显式调用；普通修改不为形成报告而采样。现有 `desktop:test:performance` 保留为测量入口，采样口径由其测试配置维护，不增加类型／运行时变更分类器。
 
 PR 的比较范围是目标分支与当前版本之间的全部改动。affected 决定需要运行的任务，缓存决定被选中的可缓存任务是否复用既有结果。手动代码验证请求完整范围。
+
+桌面应用、desktop-rpc 和 desktop-ui 的真实运行验收共用 catalog 固定的 Electron。桌面工程的 prepare:electron 调用随 Electron 提供的 install-electron，确认当前平台的二进制已就绪。需要启动开发 Electron 的任务在同一 Turbo 图中共享这一个准备步骤。构建清单记录实际安装的 Electron 版本。
 
 构建准备与回归选择分别表达。test:native 通过 Turbo 依赖 build:native 与 prepare:resources；desktop:test:e2e 和 desktop:test:performance 依赖 build:fixture；test:dev 依赖 build:native，test:artifacts 依赖 package:fixture。应用包内脚本是实际叶操作，根入口通过同一任务图完成准备。具体 inputs 由各实际任务的 turbo.json 声明，验证查询只读取 Turbo 结果，不另维护包依赖图或路径分类器。未改变但被选中任务依赖的构建，不使其他验证范围一起扩大；输入清单随运行器、配置、辅助和资源依赖同步更新。
 
@@ -284,7 +294,11 @@ CI 的工作流按工程职责划分，执行任务按目标环境划分，步�
 
 pnpm 官方 Action 管理安装所需的 store 缓存，随后仍执行 frozen-lockfile 安装；setup-node 不重复管理同一包缓存。Turbo 保存项目任务声明的输出与成功日志，仓库内上游公共包的构建属于任务依赖，不接管包安装。缓存归档恢复、实际任务命中和现场测试执行分别记录。可选缓存恢复使用官方分片下载超时设置限制等待；失败后执行正常安装或任务，具体预算由工作流配置拥有，不改变验证断言。
 
-CI 使用 GitHub Actions 官方 cache 恢复和保存 .turbo/cache，按工程命名空间、操作系统、架构与 Node 版本分组，提交作为保存键，只恢复同工程命名空间的旧键；具体结果仍由 Turbo 根据完整输入命中，不接入额外远端服务或凭据。仓库任务与各工程目标任务分别保存自己的缓存，避免竞争同一不可变键。fork PR 只恢复缓存，保存仅用于本仓库分支；主键已命中时不重复保存，恢复旧前缀后可以保存当前主键，GitHub 分支作用域限制仍然生效。缓存预算配置由实际调用缓存的工作流拥有，不能假定调用方顶层 env 自动传递。缓存不包含用户资料、密钥或现场运行证据。根实际使用的私有工程依赖参与 Turbo 全局哈希，因此共同工程源码变更可以使全仓任务失效；项目局部源码则按实际依赖图传播。验收分别记录冷运行、热命中、输入失效、输出恢复和真实 CI 跨运行恢复，不能以本机命中代替 CI 证据。
+CI 使用 GitHub Actions 官方 cache 恢复和保存 .turbo/cache，按工程命名空间、操作系统、架构与 Node 版本分组，提交作为保存键，只恢复同工程命名空间的旧键；具体结果仍由 Turbo 根据完整输入命中，不接入额外远端服务或凭据。仓库任务与各工程目标任务分别保存自己的缓存，避免竞争同一不可变键。fork PR 只恢复缓存，保存仅用于本仓库分支；主键已命中时不重复保存，恢复旧前缀后可以保存当前主键，GitHub 分支作用域限制仍然生效。
+
+缓存预算配置由实际调用缓存的工作流拥有，不能假定调用方顶层 env 自动传递。缓存不包含用户资料、密钥或现场运行证据。
+
+根实际使用的私有工程依赖参与 Turbo 全局哈希，因此共同工程源码变更可以使全仓任务失效；项目局部源码则按实际依赖图传播。验收分别记录冷运行、热命中、输入失效、输出恢复和真实 CI 跨运行恢复，不能以本机命中代替 CI 证据。
 
 <a id="ci-feedback"></a>
 
@@ -352,7 +366,7 @@ ci.yml 接收 PR 和手动事件，再调用 verification.yml 协调代码验证
 
 pr-title.yml 独立检查 PR 标题，与代码验证使用不同取消组。仓库合并规则应要求 `verify / Required checks` 与 `PR title` 两项；工作流拆分或任务改名时同步核对实际检查名称和仓库配置。元信息编辑不能用一次空验证替代失败的代码检查，正文修改也不能清除无效标题的失败结果。
 
-纯规则使用普通 Node 下的 Vitest，Solid 组件使用 Browser Mode，数据库使用与 Electron 匹配的原生环境，正式制品另行验证。公开包 tarball 消费和扩展真实安装各自完成，不能相互代替。
+纯规则使用普通 Node 下的 Vitest，Solid 组件及其组合在真实浏览器中验证。公共包的仓库外 tarball 消费由 Node 测试任务驱动 Playwright，核对实际构建、声明、样式与交互；包内浏览器用例可使用 Vitest Browser Mode。数据库使用与 Electron 匹配的原生环境，正式制品另行验证。公开包消费和扩展真实安装各自完成。
 
 Vitest 的转换缓存由启动测试的工程拥有，通过 fsModuleCachePath 显式指定相对项目 root 的 node_modules/.vitest-cache，避免合法并行的项目互相清理缓存。缓存只复用转换结果，不替代实际执行测试；同一工程的独立任务继续遵守输出访问约束。原生模块测试由开发 Electron 的 Node 模式执行应用自身的 Vitest CLI，不跨目录取根工程的运行器。
 

@@ -2,23 +2,36 @@
 
 import { RpcError } from './errors'
 
-/** Wire data shared by JSON IPC and structured-clone transports. */
+/** Finite ordinary JSON data shared by JSON IPC and structured-clone transports. */
 export type JsonValue =
   null | boolean | number | string | readonly JsonValue[] | { readonly [key: string]: JsonValue }
 
-/** Snapshot own data properties, preserving shared subtrees as JSON and rejecting cycles. */
+/**
+ * Copies ordinary JSON data into a validated snapshot.
+ *
+ * Rejects cycles, sparse arrays, accessors, symbols, unsupported objects and nonfinite values with
+ * InvalidInput. Repeated subtrees are accepted; returned containers are detached from input
+ * containers.
+ */
 export function parseJsonValue(input: unknown): JsonValue {
+  /** Mutable container assembled while the JSON snapshot is being built. */
   type Container = JsonValue[] | Record<string, JsonValue>
   const stack: { source: object; target: Container; keys: (string | symbol)[]; index: number }[] =
     []
   const ancestors = new Set<object>()
   const copies = new WeakMap<object, Container>()
 
+  /** Rejects a value that cannot be represented as ordinary finite JSON. */
   function invalid(): never {
     throw new RpcError('InvalidInput', 'Expected an ordinary finite JSON value')
   }
 
-  function read(value: unknown): JsonValue {
+  /**
+   * Validates a scalar or schedules an object or array for iterative traversal.
+   *
+   * Completed repeated subtrees reuse their snapshot; references to ancestors reject as cycles.
+   */
+  function parseValue(value: unknown): JsonValue {
     if (value === null || typeof value === 'string' || typeof value === 'boolean') {
       return value
     }
@@ -28,6 +41,7 @@ export function parseJsonValue(input: unknown): JsonValue {
     if (typeof value !== 'object' || value === null || ancestors.has(value)) {
       return invalid()
     }
+
     // Structured clone can deliver a graph with shared children. Copy each distinct object once.
     const existing = copies.get(value)
     if (existing) {
@@ -56,7 +70,7 @@ export function parseJsonValue(input: unknown): JsonValue {
     return target
   }
 
-  const root = read(input)
+  const root = parseValue(input)
   while (stack.length > 0) {
     const item = stack[stack.length - 1]!
     if (item.index === item.keys.length) {
@@ -70,13 +84,15 @@ export function parseJsonValue(input: unknown): JsonValue {
     if (typeof key !== 'string' || !property.enumerable || !Object.hasOwn(property, 'value')) {
       return invalid()
     }
+
     // Define even "__proto__" as an own data property without invoking an inherited setter.
     Object.defineProperty(item.target, key, {
-      value: read(property.value),
+      value: parseValue(property.value),
       enumerable: true,
       configurable: true,
       writable: true,
     })
   }
+
   return root
 }

@@ -1,0 +1,100 @@
+/* Host-owned workshop layout; UI defaults work without Tailwind. */
+
+@layer theme, base, components, utilities;
+
+body {
+  margin: 0;
+}
+main {
+  max-width: 1000px;
+  margin: auto;
+  padding: 2.5rem;
+}
+
+header {
+  padding-bottom: 2rem;
+}
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  margin: 0.5rem 0;
+}
+header p {
+  color: var(--muted-foreground);
+}
+.eyebrow {
+  color: var(--muted-foreground);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+section {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 1.25rem;
+  display: grid;
+  gap: 1rem;
+}
+h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  align-items: center;
+}
+form {
+  display: grid;
+  gap: 1rem;
+}
+.field-heading {
+  display: grid;
+  gap: 0.125rem;
+}
+.wide {
+  grid-column: 1/-1;
+}
+
+.context {
+  padding: 1rem;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+}
+
+.resource-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+.drag-target {
+  position: relative;
+  padding: 1rem;
+  border: 1px dashed var(--border);
+}
+
+@layer utilities {
+  .host-override {
+    background: rgb(80 120 160);
+    color: white;
+  }
+}
+
+@media (max-width: 650px) {
+  main {
+    padding: 1rem;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

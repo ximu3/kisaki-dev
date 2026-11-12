@@ -1,0 +1,66 @@
+/* Public cascade order precedes the appearance defaults and every component family. */
+
+@layer theme, base, components, utilities;
+
+@layer theme {
+  :root,
+  [data-color-scheme] {
+    --kui-control-font: var(--text-sm);
+    --kui-caption-font: var(--text-xs);
+    --kui-control-line: var(--text-base-line-height);
+    --kui-control-height: 1.75rem;
+    --kui-icon-size: 1rem;
+    --kui-icon-small: 0.75rem;
+    --kui-inline-gap: 0.5rem;
+    --kui-focus-width: 2px;
+  }
+
+  :root {
+    --kui-hint-enter: 60ms;
+    --kui-hint-exit: 40ms;
+    --kui-anchor-enter: 80ms;
+    --kui-anchor-exit: 60ms;
+    --kui-modal-enter: 100ms;
+    --kui-modal-exit: 80ms;
+    --kui-feedback-ms: 100;
+    --kui-feedback-duration: calc(var(--kui-feedback-ms) * 1ms);
+    --kui-hover-duration: var(--kui-feedback-duration);
+    --kui-enter-ease: cubic-bezier(0.16, 0.72, 0.25, 1);
+    --kui-exit-ease: cubic-bezier(0.4, 0, 1, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --kui-feedback-ms: 0;
+    }
+  }
+}
+
+@layer base {
+  :where(*) {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklch, var(--muted-foreground) 42%, transparent) transparent;
+  }
+
+  :where(button, input, textarea, select, summary) {
+    transition:
+      background-color var(--kui-hover-duration) ease,
+      color var(--kui-hover-duration) ease,
+      opacity var(--kui-hover-duration) ease;
+  }
+
+  [data-ui-popup] {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    box-sizing: border-box;
+    max-width: var(--popup-available-width);
+    max-height: var(--popup-available-height);
+    overflow: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :where(button, input, textarea, select, summary) {
+      transition: none;
+    }
+  }
+}

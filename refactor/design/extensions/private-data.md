@@ -27,7 +27,9 @@ Webview 默认只获得配置状态和变更标记。未提交新值表示保持
 
 普通安装和便携运行统一使用 Electron safeStorage，通过当前系统环境保护凭据。加解密能力位于主进程，密文和 revision 由实际业务拥有者保存；extension_secrets 与代理凭据分别使用各自的存储列。safeStorage 的保护范围是交给它处理的秘密值，不管理数据行，也不加密整份数据库或附件。应用不保存主密钥或随行 key 文件。
 
-[Electron safeStorage](https://www.electronjs.org/docs/latest/api/safe-storage) 使用 Windows DPAPI、macOS Keychain 和 Linux 实际可用的秘密后端。[DPAPI](https://learn.microsoft.com/en-us/windows/win32/api/dpapi/nf-dpapi-cryptprotectdata) 通常与登录用户及计算机关联，但存在漫游例外，因此不能承诺同一登录用户下的其他程序无法读取。macOS 需要保持一致签名，Linux 需要核实真实后端。实现必须遵循冻结运行时公开的可用性、保护强度和必要重加密合同，不启用 setUsePlainTextEncryption、basic 或自建弱保护回退，也不能仅凭某个字符串判断缺席就推定底层已经降级。
+[Electron safeStorage](https://www.electronjs.org/docs/latest/api/safe-storage) 使用 Windows DPAPI、macOS Keychain 和 Linux 实际可用的秘密后端。[DPAPI](https://learn.microsoft.com/en-us/windows/win32/api/dpapi/nf-dpapi-cryptprotectdata) 通常与登录用户及计算机关联，但存在漫游例外，因此不能承诺同一登录用户下的其他程序无法读取。macOS 需要保持一致签名，Linux 需要核实真实后端。
+
+实现必须遵循冻结运行时公开的可用性、保护强度和必要重加密合同，不启用 setUsePlainTextEncryption、basic 或自建弱保护回退，也不能仅凭某个字符串判断缺席就推定底层已经降级。
 
 移动数据目录不会改变保护策略，应用不会拆出并导出操作系统密钥。一致迁移必须包含数据库、所需持久文件，以及运行时要求的应用侧状态，不能只复制数据库。辅助系统保护状态也不是能脱离系统使用的随行密钥。在相同且有效的保护环境中，应用不主动清除凭据；跨机器、用户或保护条件后，凭据可能无法读取，但资料仍可使用。备份恢复不承诺恢复登录。
 
@@ -68,7 +70,9 @@ MAL 的 plain PKCE 和 MangaDex 的个人客户端模式是明确的兼容范围
 
 ### TMDB：应用认证与本人授权
 
-TMDB 的应用认证与本人账号授权分别处理。应用访问令牌不作为本扩展取得用户许可或完成本人连接的依据，其可读范围另按[凭据范围核验](../../verification/evidence/tmdb/account-api.md)处理。本人连接按 [v4 用户授权流程](https://developer.themoviedb.org/v4/docs/authentication-user)创建请求令牌、打开授权页面，再用已批准令牌取得用户 access token。随后通过[官方转换接口](https://developer.themoviedb.org/reference/authentication-create-session-from-v4-token)建立所需 v3 session，用户只登录一次。回调继续遵守本篇的 loopback、实例归属和取消规则；用户 access token 与 session_id 作为秘密保存。个人接入只采用[适用动画影片](sources/tmdb.md#account)，不因 v4 列表包含 TV 成员就扩大作品范围。
+TMDB 的应用认证与本人账号授权分别处理。应用访问令牌不作为本扩展取得用户许可或完成本人连接的依据，其可读范围另按[凭据范围核验](../../verification/evidence/tmdb/account-api.md)处理。
+
+本人连接按 [v4 用户授权流程](https://developer.themoviedb.org/v4/docs/authentication-user)创建请求令牌、打开授权页面，再用已批准令牌取得用户 access token。随后通过[官方转换接口](https://developer.themoviedb.org/reference/authentication-create-session-from-v4-token)建立所需 v3 session，用户只登录一次。回调继续遵守本篇的 loopback、实例归属和取消规则；用户 access token 与 session_id 作为秘密保存。个人接入只采用[适用动画影片](sources/tmdb.md#account)，不因 v4 列表包含 TV 成员就扩大作品范围。
 
 ### Google Books：桌面客户端与账号身份
 

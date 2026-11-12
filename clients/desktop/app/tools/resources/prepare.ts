@@ -17,7 +17,7 @@ import type { FontInput } from './fonts'
 
 const requireDependency = createRequire(join(appRoot, 'package.json'))
 
-/** Write the PNG and ICO variants used by desktop packaging. */
+/** Writes packaging PNG and ICO variants from the project's source icon. */
 async function prepareIcons(icons: string): Promise<void> {
   await mkdir(icons, { recursive: true })
   const sourceIcon = join(appRoot, 'assets', 'icons', 'source.png')
@@ -27,7 +27,12 @@ async function prepareIcons(icons: string): Promise<void> {
   await writeFile(join(icons, 'icon.ico'), ico)
 }
 
-/** Assemble the target resources and return their completed output directory. */
+/**
+ * Builds fonts, packaging icons and the selected SQLite binding into a complete resource candidate.
+ *
+ * Writes the byte-digest manifest before adoption and returns the completed output directory.
+ * Preparation failure or cancellation before handoff preserves previous resources.
+ */
 export async function prepareResources(
   target: DesktopTarget,
   signal?: AbortSignal,
@@ -56,7 +61,7 @@ export async function prepareResources(
 
       const files: Record<string, string> = {}
 
-      /** Add each prepared file's digest to the resource manifest. */
+      /** Adds relative file paths and SHA-256 digests to the resource inventory. */
       async function record(directory: string, prefix: string): Promise<void> {
         for (const entry of await readdir(directory, { withFileTypes: true })) {
           const relative = prefix ? `${prefix}/${entry.name}` : entry.name

@@ -3,14 +3,22 @@
  * target.
  */
 
-import { resolve, join } from 'node:path'
+import { isAbsolute, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { DesktopTarget } from './runtime-manifest'
 
 export const appRoot = fileURLToPath(new URL('../..', import.meta.url))
 export const repositoryRoot = resolve(appRoot, '../../..')
 
-/** Locate a finite build. Development generations use their own directory. */
+/**
+ * Checks whether a path is the root itself or a descendant using complete platform path segments.
+ */
+export function containsPath(parent: string, path: string): boolean {
+  const child = relative(parent, path)
+  return child !== '..' && !child.startsWith(`..${sep}`) && !isAbsolute(child)
+}
+
+/** Returns the target's finite-build directory; development generations have a separate owner. */
 export function buildDirectory(target: DesktopTarget): string {
   return join(appRoot, 'out', target)
 }

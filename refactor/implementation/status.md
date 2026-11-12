@@ -2,21 +2,25 @@
 
 <a id="design"></a>
 
-## 当前交付
+## 实施进展
 
-截至 2026-11-06，工作包按真实依赖和完整责任组织。本体业务就绪后，W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 1.9、原生能力上的自研通用 UI、组件子路径与 CSS Modules、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
+截至 2026-11-11，工作包按真实依赖和完整责任组织。本体业务就绪后，W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 1.9、原生能力上的自研通用 UI、组件子路径与 CSS Modules、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
 
-W00 工程实现与适用验收已完成并合入主线，当前职责见[工程能力](#w00)。仓库维护桌面工程工具、原生文件能力、资源、三个私有工程包，以及 desktop-appearance、extension-distribution、desktop-contracts、desktop-localization 和 desktop-rpc，workspace 共 10 个项目（含根工程）。产品能力按下表工作包实施。
+W00 工程实现与适用验收已完成并合入主线，当前职责见[工程能力](#w00)。仓库维护桌面工程工具、原生文件能力、资源、三个私有工程包，以及 desktop-appearance、extension-distribution、desktop-contracts、desktop-localization、desktop-rpc 和 desktop-ui，workspace 共 11 个项目（含根工程）。产品能力按下表工作包实施。
 
 当前任务入口为 AGENTS.md，设计、规范和实施资料集中于 refactor。[当前工程与开发](development.md)维护源码职责、环境准备与可运行命令。正式项目文档待 W23 交付；接口声明、代码注释、发行说明和许可材料随所属实现与版本维护。
 
 [当前工程验证](../verification/evidence/w00/README.md)已取得本机 Windows x64 和 CI 六目标结果，覆盖工程载体的构建、原生与 Electron 运行、开发回归、打包及制品运行。
 
-各公共包从同一份已检查的 tarball 验证独立消费，根入口通过 Turbo 调度。外观、分发、桌面合同与本地化分别见 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md) 和 [W03](../verification/evidence/w03/README.md)。[W04](../verification/evidence/w04/README.md) 另以 Node 父子进程和 Electron 窗口验证两种消息通道及其寿命。原生／SQLite、4 项 Electron 入口和制品运行已有本机及六目标 CI 结果，跨文件系统用例按实际测试根记录。最新跨平台检查由对应 PR 记录。
+各公共包从同一份已检查的 tarball 验证独立消费，根入口通过 Turbo 调度。外观、分发、桌面合同与本地化分别见 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md) 和 [W03](../verification/evidence/w03/README.md)。[W04](../verification/evidence/w04/README.md) 另以 Node 父子进程和 Electron 窗口验证两种消息通道及其寿命。[W05](../verification/evidence/w05/README.md) 验证公共 UI 的完整组件、普通样式与浏览器／Electron 消费。
+
+原生／SQLite、4 项 Electron 入口和制品运行已有本机及六目标 CI 结果，跨文件系统用例按实际测试根记录。最新跨平台检查由对应 PR 记录。
 
 错误传递覆盖启动与停止失败、取消期间的独立命令错误、操作与清理错误的保留，以及测试清理的结果交付。故障通过测试边界注入，完整诊断由失败钩子统一输出。本机 6 项开发回归、4 项 Electron 入口和制品运行通过；两轮 Linux arm64 重复验证共 100 次场景执行通过。实际范围、历史观察及归因限制见[关闭验证](../verification/evidence/w00/development.md#shutdown)。
 
 完整产品、签署、公证、安装升级、系统支持下限和主要后端验收仍待完成。npm、正式下载、更新索引及生产服务尚未发布。各对象按[验收标准](../verification/acceptance.md)登记自己的结果。
+
+现行设计与已交付实现已完成跨模块复核，合同、输入归属、原生错误、请求范围和编辑边界的修正通过本机常规检查及公共包消费验证。[复核记录](../verification/evidence/project-review/README.md)说明覆盖、判断依据、实际验证与保留的未完成范围。
 
 <a id="progress"></a>
 
@@ -25,11 +29,11 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 | 工作包                                                        | 当前结果与待完成范围                                                                                                                                                                                                                         |
 | ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [W00 工程与测试入口](work-packages.md#w00)                    | 实现与适用验收已完成，见[实际交付](#w00)与[关闭验证](../verification/evidence/w00/development.md#shutdown)。                                                                                                                                 |
-| [W01 desktop-appearance](work-packages.md#w01)                | 实现与适用验收已完成：39 项视觉词表、纯值解析、默认值、CSS、Tailwind 映射、声明与独立制品消费通过；[验证记录](../verification/evidence/w01/README.md#current-vocabulary)。项目文档待 W23，尚未公开发布。                                                           |
+| [W01 desktop-appearance](work-packages.md#w01)                | 实现与适用验收已完成：43 项视觉词表、纯值解析、默认值、CSS、Tailwind 映射、声明与独立制品消费通过；[验证记录](../verification/evidence/w01/README.md#current-vocabulary)。项目文档待 W23，尚未公开发布。                                                           |
 | [W02 extension-distribution](work-packages.md#w02)            | 实现与适用验收已完成：身份、manifest、registry、本地化、兼容选版、不可变制品和独立 Node 签名入口；25 项行为测试、仓库外 Node／浏览器消费及 CI 通过，[本机及 CI 证据](../verification/evidence/w02/README.md)。项目文档待 W23，尚未公开发布。 |
-| [W03 桌面合同与本地化](work-packages.md#w03)                  | 实现与适用验收已完成。合同包交付接口、值约束与规范编码，本地化包交付英语、关联类型、译本校验与格式化。两个包均通过制品和独立消费验证，见[本机及 CI 证据](../verification/evidence/w03/README.md)。项目文档待 W23，尚未公开发布。             |
+| [W03 桌面合同与本地化](work-packages.md#w03) | 实现与适用验收已完成。合同包交付接口、值约束与规范编码，展示柜采用单项保存、明确批量创建与共用引导输入；实际业务操作和界面由 W08、W22 实现。本地化包交付英语、关联类型、译本校验与格式化。两个包均通过制品和独立消费验证，见[本机及 CI 证据](../verification/evidence/w03/README.md)。项目文档待 W23，尚未公开发布。 |
 | [W04 desktop-rpc](work-packages.md#w04)                       | 实现与适用验收已完成。环境无关的 RPC 包通过帧与连接机制、制品、独立声明以及 Node 父子 IPC 和 Electron 窗口的真实通道验证，见[验证记录](../verification/evidence/w04/README.md)。项目文档待 W23，尚未公开发布。                               |
-| [W05 desktop-ui](work-packages.md#w05)                        | 未开始。                                                                                                                                                                                                                                     |
+| [W05 desktop-ui](work-packages.md#w05) | 31 个组件家族与共同样式已完成，静态字段标题、可搜索单选与多选、原生分段日期、虚拟列表、稳定内容的浮层、通知队列和内置格式栏已通过独立制品消费验收。范围见[验证记录](../verification/evidence/w05/README.md)。项目文档待 W23，尚未公开发布。 |
 | [W06 存储与原生基础](work-packages.md#w06)                    | 未开始。                                                                                                                                                                                                                                     |
 | [W07 应用运行与设置](work-packages.md#w07)                    | 未开始。                                                                                                                                                                                                                                     |
 | [W08 资料与记录](work-packages.md#w08)                        | 未开始。                                                                                                                                                                                                                                     |

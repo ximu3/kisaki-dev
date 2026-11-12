@@ -1,4 +1,4 @@
-/** @fileoverview Owns English messages for scanner. */
+/** @fileoverview Defines English names and explanations for built-in clue-extraction presets. */
 
 export const scannerMessages = {
   presets: {

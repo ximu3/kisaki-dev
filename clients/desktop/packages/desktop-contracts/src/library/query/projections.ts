@@ -43,6 +43,10 @@ const counts = v.strictObject({
   accessible: nonnegativeInteger,
 })
 
+/**
+ * Creates a part-count schema with totals and a required breakdown for each supplied
+ * classification.
+ */
 function classifiedCounts(keys: readonly string[]) {
   return v.strictObject({
     ...counts.entries,
@@ -125,7 +129,11 @@ const fieldSchemas: Readonly<Record<Exclude<EntryProjectionField, 'partCounts'>,
     uncheckedFileCount: nonnegativeInteger,
   }
 
-/** Check exactly the requested applicable values; missing, unrequested and inapplicable properties all fail. */
+/**
+ * Parses an entry identity and exactly its requested, applicable projection fields.
+ *
+ * Rejects missing required values and any unrequested or inapplicable property.
+ */
 export function parseEntryListItem(
   input: unknown,
   fields: readonly EntryProjectionField[] = [],
@@ -157,7 +165,10 @@ export function parseEntryListItem(
   ) as EntryListItem
 }
 
-/** These four counts describe separate facts; unknown anime classification is a read-only grouping key. */
+/**
+ * Separate counts of registered parts, completion marks, file associations and saved accessible
+ * observations.
+ */
 export interface PartCounts {
   readonly registered: number
   readonly completed: number
@@ -165,6 +176,7 @@ export interface PartCounts {
   readonly accessible: number
 }
 
+/** Projectable identity metadata, user marks and dates shared by all entry types. */
 interface CommonProjection {
   readonly originalName: string | null
   readonly sortName: string | null
@@ -182,6 +194,7 @@ interface CommonProjection {
   readonly updatedAt: number
 }
 
+/** Projectable release, activity and completion facts shared by works. */
 interface WorkProjection {
   readonly releaseDate: PartialDate | null
   readonly originalLanguages: readonly LanguageTag[]
@@ -196,6 +209,7 @@ interface WorkProjection {
   readonly lastCompletedDate: CalendarDate | null
 }
 
+/** Projectable publication and registered-file facts shared by anime, comics and novels. */
 interface MediaProjection {
   readonly releaseStatus: ReleaseStatus | null
   readonly releaseEndDate: PartialDate | null
@@ -205,7 +219,12 @@ interface MediaProjection {
   readonly uncheckedFileCount: number
 }
 
-/** Only applicable branches contain requested fields. Unrequested fields are absent rather than filled with null. */
+/**
+ * Available projection fields and their value types for each entry kind.
+ *
+ * List items include only requested fields applicable to their kind. Anime count breakdowns use the
+ * read-only unknown key for unspecified classifications.
+ */
 export interface EntryProjectionByType {
   readonly game: CommonProjection & WorkProjection
 
@@ -246,6 +265,7 @@ export interface EntryProjectionByType {
     readonly birthDate: PartialDate | null
     readonly gender: Gender | null
     readonly bloodType: BloodType | null
+
     readonly age: CharacterMeasure | null
     readonly height: CharacterMeasure | null
     readonly weight: CharacterMeasure | null
@@ -267,8 +287,14 @@ export interface EntryProjectionByType {
   }
 }
 
+/** Selectable field name from any supported entry projection. */
 export type EntryProjectionField = { [K in EntryType]: keyof EntryProjectionByType[K] }[EntryType]
 
+/**
+ * Entry identity with the requested subset of fields applicable to its kind.
+ *
+ * Unrequested fields are omitted; null retains its field-specific meaning.
+ */
 export type EntryListItem = {
   [K in EntryType]: { readonly id: string; readonly type: K; readonly name: string } & Partial<
     EntryProjectionByType[K]
@@ -323,6 +349,12 @@ export const entryProjectionFields: readonly EntryProjectionField[] = Object.fre
   'partCounts',
 ])
 
+/**
+ * Rejects a requested field unsupported by every enabled query type.
+ *
+ * Queries with no enabled types permit any declared projection field because their result set is
+ * empty.
+ */
 export function checkProjection(
   fields: readonly EntryProjectionField[] | undefined,
   query: EntryQuery,

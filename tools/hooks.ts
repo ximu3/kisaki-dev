@@ -17,7 +17,9 @@ export interface HooksResult {
   message: string
 }
 
-/** Run Git in the selected repository, forwarding diagnostics and returning status and standard output. */
+/**
+ * Runs Git in the selected repository, forwarding stderr and returning trimmed stdout and status.
+ */
 function git(directory: string, args: string[]): { status: number | null; output: string } {
   const result = spawnSync('git', args, {
     cwd: directory,
@@ -32,7 +34,13 @@ function git(directory: string, args: string[]): { status: number | null; output
   return { status: result.status, output: result.stdout.trim() }
 }
 
-/** Install or remove hooks from the project root for every worktree; report conflicting hook configuration. */
+/**
+ * Installs or removes repository-owned hooks shared by every worktree.
+ *
+ * Skips disabled environments and source archives. Installation refuses foreign hook configuration;
+ * removal preserves a user-replaced local path. If Husky setup fails on an initial install, rolls
+ * back the local registration and owned hook files.
+ */
 export async function configureHooks(
   directory: string,
   operation: 'install' | 'uninstall',

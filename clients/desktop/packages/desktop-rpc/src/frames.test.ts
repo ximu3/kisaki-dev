@@ -47,9 +47,7 @@ test('malformed envelopes and data that a native transport would coerce are reje
     accessor,
     cycle,
   ]) {
-    expect(() => parseJsonValue(value)).toThrowError(
-      expect.objectContaining({ code: 'InvalidInput' }),
-    )
+    expect(() => parseJsonValue(value)).toThrow(expect.objectContaining({ code: 'InvalidInput' }))
   }
 
   for (const frame of [
@@ -68,7 +66,7 @@ test('malformed envelopes and data that a native transport would coerce are reje
       context: null,
     },
   ]) {
-    expect(() => parseRpcFrame(frame)).toThrowError(
+    expect(() => parseRpcFrame(frame)).toThrow(
       expect.objectContaining({ code: 'ProtocolViolation' }),
     )
   }

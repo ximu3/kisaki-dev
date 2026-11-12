@@ -15,13 +15,13 @@ test('IDs allow single and dotted segments without deriving author identity', ()
   }
 
   for (const id of ['', 'A', '1a', '-a', 'a-', 'a..b', 'a._b', ' a', 'a\n', 'a\r\n', 'a\u2028']) {
-    expect(() => parseId(id)).toThrowError(expect.objectContaining({ code: 'invalid-format' }))
+    expect(() => parseId(id)).toThrow(expect.objectContaining({ code: 'invalid-format' }))
   }
 })
 
 test('new category declarations use the supported vocabulary', () => {
   expect(parseCategory('language')).toBe('language')
-  expect(() => parseCategory('future-category')).toThrowError(
+  expect(() => parseCategory('future-category')).toThrow(
     expect.objectContaining({ code: 'invalid-format' }),
   )
 })
@@ -40,7 +40,7 @@ test('locale normalization rejects alias collisions and missing defaults without
   )
   expect(() => normalizeLocalizedText({ fr: 'Bonjour' }, 'en')).toThrow('default locale')
 
-  expect(() => normalizeLocale('zh_CN')).toThrowError(
+  expect(() => normalizeLocale('zh_CN')).toThrow(
     expect.objectContaining({ path: [], code: 'invalid-format' }),
   )
 })

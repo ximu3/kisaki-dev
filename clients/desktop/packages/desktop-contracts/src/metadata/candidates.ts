@@ -22,7 +22,12 @@ import type {
 import type { MetadataRelations } from './relations'
 import type { PartMatchingRules } from './matching'
 
-/** Parse a complete composed candidate; personal data, local references and write instructions have no accepted fields. */
+/**
+ * Parses a composed candidate and validates its graph references and relationship constraints.
+ *
+ * The accepted shape contains metadata facts; personal data, local references and write
+ * instructions are rejected.
+ */
 export function parseMetadataCandidate(input: unknown): MetadataCandidate {
   const { entryType } = parseValue(
     v.looseObject({ entryType: v.picklist(entryTypes) }),
@@ -52,24 +57,36 @@ export function parseMetadataCandidate(input: unknown): MetadataCandidate {
   return value as MetadataCandidate
 }
 
-/** Composed fields are adoptable values; identification retains only original, unprocessed matching evidence. */
+/**
+ * Composed entry with adoptable fields and original matching evidence.
+ *
+ * Identification retains source facts before field processing.
+ */
 export interface CandidateEntry<T extends EntryType> extends MetadataObjectIdentity {
   readonly identification: IdentificationFields<T>
   readonly fields: MetadataEntryFields<T>
 }
 
+/** Composed part with adoptable fields and original matching evidence. */
 export interface CandidatePart<T extends PartType> extends MetadataObjectIdentity {
   readonly identification: PartIdentificationFields<T>
   readonly fields: MetadataPartFields<T>
 }
 
+/** Related candidate entries grouped by their actual catalog kind. */
 export type CandidateRelatedEntries = { readonly [K in EntryType]?: readonly CandidateEntry<K>[] }
 
+/** Candidate parts grouped by slots supported by the root entry kind. */
 export type CandidateParts<T extends EntryType> = {
   readonly [K in MetadataPartKey<T>]?: readonly CandidatePart<MetadataPartType<T, K>>[]
 }
 
-/** One root and one request-local key space; local IDs, write flags and personal data are never metadata candidates. */
+/**
+ * Composed metadata graph with one root and a request-local object key space.
+ *
+ * The graph carries source facts and matching rules; local identity and adoption decisions belong
+ * to ingest.
+ */
 export type MetadataCandidate<T extends EntryType = EntryType> = {
   [K in T]: {
     readonly entryType: K

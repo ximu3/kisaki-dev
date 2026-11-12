@@ -14,13 +14,15 @@
 
 实现与适用验收、项目文档和对外发布分别记录。W24 汇总固定候选版本的发布前整体验收，W25 完成本轮首次公开发行与发布核验，整体完成条件见[最终交付](../verification/acceptance.md#completion)。签署与隔离部署随所属工程取得证据，正式仓库接续、公开发布和生产服务切换按[首发规则](../design/engineering/releases.md#first-release)及已有授权执行。
 
-所有交付遵守[共同原则、终态实现与可读性](../design/engineering/conventions.md#quality)、[编码规则](../design/engineering/conventions.md#coding-style)、[界面文案](../design/ui/components.md#copy)和[文档归属](../design/engineering/documentation.md#owners)。验证按[实际影响](../verification/acceptance.md#verification-scope)选择，目标环境按[统一交付边界](../verification/acceptance.md#runtime-coverage)判定，证据按[实际用途](../design/engineering/documentation.md#evidence)保留。
+所有交付遵守[共同原则、终态实现与可读性](../design/engineering/conventions.md#quality)、[编码风格与逻辑分段](../design/engineering/conventions.md#logical-sections)、[代码与资源规则](../design/engineering/conventions.md#coding-style)、[界面文案](../design/ui/components.md#copy)和[文档归属](../design/engineering/documentation.md#owners)。源码、测试、工具、配置和设计文档均须按职责顺读检查，格式工具通过后仍核对语义分段。
+
+验证按[实际影响](../verification/acceptance.md#verification-scope)选择，目标环境按[统一交付边界](../verification/acceptance.md#runtime-coverage)判定，证据按[实际用途](../design/engineering/documentation.md#evidence)保留。
 
 <a id="unexpected-issues"></a>
 
 ### 实施中的判断
 
-遇到原则、正确性、质量或技术实践问题，先按[整体判断](../design/engineering/conventions.md#judgment)审视目标与相关设计，说明依据、选项和影响，由用户确定方向。模型、主要行为、公开合同、架构边界或交付范围的变化遵守同一规则。
+从[全局设计与一致性](../design/engineering/conventions.md#global-design)确定变更的共同拥有层、同类入口和全部受影响的消费者。遇到原则、正确性、质量或技术实践问题，按[整体判断](../design/engineering/conventions.md#judgment)说明依据、选项和影响，由用户确定方向。模型、主要行为、公开合同、架构边界或交付范围的变化遵守同一规则。
 
 已确认合同内的实现选择、缺陷修复与验证由实施者完成。依赖新决定的工作等待讨论，其他工作继续推进；已确认方向与已有授权直接落实。
 
@@ -198,7 +200,7 @@ W23 随各对象成熟度分批编写文档，最终采用已经验证的实现�
 
 交付：七类 Entry、五类 Part、四类关系、资料查询与整理、状态、完成记录、活动、附加时长、Note 和 Annotation，以及列表、详情、编辑、合集、展示柜和统计界面。
 
-核对完整写入、合并删除、动画种类更正、顺序、统计口径、并发基线与使用占用。页面与 Dialog 复用同一 domain-ui，选择、草稿、定位、虚拟化及重排沿实际用户操作闭合。正式业务函数与窗口入口使用同一事实；W18 通过这些完整操作实现扩展服务端接入。
+核对完整写入、合并删除、动画种类更正、顺序、统计口径、并发基线与使用占用。页面与 Dialog 复用同一 domain-ui，按[编辑对象与保存边界](../design/ui/state.md#editing-units)完成单项保存、列表管理与明确的批量操作，选择、定位、虚拟化及重排沿实际用户操作闭合。正式业务函数与窗口入口使用同一事实；W18 通过这些完整操作实现扩展服务端接入。
 
 验收：A01–A05、A14、A17–A20、A27、A29、A30 的资料与界面断言成立；代表链路先验证再扩大实现。
 
@@ -404,7 +406,7 @@ Kana 负责格式与内核，本体负责文件身份、资料、偏好、持久
 
 先完成引导、全局组合及完整英语基准，再形成三个完整官方译本，使用全部 33 项实际扩展联合验证推荐、安装、激活、资料方案和扫描配置采用、语言选择与切换。功能扩展在进入本包前已经完成；引导与译本在同一工作包内完成相互消费。
 
-onboarding 拥有推荐记录、草稿与采用编排，各业务模块继续拥有完整操作。核对主界面与独立窗口的导航、焦点、草稿、共同菜单、失败和退出体验，以及译本在真实界面、菜单、提示和无障碍信息中的完整呈现。
+onboarding 拥有推荐记录、待采用输入与采用编排，各业务模块继续拥有完整操作。引导通过明确的分组采用提交配置，已有成果使用正常单项保存；字段控件复用不改变两者的提交含义。核对主界面与独立窗口的导航、焦点、草稿、共同菜单、失败和退出体验，以及译本在真实界面、菜单、提示和无障碍信息中的完整呈现。
 
 验收：A18–A23、A27、A29、A30、A32 及相关 R 要求的应用级入口成立。三个译本分别通过构建、独立安装和宿主生命周期验证，完整基准、实际界面与所交付译文一致，逐项结果见[交付清单](delivery-checklist.md#extensions)。
 

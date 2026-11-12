@@ -99,7 +99,7 @@ note_entry_links 的 order_in_note 与 order_in_entry，以及其他 order_in_*�
 
 ### 条目资料：library.entries
 
-create 接收七种 EntryCreateInput 判别分支及适用的初始 evaluation、record、completionRecords、tags 和 collections，返回 EntryRef；update 与短事务 updateMany 返回 void；get、list、locate、groups、selectRefs 和 findByExternalIdentity 按[读取接口](../query/README.md#api)。
+create 接收七种 EntryCreate 判别分支及适用的初始 evaluation、record、completionRecords、tags 和 collections，返回 EntryRef；update 与短事务 updateMany 返回 void；get、list、locate、groups、selectRefs 和 findByExternalIdentity 按[读取接口](../query/README.md#api)。
 
 七类具体字段来自[条目字段](../../catalog.md#entry-fields)；类型与私人记录的适用性在输入分支体现；禁止修改派生值；SDK Node 开放。
 
@@ -201,7 +201,7 @@ changed 表示实际业务事实是否发生修改；空映射合法，未创建
 
 library.activities 管理四类作品的活动明细，允许用户补录已知的使用时间段、修正已有记录或删除错误记录。手动记录、自动计时和真实明细导入使用各媒介已有的活动表，不另建补录历史或运行会话。
 
-手动新增填写所属 WorkRef、startedAt、endedAt 和 durationMs。起止时间使用 UTC 毫秒，结束晚于开始，且不晚于提交时的当前时间；有效时长使用非负毫秒值，不能大于该时间段的长度。编辑器默认采用起止差值，用户可以按实际使用修正时长。只有累计量而没有明确时间段时，不据此生成活动；四类作品使用 additional_duration_ms 保存附加时长。
+手动新增填写所属 WorkRef、startedAt、endedAt 和 durationMs。起止时间使用 UTC 毫秒，结束晚于开始，且不晚于提交时的当前时间；保存的有效时长使用非负安全整数毫秒，不能大于该时间段的长度。编辑器默认采用起止差值，用户可以按实际使用修正时长。只有累计量而没有明确时间段时，不据此生成活动；四类作品使用 additional_duration_ms 保存附加时长。活动、附加值与作品累计读取使用同一整数精度，按期间分配的[统计投影](../query/README.md#activity-statistics)保留计算精度。
 
 自动记录的 UTC 起止由 sessions 按[单调时钟映射](../../sessions.md#clock)形成。系统校时可以使已经保存的区间暂时处于当前系统时间之后，读取和后续统计保留原事实；本条手动提交限制不用于回溯修补既有活动。
 

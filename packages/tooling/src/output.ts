@@ -1,16 +1,47 @@
 /**
- * @fileoverview Replaces project-owned outputs with complete candidate directories while
- * preserving the previous output on preparation failure.
+ * @fileoverview Manages declared project outputs, including candidate handoff and cleanup.
  */
 
 import { mkdir, mkdtemp, rename, rm } from 'node:fs/promises'
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from 'node:path'
 
+/** Resolves an output to a strict descendant of its owning project. */
+function projectOutput(project: string, output: string): string {
+  const destination = resolve(project, output)
+  const child = relative(resolve(project), destination)
+  if (!child || child === '..' || child.startsWith(`..${sep}`) || isAbsolute(child)) {
+    throw new Error('Output is outside its project')
+  }
+
+  return destination
+}
+
 /**
- * Prepare a private candidate and replace one project-owned output after success.
- * Preparation failure or cancellation observed before handoff keeps the previous output in place.
- * Failed adoption attempts to restore the previous output. If rollback fails, its temporary
- * directory is retained and both failures are reported; cleanup failures are also reported.
+ * Removes declared project outputs in the supplied order.
+ *
+ * The caller stops active writers first. Cancellation is checked before each removal; completed
+ * removals remain applied.
+ */
+export async function removeOutputs(
+  project: string,
+  outputs: readonly string[],
+  signal?: AbortSignal,
+): Promise<void> {
+  for (const output of outputs) {
+    signal?.throwIfAborted()
+    await rm(projectOutput(project, output), { recursive: true, force: true })
+  }
+}
+
+/**
+ * Builds a private candidate and adopts it as one project output.
+ *
+ * Preparation failure or cancellation observed before handoff preserves the previous output. Failed
+ * adoption attempts to restore that output. If restoration fails, its temporary backup is retained
+ * and both failures are reported.
+ *
+ * Returns the prepared value after adoption and old-output cleanup. Cleanup failures reject the
+ * operation.
  */
 export async function replaceOutput<T>(
   project: string,
@@ -18,12 +49,7 @@ export async function replaceOutput<T>(
   prepare: (staging: string) => Promise<T>,
   signal?: AbortSignal,
 ): Promise<T> {
-  const destination = resolve(project, output)
-  const child = relative(resolve(project), destination)
-  if (!child || child === '..' || child.startsWith(`..${sep}`) || isAbsolute(child)) {
-    throw new Error('Output is outside its project')
-  }
-
+  const destination = projectOutput(project, output)
   signal?.throwIfAborted()
 
   await mkdir(dirname(destination), { recursive: true })

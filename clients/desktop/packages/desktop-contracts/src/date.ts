@@ -10,7 +10,11 @@ export interface CalendarDate {
   readonly day: number
 }
 
-/** At least one known component. A supplied value replaces the entire date, never merges components. */
+/**
+ * A civil date with at least one known component.
+ *
+ * A supplied value replaces the entire date rather than merging components.
+ */
 export type PartialDate =
   | { readonly year: number; readonly month?: number; readonly day?: number }
   | { readonly year?: number; readonly month: number; readonly day?: number }
@@ -33,7 +37,11 @@ export interface CalendarDateRange {
   readonly to: CalendarDate
 }
 
-/** The display year is decimal text because the minimum internal year requires 9007199254740992 BCE. */
+/**
+ * An era and positive decimal year for lossless display and input.
+ *
+ * The year uses text because the minimum internal year maps to 9007199254740992 BCE.
+ */
 export interface EraYear {
   readonly era: 'ce' | 'bce'
   readonly year: string
@@ -43,10 +51,12 @@ const minYear = BigInt(Number.MIN_SAFE_INTEGER)
 
 const maxYear = BigInt(Number.MAX_SAFE_INTEGER)
 
+/** Rejects an invalid Gregorian date with the shared InvalidInput classification. */
 function invalidDate(): never {
   throw new DesktopError('InvalidInput', 'Invalid Gregorian date')
 }
 
+/** Checks the safe-integer year range and normalizes negative zero. */
 function requireYear(year: number): number {
   if (!Number.isSafeInteger(year)) {
     invalidDate()
@@ -54,13 +64,15 @@ function requireYear(year: number): number {
   return year === 0 ? 0 : year
 }
 
-/** Test a safe astronomical year using the proleptic Gregorian 400-year cycle, including BCE. */
+/**
+ * Tests a safe astronomical year against the proleptic Gregorian leap-year cycle, including BCE.
+ */
 export function isLeapYear(year: number): boolean {
   requireYear(year)
   return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)
 }
 
-/** Return a month's real length; without a year, February may contain 29 days. */
+/** Returns a valid month's length, allowing February 29 when the year is unknown. */
 export function daysInMonth(month: number, year?: number): number {
   if (!Number.isSafeInteger(month) || month < 1 || month > 12) {
     invalidDate()
@@ -76,7 +88,12 @@ export function daysInMonth(month: number, year?: number): number {
   return [4, 6, 9, 11].includes(month) ? 30 : 31
 }
 
-/** Parse all seven nonempty component combinations; reject null, unknown keys, overflows and rollovers. */
+/**
+ * Parses the seven nonempty date-component combinations.
+ *
+ * Rejects null, unknown keys, overflows and impossible calendar values; present components are
+ * preserved.
+ */
 export function parsePartialDate(input: unknown): PartialDate {
   if (typeof input !== 'object' || input === null || Array.isArray(input)) {
     invalidDate()
@@ -114,7 +131,11 @@ export function parsePartialDate(input: unknown): PartialDate {
   } as PartialDate
 }
 
-/** Require all three components of a real day; absence belongs to an owning nullable field. */
+/**
+ * Parses all three components of a real day.
+ *
+ * Date absence is represented by the owning nullable field.
+ */
 export function parseCalendarDate(input: unknown): CalendarDate {
   const value = parsePartialDate(input)
   if (value.year === undefined || value.month === undefined || value.day === undefined) {
@@ -123,7 +144,7 @@ export function parseCalendarDate(input: unknown): CalendarDate {
   return { year: value.year, month: value.month, day: value.day }
 }
 
-/** Parse a continuous-precision absolute boundary; year/day without month is not a boundary. */
+/** Parses an absolute boundary with year, year/month or full-day precision. */
 export function parseYearDate(input: unknown): YearDate {
   const value = parsePartialDate(input)
   if (value.year === undefined || (value.month === undefined && value.day !== undefined)) {
@@ -141,7 +162,7 @@ export function parseYearDate(input: unknown): YearDate {
   }
 }
 
-/** Parse a yearless month or month/day boundary, including February 29. */
+/** Parses a yearless month or month/day boundary, including February 29. */
 export function parseMonthDate(input: unknown): MonthDate {
   const value = parsePartialDate(input)
   if (value.year !== undefined || value.month === undefined) {
@@ -150,7 +171,11 @@ export function parseMonthDate(input: unknown): MonthDate {
   return { month: value.month, ...(value.day === undefined ? {} : { day: value.day }) }
 }
 
-/** Convert a positive decimal era year precisely before checking the internal safe-integer range. */
+/**
+ * Converts positive decimal era-year text into an exact safe astronomical year.
+ *
+ * Trims surrounding whitespace and rejects invalid text or values outside the safe-integer range.
+ */
 export function parseEraYear(input: string, era: 'ce' | 'bce'): number {
   const text = input.trim()
   if (!/^[0-9]+$/.test(text) || (era !== 'ce' && era !== 'bce')) {
@@ -169,7 +194,7 @@ export function parseEraYear(input: string, era: 'ce' | 'bce'): number {
   return Number(year)
 }
 
-/** Return an exact era and positive decimal year for display or input, without floating-point rounding. */
+/** Converts a safe astronomical year into an era and exact positive decimal year text. */
 export function toEraYear(year: number): EraYear {
   requireYear(year)
   return year > 0
@@ -177,7 +202,7 @@ export function toEraYear(year: number): EraYear {
     : { era: 'bce', year: String(1n - BigInt(year)) }
 }
 
-/** Compare complete valid days lexicographically; no time zone or timestamp conversion is involved. */
+/** Compares valid complete days lexicographically, returning -1, 0 or 1. */
 export function compareCalendarDates(left: CalendarDate, right: CalendarDate): number {
   for (const component of ['year', 'month', 'day'] as const) {
     if (left[component] !== right[component]) {
@@ -188,7 +213,7 @@ export function compareCalendarDates(left: CalendarDate, right: CalendarDate): n
   return 0
 }
 
-/** Expand an absolute query boundary into its first and last possible day, without changing the input. */
+/** Expands an absolute query boundary into its first and last possible day. */
 export function expandYearDate(input: YearDate): CalendarDateRange {
   const value = parseYearDate(input)
   const firstMonth = value.month ?? 1
@@ -204,7 +229,7 @@ export function expandYearDate(input: YearDate): CalendarDateRange {
   }
 }
 
-/** Validate inclusive absolute query bounds; reversed ranges are rejected instead of swapped. */
+/** Parses inclusive absolute query bounds and rejects reversed ranges. */
 export function parseDateBounds(input: unknown): Bounds<YearDate> {
   if (typeof input !== 'object' || input === null || Array.isArray(input)) {
     invalidDate()

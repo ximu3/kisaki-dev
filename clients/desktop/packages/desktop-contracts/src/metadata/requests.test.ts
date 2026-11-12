@@ -65,4 +65,21 @@ test('read requests never silently lose unsupported fields or expand relation me
   expect(() =>
     parseMetadataReadResult('anime', { relations: { workEpisodes: [] } }, request),
   ).toThrow()
+
+  const tagResult = {
+    objects: { tags: [{ key: 'pc', name: ' ＰＣ ', description: 'Desktop platform' }] },
+  }
+  expect(
+    parseMetadataReadResult('game', tagResult, {
+      objects: { tags: { fields: ['description'], names: ['pc'] } },
+    }),
+  ).toEqual(tagResult)
+
+  for (const names of [[], ['Console']]) {
+    expect(() =>
+      parseMetadataReadResult('game', tagResult, {
+        objects: { tags: { fields: ['description'], names } },
+      }),
+    ).toThrow()
+  }
 })

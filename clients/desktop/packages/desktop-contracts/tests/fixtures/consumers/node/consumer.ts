@@ -1,8 +1,9 @@
 /** @fileoverview Consumes the packed desktop value and operation contracts with standard host APIs. */
+
 import { parsePartialDate } from '@kisaki3/desktop-contracts/date'
 import { parseEntryCreate } from '@kisaki3/desktop-contracts/library'
 import { parseSourceEntry } from '@kisaki3/desktop-contracts/metadata'
-import { parseUiTranslationRegistration } from '@kisaki3/desktop-contracts/i18n'
+import { parseExtensionUiTranslationDefinition } from '@kisaki3/desktop-contracts/i18n'
 import { parse, format } from '@kisaki3/desktop-contracts/deeplink'
 import { parseThemeRef } from '@kisaki3/desktop-contracts/appearance'
 import { developmentProtocolVersion } from '@kisaki3/desktop-contracts/development'
@@ -15,7 +16,7 @@ export const summary = {
     identity: { source: 'bangumi', sourceId: '123' },
     identification: { name: 'Sample' },
   }).type,
-  locale: parseUiTranslationRegistration({
+  locale: parseExtensionUiTranslationDefinition({
     id: 'zh',
     name: '中文',
     locale: 'zh-hans-cn',

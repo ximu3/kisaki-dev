@@ -9,13 +9,21 @@ import type { RpcTransport } from '../transport'
 
 const protocol = { id: 'fixture', version: 1 }
 const hello = { type: 'hello', wireVersion: 1, protocol, context: 'client' }
-const acceptor: RpcEndpoint = { protocol, handshake: { role: 'acceptor', accept: () => 'server' } }
+const acceptor: RpcEndpoint = {
+  protocol,
+  handshake: {
+    role: 'acceptor',
+    /** Accepts fixture peers and returns the synthetic server context. */
+    accept: () => 'server',
+  },
+}
 
-/** Expose both transport callbacks so a test peer can control frame order and deliver late traffic. */
+/** Creates an RPC connection with a controllable transport and automatic test cleanup. */
 function fixture(endpoint: RpcEndpoint = acceptor) {
   let receive!: (frame: unknown) => void
   let lost!: () => void
   const transport = {
+    /** Captures receive and close callbacks for test-controlled transport delivery. */
     start(message, closed) {
       receive = message
       lost = closed
@@ -25,6 +33,7 @@ function fixture(endpoint: RpcEndpoint = acceptor) {
   } satisfies RpcTransport
   const rpc = new RpcConnection(transport, endpoint)
   onTestFinished(() => rpc.close())
+
   return { rpc, receive, lost, transport }
 }
 
@@ -37,6 +46,7 @@ test('a bound acceptor rejects a different wire, endpoint version or unauthorize
       {
         type: 'hello',
         wireVersion: 9,
+        /** Fails if the receiver inspects context from a foreign wire version. */
         get context() {
           throw new Error('foreign version')
         },
@@ -50,8 +60,10 @@ test('a bound acceptor rejects a different wire, endpoint version or unauthorize
       protocol,
       handshake: { role: 'acceptor', accept },
     })
+
     receive(frame)
     receive(hello)
+
     await expect(rpc.ready).rejects.toMatchObject({ code })
     expect(transport.send).toHaveBeenCalledOnce()
     expect(transport.send.mock.calls[0]?.[0]).toMatchObject({
@@ -111,6 +123,7 @@ test('a nested call can use the same ID in the other direction and completed rep
   })
   receive(hello)
   await expect(rpc.ready).resolves.toBe('client')
+
   receive({ type: 'request', id: 1, method: 'nested', args: [] })
   expect(transport.send).toHaveBeenLastCalledWith({
     type: 'request',
@@ -134,8 +147,10 @@ test('abort requests the remote outcome and never retroactively changes complete
   const { rpc, receive, transport } = fixture()
   receive(hello)
   await rpc.ready
+
   const controller = new AbortController()
   const result = rpc.request('commit', [], { signal: controller.signal })
+
   controller.abort()
   expect(transport.send).toHaveBeenLastCalledWith({ type: 'cancel', id: 1 })
   receive({ type: 'success', id: 1, value: 'committed' })
@@ -145,6 +160,7 @@ test('abort requests the remote outcome and never retroactively changes complete
   const completed = rpc.request('commit', [], { signal: next.signal })
   receive({ type: 'success', id: 2 })
   await completed
+
   next.abort()
   await expect(rpc.request('never sent', [], { signal: next.signal })).rejects.toMatchObject({
     code: 'Cancelled',
@@ -168,6 +184,7 @@ test('only own methods execute, exceptions stay local and notification failures 
   })
   receive(hello)
   await rpc.ready
+
   receive({ type: 'request', id: 1, method: 'toString', args: [] })
   receive({ type: 'request', id: 2, method: 'broken', args: [] })
   receive({ type: 'notify', topic: 'changed', value: null })
@@ -203,6 +220,7 @@ test('endpoint codecs receive the method and deliver its safe partial result', a
   const pending = rpc.request('edit')
   receive({ type: 'request', id: 1, method: 'edit', args: [] })
   const reply = transport.send.mock.lastCall?.[0]
+
   expect(reply).toEqual({ type: 'failure', id: 1, error: partial })
   receive(reply)
   await expect(pending).rejects.toBe(restored)
@@ -245,10 +263,12 @@ test('disconnect releases both directions; late work and old callbacks cannot se
   })
   old.receive(hello)
   await old.rpc.ready
+
   const pending = old.rpc.request('unconfirmed')
   old.receive({ type: 'request', id: 1, method: 'work', args: [] })
   old.lost()
   old.rpc.close()
+
   await expect(pending).rejects.toMatchObject({ code: 'ConnectionClosed' })
   expect(executing.aborted).toBe(true)
   expect(old.transport.close).toHaveBeenCalledOnce()
@@ -256,10 +276,12 @@ test('disconnect releases both directions; late work and old callbacks cannot se
   const next = fixture()
   next.receive(hello)
   await next.rpc.ready
+
   const fresh = next.rpc.request('read')
   old.receive({ type: 'success', id: 1, value: 'old' })
   finish()
   next.receive({ type: 'success', id: 1, value: 'new' })
+
   await expect(fresh).resolves.toBe('new')
   expect(old.transport.send).toHaveBeenCalledTimes(2)
 })

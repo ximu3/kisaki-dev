@@ -10,7 +10,12 @@ import { runPnpm } from '@kisaki3/tooling/process'
 
 const root = resolve(import.meta.dirname, '../..')
 
-/** Each host owns its type environment and data directory, removed after the process finishes. */
+/**
+ * Installs, builds and lints an isolated consumer of the checked RPC tarball.
+ *
+ * Returns its temporary directory and registers test cleanup. The caller closes child processes
+ * before the active test finishes.
+ */
 export async function prepareConsumer(
   host: 'node' | 'electron',
   signal: AbortSignal,

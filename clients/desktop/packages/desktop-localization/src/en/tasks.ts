@@ -1,4 +1,4 @@
-/** @fileoverview Owns English messages for tasks. */
+/** @fileoverview Defines English status labels for managed tasks. */
 
 export const taskMessages = {
   running: 'Running',
