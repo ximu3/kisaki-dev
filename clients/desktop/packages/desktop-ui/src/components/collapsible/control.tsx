@@ -7,7 +7,11 @@ import { createValue } from '../../internal/state'
 import { Icon, mdiChevronRight } from '../../internal/icon/glyph'
 import styles from './styles.module.css'
 
-/** name opts into native exclusive grouping; summary is the focusable disclosure label. */
+/**
+ * Native disclosure attributes with a focusable summary and controlled or local open state.
+ *
+ * The native name attribute opts into exclusive grouping.
+ */
 export interface CollapsibleProps extends Omit<
   JSX.DetailsHtmlAttributes<HTMLDetailsElement>,
   'open'
@@ -17,10 +21,11 @@ export interface CollapsibleProps extends Omit<
 
   open?: boolean
   defaultOpen?: boolean
+  /** Reports an open-state change requested by native disclosure interaction. */
   onOpenChange?: (open: boolean) => void
 }
 
-/** Native details owns activation and collapsed semantics. The content remains mounted. */
+/** Renders a native details disclosure whose content remains mounted while collapsed. */
 export function Collapsible(props: CollapsibleProps): JSX.Element {
   const [local, rest] = splitProps(props, [
     'summary',

@@ -15,7 +15,12 @@ import type { CallOptions, NonEmptyArray, Disposable } from '../operations'
 import type { EntryRef } from './catalog'
 import type { LibraryInvalidation } from './changes'
 
-/** Each capability completes its own business transaction. Views consume snapshots; runtime sessions and metadata remain separate owners. */
+/**
+ * Saved library facts and complete graph, merge and deletion operations.
+ *
+ * Each capability owns its business transaction. Views consume snapshots; runtime sessions and
+ * metadata acquisition remain separate owners.
+ */
 export interface LibraryApi {
   readonly entries: EntriesApi
   readonly parts: PartsApi
@@ -33,15 +38,27 @@ export interface LibraryApi {
   readonly holdings: HoldingsApi
   readonly showcase: ShowcaseApi
 
-  /** Prepare resources, recheck actual references/baselines and commit the complete graph atomically. */
+  /**
+   * Prepares resources, rechecks references and baselines, and commits the complete graph
+   * atomically.
+   */
   writeGraph(input: LibraryWriteGraph, call?: CallOptions): Promise<LibraryWriteResult>
 
-  /** Apply fixed same-kind merge rules and preserve the explicitly selected survivor; no fuzzy matching or field-choice preview. */
+  /** Applies fixed same-kind merge rules while preserving the explicitly selected survivor. */
   merge<I extends EntryMergeInput>(input: I, call?: CallOptions): Promise<I['target']>
 
-  /** Delete each selected entry's complete owned scope atomically, preserving independent notes and user media bytes. */
+  /**
+   * Deletes selected entries with their complete owned scope atomically.
+   *
+   * Independent notes and user media bytes remain.
+   */
   delete(refs: NonEmptyArray<EntryRef>, call?: CallOptions): Promise<void>
 
-  /** Subscribe before the first read. An invalidation during a read requires another read; it never replaces an editing draft. */
+  /**
+   * Subscribes to library-read invalidation.
+   *
+   * Callers subscribe before the first read and read again if invalidation occurs during it.
+   * Editing drafts remain under their owners.
+   */
   onInvalidated(listener: (value: LibraryInvalidation) => void): Disposable
 }

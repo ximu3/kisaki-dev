@@ -62,7 +62,12 @@ import {
 import { properties, relationEdit, actions } from './relations'
 import { parseGraphLocalContent } from './local-content'
 
-/** Every region commits together. Empty graphs succeed with changed:false and empty maps; prepared alone is not a write. */
+/**
+ * One atomic library write spanning entry, part, tag, relation and initial-holdings regions.
+ *
+ * Empty graphs succeed with changed false and empty creation maps. Prepared holds alone do not
+ * constitute a write.
+ */
 export interface LibraryWriteGraph {
   readonly entries?: {
     readonly create?: readonly GraphEntryCreate[]
@@ -85,7 +90,11 @@ export interface LibraryWriteGraph {
   readonly prepared?: readonly PreparedAttachment[]
 }
 
-/** Maps contain exactly this request's created keys; failures never return invented identities or partial maps. */
+/**
+ * The graph's change indicator and exact request-key mappings for successful creates.
+ *
+ * Failures do not return invented identities or partial creation maps.
+ */
 export interface LibraryWriteResult {
   readonly entries: Readonly<Record<string, EntryRef>>
   readonly parts: Readonly<Record<string, PartRef>>
@@ -112,13 +121,16 @@ const rawGraphSchema = v.strictObject({
   prepared: v.exactOptional(v.array(preparedSchema)),
 })
 
+/** Rejects a graph contradiction with the shared InvalidInput classification. */
 function invalid(message: string): never {
   throw new DesktopError('InvalidInput', message)
 }
 
 /**
- * Parse the complete graph before preparation or commit. This validates graph-local types and contradictions;
- * existing-object ownership, visibility, uniqueness, occupancy, real prepared holds and transaction baselines stay host checks.
+ * Parses the complete graph and checks request-local types and contradictions before preparation.
+ *
+ * The host checks existing-object ownership, visibility, uniqueness, occupancy, actual prepared
+ * holds and transaction baselines.
  */
 export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
   const raw = parseValue(rawGraphSchema, input, 'Invalid library write graph')
@@ -127,6 +139,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
   const parts = new Map<string, { readonly type: PartType; readonly work: GraphEntryRef }>()
   const tags = new Set<string>()
 
+  /** Indexes a create key, rejecting reuse across any graph region. */
   function addKey(key: string): void {
     if (keys.has(key)) {
       invalid('Create keys must be unique across the complete graph')
@@ -160,6 +173,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     tags.add(node.key)
   }
 
+  /** Resolves a graph entry reference's kind from its saved reference or indexed create key. */
   function entryType(ref: GraphEntryRef): EntryType {
     if ('type' in ref) {
       return ref.type
@@ -172,6 +186,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     return type
   }
 
+  /** Resolves a graph entry reference and requires a work kind. */
   function workType(ref: GraphEntryRef<WorkType>): WorkType {
     const type = entryType(ref)
     if (!isWorkType(type)) {
@@ -180,6 +195,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     return type
   }
 
+  /** Builds a typed entry-reference schema that resolves graph-local create keys. */
   function entryReference<T extends EntryType>(
     types: readonly T[],
   ): v.GenericSchema<unknown, GraphEntryRef<T>> {
@@ -189,6 +205,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     )
   }
 
+  /** Builds a typed part-reference schema that resolves graph-local create keys. */
   function partReference<T extends PartType>(
     types: readonly T[],
   ): v.GenericSchema<unknown, GraphPartRef<T>> {
@@ -219,6 +236,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     v.check((items) => unique(items, (item) => tagKey(item.tagId))),
   )
 
+  /** Parses an ordinary entry creation with its request key and graph-capable tag memberships. */
   function parseEntry(item: unknown): GraphEntryCreate {
     const source = parseRecord(item)
     const { key: keyInput, tags: tagInput, ...fields } = source
@@ -230,6 +248,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     return { ...value, key, ...members } as GraphEntryCreate
   }
 
+  /** Parses a part creation and checks that its graph owner has the applicable work kind. */
   function parsePart(item: unknown): GraphPartCreate {
     const { type } = parseValue(v.looseObject({ type: v.picklist(partTypes) }), item)
     return parseValue(
@@ -246,6 +265,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     ) as GraphPartCreate
   }
 
+  /** Parses a request-local tag creation through the ordinary tag-field contract. */
   function parseTag(item: unknown): {
     readonly key: string
     readonly name: string
@@ -264,6 +284,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     return { key, ...parseTagCreate(fields) }
   }
 
+  /** Parses an existing tag identity and its ordinary field edit. */
   function parseTagEdit(item: unknown) {
     const { id: tagIdInput, ...fields } = parseRecord(item)
     const tagId = parseValue(id, tagIdInput)
@@ -316,6 +337,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
   const organizationFields = { work, organization, role: v.picklist(organizationRoles) }
   const relationFields = { from: work, to: work, type: v.picklist(workRelationTypes) }
 
+  /** Checks person-role applicability when the work, role and character context are all known. */
   function checkPerson(value: Partial<GraphPersonWorkAdd>): void {
     if (
       value.work &&
@@ -327,12 +349,14 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     }
   }
 
+  /** Checks organization-role applicability when its work and role are known. */
   function checkOrganization(value: Partial<GraphOrganizationWorkAdd>): void {
     if (value.work && value.role && !canUseOrganizationRole(value.role, workType(value.work))) {
       invalid('Organization responsibility is not applicable to its graph work')
     }
   }
 
+  /** Projects graph work endpoints into typed identities for shared relation validation. */
   function workRelationBinding(value: GraphWorkRelationAdd) {
     return {
       from: { type: workType(value.from), id: entryKey(value.from) },
@@ -341,11 +365,13 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     }
   }
 
+  /** Encodes a canonical work relationship so inverse-direction duplicates share a key. */
   function relationKey(value: GraphWorkRelationAdd): string {
     const normalized = canonicalWorkRelation(workRelationBinding(value))
     return JSON.stringify([normalized.from.id, normalized.to.id, normalized.type])
   }
 
+  /** Validates a work relationship when both endpoints and its type are known. */
   function checkRelation(value: Partial<GraphWorkRelationAdd>): void {
     if (value.from && value.to && value.type) {
       validateWorkRelation(
@@ -354,10 +380,12 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     }
   }
 
+  /** Encodes the work-character endpoint pair used to identify one graph association. */
   function characterKey(value: GraphWorkCharacterAdd): string {
     return JSON.stringify([entryKey(value.work), entryKey(value.character)])
   }
 
+  /** Encodes a person's work responsibility, including role and optional character context. */
   function personKey(value: GraphPersonWorkAdd): string {
     return JSON.stringify([
       entryKey(value.work),
@@ -367,6 +395,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     ])
   }
 
+  /** Encodes an organization's work responsibility by endpoints and role. */
   function organizationKey(value: GraphOrganizationWorkAdd): string {
     return JSON.stringify([entryKey(value.work), entryKey(value.organization), value.role])
   }
@@ -561,6 +590,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
           'Invalid graph relation actions',
         )
 
+  /** Rejects different work owners when both owners can be established from the graph input. */
   function requireSameKnownOwner(
     left: GraphPartRef,
     right: GraphPartRef | GraphEntryRef,
@@ -659,7 +689,12 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
   }
 }
 
-/** Validate a graph's complete creation maps against its already parsed request; empty maps never stand in for failed creates. */
+/**
+ * Parses complete creation maps against the already parsed graph request.
+ *
+ * Checks exact keys, requested kinds, distinct created identities and consistency with the change
+ * indicator.
+ */
 export function parseLibraryWriteResult(
   input: unknown,
   request: LibraryWriteGraph,
@@ -684,6 +719,7 @@ export function parseLibraryWriteResult(
     'Invalid graph write result',
   )
 
+  /** Requires a result map to contain exactly the keys of its requested creates. */
   function exactKeys(actual: object, expected: readonly { readonly key: string }[]): void {
     if (
       Object.keys(actual).length !== expected.length ||

@@ -22,16 +22,27 @@ export const applicationIdentities = Object.freeze({
   development: { appId: 'me.kisaki.dev', scheme: 'kisaki-dev' },
 } as const)
 
-/** The running application's architecture, not physical hardware architecture. Environment sharing excludes private paths and accounts. */
+/**
+ * Shareable version, operating system and process architecture.
+ *
+ * Architecture describes the running application, rather than physical hardware. The snapshot
+ * excludes private paths and accounts.
+ */
 export interface ApplicationEnvironment {
   readonly version: string
   readonly operatingSystem: { readonly name: string; readonly version: string }
   readonly architecture: 'x64' | 'arm64'
 }
 
+/** The application-managed normal or portable data-root selection. */
 export type DataMode = 'normal' | 'portable'
 
-/** Current root is fixed for this process. A changed nextMode never moves or merges either data directory. */
+/**
+ * Current data-root facts and the portable mode available for the next launch.
+ *
+ * The current root is fixed for this process. Changing nextMode leaves both directories and their
+ * contents in place.
+ */
 export interface DataLocationState {
   readonly current: { readonly mode: DataMode; readonly path: string }
   readonly normalPath: string
@@ -41,13 +52,17 @@ export interface DataLocationState {
     | { readonly status: 'unavailable'; readonly error: ErrorSummary }
 }
 
-/** Mode selection uses an explicitly existing or newly prepared empty target; no arbitrary third data path is accepted. */
+/** A next-launch mode change with explicit intent to use an existing or empty target root. */
 export interface DataModeChange {
   readonly mode: DataMode
   readonly target: 'existing' | 'empty'
 }
 
-/** Registration and OS permission are separate facts. A failed/unsupported read is never projected as disabled. */
+/**
+ * Actual login-item registration and the separate operating-system permission state.
+ *
+ * Unsupported operations and failed reads have explicit states.
+ */
 export type LoginItemState =
   | {
       readonly status: 'available'
@@ -58,7 +73,11 @@ export type LoginItemState =
   | { readonly status: 'unsupported' }
   | { readonly status: 'unavailable'; readonly error: ErrorSummary }
 
-/** isDefault=null means the platform cannot establish the association; it does not mean this app owns it. */
+/**
+ * Actual registration and default-handler status for this application's scheme.
+ *
+ * A null isDefault means the platform cannot establish which application owns the association.
+ */
 export type ProtocolIntegrationState =
   | {
       readonly status: 'available'
@@ -69,11 +88,15 @@ export type ProtocolIntegrationState =
     }
   | { readonly status: 'unavailable'; readonly error: ErrorSummary }
 
+/**
+ * Desktop-entry registration, its read failure, or a platform where registration does not apply.
+ */
 export type DesktopEntryState =
   | { readonly status: 'notApplicable' }
   | { readonly status: 'available'; readonly registered: boolean }
   | { readonly status: 'unavailable'; readonly error: ErrorSummary }
 
+/** Operating-system integration and data-location facts for the running application. */
 export interface SystemIntegrationState {
   readonly loginItem: LoginItemState
   readonly protocol: ProtocolIntegrationState
@@ -81,41 +104,52 @@ export interface SystemIntegrationState {
   readonly dataLocation: DataLocationState
 }
 
+/** Reads and changes actual system registration and next-launch data selection. */
 export interface SystemIntegrationApi {
   /**
-   * Read actual OS integration and data-location facts; unsupported or failed reads remain
-   * explicit states.
+   * Reads actual operating-system integration and data-location facts.
+   *
+   * Unsupported operations and failed reads remain explicit states.
    */
   getState(call?: CallOptions): Promise<SystemIntegrationState>
 
-  /** Apply the OS operation and reread actual state; this is not a preferences draft write. */
+  /** Applies login-item registration and returns the reread operating-system state. */
   setLoginItem(enabled: boolean, call?: CallOptions): Promise<LoginItemState>
 
   /**
-   * Request registration of this application's own scheme and reread its actual association; OS
-   * approval remains separate.
+   * Requests registration of this application's scheme and rereads its actual association.
+   *
+   * Operating-system approval remains separate from registration.
    */
   registerProtocol(call?: CallOptions): Promise<ProtocolIntegrationState>
 
   /**
-   * Register the supported desktop integration and return its actual state; other platforms
-   * remain notApplicable.
+   * Registers supported desktop integration and returns its actual state.
+   *
+   * Platforms without this integration return notApplicable.
    */
   registerDesktopEntry(call?: CallOptions): Promise<DesktopEntryState>
 
   /**
-   * Open the available OS settings for the requested integration; this does not grant permission
-   * or change preferences.
+   * Opens the available operating-system settings for the requested integration.
+   *
+   * Opening settings leaves permissions and preferences under their existing owners.
    */
   openSettings(target: 'loginItem' | 'protocol', call?: CallOptions): Promise<void>
 
   /**
-   * Prepare the explicitly chosen existing or empty root for the next launch. The current root
-   * and its data remain in place.
+   * Prepares the chosen existing or empty root for the next launch.
+   *
+   * The current root and its data remain in place.
    */
   setDataMode(input: DataModeChange, call?: CallOptions): Promise<DataLocationState>
 }
 
+/**
+ * Exit progress for one actual content session and its type-specific target.
+ *
+ * Only game sessions can detach. A failure identifies the close, save or release stage that failed.
+ */
 export type SessionExitProgress = {
   [K in WorkType]: {
     readonly sessionId: string
@@ -134,7 +168,12 @@ export type SessionExitProgress = {
   }
 }[WorkType]
 
-/** The exit coordinator observes accepted work, including preparation before a TaskRun exists. Task counts alone cannot prove readiness. */
+/**
+ * The exit coordinator's intent and progress across sessions and pending recordings.
+ *
+ * The coordinator includes accepted preparation work before a TaskRun exists; task counts alone
+ * cannot establish readiness.
+ */
 export type ApplicationExitState =
   | { readonly status: 'idle' }
   | {
@@ -145,50 +184,57 @@ export type ApplicationExitState =
       readonly error: ErrorSummary | null
     }
 
+/** The outcome of an exit attempt, including cancellation or a reported failure. */
 export type ApplicationExitResult =
   | { readonly outcome: 'exiting' | 'cancelled' }
   | { readonly outcome: 'failed'; readonly error: ErrorSummary }
 
+/** Coordinates application exit with accepted content, recording and resource cleanup. */
 export interface ApplicationExitApi {
-  /**
-   * Read the coordinator's current progress, including accepted work that has not yet created a
-   * task record.
-   */
+  /** Reads exit progress, including accepted work that has not yet created a task record. */
   getState(call?: CallOptions): Promise<ApplicationExitState>
 
   /**
-   * Deliver the current exit state and subsequent changes; releasing observation does not cancel
-   * exit.
+   * Delivers the current exit state and subsequent changes.
+   *
+   * Disposal releases observation while the exit operation continues.
    */
   observe(listener: Listener<ApplicationExitState>): Disposable
 
-  /** Wait for actual content, recording and resource cleanup. Never escalate ordinary close to force termination. */
+  /**
+   * Waits for content, recording and resource cleanup before exit.
+   *
+   * Ordinary closure does not escalate to forced termination.
+   */
   quit(call?: CallOptions): Promise<ApplicationExitResult>
 
   /**
-   * Run the same close, recording and release sequence as quit before restarting; cancellation
-   * preserves completed work.
+   * Runs the same close, recording and release sequence as quit before restarting.
+   *
+   * Cancellation preserves completed work.
    */
   restart(call?: CallOptions): Promise<ApplicationExitResult>
 
-  /** Resume normal acceptance; ended content and saved facts are not recreated or rolled back. */
+  /** Resumes normal acceptance while preserving ended content and saved facts. */
   cancel(call?: CallOptions): Promise<void>
 
-  /** Continue observing the accepted close work, without sending another round of process exit requests. */
+  /** Continues waiting for accepted close work without sending another round of exit requests. */
   continueWaiting(call?: CallOptions): Promise<ApplicationExitResult>
 }
 
+/** Application environment, system integration and coordinated exit capabilities. */
 export interface AppApi {
   readonly systemIntegration: SystemIntegrationApi
   readonly exit: ApplicationExitApi
 
-  /**
-   * Read a shareable snapshot of the running application's version, OS and process architecture,
-   * excluding private paths.
-   */
+  /** Reads a shareable version, operating-system and process-architecture snapshot. */
   getEnvironment(call?: CallOptions): Promise<ApplicationEnvironment>
 
-  /** User-invoked clipboard action; success means the safe environment summary was actually copied, never uploaded. */
+  /**
+   * Copies the safe environment summary to the clipboard on the user's request.
+   *
+   * Resolves after the copy succeeds; the action does not upload the summary.
+   */
   copyEnvironment(call?: CallOptions): Promise<void>
 }
 
@@ -198,7 +244,11 @@ const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
 
 const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
 
-/** Parse the application's release identity, using a separate build ID rather than SemVer build metadata. */
+/**
+ * Parses the application's release version and rejects SemVer build metadata.
+ *
+ * Build identity is carried separately from the release version.
+ */
 export function parseApplicationVersion(input: unknown): string {
   const version = parseExternalValue(parseVersion, input, 'Invalid application version')
   if (version.includes('+')) {
@@ -208,7 +258,7 @@ export function parseApplicationVersion(input: unknown): string {
   return version
 }
 
-/** Parse only the intentionally shareable environment fields, rejecting accidental private diagnostics. */
+/** Parses the shareable environment fields and rejects extra diagnostic fields. */
 export function parseApplicationEnvironment(input: unknown): ApplicationEnvironment {
   return parseValue(
     v.strictObject({
@@ -221,7 +271,9 @@ export function parseApplicationEnvironment(input: unknown): ApplicationEnvironm
   )
 }
 
-/** Failed portable-marker reads remain unavailable rather than silently selecting another profile. */
+/**
+ * Parses current and next-launch data-location facts, preserving unavailable marker-read states.
+ */
 export function parseDataLocationState(input: unknown): DataLocationState {
   return parseValue(
     v.strictObject({
@@ -238,7 +290,7 @@ export function parseDataLocationState(input: unknown): DataLocationState {
   )
 }
 
-/** Validate next-launch mode and explicit target intent without inspecting, moving or creating data directories. */
+/** Parses the next-launch mode and explicit existing-or-empty target intent. */
 export function parseDataModeChange(input: unknown): DataModeChange {
   return parseValue(
     v.strictObject({ mode, target: v.picklist(['existing', 'empty']) }),
@@ -247,7 +299,7 @@ export function parseDataModeChange(input: unknown): DataModeChange {
   )
 }
 
-/** Exit reports bind progress to each actual session, independently of whether another session uses the same work. */
+/** Parses session exit progress and checks that its target and phase match the work type. */
 export function parseSessionExitProgress(input: unknown): SessionExitProgress {
   const value = parseValue(
     v.strictObject({
@@ -278,7 +330,7 @@ export function parseSessionExitProgress(input: unknown): SessionExitProgress {
   return value as SessionExitProgress
 }
 
-/** A failed exit does not imply that previously ended sessions or committed facts have been restored. */
+/** Parses exit progress with distinct session identities and a nonnegative recording count. */
 export function parseApplicationExitState(input: unknown): ApplicationExitState {
   return parseValue(
     v.variant('status', [

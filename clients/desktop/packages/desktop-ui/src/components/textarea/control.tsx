@@ -9,11 +9,16 @@ import type { TextValueProps } from '../../internal/text-control'
 import surface from '../../internal/input-surface.module.css'
 import styles from './styles.module.css'
 
-/** Default text initializes the native reset baseline; value selects controlled mode. */
+/** Native multiline text attributes with controlled value and default reset-baseline support. */
 export interface TextareaProps
   extends Omit<JSX.TextareaHTMLAttributes<HTMLTextAreaElement>, 'value'>, TextValueProps {}
 
-/** Preserve multiline selection, composition and undo; the caller owns persistence. */
+/**
+ * Binds multiline native editing and Field associations while preserving selection, composition and
+ * undo.
+ *
+ * The caller owns persistence.
+ */
 export function Textarea(props: TextareaProps): JSX.Element {
   const [local, rest] = splitProps(props, [
     'value',

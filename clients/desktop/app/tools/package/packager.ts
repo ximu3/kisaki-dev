@@ -16,7 +16,7 @@ import { replaceOutput } from '@kisaki3/tooling/output'
 import { runPnpm } from '@kisaki3/tooling/process'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
-/** Identifies the candidate files by their desktop build and SHA-256 digests. */
+/** Target and build identity with digests of completed desktop packaging outputs. */
 export interface ArtifactReceipt {
   target: DesktopTarget
   version: string
@@ -26,16 +26,22 @@ export interface ArtifactReceipt {
   files: { path: string; sha256: string }[]
 }
 
+/** Verified runtime and owned staging/output paths for one packaging candidate. */
 interface PackagingContext {
   build: DesktopBuild
+  /** Temporary runtime copy consumed by electron-builder. */
   staging: string
+  /** Candidate directory receiving installers, archives and their receipt. */
   output: string
   testOnly: boolean
 }
 
 /**
- * Package the prepared host target, returning the completed artifact receipt path.
- * Adopt the output after all formats and the receipt are written, then release the staging files.
+ * Packages a verified runtime on its matching target runner and returns the artifact receipt path.
+ *
+ * Checks the current input identity and runtime byte inventory before packaging. All formats and
+ * the receipt are prepared before adoption. Returns after temporary staging cleanup; a cleanup
+ * failure can reject after artifacts have been adopted.
  */
 export async function packageDesktop(
   target: DesktopTarget,
@@ -68,6 +74,7 @@ export async function packageDesktop(
 
   const output = join(appRoot, 'dist', target)
   const staging = await mkdtemp(join(appRoot, 'out', 'package-'))
+  /** Removes the temporary runtime copy used by the packager. */
   const cleanup = () => rm(staging, { recursive: true, force: true })
 
   try {
@@ -105,7 +112,12 @@ export async function packageDesktop(
   return join(output, 'artifacts.json')
 }
 
-/** Write the target's builder configuration, including resources and signing requirements. */
+/**
+ * Writes builder configuration for the verified runtime and candidate output directory.
+ *
+ * Production macOS packaging requires the project's signing identity; test-only packaging disables
+ * macOS signing.
+ */
 async function writeBuilderConfig(context: PackagingContext): Promise<string> {
   const { build, staging, output, testOnly } = context
   const config = parseDocument(await readFile(join(appRoot, 'electron-builder.yml'), 'utf8'))
@@ -141,7 +153,12 @@ async function writeBuilderConfig(context: PackagingContext): Promise<string> {
   return configPath
 }
 
-/** Write the ASAR carrier identity and wait for electron-builder to finish the requested formats. */
+/**
+ * Writes carrier identity and builds the requested installer or archive formats.
+ *
+ * Uses explicit project signing policy, disables publication and waits for electron-builder to
+ * exit.
+ */
 async function packageCarrier(
   context: PackagingContext,
   configPath: string,
@@ -178,7 +195,11 @@ async function packageCarrier(
   )
 }
 
-/** Record completed installers, archives and update metadata in the candidate directory. */
+/**
+ * Hashes completed carrier and update files and writes artifacts.json into the candidate.
+ *
+ * Rejects a candidate with no recognized final files.
+ */
 async function writeArtifactReceipt(context: PackagingContext): Promise<void> {
   const names = (await readdir(context.output)).filter(
     (name) =>

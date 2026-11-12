@@ -11,7 +11,12 @@ import {
   parseString,
 } from './validation'
 
-/** Literal text or translations keyed by canonical Unicode locale identifiers. */
+/**
+ * Literal display text or translations keyed by canonical locale identifiers.
+ *
+ * Translation maps include their declaring object's default locale. Contents are displayed
+ * literally, including braces.
+ */
 export type LocalizedText = string | Readonly<Record<string, string>>
 
 /** Known display categories. Unknown categories remain valid and have no capability meaning. */
@@ -26,7 +31,11 @@ export const extensionCategories = Object.freeze([
 /** Categories accepted for newly authored values; readers retain unknown category strings. */
 export type ExtensionCategory = (typeof extensionCategories)[number]
 
-/** Validate a newly authored category. Existing manifests and registry listings use tolerant string reads. */
+/**
+ * Parses a category for a newly authored declaration.
+ *
+ * Manifest and registry readers separately preserve unknown category strings.
+ */
 export function parseCategory(input: unknown, path: FieldPath = []): ExtensionCategory {
   const value = parseString(input, path)
   const category = extensionCategories.find((known) => known === value)
@@ -58,7 +67,11 @@ export interface ExtensionMetadata {
   readonly issues?: string
 }
 
-/** Validate a complete opaque ID; dots delimit syntax only, never ownership or permissions. */
+/**
+ * Parses a canonical opaque extension or registry identifier.
+ *
+ * Dots separate syntax segments and carry no ownership or permission meaning.
+ */
 export function parseId(input: unknown, path: FieldPath = []): string {
   const value = parseString(input, path)
   if (!/^[a-z](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z](?:[a-z0-9-]*[a-z0-9])?)*$/.test(value)) {
@@ -68,7 +81,11 @@ export function parseId(input: unknown, path: FieldPath = []): string {
   return value
 }
 
-/** Canonicalize a locale using the host Intl implementation; invalid tags are format errors. */
+/**
+ * Canonicalizes a locale using the host's Intl implementation.
+ *
+ * Invalid identifiers produce invalid-format at the submitted field path.
+ */
 export function normalizeLocale(input: unknown, path: FieldPath = []): string {
   const locale = parseString(input, path)
   try {
@@ -78,7 +95,12 @@ export function normalizeLocale(input: unknown, path: FieldPath = []): string {
   }
 }
 
-/** Normalize translation keys and require the declared default; preserve literal text and contents. */
+/**
+ * Normalizes locale keys while preserving literal text contents.
+ *
+ * Dictionary values require the declared default and reject canonical-key collisions. Returns a new
+ * dictionary; string inputs retain their contents.
+ */
 export function normalizeLocalizedText(
   input: unknown,
   defaultLocale: string,
@@ -107,8 +129,10 @@ export function normalizeLocalizedText(
 }
 
 /**
- * Select literal text, an exact tag, a compatible language/script variant, or the declared default.
- * Validates and normalizes external values; never interpolates messages or converts writing systems.
+ * Resolves literal display text for the requested locale.
+ *
+ * Prefers an exact canonical tag, then a same-language and same-script variant, then the declared
+ * default. Candidate order is deterministic and text contents are preserved.
  */
 export function resolveLocalizedText(
   input: LocalizedText,
@@ -136,7 +160,11 @@ export function resolveLocalizedText(
   return text[match([requested], candidates, fallback)]!
 }
 
-/** Validate a URL reference without resolving or rewriting its signed spelling. */
+/**
+ * Validates a URL reference and preserves its authored spelling.
+ *
+ * Resolution and network access belong to the consumer.
+ */
 export function parseUrlReference(input: unknown, path: FieldPath = []): string {
   const value = parseString(input, path)
   if (!URL.canParse(value, 'https://registry.invalid/index.json')) {
@@ -146,10 +174,13 @@ export function parseUrlReference(input: unknown, path: FieldPath = []): string 
   return value
 }
 
-/** Validate an absolute web/contact URL without loading it or changing its original spelling. */
+/**
+ * Validates an absolute URL and preserves its authored spelling.
+ *
+ * Scheme policy belongs to the network or open operation that consumes it.
+ */
 export function parseAbsoluteUrl(input: unknown, path: FieldPath = []): string {
   const value = parseUrlReference(input, path)
-  // Scheme policy belongs to the actual network/open operation.
   if (!URL.canParse(value)) {
     rejectFormat(path, 'Expected an absolute URL')
   }
@@ -157,11 +188,17 @@ export function parseAbsoluteUrl(input: unknown, path: FieldPath = []): string {
   return value
 }
 
-/** Parse common static fields, preserving unknown categories and normalizing only locale identifiers. */
+/**
+ * Parses shared display metadata and normalizes locale identifiers.
+ *
+ * Preserves free text and unknown category strings; returns only defined metadata fields.
+ */
 export function parseMetadata(value: Record<string, unknown>, path: FieldPath): ExtensionMetadata {
   const defaultLocale = normalizeLocale(value.defaultLocale, [...path, 'defaultLocale'])
+  /** Parses a localized field using this metadata object's default locale. */
   const localized = (input: unknown, location: FieldPath) =>
     normalizeLocalizedText(input, defaultLocale, location)
+  /** Parses a metadata string list while preserving item order and contents. */
   const strings = (input: unknown, location: FieldPath) => parseArray(input, location, parseString)
 
   return {

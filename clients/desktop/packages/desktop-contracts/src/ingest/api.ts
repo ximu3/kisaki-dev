@@ -15,7 +15,12 @@ import * as v from 'valibot'
 import { parseExecutionFailure, DesktopError } from '../errors'
 import { parseValue, nonnegativeInteger, unique } from '../validation'
 
-/** total stays the original input count; cancellation retains only actually completed item reports and their legal partial results. */
+/**
+ * Indexed outcomes for a fixed batch of adoption inputs.
+ *
+ * Total retains the original input count. Cancellation reports only completed items and their legal
+ * partial results.
+ */
 export interface IngestBatchResult<Result> {
   readonly total: number
   readonly items: readonly (
@@ -24,11 +29,16 @@ export interface IngestBatchResult<Result> {
   )[]
 }
 
-/** Each operation waits for its actual end, including graph commit and applicable initial local-content verification. */
+/**
+ * Complete metadata adoption operations for additions and fixed-target updates.
+ *
+ * Each call waits for graph commit and applicable initial local-content verification.
+ */
 export interface IngestApi {
   /**
-   * Complete identity resolution, source acquisition, preparation and creation for one input;
-   * alreadyExists does not adopt initial personal values.
+   * Completes identity resolution, source acquisition, preparation and creation for one input.
+   *
+   * An alreadyExists outcome leaves initial personal values unadopted.
    */
   add<T extends EntryType>(
     input: IngestAddInput<T>,
@@ -36,8 +46,9 @@ export interface IngestApi {
   ): Promise<IngestAddResult<T>>
 
   /**
-   * Run complete additions with per-item commits and indexed outcomes; ordinary item failure
-   * permits later items, while cancellation retains completed facts.
+   * Runs additions with per-item commits and indexed outcomes.
+   *
+   * Ordinary item failure permits later items. Cancellation retains completed facts.
    */
   addMany(
     inputs: readonly IngestAddInput[],
@@ -45,8 +56,9 @@ export interface IngestApi {
   ): Promise<IngestBatchResult<IngestAddResult>>
 
   /**
-   * Fix the existing target and authorized fields before acquisition and adoption; source
-   * results cannot redirect the target or broaden the update.
+   * Fixes the existing target and authorized fields before acquisition and adoption.
+   *
+   * Source results cannot redirect the target or broaden the update.
    */
   update(
     ...args: {
@@ -59,8 +71,9 @@ export interface IngestApi {
   ): Promise<IngestUpdateResult>
 
   /**
-   * Run the fixed update inputs with per-item commits and indexed outcomes, preserving completed
-   * items if later work fails or is cancelled.
+   * Runs fixed-target updates with per-item commits and indexed outcomes.
+   *
+   * Completed items remain committed when later work fails or is cancelled.
    */
   updateMany(
     inputs: readonly IngestUpdateItem[],
@@ -68,22 +81,25 @@ export interface IngestApi {
   ): Promise<IngestBatchResult<IngestUpdateResult>>
 }
 
-/** Native scanner/batch collaboration reuses the same complete business work inside an already admitted execution, without nested tasks. */
+/**
+ * Complete adoption work inside an already accepted native execution context.
+ *
+ * Scanner and batch collaboration reuse this surface without creating nested tasks.
+ */
 export interface IngestExecutor {
-  /**
-   * Execute the same complete addition inside the caller's accepted execution context without
-   * creating a nested task.
-   */
+  /** Executes the complete addition within the caller's accepted execution context. */
   add(input: IngestAddInput, context: ExecutionContext): Promise<IngestAddResult>
 
-  /**
-   * Execute the same fixed-target update inside the caller's accepted execution context without
-   * exposing intermediate write stages.
-   */
+  /** Executes the complete fixed-target update within the caller's accepted execution context. */
   update(input: IngestUpdateItem, context: ExecutionContext): Promise<IngestUpdateResult>
 }
 
-/** Validate complete or partial batch reporting without manufacturing failed items for work that did not start. */
+/**
+ * Parses batch outcomes with unique, in-range input indices.
+ *
+ * Complete mode requires one outcome per input. Partial mode accepts the actual subset without
+ * manufacturing unstarted-item failures.
+ */
 export function parseIngestBatchResult<Result>(
   input: unknown,
   parseResult: (value: unknown) => Result,

@@ -5,12 +5,19 @@ import type { JSX } from 'solid-js'
 import { classes } from '../../internal/dom'
 import styles from './styles.module.css'
 
-/** Native scroll container; give a label when exposing it as a keyboard region. */
+/**
+ * Native scrolling viewport attributes and allowed visible scroll axes.
+ *
+ * Callers provide a label when exposing it as a keyboard region.
+ */
 export interface ScrollAreaProps extends JSX.HTMLAttributes<HTMLDivElement> {
   orientation?: 'vertical' | 'horizontal' | 'both'
 }
 
-/** Preserve browser scrolling, selection and wheel behavior, including horizontal table access. */
+/**
+ * Renders a native scrolling viewport with keyboard entry by default and browser-owned wheel and
+ * selection behavior.
+ */
 export function ScrollArea(props: ScrollAreaProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'orientation'])
 

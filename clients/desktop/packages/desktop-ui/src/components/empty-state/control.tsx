@@ -5,14 +5,17 @@ import type { JSX } from 'solid-js'
 import { classes } from '../../internal/dom'
 import styles from './styles.module.css'
 
-/** Empty content is distinct from loading and failure; actions are supplied as children. */
+/**
+ * Empty-content heading, optional explanation and decorative icon, with actions supplied as
+ * children.
+ */
 export interface EmptyStateProps extends JSX.HTMLAttributes<HTMLDivElement> {
   heading: JSX.Element
   description?: JSX.Element
   icon?: JSX.Element
 }
 
-/** Present a named empty region with the caller's applicable next action. */
+/** Presents empty content with the caller's explanation and applicable next actions. */
 export function EmptyState(props: EmptyStateProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'heading', 'description', 'icon', 'children'])
 

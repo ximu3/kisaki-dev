@@ -1,4 +1,4 @@
-/** @fileoverview Assembles the complete domain English message tree. */
+/** @fileoverview Combines domain English messages into the validation and generated-type baseline. */
 
 import { actionMessages } from './actions'
 import { libraryMessages } from './library'
@@ -7,7 +7,7 @@ import { resourceMessages } from './resources'
 import { scannerMessages } from './scanner'
 import { showcaseMessages } from './showcase'
 
-/** One complete message tree supplies public source text, generated call types and translation validation. */
+/** English source catalog shared by call-type generation and translation validation. */
 export const englishMessages = {
   actions: actionMessages,
   library: libraryMessages,

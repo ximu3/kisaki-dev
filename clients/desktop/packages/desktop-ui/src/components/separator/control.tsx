@@ -5,13 +5,17 @@ import type { JSX } from 'solid-js'
 import { classes } from '../../internal/dom'
 import styles from './styles.module.css'
 
-/** Decorative by default; semantic separators expose their orientation. */
+/**
+ * Divider attributes with horizontal or vertical geometry and optional separator semantics.
+ *
+ * The default is decorative.
+ */
 export interface SeparatorProps extends JSX.HTMLAttributes<HTMLDivElement> {
   orientation?: 'horizontal' | 'vertical'
   decorative?: boolean
 }
 
-/** Separate adjacent content without adding a keyboard stop. */
+/** Separates adjacent content without adding a keyboard stop. */
 export function Separator(props: SeparatorProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'orientation', 'decorative'])
 

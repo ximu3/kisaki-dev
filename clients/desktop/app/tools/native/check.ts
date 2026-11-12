@@ -5,7 +5,10 @@ import { appRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
 import { run } from '@kisaki3/tooling/process'
 
-/** Check maintained Rust sources in the crate's pinned toolchain and target cache. */
+/**
+ * Checks Rust formatting and Clippy using the pinned crate toolchain and host-specific target
+ * cache.
+ */
 export async function checkNative(signal?: AbortSignal): Promise<void> {
   const cwd = join(appRoot, 'native')
   await run('cargo', ['fmt', '--all', '--check'], { cwd, signal })

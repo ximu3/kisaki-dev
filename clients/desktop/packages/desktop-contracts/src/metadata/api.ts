@@ -12,15 +12,19 @@ import type { MetadataSearchRequest, MetadataImageSearchRequest } from './search
 import type { CallOptions } from '../operations'
 import type { MetadataFetchInput, MetadataFetchResult } from './fetch'
 
-/** Search one named provider, or fetch through one fixed profile; neither operation writes local catalog data. */
+/**
+ * Provider search, profile-based metadata fetching and participant management.
+ *
+ * Search and fetch return source information without writing local catalog data.
+ */
 export interface MetadataApi {
   readonly providers: MetadataProvidersApi
   readonly fieldProcessors: MetadataFieldProcessorsApi
   readonly profiles: MetadataProfilesApi
 
   /**
-   * Search the explicitly selected provider and preserve its result identities, matching
-   * evidence and pagination; do not adopt local records.
+   * Searches the selected provider and preserves result identities, matching evidence and
+   * pagination.
    */
   search<T extends EntryType>(
     input: MetadataSearchRequest<T>,
@@ -28,8 +32,8 @@ export interface MetadataApi {
   ): Promise<MetadataSearchResult<T>>
 
   /**
-   * Search the named provider for the requested image use, preserving source candidates without
-   * downloading or adopting them.
+   * Searches the selected provider for an image use and returns source candidates without
+   * downloading them.
    */
   searchImages<T extends EntryType>(
     input: MetadataImageSearchRequest<T>,
@@ -37,8 +41,9 @@ export interface MetadataApi {
   ): Promise<MetadataImageSearchResult>
 
   /**
-   * Fix the selected profile, obtain and compose source facts into a validated candidate, and
-   * release source sessions before completion.
+   * Captures the selected profile and composes source facts into a validated candidate.
+   *
+   * Source sessions are released before the operation completes.
    */
   fetch<T extends EntryType>(
     input: MetadataFetchInput<T>,

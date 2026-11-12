@@ -43,46 +43,60 @@ const icons: Record<MarkdownCommand, string> = {
 
 const standardCommands = Object.freeze(Object.keys(icons) as MarkdownCommand[])
 
-/** A host action runs against this mounted editor. IDs are unique within its toolbar. */
+/** Host action applied to the mounted editor, identified uniquely within its toolbar. */
 export interface MarkdownToolbarAction {
   id: string
   label: string
+  /** Renders the action's decorative toolbar icon. */
   icon: () => JSX.Element
 
   /** Set for actions such as opening a preview that also work on read-only source. */
   allowReadOnly?: boolean
+  /** Checks action availability against the current editor state. */
   isEnabled?: (state: EditorState) => boolean
+  /** Executes the action against the current mounted editor view. */
   run: (view: EditorView) => void
 }
 
-/** A command name uses the package's icon and editing behavior. */
+/** Built-in formatting command or fully described host toolbar action. */
 export type MarkdownToolbarItem<C extends MarkdownCommand = MarkdownCommand> =
   C | MarkdownToolbarAction
 
-/** Supply the complete order or derive it from the standard commands. An empty list hides the bar. */
+/**
+ * Complete toolbar order or a factory deriving it from standard commands.
+ *
+ * An empty result hides the toolbar.
+ */
 export type MarkdownToolbarConfig<C extends MarkdownCommand = MarkdownCommand> =
   | readonly MarkdownToolbarItem<C>[]
   | ((standard: readonly MarkdownCommand[]) => readonly MarkdownToolbarItem<C>[])
 
+/** Live editor state, localized labels and optional toolbar composition. */
 interface ToolbarProps<C extends MarkdownCommand> {
   view: EditorView
   state: EditorState
   label: string
+  /** Returns the current localized label for a built-in toolbar command. */
   commandLabel: ((command: C) => string) | undefined
+  /** Provides or derives the complete toolbar order; undefined uses the standard command set. */
   config: MarkdownToolbarConfig<C> | undefined
 }
 
+/** Adapts a built-in command to a labeled action with its package icon and history availability. */
 function commandAction<C extends MarkdownCommand>(
   command: C,
   label: (command: C) => string,
 ): MarkdownToolbarAction {
   return {
     id: command,
+    /** Reads the current localized label for the built-in command. */
     get label() {
       return label(command)
     },
+    /** Renders the package-owned glyph for the built-in command. */
     icon: () => <Icon path={icons[command]} />,
 
+    /** Checks undo or redo availability while leaving ordinary formatting commands enabled. */
     isEnabled: (state) => {
       if (command === 'undo') {
         return undoDepth(state) > 0
@@ -93,11 +107,16 @@ function commandAction<C extends MarkdownCommand>(
 
       return true
     },
+    /** Applies the built-in command to the supplied live editor. */
     run: (view) => runMarkdownCommand(view, command),
   }
 }
 
-/** Pointer actions retain the text selection. Tab enters once and arrows follow the visible order. */
+/**
+ * Renders formatting actions with one tab entry and arrow navigation in visible order.
+ *
+ * Pointer activation preserves the editor's text selection.
+ */
 export function MarkdownToolbar<C extends MarkdownCommand>(props: ToolbarProps<C>): JSX.Element {
   let root!: HTMLDivElement
   const buttons = createMemo(() => {
@@ -127,6 +146,9 @@ export function MarkdownToolbar<C extends MarkdownCommand>(props: ToolbarProps<C
       )
       .map((action) => action.id)
   })
+  /**
+   * Chooses the remembered enabled action or the first available action as the toolbar's tab entry.
+   */
   const tabStop = () => enabled().find((id) => id === focusedId()) ?? enabled()[0]
   const navigate = createFocusNavigation(
     () => root,
@@ -147,6 +169,7 @@ export function MarkdownToolbar<C extends MarkdownCommand>(props: ToolbarProps<C
       >
         <For each={Array.from(buttons().keys())}>
           {(id) => {
+            /** Reads current action data for the stable toolbar item identity. */
             const action = () => buttons().get(id)!
 
             return (

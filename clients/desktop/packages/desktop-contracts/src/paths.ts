@@ -4,12 +4,20 @@ import { parseValue, nonemptyText } from './validation'
 import { DesktopError } from './errors'
 import * as v from 'valibot'
 
-/** Exact paths treat wildcard-looking characters literally; glob syntax is *, ? and whole ** segments only. */
+/**
+ * Root-relative literal path or glob with an explicit case-matching policy.
+ *
+ * Literal paths preserve wildcard-looking characters. Globs support *, ? and whole ** segments.
+ */
 export type PathFilter =
   | { readonly kind: 'path'; readonly path: string }
   | { readonly kind: 'glob'; readonly pattern: string; readonly ignoreCase: boolean }
 
-/** Check absolute syntax without resolving symlinks, folding .. or guessing filesystem name equivalence. */
+/**
+ * Checks absolute path syntax while preserving the supplied spelling.
+ *
+ * The host owns symlink resolution, parent traversal and filesystem name equivalence.
+ */
 export function parseAbsolutePath(input: unknown): string {
   const value = parseValue(nonemptyText, input, 'Invalid absolute path')
   if (
@@ -26,7 +34,12 @@ export function parseAbsolutePath(input: unknown): string {
   return value
 }
 
-/** Root is '.', other paths contain nonempty slash-separated segments with no root escape or drive prefix. */
+/**
+ * Parses a root-relative slash-separated path.
+ *
+ * The root is represented by a dot. Other paths require nonempty segments and reject dot segments,
+ * parent traversal and drive prefixes.
+ */
 export function parseRelativePath(input: unknown): string {
   const value = parseValue(nonemptyText, input, 'Invalid relative path')
   if (value === '.') {
@@ -43,7 +56,12 @@ export function parseRelativePath(input: unknown): string {
   return value
 }
 
-/** Validate the closed filter syntax; character-class and brace-looking text remains literal. */
+/**
+ * Parses a literal path or restricted glob and requires recursive wildcards to occupy complete
+ * segments.
+ *
+ * Character-class and brace-looking text remains literal.
+ */
 export function parsePathFilter(input: unknown): PathFilter {
   const value = parseValue(
     v.variant('kind', [

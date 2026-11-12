@@ -5,20 +5,36 @@ import type { VirtualElement } from '@floating-ui/dom'
 import { createEffect, onCleanup, onMount } from 'solid-js'
 import type { Accessor } from 'solid-js'
 
-/** Placement uses physical viewport edges; start/end follow the anchor's text direction. */
+/** Preferred physical popup side with start or end alignment interpreted by Floating UI. */
 export type PopupPlacement =
   'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'right-start' | 'left-start'
 
-/** Native modal scope follows DOM ancestry. Position observers live only while open. */
+/**
+ * Connects native popup visibility, dismissal and collision-aware placement within the current
+ * Solid owner.
+ *
+ * Refs are available at mount. Position observers run only while open, and owner cleanup releases
+ * listeners and hides the popup.
+ */
 export function createPopup(options: {
+  /** Returns the mounted native popover element. */
   element: Accessor<HTMLElement>
+  /** Returns the interaction anchor used for native popover ancestry and focus restoration. */
   anchor: Accessor<HTMLElement>
+  /**
+   * Returns a geometry reference when positioning should use a different element from the
+   * interaction anchor.
+   */
   reference?: Accessor<HTMLElement> | undefined
 
+  /** Reads the requested open state from the popup owner. */
   open: Accessor<boolean>
+  /** Reports a requested state change after native dismissal or Escape. */
   change: (open: boolean) => void
 
+  /** Reads the preferred placement before collision adjustment. */
   placement?: Accessor<PopupPlacement>
+  /** Reads an optional pointer anchor in viewport CSS pixels. */
   point?: Accessor<{ x: number; y: number } | undefined>
   matchWidth?: boolean
   restoreFocus?: boolean
@@ -29,6 +45,7 @@ export function createPopup(options: {
     const anchor = options.anchor()
 
     let lastHighlight: HTMLElement | null = null
+    /** Retains the last item highlight for exit presentation and reports native closure. */
     const toggle = (event: ToggleEvent) => {
       lastHighlight?.removeAttribute('data-exit-highlight')
       lastHighlight = null
@@ -47,6 +64,10 @@ export function createPopup(options: {
         options.change(false)
       }
     }
+    /**
+     * Requests closing this open popup and returns focus to its connected anchor when restoration
+     * is enabled.
+     */
     const escape = (event: KeyboardEvent) => {
       if (
         event.defaultPrevented ||
@@ -82,6 +103,7 @@ export function createPopup(options: {
       const reference: HTMLElement | VirtualElement = point
         ? {
             contextElement: anchor,
+            /** Returns a zero-size viewport rectangle at the supplied pointer position. */
             getBoundingClientRect: () => new DOMRect(point.x, point.y, 0, 0),
           }
         : (options.reference?.() ?? anchor)
@@ -91,6 +113,10 @@ export function createPopup(options: {
       }
       node.showPopover({ source: anchor })
 
+      /**
+       * Computes collision-adjusted geometry and applies it while the current positioning lifetime
+       * remains active.
+       */
       const update = () => {
         void computePosition(reference, node, {
           strategy: 'fixed',

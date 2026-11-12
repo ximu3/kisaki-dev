@@ -24,7 +24,11 @@ import { RangeInput } from '../../../internal/range/control'
 import popup from '../../../internal/popup/surface.module.css'
 import styles from './styles.module.css'
 
-/** Typed CSS color syntax is retained; picker gestures produce hex with alpha when needed. */
+/**
+ * Color-text input with an alpha-capable picker and localized channel and validation labels.
+ *
+ * Typed color syntax is retained; picker gestures produce hexadecimal color values.
+ */
 export interface ColorInputProps extends Omit<InputProps, 'type'> {
   pickerLabel: string
   hueLabel: string
@@ -34,7 +38,10 @@ export interface ColorInputProps extends Omit<InputProps, 'type'> {
   invalidColorMessage: string
 }
 
-/** Text and picker edits share a form value. Invalid text stays available for correction. */
+/**
+ * Connects color text and picker edits to one form value while retaining invalid text for
+ * correction.
+ */
 export function ColorInput(props: ColorInputProps): JSX.Element {
   const toHsv = converter('hsv')
   const [local, rest] = splitProps(props, [
@@ -65,7 +72,9 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
   let trigger!: HTMLButtonElement
   let picker!: HTMLDivElement
   let hue!: HTMLInputElement
+  /** Checks whether disabled or readonly state prevents picker interaction. */
   const blocked = () => (props.disabled ?? field.disabled) || props.readOnly
+  /** Formats the parsed color for the swatch or returns transparency for an unparseable value. */
   const swatch = () => (parsed() ? formatHex8(parsed()) : 'transparent')
 
   createEffect(() => {
@@ -74,11 +83,16 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
       setColor({ ...next, h: next.h ?? untrack(color).h ?? 0 })
     }
   })
+  /**
+   * Updates selected HSV channels and requests the corresponding hexadecimal form value, including
+   * alpha when needed.
+   */
   const commit = (next: Partial<Hsv>) => {
     const updated = { ...color(), ...next }
     setColor(updated)
     change((updated.alpha ?? 1) < 1 ? formatHex8(updated) : formatHex(updated))
   }
+  /** Maps pointer coordinates on the color plane to bounded saturation and brightness values. */
   const paint = (event: PointerEvent & { currentTarget: HTMLDivElement }) => {
     const rect = event.currentTarget.getBoundingClientRect()
     commit({

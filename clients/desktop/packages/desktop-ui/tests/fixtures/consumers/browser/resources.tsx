@@ -33,6 +33,7 @@ import {
 import type { Edge } from '@kisaki3/desktop-ui/drag'
 import type {} from './api.js'
 
+/** Synthetic chart coordinate with two plotted series values. */
 type Datum = { x: number; y: number; z: number }
 
 const labels: Record<MarkdownCommand, string> = {
@@ -53,7 +54,7 @@ const labels: Record<MarkdownCommand, string> = {
 const initial =
   '# Sample\n\nSelect text and use the toolbar.\n\n- [x] Completed task\n- [ ] Pending task\n\nA footnote[^a].\n\n[^a]: Local reference.\n\n| A | B |\n| - | - |\n| 1 | 2 |\n\n<img src=x onerror=alert(1)>\n\n![Unresolved](https://example.invalid/untrusted.png)\n\n[External](https://example.com/)'
 
-/** Mutable data belongs to the consumer; each capability releases only the resources it creates. */
+/** Mounts packed Markdown, chart and drag capabilities against consumer-owned synthetic data. */
 export default function Resources(): JSX.Element {
   const [text, setText] = createSignal(initial)
   const [readOnly, setReadOnly] = createSignal(false)
@@ -61,7 +62,9 @@ export default function Resources(): JSX.Element {
   const insertReference: MarkdownToolbarAction = {
     id: 'reference',
     label: 'Insert reference',
+    /** Renders the fixture's decorative reference-action symbol. */
     icon: () => <span aria-hidden="true">§</span>,
+    /** Inserts synthetic reference text through the active editor transaction. */
     run: (editor) => editor.dispatch(editor.state.replaceSelection('Reference')),
   }
 
@@ -81,14 +84,19 @@ export default function Resources(): JSX.Element {
   createDraggable(() => ({
     element: source,
     dragHandle: handle,
+    /** Supplies the synthetic drag source's stable identity. */
     getInitialData: () => ({ id: 'sample' }),
   }))
   createDropTarget(() => ({
     element: target,
+    /** Publishes target identity and the nearest supported vertical drop edge. */
     getData: ({ input, element }) =>
       attachClosestEdge({ id: 'target' }, { input, element, allowedEdges: ['top', 'bottom'] }),
+    /** Displays the currently observed target insertion edge. */
     onDrag: ({ self }) => setEdge(extractClosestEdge(self.data)),
+    /** Clears insertion feedback when the pointer leaves the target. */
     onDragLeave: () => setEdge(null),
+    /** Records the synthetic drop outcome and clears its insertion marker. */
     onDrop: () => {
       setEdge(null)
       setFeedback('Sample moved')
@@ -124,7 +132,9 @@ export default function Resources(): JSX.Element {
           commandLabel={(command) => labels[command]}
           toolbar={(standard) => (sourceOnly() ? [] : [...standard, insertReference])}
           onViewChange={(current) => {
+            /** Reads the current borrowed editor document or returns empty text after release. */
             window.fixture.editorText = () => current?.state.doc.toString() ?? ''
+            /** Selects the fixed sample heading range for formatting-command checks. */
             window.fixture.editorSelect = () =>
               current?.dispatch({ selection: { anchor: 2, head: 8 } })
             window.fixture.editorReleased = current === undefined

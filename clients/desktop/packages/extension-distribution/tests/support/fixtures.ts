@@ -7,7 +7,7 @@ import type { RegistryArtifact, RegistryDocument, RegistryRelease } from '../../
 export const fixturePublicKey =
   '-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=\n-----END PUBLIC KEY-----\n'
 
-/** Create complete package facts for tests; overrides intentionally allow independent runtime conditions. */
+/** Creates synthetic package facts with caller-supplied field overrides. */
 export function manifest(overrides: Partial<ExtensionManifest> = {}): ExtensionManifest {
   return {
     schemaVersion: 1,
@@ -22,7 +22,7 @@ export function manifest(overrides: Partial<ExtensionManifest> = {}): ExtensionM
   }
 }
 
-/** Create one synthetic archive reference; no file is downloaded by these tests. */
+/** Creates a synthetic .kisx reference with overridable byte and compatibility facts. */
 export function artifact(overrides: Partial<RegistryArtifact> = {}): RegistryArtifact {
   return {
     targets: ['windows-x64'],
@@ -34,7 +34,7 @@ export function artifact(overrides: Partial<RegistryArtifact> = {}): RegistryArt
   }
 }
 
-/** Create a release with a fixed timestamp, independent of test order and the current clock. */
+/** Creates a synthetic release with a fixed publication timestamp and explicit field overrides. */
 export function release(
   version = '1.0.0',
   overrides: Partial<RegistryRelease> = {},
@@ -48,7 +48,11 @@ export function release(
   }
 }
 
-/** Create an unsigned, populated flat registry with its current display separate from package facts. */
+/**
+ * Creates an unsigned registry fixture with one extension and the supplied releases.
+ *
+ * Listing names intentionally differ from package names to exercise metadata provenance.
+ */
 export function registry(
   releases: readonly RegistryRelease[] = [release()],
   publicKey = fixturePublicKey,

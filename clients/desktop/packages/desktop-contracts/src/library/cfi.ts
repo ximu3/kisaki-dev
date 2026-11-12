@@ -2,7 +2,7 @@
 
 import { DesktopError } from '../errors'
 
-/** CFI adopts XML's Char production, including tab, LF and CR; other discouraged scalars remain legal. */
+/** Checks the XML Char production used by CFI assertions, including tab, LF and CR. */
 function isXmlCharacter(codePoint: number): boolean {
   return (
     codePoint === 0x9 ||
@@ -14,10 +14,15 @@ function isXmlCharacter(codePoint: number): boolean {
   )
 }
 
-/** Validate the point subset of EPUB CFI 1.1; ranges are represented by two complete ReadingAnchor values. */
+/**
+ * Validates and preserves a point in the EPUB CFI 1.1 subset.
+ *
+ * Document-tree resolution is separate. Ranges use two complete ReadingAnchor values.
+ */
 export function parseCfiPoint(value: string): string {
   let offset = 8
 
+  /** Rejects invalid CFI point syntax with the shared InvalidInput classification. */
   function invalid(): never {
     throw new DesktopError('InvalidInput', 'Invalid EPUB CFI point')
   }
@@ -27,6 +32,7 @@ export function parseCfiPoint(value: string): string {
   }
   const end = value.length - 1
 
+  /** Consumes a canonical integer or decimal token without converting it to a JavaScript number. */
   function numberToken(integer: boolean): string {
     const start = offset
     while (offset < end && /[0-9]/.test(value[offset]!)) {
@@ -50,6 +56,7 @@ export function parseCfiPoint(value: string): string {
     return value.slice(start, offset)
   }
 
+  /** Consumes an exact nonnegative spatial percentage no greater than 100. */
   function spatialCoordinate(): void {
     const token = numberToken(false)
     const integerPart = token.split('.')[0]!
@@ -60,6 +67,10 @@ export function parseCfiPoint(value: string): string {
     }
   }
 
+  /**
+   * Consumes a nonempty assertion value, validating escapes, XML characters and optional space
+   * exclusion.
+   */
   function assertionValue(noSpace = false): void {
     const start = offset
     while (offset < end && !',;]='.includes(value[offset]!)) {
@@ -85,6 +96,7 @@ export function parseCfiPoint(value: string): string {
     }
   }
 
+  /** Consumes an optional bracketed assertion and its extension parameters. */
   function assertion(): void {
     if (value[offset] !== '[') {
       return
@@ -121,6 +133,7 @@ export function parseCfiPoint(value: string): string {
     offset += 1
   }
 
+  /** Consumes a character, temporal or spatial offset and its optional assertion. */
   function locationOffset(): void {
     if (value[offset] === ':') {
       offset += 1

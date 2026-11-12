@@ -30,11 +30,16 @@ import { parseThemeRef } from '../appearance'
 import { parsePageRef } from './pages'
 import { partWorkType } from '../library/parts'
 
-/** External addresses resolve only an existing root Entry in the receiving library; parts always use explicit local IDs. */
+/**
+ * Explicit local identity or external identity used to resolve an existing root entry.
+ *
+ * Parts always use local IDs.
+ */
 export type EntryIdentifier =
   | { readonly type: 'local'; readonly id: string }
   | ({ readonly type: 'external' } & ExternalIdentity)
 
+/** Optional detail-view selectors permitted for each entry kind. */
 export interface EntryViewSelectionByType {
   readonly game: { readonly launchConfigId?: string }
 
@@ -56,8 +61,10 @@ export interface EntryViewSelectionByType {
   readonly organization: object
 }
 
+/** Detail-view selection constrained to the chosen entry kind. */
 export type EntryViewSelection<T extends EntryType> = EntryViewSelectionByType[T]
 
+/** Root-entry navigation intent combining its kind, identity and permitted detail selectors. */
 export type EntryViewTarget = {
   [K in EntryType]: {
     readonly type: 'entry'
@@ -66,7 +73,11 @@ export type EntryViewTarget = {
   } & EntryViewSelection<K>
 }[EntryType]
 
-/** Search navigation never starts content or writes preferences; each target is an existing native navigation capability. */
+/**
+ * Native navigation destination returned by search.
+ *
+ * Navigating to it opens the relevant view without starting content or writing preferences.
+ */
 export type SearchTarget =
   | { readonly type: 'entry'; readonly ref: EntryRef }
   | {
@@ -88,7 +99,12 @@ export type SearchTarget =
   | { readonly type: 'page'; readonly ref: PageRef }
   | { readonly type: 'preference'; readonly key: PreferenceKey }
 
-/** Internal management targets do not automatically receive a public URL or cross-restart notification restoration. */
+/**
+ * Native view or management destination with optional focused-object selection.
+ *
+ * Internal destinations do not automatically gain a public URL or notification restoration across
+ * restarts.
+ */
 export type NativeViewTarget =
   | { readonly type: 'library' }
   | { readonly type: 'entries'; readonly entryType: EntryType }
@@ -116,7 +132,7 @@ export const entrySelectionEntries = {
   organization: {},
 }
 
-/** Validate explicit root identity without inferring local/external status from the string's appearance. */
+/** Parses an explicitly tagged local or external root identity. */
 export function parseEntryIdentifier(input: unknown): EntryIdentifier {
   return parseValue(
     v.variant('type', [
@@ -128,13 +144,18 @@ export function parseEntryIdentifier(input: unknown): EntryIdentifier {
   )
 }
 
+/** Rejects simultaneous anime episode and extra selectors. */
 function checkPartSelection(selection: object): void {
   if (Object.hasOwn(selection, 'episodeId') && Object.hasOwn(selection, 'extraId')) {
     throw new DesktopError('InvalidInput', 'Episode and extra selectors are mutually exclusive')
   }
 }
 
-/** Shared entry-selector rules for internal navigation and public URLs. Real membership is checked by the receiving owner. */
+/**
+ * Parses kind-specific selectors shared by internal navigation and public URLs.
+ *
+ * The receiving owner checks actual object membership.
+ */
 export function parseEntryViewSelection<T extends EntryType>(
   type: T,
   input: unknown,
@@ -146,7 +167,11 @@ export function parseEntryViewSelection<T extends EntryType>(
   return value as EntryViewSelection<T>
 }
 
-/** Validate native targets without creating a window, resolving IDs or changing visibility. */
+/**
+ * Parses a native destination and its selector relationships.
+ *
+ * Window creation, identity resolution and visibility changes belong to navigation execution.
+ */
 export function parseNativeViewTarget(input: unknown): NativeViewTarget {
   const record = parseRecord(input)
   if (record.type === 'entry') {
@@ -223,7 +248,11 @@ export function parseNativeViewTarget(input: unknown): NativeViewTarget {
   return value
 }
 
-/** Validate the closed target family and the medium implied by a formal part. Actual ownership still requires the library. */
+/**
+ * Parses a search destination and checks that a part's work medium matches its kind.
+ *
+ * The library checks actual ownership.
+ */
 export function parseSearchTarget(input: unknown): SearchTarget {
   const value = parseValue(
     v.variant('type', [

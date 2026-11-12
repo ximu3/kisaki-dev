@@ -11,7 +11,11 @@ import { runCli } from './cli'
 import { replaceOutput } from './output'
 import { run, runPnpm } from './process'
 
-/** Replace the project's archive only after pnpm has finished writing it. */
+/**
+ * Creates a pnpm tarball and adopts it after packing finishes.
+ *
+ * Preparation failure or cancellation before handoff preserves the previous archive.
+ */
 async function packPackage(project: string, signal: AbortSignal): Promise<void> {
   await replaceOutput(
     project,
@@ -23,7 +27,12 @@ async function packPackage(project: string, signal: AbortSignal): Promise<void> 
   )
 }
 
-/** Inspect the prepared tarball with publint and the installed ATTW CLI, without repacking. */
+/**
+ * Checks the prepared tarball with publint and the installed ATTW CLI.
+ *
+ * The caller prepares out/package/package.tgz first. Metadata diagnostics are printed, and failed
+ * metadata or declaration checks reject the operation.
+ */
 async function checkPackage(project: string, signal: AbortSignal): Promise<void> {
   const archive = join(project, 'out/package/package.tgz')
   const bytes = await readFile(archive)

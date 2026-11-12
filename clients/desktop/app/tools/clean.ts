@@ -7,7 +7,10 @@ import { removeOutputs } from '@kisaki3/tooling/output'
 import { appRoot } from './lib/paths'
 import { runCli } from '@kisaki3/tooling/cli'
 
-/** Remove declared application outputs after its tasks stop; preserve caches and profiles. */
+/**
+ * Removes declared desktop outputs after their active tasks stop; caches and profiles remain owned
+ * separately.
+ */
 export function cleanOutputs(signal?: AbortSignal): Promise<void> {
   return removeOutputs(appRoot, ['out', 'dist'], signal)
 }

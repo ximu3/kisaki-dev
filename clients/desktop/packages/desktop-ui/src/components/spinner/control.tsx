@@ -6,12 +6,16 @@ import { classes } from '../../internal/dom'
 import { Icon, mdiLoading } from '../../internal/icon/glyph'
 import styles from './styles.module.css'
 
-/** The label supplies the accessible status; omit it for a decorative indicator beside existing text. */
+/**
+ * Busy-indicator attributes with an optional accessible status label.
+ *
+ * Without a label the indicator is decorative.
+ */
 export interface SpinnerProps extends JSX.HTMLAttributes<HTMLSpanElement> {
   label?: string
 }
 
-/** Indeterminate progress; reduced motion retains a static busy indicator. */
+/** Renders an indeterminate busy indicator that remains static when reduced motion is requested. */
 export function Spinner(props: SpinnerProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'label'])
 

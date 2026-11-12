@@ -27,6 +27,7 @@ test('verification tasks prepare the artifacts they actually consume', async () 
     ),
   ) as { tasks: { taskId: string; dependencies: string[] }[] }
   const dependencies = new Map(plan.tasks.map((task) => [task.taskId, task.dependencies]))
+  /** Checks whether a task transitively depends on a prerequisite in the returned Turbo graph. */
   const reaches = (task: string, prerequisite: string): boolean =>
     (dependencies.get(task) ?? []).some(
       (dependency) => dependency === prerequisite || reaches(dependency, prerequisite),

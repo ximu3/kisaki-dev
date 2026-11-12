@@ -12,14 +12,21 @@ import { InputFrame } from '../frame'
 import frame from '../styles.module.css'
 import styles from './styles.module.css'
 
-/** Values retain the native string model, including the empty state; min, max and step stay native. */
+/**
+ * Native numeric editing props with localized step-button labels.
+ *
+ * Values retain the native string model, including empty state; min, max and step use browser
+ * constraints.
+ */
 export interface NumberInputProps extends Omit<NativeInputProps, 'type' | 'step'> {
   step?: number
   increaseLabel: string
   decreaseLabel: string
 }
 
-/** The step buttons edit the native number field and follow its range and disabled state. */
+/**
+ * Renders a numeric editor with themed step buttons following native range and availability state.
+ */
 export function NumberInput(props: NumberInputProps): JSX.Element {
   const [local, rest] = splitProps(props, [
     'value',
@@ -39,6 +46,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
   )
   let input!: HTMLInputElement
 
+  /** Steps the native numeric value in the requested direction and dispatches its input event. */
   const step = (direction: 1 | -1) => {
     if (direction === 1) {
       input.stepUp()
@@ -47,6 +55,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
     }
     input.dispatchEvent(new Event('input', { bubbles: true }))
   }
+  /** Checks whether disabled or readonly state prevents numeric step actions. */
   const blocked = () => (props.disabled ?? field.disabled) || props.readOnly
 
   return (

@@ -10,7 +10,7 @@ import { partWorkType } from '../parts'
 import { entryFieldTypes } from './fields'
 import { DesktopError } from '../../errors'
 
-/** Stable scalar sorting only. Null stays last in either direction; identity tie-breaks remain ascending. */
+/** Scalar fact supported as an entry sort key. */
 export type EntrySortField =
   | 'name'
   | 'originalName'
@@ -48,6 +48,11 @@ export type EntrySortField =
   | 'accessibleFileCount'
   | 'uncheckedFileCount'
 
+/**
+ * Entry ordering inherited from the scope or specified by a scalar field or part count.
+ *
+ * Null values remain last in either direction, and identity tie-breaks remain ascending.
+ */
 export type EntrySort =
   | { readonly type: 'scope' }
   | { readonly type: 'field'; readonly field: EntrySortField; readonly direction: 'asc' | 'desc' }
@@ -97,7 +102,11 @@ export const entrySortFields: readonly EntrySortField[] = Object.freeze([
   'uncheckedFileCount',
 ])
 
-/** Parse a complete sort and check its field across every enabled type; no types still requires a known shape. */
+/**
+ * Parses an ordering and checks its applicability to every supplied entry type.
+ *
+ * An empty type list still requires a valid ordering shape.
+ */
 export function parseEntrySort(input: unknown, types: readonly EntryType[] = []): EntrySort {
   const sort = parseValue(
     v.variant('type', [

@@ -17,7 +17,7 @@ import {
 /** The manifest format version implemented by this package, independent of extension API versions. */
 export const manifestSchemaVersion = 1
 
-/** Complete package facts; the package is independent of any registry, URL or signature. */
+/** Package identity, display metadata, entry point and runtime requirements. */
 export interface ExtensionManifest extends ExtensionMetadata, CompatibilityDeclaration {
   readonly schemaVersion: typeof manifestSchemaVersion
   readonly id: string
@@ -32,8 +32,10 @@ export interface ExtensionManifest extends ExtensionMetadata, CompatibilityDecla
 }
 
 /**
- * Require a slash-separated relative file path without root escapes, drive prefixes or alternate streams.
- * This checks names only; archive readers must also reject links, collisions and non-file entries.
+ * Parses an unambiguous package-relative path with slash-separated segments.
+ *
+ * Rejects root escapes, drive prefixes, alternate streams and control characters. Archive readers
+ * own physical-entry, symlink and collision checks.
  */
 export function parsePackagePath(input: unknown, path: FieldPath = []): string {
   const value = parseString(input, path)
@@ -51,7 +53,12 @@ export function parsePackagePath(input: unknown, path: FieldPath = []): string {
   return value
 }
 
-/** Validate defined manifest fields and return normalized locales and target order; unknown fields are omitted. */
+/**
+ * Parses defined manifest fields into a normalized value.
+ *
+ * Canonicalizes locale identifiers, sorts targets, preserves display strings and omits unknown
+ * fields.
+ */
 export function normalizeManifest(input: unknown): ExtensionManifest {
   const value = parseRecord(input, [])
 
@@ -70,7 +77,11 @@ export function normalizeManifest(input: unknown): ExtensionManifest {
   }
 }
 
-/** Parse strict JSON before normalizing the manifest; duplicate properties are rejected at every depth. */
+/**
+ * Parses strict JSON and normalizes an extension manifest.
+ *
+ * Rejects duplicate property names at every depth before extracting known fields.
+ */
 export function parseManifest(text: string): ExtensionManifest {
   return normalizeManifest(parseJson(text))
 }

@@ -26,7 +26,11 @@ export {
   mdiUnfoldMoreHorizontal,
 } from '@mdi/js'
 
-/** The enclosing control owns the accessible name and selects a glyph size when needed. */
+/**
+ * Renders a decorative MDI path in the shared glyph box.
+ *
+ * The enclosing control owns its accessible name and any size override.
+ */
 export function Icon(props: { path: string; class?: string | undefined }): JSX.Element {
   return (
     <svg
@@ -48,7 +52,7 @@ const statusPaths = {
   destructive: mdiAlertCircleOutline,
 }
 
-/** Status meaning is carried by both the message and its distinct outline symbol. */
+/** Renders the distinct outline symbol corresponding to a message's status. */
 export function StatusIcon(props: {
   type: keyof typeof statusPaths
   class?: string | undefined

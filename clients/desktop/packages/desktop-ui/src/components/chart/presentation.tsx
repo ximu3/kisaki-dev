@@ -5,13 +5,13 @@ import type { JSX } from 'solid-js'
 import { classes } from '../../internal/dom'
 import styles from './styles.module.css'
 
-/** A text summary accompanies visual data; statistics, units and selection are supplied by the host. */
+/** Figure attributes with an accessible chart label and a visible text summary. */
 export interface ChartProps extends JSX.HTMLAttributes<HTMLElement> {
   label: string
   summary: string
 }
 
-/** Theme an Unovis Solid composition without accepting or retaining external engine instances. */
+/** Wraps a Solid chart composition in the shared theme and its text alternative. */
 export function Chart(props: ChartProps): JSX.Element {
   const [local, rest] = splitProps(props, ['label', 'summary', 'children', 'class'])
 
@@ -23,7 +23,7 @@ export function Chart(props: ChartProps): JSX.Element {
   )
 }
 
-/** Series identity and selection are separate from its color and display label. */
+/** Series identity, display label and color with caller-owned selection state. */
 export interface ChartLegendItem {
   readonly id: string
   readonly label: string
@@ -31,15 +31,18 @@ export interface ChartLegendItem {
   readonly selected: boolean
 }
 
-/** The host updates selected items and the corresponding chart data/configuration. */
+/** Labeled legend items and a callback through which the host changes selection. */
 export interface ChartLegendProps {
   label: string
   items: readonly ChartLegendItem[]
+  /**
+   * Requests a selection change for the identified series; the host updates items and chart data.
+   */
   onToggle: (id: string) => void
   class?: string
 }
 
-/** Interactive legend buttons expose their pressed state and preserve keyboard activation. */
+/** Renders keyboard-activatable legend buttons with their current pressed states. */
 export function ChartLegend(props: ChartLegendProps): JSX.Element {
   return (
     <div role="group" aria-label={props.label} class={classes(styles.legend, props.class)}>
@@ -59,7 +62,11 @@ export function ChartLegend(props: ChartLegendProps): JSX.Element {
   )
 }
 
-/** Create safe text-only tooltip content in the chart's document; data is never interpreted as HTML. */
+/**
+ * Creates a text-only tooltip description list in the supplied document.
+ *
+ * Labels and values are inserted as text rather than interpreted as HTML.
+ */
 export function chartTooltipContent(
   document: Document,
   rows: readonly { label: string; value: string }[],

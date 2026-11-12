@@ -6,12 +6,20 @@
 import { CommandFailed } from './process'
 import { isCancellation } from './errors'
 
-/** Install cancellation before preparation, and report failure only after the action has closed. */
+/**
+ * Waits for a CLI action and maps its outcome to process.exitCode.
+ *
+ * Installs cancellation handlers before starting the action and removes them after it settles.
+ * Child-command failures replay captured diagnostics; signal cancellation uses the corresponding
+ * shell exit status.
+ */
 export async function runCli(action: (signal: AbortSignal) => Promise<void>): Promise<void> {
   const controller = new AbortController()
   let cancelledCode = 130
 
+  /** Requests cancellation when the CLI receives SIGINT. */
   const interrupt = () => controller.abort(new Error('Operation interrupted'))
+  /** Records the SIGTERM exit status and requests cancellation. */
   const terminate = () => {
     cancelledCode = 143
     controller.abort(new Error('Operation terminated'))

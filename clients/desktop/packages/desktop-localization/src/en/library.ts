@@ -1,4 +1,4 @@
-/** @fileoverview Owns English messages for library. */
+/** @fileoverview Defines English names and feedback for library entries and personal records. */
 
 export const libraryMessages = {
   types: {

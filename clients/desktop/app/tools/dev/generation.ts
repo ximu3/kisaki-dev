@@ -13,15 +13,18 @@ import { buildNative } from '../native/build'
 import { sha256 } from '../lib/sha256'
 import { appRoot } from '../lib/paths'
 
-/** A compiled development runtime and the source digests used for its Node programs. */
+/** Build identity and source-file digests for one compiled development generation. */
 export interface GenerationOutput {
   buildId: string
   inputs: Map<string, string>
 }
 
 /**
- * Write a development runtime and return its source digests.
- * The session owns the directory, including cleanup after a failed or superseded build.
+ * Builds a development runtime from programs, resources and native bindings.
+ *
+ * Writes into the supplied session-owned directory and returns its input digests. Waits for all
+ * compilers before rejecting; the session owns adoption and cleanup of failed or superseded
+ * generations.
  */
 export async function buildGeneration(
   sourceRoot: string,
@@ -80,7 +83,7 @@ export async function buildGeneration(
   return { buildId, inputs: nextInputs }
 }
 
-/** Report changed or unreadable inputs so the next build can compile or diagnose them. */
+/** Reports whether a recorded source file has changed or become unreadable. */
 export async function programInputsChanged(inputs: ReadonlyMap<string, string>): Promise<boolean> {
   for (const [path, digest] of inputs) {
     try {

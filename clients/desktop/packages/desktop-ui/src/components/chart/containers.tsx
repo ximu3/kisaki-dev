@@ -20,7 +20,7 @@ export interface ChartGeometry {
   readonly componentHeight: number
 }
 
-/** Child Solid components own their instances; callers supply data and public presentation configuration. */
+/** Data and public layout options for a Solid-owned XY chart composition. */
 export type XYContainerProps<Datum> = Omit<
   VisXYContainerProps<Datum>,
   | 'components'
@@ -33,10 +33,16 @@ export type XYContainerProps<Datum> = Omit<
   | 'onRenderComplete'
 > & {
   bleed?: Readonly<Spacing>
+  /** Receives copied layout geometry when the container reports render completion. */
   onRenderComplete?: (geometry: ChartGeometry) => void
 }
 
-/** Lifecycle and data updates are handled by the official Solid adapter. */
+/**
+ * Composes XY chart children through the official Solid adapter and publishes copied render
+ * geometry.
+ *
+ * Animation duration follows the document's reduced-motion preference.
+ */
 export function XYContainer<Datum>(props: XYContainerProps<Datum>): JSX.Element {
   const [local, rest] = splitProps(props, ['onRenderComplete', 'duration'])
   const duration = createChartDuration(() => local.duration)
@@ -67,13 +73,20 @@ export function XYContainer<Datum>(props: XYContainerProps<Datum>): JSX.Element 
   )
 }
 
-/** Single visual child, with lifecycle owned by its Solid composition. */
+/** Data and public layout options for a Solid-owned single-chart composition. */
 export type SingleContainerProps<Datum> = Omit<
   VisSingleContainerProps<Datum>,
   'component' | 'tooltip' | 'annotations' | 'onRenderComplete'
-> & { onRenderComplete?: (geometry: ChartGeometry) => void }
+> & {
+  /** Receives copied layout geometry when the container reports render completion. */
+  onRenderComplete?: (geometry: ChartGeometry) => void
+}
 
-/** Compose a Donut and optional tooltip without constructing an external engine object. */
+/**
+ * Composes a single chart and optional tooltip through the official Solid adapter.
+ *
+ * Render geometry is copied, and animation duration follows reduced-motion preferences.
+ */
 export function SingleContainer<Datum>(props: SingleContainerProps<Datum>): JSX.Element {
   const [local, rest] = splitProps(props, ['onRenderComplete', 'duration'])
   const duration = createChartDuration(() => local.duration)

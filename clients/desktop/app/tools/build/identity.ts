@@ -9,7 +9,12 @@ import { readPnpm } from '@kisaki3/tooling/process'
 import { repositoryRoot } from '../lib/paths'
 import { sha256 } from '../lib/sha256'
 
-/** Read the locked Turbo build task's input identity, waiting for its query to close on cancellation. */
+/**
+ * Queries Turbo for the desktop build:fixture task's input identity.
+ *
+ * Uses the supplied workspace root or the repository root by default. Cancellation still waits for
+ * the query process to close.
+ */
 export async function buildInputIdentity(
   options: { root?: string; signal?: AbortSignal | undefined } = {},
 ): Promise<string> {
@@ -52,11 +57,15 @@ export async function buildInputIdentity(
   throw new Error('Turbo did not report the desktop build task')
 }
 
-/** Record every runtime byte after all owners have completed their outputs. */
+/**
+ * Builds a relative-path-to-SHA-256 index of completed runtime files.
+ *
+ * The caller finishes output writes first. build.json is excluded because it contains this index.
+ */
 export async function runtimeFiles(directory: string): Promise<Record<string, string>> {
   const files: Record<string, string> = {}
 
-  /** Add each runtime file's digest, using paths relative to the build directory. */
+  /** Adds file digests below one runtime directory using build-relative paths. */
   async function visit(current: string): Promise<void> {
     for (const entry of await readdir(current, { withFileTypes: true })) {
       const path = join(current, entry.name)

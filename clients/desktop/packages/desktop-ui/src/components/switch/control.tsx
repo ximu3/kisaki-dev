@@ -9,7 +9,11 @@ import type { CheckedValueProps } from '../../internal/checked-control'
 import { ChoiceRow } from '../../internal/choice/row'
 import styles from './styles.module.css'
 
-/** A two-state form control; caller supplies its stable accessible name. */
+/**
+ * Two-state switch attributes with checked-state ownership and an optional inline label.
+ *
+ * The caller supplies a stable accessible name.
+ */
 export interface SwitchProps
   extends
     Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'type' | 'checked' | 'role'>,
@@ -17,7 +21,10 @@ export interface SwitchProps
   label?: JSX.Element
 }
 
-/** Native Space activation, form submission and reset follow the checkbox contract. */
+/**
+ * Renders switch semantics on a native checkbox, retaining Space activation, form submission and
+ * reset.
+ */
 export function Switch(props: SwitchProps): JSX.Element {
   const [local, rest] = splitProps(props, [
     'checked',

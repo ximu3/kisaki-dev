@@ -22,7 +22,13 @@ import {
 
 const { messages: source, contracts } = indexMessageSource(englishMessages)
 
-/** Validate registration shape and known message compatibility as one atomic unit. */
+/**
+ * Parses an extension translation definition and checks known messages against the English
+ * baseline.
+ *
+ * Returns the normalized definition after complete validation. Unknown message leaves are retained
+ * for compatibility with other baseline versions.
+ */
 export function validateExtensionUiTranslationDefinition(
   input: unknown,
 ): ExtensionUiTranslationDefinition {
@@ -31,7 +37,13 @@ export function validateExtensionUiTranslationDefinition(
   return value
 }
 
-/** The caller replaces this snapshot when its effective language or catalog changes. Missing leaves use English plural rules. */
+/**
+ * Creates a typed formatter bound to one locale and catalog snapshot.
+ *
+ * Missing messages use English text and formatting rules; present empty strings remain
+ * translations. Calls retain the English argument contract, and markup is literal text. The caller
+ * creates a new formatter when the locale or catalog changes.
+ */
 export function createTranslator(locale: string, catalog: MessageCatalog = {}): Translate {
   const language = parseUiLocale(locale)
   const translated = flattenMessages(catalog)

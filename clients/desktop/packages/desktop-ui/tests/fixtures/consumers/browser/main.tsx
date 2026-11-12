@@ -77,6 +77,7 @@ import './page.css'
 
 const Resources = lazy(() => import('./resources.js'))
 
+/** Provides an inert test hook until its fixture owner installs an active implementation. */
 const noop = () => {}
 window.fixture = {
   setExternal: noop,
@@ -90,10 +91,13 @@ window.fixture = {
   dispose: noop,
 } satisfies FixtureApi
 
-/** Window messages survive the originating component; ended handles remain inert. */
+/**
+ * Publishes synthetic loading messages and exposes retained handles for publisher-lifetime checks.
+ */
 function ToastOwner(): JSX.Element {
   let handle: ToastHandle | undefined
 
+  /** Creates the fixture's loading message and retains its update and dismissal handle. */
   window.fixture.showLoading = (persistent) => {
     handle = toast.show(
       {
@@ -109,7 +113,9 @@ function ToastOwner(): JSX.Element {
       { persistent },
     )
   }
+  /** Changes the retained message to the synthetic ready result. */
   window.fixture.updateToast = () => handle?.update({ type: 'success', message: 'Sample ready' })
+  /** Dismisses the retained fixture message when its handle exists. */
   window.fixture.dismissToast = () => handle?.dismiss()
 
   return (
@@ -119,7 +125,9 @@ function ToastOwner(): JSX.Element {
   )
 }
 
-/** Real native form behaviors exercise multiple control families at the shared boundary. */
+/**
+ * Exercises native form, reset and controlled-value behavior across the packed control families.
+ */
 function Controls(): JSX.Element {
   const [external, setExternal] = createSignal('original')
   const [disabled, setDisabled] = createSignal(false)
@@ -284,7 +292,7 @@ function Controls(): JSX.Element {
   )
 }
 
-/** Validation and reveal/focus policy belong to this form; the feedback component only presents them. */
+/** Owns synthetic form validation and field-reveal policy for feedback component acceptance. */
 function Validation(): JSX.Element {
   const [title, setTitle] = createSignal('')
   const [description, setDescription] = createSignal('')
@@ -295,6 +303,9 @@ function Validation(): JSX.Element {
   const [tab, setTab] = createSignal('basic')
   let feedback!: HTMLDivElement
 
+  /**
+   * Replaces field detail with a long multilingual sample carrying the requested language prefix.
+   */
   window.fixture.setLongMessage = (language) =>
     setLong(
       `${language}: ${'请填写可辨认的名称。請填寫可辨認的名稱。判別できる名前を入力してください。 Provide a recognizable title. '.repeat(8)}`,
@@ -316,6 +327,7 @@ function Validation(): JSX.Element {
       : [],
   )
 
+  /** Reveals the requested field's tab and focuses the field after the view updates. */
   const locate = (id: string) => {
     setTab(id === 'title' ? 'basic' : 'detail')
     queueMicrotask(() => document.getElementById(id)?.focus())
@@ -388,13 +400,16 @@ function Validation(): JSX.Element {
   )
 }
 
-/** One synthetic options list can be replaced without discarding the independently committed choice. */
+/**
+ * Exercises searchable choices whose committed records survive replacement of the candidate list.
+ */
 function Candidate(): JSX.Element {
   const [options, setOptions] = createSignal([
     { value: 'a', label: 'Alpha' },
     { value: 'd', label: 'Disabled', disabled: true },
     { value: 'b', label: 'Beta' },
   ])
+  /** Replaces candidates with new and disabled records for selection-retention checks. */
   window.fixture.setOptions = () =>
     setOptions([
       { value: 'a', label: 'Already selected', disabled: true },
@@ -438,7 +453,7 @@ function Candidate(): JSX.Element {
   )
 }
 
-/** Native modal nesting and local menus expose real focus and close behavior. */
+/** Exercises native modal nesting, menus and local popup focus and close behavior. */
 function Interactions(): JSX.Element {
   const [checked, setChecked] = createSignal(false)
   const [radio, setRadio] = createSignal('one')
@@ -541,12 +556,18 @@ function Interactions(): JSX.Element {
   )
 }
 
-/** Gallery content is synthetic and touches no application data. */
+/**
+ * Composes the synthetic component workshop and controls optional publisher and capability
+ * lifetimes.
+ */
 function App(): JSX.Element {
   const [owner, setOwner] = createSignal(true)
   const [resources, setResources] = createSignal(false)
 
   window.fixture.setOwner = setOwner
+  /**
+   * Publishes a persistent root-owned message independent of the disposable publisher component.
+   */
   window.fixture.rootToast = () =>
     toast.show({ type: 'info', message: 'Window owner survives' }, { persistent: true })
 

@@ -5,12 +5,12 @@ import { id, text, nonemptyText, parseDictionary, parseValue } from './validatio
 import { parseHttpUrl } from './network'
 import { DesktopError } from './errors'
 
-/** An opaque reference to already acquired, fixed content; the actual caller determines its authority. */
+/** Opaque reference to acquired, fixed content whose authority is checked for the actual caller. */
 export interface ReadResourceRef {
   readonly id: string
 }
 
-/** One operation's source, never a persistent attachment identity or a general request configuration. */
+/** Transient source for one file operation, supplied as a path, URL, bytes or acquired resource. */
 export type FileInput =
   | { readonly type: 'path'; readonly path: string }
   | {
@@ -22,45 +22,45 @@ export type FileInput =
   | { readonly type: 'bytes'; readonly bytes: Uint8Array }
   | { readonly type: 'resource'; readonly resource: ReadResourceRef }
 
-/**
- * Verified, retained bytes awaiting adoption. The host allocates the future attachment ID.
- * Releasing is idempotent and relinquishes this hold; it never removes adopted references or other holds.
- */
+/** Verified, retained content awaiting adoption under a host-allocated attachment ID. */
 export interface PreparedAttachment {
   readonly attachmentId: string
   readonly resource: ReadResourceRef
 
   /**
-   * Release this preparation hold idempotently after use; adopted references and other holders
-   * remain valid.
+   * Releases this preparation hold idempotently.
+   *
+   * Adopted references and other holders remain valid.
    */
   dispose(): Promise<void>
 }
 
-/** A hold on fixed readable content; closing it stops new reads through this handle after in-flight cleanup. */
+/** Owned hold on fixed readable content with an asynchronous release operation. */
 export interface ReadResource {
   readonly resource: ReadResourceRef
 
   /**
-   * Stop new reads through this handle and await in-flight cleanup; repeated disposal does not
-   * affect other holders.
+   * Stops new reads through this handle and waits for in-flight cleanup.
+   *
+   * Repeated disposal has no further effect, and other holders remain valid.
    */
   dispose(): Promise<void>
 }
 
-/** A view owns these transient URLs independently of the original holder and other view bindings. */
+/** View-owned transient URLs backed by holds independent of the original resource holder. */
 export interface ViewResourceBinding {
   readonly urls: Readonly<Record<string, string>>
 
-  /** Revoke this binding's URLs and release only its holds; other view bindings remain valid. */
+  /** Revokes this binding's URLs and releases its holds while preserving other view bindings. */
   dispose(): Promise<void>
 }
 
-/** Binds already acquired content to the actual view, preserving input keys and acquiring independent holds. */
+/** Binding of acquired content to transient addresses usable by the actual view. */
 export interface ViewResourcesApi {
   /**
-   * Acquire independent holds for the actual view and return URLs under the same keys; failure
-   * cleans partial bindings without consuming the caller's holds.
+   * Acquires independent view holds and returns resource URLs under the original input keys.
+   *
+   * Failure cleans partial bindings while preserving the caller's holds.
    */
   bind(resources: Readonly<Record<string, ReadResourceRef>>): Promise<ViewResourceBinding>
 }
@@ -91,12 +91,20 @@ const fileInputSchema = v.variant('type', [
   v.strictObject({ type: v.literal('resource'), resource: resourceSchema }),
 ])
 
-/** Validate a resource reference's shape only; existence, ownership and expiry remain host checks. */
+/**
+ * Parses an opaque resource reference's shape.
+ *
+ * The host checks existence, ownership and expiry.
+ */
 export function parseReadResourceRef(input: unknown): ReadResourceRef {
   return parseValue(resourceSchema, input, 'Invalid read resource reference')
 }
 
-/** Check a prepared resource's interface while retaining its methods; only the host can verify its authority and hold. */
+/**
+ * Checks a preparation handle's interface and returns the original object with its methods intact.
+ *
+ * The host verifies actual authority and ownership of the hold.
+ */
 export function parsePreparedAttachment(input: unknown): PreparedAttachment {
   if (typeof input !== 'object' || input === null) {
     throw new DesktopError('InvalidInput', 'Invalid prepared attachment')
@@ -113,8 +121,10 @@ export function parsePreparedAttachment(input: unknown): PreparedAttachment {
 }
 
 /**
- * Validate source shape and HTTP credential redirect policy. No network, file or ownership check occurs.
- * Authorization and Cookie are case-insensitive; any nonempty value requires explicit redirect: error.
+ * Parses a transient source and checks credential-bearing HTTP redirect policy.
+ *
+ * Nonempty Authorization or Cookie headers, matched case-insensitively, require explicit redirect:
+ * error. Resource acquisition and authority checks belong to execution.
  */
 export function parseFileInput(input: unknown): FileInput {
   const value = parseValue(fileInputSchema, input, 'Invalid file input')

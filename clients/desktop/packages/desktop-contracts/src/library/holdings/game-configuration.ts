@@ -13,7 +13,11 @@ import {
   validateExpectedKeys,
 } from '../../validation'
 
-/** Null targets allow an explicitly saved incomplete configuration; only command launch owns a working directory. */
+/**
+ * An explicit file, URL or command launch choice.
+ *
+ * Null values permit incomplete saved configurations. Only command launch owns a working directory.
+ */
 export type GameLaunchTarget =
   | { readonly type: 'file'; readonly path: string | null }
   | { readonly type: 'url'; readonly url: string | null }
@@ -23,11 +27,16 @@ export type GameLaunchTarget =
       readonly workingDirectory: string | null
     }
 
-/** The monitor is independently selected and never inferred from the launcher, command or working directory. */
+/**
+ * An independently selected directory, file or process-name monitoring target.
+ *
+ * The launcher, command and working directory do not implicitly select monitoring.
+ */
 export type GameMonitor =
   | { readonly type: 'directory' | 'file'; readonly path: string | null }
   | { readonly type: 'process'; readonly name: string | null }
 
+/** Launch, monitoring, activity timing and save-backup choices for a game configuration. */
 export interface GameLaunchDefinition {
   readonly launch: GameLaunchTarget
   readonly monitor: GameMonitor
@@ -35,10 +44,15 @@ export interface GameLaunchDefinition {
 
   readonly savePath: string | null
   readonly autoBackupEnabled: boolean
+  /** Positive count of unlocked backups retained per source; null means no count limit. */
   readonly backupRetentionCount: number | null
 }
 
-/** The configuration keeps identity and user preference independently of whether launch is currently possible. */
+/**
+ * A stable game launch configuration with saved preferences and formal order.
+ *
+ * Identity and preferences remain available when the configuration cannot currently launch.
+ */
 export interface GameLaunchConfig {
   readonly id: string
   readonly gameId: string
@@ -55,12 +69,14 @@ export interface GameLaunchConfig {
   readonly updatedAt: number
 }
 
+/** Editable launch-configuration metadata and its complete definition. */
 export interface GameLaunchConfigFields {
   readonly name: string
   readonly note: string | null
   readonly definition: GameLaunchDefinition
 }
 
+/** A named launch configuration with a complete definition and optional preferred selection. */
 export interface GameLaunchConfigCreate {
   readonly name: string
   readonly note?: string | null
@@ -68,34 +84,36 @@ export interface GameLaunchConfigCreate {
   readonly isPreferred?: boolean
 }
 
+/**
+ * Launch-configuration field changes and matching expected values.
+ *
+ * The complete definition is one comparison unit.
+ */
 export interface GameLaunchConfigUpdate {
   readonly changes: Partial<GameLaunchConfigFields>
   readonly expected?: Partial<GameLaunchConfigFields>
 }
 
-/** Editing influences future sessions only. Removal retains historical snapshots and never deletes installation/save bytes. */
+/**
+ * Saved launch choices and their game-scoped order and preference.
+ *
+ * Edits affect future sessions. Removal retains historical snapshots and installation or save
+ * bytes.
+ */
 export interface GameLaunchConfigsApi {
-  /**
-   * Read this game's saved launch configurations in their formal order; unavailable definitions
-   * remain visible.
-   */
+  /** Lists the game's configurations in formal order, retaining unavailable definitions. */
   list(gameId: string, call?: CallOptions): Promise<readonly GameLaunchConfig[]>
 
-  /**
-   * Read one saved configuration without resolving its launch target or changing an existing
-   * session snapshot.
-   */
+  /** Reads one saved configuration, or null when absent, without resolving its launch target. */
   get(gameId: string, id: string, call?: CallOptions): Promise<GameLaunchConfig | null>
 
-  /**
-   * Create a complete launch configuration for this game, including only the explicitly
-   * requested preferred selection.
-   */
+  /** Creates a game configuration with only the explicitly requested preferred selection. */
   create(gameId: string, input: GameLaunchConfigCreate, call?: CallOptions): Promise<string>
 
   /**
-   * Compare and commit changed configuration fields for future launches; active sessions retain
-   * their established snapshot.
+   * Compares and saves changed fields for future launches.
+   *
+   * Active sessions retain their established configuration snapshot.
    */
   update(
     gameId: string,
@@ -105,20 +123,22 @@ export interface GameLaunchConfigsApi {
   ): Promise<void>
 
   /**
-   * Remove the configuration and maintain its formal references, preserving history and
-   * installation/save bytes.
+   * Removes the configuration and maintains its references while preserving history and user bytes.
    */
   delete(gameId: string, id: string, call?: CallOptions): Promise<void>
 
-  /** Reorder selected configurations against the complete game-side order baseline. */
+  /** Reorders selected configurations against the complete game-side order baseline. */
   reorder(gameId: string, input: ReorderInput, call?: CallOptions): Promise<void>
 
-  /** Move configurations in the game's current order without changing the preferred selection. */
+  /**
+   * Moves configurations in the current game-side order while preserving the preferred selection.
+   */
   move(gameId: string, input: MoveInput, call?: CallOptions): Promise<void>
 
   /**
-   * Set or clear this game's explicit preferred configuration after its optional comparison; do
-   * not launch or switch a session.
+   * Sets or clears the game's preferred configuration after an optional comparison.
+   *
+   * The operation does not launch or switch a session.
    */
   setPreferred(
     gameId: string,
@@ -177,12 +197,16 @@ export const gameDefinitionSchema = v.strictObject({
   backupRetentionCount: v.nullable(positiveInteger),
 })
 
-/** Validate even an intentionally incomplete saved configuration; commands remain exact text and are never split. */
+/**
+ * Parses a saved launch definition, including explicitly incomplete choices.
+ *
+ * Command text is preserved without splitting or execution.
+ */
 export function parseGameLaunchDefinition(input: unknown): GameLaunchDefinition {
   return parseValue(gameDefinitionSchema, input, 'Invalid game launch definition')
 }
 
-/** Validate a creation without choosing a launch file from a registered directory. */
+/** Parses explicit configuration creation fields without discovering or choosing a launch file. */
 export function parseGameLaunchConfigCreate(input: unknown): GameLaunchConfigCreate {
   return parseValue(
     v.strictObject({
@@ -196,7 +220,11 @@ export function parseGameLaunchConfigCreate(input: unknown): GameLaunchConfigCre
   )
 }
 
-/** Only name, note and the whole definition are editable; isPreferred uses its explicit unique-scope operation. */
+/**
+ * Parses name, note or complete-definition changes and their expected values.
+ *
+ * Preferred selection uses its dedicated game-scoped operation.
+ */
 export function parseGameLaunchConfigUpdate(input: unknown): GameLaunchConfigUpdate {
   const fields = v.strictObject(
     optionalFields({

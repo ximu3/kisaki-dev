@@ -13,7 +13,9 @@ window.addEventListener(
     const rpc = new RpcConnection(
       {
         start(receive, closed) {
+          /** Forwards transferred port data to the RPC transport receiver. */
           port.onmessage = (message) => receive(message.data)
+          /** Reports MessagePort deserialization failure as transport closure. */
           port.onmessageerror = () => closed()
           port.addEventListener('close', () => closed(), { signal: listeners.signal })
         },

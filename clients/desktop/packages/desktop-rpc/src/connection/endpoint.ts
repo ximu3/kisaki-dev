@@ -4,39 +4,75 @@ import { RpcError, safeFailure } from '../errors'
 import { isErrorSummary, type RpcProtocol } from '../frames'
 import type { JsonValue } from '../json'
 
-/** The acceptor checks context against the bound peer. A safe RpcError rejects the handshake. */
+/**
+ * Peer-context exchange for an initiating or accepting RPC endpoint.
+ *
+ * The acceptor checks the peer against the transport's bound identity and permissions. A safe
+ * RpcError can identify a specific handshake refusal.
+ */
 export type RpcHandshake =
   | {
       readonly role: 'initiator'
       readonly context: JsonValue
-      /** Synchronously confirm the accepted context. Throw a safe RpcError for a specific refusal. */
+      /**
+       * Confirms accepted peer context synchronously; false rejects local readiness with
+       * ProtocolMismatch.
+       *
+       * A thrown RpcError supplies a more specific local failure.
+       */
       readonly accepts?: (context: JsonValue) => boolean
     }
   | {
       readonly role: 'acceptor'
-      /** Return the accepted context after checking this transport's identity and permissions. */
+      /**
+       * Checks the initiating peer's context and returns this endpoint's context.
+       *
+       * Identity and permission checks use the transport binding. A safe RpcError rejects the
+       * handshake.
+       */
       readonly accept: (context: JsonValue) => JsonValue
     }
 
-/** Validate arguments and permissions here. Settle after the actual operation and its cleanup finish. */
+/**
+ * Handler for one admitted RPC request.
+ *
+ * The handler owns argument and permission checks, receives the call's cancellation signal, and
+ * settles after its operation and cleanup finish.
+ */
 export type RpcMethod = (
   args: readonly JsonValue[],
   signal: AbortSignal,
 ) => JsonValue | void | Promise<JsonValue | void>
 
-/** Receive a known fact locally. The sender does not await its processing. */
+/**
+ * Handler for an unacknowledged fact notification.
+ *
+ * The sender does not wait for processing; local handler failures go to the endpoint's reporter.
+ */
 export type RpcNotification = (value: JsonValue) => void | Promise<void>
 
-/** Endpoints can deliver typed errors and validate a partial result against the invoked method. */
+/** Endpoint-owned conversion between local errors and safe wire failures. */
 export interface RpcErrorCodec {
-  /** Convert a local exception to public data. Keep credentials, stacks and causes local. */
+  /**
+   * Encodes a local failure as public data for the named method.
+   *
+   * Credentials, stacks and causes remain local. Method-specific partial results follow the
+   * endpoint's contract.
+   */
   encode(error: unknown, method: string): JsonValue
 
-  /** Recognize mechanism failures ({code, message}) and the endpoint's own safe failures. */
+  /**
+   * Decodes a failure for the named method, validating mechanism and endpoint-specific error data.
+   */
   decode(value: JsonValue, method: string): Error
 }
 
-/** Capabilities bound to one peer. Only own entries of the supplied tables are callable. */
+/**
+ * Capabilities and handshake policy bound to one peer.
+ *
+ * Only own method and topic entries are dispatchable. The optional error codec owns public failure
+ * values.
+ */
 export interface RpcEndpoint {
   readonly protocol: RpcProtocol
   readonly handshake: RpcHandshake
@@ -44,7 +80,11 @@ export interface RpcEndpoint {
   readonly methods?: Readonly<Record<string, RpcMethod>>
   readonly notifications?: {
     readonly topics: Readonly<Record<string, RpcNotification>>
-    /** Record a handler failure locally. The reporting hook owns its own errors. */
+    /**
+     * Receives notification failures for local reporting.
+     *
+     * The reporting implementation owns its own failures.
+     */
     readonly onError: (error: unknown, topic: string) => void
   }
 
@@ -53,6 +93,10 @@ export interface RpcEndpoint {
 
 export const defaultErrorCodec: RpcErrorCodec = {
   encode: safeFailure,
+  /**
+   * Creates an RpcError from a valid code/message summary; malformed failures yield
+   * ProtocolViolation.
+   */
   decode(value) {
     if (isErrorSummary(value)) {
       return new RpcError(value.code, value.message)

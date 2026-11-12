@@ -11,17 +11,24 @@ import { basename, join } from 'node:path'
 import extractZip from 'extract-zip'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
-/** An extracted candidate owned by one artifact test. */
+/** Extracted build artifact and inspection paths owned by one artifact test. */
 export interface ArtifactWorkspace {
   directory: string
   executablePath: string
   resourceDirectory: string
+  /** Binary or macOS application bundle accepted by Electron fuse inspection. */
   fusePath: string
 
+  /** Removes the extraction after the caller has confirmed application exit. */
   close(): Promise<void>
 }
 
-/** Extract an existing candidate; close() removes it after its application process has exited. */
+/**
+ * Extracts a supplied build artifact into an isolated test directory.
+ *
+ * Returns platform launch, resource and fuse-inspection paths. Extraction failure removes partial
+ * output; after success the caller closes the workspace after its application exits.
+ */
 export async function prepareArtifactWorkspace(archivePath: string): Promise<ArtifactWorkspace> {
   const directory = await mkdtemp(join(tmpdir(), 'kisaki-artifact-'))
 
@@ -57,6 +64,7 @@ export async function prepareArtifactWorkspace(archivePath: string): Promise<Art
       executablePath,
       resourceDirectory,
       fusePath,
+      /** Removes this test's extraction and profile tree after application shutdown. */
       close: () => rm(directory, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }),
     }
   } catch (cause) {

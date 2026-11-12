@@ -17,12 +17,16 @@ import { getMetadataRelations } from '../metadata/relations'
 import { parseErrorSummary } from '../errors'
 import { parseMetadataFieldRef } from '../metadata/fields'
 
-/** Relation identity retains its root context rather than accepting an arbitrary dotted path. */
+/** A known metadata relation identified within its applicable root-entry context. */
 export type IngestRelationRef = {
   [K in EntryType]: { readonly entryType: K; readonly relation: MetadataRelationKey<K> }
 }[EntryType]
 
-/** Issues explain excluded branches or post-commit ancillary failures; they never authorize a partially valid graph write. */
+/**
+ * An excluded adoption branch or post-commit ancillary failure with code-specific context.
+ *
+ * Issues do not authorize a partially valid graph write.
+ */
 export type IngestIssue = { readonly message: string } & (
   | {
       readonly code: 'providerFailed'
@@ -67,7 +71,7 @@ export type IngestIssue = { readonly message: string } & (
   | { readonly code: 'holdingsFailed'; readonly work: WorkRef; readonly error: ErrorSummary }
 )
 
-/** Validate the relation's applicable root while preserving only actual known issue context. */
+/** Parses a known relation within its applicable root-entry context. */
 export function parseIngestRelationRef(input: unknown): IngestRelationRef {
   const { entryType } = parseValue(v.looseObject({ entryType: v.picklist(entryTypes) }), input)
   return parseValue(
@@ -80,7 +84,9 @@ export function parseIngestRelationRef(input: unknown): IngestRelationRef {
   ) as IngestRelationRef
 }
 
-/** Parse one issue with its code-specific required context and a safe explanation, rejecting unknown detail bags. */
+/**
+ * Parses an issue's safe explanation and code-specific context, rejecting unknown detail fields.
+ */
 export function parseIngestIssue(input: unknown): IngestIssue {
   const message = nonemptyText
   const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))

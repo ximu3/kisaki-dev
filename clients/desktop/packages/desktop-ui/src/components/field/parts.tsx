@@ -6,7 +6,11 @@ import { FieldContext } from '../../internal/field'
 import { classes } from '../../internal/dom'
 import styles from './styles.module.css'
 
-/** id names the control; validation state is provided by the form, never inferred from :invalid. */
+/**
+ * Control identity and form-owned invalid, required and disabled state for one field.
+ *
+ * The id names the associated control; validation is supplied explicitly.
+ */
 export interface FieldProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, 'id'> {
   id?: string
 
@@ -15,7 +19,11 @@ export interface FieldProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, 'id
   disabled?: boolean
 }
 
-/** Associate one field's label and independent descriptions. Children retain ownership of values. */
+/**
+ * Provides one control's identity, state and independent label, guidance and error associations.
+ *
+ * Child controls retain ownership of their values.
+ */
 export function Field(props: FieldProps): JSX.Element {
   const [local, rest] = splitProps(props, [
     'id',
@@ -57,7 +65,9 @@ export function Field(props: FieldProps): JSX.Element {
   )
 }
 
-/** A static field title names its control without becoming another activation target. */
+/**
+ * Renders a static field title associated with its control, without adding an activation target.
+ */
 export function FieldLabel(props: JSX.HTMLAttributes<HTMLSpanElement>): JSX.Element {
   const field = useContext(FieldContext)
   field?.setLabel(true)
@@ -74,7 +84,7 @@ export function FieldLabel(props: JSX.HTMLAttributes<HTMLSpanElement>): JSX.Elem
   )
 }
 
-/** Place stable guidance below the label, ahead of the control in reading order. */
+/** Renders stable guidance and registers its accessible association while mounted. */
 export function FieldDescription(props: JSX.HTMLAttributes<HTMLParagraphElement>): JSX.Element {
   const field = useContext(FieldContext)
   field?.setDescription(true)
@@ -91,7 +101,7 @@ export function FieldDescription(props: JSX.HTMLAttributes<HTMLParagraphElement>
   )
 }
 
-/** The field's own accessible error remains available while the form's visible feedback changes. */
+/** Renders a field's own accessible error independently of the form's changing visible feedback. */
 export function FieldError(props: JSX.HTMLAttributes<HTMLParagraphElement>): JSX.Element {
   const field = useContext(FieldContext)
   field?.setError(true)
@@ -108,14 +118,14 @@ export function FieldError(props: JSX.HTMLAttributes<HTMLParagraphElement>): JSX
   )
 }
 
-/** Native fieldset disables its descendant controls and preserves form association. */
+/** Renders a native fieldset with browser-owned grouping and disabled-control behavior. */
 export function FieldGroup(props: JSX.FieldsetHTMLAttributes<HTMLFieldSetElement>): JSX.Element {
   const [local, rest] = splitProps(props, ['class'])
 
   return <fieldset {...rest} class={classes(styles.group, local.class)} />
 }
 
-/** Accessible name for a FieldGroup. */
+/** Renders the native legend that names a FieldGroup. */
 export function FieldLegend(props: JSX.HTMLAttributes<HTMLLegendElement>): JSX.Element {
   const [local, rest] = splitProps(props, ['class'])
 

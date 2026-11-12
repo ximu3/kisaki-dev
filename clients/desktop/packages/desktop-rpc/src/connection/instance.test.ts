@@ -9,13 +9,21 @@ import type { RpcTransport } from '../transport'
 
 const protocol = { id: 'fixture', version: 1 }
 const hello = { type: 'hello', wireVersion: 1, protocol, context: 'client' }
-const acceptor: RpcEndpoint = { protocol, handshake: { role: 'acceptor', accept: () => 'server' } }
+const acceptor: RpcEndpoint = {
+  protocol,
+  handshake: {
+    role: 'acceptor',
+    /** Accepts fixture peers and returns the synthetic server context. */
+    accept: () => 'server',
+  },
+}
 
-/** Expose both transport callbacks so a test peer can control frame order and deliver late traffic. */
+/** Creates an RPC connection with a controllable transport and automatic test cleanup. */
 function fixture(endpoint: RpcEndpoint = acceptor) {
   let receive!: (frame: unknown) => void
   let lost!: () => void
   const transport = {
+    /** Captures receive and close callbacks for test-controlled transport delivery. */
     start(message, closed) {
       receive = message
       lost = closed
@@ -38,6 +46,7 @@ test('a bound acceptor rejects a different wire, endpoint version or unauthorize
       {
         type: 'hello',
         wireVersion: 9,
+        /** Fails if the receiver inspects context from a foreign wire version. */
         get context() {
           throw new Error('foreign version')
         },

@@ -15,7 +15,9 @@ import { parseMetadataCandidate } from './candidates'
 import { parseIngestIssue } from '../ingest/issues'
 import { parseMetadataRelationScopes } from './relations'
 
-/** A fetch fixes a real profile and request scope, without local lookup or adoption policy. */
+/**
+ * Profile-based fetch request for one entry, with identification clues and an optional read scope.
+ */
 export type MetadataFetchInput<T extends EntryType = EntryType> = {
   [K in EntryType]: {
     readonly entryType: K
@@ -25,14 +27,23 @@ export type MetadataFetchInput<T extends EntryType = EntryType> = {
   }
 }[T]
 
-/** Successful data has one legal root; creation sufficiency and existing local-object decisions belong to ingest. */
+/**
+ * Validated candidate, relation-scope evidence and issues produced by a metadata fetch.
+ *
+ * Ingest determines creation sufficiency and how the candidate relates to existing local objects.
+ */
 export interface MetadataFetchResult<T extends EntryType = EntryType> {
   readonly data: MetadataCandidate<T>
   readonly relationScopes: MetadataRelationScopes<T>
   readonly issues: readonly IngestIssue[]
 }
 
-/** Validate the complete request; a supplied read scope must later be checked against the selected profile, never intersected away. */
+/**
+ * Parses a fetch request for its declared entry kind.
+ *
+ * Execution checks a supplied read scope against the selected profile and rejects unsupported
+ * requests rather than narrowing them.
+ */
 export function parseMetadataFetchInput(input: unknown): MetadataFetchInput {
   const { entryType } = parseValue(v.looseObject({ entryType: v.picklist(entryTypes) }), input)
   return parseValue(
@@ -55,7 +66,7 @@ export function parseMetadataFetchInput(input: unknown): MetadataFetchInput {
   ) as MetadataFetchInput
 }
 
-/** Validate candidate, independent replacement evidence and local issues as one complete fetch result. */
+/** Parses a candidate, root-compatible relation scopes and issues as one fetch result. */
 export function parseMetadataFetchResult(input: unknown): MetadataFetchResult {
   const value = parseValue(
     v.strictObject({

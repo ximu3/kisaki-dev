@@ -5,7 +5,11 @@ import { build } from 'tsdown'
 import { runCli } from '@kisaki3/tooling/cli'
 import { replaceOutput } from '@kisaki3/tooling/output'
 
-/** Preserve the existing dist on preparation failure or cancellation before adoption. */
+/**
+ * Builds every distribution entry and declaration before adopting the complete dist candidate.
+ *
+ * Preparation failure or cancellation before handoff preserves the previous output.
+ */
 export async function buildPackage(signal?: AbortSignal): Promise<void> {
   const project = join(import.meta.dirname, '..')
 

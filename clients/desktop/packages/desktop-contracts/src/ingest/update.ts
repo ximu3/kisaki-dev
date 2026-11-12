@@ -27,6 +27,7 @@ import { getMetadataPartFields, getMetadataEntryFields } from '../metadata/field
 import { parseMetadataUpdateInput } from './metadata'
 import { parseIngestIssue } from './issues'
 
+/** Parses person-work adoption conditions and rejects contradictory character selections. */
 function parsePersonAdoptionScope(root: EntryType, input: unknown): PersonAdoptionScope {
   if (input === 'all') {
     return 'all'
@@ -73,6 +74,12 @@ function parsePersonAdoptionScope(root: EntryType, input: unknown): PersonAdopti
   return [result[0]!, ...result.slice(1)] as PersonAdoptionScope
 }
 
+/**
+ * Builds the update-policy schema for known relations in the supplied root context.
+ *
+ * Owned part lists permit append only; other relations expose their allowed attribute policies and
+ * scopes.
+ */
 export function relationSelection(root: EntryType, keys: readonly string[]) {
   const rules: Record<string, v.GenericSchema> = {}
   for (const key of keys) {
@@ -113,7 +120,11 @@ export function relationSelection(root: EntryType, keys: readonly string[]) {
   return v.strictObject(rules)
 }
 
-/** User scope is modification authority. Provider relationScopes separately determines where replacement is complete. */
+/**
+ * The user's authorized person-work relation scope, including explicit local character selections.
+ *
+ * Provider relationScopes independently determines where replacement data is complete.
+ */
 export type PersonAdoptionScope =
   | 'all'
   | NonEmptyArray<
@@ -128,12 +139,20 @@ export type PersonAdoptionScope =
         }
     >
 
+/**
+ * The authorized update scope for a relation, with local character selection for person-work links.
+ */
 export type IngestRelationScope<K extends keyof MetadataRelationScopeValues> =
   K extends 'personWorks' ? PersonAdoptionScope : MetadataRelationScopeValues[K]
 
+/** A policy to fill an empty field or overwrite its existing value. */
 export type FieldAdoption = 'fill' | 'overwrite'
 
-/** update only touches already corresponding members. Ownership lists can only append real missing parts. */
+/**
+ * Relation membership and attribute-adoption choices.
+ *
+ * Update touches corresponding existing members. Owned part lists can only append missing parts.
+ */
 export type IngestRelationUpdate<K extends keyof MetadataRelationAttributeValues> = K extends
   'workVolumes' | 'workChapters' | 'workEpisodes' | 'workExtras'
   ? {
@@ -145,12 +164,18 @@ export type IngestRelationUpdate<K extends keyof MetadataRelationAttributeValues
       readonly scope?: K extends keyof MetadataRelationScopeValues ? IngestRelationScope<K> : never
     }
 
+/** An entry's metadata source and explicit field and relation adoption choices. */
 export type IngestEntryUpdate<T extends EntryType> = {
   readonly metadata: MetadataUpdateInput<T>
   readonly fields?: Readonly<Partial<Record<MetadataEntryField<T>, FieldAdoption>>>
   readonly relations?: { readonly [K in MetadataRelationKey<T>]?: IngestRelationUpdate<K> }
 }
 
+/**
+ * A part's root-work metadata source and explicit field adoption choices.
+ *
+ * Comic volumes may additionally adopt their chapter membership.
+ */
 export type IngestPartUpdate<T extends PartType> = {
   readonly metadata: MetadataUpdateInput<PartWorkType<T>>
   readonly fields?: Readonly<Partial<Record<MetadataPartField<T>, FieldAdoption>>>
@@ -158,21 +183,29 @@ export type IngestPartUpdate<T extends PartType> = {
   ? { readonly relations?: { readonly volumeChapters?: IngestRelationUpdate<'volumeChapters'> } }
   : object)
 
+/** Entry and part kinds accepted as fixed adoption-update targets. */
 export type IngestUpdateType = EntryType | PartType
 
+/** The local entry or part reference corresponding to an adoption target kind. */
 export type IngestUpdateRef<T extends IngestUpdateType> = T extends EntryType
   ? EntryRef<T>
   : T extends PartType
     ? PartRef<T>
     : never
 
+/** The metadata source and adoption choices allowed for a target kind. */
 export type IngestUpdateInput<T extends IngestUpdateType> = T extends EntryType
   ? IngestEntryUpdate<T>
   : T extends PartType
     ? IngestPartUpdate<T>
     : never
 
-/** A batch fixes each real target before any fetch, and cannot adopt extra source objects as additional update targets. */
+/**
+ * One fixed local target paired with its type-specific update intent.
+ *
+ * The target is fixed before acquisition; extra source objects do not become additional update
+ * targets.
+ */
 export type IngestUpdateItem = {
   [K in IngestUpdateType]: {
     readonly target: IngestUpdateRef<K>
@@ -180,13 +213,19 @@ export type IngestUpdateItem = {
   }
 }[IngestUpdateType]
 
+/**
+ * The actual target's changed or unchanged outcome and adoption issues.
+ *
+ * Updated includes relation-only or part-list changes. Unchanged does not establish source
+ * completeness.
+ */
 export interface IngestUpdateResult {
   readonly outcome: 'updated' | 'unchanged'
   readonly target: EntryRef | PartRef
   readonly issues: readonly IngestIssue[]
 }
 
-/** Validate an explicit fixed Entry/Part target and its own field/relationship choices; no generic expected or adoption wrapper exists. */
+/** Parses a fixed entry or part target with its applicable field and relationship choices. */
 export function parseIngestUpdateItem(input: unknown): IngestUpdateItem {
   const header = parseValue(
     v.looseObject({ target: v.union([entryRefSchema, partRefSchema]) }),
@@ -228,7 +267,12 @@ export function parseIngestUpdateItem(input: unknown): IngestUpdateItem {
   ) as IngestUpdateItem
 }
 
-/** Empty field choices and update-only relations without attributes require no fetch and cannot adopt identities. */
+/**
+ * Checks whether field or relationship choices require acquisition and adoption.
+ *
+ * Empty field choices and update-only relations without attributes require no fetch and cannot
+ * adopt identities.
+ */
 export function hasIngestUpdateWork(
   input: IngestEntryUpdate<EntryType> | IngestPartUpdate<PartType>,
 ): boolean {
@@ -246,7 +290,7 @@ export function hasIngestUpdateWork(
   )
 }
 
-/** updated may describe relationship-only or part-list changes; unchanged does not claim complete source data. */
+/** Parses an update outcome, its actual entry or part target and adoption issues. */
 export function parseIngestUpdateResult(input: unknown): IngestUpdateResult {
   return parseValue(
     v.strictObject({
@@ -259,7 +303,7 @@ export function parseIngestUpdateResult(input: unknown): IngestUpdateResult {
   )
 }
 
-/** Only actual target references can become update inputs; no post-query selection token can expand the target set later. */
+/** Parses an actual local entry or part reference as an adoption-update target. */
 export function parseIngestUpdateTarget(input: unknown): EntryRef | PartRef {
   return parseValue(v.union([entryRefSchema, partRefSchema]), input, 'Invalid adoption target')
 }

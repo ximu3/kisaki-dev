@@ -13,6 +13,7 @@ import { buildDirectory } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
 import { electronExecutable } from '../../tools/dev/electron-executable'
 
+/** Engineering fixture renderer and preload entry selected for a desktop test. */
 type WindowKind = 'main' | 'reader' | 'player' | 'game-panel'
 
 /** A completed desktop build launched with a profile owned by this test. */

@@ -8,22 +8,28 @@ import type { ChoiceFieldProps, ChoiceSearchProps } from '../../internal/selecti
 import type { SelectionOption } from '../../internal/selection/types'
 import { createValue } from '../../internal/state'
 
+/** Stable selectable record retaining its display information across search queries. */
 export type ComboboxOption = SelectionOption
 
+/** Searchable field props for one committed option or an empty selection. */
 interface SingleComboboxProps extends ChoiceFieldProps, ChoiceSearchProps {
   multiple?: false
   value?: ComboboxOption | null
   defaultValue?: ComboboxOption | null
+  /** Reports the proposed committed option, or null when selection is cleared. */
   onValueChange?: (value: ComboboxOption | null) => void
 }
 
+/** Searchable field props for an ordered option selection with removable chips. */
 interface MultipleComboboxProps extends ChoiceFieldProps, ChoiceSearchProps, ChipLabels {
   multiple: true
   value?: readonly ComboboxOption[]
   defaultValue?: readonly ComboboxOption[]
+  /** Reports the proposed complete ordered selection. */
   onValueChange?: (value: readonly ComboboxOption[]) => void
 }
 
+/** Single or multiple searchable selection props with matching value and callback shapes. */
 export type ComboboxProps = SingleComboboxProps | MultipleComboboxProps
 
 const searchProps = [
@@ -36,6 +42,7 @@ const searchProps = [
   'loadingMessage',
 ] as const
 
+/** Connects single-value ownership and form reset to the shared searchable selection field. */
 function SingleCombobox(props: SingleComboboxProps): JSX.Element {
   const [local, search, rest] = splitProps(
     props,
@@ -60,6 +67,7 @@ function SingleCombobox(props: SingleComboboxProps): JSX.Element {
   )
 }
 
+/** Connects ordered selection, chip removal and form reset to the shared searchable field. */
 function MultipleCombobox(props: MultipleComboboxProps): JSX.Element {
   const [local, search, labels, rest] = splitProps(
     props,
@@ -72,6 +80,7 @@ function MultipleCombobox(props: MultipleComboboxProps): JSX.Element {
     () => local.defaultValue ?? [],
     (next) => local.onValueChange?.(next),
   )
+  /** Requests removal of the selected option identified by its stable value key. */
   const remove = (key: string) => change(values().filter((option) => option.value !== key))
 
   return (
@@ -93,7 +102,7 @@ function MultipleCombobox(props: MultipleComboboxProps): JSX.Element {
   )
 }
 
-/** The button displays the committed selection. Its popup accepts a temporary search query. */
+/** Renders committed single or multiple selections with a temporary search query in the popup. */
 export function Combobox(props: ComboboxProps): JSX.Element {
   return <>{props.multiple ? <MultipleCombobox {...props} /> : <SingleCombobox {...props} />}</>
 }

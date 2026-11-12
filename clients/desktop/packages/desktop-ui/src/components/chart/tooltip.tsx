@@ -8,7 +8,11 @@ import { classes } from '../../internal/dom'
 import surface from '../../internal/popup/surface.module.css'
 import styles from './styles.module.css'
 
-/** Keep the engine's rendered element stable across samples. Plain values are displayed as text. */
+/**
+ * Creates a renderer that reuses one tooltip viewport across samples.
+ *
+ * String content is inserted as text; an empty string remains the engine's empty-content signal.
+ */
 export function createTooltipViewport() {
   let viewport: HTMLDivElement | undefined
   let last: string | HTMLElement | undefined
@@ -30,8 +34,14 @@ export function createTooltipViewport() {
   }
 }
 
+/** Tooltip placement, attributes and sample triggers from the official Solid adapter. */
 export type ChartTooltipProps = VisTooltipProps
 
+/**
+ * Renders an engine-positioned tooltip with stable content and the shared popup surface.
+ *
+ * Visibility observation and pending frame work are released with the component owner.
+ */
 export function ChartTooltip(props: ChartTooltipProps): JSX.Element {
   const [local, rest] = splitProps(props, ['attributes', 'triggers'])
   const id = createUniqueId()
@@ -55,6 +65,10 @@ export function ChartTooltip(props: ChartTooltipProps): JSX.Element {
     let element: HTMLElement | null = null
     let pending = 0
 
+    /**
+     * Mirrors engine visibility onto the shared surface and settles a missing or cancelled exit
+     * transition.
+     */
     const sync = () => {
       if (!element) {
         return
@@ -67,10 +81,12 @@ export function ChartTooltip(props: ChartTooltipProps): JSX.Element {
       if (!visible) {
         // Unovis normally hides on transitionend. A zero-duration or canceled fade has no such event.
         const tip = element
+        /** Finds the tooltip's current opacity transition, if any. */
         const fade = () =>
           tip
             .getAnimations()
             .find((a) => a instanceof CSSTransition && a.transitionProperty === 'opacity')
+        /** Marks the tooltip hidden once it remains closed with no opacity transition. */
         const finish = () => {
           if (!tip.classList.contains(VisTooltipSelectors.show) && !fade()) {
             tip.classList.add(VisTooltipSelectors.hidden)
@@ -110,6 +126,10 @@ export function ChartTooltip(props: ChartTooltipProps): JSX.Element {
         sync()
       }
     })
+    /**
+     * Attaches the shared surface and visibility observer when the engine tooltip element becomes
+     * available.
+     */
     const connect = () => {
       if (element || !marker.isConnected) {
         return

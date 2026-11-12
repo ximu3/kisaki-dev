@@ -1,15 +1,19 @@
 /** @fileoverview Shared DOM class, event and reference composition for native controls. */
 
-/** Combine the component's local class with the caller's ordinary class. */
+/** Combines nonempty local and caller class strings in their supplied order. */
 export function classes(...values: (string | undefined)[]): string {
   return values.filter(Boolean).join(' ')
 }
 
-/** Invoke either Solid event handler form without changing its event or bound data. */
+/** Invokes either Solid handler form with the original event and bound data. */
 export function callHandler<E extends Event>(
   handler:
     | ((event: E) => void)
-    | { readonly 0: (data: unknown, event: E) => void; readonly 1: unknown }
+    | {
+        /** Handles the event together with the tuple's bound data value. */
+        readonly 0: (data: unknown, event: E) => void
+        readonly 1: unknown
+      }
     | undefined,
   event: E,
 ): void {
@@ -20,7 +24,11 @@ export function callHandler<E extends Event>(
   }
 }
 
-/** Assign the mounted node to the caller's callback ref. JSX variable refs compile to callbacks. */
+/**
+ * Passes a mounted value to the caller's callback ref.
+ *
+ * Compiled JSX variable refs use this callback form.
+ */
 export function assignRef<T>(ref: T | ((value: T) => void) | undefined, value: T): void {
   if (typeof ref === 'function') {
     ;(ref as (value: T) => void)(value)

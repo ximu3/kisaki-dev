@@ -50,7 +50,11 @@ export interface PartCommonFields {
   readonly releaseDate: PartialDate | null
 }
 
-/** Kind-specific source facts; classification type and displayed number never determine identity or ordering. */
+/**
+ * Source facts specific to each real part kind.
+ *
+ * Classification and displayed numbering do not determine identity or formal order.
+ */
 export interface PartSpecificFields {
   readonly novelVolume: {
     readonly numberLabel: string | null
@@ -80,11 +84,17 @@ export interface PartSpecificFields {
   }
 }
 
+/** The complete editable catalog facts for one part kind. */
 export type PartFields<T extends PartType> = PartCommonFields & PartSpecificFields[T]
 
+/** Optional initial catalog values; omitted fields use the part kind's domain defaults. */
 export type PartCreateFields<T extends PartType> = Partial<PartFields<T>>
 
-/** Type-qualified creation; omitted fields use their domain defaults and completed defaults to false. */
+/**
+ * A new typed part with an explicit work owner and optional initial completion mark.
+ *
+ * Omitted catalog values use domain defaults, and completed defaults to false.
+ */
 export type PartCreate<T extends PartType = PartType> = {
   [K in T]: {
     readonly type: K
@@ -95,7 +105,11 @@ export type PartCreate<T extends PartType = PartType> = {
   }
 }[T]
 
-/** Ordinary edits do not change the part kind, owner, completion mark, order or technical times. */
+/**
+ * An ordinary part-field edit with optional expected values and prepared resources.
+ *
+ * Kind, owner, completion mark, order and technical times remain unchanged.
+ */
 export type PartUpdate<T extends PartType = PartType> = {
   [K in T]: {
     readonly ref: PartRef<K>
@@ -122,7 +136,11 @@ export type PartDetails<T extends PartType = PartType> = {
   }
 }[T]
 
-/** Lists stay within one real owner/kind and use its saved order; classification null explicitly selects unknown. */
+/**
+ * A filtered listing within one real work and part kind, using its saved order.
+ *
+ * Null classification explicitly selects unknown classifications.
+ */
 export type PartQuery<T extends PartType = PartType> = {
   [K in T]: {
     readonly work: EntryRef<PartWorkType<K>>
@@ -136,7 +154,11 @@ export type PartQuery<T extends PartType = PartType> = {
       : object)
 }[T]
 
-/** Changing kind preserves ID and content; the target receives only its own classification and optional numbering. */
+/**
+ * The target anime part kind and its applicable classification and number fields.
+ *
+ * Kind correction preserves the part's ID and common content.
+ */
 export type PartKindTarget =
   | {
       readonly kind: 'animeEpisode'
@@ -145,7 +167,7 @@ export type PartKindTarget =
     }
   | { readonly kind: 'animeExtra'; readonly type: AnimeExtraType | null }
 
-/** A correction replaces kind-specific fields and only the explicitly changed common facts. */
+/** An anime part-kind correction with explicit common-field edits and comparison context. */
 export interface PartKindChange {
   readonly target: PartKindTarget
   readonly changes: Partial<PartCommonFields & { readonly declaredDurationMs: number | null }>
@@ -159,12 +181,17 @@ export interface PartKindChange {
   readonly prepared?: readonly PreparedAttachment[]
 }
 
-/** A volume's own chapter numbering and order never replace the chapter's work-level number. */
+/**
+ * A volume's chapter membership with volume-specific numbering.
+ *
+ * Membership order and numbering preserve the chapter's work-level values.
+ */
 export interface VolumeChapter {
   readonly chapter: PartRef<'comicChapter'>
   readonly numberLabel: string | null
 }
 
+/** Complete volume-chapter membership replacement or disjoint incremental changes. */
 export type VolumeChapterChange =
   | { readonly type: 'replace'; readonly items: readonly VolumeChapter[] }
   | {
@@ -173,26 +200,27 @@ export type VolumeChapterChange =
       readonly remove?: readonly PartRef<'comicChapter'>[]
     }
 
-/** Actual part operations commit related references together; failures do not return partial identity migrations. */
+/**
+ * Saved part facts, completion marks, formal order and explicit identity-preserving corrections.
+ *
+ * Related references commit together; failures do not return partial identity migrations.
+ */
 export interface PartsApi {
-  /**
-   * Read parts within one real work and kind, retaining their saved order under the requested
-   * filters.
-   */
+  /** Lists parts within one work and kind in saved order under the requested filters. */
   list(query: PartQuery, options: ListOptions, call?: CallOptions): Promise<ListResult<PartDetails>>
 
-  /** Read saved part details without opening a held file or changing any completion mark. */
+  /**
+   * Reads saved part details, or null when absent, without opening content or changing completion.
+   */
   get(ref: PartRef, call?: CallOptions): Promise<PartDetails | null>
 
   /**
-   * Commit a new part and its adopted content under the supplied work; the returned identity
-   * retains its actual kind.
+   * Commits a part and its adopted content under the supplied work, returning its typed identity.
    */
   create(input: PartCreate, call?: CallOptions): Promise<PartRef>
 
   /**
-   * Compare and save this part's changed fields and related references together; the owning work
-   * and kind remain fixed.
+   * Compares and saves changed part facts and related references while preserving owner and kind.
    */
   update(
     ...args: {
@@ -201,12 +229,15 @@ export interface PartsApi {
   ): Promise<void>
 
   /**
-   * Delete the selected parts and update dependent references in one operation; held media files
-   * are not deleted.
+   * Deletes selected parts and updates dependent references together, preserving held media files.
    */
   delete(refs: PartRef | NonEmptyArray<PartRef>, call?: CallOptions): Promise<void>
 
-  /** Merge only the same kind within one work; completed is the union, target preference and filled facts win. */
+  /**
+   * Merges same-kind parts within one work into the explicit survivor.
+   *
+   * Completion marks combine; the target's preference and populated facts take precedence.
+   */
   merge(
     input: {
       [K in PartType]: { readonly source: PartRef<K>; readonly target: PartRef<K> }
@@ -215,8 +246,8 @@ export interface PartsApi {
   ): Promise<PartRef>
 
   /**
-   * Correct an anime episode or extra in place, preserving identity and replacing kind-specific
-   * fields atomically.
+   * Corrects an anime episode or extra in place, preserving identity and replacing kind fields
+   * atomically.
    */
   changeKind(
     ref: PartRef<'animeEpisode' | 'animeExtra'>,
@@ -225,24 +256,22 @@ export interface PartsApi {
   ): Promise<PartRef<'animeEpisode' | 'animeExtra'>>
 
   /**
-   * Reorder selected slots in the complete work/kind side using its full baseline; filters do
-   * not narrow that baseline.
+   * Reorders selected slots against the complete work-and-kind baseline.
+   *
+   * Read filters do not narrow that baseline.
    */
   reorder(scope: PartOrderScope, input: ReorderInput, call?: CallOptions): Promise<void>
 
   /**
-   * Move the supplied parts in input order within their current work/kind side, before the
-   * anchor or to the end.
+   * Moves supplied parts in input order within their current work-and-kind side, before an anchor
+   * or at the end.
    */
   move(scope: PartOrderScope, input: MoveInput, call?: CallOptions): Promise<void>
 
-  /** Set the part mark only; this never creates or clears a work completion record. */
+  /** Sets one part's completion mark while preserving work completion history. */
   setCompleted(ref: PartRef, completed: boolean, call?: CallOptions): Promise<void>
 
-  /**
-   * Set every supplied part mark atomically; this neither creates nor clears work completion
-   * records.
-   */
+  /** Sets all supplied part marks atomically while preserving work completion history. */
   setCompletedMany(
     refs: NonEmptyArray<PartRef>,
     completed: boolean,
@@ -252,14 +281,18 @@ export interface PartsApi {
   readonly volumeChapters: VolumeChaptersApi
 }
 
-/** The owner and part kind identify the complete ordering side, not a filtered result page. */
+/** The work and part kind owning a complete formal order, independent of filtered result pages. */
 export type PartOrderScope = {
   [K in PartType]: { readonly work: EntryRef<PartWorkType<K>>; readonly partType: K }
 }[PartType]
 
-/** Comic volume membership only; both endpoints must belong to the same comic at commit. */
+/**
+ * Comic-volume chapter membership, numbering and volume-side order.
+ *
+ * Both endpoints must belong to the same comic at commit.
+ */
 export interface VolumeChaptersApi {
-  /** Read a comic volume's chapter associations in their saved volume-specific order. */
+  /** Lists a volume's chapter associations in saved volume-specific order. */
   list(
     volumeId: string,
     options: ListOptions,
@@ -267,8 +300,9 @@ export interface VolumeChaptersApi {
   ): Promise<ListResult<VolumeChapter>>
 
   /**
-   * Compare and change the complete ordered chapter side atomically; both endpoints must remain
-   * in the same comic.
+   * Compares and changes the volume's ordered chapter side atomically.
+   *
+   * Both endpoints must remain in the same comic.
    */
   applyChanges(
     volumeId: string,
@@ -276,10 +310,7 @@ export interface VolumeChaptersApi {
     call?: CallOptions,
   ): Promise<void>
 
-  /**
-   * Compare and change only this volume-specific chapter number, preserving the chapter's
-   * work-level number.
-   */
+  /** Compares and changes a volume-specific chapter number, preserving its work-level number. */
   update(
     volumeId: string,
     chapterId: string,
@@ -290,12 +321,11 @@ export interface VolumeChaptersApi {
     call?: CallOptions,
   ): Promise<void>
 
-  /** Reorder selected chapter slots against the complete volume membership baseline. */
+  /** Reorders selected chapter slots against the complete volume-membership baseline. */
   reorder(volumeId: string, input: ReorderInput, call?: CallOptions): Promise<void>
 
   /**
-   * Move the supplied chapter associations within the volume's current order without changing
-   * work-level chapter order.
+   * Moves chapter associations in the volume's current order, preserving work-level chapter order.
    */
   move(volumeId: string, input: MoveInput, call?: CallOptions): Promise<void>
 }
@@ -339,7 +369,7 @@ export const partSpecificEntries = {
   animeExtra: { type: v.nullable(extraTypeSchema), declaredDurationMs: nullableCount },
 } as const
 
-/** Return the sole legal work kind for this real part kind. */
+/** Returns the sole owning work kind for a real part kind. */
 export function partWorkType<T extends PartType>(type: T): PartWorkType<T> {
   const mapping: { [K in PartType]: PartWorkType<K> } = {
     novelVolume: 'novel',
@@ -351,7 +381,7 @@ export function partWorkType<T extends PartType>(type: T): PartWorkType<T> {
   return mapping[type]
 }
 
-/** Validate source fields and the owner/kind relationship without fabricating a title or Part row. */
+/** Parses initial part facts and checks the owner-kind relationship. */
 export function parsePartCreate(input: unknown): PartCreate {
   const { type } = parseValue(
     v.looseObject({ type: v.picklist(partTypes) }),
@@ -371,7 +401,7 @@ export function parsePartCreate(input: unknown): PartCreate {
   ) as PartCreate
 }
 
-/** Reject unrelated baselines and noneditable identity/order/record fields. */
+/** Parses editable part facts and expected values for the submitted fields. */
 export function parsePartUpdate(input: unknown): PartUpdate {
   const { ref } = parseValue(v.looseObject({ ref: partRefSchema }), input, 'Invalid part edit')
   const fields = v.strictObject(
@@ -391,7 +421,11 @@ export function parsePartUpdate(input: unknown): PartUpdate {
   return value as PartUpdate
 }
 
-/** Validate one opposite-kind correction; removed source classification/number may be compared as context. */
+/**
+ * Parses an opposite-kind anime correction and applicable comparison context.
+ *
+ * Removed source classification or numbering may be compared alongside changed common facts.
+ */
 export function parsePartKindChange(
   ref: PartRef<'animeEpisode' | 'animeExtra'>,
   input: unknown,
@@ -433,7 +467,7 @@ export function parsePartKindChange(
   return value
 }
 
-/** Validate list intent while keeping local title filtering and saved classification semantics distinct. */
+/** Parses part filters and checks the owning work kind and applicable classifications. */
 export function parsePartQuery(input: unknown): PartQuery {
   const { partType } = parseValue(v.looseObject({ partType: v.picklist(partTypes) }), input)
   let classification: v.GenericSchema = v.never()
@@ -467,7 +501,9 @@ export function parsePartQuery(input: unknown): PartQuery {
   return value as PartQuery
 }
 
-/** Parse explicit comic chapter membership; duplicates and add/remove contradictions are invalid. */
+/**
+ * Parses explicit chapter membership, rejecting duplicates and overlapping additions and removals.
+ */
 export function parseVolumeChapterChange(input: unknown): VolumeChapterChange {
   const ref = v.strictObject({ type: v.literal('comicChapter'), id })
   const member = v.strictObject({ chapter: ref, numberLabel: v.nullable(text) })

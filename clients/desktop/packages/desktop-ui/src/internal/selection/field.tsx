@@ -26,6 +26,7 @@ import type { SelectionListProps, SelectionOption } from './types'
 import input from '../input-surface.module.css'
 import styles from './field.module.css'
 
+/** Shared field-trigger, option-list and native form-validation props for choice controls. */
 export interface ChoiceFieldProps
   extends
     Omit<
@@ -38,29 +39,53 @@ export interface ChoiceFieldProps
   emptyMessage: JSX.Element
   invalidSelectionMessage: string
   required?: boolean
+  /** Handles the validation event from the native submission select. */
   onInvalid?: JSX.SelectHTMLAttributes<HTMLSelectElement>['onInvalid']
 }
 
-/** The host may supply filtered or asynchronous results with filter=false. */
+/**
+ * Search-query ownership and result presentation for a choice field.
+ *
+ * The host may supply prefiltered or asynchronous options with filter=false.
+ */
 export interface ChoiceSearchProps {
   searchLabel: string
   searchPlaceholder?: string
   query?: string
+  /** Reports query edits and requests an empty query after popup presentation ends. */
   onQueryChange?: (query: string) => void
+  /**
+   * Tests an option against the raw query for custom local filtering.
+   *
+   * False delegates filtering to the host; omission uses case-folded substring matching.
+   */
   filter?: false | ((option: SelectionOption, query: string) => boolean)
   loading?: boolean
   loadingMessage: JSX.Element
 }
 
+/** Committed records and wrapper callbacks connected to the shared choice-field presentation. */
 interface SelectionFieldProps extends ChoiceFieldProps {
   selected: readonly SelectionOption[]
   defaults: readonly string[]
-  chips?: ChipLabels & { remove: (key: string) => void }
+  chips?: ChipLabels & {
+    /** Requests removal of a committed chip by its stable key. */
+    remove: (key: string) => void
+  }
   search?: ChoiceSearchProps
+  /** Reports the chosen record to the value-owning wrapper. */
   onChoose: (option: SelectionOption) => void
+  /** Requests restoration of the wrapper's default selection after an accepted form reset. */
   onReset: () => void
 }
 
+/**
+ * Renders committed choices and optional search while connecting popup interaction to native form
+ * submission.
+ *
+ * Selected records survive query changes; unavailable committed choices remain visible and
+ * invalidate submission.
+ */
 export function SelectionField(props: SelectionFieldProps): JSX.Element {
   const [local, rest] = splitProps(props, [
     'options',
@@ -138,11 +163,16 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
   const selected = createMemo(() => new Map(local.selected.map((option) => [option.value, option])))
   const records = createMemo(() => Array.from(selected().values()))
   const keys = createMemo(() => Array.from(selected().keys()))
+  /** Builds the field summary from selected labels with a placeholder fallback. */
   const summary = () =>
     records()
       .map((option) => option.label)
       .join(', ') || local.placeholder
 
+  /**
+   * Synchronizes selected and default options and marks disabled committed records invalid on the
+   * native select.
+   */
   const sync = () => {
     const values = new Set(keys())
     const defaults = new Set(local.defaults)
@@ -167,6 +197,10 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
     },
   )
 
+  /**
+   * Closes and refocuses a single-choice popup before forwarding its chosen record; multiple-choice
+   * lists stay open.
+   */
   const choose = (option: SelectionOption) => {
     if (!local.chips) {
       setOpen(false)
@@ -174,6 +208,7 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
     }
     local.onChoose(option)
   }
+  /** Focuses the search editor without scrolling its surrounding page. */
   const searchFocus = () => editor.focus({ preventScroll: true })
   return (
     <div
@@ -284,6 +319,7 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
                 placeholder: local.search.searchPlaceholder,
                 query: query(),
                 change: setQuery,
+                /** Retains the search editor element for focus coordination. */
                 ref: (node) => {
                   editor = node
                 },

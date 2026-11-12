@@ -6,33 +6,43 @@ import type { PlaybackPositionInput, ReadingPositionInput } from '../library/rea
 import { parseReadingPosition } from '../library/reading'
 import { parseValue, nonnegativeNumber, id, optionalFields } from '../validation'
 
-/** Explicit position, including start, always requires an explicit file identity. All supplied selectors constrain the target. */
+/**
+ * Optional file selection with a position allowed only when the file is explicit.
+ *
+ * The start instruction also requires a file ID; all supplied selectors constrain the target
+ * together.
+ */
 export type FilePositionChoice<P> =
   | { readonly fileId?: string; readonly position?: never }
   | { readonly fileId: string; readonly position: P }
 
+/** Local game target with an optional explicit launch configuration. */
 export interface GameOpenInput {
   readonly gameId: string
   readonly launchConfigId?: string
 }
 
+/** Anime target with an optional episode or extra and file-bound playback position. */
 export type AnimeOpenInput = { readonly animeId: string } & (
   | { readonly episodeId?: string; readonly extraId?: never }
   | { readonly episodeId?: never; readonly extraId: string }
 ) &
   FilePositionChoice<PlaybackPositionInput>
 
+/** Comic target constrained by any supplied volume, chapter, file and reading position. */
 export type ComicOpenInput = {
   readonly comicId: string
   readonly volumeId?: string
   readonly chapterId?: string
 } & FilePositionChoice<ReadingPositionInput>
 
+/** Novel target constrained by any supplied volume, file and reading position. */
 export type NovelOpenInput = {
   readonly novelId: string
   readonly volumeId?: string
 } & FilePositionChoice<ReadingPositionInput>
 
+/** Explicit target file with an optional position for a session switch. */
 export interface FileSwitchInput<P> {
   readonly fileId: string
   readonly position?: P
@@ -52,7 +62,11 @@ export const openSelectionEntries = {
   novel: optionalFields({ volumeId: id, fileId: id, position: readingInput }),
 }
 
-/** Bind the medium's selectors to the identity accepted by the calling entry point. */
+/**
+ * Builds a medium-specific opening schema around the entry point's accepted identity fields.
+ *
+ * Positions require a file, and anime episode and extra selectors are mutually exclusive.
+ */
 export function openTargetSchema<
   K extends keyof typeof openSelectionEntries,
   E extends v.ObjectEntries,
@@ -70,17 +84,24 @@ export function openTargetSchema<
   )
 }
 
-/** Validate current-file location input; start remains an instruction until the executor returns actual coordinates. */
+/**
+ * Parses file-local seconds or the transient start instruction.
+ *
+ * The executor resolves start to an actual position.
+ */
 export function parsePlaybackPositionInput(input: unknown): PlaybackPositionInput {
   return parseValue(playbackInput, input, 'Invalid playback position')
 }
 
-/** Accept a persistent reading coordinate or the transient start instruction without resolving document content. */
+/**
+ * Parses a persistent reading coordinate or transient start instruction without resolving document
+ * content.
+ */
 export function parseReadingPositionInput(input: unknown): ReadingPositionInput {
   return parseValue(readingInput, input, 'Invalid reading position input')
 }
 
-/** Parse a local game target and its optional launch configuration. */
+/** Parses a local game target and its optional launch configuration. */
 export function parseGameOpenInput(input: unknown): GameOpenInput {
   return parseValue(
     openTargetSchema('game', { gameId: id }),
@@ -89,7 +110,7 @@ export function parseGameOpenInput(input: unknown): GameOpenInput {
   ) as GameOpenInput
 }
 
-/** Parse an anime target with an optional episode or extra and file-bound playback position. */
+/** Parses an anime target with an optional episode or extra and file-bound playback position. */
 export function parseAnimeOpenInput(input: unknown): AnimeOpenInput {
   return parseValue(
     openTargetSchema('anime', { animeId: id }),
@@ -98,7 +119,7 @@ export function parseAnimeOpenInput(input: unknown): AnimeOpenInput {
   ) as AnimeOpenInput
 }
 
-/** Parse a comic target with volume, chapter and file-bound reading selectors. */
+/** Parses a comic target with optional volume, chapter and file-bound reading selectors. */
 export function parseComicOpenInput(input: unknown): ComicOpenInput {
   return parseValue(
     openTargetSchema('comic', { comicId: id }),
@@ -107,7 +128,7 @@ export function parseComicOpenInput(input: unknown): ComicOpenInput {
   ) as ComicOpenInput
 }
 
-/** Parse a novel target with volume and file-bound reading selectors. */
+/** Parses a novel target with optional volume and file-bound reading selectors. */
 export function parseNovelOpenInput(input: unknown): NovelOpenInput {
   return parseValue(
     openTargetSchema('novel', { novelId: id }),
@@ -116,18 +137,19 @@ export function parseNovelOpenInput(input: unknown): NovelOpenInput {
   ) as NovelOpenInput
 }
 
-/** A switch fixes the requested file; reading and playback coordinate families cannot cross. */
+/** Parses an explicit anime file and optional playback position. */
 export function parseFileSwitchInput(
   type: 'anime',
   input: unknown,
 ): FileSwitchInput<PlaybackPositionInput>
 
-/** Validate the requested reading file and optional reading coordinate without accepting playback seconds. */
+/** Parses an explicit comic or novel file and optional reading position. */
 export function parseFileSwitchInput(
   type: 'comic' | 'novel',
   input: unknown,
 ): FileSwitchInput<ReadingPositionInput>
 
+/** Parses a file-switch target using the selected medium's coordinate family. */
 export function parseFileSwitchInput(
   type: FileWorkType,
   input: unknown,

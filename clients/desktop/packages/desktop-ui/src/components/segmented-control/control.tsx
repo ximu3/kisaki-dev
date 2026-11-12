@@ -8,14 +8,18 @@ import { createValue, onFormReset } from '../../internal/state'
 import styles from './styles.module.css'
 import segmented from '../../internal/segmented.module.css'
 
-/** Labels are caller-provided content; values are stable native form values. */
+/** Stable native form value with caller-provided label content and optional disabled state. */
 export interface SegmentOption {
   readonly value: string
   readonly label: JSX.Element
   readonly disabled?: boolean
 }
 
-/** label names the group. All options share the same native form owner and keyboard selection. */
+/**
+ * Named segmented-choice field with controlled or local selection.
+ *
+ * Options share one native form owner and keyboard selection model.
+ */
 export interface SegmentedControlProps extends Omit<
   JSX.FieldsetHTMLAttributes<HTMLFieldSetElement>,
   'onChange'
@@ -26,10 +30,11 @@ export interface SegmentedControlProps extends Omit<
   value?: string
   defaultValue?: string
   required?: boolean
+  /** Reports the proposed selected segment value. */
   onValueChange?: (value: string) => void
 }
 
-/** Select a single view or value with native arrow/Space behavior and form reset. */
+/** Renders a single-value segmented choice using native radio keyboard and reset behavior. */
 export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
   const [local, rest] = splitProps(props, [
     'label',
@@ -44,6 +49,7 @@ export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
 
   const field = fieldAttributes(props, () => local.label)
   const id = createUniqueId()
+  /** Returns the explicit default or first enabled option for initialization and form reset. */
   const baseline = () =>
     local.defaultValue ?? local.options.find((option) => !option.disabled)?.value ?? ''
   const [value, change] = createValue(

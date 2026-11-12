@@ -9,13 +9,21 @@ import type { createTooltip } from './controller'
 import frame from '../popup/surface.module.css'
 import styles from './styles.module.css'
 
+/**
+ * Read-only explanation content with an anchor, shared reading controller and optional placement.
+ */
 interface TooltipSurfaceProps extends JSX.HTMLAttributes<HTMLDivElement> {
+  /** Returns the element whose supplemental explanation is positioned by this surface. */
   anchor: Accessor<HTMLElement>
   reading: ReturnType<typeof createTooltip>
   placement?: PopupPlacement
 }
 
-/** Keep the same explanation open while focus or pointer stays in its reading interaction. */
+/**
+ * Renders a native hint popover tied to the shared hover and focus reading lifetime.
+ *
+ * Its document connection is released with the surface, and closing does not move keyboard focus.
+ */
 export function TooltipSurface(props: TooltipSurfaceProps): JSX.Element {
   const [local, rest] = splitProps(props, [
     'anchor',

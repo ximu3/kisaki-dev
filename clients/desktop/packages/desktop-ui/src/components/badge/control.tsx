@@ -5,12 +5,12 @@ import type { JSX } from 'solid-js'
 import { classes } from '../../internal/dom'
 import styles from './styles.module.css'
 
-/** A non-interactive compact label; its tone describes presentation only. */
+/** Compact text-label attributes with a presentation-only semantic tone. */
 export interface BadgeProps extends JSX.HTMLAttributes<HTMLSpanElement> {
   tone?: 'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline'
 }
 
-/** Render a label without adding an action or live announcement. */
+/** Renders a compact label without adding interaction or live announcement behavior. */
 export function Badge(props: BadgeProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'tone'])
 

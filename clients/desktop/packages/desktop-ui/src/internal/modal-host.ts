@@ -1,5 +1,6 @@
-/** @fileoverview Track library modal ancestry for document-level interactive presentation. */
+/** @fileoverview Tracks library modal ancestry for document-level interactive presentation. */
 
+/** Active library modal stack and presentation listeners owned by one document. */
 interface ModalHosts {
   stack: HTMLDialogElement[]
   listeners: Set<(host: HTMLDialogElement | undefined) => void>
@@ -7,6 +8,7 @@ interface ModalHosts {
 
 const documents = new WeakMap<Document, ModalHosts>()
 
+/** Returns the document's existing modal registry or creates its empty registry. */
 function hosts(document: Document): ModalHosts {
   let value = documents.get(document)
   if (!value) {
@@ -17,9 +19,15 @@ function hosts(document: Document): ModalHosts {
   return value
 }
 
-/** Register after showModal and release before the dialog's content is removed. */
+/**
+ * Registers an active modal at the top of its document stack and returns a one-time release
+ * callback.
+ *
+ * Callers register after showModal and release before the dialog's content is removed.
+ */
 export function registerModal(node: HTMLDialogElement): () => void {
   const state = hosts(node.ownerDocument)
+  /** Notifies listeners of the document's current top modal, if any. */
   const publish = () => state.listeners.forEach((listener) => listener(state.stack.at(-1)))
   state.stack.push(node)
   publish()
@@ -30,7 +38,11 @@ export function registerModal(node: HTMLDialogElement): () => void {
   }
 }
 
-/** Subscribe within the presentation host lifetime; moving DOM preserves its component owner. */
+/**
+ * Subscribes to modal-host changes and immediately delivers the current host.
+ *
+ * The caller releases the subscription with its presentation host.
+ */
 export function observeModalHost(
   document: Document,
   listener: (host: HTMLDialogElement | undefined) => void,

@@ -9,15 +9,22 @@ import type { SelectionCollection } from './collection'
 import type { SelectionOption } from './types'
 import type { SelectionPopup } from './popup'
 
+/** Field-button attributes linked to popup disclosure, logical options and selection callbacks. */
 interface SelectionTriggerProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
   popup: SelectionPopup
   collection: SelectionCollection
   selected: readonly string[]
+  /** Reports the active option chosen through trigger keyboard interaction. */
   onChoose: (option: SelectionOption) => void
+  /** Moves focus into the popup's search editor when searchable interaction is enabled. */
   focusSearch?: (() => void) | undefined
 }
 
-/** Use with SelectionList. The owner decides whether a choice closes the list. */
+/**
+ * Renders a field trigger and routes keyboard interaction to logical options or the search editor.
+ *
+ * The value owner decides whether choosing an option closes the list.
+ */
 export function SelectionTrigger(props: SelectionTriggerProps): JSX.Element {
   const [local, rest] = splitProps(props, [
     'popup',
@@ -30,6 +37,7 @@ export function SelectionTrigger(props: SelectionTriggerProps): JSX.Element {
     'onKeyDown',
   ])
   let trigger!: HTMLButtonElement
+  /** Opens the popup and highlights an enabled selected option or the first enabled candidate. */
   const show = () => {
     local.popup.setOpen(true)
     const selected = local.selected.find((key) => {

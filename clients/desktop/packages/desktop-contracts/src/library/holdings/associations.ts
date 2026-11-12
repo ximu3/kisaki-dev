@@ -8,23 +8,30 @@ import { id, unique, parseValue } from '../../validation'
 /** Persistent permission for later automatic association, independent of current association contents. */
 export type FileAssociationMode = 'automatic' | 'manual'
 
+/** Part kinds that can be directly associated with a file of the selected medium. */
 export type FilePartType<T extends FileWorkType> = {
   readonly anime: 'animeEpisode' | 'animeExtra'
   readonly comic: 'comicVolume' | 'comicChapter'
   readonly novel: 'novelVolume'
 }[T]
 
+/** A direct file-to-part association and its preferred-file flag. */
 export interface FileAssociation<T extends FileWorkType = FileWorkType> {
   readonly part: PartRef<FilePartType<T>>
   readonly isPreferred: boolean
 }
 
+/** A direct part association supplied with an optional preferred-file choice. */
 export interface FileAssociationInput<T extends FileWorkType = FileWorkType> {
   readonly part: PartRef<FilePartType<T>>
   readonly isPreferred?: boolean
 }
 
-/** Associations form one complete direct set; comic volume membership does not imply direct chapter associations. */
+/**
+ * Complete direct-association replacement or disjoint incremental changes.
+ *
+ * A comic-volume association does not imply direct associations to its chapters.
+ */
 export type FileAssociationChange<T extends FileWorkType = FileWorkType> =
   | { readonly type: 'replace'; readonly items: readonly FileAssociationInput<T>[] }
   | {
@@ -33,6 +40,7 @@ export type FileAssociationChange<T extends FileWorkType = FileWorkType> =
       readonly remove?: readonly PartRef<FilePartType<T>>[]
     }
 
+/** Association changes with an optional baseline of the complete direct set and matching mode. */
 export interface FileAssociationEdit<T extends FileWorkType = FileWorkType> {
   readonly change: FileAssociationChange<T>
   readonly expected?: {
@@ -49,6 +57,7 @@ export const filePartTypes: { readonly [K in FileWorkType]: readonly FilePartTyp
   novel: ['novelVolume'],
 }
 
+/** Builds a part-reference schema restricted to the file medium's applicable part kinds. */
 export function partSchema<T extends FileWorkType>(
   type: T,
 ): v.GenericSchema<unknown, PartRef<FilePartType<T>>> {
@@ -56,15 +65,21 @@ export function partSchema<T extends FileWorkType>(
   return v.strictObject({ type: v.picklist(types), id })
 }
 
+/** Encodes a part's kind and identity as an unambiguous association key. */
 export function partKey(part: PartRef): string {
   return JSON.stringify([part.type, part.id])
 }
 
+/** Builds a medium-specific association input schema with an optional preferred flag. */
 export function associationSchema<T extends FileWorkType>(type: T) {
   return v.strictObject({ part: partSchema(type), isPreferred: v.exactOptional(v.boolean()) })
 }
 
-/** Parse the complete direct set or disjoint incremental intent; partial comic volume/chapter views cannot replace it. */
+/**
+ * Parses complete replacement or disjoint incremental direct-association intent.
+ *
+ * A partial comic-volume or chapter view cannot stand in for the complete set.
+ */
 export function parseFileAssociationChange<T extends FileWorkType>(
   workType: T,
   input: unknown,
@@ -102,7 +117,7 @@ export function parseFileAssociationChange<T extends FileWorkType>(
   ) as FileAssociationChange<T>
 }
 
-/** A supplied edit baseline contains both the complete direct associations and the original matching permission. */
+/** Parses association intent and an optional complete-set and matching-mode baseline. */
 export function parseFileAssociationEdit<T extends FileWorkType>(
   workType: T,
   input: unknown,
@@ -129,7 +144,7 @@ export function parseFileAssociationEdit<T extends FileWorkType>(
   ) as FileAssociationEdit<T>
 }
 
-/** Mode-only intent never changes the complete association set. */
+/** Parses a matching-mode change and optional baseline without changing association membership. */
 export function parseFileAssociationModeChange(input: unknown): {
   readonly mode: FileAssociationMode
   readonly expected?: { readonly associationMode: FileAssociationMode }

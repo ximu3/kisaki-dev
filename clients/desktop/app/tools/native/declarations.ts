@@ -5,7 +5,12 @@
 
 import { readFile, writeFile } from 'node:fs/promises'
 
-/** Compare the generated ABI declarations; explicit regeneration is a reviewable source edit. */
+/**
+ * Checks generated declarations against the tracked binding contract after normalizing line
+ * endings.
+ *
+ * update=true replaces the tracked source; otherwise a difference rejects the operation.
+ */
 export async function checkDeclarations(
   generatedPath: string,
   sourcePath: string,

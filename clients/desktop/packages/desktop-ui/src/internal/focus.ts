@@ -3,7 +3,10 @@
 import { onCleanup } from 'solid-js'
 import type { Accessor } from 'solid-js'
 
-/** Use the current DOM so conditional items and disabled fieldsets participate correctly. */
+/**
+ * Returns matching descendants with layout boxes that are neither disabled nor explicitly hidden,
+ * in DOM order.
+ */
 export function focusableItems(container: HTMLElement, selector: string): HTMLElement[] {
   return Array.from(container.querySelectorAll<HTMLElement>(selector)).filter(
     (item) =>
@@ -12,7 +15,11 @@ export function focusableItems(container: HTMLElement, selector: string): HTMLEl
   )
 }
 
-/** Move real focus for menus/tabs, with Home/End and locale-aware prefix search. */
+/**
+ * Creates a Solid-owned handler for directional focus, Home and End, and timed prefix search.
+ *
+ * Targets follow current DOM order and writing direction; owner cleanup clears the search timer.
+ */
 export function createFocusNavigation(
   root: Accessor<HTMLElement>,
   selector: string,

@@ -26,38 +26,71 @@ const highlighting = HighlightStyle.define([
   { tag: tags.meta, color: 'var(--muted-foreground)' },
 ])
 
-/** The host owns text and save policy; onViewChange(undefined) invalidates the borrowed editor on unmount. */
+/**
+ * Shared source-editor values, configuration and borrowed-view lifecycle callbacks.
+ *
+ * The host owns text persistence and save policy.
+ */
 interface EditorProps<C extends MarkdownCommand> extends Omit<
   JSX.HTMLAttributes<HTMLDivElement>,
   'onChange' | 'children'
 > {
   value?: string
   defaultValue?: string
+  /** Reports document changes outside external-value synchronization. */
   onValueChange?: (value: string) => void
 
   label: string
   placeholder?: string
   readOnly?: boolean
+  /** Selects toolbar items directly or derives them from the standard command list. */
   toolbar?: MarkdownToolbarConfig<C> | undefined
   /** Defaults to the editor's localized accessible name. */
   toolbarLabel?: string
+  /** Returns the localized accessible label for a displayed built-in command. */
   commandLabel?: (command: NoInfer<C>) => string
 
   extensions?: Extension
+  /**
+   * Publishes the mounted editor and reports undefined when it is released.
+   *
+   * The component retains ownership of the borrowed view.
+   */
   onViewChange?: (view: EditorView | undefined) => void
   cspNonce?: string
 }
 
-/** Only displayed built-ins request a localized label. Custom-only and empty lists supply their own names. */
+/**
+ * Editor props coupling displayed built-in commands to their required localized labels.
+ *
+ * Custom-only and empty toolbars carry their own names.
+ */
 export type MarkdownEditorProps<C extends MarkdownCommand = MarkdownCommand> = EditorProps<C> &
   (
-    | { toolbar: MarkdownToolbarConfig<never> }
-    | ({ commandLabel: (command: NoInfer<C>) => string } & ([MarkdownCommand] extends [C]
+    | {
+        /** Provides a custom-only or empty toolbar without requiring built-in command labels. */
+        toolbar: MarkdownToolbarConfig<never>
+      }
+    | ({
+        /** Returns labels for the built-in commands permitted by this toolbar configuration. */
+        commandLabel: (command: NoInfer<C>) => string
+      } & ([MarkdownCommand] extends [C]
         ? unknown
-        : { toolbar: MarkdownToolbarConfig<C> }))
+        : {
+            /**
+             * Selects or derives items from the declared subset of built-in commands and custom
+             * actions.
+             */
+            toolbar: MarkdownToolbarConfig<C>
+          }))
   )
 
-/** Create one CodeMirror view. External text updates wait for composition and do not add an undo step. */
+/**
+ * Creates and owns one CodeMirror source-editing view.
+ *
+ * External value updates wait for composition and do not add undo steps. Owner cleanup destroys the
+ * view and invalidates its borrowed reference.
+ */
 export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
   input: MarkdownEditorProps<C>,
 ): JSX.Element {
@@ -87,6 +120,7 @@ export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
     const configuration = new Compartment()
     let synchronizing = false
     let alive = true
+    /** Builds reactive readonly, accessibility, placeholder and host-extension configuration. */
     const extension = () => [
       EditorState.readOnly.of(!!local.readOnly),
       EditorView.editable.of(!local.readOnly),
@@ -119,6 +153,10 @@ export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
     })
     setState(view.state)
 
+    /**
+     * Adopts changed external text after composition without reporting it as an editor-originated
+     * change or adding history.
+     */
     const sync = () => {
       if (
         !alive ||
@@ -140,6 +178,7 @@ export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
       }
     }
 
+    /** Schedules controlled-value synchronization after native composition settles. */
     const compositionEnd = () => queueMicrotask(sync)
     view.contentDOM.addEventListener('compositionend', compositionEnd)
     createEffect(sync)

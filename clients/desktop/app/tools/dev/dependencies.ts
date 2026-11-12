@@ -9,10 +9,13 @@ import { repositoryRoot } from '../lib/paths'
 /** A production workspace dependency consumed through its built exports. */
 export interface DesktopDependency {
   name: string
+  /** Real path of the workspace package root. */
   path: string
 }
 
-/** Read the dependency identities already resolved by the workspace package manager. */
+/**
+ * Reads production workspace dependencies from pnpm and resolves their real package directories.
+ */
 export async function desktopDependencies(signal?: AbortSignal): Promise<DesktopDependency[]> {
   const members = JSON.parse(
     await readPnpm(
@@ -26,16 +29,24 @@ export async function desktopDependencies(signal?: AbortSignal): Promise<Desktop
   )
 }
 
-/** One complete dependency copy, owned by its caller until handed to the renderer. */
+/**
+ * Content-identified copy of built workspace dependencies.
+ *
+ * The caller owns its directory until adoption transfers that ownership to the renderer.
+ */
 export interface DependencySnapshot {
+  /** SHA-256 over copied names, byte lengths and contents. */
   id: string
   directory: string
+  /** Package name to its directory inside this candidate. */
   packages: ReadonlyMap<string, string>
 }
 
 /**
- * Prepare package manifests and built files without selecting Node or browser export conditions.
- * Failure removes the candidate; success transfers its directory to the caller for adoption or cleanup.
+ * Copies package manifests and built files into an owned dependency candidate.
+ *
+ * Retains package export conditions for the consuming resolver. Returns the completed copy and its
+ * digest; preparation failure removes the candidate and reports any cleanup failure.
  */
 export async function captureDependencies(
   members: DesktopDependency[],
@@ -46,7 +57,10 @@ export async function captureDependencies(
   const digest = createHash('sha256')
   const packages = new Map<string, string>()
 
-  /** Copy one immutable input and include its path and byte length in the candidate identity. */
+  /**
+   * Copies one input file and adds its destination name, byte length and contents to the candidate
+   * digest.
+   */
   async function copy(source: string, name: string): Promise<void> {
     const bytes = await readFile(source)
     const target = join(candidate, 'node_modules', name)
@@ -55,7 +69,7 @@ export async function captureDependencies(
     await writeFile(target, bytes)
   }
 
-  /** Built output consists of regular files; a link would not provide a stable copied value. */
+  /** Copies regular files in deterministic directory order and rejects filesystem links. */
   async function collect(source: string, prefix: string): Promise<void> {
     for (const entry of (await readdir(source, { withFileTypes: true })).sort((a, b) =>
       a.name.localeCompare(b.name, 'en'),

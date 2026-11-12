@@ -17,7 +17,7 @@ import { TooltipSurface } from '../../../internal/tooltip/content'
 import { createTooltip } from '../../../internal/tooltip/controller'
 import styles from './styles.module.css'
 
-/** The summary identifies the field in a complete correction. Its optional message explains that field's error. */
+/** Field-specific correction with a standalone summary and optional detailed error message. */
 export interface FieldIssue {
   readonly id: string
 
@@ -25,19 +25,29 @@ export interface FieldIssue {
   readonly message?: string
 }
 
-/** An active field id selects its issue. Use null for the overview and undefined to retain context while reading feedback. */
+/**
+ * Form feedback inputs, localized count formatting and caller-owned field navigation.
+ *
+ * An active field ID selects its issue; null selects the overview, and undefined retains the
+ * current context while feedback is read.
+ */
 export interface FormFeedbackProps extends JSX.HTMLAttributes<HTMLDivElement> {
   issues: readonly FieldIssue[]
   activeFieldId?: string | null | undefined
+  /** Requests that the caller reveal and focus the identified field. */
   onLocate: (id: string) => void
 
-  /** Format the standalone error count when no erroneous field is active. */
+  /** Formats a standalone error-count message when no erroneous field is active. */
   summary: (count: number) => string
   /** Explicit form-level feedback takes precedence over field and count prompts. */
   message?: string
 }
 
-/** Reserve one control row. The caller owns validation and revealing the located field. */
+/**
+ * Reserves one feedback row and selects form-level, field-specific or error-count content.
+ *
+ * The caller owns validation and revealing the requested field.
+ */
 export function FormFeedback(props: FormFeedbackProps): JSX.Element {
   const [local, rest] = splitProps(props, [
     'issues',
@@ -56,6 +66,10 @@ export function FormFeedback(props: FormFeedbackProps): JSX.Element {
   })
 
   const current = createMemo(() => local.issues.find((issue) => issue.id === remembered()))
+  /**
+   * Returns the explicit form message, active issue summary or formatted issue count in priority
+   * order.
+   */
   const text = () =>
     local.message ??
     current()?.summary ??
@@ -74,9 +88,11 @@ export function FormFeedback(props: FormFeedbackProps): JSX.Element {
   )
 }
 
+/** Renders a field-location button with read-only tooltip details for extra or clipped text. */
 function FeedbackPrompt(props: {
   text: string
   detail: string | undefined
+  /** Reveals the selected field after tooltip dismissal. */
   onLocate: () => void
 }): JSX.Element {
   const tooltip = createTooltip()
@@ -84,9 +100,11 @@ function FeedbackPrompt(props: {
   let trigger!: HTMLButtonElement
   let message!: HTMLSpanElement
   const [clipped, setClipped] = createSignal(false)
+  /** Returns supplemental error detail only when it differs from the visible summary. */
   const detail = () => (props.detail === props.text ? undefined : props.detail)
 
   onMount(() => {
+    /** Updates whether the visible feedback text exceeds its available width. */
     const measure = () => setClipped(message.scrollWidth > message.clientWidth)
     const size = new ResizeObserver(measure)
     size.observe(message)

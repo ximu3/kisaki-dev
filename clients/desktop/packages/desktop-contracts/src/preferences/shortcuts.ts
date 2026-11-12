@@ -43,16 +43,24 @@ export const shortcutKeys = Object.freeze([
   'game.viewWork',
 ] as const)
 
+/** Stable native action identity within a desktop shortcut scope. */
 export type ShortcutKey = (typeof shortcutKeys)[number]
 
-/** Empty accelerators means unbound. Enabled intent survives an operating-system registration failure. */
+/**
+ * Saved enabled intent and accelerator bindings for one action.
+ *
+ * An empty accelerator list means unbound. Operating-system registration failure leaves enabled
+ * intent intact.
+ */
 export interface ShortcutPreferences {
   readonly enabled: boolean
   readonly accelerators: readonly string[]
 }
 
+/** Complete saved bindings for the native shortcut action catalog. */
 export type ShortcutsPreferences = Readonly<Record<ShortcutKey, ShortcutPreferences>>
 
+/** Desktop operating-system identity used to interpret effective shortcut modifiers. */
 export type DesktopPlatform = 'win32' | 'darwin' | 'linux'
 
 const modifiers = new Map(
@@ -129,7 +137,11 @@ keys.set('enter', 'Return')
 
 keys.set('esc', 'Escape')
 
-/** Canonicalize documented case-insensitive Electron syntax without replacing an explicit modifier with platform intent.
+/**
+ * Parses and canonicalizes supported case-insensitive Electron accelerator syntax.
+ *
+ * Explicit modifiers remain distinct from the platform-dependent CommandOrControl choice.
+ *
  * @see https://www.electronjs.org/docs/latest/tutorial/keyboard-shortcuts
  */
 export function parseAccelerator(input: unknown): string {
@@ -160,7 +172,11 @@ export function parseAccelerator(input: unknown): string {
   return [...modifierOrder.filter((part) => parsed.includes(part)), key].join('+')
 }
 
-/** Validate a single action; aliases and modifier order are deduplicated without silently dropping invalid entries. */
+/**
+ * Parses one action's preferences and deduplicates canonical accelerator strings.
+ *
+ * Invalid bindings reject the input.
+ */
 export function parseShortcutPreferences(input: unknown): ShortcutPreferences {
   return parseValue(
     v.strictObject({
@@ -175,6 +191,7 @@ export function parseShortcutPreferences(input: unknown): ShortcutPreferences {
   )
 }
 
+/** Pair of distinct actions whose effective key combination can overlap in their scopes. */
 export interface ShortcutConflict {
   readonly first: ShortcutKey
   readonly second: ShortcutKey
@@ -208,7 +225,12 @@ const shiftedKeyCodes = new Map(
   }),
 )
 
-/** Compare potentially overlapping scopes even when no game is active; actual OS/layout registration remains a runtime result. */
+/**
+ * Finds enabled bindings with the same effective combination in potentially overlapping scopes.
+ *
+ * Checks include game actions even when no game is active. Actual operating-system and
+ * keyboard-layout registration remains a runtime result.
+ */
 export function findShortcutConflicts(
   preferences: ShortcutsPreferences,
   platform: DesktopPlatform,

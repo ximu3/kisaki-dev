@@ -17,17 +17,26 @@ import { parseLocalContentRegistrationResult } from '../library/holdings/local-c
 import { clues } from './recognizers'
 import { parseScanConfigSnapshot } from './configs'
 
-/** Only watcher-owned internal runs may describe incremental coverage; public scan always uses the full current config. */
+/**
+ * Coverage captured for one scan run.
+ *
+ * Public scan uses the full current configuration; only internal watcher runs may use incremental
+ * relative paths.
+ */
 export type ScanScope =
   | { readonly type: 'full' }
   | { readonly type: 'incremental'; readonly paths: NonEmptyArray<string> }
 
+/** Discovery completion, number of candidates found and path-specific traversal issues. */
 export interface ScanDiscovery {
   readonly finished: boolean
   readonly candidateCount: number
   readonly issues: readonly { readonly path: string; readonly error: ErrorSummary }[]
 }
 
+/**
+ * Candidate local-content outcome, including registration failures with retained partial results.
+ */
 export type ScanLocalContentResult =
   | { readonly status: 'included' }
   | { readonly status: 'skipped' }
@@ -35,20 +44,30 @@ export type ScanLocalContentResult =
   | { readonly status: 'failed'; readonly error: ExecutionFailure<LocalContentRegistrationResult> }
   | { readonly status: 'notStarted' }
 
-/** Already-created roots retain their own result, even if a later existing-content registration fails. */
+/**
+ * One candidate's clues and adoption result or failure.
+ *
+ * Established root outcomes remain available when subsequent existing-content registration fails.
+ */
 export type ScanCandidateResult = { readonly path: string; readonly clues: WorkClues | null } & (
   | { readonly result: IngestAddResult<WorkType>; readonly localContent: ScanLocalContentResult }
   | { readonly error: ExecutionFailure<IngestAddResult<WorkType>> }
 )
 
+/** Discovery progress and outcomes for candidates actually handled during a scan. */
 export interface ScanResult {
   readonly discovery: ScanDiscovery
   readonly candidates: readonly ScanCandidateResult[]
 }
 
+/** Persisted scan lifecycle state, including cancellation and interruption. */
 export type ScanRunStatus = 'active' | 'completed' | 'failed' | 'cancelled' | 'interrupted'
 
-/** Scan reports survive configuration/task-history deletion and preserve the exact scope/profile snapshot used at admission. */
+/**
+ * Persisted scan report with the scope and configuration snapshot fixed at admission.
+ *
+ * Reports survive deletion of their configuration or associated task history.
+ */
 export interface ScanRun {
   readonly id: string
   readonly scanConfigId: string
@@ -68,8 +87,10 @@ export interface ScanRun {
   readonly finishedAt: number | null
 }
 
+/** Scan-history projection omitting the full captured configuration and candidate report. */
 export type ScanRunSummary = Omit<ScanRun, 'configSnapshot' | 'result'>
 
+/** Scan-history filters for configuration, lifecycle state and creation interval. */
 export interface ScanRunQuery {
   readonly scanConfigId?: string
   readonly statuses?: readonly ScanRunStatus[]
@@ -79,24 +100,22 @@ export interface ScanRunQuery {
   readonly createdBefore?: number
 }
 
-/** Report cleanup removes finished scan history only and never cascades to tasks, configurations, entries or local files. */
+/** Independent scan-history reads, finished-report cleanup and invalidation. */
 export interface ScanRunsApi {
-  /**
-   * Read persisted scan-report summaries in the requested scope; task execution remains
-   * independently owned.
-   */
+  /** Reads an interval of persisted scan-report summaries matching the query. */
   list(
     query: ScanRunQuery,
     options: ListOptions,
     call?: CallOptions,
   ): Promise<ListResult<ScanRunSummary>>
 
-  /** Read the stored report and configuration snapshot without resuming the scan. */
+  /** Reads a stored report and its configuration snapshot, returning null when absent. */
   get(runId: string, call?: CallOptions): Promise<ScanRun | null>
 
   /**
-   * Remove only finished scan history matching the filter and return the count; tasks,
-   * configurations, library data and files remain intact.
+   * Removes matching finished reports and returns the count.
+   *
+   * Tasks, configurations, library data and files retain their own lifetimes.
    */
   clear(
     filter?: {
@@ -108,8 +127,9 @@ export interface ScanRunsApi {
   ): Promise<number>
 
   /**
-   * Subscribe before reading report history; notifications request a new snapshot rather than
-   * carrying live scan progress.
+   * Subscribes to scan-history invalidation and returns the subscription lifetime.
+   *
+   * Callers subscribe before reading. Live scan progress uses task observation.
    */
   onInvalidated(listener: () => void): Disposable
 }
@@ -126,6 +146,7 @@ export const discovery = v.strictObject({
 
 const statuses = ['active', 'completed', 'failed', 'cancelled', 'interrupted'] as const
 
+/** Parses an ingest result and requires its root to be a work. */
 function parseWorkAddResult(input: unknown): IngestAddResult<WorkType> {
   const value = parseIngestAddResult(input)
   if (!isWorkType(value.entry.type)) {
@@ -152,6 +173,10 @@ const localContent = v.variant('status', [
   }),
 ])
 
+/**
+ * Parses a candidate outcome and checks local-content status and work identity against root
+ * adoption.
+ */
 function parseScanCandidateResult(input: unknown): ScanCandidateResult {
   const value = parseValue(
     v.union([
@@ -198,7 +223,12 @@ function parseScanCandidateResult(input: unknown): ScanCandidateResult {
   return value
 }
 
-/** Reports retain discovered versus handled counts; unstarted candidates never become fabricated failures. */
+/**
+ * Parses distinct candidate reports and checks that handled candidates do not exceed the discovered
+ * count.
+ *
+ * Unstarted candidates remain outside the handled report list.
+ */
 export function parseScanResult(input: unknown): ScanResult {
   const value = parseValue(
     v.strictObject({
@@ -221,7 +251,10 @@ export function parseScanResult(input: unknown): ScanResult {
   return value
 }
 
-/** Require completed discovery and a report for every discovered candidate before declaring the scan complete. */
+/**
+ * Requires finished discovery and an outcome for every candidate, with no unstarted local-content
+ * step.
+ */
 export function requireCompleteScanResult(result: ScanResult | null): ScanResult {
   if (
     !result ||
@@ -235,7 +268,7 @@ export function requireCompleteScanResult(result: ScanResult | null): ScanResult
   return result
 }
 
-/** Validate independent persisted scan history; completed reports must finish discovery and report every discovered candidate. */
+/** Parses persisted scan history and requires completed runs to account for all discovered work. */
 export function parseScanRun(input: unknown): ScanRun {
   const relative = v.pipe(v.unknown(), v.transform(parseRelativePath))
   const scope = v.union([
@@ -271,7 +304,10 @@ export function parseScanRun(input: unknown): ScanRun {
   return value
 }
 
-/** Historical list filters do not load full reports; creation bounds use [from, before). */
+/**
+ * Parses history filters with a strictly ordered, half-open creation-time interval when both bounds
+ * are present.
+ */
 export function parseScanRunQuery(input: unknown): ScanRunQuery {
   return parseValue(
     v.pipe(

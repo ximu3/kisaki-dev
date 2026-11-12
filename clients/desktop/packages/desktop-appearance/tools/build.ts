@@ -9,14 +9,19 @@ import { runCli } from '@kisaki3/tooling/cli'
 import { defaults } from '../src/defaults'
 import type { TokenValues } from '../src/tokens'
 
-/** Serialize the maintained literal defaults; this is not an external CSS input boundary. */
+/** Serializes the package's authored token values as CSS custom-property declarations. */
 function declarations(values: TokenValues): string {
   return Object.entries(values)
     .map(([name, value]) => `    ${name}: ${value};`)
     .join('\n')
 }
 
-/** Prepare all public outputs before replacing dist; cancellation before adoption preserves it. */
+/**
+ * Builds ESM, declarations, CSS and dependency notices as one distribution candidate.
+ *
+ * Adopts dist after all outputs are prepared; earlier failures or cancellation preserve the
+ * previous output.
+ */
 export async function buildPackage(signal?: AbortSignal): Promise<void> {
   const project = join(import.meta.dirname, '..')
   await replaceOutput(

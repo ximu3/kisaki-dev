@@ -10,14 +10,22 @@ import { Icon, mdiCheck, mdiMinus } from '../../internal/icon/glyph'
 import { ChoiceRow } from '../../internal/choice/row'
 import styles from './styles.module.css'
 
-/** checked determines form submission; indeterminate is a separately controlled visual state. */
+/**
+ * Native checkbox attributes, checked-state ownership and optional mixed presentation.
+ *
+ * Checked controls form submission; indeterminate is a separate visual state.
+ */
 export interface CheckboxProps
   extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'type' | 'checked'>, CheckedValueProps {
   label?: JSX.Element
   indeterminate?: boolean
 }
 
-/** Label directly or through Field; native required, fieldset and FormData rules remain in force. */
+/**
+ * Renders a native checkbox with optional inline labeling and Field associations.
+ *
+ * Native required, fieldset and form-submission behavior remains available.
+ */
 export function Checkbox(props: CheckboxProps): JSX.Element {
   const [local, rest] = splitProps(props, [
     'checked',

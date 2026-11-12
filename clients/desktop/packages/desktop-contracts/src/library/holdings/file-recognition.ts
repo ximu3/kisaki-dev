@@ -20,6 +20,7 @@ import { inspectTextPattern, parseTextTemplate } from '../../text-rules'
 import type { FilePartType } from './associations'
 import type { ErrorSummary } from '../../errors'
 
+/** Expanded per-medium conditions used to find actual parts after rule interpretation. */
 export interface FileConditionByType {
   readonly anime:
     | (NumberedPartCondition & {
@@ -39,12 +40,17 @@ export interface FileConditionByType {
   readonly novel: NumberedPartCondition & { readonly kind: 'volume' }
 }
 
-/** Offset is a signed safe integer subtracted from the integer portion after template expansion. */
+/**
+ * A number-label template and signed safe-integer offset.
+ *
+ * The offset is subtracted from the integer portion after template expansion.
+ */
 export interface FileNumberValue {
   readonly value: string
   readonly offset: number
 }
 
+/** A single number-label template or range templates with their common offset. */
 export type FileNumberOutput =
   | ({ readonly kind: 'single' } & FileNumberValue)
   | {
@@ -54,14 +60,17 @@ export type FileNumberOutput =
       readonly offset: number
     }
 
+/** A rule target with at least a number-label template or a name template. */
 export type NumberedPartOutput =
   | { readonly number: FileNumberOutput; readonly name?: string }
   | { readonly number?: FileNumberOutput; readonly name: string }
 
+/** Number or name templates that identify one volume for chapter interpretation. */
 export type ComicVolumeScopeOutput =
   | { readonly number: FileNumberValue; readonly name?: string }
   | { readonly number?: FileNumberValue; readonly name: string }
 
+/** An episode or extra described by an anime filename rule. */
 export type AnimeFileTarget =
   | (NumberedPartOutput & {
       readonly kind: 'episode'
@@ -69,6 +78,12 @@ export type AnimeFileTarget =
     })
   | { readonly kind: 'extra'; readonly name: string; readonly extraType?: AnimeExtraType | null }
 
+/**
+ * A volume or chapter described by a comic filename rule.
+ *
+ * Numbered chapters declare work-wide or volume-relative numbering; volume-relative numbers require
+ * a volume scope.
+ */
 export type ComicFileTarget =
   | (NumberedPartOutput & { readonly kind: 'volume' })
   | ({ readonly kind: 'chapter'; readonly name?: string } & (
@@ -90,15 +105,21 @@ export type ComicFileTarget =
         }
     ))
 
+/** A real novel volume described by number or name templates. */
 export type NovelFileTarget = NumberedPartOutput & { readonly kind: 'volume' }
 
+/** The output target vocabulary owned by each file-bearing medium. */
 export interface FileTargetByType {
   readonly anime: AnimeFileTarget
   readonly comic: ComicFileTarget
   readonly novel: NovelFileTarget
 }
 
-/** The first enabled full match owns the entire interpretation; targets are jointly required, not fallback candidates. */
+/**
+ * One ordered filename rule with a complete set of output targets.
+ *
+ * The first enabled full match owns interpretation. All targets are jointly required.
+ */
 export interface FileRecognitionRule<TTarget> {
   readonly id: string
   readonly name: string
@@ -111,11 +132,17 @@ export interface FileRecognitionRule<TTarget> {
   readonly output: { readonly targets: NonEmptyArray<TTarget> }
 }
 
+/** The ordered filename rules for one medium; an empty rule list is valid. */
 export interface FileRecognitionDefinition<T extends FileWorkType = FileWorkType> {
   readonly rules: readonly FileRecognitionRule<FileTargetByType[T]>[]
 }
 
-/** Definition changes affect later interpretation; a broken selected profile never means fallback to builtin recognition. */
+/**
+ * A saved, ordered filename-recognition profile and its stored definition.
+ *
+ * Changes affect later interpretation. An unavailable selected definition does not trigger built-in
+ * fallback.
+ */
 export interface FileRecognitionProfile<T extends FileWorkType = FileWorkType> {
   readonly id: string
   readonly workType: T
@@ -131,12 +158,14 @@ export interface FileRecognitionProfile<T extends FileWorkType = FileWorkType> {
   readonly updatedAt: number
 }
 
+/** Editable profile metadata and one complete recognition definition. */
 export interface FileRecognitionProfileFields<T extends FileWorkType> {
   readonly name: string
   readonly description: string | null
   readonly definition: FileRecognitionDefinition<T>
 }
 
+/** A fixed recognition definition and display metadata for copying into a new draft. */
 export interface FileRecognitionPreset<T extends FileWorkType> {
   readonly id: string
   readonly name: string
@@ -144,22 +173,28 @@ export interface FileRecognitionPreset<T extends FileWorkType> {
   readonly definition: FileRecognitionDefinition<T>
 }
 
-/** Shared profiles are independently managed. Referenced profiles cannot be deleted or silently replaced. */
+/**
+ * Independent recognition-profile management for one medium.
+ *
+ * Referenced profiles require explicit dependency handling before deletion.
+ */
 export interface FileRecognitionProfilesApi<T extends FileWorkType> {
-  /** Read saved profile identities and descriptions for this media type in formal order. */
+  /** Lists saved profile identities and descriptions in the medium's formal order. */
   list(
     call?: CallOptions,
   ): Promise<readonly Pick<FileRecognitionProfile<T>, 'id' | 'workType' | 'name' | 'description'>[]>
 
   /**
-   * Read the profile and its saved definition, retaining corruption as an explicit unavailable
-   * value.
+   * Reads a profile with its stored definition, or null when absent.
+   *
+   * Corruption remains an explicit unavailable value.
    */
   get(id: string, call?: CallOptions): Promise<FileRecognitionProfile<T> | null>
 
   /**
-   * Create an independent profile from a complete definition; presets and copies enter through
-   * the same ordinary save path.
+   * Creates an independent profile from a complete definition.
+   *
+   * Preset copies use the same ordinary save path.
    */
   create(
     input: FileRecognitionProfileFields<T>,
@@ -167,8 +202,9 @@ export interface FileRecognitionProfilesApi<T extends FileWorkType> {
   ): Promise<FileRecognitionProfile<T>>
 
   /**
-   * Compare and save changed profile fields, treating the definition as one value; existing file
-   * associations are not rewritten by the save.
+   * Compares and saves changed profile fields with the definition treated as one value.
+   *
+   * Existing file associations remain unchanged.
    */
   update(
     id: string,
@@ -180,18 +216,14 @@ export interface FileRecognitionProfilesApi<T extends FileWorkType> {
   ): Promise<FileRecognitionProfile<T>>
 
   /**
-   * Delete only an unreferenced profile; referencing content directories must be handled
-   * explicitly before removal.
+   * Deletes an unreferenced profile after its directory dependencies have been handled explicitly.
    */
   delete(id: string, call?: CallOptions): Promise<void>
 
-  /** Reorder selected profiles against the complete media-specific directory baseline. */
+  /** Reorders selected profiles against the complete media-specific profile-order baseline. */
   reorder(input: ReorderInput, call?: CallOptions): Promise<void>
 
-  /**
-   * Read actual content directories that reference this profile so callers can resolve
-   * dependencies before deletion.
-   */
+  /** Lists actual content directories referencing the profile. */
   references(
     id: string,
     call?: CallOptions,
@@ -199,7 +231,7 @@ export interface FileRecognitionProfilesApi<T extends FileWorkType> {
     readonly { readonly work: EntryRef<T>; readonly directoryId: string; readonly path: string }[]
   >
 
-  /** Read fixed definitions for copying into a draft; listing presets creates no saved profiles. */
+  /** Lists fixed preset definitions for copying into drafts without creating saved profiles. */
   listPresets(call?: CallOptions): Promise<readonly FileRecognitionPreset<T>[]>
 }
 
@@ -262,7 +294,11 @@ const targetSchemas = {
   novel: volume,
 }
 
-/** Parse the medium's fixed output structure. Templates are checked against the owning rule's captures separately. */
+/**
+ * Parses the medium's output-target structure.
+ *
+ * Template capture names are checked separately against the owning rule.
+ */
 export function parseFileTarget<T extends FileWorkType>(
   workType: T,
   input: unknown,
@@ -274,6 +310,7 @@ export function parseFileTarget<T extends FileWorkType>(
   ) as FileTargetByType[T]
 }
 
+/** Collects name, number and volume-scope templates from a file target. */
 function targetTemplates(
   target: AnimeFileTarget | ComicFileTarget | NovelFileTarget,
 ): readonly string[] {
@@ -301,8 +338,10 @@ function targetTemplates(
 }
 
 /**
- * Validate every rule, including disabled ones, in a bounded terminable unit because patterns are compiled.
- * An empty rule list is valid; invalid selected definitions never become an empty list.
+ * Parses every rule, compiles its pattern and checks referenced capture names.
+ *
+ * The caller runs this function in a bounded terminable unit. Disabled rules are validated too; an
+ * empty list remains valid.
  */
 export function parseFileRecognitionDefinition<T extends FileWorkType>(
   workType: T,
@@ -321,7 +360,12 @@ export function parseFileRecognitionDefinition<T extends FileWorkType>(
   return value
 }
 
-/** Decode the closed value without compiling patterns; codecs/history reads cannot substitute this for isolated execution validation. */
+/**
+ * Parses closed recognition values without compiling patterns.
+ *
+ * History and codec reads can use this shape parser; execution still requires isolated semantic
+ * validation.
+ */
 export function parseFileRecognitionDefinitionShape<T extends FileWorkType>(
   workType: T,
   input: unknown,
@@ -352,7 +396,11 @@ export function parseFileRecognitionDefinitionShape<T extends FileWorkType>(
   return value
 }
 
-/** Validate a profile's actual changed fields, compiling a submitted definition within the caller's isolated unit. */
+/**
+ * Parses changed profile fields and matching expected values.
+ *
+ * Definitions are compiled within the caller's bounded terminable unit.
+ */
 export function parseFileRecognitionProfileUpdate<T extends FileWorkType>(
   workType: T,
   input: unknown,
@@ -378,24 +426,35 @@ export function parseFileRecognitionProfileUpdate<T extends FileWorkType>(
   return value
 }
 
-/** Already expanded labels; the matcher never reinterprets templates or applies the offset again. */
+/**
+ * Expanded number labels ready for matching.
+ *
+ * Templates and offsets have already been applied.
+ */
 export type FileNumberCondition =
   | { readonly kind: 'single'; readonly value: string }
   | { readonly kind: 'range'; readonly start: string; readonly end: string }
 
+/** Expanded number or name constraints identifying a part. */
 export type NumberedPartCondition =
   | { readonly number: FileNumberCondition; readonly name?: string }
   | { readonly number?: FileNumberCondition; readonly name: string }
 
+/** Expanded number or name constraints identifying the chapter's volume scope. */
 export type ComicVolumeScopeCondition =
   | { readonly number: string; readonly name?: string }
   | { readonly number?: string; readonly name: string }
 
-/** A recognition source is one complete interpretation, never a mixture of builtin and custom fields. */
+/** The single built-in or profile-rule owner of a complete file interpretation. */
 export type FileRecognitionSource =
   | { readonly type: 'builtin' }
   | { readonly type: 'profile'; readonly profileId: string; readonly ruleId: string }
 
+/**
+ * A complete part match, absence of a match or a typed interpretation failure.
+ *
+ * Matched results retain the interpretation source, expanded conditions and actual part identities.
+ */
 export type FileRecognitionResult<T extends FileWorkType = FileWorkType> =
   | {
       readonly outcome: 'matched'
@@ -417,6 +476,7 @@ export type FileRecognitionResult<T extends FileWorkType = FileWorkType> =
       readonly error: ErrorSummary
     }
 
+/** Per-file recognition outcomes and whether each selected file's saved associations changed. */
 export interface FileReidentificationResult<T extends FileWorkType = FileWorkType> {
   readonly work: EntryRef<T>
   readonly files: readonly {

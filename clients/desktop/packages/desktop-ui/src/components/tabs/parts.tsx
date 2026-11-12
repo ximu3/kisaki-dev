@@ -19,27 +19,41 @@ import segmented from '../../internal/segmented.module.css'
 const TabsContext = createContext<{
   id: string
 
+  /** Reads the selected panel value, falling back to the first registered tab when empty. */
   value: Accessor<string>
+  /** Requests a selected-tab value through the current value owner. */
   change: (value: string) => void
 
+  /** Reads the enabled registered tab that serves as the list's keyboard entry. */
   focusValue: Accessor<string>
+  /** Registers an enabled tab for focus fallback and returns its removal callback. */
   register: (value: string) => () => void
 
+  /** Reads the list orientation used by arrow-key navigation. */
   orientation: Accessor<'horizontal' | 'vertical'>
+  /** Reads whether arrow focus also activates the corresponding tab. */
   activation: Accessor<'automatic' | 'manual'>
 }>()
 
-/** Automatic activation follows arrow focus; manual activation uses Enter or Space. Panels stay mounted. */
+/**
+ * Controlled or local tab selection with orientation and activation policy.
+ *
+ * Automatic activation follows arrow focus; manual activation uses Enter or Space. Panels remain
+ * mounted.
+ */
 export interface TabsProps extends JSX.HTMLAttributes<HTMLDivElement> {
   value?: string
   defaultValue?: string
+  /** Reports the requested selected-tab value. */
   onValueChange?: (value: string) => void
 
   orientation?: 'horizontal' | 'vertical'
   activation?: 'automatic' | 'manual'
 }
 
-/** Own the tab choice locally or provide a controlled value. Hidden panels retain their local state. */
+/**
+ * Owns tab identity, selection and enabled-tab registration while hidden panels retain local state.
+ */
 export function Tabs(props: TabsProps): JSX.Element {
   const [local, rest] = splitProps(props, [
     'value',
@@ -57,6 +71,7 @@ export function Tabs(props: TabsProps): JSX.Element {
     (next) => local.onValueChange?.(next),
   )
   const [registered, setRegistered] = createSignal<string[]>([])
+  /** Returns the first registered enabled-tab value, or an empty value while none exist. */
   const first = () => registered()[0] ?? ''
 
   return (
@@ -81,7 +96,11 @@ export function Tabs(props: TabsProps): JSX.Element {
   )
 }
 
-/** The list needs an accessible name when the page has multiple tab sets. */
+/**
+ * Renders a tab list with orientation-aware roving navigation and the configured activation policy.
+ *
+ * Callers name the list when multiple tab sets need distinction.
+ */
 export function TabList(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
   const tabs = useTabs()
   let list!: HTMLDivElement
@@ -118,12 +137,12 @@ export function TabList(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element 
   )
 }
 
-/** Stable value links the tab and panel; use unique values within one Tabs instance. */
+/** Native tab-button attributes with a value unique within the owning Tabs instance. */
 export interface TabProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
   value: string
 }
 
-/** A native button with roving tabindex. Disabled options are excluded from navigation. */
+/** Renders a native tab button and registers enabled choices for roving keyboard entry. */
 export function Tab(props: TabProps): JSX.Element {
   const tabs = useTabs()
   const [local, rest] = splitProps(props, ['value', 'class', 'onClick'])
@@ -155,12 +174,12 @@ export function Tab(props: TabProps): JSX.Element {
   )
 }
 
-/** The panel's value identifies its tab; hidden content remains mounted until its owner removes it. */
+/** Panel attributes and the stable value linking it to its tab. */
 export interface TabPanelProps extends JSX.HTMLAttributes<HTMLDivElement> {
   value: string
 }
 
-/** Associate visible panel content and a keyboard entry point with the active tab. */
+/** Associates a panel with its tab and hides inactive content while keeping it mounted. */
 export function TabPanel(props: TabPanelProps): JSX.Element {
   const tabs = useTabs()
   const [local, rest] = splitProps(props, ['value', 'class'])
@@ -178,7 +197,7 @@ export function TabPanel(props: TabPanelProps): JSX.Element {
   )
 }
 
-/** Require the local tabs owner when rendering a collaborating part. */
+/** Returns the nearest tabs state and rejects parts rendered outside a Tabs owner. */
 function useTabs() {
   const tabs = useContext(TabsContext)
   if (!tabs) {

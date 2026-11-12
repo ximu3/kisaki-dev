@@ -8,17 +8,31 @@ import { tasklist } from '@mdit/plugin-tasklist'
 import { callHandler, classes } from '../../internal/dom'
 import styles from './styles.module.css'
 
-/** Source is untrusted Markdown. Only resolveImage may supply an image URL that the host already owns. */
+/** Untrusted Markdown source with host-owned image resolution and optional link navigation. */
 export interface MarkdownPreviewProps extends Omit<
   JSX.HTMLAttributes<HTMLDivElement>,
   'children' | 'innerHTML'
 > {
   value: string
+  /**
+   * Resolves an image source to a URL already owned by the host.
+   *
+   * An unresolved source displays escaped alternative text.
+   */
   resolveImage?: (source: string) => string | undefined
+  /**
+   * Handles a non-fragment link after native navigation is prevented.
+   *
+   * Fragment links remain native; omission leaves ordinary browser navigation in place.
+   */
   onNavigate?: (href: string, event: MouseEvent) => void
 }
 
-/** Raw HTML remains text; task checkboxes are read-only and footnotes use native in-page anchors. */
+/**
+ * Renders Markdown with raw HTML disabled, readonly task checkboxes and instance-local anchors.
+ *
+ * Images enter through the host resolver, and footnotes use native in-page navigation.
+ */
 export function MarkdownPreview(props: MarkdownPreviewProps): JSX.Element {
   const [local, rest] = splitProps(props, [
     'value',
@@ -45,6 +59,7 @@ export function MarkdownPreview(props: MarkdownPreviewProps): JSX.Element {
     }
   })
 
+  /** Renders an escaped image from a host-resolved URL, or alternative text when unresolved. */
   markdown.renderer.rules.image = (tokens, index) => {
     const token = tokens[index]!
     const alt = markdown.utils.escapeHtml(token.content)

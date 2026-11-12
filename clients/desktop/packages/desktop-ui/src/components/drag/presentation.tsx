@@ -8,12 +8,20 @@ import { callHandler, classes } from '../../internal/dom'
 import { Icon, mdiDrag } from '../../internal/icon/glyph'
 import styles from './styles.module.css'
 
-/** Optional keyboard movement is a direct host command, independent of pointer drag state. */
+/** Action-button props with optional keyboard movement commands independent of pointer dragging. */
 export interface DragHandleProps extends ButtonProps {
+  /**
+   * Requests previous or next movement through the host when its keyboard shortcut is activated.
+   */
   onMove?: (direction: 'previous' | 'next') => void
 }
 
-/** Name the handle and attach its ref to createDraggable. Click can open the host's movement menu. */
+/**
+ * Renders an accessible action handle with optional Alt+Arrow movement commands.
+ *
+ * The host supplies its accessible name, registers the ref for dragging and may use click to open a
+ * movement menu.
+ */
 export function DragHandle(props: DragHandleProps): JSX.Element {
   const [local, rest] = splitProps(props, ['onMove', 'onKeyDown', 'class', 'children'])
 
@@ -42,14 +50,17 @@ export function DragHandle(props: DragHandleProps): JSX.Element {
   )
 }
 
-/** Edge is actual target geometry, not a persisted row index. */
+/** Decorative insertion marker positioned from a target edge and actual neighboring-box gap. */
 export interface DropIndicatorProps extends JSX.HTMLAttributes<HTMLDivElement> {
   edge: 'top' | 'right' | 'bottom' | 'left'
   /** Actual gap between neighboring target boxes, as CSS pixels or a CSS length. */
   gap: number | string
 }
 
-/** Position inside a relatively positioned target when the host has confirmed it can accept the drop. */
+/**
+ * Renders an insertion marker inside a relatively positioned target the host has accepted for
+ * dropping.
+ */
 export function DropIndicator(props: DropIndicatorProps): JSX.Element {
   const [local, rest] = splitProps(props, ['edge', 'gap', 'class', 'style'])
 
@@ -71,7 +82,10 @@ export function DropIndicator(props: DropIndicatorProps): JSX.Element {
   )
 }
 
-/** Host-owned description of movement, completion or cancellation; no object identity is inferred. */
+/**
+ * Announces host-authored movement, completion or cancellation feedback through a polite status
+ * region.
+ */
 export function DragFeedback(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
   const [local, rest] = splitProps(props, ['class'])
 

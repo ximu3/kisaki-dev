@@ -5,6 +5,7 @@ import { classes } from '../../internal/dom'
 import surface from '../../internal/input-surface.module.css'
 import styles from './styles.module.css'
 
+/** Shared editor-shell content, presentation attributes and picker-open state. */
 interface InputFrameProps {
   children: JSX.Element
   class?: string | undefined
@@ -12,7 +13,9 @@ interface InputFrameProps {
   open?: boolean
 }
 
-/** Opening a picker keeps its field visibly active while the picker owns keyboard focus. */
+/**
+ * Frames an editor and its actions, retaining active-field presentation while a picker owns focus.
+ */
 export function InputFrame(props: InputFrameProps): JSX.Element {
   return (
     <div

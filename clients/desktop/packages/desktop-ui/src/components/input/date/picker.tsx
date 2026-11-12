@@ -11,11 +11,12 @@ import { addDays, addMonths, calendarDays, parseDate, todayValue } from './calen
 import { PeriodSelect } from './period'
 import styles from './styles.module.css'
 
-/** Calendar navigation labels come from the document owner. */
+/** Calendar bounds, locale and navigation labels supplied by the document owner. */
 export interface CalendarProps {
   min?: string | undefined
   max?: string | undefined
   locale?: string | undefined
+  /** First weekday: 0 is Sunday and 1 is Monday; omission uses Monday. */
   weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined
 
   calendarLabel: string
@@ -25,20 +26,31 @@ export interface CalendarProps {
   nextMonthLabel: string
 }
 
+/** Calendar popup state and host connections for anchoring, validation, selection and closing. */
 interface PickerProps extends CalendarProps {
   open: boolean
+  /** Publishes the mounted popup element to its presentation owner. */
   panelRef: (node: HTMLDivElement) => void
   id: string
+  /** Returns the button used to position and return focus from the calendar. */
   anchor: () => HTMLButtonElement
   value: string
+  /** Checks whether a day satisfies the owning editor's native constraints. */
   allowed: (date: string) => boolean
+  /** Submits an allowed day to the owning date editor. */
   choose: (date: string) => void
+  /** Requests closing the calendar without choosing a day. */
   close: () => void
 }
 
-/** Opening initializes the browsing period and moves focus to the current day choice. */
+/**
+ * Renders calendar browsing and keyboard navigation independently of committed selection.
+ *
+ * Opening initializes the visible period and focuses the current day choice.
+ */
 export function DatePicker(props: PickerProps): JSX.Element {
   let calendar!: HTMLDivElement
+  /** Applies the configured lower and upper browsing bounds to an ISO date. */
   const clamp = (date: string) => {
     if (date < (props.min ?? '0001-01-01')) {
       date = props.min ?? '0001-01-01'
@@ -77,9 +89,13 @@ export function DatePicker(props: PickerProps): JSX.Element {
   const initial = clamp(parseDate(props.value) ? props.value : todayValue())
   const [active, setActive] = createSignal(initial)
   const [month, setMonth] = createSignal(`${initial.slice(0, 7)}-01`)
+  /** Returns the year represented by the current displayed month. */
   const viewYear = () => Number(month().slice(0, 4))
+  /** Returns the one-based month used by period navigation. */
   const viewMonth = () => Number(month().slice(5, 7))
+  /** Returns the first year offered by the year selector. */
   const minYear = () => Number(props.min?.slice(0, 4) ?? 1)
+  /** Returns the last year offered by the year selector. */
   const maxYear = () => Number(props.max?.slice(0, 4) ?? 9999)
   const periodOrder = createMemo(() =>
     formats()
@@ -88,16 +104,21 @@ export function DatePicker(props: PickerProps): JSX.Element {
       .filter((type) => type === 'year' || type === 'month'),
   )
   const days = createMemo(() => calendarDays(month(), props.weekStartsOn ?? 1))
+  /** Builds reference dates in week-start order for localized weekday headers. */
   const weekdays = () =>
     Array.from({ length: 7 }, (_, index) =>
       addDays('2023-01-01', (props.weekStartsOn ?? 1) + index),
     )
 
+  /**
+   * Updates the active day and displayed month within browsing bounds without committing a value.
+   */
   const browse = (date: string) => {
     const next = clamp(date)
     setActive(next)
     setMonth(`${next.slice(0, 7)}-01`)
   }
+  /** Browses to a bounded day and focuses its cell after the view updates. */
   const focusDay = (date: string) => {
     browse(date)
     queueMicrotask(() =>

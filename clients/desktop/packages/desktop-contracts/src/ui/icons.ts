@@ -4,11 +4,17 @@ import * as v from 'valibot'
 import { parseExternalValue, parseValue, nonemptyText } from '../validation'
 import { parsePackagePath } from '@kisaki3/extension-distribution/manifest'
 
-/** Icon files are package-relative to the actual contribution owner; component/render callbacks are not accepted. */
+/**
+ * Contribution icon identified by a built-in name or a file relative to the actual owner's package.
+ */
 export type ExtensionUiIcon =
   { readonly type: 'mdi'; readonly name: string } | { readonly type: 'file'; readonly path: string }
 
-/** MDI name existence is verified against the host's fixed catalog, independently of pure syntax. */
+/**
+ * Parses an icon value and validates package-relative file paths.
+ *
+ * The host checks built-in name existence against its fixed catalog.
+ */
 export function parseExtensionUiIcon(input: unknown): ExtensionUiIcon {
   return parseValue(
     v.variant('type', [

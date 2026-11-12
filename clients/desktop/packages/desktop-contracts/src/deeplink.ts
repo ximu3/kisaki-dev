@@ -20,8 +20,10 @@ import { openSelectionEntries, openTargetSchema } from './sessions/targets'
 import { parseIdentificationClues } from './metadata/fields'
 import { parseStrictJson } from './json'
 
+/** The production or development application's public link scheme. */
 export type DeeplinkScheme = 'kisaki' | 'kisaki-dev'
 
+/** Native view destinations exposed through public links, with preferences addressed as a whole. */
 export type PublicViewTarget =
   | Extract<
       NativeViewTarget,
@@ -41,8 +43,10 @@ export type PublicViewTarget =
     >
   | { readonly type: 'preferences' }
 
+/** Each opening-input variant with its local root key removed for link addressing. */
 type WithoutRoot<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never
 
+/** Type-specific opening selections whose root is supplied by a link identifier. */
 export interface DeeplinkOpenInputMap {
   readonly game: WithoutRoot<GameOpenInput, 'gameId'>
   readonly anime: WithoutRoot<AnimeOpenInput, 'animeId'>
@@ -50,7 +54,11 @@ export interface DeeplinkOpenInputMap {
   readonly novel: WithoutRoot<NovelOpenInput, 'novelId'>
 }
 
-/** All selectors apply together; external identity resolves the root only, never a local child/file identity. */
+/**
+ * A work root and the selections applied together when opening it.
+ *
+ * An external identity resolves only the root; child and file identities remain local.
+ */
 export type DeeplinkOpenTarget = {
   [K in WorkType]: {
     readonly workType: K
@@ -58,6 +66,12 @@ export type DeeplinkOpenTarget = {
   } & DeeplinkOpenInputMap[K]
 }[WorkType]
 
+/**
+ * Entry-identification clues and an optional profile supplied by an add link.
+ *
+ * Clues require a useful name or one complete external identity and can contain at most one
+ * external identity.
+ */
 export type DeeplinkAddInput = {
   [K in EntryType]: {
     readonly entryType: K
@@ -68,13 +82,21 @@ export type DeeplinkAddInput = {
   }
 }[EntryType]
 
-/** Path excludes extensionId; empty components, ordered repeated query keys and an explicitly empty fragment are meaningful. */
+/**
+ * The decoded route payload delivered to the addressed extension.
+ *
+ * Path excludes the extension ID. Empty path components, ordered repeated query keys and an
+ * explicitly empty fragment retain their meaning.
+ */
 export interface ExtensionDeeplinkRequest {
   readonly path: readonly string[]
   readonly query: readonly (readonly [name: string, value: string])[]
   readonly fragment?: string
 }
 
+/**
+ * A validated application-scheme request for navigation, opening, addition or extension handling.
+ */
 export type DeeplinkRequest = { readonly scheme: DeeplinkScheme } & (
   | { readonly type: 'view'; readonly target: PublicViewTarget }
   | { readonly type: 'open'; readonly target: DeeplinkOpenTarget }
@@ -82,8 +104,13 @@ export type DeeplinkRequest = { readonly scheme: DeeplinkScheme } & (
   | ({ readonly type: 'extension'; readonly extensionId: string } & ExtensionDeeplinkRequest)
 )
 
+/** Registers the current extension's public-link handler. */
 export interface DeeplinkApi {
-  /** One live handler per instance. Resolve only after the requested business operation and its necessary cleanup finish. */
+  /**
+   * Registers the instance's single live link handler and returns its removal handle.
+   *
+   * The handler resolves after the requested business operation and its necessary cleanup finish.
+   */
   register(
     handler: (request: ExtensionDeeplinkRequest, execution: ExecutionContext) => Promise<void>,
   ): Promise<Registration<{ readonly extensionId: string }>>
@@ -110,10 +137,16 @@ const extensionIdentity = v.pipe(
   v.transform((value) => parseExternalValue(parseId, value, 'Invalid extension identity')),
 )
 
+/** Rejects invalid link data with the shared InvalidInput classification. */
 function invalid(message = 'Invalid application link'): never {
   throw new DesktopError('InvalidInput', message)
 }
 
+/**
+ * Decodes a URI component and maps malformed encoding to InvalidInput.
+ *
+ * Query components first convert plus signs to spaces.
+ */
 function decode(value: string, query = false): string {
   try {
     return decodeURIComponent(query ? value.replaceAll('+', ' ') : value)
@@ -122,6 +155,7 @@ function decode(value: string, query = false): string {
   }
 }
 
+/** Parses a native target restricted to the destinations and selections exposed by public links. */
 function parsePublicView(input: unknown): PublicViewTarget {
   const target = parseNativeViewTarget(input)
   if (
@@ -133,6 +167,7 @@ function parsePublicView(input: unknown): PublicViewTarget {
   return target as PublicViewTarget
 }
 
+/** Parses a link root identifier and the opening selections allowed for its work type. */
 function parseOpenTarget(input: unknown): DeeplinkOpenTarget {
   const record = parseRecord(input)
   const workType = parseValue(v.picklist(workTypes), record.workType)
@@ -146,6 +181,7 @@ function parseOpenTarget(input: unknown): DeeplinkOpenTarget {
   ) as DeeplinkOpenTarget
 }
 
+/** Parses add-link clues, requiring a useful name or exactly one complete external identity. */
 function parseAddInput(input: unknown): DeeplinkAddInput {
   const record = parseRecord(input)
   const entryType = parseValue(v.picklist(entryTypes), record.entryType)
@@ -170,7 +206,11 @@ function parseAddInput(input: unknown): DeeplinkAddInput {
   return result as DeeplinkAddInput
 }
 
-/** Validate the structured request before formatting; call interaction options are never accepted as link data. */
+/**
+ * Parses a structured link request and rejects fields outside its route contract.
+ *
+ * Interaction options are call context and cannot be carried as link data.
+ */
 export function parseRequest(input: unknown): DeeplinkRequest {
   const value = parseValue(
     v.variant('type', [
@@ -207,6 +247,7 @@ export function parseRequest(input: unknown): DeeplinkRequest {
   return value
 }
 
+/** Reads a local or external root address from its exact path-component shape. */
 function readIdentifier(parts: readonly string[]): EntryIdentifier {
   if (parts[0] === 'local' && parts.length === 2) {
     return { type: 'local', id: parts[1]! }
@@ -218,6 +259,7 @@ function readIdentifier(parts: readonly string[]): EntryIdentifier {
   return invalid('Invalid entry link address')
 }
 
+/** Builds native route parameters, rejecting repeated keys and empty values. */
 function singleQuery(query: readonly (readonly [string, string])[]): Record<string, string> {
   const entries = new Map<string, string>()
   for (const [key, value] of query) {
@@ -230,13 +272,19 @@ function singleQuery(query: readonly (readonly [string, string])[]): Record<stri
   return Object.fromEntries(entries)
 }
 
+/** Rejects native query parameters outside the current route's allowed set. */
 function requireKeys(values: object, allowed: readonly string[]): void {
   if (Object.keys(values).some((key) => !allowed.includes(key))) {
     invalid('Unknown native link parameter')
   }
 }
 
-/** Decode every component once, checking raw dot segments before URL normalization can change the target. */
+/**
+ * Parses an application URL into its decoded route request.
+ *
+ * Checks raw dot segments before URL normalization and rejects malformed component encoding.
+ * Extension routes preserve ordered query entries, empty path components and explicit fragments.
+ */
 export function parse(input: string): DeeplinkRequest {
   const source = parseValue(text, input, 'Invalid application link')
   if (
@@ -443,13 +491,18 @@ export function parse(input: string): DeeplinkRequest {
   return invalid('Unknown native view link')
 }
 
+/** Converts a root identifier into the path components used by native links. */
 function address(identifier: EntryIdentifier): string[] {
   return identifier.type === 'local'
     ? ['local', identifier.id]
     : ['external', identifier.source, identifier.sourceId]
 }
 
-/** Encode each path/value once. Formatting performs no lookup, defaults selection, installation or implicit profile choice. */
+/**
+ * Validates and formats a structured request, encoding each path and value once.
+ *
+ * Formatting performs no lookup, installation or implicit selection.
+ */
 export function format(input: DeeplinkRequest): string {
   const request = parseRequest(input)
   let path: readonly string[]

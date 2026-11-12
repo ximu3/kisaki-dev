@@ -11,24 +11,32 @@ import type { ButtonProps } from '../button/control'
 import frame from '../../internal/popup/surface.module.css'
 import styles from './styles.module.css'
 
+/** Local popup identity, anchor and shared open-state ownership. */
 interface PopoverState {
   id: string
   anchor: HTMLElement | undefined
 
+  /** Reads the popover's current controlled or local open state. */
   open: Accessor<boolean>
+  /** Requests a new open state through the popover's value owner. */
   change: (value: boolean) => void
 }
 
 const PopoverContext = createContext<PopoverState>()
 
-/** Adopt onOpenChange in controlled mode, including native light dismissal. */
+/**
+ * Popover composition with controlled or locally initialized open state.
+ *
+ * Controlled callers adopt open-change requests, including native light dismissal.
+ */
 export interface PopoverProps extends ParentProps {
   open?: boolean
   defaultOpen?: boolean
+  /** Reports the requested popover open state to its caller. */
   onOpenChange?: (open: boolean) => void
 }
 
-/** Local interaction owner; keep content inside its actual document and modal ancestor. */
+/** Establishes local popup identity and state within its actual document and modal ancestry. */
 export function Popover(props: PopoverProps): JSX.Element {
   const [open, change] = createValue(
     () => props.open,
@@ -43,7 +51,7 @@ export function Popover(props: PopoverProps): JSX.Element {
   )
 }
 
-/** A button trigger with reactive expanded state. */
+/** Renders a button that toggles the associated popup and exposes its expanded state. */
 export function PopoverTrigger(props: ButtonProps): JSX.Element {
   const state = usePopover()
   const [local, rest] = splitProps(props, ['ref', 'onClick'])
@@ -69,14 +77,22 @@ export function PopoverTrigger(props: ButtonProps): JSX.Element {
   )
 }
 
-/** Native popover content; autofocus may designate its first focus target. */
+/**
+ * Native popup content attributes, placement and optional viewport styling.
+ *
+ * Autofocus may designate the initial focus target.
+ */
 export interface PopoverContentProps extends JSX.HTMLAttributes<HTMLDivElement> {
   placement?: PopupPlacement
   /** Style the content viewport independently of the positioned native panel. */
   viewportClass?: string
 }
 
-/** Light dismissal and Escape close only this popup; child resources follow the caller's mounted content. */
+/**
+ * Positions interactive content in a native popover with browser dismissal behavior.
+ *
+ * Children retain the lifetime of the caller's mounted content.
+ */
 export function PopoverContent(props: PopoverContentProps): JSX.Element {
   const state = usePopover()
   const [local, rest] = splitProps(props, [
@@ -114,7 +130,7 @@ export function PopoverContent(props: PopoverContentProps): JSX.Element {
   )
 }
 
-/** End this popover's presentation without executing a business action. */
+/** Requests closing the popover and returns focus to its anchor after accepted activation. */
 export function PopoverClose(props: ButtonProps): JSX.Element {
   const state = usePopover()
   const [local, rest] = splitProps(props, ['onClick'])
@@ -133,7 +149,7 @@ export function PopoverClose(props: ButtonProps): JSX.Element {
   )
 }
 
-/** Resolve composition at the nearest actual owner. */
+/** Returns the nearest popover state and rejects parts rendered outside a Popover owner. */
 function usePopover(): PopoverState {
   const state = useContext(PopoverContext)
   if (!state) {

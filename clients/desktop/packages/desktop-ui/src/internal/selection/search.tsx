@@ -8,26 +8,40 @@ import type { SelectionCollection } from './collection'
 import type { SelectionOption } from './types'
 import styles from './styles.module.css'
 
+/** Search-editor labels, authoritative query and parent value and focus connections. */
 export interface SearchState {
   label: string
   placeholder: string | undefined
   query: string
+  /** Requests a new query value from the search owner. */
   change: (query: string) => void
+  /** Publishes the mounted search input for parent focus coordination. */
   ref: (node: HTMLInputElement) => void
 }
 
+/** Search state linked to a logical candidate collection and its listbox identity. */
 interface SearchProps {
   state: SearchState
   listId: string
   collection: SelectionCollection
   open: boolean
+  /** Reports the active candidate selected from the search editor. */
   choose: (option: SelectionOption) => void
 }
 
+/**
+ * Renders a search combobox retaining native input focus while navigating logical candidates.
+ *
+ * Composition defers query publication and candidate-key handling until it ends.
+ */
 export function SearchInput(props: SearchProps): JSX.Element {
   let input!: HTMLInputElement
   let composing = false
 
+  /**
+   * Submits native query text, restores the authoritative value and highlights the first enabled
+   * candidate.
+   */
   const edit = () => {
     props.state.change(input.value)
     if (input.value !== props.state.query) {

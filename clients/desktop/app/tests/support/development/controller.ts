@@ -20,13 +20,21 @@ export interface DevelopmentObservation {
   error?: string
 }
 
-/** Fixture behavior and the worker result that the owning test expects. */
+/** Scenario and expected child exit status for one development-test worker. */
 interface DevelopmentControllerOptions {
+  /** Defaults to the normal application lifecycle. */
   scenario?: 'normal' | 'stop-failure' | 'cancel-first-close'
+  /** Expected worker exit status after cleanup; defaults to zero. */
   expectedExitCode?: number
 }
 
-/** Start a test-owned worker with optional application behavior; register input restoration first. */
+/**
+ * Starts a development-test worker and exposes its observed lifecycle.
+ *
+ * Registers worker shutdown and diagnostic reporting with the active test. Source-editing tests
+ * register input-restoration hooks first so reverse-order cleanup stops the worker before restoring
+ * those inputs.
+ */
 export function startDevelopmentController(
   app: string,
   options: DevelopmentControllerOptions = {},
@@ -147,6 +155,7 @@ export function startDevelopmentController(
     states,
     ready,
     closed,
+    /** Returns the retained tail of combined worker stdout and stderr. */
     get output() {
       return output
     },

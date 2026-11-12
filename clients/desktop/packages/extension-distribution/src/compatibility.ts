@@ -17,7 +17,7 @@ export const extensionTargets = Object.freeze([
 /** A package target describes the host process architecture, not hardware emulation capability. */
 export type ExtensionTarget = (typeof extensionTargets)[number]
 
-/** Runtime requirements belonging to one immutable artifact. */
+/** OS, process-architecture and runtime requirements declared by one extension artifact. */
 export interface CompatibilityDeclaration {
   readonly targets: readonly ExtensionTarget[]
   readonly apiVersionRange: string
@@ -25,7 +25,11 @@ export interface CompatibilityDeclaration {
   readonly electronVersionRange?: string
 }
 
-/** Actual host versions; omitted optional runtimes fail an explicitly declared requirement. */
+/**
+ * Target and runtime versions observed by the consuming host.
+ *
+ * An omitted runtime cannot satisfy a corresponding declared version range.
+ */
 export interface CompatibilityEnvironment {
   readonly target: ExtensionTarget
   readonly apiVersion: string
@@ -33,14 +37,18 @@ export interface CompatibilityEnvironment {
   readonly electronVersion?: string
 }
 
-/** One unsatisfied condition for display; all failed conditions are returned together. */
+/**
+ * One unmet artifact requirement and the host value used for comparison.
+ *
+ * An undefined actual value identifies a runtime absent from the host.
+ */
 export interface CompatibilityIssue {
   readonly condition: 'target' | 'apiVersion' | 'nodeVersion' | 'electronVersion'
   readonly required: string | readonly ExtensionTarget[]
   readonly actual: string | undefined
 }
 
-/** Parse a full SemVer spelling, retaining build metadata without assigning it precedence. */
+/** Parses a canonical full SemVer version and preserves its spelling, including build metadata. */
 export function parseVersion(input: unknown, path: FieldPath = []): string {
   const value = parseString(input, path)
   const version = parse(value)
@@ -56,7 +64,7 @@ export function parseVersion(input: unknown, path: FieldPath = []): string {
   return value
 }
 
-/** Validate a Node SemVer range and preserve its authored spelling for artifact comparisons. */
+/** Validates a SemVer range and preserves its authored spelling for artifact comparisons. */
 export function parseVersionRange(input: unknown, path: FieldPath = []): string {
   const value = parseString(input, path)
   if (validRange(value) === null) {
@@ -66,7 +74,7 @@ export function parseVersionRange(input: unknown, path: FieldPath = []): string 
   return value
 }
 
-/** Validate one supported target; unknown host pairs are not coerced into supported targets. */
+/** Parses one supported OS and process-architecture target. */
 export function parseTarget(input: unknown, path: FieldPath = []): ExtensionTarget {
   const target = parseString(input, path)
   if (!extensionTargets.some((known) => known === target)) {
@@ -76,7 +84,7 @@ export function parseTarget(input: unknown, path: FieldPath = []): ExtensionTarg
   return target as ExtensionTarget
 }
 
-/** Require at least one unique target and sort a new array to make order immaterial. */
+/** Normalizes a nonempty, duplicate-free target list into a sorted copy. */
 export function normalizeTargets(input: unknown, path: FieldPath = []): ExtensionTarget[] {
   const targets = parseArray(input, path, parseTarget)
   if (!targets.length || new Set(targets).size !== targets.length) {
@@ -86,7 +94,11 @@ export function normalizeTargets(input: unknown, path: FieldPath = []): Extensio
   return targets.sort()
 }
 
-/** Map Node platform and process.arch values to a target; unsupported pairs return undefined. */
+/**
+ * Maps Node platform and process architecture to an extension target.
+ *
+ * Unsupported pairs return undefined.
+ */
 export function targetForPlatform(
   platform: string,
   architecture: string,
@@ -100,7 +112,7 @@ export function targetForPlatform(
   return extensionTargets.find((known) => known === target)
 }
 
-/** Read compatibility fields from a previously checked document object. */
+/** Parses compatibility fields from a previously checked document object. */
 export function parseCompatibility(
   value: Record<string, unknown>,
   path: FieldPath = [],
@@ -114,8 +126,10 @@ export function parseCompatibility(
 }
 
 /**
- * Report every incompatible host condition. Inputs are validated declarations and actual host values.
- * Runtime prereleases follow SemVer range rules; extension release preferences are separate.
+ * Reports all declared requirements the host fails to satisfy.
+ *
+ * Accepts validated artifact requirements and observed host versions. Runtime prereleases follow
+ * SemVer range matching; release-channel preferences belong to release selection.
  */
 export function getCompatibilityIssues(
   declaration: CompatibilityDeclaration,
@@ -140,12 +154,17 @@ export function getCompatibilityIssues(
   return issues
 }
 
-/** Compare valid versions by SemVer precedence; build metadata never breaks a tie. */
+/**
+ * Compares canonical versions by SemVer precedence.
+ *
+ * Returns a negative value when left is lower, zero at equal precedence, and a positive value when
+ * left is higher. Build metadata does not break a tie.
+ */
 export function compareVersions(left: string, right: string): number {
   return compare(parseVersion(left), parseVersion(right))
 }
 
-/** Whether a valid extension version has prerelease identifiers, regardless of build metadata. */
+/** Reports whether a canonical version contains prerelease identifiers. */
 export function isPrereleaseVersion(version: string): boolean {
   return prerelease(parseVersion(version)) !== null
 }

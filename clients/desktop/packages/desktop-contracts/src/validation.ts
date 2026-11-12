@@ -37,7 +37,10 @@ export const intervalEntries = {
   limit: v.pipe(positiveInteger, v.maxValue(200)),
 }
 
-/** Parse at an actual input boundary and deliver the desktop failure classification with a local cause. */
+/**
+ * Parses input with a schema and translates validation failure into InvalidInput with its local
+ * cause.
+ */
 export function parseValue<T extends v.GenericSchema>(
   schema: T,
   input: unknown,
@@ -51,7 +54,11 @@ export function parseValue<T extends v.GenericSchema>(
   return result.output
 }
 
-/** Translate documented value-parser failures into the desktop category, retaining unexpected implementation failures. */
+/**
+ * Translates external DistributionError and TypeError parser failures into desktop InvalidInput.
+ *
+ * Unexpected failures propagate unchanged.
+ */
 export function parseExternalValue<T>(
   parser: (input: unknown) => T,
   input: unknown,
@@ -68,7 +75,10 @@ export function parseExternalValue<T>(
   }
 }
 
-/** Build optional editable fields that distinguish omission from an explicit undefined value. */
+/**
+ * Creates field schemas that permit omission and validate present values with their original
+ * schema.
+ */
 export function optionalFields<T extends v.ObjectEntries>(
   entries: T,
 ): { [K in keyof T]: v.ExactOptionalSchema<T[K], undefined> } {
@@ -77,7 +87,7 @@ export function optionalFields<T extends v.ObjectEntries>(
   ) as { [K in keyof T]: v.ExactOptionalSchema<T[K], undefined> }
 }
 
-/** Copy a parsed record without the listed structural fields, retaining every other own data key for its next strict boundary. */
+/** Copies enumerable own string-keyed fields except the explicitly omitted names. */
 export function omitFields<T extends object, K extends keyof T & string>(
   value: T,
   keys: readonly K[],
@@ -88,7 +98,10 @@ export function omitFields<T extends object, K extends keyof T & string>(
   ) as T extends unknown ? Omit<T, K> : never
 }
 
-/** Preserve every own data key for strict downstream checks, including names sanitized by loose-object validators. */
+/**
+ * Checks a record's object and prototype shape while preserving its original properties for
+ * downstream validation.
+ */
 export function parseRecord(input: unknown): Record<string, unknown> {
   if (typeof input !== 'object' || input === null || Array.isArray(input)) {
     throw new DesktopError('InvalidInput', 'Expected an ordinary data object')
@@ -102,7 +115,11 @@ export function parseRecord(input: unknown): Record<string, unknown> {
   return input as Record<string, unknown>
 }
 
-/** Parse open string-keyed maps without dropping constructor/prototype keys or invoking prototype setters. */
+/**
+ * Parses dictionary entries into own data properties, preserving prototype-like names.
+ *
+ * Keys that collide after normalization are rejected.
+ */
 export function parseDictionary<T extends v.GenericSchema>(
   keys: v.GenericSchema<unknown, string>,
   values: T,
@@ -118,12 +135,15 @@ export function parseDictionary<T extends v.GenericSchema>(
   return Object.fromEntries(entries)
 }
 
-/** Reject duplicated identities without sorting, trimming or otherwise changing the submitted order. */
+/** Checks whether selected identity keys are distinct without changing item order or values. */
 export function unique<T>(items: readonly T[], key: (item: T) => string): boolean {
   return new Set(items.map(key)).size === items.length
 }
 
-/** Independent expected fields may only compare fields changed by this operation. */
+/**
+ * Requires every expected key to belong to the submitted changes or the explicitly allowed context
+ * fields.
+ */
 export function validateExpectedKeys(
   changes: object,
   expected: object | undefined,

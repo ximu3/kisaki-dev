@@ -8,28 +8,43 @@ import type { ChoiceFieldProps } from '../../internal/selection/field'
 import type { SelectionOption } from '../../internal/selection/types'
 import { createValue } from '../../internal/state'
 
-/** An empty value represents no choice. Options retain identity independently of mounted rows. */
+/**
+ * Single-selection field props storing a stable option key.
+ *
+ * An empty string represents no choice, independently of which rows are mounted.
+ */
 export interface SelectProps extends ChoiceFieldProps {
   value?: string
   defaultValue?: string
+  /** Reports the proposed selected option key. */
   onValueChange?: (value: string) => void
 }
 
-/** User activation toggles one value; no platform modifier key is required. */
+/**
+ * Multiple-selection field props storing ordered stable option keys.
+ *
+ * Activation toggles one value without requiring a platform modifier key.
+ */
 export interface MultiSelectProps extends ChoiceFieldProps, ChipLabels {
   value?: readonly string[]
   defaultValue?: readonly string[]
+  /** Reports the proposed complete ordered list of selected keys. */
   onValueChange?: (value: readonly string[]) => void
 }
 
-/** Key-based fields resolve and validate their values against the full option collection. */
+/** Creates a reactive option lookup that preserves missing keys as disabled display records. */
 function resolveKeys(options: Accessor<readonly SelectionOption[]>) {
   const catalog = createMemo(() => new Map(options().map((option) => [option.value, option])))
   return (key: string): SelectionOption =>
     catalog().get(key) ?? { value: key, label: key, disabled: true }
 }
 
-/** A single choice closes the list. The trigger keeps keyboard focus and native form validation targets it. */
+/**
+ * Renders a single-choice field that closes after selection.
+ *
+ * The trigger retains keyboard focus and receives focus when native form validation requests
+ * attention.
+ */
 export function Select(props: SelectProps): JSX.Element {
   const [local, rest] = splitProps(props, ['value', 'defaultValue', 'onValueChange'])
   const resolve = resolveKeys(() => rest.options)
@@ -50,7 +65,10 @@ export function Select(props: SelectProps): JSX.Element {
   )
 }
 
-/** Toggle choices in the open list or remove them directly in the field. Submission preserves selected order. */
+/**
+ * Renders toggled list choices and removable field chips while preserving selected submission
+ * order.
+ */
 export function MultiSelect(props: MultiSelectProps): JSX.Element {
   const [local, labels, rest] = splitProps(
     props,

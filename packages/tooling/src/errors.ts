@@ -1,6 +1,8 @@
 /** @fileoverview Preserves operation failures across cancellation and resource cleanup. */
 
-/** Match the supplied signal's own cancellation, including Node's wrapped AbortError. */
+/**
+ * Recognizes cancellation from the supplied aborted signal, including Node's AbortError wrapper.
+ */
 export function isCancellation(cause: unknown, signal: AbortSignal): boolean {
   return (
     signal.aborted &&
@@ -9,7 +11,11 @@ export function isCancellation(cause: unknown, signal: AbortSignal): boolean {
   )
 }
 
-/** Finish owned cleanup before rethrowing the operation failure; retain both errors if cleanup fails. */
+/**
+ * Finishes cleanup before rejecting with the operation failure.
+ *
+ * A cleanup failure produces an AggregateError containing both errors.
+ */
 export async function rethrowAfterCleanup(
   cause: unknown,
   cleanup: () => Promise<unknown>,

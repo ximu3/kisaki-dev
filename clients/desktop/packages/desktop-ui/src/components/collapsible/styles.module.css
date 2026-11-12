@@ -1,4 +1,4 @@
-/* Native disclosure markers and keyboard focus remain visible. */
+/* Disclosure indicator, keyboard focus and expanded-content spacing. */
 
 @layer components {
   .root {

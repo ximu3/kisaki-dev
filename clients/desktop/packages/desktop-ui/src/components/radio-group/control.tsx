@@ -9,14 +9,19 @@ import { ChoiceRow } from '../../internal/choice/row'
 import styles from './styles.module.css'
 
 const RadioContext = createContext<{
+  /** Reads the shared native form-field name for this radio group. */
   name: Accessor<string>
+  /** Reads the group's controlled or locally owned selected value. */
   value: Accessor<string>
+  /** Requests selection of one option through the group's value owner. */
   change: (value: string) => void
+  /** Reads the required state propagated to the group's native options. */
   required: Accessor<boolean>
+  /** Reads the explicit form-owner ID propagated to each radio, when supplied. */
   form: Accessor<string | undefined>
 }>()
 
-/** A native fieldset and legend; options with the same group share submission and reset. */
+/** Named native fieldset with shared radio value, submission and reset ownership. */
 export interface RadioGroupProps extends Omit<
   JSX.FieldsetHTMLAttributes<HTMLFieldSetElement>,
   'onChange'
@@ -26,12 +31,16 @@ export interface RadioGroupProps extends Omit<
   value?: string
   defaultValue?: string
   required?: boolean
+  /** Reports the proposed selected option value. */
   onValueChange?: (value: string) => void
 
   orientation?: 'horizontal' | 'vertical'
 }
 
-/** Supply Radio children. Native arrow keys select and focus enabled options. */
+/**
+ * Owns a group of Radio children with native keyboard selection, form submission and reset
+ * behavior.
+ */
 export function RadioGroup(props: RadioGroupProps): JSX.Element {
   const [local, rest] = splitProps(props, [
     'label',
@@ -90,7 +99,7 @@ export function RadioGroup(props: RadioGroupProps): JSX.Element {
   )
 }
 
-/** value identifies this option; disabled options keep native group behavior. */
+/** Native radio attributes with a stable option value and optional inline label. */
 export interface RadioProps extends Omit<
   JSX.InputHTMLAttributes<HTMLInputElement>,
   'type' | 'value' | 'checked' | 'name'
@@ -99,7 +108,11 @@ export interface RadioProps extends Omit<
   value: string
 }
 
-/** A native radio; label it with an enclosing label or an explicit id/for pair. */
+/**
+ * Renders an option using its RadioGroup's value, name and form owner.
+ *
+ * Callers provide an inline label or another native accessible naming association.
+ */
 export function Radio(props: RadioProps): JSX.Element {
   const group = useContext(RadioContext)
   if (!group) {

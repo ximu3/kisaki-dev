@@ -16,6 +16,7 @@ test('catalogs copy plain data properties and reject invalid groups', () => {
   const cycle: Record<string, unknown> = {}
   cycle.child = cycle
   const accessor = {
+    /** Fails if catalog parsing invokes this accessor instead of rejecting it as non-data. */
     get message(): string {
       throw new Error('Catalog parsing invoked a getter')
     },

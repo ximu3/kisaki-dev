@@ -17,7 +17,7 @@ import * as v from 'valibot'
 import { parseCollectionQuery, parseTagQuery } from './organizers'
 import { parseEntryQuery, parseQueryReferenceLabels } from './query/definition'
 
-/** Query kind selects an existing public reader. Showcase never owns a second query engine or membership set. */
+/** Showcase query routed by kind to an existing entry, collection or tag reader. */
 export type ShowcaseQuery =
   | ({
       readonly kind: 'entry'
@@ -26,20 +26,25 @@ export type ShowcaseQuery =
   | ({ readonly kind: 'collection' } & CollectionQuery)
   | ({ readonly kind: 'tag' } & TagQuery)
 
-/** Section limit bounds logical display, not request size; null keeps the complete result available through intervals. */
+/** Saved query and display configuration for one showcase section. */
 export interface ShowcaseFields {
   readonly name: string
   readonly query: ShowcaseQuery
 
   readonly layout: 'horizontal' | 'grid'
   readonly itemSize: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  /** Logical display limit; null keeps the complete result available through interval requests. */
   readonly limit: number | null
 
   readonly openMode: 'page' | 'dialog'
   readonly isVisible: boolean
 }
 
-/** A damaged saved query remains local to its section and cannot silently become an unrestricted query. */
+/**
+ * Saved showcase section with its order, timestamps and explicit query validity.
+ *
+ * A damaged query remains local to its section and is preserved as invalid.
+ */
 export interface ShowcaseSection extends Omit<ShowcaseFields, 'query'> {
   readonly id: string
   readonly query: StoredDefinition<ShowcaseQuery>
@@ -50,12 +55,18 @@ export interface ShowcaseSection extends Omit<ShowcaseFields, 'query'> {
   readonly updatedAt: number
 }
 
-/** Query is one edit unit; title and display fields have independent baselines. */
+/**
+ * Section field edits and optional original values.
+ *
+ * The query and its reference labels form one edit unit; name and display fields have independent
+ * baselines.
+ */
 export interface ShowcaseUpdate {
   readonly changes: Partial<ShowcaseFields>
   readonly expected?: Partial<ShowcaseFields>
 }
 
+/** Fixed, localized configuration available as the starting point for a section draft. */
 export interface ShowcasePreset {
   readonly id: string
   readonly defaultLocale: string
@@ -64,46 +75,55 @@ export interface ShowcasePreset {
   readonly initial: ShowcaseFields
 }
 
-/** Lists return all saved configurations. Presets fill drafts and are never automatically materialized. */
+/** Operations on independently saved showcase sections and fixed draft presets. */
 export interface ShowcaseApi {
   /**
-   * Read every saved section in formal order, including hidden sections and explicitly invalid
-   * stored queries.
+   * Reads all saved sections in formal order, including hidden sections and invalid stored queries.
    */
   list(call?: CallOptions): Promise<readonly ShowcaseSection[]>
 
-  /** Read one saved configuration, retaining an invalid stored query explicitly. */
+  /**
+   * Reads a saved section, preserving query validity and returning null when the section is absent.
+   */
   get(id: string, call?: CallOptions): Promise<ShowcaseSection | null>
 
   /**
-   * Read the fixed preset configurations for copying into a draft; listing never creates
-   * sections.
+   * Reads fixed preset configurations for copying into drafts.
+   *
+   * Listing presets does not create sections.
    */
   listPresets(call?: CallOptions): Promise<readonly ShowcasePreset[]>
 
-  /** Save a new independent section at the end of the directory. */
+  /** Saves a new independent section at the end of the directory. */
   create(input: ShowcaseFields, call?: CallOptions): Promise<ShowcaseSection>
 
   /**
-   * Atomically append an explicit batch and return saved sections in input order. Equal
-   * configurations remain independent.
+   * Atomically appends an explicit batch and returns saved sections in input order.
+   *
+   * Equal configurations remain independent sections.
    */
   createMany(
     input: NonEmptyArray<ShowcaseFields>,
     call?: CallOptions,
   ): Promise<readonly ShowcaseSection[]>
 
-  /** Compare and commit changed fields without depending on unrelated directory ordering. */
+  /** Compares and commits changed fields independently of unrelated directory ordering. */
   update(id: string, input: ShowcaseUpdate, call?: CallOptions): Promise<ShowcaseSection>
 
-  /** Remove the section configuration; library content keeps its own lifetime. */
+  /** Removes a section configuration while preserving the library content it displayed. */
   delete(id: string, call?: CallOptions): Promise<void>
 
-  /** Reorder selected sections against the complete saved directory baseline, including hidden sections. */
+  /**
+   * Reorders selected sections against the complete saved directory baseline, including hidden
+   * sections.
+   */
   reorder(input: ReorderInput, call?: CallOptions): Promise<void>
 }
 
-/** Parse the selected reader's exact query and keep reference labels out of execution parameters. */
+/**
+ * Parses the selected reader's query and validates entry reference labels separately from execution
+ * fields.
+ */
 export function parseShowcaseQuery(input: unknown): ShowcaseQuery {
   const { kind: kindInput, ...body } = parseRecord(input)
   const kind = parseValue(v.picklist(['entry', 'collection', 'tag']), kindInput)
@@ -135,18 +155,22 @@ const fields = {
   isVisible: v.boolean(),
 }
 
-/** Validate complete section configuration without confusing its display limit with a list request limit. */
+/** Parses a complete section configuration and trims its name. */
 export function parseShowcaseFields(input: unknown): ShowcaseFields {
   return parseValue(v.strictObject(fields), input, 'Invalid showcase configuration')
 }
 
-/** Validate an explicit nonempty creation batch without merging equal configurations. */
+/** Parses a nonempty creation batch while retaining equal configurations as distinct inputs. */
 export function parseShowcaseCreateMany(input: unknown): NonEmptyArray<ShowcaseFields> {
   const section = v.strictObject(fields)
   return parseValue(v.tupleWithRest([section], section), input, 'Invalid showcase creation batch')
 }
 
-/** Ordinary editing compares only changed fields; query and its reference labels are one complete value. */
+/**
+ * Parses section edits and requires baselines to correspond to changed fields.
+ *
+ * The query and its reference labels are validated as one complete value.
+ */
 export function parseShowcaseUpdate(input: unknown): ShowcaseUpdate {
   const partial = v.strictObject(optionalFields(fields))
   const value = parseValue(

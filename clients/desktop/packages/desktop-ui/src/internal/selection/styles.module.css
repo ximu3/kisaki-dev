@@ -1,4 +1,4 @@
-/* Shared selector surface, virtual viewport and right-aligned selection slot. */
+/* Shared selector surface, virtual viewport and trailing selection-mark slot. */
 
 @layer components {
   :where(.list) {

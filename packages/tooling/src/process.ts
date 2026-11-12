@@ -9,18 +9,23 @@ import { basename } from 'node:path'
 import { setTimeout as delay } from 'node:timers/promises'
 import { promisify } from 'node:util'
 
-/** Process inputs for a finite engineering command. */
+/** Working directory, environment and cancellation for one finite child command. */
 export interface ProcessOptions {
+  /** Child working directory; omission inherits the current process directory. */
   cwd?: string
   /** Complete child environment; omission inherits process.env as in Node's spawn(). */
   env?: NodeJS.ProcessEnv
+  /** Requests cancellation; command completion still waits for child stream closure. */
   signal?: AbortSignal | undefined
 }
 
-/** A child failure with bounded captured diagnostics, when capture was requested. */
+/** A failed child command's exit status and captured diagnostics. */
 export class CommandFailed extends Error {
   readonly exitCode: number
 
+  /**
+   * Records a positive exit code and any captured output; missing or nonpositive codes become 1.
+   */
   constructor(
     command: string,
     code: number | null,
@@ -33,7 +38,12 @@ export class CommandFailed extends Error {
   }
 }
 
-/** Report whether the owned group has members that can still run, preserving signal failures. */
+/**
+ * Sends a Unix process-group signal, or probes the group when the signal is zero.
+ *
+ * Returns false for a missing group or a Darwin group with no live members. Other signal failures
+ * reject the operation.
+ */
 async function signalGroup(group: number, signal: NodeJS.Signals | 0): Promise<boolean> {
   try {
     process.kill(-group, signal)
@@ -62,7 +72,12 @@ async function signalGroup(group: number, signal: NodeJS.Signals | 0): Promise<b
   }
 }
 
-/** Terminate the spawned command tree and wait for the platform termination request. */
+/**
+ * Requests termination of a running child command and its process tree.
+ *
+ * Windows awaits taskkill. Unix allows five seconds after SIGTERM before sending SIGKILL. The
+ * caller separately waits for the child's close event.
+ */
 async function stopCommand(child: ChildProcess): Promise<void> {
   if (!child.pid || child.exitCode !== null || child.signalCode !== null) {
     return
@@ -99,7 +114,13 @@ async function stopCommand(child: ChildProcess): Promise<void> {
   await signalGroup(child.pid, 'SIGKILL')
 }
 
-/** Wait for command closure and cancellation completion; spawn errors still wait for closed streams. */
+/**
+ * Runs a command until its streams close and pending termination handling settles.
+ *
+ * Capture uses one shared 1 MiB budget for stdout and stderr; overflow requests cancellation.
+ * Nonzero exits reject with CommandFailed. Startup and termination failures are reported after
+ * child closure.
+ */
 async function execute(
   command: string,
   args: string[],
@@ -128,6 +149,7 @@ async function execute(
   let stderr = ''
   let size = 0
 
+  /** Starts one termination request and retains any failure while the child closes. */
   const cancel = () => {
     stopping ??= stopCommand(child).catch((cause: unknown) => {
       failure = cause
@@ -147,7 +169,7 @@ async function execute(
     failure = cause
   })
 
-  /** Bound output before appending it, then cancel and await the actual child on overflow. */
+  /** Appends a captured chunk, requesting cancellation when the shared 1 MiB limit is exceeded. */
   function collect(value: string, error: boolean): void {
     size += Buffer.byteLength(value)
     if (size > 1024 * 1024) {
@@ -185,7 +207,12 @@ async function execute(
   }
 }
 
-/** Execute a finite command and forward its diagnostics, waiting for cancellation and closed output streams. */
+/**
+ * Runs a finite command with inherited standard output and error.
+ *
+ * Settles after child streams close and cancellation handling ends. Startup, termination and
+ * nonzero-exit failures reject the operation.
+ */
 export async function run(
   command: string,
   args: string[],
@@ -194,7 +221,7 @@ export async function run(
   await execute(command, args, options, false)
 }
 
-/** Resolve the pinned pnpm executable that started this project task. */
+/** Resolves the pnpm executable that launched the current project task. */
 function pnpmCommand(args: string[]): { command: string; args: string[] } {
   const executable = process.env.npm_execpath
   if (!executable) {
@@ -206,13 +233,18 @@ function pnpmCommand(args: string[]): { command: string; args: string[] } {
     : { command: process.execPath, args: [executable, ...args] }
 }
 
-/** Run pnpm with explicit cancellation; completion includes closed output streams. */
+/** Runs a pnpm task with inherited diagnostics and waits for child closure. */
 export async function runPnpm(args: string[], options: ProcessOptions = {}): Promise<void> {
   const invocation = pnpmCommand(args)
   await run(invocation.command, invocation.args, options)
 }
 
-/** Capture bounded standard output from pnpm and wait for the command to close. */
+/**
+ * Runs pnpm in the supplied directory and returns its captured standard output.
+ *
+ * Stdout and stderr share a 1 MiB limit. The explicit directory takes precedence over options.cwd;
+ * completion and failure follow {@link run}.
+ */
 export async function readPnpm(
   args: string[],
   cwd: string,

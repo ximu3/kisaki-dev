@@ -10,6 +10,7 @@ const choices = Array.from({ length: 10_000 }, (_, index) => ({
   label: `Item ${index + 1}`,
 }))
 
+/** Exercises a large virtualized multi-selection through the packed public field API. */
 export function VirtualChoices(): JSX.Element {
   const [viewport, setViewport] = createSignal<HTMLDivElement>()
   let scrollTo: ((value: string) => void) | undefined
@@ -45,6 +46,7 @@ export function VirtualChoices(): JSX.Element {
             virtualizer.getVirtualItems()
             virtualizer.measureElement(null)
           })
+          /** Reveals the fixture's numeric option key through its virtual row index. */
           scrollTo = (value) => virtualizer.scrollToIndex(Number(value), { align: 'auto' })
           onCleanup(() => {
             scrollTo = undefined

@@ -16,12 +16,18 @@ import frame from '../popup/surface.module.css'
 import row from '../list-row.module.css'
 import styles from './styles.module.css'
 
+/**
+ * Logical option and selection state connected to a popup, optional search editor and row renderer.
+ */
 interface ListProps extends SelectionListProps {
   popup: SelectionPopup
+  /** Returns the interaction anchor used by native popup and focus handling. */
   anchor: Accessor<HTMLElement>
+  /** Returns an optional geometry reference distinct from the interaction anchor. */
   reference?: Accessor<HTMLElement> | undefined
   collection: SelectionCollection
   selected: readonly string[]
+  /** Reports an enabled chosen option to the value owner. */
   onChoose: (option: SelectionOption) => void
   multiple?: boolean | undefined
   loading?: boolean | undefined
@@ -32,7 +38,13 @@ interface ListProps extends SelectionListProps {
   search?: SearchState | undefined
 }
 
-/** The trigger owns focus and the collection owns navigation, including offscreen virtual rows. */
+/**
+ * Renders logical options and selection marks in an anchored popup with optional search and
+ * virtualization.
+ *
+ * The trigger or search editor retains focus; the collection owns navigation across mounted and
+ * offscreen rows.
+ */
 export function SelectionList(props: ListProps): JSX.Element {
   let list!: HTMLDivElement
   const { id, open, present } = props.popup
@@ -44,6 +56,7 @@ export function SelectionList(props: ListProps): JSX.Element {
     }
   })
 
+  /** Groups adjacent options sharing a label while preserving collection order. */
   const groups = () => {
     const result: { label: string | undefined; options: SelectionOption[] }[] = []
     for (const option of props.collection.options()) {
@@ -94,6 +107,10 @@ export function SelectionList(props: ListProps): JSX.Element {
     })
   })
 
+  /**
+   * Renders a stable option identity with logical position, selection state and enabled pointer
+   * actions.
+   */
   const renderOption = (option: SelectionOption) => (
     <div
       id={optionId(id, option.value)}

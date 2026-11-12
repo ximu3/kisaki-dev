@@ -9,11 +9,15 @@ import { runPnpm } from '@kisaki3/tooling/process'
 import { consumerTest as test, lintConsumer, packageRoot } from '../support/consumer'
 import type {} from '../fixtures/consumers/browser/api'
 
-/** Sample the actual material and text halfway through entry and at rest. */
+/**
+ * Checks that entry opacity changes while text geometry remains fixed between the transition
+ * midpoint and rest.
+ */
 async function checkSurface(panel: Locator, textSelector: string): Promise<void> {
   const result = await panel.evaluate((node, selector) => {
     const range = document.createRange()
     range.selectNodeContents(node.querySelector(selector)!)
+    /** Samples the selected text range's viewport position and dimensions in CSS pixels. */
     const geometry = () => {
       const { x, y, width, height } = range.getBoundingClientRect()
       return [x, y, width, height]
@@ -227,6 +231,10 @@ test('virtual selection keeps offscreen values while keyboard navigation mounts 
   })
   const form = page.locator('#virtual-form')
   await browserExpect(form.getByRole('button', { name: 'Previous selected items' })).toBeHidden()
+  /**
+   * Dispatches a backward wheel sample over a selected chip and reports whether it remained
+   * uncancelled.
+   */
   const wheelPrevious = () =>
     form
       .getByRole('button', { name: 'Remove Item 9000' })

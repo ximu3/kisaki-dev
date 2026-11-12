@@ -22,19 +22,23 @@ import type { DependencySnapshot } from './dependencies'
 
 const debug = debuglog('kisaki:development')
 
-/** Process lifecycle supplied by the launch owner; readiness has completed when launch resolves. */
+/** Ready application process whose lifetime is supplied by the launch owner. */
 export interface DevelopmentApplication {
   pid: number
+  /** Completes after the launched process and its output streams close. */
   exited: Promise<{ code: number | null; signal: NodeJS.Signals | null }>
 
-  /** Request normal exit; cancelled means the application declined the close request. */
+  /** Requests normal exit and reports whether the application exited or declined the request. */
   stop(): Promise<'cancelled' | 'exited'>
 
-  /** Force the owned process to end and wait for its exit. */
+  /** Forces the owned process to end and waits for its exit. */
   terminate(): Promise<void>
 }
 
-/** Inputs for one owned Electron process and its startup readiness deadline. */
+/**
+ * Launch inputs for one owned Electron process, including its profile, build identity and readiness
+ * budget.
+ */
 export interface DevelopmentLaunchOptions {
   executable: string
   args: string[]
@@ -43,47 +47,79 @@ export interface DevelopmentLaunchOptions {
   profile: string
   buildId: string
 
+  /** Cancels startup; after readiness the returned application owns process control. */
   signal: AbortSignal
+  /** Budget in milliseconds for reaching the expected build's ready state. */
   startupTimeoutMs: number
 }
 
-/** The built runtime and Electron process currently owned by a development session. */
+/** Identity, output directory and process ID of the session's adopted application generation. */
 export interface DevelopmentBuild {
   buildId: string
   directory: string
   processId: number
 }
 
-/** A development session owns its processes, watchers and private output directories until closed. */
+/**
+ * Watching session owning a renderer, input watchers and successive application generations.
+ *
+ * The caller closes this handle even if readiness fails. Persistent profiles remain caller-owned.
+ */
 export interface DevelopmentSession {
-  /** First ready application; compilation failures can recover, while stopped startup or resource failure rejects. */
+  /** Resolves on the first ready application; recoverable build failures leave it pending. */
   readonly ready: Promise<void>
-  /** Settles after teardown; shutdown failures reject, and outputs with unconfirmed readers remain on disk. */
+  /** Settles after tool teardown; failures reject and unconfirmed-reader outputs remain on disk. */
   readonly closed: Promise<void>
+  /** Current renderer address, read from the live server handle. */
   readonly rendererUrl: string
-  /** Current running generation; absent before launch, during replacement and after process exit. */
+  /** Adopted application generation; absent while the session owns no completed launch. */
   readonly current: DevelopmentBuild | undefined
 
-  /** Request normal application exit, then close tools and outputs; cancellation keeps the session usable. */
+  /**
+   * Requests normal application exit, then tears down session tools and outputs.
+   *
+   * Concurrent requests share one operation. Cancellation keeps the session usable; confirmed
+   * shutdown resolves as stopped. Teardown failures reject, and outputs with unconfirmed readers
+   * are retained.
+   */
   stop(): Promise<'cancelled' | 'stopped'>
 
-  /** Explicitly end this session's application before closing its tools and outputs. */
+  /**
+   * Forces application exit before performing session cleanup.
+   *
+   * Cleanup starts after termination is confirmed; a termination failure leaves the session's
+   * resources owned.
+   */
   terminate(): Promise<void>
 }
 
-/** Caller-owned profiles survive stop; signal cancels startup only, before the first ready application. */
+/** Source, profile, launch capability and state reporting for a development session. */
 export interface DevelopmentOptions {
   /** Absolute root containing the program source and Vite configurations. */
   sourceRoot: string
-  /** Launch a ready process whose lifetime remains owned by this session. */
+  /**
+   * Launches the expected build and resolves with an application that has completed startup
+   * readiness.
+   */
   launch: (options: DevelopmentLaunchOptions) => Promise<DevelopmentApplication>
+  /** Persistent absolute profile directory; defaults to the desktop app's .local/development. */
   profile?: string
+  /** Cancels preparation until the first ready application; later lifetime uses the session handle. */
   signal?: AbortSignal
-  /** Report rebuild and session state; a failed rebuild can leave the current application usable. */
+  /**
+   * Reports build and session state; recoverable rebuild failures can leave the current application
+   * usable.
+   */
   onState?: (state: 'building' | 'failed' | 'ready' | 'stopped', error?: unknown) => void
 }
 
-/** Return a watching session before its first build completes; await ready for the first usable application. */
+/**
+ * Starts a watching development session and returns its lifecycle handle.
+ *
+ * Initial tool and resource preparation completes before return. The first application build runs
+ * asynchronously; ready identifies its usable launch. The caller uses stop or terminate to finish
+ * ownership of the returned session.
+ */
 export async function startDevelopmentSession(
   options: DevelopmentOptions,
 ): Promise<DevelopmentSession> {
@@ -99,6 +135,7 @@ export async function startDevelopmentSession(
   options.signal?.throwIfAborted()
 
   const controller = new AbortController()
+  /** Forwards caller cancellation while the first application is still being prepared. */
   const cancelPreparation = () => controller.abort(options.signal?.reason)
   options.signal?.addEventListener('abort', cancelPreparation, { once: true })
   const signal = controller.signal
@@ -159,7 +196,10 @@ export async function startDevelopmentSession(
     void ready.catch(() => undefined)
     void closed.catch(() => undefined)
 
-    /** Keep the current application owned while preventing further adoption after a resource fails. */
+    /**
+     * Stops future adoption after a session-level resource failure while retaining the current
+     * application's ownership.
+     */
     function failSession(cause: unknown): void {
       resourceFailed = true
       buildPending = false
@@ -167,7 +207,13 @@ export async function startDevelopmentSession(
       options.onState?.('failed', cause)
     }
 
-    /** Build dependencies, capture their complete exports and compile the next private generation. */
+    /**
+     * Prepares current dependencies and, when needed, a new application generation.
+     *
+     * Adopts complete candidates, waits for normal exit before replacement, and releases unused
+     * candidates. Reports recoverable failures while retaining any still-owned application and
+     * unconfirmed-reader outputs.
+     */
     async function rebuild(): Promise<void> {
       options.onState?.('building')
       generation += 1
@@ -176,7 +222,10 @@ export async function startDevelopmentSession(
       let dependencies: DependencySnapshot | undefined
       let failure: unknown
 
-      /** The renderer takes ownership even if refresh or prior-copy cleanup fails. */
+      /**
+       * Transfers the prepared dependency copy to the renderer, including refresh and cleanup
+       * failure paths.
+       */
       async function adoptDependencies(): Promise<void> {
         const next = dependencies!
         dependencies = undefined
@@ -322,7 +371,10 @@ export async function startDevelopmentSession(
       }
     }
 
-    /** Coalesce changes into serial rebuilds owned by this development session. */
+    /**
+     * Coalesces changes into serial rebuilds and preserves pending work while a normal stop is
+     * undecided.
+     */
     function enqueue(force = false): void {
       if (stopped || resourceFailed) {
         return
@@ -344,6 +396,9 @@ export async function startDevelopmentSession(
       })
     }
 
+    /**
+     * Requests session shutdown after internal startup cancellation and reports a shutdown failure.
+     */
     const cancel = () => {
       void session.stop().catch((cause: unknown) => {
         options.onState?.('failed', cause)
@@ -353,14 +408,20 @@ export async function startDevelopmentSession(
       ready,
       closed,
 
+      /** Reads the renderer's current listening address. */
       get rendererUrl() {
         return renderer.url
       },
 
+      /** Returns the session's currently adopted application generation. */
       get current() {
         return current
       },
 
+      /**
+       * Implements {@link DevelopmentSession.stop}, coordinating active builds, application exit
+       * and tool cleanup.
+       */
       stop() {
         if (stopped) {
           return Promise.resolve('stopped')
@@ -453,6 +514,10 @@ export async function startDevelopmentSession(
         return stopPromise
       },
 
+      /**
+       * Implements {@link DevelopmentSession.terminate}, awaiting forced process exit before normal
+       * teardown.
+       */
       async terminate() {
         stopping = true
         debug('Terminating application %s', child?.pid ?? 'not started')

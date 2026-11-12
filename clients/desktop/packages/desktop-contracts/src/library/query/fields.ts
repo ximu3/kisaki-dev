@@ -9,7 +9,7 @@ const bookTypes = ['comic', 'novel'] as const
 
 const peopleTypes = ['character', 'person'] as const
 
-/** Pure applicability only; no SQL, presentation control or persistent schema is stored in this directory. */
+/** Entry types that own each queryable, sortable or projectable fact. */
 const fieldTypes = {
   name: entryTypes,
   originalName: entryTypes,

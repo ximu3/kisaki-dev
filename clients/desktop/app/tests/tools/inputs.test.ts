@@ -12,12 +12,14 @@ import { captureDependencies } from '../../tools/dev/dependencies'
 import { startInputWatcher } from '../../tools/dev/inputs'
 
 const paths = vi.hoisted(() => ({ appRoot: '', repositoryRoot: '' }))
-// Only relocate owned files; use the actual Vite server and Chokidar input watcher.
+// The fixture redirects owned paths while exercising the real Vite server and Chokidar watcher.
 vi.mock(import('../../tools/lib/paths'), async (importOriginal) => ({
   ...(await importOriginal()),
+  /** Exposes the current isolated app root to the mocked engineering imports. */
   get appRoot() {
     return paths.appRoot
   },
+  /** Exposes the current isolated workspace root to the mocked engineering imports. */
   get repositoryRoot() {
     return paths.repositoryRoot
   },
@@ -92,7 +94,7 @@ afterAll(async () => {
   }
 
   if (paths.repositoryRoot) {
-    // Vite may still finish a cache write as its server closes; retry transient directory removal.
+    // Retries cover transient filesystem errors after both close operations complete.
     await rm(paths.repositoryRoot, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 })
   }
 })

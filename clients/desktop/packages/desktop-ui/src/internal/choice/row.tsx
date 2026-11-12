@@ -4,7 +4,11 @@ import { children, Show } from 'solid-js'
 import type { JSX } from 'solid-js'
 import styles from './styles.module.css'
 
-/** A supplied label makes the complete row clickable. A bare control keeps external labeling available. */
+/**
+ * Wraps a control in a clickable native label row when label content is supplied.
+ *
+ * A bare control retains external labeling support.
+ */
 export function ChoiceRow(props: { label?: JSX.Element; children: JSX.Element }): JSX.Element {
   const control = children(() => props.children)
 

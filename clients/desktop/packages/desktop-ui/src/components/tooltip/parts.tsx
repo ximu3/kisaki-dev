@@ -8,6 +8,9 @@ import { createTooltip } from '../../internal/tooltip/controller'
 import { Button } from '../button/control'
 import type { ButtonProps } from '../button/control'
 
+/**
+ * Local reading-lifetime state with an accessible description identity and native trigger anchor.
+ */
 interface TooltipState extends ReturnType<typeof createTooltip> {
   id: string
   anchor: HTMLElement | undefined
@@ -15,13 +18,20 @@ interface TooltipState extends ReturnType<typeof createTooltip> {
 
 const TooltipContext = createContext<TooltipState>()
 
-/** Tooltip supplements an existing accessible name; content contains no interactive controls. */
+/**
+ * Read-only explanation composition with an optional pointer-opening delay.
+ *
+ * Tooltip content supplements an existing accessible name and contains no interactive controls.
+ */
 export interface TooltipProps extends ParentProps {
   /** Initial pointer wait in milliseconds. Defaults to 300. */
   delayMs?: number
 }
 
-/** Trigger and content share hover and focus state, including Escape dismissal. */
+/**
+ * Provides one description identity and shared hover, focus and dismissal state for trigger and
+ * content.
+ */
 export function Tooltip(props: TooltipProps): JSX.Element {
   const state = createTooltip(() => props.delayMs)
 
@@ -32,7 +42,9 @@ export function Tooltip(props: TooltipProps): JSX.Element {
   )
 }
 
-/** A native button with its own name and a supplemental description. */
+/**
+ * Renders a native button with its own accessible name and the tooltip's supplemental description.
+ */
 export function TooltipTrigger(props: ButtonProps): JSX.Element {
   const state = useTooltip()
   const [local, rest] = splitProps(props, [
@@ -72,12 +84,15 @@ export function TooltipTrigger(props: ButtonProps): JSX.Element {
   )
 }
 
-/** Hoverable explanation constrained to the viewport, without taking keyboard focus. */
+/**
+ * Renders hoverable explanation content constrained to the viewport without taking keyboard focus.
+ */
 export function TooltipContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
   const state = useTooltip()
   return <TooltipSurface {...props} id={state.id} anchor={() => state.anchor!} reading={state} />
 }
 
+/** Returns the nearest tooltip state and rejects parts rendered outside a Tooltip owner. */
 function useTooltip(): TooltipState {
   const state = useContext(TooltipContext)
   if (!state) {

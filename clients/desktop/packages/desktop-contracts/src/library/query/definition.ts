@@ -10,12 +10,15 @@ import { parseEntrySort } from './sort'
 import { entryRefSchema } from '../catalog'
 import { DesktopError } from '../../errors'
 
-/** The fixed entrance always intersects rules, search and the caller's actual visibility. */
+/** Fixed query entrance intersected with rules, search and the caller's actual visibility. */
 export type EntryScope =
   | { readonly type: 'library' | 'favorites' | 'unclassified' }
   | { readonly type: 'collection' | 'tag' | 'note'; readonly id: string }
 
-/** A reusable result-set definition. Interval, requested fields and view components do not belong here. */
+/**
+ * Reusable entry result-set definition, independent of paging, projected fields and view
+ * components.
+ */
 export interface EntryQuery {
   readonly scope: EntryScope
   readonly search: string
@@ -23,13 +26,18 @@ export interface EntryQuery {
   readonly sort: EntrySort
 }
 
-/** A bounded last-saved display name never resolves an identity or affects query authorization. */
+/**
+ * Last-saved display name for a referenced query target.
+ *
+ * The label supports display when the target cannot be resolved; it grants no lookup authority and
+ * does not establish identity.
+ */
 export interface QueryReferenceLabel {
   readonly target: EntryRef | { readonly type: 'tag' | 'collection' | 'note'; readonly id: string }
   readonly name: string
 }
 
-/** Dynamic membership is evaluated over the library with an explicit sort, never scope-relative order. */
+/** Saved dynamic membership definition evaluated over the library with an explicit sort. */
 export interface DynamicRules {
   readonly search: string
   readonly rules: readonly EntryRule[]
@@ -44,7 +52,11 @@ const entryScopeSchema = v.union([
 
 const queryRulesSchema = v.array(v.pipe(v.unknown(), v.transform(parseEntryRule)))
 
-/** Parse exact scope/search/rules/sort. Empty or entirely disabled rules remain an intentionally empty result. */
+/**
+ * Parses the complete query definition and validates sorting against its enabled entry types.
+ *
+ * Empty or entirely disabled rules remain valid definitions of an empty result set.
+ */
 export function parseEntryQuery(input: unknown): EntryQuery {
   const value = parseValue(
     v.strictObject({
@@ -61,7 +73,7 @@ export function parseEntryQuery(input: unknown): EntryQuery {
   return { ...value, sort: parseEntrySort(value.sort, types) }
 }
 
-/** Validate display-only snapshots with exact, unique target identities; labels grant no lookup authority. */
+/** Parses display-name snapshots and requires each target identity to occur once. */
 export function parseQueryReferenceLabels(input: unknown): readonly QueryReferenceLabel[] {
   const label = v.strictObject({
     target: v.union([
@@ -82,7 +94,7 @@ export function parseQueryReferenceLabels(input: unknown): readonly QueryReferen
   )
 }
 
-/** Parse saved membership and sort separately from its display-only reference labels; labels grant no lookup authority. */
+/** Parses a saved membership definition, its explicit sort and display-only reference labels. */
 export function parseDynamicRules(input: unknown): DynamicRules {
   const value = parseValue(
     v.strictObject({

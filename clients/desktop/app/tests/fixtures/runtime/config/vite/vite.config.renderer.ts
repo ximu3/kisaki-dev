@@ -12,6 +12,7 @@ export default defineConfig(({ mode }) => ({
     solid(),
     {
       name: 'desktop-development-csp',
+      /** Adds Vite's development-only allowances to the fixture document policy. */
       transformIndexHtml(html) {
         if (mode !== 'development') {
           return html

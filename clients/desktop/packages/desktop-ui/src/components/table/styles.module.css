@@ -1,4 +1,4 @@
-/* Native tables scroll within their host region and keep one field per column. */
+/* Native table cell spacing, row feedback, summary emphasis and captions. */
 
 @layer components {
   .table {

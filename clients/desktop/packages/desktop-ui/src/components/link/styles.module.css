@@ -1,4 +1,4 @@
-/* link presentation in the shared component layer. */
+/* Native-link color, hover underline and visible keyboard focus. */
 
 @layer components {
   .root {

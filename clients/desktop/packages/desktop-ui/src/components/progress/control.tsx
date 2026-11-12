@@ -5,10 +5,14 @@ import type { JSX } from 'solid-js'
 import { classes } from '../../internal/dom'
 import styles from './styles.module.css'
 
-/** Native progress attributes; omit value for indeterminate work and provide a label. */
+/**
+ * Native progress attributes requiring a caller-supplied accessible label.
+ *
+ * Omitting value represents indeterminate work.
+ */
 export type ProgressProps = JSX.ProgressHTMLAttributes<HTMLProgressElement>
 
-/** Render the actual supplied progress without inferring completion or operation success. */
+/** Renders supplied progress with a default maximum of 1, independently of operation success. */
 export function Progress(props: ProgressProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class'])
 

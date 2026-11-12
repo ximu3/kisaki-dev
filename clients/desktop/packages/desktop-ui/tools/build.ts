@@ -7,7 +7,12 @@ import { build } from 'tsdown'
 import { replaceOutput } from '@kisaki3/tooling/output'
 import { runCli } from '@kisaki3/tooling/cli'
 
-/** Prepare JavaScript, declarations and styles together; failed candidates leave dist intact. */
+/**
+ * Builds component code, declarations, complete styles and bundled-declaration notices before
+ * adopting the distribution.
+ *
+ * Failed preparation preserves the previous distribution.
+ */
 export async function buildPackage(signal?: AbortSignal): Promise<void> {
   const project = join(import.meta.dirname, '..')
   await replaceOutput(

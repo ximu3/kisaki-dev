@@ -9,7 +9,12 @@ import {
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter'
 import { autoScrollForElements } from '@atlaskit/pragmatic-drag-and-drop-auto-scroll/element'
 
-/** Create in a Solid owner. The accessor runs after DOM refs exist and replaces registration when its inputs change. */
+/**
+ * Registers a draggable reactively under the current Solid owner.
+ *
+ * Input changes replace registration; cleanup removes registration and the active-drag presentation
+ * marker.
+ */
 export function createDraggable(
   options: Accessor<Parameters<typeof draggable>[0] | undefined>,
 ): void {
@@ -35,7 +40,11 @@ export function createDraggable(
   })
 }
 
-/** Host canDrop/getData retain business identity, permission, data readiness and ordering ownership. */
+/**
+ * Registers a drop target reactively and releases it with the Solid owner.
+ *
+ * The host's callbacks own business identity, permission, data readiness and ordering.
+ */
 export function createDropTarget(
   options: Accessor<Parameters<typeof dropTargetForElements>[0] | undefined>,
 ): void {
@@ -47,7 +56,11 @@ export function createDropTarget(
   })
 }
 
-/** Monitor only while its Solid owner exists; registration never commits or reorders host data itself. */
+/**
+ * Registers a reactive drag monitor for the current Solid lifetime.
+ *
+ * Host callbacks decide whether and how a drop changes data.
+ */
 export function createDragMonitor(
   options: Accessor<Parameters<typeof monitorForElements>[0] | undefined>,
 ): void {
@@ -59,7 +72,11 @@ export function createDragMonitor(
   })
 }
 
-/** The host supplies the scrolling viewport and drag eligibility; disposal stops registration. */
+/**
+ * Registers auto-scrolling for the host's viewport and drag-eligibility rules.
+ *
+ * Input changes replace registration, and owner cleanup stops it.
+ */
 export function createDragAutoScroll(
   options: Accessor<Parameters<typeof autoScrollForElements>[0] | undefined>,
 ): void {

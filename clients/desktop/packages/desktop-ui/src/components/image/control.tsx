@@ -1,17 +1,25 @@
-/** @fileoverview Host-owned image URLs with loading and failure presentation. */
+/** @fileoverview Displays host-owned image URLs with accessible fallback content. */
 
 import { createEffect, createSignal, Show, splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { callHandler, classes } from '../../internal/dom'
 import styles from './styles.module.css'
 
-/** alt is required; the host acquires and releases URLs, while fallback supplies visible failure content. */
+/**
+ * Image attributes requiring alternative text and permitting visible fallback content.
+ *
+ * The host acquires and releases the supplied URL.
+ */
 export interface ImageProps extends Omit<JSX.ImgHTMLAttributes<HTMLImageElement>, 'alt'> {
   alt: string
   fallback?: JSX.Element
 }
 
-/** Updates and retries when src changes; never revokes a URL supplied by the host. */
+/**
+ * Renders an image or accessible fallback for a missing or failed source.
+ *
+ * Changing src clears the failure state; URL ownership remains with the host.
+ */
 export function Image(props: ImageProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'fallback', 'src', 'alt', 'onLoad', 'onError'])
 

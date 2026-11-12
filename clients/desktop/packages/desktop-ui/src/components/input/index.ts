@@ -1,4 +1,4 @@
-/** @fileoverview Public input family. */
+/** @fileoverview Publishes text, numeric, date and color input controls. */
 
 export { Input, type InputProps } from './control'
 export { NumberInput, type NumberInputProps } from './number/control'

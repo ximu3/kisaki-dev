@@ -12,7 +12,11 @@ import * as v from 'valibot'
 import { error } from './runs'
 import { parseTaskRunRef } from '../tasks'
 
-/** Watch availability and managed work are separate. Removing a config does not end an already accepted currentRun. */
+/**
+ * Watch readiness and the currently accepted managed scan for a configuration.
+ *
+ * Removing the configuration leaves an accepted run alive until its own completion.
+ */
 export interface ScannerState {
   readonly watch:
     | { readonly status: 'disabled' | 'starting' | 'active'; readonly error: null }
@@ -20,33 +24,39 @@ export interface ScannerState {
   readonly currentRun: { readonly scanRunId: string; readonly taskRef: TaskRunRef } | null
 }
 
-/** Public scan is always full-config execution. Progress/control use the one actual taskRef exposed in currentRun. */
+/**
+ * Scanner configuration, preview, recognition and full-configuration execution.
+ *
+ * Runtime progress and control use the accepted run's actual task reference.
+ */
 export interface ScannerApi {
   readonly configs: ScanConfigsApi
   readonly runs: ScanRunsApi
   readonly recognizers: WorkRecognizersApi
 
   /**
-   * Evaluate a draft's bounded candidates and recognition without saving the configuration,
-   * entries or a ScanRun.
+   * Previews draft path discovery and native clue extraction.
+   *
+   * It saves no configuration, entry or ScanRun and acquires no remote metadata.
    */
   preview(input: ScanPreviewInput, call?: CallOptions): Promise<ScanPreviewResult>
 
   /**
-   * Run the complete saved configuration and return its actual report; runtime progress and
-   * control use the current task reference.
+   * Executes the complete saved configuration and returns its actual report.
+   *
+   * Runtime progress and control use the current task reference.
    */
   scan(configId: string, call?: CallOptions): Promise<ScanResult>
 
   /**
-   * Read watch readiness and the accepted current scan separately; removing the configuration
-   * does not erase in-flight work.
+   * Reads watch readiness and accepted scan state, returning null when no scanner state remains.
    */
   getState(configId: string, call?: CallOptions): Promise<ScannerState | null>
 
   /**
-   * Deliver current scanner state and subsequent changes; ending observation does not stop its
-   * watch or accepted scan.
+   * Delivers current scanner state and subsequent changes and returns the observation lifetime.
+   *
+   * Ending observation leaves its watch and accepted scan running.
    */
   observe(
     configId: string,
@@ -55,7 +65,9 @@ export interface ScannerApi {
   ): Promise<Disposable>
 }
 
-/** Watch failures and scan failures are independent; observation release never controls the current task. */
+/**
+ * Parses watch readiness and the independent accepted-run reference, or an absent scanner state.
+ */
 export function parseScannerState(input: unknown): ScannerState | null {
   return parseValue(
     v.nullable(

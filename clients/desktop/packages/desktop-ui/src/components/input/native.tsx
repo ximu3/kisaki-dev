@@ -7,13 +7,20 @@ import { fieldAttributes } from '../../internal/field'
 import { bindTextControl } from '../../internal/text-control'
 import type { TextValueProps } from '../../internal/text-control'
 
-/** Common native text binding; public controls choose the editing type and presentation. */
+/**
+ * Native single-line input attributes and shared text-value binding for dedicated input controls.
+ */
 export interface NativeInputProps
   extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'value' | 'type'>, TextValueProps {
   type?: 'text' | 'password' | 'search' | 'email' | 'url' | 'tel' | 'number'
 }
 
-/** Native input events, selection and undo remain available. Supply a label directly or with Field. */
+/**
+ * Binds native editing, form reset and optional Field associations to the caller's text-value
+ * model.
+ *
+ * Native events, selection and undo remain available.
+ */
 export function NativeInput(props: NativeInputProps): JSX.Element {
   const [local, rest] = splitProps(props, [
     'value',

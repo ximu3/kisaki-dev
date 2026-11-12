@@ -2,7 +2,7 @@
 
 import type { ColorScheme, TokenValues } from './tokens'
 
-/** Complete light values; font names do not load or distribute font files. */
+/** Default light appearance branch with CSS font-family stacks. */
 export const light: TokenValues = Object.freeze({
   '--background': 'oklch(0.965 0.005 256)',
   '--foreground': 'oklch(0.21 0.03 260)',
@@ -58,7 +58,7 @@ export const light: TokenValues = Object.freeze({
   '--text-base-letter-spacing': 'normal',
 })
 
-/** Complete dark values; font names do not load or distribute font files. */
+/** Default dark appearance branch with CSS font-family stacks. */
 export const dark: TokenValues = Object.freeze({
   '--background': 'oklch(0.17 0.015 258)',
   '--foreground': 'oklch(0.9 0.012 256)',
@@ -111,5 +111,5 @@ export const dark: TokenValues = Object.freeze({
   '--text-base-letter-spacing': 'normal',
 })
 
-/** Shared immutable branches. Copy a branch before editing; no host state is read. */
+/** Frozen default branches shared by JavaScript and generated CSS. */
 export const defaults: Readonly<Record<ColorScheme, TokenValues>> = Object.freeze({ light, dark })

@@ -19,7 +19,11 @@ export interface ActivityTiming {
   readonly durationMs: number
 }
 
-/** Context is recorded only when known. A compound file does not create multiple part-level activities. */
+/**
+ * Known file, part or launch-configuration context recorded with an activity.
+ *
+ * A compound file produces one activity rather than one record per part.
+ */
 export interface ActivityContextByType {
   readonly game: { readonly launchConfigId: string | null }
 
@@ -44,7 +48,11 @@ export type ActivityCreate = {
   }
 }[WorkType]
 
-/** Stable identity and historical display values survive later ordinary renaming or removal of the referenced context. */
+/**
+ * A saved usage interval with stable identity and historical context names.
+ *
+ * Names survive ordinary renaming or removal of referenced context.
+ */
 export type Activity = {
   [K in WorkType]: ActivityTiming & {
     readonly id: string
@@ -58,7 +66,11 @@ export type Activity = {
   }
 }[WorkType]
 
-/** Editing the interval compares all timing and actual original context but cannot rewrite that context. */
+/**
+ * A complete timing correction with optional comparison against original timing and context.
+ *
+ * The edit preserves the original occurrence context.
+ */
 export type ActivityUpdate<K extends WorkType = WorkType> = {
   readonly changes: ActivityTiming
   readonly expected?: {
@@ -72,7 +84,11 @@ export interface InstantRange {
   readonly to: number
 }
 
-/** Context filters deliberately exclude unallocated work-level additional duration. */
+/**
+ * An activity's work or occurrence-context filter.
+ *
+ * Context filters exclude unallocated work-level additional duration.
+ */
 export type ActivityFilter =
   | { readonly type: 'work'; readonly work: WorkRef }
   | { readonly type: 'launchConfig'; readonly gameId: string; readonly launchConfigId: string }
@@ -83,13 +99,19 @@ export type ActivityFilter =
     }
   | { readonly type: 'part'; readonly part: PartRef }
 
+/** Work scope, optional instant range and occurrence-context constraints for activity reads. */
 export interface ActivityQuery {
   readonly scope: WorkStatisticsScope
   readonly range?: InstantRange
   readonly context?: ActivityFilter
 }
 
-/** Allocated durations retain fractional precision. Record totals cannot be obtained by summing day record counts. */
+/**
+ * Activity totals and calendar or work-group aggregates.
+ *
+ * Allocated durations retain fractional precision. Record totals cannot be obtained by summing
+ * per-day record counts.
+ */
 export interface ActivityStatistics {
   readonly activityCount: number
   readonly durationMs: number
@@ -113,11 +135,17 @@ export interface ActivityStatistics {
   }[]
 }
 
-/** Managed active intervals must end before manual editing/deletion; ordinary operations never control a session. */
+/**
+ * Saved usage intervals, manual corrections and activity statistics.
+ *
+ * Managed active intervals must end before editing or deletion. These operations do not control
+ * sessions.
+ */
 export interface ActivitiesApi {
   /**
-   * Read saved activity records in the requested work/time/context scope; work-level additional
-   * duration is not a record.
+   * Lists saved activities in the requested work, time and context scope.
+   *
+   * Work-level additional duration is not an activity record.
    */
   list(
     query: ActivityQuery,
@@ -125,21 +153,20 @@ export interface ActivitiesApi {
     call?: CallOptions,
   ): Promise<ListResult<Activity>>
 
-  /**
-   * Read one saved activity belonging to the supplied work; the active session remains a
-   * separate runtime object.
-   */
+  /** Reads a saved activity belonging to the supplied work, or null when it is absent. */
   get(work: WorkRef, activityId: string, call?: CallOptions): Promise<Activity | null>
 
   /**
-   * Record an explicit valid past interval and its actual context; this does not start a session
-   * or infer missing history.
+   * Records an explicit past interval and its actual context.
+   *
+   * The operation does not start a session or infer missing history.
    */
   create(input: ActivityCreate, call?: CallOptions): Promise<string>
 
   /**
-   * Compare and correct a saved activity after any managed interval has ended; additional
-   * duration and reading position stay unchanged.
+   * Compares and corrects a saved activity after managed use has ended.
+   *
+   * Additional duration and reading position remain unchanged.
    */
   update(
     ...args: {
@@ -153,14 +180,16 @@ export interface ActivitiesApi {
   ): Promise<void>
 
   /**
-   * Delete only the supplied saved activities after managed use has ended; never stop a session
-   * or adjust additional duration.
+   * Deletes the supplied activities after managed use has ended.
+   *
+   * The operation leaves sessions and additional duration unchanged.
    */
   delete(work: WorkRef, ids: string | NonEmptyArray<string>, call?: CallOptions): Promise<void>
 
   /**
-   * Aggregate saved intervals using the requested scope and calendar grouping; undated
-   * additional duration has no period allocation.
+   * Aggregates saved intervals by the requested scope and calendar grouping.
+   *
+   * Undated additional duration has no period allocation.
    */
   statistics(
     query: ActivityQuery & { readonly groupBy?: 'hour' | 'day' | 'week' | 'month' | 'year' },
@@ -197,12 +226,12 @@ const contexts = {
   }),
 }
 
-/** Validate timing without applying a wall-clock rule to historical reads or automatic recordings. */
+/** Parses a positive-length interval and effective duration without applying a wall-clock limit. */
 export function parseActivityTiming(input: unknown): ActivityTiming {
   return parseValue(timingSchema, input, 'Invalid activity timing')
 }
 
-/** Validate a manual creation against an explicitly supplied submission time; no implicit Date.now is used. */
+/** Parses manual activity timing and work-specific context against an explicit submission time. */
 export function parseActivityCreate(input: unknown, submittedAt: number): ActivityCreate {
   const { work } = parseValue(v.looseObject({ work: workRefSchema }), input)
   const value = parseValue(
@@ -226,7 +255,7 @@ export function parseActivityCreate(input: unknown, submittedAt: number): Activi
   return value as ActivityCreate
 }
 
-/** Validate the complete timing save unit and original context. An ordinary edit cannot replace source context. */
+/** Parses a complete timing edit and any original context, rejecting a new end after submission. */
 export function parseActivityUpdate(
   work: WorkRef,
   input: unknown,
@@ -250,7 +279,7 @@ export function parseActivityUpdate(
   return value
 }
 
-/** Validate bounded historical labels independently from the current referenced names. */
+/** Parses historical context labels independently of current referenced names. */
 export function parseActivityContextNames(input: unknown): Activity['contextNames'] {
   return parseValue(
     v.strictObject({

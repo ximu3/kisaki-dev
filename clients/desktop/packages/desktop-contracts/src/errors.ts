@@ -62,19 +62,27 @@ export interface ErrorSummary {
   readonly message: string
 }
 
-/** A failed call can retain a complete, legal business result, never a Partial<Result>. */
+/**
+ * A failed call with an optional complete, valid business result.
+ *
+ * The retained result uses the operation's full result type, including its partial-progress
+ * variants.
+ */
 export interface ExecutionFailure<Result> extends ErrorSummary {
   readonly partialResult?: Result
 }
 
 /**
- * A recognizable local error. Only code, message and a validated partialResult cross a boundary.
- * The owning operation supplies safe English text; cause stays local and does not authorize retries.
+ * A recognizable local failure with a stable code and optional business result.
+ *
+ * The owning operation supplies safe English text. Only code, message and a validated partialResult
+ * cross boundaries; cause remains local and does not authorize retries.
  */
 export class DesktopError<Result = never> extends Error implements ExecutionFailure<Result> {
   readonly code: string
   readonly partialResult?: Result
 
+  /** Records the supplied failure code, message, local cause and optional business result. */
   constructor(
     code: string,
     message: string,
@@ -89,15 +97,17 @@ export class DesktopError<Result = never> extends Error implements ExecutionFail
   }
 }
 
-/** Read an exact safe error summary; unknown codes are preserved rather than reclassified. */
+/** Parses an exact safe error summary while preserving unknown error codes. */
 export function parseErrorSummary(input: unknown): ErrorSummary {
   const value = parseErrorRecord(input, ['code', 'message'])
   return { code: value.code, message: value.message }
 }
 
 /**
- * Read a call failure with the operation's own result parser. Present partial results must be valid,
- * including when the code is unknown. A malformed result rejects the failure instead of dropping facts.
+ * Parses a call failure using the operation's result parser.
+ *
+ * Present partial results must be valid, including when the error code is unknown. A malformed
+ * result rejects the failure rather than discarding reported facts.
  */
 export function parseExecutionFailure<Result>(
   input: unknown,
@@ -115,6 +125,7 @@ export function parseExecutionFailure<Result>(
   return { code: value.code, message: value.message }
 }
 
+/** Parses nonempty error code and message fields with only the permitted additional keys. */
 function parseErrorRecord(
   input: unknown,
   keys: readonly string[],

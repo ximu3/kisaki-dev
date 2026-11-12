@@ -22,11 +22,13 @@ import { entryTypes, isWorkType } from '../library/catalog'
 import { metadataPartKinds } from './objects'
 import type { WorkRelationType } from '../library/relations'
 
+/** Object family and concrete kind associated with a graph-local key. */
 interface NodeKind {
   readonly object: 'entry' | 'part' | 'tag'
   readonly type: EntryType | PartType | 'tag'
 }
 
+/** Creates relation-array schemas permitted for the selected metadata root kind. */
 export function relationSchemas(root: EntryType) {
   const shapes = {
     workCharacters: v.strictObject({
@@ -81,6 +83,11 @@ export function relationSchemas(root: EntryType) {
   )
 }
 
+/**
+ * Checks unique nodes, typed endpoints, root context and relation business-key uniqueness.
+ *
+ * Returns the object keys referenced by valid relations.
+ */
 export function validateGraph(
   root: EntryType,
   objects: ParsedObjects | undefined,
@@ -89,6 +96,7 @@ export function validateGraph(
   const nodes = new Map<string, NodeKind>()
   const referenced = new Set<string>()
 
+  /** Registers a graph node and rejects a key already used by another node. */
   function add(node: ParsedNode, kind: NodeKind): void {
     if (nodes.has(node.key)) {
       throw new DesktopError(
@@ -118,6 +126,7 @@ export function validateGraph(
     add(node, { object: 'tag', type: 'tag' })
   }
 
+  /** Resolves a compatible endpoint and records that its key is referenced. */
   function requireNode(
     key: string,
     object: NodeKind['object'],
@@ -134,6 +143,7 @@ export function validateGraph(
     return node
   }
 
+  /** Resolves a work endpoint and returns its concrete medium. */
   function requireWork(key: string): WorkType {
     const type = requireNode(key, 'entry').type
     if (!(entryTypes as readonly string[]).includes(type) || !isWorkType(type as EntryType)) {
@@ -143,6 +153,7 @@ export function validateGraph(
     return type as WorkType
   }
 
+  /** Requires a relation endpoint to be the graph's declared root. */
   function requireRoot(key: string): void {
     if (key !== objects?.entry?.key) {
       throw new DesktopError(
@@ -295,7 +306,11 @@ export function validateGraph(
   return referenced
 }
 
-/** Interpret a work relation from the metadata root when comparing a declared scope; no second mirror fact is created. */
+/**
+ * Returns a work relationship as viewed from the metadata root.
+ *
+ * Rejects a relation that does not contain that root.
+ */
 export function metadataRelationTypeFromRoot(
   rootKey: string,
   relation: MetadataRelationMembers['workRelations'],

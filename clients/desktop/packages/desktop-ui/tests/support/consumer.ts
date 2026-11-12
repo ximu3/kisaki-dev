@@ -98,7 +98,7 @@ export const consumerTest = test
     return page
   })
 
-/** Full type-aware rules run against installed consumer declarations, including its TSX source. */
+/** Checks the consumer's TypeScript and TSX against type-aware rules and installed declarations. */
 export async function lintConsumer(directory: string): Promise<void> {
   const lint = new ESLint({
     cwd: directory,

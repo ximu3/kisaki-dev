@@ -22,27 +22,37 @@ import type { ButtonProps } from '../button/control'
 import surface from '../../internal/popup/surface.module.css'
 import styles from './styles.module.css'
 
+/** Local dialog identity, native element and shared open and description state. */
 interface DialogState {
   id: string
   node: HTMLDialogElement | undefined
 
+  /** Reads the current controlled or locally owned open value. */
   open: Accessor<boolean>
+  /** Requests an open-state change through the dialog's value owner. */
   change: (open: boolean) => void
 
+  /** Reads whether the dialog description is currently mounted. */
   description: Accessor<boolean>
+  /** Updates description presence for the dialog's accessible association. */
   setDescription: (value: boolean) => void
 }
 
 const DialogContext = createContext<DialogState>()
 
-/** Controlled open changes must be adopted by the caller; defaultOpen initializes local state. */
+/**
+ * Dialog composition with controlled or locally initialized open state.
+ *
+ * Controlled requests require caller adoption; defaultOpen initializes local state.
+ */
 export interface DialogProps extends ParentProps {
   open?: boolean
   defaultOpen?: boolean
+  /** Reports the requested open state to the caller. */
   onOpenChange?: (open: boolean) => void
 }
 
-/** Establish a local modal owner; content remains mounted until its presentation finishes. */
+/** Establishes local state and identity for one modal composition. */
 export function Dialog(props: DialogProps): JSX.Element {
   const [description, setDescription] = createSignal(false)
   const [open, change] = createValue(
@@ -60,7 +70,7 @@ export function Dialog(props: DialogProps): JSX.Element {
   )
 }
 
-/** Native action trigger; focus restoration is handled by the dialog's showModal/close cycle. */
+/** Renders an action button that requests opening the associated native dialog. */
 export function DialogTrigger(props: ButtonProps): JSX.Element {
   const dialog = useDialog()
   const [local, rest] = splitProps(props, ['onClick'])
@@ -81,16 +91,25 @@ export function DialogTrigger(props: ButtonProps): JSX.Element {
   )
 }
 
-/** Prevent onCloseRequest's native cancel event to keep editing. Persistence and confirmation belong to the caller. */
+/**
+ * Native modal content attributes with cancelable close requests and optional outside dismissal.
+ *
+ * The caller owns persistence and any confirmation before closing.
+ */
 export interface DialogContentProps extends Omit<
   JSX.DialogHtmlAttributes<HTMLDialogElement>,
   'open'
 > {
+  /** Receives an unprevented native cancel event; preventDefault keeps the dialog open. */
   onCloseRequest?: (event: Event) => void
   closeOnOutside?: boolean
 }
 
-/** Enter the browser's modal top layer. Supply DialogTitle or an explicit aria-label. */
+/**
+ * Presents content in the browser's modal top layer and retains children through exit presentation.
+ *
+ * Callers supply DialogTitle or an explicit accessible label.
+ */
 export function DialogContent(props: DialogContentProps): JSX.Element {
   const dialog = useDialog()
   const [local, rest] = splitProps(props, [
@@ -106,6 +125,7 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
   let node!: HTMLDialogElement
   const present = createPresentation(dialog.open, () => node)
   let releaseModal: (() => void) | undefined
+  /** Releases this dialog's modal registration and clears the owned handle. */
   const release = () => {
     releaseModal?.()
     releaseModal = undefined
@@ -167,7 +187,11 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
   )
 }
 
-/** Request a native cancelable close; do not use it to perform asynchronous saving. */
+/**
+ * Renders an action that requests the native cancelable close path.
+ *
+ * Asynchronous saving belongs to the caller's close coordination.
+ */
 export function DialogClose(props: ButtonProps): JSX.Element {
   const dialog = useDialog()
   const [local, rest] = splitProps(props, ['onClick'])
@@ -186,12 +210,12 @@ export function DialogClose(props: ButtonProps): JSX.Element {
   )
 }
 
-/** Provide a localized close label for a header exit when the footer has no dismissal action. */
+/** Header attributes with an optional localized accessible label for an exit button. */
 export interface DialogHeaderProps extends JSX.HTMLAttributes<HTMLDivElement> {
   closeLabel?: string
 }
 
-/** The header exit requests the same cancelable close as Escape and DialogClose. */
+/** Renders the dialog heading area and an optional exit using the shared cancelable close path. */
 export function DialogHeader(props: DialogHeaderProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'children', 'closeLabel'])
 
@@ -215,7 +239,7 @@ export function DialogHeader(props: DialogHeaderProps): JSX.Element {
   )
 }
 
-/** Accessible modal heading, linked by DialogContent. */
+/** Renders a modal heading linked to DialogContent through the local dialog identity. */
 export function DialogTitle(props: JSX.HTMLAttributes<HTMLHeadingElement>): JSX.Element {
   const dialog = useDialog()
   const [local, rest] = splitProps(props, ['class'])
@@ -223,7 +247,7 @@ export function DialogTitle(props: JSX.HTMLAttributes<HTMLHeadingElement>): JSX.
   return <h2 {...rest} id={`${dialog.id}-title`} class={classes(styles.title, local.class)} />
 }
 
-/** An optional whole-dialog description, automatically associated while mounted. */
+/** Renders a whole-dialog description and maintains its accessible association while mounted. */
 export function DialogDescription(props: JSX.HTMLAttributes<HTMLParagraphElement>): JSX.Element {
   const dialog = useDialog()
   const [local, rest] = splitProps(props, ['class'])
@@ -235,26 +259,28 @@ export function DialogDescription(props: JSX.HTMLAttributes<HTMLParagraphElement
   )
 }
 
-/** Scrollable content leaves the footer available at small window sizes. */
+/** Renders a scrollable content area that leaves dialog actions available at small window sizes. */
 export function DialogBody(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
   const [local, rest] = splitProps(props, ['class'])
 
   return <div {...rest} class={classes(styles.body, local.class)} />
 }
 
-/** Action layout; caller selects submit/cancel actions and their accessible names. */
+/** Lays out caller-owned dialog actions and their accessible labels. */
 export function DialogFooter(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
   const [local, rest] = splitProps(props, ['class'])
 
   return <div {...rest} class={classes(styles.footer, local.class)} />
 }
 
-/** Confirmation content uses the same local dialog owner and native cancel path. */
+/**
+ * Renders confirmation content with alertdialog semantics and the same native close coordination.
+ */
 export function AlertDialogContent(props: DialogContentProps): JSX.Element {
   return <DialogContent {...props} role="alertdialog" />
 }
 
-/** Require the nearest dialog rather than sharing state across windows or nested dialogs. */
+/** Returns the nearest dialog state and rejects parts rendered outside a Dialog owner. */
 function useDialog(): DialogState {
   const dialog = useContext(DialogContext)
   if (!dialog) {

@@ -1,4 +1,4 @@
-/* Drag feedback adds no competing positioning or ordering model. */
+/* Drag-handle states, native preview surfaces and target-edge insertion markers. */
 
 @layer components {
   :global([data-ui-dragging]) {

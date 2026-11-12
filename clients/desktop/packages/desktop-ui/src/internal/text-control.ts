@@ -4,14 +4,21 @@ import { createEffect, onCleanup, onMount, untrack } from 'solid-js'
 import type { Accessor } from 'solid-js'
 import { createValue, onFormReset } from './state'
 
-/** Optional value selects controlled mode; successful resets request the current defaultValue. */
+/** Controlled text or a local default baseline with native-edit and reset notification. */
 export interface TextValueProps {
   value?: string | undefined
   defaultValue?: string | undefined
+  /** Reports text requested by native input or an accepted reset to the current default value. */
   onValueChange?: ((value: string) => void) | undefined
 }
 
-/** Connect one native editable element. Composition defers external writes until compositionend. */
+/**
+ * Binds one native editable element to text ownership and form reset within the current Solid
+ * owner.
+ *
+ * Composition defers external writes; the returned updater publishes native edits and
+ * resynchronizes the owned value.
+ */
 export function bindTextControl(
   props: TextValueProps,
   element: Accessor<HTMLInputElement | HTMLTextAreaElement>,
@@ -22,6 +29,7 @@ export function bindTextControl(
     (next) => props.onValueChange?.(next),
   )
   let composing = false
+  /** Writes changed owned text to the native element only outside active composition. */
   const sync = () => {
     const node = element()
     if (!composing && node.value !== value()) {
@@ -33,9 +41,11 @@ export function bindTextControl(
     const node = element()
     let active = true
 
+    /** Marks composition active so external text synchronization waits. */
     const start = () => {
       composing = true
     }
+    /** Ends composition and queues synchronization guarded by the binding's remaining lifetime. */
     const end = () => {
       composing = false
       queueMicrotask(() => {

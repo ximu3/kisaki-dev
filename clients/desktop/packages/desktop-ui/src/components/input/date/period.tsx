@@ -10,16 +10,21 @@ import { SelectionTrigger } from '../../../internal/selection/trigger'
 import type { SelectionOption } from '../../../internal/selection/types'
 import styles from './styles.module.css'
 
+/**
+ * Inclusive numeric period range, current value and host-owned formatting and navigation callbacks.
+ */
 interface PeriodProps {
   label: string
   value: number
   first: number
   last: number
+  /** Formats a month or year value for its option label. */
   format: (value: number) => string
+  /** Requests navigation to the selected month or year. */
   choose: (value: number) => void
 }
 
-/** Only the visible range mounts, including when the calendar offers all 9,999 years. */
+/** Renders a virtualized period selector, including ranges spanning all 9,999 supported years. */
 export function PeriodSelect(props: PeriodProps): JSX.Element {
   const popup = createSelectionPopup()
   const { present, setOpen } = popup
@@ -50,6 +55,7 @@ export function PeriodSelect(props: PeriodProps): JSX.Element {
     getItemKey: (index) => props.first + index,
     overscan: 3,
   })
+  /** Closes the period popup and forwards the selected numeric month or year. */
   const choose = (option: SelectionOption) => {
     setOpen(false)
     props.choose(Number(option.value))

@@ -10,7 +10,7 @@ import { tmpdir } from 'node:os'
 import { cleanOutputs } from '../../tools/clean'
 
 const paths = vi.hoisted(() => ({ appRoot: '' }))
-// Relocate the output owner so cleanup never touches a running development workspace.
+// The mocked output root confines cleanup to the isolated test directory.
 vi.mock('../../tools/lib/paths', () => paths)
 
 test('clean removes declared outputs and preserves development profiles and caches', async () => {

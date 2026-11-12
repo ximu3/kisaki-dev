@@ -27,11 +27,14 @@ import frame from '../../internal/popup/surface.module.css'
 import row from '../../internal/list-row.module.css'
 import styles from './styles.module.css'
 
+/** Local menu-tree state, native anchors, focus intent and submenu hover coordination. */
 interface MenuState {
   id: string
   parent: MenuState | undefined
 
+  /** Reads the menu's current controlled or local open state. */
   open: Accessor<boolean>
+  /** Requests an open-state change while coordinating sibling and descendant menus. */
   change: (open: boolean) => void
 
   anchor: HTMLElement | undefined
@@ -39,21 +42,29 @@ interface MenuState {
   children: Set<MenuState>
   focusOnOpen: boolean
   hover: ReturnType<typeof createSubmenuHover>
+  /** Reads the context-menu anchor in viewport CSS pixels, or undefined for element anchoring. */
   point: Accessor<{ x: number; y: number } | undefined>
+  /** Selects a pointer anchor or restores element-based positioning. */
   setPoint: (point: { x: number; y: number } | undefined) => void
   last: boolean
 }
 
 const MenuContext = createContext<MenuState>()
 
-/** Controlled open state follows native dismissal; nesting a Menu inside content creates a submenu. */
+/**
+ * Controlled or locally initialized state for a menu composition.
+ *
+ * Controlled callers adopt native dismissal requests. Nesting a Menu inside content creates a
+ * submenu.
+ */
 export interface MenuProps extends ParentProps {
   open?: boolean
   defaultOpen?: boolean
+  /** Reports the requested menu open state to its caller. */
   onOpenChange?: (open: boolean) => void
 }
 
-/** Own a dropdown, context menu or submenu. Menu actions remain synchronous UI notifications. */
+/** Owns dropdown, context-menu or submenu state and coordinates its menu-tree relationships. */
 export function Menu(props: MenuProps): JSX.Element {
   const parent = useContext(MenuContext)
   const [open, change] = createValue(
@@ -75,6 +86,7 @@ export function Menu(props: MenuProps): JSX.Element {
   const state: MenuState = {
     id: createUniqueId(),
     open,
+    /** Closes sibling or descendant menus as needed before forwarding the requested open state. */
     change: (next) => {
       if (next) {
         parent?.children.forEach((sibling) => {
@@ -109,7 +121,10 @@ export function Menu(props: MenuProps): JSX.Element {
   return <MenuContext.Provider value={state}>{props.children}</MenuContext.Provider>
 }
 
-/** Button trigger supports pointer activation and ArrowUp/ArrowDown entry. */
+/**
+ * Renders a button trigger with pointer activation and first-or-last-item entry from vertical arrow
+ * keys.
+ */
 export function MenuTrigger(props: ButtonProps): JSX.Element {
   const state = useMenu()
   const [local, rest] = splitProps(props, ['ref', 'onClick', 'onKeyDown'])
@@ -146,7 +161,9 @@ export function MenuTrigger(props: ButtonProps): JSX.Element {
   )
 }
 
-/** Context-menu region preserves ordinary pointer and keyboard interaction until an explicit menu request. */
+/**
+ * Renders a context-menu region supporting pointer requests and the keyboard context-menu command.
+ */
 export function ContextMenuTrigger(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
   const state = useMenu()
   const [local, rest] = splitProps(props, ['ref', 'onContextMenu', 'onKeyDown'])
@@ -187,7 +204,11 @@ export function ContextMenuTrigger(props: JSX.HTMLAttributes<HTMLDivElement>): J
   )
 }
 
-/** Place submenu content inside the parent MenuContent; the native popover ancestry retains its parent. */
+/**
+ * Renders a native menu popup with real item focus and directional submenu navigation.
+ *
+ * Submenu content stays inside the parent content so native popover ancestry retains its parent.
+ */
 export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
   const state = useMenu()
   const [local, rest] = splitProps(props, [
@@ -202,6 +223,7 @@ export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Elem
   let content!: HTMLDivElement
   let viewport!: HTMLDivElement
   const selector = '[role^="menuitem"]'
+  /** Returns focusable items owned by this menu, excluding nested menu contents. */
   const items = () =>
     focusableItems(content, selector).filter((node) => node.closest('[role="menu"]') === content)
 
@@ -296,14 +318,26 @@ export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Elem
   )
 }
 
-/** Item selection closes the menu tree by default; prevent the click or set closeOnSelect=false to keep it open. */
+/**
+ * Menu-action attributes with optional selection notification and closure policy.
+ *
+ * Selection closes the tree by default; preventing the click or setting closeOnSelect=false keeps
+ * it open.
+ */
 export interface MenuItemProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
+  /**
+   * Notifies the caller synchronously after accepted activation and before default menu closure.
+   */
   onSelect?: () => void
   closeOnSelect?: boolean
   destructive?: boolean
 }
 
-/** Real focus follows menu navigation. The caller owns asynchronous action completion and feedback. */
+/**
+ * Renders a focusable menu action and coordinates selection and default tree closure.
+ *
+ * The caller owns asynchronous completion and feedback.
+ */
 export function MenuItem(props: MenuItemProps): JSX.Element {
   const state = useMenu()
   const checked = displayedWhileOpen(state.open, () => props['aria-checked'])
@@ -370,13 +404,17 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
   )
 }
 
-/** Checkbox menu values are caller-owned and may stay open for multiple choices. */
+/** Checkable menu-action props with a caller-owned boolean value. */
 export interface MenuCheckboxItemProps extends MenuItemProps {
   checked: boolean
+  /** Reports the proposed checked value when the item is selected. */
   onCheckedChange: (checked: boolean) => void
 }
 
-/** Expose checked state without using form semantics for a menu action. */
+/**
+ * Renders menu-checkbox semantics and reports toggled state without adding form submission
+ * behavior.
+ */
 export function MenuCheckboxItem(props: MenuCheckboxItemProps): JSX.Element {
   const [local, rest] = splitProps(props, ['checked', 'onCheckedChange', 'onSelect'])
 
@@ -393,14 +431,19 @@ export function MenuCheckboxItem(props: MenuCheckboxItemProps): JSX.Element {
   )
 }
 
-/** Radio item selection uses the caller's shared group value. */
+/** Radio menu-action props using the caller's shared selected value. */
 export interface MenuRadioItemProps extends MenuItemProps {
   value: string
   selectedValue: string
+  /** Reports this item's value when it is selected. */
   onValueChange: (value: string) => void
 }
 
-/** Put related radio items in a named MenuGroup. */
+/**
+ * Renders a radio menu action against the caller's selected value.
+ *
+ * Related items belong in a named MenuGroup.
+ */
 export function MenuRadioItem(props: MenuRadioItemProps): JSX.Element {
   const [local, rest] = splitProps(props, ['value', 'selectedValue', 'onValueChange', 'onSelect'])
 
@@ -417,7 +460,11 @@ export function MenuRadioItem(props: MenuRadioItemProps): JSX.Element {
   )
 }
 
-/** The nested Menu owns this trigger and its sibling content. ArrowRight enters, ArrowLeft returns. */
+/**
+ * Renders a nested-menu trigger with hover intent and directional keyboard entry.
+ *
+ * Entry and return arrows follow the document's writing direction.
+ */
 export function MenuSubTrigger(props: ButtonProps): JSX.Element {
   const state = useMenu()
   const [local, rest] = splitProps(props, [
@@ -491,19 +538,19 @@ export function MenuSubTrigger(props: ButtonProps): JSX.Element {
   )
 }
 
-/** Named menu grouping preserves one item-navigation scope. */
+/** Renders a caller-named item group within the existing menu-navigation scope. */
 export function MenuGroup(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
   return <div {...props} role="group" />
 }
 
-/** Separate action groups without adding a focus stop. */
+/** Separates action groups semantically without adding a focus stop. */
 export function MenuSeparator(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
   const [local, rest] = splitProps(props, ['class'])
 
   return <Separator {...rest} decorative={false} class={classes(styles.separator, local.class)} />
 }
 
-/** Resolve the nearest menu state for item selection and submenu ancestry. */
+/** Returns the nearest menu state and rejects parts rendered outside a Menu owner. */
 function useMenu(): MenuState {
   const state = useContext(MenuContext)
   if (!state) {

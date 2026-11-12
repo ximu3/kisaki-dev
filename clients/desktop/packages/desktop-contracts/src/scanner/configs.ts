@@ -23,11 +23,21 @@ import { parseMetadataProfileDefinition } from '../metadata/profiles'
 
 const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
 
-/** Candidate discovery and clue extraction remain separate from holdings' existing-part matching. */
+/**
+ * Candidate discovery and clue-extraction rules for one scan configuration.
+ *
+ * Matching files to an existing work's parts belongs to holdings.
+ */
 export interface ScanDefinition {
+  /** Positive candidate depth from the discovery root; 1 selects direct children. */
   readonly entryDepth: number
   readonly inputKinds: NonEmptyArray<'directory' | 'file'>
+  /** Alternative inclusion filters; an empty list adds no restriction. */
   readonly include: readonly PathFilter[]
+  /**
+   * Alternative exclusions applied before inclusion; an excluded directory also excludes its
+   * subtree.
+   */
   readonly exclude: readonly PathFilter[]
 
   readonly identification: {
@@ -36,6 +46,10 @@ export interface ScanDefinition {
   }
 }
 
+/**
+ * Editable scan configuration fields, including the complete discovery and identification
+ * definition.
+ */
 export interface ScanConfigFields {
   readonly name: string
   readonly rootPath: string
@@ -45,6 +59,7 @@ export interface ScanConfigFields {
   readonly watchEnabled: boolean
 }
 
+/** Saved scan configuration with explicit definition validity and formal order. */
 export interface ScanConfig {
   readonly id: string
   readonly name: string
@@ -63,6 +78,11 @@ export interface ScanConfig {
   readonly updatedAt: number
 }
 
+/**
+ * Input for a new configuration with a fixed work medium.
+ *
+ * Existing-content registration defaults to false and watch activation defaults to true.
+ */
 export interface ScanConfigCreate {
   readonly name: string
   readonly workType: WorkType
@@ -75,11 +95,13 @@ export interface ScanConfigCreate {
   readonly watchEnabled?: boolean
 }
 
+/** Scan configuration field edits with optional original values for comparison. */
 export interface ScanConfigUpdate {
   readonly changes: Partial<ScanConfigFields>
   readonly expected?: Partial<ScanConfigFields>
 }
 
+/** Configuration and metadata profile captured for one accepted scan and retained in its report. */
 export interface ScanConfigSnapshot {
   readonly name: string
   readonly workType: WorkType
@@ -89,54 +111,57 @@ export interface ScanConfigSnapshot {
   readonly metadataProfile: MetadataProfileSnapshot<WorkType>
 }
 
-/** Configuration summaries omit complete definitions. Ordinary creation/updates own later watch/initial-scan work separately. */
+/** Saved scanner configuration management and native extraction preset discovery. */
 export interface ScanConfigsApi {
-  /** Read saved configuration summaries without loading complete rule definitions. */
+  /** Reads configuration summaries in formal order, optionally restricted to one work medium. */
   list(
     filter?: { readonly workType?: WorkType },
     call?: CallOptions,
   ): Promise<readonly Omit<ScanConfig, 'definition'>[]>
 
   /**
-   * Read the complete saved configuration, retaining invalid definitions and unavailable
-   * references explicitly.
+   * Reads a complete saved configuration, returning null when absent.
+   *
+   * Invalid definitions and unavailable references remain explicit.
    */
   get(id: string, call?: CallOptions): Promise<ScanConfig | null>
 
   /**
-   * Commit the configuration before separately owned watch and initial-scan adoption; saved
-   * success does not imply those later operations succeeded.
+   * Commits a configuration before separately owned watch and initial-scan adoption.
+   *
+   * Saved success does not establish success of those later operations.
    */
   create(input: ScanConfigCreate, call?: CallOptions): Promise<ScanConfig>
 
   /**
-   * Compare and commit changed fields; accepted scans retain their own snapshot while later work
-   * adopts the new configuration.
+   * Compares and commits changed fields.
+   *
+   * Accepted scans retain their captured configuration while later work adopts the new values.
    */
   update(id: string, input: ScanConfigUpdate, call?: CallOptions): Promise<ScanConfig>
 
   /**
-   * Remove the saved configuration and its future watch input; accepted work and established
-   * library facts keep their own lifetimes.
+   * Removes the saved configuration and future watch input.
+   *
+   * Accepted work and established library facts retain their own lifetimes.
    */
   delete(id: string, call?: CallOptions): Promise<void>
 
-  /** Reorder selected configurations against the complete saved directory baseline. */
+  /** Reorders selected configurations against the complete saved directory baseline. */
   reorder(input: ReorderInput, call?: CallOptions): Promise<void>
 
-  /**
-   * Read fixed clue-extraction presets for a draft; these do not create file-recognition
-   * profiles or scanner configurations.
-   */
+  /** Reads fixed native clue-extraction presets for copying into a draft. */
   listRulePresets(call?: CallOptions): Promise<readonly ClueExtractionPreset[]>
 
   /**
-   * Subscribe before reading configurations; directory invalidation remains separate from
-   * runtime-state observation.
+   * Subscribes to configuration-directory invalidation and returns the subscription lifetime.
+   *
+   * Callers subscribe before reading; runtime state has its own observation API.
    */
   onInvalidated(listener: () => void): Disposable
 }
 
+/** Builds the scan-definition schema using the supplied level of extraction-rule validation. */
 function definitionSchema(parseRule: typeof parseClueExtractionRuleShape) {
   const kind = v.picklist(['directory', 'file'])
   return v.strictObject({
@@ -161,7 +186,11 @@ function definitionSchema(parseRule: typeof parseClueExtractionRuleShape) {
   })
 }
 
-/** Decode closed definition values without compiling user regexes; appropriate for stored snapshots and synchronous codecs. */
+/**
+ * Parses stored definition structure without compiling user regular expressions.
+ *
+ * Saving or execution requires full definition validation.
+ */
 export function parseScanDefinitionShape(input: unknown): ScanDefinition {
   return parseValue(
     definitionSchema(parseClueExtractionRuleShape),
@@ -170,12 +199,22 @@ export function parseScanDefinitionShape(input: unknown): ScanDefinition {
   )
 }
 
-/** Full save/execution validation, including disabled patterns and capture references, must run in a terminable bounded unit. */
+/**
+ * Parses a scan definition and validates all patterns and capture references, including disabled
+ * rules.
+ *
+ * Callers run this validator in a bounded, terminable execution unit.
+ */
 export function parseScanDefinition(input: unknown): ScanDefinition {
   return parseValue(definitionSchema(parseClueExtractionRule), input, 'Invalid scanner definition')
 }
 
-/** Validate a new configuration; actual same-type profile existence and path accessibility are checked by its owner. */
+/**
+ * Parses a new configuration with full definition validation.
+ *
+ * The caller supplies a bounded, terminable validation unit; the configuration owner checks profile
+ * existence, matching work type and path accessibility.
+ */
 export function parseScanConfigCreate(input: unknown): ScanConfigCreate {
   return parseValue(
     v.strictObject({
@@ -192,7 +231,13 @@ export function parseScanConfigCreate(input: unknown): ScanConfigCreate {
   )
 }
 
-/** Ordinary editing cannot change workType or technical ordering/timestamps; a submitted definition is one save unit. */
+/**
+ * Parses editable configuration fields and their baselines, treating definition as one complete
+ * value.
+ *
+ * Definition validation runs in a caller-owned bounded, terminable unit. Work type, ordering and
+ * timestamps are outside ordinary edits.
+ */
 export function parseScanConfigUpdate(input: unknown): ScanConfigUpdate {
   const fields = v.strictObject(
     optionalFields({
@@ -213,7 +258,10 @@ export function parseScanConfigUpdate(input: unknown): ScanConfigUpdate {
   return value
 }
 
-/** Decode historical rule structure without executing it, and verify the fixed metadata profile has the same work type. */
+/**
+ * Parses historical rule structure without compiling patterns and checks the captured profile's
+ * work type.
+ */
 export function parseScanConfigSnapshot(input: unknown): ScanConfigSnapshot {
   const { workType } = parseValue(v.looseObject({ workType: v.picklist(workTypes) }), input)
   return parseValue(

@@ -1,4 +1,4 @@
-/* progress presentation in the shared component layer. */
+/* Determinate progress fill and motion-aware indeterminate tracks. */
 
 @layer components {
   .root {

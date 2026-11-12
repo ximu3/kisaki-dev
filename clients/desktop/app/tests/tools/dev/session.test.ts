@@ -28,7 +28,7 @@ test('a refused quit retains utility processes and normal window close preserves
   const first = controller.states.find((state) => state.state === 'ready')!
   expect(() => process.kill(first.current!.processId, 0)).not.toThrow()
   if (process.platform === 'win32') {
-    // Native observation launches PowerShell; use the same budget as the artifact checks.
+    // Windows observation starts PowerShell and uses the artifact checks' startup budget.
     await expect
       .poll(({ signal }) => hasNativeWindow(first.current!.processId, signal), {
         timeout: 30_000,
@@ -187,7 +187,7 @@ test.each(['cancellation', 'command failure'] as const)(
       'node --import tsx ../../clients/desktop/app/tests/support/preparation-worker.ts'
     await writeFile(manifestPath, JSON.stringify(manifest))
     if (outcome === 'command failure') {
-      // Select the test adapter at the copied package's declared process boundary.
+      // Fault injection is confined to the copied package's declared process entry.
       const toolingManifest = JSON.parse(originalToolingManifest) as {
         exports: Record<string, string>
       }

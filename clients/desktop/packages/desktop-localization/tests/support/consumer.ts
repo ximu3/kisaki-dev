@@ -10,7 +10,12 @@ import { runPnpm } from '@kisaki3/tooling/process'
 
 const packageRoot = resolve(import.meta.dirname, '../..')
 
-/** Install only packed outputs. Overrides supply the still-unpublished public dependency versions without workspace/source aliases. */
+/**
+ * Creates a file-scoped fixture using the localization tarball and its packed public dependencies.
+ *
+ * Consumer overrides resolve unpublished dependencies to their prepared archives. Directory cleanup
+ * is registered before preparation.
+ */
 export function consumerTest(scenario: 'node' | 'browser') {
   return test.extend('consumerDirectory', { scope: 'file' }, async ({}, { onCleanup }) => {
     const consumerDirectory = await mkdtemp(join(tmpdir(), `kisaki-localization-${scenario}-`))
@@ -43,7 +48,7 @@ export function consumerTest(scenario: 'node' | 'browser') {
   })
 }
 
-/** Check the consumers' own source with its installed types, not workspace path aliases or disabled declaration checks. */
+/** Lints consumer sources against their installed dependencies and actual TypeScript project. */
 export async function lintConsumer(directory: string): Promise<ESLint.LintResult[]> {
   const lint = new ESLint({
     cwd: directory,

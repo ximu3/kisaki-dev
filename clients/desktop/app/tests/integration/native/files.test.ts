@@ -152,6 +152,5 @@ test('synchronizes existing regular files and reports missing or wrong-type path
     await expect(result).rejects.toMatchObject({ reason: 'invalidArgument' })
   }
 
-  // Windows rejects deleting an open file: cleanup also proves the worker released its handle.
   await rm(path)
 })

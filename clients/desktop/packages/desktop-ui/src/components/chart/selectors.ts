@@ -2,7 +2,7 @@
 
 import { VisDonutSelectors } from '@unovis/solid'
 
-/** Use the segment selector as a ChartTooltip trigger. */
+/** Public donut segment selector for ChartTooltip triggers. */
 export const donutSelectors: Readonly<{ segment: string }> = {
   segment: VisDonutSelectors.segment,
 }

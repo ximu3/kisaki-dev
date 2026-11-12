@@ -6,12 +6,16 @@ import { classes } from '../../internal/dom'
 import { StatusIcon } from '../../internal/icon/glyph'
 import styles from './styles.module.css'
 
-/** Tone and announcement are separate; choose role=alert only for an urgent new message. */
+/**
+ * Inline feedback attributes and semantic tone.
+ *
+ * Tone and announcement are independent; callers choose role=alert only for an urgent new message.
+ */
 export interface AlertProps extends JSX.HTMLAttributes<HTMLDivElement> {
   tone?: 'info' | 'success' | 'warning' | 'destructive'
 }
 
-/** A persistent message uses a neutral surface, with status carried by icon and text. */
+/** Renders inline feedback on a neutral surface with status conveyed by its icon and content. */
 export function Alert(props: AlertProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'tone', 'children'])
 

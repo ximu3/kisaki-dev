@@ -42,6 +42,7 @@ test('resource inputs preserve legal headers and prepared handles while rejectin
   const prepared = {
     attachmentId: 'prepared',
     resource: { id: 'resource' },
+    /** Records whether parsing invoked the fixture's release operation. */
     async dispose() {
       released = true
     },

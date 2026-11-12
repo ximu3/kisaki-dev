@@ -51,20 +51,33 @@ import {
 import { DesktopError } from '../../errors'
 import { entryFieldTypes } from './fields'
 
-/** Whole-value presence is separate from numeric zero, false, and a known empty authoritative answer. */
+/**
+ * Whole-value presence predicate.
+ *
+ * Zero, false and a known empty authoritative answer count as present values.
+ */
 export type Presence = { readonly op: 'present' } | { readonly op: 'absent' }
 
+/** Inclusive numeric range predicate with at least one bound. */
 export type NumberTest = { readonly op: 'range'; readonly bounds: Bounds<number> }
 
+/** Exact-match or substring predicate for a text value. */
 export type TextTest = { readonly op: 'equals' | 'contains'; readonly value: string }
 
+/** Membership or emptiness predicate for a set of field values or relation targets. */
 export type SetTest<T> =
   | { readonly op: 'any' | 'all' | 'none'; readonly values: NonEmptyArray<T> }
   | { readonly op: 'empty' | 'notEmpty' }
 
+/** Inclusion or exclusion predicate over selected scalar values, including null when allowed. */
 export type EnumTest<T> = { readonly op: 'in' | 'notIn'; readonly values: NonEmptyArray<T> }
 
-/** Civil ranges contain every possible day of the saved fact; component conditions require known components. */
+/**
+ * Predicate over a saved civil date, its known components or its presence.
+ *
+ * An absolute range must contain every possible day of a partial date. Component comparisons
+ * require the tested component to be known.
+ */
 export type DateTest =
   | { readonly op: 'absoluteRange'; readonly bounds: Bounds<YearDate> }
   | {
@@ -78,10 +91,16 @@ export type DateTest =
     }
   | Presence
 
+/** Civil-date predicate extended with a recurring month-and-day birthday range. */
 export type BirthdayTest =
   DateTest | { readonly op: 'monthDayRange'; readonly from: MonthDate; readonly to: MonthDate }
 
-/** Calendar ranges use the actual display zone; instant bounds use UTC milliseconds and [from, to). */
+/**
+ * Predicate over an instant's calendar date, UTC timestamp or presence.
+ *
+ * Calendar ranges use the actual display zone. Instant bounds use UTC milliseconds and the
+ * half-open interval [from, to).
+ */
 export type InstantTest =
   | { readonly op: 'calendarRange'; readonly bounds: Bounds<YearDate> }
   | ({ readonly op: 'instantRange' } & (
@@ -90,9 +109,13 @@ export type InstantTest =
     ))
   | Presence
 
-/** Counts remain distinct: registered rows, completion marks, file associations and saved accessible observations. */
+/**
+ * Counted fact for parts: registered rows, completion marks, file associations or saved accessible
+ * observations.
+ */
 export type PartCountMeasure = 'registered' | 'completed' | 'withFiles' | 'accessible'
 
+/** Part kind and optional anime classification whose rows contribute to a count. */
 export type PartCountScope =
   | {
       readonly partType: 'animeEpisode'
@@ -101,36 +124,50 @@ export type PartCountScope =
   | { readonly partType: 'animeExtra'; readonly classification?: EnumTest<AnimeExtraType | null> }
   | { readonly partType: 'comicVolume' | 'comicChapter' | 'novelVolume' }
 
-/** A relation condition's qualifiers all apply to the same real relation before its targets are projected. */
+/**
+ * Constraint on the character attached to a person relation: absent, present or among selected
+ * characters.
+ */
 export type CharacterQualifier =
   | { readonly type: 'none' | 'any' }
   | { readonly type: 'oneOf'; readonly refs: NonEmptyArray<EntryRef<'character'>> }
 
+/** Optional text or presence constraint on a relation's note. */
 interface NoteQualifier {
   readonly note?: TextTest | Presence
 }
 
+/** Optional character-role selection, with null selecting an unspecified role. */
 interface CharacterRolesQualifier {
   readonly characterRoles?: NonEmptyArray<CharacterRole | null>
 }
 
+/** Optional person-role selection on the matched relation. */
 interface PersonRolesQualifier {
   readonly personRoles?: NonEmptyArray<PersonRole>
 }
 
+/** Optional work-type selection on the matched relation. */
 interface WorkTypesQualifier {
   readonly workTypes?: NonEmptyArray<WorkRef['type']>
 }
 
+/** Optional work and work-type selections on the matched relation. */
 interface WorksQualifier extends WorkTypesQualifier {
   readonly works?: NonEmptyArray<WorkRef>
 }
 
+/** Optional person-role, character and character-role constraints on one relation. */
 interface PersonCharacterQualifier extends CharacterRolesQualifier, PersonRolesQualifier {
   readonly character?: CharacterQualifier
 }
 
-/** Each branch permits exactly its listed target kind and qualifiers, never an arbitrary relation path. */
+/**
+ * Predicate over targets projected from a supported relation view.
+ *
+ * All qualifiers apply to the same real relation before its targets are projected. Each branch
+ * fixes the target kind and available qualifiers.
+ */
 export type EntryRelationCondition =
   | {
       readonly field: 'workCharacters'
@@ -195,7 +232,11 @@ export type EntryRelationCondition =
         WorkTypesQualifier & { readonly organizationRoles?: NonEmptyArray<OrganizationRole> }
     }
 
-/** Closed scalar, civil-date, completion and relation predicates. A rule cannot contain nested rule groups. */
+/**
+ * Closed scalar, civil-date, completion or relation predicate within a rule.
+ *
+ * Conditions cannot contain nested rule groups.
+ */
 export type EntryCondition =
   | {
       readonly field:
@@ -268,13 +309,19 @@ export type EntryCondition =
     }
   | EntryRelationCondition
 
-/** Enabled groups form a union; scope/search/visibility always intersect that union. Disabled groups still parse. */
+/**
+ * Typed group of conditions contributing to an entry query.
+ *
+ * Enabled groups form a union that intersects the query scope, search and visibility constraints.
+ * Disabled groups remain subject to validation.
+ */
 export interface EntryRule {
   readonly enabled: boolean
   readonly types: NonEmptyArray<EntryType>
   readonly filter: { readonly match: 'all' | 'any'; readonly conditions: readonly EntryCondition[] }
 }
 
+/** Creates a nonempty selection schema that removes duplicate parsed values in first-seen order. */
 function selections<T extends v.GenericSchema>(schema: T) {
   return v.pipe(
     v.tupleWithRest([schema], schema),
@@ -295,6 +342,7 @@ function selections<T extends v.GenericSchema>(schema: T) {
   )
 }
 
+/** Creates membership and emptiness schemas for the supplied set element type. */
 function setTest<T extends v.GenericSchema>(schema: T) {
   return v.union([
     v.strictObject({ op: v.picklist(['any', 'all', 'none']), values: selections(schema) }),
@@ -302,10 +350,14 @@ function setTest<T extends v.GenericSchema>(schema: T) {
   ])
 }
 
+/** Creates inclusion and exclusion schemas for the supplied scalar type. */
 function enumTest<T extends v.GenericSchema>(schema: T) {
   return v.strictObject({ op: v.picklist(['in', 'notIn']), values: selections(schema) })
 }
 
+/**
+ * Creates an inclusive numeric-bounds schema requiring at least one endpoint and an ordered range.
+ */
 function numericBounds<T extends v.GenericSchema<unknown, number>>(schema: T) {
   return v.pipe(
     v.strictObject({ min: v.exactOptional(schema), max: v.exactOptional(schema) }),
@@ -317,6 +369,7 @@ function numericBounds<T extends v.GenericSchema<unknown, number>>(schema: T) {
   )
 }
 
+/** Creates a range-predicate schema using the supplied numeric constraints. */
 function numberTest<T extends v.GenericSchema<unknown, number>>(schema: T) {
   return v.strictObject({ op: v.literal('range'), bounds: numericBounds(schema) })
 }
@@ -451,6 +504,7 @@ const organizationWhere = {
   organizationRoles: v.exactOptional(selections(v.picklist(organizationRoles))),
 }
 
+/** Creates a relation-target predicate schema with only the supplied qualifiers. */
 function relationTest<T extends v.GenericSchema, W extends v.ObjectEntries>(target: T, where: W) {
   return v.strictObject({ targets: setTest(target), where: v.exactOptional(v.strictObject(where)) })
 }
@@ -580,7 +634,12 @@ const conditionSchemas: Readonly<
   }),
 }
 
-/** Parse one predicate, normalizing duplicate selections while rejecting unknown fields, operations and qualifiers. */
+/**
+ * Parses one predicate and removes duplicate selections.
+ *
+ * Rejects unknown fields, operations and qualifiers, including character-role constraints on a
+ * relation explicitly lacking a character.
+ */
 export function parseEntryCondition(input: unknown): EntryCondition {
   const { field: fieldInput, ...body } = parseRecord(input)
   const field = parseValue(nonemptyText, fieldInput, 'Invalid entry condition')
@@ -610,19 +669,28 @@ export function parseEntryCondition(input: unknown): EntryCondition {
   return condition
 }
 
-/** Parse the actual part-count subset; unknown anime classification is represented by null, not a stored enum. */
+/**
+ * Parses a part kind and its optional classification filter.
+ *
+ * An unspecified anime classification is represented by null.
+ */
 export function parsePartCountScope(input: unknown): PartCountScope {
   return parseValue(partCountScopeSchema, input, 'Invalid part count scope')
 }
 
-/** Determine the types whose facts this parsed predicate can compare. */
+/** Returns the entry types whose facts a parsed predicate can compare. */
 export function getEntryConditionTypes(condition: EntryCondition): readonly EntryType[] {
   return condition.field === 'parts'
     ? [partWorkType(condition.scope.partType)]
     : entryFieldTypes[condition.field]
 }
 
-/** Strictly validate all groups, including disabled ones. Current reference existence belongs to actual execution. */
+/**
+ * Parses one rule and checks that every condition applies to every selected entry type.
+ *
+ * Disabled rules receive the same validation. Reference existence is checked when the query
+ * executes.
+ */
 export function parseEntryRule(input: unknown): EntryRule {
   const rule = parseValue(
     v.strictObject({

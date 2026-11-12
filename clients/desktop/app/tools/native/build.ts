@@ -1,5 +1,5 @@
 /**
- * @fileoverview Builds and verifies one host-native binding before publishing its binary,
+ * @fileoverview Builds and verifies one host-native binding before adopting its binary,
  * declarations and receipt.
  */
 
@@ -13,7 +13,13 @@ import { replaceOutput } from '@kisaki3/tooling/output'
 import { run, runPnpm } from '@kisaki3/tooling/process'
 import { checkDeclarations } from './declarations'
 
-/** Compile the host target and replace its output after the generated declarations match. */
+/**
+ * Builds and adopts a native binding for the current runner's target.
+ *
+ * Returns the output directory after declaration checks and binary-receipt creation.
+ * updateDeclarations also replaces the tracked binding declaration with generated output for
+ * review.
+ */
 export async function buildNative(
   target: DesktopTarget,
   updateDeclarations = false,

@@ -1,4 +1,4 @@
-/** @fileoverview Verifies NodeNext declarations and actual packed pure values in a standalone Node consumer. */
+/** @fileoverview Verifies packed localization declarations and formatting in an independent Node consumer. */
 
 import { expect } from 'vitest'
 import { execFile } from 'node:child_process'

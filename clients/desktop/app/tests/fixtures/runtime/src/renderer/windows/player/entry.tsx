@@ -4,6 +4,7 @@ import { createSignal } from 'solid-js'
 import { render } from 'solid-js/web'
 import './styles.css'
 
+/** Renders a button-driven counter with state local to the fixture component. */
 function Counter() {
   const [count, setCount] = createSignal(0)
 

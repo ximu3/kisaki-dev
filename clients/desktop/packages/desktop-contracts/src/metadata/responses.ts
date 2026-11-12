@@ -1,4 +1,4 @@
-/** @fileoverview Defines source read responses and validates requested field and membership coverage. */
+/** @fileoverview Defines source read responses and validates graph references and request scope. */
 
 import type { EntryType, ExternalIdentity, PartType } from '../library/catalog'
 import type { MetadataReadRequest } from './requests'
@@ -26,13 +26,22 @@ import {
 } from './fields'
 import type { MetadataEntryFields, MetadataPartFields } from './fields'
 
-/** Parse source field answers and key relationships. Supplying the actual request also rejects unrequested data expansion. */
+/**
+ * Parses source field answers and graph relationships.
+ *
+ * Supplying the actual request also checks returned object fields, memberships and attributes
+ * against its scope.
+ */
 export function parseMetadataReadResult<T extends EntryType>(
   root: T,
   input: unknown,
   request?: MetadataReadRequest<T>,
 ): MetadataReadResult<T>
 
+/**
+ * Validates source object shapes and graph references, then applies request-scope checks when
+ * supplied.
+ */
 export function parseMetadataReadResult(
   root: EntryType,
   input: unknown,
@@ -60,6 +69,10 @@ export function parseMetadataReadResult(
   return value as MetadataReadResult
 }
 
+/**
+ * Rejects returned objects, fields and relationship data outside the parsed request's permitted
+ * scope.
+ */
 function validateRequestedFields(
   root: EntryType,
   objects: ParsedObjects | undefined,
@@ -67,6 +80,10 @@ function validateRequestedFields(
   request: MetadataReadRequest,
   referenced: ReadonlySet<string>,
 ): void {
+  /**
+   * Checks a returned node against requested references and fields while allowing identity evidence
+   * for graph endpoints.
+   */
   function fields(
     node: ParsedNode,
     wanted:
@@ -161,19 +178,28 @@ function validateRequestedFields(
   }
 }
 
+/** Direct source field answers for an entry together with graph and external identities. */
 export type MetadataReadEntry<T extends EntryType> = MetadataObjectIdentity & MetadataEntryFields<T>
 
+/** Direct source field answers for a part together with graph and external identities. */
 export type MetadataReadPart<T extends PartType> = MetadataObjectIdentity & MetadataPartFields<T>
 
+/** Source answers for related entries grouped by their actual kind. */
 export type MetadataReadRelatedEntries = {
   readonly [K in EntryType]?: readonly MetadataReadEntry<K>[]
 }
 
+/** Source answers for parts grouped by root-compatible slots. */
 export type MetadataReadParts<T extends EntryType> = {
   readonly [K in MetadataPartKey<T>]?: readonly MetadataReadPart<MetadataPartType<T, K>>[]
 }
 
-/** Omitted fields and relations are unanswered. Successful arrays are complete for the predeclared session scope. */
+/**
+ * Source field and relationship answers for one read in a fixed session.
+ *
+ * Omission means unanswered. Successful arrays are complete within the declared session and request
+ * scope.
+ */
 export type MetadataReadResult<T extends EntryType = EntryType> = {
   [K in T]: {
     readonly objects?: {

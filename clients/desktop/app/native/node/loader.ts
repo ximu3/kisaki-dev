@@ -9,20 +9,26 @@ import { createNativeFiles } from './files'
 import type { NativeFiles } from './files'
 import type * as Binding from './binding'
 
-/** Native capabilities returned by loadNative(). */
+/** Application-facing capabilities backed by the selected desktop native module. */
 export interface NativeCapabilities {
   files: NativeFiles
 }
 
-/** Loading failed before any capability was available; the original failure is retained. */
+/** Failure to load a usable native module, retaining the original loading or export error. */
 export class NativeLoadError extends Error {
+  /** Wraps the failure that prevented native capabilities from becoming available. */
   constructor(cause: unknown) {
     super('Could not load the desktop native module', { cause })
     this.name = 'NativeLoadError'
   }
 }
 
-/** Load the binding at the absolute deployment path; wrap load failures in NativeLoadError. */
+/**
+ * Loads the explicitly selected native module and exposes its application capabilities.
+ *
+ * Requires an absolute deployment path. Relative paths throw TypeError; loading or required-export
+ * failures throw NativeLoadError with their cause.
+ */
 export function loadNative(modulePath: string): NativeCapabilities {
   if (!isAbsolute(modulePath)) {
     throw new TypeError('Expected an absolute native module path')

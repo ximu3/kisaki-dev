@@ -57,9 +57,15 @@ export const textEncodings = Object.freeze([
   'x-user-defined',
 ] as const)
 
+/** Canonical lowercase WHATWG encoding name supported for persisted text coordinates. */
 export type TextEncoding = (typeof textEncodings)[number]
 
-/** Source coordinate systems. Text offsets count UTF-16 units; byte offsets address original reconstructed content. */
+/**
+ * Source coordinate shape for each supported reading anchor kind.
+ *
+ * Text offsets count UTF-16 units. Byte offsets address the format's original reconstructed
+ * content.
+ */
 export interface ReadingAnchorByType {
   readonly epubCfi: { readonly type: 'epubCfi'; readonly value: string }
 
@@ -89,20 +95,30 @@ export interface ReadingAnchorByType {
   }
 }
 
+/** Persistent address within a supported source text coordinate system. */
 export type ReadingAnchor = ReadingAnchorByType[keyof ReadingAnchorByType]
 
-/** Original page identity, never the currently rendered page number. Member paths preserve source case and Unicode. */
+/**
+ * Original page identity independent of the rendered page number.
+ *
+ * Member paths preserve source case and Unicode.
+ */
 export type ReadingPageRef =
   | { readonly type: 'pageIndex'; readonly index: number }
   | { readonly type: 'memberPath'; readonly path: string }
   | { readonly type: 'epubSpineItem'; readonly index: number }
   | { readonly type: 'kf8Document'; readonly index: number }
 
+/** Persistent reading location expressed as a source anchor or a point on an original page. */
 export type ReadingPosition =
   | { readonly type: 'anchor'; readonly anchor: ReadingAnchor }
   | { readonly type: 'page'; readonly page: ReadingPageRef; readonly point: NormalizedPoint }
 
-/** One continuous nonempty selection; source interpretation verifies order, path continuity and surrogate boundaries. */
+/**
+ * Continuous nonempty text selection expressed as matching source anchors or ordered page quads.
+ *
+ * Source interpretation verifies order, path continuity and surrogate boundaries.
+ */
 export type ReadingTextSelection =
   | {
       [K in keyof ReadingAnchorByType]: {
@@ -125,6 +141,7 @@ export interface ReadingPageRegion {
   readonly rect: NormalizedRect
 }
 
+/** Reading annotation target: a position, text selection or single-page region. */
 export type ReadingAnnotationLocation =
   | { readonly type: 'position'; readonly position: ReadingPosition }
   | { readonly type: 'text'; readonly selection: ReadingTextSelection }
@@ -135,9 +152,14 @@ export type PlaybackAnnotationLocation =
   | { readonly type: 'position'; readonly positionSeconds: number }
   | { readonly type: 'range'; readonly startSeconds: number; readonly endSeconds: number }
 
-/** start is a current operation instruction and is never persisted as a location. */
+/**
+ * Reading target accepting a persistent coordinate or the transient start instruction.
+ *
+ * The start instruction is never persisted as a location.
+ */
 export type ReadingPositionInput = ReadingPosition | 'start'
 
+/** Playback target in file-local seconds or the transient start instruction. */
 export type PlaybackPositionInput = number | 'start'
 
 const anchorSchema = v.variant('type', [
@@ -194,27 +216,40 @@ const positionSchema = v.variant('type', [
   }),
 ])
 
-/** Validate persisted canonical encoding, not an auto-detection option or an alias such as sjis. */
+/**
+ * Parses a persisted canonical encoding name.
+ *
+ * Auto-detection options and aliases such as sjis are rejected.
+ */
 export function parseTextEncoding(input: unknown): TextEncoding {
   return parseValue(v.picklist(textEncodings), input, 'Invalid text encoding')
 }
 
-/** Validate source address syntax and integer bounds; file-dependent target resolution belongs to the executor. */
+/**
+ * Parses source-address syntax and integer bounds.
+ *
+ * The executor resolves the address against the actual file.
+ */
 export function parseReadingAnchor(input: unknown): ReadingAnchor {
   return parseValue(anchorSchema, input, 'Invalid reading anchor')
 }
 
-/** Validate an original page reference, preserving exact source member names. */
+/** Parses an original-page reference while preserving exact source member names. */
 export function parseReadingPageRef(input: unknown): ReadingPageRef {
   return parseValue(pageSchema, input, 'Invalid reading page reference')
 }
 
-/** Validate the persistent coordinate without accepting the transient start instruction. */
+/** Parses a persistent reading coordinate, excluding the transient start instruction. */
 export function parseReadingPosition(input: unknown): ReadingPosition {
   return parseValue(positionSchema, input, 'Invalid reading position')
 }
 
-/** Reject mismatched addressing, empty selections, duplicate pages and invalid geometry; never infer source order. */
+/**
+ * Parses selection coordinates and geometry.
+ *
+ * Rejects mismatched addressing, identical anchor endpoints, empty page selections and duplicate
+ * pages. Source-dependent ordering and continuity remain the executor's responsibility.
+ */
 export function parseReadingTextSelection(input: unknown): ReadingTextSelection {
   const quad = v.pipe(v.unknown(), v.transform(parseNormalizedQuad))
   const value = parseValue(
@@ -251,7 +286,7 @@ export function parseReadingTextSelection(input: unknown): ReadingTextSelection 
   return value as ReadingTextSelection
 }
 
-/** Validate one original-page region without altering or clamping its geometry. */
+/** Parses a region on one original page and validates its geometry without clamping. */
 export function parseReadingPageRegion(input: unknown): ReadingPageRegion {
   return parseValue(
     v.strictObject({
@@ -263,7 +298,11 @@ export function parseReadingPageRegion(input: unknown): ReadingPageRegion {
   )
 }
 
-/** Validate complete reading annotation location, leaving file ownership and current availability to their owners. */
+/**
+ * Parses a reading annotation's complete location value.
+ *
+ * File ownership and current availability are checked by their respective owners.
+ */
 export function parseReadingAnnotationLocation(input: unknown): ReadingAnnotationLocation {
   return parseValue(
     v.variant('type', [
@@ -282,7 +321,12 @@ export function parseReadingAnnotationLocation(input: unknown): ReadingAnnotatio
   )
 }
 
-/** Validate file-local seconds and a strictly increasing range without opening media or clipping to its duration. */
+/**
+ * Parses a file-local point or strictly increasing time range in seconds.
+ *
+ * Validation checks nonnegative finite values; the media owner checks them against the actual
+ * duration.
+ */
 export function parsePlaybackAnnotationLocation(input: unknown): PlaybackAnnotationLocation {
   return parseValue(
     v.variant('type', [

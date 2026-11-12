@@ -5,54 +5,58 @@ import type { JSX } from 'solid-js'
 import { classes } from '../../internal/dom'
 import styles from './styles.module.css'
 
-/** Native table with shared table styling; use scope/headers to identify column and row relationships. */
+/**
+ * Renders a native table with shared styling.
+ *
+ * Callers express row and column relationships through header scope and associations.
+ */
 export function Table(props: JSX.HTMLAttributes<HTMLTableElement>): JSX.Element {
   const [local, rest] = splitProps(props, ['class'])
 
   return <table {...rest} class={classes(styles.table, local.class)} />
 }
 
-/** Group the table's column-header rows in a native thead. */
+/** Groups column-header rows in a native table head. */
 export function TableHeader(props: JSX.HTMLAttributes<HTMLTableSectionElement>): JSX.Element {
   return <thead {...props} />
 }
 
-/** Group the table's main data rows in a native tbody. */
+/** Groups primary data rows in a styled native table body. */
 export function TableBody(props: JSX.HTMLAttributes<HTMLTableSectionElement>): JSX.Element {
   const [local, rest] = splitProps(props, ['class'])
 
   return <tbody {...rest} class={classes(styles.tbody, local.class)} />
 }
 
-/** Group table summaries or totals in a native tfoot. */
+/** Groups summary or total rows in a styled native table footer. */
 export function TableFooter(props: JSX.HTMLAttributes<HTMLTableSectionElement>): JSX.Element {
   const [local, rest] = splitProps(props, ['class'])
 
   return <tfoot {...rest} class={classes(styles.tfoot, local.class)} />
 }
 
-/** A native row containing header or data cells. */
+/** Renders a native row containing header or data cells. */
 export function TableRow(props: JSX.HTMLAttributes<HTMLTableRowElement>): JSX.Element {
   const [local, rest] = splitProps(props, ['class'])
 
   return <tr {...rest} class={classes(styles.tr, local.class)} />
 }
 
-/** A native header cell; supply scope or id to express its relationship with data cells. */
+/** Renders a header cell whose supplied scope or identity relates it to data cells. */
 export function TableHead(props: JSX.ThHTMLAttributes<HTMLTableCellElement>): JSX.Element {
   const [local, rest] = splitProps(props, ['class'])
 
   return <th {...rest} class={classes(styles.th, local.class)} />
 }
 
-/** A native data cell; headers can associate it with explicitly identified header cells. */
+/** Renders a data cell with native header-association support. */
 export function TableCell(props: JSX.TdHTMLAttributes<HTMLTableCellElement>): JSX.Element {
   const [local, rest] = splitProps(props, ['class'])
 
   return <td {...rest} class={classes(styles.td, local.class)} />
 }
 
-/** Give the table an accessible name through its native caption. */
+/** Names a table through its native caption. */
 export function TableCaption(props: JSX.HTMLAttributes<HTMLTableCaptionElement>): JSX.Element {
   const [local, rest] = splitProps(props, ['class'])
 

@@ -31,7 +31,11 @@ import { parseAbsolutePath } from '../paths'
 import { parseMetadataInput } from './metadata'
 import { parseIngestIssue } from './issues'
 
-/** A local candidate is one declared input. Only file-bearing directory inputs can explicitly select a recognition profile. */
+/**
+ * One explicit local file or directory candidate for a work addition.
+ *
+ * Only file-bearing work directories can select a recognition profile.
+ */
 export type IngestLocalContent<T extends WorkType> =
   | { readonly type: 'file'; readonly path: string }
   | ({ readonly type: 'directory'; readonly path: string } & (T extends 'game'
@@ -41,6 +45,11 @@ export type IngestLocalContent<T extends WorkType> =
           readonly recognitionProfileId?: string | null
         }))
 
+/**
+ * Metadata adoption intent for one new entry, with optional initial personal facts.
+ *
+ * Work branches additionally accept local content and usage or completion records.
+ */
 export type IngestAddInput<T extends EntryType = EntryType> = {
   [K in EntryType]: {
     readonly entryType: K
@@ -54,6 +63,12 @@ export type IngestAddInput<T extends EntryType = EntryType> = {
   } & (K extends WorkType ? { readonly localContent?: IngestLocalContent<K> } : object)
 }[T]
 
+/**
+ * The created entry or an existing entry matched by complete external identities.
+ *
+ * Issues retain excluded branches or ancillary failures. Name-only similarity cannot produce
+ * alreadyExists.
+ */
 export type IngestAddResult<T extends EntryType = EntryType> =
   | {
       readonly outcome: 'added'
@@ -67,7 +82,10 @@ export type IngestAddResult<T extends EntryType = EntryType> =
       readonly issues: readonly IngestIssue[]
     }
 
-/** Validate seven closed add branches and explicit work-only local content and personal initial values. */
+/**
+ * Parses an addition with the metadata, local content and personal fields allowed for its entry
+ * type.
+ */
 export function parseIngestAddInput(input: unknown): IngestAddInput {
   const { entryType } = parseValue(v.looseObject({ entryType: v.picklist(entryTypes) }), input)
   const initial = v.strictObject({
@@ -115,7 +133,7 @@ export function parseIngestAddInput(input: unknown): IngestAddInput {
   ) as IngestAddInput
 }
 
-/** An existing outcome needs actual nonempty complete identities; same-name suggestions never qualify as alreadyExists. */
+/** Parses an addition outcome and requires distinct matched identities for alreadyExists. */
 export function parseIngestAddResult(input: unknown): IngestAddResult {
   const issues = v.array(v.pipe(v.unknown(), v.transform(parseIngestIssue)))
   return parseValue(

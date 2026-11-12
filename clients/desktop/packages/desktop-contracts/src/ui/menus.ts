@@ -11,21 +11,31 @@ import { normalizeLocalizedText } from '@kisaki3/extension-distribution/metadata
 import { DesktopError } from '../errors'
 import { parseExtensionUiIcon } from './icons'
 
+/** Localized label, optional icon and disabled state shared by actionable menu nodes. */
 export interface ExtensionMenuItemPresentation {
   readonly label: LocalizedText
   readonly icon?: ExtensionUiIcon
   readonly disabled?: boolean
 }
 
-/** Menu callbacks return completed operation feedback, with no handle for loading updates. */
+/**
+ * Optional completion feedback returned by a menu operation.
+ *
+ * Loading messages require a live handle and are outside this result shape.
+ */
 export type ExtensionMenuFeedback =
   void | (ToastMessage & { readonly type: Exclude<ToastMessage['type'], 'loading'> })
 
-/** Node-owned contributions retain live callbacks; each submenu owns its sibling radio groups. */
+/**
+ * Node-owned menu contribution with live callbacks.
+ *
+ * Each submenu defines a separate scope for sibling radio groups.
+ */
 export type ExtensionMenuItem =
   | { readonly type: 'separator' }
   | (ExtensionMenuItemPresentation & {
       readonly type: 'action'
+      /** Executes the selected action and returns optional completion feedback. */
       readonly onSelect: (
         execution: ExecutionContext,
       ) => ExtensionMenuFeedback | Promise<ExtensionMenuFeedback>
@@ -33,6 +43,7 @@ export type ExtensionMenuItem =
   | (ExtensionMenuItemPresentation & {
       readonly type: 'checkbox'
       readonly checked: boolean
+      /** Handles the requested checked state and returns optional completion feedback. */
       readonly onChange: (
         nextChecked: boolean,
         execution: ExecutionContext,
@@ -42,6 +53,7 @@ export type ExtensionMenuItem =
       readonly type: 'radio'
       readonly group: string
       readonly checked: boolean
+      /** Handles selection of this radio item and returns optional completion feedback. */
       readonly onSelect: (
         execution: ExecutionContext,
       ) => ExtensionMenuFeedback | Promise<ExtensionMenuFeedback>
@@ -51,13 +63,20 @@ export type ExtensionMenuItem =
       readonly items: readonly ExtensionMenuItem[]
     })
 
+/** Fixed native context supplied to extension-wide or selected-entry menu construction. */
 export interface ExtensionMenuContextMap {
   readonly extension: object
   readonly entry: { readonly entries: NonEmptyArray<EntryRef> }
 }
 
+/** Owner-bound registration of context-menu contribution factories. */
 export interface ExtensionMenusApi {
-  /** Construction uses fixed local targets and its own signal; selected callbacks outlive menu closure. */
+  /**
+   * Registers a factory for the selected menu context and returns its removal handle.
+   *
+   * Construction receives fixed local targets and its own signal. Accepted action callbacks outlive
+   * menu closure.
+   */
   add<K extends keyof ExtensionMenuContextMap>(
     contextKind: K,
     getItems: (
@@ -67,7 +86,11 @@ export interface ExtensionMenusApi {
   ): Disposable
 }
 
-/** Validate live callback nodes and sibling radio groups without serializing callbacks or invoking business work. */
+/**
+ * Validates menu presentation, live callback shapes and sibling radio-group selection.
+ *
+ * Callbacks are retained without invoking business operations.
+ */
 export function validateExtensionMenuItems(
   input: unknown,
   defaultLocale: string,

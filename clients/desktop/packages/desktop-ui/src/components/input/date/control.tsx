@@ -24,14 +24,24 @@ import { DatePicker } from './picker'
 import type { CalendarProps } from './picker'
 import styles from './styles.module.css'
 
-/** Complete ISO dates and the empty value cross the editing boundary. Incomplete segments remain native drafts. */
+/**
+ * Native date-editor and calendar props with localized validation feedback.
+ *
+ * Complete ISO dates and empty values cross the value boundary; incomplete segments remain native
+ * drafts.
+ */
 export interface DateInputProps
   extends Omit<InputProps, 'type' | 'min' | 'max' | 'step'>, CalendarProps {
   step?: number
   invalidDateMessage: string
 }
 
-/** The ref targets the native editor. Browsing the calendar changes the value only when a day is chosen. */
+/**
+ * Connects native date segments and a themed calendar to one form value.
+ *
+ * The ref targets the editor. Browsing months or years leaves the value unchanged until a day is
+ * chosen.
+ */
 export function DateInput(props: DateInputProps): JSX.Element {
   const [local, calendar, rest] = splitProps(
     props,
@@ -73,6 +83,7 @@ export function DateInput(props: DateInputProps): JSX.Element {
   let picker: HTMLDivElement | undefined
   const present = createPresentation(open, () => picker)
 
+  /** Checks whether disabled or readonly state prevents calendar interaction. */
   const blocked = () => (props.disabled ?? field.disabled) || props.readOnly
   const min = createMemo(() => (parseDate(calendar.min ?? '') ? calendar.min : undefined))
   const max = createMemo(() => (parseDate(calendar.max ?? '') ? calendar.max! : '9999-12-31'))
@@ -89,23 +100,32 @@ export function DateInput(props: DateInputProps): JSX.Element {
     }
     return candidate
   })
+  /** Checks a candidate day with the same native bounds and step constraints as the editor. */
   const allowed = (date: string) => {
     const candidate = constraints()
     candidate.value = date
     return candidate.value !== '' && candidate.validity.valid
   }
+  /**
+   * Updates localized custom validity for incomplete segments or a constraint-violating complete
+   * date.
+   */
   const validate = () =>
     input.setCustomValidity(
       input.validity.badInput || (input.value && !allowed(input.value))
         ? local.invalidDateMessage
         : '',
     )
+  /** Synchronizes the editor to the owned value and refreshes custom validity. */
   const sync = () => {
     if (input.value !== value()) {
       input.value = value()
     }
     validate()
   }
+  /**
+   * Writes a chosen date through the editor and dispatches its ordinary input and change events.
+   */
   const enter = (date: string) => {
     input.value = date
     input.dispatchEvent(new Event('input', { bubbles: true }))

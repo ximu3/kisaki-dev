@@ -4,7 +4,11 @@ import { EditorSelection, Transaction } from '@codemirror/state'
 import type { EditorView } from '@codemirror/view'
 import { undo, redo } from '@codemirror/commands'
 
-/** Source-formatting actions; link and image resource selection remains a host operation. */
+/**
+ * Markdown source-formatting and undo-history actions.
+ *
+ * Link and image resource selection remains a host operation.
+ */
 export type MarkdownCommand =
   | 'bold'
   | 'italic'
@@ -19,7 +23,11 @@ export type MarkdownCommand =
   | 'undo'
   | 'redo'
 
-/** Apply to the current primary selection in a live view; read-only views return false. */
+/**
+ * Applies formatting to the primary selection or runs a shared undo-history command.
+ *
+ * Returns false for readonly views or unavailable undo and redo operations.
+ */
 export function runMarkdownCommand(view: EditorView, command: MarkdownCommand): boolean {
   if (view.state.readOnly) {
     return false

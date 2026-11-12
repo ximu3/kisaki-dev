@@ -4,71 +4,101 @@ import type { ErrorSummary } from './errors'
 import { parseValue, intervalEntries } from './validation'
 import * as v from 'valibot'
 
-/** At least one submitted value; uniqueness and domain constraints are checked at the input boundary. */
+/**
+ * Readonly sequence containing at least one submitted value.
+ *
+ * The input boundary checks uniqueness and domain-specific constraints.
+ */
 export type NonEmptyArray<T> = readonly [T, ...T[]]
 
-/** A nonempty range with inclusive bounds. Individual domains define units and comparison. */
+/**
+ * Range with at least one inclusive bound.
+ *
+ * Each domain defines the units and comparison rules.
+ */
 export type Bounds<T> =
   { readonly min: T; readonly max?: T } | { readonly min?: T; readonly max: T }
 
 /**
- * Request cancellation of this call; the receiving endpoint binds the actual caller instance.
- * Operations finish necessary commit or cleanup before settling and preserve completed facts.
- * Cancelling an observation or a wait only ends that call, not the work it observes.
+ * Optional cancellation signal for one capability call.
+ *
+ * The receiving endpoint binds the actual caller instance. Operations finish required commit or
+ * cleanup before settling and preserve completed facts. Cancelling an observation or wait ends that
+ * call while leaving observed work running.
  */
 export interface CallOptions {
   readonly signal?: AbortSignal
 }
 
-/** Registration removal completes before resolve; already acquired work follows its own lifetime. */
+/**
+ * Instance-owned registration reference and asynchronous removal handle.
+ *
+ * Already acquired work follows its own lifetime after removal.
+ */
 export interface Registration<Ref> {
   readonly ref: Ref
 
   /**
-   * Remove this instance's registration and finish its cleanup; repeated disposal has no further
-   * effect.
+   * Removes this instance's registration and completes its cleanup.
+   *
+   * Repeated disposal has no further effect.
    */
   dispose(): Promise<void>
 }
 
-/** Per-call cancellation supplied to the callee. Operation-specific choices are explicit options, never ambient policy. */
+/**
+ * Per-call cancellation context supplied to an implementation.
+ *
+ * Operation-specific choices are passed as explicit input options.
+ */
 export interface ExecutionContext {
   readonly signal: AbortSignal
 }
 
-/** A release belongs to its creating instance; releasing again has no further effect. */
+/** Idempotent release handle belonging to the instance that created it. */
 export interface Disposable {
   /**
-   * Stop this instance's future delivery or use; await a returned promise for release
-   * completion.
+   * Stops this instance's future delivery or use.
+   *
+   * A returned promise settles when release completes.
    */
   dispose(): void | Promise<void>
 }
 
-/** Observers receive read-only snapshots. Releasing stops future delivery, not accepted business work. */
+/**
+ * Observer of readonly snapshots.
+ *
+ * Releasing the subscription stops future delivery while leaving accepted business work running.
+ */
 export type Listener<T> = (value: T) => void
 
-/** An arbitrary zero-based interval in a complete local list, limited to 200 items per call. */
+/** Zero-based interval in a complete local list, with a limit from 1 through 200 items. */
 export interface ListOptions {
   readonly offset: number
   readonly limit: number
 }
 
-/** Items and the deduplicated full count come from the same short read; no cross-call snapshot is implied. */
+/**
+ * Requested items and deduplicated full count from one short read.
+ *
+ * Separate calls do not share a snapshot.
+ */
 export interface ListResult<T> {
   readonly items: readonly T[]
   readonly total: number
 }
 
 /**
- * A saved execution definition can remain unreadable while the surrounding object stays usable.
- * Invalid snapshots carry a safe explanation, never raw corrupt storage or an editable repair baseline.
+ * Saved execution definition represented as a usable value or an explicit validation failure.
+ *
+ * Invalid definitions retain a safe explanation while the surrounding object stays usable. Raw
+ * corrupt storage and repair baselines are not exposed.
  */
 export type StoredDefinition<T> =
   | { readonly status: 'ready'; readonly value: T }
   | { readonly status: 'invalid'; readonly error: ErrorSummary }
 
-/** Validate a local interval without truncating it or treating an omitted limit as an unbounded read. */
+/** Parses a bounded local interval, requiring an explicit valid offset and limit. */
 export function parseListOptions(input: unknown): ListOptions {
   return parseValue(v.strictObject(intervalEntries), input, 'Invalid list interval')
 }

@@ -4,7 +4,7 @@ import { removeOutputs } from '@kisaki3/tooling/output'
 import { resolve } from 'node:path'
 import { runCli } from '@kisaki3/tooling/cli'
 
-/** Remove declared outputs after consumers stop; sources and dependency caches remain owned separately. */
+/** Removes generated distribution and archive outputs after package consumers stop. */
 export function cleanOutput(signal?: AbortSignal): Promise<void> {
   return removeOutputs(resolve(import.meta.dirname, '..'), ['dist', 'out'], signal)
 }

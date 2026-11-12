@@ -10,14 +10,15 @@ import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
 /** Independently compiled desktop programs with separate runtime environments. */
 export const programNames = ['main', 'preload', 'extension-host', 'renderer'] as const
+/** Identity of one independently compiled desktop runtime program. */
 export type ProgramName = (typeof programNames)[number]
 
-/** Actual source modules reported by the compiler, used to decide whether Node programs changed. */
+/** Absolute compiler module IDs retained for development input tracking. */
 export interface ProgramBuild {
   modules: string[]
 }
 
-/** Resolve the same source configuration for finite builds and development sessions. */
+/** Creates the shared finite-build configuration for a desktop program and output directory. */
 export function programConfig(
   sourceRoot: string,
   program: ProgramName,
@@ -34,6 +35,7 @@ export function programConfig(
     plugins: [
       {
         name: 'desktop-finite-build',
+        /** Rejects watch mode so the finite build can settle and release output ownership. */
         configResolved(config) {
           if (config.build.watch) {
             throw new Error('Finite program builds do not support watch mode')
@@ -44,7 +46,12 @@ export function programConfig(
   }
 }
 
-/** Compile one complete program into its caller-owned candidate directory. */
+/**
+ * Compiles a complete program into its caller-owned candidate directory.
+ *
+ * Builds preload entries separately as CommonJS files. Returns the absolute module IDs reported by
+ * the completed builds.
+ */
 export async function buildProgram(
   sourceRoot: string,
   program: ProgramName,
@@ -55,7 +62,11 @@ export async function buildProgram(
   const config = programConfig(sourceRoot, program, outputDirectory, buildId, mode)
   const modules = new Set<string>()
 
-  /** Compile using Vite's public output and retain only real filesystem module inputs. */
+  /**
+   * Compiles one Vite configuration and records absolute module IDs.
+   *
+   * An unexpected watcher is closed before its finite-build failure is reported.
+   */
   async function compile(options: InlineConfig): Promise<void> {
     const result = await build(options)
     const bundles = Array.isArray(result) ? result : [result]

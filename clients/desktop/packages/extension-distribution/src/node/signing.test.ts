@@ -1,4 +1,4 @@
-/** @fileoverview Verifies original-byte trust boundaries, RFC8785 payloads and resource integrity. */
+/** @fileoverview Verifies registry trust, RFC8785 signing payloads and downloaded-resource integrity. */
 
 import { expect, test } from 'vitest'
 import { createHash, createPublicKey, generateKeyPairSync, verify } from 'node:crypto'

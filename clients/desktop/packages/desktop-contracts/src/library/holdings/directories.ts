@@ -17,13 +17,26 @@ import {
 } from '../../validation'
 import { DesktopError } from '../../errors'
 
-/** Discovery settings control new paths only; they do not remove existing files or choose a naming profile. */
+/**
+ * A content directory's depth and path filters for discovering new files.
+ *
+ * These settings preserve existing registrations and leave naming-profile selection separate.
+ */
 export interface DirectoryDiscoveryDefinition {
+  /**
+   * Positive safe-integer depth: 1 includes direct children; null allows recursive discovery
+   * without a depth limit.
+   */
   readonly maxDepth: number | null
   readonly include: readonly PathFilter[]
   readonly exclude: readonly PathFilter[]
 }
 
+/**
+ * A work-owned local directory with stable identity and media-specific discovery configuration.
+ *
+ * A null recognitionProfileId selects built-in recognition only.
+ */
 export type ContentDirectory<T extends WorkType = WorkType> = {
   [K in T]: {
     readonly id: string
@@ -41,6 +54,12 @@ export type ContentDirectory<T extends WorkType = WorkType> = {
     : object)
 }[T]
 
+/**
+ * A local directory path and optional discovery settings for the applicable medium.
+ *
+ * File-bearing directories default to unlimited depth, empty include/exclude lists and built-in
+ * recognition.
+ */
 export type DirectoryCreateFields<T extends WorkType = WorkType> = {
   [K in T]: { readonly path: string } & (K extends FileWorkType
     ? {
@@ -50,7 +69,11 @@ export type DirectoryCreateFields<T extends WorkType = WorkType> = {
     : object)
 }[T]
 
-/** Discovery/profile edits do not relocate paths. A path change with related mappings uses the explicit relocation operation. */
+/**
+ * Discovery or recognition-profile changes with matching expected values.
+ *
+ * Path changes use the explicit relocation operation.
+ */
 export interface DirectoryUpdate {
   readonly changes: {
     readonly definition?: DirectoryDiscoveryDefinition
@@ -62,7 +85,11 @@ export interface DirectoryUpdate {
   }
 }
 
-/** Only explicitly named stored path fields may accompany directory relocation; commands and historical text are excluded. */
+/**
+ * A new registered directory path and explicitly selected related path mappings.
+ *
+ * Commands and historical text are outside the relocation scope.
+ */
 export interface DirectoryRelocationInput {
   readonly path: string
   readonly expected?: { readonly path: string }
@@ -78,6 +105,7 @@ export interface DirectoryRelocationInput {
   }[]
 }
 
+/** A registered directory, file, launch field or subtitle path addressed by relocation. */
 export type RelocatedPathTarget =
   | { readonly type: 'directory' | 'file'; readonly id: string }
   | {
@@ -87,6 +115,9 @@ export type RelocatedPathTarget =
     }
   | { readonly type: 'subtitle'; readonly fileId: string; readonly path: string }
 
+/**
+ * Applied path mappings and unresolved verification, availability or conflict issues for a work.
+ */
 export interface HoldingsRelocationResult {
   readonly work: WorkRef
 
@@ -104,21 +135,23 @@ export interface HoldingsRelocationResult {
   }[]
 }
 
-/** Directory registration owns discovery only; deletion retains files/configurations, and relocation never moves user bytes. */
+/**
+ * Work-owned directory registration, discovery configuration and path relocation.
+ *
+ * Deletion preserves files and configurations. Relocation updates registrations without moving user
+ * bytes.
+ */
 export interface ContentDirectoriesApi {
   /**
-   * Read this work's registered discovery roots and their saved definitions, including
-   * explicitly unavailable settings.
+   * Lists the work's registered roots and saved discovery definitions, including unavailable
+   * values.
    */
   list<T extends WorkType>(
     work: EntryRef<T>,
     call?: CallOptions,
   ): Promise<readonly ContentDirectory<T>[]>
 
-  /**
-   * Read one registered root under the supplied work without moving bytes or discovering new
-   * files.
-   */
+  /** Reads one registered root under the work, returning null when it is absent. */
   get<T extends WorkType>(
     work: EntryRef<T>,
     directoryId: string,
@@ -126,8 +159,8 @@ export interface ContentDirectoriesApi {
   ): Promise<ContentDirectory<T> | null>
 
   /**
-   * Register a discovery root with its complete media-specific configuration; user files remain
-   * in their existing location.
+   * Registers a local directory with its applicable configuration while preserving user-file
+   * locations.
    */
   create(
     ...args: {
@@ -136,8 +169,9 @@ export interface ContentDirectoriesApi {
   ): Promise<string>
 
   /**
-   * Compare and save changed discovery settings or profile selection; existing file associations
-   * and their modes remain unchanged.
+   * Compares and saves changed discovery settings or profile selection.
+   *
+   * Existing file associations and their matching modes remain unchanged.
    */
   update(
     work: EntryRef<FileWorkType>,
@@ -147,14 +181,15 @@ export interface ContentDirectoriesApi {
   ): Promise<void>
 
   /**
-   * Remove only this discovery registration; retain existing files, launch configurations and
-   * user bytes.
+   * Removes the directory registration while preserving files, launch configurations and user
+   * bytes.
    */
   delete(work: WorkRef, directoryId: string, call?: CallOptions): Promise<void>
 
   /**
-   * Verify the explicitly selected path mappings and update stable registrations; report
-   * conflicts without moving or merging user files.
+   * Verifies selected path mappings and updates stable registrations.
+   *
+   * Conflicts are reported without moving or merging user files.
    */
   relocate(
     work: WorkRef,
@@ -172,12 +207,16 @@ const discoverySchema = v.strictObject({
   exclude: v.array(v.pipe(v.unknown(), v.transform(parsePathFilter))),
 })
 
-/** Validate discovery only; it does not choose an identification profile or change existing file maintenance. */
+/** Parses the complete depth and path-filter definition for new-file discovery. */
 export function parseDirectoryDiscoveryDefinition(input: unknown): DirectoryDiscoveryDefinition {
   return parseValue(discoverySchema, input, 'Invalid directory discovery definition')
 }
 
-/** Game directories reject media-discovery and naming-profile fields instead of preserving inapplicable data. */
+/**
+ * Parses creation fields applicable to the work kind.
+ *
+ * Game directories reject file-discovery and recognition-profile fields.
+ */
 export function parseDirectoryCreateFields<T extends WorkType>(
   workType: T,
   input: unknown,
@@ -193,7 +232,7 @@ export function parseDirectoryCreateFields<T extends WorkType>(
   return parseValue(schema, input, 'Invalid directory creation') as DirectoryCreateFields<T>
 }
 
-/** Discovery and naming-profile changes compare only their corresponding complete original values. */
+/** Parses directory-setting changes and expected values for the same complete fields. */
 export function parseDirectoryUpdate(input: unknown): DirectoryUpdate {
   const fields = v.strictObject(
     optionalFields({ definition: discoverySchema, recognitionProfileId: v.nullable(id) }),
@@ -207,7 +246,11 @@ export function parseDirectoryUpdate(input: unknown): DirectoryUpdate {
   return value
 }
 
-/** Validate explicit path mapping scope without changing paths, checking disk state or applying prefix replacements to text. */
+/**
+ * Parses explicit relocation scope and checks work-specific field applicability.
+ *
+ * Disk verification and path updates belong to the relocation operation.
+ */
 export function parseDirectoryRelocationInput(
   workType: WorkType,
   input: unknown,

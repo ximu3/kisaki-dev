@@ -12,16 +12,19 @@ import type { FSWatcher } from 'chokidar'
 import { appRoot, containsPath, repositoryRoot } from '../lib/paths'
 import type { DesktopDependency } from './dependencies'
 
-/** Session callbacks receive changes and terminal watcher failures after initial readiness. */
+/** Session callbacks and initialization cancellation for a development input watcher. */
 interface InputWatchOptions {
+  /** Cancels initialization; the session owns closure after readiness. */
   signal?: AbortSignal
 
+  /** Reports whether a changed path belongs to runtime or public-package inputs. */
   onChange(change: 'runtime' | 'public-package'): void
 
+  /** Delivers a post-readiness watcher failure to the owning session. */
   onError(cause: unknown): void
 }
 
-/** Keep documentation, verification and generated state outside the live production input set. */
+/** Recognizes live production inputs while excluding documentation, tests and generated state. */
 function isDevelopmentInput(path: string): boolean {
   const name = basename(path)
   return (
@@ -48,7 +51,9 @@ function isDevelopmentInput(path: string): boolean {
   )
 }
 
-/** Watch package production roots so additions are observed alongside existing source and configuration. */
+/**
+ * Collects production roots and eligible root-level configuration files to watch for one package.
+ */
 async function publicPackageInputs(directory: string): Promise<string[]> {
   const entries = await readdir(directory, { withFileTypes: true })
   const files = entries
@@ -62,7 +67,12 @@ async function publicPackageInputs(directory: string): Promise<string[]> {
   return ['src', 'tools', 'config', ...files].map((name) => join(directory, name))
 }
 
-/** Initialize all build inputs, closing on failure or cancellation; the session owns close() afterward. */
+/**
+ * Starts watchers for runtime and public-package production inputs.
+ *
+ * Waits for initial readiness before delivering changes. Startup failure or cancellation closes the
+ * watcher before rejection; after success the session owns close().
+ */
 export async function startInputWatcher(
   sourceRoot: string,
   members: DesktopDependency[],

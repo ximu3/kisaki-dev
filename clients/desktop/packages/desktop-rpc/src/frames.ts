@@ -6,10 +6,19 @@ import { parseJsonValue, type JsonValue } from './json'
 /** Version of the frame format and correlation rules implemented by this package. */
 export const rpcWireVersion = 1
 
-/** Application protocol agreed by both endpoints, independently of the wire version. */
+/**
+ * Application-level protocol identity and numeric version, independent of the wire format.
+ *
+ * The version is a positive safe integer; the acceptor compares both fields exactly.
+ */
 export type RpcProtocol = { readonly id: string; readonly version: number }
 
-/** Complete messages carried by one ordered transport in either direction. */
+/**
+ * The closed message vocabulary of the version-one wire protocol.
+ *
+ * Request IDs are positive safe integers allocated independently in each direction. An omitted
+ * success value represents void; explicit null remains data.
+ */
 export type RpcFrame =
   | {
       readonly type: 'hello'
@@ -33,10 +42,12 @@ export type RpcFrame =
   | { readonly type: 'notify'; readonly topic: string; readonly value: JsonValue }
   | { readonly type: 'cancel'; readonly id: number }
 
+/** Recognizes JSON objects, excluding arrays and null. */
 function isRecord(value: JsonValue | undefined): value is { readonly [key: string]: JsonValue } {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
+/** Checks a parsed object's key count and ownership of every required field. */
 function hasExactFields(value: object, ...fields: string[]): boolean {
   return (
     Object.keys(value).length === fields.length &&
@@ -44,11 +55,14 @@ function hasExactFields(value: object, ...fields: string[]): boolean {
   )
 }
 
+/** Recognizes positive safe integers used by RPC versions and request IDs. */
 function isPositiveInteger(value: JsonValue | undefined): boolean {
   return typeof value === 'number' && Number.isSafeInteger(value) && value > 0
 }
 
-/** The handshake and the default call-error codec share this exact public failure shape. */
+/**
+ * Recognizes the exact nonempty code/message shape shared by handshake and default call failures.
+ */
 export function isErrorSummary(
   value: JsonValue | undefined,
 ): value is { code: string; message: string } {
@@ -62,6 +76,7 @@ export function isErrorSummary(
   )
 }
 
+/** Recognizes a complete version-one envelope after JSON value validation. */
 function isFrame(value: JsonValue): value is RpcFrame {
   if (!isRecord(value) || typeof value.type !== 'string') {
     return false
@@ -106,7 +121,7 @@ function isFrame(value: JsonValue): value is RpcFrame {
   }
 }
 
-/** Read only the version discriminator before interpreting a hello in the supported format. */
+/** Detects a foreign wire version in a hello frame without inspecting its context. */
 export function hasUnknownWireVersion(input: unknown): boolean {
   if (
     typeof input !== 'object' ||
@@ -119,7 +134,12 @@ export function hasUnknownWireVersion(input: unknown): boolean {
   return typeof version === 'number' && Number.isSafeInteger(version) && version !== rpcWireVersion
 }
 
-/** Parse a version-one frame whose fields and payload survive both wire encodings. */
+/**
+ * Parses a complete frame in the supported wire format.
+ *
+ * Snapshots JSON-compatible data and rejects malformed values or envelopes with ProtocolViolation.
+ * Connection state owns request ordering and correlation.
+ */
 export function parseRpcFrame(input: unknown): RpcFrame {
   try {
     const value = parseJsonValue(input)

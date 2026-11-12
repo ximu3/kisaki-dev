@@ -24,7 +24,9 @@ A13、A27 和 A28 核对[原生 syncFile](../../design/engineering/native.md#fil
 
 A26、A31 和 A32 按[源码语言规则](../../design/engineering/conventions.md#source-language)检查应用、包、扩展、工具、配置、测试和模板。手写 JavaScript 源文件不能因位于产品 src 之外而漏检；编译产物、绑定生成结果和第三方发行内容分别按制品归属核对。
 
-按[可读性](../../design/engineering/conventions.md#readability)与[代码对象的注释要求](../../design/engineering/conventions.md#comment-objects)审查完整操作的正常路径及相关失败、取消和清理路径。逐类核对注释覆盖，以及输入、完成、失败、状态和资源说明是否准确。名称、类型与实现相符，说明由实际合同拥有者维护；实现改变后，旧注释和已失效的临时标记同步修正。格式检查或注释数量不能替代这些审查。
+按[声明覆盖](../../design/engineering/conventions.md#comment-coverage)逐项对应自维护具名函数、方法、类、组件、接口、类型和枚举的文档，包含内部声明、访问器、嵌套函数与独立函数绑定。纯重导出沿用定义处文档，内联回调和普通局部变量按所属流程核对。
+
+按[可读性](../../design/engineering/conventions.md#readability)与[调用合同](../../design/engineering/conventions.md#comment-objects)审查完整操作的正常路径及相关失败、取消和清理路径，核对概述、输入、完成、失败、状态和资源说明。公开入口从构建后的声明取得相应文档。名称、类型与实现相符，说明由实际合同拥有者维护；实现改变后，旧注释和已失效的临时标记同步修正。覆盖检查与内容审查分别完成，格式检查或注释数量不代替内容判断。
 
 源码文件概述与配置说明按各自覆盖边界核对，配置不因使用 TypeScript 而增加文件头要求。说明提供定位、调用条件或实际依据，不以逐文件清单或固定栏目代替信息。普通改动审阅完整影响，全项目审查逐项核对维护范围。
 
