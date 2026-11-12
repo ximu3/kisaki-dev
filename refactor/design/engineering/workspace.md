@@ -22,6 +22,7 @@
 | 基础控件       | Solid 1.9 与浏览器原生能力 | 按[UI 合同](../ui/package.md)实现并验证                                           |
 | 虚拟列表与网格 | TanStack Virtual 3.x       | Solid 适配 3.13.48 与 core 3.19.6，见[几何边界](../ui/virtualization.md#geometry) |
 | 拖拽排序       | Pragmatic Drag and Drop    | 核心与辅助包的固定版本见 [拖拽实现](../ui/virtualization.md#dependency)          |
+| 系统与功能图标 | Lucide 1.x | lucide-solid 与 @lucide/icons 均为 1.72.0；名称合同见 [UI 图标值](../extensions/webview.md#icons) |
 
 原生窗口、公共 UI 和官方扩展统一使用 Solid 1.9，并遵守该版本的 API 与 owner 生命周期。应用使用 Vite 8.3.3 和 vite-plugin-solid 2.11.14；公共 Solid 库使用 tsdown 0.23.0，以及 unplugin-solid 1.0.0 提供的公开 Rolldown 接入。unplugin-solid 3.x 不用于 Solid 1.9。
 

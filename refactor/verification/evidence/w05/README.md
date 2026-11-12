@@ -37,4 +37,15 @@ UI 制品为包内 `out/package/package.tgz`。`test-results/consumers` 保存�
 
 构建沿 [tsdown 的 Solid 接入](https://tsdown.dev/recipes/solid-support)和 [CSS Modules 提取](https://tsdown.dev/options/css)，使用固定 tsdown／CSS 0.23.0 与适配 Solid 1.9 的 unplugin-solid 1.0.0。专用工具通过其公开入口接入，声明归集保留 Unovis 的许可材料。
 
+## 图标目录与呈现
+
+2026-11-12，公共 UI、扩展贡献与搜索合同统一到 Lucide 1.72.0。Solid 1.9 使用 lucide-solid；desktop-contracts 从同版 @lucide/icons 的公开目录生成名称类型与校验。图标选择和拥有边界见 [UI 图标](../../../design/ui/package.md#icons)与[贡献图标值](../../../design/extensions/webview.md#icons)。
+
+| 范围 | 实际验证 |
+| --- | --- |
+| 名称与资源 | 上游 2,356 个名称及别名逐项通过值解析；未知名称、组件式拼写、旧 mdi 分支及越界包路径被拒绝。贡献包文件与搜索扩展资源分别保留原有归属。 |
+| 包与裁剪 | pnpm check、desktop-contracts 和 desktop-ui 的制品消费通过，包含 Node、浏览器完整声明及真实 Electron。独立 Spinner 入口的浏览器构建仅保留 LoaderCircle 图形；名称校验入口没有图形模块、动态图库导入或 DOM 接入。 |
+| 视觉与响应 | 实际制品的四种 Alert 状态在同一组件中更新图形。31 个可见图标槽位在亮暗、150% 缩放、亮暗强制颜色和 RTL 下核对；常规槽位从 14px 到 21px，选中标记和工具栏同比缩放，均使用 currentColor 与 2 单位描边。 |
+| 动效与语义 | Spinner 在普通模式旋转，减少动效时静止。内部 SVG 为装饰图形，操作名称由控件提供；日历、选择器、Markdown 工具栏与拖拽手柄沿既有消费检查验证。 |
+
 本次运行支持当前桌面 Chromium 能力基线。其他浏览器引擎、SSR、产品窗口与扩展 Webview 的完整业务接入分别按实际支持范围和所属工作包处理；该包尚未公开发布，成篇项目文档归 W23。

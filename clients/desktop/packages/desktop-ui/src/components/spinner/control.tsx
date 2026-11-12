@@ -1,9 +1,9 @@
-/** @fileoverview A stationary status slot contains the animated MDI loading glyph. */
+/** @fileoverview A stationary status slot contains the animated Lucide loading glyph. */
 
 import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { classes } from '../../internal/dom'
-import { Icon, mdiLoading } from '../../internal/icon/glyph'
+import { Icon, LoaderCircle } from '../../internal/icon/glyph'
 import styles from './styles.module.css'
 
 /**
@@ -27,7 +27,7 @@ export function Spinner(props: SpinnerProps): JSX.Element {
       aria-label={local.label}
       aria-hidden={local.label ? undefined : true}
     >
-      <Icon path={mdiLoading} class={styles.glyph} />
+      <Icon icon={LoaderCircle} class={styles.glyph} />
     </span>
   )
 }

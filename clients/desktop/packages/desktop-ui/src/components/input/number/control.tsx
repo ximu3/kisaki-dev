@@ -4,7 +4,7 @@ import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { assignRef, classes } from '../../../internal/dom'
 import { fieldAttributes } from '../../../internal/field'
-import { Icon, mdiChevronDown, mdiChevronUp } from '../../../internal/icon/glyph'
+import { Icon, ChevronDown, ChevronUp } from '../../../internal/icon/glyph'
 import { createValue } from '../../../internal/state'
 import { NativeInput } from '../native'
 import type { NativeInputProps } from '../native'
@@ -81,7 +81,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
           onPointerDown={(event) => event.preventDefault()}
           onClick={() => step(1)}
         >
-          <Icon path={mdiChevronUp} />
+          <Icon icon={ChevronUp} />
         </button>
         <button
           type="button"
@@ -91,7 +91,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
           onPointerDown={(event) => event.preventDefault()}
           onClick={() => step(-1)}
         >
-          <Icon path={mdiChevronDown} />
+          <Icon icon={ChevronDown} />
         </button>
       </span>
     </InputFrame>

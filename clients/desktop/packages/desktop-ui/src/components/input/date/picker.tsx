@@ -3,7 +3,7 @@
 import { createEffect, createMemo, createSignal, For, on, onMount, Show } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { classes } from '../../../internal/dom'
-import { Icon, mdiChevronLeft, mdiChevronRight } from '../../../internal/icon/glyph'
+import { Icon, ChevronLeft, ChevronRight } from '../../../internal/icon/glyph'
 import { createPopup } from '../../../internal/popup/controller'
 import { displayedWhileOpen } from '../../../internal/popup/presentation'
 import frame from '../../../internal/popup/surface.module.css'
@@ -190,7 +190,7 @@ export function DatePicker(props: PickerProps): JSX.Element {
             disabled={month().slice(0, 7) <= (props.min ?? '0001-01-01').slice(0, 7)}
             onClick={() => browse(addMonths(month(), -1))}
           >
-            <Icon path={mdiChevronLeft} />
+            <Icon icon={ChevronLeft} />
           </button>
           <div class={styles.periods}>
             <For each={periodOrder()}>
@@ -227,7 +227,7 @@ export function DatePicker(props: PickerProps): JSX.Element {
             disabled={month().slice(0, 7) >= (props.max ?? '9999-12-31').slice(0, 7)}
             onClick={() => browse(addMonths(month(), 1))}
           >
-            <Icon path={mdiChevronRight} />
+            <Icon icon={ChevronRight} />
           </button>
         </div>
         <div

@@ -14,7 +14,7 @@ import {
 import type { JSX } from 'solid-js'
 import { assignRef, classes } from '../dom'
 import { fieldAttributes } from '../field'
-import { Icon, mdiChevronDown, mdiUnfoldMoreHorizontal } from '../icon/glyph'
+import { Icon, ChevronDown, ChevronsUpDown } from '../icon/glyph'
 import { createValue, onFormReset } from '../state'
 import { SelectedChips } from './chips'
 import type { ChipLabels } from './chips'
@@ -256,7 +256,7 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
           {summary()}
         </span>
         <span class={styles.arrow} aria-hidden="true">
-          <Icon path={local.search ? mdiUnfoldMoreHorizontal : mdiChevronDown} />
+          <Icon icon={local.search ? ChevronsUpDown : ChevronDown} />
         </span>
       </SelectionTrigger>
       <Show when={local.chips && keys().length ? local.chips : undefined}>

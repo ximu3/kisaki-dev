@@ -7,6 +7,7 @@ import { parseExtensionUiTranslationDefinition } from '@kisaki3/desktop-contract
 import { parse, format } from '@kisaki3/desktop-contracts/deeplink'
 import { parseThemeRef } from '@kisaki3/desktop-contracts/appearance'
 import { developmentProtocolVersion } from '@kisaki3/desktop-contracts/development'
+import { parseExtensionUiIcon } from '@kisaki3/desktop-contracts/ui'
 
 export const summary = {
   date: parsePartialDate({ year: 2004 }),
@@ -25,4 +26,5 @@ export const summary = {
   link: format(parse('kisaki://view/anime/external/bangumi/subject%2F123')),
   theme: parseThemeRef({ type: 'builtin', id: 'default' }).type,
   protocol: developmentProtocolVersion,
+  icon: parseExtensionUiIcon({ type: 'lucide', name: 'book-open' }),
 }

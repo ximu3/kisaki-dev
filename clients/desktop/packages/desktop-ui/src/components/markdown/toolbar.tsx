@@ -6,19 +6,20 @@ import type { EditorState } from '@codemirror/state'
 import type { EditorView } from '@codemirror/view'
 import { redoDepth, undoDepth } from '@codemirror/commands'
 import {
-  mdiCodeTags,
-  mdiFormatBold,
-  mdiFormatHeader2,
-  mdiFormatItalic,
-  mdiFormatListBulleted,
-  mdiFormatListChecks,
-  mdiFormatListNumbered,
-  mdiFormatQuoteClose,
-  mdiFormatStrikethrough,
-  mdiLinkVariant,
-  mdiRedo,
-  mdiUndo,
-} from '@mdi/js'
+  Code,
+  Bold,
+  Heading2,
+  Italic,
+  List,
+  ListTodo,
+  ListOrdered,
+  Quote,
+  Strikethrough,
+  Link,
+  Redo2,
+  Undo2,
+} from 'lucide-solid'
+import type { LucideIcon } from 'lucide-solid'
 import { createFocusNavigation } from '../../internal/focus'
 import { Icon } from '../../internal/icon/glyph'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../tooltip/parts'
@@ -26,19 +27,19 @@ import { runMarkdownCommand } from './commands'
 import type { MarkdownCommand } from './commands'
 import styles from './styles.module.css'
 
-const icons: Record<MarkdownCommand, string> = {
-  bold: mdiFormatBold,
-  italic: mdiFormatItalic,
-  strike: mdiFormatStrikethrough,
-  code: mdiCodeTags,
-  heading: mdiFormatHeader2,
-  bullet: mdiFormatListBulleted,
-  ordered: mdiFormatListNumbered,
-  quote: mdiFormatQuoteClose,
-  task: mdiFormatListChecks,
-  link: mdiLinkVariant,
-  undo: mdiUndo,
-  redo: mdiRedo,
+const icons: Record<MarkdownCommand, LucideIcon> = {
+  bold: Bold,
+  italic: Italic,
+  strike: Strikethrough,
+  code: Code,
+  heading: Heading2,
+  bullet: List,
+  ordered: ListOrdered,
+  quote: Quote,
+  task: ListTodo,
+  link: Link,
+  undo: Undo2,
+  redo: Redo2,
 }
 
 const standardCommands = Object.freeze(Object.keys(icons) as MarkdownCommand[])
@@ -94,7 +95,7 @@ function commandAction<C extends MarkdownCommand>(
       return label(command)
     },
     /** Renders the package-owned glyph for the built-in command. */
-    icon: () => <Icon path={icons[command]} />,
+    icon: () => <Icon icon={icons[command]} />,
 
     /** Checks undo or redo availability while leaving ordinary formatting commands enabled. */
     isEnabled: (state) => {

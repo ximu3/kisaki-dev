@@ -2,6 +2,7 @@
 
 import { createMemo, createSignal, lazy, Show } from 'solid-js'
 import type { JSX } from 'solid-js'
+import { Info } from 'lucide-solid'
 import { render } from 'solid-js/web'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { Link } from '@kisaki3/desktop-ui/link'
@@ -537,7 +538,7 @@ function Interactions(): JSX.Element {
         </Popover>
         <Tooltip>
           <TooltipTrigger variant="ghost" aria-label="Information">
-            ⓘ
+            <Info />
           </TooltipTrigger>
           <TooltipContent>
             Information about the sample. This text remains readable while hovered.

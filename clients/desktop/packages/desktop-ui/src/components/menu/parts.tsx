@@ -18,7 +18,7 @@ import { createValue } from '../../internal/state'
 import { createFocusNavigation, focusableItems } from '../../internal/focus'
 import { createPopup } from '../../internal/popup/controller'
 import { displayedWhileOpen } from '../../internal/popup/presentation'
-import { Icon, mdiCheck, mdiChevronRight } from '../../internal/icon/glyph'
+import { Icon, Check, ChevronRight } from '../../internal/icon/glyph'
 import { createSubmenuHover } from './hover'
 import { Button } from '../button/control'
 import { Separator } from '../separator/control'
@@ -396,7 +396,7 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
       <Show when={checked() !== undefined}>
         <span aria-hidden="true" class={row.mark}>
           <Show when={checked() === true}>
-            <Icon path={mdiCheck} />
+            <Icon icon={Check} />
           </Show>
         </span>
       </Show>
@@ -532,7 +532,7 @@ export function MenuSubTrigger(props: ButtonProps): JSX.Element {
     >
       {local.children}
       <span aria-hidden="true" class={styles.arrow}>
-        <Icon path={mdiChevronRight} />
+        <Icon icon={ChevronRight} />
       </span>
     </button>
   )

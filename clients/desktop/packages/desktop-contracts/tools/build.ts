@@ -4,6 +4,7 @@ import { join } from 'node:path'
 import { build } from 'tsdown'
 import { runCli } from '@kisaki3/tooling/cli'
 import { replaceOutput } from '@kisaki3/tooling/output'
+import { checkIconNames } from './generate-icon-names'
 
 /**
  * Builds package entries and declarations before adopting the candidate distribution.
@@ -12,6 +13,7 @@ import { replaceOutput } from '@kisaki3/tooling/output'
  */
 export async function buildPackage(signal?: AbortSignal): Promise<void> {
   const project = join(import.meta.dirname, '..')
+  await checkIconNames()
 
   await replaceOutput(
     project,

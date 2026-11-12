@@ -86,7 +86,7 @@ Worker 授权采用上述资源绑定与响应 CSP，不能仅依赖 webRequest�
 await context.ui.pages.register({
   id: 'account',
   title: 'Account',
-  icon: { type: 'mdi', name: 'account-circle' },
+  icon: { type: 'lucide', name: 'circle-user-round' },
   document: {
     root: 'ui',
     entry: 'account.html'
@@ -131,10 +131,16 @@ const view = await context.ui.dialogs.open({
 ## UI 图标值
 
 ```ts
-type ExtensionUiIcon = { type: 'mdi'; name: string } | { type: 'file'; path: string }
+type ExtensionUiIcon =
+  | { type: 'lucide'; name: LucideIconName }
+  | { type: 'file'; path: string }
 ```
 
-mdi 使用应用固定版本图标目录中的名称，file 使用所属扩展包内的 SVG、PNG 等受控资源。MDI 以 SVG 资源按需加载。宿主统一图标槽位、对齐、状态与回退，品牌图片保留自身比例和颜色。是否必须提供图标，由具体贡献合同决定。ExtensionUiIcon 不接受组件或渲染函数。
+lucide 使用[固定版本](../engineering/workspace.md#solid)完整目录中的名称，如 book-open；LucideIconName 与运行时校验从同一上游目录生成，包含该版本公开的名称和别名。名称采用目录中的拼写，未知名称在输入边界拒绝。SDK 的纯作者入口直接采用这一合同，登记值不携带组件、回调或图形节点。
+
+宿主离线交付同版完整目录，按名称加载图形。静态界面使用具名组件，动态贡献通过官方目录取得相应图形，按需进入呈现；目录交付不要求首屏加载全部组件。图库升级时同步组件依赖、名称生成与资源，核对名称变化和已声明的宿主兼容范围。目录依据见 [Lucide 数据与动态入口](https://lucide.dev/guide/icons)。
+
+file 使用所属扩展包内的 SVG、PNG 等受控资源。宿主统一图标槽位、对齐、状态与回退，品牌图片保留自身比例和颜色。是否必须提供图标，由具体贡献合同决定。本地 renderer 或 Webview 的组件组合遵守[公共 UI 的图标规则](../ui/package.md#icons)。
 
 运行时 ExtensionUiIcon 与 manifest、registry 的品牌图标分别使用自己的资源合同。页面、菜单和导航按登记元数据呈现。
 

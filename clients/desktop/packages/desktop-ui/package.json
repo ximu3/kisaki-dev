@@ -168,7 +168,6 @@
     "@floating-ui/dom": "1.8.0",
     "@kisaki3/desktop-appearance": "workspace:^",
     "@lezer/highlight": "1.2.5",
-    "@mdi/js": "7.4.47",
     "@mdit/plugin-footnote": "1.1.3",
     "@mdit/plugin-tasklist": "1.1.4",
     "@tanstack/solid-virtual": "3.13.48",
@@ -178,6 +177,7 @@
     "@unovis/ts": "1.7.1",
     "csstype": "3.2.3",
     "culori": "4.0.2",
+    "lucide-solid": "1.72.0",
     "markdown-it": "15.0.3"
   },
   "devDependencies": {

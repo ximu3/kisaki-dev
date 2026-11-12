@@ -32,6 +32,8 @@ desktop-rpc 从包根导出 `RpcConnection`、传输接口和帧合同。接入�
 
 desktop-contracts 按业务子路径导出显式接口、值校验与规范编码。类型、校验和操作按主题就近维护，多文件公开入口位于主题目录内。纯单测随源码放置，真实消费者与其样板保留在所属包的 tests 中。本体业务实现按所属工作包建立。
 
+Lucide 名称目录由 desktop-contracts 的 `tools/generate-icon-names.ts` 从固定依赖生成，`pnpm --filter @kisaki3/desktop-contracts run generate:icon-names` 更新 `src/ui/icons/names.generated.ts`。普通 build 核对生成一致性；公开纯合同只携带名称和校验，不加载图形目录。desktop-ui 以 lucide-solid 组件呈现本地图标。
+
 desktop-localization 的英语 ICU 源文位于 src/en，按领域维护并由 index.ts 静态汇总；`pnpm --filter @kisaki3/desktop-localization run generate:messages` 更新 src/contracts.generated.ts。普通 build 校验消息声明与英语源文一致，再交接完整构建结果。`createTranslator(locale, catalog)` 创建独立格式化快照；有效语言、译本登记和响应式接入由后续本体工作包实现。生成源由生成器负责排版。
 
 桌面 `tools/build` 接收明确的程序输入，完成整份候选后交接；`tools/resources`、`tools/native` 与 `tools/package` 分别拥有资源、原生编译和打包。跨工作流的路径、目标、运行清单和摘要归 `tools/lib`，跨工程机制归 `@kisaki3/tooling`。原生调用通过 `#native` 加载明确的绝对制品路径，失败保留原始原因。

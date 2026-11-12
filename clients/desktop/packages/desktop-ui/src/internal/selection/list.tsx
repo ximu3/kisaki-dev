@@ -3,7 +3,7 @@
 import { createEffect, createSignal, For, onCleanup, onMount, Show } from 'solid-js'
 import type { Accessor, JSX } from 'solid-js'
 import { classes } from '../dom'
-import { Icon, mdiCheck } from '../icon/glyph'
+import { Icon, Check } from '../icon/glyph'
 import { createPopup } from '../popup/controller'
 import { displayedWhileOpen } from '../popup/presentation'
 import type { SelectionPopup } from './popup'
@@ -142,7 +142,7 @@ export function SelectionList(props: ListProps): JSX.Element {
         </span>
         <span class={row.mark}>
           <Show when={selected().includes(option.value)}>
-            <Icon path={mdiCheck} />
+            <Icon icon={Check} />
           </Show>
         </span>
       </div>

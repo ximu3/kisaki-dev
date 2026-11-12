@@ -6,7 +6,7 @@ import { assignRef, callHandler, classes } from '../../internal/dom'
 import { fieldAttributes } from '../../internal/field'
 import { bindCheckedControl } from '../../internal/checked-control'
 import type { CheckedValueProps } from '../../internal/checked-control'
-import { Icon, mdiCheck, mdiMinus } from '../../internal/icon/glyph'
+import { Icon, Check, Minus } from '../../internal/icon/glyph'
 import { ChoiceRow } from '../../internal/choice/row'
 import styles from './styles.module.css'
 
@@ -65,8 +65,8 @@ export function Checkbox(props: CheckboxProps): JSX.Element {
             callHandler(local.onChange, event)
           }}
         />
-        <Icon path={mdiCheck} class={styles.check} />
-        <Icon path={mdiMinus} class={styles.mixed} />
+        <Icon icon={Check} class={styles.check} />
+        <Icon icon={Minus} class={styles.mixed} />
       </span>
     </ChoiceRow>
   )

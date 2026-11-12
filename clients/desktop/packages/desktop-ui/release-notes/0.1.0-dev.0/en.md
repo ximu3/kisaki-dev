@@ -13,3 +13,5 @@ Install one Toaster per document and call `toast.show` from UI code. Messages su
 Dedicated subpaths provide CodeMirror Markdown editing, safe previews, Unovis charts and Pragmatic Drag and Drop integration with automatic scrolling and compact drag previews. Markdown formatting actions use a compact tinted toolbar with foreground hover feedback. Chart tooltips fade on visibility changes and follow the pointer directly. String templates render as text, and structured tooltips can return an HTMLElement.
 
 Runtime support follows the desktop Chromium baseline.
+
+System icons use Lucide components with shared sizing, proportional strokes, inherited color and decorative accessibility. Consumers can compose the same Solid icon components in local content and toolbar actions.
