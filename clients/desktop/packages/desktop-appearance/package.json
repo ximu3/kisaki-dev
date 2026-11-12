@@ -34,10 +34,12 @@
     "./tailwind.css": "./dist/tailwind.css"
   },
   "scripts": {
+    "prepare:build": "kisaki-package prepare-build",
     "build": "tsx tools/build.ts",
     "pack": "kisaki-package pack",
     "typecheck": "tsc -b",
     "lint": "eslint . --max-warnings 0",
+    "check:boundaries": "pnpm --workspace-root exec tsx tools/boundaries.ts clients/desktop/packages/desktop-appearance",
     "test": "vitest run",
     "test:consumers": "vitest run --config config/vitest/consumers.ts",
     "check:package": "kisaki-package check",

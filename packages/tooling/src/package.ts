@@ -1,30 +1,24 @@
 #!/usr/bin/env -S node --import tsx
-/** @fileoverview Packs one project and checks the exact tarball consumed by external tests. */
+/** @fileoverview Prepares public outputs and checks the tarball consumed by external package tests. */
 
 import { createRequire } from 'node:module'
-import { readFile } from 'node:fs/promises'
+import { mkdir, readFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { parseArgs } from 'node:util'
 import { publint } from 'publint'
 import { formatMessage } from 'publint/utils'
 import { runCli } from './cli'
-import { replaceOutput } from './output'
+import { removeOutputs } from './output'
 import { run, runPnpm } from './process'
 
 /**
- * Creates a pnpm tarball and adopts it after packing finishes.
- *
- * Preparation failure or cancellation before handoff preserves the previous archive.
+ * Creates the tarball consumed by package checks in a clean, disposable output directory.
  */
 async function packPackage(project: string, signal: AbortSignal): Promise<void> {
-  await replaceOutput(
-    project,
-    'out/package',
-    async (candidate) => {
-      await runPnpm(['pack', '--out', join(candidate, 'package.tgz')], { cwd: project, signal })
-    },
-    signal,
-  )
+  await removeOutputs(project, ['out/package'], signal)
+  const directory = join(project, 'out/package')
+  await mkdir(directory, { recursive: true })
+  await runPnpm(['pack', '--out', join(directory, 'package.tgz')], { cwd: project, signal })
 }
 
 /**
@@ -61,15 +55,17 @@ async function checkPackage(project: string, signal: AbortSignal): Promise<void>
 await runCli(async (signal) => {
   const { positionals } = parseArgs({ allowPositionals: true })
   if (positionals.length !== 1) {
-    throw new Error('Usage: kisaki-package <pack|check>')
+    throw new Error('Usage: kisaki-package <prepare-build|pack|check>')
   }
 
   const operation = positionals[0]
-  if (operation === 'pack') {
+  if (operation === 'prepare-build') {
+    await removeOutputs(process.cwd(), ['dist'], signal)
+  } else if (operation === 'pack') {
     await packPackage(process.cwd(), signal)
   } else if (operation === 'check') {
     await checkPackage(process.cwd(), signal)
   } else {
-    throw new Error('Usage: kisaki-package <pack|check>')
+    throw new Error('Usage: kisaki-package <prepare-build|pack|check>')
   }
 })

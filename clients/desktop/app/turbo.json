@@ -166,7 +166,7 @@
         "!native/**/*.test.ts",
         "!config/typescript/tsconfig.tests.json"
       ],
-      "outputs": ["out/**"],
+      "outputs": ["out/windows-*/**", "out/macos-*/**", "out/linux-*/**"],
       "cache": false
     },
     "package:fixture": {

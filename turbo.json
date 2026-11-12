@@ -12,7 +12,7 @@
       "cache": false
     },
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "prepare:build"],
       "inputs": [
         "$TURBO_DEFAULT$",
         "!**/*.md",
@@ -83,19 +83,6 @@
       "inputs": ["$TURBO_DEFAULT$", "!**/*.md"],
       "cache": false
     },
-    "//#check:boundaries": {
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        "!**/*.md",
-        "!**/*.test.ts",
-        "!**/*.test.tsx",
-        "!**/tests/**/fixtures/**",
-        "!refactor/**",
-        "!.github/**"
-      ],
-      "dependsOn": ["^build"],
-      "outputs": []
-    },
     "pack": {
       "dependsOn": ["build"],
       "inputs": ["package.json", "LICENSE", "NOTICE", "release-notes/**"],
@@ -106,6 +93,41 @@
       "dependsOn": ["check:package"],
       "inputs": ["$TURBO_DEFAULT$", "!**/*.md", "!src/**/*.test.ts", "!src/**/*.test.tsx"],
       "cache": false
+    },
+    "prepare:build": {
+      "cache": false,
+      "inputs": ["package.json"],
+      "outputs": []
+    },
+    "check:boundaries": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!**/*.md",
+        "!**/*.test.ts",
+        "!**/*.test.tsx",
+        "!tests/**/fixtures/**",
+        "$TURBO_ROOT$/.dependency-cruiser.json",
+        "$TURBO_ROOT$/tools/boundaries.ts",
+        "$TURBO_ROOT$/tsconfig.json",
+        "$TURBO_ROOT$/config/typescript/**"
+      ],
+      "outputs": []
+    },
+    "//#root:boundaries": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "package.json",
+        "tsconfig.json",
+        "config/typescript/**",
+        "*.config.ts",
+        "config/**/*.ts",
+        "tools/**/*.ts",
+        "tests/**/*.ts",
+        "tests/**/*.tsx",
+        ".dependency-cruiser.json"
+      ],
+      "outputs": []
     }
   }
 }

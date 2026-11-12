@@ -1,24 +1,25 @@
 /**
  * @fileoverview Assembles a finite desktop runtime from complete program, resource and
- * native outputs and records its build manifest before replacing the previous output.
+ * native outputs and records the completed build manifest.
  */
 
+import { randomUUID } from 'node:crypto'
 import { copyFile, cp, mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import electronManifest from 'electron/package.json' with { type: 'json' }
 import { appRoot, buildDirectory } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
 import type { DesktopBuild, DesktopTarget } from '../lib/runtime-manifest'
-import { replaceOutput } from '@kisaki3/tooling/output'
-import { runtimeFiles, buildInputIdentity } from './identity'
+import { removeOutputs } from '@kisaki3/tooling/output'
+import { runtimeFiles } from './files'
 import { buildProgram, programNames } from './programs'
 
 /**
  * Assembles a complete desktop runtime from prepared resources and native bindings.
  *
  * Requires the target's own runner. Waits for all program compilers, verifies required outputs and
- * a stable input identity, then adopts the directory and returns its manifest. Preparation failure
- * or cancellation before handoff preserves the previous runtime.
+ * the completed file set, then writes and returns the build manifest. Failed or cancelled
+ * builds are not consumable.
  */
 export async function buildDesktop(
   sourceRoot: string,
@@ -31,99 +32,94 @@ export async function buildDesktop(
 
   const output = buildDirectory(target)
 
-  return replaceOutput(
-    appRoot,
-    output,
-    async (staging) => {
-      const buildId = await buildInputIdentity({ signal })
-      const manifest = JSON.parse(await readFile(join(appRoot, 'package.json'), 'utf8')) as {
-        name: string
-        version: string
-        type: string
-        description: string
-        homepage: string
-        author: { name: string; email: string }
-        license: string
-      }
+  await removeOutputs(appRoot, [output], signal)
+  await mkdir(output, { recursive: true })
 
-      const resources = join(appRoot, 'out', 'resources', target)
-      const native = join(appRoot, 'out', 'native', target)
+  const buildId = randomUUID()
+  const manifest = JSON.parse(await readFile(join(appRoot, 'package.json'), 'utf8')) as {
+    name: string
+    version: string
+    type: string
+    description: string
+    homepage: string
+    author: { name: string; email: string }
+    license: string
+  }
 
-      await cp(resources, join(staging, 'resources'), { recursive: true })
-      await mkdir(join(staging, 'resources', 'native'), { recursive: true })
-      for (const file of ['kisaki-native.node', 'native.json']) {
-        await copyFile(join(native, file), join(staging, 'resources', 'native', file))
-      }
+  const resources = join(appRoot, 'out', 'resources', target)
+  const native = join(appRoot, 'out', 'native', target)
 
-      // Wait for every compiler to finish before candidate cleanup can begin.
-      const results = await Promise.allSettled(
-        programNames.map((program) =>
-          buildProgram(sourceRoot, program, join(staging, program), buildId),
-        ),
-      )
-      const failures = results.filter((result) => result.status === 'rejected')
-      if (failures.length) {
-        throw new AggregateError(
-          failures.map((result): unknown => result.reason),
-          'Desktop program compilation failed',
-        )
-      }
-
-      await writeFile(
-        join(staging, 'package.json'),
-        JSON.stringify(
-          {
-            name: manifest.name,
-            version: manifest.version,
-            type: manifest.type,
-            main: 'main/entry.js',
-            desktopName: 'me.kisaki.desktop',
-            description: manifest.description,
-            homepage: manifest.homepage,
-            author: manifest.author,
-            license: manifest.license,
-          },
-          null,
-          2,
-        ),
-      )
-
-      const files = await runtimeFiles(staging)
-      for (const required of [
-        'main/entry.js',
-        'extension-host/entry.js',
-        'preload/main.cjs',
-        'preload/reader.cjs',
-        'preload/player.cjs',
-        'preload/game-panel.cjs',
-        'renderer/main/index.html',
-        'renderer/reader/index.html',
-        'renderer/player/index.html',
-        'renderer/game-panel/index.html',
-        'resources/native/kisaki-native.node',
-        'resources/native/better-sqlite3.node',
-      ]) {
-        if (!files[required]) {
-          throw new Error(`Desktop build is missing ${required}`)
-        }
-      }
-
-      const build: DesktopBuild = {
-        schemaVersion: 1,
-        buildId,
-        target,
-        version: manifest.version,
-        electronVersion: electronManifest.version,
-        files,
-      }
-      if ((await buildInputIdentity({ signal })) !== buildId) {
-        throw new Error('Desktop inputs changed during the build; the previous output is retained')
-      }
-
-      await writeFile(join(staging, 'build.json'), JSON.stringify(build, null, 2))
-
-      return build
-    },
-    signal,
+  await cp(resources, join(output, 'resources'), { recursive: true })
+  await mkdir(join(output, 'resources', 'native'), { recursive: true })
+  await copyFile(
+    join(native, 'kisaki-native.node'),
+    join(output, 'resources', 'native', 'kisaki-native.node'),
   )
+
+  // Wait for every compiler before reporting completion or failure.
+  const results = await Promise.allSettled(
+    programNames.map((program) =>
+      buildProgram(sourceRoot, program, join(output, program), buildId),
+    ),
+  )
+  const failures = results.filter((result) => result.status === 'rejected')
+  if (failures.length) {
+    throw new AggregateError(
+      failures.map((result): unknown => result.reason),
+      'Desktop program compilation failed',
+    )
+  }
+
+  await writeFile(
+    join(output, 'package.json'),
+    JSON.stringify(
+      {
+        name: manifest.name,
+        version: manifest.version,
+        type: manifest.type,
+        main: 'main/entry.js',
+        desktopName: 'me.kisaki.desktop',
+        description: manifest.description,
+        homepage: manifest.homepage,
+        author: manifest.author,
+        license: manifest.license,
+      },
+      null,
+      2,
+    ),
+  )
+
+  const files = await runtimeFiles(output)
+  for (const required of [
+    'main/entry.js',
+    'extension-host/entry.js',
+    'preload/main.cjs',
+    'preload/reader.cjs',
+    'preload/player.cjs',
+    'preload/game-panel.cjs',
+    'renderer/main/index.html',
+    'renderer/reader/index.html',
+    'renderer/player/index.html',
+    'renderer/game-panel/index.html',
+    'resources/native/kisaki-native.node',
+    'resources/native/better-sqlite3.node',
+  ]) {
+    if (!files[required]) {
+      throw new Error(`Desktop build is missing ${required}`)
+    }
+  }
+
+  const build: DesktopBuild = {
+    schemaVersion: 1,
+    buildId,
+    target,
+    version: manifest.version,
+    electronVersion: electronManifest.version,
+    files,
+  }
+  signal?.throwIfAborted()
+
+  await writeFile(join(output, 'build.json'), JSON.stringify(build, null, 2))
+
+  return build
 }

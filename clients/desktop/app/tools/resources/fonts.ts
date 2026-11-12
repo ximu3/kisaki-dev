@@ -14,10 +14,9 @@ export interface FontInput {
 }
 
 /**
- * Copies selected font files and notices from locked dependencies into the candidate font
- * directory.
+ * Copies selected font files and notices from locked dependencies into the target font directory.
  *
- * The caller owns candidate cleanup and inventories the completed resource bytes.
+ * The resource workflow owns the output directory; the final build inventories its runtime bytes.
  */
 export async function copyFonts(fontInputs: FontInput[], output: string): Promise<void> {
   for (const font of fontInputs) {

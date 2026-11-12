@@ -1,11 +1,8 @@
-/**
- * @fileoverview Compiles desktop programs with their Vite configurations and records the
- * source modules used by the compiler.
- */
+/** @fileoverview Configures and compiles desktop programs through Vite's public build API. */
 
 import { build, loadConfigFromFile } from 'vite'
 import type { InlineConfig } from 'vite'
-import { isAbsolute, join } from 'node:path'
+import { join } from 'node:path'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
 /** Independently compiled desktop programs with separate runtime environments. */
@@ -13,12 +10,7 @@ export const programNames = ['main', 'preload', 'extension-host', 'renderer'] as
 /** Identity of one independently compiled desktop runtime program. */
 export type ProgramName = (typeof programNames)[number]
 
-/** Absolute compiler module IDs retained for development input tracking. */
-export interface ProgramBuild {
-  modules: string[]
-}
-
-/** Creates the shared finite-build configuration for a desktop program and output directory. */
+/** Creates a program's Vite configuration with its output directory and shared build identity. */
 export function programConfig(
   sourceRoot: string,
   program: ProgramName,
@@ -32,72 +24,20 @@ export function programConfig(
     mode,
     define: { __KISAKI_BUILD_ID__: JSON.stringify(buildId) },
     build: { outDir: outputDirectory, emptyOutDir: true },
-    plugins: [
-      {
-        name: 'desktop-finite-build',
-        /** Rejects watch mode so the finite build can settle and release output ownership. */
-        configResolved(config) {
-          if (config.build.watch) {
-            throw new Error('Finite program builds do not support watch mode')
-          }
-        },
-      },
-    ],
   }
 }
 
-/**
- * Compiles a complete program into its caller-owned candidate directory.
- *
- * Builds preload entries separately as CommonJS files. Returns the absolute module IDs reported by
- * the completed builds.
- */
-export async function buildProgram(
+/** Resolves current program entries, giving each sandbox preload its own self-contained build. */
+export async function programConfigurations(
   sourceRoot: string,
   program: ProgramName,
   outputDirectory: string,
   buildId: string,
-  mode: 'development' | 'production' = 'production',
-): Promise<ProgramBuild> {
+  mode: 'development' | 'production',
+): Promise<InlineConfig[]> {
   const config = programConfig(sourceRoot, program, outputDirectory, buildId, mode)
-  const modules = new Set<string>()
-
-  /**
-   * Compiles one Vite configuration and records absolute module IDs.
-   *
-   * An unexpected watcher is closed before its finite-build failure is reported.
-   */
-  async function compile(options: InlineConfig): Promise<void> {
-    const result = await build(options)
-    const bundles = Array.isArray(result) ? result : [result]
-
-    for (const bundle of bundles) {
-      if (!('output' in bundle)) {
-        return rethrowAfterCleanup(
-          new Error('A finite program build returned a watcher'),
-          () => bundle.close(),
-          'Unexpected build watcher cleanup failed',
-        )
-      }
-
-      for (const chunk of bundle.output) {
-        if (chunk.type !== 'chunk') {
-          continue
-        }
-
-        for (const path of Object.keys(chunk.modules)) {
-          if (isAbsolute(path)) {
-            modules.add(path)
-          }
-        }
-      }
-    }
-  }
-
   if (program !== 'preload') {
-    await compile(config)
-
-    return { modules: [...modules] }
+    return [config]
   }
 
   const loaded = await loadConfigFromFile({ command: 'build', mode }, config.configFile, sourceRoot)
@@ -106,18 +46,56 @@ export async function buildProgram(
     throw new Error('Preload configuration must provide named entries')
   }
 
-  let first = true
-  for (const [name, entry] of Object.entries(library.entry)) {
-    await compile({
-      ...config,
-      build: {
-        ...config.build,
-        emptyOutDir: first,
-        lib: { entry, fileName: () => `${name}.cjs` },
+  return Object.entries(library.entry).map(([name, entry], index) => ({
+    ...config,
+    build: {
+      ...config.build,
+      emptyOutDir: index === 0,
+      lib: {
+        ...library,
+        entry,
+        /** Keeps this sandbox preload in its declared single-file CommonJS entry. */
+        fileName: () => `${name}.cjs`,
       },
-    })
-    first = false
-  }
+    },
+  }))
+}
 
-  return { modules: [...modules] }
+/** Compiles the current program entries and waits for all finite output writes to finish. */
+export async function buildProgram(
+  sourceRoot: string,
+  program: ProgramName,
+  outputDirectory: string,
+  buildId: string,
+  mode: 'development' | 'production' = 'production',
+): Promise<void> {
+  for (const config of await programConfigurations(
+    sourceRoot,
+    program,
+    outputDirectory,
+    buildId,
+    mode,
+  )) {
+    const result = await build({
+      ...config,
+      plugins: [
+        {
+          name: 'desktop-finite-build',
+          /** Keeps this finite entry from acquiring a persistent compiler. */
+          configResolved(resolved) {
+            if (resolved.build.watch) {
+              throw new Error('Finite program builds do not support watch mode')
+            }
+          },
+        },
+      ],
+    })
+    if (!Array.isArray(result) && !('output' in result)) {
+      return rethrowAfterCleanup(
+        new Error('A finite program build returned a watcher'),
+        () => result.close(),
+        'Unexpected build watcher cleanup failed',
+      )
+    }
+  }
 }

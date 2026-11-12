@@ -1,8 +1,6 @@
-/**
- * @fileoverview Owns one development session's build generations, input watchers, renderer
- * server and application lifecycle.
- */
+/** @fileoverview Coordinates native compilers, preparation workflows and one development application. */
 
+import { randomUUID } from 'node:crypto'
 import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import { isAbsolute, join } from 'node:path'
 import { debuglog } from 'node:util'
@@ -10,15 +8,16 @@ import { runPnpm } from '@kisaki3/tooling/process'
 import { isCancellation, rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 import { appRoot, repositoryRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
+import { prepareResources } from '../resources/prepare'
+import { buildNative } from '../native/build'
 import { startRenderer } from './renderer'
 import { startInputWatcher } from './inputs'
-import { buildInputIdentity } from '../build/identity'
-import { prepareResources } from '../resources/prepare'
+import type { PreparationChange } from './inputs'
 import { electronExecutable } from './electron-executable'
-import { captureDependencies, desktopDependencies } from './dependencies'
-import { buildGeneration, programInputsChanged } from './generation'
-import type { GenerationOutput } from './generation'
-import type { DependencySnapshot } from './dependencies'
+import { desktopDependencies } from './dependencies'
+import { prepareGeneration } from './generation'
+import { watchPrograms } from './programs'
+import type { ProgramWatch } from './programs'
 
 const debug = debuglog('kisaki:development')
 
@@ -61,7 +60,7 @@ export interface DevelopmentBuild {
 }
 
 /**
- * Watching session owning a renderer, input watchers and successive application generations.
+ * Watching session owning a renderer, input watchers and the application processes started from completed compiler output.
  *
  * The caller closes this handle even if readiness fails. Persistent profiles remain caller-owned.
  */
@@ -114,11 +113,10 @@ export interface DevelopmentOptions {
 }
 
 /**
- * Starts a watching development session and returns its lifecycle handle.
+ * Starts a source development session with Vite-owned program compilation and renderer HMR.
  *
- * Initial tool and resource preparation completes before return. The first application build runs
- * asynchronously; ready identifies its usable launch. The caller uses stop or terminate to finish
- * ownership of the returned session.
+ * Preparation errors remain observable and can recover after another input change. The returned
+ * session owns every compiler, server and process until stop or terminate finishes.
  */
 export async function startDevelopmentSession(
   options: DevelopmentOptions,
@@ -126,58 +124,59 @@ export async function startDevelopmentSession(
   if (!isAbsolute(options.sourceRoot)) {
     throw new Error('Development source root must be an absolute path')
   }
-  const target = hostTarget()
   const profile = options.profile ?? join(appRoot, '.local', 'development')
   if (!isAbsolute(profile)) {
     throw new Error('Development profile must be an absolute path')
   }
-
   options.signal?.throwIfAborted()
 
+  const target = hostTarget()
+  const buildId = randomUUID()
   const controller = new AbortController()
-  /** Forwards caller cancellation while the first application is still being prepared. */
-  const cancelPreparation = () => controller.abort(options.signal?.reason)
-  options.signal?.addEventListener('abort', cancelPreparation, { once: true })
   const signal = controller.signal
+  let session: DevelopmentSession | undefined
+  /** Forwards cancellation until the first application is ready. */
+  const cancelPreparation = () => {
+    controller.abort(options.signal?.reason)
+    void session?.stop().catch((cause: unknown) => options.onState?.('failed', cause))
+  }
+  options.signal?.addEventListener('abort', cancelPreparation, { once: true })
 
   let directory: string | undefined
-  let rendererToClose: Awaited<ReturnType<typeof startRenderer>> | undefined
-  let inputsToClose: Awaited<ReturnType<typeof startInputWatcher>> | undefined
-  let child: DevelopmentApplication | undefined
+  let renderer: Awaited<ReturnType<typeof startRenderer>> | undefined
+  let inputs: Awaited<ReturnType<typeof startInputWatcher>> | undefined
+  let compilers: ProgramWatch | undefined
 
   try {
-    const parent = join(appRoot, 'out', 'development', target)
+    const parent = join(appRoot, 'out/development', target)
     await mkdir(parent, { recursive: true })
     const sessionDirectory = await mkdtemp(join(parent, 'session-'))
     directory = sessionDirectory
-
+    const compilerDirectory = join(sessionDirectory, 'compiler')
     await mkdir(profile, { recursive: true })
-
-    const members = await desktopDependencies(signal)
     electronExecutable()
-    await prepareResources(target, signal)
+    let members = await desktopDependencies(signal)
+    renderer = await startRenderer(options.sourceRoot, members, buildId)
+    let rendererAddress = renderer.resolvedUrls!.local[0]!
 
-    const tasks = ['run', 'build', '--filter=@kisaki3/desktop^...']
-    const snapshotDirectory = join(sessionDirectory, 'dependencies')
-    const renderer = await startRenderer(options.sourceRoot, members, snapshotDirectory)
-    rendererToClose = renderer
-    signal.throwIfAborted()
-
+    let child: DevelopmentApplication | undefined
     let current: DevelopmentBuild | undefined
-    let stopping = false
-    let replacing = false
-    let stopped = false
-    let resourceFailed = false
-    // An abnormal main exit cannot confirm that every runtime reader has stopped.
-    let retainOutputs = false
-    let stopPromise: Promise<'cancelled' | 'stopped'> | undefined
-
-    let buildPending = false
-    let buildLoop: Promise<void> | undefined
-    let shutdownFailures: unknown[] = []
     let generation = 0
-    let forceRuntimeBuild = true
-    let programInputs = new Map<string, string>()
+    let adopted: { compiler: ProgramWatch; revision: number } | undefined
+    let runtimeChanged = true
+    let replacing = false
+    let retainOutputs = false
+
+    let stopping = false
+    let stopped = false
+    let terminalFailure = false
+    let stopPromise: Promise<'cancelled' | 'stopped'> | undefined
+    const shutdownFailures: unknown[] = []
+
+    let workLoop: Promise<void> | undefined
+    let waitForChange = false
+    let requestVersion = 0
+    const pending = new Set<PreparationChange | 'runtime'>(['packages', 'resources', 'native'])
 
     let resolveReady!: () => void
     let rejectReady!: (cause: unknown) => void
@@ -191,237 +190,233 @@ export async function startDevelopmentSession(
       resolveClosed = resolve
       rejectClosed = reject
     })
-
-    // Stop can precede the caller's first await of these lifecycle promises.
     void ready.catch(() => undefined)
     void closed.catch(() => undefined)
 
-    /**
-     * Stops future adoption after a session-level resource failure while retaining the current
-     * application's ownership.
-     */
+    /** Reports a nonrecoverable watcher failure while preserving ownership of active resources. */
     function failSession(cause: unknown): void {
-      resourceFailed = true
-      buildPending = false
+      terminalFailure = true
+      pending.clear()
       rejectReady(cause)
+      shutdownFailures.push(cause)
       options.onState?.('failed', cause)
     }
 
-    /**
-     * Prepares current dependencies and, when needed, a new application generation.
-     *
-     * Adopts complete candidates, waits for normal exit before replacement, and releases unused
-     * candidates. Reports recoverable failures while retaining any still-owned application and
-     * unconfirmed-reader outputs.
-     */
-    async function rebuild(): Promise<void> {
-      options.onState?.('building')
-      generation += 1
-      const candidate = join(sessionDirectory, `generation-${generation}`)
-      let launching = false
-      let dependencies: DependencySnapshot | undefined
-      let failure: unknown
+    /** Rebuilds compiler watchers after the current configuration has been prepared. */
+    async function startCompilers(): Promise<void> {
+      compilers = await watchPrograms(
+        options.sourceRoot,
+        compilerDirectory,
+        buildId,
+        (state, cause) => {
+          if (stopping || stopped || terminalFailure) {
+            return
+          }
+          if (state === 'ready') {
+            enqueue('runtime')
+          } else {
+            options.onState?.(state, cause)
+          }
+        },
+      )
+      runtimeChanged = true
+    }
 
-      /**
-       * Transfers the prepared dependency copy to the renderer, including refresh and cleanup
-       * failure paths.
-       */
-      async function adoptDependencies(): Promise<void> {
-        const next = dependencies!
-        dependencies = undefined
-        await renderer.adopt(next)
+    /** Launches one completed compiler batch and releases the previous runtime after its readers exit. */
+    async function restartApplication(): Promise<void> {
+      const owner = compilers
+      const batch = owner?.current
+      if (stopping || !owner || !batch) {
+        return
+      }
+      if (!runtimeChanged && adopted?.compiler === owner && adopted.revision === batch.revision) {
+        options.onState?.('ready')
+        return
+      }
+
+      const candidate = join(sessionDirectory, `runtime-${++generation}`)
+      /** Releases an unused runtime before any process takes ownership. */
+      const discard = () => rm(candidate, { recursive: true, force: true })
+      /** Checks the compiler completion token before handing its copied output to a process. */
+      const isCurrent = () =>
+        !stopping && owner === compilers && owner.current?.revision === batch.revision
+      let prepared = false
+
+      try {
+        await prepareGeneration(compilerDirectory, batch.files, target, candidate)
+        if (isCurrent()) {
+          const previous = current?.directory
+          if (child) {
+            replacing = true
+            try {
+              if ((await child.stop()) === 'cancelled') {
+                throw new Error('Source application restart was cancelled')
+              }
+            } finally {
+              replacing = false
+            }
+          }
+          child = undefined
+          current = undefined
+          if (previous && !retainOutputs) {
+            await rm(previous, { recursive: true, force: true })
+          }
+          signal.throwIfAborted()
+          prepared = isCurrent()
+        }
+      } catch (cause) {
+        return rethrowAfterCleanup(cause, discard, 'Runtime preparation and cleanup failed')
+      }
+      if (!prepared) {
+        await discard()
+        return
       }
 
       try {
-        await runPnpm(['exec', 'turbo', ...tasks], { cwd: repositoryRoot, signal })
-
-        dependencies = await captureDependencies(members, snapshotDirectory)
-
-        const forced = forceRuntimeBuild
-        forceRuntimeBuild = false
-        let runtime: GenerationOutput | undefined
-        if (!current || forced || (await programInputsChanged(programInputs))) {
-          runtime = await buildGeneration(options.sourceRoot, target, candidate, signal)
-          if (runtime.buildId !== (await buildInputIdentity({ signal }))) {
-            buildPending = !stopping && !resourceFailed
-            return
-          }
-        }
-
-        if (stopping || resourceFailed) {
-          return
-        }
-
-        if (!runtime) {
-          await adoptDependencies()
-          if (!resourceFailed) {
-            options.onState?.('ready')
-          }
-          return
-        }
-
-        const previous = current?.directory
-        if (child) {
-          replacing = true
-          try {
-            if ((await child.stop()) === 'cancelled') {
-              throw new Error('Source application restart was cancelled')
-            }
-          } finally {
-            replacing = false
-          }
-        }
-
-        child = undefined
-        current = undefined
-
-        signal.throwIfAborted()
-        if (stopping || resourceFailed) {
-          return
-        }
-
-        await adoptDependencies()
-        signal.throwIfAborted()
-        if (stopping || resourceFailed) {
-          return
-        }
-
-        launching = true
         child = await options.launch({
           executable: electronExecutable(),
-          args: [join(candidate, 'main', 'entry.js'), `--renderer-url=${renderer.url}`],
+          args: [join(candidate, 'main/entry.js'), `--renderer-url=${rendererAddress}`],
           cwd: appRoot,
           profile,
-          buildId: runtime.buildId,
+          buildId,
           signal,
           startupTimeoutMs: 30_000,
         })
-        current = { buildId: runtime.buildId, directory: candidate, processId: child.pid }
-
-        const launched = child
-        void launched.exited.then((result) => {
-          if (result.code !== 0) {
-            retainOutputs = true
-          }
-
-          if (child !== launched || replacing || stopping) {
-            return
-          }
-
-          child = undefined
-          current = undefined
-          if (result.code !== 0) {
-            options.onState?.('failed', new Error('Development application exited unsuccessfully'))
-          }
-
-          void session.stop().catch((cause: unknown) => options.onState?.('failed', cause))
-        }, failSession)
-
-        programInputs = runtime.inputs
-        if (previous && !retainOutputs) {
-          await rm(previous, { recursive: true, force: true })
-        }
-        if (resourceFailed) {
-          return
-        }
-
-        options.signal?.removeEventListener('abort', cancelPreparation)
-        options.onState?.('ready')
-        resolveReady()
       } catch (cause) {
-        forceRuntimeBuild = true
-        failure = cause
-        if (launching) {
+        retainOutputs = true
+        throw cause
+      }
+      current = { buildId, directory: candidate, processId: child.pid }
+      adopted = { compiler: owner, revision: batch.revision }
+      runtimeChanged = false
+
+      const launched = child
+      void launched.exited.then((result) => {
+        if (result.code !== 0) {
           retainOutputs = true
         }
-      } finally {
-        const unused = []
-        if (!launching && current?.directory !== candidate) {
-          unused.push(candidate)
+        if (child !== launched || replacing || stopping) {
+          return
         }
-        if (dependencies) {
-          unused.push(dependencies.directory)
+        child = undefined
+        current = undefined
+        if (result.code !== 0) {
+          options.onState?.('failed', new Error('Development application exited unsuccessfully'))
         }
+        void session!.stop().catch((cause: unknown) => options.onState?.('failed', cause))
+      }, failSession)
 
-        const cleaned = await Promise.allSettled(
-          unused.map((path) => rm(path, { recursive: true, force: true })),
-        )
+      options.signal?.removeEventListener('abort', cancelPreparation)
+      resolveReady()
+      options.onState?.('ready')
+    }
 
-        const errors: unknown[] = []
-        for (const result of cleaned) {
-          if (result.status === 'rejected') {
-            errors.push(result.reason)
+    /** Runs selected preparation work serially; compilers independently observe their module inputs. */
+    async function drain(): Promise<void> {
+      while (pending.size && !stopping && !terminalFailure) {
+        const selected = new Set(pending)
+        pending.clear()
+        const started = requestVersion
+        options.onState?.('building')
+        try {
+          if (selected.has('configuration')) {
+            const nextMembers = await desktopDependencies(signal)
+            const nextInputs = await startInputWatcher(options.sourceRoot, nextMembers, {
+              signal,
+              onChange: enqueue,
+              onError: failSession,
+            })
+            try {
+              await inputs!.close()
+            } catch (cause) {
+              await rethrowAfterCleanup(
+                cause,
+                () => nextInputs.close(),
+                'Input watch replacement and cleanup failed',
+              )
+            }
+            inputs = nextInputs
+            members = nextMembers
+            await compilers?.close()
+            compilers = undefined
+            await renderer?.close()
+            renderer = undefined
+            renderer = await startRenderer(options.sourceRoot, members, buildId)
+            rendererAddress = renderer.resolvedUrls!.local[0]!
+            selected.add('packages')
+            selected.delete('configuration')
           }
-        }
-        if (failure && !isCancellation(failure, signal)) {
-          errors.unshift(failure)
-        }
-
-        if (errors.length) {
-          if (stopping || signal.aborted) {
-            shutdownFailures.push(...errors)
+          if (selected.has('packages')) {
+            await runPnpm(['exec', 'turbo', 'run', 'build', '--filter=@kisaki3/desktop^...'], {
+              cwd: repositoryRoot,
+              signal,
+            })
+            selected.delete('packages')
           }
-          options.onState?.(
-            'failed',
-            errors.length === 1
-              ? errors[0]
-              : new AggregateError(errors, 'Development build and cleanup failed'),
-          )
+          if (selected.has('resources')) {
+            await prepareResources(target, signal)
+            runtimeChanged = true
+            selected.delete('resources')
+          }
+          if (selected.has('native')) {
+            await buildNative(target, false, signal)
+            runtimeChanged = true
+            selected.delete('native')
+          }
+          signal.throwIfAborted()
+          if (!compilers) {
+            await startCompilers()
+          }
+          await restartApplication()
+        } catch (cause) {
+          for (const kind of selected) {
+            pending.add(kind)
+          }
+          if (!isCancellation(cause, signal)) {
+            options.onState?.('failed', cause)
+            if (stopping || signal.aborted) {
+              shutdownFailures.push(cause)
+            }
+          }
+          if (requestVersion === started) {
+            waitForChange = true
+            return
+          }
         }
       }
     }
 
-    /**
-     * Coalesces changes into serial rebuilds and preserves pending work while a normal stop is
-     * undecided.
-     */
-    function enqueue(force = false): void {
-      if (stopped || resourceFailed) {
+    /** Coalesces real input or compiler completion events into the owned preparation loop. */
+    function enqueue(kind: PreparationChange | 'runtime'): void {
+      if (stopped || terminalFailure) {
         return
       }
-
-      forceRuntimeBuild ||= force
-      buildPending = true
-      if (stopping) {
+      pending.add(kind)
+      requestVersion += 1
+      waitForChange = false
+      if (stopping || workLoop) {
         return
       }
-
-      buildLoop ??= (async () => {
-        while (buildPending && !stopping && !resourceFailed) {
-          buildPending = false
-          await rebuild()
+      workLoop = drain().finally(() => {
+        workLoop = undefined
+        if (pending.size && !waitForChange && !stopping && !terminalFailure) {
+          enqueue('runtime')
         }
-      })().finally(() => {
-        buildLoop = undefined
       })
     }
 
-    /**
-     * Requests session shutdown after internal startup cancellation and reports a shutdown failure.
-     */
-    const cancel = () => {
-      void session.stop().catch((cause: unknown) => {
-        options.onState?.('failed', cause)
-      })
-    }
-    const session: DevelopmentSession = {
-      ready,
-      closed,
-
-      /** Reads the renderer's current listening address. */
+    session = {
+      ready: ready,
+      closed: closed,
+      /** Reads the renderer's current address, including configuration restarts. */
       get rendererUrl() {
-        return renderer.url
+        return renderer?.resolvedUrls?.local[0] ?? rendererAddress
       },
-
-      /** Returns the session's currently adopted application generation. */
+      /** Reads the currently owned application and runtime directory. */
       get current() {
         return current
       },
-
-      /**
-       * Implements {@link DevelopmentSession.stop}, coordinating active builds, application exit
-       * and tool cleanup.
-       */
+      /** Stops preparation, confirms application exit, and closes every remaining resource owner. */
       stop() {
         if (stopped) {
           return Promise.resolve('stopped')
@@ -429,57 +424,40 @@ export async function startDevelopmentSession(
         if (stopPromise) {
           return stopPromise
         }
-
         stopping = true
-        signal.removeEventListener('abort', cancel)
         if (!current) {
           controller.abort(new Error('Development startup cancelled'))
         }
-
         stopPromise = (async () => {
-          debug('Waiting for the active build before stopping')
-          await buildLoop
-
+          await workLoop
           debug('Stopping application %s', child?.pid ?? 'not started')
           if (child && (await child.stop()) === 'cancelled') {
-            debug('Application declined the stop request')
+            pending.add('runtime')
             return 'cancelled'
           }
-
-          signal.removeEventListener('abort', cancel)
+          child = undefined
+          current = undefined
           options.signal?.removeEventListener('abort', cancelPreparation)
           controller.abort(new Error('Development session stopping'))
 
-          const failures = shutdownFailures
-          shutdownFailures = []
-          child = undefined
-          current = undefined
-          let rendererClosed = false
-
-          try {
-            debug('Closing input watchers')
-            await inputs.close()
-          } catch (cause) {
-            failures.push(cause)
-          }
-
-          try {
-            debug('Closing the renderer server')
-            await renderer.close()
-            rendererClosed = true
-          } catch (cause) {
-            failures.push(cause)
-          }
-
-          if (rendererClosed && !retainOutputs) {
+          const failures = [...shutdownFailures]
+          shutdownFailures.length = 0
+          let ownersClosed = true
+          for (const resource of [inputs, compilers, renderer]) {
             try {
-              debug('Removing session directory %s', sessionDirectory)
+              await resource?.close()
+            } catch (cause) {
+              failures.push(cause)
+              ownersClosed = false
+            }
+          }
+          if (ownersClosed && !retainOutputs) {
+            try {
               await rm(sessionDirectory, { recursive: true, force: true })
             } catch (cause) {
               failures.push(cause)
             }
           }
-
           if (retainOutputs) {
             options.onState?.(
               'failed',
@@ -488,16 +466,13 @@ export async function startDevelopmentSession(
               ),
             )
           }
-
           rejectReady(new Error('Development session stopped before readiness'))
           if (failures.length) {
             const cause = new AggregateError(failures, 'Development session shutdown failed')
             rejectClosed(cause)
             throw cause
           }
-
           stopped = true
-          debug('Development session stopped')
           resolveClosed()
           options.onState?.('stopped')
           return 'stopped'
@@ -505,71 +480,50 @@ export async function startDevelopmentSession(
           stopPromise = undefined
           if (!stopped && !signal.aborted) {
             stopping = false
-            if (buildPending) {
-              enqueue()
+            if (pending.size) {
+              enqueue('runtime')
             }
           }
         })
-
         return stopPromise
       },
-
-      /**
-       * Implements {@link DevelopmentSession.terminate}, awaiting forced process exit before normal
-       * teardown.
-       */
+      /** Confirms forced termination before completing the same session teardown. */
       async terminate() {
         stopping = true
-        debug('Terminating application %s', child?.pid ?? 'not started')
         await child?.terminate()
-        await session.stop()
+        await session!.stop()
       },
     }
 
-    const inputs = await startInputWatcher(options.sourceRoot, members, {
+    inputs = await startInputWatcher(options.sourceRoot, members, {
       signal,
-      onChange: (change) => enqueue(change === 'runtime'),
+      onChange: enqueue,
       onError: failSession,
     })
-    inputsToClose = inputs
-    signal.addEventListener('abort', cancel, { once: true })
-    enqueue()
+    enqueue('runtime')
     if (signal.aborted) {
-      cancel()
+      await session.stop()
     }
-
     return session
   } catch (cause) {
     options.signal?.removeEventListener('abort', cancelPreparation)
     const failures: unknown[] = [cause]
-
-    try {
-      await child?.terminate()
-    } catch (failure) {
-      failures.push(failure)
-    }
-
-    for (const resource of [inputsToClose, rendererToClose]) {
+    for (const resource of [inputs, compilers, renderer]) {
       try {
         await resource?.close()
       } catch (failure) {
         failures.push(failure)
       }
     }
-
-    if (failures.length > 1) {
-      throw new AggregateError(failures, 'Development startup and cleanup failed', { cause })
+    if (failures.length === 1 && directory) {
+      try {
+        await rm(directory, { recursive: true, force: true })
+      } catch (failure) {
+        failures.push(failure)
+      }
     }
-
-    if (directory) {
-      const remainingDirectory = directory
-      return rethrowAfterCleanup(
-        cause,
-        () => rm(remainingDirectory, { recursive: true, force: true }),
-        'Development startup and directory cleanup failed',
-      )
-    }
-
-    throw cause
+    throw failures.length === 1
+      ? cause
+      : new AggregateError(failures, 'Development startup and cleanup failed')
   }
 }

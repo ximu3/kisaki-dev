@@ -28,11 +28,13 @@
     }
   },
   "scripts": {
+    "prepare:build": "kisaki-package prepare-build",
     "build": "tsx tools/build.ts",
     "pack": "kisaki-package pack",
     "check:package": "kisaki-package check",
     "typecheck": "tsc -b",
     "lint": "eslint . --max-warnings 0",
+    "check:boundaries": "pnpm --workspace-root exec tsx tools/boundaries.ts clients/desktop/packages/desktop-rpc",
     "test": "vitest run",
     "test:consumers": "vitest run --config config/vitest/consumers.ts",
     "clean": "tsx tools/clean.ts"

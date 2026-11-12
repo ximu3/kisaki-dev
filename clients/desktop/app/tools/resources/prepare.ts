@@ -1,17 +1,15 @@
 /**
- * @fileoverview Assembles fonts, icons and the target's SQLite binding into a complete
- * desktop resource set with file digests.
+ * @fileoverview Assembles fonts, icons and the target's SQLite binding into the target build workspace.
  */
 
 import { createRequire } from 'node:module'
-import { copyFile, mkdir, readFile, readdir, writeFile } from 'node:fs/promises'
+import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import sharp from 'sharp'
 import pngToIco from 'png-to-ico'
 import { appRoot } from '../lib/paths'
 import type { DesktopTarget } from '../lib/runtime-manifest'
-import { replaceOutput } from '@kisaki3/tooling/output'
-import { sha256 } from '../lib/sha256'
+import { removeOutputs } from '@kisaki3/tooling/output'
 import { copyFonts } from './fonts'
 import type { FontInput } from './fonts'
 
@@ -28,10 +26,9 @@ async function prepareIcons(icons: string): Promise<void> {
 }
 
 /**
- * Builds fonts, packaging icons and the selected SQLite binding into a complete resource candidate.
+ * Prepares fonts, packaging icons and the selected SQLite binding in a clean output directory.
  *
- * Writes the byte-digest manifest before adoption and returns the completed output directory.
- * Preparation failure or cancellation before handoff preserves previous resources.
+ * The caller consumes the completed resources after this operation succeeds.
  */
 export async function prepareResources(
   target: DesktopTarget,
@@ -42,42 +39,23 @@ export async function prepareResources(
     await readFile(join(appRoot, 'assets', 'fonts', 'inputs.json'), 'utf8'),
   ) as FontInput[]
 
-  await replaceOutput(
-    appRoot,
-    output,
-    async (staging) => {
-      await prepareIcons(join(staging, 'icons'))
-      await copyFonts(fontInputs, join(staging, 'fonts'))
+  await removeOutputs(appRoot, [output], signal)
+  await mkdir(output, { recursive: true })
 
-      // SQLite 13 provides Node-API prebuilds shared by the development and Electron runtimes.
-      const sqliteRoot = dirname(requireDependency.resolve('better-sqlite3/package.json'))
-      const platform = target.replace('windows', 'win32').replace('macos', 'darwin')
-      const native = join(staging, 'native')
-      await mkdir(native, { recursive: true })
-      await copyFile(
-        join(sqliteRoot, 'prebuilds', `${platform}.node`),
-        join(native, 'better-sqlite3.node'),
-      )
+  await prepareIcons(join(output, 'icons'))
+  await copyFonts(fontInputs, join(output, 'fonts'))
 
-      const files: Record<string, string> = {}
-
-      /** Adds relative file paths and SHA-256 digests to the resource inventory. */
-      async function record(directory: string, prefix: string): Promise<void> {
-        for (const entry of await readdir(directory, { withFileTypes: true })) {
-          const relative = prefix ? `${prefix}/${entry.name}` : entry.name
-          if (entry.isDirectory()) {
-            await record(join(directory, entry.name), relative)
-          } else {
-            files[relative] = sha256(await readFile(join(directory, entry.name)))
-          }
-        }
-      }
-
-      await record(staging, '')
-      await writeFile(join(staging, 'resources.json'), JSON.stringify({ target, files }, null, 2))
-    },
-    signal,
+  // SQLite 13 provides Node-API prebuilds shared by the development and Electron runtimes.
+  const sqliteRoot = dirname(requireDependency.resolve('better-sqlite3/package.json'))
+  const platform = target.replace('windows', 'win32').replace('macos', 'darwin')
+  const native = join(output, 'native')
+  await mkdir(native, { recursive: true })
+  await copyFile(
+    join(sqliteRoot, 'prebuilds', `${platform}.node`),
+    join(native, 'better-sqlite3.node'),
   )
+
+  signal?.throwIfAborted()
 
   return output
 }
