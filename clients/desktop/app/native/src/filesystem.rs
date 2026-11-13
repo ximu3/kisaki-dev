@@ -44,7 +44,7 @@ fn location(path: &str) -> io::Result<&'static str> {
     }
     // SAFETY: statfs initialized the complete output on success.
     let information = unsafe { information.assume_init() };
-    Ok(if information.f_flags & libc::MNT_LOCAL != 0 {
+    Ok(if information.f_flags & (libc::MNT_LOCAL as u32) != 0 {
         "local"
     } else {
         "network"
