@@ -21,5 +21,7 @@ export default defineConfig({
     pool: 'forks',
     globals: false,
     testTimeout: 30_000,
+    // Preparing a durable database uses the same budget as the native operation cases.
+    hookTimeout: 30_000,
   },
 })

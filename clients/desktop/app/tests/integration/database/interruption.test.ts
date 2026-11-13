@@ -10,7 +10,9 @@ import { initializeDatabase } from '../../../src/main/infrastructure/database'
 import { entries } from '../../../src/main/infrastructure/database/schema'
 import { storageOptions } from '../../support/database'
 
-test('retains committed data and rolls back interrupted work after reopening', async () => {
+test('retains committed data and rolls back interrupted work after reopening', async ({
+  signal,
+}) => {
   const directory = await mkdtemp(join(tmpdir(), 'kisaki-interruption-'))
   const worker = fork(new URL('./interruption-worker.ts', import.meta.url), [directory], {
     execArgv: ['--import', 'tsx'],
@@ -19,10 +21,7 @@ test('retains committed data and rolls back interrupted work after reopening', a
   })
   const closed = once(worker, 'exit')
   try {
-    expect(await once(worker, 'message', { signal: AbortSignal.timeout(10_000) })).toEqual([
-      'transaction-open',
-      undefined,
-    ])
+    expect(await once(worker, 'message', { signal })).toEqual(['transaction-open', undefined])
     worker.kill('SIGKILL')
     await closed
     const storage = initializeDatabase(storageOptions(directory))
