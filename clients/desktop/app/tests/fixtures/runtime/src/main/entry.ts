@@ -2,11 +2,13 @@
 
 import { app, BrowserWindow, ipcMain, protocol, utilityProcess } from 'electron'
 import { mkdirSync, writeFileSync } from 'node:fs'
-import { readFile } from 'node:fs/promises'
+import { readFile, writeFile } from 'node:fs/promises'
 import { dirname, extname, isAbsolute, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { debuglog } from 'node:util'
 import { loadNative } from '#native'
+import { verifyStorage } from './storage'
+import { measureStorage } from './storage/measurement'
 
 const debug = debuglog('kisaki:fixture')
 
@@ -49,7 +51,8 @@ protocol.registerSchemesAsPrivileged([
  */
 async function runFixture(): Promise<void> {
   await app.whenReady()
-  loadNative(join(resources, 'native/kisaki-native.node'))
+  const native = loadNative(join(resources, 'native/kisaki-native.node'))
+  await verifyStorage(profile!, resources, native.files)
   protocol.handle('fixture', async (request) => {
     const path = resolve(
       runtime,
@@ -182,6 +185,10 @@ async function runFixture(): Promise<void> {
   )
   window.show()
   process.send?.({ type: 'fixture-ready', buildId: __KISAKI_BUILD_ID__ })
+  if (process.argv.includes('--storage-performance')) {
+    const report = await measureStorage(profile!, resources)
+    await writeFile(join(profile!, 'storage-performance.json'), JSON.stringify(report, null, 2))
+  }
 }
 
 // Leave module evaluation unblocked so Electron can reach app readiness.

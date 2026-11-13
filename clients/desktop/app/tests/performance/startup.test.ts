@@ -14,7 +14,7 @@ import { buildDirectory } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
-// Fixed engineering-carrier workload without product data.
+// Fixed engineering carrier with one persistent storage fixture entry.
 const sampleCount = 20
 
 test('measures twenty fresh processes and confirms all observed child processes exit', async ({
@@ -112,7 +112,7 @@ test('measures twenty fresh processes and confirms all observed child processes 
     osRelease: release(),
     cpu: cpus()[0]?.model,
     memoryBytes: totalmem(),
-    mode: 'fresh processes, warm OS disk cache, isolated retained profile, windows and native modules only',
+    mode: 'fresh processes, warm OS disk cache, isolated retained profile, windows, native modules and one storage fixture entry',
     build: JSON.parse(await readFile(join(runtime, 'build.json'), 'utf8')) as unknown,
     samples,
     medianMs: median,

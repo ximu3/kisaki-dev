@@ -14,8 +14,12 @@
 | 根 `tests/workspace`                                     | 工程登记、类型检查覆盖、任务依赖与验证选择，以及跨工程导入边界                   |
 | `packages/typescript-config`、`eslint-config`、`tooling` | 共用类型与 lint 配置、所属输出清理、命令执行、错误交付和 CLI 收尾                    |
 | `clients/desktop/app/tools`                              | 桌面程序构建、资源准备、原生编译、开发会话、打包与输出清理                       |
-| `clients/desktop/app/native`                             | Rust 文件同步与不覆盖移动，Node 加载、声明与错误转换                             |
-| `clients/desktop/app/assets`                             | 锁定字体输入与许可、图标源稿                                                     |
+| `clients/desktop/app/src/main/infrastructure/database`    | 正式 schema、逐值 codec、连接、同步事务、初始化与固定 Unicode 名称顺序          |
+| `clients/desktop/app/src/main/infrastructure/files`       | 实际路径比较、本地资料根检查、有限字节准备、不覆盖发布与流式 ZIP                |
+| `clients/desktop/app/src/main/features/preferences`       | 初始化与 getDefaults 共用的产品默认配置定义                                   |
+| `clients/desktop/app/drizzle`                            | Drizzle Kit 生成并审阅的 SQL 迁移及 snapshot，随资源原样交付                    |
+| `clients/desktop/app/native`                             | Rust 文件同步、不覆盖移动与实际文件系统识别，Node 加载、声明与错误转换          |
+| `clients/desktop/app/assets`                             | 锁定字体与 Unicode 输入清单及许可、图标源稿                                    |
 | `clients/desktop/app/tests`                              | 工程用例、隔离载体，以及原生、Electron、开发、制品和性能验证                     |
 | `clients/desktop/packages/desktop-appearance`            | 视觉词表、纯值解析、亮暗默认值、普通 CSS 与可选 Tailwind 映射                    |
 | `clients/desktop/packages/desktop-ui` | Solid 控件、原生表单与反馈、浮层、Toast、Markdown、图表、拖拽和普通 CSS |
@@ -39,6 +43,8 @@ desktop-localization 的英语 ICU 源文位于 src/en，按领域维护并由 i
 桌面 `tools/build` 接收明确的程序输入，在干净的所属输出目录完成编译与完整性核对；`tools/resources`、`tools/native` 与 `tools/package` 分别拥有资源、原生编译和打包。跨工作流的路径、目标、运行清单和摘要归 `tools/lib`，跨工程机制归 `@kisaki3/tooling`。原生调用通过 `#native` 加载明确的绝对制品路径，失败保留原始原因。
 
 `tests/fixtures/runtime` 验证四个 renderer/preload 入口、main、utility process、Solid 热更新及资源加载。运行必须提供测试拥有的绝对资料目录；窗口名称对应编译入口，本地消息供测试控制使用。产品窗口、公开通信和扩展宿主按所属工作包实现。
+
+载体的 main/storage 直接消费正式存储，使用包内迁移和驱动完成空库初始化、短事务与关闭重开。相同入口也用于打包验收。该目录中的代表负载与测量只在性能任务明确选择时执行。
 
 `tools/dev/session` 拥有编译器、服务器、运行目录与应用进程。公共包的完整构建由 Turbo 排序，程序模块由 Vite 监听编译；renderer 使用正常 workspace 导出和 HMR。资源与配置变化调用所属准备流程。编译成功后安排受控重启，旧进程退出后释放它读取的目录；正常退出可以取消。
 
@@ -84,6 +90,18 @@ pnpm desktop:package:fixture --target windows-x64
 
 `pnpm --filter @kisaki3/desktop build:fixture --program preload` 单独验证 preload 编译。`build:native` 编译私有绑定；需要更新生成声明时显式添加 `--update-declarations` 并审阅变化。`check:native` 执行固定 Rust 工具链的格式与 Clippy 检查。
 
+### 存储与生成资源
+
+数据库固定使用 Drizzle ORM／Kit 1.0.0-rc.5、better-sqlite3 13.0.3 和 Electron 45.0.0。`database/initialize` 接收数据库、原生驱动、迁移目录的明确路径及当前完整偏好默认值；路径拥有者先以 `files.assertLocalDataDirectory` 核对实际卷或挂载。初始化完成格式检查、原生 migrate、结构核对和缺失偏好首行插入后才返回连接。业务使用 Drizzle 的同步查询与事务，并在关闭前结束自己的消费者。
+
+连接使用 WAL、FULL，以及 macOS 的 fullfsync；页缓存目标为 32 MiB。表、外键、CHECK 和索引由 schema 定义；保存的执行配置、身份与定位值通过 `StoredDefinition` 表达读取问题，普通偏好按独立字段采用默认值。读取投影不会自动写回；后续业务更新须保留未修改的原始字段。
+
+`pnpm --filter @kisaki3/desktop generate:migrations --name <主题>` 使用正式 Drizzle Kit 入口。审阅生成的 SQL、snapshot 及必要的数据变换后提交整个迁移目录。构建按实际目录结构复制迁移，开发监听将迁移变化交给资源准备。迁移的格式识别、不可修改规则与失败处理见[数据库合同](../design/engineering/database.md)。
+
+名称自然序使用固定 Unicode 18 数据生成的版本化 SQLite 键。`assets/unicode/inputs.json` 记录官方地址、版本和原始文件摘要；下载这些输入后，`pnpm --filter @kisaki3/desktop generate:unicode --input <绝对目录>` 核对摘要并生成运行表和规范化测试样本。普通构建直接消费已提交产物。更换排序规则须使用新的函数版本并通过数据库迁移重建相关键。
+
+文件设施使用原生不覆盖移动与同步屏障发布已准备字节。ZIP 读取按需访问中央目录，写入逐成员消费流；拥有者提供条目、路径元数据、展开字节与归档字节预算。取消和失败等待当前流结束并释放所属文件与临时目录。业务清单、资源引用和恢复事务由所属后续工作包接入。
+
 开发监听由 `tools/dev/session` 通过明确的输入和启动回调提供，真实回归在隔离 workspace 内执行。测试临时创建合成依赖，验证构建失败修复、公开依赖更新、HMR、程序重启、正常退出取消和清理；测试载体的消息不定义产品开发协议。
 
 同一工作副本中，共享输出的构建、运行与打包顺序执行。任务内依赖和合法并行由 Turbo 管理。有限输出位于 `out/<target>`，开发会话位于 `out/development/<target>/session-*`，载体位于 `dist/<target>`。停止相关任务后用 `pnpm run clean` 清理声明输出。各项目指定自己的输出目录，工程工具按项目边界执行清理。
@@ -103,13 +121,15 @@ pack 的输入由已声明的 build 依赖，以及包元数据、许可和发�
 | 命令                            | 输入与运行环境                                                               |
 | ------------------------------- | ---------------------------------------------------------------------------- |
 | `pnpm check`                    | 全仓类型、lint、格式及常规 Node 测试                                         |
-| `pnpm desktop:test:native`      | 先准备原生与资源输出，由开发 Electron 的 Node 模式执行 SQLite 与原生文件测试 |
+| `pnpm desktop:test:native`      | 先准备公共依赖、原生与资源输出，由 Electron Node 模式执行 schema、codec、迁移、WAL 中断恢复、文件和归档验证 |
 | `pnpm desktop:test:e2e`         | 先构建，在隔离资料中验证四个 Electron 编译入口与进程隔离                     |
 | `pnpm desktop:test:dev`         | 准备原生输出，在隔离源码副本中验证开发工作流与浏览器 HMR                     |
 | `pnpm desktop:test:artifacts`   | 先构建并打包工程载体，保留 fuses，从外部观察启动与关闭                       |
-| `pnpm desktop:test:performance` | 先构建，记录 20 次工程载体启动耗时与内存，验证进程退出                       |
+| `pnpm desktop:test:performance` | 先构建，测量 20 次载体启动及完整存储负载；查询结果、计划、分布与固定同步预算分别核对 |
 
 浏览器首次准备由所属工程执行：开发回归使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`，公共包消费者使用 `pnpm --filter <包名> exec playwright install chromium`。已建立的公共包使用同一锁定 Playwright 版本，可复用该版本的浏览器安装。
+
+存储测量可单独运行 `pnpm desktop:test:performance storage.test.ts`。数据规模、采样数和 50 ms 同步预算由载体的 `main/storage/fixture.ts` 预先固定；输入清单、实际迁移摘要、SQLite 配置、EXPLAIN 与完整结果断言一并进入 `test-results/performance`。结果适用于所测设备与存储查询；后续业务、IPC 和输入响应由所属工作包接续。
 
 desktop-contracts 和 desktop-localization 的独立消费者同时安装所需公共依赖的实际 tarball，由自身 Turbo 任务准备；尚未公开的依赖通过临时消费者的 pnpm-workspace.yaml 指向这些包，不使用源码别名。
 
@@ -117,7 +137,7 @@ Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 Ap
 
 制品输入用 `KISAKI_ARTIFACT_RECEIPT` 指定，默认 `dist/<target>/artifacts.json`。Windows 使用窗口句柄，macOS 使用已获准的系统辅助功能，Linux X11 使用窗口管理器观察。X11 结果不代表 Wayland 验收。
 
-根 TypeScript 项目检查工具、配置和测试；桌面项目按 main、preload、renderer、utility process、shared、tools 和 tests 分环境检查。测试载体也遵守自己的实际运行环境。自有声明至少由一个 `skipLibCheck: false` 的实际项目完整检查，规则见[类型分工](../design/engineering/workspace.md#declaration-checks)。
+根 TypeScript 项目检查工具、配置和测试；桌面项目按 main、preload、renderer、utility process、shared、native、tools 和 tests 分环境检查。native 项目拥有 Node 绑定源码及生成声明，main 消费其实际入口。测试载体也遵守自己的实际运行环境。自有声明至少由一个 `skipLibCheck: false` 的实际项目完整检查，规则见[类型分工](../design/engineering/workspace.md#declaration-checks)。
 
 三个私有工程包直接通过 exports 加载，不预构建。工程函数用 `@kisaki3/tooling/cli`、`/errors`、`/output`、`/process`，类型与 lint 使用各自共享包。项目声明自己的依赖、配置与检查任务，类型感知 lint 沿 TypeScript Project Service 使用所属项目。`pnpm lint:fix` 完成后须审阅修改。
 

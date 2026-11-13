@@ -277,8 +277,8 @@ export function requireCompleteScanResult<T extends WorkType>(
   return result
 }
 
-/** Parses same-medium scan history and requires completed runs to account for all discovered work. */
-export function parseScanRun(input: unknown): ScanRun {
+/** Parses one scan's exact full or incremental coverage without inventing missing paths. */
+export function parseScanScope(input: unknown): ScanScope {
   const relative = v.pipe(v.unknown(), v.transform(parseRelativePath))
   const scope = v.union([
     v.strictObject({ type: v.literal('full') }),
@@ -290,12 +290,17 @@ export function parseScanRun(input: unknown): ScanRun {
       ),
     }),
   ])
+  return parseValue(scope, input, 'Invalid scan scope')
+}
+
+/** Parses same-medium scan history and requires completed runs to account for all discovered work. */
+export function parseScanRun(input: unknown): ScanRun {
   const value = parseValue(
     v.strictObject({
       id,
       scanConfigId: id,
       configSnapshot: v.pipe(v.unknown(), v.transform(parseScanConfigSnapshot)),
-      scope,
+      scope: v.pipe(v.unknown(), v.transform(parseScanScope)),
       description: v.nullable(text),
       status: v.picklist(statuses),
       result: v.nullable(v.pipe(v.unknown(), v.transform(parseScanResult))),

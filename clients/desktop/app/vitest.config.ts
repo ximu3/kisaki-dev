@@ -12,7 +12,12 @@ export default defineConfig({
       'tests/integration/**/*.test.ts',
       'tests/tools/**/*.test.ts',
     ],
-    exclude: ['tests/integration/database/**', 'tests/integration/native/**', 'tests/tools/dev/**'],
+    exclude: [
+      'tests/integration/database/**',
+      'tests/integration/native/**',
+      'tests/integration/files/**',
+      'tests/tools/dev/**',
+    ],
     testTimeout: 30_000,
     hookTimeout: 30_000,
   },

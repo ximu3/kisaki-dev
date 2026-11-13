@@ -1,9 +1,9 @@
 /**
- * @fileoverview Assembles fonts, icons and the target's SQLite binding into the target build workspace.
+ * @fileoverview Assembles fonts, icons, database migrations and native dependencies into the target build workspace.
  */
 
 import { createRequire } from 'node:module'
-import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises'
+import { copyFile, cp, mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import sharp from 'sharp'
 import pngToIco from 'png-to-ico'
@@ -26,7 +26,7 @@ async function prepareIcons(icons: string): Promise<void> {
 }
 
 /**
- * Prepares fonts, packaging icons and the selected SQLite binding in a clean output directory.
+ * Prepares immutable migration resources, licenses, fonts, icons and the selected SQLite binding.
  *
  * The caller consumes the completed resources after this operation succeeds.
  */
@@ -44,6 +44,8 @@ export async function prepareResources(
 
   await prepareIcons(join(output, 'icons'))
   await copyFonts(fontInputs, join(output, 'fonts'))
+  await cp(join(appRoot, 'drizzle'), join(output, 'drizzle'), { recursive: true })
+  await cp(join(appRoot, 'assets', 'unicode'), join(output, 'unicode'), { recursive: true })
 
   // SQLite 13 provides Node-API prebuilds shared by the development and Electron runtimes.
   const sqliteRoot = dirname(requireDependency.resolve('better-sqlite3/package.json'))

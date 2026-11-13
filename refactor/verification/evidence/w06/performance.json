@@ -1,0 +1,1687 @@
+{
+  "date": "2026-11-13",
+  "command": "pnpm desktop:test:performance",
+  "build": {
+    "schemaVersion": 1,
+    "buildId": "0bbc7736-f0e1-4dd8-ac25-111084362385",
+    "target": "windows-x64",
+    "version": "0.1.0-dev.0",
+    "electronVersion": "45.0.0",
+    "files": {
+      "extension-host/entry.js": "88fa81337478f640fc31960b126e8ce21dff0f3202ef2ba2de92f61d8a82e27d",
+      "main/entry.js": "d8433bfc2a7cafe52fcb3ea5ff09efbd5d1ff06ac6587096937c802ec9b4f605",
+      "package.json": "c6a0534cee5a3935df96462741a9e05ea67cf078bac9e8e4ba70976e58e65b68",
+      "preload/game-panel.cjs": "9f2590ea2d2b2de264b23d31388aac4ae3f6ce4eeda8ed26b62abcf8ddb8241b",
+      "preload/main.cjs": "9f2590ea2d2b2de264b23d31388aac4ae3f6ce4eeda8ed26b62abcf8ddb8241b",
+      "preload/player.cjs": "9f2590ea2d2b2de264b23d31388aac4ae3f6ce4eeda8ed26b62abcf8ddb8241b",
+      "preload/reader.cjs": "9f2590ea2d2b2de264b23d31388aac4ae3f6ce4eeda8ed26b62abcf8ddb8241b",
+      "renderer/assets/game-panel-QcKSjJvM.js": "e567bd6f774a4980a252e4d7673a36a8b9b30979ab82d39fd72bfd30e0ca5ebc",
+      "renderer/assets/main-BDUL3ZEf.css": "2b16c52962431a7dce3792a78c11b03ae7923b44013fed479e84d4b70651a55d",
+      "renderer/assets/main-QcKSjJvM.js": "e567bd6f774a4980a252e4d7673a36a8b9b30979ab82d39fd72bfd30e0ca5ebc",
+      "renderer/assets/player-QcKSjJvM.js": "e567bd6f774a4980a252e4d7673a36a8b9b30979ab82d39fd72bfd30e0ca5ebc",
+      "renderer/assets/reader-QcKSjJvM.js": "e567bd6f774a4980a252e4d7673a36a8b9b30979ab82d39fd72bfd30e0ca5ebc",
+      "renderer/assets/web-CczzqO9i.js": "151791fc95f7e73f5c709390d751d85548fa9151e9184277280143b302aeb3ef",
+      "renderer/game-panel/index.html": "e4530eecc75be09c9bd3fb6af8b3d9da56fb1b89255bceeccaa1b22905e8449b",
+      "renderer/main/index.html": "3f79e733c1752dd00ff5a79cf4a4763c3fb9e39e6e4647edda45b3cdb6c37aaf",
+      "renderer/player/index.html": "b7231fc2f756c1d7bff6d8e7f75a48ae438ba6fb34c441e0667d8852e61bae01",
+      "renderer/reader/index.html": "a277daa9e8477d4d1042f3bc11fc5215342678365aabfa85c5a43bd6a5d4c4d9",
+      "resources/drizzle/20261113100600_baseline/migration.sql": "2cac9400a0ab3620ea7d28ca0c2f6ef0118a27e975b242cc774fdbae755fd13a",
+      "resources/drizzle/20261113100600_baseline/snapshot.json": "f28479ab1b1bc4931bf56acf42059fd0489ed568f92d60ade3c15184bd1c0ebd",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-cyrillic-ext-standard-normal.woff2": "c1ef7586b8de564f26280a26ba32fca37f7370261cd9ed566c17a4c7be9bf7a7",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-cyrillic-ext-wdth-normal.woff2": "c1ef7586b8de564f26280a26ba32fca37f7370261cd9ed566c17a4c7be9bf7a7",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-cyrillic-ext-wght-normal.woff2": "0c24f21ad3bd248e39d428679cddd7969f90eb6cebe20f1670e81a89e8d3f751",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-cyrillic-standard-normal.woff2": "1d77e98d3a0de770d4c4f4fe2631051768b230e4bdfbade9484aa68686a789f4",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-cyrillic-wdth-normal.woff2": "1d77e98d3a0de770d4c4f4fe2631051768b230e4bdfbade9484aa68686a789f4",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-cyrillic-wght-normal.woff2": "f7e1023ce0099ebc4a67d26607f6f2ebaa5de1388635fdf748e8f290354147d6",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-greek-ext-standard-normal.woff2": "130a27916aebfd47e938a9ac8d9e9cfeb759d9e5cd776a7063a8d4bd21990139",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-greek-ext-wdth-normal.woff2": "130a27916aebfd47e938a9ac8d9e9cfeb759d9e5cd776a7063a8d4bd21990139",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-greek-ext-wght-normal.woff2": "109a84229e44cc35b5e2e9eb0bfbd0633af0c2b6f819e7752a39426446f52a84",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-greek-standard-normal.woff2": "a895167aa52dffebf00ceeff59db91319c3757931ffc97f9ba5d240da1883e96",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-greek-wdth-normal.woff2": "a895167aa52dffebf00ceeff59db91319c3757931ffc97f9ba5d240da1883e96",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-greek-wght-normal.woff2": "25f926be2f80fdf964d14e56bb9baa7ddc1ed015f14449d40fd4f12322e5ec68",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-latin-ext-standard-normal.woff2": "657351a8fc495e62df0b10849a2b514aae83fcb122a6178178f385fad0894c0f",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-latin-ext-wdth-normal.woff2": "657351a8fc495e62df0b10849a2b514aae83fcb122a6178178f385fad0894c0f",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-latin-ext-wght-normal.woff2": "aed68c8758d2a5e224dd849fe4caf0728bc33e29b471662f9a6b36f606d14202",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-latin-standard-normal.woff2": "2f66aefa507bac4e1458764b5e5e721c82fea1109b93f2c41551847fe46e2eeb",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-latin-wdth-normal.woff2": "2f66aefa507bac4e1458764b5e5e721c82fea1109b93f2c41551847fe46e2eeb",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-latin-wght-normal.woff2": "71f6c22d5dd256eaa9e48347bda6ac2c65f58980dd372ed5780fbdaca1186331",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-vietnamese-standard-normal.woff2": "977272a1ae25e43ae7d7cb1b6046e1429769025fc4aa63ea37e8de6a8bde38a9",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-vietnamese-wdth-normal.woff2": "977272a1ae25e43ae7d7cb1b6046e1429769025fc4aa63ea37e8de6a8bde38a9",
+      "resources/fonts/noto-sans-mono/files/noto-sans-mono-vietnamese-wght-normal.woff2": "3075bd69d52719d6f573da7d02a83d881f50801311a13e91dc2931f1fb46d251",
+      "resources/fonts/noto-sans-mono/index.css": "f5933ebbab3b427394a0b1831314029d4e5eb7e70c775192b60ebcdfb54f014e",
+      "resources/fonts/noto-sans-mono/LICENSE": "9e73c367ca79c54f9bce96d879b7a7f7fa279119ed4b3e61299f061b34f361cb",
+      "resources/fonts/noto-sans-mono/metadata.json": "5991012f411bf0d010fd47251a75de09f6fa0959245c76926ff22a06f113fb11",
+      "resources/fonts/noto-sans-mono/standard.css": "2ec560a3d246a5e724fd59dd44f402d89abbc0f1e60c16f1004ab6609b78a75c",
+      "resources/fonts/noto-sans-mono/wdth.css": "457b2575a73dd1e083038db563412ab279250468ecef66e6a77c6337348f3505",
+      "resources/fonts/noto-sans-mono/wght.css": "f5933ebbab3b427394a0b1831314029d4e5eb7e70c775192b60ebcdfb54f014e",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-100-wght-normal.woff2": "2c5ddf9cdfad73afb5235e06bc8ed3b5c627849200d673978148700c78f84160",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-101-wght-normal.woff2": "a33308bf652e64ac2884bfe830996e933322b939b915bb823fd47383580664ad",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-102-wght-normal.woff2": "4ea85e144cb385ce086b21b307730d3fdb70a587aaf350b12d0c4c2f13e66d27",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-103-wght-normal.woff2": "1bfdb1f001006c62434577b60064c3ec0562e4a68191acbc7feeba4b303bf095",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-104-wght-normal.woff2": "1e716b78655e396075808be52a9e749df1b6b5d17bd0ccedc6dcb89586903737",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-105-wght-normal.woff2": "ade910a27a4bd65baed59a8a86a3a6a80f6083daa7123bb9ff32da15e56fda9d",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-106-wght-normal.woff2": "d31c838eb0e43043109bd6ddc23c295c340fc50f9a2f2381076ae8c0fa7f980b",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-107-wght-normal.woff2": "d8d9b5fd2b266fdf3f6855444e7769e54f39806e48994e7fe5e0c4ace9553c81",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-108-wght-normal.woff2": "12fcc1175cb6370acb056743f4fea7fdde85b6376ada2f15dfbab59f02b45988",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-109-wght-normal.woff2": "85ebc9985c665dd55346ebc78b93f8d8ef6ff972d78afc288b75d697a242d780",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-110-wght-normal.woff2": "51785f4a4d2a011d877052cab1bc4c36cabcc4e186ed0176214061c174b7f024",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-111-wght-normal.woff2": "aaa67a70f5e8b351c558e32345093fdfd86f089726b3b86d84b58de6a2475104",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-112-wght-normal.woff2": "34e76675ceffd89824fb130d7649dc92df9e57843a73b9996d405baa2ff9ecff",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-113-wght-normal.woff2": "40290d98d5c121bdbb1909e39c9c0242eae3a5a88f1bbe302857e525b90056df",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-114-wght-normal.woff2": "c49b2eb658a0c2d76de9a279945de30bf32acd8fdd6d56cf84aea9c6b14aacae",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-115-wght-normal.woff2": "6c0cda055b31066fb60058ac30ede37f6f9ca02265c2e1a84aee81175f567fa8",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-116-wght-normal.woff2": "002e502515bee8b9efa1b17abf7e52b51d4cfa20538ae2b2bd82ac52e1153f5e",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-117-wght-normal.woff2": "3d7ced7101c03dfa9bf0e60460a1b91fc6f1166fb33f718506e8110bb12e74a7",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-118-wght-normal.woff2": "f26330ce4056382832c0f2a0d7f411e0b4140fc87937e8865d91664410cfb98c",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-119-wght-normal.woff2": "09b9fa5a9521fbeccb8267a5abe7443c83cbe25b32eb15b00de316d913235525",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-21-wght-normal.woff2": "0c5afc8752b151a444ccb3b21d740cc8e429347ea52bd4cf9d22b73937624bbf",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-22-wght-normal.woff2": "b15b23e18f7b765bd08d12d13210c0af8d32bee34712bc3152d0b386d043ec04",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-23-wght-normal.woff2": "a8f6664d83439cd5d329e9b35a54fb4d9d3786e80d3eaebbaeac24e3acf950fc",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-24-wght-normal.woff2": "fc59757db66129052cd8e4248045f92f8273b37f719be2a058a55859de190a0e",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-25-wght-normal.woff2": "074e6162a8ba4f9cf25881da25ce522bb949c1e2516142746daf85471bc48a9c",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-26-wght-normal.woff2": "68074245ba1ea9745cad9cf3780b69c9def3568891296e44d60e070e45df7b7a",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-27-wght-normal.woff2": "4e0dafaa26d924f5612a138a34a817aa06b8f72bad9798fe64d221fb13001d31",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-28-wght-normal.woff2": "31bb7facf7a62ee189026f7ff725b9c4639c712762036394c2996db140549746",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-29-wght-normal.woff2": "67d137f738bc8294a0365f60661e31b33a6e534d56d7e5ed6982d5e6ffa5663c",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-30-wght-normal.woff2": "12acd771479c93c76f064a81447266c349d6a33d2f1893d5413c6303b1156fef",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-31-wght-normal.woff2": "def5793483c7abc922de654bc16262646c9ae263819e663990b52fd56a3d5d69",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-32-wght-normal.woff2": "2d884d1cfd97c6f72518a2d690573e4130b0b707423f25963d7cc975388adf3e",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-33-wght-normal.woff2": "02fd273486d8e0c876b3b5d2c3c131b9ce85058196ee3ed77c7d38a7a10e139c",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-34-wght-normal.woff2": "13a18e443a4bf6557e252a63061914ce19c4be018c9b16eaf5c75842ee88baf5",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-35-wght-normal.woff2": "68413e3f3e5b912efd25702281aae9acb37c9920bb7bb941404506ab520add49",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-36-wght-normal.woff2": "21b841e271833161fe5f70a2052399e79faac029667abdcdffe81f260f2ce6b5",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-37-wght-normal.woff2": "bcbdf5fd7899c7ed192a0c89de9c6c92477be74b8c2343e74914359bfd32a10f",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-38-wght-normal.woff2": "ca375e4a6ecc230333656ad11081b26e6b8f3240f4160e22f75150d4fdddcc9f",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-39-wght-normal.woff2": "e73a947fa1fb1a7385e9d654fa0fe7dd8a2241e9b73282f67941c650c94de326",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-4-wght-normal.woff2": "29634170d5eb07f460a9eb1b2d0ef126ad0b5ef705e4c25191fd5794dc930d4d",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-40-wght-normal.woff2": "2f186187cfd9a546d199aac41fbaed1241a47a7d5aad1804f98127506af80340",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-41-wght-normal.woff2": "7e2a21f95e969165ff32e2fdab8422b489d2c7b0f899f69bfc83d71872cde2af",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-42-wght-normal.woff2": "c53279f786dde3590baf0343d080fad8c7bd976e9dccecd2adea893cfad2f99a",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-43-wght-normal.woff2": "a98ffa0839e353eb7e768084e27892596616f6a3d8bb65c94202898bccb1fd68",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-44-wght-normal.woff2": "aa1a541dfacfcad0c66fb7f9dd4f9c12ce729d98311336c634702d066aabbbc2",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-45-wght-normal.woff2": "ea12aaa5635e53eaf7429500be57e9e8a6030e0906f985426412a1303761f77f",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-46-wght-normal.woff2": "d4a75aa10eb4487dcd94ff2009ef0f185d35f0e3264fa87532887c5c1517c816",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-47-wght-normal.woff2": "d5c48bd3b5502918adf253c96909f27be4eda7653fc0254a6564557b516cb2e1",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-48-wght-normal.woff2": "c4f53f8b05fa6350ac20f8a12b550f9634ed31b084dc50b1263f2080e392b9f7",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-49-wght-normal.woff2": "2418a76f14f6299b160af41cd283ed529b0030e2448b2ec11895ea5009561e25",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-5-wght-normal.woff2": "08f7b17fb6a88382277dfa1b6969f1f0b73a1f87819713849bb9e1ff6017088e",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-50-wght-normal.woff2": "050cbf869048801588356d05f1145c601ddb9063a9e9fd241bbd0997a5ca263f",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-51-wght-normal.woff2": "48810df68807cb9a06052daa52495183575373dc1f3294cce7739a6f37ff25cf",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-52-wght-normal.woff2": "bf40713c12d0ae841b4cbe9d487724e4ee780fdb84844a96ba8ebae6b79a3191",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-53-wght-normal.woff2": "13b6821eb6534f1ac72a4bab506de7012bec7fe0b9bb0a73733d5c798dd45e29",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-54-wght-normal.woff2": "db60ee4c755151c036004e39bde39fa9676c6a9d1753d9842ae1a7b2e5899b83",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-55-wght-normal.woff2": "70105493871b782981352a0cf696487afc098a69a4708d87a7931607fe15a128",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-56-wght-normal.woff2": "cc5fe9a6dedd91e7b95482713b12c84d99a04f90d5124e50db3efa9f2450923f",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-57-wght-normal.woff2": "3a4bddf6442271be898390e29e344183f5f10a97eefa04595c9537f535f34927",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-58-wght-normal.woff2": "b4a952b513ca0e1b594a856e5398d1e40d69b0bf220825210955fde747faa8d0",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-59-wght-normal.woff2": "0557109d55c77ff9c9b5c9732d732c5328bd0b61038cffe611d9d62b26ded420",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-6-wght-normal.woff2": "675ff09731b49aeff9031c6d8edb3d54766aec64e4c6c699be5766729e4dad98",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-60-wght-normal.woff2": "105d09095364787b4eef08ecd4faa975d66ad3ce2be43bb968dd37b9285e6667",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-61-wght-normal.woff2": "21c21d2375925f742573edc50e3bca85a63350bf1d5d566d2d762f8ce2b259d9",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-62-wght-normal.woff2": "d532c89a0da063c68ce871a7f85fa75448efc3089335e012f107d80618512fd4",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-63-wght-normal.woff2": "0897654d316342cdf37bb3d16fcf1a51fdcc38fcf1fb39880b5d3f17e87bf7de",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-64-wght-normal.woff2": "d490960a491521936b84a4be078a9570444960a2dc73c584b802d2c9c8fba1c1",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-65-wght-normal.woff2": "086958b9f441a2ba9fca76e9ac4924bc4acb60559bd5620d348c707ff154ee83",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-66-wght-normal.woff2": "50c8a455f282618211dacd6a0a30c1dee510d6d46eea9be79937b24e69cb0353",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-67-wght-normal.woff2": "54fc8c9eca1c929480b2c090907dfd9d42875cec49989b0737af2b6a60097f29",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-68-wght-normal.woff2": "3ed406ceb43b6f73a6a42ad9e8b2a9aab96fd6603bab5b73a908ca53f0d354a8",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-69-wght-normal.woff2": "c7d1f5b0f95f358dee4cf9e76eda5c0465eb9d0f4e21a13ef39d0cf8761e5b9d",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-70-wght-normal.woff2": "8474823a5264bfdee208fd16e2e5f3fe689e8eb18941446678426dc5f1264d19",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-71-wght-normal.woff2": "734da1dcc260ca6cc29c9e42078125ae8e4583fbc1f7cc76d82572a73767f04d",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-72-wght-normal.woff2": "71d3da5b2d0e05b8899e271aaa49982fa73a589168be26a8350ff6f79f20bfd7",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-73-wght-normal.woff2": "92f8b99dc1a79089d18b1684447e31ef62abf48de736555cf5840b781aeb9d56",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-74-wght-normal.woff2": "5c8faf77fe0277b9e59904396fdf3fe24088bcb2decfc5729895b279c53754f6",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-75-wght-normal.woff2": "216c1c94ee016db46f8d1dc5c51f402215dbf9013fbf9f60f3db3901f9a3b035",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-76-wght-normal.woff2": "8a31272bf31f9340747866ad1a59ff6073bf92fe802e2ba5a531f6a8aac2a42b",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-77-wght-normal.woff2": "bc249f82f40ec61d6ec096c748603fdb4e946adaf659392b06c6810169e81513",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-78-wght-normal.woff2": "26210c38ccee9b53194481bed1dfc1aa4f74810d5672b2e7ed6a2e44b169835d",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-79-wght-normal.woff2": "db79df334235f3d72cc0a7e625bfee1c3d6a76104af15e0814c4926ceee6188e",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-80-wght-normal.woff2": "c9ce6e0654379a2dd291a6f29323ff2d7f06156389ffb3e4d087a9d211887a6b",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-81-wght-normal.woff2": "9958d614924fa54de4f661febd02c1de787ef640d58970e4d928e1ecd7c17990",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-82-wght-normal.woff2": "2129264ef35c203e3a2c2bc16abc437c110c57006d108ff107ad775dc7ea1e39",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-83-wght-normal.woff2": "24a037cbb07cb4de1f92993a9ceda16ba4483f1d63f6f529ea26ae44f01243fd",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-84-wght-normal.woff2": "e1b9b9aee81a74fc4ec19e1709c64a0042d9d898a2f00f6c3b2012564b6a4783",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-85-wght-normal.woff2": "cce97c39b9304c87e55ed84d511d479afd3343b91c04b3ac7bdc5beb9ecf709d",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-86-wght-normal.woff2": "55fd1a42ab8ace744691b59c535499ad22b22c7c98b1d69a22fe101a2cd9b0e9",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-87-wght-normal.woff2": "40292a14f8f52accb05252b7ec7c68e00f35781d2a726223bec1685eee6312b5",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-88-wght-normal.woff2": "008f38db74bc1c346ba8f4d6065dd41d0fe33a4ed2f9909cb880b81c5a3f9334",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-89-wght-normal.woff2": "74a75243aa93eb61367a28d217ce82b76c6cf9e86d0f23fd96708bfd91b68f46",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-90-wght-normal.woff2": "80d51f95afbebcbed0cc53985fbce43eec3a37c8ec88b08d316c56a32aa77843",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-91-wght-normal.woff2": "7bf857d9d1285675fe572e64f968ae1f3213da7654ffd335633fb5b39493c057",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-97-wght-normal.woff2": "7671f7b32d4c5c11ba72df9e6b9a18a6441f863aade2623ac0562ebd34b82bc7",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-98-wght-normal.woff2": "94e55b60e87bfb909709592144002c0b10a4214612ea512b38bb719c9ef45c49",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-99-wght-normal.woff2": "6b2d1065f737c83608088c2e241c605683d94c6160121ca976496507ebc6cc94",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-cyrillic-wght-normal.woff2": "811e869a2b23ff46086eeff6fa59185bb1aa982f5bcd8d34db51e10ea8e5f7e1",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-latin-ext-wght-normal.woff2": "0049f7154dcc3fa0d585f80383b232cb9e497084ee77e10519747d668db3cb55",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-latin-wght-normal.woff2": "cf5346b0747cd71123c8f74da0ad41fc0f63eda07b9d8e0382e00882ae743733",
+      "resources/fonts/noto-sans-sc/files/noto-sans-sc-vietnamese-wght-normal.woff2": "310e65da63933201c3381173106418442de6441742594001290b4056abbc9ed8",
+      "resources/fonts/noto-sans-sc/index.css": "e0abf071de114db4a7f08f6188ae2de22bb5e49bf77721b01d771afa45c62621",
+      "resources/fonts/noto-sans-sc/LICENSE": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3",
+      "resources/fonts/noto-sans-sc/metadata.json": "24de6a97a8374d1f5c48e82407e41835a1ce39d719d2dc9c3fc72f4f25fb05ff",
+      "resources/fonts/noto-sans-sc/wght.css": "e0abf071de114db4a7f08f6188ae2de22bb5e49bf77721b01d771afa45c62621",
+      "resources/icons/icon.ico": "9ce13a76a5ef8747abbbaa976d5eba932f13e2ac1b1e20322a88139be0cbeceb",
+      "resources/icons/icon.png": "a0fc3f67137c782d31da31b37538569b6c164bc431e8a18f3a30534234a2060f",
+      "resources/native/better-sqlite3.node": "e21e5efd71fba66578e95b62554d9028064a80dafd7221bf8a8ef155de8d240a",
+      "resources/native/kisaki-native.node": "4e77342c208769f097089379ce72d23dd1be3778f6fbc8eff2550bf7cb0f33db",
+      "resources/unicode/inputs.json": "37be7c57cf9292d5ea994585cea8bb062b62be30e9137ff87c9461a694d1e53d",
+      "resources/unicode/LICENSE": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96"
+    }
+  },
+  "startup": {
+    "target": "windows-x64",
+    "osRelease": "10.0.19045",
+    "cpu": "AMD Ryzen 9 7945HX with Radeon Graphics        ",
+    "memoryBytes": 33474768896,
+    "mode": "fresh processes, warm OS disk cache, isolated retained profile, windows, native modules and one storage fixture entry",
+    "samples": [
+      {
+        "milliseconds": 514.9382,
+        "workingSetKiB": 385872
+      },
+      {
+        "milliseconds": 456.83219999999994,
+        "workingSetKiB": 295536
+      },
+      {
+        "milliseconds": 452.8446999999999,
+        "workingSetKiB": 295316
+      },
+      {
+        "milliseconds": 426.3406,
+        "workingSetKiB": 292644
+      },
+      {
+        "milliseconds": 487.0779000000002,
+        "workingSetKiB": 297728
+      },
+      {
+        "milliseconds": 458.8128999999999,
+        "workingSetKiB": 293920
+      },
+      {
+        "milliseconds": 425.8391999999999,
+        "workingSetKiB": 299512
+      },
+      {
+        "milliseconds": 418.85660000000007,
+        "workingSetKiB": 296996
+      },
+      {
+        "milliseconds": 414.3697000000002,
+        "workingSetKiB": 296828
+      },
+      {
+        "milliseconds": 410.91949999999997,
+        "workingSetKiB": 294020
+      },
+      {
+        "milliseconds": 415.03089999999975,
+        "workingSetKiB": 294724
+      },
+      {
+        "milliseconds": 412.14390000000003,
+        "workingSetKiB": 291144
+      },
+      {
+        "milliseconds": 412.3218999999999,
+        "workingSetKiB": 297232
+      },
+      {
+        "milliseconds": 406.66789999999946,
+        "workingSetKiB": 294684
+      },
+      {
+        "milliseconds": 410.01820000000043,
+        "workingSetKiB": 302624
+      },
+      {
+        "milliseconds": 423.8630000000012,
+        "workingSetKiB": 297296
+      },
+      {
+        "milliseconds": 415.3752000000004,
+        "workingSetKiB": 294352
+      },
+      {
+        "milliseconds": 415.7990000000009,
+        "workingSetKiB": 297252
+      },
+      {
+        "milliseconds": 404.8948999999993,
+        "workingSetKiB": 296736
+      },
+      {
+        "milliseconds": 438.40250000000015,
+        "workingSetKiB": 297292
+      }
+    ],
+    "medianMs": 417.3278000000005,
+    "p95Ms": 487.0779000000002,
+    "maxMs": 514.9382,
+    "standardDeviationMs": 28.493902400258825
+  },
+  "storage": {
+    "workload": {
+      "revision": 1,
+      "entries": {
+        "game": 8000,
+        "anime": 10000,
+        "comic": 9000,
+        "novel": 8000,
+        "character": 5000,
+        "person": 5000,
+        "organization": 5000
+      },
+      "parts": {
+        "anime_episodes": 80000,
+        "anime_extras": 20000,
+        "comic_volumes": 40000,
+        "comic_chapters": 40000,
+        "novel_volumes": 20000
+      },
+      "relations": {
+        "work_character_links": 140000,
+        "work_person_links": 160000,
+        "work_organization_links": 100000,
+        "work_relations": 100000
+      },
+      "files": {
+        "anime_files": 50000,
+        "comic_files": 30000,
+        "novel_files": 20000
+      },
+      "activities": 500000,
+      "tags": 200,
+      "tagApplications": 100000,
+      "manualCollections": 20,
+      "manualMembers": 10000,
+      "dynamicCollections": 100,
+      "warmups": 3,
+      "samples": 31,
+      "synchronousBudgetMs": 50
+    },
+    "inputSha256": "6f9b21913f05a285f5ba605dc539f8bbcc623b14445310a30faba4a460e0f9dc",
+    "observedCounts": {
+      "entries": 50000,
+      "anime_episodes": 80000,
+      "anime_extras": 20000,
+      "comic_volumes": 40000,
+      "comic_chapters": 40000,
+      "novel_volumes": 20000,
+      "work_character_links": 140000,
+      "work_person_links": 160000,
+      "work_organization_links": 100000,
+      "work_relations": 100000,
+      "anime_files": 50000,
+      "comic_files": 30000,
+      "novel_files": 20000,
+      "game_play_activity": 120000,
+      "anime_watch_activity": 142000,
+      "comic_reading_activity": 126000,
+      "novel_reading_activity": 112000,
+      "collections": 120
+    },
+    "migrations": [
+      {
+        "name": "20261113100600_baseline",
+        "sha256": "2cac9400a0ab3620ea7d28ca0c2f6ef0118a27e975b242cc774fdbae755fd13a"
+      }
+    ],
+    "environment": {
+      "platform": "win32",
+      "arch": "x64",
+      "osRelease": "10.0.19045",
+      "cpu": "AMD Ryzen 9 7945HX with Radeon Graphics        ",
+      "memoryBytes": 33474768896,
+      "versions": {
+        "node": "24.22.0",
+        "acorn": "8.18.0",
+        "ada": "4.0.0",
+        "amaro": "1.1.11",
+        "ares": "1.34.8",
+        "brotli": "1.2.0",
+        "cldr": "48.0",
+        "icu": "78.2",
+        "llhttp": "9.4.3",
+        "merve": "1.2.2",
+        "modules": "150",
+        "napi": "10",
+        "nbytes": "0.1.4",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.70.0",
+        "nghttp3": "",
+        "ngtcp2": "",
+        "openssl": "0.0.0",
+        "simdjson": "4.6.11",
+        "simdutf": "7.7.0",
+        "sqlite": "3.53.4",
+        "tz": "2026e",
+        "undici": "7.29.1",
+        "unicode": "17.0",
+        "uv": "1.52.1",
+        "uvwasi": "0.0.23",
+        "v8": "15.6.75.19-electron.0",
+        "zlib": "1.3.2.1-motley",
+        "zstd": "1.6.0",
+        "electron": "45.0.0",
+        "chrome": "156.0.8078.48"
+      },
+      "drizzle": "1.0.0-rc.5",
+      "sqliteDriver": "13.0.3",
+      "sqlite": "3.53.4",
+      "journalMode": "wal",
+      "synchronous": 2,
+      "fullfsync": 0,
+      "pageCacheKiB": 32768
+    },
+    "mode": "Actual Electron main, production fixture build, one full isolated database, reopened connection and warm OS cache; fixture preparation excluded",
+    "preparationMs": 40161.1343,
+    "queries": [
+      {
+        "name": "mixed-rated.list",
+        "statement": " select e.id from entries e where e.type in ('anime','comic','novel') and e.id in (select entry_id from entry_evaluations where rating >= 70) order by e.sort_name_key,e.id limit 200 offset 8077",
+        "parameters": [],
+        "expectedRows": 200,
+        "plan": [
+          {
+            "id": 8,
+            "parent": 0,
+            "notused": 89,
+            "detail": "SEARCH e USING INDEX sqlite_autoindex_entries_1 (id=?)"
+          },
+          {
+            "id": 12,
+            "parent": 0,
+            "notused": 0,
+            "detail": "LIST SUBQUERY 1"
+          },
+          {
+            "id": 14,
+            "parent": 12,
+            "notused": 151,
+            "detail": "SEARCH entry_evaluations USING COVERING INDEX entry_evaluations_rated (rating>?)"
+          },
+          {
+            "id": 56,
+            "parent": 0,
+            "notused": 0,
+            "detail": "USE TEMP B-TREE FOR ORDER BY"
+          }
+        ],
+        "firstReadMs": 27.866199999996752,
+        "samplesMs": [
+          13.9346000000005,
+          14.56140000000596,
+          15.005300000004354,
+          15.085299999998824,
+          14.734000000004016,
+          14.710500000001048,
+          14.525299999993877,
+          14.452599999996892,
+          14.321700000000419,
+          13.915099999998347,
+          14.367700000002515,
+          14.303899999998976,
+          13.985100000005332,
+          14.534599999999045,
+          14.58179999999993,
+          14.026899999997113,
+          14.443399999996473,
+          14.117700000002515,
+          14.069500000005064,
+          14.103399999999965,
+          13.814500000000407,
+          13.775300000001153,
+          14.24720000000525,
+          14.120600000002014,
+          14.007799999999406,
+          13.796000000002095,
+          14.10740000000078,
+          14.14429999999993,
+          13.912600000003295,
+          13.836100000000442,
+          13.633800000003248
+        ],
+        "medianMs": 14.120600000002014,
+        "p95Ms": 15.005300000004354,
+        "maxMs": 15.085299999998824
+      },
+      {
+        "name": "mixed-rated.total",
+        "statement": " select count(*) as total from entries e where e.type in ('anime','comic','novel') and e.id in (select entry_id from entry_evaluations where rating >= 70)",
+        "parameters": [],
+        "expectedRows": 1,
+        "plan": [
+          {
+            "id": 3,
+            "parent": 0,
+            "notused": 87,
+            "detail": "SEARCH e USING COVERING INDEX sqlite_autoindex_entries_2 (id=?)"
+          },
+          {
+            "id": 7,
+            "parent": 0,
+            "notused": 0,
+            "detail": "LIST SUBQUERY 1"
+          },
+          {
+            "id": 9,
+            "parent": 7,
+            "notused": 151,
+            "detail": "SEARCH entry_evaluations USING COVERING INDEX entry_evaluations_rated (rating>?)"
+          }
+        ],
+        "firstReadMs": 12.212899999998626,
+        "samplesMs": [
+          9.755400000001828,
+          9.71979999999894,
+          9.583599999998114,
+          9.54960000000574,
+          9.669699999998556,
+          9.74659999999858,
+          9.693499999993946,
+          9.527099999999336,
+          9.518499999998312,
+          9.539600000003702,
+          9.504000000000815,
+          9.490700000002107,
+          9.409400000004098,
+          9.554400000000896,
+          9.47790000000532,
+          9.520199999999022,
+          9.400699999998324,
+          9.41530000000057,
+          9.535100000000966,
+          9.391300000002957,
+          9.429100000001199,
+          9.407100000003993,
+          9.383499999996275,
+          9.447999999996682,
+          9.354299999999057,
+          9.265100000004168,
+          9.27100000000064,
+          9.269999999996799,
+          9.34939999999915,
+          9.383199999996577,
+          9.264500000004773
+        ],
+        "medianMs": 9.47790000000532,
+        "p95Ms": 9.74659999999858,
+        "maxMs": 9.755400000001828
+      },
+      {
+        "name": "mixed-rated.locate",
+        "statement": " select count(*) as position from entries e where (e.type in ('anime','comic','novel') and e.id in (select entry_id from entry_evaluations where rating >= 70)) and (e.sort_name_key,e.id) < (?,?)",
+        "parameters": [
+          {
+            "type": "Buffer",
+            "data": [
+              0,
+              79,
+              93,
+              0,
+              84,
+              194,
+              0,
+              0,
+              33,
+              0,
+              0,
+              49,
+              0,
+              0,
+              0,
+              4,
+              4,
+              6,
+              10,
+              8,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          },
+          "novel:0003597"
+        ],
+        "expectedRows": 1,
+        "plan": [
+          {
+            "id": 4,
+            "parent": 0,
+            "notused": 89,
+            "detail": "SEARCH e USING INDEX sqlite_autoindex_entries_2 (id=?)"
+          },
+          {
+            "id": 8,
+            "parent": 0,
+            "notused": 0,
+            "detail": "LIST SUBQUERY 1"
+          },
+          {
+            "id": 10,
+            "parent": 8,
+            "notused": 151,
+            "detail": "SEARCH entry_evaluations USING COVERING INDEX entry_evaluations_rated (rating>?)"
+          }
+        ],
+        "firstReadMs": 10.921799999996438,
+        "samplesMs": [
+          10.379000000000815,
+          10.372699999999895,
+          10.141800000004878,
+          10.035400000000664,
+          10.71809999999823,
+          10.121400000003632,
+          10.139299999995274,
+          10.040699999997742,
+          10.275400000005902,
+          10.527500000003783,
+          10.240099999995437,
+          10.222900000000664,
+          10.121400000003632,
+          10.1391999999978,
+          10.023099999998522,
+          10.004800000002433,
+          10.124199999998382,
+          10.340499999998428,
+          10.215000000003783,
+          10.153800000000047,
+          10.82890000000043,
+          10.78530000000319,
+          10.55789999999979,
+          10.407900000005611,
+          10.323499999998603,
+          10.159899999998743,
+          10.007799999999406,
+          10.224900000001071,
+          10.453799999995681,
+          10.336199999997916,
+          10.170399999995425
+        ],
+        "medianMs": 10.222900000000664,
+        "p95Ms": 10.78530000000319,
+        "maxMs": 10.82890000000043
+      },
+      {
+        "name": "dynamic-union-100.list",
+        "statement": "with dynamic_members as (select entry_id from entry_tags where tag_id in ('tag:0000000','tag:0000001','tag:0000002','tag:0000003','tag:0000004','tag:0000005','tag:0000006','tag:0000007','tag:0000008','tag:0000009','tag:0000010','tag:0000011','tag:0000012','tag:0000013','tag:0000014','tag:0000015','tag:0000016','tag:0000017','tag:0000018','tag:0000019','tag:0000020','tag:0000021','tag:0000022','tag:0000023','tag:0000024','tag:0000025','tag:0000026','tag:0000027','tag:0000028','tag:0000029','tag:0000030','tag:0000031','tag:0000032','tag:0000033','tag:0000034','tag:0000035','tag:0000036','tag:0000037','tag:0000038','tag:0000039','tag:0000040','tag:0000041','tag:0000042','tag:0000043','tag:0000044','tag:0000045','tag:0000046','tag:0000047','tag:0000048','tag:0000049','tag:0000050','tag:0000051','tag:0000052','tag:0000053','tag:0000054','tag:0000055','tag:0000056','tag:0000057','tag:0000058','tag:0000059','tag:0000060','tag:0000061','tag:0000062','tag:0000063','tag:0000064','tag:0000065','tag:0000066','tag:0000067','tag:0000068','tag:0000069','tag:0000070','tag:0000071','tag:0000072','tag:0000073','tag:0000074','tag:0000075','tag:0000076','tag:0000077','tag:0000078','tag:0000079','tag:0000080','tag:0000081','tag:0000082','tag:0000083','tag:0000084','tag:0000085','tag:0000086','tag:0000087','tag:0000088','tag:0000089','tag:0000090','tag:0000091','tag:0000092','tag:0000093','tag:0000094','tag:0000095','tag:0000096','tag:0000097','tag:0000098','tag:0000099') group by entry_id) select e.id from entries e where exists (select 1 from dynamic_members where dynamic_members.entry_id=e.id) order by e.sort_name_key,e.id limit 200 offset 43050",
+        "parameters": [],
+        "expectedRows": 200,
+        "plan": [
+          {
+            "id": 8,
+            "parent": 0,
+            "notused": 179,
+            "detail": "SCAN e USING INDEX entries_sort"
+          },
+          {
+            "id": 12,
+            "parent": 0,
+            "notused": 0,
+            "detail": "CORRELATED SCALAR SUBQUERY 2"
+          },
+          {
+            "id": 15,
+            "parent": 12,
+            "notused": 0,
+            "detail": "CO-ROUTINE dynamic_members"
+          },
+          {
+            "id": 21,
+            "parent": 15,
+            "notused": 160,
+            "detail": "SEARCH entry_tags USING COVERING INDEX entry_tags_tag (tag_id=?)"
+          },
+          {
+            "id": 333,
+            "parent": 15,
+            "notused": 0,
+            "detail": "USE TEMP B-TREE FOR GROUP BY"
+          },
+          {
+            "id": 377,
+            "parent": 12,
+            "notused": 47,
+            "detail": "SEARCH dynamic_members USING AUTOMATIC COVERING INDEX (entry_id=?)"
+          }
+        ],
+        "firstReadMs": 46.64929999999731,
+        "samplesMs": [
+          38.16530000000057,
+          38.074000000000524,
+          39.00770000000193,
+          39.16279999999824,
+          38.59100000000035,
+          38.65759999999864,
+          38.671699999998964,
+          38.247099999993225,
+          38.4429999999993,
+          38.71349999999802,
+          38.88220000000001,
+          38.42469999999594,
+          39.02130000000034,
+          38.40179999999964,
+          38.61049999999523,
+          38.57630000000063,
+          38.59569999999803,
+          38.5486000000019,
+          38.43319999999949,
+          38.8859999999986,
+          38.32420000000275,
+          38.48659999999654,
+          38.404099999999744,
+          38.199000000000524,
+          37.82970000000205,
+          38.1224000000002,
+          38.443599999998696,
+          38.203300000001036,
+          38.24979999999778,
+          38.24550000000454,
+          38.24760000000242
+        ],
+        "medianMs": 38.4429999999993,
+        "p95Ms": 39.02130000000034,
+        "maxMs": 39.16279999999824
+      },
+      {
+        "name": "dynamic-union-100.total",
+        "statement": "with dynamic_members as (select entry_id from entry_tags where tag_id in ('tag:0000000','tag:0000001','tag:0000002','tag:0000003','tag:0000004','tag:0000005','tag:0000006','tag:0000007','tag:0000008','tag:0000009','tag:0000010','tag:0000011','tag:0000012','tag:0000013','tag:0000014','tag:0000015','tag:0000016','tag:0000017','tag:0000018','tag:0000019','tag:0000020','tag:0000021','tag:0000022','tag:0000023','tag:0000024','tag:0000025','tag:0000026','tag:0000027','tag:0000028','tag:0000029','tag:0000030','tag:0000031','tag:0000032','tag:0000033','tag:0000034','tag:0000035','tag:0000036','tag:0000037','tag:0000038','tag:0000039','tag:0000040','tag:0000041','tag:0000042','tag:0000043','tag:0000044','tag:0000045','tag:0000046','tag:0000047','tag:0000048','tag:0000049','tag:0000050','tag:0000051','tag:0000052','tag:0000053','tag:0000054','tag:0000055','tag:0000056','tag:0000057','tag:0000058','tag:0000059','tag:0000060','tag:0000061','tag:0000062','tag:0000063','tag:0000064','tag:0000065','tag:0000066','tag:0000067','tag:0000068','tag:0000069','tag:0000070','tag:0000071','tag:0000072','tag:0000073','tag:0000074','tag:0000075','tag:0000076','tag:0000077','tag:0000078','tag:0000079','tag:0000080','tag:0000081','tag:0000082','tag:0000083','tag:0000084','tag:0000085','tag:0000086','tag:0000087','tag:0000088','tag:0000089','tag:0000090','tag:0000091','tag:0000092','tag:0000093','tag:0000094','tag:0000095','tag:0000096','tag:0000097','tag:0000098','tag:0000099') group by entry_id) select count(*) as total from entries e where exists (select 1 from dynamic_members where dynamic_members.entry_id=e.id)",
+        "parameters": [],
+        "expectedRows": 1,
+        "plan": [
+          {
+            "id": 3,
+            "parent": 0,
+            "notused": 165,
+            "detail": "SCAN e USING COVERING INDEX sqlite_autoindex_entries_1"
+          },
+          {
+            "id": 6,
+            "parent": 0,
+            "notused": 0,
+            "detail": "CORRELATED SCALAR SUBQUERY 2"
+          },
+          {
+            "id": 9,
+            "parent": 6,
+            "notused": 0,
+            "detail": "CO-ROUTINE dynamic_members"
+          },
+          {
+            "id": 15,
+            "parent": 9,
+            "notused": 160,
+            "detail": "SEARCH entry_tags USING COVERING INDEX entry_tags_tag (tag_id=?)"
+          },
+          {
+            "id": 327,
+            "parent": 9,
+            "notused": 0,
+            "detail": "USE TEMP B-TREE FOR GROUP BY"
+          },
+          {
+            "id": 371,
+            "parent": 6,
+            "notused": 47,
+            "detail": "SEARCH dynamic_members USING AUTOMATIC COVERING INDEX (entry_id=?)"
+          }
+        ],
+        "firstReadMs": 36.071100000001024,
+        "samplesMs": [
+          36.042499999995925,
+          36.04660000000149,
+          35.96440000000439,
+          35.93549999999959,
+          35.96419999999489,
+          36.19749999999476,
+          36.02339999999822,
+          36.24959999999555,
+          36.161800000001676,
+          36.14530000000377,
+          36.08929999999964,
+          36.29769999999553,
+          36.30430000000342,
+          36.18939999999566,
+          36.10080000000016,
+          36.08759999999893,
+          36.222600000000966,
+          36.20690000000468,
+          35.85100000000239,
+          36.34640000000218,
+          36.295100000003,
+          36.46360000000277,
+          36.37289999999484,
+          36.19210000000021,
+          36.189100000003236,
+          36.397100000001956,
+          36.55449999999837,
+          36.36250000000291,
+          36.20829999999842,
+          36.63609999999608,
+          36.4001999999964
+        ],
+        "medianMs": 36.19749999999476,
+        "p95Ms": 36.55449999999837,
+        "maxMs": 36.63609999999608
+      },
+      {
+        "name": "dynamic-union-100.locate",
+        "statement": "with dynamic_members as (select entry_id from entry_tags where tag_id in ('tag:0000000','tag:0000001','tag:0000002','tag:0000003','tag:0000004','tag:0000005','tag:0000006','tag:0000007','tag:0000008','tag:0000009','tag:0000010','tag:0000011','tag:0000012','tag:0000013','tag:0000014','tag:0000015','tag:0000016','tag:0000017','tag:0000018','tag:0000019','tag:0000020','tag:0000021','tag:0000022','tag:0000023','tag:0000024','tag:0000025','tag:0000026','tag:0000027','tag:0000028','tag:0000029','tag:0000030','tag:0000031','tag:0000032','tag:0000033','tag:0000034','tag:0000035','tag:0000036','tag:0000037','tag:0000038','tag:0000039','tag:0000040','tag:0000041','tag:0000042','tag:0000043','tag:0000044','tag:0000045','tag:0000046','tag:0000047','tag:0000048','tag:0000049','tag:0000050','tag:0000051','tag:0000052','tag:0000053','tag:0000054','tag:0000055','tag:0000056','tag:0000057','tag:0000058','tag:0000059','tag:0000060','tag:0000061','tag:0000062','tag:0000063','tag:0000064','tag:0000065','tag:0000066','tag:0000067','tag:0000068','tag:0000069','tag:0000070','tag:0000071','tag:0000072','tag:0000073','tag:0000074','tag:0000075','tag:0000076','tag:0000077','tag:0000078','tag:0000079','tag:0000080','tag:0000081','tag:0000082','tag:0000083','tag:0000084','tag:0000085','tag:0000086','tag:0000087','tag:0000088','tag:0000089','tag:0000090','tag:0000091','tag:0000092','tag:0000093','tag:0000094','tag:0000095','tag:0000096','tag:0000097','tag:0000098','tag:0000099') group by entry_id) select count(*) as position from entries e where (exists (select 1 from dynamic_members where dynamic_members.entry_id=e.id)) and (e.sort_name_key,e.id) < (?,?)",
+        "parameters": [
+          {
+            "type": "Buffer",
+            "data": [
+              0,
+              79,
+              93,
+              0,
+              84,
+              194,
+              0,
+              0,
+              33,
+              0,
+              0,
+              49,
+              0,
+              0,
+              0,
+              4,
+              3,
+              9,
+              5,
+              10,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          },
+          "person:0002849"
+        ],
+        "expectedRows": 1,
+        "plan": [
+          {
+            "id": 4,
+            "parent": 0,
+            "notused": 160,
+            "detail": "SEARCH e USING INDEX entries_sort ((sort_name_key,id)<(?,?))"
+          },
+          {
+            "id": 24,
+            "parent": 0,
+            "notused": 0,
+            "detail": "CORRELATED SCALAR SUBQUERY 2"
+          },
+          {
+            "id": 27,
+            "parent": 24,
+            "notused": 0,
+            "detail": "CO-ROUTINE dynamic_members"
+          },
+          {
+            "id": 33,
+            "parent": 27,
+            "notused": 160,
+            "detail": "SEARCH entry_tags USING COVERING INDEX entry_tags_tag (tag_id=?)"
+          },
+          {
+            "id": 345,
+            "parent": 27,
+            "notused": 0,
+            "detail": "USE TEMP B-TREE FOR GROUP BY"
+          },
+          {
+            "id": 389,
+            "parent": 24,
+            "notused": 47,
+            "detail": "SEARCH dynamic_members USING AUTOMATIC COVERING INDEX (entry_id=?)"
+          }
+        ],
+        "firstReadMs": 36.93900000000576,
+        "samplesMs": [
+          36.71940000000177,
+          36.69890000000305,
+          37.11750000000029,
+          37.202299999997194,
+          37.749900000002526,
+          36.870499999997264,
+          36.96280000000115,
+          37.50479999999516,
+          36.91440000000148,
+          37.35489999999845,
+          36.7129999999961,
+          37.01219999999739,
+          37.101699999999255,
+          36.87350000000151,
+          37.02140000000509,
+          36.903999999994994,
+          36.91320000000269,
+          37.157399999996414,
+          36.80750000000262,
+          37.053500000001804,
+          36.84799999999814,
+          36.698099999994156,
+          37.058399999994435,
+          36.479499999994005,
+          36.57369999999355,
+          36.78070000000298,
+          37.632299999997485,
+          36.992599999997765,
+          36.98280000000523,
+          37.714899999999034,
+          32.2100000000064
+        ],
+        "medianMs": 36.96280000000115,
+        "p95Ms": 37.714899999999034,
+        "maxMs": 37.749900000002526
+      },
+      {
+        "name": "unclassified.list",
+        "statement": "with dynamic_members as (select entry_id from entry_tags where tag_id in ('tag:0000000','tag:0000001','tag:0000002','tag:0000003','tag:0000004','tag:0000005','tag:0000006','tag:0000007','tag:0000008','tag:0000009','tag:0000010','tag:0000011','tag:0000012','tag:0000013','tag:0000014','tag:0000015','tag:0000016','tag:0000017','tag:0000018','tag:0000019','tag:0000020','tag:0000021','tag:0000022','tag:0000023','tag:0000024','tag:0000025','tag:0000026','tag:0000027','tag:0000028','tag:0000029','tag:0000030','tag:0000031','tag:0000032','tag:0000033','tag:0000034','tag:0000035','tag:0000036','tag:0000037','tag:0000038','tag:0000039','tag:0000040','tag:0000041','tag:0000042','tag:0000043','tag:0000044','tag:0000045','tag:0000046','tag:0000047','tag:0000048','tag:0000049','tag:0000050','tag:0000051','tag:0000052','tag:0000053','tag:0000054','tag:0000055','tag:0000056','tag:0000057','tag:0000058','tag:0000059','tag:0000060','tag:0000061','tag:0000062','tag:0000063','tag:0000064','tag:0000065','tag:0000066','tag:0000067','tag:0000068','tag:0000069','tag:0000070','tag:0000071','tag:0000072','tag:0000073','tag:0000074','tag:0000075','tag:0000076','tag:0000077','tag:0000078','tag:0000079','tag:0000080','tag:0000081','tag:0000082','tag:0000083','tag:0000084','tag:0000085','tag:0000086','tag:0000087','tag:0000088','tag:0000089','tag:0000090','tag:0000091','tag:0000092','tag:0000093','tag:0000094','tag:0000095','tag:0000096','tag:0000097','tag:0000098','tag:0000099')) select e.id from entries e where e.id not in (select entry_id from dynamic_members) and e.id not in (select entry_id from collection_members) order by e.sort_name_key,e.id limit 200 offset 5050",
+        "parameters": [],
+        "expectedRows": 200,
+        "plan": [
+          {
+            "id": 8,
+            "parent": 0,
+            "notused": 179,
+            "detail": "SCAN e USING INDEX entries_sort"
+          },
+          {
+            "id": 14,
+            "parent": 0,
+            "notused": 0,
+            "detail": "LIST SUBQUERY 2"
+          },
+          {
+            "id": 17,
+            "parent": 14,
+            "notused": 160,
+            "detail": "SEARCH entry_tags USING COVERING INDEX entry_tags_tag (tag_id=?)"
+          },
+          {
+            "id": 333,
+            "parent": 14,
+            "notused": 0,
+            "detail": "CREATE BLOOM FILTER"
+          },
+          {
+            "id": 351,
+            "parent": 0,
+            "notused": 0,
+            "detail": "USING INDEX collection_members_entry FOR IN-OPERATOR"
+          }
+        ],
+        "firstReadMs": 39.43340000000171,
+        "samplesMs": [
+          38.92160000000149,
+          38.31380000000354,
+          38.05489999999554,
+          38.137399999999616,
+          37.918900000004214,
+          37.59530000000086,
+          37.95640000000276,
+          37.74300000000221,
+          38.109800000005635,
+          38.13249999999971,
+          37.896200000002864,
+          38.230499999997846,
+          38.93350000000646,
+          37.92149999999674,
+          38.62770000000455,
+          39.87989999999991,
+          38.20820000000094,
+          37.97980000000098,
+          37.78230000000622,
+          38.40020000000368,
+          38.19689999999537,
+          37.87380000000121,
+          38.02799999999843,
+          37.57220000000234,
+          38.366399999998976,
+          38.069400000000314,
+          37.90950000000157,
+          37.59049999999843,
+          37.35190000000148,
+          37.56100000000151,
+          37.763999999995576
+        ],
+        "medianMs": 38.02799999999843,
+        "p95Ms": 38.93350000000646,
+        "maxMs": 39.87989999999991
+      },
+      {
+        "name": "unclassified.total",
+        "statement": "with dynamic_members as (select entry_id from entry_tags where tag_id in ('tag:0000000','tag:0000001','tag:0000002','tag:0000003','tag:0000004','tag:0000005','tag:0000006','tag:0000007','tag:0000008','tag:0000009','tag:0000010','tag:0000011','tag:0000012','tag:0000013','tag:0000014','tag:0000015','tag:0000016','tag:0000017','tag:0000018','tag:0000019','tag:0000020','tag:0000021','tag:0000022','tag:0000023','tag:0000024','tag:0000025','tag:0000026','tag:0000027','tag:0000028','tag:0000029','tag:0000030','tag:0000031','tag:0000032','tag:0000033','tag:0000034','tag:0000035','tag:0000036','tag:0000037','tag:0000038','tag:0000039','tag:0000040','tag:0000041','tag:0000042','tag:0000043','tag:0000044','tag:0000045','tag:0000046','tag:0000047','tag:0000048','tag:0000049','tag:0000050','tag:0000051','tag:0000052','tag:0000053','tag:0000054','tag:0000055','tag:0000056','tag:0000057','tag:0000058','tag:0000059','tag:0000060','tag:0000061','tag:0000062','tag:0000063','tag:0000064','tag:0000065','tag:0000066','tag:0000067','tag:0000068','tag:0000069','tag:0000070','tag:0000071','tag:0000072','tag:0000073','tag:0000074','tag:0000075','tag:0000076','tag:0000077','tag:0000078','tag:0000079','tag:0000080','tag:0000081','tag:0000082','tag:0000083','tag:0000084','tag:0000085','tag:0000086','tag:0000087','tag:0000088','tag:0000089','tag:0000090','tag:0000091','tag:0000092','tag:0000093','tag:0000094','tag:0000095','tag:0000096','tag:0000097','tag:0000098','tag:0000099')) select count(*) as total from entries e where e.id not in (select entry_id from dynamic_members) and e.id not in (select entry_id from collection_members)",
+        "parameters": [],
+        "expectedRows": 1,
+        "plan": [
+          {
+            "id": 3,
+            "parent": 0,
+            "notused": 165,
+            "detail": "SCAN e USING COVERING INDEX sqlite_autoindex_entries_1"
+          },
+          {
+            "id": 8,
+            "parent": 0,
+            "notused": 0,
+            "detail": "LIST SUBQUERY 2"
+          },
+          {
+            "id": 11,
+            "parent": 8,
+            "notused": 160,
+            "detail": "SEARCH entry_tags USING COVERING INDEX entry_tags_tag (tag_id=?)"
+          },
+          {
+            "id": 327,
+            "parent": 8,
+            "notused": 0,
+            "detail": "CREATE BLOOM FILTER"
+          },
+          {
+            "id": 345,
+            "parent": 0,
+            "notused": 0,
+            "detail": "USING INDEX collection_members_entry FOR IN-OPERATOR"
+          }
+        ],
+        "firstReadMs": 34.967100000001665,
+        "samplesMs": [
+          35.39039999999659,
+          35.03319999999803,
+          35.246100000003935,
+          35.30220000000554,
+          35.13400000000547,
+          35.00800000000163,
+          34.91500000000087,
+          34.96100000000297,
+          34.89630000000034,
+          35.01659999999538,
+          35.03659999999945,
+          35.084100000000035,
+          35.63330000000133,
+          35.50590000000375,
+          35.3208999999988,
+          35.050100000000384,
+          35.07140000000072,
+          34.837100000004284,
+          35.18989999999758,
+          35.29509999999573,
+          35.093699999997625,
+          35.22230000000127,
+          34.925499999997555,
+          35.140999999995984,
+          35.22869999999966,
+          35.14860000000044,
+          35.11739999999554,
+          35.3156999999992,
+          35.28889999999956,
+          35.41610000000219,
+          35.39749999999913
+        ],
+        "medianMs": 35.140999999995984,
+        "p95Ms": 35.50590000000375,
+        "maxMs": 35.63330000000133
+      },
+      {
+        "name": "unclassified.locate",
+        "statement": "with dynamic_members as (select entry_id from entry_tags where tag_id in ('tag:0000000','tag:0000001','tag:0000002','tag:0000003','tag:0000004','tag:0000005','tag:0000006','tag:0000007','tag:0000008','tag:0000009','tag:0000010','tag:0000011','tag:0000012','tag:0000013','tag:0000014','tag:0000015','tag:0000016','tag:0000017','tag:0000018','tag:0000019','tag:0000020','tag:0000021','tag:0000022','tag:0000023','tag:0000024','tag:0000025','tag:0000026','tag:0000027','tag:0000028','tag:0000029','tag:0000030','tag:0000031','tag:0000032','tag:0000033','tag:0000034','tag:0000035','tag:0000036','tag:0000037','tag:0000038','tag:0000039','tag:0000040','tag:0000041','tag:0000042','tag:0000043','tag:0000044','tag:0000045','tag:0000046','tag:0000047','tag:0000048','tag:0000049','tag:0000050','tag:0000051','tag:0000052','tag:0000053','tag:0000054','tag:0000055','tag:0000056','tag:0000057','tag:0000058','tag:0000059','tag:0000060','tag:0000061','tag:0000062','tag:0000063','tag:0000064','tag:0000065','tag:0000066','tag:0000067','tag:0000068','tag:0000069','tag:0000070','tag:0000071','tag:0000072','tag:0000073','tag:0000074','tag:0000075','tag:0000076','tag:0000077','tag:0000078','tag:0000079','tag:0000080','tag:0000081','tag:0000082','tag:0000083','tag:0000084','tag:0000085','tag:0000086','tag:0000087','tag:0000088','tag:0000089','tag:0000090','tag:0000091','tag:0000092','tag:0000093','tag:0000094','tag:0000095','tag:0000096','tag:0000097','tag:0000098','tag:0000099')) select count(*) as position from entries e where (e.id not in (select entry_id from dynamic_members) and e.id not in (select entry_id from collection_members)) and (e.sort_name_key,e.id) < (?,?)",
+        "parameters": [
+          {
+            "type": "Buffer",
+            "data": [
+              0,
+              79,
+              93,
+              0,
+              84,
+              194,
+              0,
+              0,
+              33,
+              0,
+              0,
+              49,
+              0,
+              0,
+              0,
+              4,
+              3,
+              10,
+              1,
+              8,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          },
+          "novel:0002907"
+        ],
+        "expectedRows": 1,
+        "plan": [
+          {
+            "id": 4,
+            "parent": 0,
+            "notused": 160,
+            "detail": "SEARCH e USING INDEX entries_sort ((sort_name_key,id)<(?,?))"
+          },
+          {
+            "id": 16,
+            "parent": 0,
+            "notused": 0,
+            "detail": "LIST SUBQUERY 2"
+          },
+          {
+            "id": 19,
+            "parent": 16,
+            "notused": 160,
+            "detail": "SEARCH entry_tags USING COVERING INDEX entry_tags_tag (tag_id=?)"
+          },
+          {
+            "id": 335,
+            "parent": 16,
+            "notused": 0,
+            "detail": "CREATE BLOOM FILTER"
+          },
+          {
+            "id": 353,
+            "parent": 0,
+            "notused": 0,
+            "detail": "USING INDEX collection_members_entry FOR IN-OPERATOR"
+          }
+        ],
+        "firstReadMs": 35.287600000003295,
+        "samplesMs": [
+          34.62480000000505,
+          35.672599999998056,
+          34.937400000002526,
+          35.326600000000326,
+          35.189900000004855,
+          34.731800000001385,
+          35.37250000000495,
+          35.54080000000249,
+          35.28559999999561,
+          35.435700000001816,
+          35.029999999998836,
+          35.241500000003725,
+          35.775000000001455,
+          35.354700000003504,
+          34.94930000000022,
+          35.47690000000148,
+          35.45440000000235,
+          35.20990000000165,
+          35.40899999999965,
+          35.36379999999917,
+          35.24829999999929,
+          35.33309999999619,
+          35.438200000004144,
+          35.50959999999759,
+          35.854999999995925,
+          35.4635000000053,
+          35.4713000000047,
+          35.60149999999703,
+          35.05279999999766,
+          34.977899999998044,
+          34.82610000000568
+        ],
+        "medianMs": 35.354700000003504,
+        "p95Ms": 35.775000000001455,
+        "maxMs": 35.854999999995925
+      },
+      {
+        "name": "same-relation.list",
+        "statement": " select e.id from entries e where e.id in (select work_id from work_person_links where person_id = 'person:0000000' and role = 'voiceActor' and character_id is not null) order by e.sort_name_key,e.id limit 200 offset 0",
+        "parameters": [],
+        "expectedRows": 6,
+        "plan": [
+          {
+            "id": 8,
+            "parent": 0,
+            "notused": 89,
+            "detail": "SEARCH e USING INDEX sqlite_autoindex_entries_1 (id=?)"
+          },
+          {
+            "id": 12,
+            "parent": 0,
+            "notused": 0,
+            "detail": "LIST SUBQUERY 1"
+          },
+          {
+            "id": 15,
+            "parent": 12,
+            "notused": 67,
+            "detail": "SEARCH work_person_links USING INDEX work_person_links_person (person_id=? AND role=?)"
+          },
+          {
+            "id": 45,
+            "parent": 0,
+            "notused": 0,
+            "detail": "USE TEMP B-TREE FOR ORDER BY"
+          }
+        ],
+        "firstReadMs": 0.21630000000004657,
+        "samplesMs": [
+          0.018000000003667083,
+          0.03229999999894062,
+          0.018299999996088445,
+          0.016700000000128057,
+          0.01690000000235159,
+          0.018199999998614658,
+          0.018900000002759043,
+          0.01750000000174623,
+          0.016400000000430737,
+          0.016199999998207204,
+          0.01690000000235159,
+          0.01600000000325963,
+          0.016199999998207204,
+          0.01599999999598367,
+          0.016999999999825377,
+          0.016199999998207204,
+          0.01629999999568099,
+          0.016100000000733417,
+          0.016199999998207204,
+          0.01750000000174623,
+          0.01629999999568099,
+          0.015800000001036096,
+          0.01569999999628635,
+          0.016199999998207204,
+          0.015899999998509884,
+          0.016499999997904524,
+          0.015899999998509884,
+          0.016100000000733417,
+          0.016999999999825377,
+          0.015899999998509884,
+          0.01720000000204891
+        ],
+        "medianMs": 0.01629999999568099,
+        "p95Ms": 0.018900000002759043,
+        "maxMs": 0.03229999999894062
+      },
+      {
+        "name": "same-relation.total",
+        "statement": " select count(*) as total from entries e where e.id in (select work_id from work_person_links where person_id = 'person:0000000' and role = 'voiceActor' and character_id is not null)",
+        "parameters": [],
+        "expectedRows": 1,
+        "plan": [
+          {
+            "id": 3,
+            "parent": 0,
+            "notused": 87,
+            "detail": "SEARCH e USING COVERING INDEX sqlite_autoindex_entries_2 (id=?)"
+          },
+          {
+            "id": 7,
+            "parent": 0,
+            "notused": 0,
+            "detail": "LIST SUBQUERY 1"
+          },
+          {
+            "id": 10,
+            "parent": 7,
+            "notused": 67,
+            "detail": "SEARCH work_person_links USING INDEX work_person_links_person (person_id=? AND role=?)"
+          }
+        ],
+        "firstReadMs": 0.03510000000096625,
+        "samplesMs": [
+          0.013399999996181577,
+          0.01239999999961583,
+          0.01239999999961583,
+          0.012300000002142042,
+          0.01239999999961583,
+          0.012599999994563404,
+          0.012300000002142042,
+          0.012200000004668254,
+          0.012499999997089617,
+          0.012200000004668254,
+          0.012799999996786937,
+          0.012499999997089617,
+          0.012200000004668254,
+          0.012499999997089617,
+          0.011999999995168764,
+          0.01209999999991851,
+          0.012199999997392297,
+          0.012599999994563404,
+          0.012300000002142042,
+          0.01239999999961583,
+          0.01299999999901047,
+          0.012500000004365575,
+          0.01239999999961583,
+          0.012400000006891787,
+          0.01209999999991851,
+          0.011999999995168764,
+          0.012800000004062895,
+          0.012600000001839362,
+          0.01239999999961583,
+          0.01209999999991851,
+          0.01209999999991851
+        ],
+        "medianMs": 0.01239999999961583,
+        "p95Ms": 0.01299999999901047,
+        "maxMs": 0.013399999996181577
+      },
+      {
+        "name": "same-relation.locate",
+        "statement": " select count(*) as position from entries e where (e.id in (select work_id from work_person_links where person_id = 'person:0000000' and role = 'voiceActor' and character_id is not null)) and (e.sort_name_key,e.id) < (?,?)",
+        "parameters": [
+          {
+            "type": "Buffer",
+            "data": [
+              0,
+              79,
+              93,
+              0,
+              84,
+              194,
+              0,
+              0,
+              33,
+              0,
+              0,
+              49,
+              0,
+              0,
+              0,
+              4,
+              2,
+              2,
+              7,
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          },
+          "anime:0001162"
+        ],
+        "expectedRows": 1,
+        "plan": [
+          {
+            "id": 4,
+            "parent": 0,
+            "notused": 89,
+            "detail": "SEARCH e USING INDEX sqlite_autoindex_entries_2 (id=?)"
+          },
+          {
+            "id": 8,
+            "parent": 0,
+            "notused": 0,
+            "detail": "LIST SUBQUERY 1"
+          },
+          {
+            "id": 11,
+            "parent": 8,
+            "notused": 67,
+            "detail": "SEARCH work_person_links USING INDEX work_person_links_person (person_id=? AND role=?)"
+          }
+        ],
+        "firstReadMs": 0.03149999999732245,
+        "samplesMs": [
+          0.014400000000023283,
+          0.014299999995273538,
+          0.01419999999779975,
+          0.01419999999779975,
+          0.014100000000325963,
+          0.014500000004773028,
+          0.014999999999417923,
+          0.014299999995273538,
+          0.014200000005075708,
+          0.014100000000325963,
+          0.014100000000325963,
+          0.014100000000325963,
+          0.014000000002852175,
+          0.014300000002549496,
+          0.014100000000325963,
+          0.014100000000325963,
+          0.013999999995576218,
+          0.01419999999779975,
+          0.014100000000325963,
+          0.013900000005378388,
+          0.014300000002549496,
+          0.014000000002852175,
+          0.016100000000733417,
+          0.014400000000023283,
+          0.01419999999779975,
+          0.013999999995576218,
+          0.014100000000325963,
+          0.010699999998905696,
+          0.015400000003864989,
+          0.014999999999417923,
+          0.015099999996891711
+        ],
+        "medianMs": 0.01419999999779975,
+        "p95Ms": 0.015400000003864989,
+        "maxMs": 0.016100000000733417
+      },
+      {
+        "name": "external-identity",
+        "statement": "select entry_id from entry_external_identities where source = ? and source_id = ?",
+        "parameters": [
+          "fixture-source",
+          "source-42000"
+        ],
+        "expectedRows": 1,
+        "plan": [
+          {
+            "id": 3,
+            "parent": 0,
+            "notused": 39,
+            "detail": "SEARCH entry_external_identities USING INDEX sqlite_autoindex_entry_external_identities_1 (source=? AND source_id=?)"
+          }
+        ],
+        "firstReadMs": 0.15789999999833526,
+        "samplesMs": [
+          0.007999999994353857,
+          0.00789999999688007,
+          0.008099999999103602,
+          0.00789999999688007,
+          0.014100000000325963,
+          0.012499999997089617,
+          0.009299999997892883,
+          0.007799999999406282,
+          0.007299999997485429,
+          0.0072000000000116415,
+          0.0072000000000116415,
+          0.007499999999708962,
+          0.007400000002235174,
+          0.007299999997485429,
+          0.007299999997485429,
+          0.007299999997485429,
+          0.007400000002235174,
+          0.008000000001629815,
+          0.007600000004458707,
+          0.007300000004761387,
+          0.007299999997485429,
+          0.007299999997485429,
+          0.007599999997182749,
+          0.0073999999949592166,
+          0.007300000004761387,
+          0.007300000004761387,
+          0.007300000004761387,
+          0.007299999997485429,
+          0.0072000000000116415,
+          0.0073999999949592166,
+          0.0072000000000116415
+        ],
+        "medianMs": 0.0073999999949592166,
+        "p95Ms": 0.012499999997089617,
+        "maxMs": 0.014100000000325963
+      },
+      {
+        "name": "calendar-date-order",
+        "statement": "select id,work_id from work_completion_records order by json_extract(completed_date,'$.year'),json_extract(completed_date,'$.month'),json_extract(completed_date,'$.day'),work_id limit 200 offset 30000",
+        "parameters": [],
+        "expectedRows": 200,
+        "plan": [
+          {
+            "id": 8,
+            "parent": 0,
+            "notused": 175,
+            "detail": "SCAN work_completion_records USING INDEX work_completion_records_date"
+          }
+        ],
+        "firstReadMs": 3.3505000000004657,
+        "samplesMs": [
+          0.565999999998894,
+          0.554599999995844,
+          0.5551000000050408,
+          0.5552999999999884,
+          0.5611000000062631,
+          0.5472999999983585,
+          0.5532000000021071,
+          0.5455000000001746,
+          0.5702999999994063,
+          0.5458999999973457,
+          0.5492000000012922,
+          0.5385000000023865,
+          0.5529999999998836,
+          0.5474000000031083,
+          0.5691999999980908,
+          0.5541000000011991,
+          0.5517000000036205,
+          0.55279999999766,
+          0.5551000000050408,
+          0.5401999999958207,
+          0.5619999999980791,
+          0.5495000000009895,
+          0.5622000000003027,
+          0.5522000000055414,
+          0.5587999999988824,
+          0.5463000000017928,
+          0.5532999999995809,
+          0.5529000000024098,
+          0.5578000000023167,
+          0.5524000000004889,
+          0.5568999999959487
+        ],
+        "medianMs": 0.5532000000021071,
+        "p95Ms": 0.5691999999980908,
+        "maxMs": 0.5702999999994063
+      },
+      {
+        "name": "part-file-activity-statistics",
+        "statement": "with activity as (select anime_id,sum(duration_ms) as duration from anime_watch_activity group by anime_id), ranked as (select a.entry_id as id,coalesce(activity.duration,0) as duration from animes a left join activity on activity.anime_id=a.entry_id order by duration desc,a.entry_id limit 200) select id,(select count(*) from anime_episodes where anime_id=ranked.id) as parts,(select count(*) from anime_files where anime_id=ranked.id) as files,duration from ranked order by duration desc,id",
+        "parameters": [],
+        "expectedRows": 200,
+        "plan": [
+          {
+            "id": 2,
+            "parent": 0,
+            "notused": 0,
+            "detail": "CO-ROUTINE ranked"
+          },
+          {
+            "id": 5,
+            "parent": 2,
+            "notused": 0,
+            "detail": "MATERIALIZE activity"
+          },
+          {
+            "id": 12,
+            "parent": 5,
+            "notused": 183,
+            "detail": "SCAN anime_watch_activity USING COVERING INDEX anime_watch_activity_work_time"
+          },
+          {
+            "id": 47,
+            "parent": 2,
+            "notused": 142,
+            "detail": "SCAN a USING COVERING INDEX sqlite_autoindex_animes_1"
+          },
+          {
+            "id": 60,
+            "parent": 2,
+            "notused": 47,
+            "detail": "SEARCH activity USING AUTOMATIC COVERING INDEX (anime_id=?) LEFT-JOIN"
+          },
+          {
+            "id": 82,
+            "parent": 2,
+            "notused": 0,
+            "detail": "USE TEMP B-TREE FOR ORDER BY"
+          },
+          {
+            "id": 90,
+            "parent": 0,
+            "notused": 92,
+            "detail": "SCAN ranked"
+          },
+          {
+            "id": 95,
+            "parent": 0,
+            "notused": 0,
+            "detail": "CORRELATED SCALAR SUBQUERY 3"
+          },
+          {
+            "id": 100,
+            "parent": 95,
+            "notused": 51,
+            "detail": "SEARCH anime_episodes USING COVERING INDEX anime_episodes_owner_order (anime_id=?)"
+          },
+          {
+            "id": 113,
+            "parent": 0,
+            "notused": 0,
+            "detail": "CORRELATED SCALAR SUBQUERY 4"
+          },
+          {
+            "id": 118,
+            "parent": 113,
+            "notused": 47,
+            "detail": "SEARCH anime_files USING COVERING INDEX sqlite_autoindex_anime_files_2 (anime_id=?)"
+          }
+        ],
+        "firstReadMs": 25.251499999998487,
+        "samplesMs": [
+          13.31930000000284,
+          13.377099999997881,
+          13.06090000000404,
+          13.508300000001327,
+          13.64770000000135,
+          13.340900000002875,
+          13.002300000000105,
+          13.114699999998265,
+          12.874100000000908,
+          12.944999999999709,
+          13.399199999999837,
+          13.060199999999895,
+          12.69079999999667,
+          13.009500000000116,
+          13.019800000001851,
+          12.823500000005879,
+          13.045100000003004,
+          13.97950000000128,
+          13.091599999999744,
+          12.908199999998033,
+          13.297200000000885,
+          13.048499999997148,
+          13.046300000001793,
+          13.564800000000105,
+          13.035000000003492,
+          12.971700000001874,
+          13.35450000000128,
+          13.010299999994459,
+          12.731199999994715,
+          13.157800000000861,
+          13.134500000000116
+        ],
+        "medianMs": 13.060199999999895,
+        "p95Ms": 13.64770000000135,
+        "maxMs": 13.97950000000128
+      },
+      {
+        "name": "drizzle-codec-projection",
+        "statement": "select id,name,aliases from entries order by sort_name_key,id limit 200",
+        "parameters": [],
+        "expectedRows": 200,
+        "plan": [
+          {
+            "id": 5,
+            "parent": 0,
+            "notused": 180,
+            "detail": "SCAN entries USING INDEX entries_sort"
+          }
+        ],
+        "firstReadMs": 4.257900000004156,
+        "samplesMs": [
+          2.3324999999967986,
+          2.389600000002247,
+          2.3634000000020023,
+          2.9228000000002794,
+          2.1947999999974854,
+          2.19539999999688,
+          2.2223999999987427,
+          2.2019000000000233,
+          2.551500000001397,
+          2.290500000002794,
+          2.224999999998545,
+          2.160299999995914,
+          2.1653000000005704,
+          2.1212999999988824,
+          2.132900000004156,
+          2.205499999996391,
+          2.2115999999950873,
+          2.1304999999993015,
+          2.13020000000688,
+          2.8298999999969965,
+          2.7300000000032014,
+          2.2743000000045868,
+          2.08969999999681,
+          2.0688000000009197,
+          2.0610000000015134,
+          2.057300000000396,
+          2.033799999997427,
+          2.0274999999965075,
+          2.053699999996752,
+          2.061600000000908,
+          2.0530999999973574
+        ],
+        "medianMs": 2.1947999999974854,
+        "p95Ms": 2.8298999999969965,
+        "maxMs": 2.9228000000002794
+      }
+    ],
+    "writeSamplesMs": [
+      6.7445000000006985,
+      1.9567999999999302,
+      1.992500000000291,
+      2.0791000000026543,
+      1.9720000000015716,
+      2.0023999999975786,
+      2.013200000001234,
+      2.000900000006368,
+      1.9665999999997439,
+      2.084500000004482,
+      1.967899999996007,
+      2.0248999999967054,
+      1.9464999999981956,
+      1.9036999999952968,
+      1.8897999999971944,
+      1.8524000000033993,
+      1.8450000000011642,
+      1.8971000000019558,
+      1.847299999993993,
+      1.905400000003283,
+      1.9188999999969383,
+      1.902699999998731,
+      1.8779000000067754,
+      1.8548000000009779,
+      1.8524999999935972,
+      1.9284000000043306,
+      1.9712999999974272,
+      1.980600000002596,
+      1.9351000000024214,
+      1.9476999999969848,
+      1.9576000000015483
+    ],
+    "eventLoop": {
+      "p95Ms": 38.633471,
+      "maxMs": 53.346303
+    },
+    "memory": {
+      "rss": 189300736,
+      "heapTotal": 33918976,
+      "heapUsed": 24326868,
+      "external": 7802555,
+      "arrayBuffers": 0
+    }
+  }
+}

@@ -48,6 +48,9 @@ export class FileSyncError extends Error {
  * Paths follow native platform rules; Windows drive-rooted paths without a drive prefix are rejected.
  */
 export interface NativeFiles {
+  /** Inspects an existing path's actual volume or mount without opening a database. */
+  getFilesystemLocation(path: string): Promise<'local' | 'network' | 'unknown'>
+
   /**
    * Moves an absolute source to an absent target within the same filesystem.
    *
@@ -73,6 +76,11 @@ export interface NativeFiles {
  */
 export function createNativeFiles(binding: typeof Binding): NativeFiles {
   return {
+    /** Returns the native observation of the existing path's backing filesystem. */
+    getFilesystemLocation(path) {
+      return binding.getFilesystemLocation(path)
+    },
+
     /**
      * Implements {@link NativeFiles.moveNoReplace} by translating native completions and argument
      * errors.

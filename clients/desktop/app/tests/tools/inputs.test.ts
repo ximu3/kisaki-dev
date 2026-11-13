@@ -31,6 +31,7 @@ beforeAll(async () => {
     'app/config/typescript',
     'app/native',
     'app/assets',
+    'app/drizzle',
     'app/src/main',
     'package/src',
     'package/tools',
@@ -83,6 +84,7 @@ test('package, resource and configuration changes select their actual preparatio
     ['app/config/typescript/tsconfig.main.json', 'configuration'],
     ['app/native/src.rs', 'native'],
     ['app/assets/font.json', 'resources'],
+    ['app/drizzle/migration.sql', 'resources'],
     ['package/src/value.ts', 'packages'],
     ['package/config/typescript/tsconfig.lib.json', 'packages'],
   ] as const) {

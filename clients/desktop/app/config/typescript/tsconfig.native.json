@@ -1,0 +1,10 @@
+{
+  "extends": "@kisaki3/typescript-config/node.json",
+  "compilerOptions": {
+    "skipLibCheck": false,
+    "incremental": true,
+    "tsBuildInfoFile": "../../.cache/typescript/native.tsbuildinfo"
+  },
+  "include": ["../../native/node/**/*.ts"],
+  "exclude": ["../../native/node/**/*.test.ts"]
+}

@@ -4,7 +4,7 @@
 
 ## 实施进展
 
-截至 2026-11-12，工作包按真实依赖和完整责任组织。本体业务就绪后，W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 1.9、原生能力上的自研通用 UI、组件子路径与 CSS Modules、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
+截至 2026-11-13，工作包按真实依赖和完整责任组织。本体业务就绪后，W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 1.9、原生能力上的自研通用 UI、组件子路径与 CSS Modules、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
 
 W00 工程实现与适用验收已完成并合入主线，当前职责见[工程能力](#w00)。仓库维护桌面工程工具、原生文件能力、资源、三个私有工程包，以及 desktop-appearance、extension-distribution、desktop-contracts、desktop-localization、desktop-rpc 和 desktop-ui，workspace 共 11 个项目（含根工程）。产品能力按下表工作包实施。
 
@@ -36,7 +36,7 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 | [W03 桌面合同与本地化](work-packages.md#w03) | 实现与适用验收已完成。合同包交付接口、值约束与规范编码，展示柜采用单项保存、明确批量创建与共用引导输入；实际业务操作和界面由 W08、W22 实现。本地化包交付英语、关联类型、译本校验与格式化。两个包均通过制品和独立消费验证，见[本机及 CI 证据](../verification/evidence/w03/README.md)。项目文档待 W23，尚未公开发布。 |
 | [W04 desktop-rpc](work-packages.md#w04)                       | 实现与适用验收已完成。环境无关的 RPC 包通过帧与连接机制、制品、独立声明以及 Node 父子 IPC 和 Electron 窗口的真实通道验证，见[验证记录](../verification/evidence/w04/README.md)。项目文档待 W23，尚未公开发布。                               |
 | [W05 desktop-ui](work-packages.md#w05) | 31 个组件家族与共同样式已完成，静态字段标题、可搜索单选与多选、原生分段日期、虚拟列表、稳定内容的浮层、通知队列和内置格式栏已通过独立制品消费验收。范围见[验证记录](../verification/evidence/w05/README.md)。项目文档待 W23，尚未公开发布。 |
-| [W06 存储与原生基础](work-packages.md#w06)                    | 未开始。                                                                                                                                                                                                                                     |
+| [W06 存储与原生基础](work-packages.md#w06)                    | 正式存储与文件设施已实现：schema、codec、同步事务、基线迁移、固定 Unicode 顺序及流式归档通过本机验证；完整负载查询满足预设预算。六目标 CI 待核验，见[验证记录](../verification/evidence/w06/README.md)。                                                                                                                                                                                                                                     |
 | [W07 应用运行与设置](work-packages.md#w07)                    | 未开始。                                                                                                                                                                                                                                     |
 | [W08 资料与记录](work-packages.md#w08)                        | 未开始。                                                                                                                                                                                                                                     |
 | [W09 Vantage](work-packages.md#w09)                           | 未开始；分项结果见[项目交付](delivery-checklist.md#projects)。                                                                                                                                                                               |
@@ -61,7 +61,7 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 
 ## 待取得的运行与外部输入
 
-- W06 尚需在正式 schema 与制品上验证 Drizzle 1.x、Kit、codec、迁移和查询。现有查询与合同试件保留各自适用范围。
+- W06 本机存储、制品与完整负载查询已验证；六目标 CI 待本 PR 核验。
 - W09–W12 尚需取得完整实现、目标制品及主要后端结果。固定 libmpv 源码补丁已有依据，正式媒体、颜色、截图和 GPU 接入待验收。
 - W21 尚需真实宿主、资源、安装与来源消费。Google OAuth 应用审核、AniList 高级评分和部分导入器真实样本的缺项见[交付清单](delivery-checklist.md#extensions)与[来源证据](../verification/evidence/extensions.md)。
 - 跨文件系统移动已在 Windows x64 取得运行证据；其余五个 CI 目标因测试根同属一个文件系统而跳过。完整平台组合、系统下限、签署与随包权利材料按所属交付继续验证。

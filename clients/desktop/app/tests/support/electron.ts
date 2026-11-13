@@ -21,10 +21,12 @@ interface DesktopFixtures {
   desktop: ElectronApplication
   profile: string
   kind: WindowKind
+  storagePerformance: boolean
 }
 
 export const test = base.extend<DesktopFixtures>({
   kind: ['main', { option: true }],
+  storagePerformance: [false, { option: true }],
   profile: async ({}, use) => {
     const directory = await mkdtemp(join(tmpdir(), 'kisaki-desktop-test-'))
     try {
@@ -33,7 +35,7 @@ export const test = base.extend<DesktopFixtures>({
       await rm(directory, { recursive: true, force: true })
     }
   },
-  desktop: async ({ profile, kind }, use) => {
+  desktop: async ({ profile, kind, storagePerformance }, use) => {
     const runtime = buildDirectory(hostTarget())
     const build = JSON.parse(await readFile(join(runtime, 'build.json'), 'utf8')) as {
       target: string
@@ -52,7 +54,12 @@ export const test = base.extend<DesktopFixtures>({
 
     const application = await _electron.launch({
       executablePath: electronExecutable(),
-      args: [join(runtime, 'main/entry.js'), `--profile=${profile}`, `--window=${kind}`],
+      args: [
+        join(runtime, 'main/entry.js'),
+        `--profile=${profile}`,
+        `--window=${kind}`,
+        ...(storagePerformance ? ['--storage-performance'] : []),
+      ],
       env,
     })
     const child = application.process()

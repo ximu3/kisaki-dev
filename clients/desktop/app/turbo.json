@@ -9,8 +9,11 @@
       "cache": false
     },
     "test:native": {
-      "dependsOn": ["build:native", "prepare:resources", "prepare:electron"],
+      "dependsOn": ["^build", "build:native", "prepare:resources", "prepare:electron"],
       "inputs": [
+        "src/**",
+        "!src/**/*.test.ts",
+        "drizzle/**",
         "native/**",
         "!native/target/**",
         "!**/*.md",
@@ -24,13 +27,17 @@
         "!tests/fixtures/runtime/src/**/*.test.ts",
         "!tests/fixtures/runtime/src/**/*.test.tsx",
         "!tools/**/*.test.ts",
-        "!native/**/*.test.ts"
+        "!native/**/*.test.ts",
+        "tests/integration/files/**"
       ],
       "cache": false
     },
     "test:e2e": {
       "dependsOn": ["build:fixture", "prepare:electron"],
       "inputs": [
+        "src/**",
+        "!src/**/*.test.ts",
+        "drizzle/**",
         "tests/fixtures/runtime/src/**",
         "native/**",
         "!native/target/**",
@@ -58,6 +65,9 @@
     "test:artifacts": {
       "dependsOn": ["package:fixture", "prepare:electron"],
       "inputs": [
+        "src/**",
+        "!src/**/*.test.ts",
+        "drizzle/**",
         "electron-builder.yml",
         "$TURBO_ROOT$/LICENSE",
         "tests/fixtures/runtime/src/**",
@@ -89,6 +99,9 @@
     "test:performance": {
       "dependsOn": ["build:fixture", "prepare:electron"],
       "inputs": [
+        "src/**",
+        "!src/**/*.test.ts",
+        "drizzle/**",
         "tests/fixtures/runtime/src/**",
         "native/**",
         "!native/target/**",
@@ -114,9 +127,12 @@
       "cache": false
     },
     "test:dev": {
-      "dependsOn": ["build:native", "prepare:electron"],
+      "dependsOn": ["^build", "build:native", "prepare:electron"],
       "env": ["TSDOWN_*", "MACOSX_DEPLOYMENT_TARGET"],
       "inputs": [
+        "src/**",
+        "!src/**/*.test.ts",
+        "drizzle/**",
         "tools/dev/**",
         "tools/build/**",
         "tools/resources/**",
@@ -148,6 +164,9 @@
       "dependsOn": ["^build", "build:native", "prepare:resources"],
       "env": ["$TURBO_EXTENDS$", "MACOSX_DEPLOYMENT_TARGET"],
       "inputs": [
+        "src/**",
+        "!src/**/*.test.ts",
+        "drizzle/**",
         "tests/fixtures/runtime/src/**",
         "native/**",
         "!native/target/**",
@@ -173,6 +192,9 @@
       "dependsOn": ["build:fixture"],
       "env": ["KISAKI_MAC_SIGNING_IDENTITY", "MACOSX_DEPLOYMENT_TARGET", "TSDOWN_*"],
       "inputs": [
+        "src/**",
+        "!src/**/*.test.ts",
+        "drizzle/**",
         "electron-builder.yml",
         "$TURBO_ROOT$/LICENSE",
         "tests/fixtures/runtime/src/**",
@@ -210,7 +232,14 @@
       "cache": false
     },
     "prepare:resources": {
-      "inputs": ["assets/**", "!**/*.md", "tools/resources/**", "tools/lib/**", "package.json"],
+      "inputs": [
+        "assets/**",
+        "!**/*.md",
+        "tools/resources/**",
+        "tools/lib/**",
+        "package.json",
+        "drizzle/**"
+      ],
       "outputs": ["out/resources/**"],
       "cache": false
     },

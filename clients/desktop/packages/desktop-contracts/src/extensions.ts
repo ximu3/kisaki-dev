@@ -525,6 +525,11 @@ export function parseExtensionPackageSource(input: unknown): ExtensionPackageSou
   return parseValue(source, input, 'Invalid extension package source')
 }
 
+/** Parses an artifact's exact identity independently from acquisition or installation state. */
+export function parseExtensionArtifactIdentity(input: unknown): ExtensionArtifactIdentity {
+  return parseValue(v.strictObject(artifact), input, 'Invalid extension artifact identity')
+}
+
 /**
  * Parses a prepared receipt and checks that repository coordinates match its artifact.
  *
