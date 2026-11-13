@@ -3,16 +3,16 @@
  * records the resulting artifact identities.
  */
 
-import { copyFile, cp, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
+import { copyFile, cp, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { parseDocument } from 'yaml'
 import { appRoot, buildDirectory, repositoryRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
-import { runtimeFiles, buildInputIdentity } from '../build/identity'
+import { runtimeFiles } from '../build/files'
 import type { DesktopBuild, DesktopTarget } from '../lib/runtime-manifest'
 import type { DistributionKind, DistributionManifest } from '../lib/distribution'
 import { sha256 } from '../lib/sha256'
-import { replaceOutput } from '@kisaki3/tooling/output'
+import { removeOutputs } from '@kisaki3/tooling/output'
 import { runPnpm } from '@kisaki3/tooling/process'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
@@ -26,12 +26,12 @@ export interface ArtifactReceipt {
   files: { path: string; sha256: string }[]
 }
 
-/** Verified runtime and owned staging/output paths for one packaging candidate. */
+/** Verified runtime and owned working directories for one packaging operation. */
 interface PackagingContext {
   build: DesktopBuild
   /** Temporary runtime copy consumed by electron-builder. */
   staging: string
-  /** Candidate directory receiving installers, archives and their receipt. */
+  /** Disposable directory receiving installers, archives and their completion receipt. */
   output: string
   testOnly: boolean
 }
@@ -39,9 +39,9 @@ interface PackagingContext {
 /**
  * Packages a verified runtime on its matching target runner and returns the artifact receipt path.
  *
- * Checks the current input identity and runtime byte inventory before packaging. All formats and
- * the receipt are prepared before adoption. Returns after temporary staging cleanup; a cleanup
- * failure can reject after artifacts have been adopted.
+ * Checks the target and runtime byte inventory before packaging. All formats finish before the
+ * completion receipt is written. Returns after temporary staging cleanup; failures leave the
+ * output unverified.
  */
 export async function packageDesktop(
   target: DesktopTarget,
@@ -54,12 +54,8 @@ export async function packageDesktop(
 
   const runtime = buildDirectory(target)
   const desktop = JSON.parse(await readFile(join(runtime, 'build.json'), 'utf8')) as DesktopBuild
-  if (
-    desktop.schemaVersion !== 1 ||
-    desktop.target !== target ||
-    desktop.buildId !== (await buildInputIdentity({ signal }))
-  ) {
-    throw new Error('Desktop packaging requires a build matching the current target and inputs')
+  if (desktop.schemaVersion !== 1 || desktop.target !== target) {
+    throw new Error('Desktop packaging requires a build matching the selected target')
   }
 
   const actual = await runtimeFiles(runtime)
@@ -73,6 +69,8 @@ export async function packageDesktop(
   }
 
   const output = join(appRoot, 'dist', target)
+  await removeOutputs(appRoot, [output], signal)
+  await mkdir(output, { recursive: true })
   const staging = await mkdtemp(join(appRoot, 'out', 'package-'))
   /** Removes the temporary runtime copy used by the packager. */
   const cleanup = () => rm(staging, { recursive: true, force: true })
@@ -81,28 +79,21 @@ export async function packageDesktop(
     await cp(runtime, staging, { recursive: true })
     await copyFile(join(repositoryRoot, 'LICENSE'), join(staging, 'LICENSE'))
 
-    await replaceOutput(
-      appRoot,
-      output,
-      async (candidate) => {
-        const context = { build: desktop, staging, output: candidate, testOnly }
-        const configPath = await writeBuilderConfig(context)
+    const context = { build: desktop, staging, output, testOnly }
+    const configPath = await writeBuilderConfig(context)
 
-        if (target.startsWith('windows-')) {
-          await packageCarrier(context, configPath, 'zip', '--win', ['zip'], signal)
-          await packageCarrier(context, configPath, 'nsis', '--win', ['nsis'], signal)
-        } else if (target.startsWith('macos-')) {
-          await packageCarrier(context, configPath, 'app', '--mac', ['dmg', 'zip'], signal)
-        } else {
-          await packageCarrier(context, configPath, 'deb', '--linux', ['deb'], signal)
-          await packageCarrier(context, configPath, 'rpm', '--linux', ['rpm'], signal)
-          await packageCarrier(context, configPath, 'appimage', '--linux', ['AppImage'], signal)
-        }
+    if (target.startsWith('windows-')) {
+      await packageCarrier(context, configPath, 'zip', '--win', ['zip'], signal)
+      await packageCarrier(context, configPath, 'nsis', '--win', ['nsis'], signal)
+    } else if (target.startsWith('macos-')) {
+      await packageCarrier(context, configPath, 'app', '--mac', ['dmg', 'zip'], signal)
+    } else {
+      await packageCarrier(context, configPath, 'deb', '--linux', ['deb'], signal)
+      await packageCarrier(context, configPath, 'rpm', '--linux', ['rpm'], signal)
+      await packageCarrier(context, configPath, 'appimage', '--linux', ['AppImage'], signal)
+    }
 
-        await writeArtifactReceipt(context)
-      },
-      signal,
-    )
+    await writeArtifactReceipt(context)
   } catch (cause) {
     return rethrowAfterCleanup(cause, cleanup, 'Desktop packaging and cleanup failed')
   }
@@ -113,7 +104,7 @@ export async function packageDesktop(
 }
 
 /**
- * Writes builder configuration for the verified runtime and candidate output directory.
+ * Writes builder configuration for the verified runtime and packaging output directory.
  *
  * Production macOS packaging requires the project's signing identity; test-only packaging disables
  * macOS signing.
@@ -196,9 +187,9 @@ async function packageCarrier(
 }
 
 /**
- * Hashes completed carrier and update files and writes artifacts.json into the candidate.
+ * Hashes completed carrier and update files and writes the completion receipt.
  *
- * Rejects a candidate with no recognized final files.
+ * Rejects output with no recognized final files.
  */
 async function writeArtifactReceipt(context: PackagingContext): Promise<void> {
   const names = (await readdir(context.output)).filter(

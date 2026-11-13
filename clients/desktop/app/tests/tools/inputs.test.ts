@@ -1,160 +1,96 @@
-/**
- * @fileoverview Exercises real renderer restarts and input watching for production changes
- * and excluded verification files.
- */
+/** @fileoverview Checks preparation input selection while program modules remain compiler-owned. */
 
 import { afterAll, beforeAll, expect, test, vi } from 'vitest'
-import { copyFile, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
-import { dirname, join, relative } from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { startRenderer } from '../../tools/dev/renderer'
-import { captureDependencies } from '../../tools/dev/dependencies'
+import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { dirname, join } from 'node:path'
+import { tmpdir } from 'node:os'
 import { startInputWatcher } from '../../tools/dev/inputs'
 
 const paths = vi.hoisted(() => ({ appRoot: '', repositoryRoot: '' }))
-// The fixture redirects owned paths while exercising the real Vite server and Chokidar watcher.
 vi.mock(import('../../tools/lib/paths'), async (importOriginal) => ({
   ...(await importOriginal()),
-  /** Exposes the current isolated app root to the mocked engineering imports. */
+  /** Exposes the isolated application's preparation inputs. */
   get appRoot() {
     return paths.appRoot
   },
-  /** Exposes the current isolated workspace root to the mocked engineering imports. */
+  /** Exposes the isolated workspace's dependency inputs. */
   get repositoryRoot() {
     return paths.repositoryRoot
   },
 }))
 
-let renderer: Awaited<ReturnType<typeof startRenderer>> | undefined
 let inputs: Awaited<ReturnType<typeof startInputWatcher>> | undefined
 const changes: string[] = []
 const errors: unknown[] = []
 
 beforeAll(async () => {
-  const originalApp = fileURLToPath(new URL('../..', import.meta.url))
-  await mkdir(join(originalApp, '.local'), { recursive: true })
-  paths.repositoryRoot = await mkdtemp(join(originalApp, '.local', 'inputs-test-'))
-  paths.appRoot = join(paths.repositoryRoot, 'clients/desktop/app')
-
+  paths.repositoryRoot = await mkdtemp(join(tmpdir(), 'kisaki-preparation-inputs-'))
+  paths.appRoot = join(paths.repositoryRoot, 'app')
   for (const directory of [
-    'config/vite',
-    'config/typescript',
-    'src/main',
-    'src/preload',
-    'src/extension-host',
-    'src/shared',
-    'native',
-    'assets/icons',
+    'app/config/vite',
+    'app/config/typescript',
+    'app/native',
+    'app/assets',
+    'app/src/main',
+    'package/src',
+    'package/tools',
+    'package/config/typescript',
+    'package/config/vitest',
   ]) {
-    await mkdir(join(paths.appRoot, directory), { recursive: true })
+    await mkdir(join(paths.repositoryRoot, directory), { recursive: true })
   }
-
-  await copyFile(
-    join(originalApp, 'tests/fixtures/runtime/config/vite/vite.config.renderer.ts'),
-    join(paths.appRoot, 'config/vite/vite.config.renderer.ts'),
-  )
-
-  for (const name of ['main', 'reader', 'player', 'game-panel']) {
-    const directory = join(paths.appRoot, 'src/renderer/windows', name)
-    await mkdir(directory, { recursive: true })
-    await writeFile(join(directory, 'index.html'), '<!doctype html><main>Watcher fixture</main>')
-  }
-
   await writeFile(join(paths.appRoot, 'package.json'), '{"type":"module"}')
-  await writeFile(join(paths.appRoot, 'tsconfig.json'), '{}\n')
-  await writeFile(join(paths.appRoot, 'config/vite/vite.config.main.ts'), 'export default {}\n')
+  await writeFile(join(paths.appRoot, 'tsconfig.json'), '{}')
   await writeFile(join(paths.repositoryRoot, 'pnpm-lock.yaml'), 'lockfileVersion: 9\n')
-
-  const member = join(paths.repositoryRoot, 'package')
-  await mkdir(join(member, 'config/typescript'), { recursive: true })
-  await mkdir(join(member, 'config/vitest'), { recursive: true })
-  await mkdir(join(member, 'src'), { recursive: true })
-  await writeFile(join(member, 'package.json'), '{"name":"@kisaki3/watch-fixture"}')
-  await writeFile(join(member, 'config/typescript/tsconfig.lib.json'), '{}\n')
-
-  const members = [{ name: '@kisaki3/watch-fixture', path: member }]
-  renderer = await startRenderer(paths.appRoot, members, join(paths.repositoryRoot, 'snapshots'))
-  inputs = await startInputWatcher(paths.appRoot, members, {
-    onChange: (change) => changes.push(change),
-    onError: (cause) => errors.push(cause),
-  })
-
-  // Initial adoption restarts Vite. Watch subscriptions must survive that real restart.
-  await renderer.adopt(await captureDependencies([], join(paths.repositoryRoot, 'snapshots')))
+  await writeFile(
+    join(paths.repositoryRoot, 'package/package.json'),
+    '{"name":"@kisaki3/watch-fixture"}',
+  )
+  inputs = await startInputWatcher(
+    paths.appRoot,
+    [{ name: '@kisaki3/watch-fixture', path: join(paths.repositoryRoot, 'package') }],
+    {
+      onChange: (change) => changes.push(change),
+      onError: (cause) => errors.push(cause),
+    },
+  )
 })
 
 afterAll(async () => {
-  const closed = await Promise.allSettled([inputs?.close(), renderer?.close()])
-  const failures = closed.filter((result) => result.status === 'rejected')
-  if (failures.length) {
-    throw new AggregateError(
-      failures.map((result): unknown => result.reason),
-      'Input verification cleanup failed',
-    )
-  }
-
+  await inputs?.close()
   if (paths.repositoryRoot) {
-    // Retries cover transient filesystem errors after both close operations complete.
-    await rm(paths.repositoryRoot, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 })
+    await rm(paths.repositoryRoot, { recursive: true, force: true })
   }
 })
 
-test('runtime configuration and nested public-package inputs remain watched after Vite restarts', async () => {
-  const previous = changes.length
+test('package, resource and configuration changes select their actual preparation owner', async () => {
   for (const file of [
-    'package/config/typescript/tsconfig.tests.json',
-    'package/config/vitest/vitest.config.browser.ts',
-    'package/src/README.md',
+    'app/src/main/entry.ts',
     'package/src/value.test.ts',
-    'clients/desktop/app/assets/icons/README.md',
-    'clients/desktop/app/config/typescript/tsconfig.tests.json',
-    'clients/desktop/app/src/main/value.test.ts',
-    'clients/desktop/app/native/target/generated.json',
-    'clients/desktop/app/native/.cache/generated.json',
+    'package/src/README.md',
+    'package/config/vitest/consumers.ts',
+    'app/native/target/generated.json',
   ]) {
     const path = join(paths.repositoryRoot, file)
     await mkdir(dirname(path), { recursive: true })
-    await writeFile(path, 'excluded input\n')
+    await writeFile(path, 'excluded from preparation\n')
   }
-
-  // Allow real filesystem events to settle before a positive change proves the watcher is live.
   await new Promise((resolve) => setTimeout(resolve, 200))
-  expect(changes).toHaveLength(previous)
+  expect(changes).toEqual([])
 
-  for (const [path, content, kind] of [
-    [
-      join(paths.appRoot, 'config/vite/vite.config.main.ts'),
-      'export default { mode: "development" }\n',
-      'runtime',
-    ],
-    [
-      join(paths.appRoot, 'package.json'),
-      '{"type":"module","imports":{"#fixture":"./src/main/entry.ts"}}',
-      'runtime',
-    ],
-    [join(paths.appRoot, 'tsconfig.json'), '{"compilerOptions":{"strict":true}}', 'runtime'],
-    [
-      join(paths.appRoot, 'config/typescript/tsconfig.main.json'),
-      '{"compilerOptions":{"strict":true}}',
-      'runtime',
-    ],
-    [
-      join(paths.repositoryRoot, 'package/config/typescript/tsconfig.lib.json'),
-      '{"compilerOptions":{"strict":true}}',
-      'public-package',
-    ],
-    [join(paths.appRoot, 'src/main/added.ts'), 'export const value = 1\n', 'runtime'],
-    [join(paths.repositoryRoot, 'package/config/typescript/added.json'), '{}\n', 'public-package'],
+  for (const [file, kind] of [
+    ['app/config/vite/vite.config.main.ts', 'configuration'],
+    ['app/config/typescript/tsconfig.main.json', 'configuration'],
+    ['app/native/src.rs', 'native'],
+    ['app/assets/font.json', 'resources'],
+    ['package/src/value.ts', 'packages'],
+    ['package/config/typescript/tsconfig.lib.json', 'packages'],
   ] as const) {
     const before = changes.filter((change) => change === kind).length
-    await writeFile(path, content)
-
+    await writeFile(join(paths.repositoryRoot, file), 'changed input\n')
     await expect
-      .poll(() => changes.filter((change) => change === kind).length, {
-        message: `Expected ${kind} notification for ${relative(paths.repositoryRoot, path)}`,
-      })
+      .poll(() => changes.filter((change) => change === kind).length)
       .toBeGreaterThan(before)
   }
-
   expect(errors).toEqual([])
 })

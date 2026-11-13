@@ -32,4 +32,4 @@ Linux x64 的 `Test public package consumers` 覆盖两个公共包的构建、�
 - 兼容与优先级采用 [node-semver](https://github.com/npm/node-semver) 7.8.5；静态文案按设计筛选相同语言与文字体系后使用 [FormatJS matcher](https://formatjs.github.io/docs/polyfills/intl-localematcher/) 0.10.1。两者的实际锁定代码与独立浏览器运行均已核对。
 - Ed25519、SPKI／PKCS8、签名和 SHA-256 使用 [Node crypto](https://nodejs.org/docs/latest-v24.x/api/crypto.html)；私钥只在调用方内存中生成或传入。本机身份不进入测试，签名用例使用合成密钥和资料。
 
-人工审阅覆盖格式拥有层、完整公开声明、正常与拒绝路径、规范化和原文的区别、版本选择及字节不变、首次检查与已保存信任、公开入口的导入链、构建失败与取消时保留旧输出、消费者准备失败和结束后的清理。纯操作和密码操作不持有持续资源，构建交接沿用已有工程实现及其验证。
+人工审阅覆盖格式拥有层、完整公开声明、正常与拒绝路径、规范化和原文的区别、版本选择及字节不变、首次检查与已保存信任、公开入口的导入链、消费者准备失败和结束后的清理。纯操作和密码操作不持有持续资源，构建与缓存恢复遵循[现行输出规则](../../../design/engineering/workspace.md#output-access)。

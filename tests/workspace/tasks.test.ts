@@ -21,6 +21,8 @@ test('verification tasks prepare the artifacts they actually consume', async () 
         'test:dev',
         'test:artifacts',
         'test:consumers',
+        'check:boundaries',
+        'root:boundaries',
         '--dry=json',
       ],
       process.cwd(),
@@ -37,6 +39,9 @@ test('verification tasks prepare the artifacts they actually consume', async () 
   expect(reaches('@kisaki3/desktop#test:e2e', '@kisaki3/desktop#build:fixture')).toBe(true)
   expect(reaches('@kisaki3/desktop#test:dev', '@kisaki3/desktop#build:native')).toBe(true)
   expect(reaches('@kisaki3/desktop#test:artifacts', '@kisaki3/desktop#package:fixture')).toBe(true)
+  expect(
+    reaches('@kisaki3/desktop-localization#check:boundaries', '@kisaki3/desktop-contracts#build'),
+  ).toBe(true)
   for (const task of plan.tasks.filter((item) => item.taskId.endsWith('#test:consumers'))) {
     const project = task.taskId.split('#')[0]!
     expect(reaches(task.taskId, `${project}#check:package`), task.taskId).toBe(true)

@@ -61,12 +61,18 @@ test('a refused quit retains utility processes and normal window close preserves
   expect(() => process.kill(first.current!.processId, 0)).toThrow()
 })
 
-test('a failed runtime build retains the old process and a renamed source hands off a complete generation', async () => {
+test('runtime syntax, renamed imports and configuration errors recover through native compilation', async () => {
   const entry = join(workspace.app, 'tests/fixtures/runtime/src/main/entry.ts')
   const original = await readFile(entry, 'utf8')
   const helper = join(workspace.app, 'tests/fixtures/runtime/src/main/development-fixture.ts')
   const renamed = join(workspace.app, 'tests/fixtures/runtime/src/main/renamed-fixture.ts')
+  const configuration = join(
+    workspace.app,
+    'tests/fixtures/runtime/config/vite/vite.config.main.ts',
+  )
+  const originalConfiguration = await readFile(configuration, 'utf8')
   onTestFinished(() => writeFile(entry, original))
+  onTestFinished(() => writeFile(configuration, originalConfiguration))
   onTestFinished(() => rm(helper, { force: true }))
   onTestFinished(() => rm(renamed, { force: true }))
 
@@ -101,6 +107,24 @@ test('a failed runtime build retains the old process and a renamed source hands 
     )
     .not.toBe(good.current!.processId)
   await expect.poll(() => controller.output).toContain('synthetic repaired generation')
+
+  const repaired = controller.states.filter((state) => state.state === 'ready').at(-1)!
+  const failures = controller.states.filter((state) => state.state === 'failed').length
+  await writeFile(configuration, 'export default {\n')
+  await expect
+    .poll(() => controller.states.filter((state) => state.state === 'failed').length, {
+      timeout: 60_000,
+    })
+    .toBeGreaterThan(failures)
+  expect(() => process.kill(repaired.current!.processId, 0)).not.toThrow()
+
+  await writeFile(configuration, originalConfiguration)
+  await expect
+    .poll(
+      () => controller.states.filter((state) => state.state === 'ready').at(-1)?.current?.processId,
+      { timeout: 60_000 },
+    )
+    .not.toBe(repaired.current!.processId)
 })
 
 test('dependency recovery and renderer updates preserve a usable process', async () => {

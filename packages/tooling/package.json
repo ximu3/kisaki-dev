@@ -17,6 +17,7 @@
   "scripts": {
     "typecheck": "tsc -b",
     "lint": "eslint . --max-warnings 0",
+    "check:boundaries": "pnpm --workspace-root exec tsx tools/boundaries.ts packages/tooling",
     "test": "vitest run"
   },
   "dependencies": {

@@ -59,6 +59,7 @@ kisaki/
 │   └── tooling/
 ├── tools/
 │   ├── release/
+│   ├── boundaries.ts
 │   ├── host-environment.ts
 │   └── hooks.ts
 ├── tests/
@@ -121,8 +122,8 @@ tools 承载所属工程的独立维护能力，tests 拥有验证场景、断�
 
 | 位置                      | 负责的工作                                                                                          |
 | ------------------------- | --------------------------------------------------------------------------------------------------- |
-| 根 tools                  | release 管理跨项目发行与元数据，hooks.ts 管理仓库 Git hooks，host-environment.ts 输出验证环境信息。 |
-| packages/tooling          | 多个工程共用的候选交接、命令执行和 CLI 收尾函数，以及这些函数自己的测试。                           |
+| 根 tools                  | release 管理跨项目发行与元数据，hooks.ts 管理仓库 Git hooks，boundaries.ts 执行各工程范围的共同依赖规则，host-environment.ts 输出验证环境信息。 |
+| packages/tooling          | 多个工程共用的所属输出清理、命令执行和 CLI 收尾函数，以及这些函数自己的测试。                           |
 | clients/desktop/app/tools | 桌面开发会话、程序构建、资源准备、私有原生编译、打包与工程输出清理。                                |
 | 公共包或扩展自身的 tools  | 本工程的准备、生成与工程输入输出校验；运行代码仍在其 src。                                          |
 | extension-cli/src         | 面向扩展作者的正式 CLI 和程序化工作流，作为产品能力交付。                                           |
@@ -133,6 +134,7 @@ tools 承载所属工程的独立维护能力，tests 拥有验证场景、断�
 ```text
 tools/
 ├── hooks.ts
+├── boundaries.ts
 ├── host-environment.ts
 └── release/
 ```
@@ -151,9 +153,9 @@ cli.ts 处理参数、建立运行上下文、调用工作流并呈现结果与�
 
 不同工程按公开入口协作，不借用另一项目的工具私有实现；生产运行代码不反向依赖 tools。测试可以调用被测工具的工作流或消费其产物，工程实现不导入测试用例、fixture 或 tests/support。仅供测试使用的准备与清理归测试拥有者；工具与运行代码确有共同机制时，归入能同时服务二者的正式模块，由工具消费。
 
-packages/tooling/src 中的 output.ts 提供候选准备与成功交接，process.ts 执行命令并处理显式取消和进程收尾，cli.ts 在 CLI 调用期间安装信号处理并呈现退出状态。工具及其测试分别通过 `@kisaki3/tooling/output`、`@kisaki3/tooling/process`、`@kisaki3/tooling/cli` 引用，入口由包 exports 唯一定义。这些普通函数由实际工作流调用，不提供命令调度入口，不属于八个公共包，也不被生产运行代码消费。
+packages/tooling/src 中的 output.ts 按项目归属清理可重建输出，process.ts 执行命令并处理显式取消和进程收尾，cli.ts 在 CLI 调用期间安装信号处理并呈现退出状态。工具及其测试分别通过 `@kisaki3/tooling/output`、`@kisaki3/tooling/process`、`@kisaki3/tooling/cli` 引用，入口由包 exports 唯一定义。这些普通函数由实际工作流调用，不提供命令调度入口，不属于八个公共包，也不被生产运行代码消费。
 
-候选失败、取消和文件替换的验证归 packages/tooling/tests/output.test.ts，真实命令树的取消验证归同包 tests/process.test.ts，均使用隔离目录和子进程。桌面开发会话的交接与关闭验证归本体 tests/tools/dev。
+输出范围与清理的验证归 packages/tooling/tests/output.test.ts，真实命令树的取消验证归同包 tests/process.test.ts，均使用隔离目录和子进程。桌面开发会话的交接与关闭验证归本体 tests/tools/dev。
 
 工具源码与配置遵守[源码语言](conventions.md#source-language)、[可读性](conventions.md#readability)和[注释覆盖](conventions.md#comments)。本地与 CI 通过相同项目脚本调用工程工作流、现成检查工具或测试运行器；脚本转交参数与退出状态，工程实现不另写在 YAML 或 shell 字符串中。工具测试遵守[测试结构](#tests)，不因工具是单文件或目录而改变测试的工程归属。
 
@@ -201,11 +203,11 @@ clients/desktop/app/tools/
 
 | 位置                             | 职责与调用关系                                                                                                                                                                                                                                                               |
 | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| dev/session.ts                   | 拥有完整开发会话与构建交接，接收源码根和进程启动能力；产品入口提供 extension-cli/extension 的真实启动实现，inputs 管理 Chokidar 输入监听，renderer 管理 Vite，generation 准备候选，dependencies 保存公共包快照。按[开发会话合同](workspace.md#tasks)处理取消退出与实际收尾。 |
+| dev/session.ts | 拥有开发会话、准备工作与应用进程。programs 使用 Vite 原生程序监听，inputs 观察包构建、资源及配置输入，renderer 提供原生 Vite 服务，generation 复制完成的程序与资源供实际进程读取；dependencies 通过 pnpm 发现公开依赖。按[开发会话合同](workspace.md#desktop-development)处理取消退出与收尾。 |
 | dev/electron-executable.ts       | 定位项目依赖中的开发 Electron 可执行文件，由开发流程和需要该宿主的测试复用。                                                                                                                                                                                                 |
-| build/coordinator.ts             | 消费 Turbo 前置任务已准备的资源与原生输出，编译应用程序并核对完整运行布局；完整候选成功后替换输出，不重复执行资源或原生构建。                                                                                                                                                |
+| build/coordinator.ts | 消费前置任务准备的资源和原生输出，在干净的目标目录编译程序；完成布局与字节核对后写入构建清单。 |
 | build/programs.ts                | 依据调用方指定源码根下 config/vite 中的 vite.config.*.ts 调用 Vite 公共 API，完成 main、preload、renderer 和 extension-host 的有限构建，返回实际模块输入。开发与正式构建采用同一份程序配置。                                                                                 |
-| build/identity.ts                | 读取 Turbo 的桌面 build 任务摘要作为输入身份，并计算完成输出的逐文件 SHA-256，供有限构建、开发候选和打包共同消费。                                                                                                                                                           |
+| build/files.ts | 为已完成运行文件计算 SHA-256，供有限构建、打包和制品验证使用。 |
 | resources/prepare.ts             | 按固定输入准备图标、字体、Kana 资源、独立媒体包和数据库迁移资源，拥有对应资源目录的写入与校验；私有原生制品由 native 工作流负责。                                                                                                                                            |
 | native/build.ts、declarations.ts | 编译目标绑定、生成与核对声明、准备所需原生资源，具体规则见[私有原生交付](native.md#delivery)。                                                                                                                                                                               |
 | package/packager.ts              | 在所需构建就绪后调用 electron-builder 生成目标安装或归档文件，消费应用的 electron-builder.yml 与实际存在的打包专用输入；签名按已有环境与策略执行，不隐含公开发布。                                                                                                           |

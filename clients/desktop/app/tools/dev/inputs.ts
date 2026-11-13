@@ -1,6 +1,5 @@
 /**
- * @fileoverview Watches runtime and public-package inputs independently of renderer-server
- * restarts.
+ * @fileoverview Watches preparation and configuration inputs outside the program compiler graph.
  */
 
 import { once } from 'node:events'
@@ -12,13 +11,16 @@ import type { FSWatcher } from 'chokidar'
 import { appRoot, containsPath, repositoryRoot } from '../lib/paths'
 import type { DesktopDependency } from './dependencies'
 
-/** Session callbacks and initialization cancellation for a development input watcher. */
+/** Preparation work selected by a non-program input change. */
+export type PreparationChange = 'packages' | 'native' | 'resources' | 'configuration'
+
+/** Session callbacks and initialization cancellation for preparation input watching. */
 interface InputWatchOptions {
   /** Cancels initialization; the session owns closure after readiness. */
   signal?: AbortSignal
 
-  /** Reports whether a changed path belongs to runtime or public-package inputs. */
-  onChange(change: 'runtime' | 'public-package'): void
+  /** Selects the owning preparation workflow for a changed input. */
+  onChange(change: PreparationChange): void
 
   /** Delivers a post-readiness watcher failure to the owning session. */
   onError(cause: unknown): void
@@ -68,7 +70,7 @@ async function publicPackageInputs(directory: string): Promise<string[]> {
 }
 
 /**
- * Starts watchers for runtime and public-package production inputs.
+ * Watches package builds, native resources and program configuration.
  *
  * Waits for initial readiness before delivering changes. Startup failure or cancellation closes the
  * watcher before rejection; after success the session owns close().
@@ -84,7 +86,6 @@ export async function startInputWatcher(
     await Promise.all(members.map((member) => publicPackageInputs(member.path)))
   ).flat()
   const runtimeInputs = [
-    ...['main', 'preload', 'extension-host', 'shared'].map((name) => join(sourceRoot, 'src', name)),
     join(appRoot, 'native'),
     join(appRoot, 'assets'),
     ...['main', 'preload', 'extension-host', 'renderer'].map((name) =>
@@ -113,9 +114,13 @@ export async function startInputWatcher(
     initialized = true
     watcher.on('all', (_event, path) => {
       if (packageInputs.some((input) => containsPath(input, path))) {
-        options.onChange('public-package')
+        options.onChange('packages')
+      } else if (containsPath(join(appRoot, 'native'), path)) {
+        options.onChange('native')
+      } else if (containsPath(join(appRoot, 'assets'), path)) {
+        options.onChange('resources')
       } else if (runtimeInputs.some((input) => containsPath(input, path))) {
-        options.onChange('runtime')
+        options.onChange('configuration')
       }
     })
 

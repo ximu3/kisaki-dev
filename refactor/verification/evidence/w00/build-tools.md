@@ -10,10 +10,10 @@ main 与 extension-host 采用 Vite SSR 的 Node 解析语义，选择依赖的 
 
 有限编译在 Vite 的 [configResolved](https://vite.dev/guide/api-plugin.html#configresolved) 阶段检查最终 build.watch，启动编译前拒绝监听模式。监听与后续重建由开发会话拥有。2026-11-02 对 `ec15952` 的独立 Node 调用复核确认：无效模式立即拒绝，未创建输出，进程正常退出。
 
-## 开发快照
+## 原生开发编译
 
-renderer 通过当前 Vite 环境的公开 this.resolve 解析当前依赖副本，package.json 与完整构建结果一起交接。准备失败保留当前副本，成功采用后重启 Vite、刷新文档并释放旧副本；不继续保留旧文档的历史代际。重启同时释放 Vite 的旧模块图和监听资源。
+renderer 使用 Vite 的 workspace ESM 解析和 HMR，公共依赖沿自己的构建 exports 消费。Node 程序使用 Vite 构建监听，完成事件交付实际输出文件；开发会话只在编译结果仍有效时启动对应程序。资源和包构建的准备步骤按实际输入触发，程序模块的依赖变化由编译器观察。
 
-[副本用例](../../../../clients/desktop/app/tests/tools/dependency-snapshots.test.ts)核对开发条件、CSS 查询参数、第三方依赖解析、Node 专用条件导出、准备失败与旧副本释放。浏览器解析只针对真实浏览器消费，不能预先拒绝包内合法的 Node 入口。编译、解析和 HMR 由 Vite 提供，项目会话拥有资源准备、候选采用与进程寿命。[Vite 公共 API](https://vite.dev/guide/api-javascript.html)
+[程序解析用例](../../../../clients/desktop/app/tests/tools/build/programs.test.ts)核对 Node 条件与外部运行依赖；[准备输入用例](../../../../clients/desktop/app/tests/tools/inputs.test.ts)核对包、资源、原生及配置的归属。源码会话的实际行为由[开发回归](../../../../clients/desktop/app/tests/tools/dev/session.test.ts)核对。接口依据为 [Vite 公共 API](https://vite.dev/guide/api-javascript.html)与[构建监听](https://vite.dev/guide/build#rebuild-on-files-changes)。
 
-已核对 Vite 8.3.3 客户端的重连实现：它使用 blob SharedWorker 等待服务器重新就绪。工程载体仅在 development 模式允许对应 worker-src，生产 CSP 保持原值；实际依赖更新的浏览器回归验证重连与新值采用。
+Vite 8.3.3 客户端通过 blob SharedWorker 等待服务器重新就绪。工程载体仅在 development 模式允许对应 worker-src，生产 CSP 保持原值。

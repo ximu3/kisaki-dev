@@ -12,7 +12,8 @@
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json",
-    "lint": "eslint . --max-warnings 0"
+    "lint": "eslint . --max-warnings 0",
+    "check:boundaries": "pnpm --workspace-root exec tsx tools/boundaries.ts packages/eslint-config"
   },
   "dependencies": {
     "@eslint/js": "catalog:",

@@ -1,26 +1,24 @@
-/** @fileoverview Builds the public RPC entry and declarations before adopting the candidate. */
+/** @fileoverview Builds the public RPC entry and declarations into the package output directory. */
 
 import { join } from 'node:path'
 import { build } from 'tsdown'
 import { runCli } from '@kisaki3/tooling/cli'
-import { replaceOutput } from '@kisaki3/tooling/output'
+import { removeOutputs } from '@kisaki3/tooling/output'
 
 /**
- * Builds the public RPC entry and declarations, then adopts the complete distribution.
+ * Prepares the package's disposable dist directory and builds its public distribution.
  *
- * Failed preparation or cancellation before handoff preserves the existing dist directory.
+ * The caller consumes the output only after this operation succeeds.
  */
 export async function buildPackage(signal?: AbortSignal): Promise<void> {
   const project = join(import.meta.dirname, '..')
 
-  await replaceOutput(
-    project,
-    'dist',
-    async (outDir) => {
-      await build({ cwd: project, outDir })
-    },
-    signal,
-  )
+  const outDir = join(project, 'dist')
+  await removeOutputs(project, ['dist'], signal)
+
+  await build({ cwd: project, outDir, clean: false })
+
+  signal?.throwIfAborted()
 }
 
 if (import.meta.main) {

@@ -10,9 +10,9 @@
 
 | 位置                                                     | 当前职责                                                                         |
 | -------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| 根 `tools` 与 `tests/tools`                              | Git hooks、验证环境记录及所属工具的回归验证                                      |
+| 根 `tools` 与 `tests/tools`                              | Git hooks、依赖边界入口、验证环境记录及所属工具的回归验证                                      |
 | 根 `tests/workspace`                                     | 工程登记、类型检查覆盖、任务依赖与验证选择，以及跨工程导入边界                   |
-| `packages/typescript-config`、`eslint-config`、`tooling` | 共用类型与 lint 配置、候选输出、命令执行、错误交付和 CLI 收尾                    |
+| `packages/typescript-config`、`eslint-config`、`tooling` | 共用类型与 lint 配置、所属输出清理、命令执行、错误交付和 CLI 收尾                    |
 | `clients/desktop/app/tools`                              | 桌面程序构建、资源准备、原生编译、开发会话、打包与输出清理                       |
 | `clients/desktop/app/native`                             | Rust 文件同步与不覆盖移动，Node 加载、声明与错误转换                             |
 | `clients/desktop/app/assets`                             | 锁定字体输入与许可、图标源稿                                                     |
@@ -36,11 +36,11 @@ Lucide 名称目录由 desktop-contracts 的 `tools/generate-icon-names.ts` 从�
 
 desktop-localization 的英语 ICU 源文位于 src/en，按领域维护并由 index.ts 静态汇总；`pnpm --filter @kisaki3/desktop-localization run generate:messages` 更新 src/contracts.generated.ts。普通 build 校验消息声明与英语源文一致，再交接完整构建结果。`createTranslator(locale, catalog)` 创建独立格式化快照；有效语言、译本登记和响应式接入由后续本体工作包实现。生成源由生成器负责排版。
 
-桌面 `tools/build` 接收明确的程序输入，完成整份候选后交接；`tools/resources`、`tools/native` 与 `tools/package` 分别拥有资源、原生编译和打包。跨工作流的路径、目标、运行清单和摘要归 `tools/lib`，跨工程机制归 `@kisaki3/tooling`。原生调用通过 `#native` 加载明确的绝对制品路径，失败保留原始原因。
+桌面 `tools/build` 接收明确的程序输入，在干净的所属输出目录完成编译与完整性核对；`tools/resources`、`tools/native` 与 `tools/package` 分别拥有资源、原生编译和打包。跨工作流的路径、目标、运行清单和摘要归 `tools/lib`，跨工程机制归 `@kisaki3/tooling`。原生调用通过 `#native` 加载明确的绝对制品路径，失败保留原始原因。
 
 `tests/fixtures/runtime` 验证四个 renderer/preload 入口、main、utility process、Solid 热更新及资源加载。运行必须提供测试拥有的绝对资料目录；窗口名称对应编译入口，本地消息供测试控制使用。产品窗口、公开通信和扩展宿主按所属工作包实现。
 
-`tools/dev/session` 拥有服务、监听、候选和进程寿命，调用方提供源码根目录与启动能力。`renderer` 管理 Vite，`inputs` 管理输入监听，`generation` 编译 Node 程序，`dependencies` 准备完整依赖候选；采用新副本后刷新文档并释放旧副本。失败保留既有可用结果，正常退出可以取消，资源释放完成后结束会话。
+`tools/dev/session` 拥有编译器、服务器、运行目录与应用进程。公共包的完整构建由 Turbo 排序，程序模块由 Vite 监听编译；renderer 使用正常 workspace 导出和 HMR。资源与配置变化调用所属准备流程。编译成功后安排受控重启，旧进程退出后释放它读取的目录；正常退出可以取消。
 
 <a id="setup"></a>
 
@@ -72,19 +72,19 @@ pnpm desktop:build:fixture --target windows-x64
 pnpm desktop:package:fixture --target windows-x64
 ```
 
-目标必须匹配实际 runner。构建先准备资源和原生绑定，再通过 Vite 编译各程序；完整候选成功后才替换输出，失败或采用前取消保留旧结果。资源准备可独立执行 `pnpm --filter @kisaki3/desktop prepare:resources --target windows-x64`。
+目标必须匹配实际 runner。构建先准备资源和原生绑定，再通过 Vite 编译各程序；全部编译与装配成功后写入完成清单；失败结果不供下游采用。资源准备可独立执行 `pnpm --filter @kisaki3/desktop prepare:resources --target windows-x64`。
 
-资源工作流从锁定依赖准备字体与 SQLite 绑定，从唯一图标源稿生成 PNG／ICO，记录最终资源摘要。`assets/fonts/inputs.json` 选择字体文件和许可，包版本与来源完整性由 pnpm 锁文件约束。
+资源工作流从锁定依赖准备字体与 SQLite 绑定，从唯一图标源稿生成 PNG／ICO，最终运行清单统一记录资源摘要。`assets/fonts/inputs.json` 选择字体文件和许可，包版本与来源完整性由 pnpm 锁文件约束。
 
 字体输入为 Fontsource 的 Noto Sans SC Variable 与 Noto Sans Mono Variable，按原始字节和名称装配，并保留 LICENSE、CSS 与 metadata。`assets/icons/source.png` 为项目作者的原创图标源稿。字体与图像的许可归属见[项目许可](../design/engineering/licensing.md#third-party)及[原创图像](../design/engineering/licensing.md#brand)。
 
-`buildId` 来自 Turbo 的桌面 build:fixture 任务，覆盖实际输入、依赖、工具链和声明的环境变量；SHA-256 核对完成的运行字节。打包检查既有 `build.json` 的目标、输入身份、完整文件集合和摘要。根 `desktop:package:fixture` 通过 Turbo 准备资源、原生绑定和工程载体。包内脚本执行各自的叶操作；需要准备依赖时使用根入口或 Turbo。
+`buildId` 是同次程序构建的独立标识，源码会话使用单独的会话身份。SHA-256 核对已完成的运行字节；发行来源由固定 SHA 和验证记录关联。打包检查既有 `build.json` 的目标、完整文件集合和摘要，消费已完成的构建。根 `desktop:package:fixture` 通过 Turbo 准备资源、原生绑定和工程载体。包内脚本执行各自的叶操作；需要准备依赖时使用根入口或 Turbo。
 
 工程载体打包固定标记 `testOnly`，构建和打包均不发布。正式签署、安装升级及发行接入由 W20 验收。
 
 `pnpm --filter @kisaki3/desktop build:fixture --program preload` 单独验证 preload 编译。`build:native` 编译私有绑定；需要更新生成声明时显式添加 `--update-declarations` 并审阅变化。`check:native` 执行固定 Rust 工具链的格式与 Clippy 检查。
 
-开发监听由 `tools/dev/session` 通过明确的输入和启动回调提供，真实回归在隔离 workspace 内执行。测试临时创建合成依赖，验证构建失败、完整快照交接、HMR、正常退出取消和清理；测试载体的消息不定义产品开发协议。
+开发监听由 `tools/dev/session` 通过明确的输入和启动回调提供，真实回归在隔离 workspace 内执行。测试临时创建合成依赖，验证构建失败修复、公开依赖更新、HMR、程序重启、正常退出取消和清理；测试载体的消息不定义产品开发协议。
 
 同一工作副本中，共享输出的构建、运行与打包顺序执行。任务内依赖和合法并行由 Turbo 管理。有限输出位于 `out/<target>`，开发会话位于 `out/development/<target>/session-*`，载体位于 `dist/<target>`。停止相关任务后用 `pnpm run clean` 清理声明输出。各项目指定自己的输出目录，工程工具按项目边界执行清理。
 
@@ -121,7 +121,7 @@ Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 Ap
 
 三个私有工程包直接通过 exports 加载，不预构建。工程函数用 `@kisaki3/tooling/cli`、`/errors`、`/output`、`/process`，类型与 lint 使用各自共享包。项目声明自己的依赖、配置与检查任务，类型感知 lint 沿 TypeScript Project Service 使用所属项目。`pnpm lint:fix` 完成后须审阅修改。
 
-依赖检查核对循环、无法解析或未声明的包，以及原生运行代码、工程工具和测试之间的边界。祖先目录能解析一个包不代表导入者已经声明它。`#native` 由桌面 package.json 的 imports 定义，不复制到根 paths。
+依赖检查核对循环、无法解析或未声明的包，以及原生运行代码、工程工具和测试之间的边界。`pnpm check:boundaries` 通过 Turbo 调度各工程的源码检查，先准备实际公共依赖；根工具、测试和配置归 `root:boundaries`。共同入口为 `tools/boundaries.ts`，规则仍由根 .dependency-cruiser.json 维护。祖先目录能解析一个包不代表导入者已经声明它。`#native` 由桌面 package.json 的 imports 定义，不复制到根 paths。
 
 Vitest 转换缓存归各项目的 `node_modules/.vitest-cache`。TypeScript 增量信息归 `.cache/typescript`。脚本调用所属运行器；只读任务计划可用 `pnpm exec turbo run <task> --filter=<project> --dry=json` 查看。
 
@@ -133,11 +133,11 @@ Vitest 转换缓存归各项目的 `node_modules/.vitest-cache`。TypeScript 增
 
 `@kisaki3/eslint-config/base` 提供共同规则与输出忽略范围，`/node` 限定 Node 环境，`/tests` 接受 Playwright 所需的空参数对象。消费者声明 ESLint、jiti 与本包，并以 `import.meta.dirname` 绑定 `parserOptions.tsconfigRootDir`。TypeScript Project Service 沿各文件的实际项目与 references 检查；根 lint 任务先通过 Turbo 准备依赖包声明，直接调用 ESLint 使用已准备的输出。
 
-`@kisaki3/tooling` 的 `/cli`、`/errors`、`/output` 与 `/process` 分别处理 CLI 信号与退出状态、错误交付、候选输出和命令执行。调用方传入取消信号并等待所属资源结束；终止请求失败时立即输出诊断，继续等实际进程和输出流关闭后报告错误。原始操作与清理同时失败时按此顺序保留两项错误。
+`@kisaki3/tooling` 的 `/cli`、`/errors`、`/output` 与 `/process` 分别处理 CLI 信号与退出状态、错误交付、所属输出清理和命令执行。调用方传入取消信号并等待所属资源结束；终止请求失败时立即输出诊断，继续等实际进程和输出流关闭后报告错误。原始操作与清理同时失败时按此顺序保留两项错误。
 
 `runPnpm` 与 `readPnpm` 使用 `npm_execpath` 指向的当前 pnpm，因此相关工具和测试通过 pnpm 项目脚本运行。普通外部命令由调用方明确提供可执行文件与参数。同时供导入和直接运行的工程脚本使用固定 Node 宿主的 [import.meta.main](https://nodejs.org/download/release/v24.11.1/docs/api/esm.html#importmetamain) 判断入口，经目录联接启动时同样有效。
 
-`kisaki-package pack` 成功后替换 `out/package/package.tgz`，`check` 对同一文件执行 publint 和 ATTW。任务顺序由 Turbo 拥有。命令入口在 Git 中保留可执行位，与 [pnpm 在 POSIX 上安装 bin 的方式](https://github.com/pnpm/pnpm/blob/v11.11.0/pnpm11/bins/linker/src/index.ts#L367-L368)一致，安装依赖不会因此把工程工具标记为已修改。
+`kisaki-package prepare-build` 为 build 和缓存恢复准备干净的 dist。包内直接 build 同样清理自己的输出；`kisaki-package pack` 在干净的 out/package 中生成 `package.tgz`，`check` 对同一文件执行 publint 和 ATTW。任务顺序由 Turbo 拥有。命令入口在 Git 中保留可执行位，与 [pnpm 在 POSIX 上安装 bin 的方式](https://github.com/pnpm/pnpm/blob/v11.11.0/pnpm11/bins/linker/src/index.ts#L367-L368)一致，安装依赖不会因此把工程工具标记为已修改。
 
 <a id="ci"></a>
 

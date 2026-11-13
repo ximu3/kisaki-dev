@@ -47,6 +47,6 @@ Linux x64 执行公共包构建、publint、Are the Types Wrong 和 3 项仓库�
 
 Are the Types Wrong 按 ESM 模式检查 JavaScript 声明，CSS 资源由实际消费者检查，遵循上游[非 JavaScript 资源说明](https://github.com/arethetypeswrong/arethetypeswrong.github.io/blob/main/docs/problems/NoResolution.md)。没有关闭 JavaScript 入口的解析错误规则。
 
-人工审阅覆盖词表与字段语义、正常和失败解析、默认与派生样式、公开声明和许可证，以及构建准备、采用前取消、失败保留旧输出和消费者资源释放。构建候选交接与取消复用 W00 工程函数及其测试，纯值操作本身不持有持续资源。
+人工审阅覆盖词表与字段语义、正常和失败解析、默认与派生样式、公开声明和许可证，以及构建准备和消费者资源释放。普通构建与缓存恢复遵循[现行输出规则](../../../design/engineering/workspace.md#output-access)，纯值操作本身不持有持续资源。
 
 主题持久化、字体资源加载和正式窗口接入由所属工作包验收；本包不承担应用状态或框架生命周期。

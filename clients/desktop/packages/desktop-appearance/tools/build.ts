@@ -1,10 +1,10 @@
-/** @fileoverview Builds public ESM, declarations and CSS as one complete candidate. */
+/** @fileoverview Builds public ESM, declarations and CSS as one public distribution. */
 
 import { copyFile, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { createRequire } from 'node:module'
 import { build } from 'tsdown'
-import { replaceOutput } from '@kisaki3/tooling/output'
+import { removeOutputs } from '@kisaki3/tooling/output'
 import { runCli } from '@kisaki3/tooling/cli'
 import { defaults } from '../src/defaults'
 import type { TokenValues } from '../src/tokens'
@@ -17,57 +17,54 @@ function declarations(values: TokenValues): string {
 }
 
 /**
- * Builds ESM, declarations, CSS and dependency notices as one distribution candidate.
+ * Prepares the package's disposable dist directory and builds its public distribution.
  *
- * Adopts dist after all outputs are prepared; earlier failures or cancellation preserve the
- * previous output.
+ * The caller consumes the output only after this operation succeeds.
  */
 export async function buildPackage(signal?: AbortSignal): Promise<void> {
   const project = join(import.meta.dirname, '..')
-  await replaceOutput(
-    project,
-    'dist',
-    async (outDir) => {
-      await build({ cwd: project, outDir })
-      const styles = await readFile(join(project, 'src/styles.css'), 'utf8')
-      const base = `/* Generated from defaults.ts; host font loading is separate. */
+  const outDir = join(project, 'dist')
+  await removeOutputs(project, ['dist'], signal)
+
+  await build({ cwd: project, outDir, clean: false })
+  const styles = await readFile(join(project, 'src/styles.css'), 'utf8')
+  const base = `/* Generated from defaults.ts; host font loading is separate. */
 @layer theme {
   :root, [data-color-scheme='light'] {
-    color-scheme: light;
+color-scheme: light;
 ${declarations(defaults.light)}
   }
   [data-color-scheme='dark'] {
-    color-scheme: dark;
+color-scheme: dark;
 ${declarations(defaults.dark)}
   }
 }
 
 `
-      await writeFile(join(outDir, 'styles.css'), base + styles)
-      await copyFile(join(project, 'src/tailwind.css'), join(outDir, 'tailwind.css'))
+  await writeFile(join(outDir, 'styles.css'), base + styles)
+  await copyFile(join(project, 'src/tailwind.css'), join(outDir, 'tailwind.css'))
 
-      // The value parser bundles CSS Tree and its grammar data; preserve their actual licenses.
-      const require = createRequire(import.meta.url)
-      const cssTree = require.resolve('css-tree/package.json')
-      const dependencyRequire = createRequire(cssTree)
-      const notices = []
-      for (const manifest of [
-        cssTree,
-        dependencyRequire.resolve('mdn-data/package.json'),
-        dependencyRequire.resolve('source-map-js/package.json'),
-      ]) {
-        const { name, version } = JSON.parse(await readFile(manifest, 'utf8')) as {
-          name: string
-          version: string
-        }
-        notices.push(
-          `${name} ${version}\n\n${await readFile(join(dirname(manifest), 'LICENSE'), 'utf8')}`,
-        )
-      }
-      await writeFile(join(outDir, 'THIRD-PARTY-NOTICES.txt'), notices.join('\n\n---\n\n'))
-    },
-    signal,
-  )
+  // The value parser bundles CSS Tree and its grammar data; preserve their actual licenses.
+  const require = createRequire(import.meta.url)
+  const cssTree = require.resolve('css-tree/package.json')
+  const dependencyRequire = createRequire(cssTree)
+  const notices = []
+  for (const manifest of [
+    cssTree,
+    dependencyRequire.resolve('mdn-data/package.json'),
+    dependencyRequire.resolve('source-map-js/package.json'),
+  ]) {
+    const { name, version } = JSON.parse(await readFile(manifest, 'utf8')) as {
+      name: string
+      version: string
+    }
+    notices.push(
+      `${name} ${version}\n\n${await readFile(join(dirname(manifest), 'LICENSE'), 'utf8')}`,
+    )
+  }
+  await writeFile(join(outDir, 'THIRD-PARTY-NOTICES.txt'), notices.join('\n\n---\n\n'))
+
+  signal?.throwIfAborted()
 }
 
 if (import.meta.main) {

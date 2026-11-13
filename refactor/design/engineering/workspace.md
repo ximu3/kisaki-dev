@@ -175,7 +175,7 @@ Kisaki 中的 Node 与 TypeScript 工程采用一个根 pnpm workspace、一份 
 
 各依赖声明块按包名排序，脚本按开发、构建与打包、验证、维护组织，同类任务相邻。工具默认入口可直接发现，需要选择其他宿主或输入范围时显式指定配置。条件 exports 的顺序具有匹配语义，不能机械排序；不为固定字段顺序增加结构快照测试。已经进入共同 catalog 的版本由消费者引用 catalog，不另写一份等价版本。
 
-packages/typescript-config 提供共同严格性和纯环境、Node、浏览器、Solid 配置；packages/eslint-config 提供共同 lint 规则和适用的环境规则；packages/tooling 提供命令执行、候选交接、错误传递和 CLI 收尾。三者均为私有工程依赖，消费者通过 workspace devDependencies 与 exports 使用，固定工程宿主直接加载 JSON 或 TypeScript 源码，不要求预构建。公共包继续交付构建后的 exports，产品运行代码、公开声明和仓库外作者模板不引用私有工程包。格式规则由仓库根统一维护，各项目的默认配置负责本项目的范围与环境选择。
+packages/typescript-config 提供共同严格性和纯环境、Node、浏览器、Solid 配置；packages/eslint-config 提供共同 lint 规则和适用的环境规则；packages/tooling 提供命令执行、所属输出清理、错误传递和 CLI 收尾。三者均为私有工程依赖，消费者通过 workspace devDependencies 与 exports 使用，固定工程宿主直接加载 JSON 或 TypeScript 源码，不要求预构建。公共包继续交付构建后的 exports，产品运行代码、公开声明和仓库外作者模板不引用私有工程包。格式规则由仓库根统一维护，各项目的默认配置负责本项目的范围与环境选择。
 
 类型感知 lint 使用 TypeScript Project Service 读取实际类型项目与 references，跨项目暂存文件也按各自环境检查。lint 与 root:lint 通过 ^build 准备依赖包声明，缓存输入包含所用 TypeScript 配置和共享规则；构建前置不扩大其他运行验收范围。仓库外消费者样板在安装实际 tarball 后执行完整规则，仓库内采用语法检查。具体配置与入口见[共用工程包](../../implementation/development.md#shared-tooling)。
 
@@ -219,7 +219,7 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 
 公开库默认交付 ESM、d.ts 和所需 CSS，并区分 Node、DOM、Solid 与纯定义入口。通过 publint、Are the Types Wrong 和实际 tarball 消费检查制品。sandbox preload 将非 Electron 依赖完整打包为可加载的 CommonJS；其他程序按 [Electron 加载规则](https://www.electronjs.org/docs/latest/tutorial/esm) 检查，不机械统一为 ESM。
 
-tsdown 生成声明不能代替完整 typecheck。根 TypeScript 配置只规定共同严格性，各项目限制实际可用的 globals、模块和测试类型，手写 d.ts 也作为源码检查。ESLint 检查局部导入规则，dependency-cruiser 检查进程边界、私有依赖、循环及绕过路径。格式和 lint 共享配置只保留必要的环境差异。
+tsdown 生成声明不能代替完整 typecheck。根 TypeScript 配置只规定共同严格性，各项目限制实际可用的 globals、模块和测试类型，手写 d.ts 也作为源码检查。ESLint 检查局部导入规则，dependency-cruiser 检查进程边界、私有依赖、循环及绕过路径。各工程的 check:boundaries 只扫描自己的源码范围，并通过 ^build 等待实际公共依赖；根 root:boundaries 拥有根工具、测试和配置。共同规则由根 .dependency-cruiser.json 维护，tools/boundaries.ts 在仓库坐标下执行对应范围，避免全仓扫描与其他工程的输出准备并行。格式和 lint 共享配置只保留必要的环境差异。
 
 自维护源码按[TypeScript 要求](conventions.md#source-language)检查，范围包含产品代码、工具、配置、测试、模板和本体私有原生入口。源码类型配置保持 allowJs: false，结构检查核对未进入 typecheck 的目录，生成产物和第三方发行内容按自己的归属检查。
 
@@ -249,7 +249,7 @@ UI 与其他包遵守同一分工，不另设仅为跳过依赖声明的配置�
 
 根定向脚本按范围、动作和限定方式命名，例如 desktop:packages:pack、desktop:test:native、root:typecheck。真正覆盖全仓的 build、typecheck、lint、test、check、clean 保留聚合名称。包内已有工程上下文，采用 build:native、prepare:resources、check:package 等动作在前的名称，不重复项目名前缀。根工程自身的维护动作同样使用 install:hooks 等本地名称。
 
-包级 pack 生成一次实际 tarball，check:package 对该文件执行 publint／Are the Types Wrong；同包 test:consumers 依赖制品检查并安装同一文件，根 desktop:test:consumers 通过 Turbo 聚合调度。test:* 用于执行测试断言，工程载体的生成分别命名为 build:fixture 和 package:fixture。
+包级 prepare:build 是不缓存的输出准备任务，清理该包的 dist；build 依赖它和实际上游 build，正常编译及缓存恢复均取得干净目录。包内直接执行 build 时同样准备自己的输出，生成声明、CSS 和许可材料后才完成。pack 在独立的可重建目录生成一次实际 tarball，check:package 对该文件执行 publint／Are the Types Wrong；同包 test:consumers 依赖制品检查并安装同一文件，根 desktop:test:consumers 通过 Turbo 聚合调度。test:* 用于执行测试断言，工程载体的生成分别命名为 build:fixture 和 package:fixture。
 
 使用与 pnpm 内置命令同名的脚本时明确写 pnpm run，例如 pnpm run pack 和 pnpm run clean。
 
@@ -279,19 +279,19 @@ CI 的工作流按工程职责划分，执行任务按目标环境划分，步�
 
 编排文件由所属工作流直接比较 Git 输入：事件入口与共同协调器变动触发全部工程，工程工作流只触发自身完整验证。标题工作流独立验证标题，不进入产品任务的全局输入。桌面与公共包的生产任务排除 Markdown、Vitest 配置、测试类型配置和测试文件；开发监听同时排除生成目录与本地状态，生产配置与新增生产文件继续触发相应构建。任务图与真实监听分别验证这些边界。
 
-工作流通过 tools/host-environment.ts 记录运行环境。CI 选择适用任务，在一次 Turbo 调度中串行执行，资源、原生构建与工程载体由实际依赖准备。同一生产任务只运行一次；打包继续核对输入身份和实际字节，不另行记录文件修改时间证明构建复用。
+工作流通过 tools/host-environment.ts 记录运行环境。CI 选择适用任务，在一次 Turbo 调度中串行执行，资源、原生构建与工程载体由实际依赖准备。同一生产任务只运行一次；打包继续核对完成清单和实际字节，不另行记录文件修改时间证明构建复用。
 
-桌面[构建输入身份](build.md#pipeline)直接使用 build:fixture 任务的 Turbo 摘要，包括任务依赖、全局工具链文件及声明的环境变量。根依赖的私有工程包沿 Turbo 的全局摘要语义纳入，局部任务的 inputs 排除不改写全局规则；工作流选择继续按实际 affected 结果确定。运行字节校验独立使用 SHA-256。
+Turbo 摘要只用于任务选择与计算结果复用。桌面 buildId 关联同一组程序，源码会话使用独立会话标识；[发行来源](build.md#pipeline)由固定提交、版本和目标记录，运行字节使用 SHA-256。根依赖的私有工程包沿 Turbo 的全局摘要语义纳入，局部任务的 inputs 排除不改写全局规则。
 
 仓库工作流调度各 workspace 自己的常规检查与测试。桌面公共包的打包、产物检查和包内消费者由桌面工作流的 Linux x64 参考目标调度，各公共包拥有自己的 out/package/package.tgz 和 test-results/consumers，检查与消费者使用同一 tarball。公共包拥有独立可运行的构建、类型、lint 和适用测试入口；纯合同与 Node 启动器验证归其所属包，不依附桌面开发回归。共同 Node 环境可统一调度这些任务，独立的发布、权限或宿主要求出现后再建立相应工作流边界。
 
-桌面工作流自行选择套件与目标。仅浏览器交互或桌面包消费者被选中时运行 Linux x64 参考目标；具有平台差异的检查被选中时，继续覆盖既定六目标。每个目标在同一 runner 内准备环境并执行选中的包消费者、浏览器、原生、窗口、开发与制品步骤。需要有限应用构建时只构建一次，所选运行检查与打包消费同一输出；开发回归复用其中已准备的原生编译输出，仅开发检查时单独准备原生输出。开发测试仍在隔离副本内验证真实构建与会话生命周期。打包核对既有 build.json 的目标、当前输入身份、完整文件集合和摘要，缺失、过时或改写均失败。根 desktop:package:fixture 通过同一任务图保持独立可运行；外部实际制品可以通过显式收据交给包内 test:artifacts 叶操作验证。
+桌面工作流自行选择套件与目标。仅浏览器交互或桌面包消费者被选中时运行 Linux x64 参考目标；具有平台差异的检查被选中时，继续覆盖既定六目标。每个目标在同一 runner 内准备环境并执行选中的包消费者、浏览器、原生、窗口、开发与制品步骤。需要有限应用构建时只构建一次，所选运行检查与打包消费同一输出；开发回归复用其中已准备的原生编译输出，仅开发检查时单独准备原生输出。开发测试仍在隔离副本内验证真实构建与会话生命周期。打包核对既有 build.json 的目标、完整文件集合和摘要，缺失或改写均失败。根 desktop:package:fixture 通过同一任务图保持独立可运行；外部实际制品可以通过显式收据交给包内 test:artifacts 叶操作验证。
 
 <a id="task-cache"></a>
 
 ### 任务缓存与依赖安装
 
-只有结果由完整输入决定的有限任务才使用缓存，纯逻辑包的单测复用这一规则。输入需要包含影响输出的共享配置、环境变量、工具、平台、架构和 ABI，恢复时只写入本任务的输出。根工程、桌面工具和 Node 启动器等现场进程与文件系统验证继续实际执行。依赖实时外部信息或输入不明的任务不使用缓存；watch、现场原生验证、下载实时校验、签名、发布和部署不能通过重放缓存代替执行。外部 PR 无权写入可信缓存，也不能取得发行凭据。
+只有结果由完整输入决定的有限任务才使用缓存，纯逻辑包的单测复用这一规则。输入需要包含影响输出的共享配置、环境变量、工具、平台、架构和 ABI，恢复时只写入本任务的输出，所属不缓存的准备任务先清理可重建目录。缓存命中与重新构建交付相同文件集合。根工程、桌面工具和 Node 启动器等现场进程与文件系统验证继续实际执行。依赖实时外部信息或输入不明的任务不使用缓存；watch、现场原生验证、下载实时校验、签名、发布和部署不能通过重放缓存代替执行。外部 PR 无权写入可信缓存，也不能取得发行凭据。
 
 pnpm 官方 Action 管理安装所需的 store 缓存，随后仍执行 frozen-lockfile 安装；setup-node 不重复管理同一包缓存。Turbo 保存项目任务声明的输出与成功日志，仓库内上游公共包的构建属于任务依赖，不接管包安装。缓存归档恢复、实际任务命中和现场测试执行分别记录。可选缓存恢复使用官方分片下载超时设置限制等待；失败后执行正常安装或任务，具体预算由工作流配置拥有，不改变验证断言。
 
@@ -311,19 +311,15 @@ CI 使用 GitHub Actions 官方 cache 恢复和保存 .turbo/cache，按工程�
 
 ### 桌面开发会话
 
-persistent 任务不能作为等待完成的依赖，with 也不是就绪屏障。调度行为遵守 [Turbo 任务规则](https://turborepo.dev/docs/crafting-your-repository/configuring-tasks)、[watch 规则](https://turborepo.dev/docs/reference/watch) 和 [缓存规则](https://turborepo.dev/docs/crafting-your-repository/caching)。
+源码开发通过公开包的构建 exports 接入依赖。包构建包含声明、样式与资源装配，依赖顺序和缓存由 Turbo 任务图管理。公共包源码或构建配置变化时，准备流程调用对应依赖构建；程序模块的依赖图、监听、编译及 renderer HMR 由 Vite 拥有。资源、Rust 输入与构建配置的变更由开发会话安排其所属准备流程。
 
-桌面工具直接使用 Vite 的公开 API，由项目开发会话拥有进程和就绪交接。[桌面工具布局](layout.md#desktop-tools)中的 dev/session.ts 负责一个完整开发会话，依次完成有限依赖构建、当前目标资源准备、服务与程序监听、首次编译和 renderer 就绪，然后启动 Electron。就绪由回调或明确信号确认，不解析日志或依靠固定延时。
+persistent 任务不能作为等待完成的依赖，with 也不是就绪屏障。首次包准备等待有限任务完成，程序就绪来自编译器公开的完成事件。调度行为遵守 [Turbo 任务规则](https://turborepo.dev/docs/crafting-your-repository/configuring-tasks)和 [Vite 构建监听](https://vite.dev/guide/build#rebuild-on-files-changes)。工具日志用于诊断，不用日志文字或固定等待推断构建完成。
 
-项目协调器的定制范围限于 extension-host 接入、跨包就绪与受控退出；编译、模块解析、renderer HMR 和打包使用 Vite 的公开能力。开发会话独立使用 Chokidar 6 监听运行时和公共包输入，一次传入完整路径并等待公开 ready 事件后再开始首次编译，监听寿命跨越 Vite 重启。初始化失败释放已建立资源；运行期间的监听错误使会话进入失败状态，停止采用新结果，由正常停止流程关闭监听、服务和进程。接口与行为依据见[开发监听验证](../../verification/evidence/w00/development.md)。
+renderer 通过 Vite 正常解析 workspace ESM 导出并使用 HMR，依赖变化需要时刷新页面。main、preload 与 extension-host 使用 Vite 的 Node 或沙箱构建配置，成功编译后由唯一会话拥有者安排受控重启。编译工作区可以重建；实际启动的程序和原生资源使用完成的运行目录，旧进程退出后释放其目录。
 
-main 与 extension-host 使用 Vite 的 SSR 构建选择 Node 解析和插件语义；target 只负责生成语法，不能替代宿主配置。普通 JavaScript 依赖按制品布局打包，Electron、Node 内建模块和实际原生资源按所属部署合同处理。preload 保持沙箱可消费的独立 CommonJS 输出，renderer 使用浏览器环境，不套用完整 Node 宿主的缺省配置。
+源码会话以独立 buildId 关联各程序，运行代际分别持有进程与目录。编译失败报告实际错误，不采用失败结果；修复后继续构建。开发期允许错误提示与必要重载，不承诺失败后整套旧公共依赖持续可用。用户数据、持久 profile 与尚未释放的运行资源仍由各自拥有者保护。
 
-开发依赖仅保留当前完整副本和一个构建候选，内容为各包的 package.json 与 dist。准备失败保留当前副本，未采用候选由构建拥有者释放；成功采用后由 Vite 刷新页面，再释放旧副本，不继续为旧文档保存旧代模块。相同内容无需刷新，只释放重复候选。浏览器与 Node 入口由各自的实际消费者解析，不以浏览器条件预检全部导出。renderer 关闭后释放自己拥有的副本，运行时与公共包输入监听仍由开发会话拥有。
-
-renderer 使用 HMR；main、preload 或 extension-host 成功重建后，由同一开发会话安排受影响的重启。依赖构建失败时保留最后成功状态，不混用不同版本的输出。
-
-每份输出只有一个写入者，build 与 watch 不互相清理，监听过程也不先删除下游正在读取的目录。成功构建后完整交接，并处理文件删除和改名。正式构建使用干净输出，不夹带开发遗留文件。HMR 接入释放旧 Solid root、监听和 DOM。
+初始化失败释放已建立的监听、服务器与进程。运行中的资源错误停止采用新结果，交由会话停止流程收尾。公共依赖不复制到另一套模块目录，不维护自定义包解析器或按文件哈希重建编译器模块图。
 
 <a id="output-access"></a>
 
@@ -331,13 +327,13 @@ renderer 使用 HMR；main、preload 或 extension-host 成功重建后，由同
 
 同一工作副本内，使用相同构建输出的独立任务顺序执行，不提供跨命令互斥、排队或冲突检测。运行检查、有限构建或打包前停止会重建相同依赖的开发会话；执行 clean 前停止相关任务。独立流程需要并行时使用不同工作副本，单次任务内的依赖顺序、合法并行和缓存由 Turbo 的实际依赖图决定。
 
-根任务与项目脚本直接调用 Turbo、编译器、打包器和测试运行器。缓存恢复按任务声明的输出执行。完整流程按顺序完成准备、构建、快照或打包交接；候选在成功后替换对应输出，准备失败或采用前取消时保留原有结果。
+普通构建、资源准备和打包在所属可重建目录完成。输出只有在整项操作成功后才有效；失败阻止后续消费，重跑重新准备目录。已经核验且仍需交付的文件保存到固定来源目录，发布继续消费同一份文件。
 
-开发会话拥有程序代际与依赖快照的写入和清理，现用程序与 renderer 使用已交接的完整结果。启动准备沿工作流传递取消信号；运行中的停止先取得本体正常退出结果。取消退出保留可用会话，确认退出后再取消编译、关闭监听和服务，并清理已无读取者的目录。不能中断的调用等待实际完成，采用结果前检查取消状态。
+源码开发会话拥有编译工作区、运行目录、监听、服务器和应用进程。运行中的停止先取得应用正常退出结果；取消退出保留可用会话。确认退出后停止接纳变化、等待在途工作、关闭编译器和服务，再清理已无读取者的目录。无法中断的编译等待实际完成；终止和清理失败如实交付。
 
-源码开发与作者开发共用 extension-cli/extension 的启动入口、desktop-contracts/development 的控制合同和 desktop-rpc；Node 父子 IPC 承载实际传输。源码会话选择本次 main、renderer 地址和隔离 profile，直接观察实际进程退出；不维护第二套私有控制消息。.local 中的隔离资料不随普通 clean 或重启删除。typecheck 和普通库 build 不下载媒体工具；桌面首次准备资源时只处理当前目标。
+源码开发与作者开发共用 extension-cli/extension 的启动能力、desktop-contracts/development 的控制合同和 desktop-rpc；Node 父子 IPC 承载实际传输。源码会话选择本次 main、renderer 地址和隔离 profile，直接观察实际进程退出。扩展作者交付的完整构建由宿主持续读取，继续按[构建交接](../extensions/development.md#reload)等待采用结果与读取者释放。.local 中的持久资料不随普通 clean 或重启删除。
 
-Turbo 只负责选择和调度任务。桌面与 kisx 通过 [公开开发接入](../extensions/development.md#connection) 协作，官方扩展不使用私有热加载路径。集成验证包括公共合同、UI 样式和 SDK 变化，故意构建失败后的恢复，多程序输出交接，停止与重启，以及真实资源使用；打开 watch 开关本身不代表开发流程可用。
+集成验证覆盖首次就绪、公共导出与样式更新、编译失败后的修复、程序重启、退出取消和真实资源释放。准备、构建、缓存恢复与最终消费分别核对可观察结果。
 
 <a id="dependencies"></a>
 

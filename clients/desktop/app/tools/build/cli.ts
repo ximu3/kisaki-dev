@@ -1,13 +1,13 @@
 /** @fileoverview Parses target and program arguments for finite desktop builds. */
 
 import { parseArgs } from 'node:util'
+import { randomUUID } from 'node:crypto'
 import { join, resolve } from 'node:path'
 import { appRoot } from '../lib/paths'
 import { hostTarget, parseTarget } from '../lib/targets'
-import { replaceOutput } from '@kisaki3/tooling/output'
+import { removeOutputs } from '@kisaki3/tooling/output'
 import { runCli } from '@kisaki3/tooling/cli'
 import { buildDesktop } from './coordinator'
-import { buildInputIdentity } from './identity'
 import { buildProgram, programNames } from './programs'
 import type { ProgramName } from './programs'
 
@@ -32,14 +32,9 @@ await runCli(async (signal) => {
 
     const program = values.program as ProgramName
     const output = join(appRoot, 'out', 'programs', target, program)
-    const buildId = await buildInputIdentity({ signal })
-
-    await replaceOutput(
-      appRoot,
-      output,
-      (staging) => buildProgram(sourceRoot, program, staging, buildId),
-      signal,
-    )
+    await removeOutputs(appRoot, [output], signal)
+    await buildProgram(sourceRoot, program, output, randomUUID())
+    signal.throwIfAborted()
   } else {
     const build = await buildDesktop(sourceRoot, target, signal)
 
