@@ -49,6 +49,7 @@ interface MenuState {
   last: boolean
 }
 
+/** Menu state shared by triggers, items and nested compound parts. */
 const MenuContext = createContext<MenuState>()
 
 /**
@@ -67,20 +68,29 @@ export interface MenuProps extends ParentProps {
 /** Owns dropdown, context-menu or submenu state and coordinates its menu-tree relationships. */
 export function Menu(props: MenuProps): JSX.Element {
   const parent = useContext(MenuContext)
+  /** Live menu visibility and change requests delegated to its value owner. */
   const [open, change] = createValue(
     () => props.open,
     () => props.defaultOpen ?? false,
     (next) => props.onOpenChange?.(next),
   )
+  /** Optional pointer anchor used when the menu opens at a context position. */
   const [point, setPoint] = createSignal<{ x: number; y: number }>()
   const hover = createSubmenuHover({
+    /** Reads the current submenu anchor for pointer handoff. */
     anchor: () => state.anchor,
+
+    /** Reads the current submenu surface for pointer handoff. */
     content: () => state.content,
     isOpen: open,
+
+    /** Opens through the menu owner without moving focus during pointer handoff. */
     open: () => {
       state.focusOnOpen = false
       state.change(true)
     },
+
+    /** Requests submenu closure through the current value owner. */
     close: () => state.change(false),
   })
   const state: MenuState = {
@@ -228,11 +238,16 @@ export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Elem
     focusableItems(content, selector).filter((node) => node.closest('[role="menu"]') === content)
 
   createPopup({
+    /** Reads the currently mounted menu surface. */
     element: () => content,
+
+    /** Reads the current menu anchor for surface positioning. */
     anchor: () => state.anchor!,
     open: state.open,
     change: state.change,
     point: state.point,
+
+    /** Chooses a direction-aware submenu side or the root menu's preferred placement. */
     placement: () => {
       if (state.parent) {
         return getComputedStyle(state.anchor!).direction === 'rtl' ? 'left-start' : 'right-start'
@@ -241,6 +256,7 @@ export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Elem
     },
   })
 
+  /** Vertical keyboard navigation across the menu's direct and grouped items. */
   const navigate = createFocusNavigation(
     () => viewport,
     ':scope > [role^="menuitem"], :scope > [role="group"] > [role^="menuitem"]',
@@ -340,6 +356,7 @@ export interface MenuItemProps extends JSX.ButtonHTMLAttributes<HTMLButtonElemen
  */
 export function MenuItem(props: MenuItemProps): JSX.Element {
   const state = useMenu()
+  /** Displayed check state retained while the menu completes its exit transition. */
   const checked = displayedWhileOpen(state.open, () => props['aria-checked'])
   const [local, rest] = splitProps(props, [
     'onSelect',

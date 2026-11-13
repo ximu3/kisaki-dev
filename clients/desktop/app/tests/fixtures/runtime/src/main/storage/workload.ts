@@ -111,6 +111,7 @@ export async function prepareWorkload(storage: Storage, directory: string) {
   ): Promise<void> {
     const prepared = connection.prepare(statement)
     inputHash.update(statement)
+    /** Writes and fingerprints one bounded fixture batch inside the real driver transaction. */
     const batch = connection.transaction((from: number, to: number) => {
       for (let index = from; index < to; index += 1) {
         const row = values(index)

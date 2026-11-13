@@ -45,8 +45,10 @@ ${declarations(defaults.dark)}
   await copyFile(join(project, 'src/tailwind.css'), join(outDir, 'tailwind.css'))
 
   // The value parser bundles CSS Tree and its grammar data; preserve their actual licenses.
+  /** Resolves the installed CSS parser from this package's build environment. */
   const require = createRequire(import.meta.url)
   const cssTree = require.resolve('css-tree/package.json')
+  /** Resolves the CSS parser's data and license dependencies relative to their owner. */
   const dependencyRequire = createRequire(cssTree)
   const notices = []
   for (const manifest of [

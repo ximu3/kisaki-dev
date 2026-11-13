@@ -4,6 +4,7 @@ import { expect, test } from 'vitest'
 import { relative } from 'node:path'
 import { maintainedFiles, workspaceMembers } from '../support/workspace'
 
+/** Workspace root supplied by the repository test task's working directory. */
 const root = process.cwd()
 
 test('all maintained packages are registered with unique workspace identities', async () => {

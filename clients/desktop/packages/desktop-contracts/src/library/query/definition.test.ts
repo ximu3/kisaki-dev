@@ -5,6 +5,7 @@ import { test, expect } from 'vitest'
 import { parseEntryQuery } from './definition'
 import type { EntryQuery } from './definition'
 
+/** Mixed game/person query reused by the complete-query validation cases. */
 const query: EntryQuery = {
   scope: { type: 'library' },
   search: '',

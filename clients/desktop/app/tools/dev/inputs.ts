@@ -100,6 +100,8 @@ export async function startInputWatcher(
 
   const watcher = watch([...packageInputs, ...runtimeInputs], {
     ignoreInitial: true,
+
+    /** Excludes inputs that do not belong to live development preparation. */
     ignored: (path) => !isDevelopmentInput(path),
   })
   let initialized = false

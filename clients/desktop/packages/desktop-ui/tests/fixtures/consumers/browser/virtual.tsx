@@ -5,6 +5,7 @@ import type { JSX } from 'solid-js'
 import { createVirtualizer } from '@tanstack/solid-virtual'
 import { MultiSelect } from '@kisaki3/desktop-ui/select'
 
+/** Ten-thousand-option synthetic input for virtualized selection and scrolling checks. */
 const choices = Array.from({ length: 10_000 }, (_, index) => ({
   value: String(index),
   label: `Item ${index + 1}`,
@@ -12,6 +13,7 @@ const choices = Array.from({ length: 10_000 }, (_, index) => ({
 
 /** Exercises a large virtualized multi-selection through the packed public field API. */
 export function VirtualChoices(): JSX.Element {
+  /** Reactive scroll viewport used by the standalone virtual-selection consumer. */
   const [viewport, setViewport] = createSignal<HTMLDivElement>()
   let scrollTo: ((value: string) => void) | undefined
 
@@ -32,12 +34,18 @@ export function VirtualChoices(): JSX.Element {
         scrollToValue={(value) => scrollTo?.(value)}
         renderOptions={(state) => {
           const virtualizer = createVirtualizer({
+            /** Reads the live fixture option count for the real virtualizer. */
             get count() {
               return state.options().length
             },
+
+            /** Reads the mounted viewport used by the consumer's real virtualizer. */
             getScrollElement: () => viewport() ?? null,
+
+            /** Supplies the fixed synthetic row-height estimate before actual measurement. */
             estimateSize: () => 30,
             overscan: 4,
+            /** Runs fixture virtual measurements only while the selection surface is present. */
             get enabled() {
               return state.present()
             },

@@ -24,9 +24,12 @@ interface DesktopFixtures {
   storagePerformance: boolean
 }
 
+/** Playwright fixtures that own the prepared Electron process and its isolated profile. */
 export const test = base.extend<DesktopFixtures>({
   kind: ['main', { option: true }],
   storagePerformance: [false, { option: true }],
+
+  /** Owns an isolated profile for the consuming test and removes it after teardown. */
   profile: async ({}, use) => {
     const directory = await mkdtemp(join(tmpdir(), 'kisaki-desktop-test-'))
     try {
@@ -35,6 +38,8 @@ export const test = base.extend<DesktopFixtures>({
       await rm(directory, { recursive: true, force: true })
     }
   },
+
+  /** Launches the verified host build and closes its actual Electron process after the test. */
   desktop: async ({ profile, kind, storagePerformance }, use) => {
     const runtime = buildDirectory(hostTarget())
     const build = JSON.parse(await readFile(join(runtime, 'build.json'), 'utf8')) as {

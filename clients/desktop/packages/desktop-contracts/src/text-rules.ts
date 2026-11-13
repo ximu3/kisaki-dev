@@ -28,6 +28,7 @@ export function inspectTextPattern(pattern: string, ignoreCase: boolean): TextPa
 
     const names = new Set<string>()
     visitRegExpAST(ast, {
+      /** Collects named capture identities from the parsed regular-expression syntax. */
       onCapturingGroupEnter(group) {
         if (group.name !== null) {
           names.add(group.name)

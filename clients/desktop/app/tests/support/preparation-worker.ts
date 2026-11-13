@@ -8,6 +8,7 @@ import { join } from 'node:path'
 import { repositoryRoot } from '../../tools/lib/paths'
 
 // A fixture package build reports readiness and stays pending so startup cancellation is observable.
+/** Isolated marker directory used to report preparation progress to the parent test. */
 const directory = join(repositoryRoot, '.cache')
 await mkdir(directory, { recursive: true })
 await writeFile(

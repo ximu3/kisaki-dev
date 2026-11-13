@@ -9,15 +9,24 @@ import { launchFixtureApplication } from '../fixture-application'
 import { startDevelopmentSession } from '../../../tools/dev/session'
 import type { DevelopmentSession } from '../../../tools/dev/session'
 
+/** Cancellation owner for initial development preparation. */
 const controller = new AbortController()
+
+/** Fault or lifecycle scenario selected by the parent test. */
 const scenario = process.argv[2]
 
+/** Rejects the deliberately injected application-stop failure when requested by the parent. */
 let rejectStop!: (cause: unknown) => void
+
+/** Pending failure used to exercise a stop rejection while process ownership remains explicit. */
 const stopFailure = new Promise<never>((_resolve, reject) => {
   rejectStop = reject
 })
 
+/** Development session owned and closed by this child process. */
 let session: DevelopmentSession | undefined
+
+/** Records whether the worker must report an unsuccessful terminal outcome. */
 let failed = false
 
 /**
@@ -87,6 +96,7 @@ process.once('disconnect', disconnected)
 try {
   session = await startDevelopmentSession({
     sourceRoot: fileURLToPath(new URL('../../fixtures/runtime', import.meta.url)),
+    /** Launches the real carrier and wraps only the lifecycle fault selected by the parent test. */
     async launch(options) {
       const application = await launchFixtureApplication({
         ...options,
@@ -117,6 +127,10 @@ try {
       }
     },
     signal: controller.signal,
+    /**
+     * Forwards session state and diagnostic messages to the parent while its IPC channel is
+     * connected.
+     */
     onState(state, error) {
       if (process.connected) {
         process.send?.(

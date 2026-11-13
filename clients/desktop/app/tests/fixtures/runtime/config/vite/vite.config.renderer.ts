@@ -3,6 +3,7 @@ import solid from 'vite-plugin-solid'
 import { fileURLToPath } from 'node:url'
 import { resolve } from 'node:path'
 
+/** The fixture window-source root used to resolve renderer HTML entries. */
 const root = fileURLToPath(new URL('../../src/renderer/windows', import.meta.url))
 
 export default defineConfig(({ mode }) => ({

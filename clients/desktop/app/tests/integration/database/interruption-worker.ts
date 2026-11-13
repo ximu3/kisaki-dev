@@ -3,12 +3,15 @@
 import { sql } from 'drizzle-orm'
 import { initializeDatabase } from '../../../src/main/infrastructure/database'
 import { entries } from '../../../src/main/infrastructure/database/schema'
-import { storageOptions } from './fixture'
+import { storageOptions } from '../../support/database'
 
+/** The parent test's isolated profile whose interrupted transaction will be reopened. */
 const directory = process.argv[2]
 if (!directory || !process.send) {
   throw new Error('The interruption worker requires a test directory and IPC parent')
 }
+
+/** Real storage connection intentionally left open until the parent terminates this worker. */
 const storage = initializeDatabase(storageOptions(directory))
 storage.db
   .insert(entries)

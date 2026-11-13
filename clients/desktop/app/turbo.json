@@ -24,6 +24,7 @@
         "config/vitest/vitest.config.native.ts",
         "tests/integration/native/**",
         "tests/integration/database/**",
+        "tests/support/database.ts",
         "!tests/fixtures/runtime/src/**/*.test.ts",
         "!tests/fixtures/runtime/src/**/*.test.tsx",
         "!tools/**/*.test.ts",

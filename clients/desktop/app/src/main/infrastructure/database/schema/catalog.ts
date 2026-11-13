@@ -18,6 +18,7 @@ import { aliases, externalLinks, languages, partialDate, characterMeasure } from
 import { attachments } from './attachments'
 import { booleanValue, enumValue, nonempty, idColumn, safeInteger, timestamps } from './constraints'
 
+/** Stores shared catalog identity and descriptive facts, including versioned natural-order keys. */
 export const entries = sqliteTable(
   'entries',
   {
@@ -116,9 +117,13 @@ function workIndexes(
   ]
 }
 
+/** Publication-progress labels kept separate from personal status and completion history. */
 const releaseStatuses = ['planned', 'ongoing', 'finished', 'paused', 'cancelled']
+
+/** Finite storage labels shared by character and person gender fields. */
 const genders = ['male', 'female', 'nonBinary', 'genderless', 'other'] as const
 
+/** Stores game-specific catalog facts for an entry whose discriminator is game. */
 export const games = sqliteTable(
   'games',
   {
@@ -134,6 +139,10 @@ export const games = sqliteTable(
   ],
 )
 
+/**
+ * Stores anime publication facts and declared episode counts independently from actual parts and
+ * files.
+ */
 export const animes = sqliteTable(
   'animes',
   {
@@ -155,6 +164,10 @@ export const animes = sqliteTable(
   ],
 )
 
+/**
+ * Stores comic publication facts and declared counts independently from actual volumes and
+ * chapters.
+ */
 export const comics = sqliteTable(
   'comics',
   {
@@ -176,6 +189,7 @@ export const comics = sqliteTable(
   ],
 )
 
+/** Stores novel publication facts and declared counts independently from actual volumes. */
 export const novels = sqliteTable(
   'novels',
   {
@@ -195,6 +209,7 @@ export const novels = sqliteTable(
   ],
 )
 
+/** Stores fictional-character facts with independently nullable dates and measurements. */
 export const characters = sqliteTable(
   'characters',
   {
@@ -218,6 +233,7 @@ export const characters = sqliteTable(
   ],
 )
 
+/** Stores independently identified people and their nullable biographical facts. */
 export const persons = sqliteTable(
   'persons',
   {
@@ -233,6 +249,7 @@ export const persons = sqliteTable(
   ],
 )
 
+/** Stores independently identified organizations and their known lifecycle dates. */
 export const organizations = sqliteTable(
   'organizations',
   {
@@ -286,6 +303,10 @@ function partConstraints(
   ]
 }
 
+/**
+ * Stores actual episodes with separate ordering, display numbering and regular or special
+ * classification.
+ */
 export const animeEpisodes = sqliteTable(
   'anime_episodes',
   {
@@ -305,6 +326,10 @@ export const animeEpisodes = sqliteTable(
   ],
 )
 
+/**
+ * Stores actual anime extras outside the episode catalog, retaining their independent
+ * classification.
+ */
 export const animeExtras = sqliteTable(
   'anime_extras',
   {
@@ -329,6 +354,7 @@ export const animeExtras = sqliteTable(
   ],
 )
 
+/** Stores actual comic volumes without deriving their identity or order from display numbers. */
 export const comicVolumes = sqliteTable(
   'comic_volumes',
   {
@@ -348,6 +374,7 @@ export const comicVolumes = sqliteTable(
   ],
 )
 
+/** Stores actual comic chapters independently from the volumes that include them. */
 export const comicChapters = sqliteTable(
   'comic_chapters',
   {
@@ -365,6 +392,7 @@ export const comicChapters = sqliteTable(
   ],
 )
 
+/** Stores actual novel volumes with independent display numbering and ordering. */
 export const novelVolumes = sqliteTable(
   'novel_volumes',
   {
@@ -382,6 +410,10 @@ export const novelVolumes = sqliteTable(
   ],
 )
 
+/**
+ * Records chapter inclusion and order within each comic volume without transferring chapter
+ * ownership.
+ */
 export const comicVolumeChapters = sqliteTable(
   'comic_volume_chapters',
   {
@@ -426,31 +458,42 @@ function externalIdentities<TName extends string, TKey extends string>(
   )
 }
 
+/** Binds exact source coordinates to catalog entries, with reverse lookup by the local owner. */
 export const entryExternalIdentities = externalIdentities(
   'entry_external_identities',
   'entry_id',
   entries.id,
 )
+
+/** Binds exact source coordinates to anime episodes, with reverse lookup by the local owner. */
 export const animeEpisodeExternalIdentities = externalIdentities(
   'anime_episode_external_identities',
   'episode_id',
   animeEpisodes.id,
 )
+
+/** Binds exact source coordinates to anime extras, with reverse lookup by the local owner. */
 export const animeExtraExternalIdentities = externalIdentities(
   'anime_extra_external_identities',
   'extra_id',
   animeExtras.id,
 )
+
+/** Binds exact source coordinates to comic volumes, with reverse lookup by the local owner. */
 export const comicVolumeExternalIdentities = externalIdentities(
   'comic_volume_external_identities',
   'volume_id',
   comicVolumes.id,
 )
+
+/** Binds exact source coordinates to comic chapters, with reverse lookup by the local owner. */
 export const comicChapterExternalIdentities = externalIdentities(
   'comic_chapter_external_identities',
   'chapter_id',
   comicChapters.id,
 )
+
+/** Binds exact source coordinates to novel volumes, with reverse lookup by the local owner. */
 export const novelVolumeExternalIdentities = externalIdentities(
   'novel_volume_external_identities',
   'volume_id',

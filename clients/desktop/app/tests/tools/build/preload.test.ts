@@ -7,6 +7,7 @@ import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import { buildProgram } from '../../../tools/build/programs'
 
+/** Hoisted application root redirected to the isolated preload build fixture. */
 const paths = vi.hoisted(() => ({ appRoot: '' }))
 // The fixture redirects owned inputs while exercising Vite's real loader and compiler.
 vi.mock('../../../tools/lib/paths', () => paths)
@@ -39,6 +40,7 @@ test('preload entry changes take effect in a later build within the same process
   const first = join(paths.appRoot, 'out/first')
   await buildProgram(paths.appRoot, 'preload', first, 'first')
 
+  /** Resolves the actual development runtime from the isolated application fixture. */
   const require = createRequire(join(paths.appRoot, 'package.json'))
   expect(require(join(first, 'main.cjs'))).toHaveProperty('value', 'main')
 

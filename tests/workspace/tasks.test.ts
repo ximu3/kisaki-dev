@@ -62,6 +62,7 @@ test(
     const root = process.cwd()
     const directory = await mkdtemp(join(tmpdir(), 'kisaki-task-inputs-'))
     onTestFinished(() => rm(directory, { recursive: true, force: true }))
+    /** Promise-based command runner for the isolated task-selection repository. */
     const execute = promisify(execFile)
     const options = {
       signal,

@@ -31,6 +31,7 @@ export function Slider(props: SliderProps): JSX.Element {
    * Returns the explicit default value or configured range midpoint for initialization and reset.
    */
   const baseline = () => local.defaultValue ?? ((props.min ?? 0) + (props.max ?? 100)) / 2
+  /** Live slider value and change requests using the native range baseline. */
   const [value, change] = createValue(
     () => local.value,
     baseline,

@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { initializeDatabase } from '../../../src/main/infrastructure/database'
 import { entries } from '../../../src/main/infrastructure/database/schema'
-import { storageOptions } from './fixture'
+import { storageOptions } from '../../support/database'
 
 test('retains committed data and rolls back interrupted work after reopening', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'kisaki-interruption-'))

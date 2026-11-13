@@ -272,14 +272,19 @@ function choices<T extends string>(values: readonly T[]) {
   )
 }
 
+/** Nonempty selected work media used by relation-coverage conditions. */
 const workChoices = choices(workTypes)
 
+/** Nonempty selected person responsibilities used by relation-coverage conditions. */
 const personChoices = choices(personRoles)
 
+/** Nonempty selected organization responsibilities used by relation-coverage conditions. */
 const organizationChoices = choices(organizationRoles)
 
+/** Nonempty selected work-relation directions used by coverage conditions. */
 const relationChoices = choices(workRelationTypes)
 
+/** Nonempty combination of work medium, responsibility and character-binding coverage. */
 const personCondition = v.pipe(
   v.strictObject({
     workTypes: v.exactOptional(workChoices),
@@ -289,6 +294,7 @@ const personCondition = v.pipe(
   v.check((value) => Object.keys(value).length > 0),
 )
 
+/** Nonempty combination of work medium and organization-role coverage. */
 const organizationCondition = v.pipe(
   v.strictObject({
     workTypes: v.exactOptional(workChoices),
@@ -297,6 +303,7 @@ const organizationCondition = v.pipe(
   v.check((value) => Object.keys(value).length > 0),
 )
 
+/** Nonempty relation-direction or target-medium coverage condition. */
 const workRelationCondition = v.pipe(
   v.strictObject({
     types: v.exactOptional(relationChoices),
@@ -305,8 +312,10 @@ const workRelationCondition = v.pipe(
   v.check((value) => Object.keys(value).length > 0),
 )
 
+/** Work-medium coverage condition for character participation. */
 const characterCondition = v.strictObject({ workTypes: workChoices })
 
+/** Complete or explicitly bounded coverage shapes for each supported metadata relation view. */
 const scopeSchemas = {
   workCharacters: v.union([
     v.literal('all'),

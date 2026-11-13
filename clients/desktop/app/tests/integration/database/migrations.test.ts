@@ -8,7 +8,7 @@ import Database from 'better-sqlite3'
 import { eq, sql } from 'drizzle-orm'
 import { DatabaseFormatError, initializeDatabase } from '../../../src/main/infrastructure/database'
 import { entries } from '../../../src/main/infrastructure/database/schema'
-import { storageOptions } from './fixture'
+import { storageOptions } from '../../support/database'
 
 /** Creates an owned directory and registers cleanup after all test connections have closed. */
 async function fixtureDirectory(): Promise<string> {

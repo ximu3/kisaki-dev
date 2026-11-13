@@ -21,6 +21,7 @@ import {
 import { animeFiles, comicFiles, novelFiles, gameLaunchConfigs } from './holdings'
 import { booleanValue, enumValue, idColumn, safeInteger, timestamps } from './constraints'
 
+/** Stores nullable personal ratings and explicit favorite state for all seven entry types. */
 export const entryEvaluations = sqliteTable(
   'entry_evaluations',
   {
@@ -55,9 +56,16 @@ function workRecord<TName extends string>(name: TName, ownerName: string, owner:
   )
 }
 
+/** Stores a game's current personal status and additional duration separately from history. */
 export const gameRecords = workRecord('game_records', 'game_id', games.entryId)
+
+/** Stores an anime's current personal status and additional duration separately from history. */
 export const animeRecords = workRecord('anime_records', 'anime_id', animes.entryId)
+
+/** Stores a comic's current personal status and additional duration separately from history. */
 export const comicRecords = workRecord('comic_records', 'comic_id', comics.entryId)
+
+/** Stores a novel's current personal status and additional duration separately from history. */
 export const novelRecords = workRecord('novel_records', 'novel_id', novels.entryId)
 
 /** Creates a part's optional boolean completion mark, without dates or completion counts. */
@@ -75,20 +83,33 @@ function partRecord<TName extends string>(name: TName, ownerName: string, owner:
   )
 }
 
+/** Stores an optional completion mark for one actual episode. */
 export const animeEpisodeRecords = partRecord(
   'anime_episode_records',
   'episode_id',
   animeEpisodes.id,
 )
+
+/** Stores an optional completion mark for one actual anime extra. */
 export const animeExtraRecords = partRecord('anime_extra_records', 'extra_id', animeExtras.id)
+
+/** Stores an optional completion mark for one actual comic volume. */
 export const comicVolumeRecords = partRecord('comic_volume_records', 'volume_id', comicVolumes.id)
+
+/** Stores an optional completion mark for one actual comic chapter. */
 export const comicChapterRecords = partRecord(
   'comic_chapter_records',
   'chapter_id',
   comicChapters.id,
 )
+
+/** Stores an optional completion mark for one actual novel volume. */
 export const novelVolumeRecords = partRecord('novel_volume_records', 'volume_id', novelVolumes.id)
 
+/**
+ * Stores individual completion facts; the writing operation verifies the referenced entry's
+ * concrete work type.
+ */
 export const workCompletionRecords = sqliteTable(
   'work_completion_records',
   {
@@ -147,7 +168,7 @@ function activityConstraints(
     safeInteger(`${name}_duration`, table.durationMs),
     check(
       `${name}_interval`,
-      sql`${table.endedAt} >= ${table.startedAt} and ${table.durationMs} <= ${table.endedAt} - ${table.startedAt}`,
+      sql`${table.endedAt} > ${table.startedAt} and ${table.durationMs} <= ${table.endedAt} - ${table.startedAt}`,
     ),
     index(`${name}_work_time`).on(
       owner,
@@ -160,6 +181,10 @@ function activityConstraints(
   ]
 }
 
+/**
+ * Stores actual game-use intervals with occurrence names retained after launch-configuration
+ * removal.
+ */
 export const gamePlayActivity = sqliteTable(
   'game_play_activity',
   {
@@ -178,6 +203,10 @@ export const gamePlayActivity = sqliteTable(
   ],
 )
 
+/**
+ * Stores actual watch intervals with optional file and part references and independent occurrence
+ * names.
+ */
 export const animeWatchActivity = sqliteTable(
   'anime_watch_activity',
   {
@@ -199,6 +228,10 @@ export const animeWatchActivity = sqliteTable(
   ],
 )
 
+/**
+ * Stores actual comic-reading intervals without multiplying a compound file's time across its
+ * parts.
+ */
 export const comicReadingActivity = sqliteTable(
   'comic_reading_activity',
   {
@@ -223,6 +256,7 @@ export const comicReadingActivity = sqliteTable(
   ],
 )
 
+/** Stores actual novel-reading intervals with optional file and volume context. */
 export const novelReadingActivity = sqliteTable(
   'novel_reading_activity',
   {

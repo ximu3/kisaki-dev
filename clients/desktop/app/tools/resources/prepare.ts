@@ -13,6 +13,7 @@ import { removeOutputs } from '@kisaki3/tooling/output'
 import { copyFonts } from './fonts'
 import type { FontInput } from './fonts'
 
+/** Resolves resource dependencies from the desktop package's declared installation. */
 const requireDependency = createRequire(join(appRoot, 'package.json'))
 
 /** Writes packaging PNG and ICO variants from the project's source icon. */

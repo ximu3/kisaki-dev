@@ -14,6 +14,7 @@ import { storedJsonColumn } from '../codecs/json'
 import { attachments } from './attachments'
 import { booleanValue, nonempty, idColumn, timestamps } from './constraints'
 
+/** Stores user-owned light and dark theme definitions under one stable theme identity. */
 export const themes = sqliteTable(
   'themes',
   {
@@ -26,6 +27,7 @@ export const themes = sqliteTable(
   (table) => [primaryKey({ columns: [table.id] })],
 )
 
+/** Stores user font-family identities independently from their attached font files. */
 export const fonts = sqliteTable(
   'fonts',
   {
@@ -36,6 +38,7 @@ export const fonts = sqliteTable(
   (table) => [primaryKey({ columns: [table.id] })],
 )
 
+/** Associates a user font with immutable file attachments and their validated font metadata. */
 export const fontAttachments = sqliteTable(
   'font_attachments',
   {
@@ -53,6 +56,7 @@ export const fontAttachments = sqliteTable(
   ],
 )
 
+/** Stores the single onboarding history value seeded by the initial migration. */
 export const onboardingState = sqliteTable(
   'onboarding_state',
   {
@@ -62,6 +66,7 @@ export const onboardingState = sqliteTable(
   (table) => [check('onboarding_state_singleton', sql`${table.id} = 1`)],
 )
 
+/** Stores user-confirmed repository addresses and their pinned signing identities. */
 export const extensionRepositories = sqliteTable(
   'extension_repositories',
   {
@@ -73,6 +78,10 @@ export const extensionRepositories = sqliteTable(
   (table) => [primaryKey({ columns: [table.id] })],
 )
 
+/**
+ * Stores installed artifact identity, enabled intent, update selection and prepared replacement
+ * independently.
+ */
 export const installedExtensions = sqliteTable(
   'installed_extensions',
   {
@@ -100,6 +109,7 @@ export const installedExtensions = sqliteTable(
   ],
 )
 
+/** Stores revisioned extension JSON independently from installation lifetime. */
 export const extensionStorage = sqliteTable(
   'extension_storage',
   {
@@ -114,6 +124,7 @@ export const extensionStorage = sqliteTable(
   ],
 )
 
+/** Stores revisioned encrypted extension bytes without mixing them with ordinary JSON settings. */
 export const extensionSecrets = sqliteTable(
   'extension_secrets',
   {

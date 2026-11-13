@@ -1,7 +1,7 @@
 {
   "version": "7",
   "dialect": "sqlite",
-  "id": "8195b2fd-ac98-4409-84d1-e84623ba6bea",
+  "id": "66ae528a-6189-4d97-8d44-9575c276a392",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -12969,7 +12969,7 @@
     {
       "table": "anime_watch_activity",
       "name": "anime_watch_activity_interval",
-      "value": "\"ended_at\" >= \"started_at\" and \"duration_ms\" <= \"ended_at\" - \"started_at\"",
+      "value": "\"ended_at\" > \"started_at\" and \"duration_ms\" <= \"ended_at\" - \"started_at\"",
       "entityType": "checks"
     },
     {
@@ -13197,7 +13197,7 @@
     {
       "table": "comic_reading_activity",
       "name": "comic_reading_activity_interval",
-      "value": "\"ended_at\" >= \"started_at\" and \"duration_ms\" <= \"ended_at\" - \"started_at\"",
+      "value": "\"ended_at\" > \"started_at\" and \"duration_ms\" <= \"ended_at\" - \"started_at\"",
       "entityType": "checks"
     },
     {
@@ -13449,7 +13449,7 @@
     {
       "table": "game_play_activity",
       "name": "game_play_activity_interval",
-      "value": "\"ended_at\" >= \"started_at\" and \"duration_ms\" <= \"ended_at\" - \"started_at\"",
+      "value": "\"ended_at\" > \"started_at\" and \"duration_ms\" <= \"ended_at\" - \"started_at\"",
       "entityType": "checks"
     },
     {
@@ -13599,7 +13599,7 @@
     {
       "table": "novel_reading_activity",
       "name": "novel_reading_activity_interval",
-      "value": "\"ended_at\" >= \"started_at\" and \"duration_ms\" <= \"ended_at\" - \"started_at\"",
+      "value": "\"ended_at\" > \"started_at\" and \"duration_ms\" <= \"ended_at\" - \"started_at\"",
       "entityType": "checks"
     },
     {

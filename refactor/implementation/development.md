@@ -129,7 +129,7 @@ pack 的输入由已声明的 build 依赖，以及包元数据、许可和发�
 
 浏览器首次准备由所属工程执行：开发回归使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`，公共包消费者使用 `pnpm --filter <包名> exec playwright install chromium`。已建立的公共包使用同一锁定 Playwright 版本，可复用该版本的浏览器安装。
 
-存储测量可单独运行 `pnpm desktop:test:performance storage.test.ts`。数据规模、采样数和 50 ms 同步预算由载体的 `main/storage/fixture.ts` 预先固定；输入清单、实际迁移摘要、SQLite 配置、EXPLAIN 与完整结果断言一并进入 `test-results/performance`。结果适用于所测设备与存储查询；后续业务、IPC 和输入响应由所属工作包接续。
+存储测量可单独运行 `pnpm desktop:test:performance storage.test.ts`。数据规模、采样数和 50 ms 同步预算由载体的 `main/storage/workload.ts` 预先固定；输入清单、实际迁移摘要、SQLite 配置、EXPLAIN 与完整结果断言一并进入 `test-results/performance`。结果适用于所测设备与存储查询；后续业务、IPC 和输入响应由所属工作包接续。
 
 desktop-contracts 和 desktop-localization 的独立消费者同时安装所需公共依赖的实际 tarball，由自身 Turbo 任务准备；尚未公开的依赖通过临时消费者的 pnpm-workspace.yaml 指向这些包，不使用源码别名。
 

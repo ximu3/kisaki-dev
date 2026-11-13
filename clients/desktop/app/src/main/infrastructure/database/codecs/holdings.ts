@@ -19,9 +19,16 @@ import type {
   UsageOverride,
 } from '@kisaki3/desktop-contracts/preferences'
 
+/** Nonnegative safe-integer observations used for file counts and dimensions. */
 const count = v.pipe(v.number(), v.safeInteger(), v.minValue(0))
+
+/** Positive safe-integer observations for known dimensions and page counts. */
 const positiveCount = v.pipe(count, v.minValue(1))
+
+/** Safe integer UTC milliseconds used by saved file-access observations. */
 const instant = v.pipe(v.number(), v.safeInteger())
+
+/** Finite nonnegative seconds used for media duration and playback position. */
 const seconds = v.pipe(v.number(), v.finite(), v.minValue(0))
 
 /** Applies a local storage schema and uses the shared value-error category. */

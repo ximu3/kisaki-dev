@@ -2,6 +2,7 @@
 
 import { createTranslator } from '@kisaki3/desktop-localization'
 
+/** Synthetic catalog retaining literal markup-like message text for browser rendering checks. */
 const t = createTranslator('zh-CN', { library: { completion: { recorded: '<b>{name}</b>' } } })
 document.body.textContent = t('library.completion.recorded', { name: '{literal}' })
 document.body.dataset.ready = 'true'

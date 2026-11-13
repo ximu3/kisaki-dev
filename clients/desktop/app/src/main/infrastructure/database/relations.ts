@@ -3,6 +3,7 @@
 import { defineRelations } from 'drizzle-orm'
 import * as schema from './schema'
 
+/** Maps catalog entries to their typed rows, identities, parts and files for relational reads. */
 export const relations = defineRelations(schema, (r) => ({
   entries: {
     identities: r.many.entryExternalIdentities({

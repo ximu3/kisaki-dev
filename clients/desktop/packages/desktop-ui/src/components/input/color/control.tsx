@@ -43,6 +43,10 @@ export interface ColorInputProps extends Omit<InputProps, 'type'> {
  * correction.
  */
 export function ColorInput(props: ColorInputProps): JSX.Element {
+  /**
+   * Color-space converter used to obtain picker coordinates without rewriting the submitted CSS
+   * value.
+   */
   const toHsv = converter('hsv')
   const [local, rest] = splitProps(props, [
     'value',
@@ -59,13 +63,17 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
     'style',
   ])
   const field = fieldAttributes(props)
+  /** Live CSS color value and change requests delegated to the controlled or local owner. */
   const [value, change] = createValue(
     () => local.value,
     () => local.defaultValue ?? '',
     (next) => local.onValueChange?.(next),
   )
+  /** Parsed current CSS color observed by the picker. */
   const parsed = createMemo(() => parse(value()))
+  /** Local HSV picker coordinates retained while the submitted color value changes. */
   const [color, setColor] = createSignal<Hsv>({ mode: 'hsv', h: 0, s: 1, v: 1, alpha: 1 })
+  /** Locally owned visibility of the color-picker surface. */
   const [open, setOpen] = createSignal(false)
   const id = createUniqueId()
   let input!: HTMLInputElement
@@ -102,10 +110,15 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
   }
 
   createPopup({
+    /** Reads the currently mounted color-picker surface. */
     element: () => picker,
+
+    /** Reads the current color-picker trigger used for positioning. */
     anchor: () => trigger,
     open,
     change: setOpen,
+
+    /** Selects the color picker's preferred logical starting placement. */
     placement: () => 'bottom-start',
   })
   closeWhenUnavailable(

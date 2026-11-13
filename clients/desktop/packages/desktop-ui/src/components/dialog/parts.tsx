@@ -38,6 +38,7 @@ interface DialogState {
   setDescription: (value: boolean) => void
 }
 
+/** Dialog state shared by its compound parts within the owning Solid tree. */
 const DialogContext = createContext<DialogState>()
 
 /**
@@ -54,7 +55,9 @@ export interface DialogProps extends ParentProps {
 
 /** Establishes local state and identity for one modal composition. */
 export function Dialog(props: DialogProps): JSX.Element {
+  /** Presence of the dialog description used to maintain its accessible relationship. */
   const [description, setDescription] = createSignal(false)
+  /** Live dialog visibility and change requests delegated to its value owner. */
   const [open, change] = createValue(
     () => props.open,
     () => props.defaultOpen ?? false,
@@ -123,6 +126,7 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
   ])
 
   let node!: HTMLDialogElement
+  /** Presence reader retaining the dialog surface through its exit transition. */
   const present = createPresentation(dialog.open, () => node)
   let releaseModal: (() => void) | undefined
   /** Releases this dialog's modal registration and clears the owned handle. */

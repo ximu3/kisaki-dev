@@ -43,8 +43,13 @@ export type GameBackupTreeRow =
   | readonly [path: string, type: 'directory']
   | readonly [path: string, type: 'file', sizeBytes: number, sha256: string]
 
+/** Lowercase SHA-256 value used by canonical backup content identities. */
 export const digest = v.pipe(text, v.regex(/^[0-9a-f]{64}$/))
 
+/**
+ * Logical content-tree path, including the empty root, checked before destination-filesystem
+ * interpretation.
+ */
 const archivePath = v.pipe(
   text,
   v.check(
@@ -57,6 +62,7 @@ const archivePath = v.pipe(
   ),
 )
 
+/** Directory identity or file identity with complete byte length and content digest. */
 const archiveEntry = v.variant('type', [
   v.strictObject({ path: archivePath, type: v.literal('directory') }),
   v.strictObject({

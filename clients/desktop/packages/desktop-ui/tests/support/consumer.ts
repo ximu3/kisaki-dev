@@ -11,6 +11,7 @@ import { ESLint } from 'eslint'
 import base from '@kisaki3/eslint-config/base'
 import { runPnpm } from '@kisaki3/tooling/process'
 
+/** UI package root whose completed tarball and styles are installed by consumer checks. */
 export const packageRoot = resolve(import.meta.dirname, '../..')
 
 /** A file-scoped isolated installation; every browser and server closes before the directory is removed. */

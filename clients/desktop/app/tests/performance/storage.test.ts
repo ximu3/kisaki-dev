@@ -14,12 +14,12 @@ test('all storage statements fit the fixed main-thread budget on the full repres
   profile,
 }, info) => {
   const runtime = buildDirectory(hostTarget())
+  const process = desktop.process()
   await desktop.firstWindow()
   const reportPath = join(profile, 'storage-performance.json')
   await expect
     .poll(
       async () => {
-        const process = desktop.process()
         if (process.exitCode !== null || process.signalCode !== null) {
           throw new Error(
             `Storage measurement process exited (${process.signalCode ?? process.exitCode})`,

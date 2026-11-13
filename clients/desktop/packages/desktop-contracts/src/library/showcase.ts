@@ -140,6 +140,9 @@ export function parseShowcaseQuery(input: unknown): ShowcaseQuery {
   return { kind, ...query, referenceLabels: labels }
 }
 
+/**
+ * Complete editable showcase-section query and presentation fields shared by creation and updates.
+ */
 const fields = {
   name: v.pipe(
     nonemptyText,

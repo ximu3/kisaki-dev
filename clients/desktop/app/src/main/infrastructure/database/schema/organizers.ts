@@ -18,6 +18,7 @@ import { attachments } from './attachments'
 import { entries } from './catalog'
 import { booleanValue, nonempty, idColumn, safeInteger, timestamps } from './constraints'
 
+/** Stores collection identity and either manual membership or one saved dynamic definition. */
 export const collections = sqliteTable(
   'collections',
   {
@@ -50,6 +51,9 @@ export const collections = sqliteTable(
   ],
 )
 
+/**
+ * Stores explicit members only for manual collections, with collection-owned ordering and notes.
+ */
 export const collectionMembers = sqliteTable(
   'collection_members',
   {
@@ -77,6 +81,7 @@ export const collectionMembers = sqliteTable(
   ],
 )
 
+/** Stores reusable tags with unique normalized identity keys and separate natural-order keys. */
 export const tags = sqliteTable(
   'tags',
   {
@@ -100,6 +105,9 @@ export const tags = sqliteTable(
   ],
 )
 
+/**
+ * Stores tag applications with relationship notes, spoiler flags and independent ordering sides.
+ */
 export const entryTags = sqliteTable(
   'entry_tags',
   {

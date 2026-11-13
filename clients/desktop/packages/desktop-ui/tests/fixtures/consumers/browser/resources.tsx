@@ -37,6 +37,7 @@ import type {} from './api.js'
 /** Synthetic chart coordinate with two plotted series values. */
 type Datum = { x: number; y: number; z: number }
 
+/** Accessible command labels used by the synthetic Markdown editing toolbar. */
 const labels: Record<MarkdownCommand, string> = {
   bold: 'Bold',
   italic: 'Italic',
@@ -52,13 +53,17 @@ const labels: Record<MarkdownCommand, string> = {
   redo: 'Redo',
 }
 
+/** Synthetic Markdown covering formatting, footnotes, tables and untrusted HTML and image URLs. */
 const initial =
   '# Sample\n\nSelect text and use the toolbar.\n\n- [x] Completed task\n- [ ] Pending task\n\nA footnote[^a].\n\n[^a]: Local reference.\n\n| A | B |\n| - | - |\n| 1 | 2 |\n\n<img src=x onerror=alert(1)>\n\n![Unresolved](https://example.invalid/untrusted.png)\n\n[External](https://example.com/)'
 
 /** Mounts packed Markdown, chart and drag capabilities against consumer-owned synthetic data. */
 export default function Resources(): JSX.Element {
+  /** Shared Markdown draft used to compare editing, preview and external updates. */
   const [text, setText] = createSignal(initial)
+  /** Reactive read-only state applied to the rich-content editor. */
   const [readOnly, setReadOnly] = createSignal(false)
+  /** Whether the fixture presents only the Markdown source editor. */
   const [sourceOnly, setSourceOnly] = createSignal(false)
   const insertReference: MarkdownToolbarAction = {
     id: 'reference',
@@ -69,14 +74,18 @@ export default function Resources(): JSX.Element {
     run: (editor) => editor.dispatch(editor.state.replaceSelection('Reference')),
   }
 
+  /** Mutable synthetic chart data used to verify live series updates. */
   const [data, setData] = createSignal([
     { x: 1, y: 2, z: 1 },
     { x: 2, y: 4, z: 3 },
     { x: 3, y: 3, z: 2 },
   ])
+  /** Synthetic legend selection used to verify chart visibility updates. */
   const [selected, setSelected] = createSignal(true)
 
+  /** Current drag target edge observed by the fixture. */
   const [edge, setEdge] = createSignal<Edge | null>(null)
+  /** Visible outcome text from the synthetic drag interaction. */
   const [feedback, setFeedback] = createSignal('')
   let source!: HTMLDivElement
   let handle!: HTMLButtonElement

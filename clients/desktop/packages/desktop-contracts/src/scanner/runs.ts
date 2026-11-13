@@ -141,16 +141,20 @@ export interface ScanRunsApi {
   onInvalidated(listener: () => void): Disposable
 }
 
+/** Validated absolute candidate or traversal-issue location in a scan report. */
 export const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
 
+/** Safe scan failure details retained in reports and history. */
 export const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
 
+/** Traversal completion, discovered candidate count and path-specific discovery issues. */
 export const discovery = v.strictObject({
   finished: v.boolean(),
   candidateCount: nonnegativeInteger,
   issues: v.array(v.strictObject({ path, error })),
 })
 
+/** Saved scan-run phases, including explicit interruption. */
 const statuses = ['active', 'completed', 'failed', 'cancelled', 'interrupted'] as const
 
 /** Parses an ingest result and requires its root to be a work. */
@@ -163,6 +167,10 @@ function parseWorkAddResult(input: unknown): IngestAddResult<WorkType> {
   return value as IngestAddResult<WorkType>
 }
 
+/**
+ * Candidate content-registration outcome that preserves skipped, unstarted and partial-failure
+ * meanings.
+ */
 const localContent = v.variant('status', [
   v.strictObject({ status: v.literal('included') }),
   v.strictObject({ status: v.literal('skipped') }),

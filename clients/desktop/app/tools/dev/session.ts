@@ -19,6 +19,7 @@ import { prepareGeneration } from './generation'
 import { watchPrograms } from './programs'
 import type { ProgramWatch } from './programs'
 
+/** Opt-in diagnostics for development generation adoption and resource shutdown. */
 const debug = debuglog('kisaki:development')
 
 /** Ready application process whose lifetime is supplied by the launch owner. */
@@ -135,6 +136,7 @@ export async function startDevelopmentSession(
   const controller = new AbortController()
   const signal = controller.signal
   let session: DevelopmentSession | undefined
+
   /** Forwards cancellation until the first application is ready. */
   const cancelPreparation = () => {
     controller.abort(options.signal?.reason)
@@ -162,7 +164,7 @@ export async function startDevelopmentSession(
     let child: DevelopmentApplication | undefined
     let current: DevelopmentBuild | undefined
     let generation = 0
-    let adopted: { compiler: ProgramWatch; revision: number } | undefined
+    let adoptedDigest: string | undefined
     let runtimeChanged = true
     let replacing = false
     let retainOutputs = false
@@ -229,17 +231,20 @@ export async function startDevelopmentSession(
       if (stopping || !owner || !batch) {
         return
       }
-      if (!runtimeChanged && adopted?.compiler === owner && adopted.revision === batch.revision) {
+      if (!runtimeChanged && adoptedDigest === batch.digest) {
         options.onState?.('ready')
         return
       }
 
       const candidate = join(sessionDirectory, `runtime-${++generation}`)
+
       /** Releases an unused runtime before any process takes ownership. */
       const discard = () => rm(candidate, { recursive: true, force: true })
+
       /** Checks the compiler completion token before handing its copied output to a process. */
       const isCurrent = () =>
         !stopping && owner === compilers && owner.current?.revision === batch.revision
+
       let prepared = false
 
       try {
@@ -287,7 +292,7 @@ export async function startDevelopmentSession(
         throw cause
       }
       current = { buildId, directory: candidate, processId: child.pid }
-      adopted = { compiler: owner, revision: batch.revision }
+      adoptedDigest = batch.digest
       runtimeChanged = false
 
       const launched = child

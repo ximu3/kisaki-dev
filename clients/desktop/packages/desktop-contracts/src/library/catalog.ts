@@ -33,8 +33,10 @@ export const entryTypes = Object.freeze([
   'organization',
 ] as const)
 
+/** The four entry kinds that support work-specific catalog and usage behavior. */
 export const workTypes = Object.freeze(['game', 'anime', 'comic', 'novel'] as const)
 
+/** The five real part kinds, each owned by its corresponding work medium. */
 export const partTypes = Object.freeze([
   'novelVolume',
   'comicVolume',
@@ -379,37 +381,52 @@ export type EntryDetails<T extends EntryType = EntryType> = {
       : object)
 }[T]
 
+/** Stable local entry identity qualified by one of the seven entry kinds. */
 export const entryRefSchema = v.strictObject({ type: v.picklist(entryTypes), id })
 
+/** Stable local entry reference restricted to the four work kinds. */
 export const workRefSchema = v.strictObject({ type: v.picklist(workTypes), id })
 
+/** Stable local part identity qualified by its concrete part kind. */
 export const partRefSchema = v.strictObject({ type: v.picklist(partTypes), id })
 
+/** Known civil-date components validated through the shared calendar contract. */
 export const partialDateSchema = v.pipe(v.unknown(), v.transform(parsePartialDate))
 
+/** Complete civil-date values validated without timestamp or timezone conversion. */
 export const calendarDateSchema = v.pipe(v.unknown(), v.transform(parseCalendarDate))
 
+/** Canonical open language identifier used by catalog facts and source preferences. */
 export const languageSchema = v.pipe(
   nonemptyText,
   v.transform((value) => parseExternalValue(normalizeLocale, value, 'Invalid language tag')),
 )
 
+/** Exact external source coordinates, preserving the complete source item identity. */
 export const identitySchema = v.strictObject({
   source: v.pipe(nonemptyText, v.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)),
   sourceId: nonemptyText,
 })
 
+/** External source bindings that reject repeated source-coordinate pairs. */
 export const identitiesSchema = v.pipe(
   v.array(identitySchema),
   v.check((items) => unique(items, identityKey)),
 )
 
+/** A descriptive link with nonblank label and target text. */
 export const externalLinkSchema = v.strictObject({ name: nonemptyText, url: nonemptyText })
 
+/** Ordered aliases shared by entries and parts; every item retains nonblank source text. */
+export const aliasesSchema = v.array(nonemptyText)
+
+/** The shared finite gender vocabulary for character and person facts. */
 export const genderSchema = v.picklist(['male', 'female', 'nonBinary', 'genderless', 'other'])
 
+/** Current personal work status, separate from completion history. */
 export const statusSchema = v.picklist(['planned', 'active', 'onHold'])
 
+/** Publication-progress vocabulary used by serial work catalog facts. */
 export const releaseStatusSchema = v.picklist([
   'planned',
   'ongoing',
@@ -418,18 +435,22 @@ export const releaseStatusSchema = v.picklist([
   'cancelled',
 ])
 
+/** A definite nonnegative character measurement or complete nonblank source wording. */
 export const measureSchema = v.variant('kind', [
   v.strictObject({ kind: v.literal('number'), value: nonnegativeNumber }),
   v.strictObject({ kind: v.literal('text'), value: nonemptyText }),
 ])
 
+/** Independent personal rating and favorite fields shared by every entry kind. */
 export const evaluationEntries = { rating: v.nullable(rating), favorite: v.boolean() }
 
+/** Current personal work status and additional duration, independent of recorded activity. */
 export const recordEntries = {
   status: v.nullable(statusSchema),
   additionalDurationMs: nonnegativeInteger,
 }
 
+/** One completion fact with an optional complete date and blank-note normalization. */
 export const completionFieldsSchema = v.strictObject({
   completedDate: v.nullable(calendarDateSchema),
   note: v.pipe(
@@ -438,39 +459,48 @@ export const completionFieldsSchema = v.strictObject({
   ),
 })
 
+/** Saved tag-application identity, note and spoiler attributes. */
 export const entryTagEntries = { tagId: id, note: v.nullable(text), isSpoiler: v.boolean() }
 
+/** Saved collection-membership identity and its independent note. */
 export const entryCollectionEntries = { collectionId: id, note: v.nullable(text) }
 
+/** Explicit tag-application input with optional relationship attributes. */
 export const entryTagInputSchema = v.strictObject({
   tagId: id,
   ...optionalFields({ note: v.nullable(text), isSpoiler: v.boolean() }),
 })
 
+/** Explicit collection-membership input with an optional note. */
 export const entryCollectionInputSchema = v.strictObject({
   collectionId: id,
   note: v.exactOptional(v.nullable(text)),
 })
 
+/** Saved tag applications with one row per tag identity. */
 export const entryTagsSchema = v.pipe(
   v.array(v.strictObject(entryTagEntries)),
   v.check((items) => unique(items, (item) => item.tagId)),
 )
 
+/** Saved collection memberships with one row per collection identity. */
 export const entryCollectionsSchema = v.pipe(
   v.array(v.strictObject(entryCollectionEntries)),
   v.check((items) => unique(items, (item) => item.collectionId)),
 )
 
+/** Optional partial catalog date, retaining null as a distinct unset value. */
 const nullableDate = v.nullable(partialDateSchema)
 
+/** Optional declared count whose known value is a nonnegative safe integer. */
 const nullableCount = v.nullable(nonnegativeInteger)
 
+/** Descriptive facts and identity bindings shared by all entry creation and edit contracts. */
 export const entryCommonEntries = {
   name: nonemptyText,
   originalName: v.nullable(text),
   sortName: v.nullable(text),
-  aliases: v.array(nonemptyText),
+  aliases: aliasesSchema,
 
   description: v.nullable(text),
   primaryImageId: v.nullable(id),
@@ -482,6 +512,7 @@ export const entryCommonEntries = {
   addedDate: nullableDate,
 }
 
+/** Catalog facts shared by the four work media, separate from personal records. */
 const workEntries = {
   releaseDate: nullableDate,
   originalLanguages: v.pipe(
@@ -493,11 +524,13 @@ const workEntries = {
   titleLogoId: v.nullable(id),
 }
 
+/** Publication status and end date for serial media. */
 const serialEntries = {
   releaseStatus: v.nullable(releaseStatusSchema),
   releaseEndDate: nullableDate,
 }
 
+/** Catalog field vocabulary and validators owned by each concrete entry kind. */
 export const entrySpecificEntries = {
   game: { ...workEntries, iconImageId: v.nullable(id) },
 
@@ -621,8 +654,13 @@ export function membershipSchema<T extends v.GenericSchema>(
   ])
 }
 
+/** Whole replacement or explicit tag-membership edits with conflict checks by tag identity. */
 export const entryTagChangeSchema = membershipSchema(entryTagInputSchema, (item) => item.tagId)
 
+/**
+ * Whole replacement or explicit collection-membership edits with conflict checks by collection
+ * identity.
+ */
 export const entryCollectionChangeSchema = membershipSchema(
   entryCollectionInputSchema,
   (item) => item.collectionId,

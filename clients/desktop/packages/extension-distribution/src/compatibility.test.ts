@@ -5,6 +5,7 @@ import { getCompatibilityIssues, targetForPlatform } from './compatibility'
 import type { CompatibilityEnvironment } from './compatibility'
 import { artifact } from '../tests/support/fixtures'
 
+/** Fixed synthetic desktop capabilities used to compare declared compatibility requirements. */
 const host: CompatibilityEnvironment = {
   target: 'windows-x64',
   apiVersion: '1.2.0',

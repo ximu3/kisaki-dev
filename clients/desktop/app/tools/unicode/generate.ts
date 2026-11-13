@@ -96,6 +96,7 @@ async function generate(directory: string): Promise<void> {
   await writeFile(fixture, gzipSync(sources[3]!, { level: 9 }))
 }
 
+/** Explicit local input-directory option for the pinned Unicode data generation command. */
 const { values } = parseArgs({ options: { input: { type: 'string' } } })
 if (!values.input) {
   throw new Error('Provide --input with the directory containing the fixed Unicode source files')

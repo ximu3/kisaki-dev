@@ -10,29 +10,36 @@ import { loadNative } from '#native'
 import { verifyStorage } from './storage'
 import { measureStorage } from './storage/measurement'
 
+/** Opt-in diagnostics for the fixture window and utility-process lifetime. */
 const debug = debuglog('kisaki:fixture')
 
 /** Reads a named --key=value argument from the fixture command line. */
 const argument = (name: string) =>
   process.argv.find((value) => value.startsWith(`--${name}=`))?.slice(name.length + 3)
 
+/** Explicit isolated data directory supplied by the test or development-session owner. */
 const profile = argument('profile')
 if (!profile || !isAbsolute(profile)) {
   throw new Error('The engineering fixture requires an explicit isolated profile')
 }
 
+/** The requested fixture window entry, defaulting to the main window. */
 const kind = argument('window') ?? 'main'
 if (!['main', 'reader', 'player', 'game-panel'].includes(kind)) {
   throw new Error('Unknown fixture entry')
 }
 
+/** The current compiled runtime root in development or inside the packaged application. */
 const runtime = app.isPackaged
   ? app.getAppPath()
   : resolve(dirname(fileURLToPath(import.meta.url)), '..')
+
+/** External runtime resources selected from the actual deployment layout. */
 const resources = app.isPackaged
   ? join(process.resourcesPath, 'resources')
   : join(runtime, 'resources')
 
+/** Browser state kept below the test-owned profile and separate from library data. */
 const browser = join(profile, 'browser')
 mkdirSync(browser, { recursive: true })
 app.setPath('userData', profile)

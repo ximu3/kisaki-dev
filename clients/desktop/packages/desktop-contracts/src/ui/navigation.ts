@@ -122,6 +122,7 @@ export type NativeViewTarget =
   | { readonly type: 'systemIntegration' | 'updates' | 'about' }
   | { readonly type: 'onboarding'; readonly mode?: 'firstUse' | 'update' | 'manual' }
 
+/** Per-entry navigation selections that retain concrete work and part kinds. */
 export const entrySelectionEntries = {
   game: optionalFields({ launchConfigId: id }),
   anime: optionalFields({ episodeId: id, extraId: id, fileId: id }),

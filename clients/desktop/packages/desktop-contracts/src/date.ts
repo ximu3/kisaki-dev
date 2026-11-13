@@ -47,8 +47,10 @@ export interface EraYear {
   readonly year: string
 }
 
+/** Lowest supported astronomical year represented exactly for calendar arithmetic. */
 const minYear = BigInt(Number.MIN_SAFE_INTEGER)
 
+/** Highest supported astronomical year represented exactly for calendar arithmetic. */
 const maxYear = BigInt(Number.MAX_SAFE_INTEGER)
 
 /** Rejects an invalid Gregorian date with the shared InvalidInput classification. */

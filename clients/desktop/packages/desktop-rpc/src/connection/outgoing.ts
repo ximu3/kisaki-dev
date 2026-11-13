@@ -63,6 +63,8 @@ export class OutgoingCalls {
         method,
         resolve,
         reject,
+
+        /** Detaches this pending request's abort listener when its lifetime ends. */
         release: () => signal?.removeEventListener('abort', cancel),
       })
       signal?.addEventListener('abort', cancel, { once: true })

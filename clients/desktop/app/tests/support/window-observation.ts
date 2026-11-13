@@ -6,6 +6,7 @@
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 
+/** Promise-based process execution used by host-native window observation commands. */
 const execute = promisify(execFile)
 
 /**

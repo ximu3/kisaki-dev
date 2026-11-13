@@ -3,6 +3,7 @@
 import data from './unicode.generated.json' with { type: 'json' }
 import { normalizeName } from './normalization'
 
+/** Fixed Unicode decimal values indexed by scalar, independent of the host's Unicode tables. */
 const digits: Readonly<Record<number, number>> = data.digits
 
 /** Appends an unsigned 32-bit count in lexicographically comparable byte order. */

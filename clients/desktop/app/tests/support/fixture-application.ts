@@ -5,6 +5,7 @@ import { debuglog } from 'node:util'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 import type { DevelopmentApplication, DevelopmentLaunchOptions } from '../../tools/dev/session'
 
+/** Opt-in diagnostics for fixture startup, readiness and confirmed process closure. */
 const debug = debuglog('kisaki:fixture-launch')
 
 /**

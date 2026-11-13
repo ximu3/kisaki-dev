@@ -12,8 +12,8 @@ import type Database from 'better-sqlite3'
 import { initializeDatabase } from '../../../../../../src/main/infrastructure/database'
 import { entries as entryTable } from '../../../../../../src/main/infrastructure/database/schema'
 import { getPreferenceDefaults } from '../../../../../../src/main/features/preferences/defaults'
-import { fixtureId, prepareWorkload, workload } from './fixture'
-import type { FixtureEntry } from './fixture'
+import { fixtureId, prepareWorkload, workload } from './workload'
+import type { FixtureEntry } from './workload'
 import manifest from '../../../../../../package.json' with { type: 'json' }
 
 /** One already validated statement, with complete SQL and plan retained as reproducible evidence. */
@@ -309,6 +309,7 @@ export async function measureStorage(profile: string, resources: string) {
 
     const results: QueryMeasurement[] = []
     const writeSamplesMs: number[] = []
+    /** Measures a durable short transaction that restores the fixture's original favorite state. */
     const write = storage.db.$client.transaction(() => {
       connection
         .prepare('update entry_evaluations set favorite=1-favorite where entry_id=?')

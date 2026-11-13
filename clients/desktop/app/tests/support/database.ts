@@ -2,12 +2,12 @@
 
 import { join } from 'node:path'
 import { entryTypes } from '@kisaki3/desktop-contracts/library'
-import type { DatabaseOptions, Storage } from '../../../src/main/infrastructure/database'
-import * as tables from '../../../src/main/infrastructure/database/schema'
-import { ready } from '../../../src/main/infrastructure/database/codecs/json'
-import { getPreferenceDefaults } from '../../../src/main/features/preferences/defaults'
-import { appRoot } from '../../../tools/lib/paths'
-import { hostTarget } from '../../../tools/lib/targets'
+import type { DatabaseOptions, Storage } from '../../src/main/infrastructure/database'
+import * as tables from '../../src/main/infrastructure/database/schema'
+import { ready } from '../../src/main/infrastructure/database/codecs/json'
+import { getPreferenceDefaults } from '../../src/main/features/preferences/defaults'
+import { appRoot } from '../../tools/lib/paths'
+import { hostTarget } from '../../tools/lib/targets'
 
 /** Uses the actually prepared resources and a caller-owned disposable database location. */
 export function storageOptions(

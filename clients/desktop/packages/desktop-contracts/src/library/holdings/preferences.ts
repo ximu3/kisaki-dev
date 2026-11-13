@@ -157,6 +157,7 @@ export interface FilePlaybackChoicesApi {
   ): Promise<void>
 }
 
+/** Embedded or external track identity with a nonnegative source track index. */
 const track = v.variant('type', [
   v.strictObject({ type: v.literal('embedded'), index: nonnegativeInteger }),
   v.strictObject({ type: v.literal('external'), path, index: nonnegativeInteger }),

@@ -28,6 +28,7 @@ import { parseScanConfigCreate } from './scanner/configs'
 import { parseShowcaseFields } from './library/showcase'
 import { parseApplicationVersion } from './app'
 
+/** Native recommendation groups with independently owned preparation and commit behavior. */
 export const onboardingGroups = Object.freeze([
   'preferences',
   'extensions',
@@ -232,16 +233,19 @@ export interface OnboardingApi {
   onInvalidated(listener: () => void): Disposable
 }
 
+/** Validated release version retained by onboarding presentation history. */
 const version = v.pipe(
   v.unknown(),
   v.transform((value) => parseExternalValue(parseVersion, value, 'Invalid onboarding version')),
 )
 
+/** Validated extension identity used by recommendations and created-resource receipts. */
 const extensionId = v.pipe(
   v.unknown(),
   v.transform((value) => parseExternalValue(parseId, value, 'Invalid extension identity')),
 )
 
+/** Stable identity of a resource actually created or adopted by an onboarding action. */
 const resource = v.variant('type', [
   v.strictObject({ type: v.literal('extension'), extensionId }),
   v.strictObject({ type: v.literal('metadataProfile'), profileId: id }),
@@ -249,18 +253,22 @@ const resource = v.variant('type', [
   v.strictObject({ type: v.literal('showcaseSection'), sectionId: id }),
 ])
 
+/** Distinct resource receipts retained with an applied recommendation. */
 const resources = v.pipe(
   v.array(resource),
   v.check((values) => unique(values, (value) => JSON.stringify(value))),
 )
 
+/** Explicit skipped or applied recommendation outcome with its handling time. */
 const handled = v.variant('outcome', [
   v.strictObject({ outcome: v.literal('skipped'), handledAt: timestamp }),
   v.strictObject({ outcome: v.literal('applied'), handledAt: timestamp, resources }),
 ])
 
+/** Nullable baseline for a recommendation's previously recorded handling state. */
 const expectedHandled = v.nullable(handled)
 
+/** Failure stage and safe error details from installation, commit or runtime adoption. */
 const issue = v.strictObject({
   stage: v.picklist(['installation', 'commit', 'runtime']),
   error: v.pipe(v.unknown(), v.transform(parseErrorSummary)),
@@ -364,6 +372,7 @@ function parseProfileInput(input: unknown): OnboardingInputMap['metadataProfiles
   return { ...value, isDefault: value.isDefault }
 }
 
+/** Recommendation-group input parsers delegated to their actual capability owners. */
 const inputParsers = {
   preferences: parsePreferenceInput,
   extensions: parseExtensionInput,
@@ -381,6 +390,7 @@ const inputParsers = {
 export function parseOnboardingApplyInput(input: unknown): OnboardingApplyInput {
   const record = parseRecord(input)
   const group = parseValue(v.picklist(onboardingGroups), record.group)
+  /** Input parser owned by the explicitly selected onboarding recommendation group. */
   const parseInput: (input: unknown) => OnboardingInputMap[OnboardingGroup] = inputParsers[group]
 
   const item = v.strictObject({

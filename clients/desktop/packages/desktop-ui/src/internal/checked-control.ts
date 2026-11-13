@@ -19,6 +19,7 @@ export interface CheckedValueProps {
  * owner.
  */
 export function bindCheckedControl(props: CheckedValueProps, element: Accessor<HTMLInputElement>) {
+  /** Live checked state and owner-directed updates shared by native boolean controls. */
   const [checked, change] = createValue(
     () => props.checked,
     () => props.defaultChecked ?? false,

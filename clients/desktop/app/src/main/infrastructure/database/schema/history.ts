@@ -22,6 +22,9 @@ function runTimes() {
   }
 }
 
+/**
+ * Stores generic task lifecycle, input, result and error history independently of scanner reports.
+ */
 export const taskRuns = sqliteTable(
   'task_runs',
   {
@@ -44,6 +47,10 @@ export const taskRuns = sqliteTable(
   ],
 )
 
+/**
+ * Stores scan coverage, configuration snapshots and complete reports after the source
+ * configuration changes.
+ */
 export const scanRuns = sqliteTable(
   'scan_runs',
   {

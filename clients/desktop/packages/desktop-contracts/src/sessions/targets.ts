@@ -48,13 +48,16 @@ export interface FileSwitchInput<P> {
   readonly position?: P
 }
 
+/** Explicit file-local playback position or the transient start instruction. */
 const playbackInput = v.union([v.literal('start'), nonnegativeNumber])
 
+/** Persistent source location or the transient start instruction for opening content. */
 const readingInput = v.union([
   v.literal('start'),
   v.pipe(v.unknown(), v.transform(parseReadingPosition)),
 ])
 
+/** Per-medium launch, part, file and position selections accepted by session opening. */
 export const openSelectionEntries = {
   game: optionalFields({ launchConfigId: id }),
   anime: optionalFields({ episodeId: id, extraId: id, fileId: id, position: playbackInput }),

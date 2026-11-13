@@ -14,7 +14,7 @@ export function jsonLiteral(value: unknown) {
   return sql.raw(`'${JSON.stringify(parseJsonValue(value)).replaceAll("'", "''")}'`)
 }
 
-/** Reads one JSON text value without accepting duplicate keys or lossy numbers. */
+/** Reads JSON text with duplicate-key and non-finite number rejection. */
 export function readJsonText(input: unknown): unknown {
   if (typeof input !== 'string') {
     throw new DesktopError('InvalidInput', 'Expected stored JSON text')

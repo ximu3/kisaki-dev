@@ -19,7 +19,10 @@ import type { ArchiveLimits } from '../../../src/main/infrastructure/files'
 import { appRoot } from '../../../tools/lib/paths'
 import { hostTarget } from '../../../tools/lib/targets'
 
+/** File primitives loaded from the prepared binding for the actual host target. */
 const native = loadNative(join(appRoot, 'out/native', hostTarget(), 'kisaki-native.node')).files
+
+/** Fixed archive budgets that keep these filesystem integration cases bounded. */
 const limits: ArchiveLimits = {
   entries: 10,
   namesBytes: 1024,
@@ -27,6 +30,8 @@ const limits: ArchiveLimits = {
   totalBytes: 2 * 1024 * 1024,
   archiveBytes: 2 * 1024 * 1024,
 }
+
+/** Disposable filesystem root removed after the current case releases its streams. */
 let directory: string
 
 beforeEach(async () => {

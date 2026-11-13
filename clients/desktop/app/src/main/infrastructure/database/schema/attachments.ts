@@ -4,6 +4,7 @@ import { sql } from 'drizzle-orm'
 import { primaryKey, check, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { idColumn, safeInteger, nonempty } from './constraints'
 
+/** Stores immutable attachment identities, byte digests and optional image dimensions. */
 export const attachments = sqliteTable(
   'attachments',
   {

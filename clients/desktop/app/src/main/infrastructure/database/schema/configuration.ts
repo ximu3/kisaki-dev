@@ -38,6 +38,7 @@ function parseProfileDefinition(input: unknown): MetadataProfileDefinition {
   throw new DesktopError('InvalidInput', 'Invalid metadata profile definition')
 }
 
+/** Stores source-adoption definitions and the optional default profile for each entry type. */
 export const metadataProfiles = sqliteTable(
   'metadata_profiles',
   {
@@ -64,6 +65,7 @@ export const metadataProfiles = sqliteTable(
   ],
 )
 
+/** Stores work-specific scan roots and definitions bound to a matching metadata-profile type. */
 export const scanConfigs = sqliteTable(
   'scan_configs',
   {
@@ -95,6 +97,9 @@ export const scanConfigs = sqliteTable(
   ],
 )
 
+/**
+ * Stores independently ordered showcase sections with complete queries and presentation choices.
+ */
 export const showcaseSections = sqliteTable(
   'showcase_sections',
   {

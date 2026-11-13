@@ -60,6 +60,7 @@ export function DatePicker(props: PickerProps): JSX.Element {
     }
     return date
   }
+  /** Locale-sensitive Gregorian label formats using UTC calendar interpretation. */
   const formats = createMemo(() => ({
     month: new Intl.DateTimeFormat(props.locale, {
       calendar: 'gregory',
@@ -82,12 +83,15 @@ export function DatePicker(props: PickerProps): JSX.Element {
     shortWeekday: new Intl.DateTimeFormat(props.locale, { weekday: 'short', timeZone: 'UTC' }),
   }))
 
+  /** Displayed selection retained while the calendar finishes closing. */
   const selected = displayedWhileOpen(
     () => props.open,
     () => props.value,
   )
   const initial = clamp(parseDate(props.value) ? props.value : todayValue())
+  /** Keyboard-active day within the current calendar view. */
   const [active, setActive] = createSignal(initial)
+  /** Displayed calendar month, separate from the selected date. */
   const [month, setMonth] = createSignal(`${initial.slice(0, 7)}-01`)
   /** Returns the year represented by the current displayed month. */
   const viewYear = () => Number(month().slice(0, 4))
@@ -97,12 +101,14 @@ export function DatePicker(props: PickerProps): JSX.Element {
   const minYear = () => Number(props.min?.slice(0, 4) ?? 1)
   /** Returns the last year offered by the year selector. */
   const maxYear = () => Number(props.max?.slice(0, 4) ?? 9999)
+  /** Locale-derived order of year and month navigation controls. */
   const periodOrder = createMemo(() =>
     formats()
       .month.formatToParts(parseDate(month()))
       .map((part) => part.type)
       .filter((type) => type === 'year' || type === 'month'),
   )
+  /** Day grid for the displayed month and the requested week-start convention. */
   const days = createMemo(() => calendarDays(month(), props.weekStartsOn ?? 1))
   /** Builds reference dates in week-start order for localized weekday headers. */
   const weekdays = () =>
@@ -126,14 +132,21 @@ export function DatePicker(props: PickerProps): JSX.Element {
     )
   }
   createPopup({
+    /** Reads the currently mounted calendar surface. */
     element: () => calendar,
     anchor: props.anchor,
+
+    /** Reads the calendar visibility requested by its owner. */
     open: () => props.open,
+
+    /** Forwards a dismissal request through the calendar owner's close operation. */
     change: (open) => {
       if (!open) {
         props.close()
       }
     },
+
+    /** Selects the calendar's preferred logical ending placement. */
     placement: () => 'bottom-end',
   })
   onMount(() => {

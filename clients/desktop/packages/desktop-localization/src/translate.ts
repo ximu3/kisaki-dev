@@ -20,6 +20,10 @@ import {
   validateMessageArguments,
 } from './messages'
 
+/**
+ * Indexed English fallback text and its derived argument contracts, created from the same message
+ * source.
+ */
 const { messages: source, contracts } = indexMessageSource(englishMessages)
 
 /**

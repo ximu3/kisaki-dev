@@ -116,6 +116,7 @@ export interface DeeplinkApi {
   ): Promise<Registration<{ readonly extensionId: string }>>
 }
 
+/** Native page families that may be addressed through public deeplinks. */
 const publicTypes = [
   'library',
   'entries',
@@ -130,8 +131,10 @@ const publicTypes = [
   'extensions',
 ]
 
+/** Application protocol schemes accepted by native link parsing. */
 const schemeSchema = v.picklist(['kisaki', 'kisaki-dev'])
 
+/** Validated distribution identity used by extension-targeted links. */
 const extensionIdentity = v.pipe(
   v.unknown(),
   v.transform((value) => parseExternalValue(parseId, value, 'Invalid extension identity')),

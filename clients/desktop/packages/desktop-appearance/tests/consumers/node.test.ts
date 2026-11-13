@@ -8,6 +8,7 @@ import { promisify } from 'node:util'
 import { runPnpm } from '@kisaki3/tooling/process'
 import { consumerTest, lintConsumer } from '../support/consumer'
 
+/** Isolated Node fixtures that install and exercise the actual appearance tarball. */
 const test = consumerTest('node')
 
 test('NodeNext declarations and pure entrypoints work without browser dependencies', async ({

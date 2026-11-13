@@ -45,7 +45,9 @@ export type ChartTooltipProps = VisTooltipProps
 export function ChartTooltip(props: ChartTooltipProps): JSX.Element {
   const [local, rest] = splitProps(props, ['attributes', 'triggers'])
   const id = createUniqueId()
+  /** Stable tooltip viewport renderer shared by the active trigger templates. */
   const render = createTooltipViewport()
+  /** Reactive selector-to-template bindings that reuse the same tooltip viewport. */
   const triggers = createMemo(() => {
     const bound: NonNullable<ChartTooltipProps['triggers']> = {}
     for (const [selector, template] of Object.entries(local.triggers ?? {})) {

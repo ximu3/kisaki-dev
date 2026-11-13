@@ -5,9 +5,11 @@ import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { createTranslator, validateExtensionUiTranslationDefinition } from './translate'
 
 test('missing leaves use English plural rules while present leaves use the explicit locale', () => {
+  /** Chinese-locale translator exercising fallback to the canonical English source. */
   const fallback = createTranslator('zh-CN')
   expect(fallback('library.selection', { count: 1 })).toBe('1 item selected')
 
+  /** Partial Chinese catalog used to verify locale-specific plural formatting. */
   const translated = createTranslator('zh-CN', {
     library: { selection: '{count, plural, one {one} other {other}}' },
   })
@@ -15,6 +17,7 @@ test('missing leaves use English plural rules while present leaves use the expli
 })
 
 test('an empty translated leaf is present and source arguments remain required after omission', () => {
+  /** Translator with an explicitly empty supplied message for fallback validation. */
   const t = createTranslator('zh-CN', { library: { selection: '' } })
   expect(t('library.selection', { count: 2 })).toBe('')
   for (const args of [
@@ -31,10 +34,12 @@ test('an empty translated leaf is present and source arguments remain required a
 
 test('same-locale translators and later catalog changes cannot share stale message caches', () => {
   const catalog = { actions: { save: '保存' } }
+  /** Translator snapshot created before the source catalog is modified. */
   const first = createTranslator('zh-CN', catalog)
   expect(first('actions.save')).toBe('保存')
 
   catalog.actions.save = '存储'
+  /** Independent translator snapshot created after the source catalog changes. */
   const second = createTranslator('zh-CN', catalog)
 
   expect(second('actions.save')).toBe('存储')
@@ -42,6 +47,7 @@ test('same-locale translators and later catalog changes cannot share stale messa
 })
 
 test('markup and inserted ICU-looking text remain literal text', () => {
+  /** Translator whose message retains literal markup-like text and interpolated braces. */
   const t = createTranslator('en', { library: { completion: { recorded: '<b>{name}</b>' } } })
   expect(t('library.completion.recorded', { name: '{count, number}' })).toBe(
     '<b>{count, number}</b>',

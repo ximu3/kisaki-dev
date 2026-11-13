@@ -2,9 +2,16 @@
 
 import data from './unicode.generated.json' with { type: 'json' }
 
+/** Fixed canonical and compatibility decompositions used before canonical ordering. */
 const decomposition: Readonly<Record<number, readonly number[]>> = data.decomposition
+
+/** Fixed canonical combining classes; absent scalars are starters. */
 const combining: Readonly<Record<number, number>> = data.combining
+
+/** Default full case-fold mappings from the pinned Unicode C and F records. */
 const folding: Readonly<Record<number, readonly number[]>> = data.folding
+
+/** Allowed canonical pair compositions indexed by a collision-free pair of Unicode scalars. */
 const composition = new Map(
   data.composition.map(([first, second, result]) => [first! * 0x110000 + second!, result!]),
 )

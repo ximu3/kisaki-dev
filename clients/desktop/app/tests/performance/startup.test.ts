@@ -14,7 +14,7 @@ import { buildDirectory } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
-// Fixed engineering carrier with one persistent storage fixture entry.
+/** Fixed twenty-process sampling count for the carrier's single-entry storage profile. */
 const sampleCount = 20
 
 test('measures twenty fresh processes and confirms all observed child processes exit', async ({

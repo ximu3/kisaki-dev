@@ -67,6 +67,10 @@ export async function prepareDevelopmentWorkspace(): Promise<{
     for (const directory of ['clients', 'packages']) {
       await cp(join(repositoryRoot, directory), join(root, directory), {
         recursive: true,
+        /**
+         * Copies maintained inputs while excluding dependency, cache and generated-output
+         * directories.
+         */
         filter(path) {
           return !relative(join(repositoryRoot, directory), path)
             .split(/[\\/]/)
@@ -96,6 +100,7 @@ export async function prepareDevelopmentWorkspace(): Promise<{
 
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 
+/** The source value emitted by this synthetic package's build. */
 const value = JSON.parse(await readFile(new URL('./src/value.json', import.meta.url), 'utf8'))
 
 await mkdir(new URL('./dist/', import.meta.url), { recursive: true })
@@ -154,7 +159,9 @@ await writeFile(new URL('./dist/index.js', import.meta.url), 'export const label
       )
     }
 
+    /** Resolves the already installed Electron input from the original desktop package. */
     const originalRequire = createRequire(join(appRoot, 'package.json'))
+    /** Resolves dependencies from the isolated copied desktop package. */
     const fixtureRequire = createRequire(join(app, 'package.json'))
     const originalElectron = dirname(originalRequire.resolve('electron/package.json'))
     const fixtureElectron = dirname(fixtureRequire.resolve('electron/package.json'))

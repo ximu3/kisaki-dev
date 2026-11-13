@@ -127,6 +127,9 @@ export function createPopup(options: {
             shift({ padding: 8 }),
             size({
               padding: 8,
+              /**
+               * Applies available positioning bounds only to the currently active popup element.
+               */
               apply({ availableWidth, availableHeight, rects }) {
                 if (active) {
                   node.style.setProperty('--popup-width', `${rects.reference.width}px`)
@@ -155,6 +158,7 @@ export function createPopup(options: {
           }
         })
       }
+      /** Disposer for live position tracking of the active reference and popup pair. */
       const stop = autoUpdate(reference, node, update)
       onCleanup(() => {
         active = false

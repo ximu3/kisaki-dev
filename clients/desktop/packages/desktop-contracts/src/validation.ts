@@ -4,34 +4,46 @@ import * as v from 'valibot'
 import { DesktopError } from './errors'
 import { DistributionError } from '@kisaki3/extension-distribution/errors'
 
+/** Unicode scalar text retained without trimming or rejecting legitimate empty content. */
 export const text = v.pipe(
   v.string(),
   v.check((value) => !/[\uD800-\uDFFF]/u.test(value), 'Invalid Unicode'),
 )
 
+/**
+ * Scalar text containing at least one non-whitespace character, preserving its original wording.
+ */
 export const nonemptyText = v.pipe(
   text,
   v.check((value) => value.trim().length > 0, 'Empty text'),
 )
 
+/** Nonblank opaque identity text; domain-specific identities may impose additional format rules. */
 export const id = nonemptyText
 
+/** Integers represented exactly within JavaScript's safe range. */
 export const integer = v.pipe(v.number(), v.safeInteger())
 
+/** Nonnegative safe integers used for counts, indexes and ordered positions. */
 export const nonnegativeInteger = v.pipe(integer, v.minValue(0))
 
+/** Strictly positive safe integers used for required counts and limits. */
 export const positiveInteger = v.pipe(integer, v.minValue(1))
 
+/** Finite nonnegative quantities that may retain fractional values. */
 export const nonnegativeNumber = v.pipe(v.number(), v.finite(), v.minValue(0))
 
+/** UTC milliseconds within the range supported by JavaScript Date. */
 export const timestamp = v.pipe(
   integer,
   v.minValue(-8_640_000_000_000_000),
   v.maxValue(8_640_000_000_000_000),
 )
 
+/** Personal rating in integer points from zero through one hundred. */
 export const rating = v.pipe(integer, v.minValue(0), v.maxValue(100))
 
+/** Zero-based interval offset and positive limit capped at two hundred results. */
 export const intervalEntries = {
   offset: nonnegativeInteger,
   limit: v.pipe(positiveInteger, v.maxValue(200)),

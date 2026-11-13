@@ -10,8 +10,10 @@ import { copyFile, mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promis
 import { dirname, join, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
 
+/** Installed dependency-cruiser entry used to inspect the synthetic import graph. */
 const executable = resolve('node_modules/dependency-cruiser/bin/dependency-cruiser.mjs')
 
+/** Synthetic imports exercising project, runtime and public-package dependency boundaries. */
 const cases: {
   name: string
   from: string
@@ -112,7 +114,10 @@ const cases: {
   },
 ]
 
+/** Isolated source root containing only the dependency-boundary test cases. */
 let directory: string
+
+/** Dependency-cruiser graph and rule violations collected for the current suite. */
 let result: {
   modules: { source: string }[]
   summary: { violations: { from: string; rule: { name: string } }[] }

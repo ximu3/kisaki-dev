@@ -7,6 +7,7 @@ import { chromium } from '@playwright/test'
 import { runPnpm } from '@kisaki3/tooling/process'
 import { consumerTest, lintConsumer } from '../support/consumer'
 
+/** Packed-contract consumer fixtures owning the browser and its built test site. */
 const test = consumerTest('browser')
   .extend('browser', { scope: 'file' }, async ({}, { onCleanup }) => {
     const browser = await chromium.launch()

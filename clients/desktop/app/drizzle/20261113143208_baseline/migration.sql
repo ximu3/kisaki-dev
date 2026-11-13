@@ -236,7 +236,7 @@ CREATE TABLE `anime_watch_activity` (
 	CONSTRAINT "anime_watch_activity_start" CHECK("started_at" is null or (typeof("started_at") = 'integer' and "started_at" between -9007199254740991 and 9007199254740991)),
 	CONSTRAINT "anime_watch_activity_end" CHECK("ended_at" is null or (typeof("ended_at") = 'integer' and "ended_at" between -9007199254740991 and 9007199254740991)),
 	CONSTRAINT "anime_watch_activity_duration" CHECK("duration_ms" is null or (typeof("duration_ms") = 'integer' and "duration_ms" between 0 and 9007199254740991)),
-	CONSTRAINT "anime_watch_activity_interval" CHECK("ended_at" >= "started_at" and "duration_ms" <= "ended_at" - "started_at"),
+	CONSTRAINT "anime_watch_activity_interval" CHECK("ended_at" > "started_at" and "duration_ms" <= "ended_at" - "started_at"),
 	CONSTRAINT "anime_watch_activity_part" CHECK("episode_id" is null or "extra_id" is null)
 );
 --> statement-breakpoint
@@ -493,7 +493,7 @@ CREATE TABLE `comic_reading_activity` (
 	CONSTRAINT "comic_reading_activity_start" CHECK("started_at" is null or (typeof("started_at") = 'integer' and "started_at" between -9007199254740991 and 9007199254740991)),
 	CONSTRAINT "comic_reading_activity_end" CHECK("ended_at" is null or (typeof("ended_at") = 'integer' and "ended_at" between -9007199254740991 and 9007199254740991)),
 	CONSTRAINT "comic_reading_activity_duration" CHECK("duration_ms" is null or (typeof("duration_ms") = 'integer' and "duration_ms" between 0 and 9007199254740991)),
-	CONSTRAINT "comic_reading_activity_interval" CHECK("ended_at" >= "started_at" and "duration_ms" <= "ended_at" - "started_at"),
+	CONSTRAINT "comic_reading_activity_interval" CHECK("ended_at" > "started_at" and "duration_ms" <= "ended_at" - "started_at"),
 	CONSTRAINT "comic_reading_activity_part" CHECK("volume_id" is null or "chapter_id" is null)
 );
 --> statement-breakpoint
@@ -784,7 +784,7 @@ CREATE TABLE `game_play_activity` (
 	CONSTRAINT "game_play_activity_start" CHECK("started_at" is null or (typeof("started_at") = 'integer' and "started_at" between -9007199254740991 and 9007199254740991)),
 	CONSTRAINT "game_play_activity_end" CHECK("ended_at" is null or (typeof("ended_at") = 'integer' and "ended_at" between -9007199254740991 and 9007199254740991)),
 	CONSTRAINT "game_play_activity_duration" CHECK("duration_ms" is null or (typeof("duration_ms") = 'integer' and "duration_ms" between 0 and 9007199254740991)),
-	CONSTRAINT "game_play_activity_interval" CHECK("ended_at" >= "started_at" and "duration_ms" <= "ended_at" - "started_at")
+	CONSTRAINT "game_play_activity_interval" CHECK("ended_at" > "started_at" and "duration_ms" <= "ended_at" - "started_at")
 );
 --> statement-breakpoint
 CREATE TABLE `game_records` (
@@ -994,7 +994,7 @@ CREATE TABLE `novel_reading_activity` (
 	CONSTRAINT "novel_reading_activity_start" CHECK("started_at" is null or (typeof("started_at") = 'integer' and "started_at" between -9007199254740991 and 9007199254740991)),
 	CONSTRAINT "novel_reading_activity_end" CHECK("ended_at" is null or (typeof("ended_at") = 'integer' and "ended_at" between -9007199254740991 and 9007199254740991)),
 	CONSTRAINT "novel_reading_activity_duration" CHECK("duration_ms" is null or (typeof("duration_ms") = 'integer' and "duration_ms" between 0 and 9007199254740991)),
-	CONSTRAINT "novel_reading_activity_interval" CHECK("ended_at" >= "started_at" and "duration_ms" <= "ended_at" - "started_at")
+	CONSTRAINT "novel_reading_activity_interval" CHECK("ended_at" > "started_at" and "duration_ms" <= "ended_at" - "started_at")
 );
 --> statement-breakpoint
 CREATE TABLE `novel_reading_preferences` (

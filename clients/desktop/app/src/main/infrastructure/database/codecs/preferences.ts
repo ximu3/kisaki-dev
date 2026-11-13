@@ -20,6 +20,10 @@ export type StoredPreferences = Omit<PreferencesSnapshot, 'network'> & {
   readonly network: StoredDefinition<StoredNetworkPreferences>
 }
 
+/**
+ * Preference paths whose selections retain explicit invalid states instead of adopting ordinary
+ * defaults.
+ */
 const identityFields = new Set([
   'general.uiTranslation',
   'appearance.theme',
@@ -129,6 +133,7 @@ export function preferenceColumn<K extends OrdinaryGroup>(key: K, defaults: Pref
     }
     return readFields(value, defaults[key], [key]) as PreferencesSnapshot[K]
   }
+
   return customType<{ data: PreferencesSnapshot[K]; driverData: string; jsonData: unknown }>({
     /** Keeps each fixed preference group in one SQLite JSON-text column. */
     dataType: () => 'text',
@@ -154,6 +159,7 @@ function parseStoredNetwork(input: unknown): StoredNetworkPreferences {
   return { mode: value.mode, endpoint: value.endpoint, bypassRules: value.bypassRules }
 }
 
+/** Builds non-secret proxy-configuration columns with explicit validity for execution. */
 export const networkPreferences = storedJsonColumn(parseStoredNetwork)
 
 /** Wraps complete validated values for an explicit first-row or whole-configuration insertion. */

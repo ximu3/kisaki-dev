@@ -346,6 +346,7 @@ export interface AppearanceApi {
   preview(input: AppearancePreviewInput, call?: CallOptions): Promise<AppearancePreview>
 }
 
+/** Stable selection of a built-in, user-owned or extension-provided theme. */
 const themeRef = v.variant('type', [
   v.strictObject({ type: v.literal('builtin'), id: v.literal('default') }),
   v.strictObject({ type: v.literal('user'), id }),
@@ -359,10 +360,13 @@ const themeRef = v.variant('type', [
   }),
 ])
 
+/** Resolved light or dark appearance used after evaluating the saved mode. */
 const colorScheme = v.picklist(['light', 'dark'])
 
+/** Allowed integer interface scaling percentages from 75 through 200. */
 const scale = v.pipe(integer, v.minValue(75), v.maxValue(200))
 
+/** Package- or data-scoped extension resource path used by appearance definitions. */
 const extensionFile = v.strictObject({
   scope: v.picklist(['package', 'data']),
   path: v.pipe(

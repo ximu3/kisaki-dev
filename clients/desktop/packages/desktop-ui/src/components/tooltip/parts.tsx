@@ -16,6 +16,7 @@ interface TooltipState extends ReturnType<typeof createTooltip> {
   anchor: HTMLElement | undefined
 }
 
+/** Tooltip state shared by its trigger and content within the owning Solid tree. */
 const TooltipContext = createContext<TooltipState>()
 
 /**

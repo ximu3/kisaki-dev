@@ -237,25 +237,31 @@ export interface FileRecognitionProfilesApi<T extends FileWorkType> {
   listPresets(call?: CallOptions): Promise<readonly FileRecognitionPreset<T>[]>
 }
 
+/** Captured display-number text paired with its explicit numeric adjustment. */
 const numberValue = v.strictObject({ value: text, offset: integer })
 
+/** Single or ranged display-number output, retaining source text and adjustment. */
 const numberOutput = v.variant('kind', [
   v.strictObject({ kind: v.literal('single'), ...numberValue.entries }),
   v.strictObject({ kind: v.literal('range'), start: text, end: text, offset: integer }),
 ])
 
+/** Optional number and name outputs shared by recognized numbered parts. */
 const numbered = { number: v.exactOptional(numberOutput), name: v.exactOptional(text) }
 
+/** Nonempty volume identification used to scope recognized comic chapters. */
 const volumeScope = v.pipe(
   v.strictObject({ number: v.exactOptional(numberValue), name: v.exactOptional(text) }),
   v.check((value) => value.number !== undefined || value.name !== undefined),
 )
 
+/** Recognized volume output requiring a number or name. */
 const volume = v.pipe(
   v.strictObject({ kind: v.literal('volume'), ...numbered }),
   v.check((value) => value.number !== undefined || value.name !== undefined),
 )
 
+/** Recognition output shapes permitted by each file-bearing medium. */
 const targetSchemas = {
   anime: v.union([
     v.pipe(

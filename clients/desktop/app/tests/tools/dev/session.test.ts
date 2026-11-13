@@ -12,6 +12,9 @@ import { closeNativeWindow, hasNativeWindow } from '../../support/window-observa
 import { prepareDevelopmentWorkspace } from '../../support/development/workspace'
 import { startDevelopmentController } from '../../support/development/controller'
 
+/**
+ * Isolated source workspace shared by the serial development cases and removed after they close.
+ */
 let workspace: Awaited<ReturnType<typeof prepareDevelopmentWorkspace>>
 
 beforeAll(async () => {

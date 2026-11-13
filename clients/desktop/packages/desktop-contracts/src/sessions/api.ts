@@ -674,16 +674,22 @@ export function parseSessionInteraction(input: unknown = 'fail'): SessionInterac
   return parseValue(v.picklist(['fail', 'prompt']), input, 'Invalid session interaction policy')
 }
 
+/** Finite numeric values used by observed media state and explicit controls. */
 const finite = v.pipe(v.number(), v.finite())
 
+/** Supported playback rate range from 0.01 through 100. */
 const speed = v.pipe(finite, v.minValue(0.01), v.maxValue(100))
 
+/** Positive subtitle display scale bounded by the saved-settings contract. */
 const scale = v.pipe(finite, v.gtValue(0), v.maxValue(100))
 
+/** Application playback volume in the inclusive 0–100 percentage range. */
 const volume = v.pipe(finite, v.minValue(0), v.maxValue(100))
 
+/** Validated persistent source position used by reading-session snapshots. */
 const readingPosition = v.pipe(v.unknown(), v.transform(parseReadingPosition))
 
+/** Actual launch-time save-source snapshot retained by a game session. */
 const sourceSnapshot = v.pipe(
   v.unknown(),
   v.transform((input) => {
@@ -699,8 +705,10 @@ const sourceSnapshot = v.pipe(
   }),
 )
 
+/** Stable session identity and its actual start time shared by start receipts. */
 const startedBase = { sessionId: id, startedAt: timestamp }
 
+/** Concrete work and content identities captured when each session begins. */
 const startedEntries = {
   game: {
     ...startedBase,
@@ -713,6 +721,7 @@ const startedEntries = {
   novel: { ...startedBase, novelId: id, fileId: id },
 }
 
+/** Observed effective-use clock state with mutually consistent pause, counting and grace fields. */
 const timing = v.pipe(
   v.strictObject({
     paused: v.boolean(),
@@ -727,10 +736,13 @@ const timing = v.pipe(
   ),
 )
 
+/** Session identity, start time and effective-use timing shared by live snapshots. */
 const base = { sessionId: id, startedAt: timestamp, timing }
 
+/** File-session identity and timing with the registered file currently owned by the session. */
 const fileBase = { ...base, fileId: id }
 
+/** Observed reading position, progress and layout state, including an active reflow. */
 const reading = v.strictObject({
   position: readingPosition,
   progress: v.nullable(v.pipe(finite, v.minValue(0), v.maxValue(1))),
@@ -738,6 +750,10 @@ const reading = v.strictObject({
   reflowing: v.boolean(),
 })
 
+/**
+ * Live game-session snapshot with independent process-monitoring availability and foreground
+ * state.
+ */
 const game = v.strictObject({
   ...startedEntries.game,
   timing,
@@ -745,6 +761,7 @@ const game = v.strictObject({
   monitoring: v.strictObject({ available: v.boolean(), foreground: v.nullable(v.boolean()) }),
 })
 
+/** Live video-session snapshot with observed playback state and saved-settings source. */
 const anime = v.strictObject({
   ...fileBase,
   type: v.literal('anime'),
@@ -770,8 +787,10 @@ const anime = v.strictObject({
   }),
 })
 
+/** Live comic-reading session bound to its current registered file. */
 const comic = v.strictObject({ ...fileBase, type: v.literal('comic'), comicId: id, reading })
 
+/** Live novel-reading session bound to its current registered file. */
 const novel = v.strictObject({ ...fileBase, type: v.literal('novel'), novelId: id, reading })
 
 /** Checks that a game session's save-source snapshot belongs to its launch configuration. */
@@ -914,6 +933,7 @@ export function parsePlaybackControlValue(
   return parseValue(schemas[field], input, 'Invalid playback control value')
 }
 
+/** Receipt values for settings actually persisted at their application, work or file scope. */
 const saved = v.variant('field', [
   v.strictObject({
     field: v.literal('volumePercent'),
@@ -966,11 +986,13 @@ export function parsePlaybackSettingResult(input: unknown): PlaybackSettingResul
   return value as PlaybackSettingResult
 }
 
+/** Distinct activity identities returned by a session persistence operation. */
 const ids = v.pipe(
   v.array(id),
   v.check((values) => unique(values, (value) => value)),
 )
 
+/** Safe activity- or position-persistence failure details kept separate from successful facts. */
 const issue = v.variant('kind', [
   v.strictObject({
     kind: v.literal('activity'),

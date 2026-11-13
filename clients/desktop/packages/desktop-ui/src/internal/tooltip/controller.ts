@@ -14,6 +14,7 @@ interface TooltipGroup {
   warmUntil: number
 }
 
+/** Document-scoped hover groups coordinating tooltip delay and handoff timing. */
 const groups = new WeakMap<Document, TooltipGroup>()
 
 /**
@@ -23,7 +24,9 @@ const groups = new WeakMap<Document, TooltipGroup>()
  * connection owner releases timers and shared ownership through its returned cleanup.
  */
 export function createTooltip(delay?: Accessor<number | undefined>) {
+  /** Requested visibility of this tooltip within its document hover group. */
   const [open, setOpen] = createSignal(false)
+  /** Whether this opening follows an already active tooltip in the same hover group. */
   const [handoff, setHandoff] = createSignal(false)
   const hovered = { trigger: false, content: false }
   let focused = false

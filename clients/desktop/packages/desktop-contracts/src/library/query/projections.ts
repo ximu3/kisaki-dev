@@ -36,6 +36,7 @@ import type {
 import type { EntryQuery } from './definition'
 import { DesktopError } from '../../errors'
 
+/** Complete nonnegative counts for registered, completed, associated and accessible parts. */
 const counts = v.strictObject({
   registered: nonnegativeInteger,
   completed: nonnegativeInteger,
@@ -54,6 +55,7 @@ function classifiedCounts(keys: readonly string[]) {
   })
 }
 
+/** Per-medium part-count projections, including explicit unknown anime classifications. */
 const partCountSchemas = {
   anime: v.strictObject({
     animeEpisode: classifiedCounts(['regular', 'special', 'unknown']),
@@ -70,10 +72,13 @@ const partCountSchemas = {
   novel: v.strictObject({ novelVolume: counts }),
 }
 
+/** Optional partial civil date used by catalog projections. */
 const date = v.nullable(partialDateSchema)
 
+/** Optional nonnegative safe count used by declared catalog projections. */
 const count = v.nullable(nonnegativeInteger)
 
+/** Validators for individually requested scalar and resource projection fields. */
 const fieldSchemas: Readonly<Record<Exclude<EntryProjectionField, 'partCounts'>, v.GenericSchema>> =
   {
     originalName: v.nullable(text),
@@ -371,6 +376,7 @@ export function checkProjection(
   }
 }
 
+/** Supported projection fields deduplicated in their first requested order. */
 export const projectionSchema = v.pipe(
   v.array(v.picklist(entryProjectionFields)),
   v.transform((fields) => [...new Set(fields)]),

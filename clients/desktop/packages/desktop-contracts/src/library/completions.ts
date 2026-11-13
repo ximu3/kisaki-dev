@@ -148,11 +148,13 @@ export interface CompletionsApi {
   delete(work: WorkRef, completionId: string, call?: CallOptions): Promise<void>
 }
 
+/** Completion input fields with an optional pre-write completion-count baseline. */
 const createEntries = {
   ...completionFieldsSchema.entries,
   expected: v.exactOptional(v.strictObject({ completionCount: nonnegativeInteger })),
 }
 
+/** One explicitly targeted work completion item in an atomic batch. */
 const itemSchema = v.strictObject({ work: workRefSchema, ...createEntries })
 
 /**

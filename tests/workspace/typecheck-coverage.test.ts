@@ -6,6 +6,7 @@ import { join, relative, resolve } from 'node:path'
 import ts from 'typescript'
 import { maintainedFiles, workspaceMembers } from '../support/workspace'
 
+/** Workspace root whose maintained sources and executed typecheck owners are compared. */
 const root = process.cwd()
 
 test('all maintained JavaScript-environment sources are TypeScript and have an executed typecheck owner', async () => {

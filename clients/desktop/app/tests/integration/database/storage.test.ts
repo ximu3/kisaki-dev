@@ -8,9 +8,12 @@ import { eq, sql } from 'drizzle-orm'
 import { initializeDatabase } from '../../../src/main/infrastructure/database'
 import type { Storage } from '../../../src/main/infrastructure/database'
 import * as tables from '../../../src/main/infrastructure/database/schema'
-import { seedStorage, storageOptions } from './fixture'
+import { seedStorage, storageOptions } from '../../support/database'
 
+/** Disposable database directory owned by the current storage case. */
 let directory: string
+
+/** Current real connection, replaced during reopen checks and closed before directory cleanup. */
 let storage: Storage
 
 beforeEach(async () => {

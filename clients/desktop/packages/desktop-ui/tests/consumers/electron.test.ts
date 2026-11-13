@@ -10,6 +10,7 @@ import ts from 'typescript'
 import { consumerTest as test, packageRoot } from '../support/consumer'
 
 // Electron's Node entry returns its executable path; its declarations describe the running host.
+/** Executable path of the selected Electron runtime used by the packed UI consumer. */
 const electron = createRequire(import.meta.url)('electron') as string
 
 test('Electron consumes the same packed UI in a sandboxed document with native modal scope', async ({
