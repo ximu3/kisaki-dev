@@ -6,7 +6,7 @@ import type { GameLaunchConfigsApi } from './game-configuration'
 import type { GameBackupsApi } from './backups/api'
 import type { HoldingsPreferencesApi } from './preferences'
 import type { FileRecognitionProfilesApi } from './file-recognition'
-import type { FileWorkType, WorkRef, EntryRef } from '../catalog'
+import type { FileWorkType, WorkRef, WorkType, EntryRef } from '../catalog'
 
 import type {
   LocalContentInput,
@@ -39,12 +39,12 @@ export interface HoldingsApi {
    *
    * Initial-refresh issues are reported separately from established registrations.
    */
-  registerLocalContent(
-    work: WorkRef,
+  registerLocalContent<T extends WorkType>(
+    work: WorkRef<T>,
     input: LocalContentInput,
     options?: LocalContentRegistrationOptions,
     call?: CallOptions,
-  ): Promise<LocalContentRegistrationResult>
+  ): Promise<LocalContentRegistrationResult<T>>
 
   /**
    * Completes discovery and maintenance while preserving held data and manual associations.

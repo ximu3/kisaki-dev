@@ -19,6 +19,8 @@ extension_id 来自真实 ExtensionContext，调用者不能自行指定。私�
 
 storage.commit 在本扩展内一次提交普通值与凭据。扩展 Node 完成业务校验，宿主在事务外准备密文，再通过短事务核对条件并写入。调用方传递键值和比较条件，宿主持有 SQL 与事务执行。草稿冲突时保留用户输入；revision 按扩展私有键的合同管理。
 
+提交结果按 values、secrets 分别保留请求中的键；set 对应新 revision，delete 对应 null。声明保留每个键的操作与结果关系，values.set 同时保留所提交 JSON 值的类型。
+
 Webview 默认只获得配置状态和变更标记。未提交新值表示保持原值，明确的新值表示替换，明确的移除操作表示删除。实际秘密只能通过 Node 的专用路径读取，不能根据键名是否包含 password 或 token 来猜测加解密方式。凭据“已配置”也不代表远端认证仍有效。
 
 <a id="protection"></a>

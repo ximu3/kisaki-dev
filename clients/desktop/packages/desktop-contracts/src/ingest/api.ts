@@ -50,35 +50,37 @@ export interface IngestApi {
    *
    * Ordinary item failure permits later items. Cancellation retains completed facts.
    */
-  addMany(
-    inputs: readonly IngestAddInput[],
+  addMany<T extends EntryType>(
+    inputs: readonly IngestAddInput<T>[],
     call?: CallOptions,
-  ): Promise<IngestBatchResult<IngestAddResult>>
+  ): Promise<IngestBatchResult<IngestAddResult<T>>>
 
   /**
    * Fixes the existing target and authorized fields before acquisition and adoption.
    *
    * Source results cannot redirect the target or broaden the update.
    */
-  update(
-    ...args: {
+  update<
+    Args extends {
       [K in IngestUpdateType]: [
         target: IngestUpdateRef<K>,
         input: IngestUpdateInput<K>,
         call?: CallOptions,
       ]
-    }[IngestUpdateType]
-  ): Promise<IngestUpdateResult>
+    }[IngestUpdateType],
+  >(
+    ...args: Args
+  ): Promise<IngestUpdateResult<Args[0]['type']>>
 
   /**
    * Runs fixed-target updates with per-item commits and indexed outcomes.
    *
    * Completed items remain committed when later work fails or is cancelled.
    */
-  updateMany(
-    inputs: readonly IngestUpdateItem[],
+  updateMany<I extends IngestUpdateItem>(
+    inputs: readonly I[],
     call?: CallOptions,
-  ): Promise<IngestBatchResult<IngestUpdateResult>>
+  ): Promise<IngestBatchResult<IngestUpdateResult<I['target']['type']>>>
 }
 
 /**
@@ -88,10 +90,16 @@ export interface IngestApi {
  */
 export interface IngestExecutor {
   /** Executes the complete addition within the caller's accepted execution context. */
-  add(input: IngestAddInput, context: ExecutionContext): Promise<IngestAddResult>
+  add<T extends EntryType>(
+    input: IngestAddInput<T>,
+    context: ExecutionContext,
+  ): Promise<IngestAddResult<T>>
 
   /** Executes the complete fixed-target update within the caller's accepted execution context. */
-  update(input: IngestUpdateItem, context: ExecutionContext): Promise<IngestUpdateResult>
+  update<I extends IngestUpdateItem>(
+    input: I,
+    context: ExecutionContext,
+  ): Promise<IngestUpdateResult<I['target']['type']>>
 }
 
 /**

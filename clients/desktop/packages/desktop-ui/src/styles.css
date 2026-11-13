@@ -25,6 +25,8 @@
     --kui-feedback-ms: 100;
     --kui-feedback-duration: calc(var(--kui-feedback-ms) * 1ms);
     --kui-hover-duration: var(--kui-feedback-duration);
+    --kui-focus-duration: var(--kui-feedback-duration);
+    --kui-focus-enter: kui-focus-in var(--kui-focus-duration) ease;
     --kui-enter-ease: cubic-bezier(0.16, 0.72, 0.25, 1);
     --kui-exit-ease: cubic-bezier(0.4, 0, 1, 1);
   }
@@ -33,9 +35,22 @@
       --kui-feedback-ms: 0;
     }
   }
+  @media (prefers-reduced-motion: reduce), (forced-colors: active) {
+    :root {
+      --kui-focus-duration: 0ms;
+      --kui-focus-enter: none;
+    }
+  }
 }
 
 @layer base {
+  /* Focus owners provide the final color and remove the entry animation on blur. */
+  @keyframes kui-focus-in {
+    from {
+      outline-color: transparent;
+    }
+  }
+
   :where(*) {
     scrollbar-width: thin;
     scrollbar-color: color-mix(in oklch, var(--muted-foreground) 42%, transparent) transparent;

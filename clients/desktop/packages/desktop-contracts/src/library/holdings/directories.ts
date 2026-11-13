@@ -90,50 +90,62 @@ export interface DirectoryUpdate {
  *
  * Commands and historical text are outside the relocation scope.
  */
-export interface DirectoryRelocationInput {
-  readonly path: string
-  readonly expected?: { readonly path: string }
+export type DirectoryRelocationInput<T extends WorkType = WorkType> = {
+  [K in T]: {
+    readonly path: string
+    readonly expected?: { readonly path: string }
 
-  readonly gameConfigFields?: readonly {
-    readonly launchConfigId: string
-    readonly fields: NonEmptyArray<'launchPath' | 'workingDirectory' | 'monitorPath' | 'savePath'>
-  }[]
+    readonly gameConfigFields?: K extends 'game'
+      ? readonly {
+          readonly launchConfigId: string
+          readonly fields: NonEmptyArray<
+            'launchPath' | 'workingDirectory' | 'monitorPath' | 'savePath'
+          >
+        }[]
+      : never
 
-  readonly subtitlePaths?: readonly {
-    readonly fileId: string
-    readonly paths: NonEmptyArray<string>
-  }[]
-}
+    readonly subtitlePaths?: K extends 'anime'
+      ? readonly { readonly fileId: string; readonly paths: NonEmptyArray<string> }[]
+      : never
+  }
+}[T]
 
 /** A registered directory, file, launch field or subtitle path addressed by relocation. */
-export type RelocatedPathTarget =
-  | { readonly type: 'directory' | 'file'; readonly id: string }
-  | {
-      readonly type: 'launchConfig'
-      readonly id: string
-      readonly field: 'launchPath' | 'workingDirectory' | 'monitorPath' | 'savePath'
-    }
-  | { readonly type: 'subtitle'; readonly fileId: string; readonly path: string }
+export type RelocatedPathTarget<T extends WorkType = WorkType> =
+  | { readonly type: 'directory'; readonly id: string }
+  | (T extends FileWorkType ? { readonly type: 'file'; readonly id: string } : never)
+  | (T extends 'game'
+      ? {
+          readonly type: 'launchConfig'
+          readonly id: string
+          readonly field: 'launchPath' | 'workingDirectory' | 'monitorPath' | 'savePath'
+        }
+      : never)
+  | (T extends 'anime'
+      ? { readonly type: 'subtitle'; readonly fileId: string; readonly path: string }
+      : never)
 
 /**
  * Applied path mappings and unresolved verification, availability or conflict issues for a work.
  */
-export interface HoldingsRelocationResult {
-  readonly work: WorkRef
+export type HoldingsRelocationResult<T extends WorkType = WorkType> = {
+  [K in T]: {
+    readonly work: WorkRef<K>
 
-  readonly updated: readonly {
-    readonly target: RelocatedPathTarget
-    readonly from: string
-    readonly to: string
-  }[]
+    readonly updated: readonly {
+      readonly target: RelocatedPathTarget<K>
+      readonly from: string
+      readonly to: string
+    }[]
 
-  readonly issues: readonly {
-    readonly target: RelocatedPathTarget
-    readonly path: string
-    readonly status: 'unverified' | 'unavailable' | 'conflict'
-    readonly error: ErrorSummary
-  }[]
-}
+    readonly issues: readonly {
+      readonly target: RelocatedPathTarget<K>
+      readonly path: string
+      readonly status: 'unverified' | 'unavailable' | 'conflict'
+      readonly error: ErrorSummary
+    }[]
+  }
+}[T]
 
 /**
  * Work-owned directory registration, discovery configuration and path relocation.
@@ -191,12 +203,18 @@ export interface ContentDirectoriesApi {
    *
    * Conflicts are reported without moving or merging user files.
    */
-  relocate(
-    work: WorkRef,
-    directoryId: string,
-    input: DirectoryRelocationInput,
-    call?: CallOptions,
-  ): Promise<HoldingsRelocationResult>
+  relocate<
+    Args extends {
+      [K in WorkType]: [
+        work: WorkRef<K>,
+        directoryId: string,
+        input: DirectoryRelocationInput<K>,
+        call?: CallOptions,
+      ]
+    }[WorkType],
+  >(
+    ...args: Args
+  ): Promise<HoldingsRelocationResult<Args[0]['type']>>
 }
 
 export const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
@@ -251,6 +269,11 @@ export function parseDirectoryUpdate(input: unknown): DirectoryUpdate {
  *
  * Disk verification and path updates belong to the relocation operation.
  */
+export function parseDirectoryRelocationInput<T extends WorkType>(
+  workType: T,
+  input: unknown,
+): DirectoryRelocationInput<T>
+
 export function parseDirectoryRelocationInput(
   workType: WorkType,
   input: unknown,
@@ -293,5 +316,5 @@ export function parseDirectoryRelocationInput(
     throw new DesktopError('InvalidInput', 'Relocation fields are not applicable to this work type')
   }
 
-  return value
+  return value as DirectoryRelocationInput
 }

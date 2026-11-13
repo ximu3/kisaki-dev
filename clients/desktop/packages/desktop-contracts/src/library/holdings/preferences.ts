@@ -104,16 +104,18 @@ export interface HoldingsPreferencesApi {
    *
    * Parent changes do not silently rebase saved custom settings.
    */
-  update(
-    ...args: {
+  update<
+    Args extends {
       [K in FileWorkType]: [
         work: EntryRef<K>,
         target: UsagePreferenceTarget,
         input: FilePreferenceChangeByType[K],
         call?: CallOptions,
       ]
-    }[FileWorkType]
-  ): Promise<UsageOverride<FilePreferencesByType[FileWorkType]>>
+    }[FileWorkType],
+  >(
+    ...args: Args
+  ): Promise<UsageOverride<FilePreferencesByType[Args[0]['type']]>>
 
   /**
    * Selects one complete enabled file, work or global configuration for the file.

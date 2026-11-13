@@ -7,8 +7,22 @@ import type {
   ShowcaseApi,
   ShowcaseFields,
   ShowcaseSection,
+  EntryRef,
+  PartRef,
 } from '@kisaki3/desktop-contracts/library'
-import type { MetadataReadRequest } from '@kisaki3/desktop-contracts/metadata'
+import type {
+  MetadataReadRequest,
+  MetadataProfilesApi,
+  MetadataProfile,
+} from '@kisaki3/desktop-contracts/metadata'
+import { parseFieldProcessingResult } from '@kisaki3/desktop-contracts/metadata'
+import type { ThemesApi, UserThemeCreate } from '@kisaki3/desktop-contracts/appearance'
+import type { IngestApi, IngestUpdateInput } from '@kisaki3/desktop-contracts/ingest'
+import type {
+  AnimePlaybackPreferences,
+  PlaybackOverrideChange,
+} from '@kisaki3/desktop-contracts/preferences'
+import type { ViewResourcesApi, ReadResourceRef } from '@kisaki3/desktop-contracts/resources'
 import type {
   AnimeSessionsApi,
   GameSessionsApi,
@@ -20,7 +34,7 @@ import type { DeeplinkOpenTarget } from '@kisaki3/desktop-contracts/deeplink'
 import type { NetworkApi, NetworkFetchOptions } from '@kisaki3/desktop-contracts/network'
 import type { EventsApi } from '@kisaki3/desktop-contracts/events'
 import type { ApplicationUpdateState } from '@kisaki3/desktop-contracts/updates'
-import type { OnboardingApplyInput } from '@kisaki3/desktop-contracts/onboarding'
+import type { OnboardingApi, OnboardingApplyInput } from '@kisaki3/desktop-contracts/onboarding'
 import type { AppApi } from '@kisaki3/desktop-contracts/app'
 import type { PrivateStorageApi } from '@kisaki3/desktop-contracts/private-data'
 import type { ExtensionUiIcon, ViewClientIpc } from '@kisaki3/desktop-contracts/ui'
@@ -36,11 +50,164 @@ interface ExampleViewNotifications {
   readonly changed: { readonly value: string }
 }
 
+/** Checks that typed reads provide the editable values required by their matching write APIs. */
+export async function checkReadEditing(themes: ThemesApi, library: LibraryApi): Promise<void> {
+  const theme = await themes.get({ type: 'user', id: 'theme' })
+  if (theme) {
+    const draft: UserThemeCreate = { name: theme.name, light: theme.light, dark: theme.dark }
+    await themes.update(theme.ref.id, { changes: draft, expected: draft })
+  }
+  const read = await themes.open({ type: 'user', id: 'theme' })
+  const light: UserThemeCreate['light'] = read.theme.light
+  void light
+  await read.dispose()
+
+  const part = await library.parts.get({ type: 'novelVolume', id: 'volume' })
+  if (part) {
+    await library.parts.update(part.ref, { changes: part.data, expected: part.data })
+  }
+
+  const annotation = await library.annotations.get({ workType: 'anime', id: 'annotation' })
+  if (annotation) {
+    const target = {
+      fileId: annotation.fileId,
+      location: annotation.location,
+      imageId: annotation.imageId,
+    }
+    await library.annotations.update(
+      { workType: annotation.workType, id: annotation.id },
+      { changes: { target }, expected: { target } },
+    )
+  }
+
+  const work = { type: 'anime', id: 'anime' } as const
+  const activity = await library.activities.get(work, 'activity')
+  if (activity) {
+    const timing = {
+      startedAt: activity.startedAt,
+      endedAt: activity.endedAt,
+      durationMs: activity.durationMs,
+    }
+    await library.activities.update(work, activity.id, {
+      changes: timing,
+      expected: { activity: { ...timing, context: activity.context } },
+    })
+  }
+}
+
+/** Checks that creation and update results retain their explicitly selected object kinds. */
+export async function checkResultKinds(
+  library: LibraryApi,
+  profiles: MetadataProfilesApi,
+  ingest: IngestApi,
+  update: IngestUpdateInput<'novel'>,
+  playback: PlaybackOverrideChange,
+): Promise<void> {
+  const volume: PartRef<'novelVolume'> = await library.parts.create({
+    type: 'novelVolume',
+    work: { type: 'novel', id: 'novel' },
+    data: {},
+  })
+  const merged: PartRef<'novelVolume'> = await library.parts.merge({
+    source: volume,
+    target: { type: 'novelVolume', id: 'target' },
+  })
+
+  for (const preset of await profiles.listPresets({ entryType: 'novel' })) {
+    const profile: MetadataProfile<'novel'> = await profiles.create({
+      entryType: preset.entryType,
+      name: 'Novel profile',
+      definition: preset.definition,
+    })
+    void profile
+  }
+  // @ts-expect-error: A narrowed result requires an actual runtime kind filter.
+  void profiles.listPresets<'novel'>()
+
+  const result = await ingest.update({ type: 'novel', id: 'novel' }, update)
+  const target: EntryRef<'novel'> = result.target
+  // @ts-expect-error: Typed results must not weaken the correlation between target and input.
+  void ingest.update({ type: 'person', id: 'person' }, update)
+
+  const override = await library.holdings.preferences.update(
+    { type: 'anime', id: 'anime' },
+    { type: 'work' },
+    playback,
+  )
+  const settings: AnimePlaybackPreferences = override.settings
+  void merged
+  void target
+  void settings
+}
+
+/** Checks submitted keys and their value types across resource binding and atomic writes. */
+export async function checkResultKeys(
+  resources: ViewResourcesApi,
+  resource: ReadResourceRef,
+  library: LibraryApi,
+  storage: PrivateStorageApi,
+): Promise<void> {
+  const binding = await resources.bind({ cover: resource })
+  const url: string = binding.urls.cover
+  // @ts-expect-error: Unrequested keys are absent from the binding.
+  void binding.urls.other
+  void url
+  await binding.dispose()
+
+  const created = await library.writeGraph({
+    entries: { create: [{ key: 'work', type: 'novel', name: 'Novel' }] },
+  })
+  const work: EntryRef<'novel'> = created.entries.work
+  // @ts-expect-error: The graph did not create any parts.
+  void created.parts.volume
+
+  const committed = await storage.commit({
+    values: [{ type: 'set', key: 'settings', value: { enabled: true } }],
+    secrets: [{ type: 'delete', key: 'token' }],
+  })
+  const revision: string = committed.values.settings
+  const removed: null = committed.secrets.token
+  void work
+  void revision
+  void removed
+}
+
+/** Checks field-specific values and the distinction between complete and partial keyed results. */
+export function checkProcessorKeys(raw: unknown): void {
+  const input = {
+    items: [
+      {
+        key: 'flag',
+        field: { object: 'entry', entryType: 'novel', field: 'isNsfw' },
+        value: false,
+      },
+    ],
+  } as const
+  const complete = parseFieldProcessingResult(input, raw)
+  const value: boolean = complete.flag
+  const partial = parseFieldProcessingResult(input, raw, 'partial')
+  const optional: boolean | undefined = partial.flag
+  // @ts-expect-error: Parsed results retain the submitted key set.
+  void complete.other
+
+  const dynamicItems: readonly (typeof input.items)[number][] = []
+  const dynamic = parseFieldProcessingResult({ items: dynamicItems }, raw)
+  // @ts-expect-error: A dynamic collection may omit a key allowed by its item type.
+  const required: boolean = dynamic.flag
+  void value
+  void optional
+  void required
+}
+
 /**
  * Checks saved section results and explicit creation inputs against the shared showcase and
  * onboarding types.
  */
-export async function checkShowcase(showcase: ShowcaseApi, initial: ShowcaseFields): Promise<void> {
+export async function checkShowcase(
+  showcase: ShowcaseApi,
+  initial: ShowcaseFields,
+  onboarding: OnboardingApi,
+): Promise<void> {
   const created = await showcase.create(initial)
   const saved = await showcase.update(created.id, {
     changes: { name: 'Updated section' },
@@ -59,10 +226,16 @@ export async function checkShowcase(showcase: ShowcaseApi, initial: ShowcaseFiel
     group: 'showcase',
     items: [{ itemId: 'collections', expectedHandled: null, input: initial }],
   }
+  const result = await onboarding.apply(apply)
+  for (const item of result.items) {
+    for (const resource of item.resources) {
+      const sectionId: string = resource.sectionId
+      void sectionId
+    }
+  }
 
   void section
   void batch
-  void apply
 }
 
 /** Checks named-interface method catalogs, required inputs and notification payload inference. */

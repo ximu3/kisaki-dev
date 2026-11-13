@@ -1,4 +1,5 @@
 - Define desktop library values, typed queries, editing baselines, atomic graph inputs, relationships, records and local-content contracts.
+- Preserve known object kinds and resource ownership through reads and writes. Keyed results retain their value types and distinguish fixed inputs from optional or dynamic collections.
 - Provide independent showcase edits and explicit atomic creation batches; onboarding reuses complete section values.
 - Define metadata participation and adoption, scanning, tasks, sessions, resources, views, preferences, application and extension management, and typed fact events.
 - Share a generated Lucide name catalog across extension contributions and search icons while preserving package-file ownership.

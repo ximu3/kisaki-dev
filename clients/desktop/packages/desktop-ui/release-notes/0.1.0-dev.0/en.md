@@ -6,11 +6,15 @@ Group a field's static label and optional description before its control. FormFe
 
 Select and MultiSelect display a down chevron. Combobox displays paired chevrons and accepts one option record or an ordered array with `multiple`. Use `searchLabel` for the popup editor, `query` and `onQueryChange` for its text, and `filter={false}` for host-filtered results. The ref points to the field button. Search text and submitted keys have independent lifetimes. The optional virtual renderer uses `present` to retain visible rows through exit. Selected chips scroll within one row and can be removed directly.
 
-Text-bearing surfaces fade in place. Hints enter in 60ms and exit in 40ms, anchored pickers and menus in 80ms and 60ms, and modal dialogs in 100ms and 80ms. Selection commits and focus returns while the outgoing panel keeps its last painted selection. The first pointer hover waits 300ms by default. Adjacent hints hand off immediately, and keyboard focus opens a hint directly. Controls respect reduced motion.
+Text-bearing surfaces fade in place. Hints enter in 60ms and exit in 40ms, anchored pickers and menus in 80ms and 60ms, and modal dialogs in 100ms and 80ms. Selection commits and focus returns while the outgoing panel keeps its last painted selection. The first pointer hover waits 400ms by default. Adjacent hints hand off immediately, and keyboard focus opens a hint directly. Controls respect reduced motion.
+
+Focus emphasis enters in 100ms and ends immediately. Field and editor borders return directly to their applicable resting colors, while keyboard focus rings disappear on blur. Geometry and focus ownership stay unchanged. Expanded controls retain their own emphasis; reduced motion and forced colors show the final focus state immediately.
+
+Validation feedback updates immediately. Unfocused error borders appear and clear without a transition; checked switches and checkboxes retain their error borders while their fill still expresses selection.
 
 Install one Toaster per document and call `toast.show` from UI code. Messages survive their caller and follow the active modal. Cards enter and leave from the bottom and reposition in 100ms. Ended handles stay inert. DialogHeader, DialogBody and DialogFooter keep headings and actions around independently scrolling content. Pass a localized `closeLabel` to DialogHeader for a title-bar exit.
 
-Dedicated subpaths provide CodeMirror Markdown editing, safe previews, Unovis charts and Pragmatic Drag and Drop integration with automatic scrolling and compact drag previews. Markdown formatting actions use a compact tinted toolbar with foreground hover feedback. Chart tooltips fade on visibility changes and follow the pointer directly. String templates render as text, and structured tooltips can return an HTMLElement.
+Dedicated subpaths provide CodeMirror Markdown editing, safe previews, Unovis charts and Pragmatic Drag and Drop integration with automatic scrolling and compact drag previews. Markdown formatting actions use shared 1rem icons and adjoining buttons in a tinted toolbar with zero vertical padding. Toolbar actions and default drag handles use foreground-only hover feedback. Chart tooltips fade on visibility changes and follow the pointer directly. String templates render as text, and structured tooltips can return an HTMLElement.
 
 Runtime support follows the desktop Chromium baseline.
 

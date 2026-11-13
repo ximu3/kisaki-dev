@@ -32,11 +32,13 @@ export type MetadataFetchInput<T extends EntryType = EntryType> = {
  *
  * Ingest determines creation sufficiency and how the candidate relates to existing local objects.
  */
-export interface MetadataFetchResult<T extends EntryType = EntryType> {
-  readonly data: MetadataCandidate<T>
-  readonly relationScopes: MetadataRelationScopes<T>
-  readonly issues: readonly IngestIssue[]
-}
+export type MetadataFetchResult<T extends EntryType = EntryType> = {
+  [K in T]: {
+    readonly data: MetadataCandidate<K>
+    readonly relationScopes: MetadataRelationScopes<K>
+    readonly issues: readonly IngestIssue[]
+  }
+}[T]
 
 /**
  * Parses a fetch request for its declared entry kind.
@@ -80,5 +82,5 @@ export function parseMetadataFetchResult(input: unknown): MetadataFetchResult {
   return {
     ...value,
     relationScopes: parseMetadataRelationScopes(value.data.entryType, value.relationScopes),
-  }
+  } as MetadataFetchResult
 }

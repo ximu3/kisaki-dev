@@ -8,7 +8,7 @@ import type {
   MetadataFieldValue,
 } from './fields'
 import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
-import type { ExecutionContext, CallOptions, Registration } from '../operations'
+import type { ExecutionContext, CallOptions, Registration, KeyedResult } from '../operations'
 import { parseValue, id, unique, parseRecord } from '../validation'
 import * as v from 'valibot'
 import { entryTypes, partTypes } from '../library/catalog'
@@ -72,7 +72,11 @@ export interface FieldProcessingInput {
  * Normal completion covers every input key. A failure may carry only the successfully processed
  * keys.
  */
-export type FieldProcessingResult = Readonly<Record<string, MetadataFieldValue<MetadataFieldRef>>>
+export type FieldProcessingResult<I extends FieldProcessingInput = FieldProcessingInput> =
+  KeyedResult<
+    I['items'],
+    { readonly [Item in I['items'][number] as Item['key']]: MetadataFieldValue<Item['field']> }
+  >
 
 /** Registered batch implementation for a declared set of metadata fields. */
 export interface MetadataFieldProcessor {
@@ -195,11 +199,20 @@ export function parseFieldProcessingInput(input: unknown): FieldProcessingInput 
  * Complete results must cover every input key; partial results may omit keys. Both reject extra
  * keys and preserve only returned values.
  */
+export function parseFieldProcessingResult<
+  const I extends FieldProcessingInput,
+  C extends 'complete' | 'partial' = 'complete',
+>(
+  input: I,
+  result: unknown,
+  completeness?: C,
+): C extends 'complete' ? FieldProcessingResult<I> : Partial<FieldProcessingResult<I>>
+
 export function parseFieldProcessingResult(
   input: FieldProcessingInput,
   result: unknown,
   completeness: 'complete' | 'partial' = 'complete',
-): FieldProcessingResult {
+): Partial<FieldProcessingResult> {
   const source = parseRecord(result)
   const byKey = new Map(input.items.map((item) => [item.key, item]))
   if (

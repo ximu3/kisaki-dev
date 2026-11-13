@@ -135,6 +135,8 @@ onboarding 在同一事务写入 `handled[itemId] = { outcome: 'applied', handle
 
 apply 返回 `{ group, items }`，每个结果保留输入顺序，并含 `{ itemId, outcome, resources, issues }`。outcome 为 applied、notApplied 或 notStarted；resources 仅包含已经成立的成果，issues 为 `{ stage: 'installation' | 'commit' | 'runtime', error: ErrorSummary }[]`。成功时全部为 applied，可以有运行问题。
 
+OnboardingApplyResult 按输入 group 保留成果引用类型：preferences 的资源数组为空，其余组分别返回扩展、资料方案、扫描配置或展示区块引用。
+
 完整失败通过 ExecutionFailure<OnboardingApplyResult> 交付已经形成的报告：同库事务失败时全部 notApplied 且没有新资源；扩展安装已成立而标记失败时为 notApplied，但保留 extensionId，后续未执行项为 notStarted。未知的安装提交结果按原安装合同表达，不能伪造资源引用。
 
 输入或目录归属错误为 InvalidInput；必要资源缺失为 NotFound；handled 或业务基线不符为 Conflict；实际安装、持久化或运行错误由拥有者提供稳定分类。提交前取消不写同库配置；提交后的取消不撤销成果，也不重复创建。skip 接收非空且 itemId 不重复的 items，每项仅含 { itemId, expectedHandled }；在短事务中比较所选项目的处理基线，只将尚未采用的项目记为 skipped。已经 applied 或 skipped 且基线相符的项目保留原结果与时间，无变化不发失效；并发采用使旧基线冲突，不能被 skip 覆盖。

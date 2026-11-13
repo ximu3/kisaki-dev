@@ -60,10 +60,10 @@ export interface ScanConfigFields {
 }
 
 /** Saved scan configuration with explicit definition validity and formal order. */
-export interface ScanConfig {
+export interface ScanConfig<T extends WorkType = WorkType> {
   readonly id: string
   readonly name: string
-  readonly workType: WorkType
+  readonly workType: T
   readonly rootPath: string
   readonly metadataProfileId: string
   readonly definition: StoredDefinition<ScanDefinition>
@@ -102,18 +102,24 @@ export interface ScanConfigUpdate {
 }
 
 /** Configuration and metadata profile captured for one accepted scan and retained in its report. */
-export interface ScanConfigSnapshot {
-  readonly name: string
-  readonly workType: WorkType
-  readonly rootPath: string
-  readonly definition: ScanDefinition
-  readonly registerExistingContent: boolean
-  readonly metadataProfile: MetadataProfileSnapshot<WorkType>
-}
+export type ScanConfigSnapshot<T extends WorkType = WorkType> = {
+  [K in T]: {
+    readonly name: string
+    readonly workType: K
+    readonly rootPath: string
+    readonly definition: ScanDefinition
+    readonly registerExistingContent: boolean
+    readonly metadataProfile: MetadataProfileSnapshot<K>
+  }
+}[T]
 
 /** Saved scanner configuration management and native extraction preset discovery. */
 export interface ScanConfigsApi {
   /** Reads configuration summaries in formal order, optionally restricted to one work medium. */
+  list<T extends WorkType>(
+    filter: { readonly workType: T },
+    call?: CallOptions,
+  ): Promise<readonly Omit<ScanConfig<T>, 'definition'>[]>
   list(
     filter?: { readonly workType?: WorkType },
     call?: CallOptions,
@@ -131,7 +137,10 @@ export interface ScanConfigsApi {
    *
    * Saved success does not establish success of those later operations.
    */
-  create(input: ScanConfigCreate, call?: CallOptions): Promise<ScanConfig>
+  create<I extends ScanConfigCreate>(
+    input: I,
+    call?: CallOptions,
+  ): Promise<ScanConfig<I['workType']>>
 
   /**
    * Compares and commits changed fields.

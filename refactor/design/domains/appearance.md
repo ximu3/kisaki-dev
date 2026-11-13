@@ -79,12 +79,14 @@ interface AppearancePreferences {
   theme: ThemeRef
 }
 
-interface Theme {
-  ref: ThemeRef
-  name: LocalizedText
-  light: AppearanceTokens
-  dark: AppearanceTokens
-}
+type Theme<T extends ThemeRef['type'] = ThemeRef['type']> = {
+  [K in T]: {
+    ref: Extract<ThemeRef, { type: K }>
+    name: K extends 'user' ? string : LocalizedText
+    light: K extends 'extension' ? AppearanceTokens : UserAppearanceTokens
+    dark: K extends 'extension' ? AppearanceTokens : UserAppearanceTokens
+  }
+}[T]
 ```
 
 主题引用区分三种来源：
@@ -101,6 +103,8 @@ type ThemeRef =
 ThemeRef 保存稳定身份。用户主题 id 由本体生成；扩展登记使用扩展内部 id，宿主将其绑定到真实 extensionId。get 和 open 统一接收完整 ref。Clone 必须成功读取该 ref 指向的来源，读取失败则报告失败。
 
 用户主题名称是普通字符串，在目录中使用 LocalizedText 的字符串分支。创建或 Clone 后普通保存不会自动选用，修改已经选中的用户主题则会正常更新正式外观。默认主题同样具备完整亮暗两套值，公共入口可以取得桌面默认，不从其他扩展或上次主题补齐空缺。新增 token 通过合同和所属数据的正常演进处理，不靠重新套用模板。
+
+AppearanceTokens 表达共同的桌面外观分支。UserAppearanceTokens 使用相同词表，字体槽限定为默认、系统或用户字体。Theme 的来源同时约束身份、名称与字体；get 和 open 根据传入的 ThemeRef 保留来源类型，用户主题的读取值可直接建立创建或更新草稿。目录摘要使用 ThemeSummary，保留身份与名称的来源关联。
 
 <a id="scale"></a>
 
@@ -189,8 +193,8 @@ Clone 读取主题完整的亮暗定义。系统字体保留族名，用户 Font
 需要实际占用资源时，open 返回以下读取句柄：
 
 ```ts
-interface ThemeRead {
-  readonly theme: Theme
+interface ThemeRead<T extends ThemeRef['type'] = ThemeRef['type']> {
+  readonly theme: Theme<T>
   readonly fontResources: ThemeFontResources
   dispose(): Promise<void>
 }

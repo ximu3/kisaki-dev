@@ -148,14 +148,18 @@ type MetadataUpdateInput<T extends EntryType> =
   | { type: 'profile'; profileId: string; clues?: IdentificationClues<T> }
   | { type: 'prepared'; data: MetadataCandidate<T>; relationScopes?: MetadataRelationScopes<T> }
 
-interface MetadataFetchResult<T extends EntryType> {
-  data: MetadataCandidate<T>
-  relationScopes: MetadataRelationScopes<T>
-  issues: readonly IngestIssue[]
-}
+type MetadataFetchResult<T extends EntryType = EntryType> = {
+  [K in T]: {
+    data: MetadataCandidate<K>
+    relationScopes: MetadataRelationScopes<K>
+    issues: readonly IngestIssue[]
+  }
+}[T]
 ```
 
 metadata.fetch 接收 entryType、profileId、clues 和可选 request，返回候选、完整关系范围及获取问题。省略 request 时读取方案配置范围，明确请求须受方案支持。成功结果具有合法根候选，本地创建所需资料由 ingest 另行核对；存在合法候选图时，失败可以携带同类型 partialResult。
+
+fetch、ingest.add 和 ingest.update 的结果保留输入确定的根或目标种类；候选与关系范围在同一根类型分支中配对。批量结果保留各项实际结果及输入涉及的种类，内部执行入口沿用同一关联。
 
 ingest.add 的输入为 entryType、metadata: MetadataInput、可选 initial 与已经声明的本地内容输入。initial 复用 entries.create 的 evaluation、Work record 与 completionRecords，不进入 MetadataCandidate。
 

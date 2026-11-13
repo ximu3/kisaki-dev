@@ -355,6 +355,8 @@ const result = await processor.process(
 
 process(input, context) 的 items 每项包含本次唯一的 key、有限字段标识、当前值，以及必要的已有只读上下文。正常结果是普通的 key 到新值映射，必须覆盖全部输入 key。无需修改时也要明确返回原值，不能漏项后报告成功。失败的 partialResult 可以只包含成功项，不能补上原值来伪装成功。
 
+调用边界按原始 items 的键与字段类型解析结果。解析后的 FieldProcessingResult 保留输入键及对应值类型，partial 模式同时保留键可以缺省的语义。
+
 每个字段按其 processors 顺序执行，同一步骤中兼容的项目可以批量处理。partialResult 中的成功项只表示本步骤成功，仍须完成该字段剩余的处理器链。失败项停止后续处理；候选字段的采用遵守[整条链成功规则](../domains/metadata/profiles.md#processors)，其他独立字段继续。原始匹配资料保持独立，处理结果不能改变身份依据。
 
 处理器只返回本次获准字段的加工值，对象、关系、身份和资料写入继续由调用流程负责。翻译服务与阈值等设置属于扩展，处理器的选用与顺序属于 Profile。

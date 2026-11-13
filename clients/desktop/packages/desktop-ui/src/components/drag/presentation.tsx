@@ -27,7 +27,7 @@ export function DragHandle(props: DragHandleProps): JSX.Element {
 
   return (
     <Button
-      variant="ghost"
+      variant="text"
       size="icon-sm"
       {...rest}
       class={classes(styles.handle, local.class)}

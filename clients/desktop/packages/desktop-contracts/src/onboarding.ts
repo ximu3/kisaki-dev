@@ -43,11 +43,13 @@ export type OnboardingGroup = (typeof onboardingGroups)[number]
 export type OnboardingMode = 'firstUse' | 'update' | 'manual'
 
 /** Durable resource created or installed while applying a recommendation. */
-export type OnboardingResourceRef =
-  | { readonly type: 'extension'; readonly extensionId: string }
-  | { readonly type: 'metadataProfile'; readonly profileId: string }
-  | { readonly type: 'scanConfig'; readonly configId: string }
-  | { readonly type: 'showcaseSection'; readonly sectionId: string }
+export type OnboardingResourceRef<G extends OnboardingGroup = OnboardingGroup> = {
+  readonly preferences: never
+  readonly extensions: { readonly type: 'extension'; readonly extensionId: string }
+  readonly metadataProfiles: { readonly type: 'metadataProfile'; readonly profileId: string }
+  readonly scanner: { readonly type: 'scanConfig'; readonly configId: string }
+  readonly showcase: { readonly type: 'showcaseSection'; readonly sectionId: string }
+}[G]
 
 /** Established applied or skipped outcome with its handling time and any created resources. */
 export type OnboardingHandled =
@@ -148,10 +150,10 @@ export interface OnboardingIssue {
 }
 
 /** One item's application outcome, retained resources and stage-specific issues. */
-export interface OnboardingItemResult {
+export interface OnboardingItemResult<G extends OnboardingGroup = OnboardingGroup> {
   readonly itemId: string
   readonly outcome: 'applied' | 'notApplied' | 'notStarted'
-  readonly resources: readonly OnboardingResourceRef[]
+  readonly resources: readonly OnboardingResourceRef<G>[]
   readonly issues: readonly OnboardingIssue[]
 }
 
@@ -161,10 +163,12 @@ export interface OnboardingItemResult {
  * Same-database groups commit atomically. Extension installation can remain durable even when its
  * handling record was not committed.
  */
-export interface OnboardingApplyResult<G extends OnboardingGroup = OnboardingGroup> {
-  readonly group: G
-  readonly items: readonly OnboardingItemResult[]
-}
+export type OnboardingApplyResult<G extends OnboardingGroup = OnboardingGroup> = {
+  [K in G]: {
+    readonly group: K
+    readonly items: readonly OnboardingItemResult<K>[]
+  }
+}[G]
 
 /** Explicit recommendation selection with the handling baselines required to mark it skipped. */
 export interface OnboardingSkipInput {
@@ -506,5 +510,5 @@ export function parseOnboardingApplyResult(input: unknown): OnboardingApplyResul
     throw new DesktopError('InvalidInput', 'Same-database onboarding apply is atomic')
   }
 
-  return value
+  return value as OnboardingApplyResult
 }

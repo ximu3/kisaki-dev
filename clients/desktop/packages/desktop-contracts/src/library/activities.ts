@@ -53,8 +53,8 @@ export type ActivityCreate = {
  *
  * Names survive ordinary renaming or removal of referenced context.
  */
-export type Activity = {
-  [K in WorkType]: ActivityTiming & {
+export type Activity<T extends WorkType = WorkType> = {
+  [K in T]: ActivityTiming & {
     readonly id: string
     readonly work: EntryRef<K>
     readonly context: ActivityContextByType[K]
@@ -64,7 +64,7 @@ export type Activity = {
       readonly launchConfigName?: string
     }
   }
-}[WorkType]
+}[T]
 
 /**
  * A complete timing correction with optional comparison against original timing and context.
@@ -154,7 +154,11 @@ export interface ActivitiesApi {
   ): Promise<ListResult<Activity>>
 
   /** Reads a saved activity belonging to the supplied work, or null when it is absent. */
-  get(work: WorkRef, activityId: string, call?: CallOptions): Promise<Activity | null>
+  get<T extends WorkType>(
+    work: WorkRef<T>,
+    activityId: string,
+    call?: CallOptions,
+  ): Promise<Activity<T> | null>
 
   /**
    * Records an explicit past interval and its actual context.
@@ -256,6 +260,12 @@ export function parseActivityCreate(input: unknown, submittedAt: number): Activi
 }
 
 /** Parses a complete timing edit and any original context, rejecting a new end after submission. */
+export function parseActivityUpdate<T extends WorkType>(
+  work: WorkRef<T>,
+  input: unknown,
+  submittedAt: number,
+): ActivityUpdate<T>
+
 export function parseActivityUpdate(
   work: WorkRef,
   input: unknown,

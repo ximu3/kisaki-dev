@@ -25,13 +25,6 @@ interface LibraryWriteGraph {
   prepared?: readonly PreparedAttachment[]
 }
 
-interface LibraryWriteResult {
-  entries: Readonly<Record<string, EntryRef>>
-  parts: Readonly<Record<string, PartRef>>
-  tags: Readonly<Record<string, string>>
-  changed: boolean
-}
-
 type GraphEntryRef<T extends EntryType = EntryType> = EntryRef<T> | { key: string }
 
 type GraphPartRef<T extends PartType = PartType> = PartRef<T> | { key: string }
@@ -40,6 +33,15 @@ type GraphTagRef = { id: string } | { key: string }
 ```
 
 省略区域或空数组表示没有该类意图，空图是 changed: false 与三份空映射。prepared 只提供资源占用，不构成独立写入；没有最终业务引用的准备结果不被采用。三个结果映射只包含本次 create 中确实建立的 key，不包含已有引用或隐式新建对象。
+
+`LibraryWriteResult<G>` 根据请求 G 保留创建键与对象种类，writeGraph 和结果解析使用同一关联：
+
+| 字段 | 内容 |
+| --- | --- |
+| entries | 以 entries.create 的 key 为键，各值为对应 type 的 EntryRef |
+| parts | 以 parts.create 的 key 为键，各值为对应 type 的 PartRef |
+| tags | 以 tags.create 的 key 为键，各值为新标签 ID |
+| changed | 本次提交是否实际改变资料 |
 
 所有 create key 在整份图中唯一且非空。`{ key }` 只能指向本次相应 create 节点，不能引用更新项或另一次请求。实际类型由被引用节点确定并核对槽位；TypeScript 无法仅凭字符串证明图内引用正确，运行校验仍须检查完整图。
 

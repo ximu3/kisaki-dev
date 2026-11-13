@@ -89,6 +89,29 @@ export interface ListResult<T> {
 }
 
 /**
+ * Result values keyed by submitted items, retaining definite tuple keys and optional membership.
+ *
+ * Dynamic dictionaries use ordinary indexed access. Finite keys remain optional unless a fixed
+ * input tuple contains an item with that exact key.
+ */
+export type KeyedResult<
+  Items extends readonly { readonly key: string }[] | undefined,
+  Values extends object,
+> = string extends keyof Values
+  ? Values
+  : Items extends readonly { readonly key: string }[]
+    ? number extends Items['length']
+      ? Partial<Values>
+      : Partial<Values> & {
+          readonly [
+            K in keyof Values as Extract<Items[number], { readonly key: K }> extends never
+              ? never
+              : K
+          ]-?: Values[K]
+        }
+    : Partial<Values>
+
+/**
  * Saved execution definition represented as a usable value or an explicit validation failure.
  *
  * Invalid definitions retain a safe explanation while the surrounding object stays usable. Raw

@@ -19,6 +19,7 @@
   }
   .summary:focus-visible {
     outline: var(--kui-focus-width) solid var(--ring);
+    animation: var(--kui-focus-enter);
   }
 
   .summary::-webkit-details-marker {

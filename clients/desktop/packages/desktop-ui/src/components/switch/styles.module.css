@@ -1,9 +1,6 @@
 /* Switch presentation keeps the actual checkbox as the focus and submission target. */
 
 @layer components {
-  .root[aria-invalid='true'] {
-    border-color: var(--destructive);
-  }
   .root {
     appearance: none;
     display: inline-flex;
@@ -45,7 +42,11 @@
   }
   .root:focus-visible {
     outline: var(--kui-focus-width) solid var(--ring);
+    animation: var(--kui-focus-enter);
     outline-offset: 2px;
+  }
+  .root[aria-invalid='true'] {
+    border-color: var(--destructive);
   }
   .root:disabled {
     opacity: 0.5;

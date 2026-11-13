@@ -37,11 +37,14 @@ export interface ScanDiscovery {
 /**
  * Candidate local-content outcome, including registration failures with retained partial results.
  */
-export type ScanLocalContentResult =
+export type ScanLocalContentResult<T extends WorkType = WorkType> =
   | { readonly status: 'included' }
   | { readonly status: 'skipped' }
-  | { readonly status: 'registered'; readonly result: LocalContentRegistrationResult }
-  | { readonly status: 'failed'; readonly error: ExecutionFailure<LocalContentRegistrationResult> }
+  | { readonly status: 'registered'; readonly result: LocalContentRegistrationResult<T> }
+  | {
+      readonly status: 'failed'
+      readonly error: ExecutionFailure<LocalContentRegistrationResult<T>>
+    }
   | { readonly status: 'notStarted' }
 
 /**
@@ -49,15 +52,17 @@ export type ScanLocalContentResult =
  *
  * Established root outcomes remain available when subsequent existing-content registration fails.
  */
-export type ScanCandidateResult = { readonly path: string; readonly clues: WorkClues | null } & (
-  | { readonly result: IngestAddResult<WorkType>; readonly localContent: ScanLocalContentResult }
-  | { readonly error: ExecutionFailure<IngestAddResult<WorkType>> }
-)
+export type ScanCandidateResult<T extends WorkType = WorkType> = {
+  [K in T]: { readonly path: string; readonly clues: WorkClues | null } & (
+    | { readonly result: IngestAddResult<K>; readonly localContent: ScanLocalContentResult<K> }
+    | { readonly error: ExecutionFailure<IngestAddResult<K>> }
+  )
+}[T]
 
 /** Discovery progress and outcomes for candidates actually handled during a scan. */
-export interface ScanResult {
+export interface ScanResult<T extends WorkType = WorkType> {
   readonly discovery: ScanDiscovery
-  readonly candidates: readonly ScanCandidateResult[]
+  readonly candidates: readonly ScanCandidateResult<T>[]
 }
 
 /** Persisted scan lifecycle state, including cancellation and interruption. */
@@ -68,24 +73,26 @@ export type ScanRunStatus = 'active' | 'completed' | 'failed' | 'cancelled' | 'i
  *
  * Reports survive deletion of their configuration or associated task history.
  */
-export interface ScanRun {
-  readonly id: string
-  readonly scanConfigId: string
-  readonly configSnapshot: ScanConfigSnapshot
-  readonly scope: ScanScope
-  readonly description: string | null
+export type ScanRun<T extends WorkType = WorkType> = {
+  [K in T]: {
+    readonly id: string
+    readonly scanConfigId: string
+    readonly configSnapshot: ScanConfigSnapshot<K>
+    readonly scope: ScanScope
+    readonly description: string | null
 
-  readonly status: ScanRunStatus
-  readonly result: ScanResult | null
-  readonly error: ErrorSummary | null
+    readonly status: ScanRunStatus
+    readonly result: ScanResult<K> | null
+    readonly error: ErrorSummary | null
 
-  /** UTC milliseconds since the Unix epoch. */
-  readonly createdAt: number
-  /** UTC milliseconds since the Unix epoch. */
-  readonly startedAt: number | null
-  /** UTC milliseconds since the Unix epoch. */
-  readonly finishedAt: number | null
-}
+    /** UTC milliseconds since the Unix epoch. */
+    readonly createdAt: number
+    /** UTC milliseconds since the Unix epoch. */
+    readonly startedAt: number | null
+    /** UTC milliseconds since the Unix epoch. */
+    readonly finishedAt: number | null
+  }
+}[T]
 
 /** Scan-history projection omitting the full captured configuration and candidate report. */
 export type ScanRunSummary = Omit<ScanRun, 'configSnapshot' | 'result'>
@@ -220,7 +227,7 @@ function parseScanCandidateResult(input: unknown): ScanCandidateResult {
       )
     }
   }
-  return value
+  return value as ScanCandidateResult
 }
 
 /**
@@ -255,7 +262,9 @@ export function parseScanResult(input: unknown): ScanResult {
  * Requires finished discovery and an outcome for every candidate, with no unstarted local-content
  * step.
  */
-export function requireCompleteScanResult(result: ScanResult | null): ScanResult {
+export function requireCompleteScanResult<T extends WorkType>(
+  result: ScanResult<T> | null,
+): ScanResult<T> {
   if (
     !result ||
     !result.discovery.finished ||
@@ -268,7 +277,7 @@ export function requireCompleteScanResult(result: ScanResult | null): ScanResult
   return result
 }
 
-/** Parses persisted scan history and requires completed runs to account for all discovered work. */
+/** Parses same-medium scan history and requires completed runs to account for all discovered work. */
 export function parseScanRun(input: unknown): ScanRun {
   const relative = v.pipe(v.unknown(), v.transform(parseRelativePath))
   const scope = v.union([
@@ -298,10 +307,17 @@ export function parseScanRun(input: unknown): ScanRun {
     input,
     'Invalid scan history',
   )
+  for (const candidate of value.result?.candidates ?? []) {
+    const result = 'result' in candidate ? candidate.result : candidate.error.partialResult
+    if (result && result.entry.type !== value.configSnapshot.workType) {
+      throw new DesktopError('InvalidInput', 'Scan result does not match the captured work type')
+    }
+  }
+
   if (value.status === 'completed') {
     requireCompleteScanResult(value.result)
   }
-  return value
+  return value as ScanRun
 }
 
 /**

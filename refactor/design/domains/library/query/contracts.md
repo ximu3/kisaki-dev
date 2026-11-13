@@ -78,7 +78,9 @@ list(query, options) 返回 EntryListResult；locate(query, target, options) 的
 
 locate 的区间起点为 `max(0, min(index - floor(limit / 2), total - limit))`，因此目标尽量位于中间，靠近末端时填满剩余区间。index、offset、items 和 total 属于同一次短只读事务。group 存在时，所有位置和数量均相对于该组与原 query 的交集；不能用一个组的下标读取另一个组。
 
-get(ref) 返回 EntryDetails 或 null；findByExternalIdentity(identity) 返回 EntryRef 或 null。两者遵守普通可见范围，不通过特殊结果泄露隐藏目标。身份查找精确比较 source 与完整 sourceId。新增、绑定和合并的内部完整身份核对不能以这项可见读取的 null 推断身份尚未占用。
+get(ref) 返回与 `EntryRef<T>` 对应的 `EntryDetails<T>` 或 null；findByExternalIdentity(identity) 返回 EntryRef 或 null。两者遵守普通可见范围，不通过特殊结果泄露隐藏目标。身份查找精确比较 source 与完整 sourceId。新增、绑定和合并的内部完整身份核对不能以这项可见读取的 null 推断身份尚未占用。
+
+按 PartRef、AnnotationRef 或 WorkRef 读取分部、标注、活动和完成记录时，结果保留引用确定的种类及其专属字段。分部列表按 partType 返回对应详情；创建、合并和种类更正返回实际目标种类的引用。混合范围查询按每项真实种类交付联合结果。
 
 所有结构严格解析：未知字段、未知操作、非法数值和不适用字段均拒绝。规则的结构和字段适用性也检查禁用组；引用的当前存在性只检查本次实际执行的范围和启用条件。禁用组可以保留已失效的引用，重新启用时正常报错。规则组不嵌套，types 非空且去重；空 rules 或全部禁用正常返回空结果，不能回退全库。字段排序按全部启用组的类型核对；没有启用类型时仍校验字段名与形状。
 

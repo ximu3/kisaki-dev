@@ -195,6 +195,15 @@ export type MetadataProfilePreset<T extends EntryType = EntryType> = {
  */
 export interface MetadataProfilesApi {
   /** Reads saved profile summaries in formal order, optionally restricted to one entry kind. */
+  list<T extends EntryType>(
+    filter: { readonly entryType: T },
+    call?: CallOptions,
+  ): Promise<
+    readonly Pick<
+      MetadataProfile<T>,
+      'id' | 'name' | 'description' | 'entryType' | 'preferredLanguages' | 'isDefault'
+    >[]
+  >
   list(
     filter?: { readonly entryType?: EntryType },
     call?: CallOptions,
@@ -213,7 +222,10 @@ export interface MetadataProfilesApi {
   get(id: string, call?: CallOptions): Promise<MetadataProfile | null>
 
   /** Commits an independent profile from the supplied definition and explicit default selection. */
-  create(input: MetadataProfileCreate, call?: CallOptions): Promise<MetadataProfile>
+  create<I extends MetadataProfileCreate>(
+    input: I,
+    call?: CallOptions,
+  ): Promise<MetadataProfile<I['entryType']>>
 
   /**
    * Compares and commits changed fields and complete definition values.
@@ -236,6 +248,10 @@ export interface MetadataProfilesApi {
    * Reads fixed definitions matching the requested entry kind and applicable language for use in
    * drafts.
    */
+  listPresets<T extends EntryType>(
+    filter: { readonly entryType: T; readonly language?: string },
+    call?: CallOptions,
+  ): Promise<readonly MetadataProfilePreset<T>[]>
   listPresets(
     filter?: { readonly entryType?: EntryType; readonly language?: string },
     call?: CallOptions,

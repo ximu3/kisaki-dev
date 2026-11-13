@@ -1,7 +1,7 @@
 /** @fileoverview Defines extension-owned private JSON and protected secret storage with per-key atomic comparisons. */
 
 import type { JsonValue } from './json'
-import type { CallOptions } from './operations'
+import type { CallOptions, KeyedResult } from './operations'
 import * as v from 'valibot'
 import { nonemptyText, id, unique, text, parseValue } from './validation'
 import { parseJsonValue } from './json'
@@ -39,14 +39,33 @@ export interface PrivateCommit {
   readonly secrets?: readonly PrivateMutation<string>[]
 }
 
+/** Mutations submitted to one optional private store in a commit. */
+type SubmittedMutations<Items> = Items extends readonly (infer Mutation)[]
+  ? Extract<Mutation, PrivateMutation<JsonValue>>
+  : never
+
 /**
  * Post-commit revisions for the submitted keys in each store.
  *
  * Sets receive fresh revisions; deleted or absent keys return null. Unrelated keys are omitted.
  */
-export interface PrivateCommitResult {
-  readonly values: Readonly<Record<string, string | null>>
-  readonly secrets: Readonly<Record<string, string | null>>
+export interface PrivateCommitResult<I extends PrivateCommit = PrivateCommit> {
+  readonly values: KeyedResult<
+    I['values'],
+    {
+      readonly [
+        Mutation in SubmittedMutations<I['values']> as Mutation['key']
+      ]: Mutation['type'] extends 'set' ? string : null
+    }
+  >
+  readonly secrets: KeyedResult<
+    I['secrets'],
+    {
+      readonly [
+        Mutation in SubmittedMutations<I['secrets']> as Mutation['key']
+      ]: Mutation['type'] extends 'set' ? string : null
+    }
+  >
 }
 
 /** Private JSON reads and per-key writes scoped to the actual extension owner. */
@@ -59,12 +78,12 @@ export interface PrivateValuesApi {
    *
    * An optional revision is compared atomically; a mismatch preserves the old value.
    */
-  set(
+  set<T extends JsonValue>(
     key: string,
-    value: JsonValue,
+    value: T,
     options?: PrivateWriteOptions,
     call?: CallOptions,
-  ): Promise<PrivateValue<JsonValue>>
+  ): Promise<PrivateValue<T>>
 
   /**
    * Deletes an owned key after its optional revision comparison.
@@ -121,7 +140,10 @@ export interface PrivateStorageApi {
    *
    * Any protection or revision-comparison failure preserves all previous values.
    */
-  commit(input: PrivateCommit, call?: CallOptions): Promise<PrivateCommitResult>
+  commit<const I extends PrivateCommit>(
+    input: I,
+    call?: CallOptions,
+  ): Promise<PrivateCommitResult<I>>
 }
 
 /**
