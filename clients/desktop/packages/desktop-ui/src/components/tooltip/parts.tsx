@@ -24,7 +24,7 @@ const TooltipContext = createContext<TooltipState>()
  * Tooltip content supplements an existing accessible name and contains no interactive controls.
  */
 export interface TooltipProps extends ParentProps {
-  /** Initial pointer wait in milliseconds. Defaults to 300. */
+  /** Initial pointer wait in milliseconds. Defaults to 400. */
   delayMs?: number
 }
 

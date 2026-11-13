@@ -27,6 +27,11 @@
   .surface:where(:focus-within, [data-open], [aria-expanded='true']) {
     outline: none;
     border-color: var(--ring);
+    transition:
+      background-color var(--kui-hover-duration) ease,
+      color var(--kui-hover-duration) ease,
+      opacity var(--kui-hover-duration) ease,
+      border-color var(--kui-focus-duration) ease;
   }
   .surface:where(:disabled, [data-disabled], :has(> input:disabled)) {
     opacity: 0.5;

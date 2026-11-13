@@ -63,6 +63,7 @@
   }
   .legend button:focus-visible {
     outline: var(--kui-focus-width) solid var(--ring);
+    animation: var(--kui-focus-enter);
     border-radius: var(--radius-sm);
   }
   .legend span {

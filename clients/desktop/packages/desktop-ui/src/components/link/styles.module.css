@@ -11,6 +11,7 @@
   }
   .root:focus-visible {
     outline: var(--kui-focus-width) solid var(--ring);
+    animation: var(--kui-focus-enter);
     outline-offset: 2px;
     border-radius: var(--radius-md);
   }

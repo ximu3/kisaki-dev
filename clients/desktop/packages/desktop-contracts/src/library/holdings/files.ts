@@ -282,12 +282,12 @@ export interface HeldFilesApi {
    *
    * Another registration at that path produces a conflict.
    */
-  relocate(
-    work: EntryRef<FileWorkType>,
+  relocate<T extends FileWorkType>(
+    work: EntryRef<T>,
     fileId: string,
     input: { readonly path: string; readonly expected?: { readonly path: string } },
     call?: CallOptions,
-  ): Promise<HoldingsRelocationResult>
+  ): Promise<HoldingsRelocationResult<T>>
 
   /**
    * Retains the chosen survivor and participant path, migrating saved references atomically.

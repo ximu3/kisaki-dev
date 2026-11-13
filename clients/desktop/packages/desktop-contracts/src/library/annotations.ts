@@ -62,8 +62,8 @@ type NewTarget<K extends WorkType> = K extends 'game'
  *
  * Game annotations retain captured images; other media require their corresponding location form.
  */
-export type Annotation = {
-  [K in WorkType]: {
+export type Annotation<T extends WorkType = WorkType> = {
+  [K in T]: {
     readonly workType: K
     readonly id: string
     readonly title: string | null
@@ -74,7 +74,7 @@ export type Annotation = {
     readonly updatedAt: number
   } & WorkId<K> &
     AnnotationTargetByType[K]
-}[WorkType]
+}[T]
 
 /**
  * New annotation content and a complete actual target.
@@ -165,23 +165,22 @@ export interface AnnotationSummary {
 }
 
 /** Lightweight original locations for a live file's content-order index, without saved text or images. */
-export type AnnotationLocationItem =
-  | {
-      readonly ref: AnnotationRef<'anime'>
-      readonly location: PlaybackAnnotationLocation
-      /** UTC milliseconds since the Unix epoch. */
-      readonly createdAt: number
-    }
-  | {
-      readonly ref: AnnotationRef<'comic' | 'novel'>
-      readonly location: ReadingAnnotationLocation
-      /** UTC milliseconds since the Unix epoch. */
-      readonly createdAt: number
-    }
+export type AnnotationLocationItem<
+  T extends 'anime' | 'comic' | 'novel' = 'anime' | 'comic' | 'novel',
+> = {
+  [K in T]: {
+    readonly ref: AnnotationRef<K>
+    readonly location: AnnotationTargetByType[K]['location']
+    /** UTC milliseconds since the Unix epoch. */
+    readonly createdAt: number
+  }
+}[T]
 
 /** A page of original annotation locations and the total matching count. */
-export interface AnnotationLocationResult {
-  readonly items: readonly AnnotationLocationItem[]
+export interface AnnotationLocationResult<
+  T extends 'anime' | 'comic' | 'novel' = 'anime' | 'comic' | 'novel',
+> {
+  readonly items: readonly AnnotationLocationItem<T>[]
   readonly total: number
 }
 
@@ -202,18 +201,18 @@ export interface AnnotationsApi {
    * Reads a complete saved annotation, or null when it is absent, without changing a content
    * session.
    */
-  get(ref: AnnotationRef, call?: CallOptions): Promise<Annotation | null>
+  get<T extends WorkType>(ref: AnnotationRef<T>, call?: CallOptions): Promise<Annotation<T> | null>
 
   /**
    * Lists original locations for one file's content-order index.
    *
    * Results exclude saved text, images and unrelated files.
    */
-  listLocations(
-    scope: { readonly work: EntryRef<'anime' | 'comic' | 'novel'>; readonly fileId: string },
+  listLocations<T extends 'anime' | 'comic' | 'novel'>(
+    scope: { readonly work: EntryRef<T>; readonly fileId: string },
     options: ListOptions,
     call?: CallOptions,
-  ): Promise<AnnotationLocationResult>
+  ): Promise<AnnotationLocationResult<T>>
 
   /**
    * Commits an annotation, its exact location and adopted content together.
@@ -364,6 +363,11 @@ export function parseAnnotationCreate(input: unknown): AnnotationCreate {
  * Rejects a known transition from a nonnull file reference to null; current-state checks remain
  * with the write owner.
  */
+export function parseAnnotationUpdate<T extends WorkType>(
+  ref: AnnotationRef<T>,
+  input: unknown,
+): AnnotationUpdate<T>
+
 export function parseAnnotationUpdate(ref: AnnotationRef, input: unknown): AnnotationUpdate {
   const type = parseAnnotationRef(ref).workType
   const fields = v.strictObject(

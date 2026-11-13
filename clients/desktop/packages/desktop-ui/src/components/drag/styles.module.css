@@ -17,11 +17,20 @@
   }
 
   .handle {
-    cursor: grab;
     touch-action: none;
   }
-  .handle:active {
+  .handle:not(:disabled) {
+    cursor: grab;
+  }
+  .handle:not(:disabled):active {
     cursor: grabbing;
+  }
+  .handle[data-variant='text'] {
+    transition: color var(--kui-hover-duration) ease;
+  }
+  .handle[data-variant='text']:not(:disabled):hover {
+    background: transparent;
+    color: var(--foreground);
   }
 
   .indicator {

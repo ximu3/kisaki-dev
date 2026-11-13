@@ -91,7 +91,7 @@ export function createTooltip(delay?: Accessor<number | undefined>) {
     if (focused || hovered.content || continuing) {
       show()
     } else {
-      timer = setTimeout(show, delay?.() ?? 300)
+      timer = setTimeout(show, delay?.() ?? 400)
     }
   }
 

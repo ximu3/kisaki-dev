@@ -13,6 +13,7 @@
   }
   .editor:focus-within {
     border-color: var(--ring);
+    transition: border-color var(--kui-focus-duration) ease;
   }
 
   .toolbar {
@@ -24,7 +25,6 @@
     padding: 0 0.125rem;
     border-bottom: 1px solid var(--border);
     background: color-mix(in srgb, var(--muted) 60%, var(--input));
-    --kui-icon-size: 1.125rem;
   }
 
   .toolbar .command {
@@ -45,6 +45,12 @@
     flex-direction: column;
     min-width: 0;
     min-height: 0;
+  }
+
+  @media (forced-colors: active) {
+    .editor:focus-within {
+      border-color: Highlight;
+    }
   }
 
   .preview {

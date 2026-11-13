@@ -167,19 +167,20 @@ export type PartKindTarget =
     }
   | { readonly kind: 'animeExtra'; readonly type: AnimeExtraType | null }
 
-/** An anime part-kind correction with explicit common-field edits and comparison context. */
-export interface PartKindChange {
-  readonly target: PartKindTarget
-  readonly changes: Partial<PartCommonFields & { readonly declaredDurationMs: number | null }>
-  readonly expected?: Partial<
-    PartCommonFields & {
-      readonly declaredDurationMs: number | null
-      readonly type: AnimeEpisodeType | AnimeExtraType | null
-      readonly numberLabel: string | null
-    }
-  >
-  readonly prepared?: readonly PreparedAttachment[]
-}
+/** An opposite-kind anime correction with common-field edits and source-kind comparison values. */
+export type PartKindChange<
+  T extends 'animeEpisode' | 'animeExtra' = 'animeEpisode' | 'animeExtra',
+> = {
+  [K in T]: {
+    readonly target: Extract<
+      PartKindTarget,
+      { readonly kind: K extends 'animeEpisode' ? 'animeExtra' : 'animeEpisode' }
+    >
+    readonly changes: Partial<PartCommonFields & { readonly declaredDurationMs: number | null }>
+    readonly expected?: Partial<PartFields<K>>
+    readonly prepared?: readonly PreparedAttachment[]
+  }
+}[T]
 
 /**
  * A volume's chapter membership with volume-specific numbering.
@@ -207,17 +208,21 @@ export type VolumeChapterChange =
  */
 export interface PartsApi {
   /** Lists parts within one work and kind in saved order under the requested filters. */
-  list(query: PartQuery, options: ListOptions, call?: CallOptions): Promise<ListResult<PartDetails>>
+  list<Q extends PartQuery>(
+    query: Q,
+    options: ListOptions,
+    call?: CallOptions,
+  ): Promise<ListResult<PartDetails<Q['partType']>>>
 
   /**
    * Reads saved part details, or null when absent, without opening content or changing completion.
    */
-  get(ref: PartRef, call?: CallOptions): Promise<PartDetails | null>
+  get<T extends PartType>(ref: PartRef<T>, call?: CallOptions): Promise<PartDetails<T> | null>
 
   /**
    * Commits a part and its adopted content under the supplied work, returning its typed identity.
    */
-  create(input: PartCreate, call?: CallOptions): Promise<PartRef>
+  create<I extends PartCreate>(input: I, call?: CallOptions): Promise<PartRef<I['type']>>
 
   /**
    * Compares and saves changed part facts and related references while preserving owner and kind.
@@ -238,22 +243,30 @@ export interface PartsApi {
    *
    * Completion marks combine; the target's preference and populated facts take precedence.
    */
-  merge(
-    input: {
+  merge<
+    I extends {
       [K in PartType]: { readonly source: PartRef<K>; readonly target: PartRef<K> }
     }[PartType],
+  >(
+    input: I,
     call?: CallOptions,
-  ): Promise<PartRef>
+  ): Promise<I['target']>
 
   /**
    * Corrects an anime episode or extra in place, preserving identity and replacing kind fields
    * atomically.
    */
-  changeKind(
-    ref: PartRef<'animeEpisode' | 'animeExtra'>,
-    input: PartKindChange,
-    call?: CallOptions,
-  ): Promise<PartRef<'animeEpisode' | 'animeExtra'>>
+  changeKind<
+    Args extends {
+      [K in 'animeEpisode' | 'animeExtra']: [
+        ref: PartRef<K>,
+        input: PartKindChange<K>,
+        call?: CallOptions,
+      ]
+    }['animeEpisode' | 'animeExtra'],
+  >(
+    ...args: Args
+  ): Promise<PartRef<Args[1]['target']['kind']>>
 
   /**
    * Reorders selected slots against the complete work-and-kind baseline.
@@ -426,6 +439,11 @@ export function parsePartUpdate(input: unknown): PartUpdate {
  *
  * Removed source classification or numbering may be compared alongside changed common facts.
  */
+export function parsePartKindChange<T extends 'animeEpisode' | 'animeExtra'>(
+  ref: PartRef<T>,
+  input: unknown,
+): PartKindChange<T>
+
 export function parsePartKindChange(
   ref: PartRef<'animeEpisode' | 'animeExtra'>,
   input: unknown,
@@ -464,7 +482,7 @@ export function parsePartKindChange(
     value.expected,
     ref.type === 'animeEpisode' ? ['type', 'numberLabel'] : ['type'],
   )
-  return value
+  return value as PartKindChange
 }
 
 /** Parses part filters and checks the owning work kind and applicable classifications. */

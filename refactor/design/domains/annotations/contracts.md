@@ -58,23 +58,23 @@ offset 是非负安全整数，limit 是 1–200 的安全整数。越界参数�
 
 摘要片段从已保存纯文本取得，各自最多 160 个 UTF-16 单元，并收敛到完整扩展字素边界；没有实际文字时为 null，不补占位正文。title 保留正式标题，位置提示只提供保存值可以直接解释的时间或原始页身份，不打开文件、推导章节名或返回选区几何。不能直接解释的文字锚点提示为 null。game 使用 image，其他 locationKind 沿各自位置分支；imageId 的实际必填性仍由所属类型验证。
 
-get(ref) 返回完整 Annotation 或 null。完整 Annotation 使用 workType 判别：游戏包含 gameId 与 imageId；动画包含 animeId、可空 fileId、PlaybackAnnotationLocation 与可空 imageId；漫画／小说包含各自作品 ID、可空 fileId、ReadingAnnotationLocation、可空 quote 和 imageId。四类均包含 id、title、content、createdAt、updatedAt；不存在的类型字段不交付。
+get(ref) 根据 AnnotationRef 的 workType 返回对应的 `Annotation<T>` 或 null。完整 Annotation 使用 workType 判别：游戏包含 gameId 与 imageId；动画包含 animeId、可空 fileId、PlaybackAnnotationLocation 与可空 imageId；漫画／小说包含各自作品 ID、可空 fileId、ReadingAnnotationLocation、可空 quote 和 imageId。四类均包含 id、title、content、createdAt、updatedAt；不存在的类型字段不交付。
 
 ```ts
-type AnnotationLocationItem =
-  | {
-      ref: AnnotationRef<'anime'>
-      location: PlaybackAnnotationLocation
-      createdAt: number
-    }
-  | {
-      ref: AnnotationRef<'comic' | 'novel'>
-      location: ReadingAnnotationLocation
-      createdAt: number
-    }
+type AnnotationLocationItem<
+  T extends 'anime' | 'comic' | 'novel' = 'anime' | 'comic' | 'novel',
+> = {
+  [K in T]: {
+    ref: AnnotationRef<K>
+    location: K extends 'anime' ? PlaybackAnnotationLocation : ReadingAnnotationLocation
+    createdAt: number
+  }
+}[T]
 
-interface AnnotationLocationResult {
-  items: readonly AnnotationLocationItem[]
+interface AnnotationLocationResult<
+  T extends 'anime' | 'comic' | 'novel' = 'anime' | 'comic' | 'novel',
+> {
+  items: readonly AnnotationLocationItem<T>[]
   total: number
 }
 ```

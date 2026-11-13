@@ -10,9 +10,9 @@ import { nonnegativeInteger, parseValue, optionalFields, validateExpectedKeys } 
 import { DesktopError } from '../errors'
 
 /** A stable one-time fact. Null date still contributes to count but not to calendar-period statistics. */
-export interface WorkCompletion extends CompletionFields {
+export interface WorkCompletion<T extends WorkType = WorkType> extends CompletionFields {
   readonly id: string
-  readonly work: WorkRef
+  readonly work: WorkRef<T>
   /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
   /** UTC milliseconds since the Unix epoch. */
@@ -29,8 +29,8 @@ export interface CompletionCreate extends CompletionFields {
 }
 
 /** A completion-creation input paired with its actual owning work for a batch. */
-export interface CompletionCreateItem extends CompletionCreate {
-  readonly work: WorkRef
+export interface CompletionCreateItem<T extends WorkType = WorkType> extends CompletionCreate {
+  readonly work: WorkRef<T>
 }
 
 /** Changes to a saved completion's date or note with independent expected values. */
@@ -78,10 +78,18 @@ export interface CompletionsApi {
   /**
    * Lists the work's individual completion facts, retaining separate records with identical values.
    */
-  list(work: WorkRef, options: ListOptions, call?: CallOptions): Promise<ListResult<WorkCompletion>>
+  list<T extends WorkType>(
+    work: WorkRef<T>,
+    options: ListOptions,
+    call?: CallOptions,
+  ): Promise<ListResult<WorkCompletion<T>>>
 
   /** Reads one completion belonging to the work, returning null when it is absent. */
-  get(work: WorkRef, completionId: string, call?: CallOptions): Promise<WorkCompletion | null>
+  get<T extends WorkType>(
+    work: WorkRef<T>,
+    completionId: string,
+    call?: CallOptions,
+  ): Promise<WorkCompletion<T> | null>
 
   /**
    * Counts matching records and distinct works, reporting unknown dates outside calendar groups.
@@ -120,10 +128,10 @@ export interface CompletionsApi {
    *
    * Equivalent duplicate work intents coalesce; contradictory duplicates reject the batch.
    */
-  recordCurrentMany(
-    items: NonEmptyArray<CompletionCreateItem>,
+  recordCurrentMany<T extends WorkType>(
+    items: NonEmptyArray<CompletionCreateItem<T>>,
     call?: CallOptions,
-  ): Promise<readonly { readonly work: WorkRef; readonly completionId: string }[]>
+  ): Promise<readonly { readonly work: WorkRef<T>; readonly completionId: string }[]>
 
   /** Compares and corrects submitted fact fields while preserving identity and owning work. */
   update(

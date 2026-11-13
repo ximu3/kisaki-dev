@@ -143,20 +143,22 @@ export interface FileRecognitionDefinition<T extends FileWorkType = FileWorkType
  * Changes affect later interpretation. An unavailable selected definition does not trigger built-in
  * fallback.
  */
-export interface FileRecognitionProfile<T extends FileWorkType = FileWorkType> {
-  readonly id: string
-  readonly workType: T
-  readonly name: string
-  readonly description: string | null
+export type FileRecognitionProfile<T extends FileWorkType = FileWorkType> = {
+  [K in T]: {
+    readonly id: string
+    readonly workType: K
+    readonly name: string
+    readonly description: string | null
 
-  readonly definition: StoredDefinition<FileRecognitionDefinition<T>>
-  readonly sortOrder: number
+    readonly definition: StoredDefinition<FileRecognitionDefinition<K>>
+    readonly sortOrder: number
 
-  /** UTC milliseconds since the Unix epoch. */
-  readonly createdAt: number
-  /** UTC milliseconds since the Unix epoch. */
-  readonly updatedAt: number
-}
+    /** UTC milliseconds since the Unix epoch. */
+    readonly createdAt: number
+    /** UTC milliseconds since the Unix epoch. */
+    readonly updatedAt: number
+  }
+}[T]
 
 /** Editable profile metadata and one complete recognition definition. */
 export interface FileRecognitionProfileFields<T extends FileWorkType> {
@@ -455,33 +457,37 @@ export type FileRecognitionSource =
  *
  * Matched results retain the interpretation source, expanded conditions and actual part identities.
  */
-export type FileRecognitionResult<T extends FileWorkType = FileWorkType> =
-  | {
-      readonly outcome: 'matched'
-      readonly source: FileRecognitionSource
-      readonly conditions: NonEmptyArray<FileConditionByType[T]>
-      readonly parts: NonEmptyArray<PartRef<FilePartType<T>>>
-    }
-  | { readonly outcome: 'unmatched' }
-  | {
-      readonly outcome: 'failed'
-      readonly source: FileRecognitionSource | null
-      readonly reason:
-        | 'invalidOutput'
-        | 'targetMissing'
-        | 'ambiguousTarget'
-        | 'conflictingInterpretation'
-        | 'invalidConfiguration'
-        | 'unreadable'
-      readonly error: ErrorSummary
-    }
+export type FileRecognitionResult<T extends FileWorkType = FileWorkType> = {
+  [K in T]:
+    | {
+        readonly outcome: 'matched'
+        readonly source: FileRecognitionSource
+        readonly conditions: NonEmptyArray<FileConditionByType[K]>
+        readonly parts: NonEmptyArray<PartRef<FilePartType<K>>>
+      }
+    | { readonly outcome: 'unmatched' }
+    | {
+        readonly outcome: 'failed'
+        readonly source: FileRecognitionSource | null
+        readonly reason:
+          | 'invalidOutput'
+          | 'targetMissing'
+          | 'ambiguousTarget'
+          | 'conflictingInterpretation'
+          | 'invalidConfiguration'
+          | 'unreadable'
+        readonly error: ErrorSummary
+      }
+}[T]
 
 /** Per-file recognition outcomes and whether each selected file's saved associations changed. */
-export interface FileReidentificationResult<T extends FileWorkType = FileWorkType> {
-  readonly work: EntryRef<T>
-  readonly files: readonly {
-    readonly fileId: string
-    readonly result: FileRecognitionResult<T>
-    readonly changed: boolean
-  }[]
-}
+export type FileReidentificationResult<T extends FileWorkType = FileWorkType> = {
+  [K in T]: {
+    readonly work: EntryRef<K>
+    readonly files: readonly {
+      readonly fileId: string
+      readonly result: FileRecognitionResult<K>
+      readonly changed: boolean
+    }[]
+  }
+}[T]

@@ -19,6 +19,7 @@ import type {
 } from './relations'
 import type { GraphLocalContent } from './local-content'
 import type { PreparedAttachment } from '../../resources'
+import type { KeyedResult } from '../../operations'
 import * as v from 'valibot'
 import {
   preparedSchema,
@@ -90,15 +91,51 @@ export interface LibraryWriteGraph {
   readonly prepared?: readonly PreparedAttachment[]
 }
 
+/** Creation items and their presence within one optional graph region. */
+type CreatedItems<Region> = Region extends {
+  readonly create: infer Items extends readonly { readonly key: string }[]
+}
+  ? Items
+  : Region extends { readonly create?: readonly (infer Node extends { readonly key: string })[] }
+    ? readonly Node[] | undefined
+    : undefined
+
 /**
  * The graph's change indicator and exact request-key mappings for successful creates.
  *
  * Failures do not return invented identities or partial creation maps.
  */
-export interface LibraryWriteResult {
-  readonly entries: Readonly<Record<string, EntryRef>>
-  readonly parts: Readonly<Record<string, PartRef>>
-  readonly tags: Readonly<Record<string, string>>
+export interface LibraryWriteResult<G extends LibraryWriteGraph = LibraryWriteGraph> {
+  readonly entries: KeyedResult<
+    CreatedItems<G['entries']>,
+    {
+      readonly [
+        Node in Extract<
+          NonNullable<CreatedItems<G['entries']>>[number],
+          GraphEntryCreate
+        > as Node['key']
+      ]: EntryRef<Node['type']>
+    }
+  >
+  readonly parts: KeyedResult<
+    CreatedItems<G['parts']>,
+    {
+      readonly [
+        Node in Extract<
+          NonNullable<CreatedItems<G['parts']>>[number],
+          GraphPartCreate
+        > as Node['key']
+      ]: PartRef<Node['type']>
+    }
+  >
+  readonly tags: KeyedResult<
+    CreatedItems<G['tags']>,
+    {
+      readonly [
+        Node in Extract<NonNullable<CreatedItems<G['tags']>>[number], GraphTagCreate> as Node['key']
+      ]: string
+    }
+  >
   readonly changed: boolean
 }
 
@@ -695,6 +732,11 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
  * Checks exact keys, requested kinds, distinct created identities and consistency with the change
  * indicator.
  */
+export function parseLibraryWriteResult<const G extends LibraryWriteGraph>(
+  input: unknown,
+  request: G,
+): LibraryWriteResult<G>
+
 export function parseLibraryWriteResult(
   input: unknown,
   request: LibraryWriteGraph,

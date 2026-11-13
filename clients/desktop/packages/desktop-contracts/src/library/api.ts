@@ -42,7 +42,10 @@ export interface LibraryApi {
    * Prepares resources, rechecks references and baselines, and commits the complete graph
    * atomically.
    */
-  writeGraph(input: LibraryWriteGraph, call?: CallOptions): Promise<LibraryWriteResult>
+  writeGraph<const G extends LibraryWriteGraph>(
+    input: G,
+    call?: CallOptions,
+  ): Promise<LibraryWriteResult<G>>
 
   /** Applies fixed same-kind merge rules while preserving the explicitly selected survivor. */
   merge<I extends EntryMergeInput>(input: I, call?: CallOptions): Promise<I['target']>

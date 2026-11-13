@@ -1,7 +1,7 @@
 /** @fileoverview Defines local-content registration inputs and actual refresh outcomes. */
 
 import type { NonEmptyArray } from '../../operations'
-import type { ExternalIdentity, WorkRef, EntryRef, FileWorkType } from '../catalog'
+import type { ExternalIdentity, WorkRef, WorkType, EntryRef, FileWorkType } from '../catalog'
 import type { ErrorSummary } from '../../errors'
 import type { FileRecognitionResult } from './file-recognition'
 
@@ -28,40 +28,46 @@ export interface LocalContentRegistrationOptions {
 }
 
 /** Actual new or reused holdings identities and any initial-refresh or incomplete-launch issues. */
-export interface LocalContentRegistrationResult {
-  readonly work: WorkRef
-  readonly registrations: NonEmptyArray<{
-    readonly type: 'directory' | 'file' | 'launchConfig'
-    readonly id: string
-    readonly outcome: 'registered' | 'alreadyRegistered'
-  }>
-  readonly issues: readonly (
-    | { readonly code: 'initialRefreshFailed'; readonly error: ErrorSummary }
-    | { readonly code: 'launchConfigIncomplete'; readonly launchConfigId: string }
-  )[]
-}
+export type LocalContentRegistrationResult<T extends WorkType = WorkType> = {
+  [K in T]: {
+    readonly work: WorkRef<K>
+    readonly registrations: NonEmptyArray<{
+      readonly type: 'directory' | (K extends 'game' ? 'launchConfig' : 'file')
+      readonly id: string
+      readonly outcome: 'registered' | 'alreadyRegistered'
+    }>
+    readonly issues: readonly (
+      | { readonly code: 'initialRefreshFailed'; readonly error: ErrorSummary }
+      | (K extends 'game'
+          ? { readonly code: 'launchConfigIncomplete'; readonly launchConfigId: string }
+          : never)
+    )[]
+  }
+}[T]
 
 /**
  * Discovery progress and actual per-file maintenance and recognition outcomes.
  *
  * Unavailable files and failed matching retain existing holdings data.
  */
-export interface HoldingsRefreshResult<T extends FileWorkType = FileWorkType> {
-  readonly work: EntryRef<T>
+export type HoldingsRefreshResult<T extends FileWorkType = FileWorkType> = {
+  [K in T]: {
+    readonly work: EntryRef<K>
 
-  readonly discovery: {
-    readonly finished: boolean
-    readonly registeredFileIds: readonly string[]
-    readonly issues: readonly { readonly path: string; readonly error: ErrorSummary }[]
+    readonly discovery: {
+      readonly finished: boolean
+      readonly registeredFileIds: readonly string[]
+      readonly issues: readonly { readonly path: string; readonly error: ErrorSummary }[]
+    }
+
+    readonly files: readonly {
+      readonly fileId: string
+      readonly availability: FileAvailability
+      readonly recognition: FileRecognitionResult<K> | null
+      readonly associationOutcome: 'updated' | 'unchanged' | 'notAttempted' | 'waitingForUse'
+    }[]
   }
-
-  readonly files: readonly {
-    readonly fileId: string
-    readonly availability: FileAvailability
-    readonly recognition: FileRecognitionResult<T> | null
-    readonly associationOutcome: 'updated' | 'unchanged' | 'notAttempted' | 'waitingForUse'
-  }[]
-}
+}[T]
 
 /** Parses one file or directory input without inspecting the filesystem. */
 export function parseLocalContentInput(input: unknown): LocalContentInput {
@@ -126,5 +132,5 @@ export function parseLocalContentRegistrationResult(
     throw new DesktopError('InvalidInput', 'Local registration result does not match its work type')
   }
 
-  return value
+  return value as LocalContentRegistrationResult
 }

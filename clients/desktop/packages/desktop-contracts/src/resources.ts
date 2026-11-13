@@ -48,8 +48,8 @@ export interface ReadResource {
 }
 
 /** View-owned transient URLs backed by holds independent of the original resource holder. */
-export interface ViewResourceBinding {
-  readonly urls: Readonly<Record<string, string>>
+export interface ViewResourceBinding<K extends string = string> {
+  readonly urls: Readonly<Record<K, string>>
 
   /** Revokes this binding's URLs and releases its holds while preserving other view bindings. */
   dispose(): Promise<void>
@@ -62,7 +62,9 @@ export interface ViewResourcesApi {
    *
    * Failure cleans partial bindings while preserving the caller's holds.
    */
-  bind(resources: Readonly<Record<string, ReadResourceRef>>): Promise<ViewResourceBinding>
+  bind<K extends string>(
+    resources: Readonly<Record<K, ReadResourceRef>>,
+  ): Promise<ViewResourceBinding<K>>
 }
 
 const resourceSchema = v.strictObject({ id })

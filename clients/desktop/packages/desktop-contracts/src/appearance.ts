@@ -70,13 +70,20 @@ export interface AppearancePreferences {
   readonly theme: ThemeRef
 }
 
-/** A theme's identity, localized name and complete light and dark branches. */
-export interface Theme {
-  readonly ref: ThemeRef
-  readonly name: LocalizedText
-  readonly light: AppearanceTokens
-  readonly dark: AppearanceTokens
-}
+/** A theme's origin-correlated identity, name and complete light and dark branches. */
+export type Theme<T extends ThemeRef['type'] = ThemeRef['type']> = {
+  [K in T]: {
+    readonly ref: Extract<ThemeRef, { readonly type: K }>
+    readonly name: K extends 'user' ? string : LocalizedText
+    readonly light: K extends 'extension' ? AppearanceTokens : UserAppearanceTokens
+    readonly dark: K extends 'extension' ? AppearanceTokens : UserAppearanceTokens
+  }
+}[T]
+
+/** A directory entry retaining the origin-specific name contract. */
+export type ThemeSummary<T extends ThemeRef['type'] = ThemeRef['type']> = {
+  [K in T]: Pick<Theme<K>, 'ref' | 'name'>
+}[T]
 
 /** A complete theme contribution whose private font paths belong to the registering extension. */
 export interface ExtensionThemeDefinition {
@@ -126,8 +133,8 @@ export type ThemeFontResources = Readonly<
 >
 
 /** A fixed theme snapshot with font-resource holds owned by this read. */
-export interface ThemeRead {
-  readonly theme: Theme
+export interface ThemeRead<T extends ThemeRef['type'] = ThemeRef['type']> {
+  readonly theme: Theme<T>
   readonly fontResources: ThemeFontResources
 
   /**
@@ -245,14 +252,14 @@ export interface AppearanceState {
  */
 export interface ThemesApi {
   /** Lists available theme identities and names without acquiring font resources. */
-  list(call?: CallOptions): Promise<readonly Pick<Theme, 'ref' | 'name'>[]>
+  list(call?: CallOptions): Promise<readonly ThemeSummary[]>
 
   /**
    * Reads a theme definition for browsing or editing without acquiring resource holds.
    *
    * Returns null when the definition is absent.
    */
-  get(ref: ThemeRef, call?: CallOptions): Promise<Theme | null>
+  get<R extends ThemeRef>(ref: R, call?: CallOptions): Promise<Theme<R['type']> | null>
 
   /**
    * Commits a user theme with two complete branches.
@@ -291,7 +298,7 @@ export interface ThemesApi {
    * A failed acquisition releases partial holds and rejects the read. The caller disposes the
    * returned read.
    */
-  open(ref: ThemeRef, call?: CallOptions): Promise<ThemeRead>
+  open<R extends ThemeRef>(ref: R, call?: CallOptions): Promise<ThemeRead<R['type']>>
 
   /**
    * Registers a complete theme for the actual extension owner.

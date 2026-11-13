@@ -219,9 +219,9 @@ export type IngestUpdateItem = {
  * Updated includes relation-only or part-list changes. Unchanged does not establish source
  * completeness.
  */
-export interface IngestUpdateResult {
+export interface IngestUpdateResult<T extends IngestUpdateType = IngestUpdateType> {
   readonly outcome: 'updated' | 'unchanged'
-  readonly target: EntryRef | PartRef
+  readonly target: IngestUpdateRef<T>
   readonly issues: readonly IngestIssue[]
 }
 

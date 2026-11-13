@@ -72,13 +72,13 @@ interface ReadResourceRef {
   readonly id: string
 }
 
-interface ViewResourceBinding {
-  readonly urls: Readonly<Record<string, string>>
+interface ViewResourceBinding<K extends string = string> {
+  readonly urls: Readonly<Record<K, string>>
   dispose(): Promise<void>
 }
 ```
 
-ReadResourceRef 由宿主发出，标识本次已经取得的具体内容，值中只携带受控读取引用。view.resources.bind 接收 `Readonly<Record<string, ReadResourceRef>>`，返回的 urls 保留输入键，目标由真实 view 句柄确定。稳定附件身份由附件合同另行管理。
+ReadResourceRef 由宿主发出，标识本次已经取得的具体内容，值中只携带受控读取引用。view.resources.bind 接收 `Readonly<Record<K, ReadResourceRef>>`，返回 `ViewResourceBinding<K>`，urls 的值与类型均保留输入键。目标由真实 view 句柄确定，稳定附件身份由附件合同另行管理。
 
 绑定只交付已经取得的内容，不查询业务、不重新读取最新版本，也不处理图片或字体。资源模块因此无需依赖 UI。绑定成功后，目标视图独立占用同一份内容，原读取方可以释放自己的占用，不必复制文件。dispose 只释放该绑定的占用，其他视图继续使用。视图销毁时，宿主清理其剩余绑定。
 

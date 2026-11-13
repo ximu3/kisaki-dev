@@ -195,7 +195,7 @@ scan_runs 包含 id、scan_config_id、config_snapshot、scope、description、s
 | description     | 必要的运行说明，可空                                                                   |
 | result          | 当次已形成的完整 ScanResult 或符合相同合同的有效部分结果                               |
 
-接纳扫描时核对配置并固定快照。起始记录保存成功后，才开始可能产生副作用的工作。每次执行只有一条 ScanRun。配置删除后保留发生时的身份与报告，不级联清理。快照不复制凭据、原始响应或运行对象。
+接纳扫描时核对配置并固定快照。ScanRun 的配置、资料方案和候选结果保留同一 WorkType，读取历史时也核对已完成与部分采用结果的作品类型。起始记录保存成功后，才开始可能产生副作用的工作。每次执行只有一条 ScanRun。配置删除后保留发生时的身份与报告，不级联清理。快照不复制凭据、原始响应或运行对象。
 
 历史中的再次执行明确表示“运行当前配置”。配置已删除时只能查看报告，不能重放旧快照。scanner.runs 提供 list(query, { offset, limit })、get(runId) 和 clear(filter)，不依赖 TaskRun 历史或当前配置存在。
 
