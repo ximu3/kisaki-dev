@@ -5,7 +5,7 @@ import type { JSX } from 'solid-js'
 import { Button } from '../button/control'
 import type { ButtonProps } from '../button/control'
 import { callHandler, classes } from '../../internal/dom'
-import { Icon, mdiDrag } from '../../internal/icon/glyph'
+import { Icon, GripVertical } from '../../internal/icon/glyph'
 import styles from './styles.module.css'
 
 /** Action-button props with optional keyboard movement commands independent of pointer dragging. */
@@ -45,7 +45,7 @@ export function DragHandle(props: DragHandleProps): JSX.Element {
         }
       }}
     >
-      {local.children ?? <Icon path={mdiDrag} />}
+      {local.children ?? <Icon icon={GripVertical} />}
     </Button>
   )
 }

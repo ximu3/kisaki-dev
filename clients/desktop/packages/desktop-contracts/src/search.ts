@@ -2,15 +2,10 @@
 
 import type { SearchTarget } from './ui/navigation'
 import type { ListOptions, CallOptions } from './operations'
+import type { LucideIconName } from './ui/icons'
+import { parseLucideIconName } from './ui/icons'
 import * as v from 'valibot'
-import {
-  nonemptyText,
-  parseExternalValue,
-  parseValue,
-  text,
-  nonnegativeInteger,
-  id,
-} from './validation'
+import { parseExternalValue, parseValue, text, nonnegativeInteger, id } from './validation'
 import { parseId } from '@kisaki3/extension-distribution/metadata'
 import { parsePackagePath } from '@kisaki3/extension-distribution/manifest'
 import { parseSearchTarget } from './ui/navigation'
@@ -53,7 +48,7 @@ export interface SearchTargetMap {
  * Results retain the actual extension owner and hold no read-resource leases.
  */
 export type SearchIcon =
-  | { readonly type: 'mdi'; readonly name: string }
+  | { readonly type: 'lucide'; readonly name: LucideIconName }
   | { readonly type: 'extension'; readonly extensionId: string; readonly path: string }
 
 /** Text query scoped to one native search category. */
@@ -106,7 +101,10 @@ const targetTypes = {
 } satisfies Record<SearchCategory, readonly SearchTarget['type'][]>
 
 const icon = v.variant('type', [
-  v.strictObject({ type: v.literal('mdi'), name: nonemptyText }),
+  v.strictObject({
+    type: v.literal('lucide'),
+    name: v.pipe(v.unknown(), v.transform(parseLucideIconName)),
+  }),
   v.strictObject({
     type: v.literal('extension'),
     extensionId: v.pipe(

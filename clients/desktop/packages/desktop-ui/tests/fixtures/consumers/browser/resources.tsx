@@ -2,6 +2,7 @@
 
 import { createSignal, onCleanup } from 'solid-js'
 import type { JSX } from 'solid-js'
+import { BookOpen } from 'lucide-solid'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { MarkdownEditor, MarkdownPreview } from '@kisaki3/desktop-ui/markdown'
 import type { MarkdownCommand, MarkdownToolbarAction } from '@kisaki3/desktop-ui/markdown'
@@ -63,7 +64,7 @@ export default function Resources(): JSX.Element {
     id: 'reference',
     label: 'Insert reference',
     /** Renders the fixture's decorative reference-action symbol. */
-    icon: () => <span aria-hidden="true">§</span>,
+    icon: () => <BookOpen />,
     /** Inserts synthetic reference text through the active editor transaction. */
     run: (editor) => editor.dispatch(editor.state.replaceSelection('Reference')),
   }
@@ -222,9 +223,7 @@ export default function Resources(): JSX.Element {
           }}
           aria-label="Move sample"
           onMove={(direction) => setFeedback(`Moved ${direction}`)}
-        >
-          ↕
-        </DragHandle>
+        />
         Sample drag source
       </div>
       <div

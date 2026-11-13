@@ -4,7 +4,7 @@ import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { callHandler, classes } from '../../internal/dom'
 import { createValue } from '../../internal/state'
-import { Icon, mdiChevronRight } from '../../internal/icon/glyph'
+import { Icon, ChevronRight } from '../../internal/icon/glyph'
 import styles from './styles.module.css'
 
 /**
@@ -57,7 +57,7 @@ export function Collapsible(props: CollapsibleProps): JSX.Element {
       }}
     >
       <summary class={classes(styles.summary, local.summaryClass)}>
-        <Icon path={mdiChevronRight} class={styles.chevron} />
+        <Icon icon={ChevronRight} class={styles.chevron} />
         {local.summary}
       </summary>
       <div class={styles.content}>{local.children}</div>

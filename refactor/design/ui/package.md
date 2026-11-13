@@ -2,7 +2,7 @@
 
 `@kisaki3/desktop-ui` 为 Solid 1.9 提供可独立消费的完整控件、图表、Markdown、拖拽与样式。通用控件、浮层和 Toast 自行实现，采用浏览器原生能力；编辑、图表、拖拽和虚拟几何使用所属专用工具。视觉协议由 desktop-appearance 提供，业务数据与操作由宿主传入。
 
-按任务阅读：[职责](#ownership) · [公开能力](#families) · [表单](#forms) · [浮层与焦点](#overlays) · [Toast](#toast) · [源码与入口](#organization) · [样式](#styles) · [动效](#motion) · [交付](#delivery)。应用体验见[共同界面](components.md)，工程与制品规则见[公共包](../engineering/workspace.md#visual-packages)。
+按任务阅读：[职责](#ownership) · [公开能力](#families) · [表单](#forms) · [浮层与焦点](#overlays) · [Toast](#toast) · [源码与入口](#organization) · [样式](#styles) · [图标](#icons) · [动效](#motion) · [交付](#delivery)。应用体验见[共同界面](components.md)，工程与制品规则见[公共包](../engineering/workspace.md#visual-packages)。
 
 <a id="ownership"></a>
 
@@ -72,7 +72,7 @@ DateInput 使用原生日期输入分段编辑年月日，支持粘贴完整 ISO
 
 日历标题栏与星期行相距 0.25rem。正方形日期格共用七列，横纵间隙均为 0.125rem。今日在数字下方标记直径 0.1875rem 的圆点，圆点居中且距格底 0.375rem。选中今天时圆点使用选中前景色，键盘焦点环沿格子内缘描出。
 
-选择器接收稳定 value、标签、分组、禁用状态与呈现内容。整框触发器显示当前选择，再次点击收起列表。class 和 style 定制整框，ref、id 和触发事件属于真实按钮。Select 与 MultiSelect 使用向下单箭头，Combobox 的单选和多选使用上下双箭头，悬停与展开时增强图标前景色。菜单与选项共用紧凑行和末端标记槽，约 12px 的常规 MDI 对勾使用该行前景色。
+选择器接收稳定 value、标签、分组、禁用状态与呈现内容。整框触发器显示当前选择，再次点击收起列表。class 和 style 定制整框，ref、id 和触发事件属于真实按钮。Select 与 MultiSelect 使用向下单箭头，Combobox 的单选和多选使用上下双箭头，悬停与展开时增强图标前景色。菜单与选项共用紧凑行和末端标记槽，约 12px 的 Lucide Check 使用该行前景色。
 
 Combobox 打开后聚焦浮层内具名的搜索框。默认按标签忽略大小写筛选，调用方可提供 filter 函数，或用 filter={false} 按 query 和 onQueryChange 提供异步候选。加载、无结果和已选值分别表达。单选值为选项记录或 null，multiple 模式使用有序的选项记录数组。字段显示、表单提交和有效性使用已选记录，候选的禁用状态决定该项当前能否选取。已选资料更名或失效时，宿主更新对应记录。方向键移动高亮，Enter 选择，输入法组合期间保留原生编辑。单选提交后收起，多选切换当前项并保留正在使用的查询。完成退场后清空本次查询，中途重开可继续输入。
 
@@ -226,7 +226,13 @@ desktop-appearance 拥有正式视觉变量与[根字号计算](../domains/appea
 
 家族自己的部件、变体、交互状态和原生伪元素随实现维护。跨家族共用的动作外观、输入框、弹出表面、列表行、图标和选项行由包内 internal 目录按职责维护。Field 的字段结构和 feedback 子目录各自拥有对应样式，公开导出仍由家族入口负责。样式采用 CSS Modules，TSX 负责结构和行为。专用图表与编辑器的适配留在所属家族。
 
-系统图标使用 MDI 线性图形。图标在独立槽位内按块绘制，单行内容居中，多行提示的图标与首行对齐。带文案的 Checkbox、Switch 与 Radio 共用选项行，单行最小高度与 Input 一致，图形与文字相距 0.5rem。文案换行时整行自然增高，图形对准首行。Spinner 在固定槽位内旋转加载图形，减少动效时静止。单值 Slider 从最小值到滑块中心按当前值绘制主色填充，剩余轨道使用中性色。输入、键盘步进和重置同步更新，悬停时颜色稳定。
+<a id="icons"></a>
+
+系统与功能图标统一使用 Lucide，版本遵守[固定兼容基线](../engineering/workspace.md#solid)。本体、公共 UI 和官方扩展的本地界面通过 lucide-solid 具名组件导入，按实际使用裁剪。公共 UI 的内部适配统一装饰语义、槽位和描边，图形替换保持 Solid 响应性；本地内容和工具栏插槽继续采用正常组件组合。
+
+图形使用 currentColor、圆端点与圆连接，24 单位坐标中的默认线宽为 2，随图形和界面尺寸同比缩放。图标在独立槽位内按块绘制，单行内容居中，多行提示对齐首行。只有图标的操作由控件提供可访问名称，装饰图形不重复播报。跨运行端的贡献值遵守[名称与资源合同](../extensions/webview.md#icons)。依据：[Solid 组件接入](https://lucide.dev/guide/solid/getting-started)、[描边缩放](https://lucide.dev/guide/solid/basics/stroke-width)及[可访问性](https://lucide.dev/guide/solid/advanced/accessibility)。
+
+带文案的 Checkbox、Switch 与 Radio 共用选项行，单行最小高度与 Input 一致，图形与文字相距 0.5rem。文案换行时整行自然增高，图形对准首行。Spinner 在固定槽位内旋转 Lucide LoaderCircle，减少动效时静止。单值 Slider 从最小值到滑块中心按当前值绘制主色填充，剩余轨道使用中性色。输入、键盘步进和重置同步更新，悬停时颜色稳定。
 
 Dialog 使用原生模态约束和透明背景层。Header 与 Footer 使用紧凑留白和分隔线，标题沿用常规控件字号，以字重表达层级。Body 独立滚动。可见弹层共用一层 1px 常规边框。默认主题的输入框、菜单、选择列表、日历、拾色器和 Tooltip 使用 4px 圆角，Dialog 与 Toast 使用 6px 圆角。各自采用所属表面与阴影。普通工具窗、详情窗在 Header 提供具名关闭按钮，已有底部取消的表单和明确选择的确认框使用底部操作。标题栏关闭和 Escape 提交同一可阻止的关闭请求。Collapsible 的触发区保留可操作高度，与内容之间只留一处间距。
 

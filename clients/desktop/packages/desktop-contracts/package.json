@@ -154,6 +154,7 @@
     "typecheck": "tsc -b",
     "lint": "eslint . --max-warnings 0",
     "test": "vitest run",
+    "generate:icon-names": "tsx tools/generate-icon-names.ts",
     "test:consumers": "vitest run --config config/vitest/consumers.ts",
     "clean": "tsx tools/clean.ts"
   },
@@ -169,6 +170,7 @@
     "@kisaki3/eslint-config": "workspace:*",
     "@kisaki3/tooling": "workspace:*",
     "@kisaki3/typescript-config": "workspace:*",
+    "@lucide/icons": "1.72.0",
     "@playwright/test": "1.64.1",
     "@types/node": "catalog:",
     "eslint": "catalog:",

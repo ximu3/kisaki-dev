@@ -23,7 +23,7 @@ import type { ApplicationUpdateState } from '@kisaki3/desktop-contracts/updates'
 import type { OnboardingApplyInput } from '@kisaki3/desktop-contracts/onboarding'
 import type { AppApi } from '@kisaki3/desktop-contracts/app'
 import type { PrivateStorageApi } from '@kisaki3/desktop-contracts/private-data'
-import type { ViewClientIpc } from '@kisaki3/desktop-contracts/ui'
+import type { ExtensionUiIcon, ViewClientIpc } from '@kisaki3/desktop-contracts/ui'
 
 /** Consumer method catalog exercising void and required private-call inputs. */
 interface ExampleViewMethods {
@@ -178,6 +178,10 @@ export function acceptNovelRead(request: MetadataReadRequest<'novel'>): void {
 
 /** Checks correlated result, intent and native-scope types across consumer entry points. */
 export function checkAssociations(): void {
+  const icon: ExtensionUiIcon = { type: 'lucide', name: 'book-open' }
+  // @ts-expect-error: Built-in names use the fixed catalog rather than component identifiers.
+  const invalidIcon: ExtensionUiIcon = { type: 'lucide', name: 'BookOpen' }
+
   const missingFile = {
     workType: 'anime',
     identifier: { type: 'local', id: 'a' },
@@ -231,6 +235,8 @@ export function checkAssociations(): void {
   }
 
   void result
+  void icon
+  void invalidIcon
   void state
   void apply
 }

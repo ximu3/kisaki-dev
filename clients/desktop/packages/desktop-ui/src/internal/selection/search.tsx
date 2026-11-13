@@ -2,7 +2,7 @@
 
 import { createEffect, onMount } from 'solid-js'
 import type { JSX } from 'solid-js'
-import { Icon, mdiMagnify } from '../icon/glyph'
+import { Icon, Search } from '../icon/glyph'
 import { optionId } from './collection'
 import type { SelectionCollection } from './collection'
 import type { SelectionOption } from './types'
@@ -60,7 +60,7 @@ export function SearchInput(props: SearchProps): JSX.Element {
 
   return (
     <div class={styles.search}>
-      <Icon path={mdiMagnify} />
+      <Icon icon={Search} />
       <input
         ref={(node) => {
           input = node

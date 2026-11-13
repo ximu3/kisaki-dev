@@ -5,7 +5,7 @@ import type { JSX } from 'solid-js'
 import { createToastController } from './controller'
 import { createStackMotion } from './stack'
 import type { ToastEntry } from './controller'
-import { Icon, mdiClose, StatusIcon } from '../../internal/icon/glyph'
+import { Icon, X, StatusIcon } from '../../internal/icon/glyph'
 import { observeModalHost } from '../../internal/modal-host'
 import { Button } from '../button/control'
 import { Spinner } from '../spinner/control'
@@ -291,7 +291,7 @@ function ToastItem(props: {
         aria-label={props.closeLabel}
         onClick={props.dismiss}
       >
-        <Icon path={mdiClose} />
+        <Icon icon={X} />
       </Button>
     </div>
   )

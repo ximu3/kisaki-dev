@@ -2,7 +2,7 @@
 
 import { createSignal, For, onCleanup, onMount } from 'solid-js'
 import type { JSX } from 'solid-js'
-import { Icon, mdiChevronLeft, mdiChevronRight, mdiClose } from '../icon/glyph'
+import { Icon, ChevronLeft, ChevronRight, X } from '../icon/glyph'
 import styles from './chips.module.css'
 
 /** Accessible labels for removing a selected value and scrolling the selected-value viewport. */
@@ -157,7 +157,7 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
           scroll(-1, event.currentTarget)
         }}
       >
-        <Icon path={mdiChevronLeft} />
+        <Icon icon={ChevronLeft} />
       </button>
       <div
         class={styles.viewport}
@@ -200,7 +200,7 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
                     }
                   }}
                 >
-                  <Icon path={mdiClose} />
+                  <Icon icon={X} />
                 </button>
               </span>
             )}
@@ -223,7 +223,7 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
           scroll(1, event.currentTarget)
         }}
       >
-        <Icon path={mdiChevronRight} />
+        <Icon icon={ChevronRight} />
       </button>
     </div>
   )

@@ -34,5 +34,6 @@ test('Node globals alone support the complete public type graph and actual value
     link: 'kisaki://view/anime/external/bangumi/subject%2F123',
     theme: 'builtin',
     protocol: 1,
+    icon: { type: 'lucide', name: 'book-open' },
   })
 })

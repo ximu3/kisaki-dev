@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@kisaki3/desktop-ui": "0.1.0-dev.0",
+    "lucide-solid": "1.72.0",
     "solid-js": "1.9.16",
     "@tanstack/solid-virtual": "3.13.48"
   },
