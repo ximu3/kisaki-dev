@@ -162,8 +162,13 @@ test('dependency recovery and renderer updates preserve a usable process', async
     .toBe('73px')
   expect(await page.getByRole('button', { name: 'Count: 1' }).count()).toBe(1)
 
-  await writeFile(dependency, 'export const broken =\\n')
-  await expect.poll(() => page.locator('vite-error-overlay').count(), { timeout: 15_000 }).toBe(1)
+  // Observe the rejected module in this page's HMR request before restoring the source.
+  const rejected = page.waitForResponse(
+    (response) =>
+      new URL(response.url()).pathname.endsWith('/src/development.ts') && response.status() === 500,
+    { timeout: 15_000 },
+  )
+  await Promise.all([rejected, writeFile(dependency, 'export const broken =\n')])
   expect(() => process.kill(first.current!.processId, 0)).not.toThrow()
 
   await writeFile(dependency, originals[2]!.replace("'kisaki.development'", "'fixture.updated'"))
