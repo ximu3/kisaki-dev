@@ -195,3 +195,49 @@ test('isolates corrupt fields on reads, rejects invalid writes and leaves untouc
     db.get<{ general: string }>(sql`select general from preferences where id = 1`)?.general,
   ).toBe('{"uiTranslation":{"type":"wrong"},"closeMainWindow":"quit"}')
 })
+
+test('adopts the effective software locale with its indexes and rebuilds an obsolete ICU revision on reopen', () => {
+  const connection = storage.db.$client
+  const samples = [
+    ['x', 'z'],
+    ['y', 'ä'],
+    ['n2', 'Item 2'],
+    ['n10', 'Item 10'],
+    ['a', '八'],
+    ['b', '阿'],
+  ]
+  for (const [id, name] of samples) {
+    connection
+      .prepare("insert into entries(id,type,name,created_at,updated_at) values (?,'game',?,1,1)")
+      .run(id, name)
+  }
+  /** Reads the controlled names through their actual SQLite index and stable identity tie-break. */
+  const order = (db: Storage, ids: string[]) =>
+    db.db.$client
+      .prepare(
+        `select id from entries indexed by entries_name where id in (${ids.map(() => '?').join(',')}) order by name collate kisaki_name,id`,
+      )
+      .pluck()
+      .all(...ids)
+  storage.adoptLocale('sv')
+  expect(order(storage, ['x', 'y'])).toEqual(['x', 'y'])
+  storage.adoptLocale('de')
+  expect(order(storage, ['x', 'y'])).toEqual(['y', 'x'])
+  storage.adoptLocale('zh-Hans-CN')
+  expect(order(storage, ['a', 'b'])).toEqual(['b', 'a'])
+  expect(order(storage, ['n2', 'n10'])).toEqual(['n2', 'n10'])
+
+  connection.prepare('select kisaki_set_name_locale(?)').get('sv')
+  connection.exec("reindex kisaki_name; update name_order_state set revision='old'")
+  storage.close()
+  storage = initializeDatabase(storageOptions(directory))
+  expect(order(storage, ['a', 'b'])).toEqual(['b', 'a'])
+  const state = storage.db.select().from(tables.nameOrderState).get()!
+  expect(state.locale).toBe('zh-Hans-CN')
+  expect(state.revision).not.toBe('old')
+
+  storage.close()
+  storage = initializeDatabase(storageOptions(directory))
+  storage.adoptLocale('zh-Hans-CN')
+  expect(storage.db.$client.prepare('select total_changes()').pluck().get()).toBe(0)
+})

@@ -147,10 +147,9 @@
         "config/typescript/**",
         "tsconfig.json",
         "config/vitest/vitest.config.dev.ts",
-        "tests/tools/dev/**",
+        "tests/tools/dev/session.test.ts",
         "tests/support/development/**",
         "tests/support/fixture-application.ts",
-        "tests/support/preparation-worker.ts",
         "tests/support/window-observation.ts",
         "!tests/fixtures/runtime/src/**/*.test.ts",
         "!tests/fixtures/runtime/src/**/*.test.tsx",
@@ -191,7 +190,12 @@
     },
     "package:fixture": {
       "dependsOn": ["build:fixture"],
-      "env": ["KISAKI_MAC_SIGNING_IDENTITY", "MACOSX_DEPLOYMENT_TARGET", "TSDOWN_*"],
+      "env": [
+        "KISAKI_VERIFY_INSTALLERS",
+        "KISAKI_MAC_SIGNING_IDENTITY",
+        "MACOSX_DEPLOYMENT_TARGET",
+        "TSDOWN_*"
+      ],
       "inputs": [
         "src/**",
         "!src/**/*.test.ts",

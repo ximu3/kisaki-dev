@@ -30,8 +30,7 @@
     "test:artifacts": "vitest run --config config/vitest/vitest.config.artifacts.ts",
     "test:performance": "playwright test --config config/playwright/playwright.config.performance.ts",
     "clean": "tsx tools/clean.ts",
-    "generate:migrations": "drizzle-kit generate",
-    "generate:unicode": "tsx tools/unicode/generate.ts"
+    "generate:migrations": "drizzle-kit generate"
   },
   "dependencies": {
     "@kisaki3/desktop-contracts": "workspace:*",

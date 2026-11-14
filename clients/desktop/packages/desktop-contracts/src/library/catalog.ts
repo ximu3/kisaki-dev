@@ -396,7 +396,7 @@ export const partialDateSchema = v.pipe(v.unknown(), v.transform(parsePartialDat
 /** Complete civil-date values validated without timestamp or timezone conversion. */
 export const calendarDateSchema = v.pipe(v.unknown(), v.transform(parseCalendarDate))
 
-/** Canonical open language identifier used by catalog facts and source preferences. */
+/** Parses a language tag without dropping script, region or collation identifiers. */
 export const languageSchema = v.pipe(
   nonemptyText,
   v.transform((value) => parseExternalValue(normalizeLocale, value, 'Invalid language tag')),
@@ -419,6 +419,15 @@ export const externalLinkSchema = v.strictObject({ name: nonemptyText, url: none
 
 /** Ordered aliases shared by entries and parts; every item retains nonblank source text. */
 export const aliasesSchema = v.array(nonemptyText)
+
+/** Ordered descriptive links accepted by catalog and part values. */
+export const externalLinksSchema = v.array(externalLinkSchema)
+
+/** Canonical language tags retained in order with no duplicate language identity. */
+export const languagesSchema = v.pipe(
+  v.array(languageSchema),
+  v.check((items) => unique(items, (item) => item)),
+)
 
 /** The shared finite gender vocabulary for character and person facts. */
 export const genderSchema = v.picklist(['male', 'female', 'nonBinary', 'genderless', 'other'])
@@ -505,7 +514,7 @@ export const entryCommonEntries = {
   description: v.nullable(text),
   primaryImageId: v.nullable(id),
 
-  externalLinks: v.array(externalLinkSchema),
+  externalLinks: externalLinksSchema,
   externalIdentities: identitiesSchema,
 
   isNsfw: v.boolean(),
@@ -515,10 +524,7 @@ export const entryCommonEntries = {
 /** Catalog facts shared by the four work media, separate from personal records. */
 const workEntries = {
   releaseDate: nullableDate,
-  originalLanguages: v.pipe(
-    v.array(languageSchema),
-    v.check((items) => unique(items, (item) => item)),
-  ),
+  originalLanguages: languagesSchema,
 
   backdropImageId: v.nullable(id),
   titleLogoId: v.nullable(id),
@@ -614,6 +620,26 @@ export function parseExternalIdentities(input: unknown): readonly ExternalIdenti
 /** Normalizes a language tag through the shared distribution locale rules. */
 export function parseLanguageTag(input: unknown): LanguageTag {
   return parseValue(languageSchema, input, 'Invalid language tag')
+}
+
+/** Parses a complete ordered list of nonblank entry or part aliases. */
+export function parseAliases(input: unknown): readonly string[] {
+  return parseValue(aliasesSchema, input, 'Invalid catalog aliases')
+}
+
+/** Parses descriptive links independently of a catalog operation. */
+export function parseExternalLinks(input: unknown): readonly ExternalLink[] {
+  return parseValue(externalLinksSchema, input, 'Invalid external links')
+}
+
+/** Parses distinct canonical language tags without reordering them. */
+export function parseLanguages(input: unknown): readonly LanguageTag[] {
+  return parseValue(languagesSchema, input, 'Invalid catalog languages')
+}
+
+/** Parses a numeric measurement or its original descriptive wording. */
+export function parseCharacterMeasure(input: unknown): CharacterMeasure {
+  return parseValue(measureSchema, input, 'Invalid character measurement')
 }
 
 /** A resource interface is checked only for shape here. The host validates actual ownership and retention. */

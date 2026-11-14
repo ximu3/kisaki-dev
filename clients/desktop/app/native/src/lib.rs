@@ -1,5 +1,6 @@
-//! Private Node-API library entry for the desktop application's asynchronous file primitives.
+//! Exposes desktop file operations through Node-API and language ordering through SQLite.
 
+mod collation;
 mod files;
 mod filesystem;
 

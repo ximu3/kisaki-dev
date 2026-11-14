@@ -10,11 +10,15 @@ publish = false
 crate-type = ["cdylib"]
 
 [dependencies]
+icu_collator = "=2.4.0"
+icu_locale_core = { version = "=2.4.0", features = ["alloc"] }
 napi = { version = "=3.15.0", default-features = false, features = ["napi8", "dyn-symbols"] }
 napi-derive = "=3.6.13"
+rusqlite = { version = "=0.42.0", default-features = false, features = ["collation", "functions", "loadable_extension"] }
 
 [build-dependencies]
 napi-build = "=2.6.0"
+toml = { version = "=0.9.8", default-features = false, features = ["std", "parse", "serde"] }
 
 [target.'cfg(unix)'.dependencies]
 libc = "=0.2.186"

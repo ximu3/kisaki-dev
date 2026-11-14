@@ -6,12 +6,10 @@ import {
   parseAnimePlaybackPreferences,
   parseReadingPreferences,
 } from '@kisaki3/desktop-contracts/preferences'
-import { parseFilePlaybackChoicesUpdate } from '@kisaki3/desktop-contracts/library'
 import type {
   AnimeFileMetadata,
   ReadingFileMetadata,
   FileAvailability,
-  FilePlaybackChoices,
 } from '@kisaki3/desktop-contracts/library'
 import type {
   AnimePlaybackPreferences,
@@ -79,25 +77,6 @@ export function parseFileAvailability(input: unknown): FileAvailability {
     ]),
     input,
   )
-}
-
-/** Validates a complete track-and-delay value through the public edit parser. */
-export function parsePlaybackChoices(input: unknown): FilePlaybackChoices {
-  const value = parseFilePlaybackChoicesUpdate({ changes: input }).changes
-  if (
-    value.audioTrack === undefined ||
-    value.subtitleTrack === undefined ||
-    value.audioDelaySeconds === undefined ||
-    value.subtitleDelaySeconds === undefined
-  ) {
-    throw new DesktopError('InvalidInput', 'Expected complete saved playback choices')
-  }
-  return {
-    audioTrack: value.audioTrack,
-    subtitleTrack: value.subtitleTrack,
-    audioDelaySeconds: value.audioDelaySeconds,
-    subtitleDelaySeconds: value.subtitleDelaySeconds,
-  }
 }
 
 /** Validates a stored playback position in seconds. */

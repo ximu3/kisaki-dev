@@ -128,12 +128,15 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
   let node!: HTMLDialogElement
   /** Presence reader retaining the dialog surface through its exit transition. */
   const present = createPresentation(dialog.open, () => node)
+  /** Removes this dialog's current registration from shared modal tracking. */
   let releaseModal: (() => void) | undefined
+
   /** Releases this dialog's modal registration and clears the owned handle. */
   const release = () => {
     releaseModal?.()
     releaseModal = undefined
   }
+
   onMount(() => {
     dialog.node = node
     createEffect(() => {

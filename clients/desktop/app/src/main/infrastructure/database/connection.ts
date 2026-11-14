@@ -2,18 +2,13 @@
 
 import Database from 'better-sqlite3'
 import { isAbsolute } from 'node:path'
-import { nameOrderKey } from './text/name-order'
 
 /** Opens one explicit database file with the matching deployed native binding. */
 export function openConnection(path: string, nativeBinding: string): Database.Database {
   if (!isAbsolute(path) || !isAbsolute(nativeBinding)) {
     throw new TypeError('Database and native binding paths must be absolute')
   }
-  const connection = new Database(path, { nativeBinding })
-  connection.function('kisaki_name_key_v1', { deterministic: true }, (value: string | null) =>
-    nameOrderKey(value),
-  )
-  return connection
+  return new Database(path, { nativeBinding })
 }
 
 /**

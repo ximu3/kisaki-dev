@@ -2,7 +2,7 @@
 
 import { desc, sql } from 'drizzle-orm'
 import {
-  blob,
+  check,
   foreignKey,
   index,
   integer,
@@ -16,9 +16,10 @@ import { entryTypes } from '@kisaki3/desktop-contracts/library'
 import type { EntryType } from '@kisaki3/desktop-contracts/library'
 import { aliases, externalLinks, languages, partialDate, characterMeasure } from '../codecs/catalog'
 import { attachments } from './attachments'
+import { orderedText, orderedName } from '../name-order'
 import { booleanValue, enumValue, nonempty, idColumn, safeInteger, timestamps } from './constraints'
 
-/** Stores shared catalog identity and descriptive facts, including versioned natural-order keys. */
+/** Stores shared catalog identity and descriptive facts with language-ordered name indexes. */
 export const entries = sqliteTable(
   'entries',
   {
@@ -27,6 +28,9 @@ export const entries = sqliteTable(
     name: text('name').notNull(),
     originalName: text('original_name'),
     sortName: text('sort_name'),
+    effectiveSortName: orderedText('effective_sort_name').generatedAlwaysAs(
+      sql`coalesce("sort_name", "name")`,
+    ),
     aliases: aliases('aliases').notNull().default([]),
     description: text('description'),
     primaryImageId: text('primary_image_id').references(() => attachments.id, {
@@ -36,19 +40,6 @@ export const entries = sqliteTable(
     isNsfw: integer('is_nsfw', { mode: 'boolean' }).notNull().default(false),
     addedDate: partialDate('added_date'),
     ...timestamps(),
-
-    nameKey: blob('name_key', { mode: 'buffer' }).generatedAlwaysAs(
-      sql`kisaki_name_key_v1("name")`,
-      { mode: 'stored' },
-    ),
-    sortNameKey: blob('sort_name_key', { mode: 'buffer' }).generatedAlwaysAs(
-      sql`kisaki_name_key_v1(coalesce("sort_name", "name"))`,
-      { mode: 'stored' },
-    ),
-    originalNameKey: blob('original_name_key', { mode: 'buffer' }).generatedAlwaysAs(
-      sql`kisaki_name_key_v1("original_name")`,
-      { mode: 'stored' },
-    ),
   },
   (table) => [
     primaryKey({ columns: [table.id] }),
@@ -59,13 +50,24 @@ export const entries = sqliteTable(
     booleanValue('entries_nsfw', table.isNsfw),
     safeInteger('entries_created', table.createdAt, Number.MIN_SAFE_INTEGER),
     safeInteger('entries_updated', table.updatedAt, Number.MIN_SAFE_INTEGER),
-    index('entries_type_sort').on(table.type, table.sortNameKey, table.id),
-    index('entries_sort').on(table.sortNameKey, table.id),
-    index('entries_name').on(table.nameKey, table.id),
-    index('entries_original_name').on(table.originalNameKey, table.id),
+    index('entries_type_sort').on(table.type, table.effectiveSortName, table.id),
+    index('entries_sort').on(table.effectiveSortName, table.id),
+    index('entries_name').on(orderedName(table.name), table.id),
+    index('entries_original_name').on(orderedName(table.originalName), table.id),
     index('entries_created_order').on(desc(table.createdAt), table.id),
     index('entries_primary_image').on(table.primaryImageId),
   ],
+)
+
+/** Records which locale and ICU revision produced this database's name indexes. */
+export const nameOrderState = sqliteTable(
+  'name_order_state',
+  {
+    id: integer('id').primaryKey().notNull(),
+    locale: text('locale').notNull(),
+    revision: text('revision').notNull(),
+  },
+  (table) => [check('name_order_singleton', sql`${table.id} = 1`)],
 )
 
 /** Creates the fixed type discriminator used by each concrete entry table. */

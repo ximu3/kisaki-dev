@@ -3,7 +3,6 @@
 import { sql } from 'drizzle-orm'
 import { blob, check, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import type { Preferences } from '@kisaki3/desktop-contracts/preferences'
-import { parsePreferences } from '@kisaki3/desktop-contracts/preferences'
 import { preferenceColumn, networkPreferences } from '../codecs/preferences'
 
 /**
@@ -12,20 +11,19 @@ import { preferenceColumn, networkPreferences } from '../codecs/preferences'
  * Defaults affect decoding and first-row initialization, never schema generation or existing rows.
  */
 export function createPreferencesTable(defaults: Preferences) {
-  const values = parsePreferences(defaults)
   return sqliteTable(
     'preferences',
     {
       id: integer('id').primaryKey().notNull(),
-      general: preferenceColumn('general', values)('general').notNull(),
-      appearance: preferenceColumn('appearance', values)('appearance').notNull(),
-      navigation: preferenceColumn('navigation', values)('navigation').notNull(),
-      library: preferenceColumn('library', values)('library').notNull(),
-      usage: preferenceColumn('usage', values)('usage').notNull(),
-      playback: preferenceColumn('playback', values)('playback').notNull(),
-      shortcuts: preferenceColumn('shortcuts', values)('shortcuts').notNull(),
+      general: preferenceColumn('general', defaults)('general').notNull(),
+      appearance: preferenceColumn('appearance', defaults)('appearance').notNull(),
+      navigation: preferenceColumn('navigation', defaults)('navigation').notNull(),
+      library: preferenceColumn('library', defaults)('library').notNull(),
+      usage: preferenceColumn('usage', defaults)('usage').notNull(),
+      playback: preferenceColumn('playback', defaults)('playback').notNull(),
+      shortcuts: preferenceColumn('shortcuts', defaults)('shortcuts').notNull(),
       network: networkPreferences('network').notNull(),
-      updates: preferenceColumn('updates', values)('updates').notNull(),
+      updates: preferenceColumn('updates', defaults)('updates').notNull(),
       proxyCredentialsCiphertext: blob('proxy_credentials_ciphertext', { mode: 'buffer' }),
       proxyCredentialsRevision: text('proxy_credentials_revision'),
     },

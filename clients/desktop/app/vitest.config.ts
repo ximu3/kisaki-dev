@@ -16,7 +16,7 @@ export default defineConfig({
       'tests/integration/database/**',
       'tests/integration/native/**',
       'tests/integration/files/**',
-      'tests/tools/dev/**',
+      'tests/tools/dev/session.test.ts',
     ],
     testTimeout: 30_000,
     hookTimeout: 30_000,

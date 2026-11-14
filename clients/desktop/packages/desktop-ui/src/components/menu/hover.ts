@@ -27,8 +27,10 @@ export function createSubmenuHover(options: {
   close: () => void
 }) {
   let timer: ReturnType<typeof setTimeout> | undefined
+  /** Removes the current document's capture-phase pointer-transit listener. */
   let release: (() => void) | undefined
   let transit = false
+
   /** Cancels the current hover timer and transit listener and clears protected transit state. */
   const stop = () => {
     clearTimeout(timer)
@@ -36,6 +38,7 @@ export function createSubmenuHover(options: {
     release = undefined
     transit = false
   }
+
   /** Stops hover tracking and requests closing the submenu. */
   const close = () => {
     stop()
@@ -85,7 +88,6 @@ export function createSubmenuHover(options: {
       }
       transit = true
       document.addEventListener('pointermove', move, true)
-      /** Removes the current document's capture-phase pointer-transit listener. */
       release = () => document.removeEventListener('pointermove', move, true)
       timer = setTimeout(close, 400)
     },

@@ -13,6 +13,7 @@ async function verifyChannel(window: BrowserWindow): Promise<void> {
   const { RpcConnection } = await import('@kisaki3/desktop-rpc')
   const { port1, port2 } = new MessageChannelMain()
   const cancel = new AbortController()
+  /** Removes this fixture's port and window listeners. */
   let detach: () => void
   const rpc = new RpcConnection(
     {
@@ -23,7 +24,6 @@ async function verifyChannel(window: BrowserWindow): Promise<void> {
         port1.on('message', message)
         port1.once('close', closed)
         window.once('closed', closed)
-        /** Removes this fixture's port and window listeners. */
         detach = () => {
           port1.off('message', message)
           port1.off('close', closed)

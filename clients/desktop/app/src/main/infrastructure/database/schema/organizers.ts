@@ -2,7 +2,6 @@
 
 import { sql } from 'drizzle-orm'
 import {
-  blob,
   check,
   foreignKey,
   index,
@@ -16,6 +15,7 @@ import { parseDynamicRules } from '@kisaki3/desktop-contracts/library'
 import { storedJsonColumn } from '../codecs/json'
 import { attachments } from './attachments'
 import { entries } from './catalog'
+import { orderedName } from '../name-order'
 import { booleanValue, nonempty, idColumn, safeInteger, timestamps } from './constraints'
 
 /** Stores collection identity and either manual membership or one saved dynamic definition. */
@@ -81,7 +81,7 @@ export const collectionMembers = sqliteTable(
   ],
 )
 
-/** Stores reusable tags with unique normalized identity keys and separate natural-order keys. */
+/** Stores reusable tags with a unique identity key independent of their display order. */
 export const tags = sqliteTable(
   'tags',
   {
@@ -91,17 +91,13 @@ export const tags = sqliteTable(
     description: text('description'),
     isNsfw: integer('is_nsfw', { mode: 'boolean' }).notNull().default(false),
     ...timestamps(),
-    nameOrderKey: blob('name_order_key', { mode: 'buffer' }).generatedAlwaysAs(
-      sql`kisaki_name_key_v1("name")`,
-      { mode: 'stored' },
-    ),
   },
   (table) => [
     primaryKey({ columns: [table.id] }),
     nonempty('tags_name', table.name),
     nonempty('tags_name_key', table.nameKey),
     booleanValue('tags_nsfw', table.isNsfw),
-    index('tags_name_order').on(table.nameOrderKey, table.id),
+    index('tags_name_order').on(orderedName(table.name), table.id),
   ],
 )
 

@@ -22,7 +22,7 @@ if (role === 'leaf') {
   const child = spawn(
     process.execPath,
     [...process.execArgv, fileURLToPath(import.meta.url), directory, 'leaf'],
-    { windowsHide: true, stdio: ['ignore', 'ignore', 'ignore', 'ipc'] },
+    { windowsHide: true, stdio: ['ignore', 'inherit', 'inherit', 'ipc'] },
   )
 
   await new Promise<void>((resolve, reject) => {

@@ -25,6 +25,7 @@ export function storageOptions(
     path: join(directory, 'library.sqlite'),
     migrationsDirectory,
     nativeBinding: join(appRoot, 'out/resources', hostTarget(), 'native/better-sqlite3.node'),
+    collationExtension: join(appRoot, 'out/native', hostTarget(), 'kisaki-native.node'),
     defaults: getPreferenceDefaults(process.platform, []),
   }
 }

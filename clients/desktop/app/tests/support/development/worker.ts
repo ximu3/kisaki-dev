@@ -15,13 +15,8 @@ const controller = new AbortController()
 /** Fault or lifecycle scenario selected by the parent test. */
 const scenario = process.argv[2]
 
-/** Rejects the deliberately injected application-stop failure when requested by the parent. */
-let rejectStop!: (cause: unknown) => void
-
-/** Pending failure used to exercise a stop rejection while process ownership remains explicit. */
-const stopFailure = new Promise<never>((_resolve, reject) => {
-  rejectStop = reject
-})
+/** Rejects the controller wait when an application declines to complete its stop operation. */
+const stopFailure = Promise.withResolvers<never>()
 
 /** Development session owned and closed by this child process. */
 let session: DevelopmentSession | undefined
@@ -45,7 +40,7 @@ function stop(): void {
           rendererUrl: session?.rendererUrl,
         })
       }
-    }, rejectStop)
+    }, stopFailure.reject)
   } else {
     controller.abort(new Error('Fixture development session stopped'))
   }
@@ -81,13 +76,13 @@ const message = (value: unknown) => {
   if (value.type === 'stop') {
     stop()
   } else if (value.type === 'cleanup') {
-    void cleanup().catch(rejectStop)
+    void cleanup().catch(stopFailure.reject)
   }
 }
 
 /** Requests test-session cleanup when the parent IPC channel disconnects. */
 const disconnected = () => {
-  void cleanup().catch(rejectStop)
+  void cleanup().catch(stopFailure.reject)
 }
 
 process.on('message', message)
@@ -151,7 +146,7 @@ try {
   })
 
   // A failed stop leaves the session owned, so closed alone cannot report that failure.
-  await Promise.race([session.closed, stopFailure])
+  await Promise.race([session.closed, stopFailure.promise])
 } catch (cause) {
   if (!isCancellation(cause, controller.signal)) {
     failed = true

@@ -4,7 +4,7 @@
  */
 
 import { createRequire } from 'node:module'
-import { cp, copyFile, mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises'
+import { cp, copyFile, mkdtemp, realpath, rm } from 'node:fs/promises'
 import { dirname, join, relative } from 'node:path'
 import { tmpdir } from 'node:os'
 import { appRoot, repositoryRoot } from '../../../tools/lib/paths'
@@ -79,42 +79,6 @@ export async function prepareDevelopmentWorkspace(): Promise<{
       })
     }
 
-    // A synthetic dependency exercises package rebuilds without retaining a product stub.
-    const fixture = join(root, 'packages/development-fixture')
-    await mkdir(join(fixture, 'src'), { recursive: true })
-    await writeFile(
-      join(fixture, 'package.json'),
-      JSON.stringify({
-        name: '@kisaki3/development-fixture',
-        version: '1.0.0',
-        type: 'module',
-        exports: { '.': './dist/index.js' },
-        scripts: { build: 'node build.mjs' },
-      }),
-    )
-    await writeFile(join(fixture, 'src/value.json'), JSON.stringify({ label: 'initial' }))
-    await writeFile(
-      join(fixture, 'build.mjs'),
-      `
-/** @fileoverview Builds the synthetic dependency used by development-session tests. */
-
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
-
-/** The source value emitted by this synthetic package's build. */
-const value = JSON.parse(await readFile(new URL('./src/value.json', import.meta.url), 'utf8'))
-
-await mkdir(new URL('./dist/', import.meta.url), { recursive: true })
-await writeFile(new URL('./dist/index.js', import.meta.url), 'export const label = ' + JSON.stringify(value.label))
-`,
-    )
-
-    const appManifestPath = join(app, 'package.json')
-    const appManifest = JSON.parse(await readFile(appManifestPath, 'utf8')) as {
-      dependencies: Record<string, string>
-    }
-    appManifest.dependencies['@kisaki3/development-fixture'] = 'workspace:*'
-    await writeFile(appManifestPath, JSON.stringify(appManifest))
-
     // Turbo needs a valid HEAD to keep generated outputs out of its default input set.
     await run('git', ['init', '--quiet'], { cwd: root })
     await run(
@@ -137,27 +101,19 @@ await writeFile(new URL('./dist/index.js', import.meta.url), 'export const label
       { cwd: root },
     )
 
-    // Reuse archives; resolving the synthetic workspace can require registry metadata.
+    // The isolated checkout uses the same workspace graph, lockfile and populated pnpm store.
     const store = await readPnpm(['store', 'path'], repositoryRoot)
-    try {
-      await readPnpm(
-        [
-          'install',
-          '--store-dir',
-          dirname(store.trim()),
-          '--prefer-offline',
-          '--ignore-scripts',
-          '--no-frozen-lockfile',
-        ],
-        root,
-      )
-    } catch (cause) {
-      const failure = cause as { stdout?: string; stderr?: string }
-      throw new Error(
-        `Fixture installation failed:\n${`${failure.stdout ?? ''}\n${failure.stderr ?? ''}`.slice(-8_192)}`,
-        { cause },
-      )
-    }
+    await readPnpm(
+      [
+        'install',
+        '--offline',
+        '--frozen-lockfile',
+        '--ignore-scripts',
+        '--store-dir',
+        dirname(store.trim()),
+      ],
+      root,
+    )
 
     /** Resolves the already installed Electron input from the original desktop package. */
     const originalRequire = createRequire(join(appRoot, 'package.json'))

@@ -46,7 +46,7 @@ export async function prepareResources(
   await prepareIcons(join(output, 'icons'))
   await copyFonts(fontInputs, join(output, 'fonts'))
   await cp(join(appRoot, 'drizzle'), join(output, 'drizzle'), { recursive: true })
-  await cp(join(appRoot, 'assets', 'unicode'), join(output, 'unicode'), { recursive: true })
+  await cp(join(appRoot, 'assets', 'licenses'), join(output, 'licenses'), { recursive: true })
 
   // SQLite 13 provides Node-API prebuilds shared by the development and Electron runtimes.
   const sqliteRoot = dirname(requireDependency.resolve('better-sqlite3/package.json'))

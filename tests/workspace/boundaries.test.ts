@@ -91,7 +91,7 @@ const cases: {
   {
     name: 'runtime-does-not-import-engineering',
     from: 'clients/desktop/app/native/node/engineering.ts',
-    to: 'packages/tooling/src/process.ts',
+    to: 'packages/tooling/src/process/index.ts',
     source: "export type { Value } from '@kisaki3/tooling/process'\n",
   },
   {
@@ -109,7 +109,7 @@ const cases: {
     name: 'engineering tools use private package exports',
     allowed: true,
     from: 'clients/desktop/app/tools/process.ts',
-    to: 'packages/tooling/src/process.ts',
+    to: 'packages/tooling/src/process/index.ts',
     source: "export type { Value } from '@kisaki3/tooling/process'\n",
   },
 ]
@@ -160,7 +160,7 @@ beforeAll(async () => {
     JSON.stringify({
       name: '@kisaki3/tooling',
       type: 'module',
-      exports: { './process': './src/process.ts' },
+      exports: { './process': './src/process/index.ts' },
     }),
   )
 

@@ -39,15 +39,16 @@ interface PackagingContext {
 /**
  * Packages a verified runtime on its matching target runner and returns the artifact receipt path.
  *
- * Checks the target and runtime byte inventory before packaging. All formats finish before the
- * completion receipt is written. Returns after temporary staging cleanup; failures leave the
- * output unverified.
+ * Checks the target and runtime byte inventory before packaging. Ordinary fixture runs build the
+ * smoke carrier; installer checks and release builds produce every target format. The receipt
+ * records completed files before temporary staging cleanup.
  */
 export async function packageDesktop(
   target: DesktopTarget,
-  testOnly = false,
-  signal?: AbortSignal,
+  options: { testOnly?: boolean; installers?: boolean; signal?: AbortSignal } = {},
 ): Promise<string> {
+  const { testOnly = false, signal } = options
+  const installers = !testOnly || options.installers
   if (target !== hostTarget()) {
     throw new Error('Package on the corresponding native target runner')
   }
@@ -84,12 +85,23 @@ export async function packageDesktop(
 
     if (target.startsWith('windows-')) {
       await packageCarrier(context, configPath, 'zip', '--win', ['zip'], signal)
-      await packageCarrier(context, configPath, 'nsis', '--win', ['nsis'], signal)
+      if (installers) {
+        await packageCarrier(context, configPath, 'nsis', '--win', ['nsis'], signal)
+      }
     } else if (target.startsWith('macos-')) {
-      await packageCarrier(context, configPath, 'app', '--mac', ['dmg', 'zip'], signal)
+      await packageCarrier(
+        context,
+        configPath,
+        'app',
+        '--mac',
+        installers ? ['dmg', 'zip'] : ['zip'],
+        signal,
+      )
     } else {
-      await packageCarrier(context, configPath, 'deb', '--linux', ['deb'], signal)
-      await packageCarrier(context, configPath, 'rpm', '--linux', ['rpm'], signal)
+      if (installers) {
+        await packageCarrier(context, configPath, 'deb', '--linux', ['deb'], signal)
+        await packageCarrier(context, configPath, 'rpm', '--linux', ['rpm'], signal)
+      }
       await packageCarrier(context, configPath, 'appimage', '--linux', ['AppImage'], signal)
     }
 

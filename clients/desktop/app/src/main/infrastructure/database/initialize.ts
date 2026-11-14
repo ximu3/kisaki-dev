@@ -3,16 +3,14 @@
 import { drizzle } from 'drizzle-orm/better-sqlite3'
 import { migrate } from 'drizzle-orm/better-sqlite3/migrator'
 import { readMigrationFiles } from 'drizzle-orm/migrator'
-import { getTableConfig } from 'drizzle-orm/sqlite-core'
-import type { SQLiteTable } from 'drizzle-orm/sqlite-core'
+import { isAbsolute } from 'node:path'
 import type Database from 'better-sqlite3'
-import { parsePreferences } from '@kisaki3/desktop-contracts/preferences'
 import type { Preferences } from '@kisaki3/desktop-contracts/preferences'
 import { configureConnection, openConnection } from './connection'
 import { createPreferencesTable } from './schema/preferences'
 import { preparePreferences } from './codecs/preferences'
-import * as tables from './schema'
 import { relations } from './relations'
+import { openNameOrder } from './name-order'
 
 /** Database-file identity established by the first formal migration, independent of application version. */
 const applicationId = 0x4b534b33
@@ -21,6 +19,8 @@ const applicationId = 0x4b534b33
 export interface DatabaseOptions {
   readonly path: string
   readonly nativeBinding: string
+  /** Deployed private SQLite collation extension, also used by the app's Node-API loader. */
+  readonly collationExtension: string
   readonly migrationsDirectory: string
   readonly defaults: Preferences
 }
@@ -34,15 +34,15 @@ export class DatabaseFormatError extends Error {
   }
 }
 
-/** Checks storage identity and migration compatibility before any schema or journal mutation. */
-function inspectFormat(connection: Database.Database, migrationsDirectory: string): void {
+/** Checks compatibility before mutation and identifies an already migrated library. */
+function inspectFormat(connection: Database.Database, migrationsDirectory: string): boolean {
   const objects = connection
     .prepare("select name from sqlite_schema where type = 'table' and name not like 'sqlite_%'")
     .pluck()
     .all() as string[]
   const identity = connection.pragma('application_id', { simple: true })
   if (objects.length === 0 && identity === 0) {
-    return
+    return false
   }
   // Drizzle creates its empty ledger before the first migration transaction starts.
   if (
@@ -51,54 +51,31 @@ function inspectFormat(connection: Database.Database, migrationsDirectory: strin
     objects[0] === '__drizzle_migrations' &&
     connection.prepare('select count(*) from __drizzle_migrations').pluck().get() === 0
   ) {
-    return
+    return false
   }
   if (identity !== applicationId || !objects.includes('__drizzle_migrations')) {
     throw new DatabaseFormatError('The file is not a supported Kisaki database')
   }
 
-  const supported = new Map(
-    readMigrationFiles({ migrationsFolder: migrationsDirectory }).map((migration) => [
-      migration.name,
-      migration.hash,
-    ]),
-  )
-  const applied = connection.prepare('select name, hash from __drizzle_migrations').all() as {
+  const supported = readMigrationFiles({ migrationsFolder: migrationsDirectory })
+  const applied = connection
+    .prepare('select name, hash from __drizzle_migrations order by id')
+    .all() as {
     name: string
     hash: string
   }[]
   if (
     applied.length === 0 ||
-    applied.some((migration) => supported.get(migration.name) !== migration.hash)
+    applied.some(
+      (migration, index) =>
+        supported[index]?.name !== migration.name || supported[index]?.hash !== migration.hash,
+    )
   ) {
     throw new DatabaseFormatError(
       'The database migration history is not supported by this application',
     )
   }
-}
-
-/** Checks required current columns and their actual nullability after migrations complete. */
-function inspectStructure(connection: Database.Database, schema: readonly SQLiteTable[]): void {
-  for (const table of schema) {
-    const definition = getTableConfig(table)
-    const columns = connection.pragma(
-      `table_xinfo('${definition.name.replaceAll("'", "''")}')`,
-    ) as { name: string; notnull: number; pk: number; type: string }[]
-    const actual = new Map(columns.map((column) => [column.name, column]))
-    for (const column of definition.columns) {
-      const saved = actual.get(column.name)
-      if (
-        !saved ||
-        (column.notNull &&
-          saved.notnull !== 1 &&
-          !(saved.pk === 1 && saved.type.toLowerCase() === 'integer'))
-      ) {
-        throw new DatabaseFormatError(
-          'The database is missing a required storage column or constraint',
-        )
-      }
-    }
-  }
+  return true
 }
 
 /**
@@ -109,16 +86,22 @@ function inspectStructure(connection: Database.Database, schema: readonly SQLite
  * transaction callbacks. A failed initialization closes the connection and preserves the file.
  */
 export function initializeDatabase(options: DatabaseOptions) {
-  const defaults = parsePreferences(options.defaults)
+  const defaults = options.defaults
+  if (!isAbsolute(options.collationExtension)) {
+    throw new TypeError('Expected an absolute desktop collation extension path')
+  }
   const connection = openConnection(options.path, options.nativeBinding)
   try {
-    inspectFormat(connection, options.migrationsDirectory)
+    const existing = inspectFormat(connection, options.migrationsDirectory)
+    connection.loadExtension(options.collationExtension)
     configureConnection(connection)
+    // Pending migrations may write names; reopen existing indexes with their own comparator first.
+    const existingOrder = existing ? openNameOrder(connection) : undefined
     const db = drizzle({ client: connection, relations })
     migrate(db, { migrationsFolder: options.migrationsDirectory })
+    const adoptLocale = existingOrder ?? openNameOrder(connection)
 
     const preferences = createPreferencesTable(defaults)
-    inspectStructure(connection, [...Object.values(tables), preferences])
     if (!db.select({ id: preferences.id }).from(preferences).get()) {
       db.insert(preferences)
         .values({ id: 1, ...preparePreferences(defaults) })
@@ -128,6 +111,7 @@ export function initializeDatabase(options: DatabaseOptions) {
     return {
       db,
       preferences,
+      adoptLocale,
       /** Closes this connection after its consumers have finished; repeated close is harmless. */
       close() {
         if (connection.open) {

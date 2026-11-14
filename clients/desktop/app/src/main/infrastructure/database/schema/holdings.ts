@@ -17,14 +17,14 @@ import {
   parseGameLaunchDefinition,
   parseDirectoryDiscoveryDefinition,
   parseFileRecognitionDefinitionShape,
+  parseFilePlaybackChoices,
+  parseReadingPosition,
 } from '@kisaki3/desktop-contracts/library'
-import { parseReadingPosition } from '@kisaki3/desktop-contracts/library'
 import { storedJsonColumn, jsonLiteral } from '../codecs/json'
 import {
   parseAnimeMetadata,
   parseReadingMetadata,
   parseFileAvailability,
-  parsePlaybackChoices,
   parsePlaybackPosition,
   parsePlaybackOverride,
   parseReadingOverride,
@@ -255,7 +255,7 @@ export const animeFiles = sqliteTable(
     metadata: storedJsonColumn(parseAnimeMetadata)('metadata'),
     position: storedJsonColumn(parsePlaybackPosition)('position'),
     preferences: storedJsonColumn(parsePlaybackOverride)('preferences'),
-    playbackChoices: storedJsonColumn(parsePlaybackChoices)('playback_choices')
+    playbackChoices: storedJsonColumn(parseFilePlaybackChoices)('playback_choices')
       .notNull()
       .default(
         jsonLiteral({

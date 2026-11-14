@@ -3,6 +3,7 @@
 export { attachments } from './attachments'
 export {
   entries,
+  nameOrderState,
   games,
   animes,
   comics,

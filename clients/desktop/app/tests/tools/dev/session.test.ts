@@ -5,9 +5,8 @@
 
 import { afterAll, beforeAll, expect, onTestFinished, test } from 'vitest'
 import { chromium } from '@playwright/test'
-import { readFile, readdir, rename, rm, writeFile } from 'node:fs/promises'
+import { readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import { hostTarget } from '../../../tools/lib/targets'
 import { closeNativeWindow, hasNativeWindow } from '../../support/window-observation'
 import { prepareDevelopmentWorkspace } from '../../support/development/workspace'
 import { startDevelopmentController } from '../../support/development/controller'
@@ -133,11 +132,13 @@ test('runtime syntax, renamed imports and configuration errors recover through n
 test('dependency recovery and renderer updates preserve a usable process', async () => {
   const styles = join(workspace.app, 'tests/fixtures/runtime/src/renderer/windows/main/styles.css')
   const renderer = join(workspace.app, 'tests/fixtures/runtime/src/renderer/windows/main/entry.tsx')
-  const dependency = join(workspace.root, 'packages/development-fixture/src/value.json')
-  const originals = await Promise.all(
-    [styles, renderer, dependency].map((path) => readFile(path, 'utf8')),
+  const dependency = join(
+    workspace.root,
+    'clients/desktop/packages/desktop-contracts/src/development.ts',
   )
-  for (const [index, path] of [styles, renderer, dependency].entries()) {
+  const paths = [styles, renderer, dependency]
+  const originals = await Promise.all(paths.map((path) => readFile(path, 'utf8')))
+  for (const [index, path] of paths.entries()) {
     onTestFinished(() => writeFile(path, originals[index]!))
   }
   await writeFile(
@@ -145,9 +146,9 @@ test('dependency recovery and renderer updates preserve a usable process', async
     originals[1]!
       .replace(
         "import './styles.css'",
-        "import './styles.css'\nimport { label } from '@kisaki3/development-fixture'",
+        "import { developmentProtocolId } from '@kisaki3/desktop-contracts/development'\nimport './styles.css'",
       )
-      .replace('<main>', '<main data-dependency={label}>'),
+      .replace('<main>', '<main data-protocol={developmentProtocolId}>'),
   )
   const controller = startDevelopmentController(workspace.app)
 
@@ -166,7 +167,7 @@ test('dependency recovery and renderer updates preserve a usable process', async
     .toBe('73px')
   expect(await page.getByRole('button', { name: 'Count: 1' }).count()).toBe(1)
 
-  await writeFile(dependency, '{')
+  await writeFile(dependency, 'export const broken =\n')
   await expect
     .poll(() => controller.states.some((state) => state.state === 'failed'), { timeout: 60_000 })
     .toBe(true)
@@ -183,7 +184,7 @@ test('dependency recovery and renderer updates preserve a usable process', async
 
   // Recovery may rebuild the runtime; a subsequent dependency-only update must not restart it.
   const readyBeforeUpdate = controller.states.filter((state) => state.state === 'ready').length
-  await writeFile(dependency, JSON.stringify({ label: 'updated' }))
+  await writeFile(dependency, originals[2]!.replace("'kisaki.development'", "'fixture.updated'"))
   await expect
     .poll(() => controller.states.filter((state) => state.state === 'ready').length, {
       timeout: 60_000,
@@ -193,96 +194,9 @@ test('dependency recovery and renderer updates preserve a usable process', async
     controller.states.filter((state) => state.state === 'ready').at(-1)?.current?.processId,
   ).toBe(recovered.current!.processId)
   await expect
-    .poll(() => page.locator('main').getAttribute('data-dependency'), { timeout: 15_000 })
-    .toBe('updated')
+    .poll(() => page.locator('main').getAttribute('data-protocol'), { timeout: 15_000 })
+    .toBe('fixture.updated')
 })
-
-test.each(['cancellation', 'command failure'] as const)(
-  '%s during initial preparation reports its outcome and releases owned resources',
-  async (outcome) => {
-    const manifestPath = join(workspace.root, 'packages/development-fixture/package.json')
-    const preparationPath = join(workspace.root, '.cache', 'dependency-preparation.json')
-    const toolingManifestPath = join(workspace.root, 'packages/tooling/package.json')
-    const original = await readFile(manifestPath, 'utf8')
-    const originalToolingManifest = await readFile(toolingManifestPath, 'utf8')
-    onTestFinished(() => writeFile(manifestPath, original))
-    onTestFinished(() => writeFile(toolingManifestPath, originalToolingManifest))
-    onTestFinished(() => rm(preparationPath, { force: true }))
-
-    const manifest = JSON.parse(original) as { scripts: Record<string, string> }
-    manifest.scripts.build =
-      'node --import tsx ../../clients/desktop/app/tests/support/preparation-worker.ts'
-    await writeFile(manifestPath, JSON.stringify(manifest))
-    if (outcome === 'command failure') {
-      // Fault injection is confined to the copied package's declared process entry.
-      const toolingManifest = JSON.parse(originalToolingManifest) as {
-        exports: Record<string, string>
-      }
-      toolingManifest.exports['./process'] = './tests/support/cancellation-failure.ts'
-      await writeFile(toolingManifestPath, JSON.stringify(toolingManifest))
-    }
-
-    const first = startDevelopmentController(workspace.app, {
-      expectedExitCode: outcome === 'cancellation' ? 0 : 1,
-    })
-    const sessions = join(workspace.app, 'out', 'development', hostTarget())
-    let preparation: { pid: number } | undefined
-    await expect
-      .poll(
-        async () => {
-          try {
-            preparation = JSON.parse(await readFile(preparationPath, 'utf8')) as typeof preparation
-            return true
-          } catch (cause) {
-            if ((cause as NodeJS.ErrnoException).code !== 'ENOENT') {
-              throw cause
-            }
-
-            return false
-          }
-        },
-        { timeout: 60_000 },
-      )
-      .toBe(true)
-
-    first.process.send({ type: 'stop' })
-    expect(await first.closed).toBe(outcome === 'cancellation' ? 0 : 1)
-    if (outcome === 'command failure') {
-      expect(first.output).toContain('Synthetic command cancellation failure')
-    }
-    expect(first.states.some((state) => state.state === 'ready')).toBe(false)
-    expect(await readdir(sessions)).toEqual([])
-    expect(preparation).toBeDefined()
-
-    await expect
-      .poll(() => {
-        try {
-          process.kill(preparation!.pid, 0)
-          return true
-        } catch (cause) {
-          if ((cause as NodeJS.ErrnoException).code !== 'ESRCH') {
-            throw cause
-          }
-
-          return false
-        }
-      })
-      .toBe(false)
-
-    if (outcome === 'command failure') {
-      return
-    }
-
-    await writeFile(manifestPath, original)
-    await writeFile(toolingManifestPath, originalToolingManifest)
-    const retry = startDevelopmentController(workspace.app)
-    await retry.ready
-
-    retry.process.send({ type: 'stop' })
-    expect(await retry.closed).toBe(0)
-    expect(await readdir(sessions)).toEqual([])
-  },
-)
 
 test('a failed application stop is reported and the worker releases its owned process', async () => {
   const controller = startDevelopmentController(workspace.app, {

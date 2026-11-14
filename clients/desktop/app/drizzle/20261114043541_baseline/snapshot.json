@@ -1,7 +1,7 @@
 {
   "version": "7",
   "dialect": "sqlite",
-  "id": "66ae528a-6189-4d97-8d44-9575c276a392",
+  "id": "49b8eac8-0d37-4cc1-985d-dfc0dcc02f71",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -268,6 +268,10 @@
     },
     {
       "name": "metadata_profiles",
+      "entityType": "tables"
+    },
+    {
+      "name": "name_order_state",
       "entityType": "tables"
     },
     {
@@ -3252,6 +3256,19 @@
     },
     {
       "table": "entries",
+      "name": "effective_sort_name",
+      "type": "text collate kisaki_name",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": {
+        "as": "(coalesce(\"sort_name\", \"name\"))",
+        "type": "virtual"
+      },
+      "entityType": "columns"
+    },
+    {
+      "table": "entries",
       "name": "aliases",
       "type": "text",
       "notNull": true,
@@ -3328,45 +3345,6 @@
       "autoincrement": false,
       "default": null,
       "generated": null,
-      "entityType": "columns"
-    },
-    {
-      "table": "entries",
-      "name": "name_key",
-      "type": "blob",
-      "notNull": false,
-      "autoincrement": false,
-      "default": null,
-      "generated": {
-        "as": "(kisaki_name_key_v1(\"name\"))",
-        "type": "stored"
-      },
-      "entityType": "columns"
-    },
-    {
-      "table": "entries",
-      "name": "sort_name_key",
-      "type": "blob",
-      "notNull": false,
-      "autoincrement": false,
-      "default": null,
-      "generated": {
-        "as": "(kisaki_name_key_v1(coalesce(\"sort_name\", \"name\")))",
-        "type": "stored"
-      },
-      "entityType": "columns"
-    },
-    {
-      "table": "entries",
-      "name": "original_name_key",
-      "type": "blob",
-      "notNull": false,
-      "autoincrement": false,
-      "default": null,
-      "generated": {
-        "as": "(kisaki_name_key_v1(\"original_name\"))",
-        "type": "stored"
-      },
       "entityType": "columns"
     },
     {
@@ -4526,6 +4504,36 @@
       "table": "metadata_profiles",
       "name": "updated_at",
       "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "name_order_state",
+      "name": "id",
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "name_order_state",
+      "name": "locale",
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "name_order_state",
+      "name": "revision",
+      "type": "text",
       "notNull": true,
       "autoincrement": false,
       "default": null,
@@ -6069,19 +6077,6 @@
       "autoincrement": false,
       "default": null,
       "generated": null,
-      "entityType": "columns"
-    },
-    {
-      "table": "tags",
-      "name": "name_order_key",
-      "type": "blob",
-      "notNull": false,
-      "autoincrement": false,
-      "default": null,
-      "generated": {
-        "as": "(kisaki_name_key_v1(\"name\"))",
-        "type": "stored"
-      },
       "entityType": "columns"
     },
     {
@@ -7793,7 +7788,7 @@
           "isExpression": false
         },
         {
-          "value": "sort_name_key",
+          "value": "effective_sort_name",
           "isExpression": false
         },
         {
@@ -7811,7 +7806,7 @@
       "name": "entries_sort",
       "columns": [
         {
-          "value": "sort_name_key",
+          "value": "effective_sort_name",
           "isExpression": false
         },
         {
@@ -7829,8 +7824,8 @@
       "name": "entries_name",
       "columns": [
         {
-          "value": "name_key",
-          "isExpression": false
+          "value": "\"name\" collate kisaki_name",
+          "isExpression": true
         },
         {
           "value": "id",
@@ -7847,8 +7842,8 @@
       "name": "entries_original_name",
       "columns": [
         {
-          "value": "original_name_key",
-          "isExpression": false
+          "value": "\"original_name\" collate kisaki_name",
+          "isExpression": true
         },
         {
           "value": "id",
@@ -9039,8 +9034,8 @@
       "name": "tags_name_order",
       "columns": [
         {
-          "value": "name_order_key",
-          "isExpression": false
+          "value": "\"name\" collate kisaki_name",
+          "isExpression": true
         },
         {
           "value": "id",
@@ -12622,6 +12617,15 @@
       "entityType": "pks"
     },
     {
+      "table": "name_order_state",
+      "name": "name_order_state_pk",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
       "table": "onboarding_state",
       "name": "onboarding_state_pk",
       "columns": [
@@ -13528,6 +13532,12 @@
       "table": "metadata_profiles",
       "name": "metadata_profiles_order",
       "value": "\"sort_order\" is null or (typeof(\"sort_order\") = 'integer' and \"sort_order\" between 0 and 9007199254740991)",
+      "entityType": "checks"
+    },
+    {
+      "table": "name_order_state",
+      "name": "name_order_singleton",
+      "value": "\"id\" = 1",
       "entityType": "checks"
     },
     {

@@ -15,6 +15,7 @@ const choices = Array.from({ length: 10_000 }, (_, index) => ({
 export function VirtualChoices(): JSX.Element {
   /** Reactive scroll viewport used by the standalone virtual-selection consumer. */
   const [viewport, setViewport] = createSignal<HTMLDivElement>()
+  /** Reveals the fixture's numeric option key through its currently mounted virtual row index. */
   let scrollTo: ((value: string) => void) | undefined
 
   return (
@@ -54,7 +55,6 @@ export function VirtualChoices(): JSX.Element {
             virtualizer.getVirtualItems()
             virtualizer.measureElement(null)
           })
-          /** Reveals the fixture's numeric option key through its virtual row index. */
           scrollTo = (value) => virtualizer.scrollToIndex(Number(value), { align: 'auto' })
           onCleanup(() => {
             scrollTo = undefined

@@ -25,7 +25,9 @@ const acceptor: RpcEndpoint = {
 
 /** Creates an RPC connection with a controllable transport and automatic test cleanup. */
 function fixture(endpoint: RpcEndpoint = acceptor) {
+  /** Delivers a test-controlled frame through the connection's actual transport subscription. */
   let receive!: (frame: unknown) => void
+  /** Notifies the connection that the controlled transport has been lost. */
   let lost!: () => void
   const transport = {
     /** Captures receive and close callbacks for test-controlled transport delivery. */
@@ -33,7 +35,9 @@ function fixture(endpoint: RpcEndpoint = acceptor) {
       receive = message
       lost = closed
     },
+    /** Records frames handed to the controlled transport. */
     send: vi.fn<(frame: RpcFrame) => void>(),
+    /** Records release of the controlled transport. */
     close: vi.fn<() => void>(),
   } satisfies RpcTransport
   const rpc = new RpcConnection(transport, endpoint)
@@ -275,6 +279,7 @@ test('correlation violations close the connection and terminate outstanding wait
 })
 
 test('disconnect releases both directions; late work and old callbacks cannot settle a new connection', async () => {
+  /** Completes the old method after disconnection to verify that late work stays isolated. */
   let finish!: () => void
   let executing!: AbortSignal
   const old = fixture({

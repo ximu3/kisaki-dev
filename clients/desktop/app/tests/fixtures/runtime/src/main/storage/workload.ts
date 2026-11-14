@@ -14,7 +14,6 @@ import {
 } from '@kisaki3/desktop-contracts/library'
 import type { EntryType, WorkType } from '@kisaki3/desktop-contracts/library'
 import type { Storage } from '../../../../../../src/main/infrastructure/database'
-import { nameOrderKey } from '../../../../../../src/main/infrastructure/database/text/name-order'
 
 /** Fixed simultaneous object counts and sampling policy, selected before measurement. */
 export const workload = {
@@ -60,7 +59,6 @@ export interface FixtureEntry {
   readonly ordinal: number
   readonly local: number
   readonly name: string
-  readonly nameKey: Buffer
 }
 
 /** Stable synthetic identities remain independent of filesystem spelling and source data. */
@@ -96,7 +94,6 @@ export async function prepareWorkload(storage: Storage, directory: string) {
         ordinal,
         local,
         name,
-        nameKey: nameOrderKey(name)!,
       })
     }
   }

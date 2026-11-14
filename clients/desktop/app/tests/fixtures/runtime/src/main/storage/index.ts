@@ -21,11 +21,13 @@ export async function verifyStorage(
   const options = {
     path: join(profile, 'library.sqlite'),
     nativeBinding: join(resources, 'native/better-sqlite3.node'),
+    collationExtension: join(resources, 'native/kisaki-native.node'),
     migrationsDirectory: join(resources, 'drizzle'),
     defaults: getPreferenceDefaults(platform, []),
   }
   let storage = initializeDatabase(options)
   try {
+    storage.adoptLocale('en')
     if (!storage.db.select().from(entries).where(eq(entries.id, 'fixture')).get()) {
       storage.db.transaction((transaction) => {
         transaction
@@ -40,6 +42,7 @@ export async function verifyStorage(
     }
     storage.close()
     storage = initializeDatabase(options)
+    storage.adoptLocale('en')
     assert.equal(
       storage.db.select().from(entries).where(eq(entries.id, 'fixture')).get()?.name,
       '資料 ２',

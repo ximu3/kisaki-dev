@@ -26,7 +26,7 @@ import {
 } from '../validation'
 import {
   aliasesSchema,
-  externalLinkSchema,
+  externalLinksSchema,
   identitiesSchema,
   partialDateSchema,
   partTypes,
@@ -353,7 +353,7 @@ export const partCommonEntries = {
   description: v.nullable(text),
   primaryImageId: v.nullable(id),
 
-  externalLinks: v.array(externalLinkSchema),
+  externalLinks: externalLinksSchema,
   externalIdentities: identitiesSchema,
   releaseDate: v.nullable(partialDateSchema),
 }

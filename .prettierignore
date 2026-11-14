@@ -5,7 +5,6 @@ pnpm-lock.yaml
 # These sources are emitted deterministically by their owning data generators.
 clients/desktop/packages/desktop-contracts/src/ui/icons/names.generated.ts
 clients/desktop/packages/desktop-localization/src/contracts.generated.ts
-clients/desktop/app/src/main/infrastructure/database/text/unicode.generated.json
 clients/desktop/app/drizzle/
 node_modules/
 **/dist/

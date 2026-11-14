@@ -601,6 +601,7 @@ CREATE TABLE `entries` (
 	`name` text NOT NULL,
 	`original_name` text,
 	`sort_name` text,
+	`effective_sort_name` text collate kisaki_name GENERATED ALWAYS AS (coalesce("sort_name", "name")) VIRTUAL,
 	`aliases` text DEFAULT '[]' NOT NULL,
 	`description` text,
 	`primary_image_id` text,
@@ -609,9 +610,6 @@ CREATE TABLE `entries` (
 	`added_date` text,
 	`created_at` integer NOT NULL,
 	`updated_at` integer NOT NULL,
-	`name_key` blob GENERATED ALWAYS AS (kisaki_name_key_v1("name")) STORED,
-	`sort_name_key` blob GENERATED ALWAYS AS (kisaki_name_key_v1(coalesce("sort_name", "name"))) STORED,
-	`original_name_key` blob GENERATED ALWAYS AS (kisaki_name_key_v1("original_name")) STORED,
 	CONSTRAINT `fk_entries_primary_image_id_attachments_id_fk` FOREIGN KEY (`primary_image_id`) REFERENCES `attachments`(`id`) ON DELETE RESTRICT,
 	CONSTRAINT `entries_id_type` UNIQUE(`id`,`type`),
 	CONSTRAINT "entries_type" CHECK("type" in ('game', 'anime', 'comic', 'novel', 'character', 'person', 'organization')),
@@ -865,6 +863,13 @@ CREATE TABLE `metadata_profiles` (
 	CONSTRAINT "metadata_profiles_type" CHECK("entry_type" in ('game', 'anime', 'comic', 'novel', 'character', 'person', 'organization')),
 	CONSTRAINT "metadata_profiles_default_value" CHECK("is_default" in (0, 1)),
 	CONSTRAINT "metadata_profiles_order" CHECK("sort_order" is null or (typeof("sort_order") = 'integer' and "sort_order" between 0 and 9007199254740991))
+);
+--> statement-breakpoint
+CREATE TABLE `name_order_state` (
+	`id` integer PRIMARY KEY,
+	`locale` text NOT NULL,
+	`revision` text NOT NULL,
+	CONSTRAINT "name_order_singleton" CHECK("id" = 1)
 );
 --> statement-breakpoint
 CREATE TABLE `note_content_attachments` (
@@ -1174,7 +1179,6 @@ CREATE TABLE `tags` (
 	`is_nsfw` integer DEFAULT false NOT NULL,
 	`created_at` integer NOT NULL,
 	`updated_at` integer NOT NULL,
-	`name_order_key` blob GENERATED ALWAYS AS (kisaki_name_key_v1("name")) STORED,
 	CONSTRAINT "tags_name" CHECK(length("name") > 0),
 	CONSTRAINT "tags_name_key" CHECK(length("name_key") > 0),
 	CONSTRAINT "tags_nsfw" CHECK("is_nsfw" in (0, 1))
@@ -1363,10 +1367,10 @@ CREATE INDEX `comic_volumes_owner_order` ON `comic_volumes` (`comic_id`,`sort_or
 CREATE INDEX `comic_volumes_primary_image` ON `comic_volumes` (`primary_image_id`);--> statement-breakpoint
 CREATE INDEX `comics_backdrop` ON `comics` (`backdrop_image_id`);--> statement-breakpoint
 CREATE INDEX `comics_title_logo` ON `comics` (`title_logo_id`);--> statement-breakpoint
-CREATE INDEX `entries_type_sort` ON `entries` (`type`,`sort_name_key`,`id`);--> statement-breakpoint
-CREATE INDEX `entries_sort` ON `entries` (`sort_name_key`,`id`);--> statement-breakpoint
-CREATE INDEX `entries_name` ON `entries` (`name_key`,`id`);--> statement-breakpoint
-CREATE INDEX `entries_original_name` ON `entries` (`original_name_key`,`id`);--> statement-breakpoint
+CREATE INDEX `entries_type_sort` ON `entries` (`type`,`effective_sort_name`,`id`);--> statement-breakpoint
+CREATE INDEX `entries_sort` ON `entries` (`effective_sort_name`,`id`);--> statement-breakpoint
+CREATE INDEX `entries_name` ON `entries` ("name" collate kisaki_name,`id`);--> statement-breakpoint
+CREATE INDEX `entries_original_name` ON `entries` ("original_name" collate kisaki_name,`id`);--> statement-breakpoint
 CREATE INDEX `entries_created_order` ON `entries` ("created_at" desc,`id`);--> statement-breakpoint
 CREATE INDEX `entries_primary_image` ON `entries` (`primary_image_id`);--> statement-breakpoint
 CREATE INDEX `entry_description_attachments_attachment` ON `entry_description_attachments` (`attachment_id`,`entry_id`);--> statement-breakpoint
@@ -1432,7 +1436,7 @@ CREATE INDEX `scan_runs_status_created` ON `scan_runs` (`status`,"created_at" de
 CREATE INDEX `scan_runs_created` ON `scan_runs` ("created_at" desc,`id`);--> statement-breakpoint
 CREATE INDEX `showcase_sections_ordered` ON `showcase_sections` (`sort_order`,`id`);--> statement-breakpoint
 CREATE INDEX `tag_description_attachments_attachment` ON `tag_description_attachments` (`attachment_id`,`tag_id`);--> statement-breakpoint
-CREATE INDEX `tags_name_order` ON `tags` (`name_order_key`,`id`);--> statement-breakpoint
+CREATE INDEX `tags_name_order` ON `tags` ("name" collate kisaki_name,`id`);--> statement-breakpoint
 CREATE INDEX `task_runs_status_created` ON `task_runs` (`status`,"created_at" desc,`id`);--> statement-breakpoint
 CREATE INDEX `task_runs_created` ON `task_runs` ("created_at" desc,`id`);--> statement-breakpoint
 CREATE INDEX `task_runs_type_created` ON `task_runs` (`type`,"created_at" desc,`id`);--> statement-breakpoint

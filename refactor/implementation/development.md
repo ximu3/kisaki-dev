@@ -14,12 +14,12 @@
 | 根 `tests/workspace`                                     | 工程登记、类型检查覆盖、任务依赖与验证选择，以及跨工程导入边界                   |
 | `packages/typescript-config`、`eslint-config`、`tooling` | 共用类型与 lint 配置、所属输出清理、命令执行、错误交付和 CLI 收尾                    |
 | `clients/desktop/app/tools`                              | 桌面程序构建、资源准备、原生编译、开发会话、打包与输出清理                       |
-| `clients/desktop/app/src/main/infrastructure/database`    | 正式 schema、逐值 codec、连接、同步事务、初始化与固定 Unicode 名称顺序          |
+| `clients/desktop/app/src/main/infrastructure/database`    | 正式 schema、逐值 codec、连接、同步事务、初始化与资料库语言排序          |
 | `clients/desktop/app/src/main/infrastructure/files`       | 实际路径比较、本地资料根检查、有限字节准备、不覆盖发布与流式 ZIP                |
 | `clients/desktop/app/src/main/features/preferences`       | 初始化与 getDefaults 共用的产品默认配置定义                                   |
 | `clients/desktop/app/drizzle`                            | Drizzle Kit 生成并审阅的 SQL 迁移及 snapshot，随资源原样交付                    |
 | `clients/desktop/app/native`                             | Rust 文件同步、不覆盖移动与实际文件系统识别，Node 加载、声明与错误转换          |
-| `clients/desktop/app/assets`                             | 锁定字体与 Unicode 输入清单及许可、图标源稿                                    |
+| `clients/desktop/app/assets`                             | 锁定字体、第三方许可与图标源稿                                    |
 | `clients/desktop/app/tests`                              | 工程用例、隔离载体，以及原生、Electron、开发、制品和性能验证                     |
 | `clients/desktop/packages/desktop-appearance`            | 视觉词表、纯值解析、亮暗默认值、普通 CSS 与可选 Tailwind 映射                    |
 | `clients/desktop/packages/desktop-ui` | Solid 控件、原生表单与反馈、浮层、Toast、Markdown、图表、拖拽和普通 CSS |
@@ -86,23 +86,23 @@ pnpm desktop:package:fixture --target windows-x64
 
 `buildId` 是同次程序构建的独立标识，源码会话使用单独的会话身份。SHA-256 核对已完成的运行字节；发行来源由固定 SHA 和验证记录关联。打包检查既有 `build.json` 的目标、完整文件集合和摘要，消费已完成的构建。根 `desktop:package:fixture` 通过 Turbo 准备资源、原生绑定和工程载体。包内脚本执行各自的叶操作；需要准备依赖时使用根入口或 Turbo。
 
-工程载体打包固定标记 `testOnly`，构建和打包均不发布。正式签署、安装升级及发行接入由 W20 验收。
+工程载体打包固定标记 `testOnly`。默认生成实际启动验证使用的 ZIP 或 AppImage；`pnpm desktop:package:fixture --installers` 生成目标平台全部格式。构建和打包均不发布。正式签署、安装升级及发行接入由 W20 验收。
 
 `pnpm --filter @kisaki3/desktop build:fixture --program preload` 单独验证 preload 编译。`build:native` 编译私有绑定；需要更新生成声明时显式添加 `--update-declarations` 并审阅变化。`check:native` 执行固定 Rust 工具链的格式与 Clippy 检查。
 
 ### 存储与生成资源
 
-数据库固定使用 Drizzle ORM／Kit 1.0.0-rc.5、better-sqlite3 13.0.3 和 Electron 45.0.0。`database/initialize` 接收数据库、原生驱动、迁移目录的明确路径及当前完整偏好默认值；路径拥有者先以 `files.assertLocalDataDirectory` 核对实际卷或挂载。初始化完成格式检查、原生 migrate、结构核对和缺失偏好首行插入后才返回连接。业务使用 Drizzle 的同步查询与事务，并在关闭前结束自己的消费者。
+数据库固定使用 Drizzle ORM／Kit 1.0.0-rc.5、better-sqlite3 13.0.3 和 Electron 45.0.0。`database/initialize` 接收数据库、原生驱动、迁移目录的明确路径及当前完整偏好默认值；路径拥有者先以 `files.assertLocalDataDirectory` 核对实际卷或挂载。初始化完成格式与迁移链检查、原生 migrate、缺失偏好首行插入和名称索引采用后才返回连接。业务使用 Drizzle 的同步查询与事务，并在关闭前结束自己的消费者。
 
 连接使用 WAL、FULL，以及 macOS 的 fullfsync；页缓存目标为 32 MiB。表、外键、CHECK 和索引由 schema 定义；保存的执行配置、身份与定位值通过 `StoredDefinition` 表达读取问题，普通偏好按独立字段采用默认值。读取投影不会自动写回；后续业务更新须保留未修改的原始字段。
 
 `pnpm --filter @kisaki3/desktop generate:migrations --name <主题>` 使用正式 Drizzle Kit 入口。审阅生成的 SQL、snapshot 及必要的数据变换后提交整个迁移目录。构建按实际目录结构复制迁移，开发监听将迁移变化交给资源准备。迁移的格式识别、不可修改规则与失败处理见[数据库合同](../design/engineering/database.md)。
 
-名称自然序使用固定 Unicode 18 数据生成的版本化 SQLite 键。`assets/unicode/inputs.json` 记录官方地址、版本和原始文件摘要；下载这些输入后，`pnpm --filter @kisaki3/desktop generate:unicode --input <绝对目录>` 核对摘要并生成运行表和规范化测试样本。普通构建直接消费已提交产物。更换排序规则须使用新的函数版本并通过数据库迁移重建相关键。
+名称排序由同一私有绑定的 SQLite 扩展入口与 ICU4X 2.4.0 提供。数据库先按索引记录的语言重开，新库采用英语。main 读取已选译本，待 i18n 确认生效语言或回退后调用 `storage.adoptLocale`，再开放资料库查询。后续语言切换沿用同一入口。仅在生效语言或引擎修订变化时重建 `kisaki_name` 索引；比较规则见[资料库名称排序](../design/domains/library/query/README.md#name-order)。
 
 文件设施使用原生不覆盖移动与同步屏障发布已准备字节。ZIP 读取按需访问中央目录，写入逐成员消费流；拥有者提供条目、路径元数据、展开字节与归档字节预算。取消和失败等待当前流结束并释放所属文件与临时目录。业务清单、资源引用和恢复事务由所属后续工作包接入。
 
-开发监听由 `tools/dev/session` 通过明确的输入和启动回调提供，真实回归在隔离 workspace 内执行。测试临时创建合成依赖，验证构建失败修复、公开依赖更新、HMR、程序重启、正常退出取消和清理；测试载体的消息不定义产品开发协议。
+开发监听由 `tools/dev/session` 通过明确的输入和启动回调提供，真实回归在隔离 workspace 内执行。编辑用例按仓库原锁文件离线安装，使用真实公共包验证构建失败修复、公开依赖更新、HMR、程序重启、正常退出取消和清理；测试载体的消息不定义产品开发协议。
 
 同一工作副本中，共享输出的构建、运行与打包顺序执行。任务内依赖和合法并行由 Turbo 管理。有限输出位于 `out/<target>`，开发会话位于 `out/development/<target>/session-*`，载体位于 `dist/<target>`。停止相关任务后用 `pnpm run clean` 清理声明输出。各项目指定自己的输出目录，工程工具按项目边界执行清理。
 
@@ -153,7 +153,7 @@ Vitest 转换缓存归各项目的 `node_modules/.vitest-cache`。TypeScript 增
 
 `@kisaki3/eslint-config/base` 提供共同规则与输出忽略范围，`/node` 限定 Node 环境，`/tests` 接受 Playwright 所需的空参数对象。消费者声明 ESLint、jiti 与本包，并以 `import.meta.dirname` 绑定 `parserOptions.tsconfigRootDir`。TypeScript Project Service 沿各文件的实际项目与 references 检查；根 lint 任务先通过 Turbo 准备依赖包声明，直接调用 ESLint 使用已准备的输出。
 
-`@kisaki3/tooling` 的 `/cli`、`/errors`、`/output` 与 `/process` 分别处理 CLI 信号与退出状态、错误交付、所属输出清理和命令执行。调用方传入取消信号并等待所属资源结束；终止请求失败时立即输出诊断，继续等实际进程和输出流关闭后报告错误。原始操作与清理同时失败时按此顺序保留两项错误。
+`@kisaki3/tooling` 的 `/cli`、`/errors`、`/output` 与 `/process` 分别处理 CLI 信号与退出状态、错误交付、所属输出清理和命令执行。调用方传入取消信号并等待所属资源结束。Windows 用 Node 启动器和 `@seydx/win-job` 持有本次命令的 Job Object，Unix 使用独立进程组。取消不吞掉独立错误。原始操作与清理同时失败时按此顺序保留两项错误。
 
 `runPnpm` 与 `readPnpm` 使用 `npm_execpath` 指向的当前 pnpm，因此相关工具和测试通过 pnpm 项目脚本运行。普通外部命令由调用方明确提供可执行文件与参数。同时供导入和直接运行的工程脚本使用固定 Node 宿主的 [import.meta.main](https://nodejs.org/download/release/v24.11.1/docs/api/esm.html#importmetamain) 判断入口，经目录联接启动时同样有效。
 

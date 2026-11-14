@@ -168,6 +168,19 @@ export function parseFileTrackSelection(input: unknown): FileTrackSelection {
   return parseValue(track, input, 'Invalid saved track selection')
 }
 
+/** Saved source tracks and finite signed offsets shared by whole values and partial edits. */
+const playbackChoiceFields = {
+  audioTrack: v.nullable(track),
+  subtitleTrack: v.nullable(track),
+  audioDelaySeconds: v.pipe(v.number(), v.finite()),
+  subtitleDelaySeconds: v.pipe(v.number(), v.finite()),
+}
+
+/** Parses a complete saved playback choice without applying update or baseline semantics. */
+export function parseFilePlaybackChoices(input: unknown): FilePlaybackChoices {
+  return parseValue(v.strictObject(playbackChoiceFields), input, 'Invalid saved playback choices')
+}
+
 /**
  * Parses complete saved-track references and finite signed-second offsets with matching baselines.
  */
@@ -175,14 +188,7 @@ export function parseFilePlaybackChoicesUpdate(input: unknown): {
   readonly changes: Partial<FilePlaybackChoices>
   readonly expected?: Partial<FilePlaybackChoices>
 } {
-  const fields = v.strictObject(
-    optionalFields({
-      audioTrack: v.nullable(track),
-      subtitleTrack: v.nullable(track),
-      audioDelaySeconds: v.pipe(v.number(), v.finite()),
-      subtitleDelaySeconds: v.pipe(v.number(), v.finite()),
-    }),
-  )
+  const fields = v.strictObject(optionalFields(playbackChoiceFields))
   const value = parseValue(
     v.strictObject({ changes: fields, expected: v.exactOptional(fields) }),
     input,

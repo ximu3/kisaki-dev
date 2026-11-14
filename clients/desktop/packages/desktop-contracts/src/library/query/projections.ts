@@ -11,8 +11,8 @@ import {
   nonemptyText,
 } from '../../validation'
 import {
+  languagesSchema,
   partialDateSchema,
-  languageSchema,
   statusSchema,
   releaseStatusSchema,
   genderSchema,
@@ -95,7 +95,7 @@ const fieldSchemas: Readonly<Record<Exclude<EntryProjectionField, 'partCounts'>,
     updatedAt: timestamp,
 
     releaseDate: date,
-    originalLanguages: v.array(languageSchema),
+    originalLanguages: languagesSchema,
     status: v.nullable(statusSchema),
     additionalDurationMs: nonnegativeInteger,
 

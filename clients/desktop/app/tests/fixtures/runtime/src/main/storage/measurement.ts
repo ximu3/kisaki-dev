@@ -44,10 +44,17 @@ interface QueryCase {
   verify(value: unknown): void
 }
 
-/** Uses the fixture's persisted natural keys and the contract's ascending identity tie-break. */
+/** Independent English comparator for this fixed workload's names, using natural number order. */
+const fixtureCollator = new Intl.Collator('en', {
+  usage: 'sort',
+  numeric: true,
+  sensitivity: 'accent',
+})
+
+/** Applies the fixture comparator and the same stable identity tie-break to expected results. */
 function compareEntries(left: FixtureEntry, right: FixtureEntry): number {
   return (
-    Buffer.compare(left.nameKey, right.nameKey) ||
+    fixtureCollator.compare(left.name, right.name) ||
     (left.id < right.id ? -1 : Number(left.id > right.id))
   )
 }
@@ -62,10 +69,10 @@ function resultSet(
 ): QueryCase[] {
   expected.sort(compareEntries)
   const offset = Math.max(0, expected.length - 200)
-  const listSql = `${prefix} select e.id from entries e where ${where} order by e.sort_name_key,e.id limit 200 offset ${offset}`
+  const listSql = `${prefix} select e.id from entries e where ${where} order by e.effective_sort_name,e.id limit 200 offset ${offset}`
   const countSql = `${prefix} select count(*) as total from entries e where ${where}`
   const target = expected[Math.floor(expected.length * 0.8)]!
-  const locateSql = `${prefix} select count(*) as position from entries e where (${where}) and (e.sort_name_key,e.id) < (?,?)`
+  const locateSql = `${prefix} select count(*) as position from entries e where (${where}) and (e.effective_sort_name,e.id) < (?,?)`
   const list = connection.prepare(listSql)
   const count = connection.prepare(countSql)
   const locate = connection.prepare(locateSql)
@@ -97,10 +104,10 @@ function resultSet(
     {
       name: `${name}.locate`,
       statement: locateSql,
-      parameters: [target.nameKey, target.id],
+      parameters: [target.name, target.id],
       expectedRows: 1,
       /** Locates the fixed target under the same predicate and ordering. */
-      run: () => locate.get(target.nameKey, target.id),
+      run: () => locate.get(target.name, target.id),
       /** Confirms the target's independently computed zero-based position. */
       verify: (value) => assert.deepEqual(value, { position: Math.floor(expected.length * 0.8) }),
     },
@@ -117,15 +124,18 @@ export async function measureStorage(profile: string, resources: string) {
   const options = {
     path: join(directory, 'library.sqlite'),
     nativeBinding: join(resources, 'native/better-sqlite3.node'),
+    collationExtension: join(resources, 'native/kisaki-native.node'),
     migrationsDirectory: join(resources, 'drizzle'),
     defaults: getPreferenceDefaults(process.platform, []),
   }
   let storage = initializeDatabase(options)
   const loop = monitorEventLoopDelay({ resolution: 1 })
   try {
+    storage.adoptLocale('en')
     const prepared = await prepareWorkload(storage, directory)
     storage.close()
     storage = initializeDatabase(options)
+    storage.adoptLocale('en')
     const connection = storage.db.$client
     const entries = prepared.entries
     const observedCounts: Record<string, number> = {}
@@ -285,7 +295,7 @@ export async function measureStorage(profile: string, resources: string) {
     const projection = storage.db
       .select({ id: entryTable.id, name: entryTable.name, aliases: entryTable.aliases })
       .from(entryTable)
-      .orderBy(asc(entryTable.sortNameKey), asc(entryTable.id))
+      .orderBy(asc(entryTable.effectiveSortName), asc(entryTable.id))
       .limit(200)
       .prepare()
     const expectedProjection = [...entries]
@@ -298,7 +308,7 @@ export async function measureStorage(profile: string, resources: string) {
       }))
     queries.push({
       name: 'drizzle-codec-projection',
-      statement: 'select id,name,aliases from entries order by sort_name_key,id limit 200',
+      statement: 'select id,name,aliases from entries order by effective_sort_name,id limit 200',
       parameters: [],
       expectedRows: 200,
       /** Reads a typed projection through Drizzle and the production list codec. */
@@ -385,6 +395,7 @@ export async function measureStorage(profile: string, resources: string) {
         journalMode: connection.pragma('journal_mode', { simple: true }),
         synchronous: connection.pragma('synchronous', { simple: true }),
         fullfsync: connection.pragma('fullfsync', { simple: true }),
+        nameOrder: connection.prepare('select locale,revision from name_order_state').get(),
         pageCacheKiB: -Number(connection.pragma('cache_size', { simple: true })),
       },
       mode: 'Actual Electron main, production fixture build, one full isolated database, reopened connection and warm OS cache; fixture preparation excluded',
