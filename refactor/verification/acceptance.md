@@ -2,7 +2,7 @@
 
 验收检查真实产品行为、完整调用、持久化、界面、性能和最终制品。纯逻辑、技术原型、真实应用和发行文件各自提供对应范围的证据，不能互相替代。本篇规定设计验证与实现验收的要求。设计验证证据随对应设计记录，实施验收结果记录在实施状态中。
 
-[简洁、清晰、干净与克制](../design/engineering/conventions.md#quality)具有同等首要地位，并与[终态实现与整体一致性](../design/engineering/conventions.md#final-state)共同约束质量判断。先判断机制、限制和验证投入是否必要且相称，再按完整职责与相关场景核对模型、接口、实现、测试和说明；既有规范与检查方式同样接受复核。
+[现代化、简洁、清晰、干净与克制](../design/engineering/conventions.md#quality)具有同等首要地位，并与[终态实现与整体一致性](../design/engineering/conventions.md#final-state)共同约束质量判断。先判断机制、限制和验证投入是否必要且相称，再按完整职责与相关场景核对模型、接口、实现、测试和说明；既有规范与检查方式同样接受复核。
 
 [可读性](../design/engineering/conventions.md#readability-principle)同样构成交付门槛。核对代码、模块组织、目录、命名、配置和文档能否支持完整的理解与维护路径：从入口定位拥有者，追踪正常流程及相关失败和收尾，并确定修改影响。[编码风格与逻辑分段](../design/engineering/conventions.md#logical-sections)覆盖源码、测试、工具、配置与设计示例。自动格式和静态检查提供各自证据，实际可读性由逐项审阅判断。
 

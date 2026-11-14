@@ -10,6 +10,8 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 
 当前任务入口为 AGENTS.md，设计、规范和实施资料集中于 refactor。[当前工程与开发](development.md)维护源码职责、环境准备与可运行命令。正式项目文档待 W23 交付；接口声明、代码注释、发行说明和许可材料随所属实现与版本维护。
 
+[工程现代化重构](engineering-modernization.md)处于方案评审阶段。工作文档记录要求、工具实测、实施顺序和验收条件，随重构进展更新。
+
 [当前工程验证](../verification/evidence/w00/README.md)已取得本机 Windows x64 和 CI 六目标结果，覆盖工程载体的构建、原生与 Electron 运行、开发回归、打包及制品运行。
 
 各公共包从同一份已检查的 tarball 验证独立消费，根入口通过 Turbo 调度。外观、分发、桌面合同与本地化分别见 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md) 和 [W03](../verification/evidence/w03/README.md)。[W04](../verification/evidence/w04/README.md) 另以 Node 父子进程和 Electron 窗口验证两种消息通道及其寿命。[W05](../verification/evidence/w05/README.md) 验证公共 UI 的完整组件、普通样式与浏览器／Electron 消费。
