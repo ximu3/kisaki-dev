@@ -32,7 +32,7 @@ pnpm 声明项目与依赖，`vp run` 执行工作区任务，Vite 管理编译�
 | 各公共包的 `tools` | 六份相同的 `clean.ts` 收敛为一次受限清理，项目声明自己的可重建输出。RPC 和分发包改为直接执行 `vp pack`，清理与构建两层包装退役后移除这两个包的 `tools/`。合同包保留 Lucide 名称生成与一致性核对，本地化包保留 ICU 消息声明生成，外观包保留视觉 token 到 CSS 的生成、Tailwind 入口和许可说明，UI 包保留组件样式和许可组装。只保留有独立读者的 CLI 或程序化入口。 |
 | 官方扩展、作者 SDK/CLI 与独立项目 | SDK/CLI 的作者命令、模板和 `.kisx` 打包是交付给用户的产品，随所属包的 `src` 发布。第一方扩展的维护脚本归项目 `tools`，源码模板与测试用消费者工程分别维护。Vantage 和 libmpv-node 的 Rust 单测、集成测试遵循 Cargo 的发现规则，JS 包验证实际绑定和平台制品。Kana 拥有真实格式与浏览器布局验证，relay 拥有 HTTP、容器、配置与停止测试。独立仓库各自落地并登记可取得的运行证据。[作者工具](../design/extensions/development.md#templates) · [原生工程](../design/projects/native-runtime.md) · [Cargo 测试](https://doc.rust-lang.org/cargo/guide/tests.html) |
 
-迁移时把 `tools/build/coordinator.ts` 命名为 `tools/build/assemble.ts`，它组装运行目录并写出 `build.json`。`tools/build/manifest.ts` 负责该清单及文件摘要索引，`tools/lib/targets.ts` 负责目标身份和映射，`tools/package/distribution.ts` 负责分发载体元数据。`tools/dev/generation.ts` 改为 `tools/dev/prepare-runtime.ts`，表达它在应用启动前复制编译产物和原生资源的职责。
+保留 `tools/build/coordinator.ts` 作为整次桌面构建的协调入口，负责程序编译的交接和最终完成判断。清单与文件摘要索引归 `tools/build/manifest.ts`，目标身份和映射归 `tools/lib/targets.ts`，分发载体元数据归 `tools/package/distribution.ts`。`tools/dev/generation.ts` 改为 `tools/dev/prepare-runtime.ts`，表达它在应用启动前复制编译产物和原生资源的职责。
 
 导入方向是实施约束。用例可以调用工具、源码或已构建制品。工程工具可以依赖已声明的私有工程包和允许的纯合同。所有测试专用入口、样板和运行器只供测试侧使用。产品包的 exports、正式安装包和镜像保持独立消费所需的最小依赖。目录按实际拥有者与阅读路径建立，现行布局在迁移前供对照。[源码布局](../design/engineering/layout.md#tools) · [工具与宿主](../design/engineering/workspace.md#tooling)
 

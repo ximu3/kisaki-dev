@@ -179,7 +179,7 @@ clients/desktop/app/tools/
 │   └── dependencies.ts
 ├── build/
 │   ├── cli.ts
-│   ├── assemble.ts
+│   ├── coordinator.ts
 │   ├── manifest.ts
 │   └── programs.ts
 ├── resources/
@@ -206,7 +206,7 @@ clients/desktop/app/tools/
 | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | dev/session.ts | 拥有开发会话、准备工作和应用进程。程序编译与 renderer 使用 Vite 的公开能力，`prepare-runtime.ts` 为本次启动准备可独立读取的程序与资源。按[开发会话合同](workspace.md#desktop-development)处理取消退出与收尾。 |
 | dev/electron-executable.ts       | 定位项目依赖中的开发 Electron 可执行文件，由开发流程和需要该宿主的测试复用。                                                                                                                                                                                                 |
-| build/assemble.ts | 消费前置任务准备的资源和原生输出，在干净的目标目录编译程序；完成布局与字节核对后写入构建清单。 |
+| build/coordinator.ts | `buildDesktop` 负责一次完整桌面构建。它接入已准备的资源与原生绑定，给各程序传入同一个构建 ID，等待全部编译结束并汇总失败。编译成功且必需文件齐全时写出 `build.json`。 |
 | build/manifest.ts | 定义 `build.json`，清点运行目录中的文件与摘要。构建方写出清单，打包方与测试按同一份清单核对输入。 |
 | build/programs.ts                | 依据调用方指定源码根下 config/vite 中的 vite.config.*.ts 调用 Vite 公共 API，完成 main、preload、renderer 和 extension-host 的有限构建，返回实际模块输入。开发与正式构建采用同一份程序配置。                                                                                 |
 | resources/prepare.ts             | 按固定输入准备图标、字体、Kana 资源、独立媒体包和数据库迁移资源，拥有对应资源目录的写入与校验；私有原生制品由 native 工作流负责。                                                                                                                                            |
