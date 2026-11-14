@@ -113,7 +113,7 @@ SKILL.md 统一提供任务到参考文档的导航，references 直接按实际
 
 执行具体任务时，只读取相关参考文档。例如，修改标签替换操作时，阅读 data/operations.md 及对应测试；调整统计页的详情弹窗时，阅读 ui/composition.md 和 ui/state.md；处理扩展更新时，阅读 extensions/lifecycle.md 和 engineering/packages.md；修改新库初始化时，阅读 data/schema.md 和 engineering/testing.md。
 
-参考文档通过链接引用项目说明、适用规范、公共类型和既有工程入口。实施期间读取 refactor 的共用要求；项目文档交付后，CONTRIBUTING 说明开发与交付流程，CONVENTIONS 维护该项目的完整工程与编写规范。skill 补充资料选择、任务步骤和验证方法，工程工作流归 tools，测试专用辅助归 tests/support。
+参考文档通过链接引用项目说明、适用规范、公共类型和既有工程入口。实施期间读取 refactor 的共用要求；项目文档交付后，CONTRIBUTING 说明开发与交付流程，CONVENTIONS 维护该项目的完整工程与编写规范。skill 补充资料选择、任务步骤和验证方法，工程工作流归所属项目的 `tools/`，测试辅助和样板按[测试归属](layout.md#test-placement)就近维护。
 
 <a id="lifecycle"></a>
 

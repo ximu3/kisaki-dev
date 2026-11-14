@@ -32,26 +32,28 @@ pnpm 声明项目与依赖，`vp run` 执行工作区任务，Vite 管理编译�
 | 各公共包的 `tools` | 六份相同的 `clean.ts` 收敛为一次受限清理，项目声明自己的可重建输出。RPC 和分发包改为直接执行 `vp pack`，清理与构建两层包装退役后移除这两个包的 `tools/`。合同包保留 Lucide 名称生成与一致性核对，本地化包保留 ICU 消息声明生成，外观包保留视觉 token 到 CSS 的生成、Tailwind 入口和许可说明，UI 包保留组件样式和许可组装。只保留有独立读者的 CLI 或程序化入口。 |
 | 官方扩展、作者 SDK/CLI 与独立项目 | SDK/CLI 的作者命令、模板和 `.kisx` 打包是交付给用户的产品，随所属包的 `src` 发布。第一方扩展的维护脚本归项目 `tools`，源码模板与测试用消费者工程分别维护。Vantage 和 libmpv-node 的 Rust 单测、集成测试遵循 Cargo 的发现规则，JS 包验证实际绑定和平台制品。Kana 拥有真实格式与浏览器布局验证，relay 拥有 HTTP、容器、配置与停止测试。独立仓库各自落地并登记可取得的运行证据。[作者工具](../design/extensions/development.md#templates) · [原生工程](../design/projects/native-runtime.md) · [Cargo 测试](https://doc.rust-lang.org/cargo/guide/tests.html) |
 
+迁移时把 `tools/build/coordinator.ts` 命名为 `tools/build/assemble.ts`，它组装运行目录并写出 `build.json`。`tools/build/manifest.ts` 负责该清单及文件摘要索引，`tools/lib/targets.ts` 负责目标身份和映射，`tools/package/distribution.ts` 负责分发载体元数据。`tools/dev/generation.ts` 改为 `tools/dev/prepare-runtime.ts`，表达它在应用启动前复制编译产物和原生资源的职责。
+
 导入方向是实施约束。用例可以调用工具、源码或已构建制品。工程工具可以依赖已声明的私有工程包和允许的纯合同。所有测试专用入口、样板和运行器只供测试侧使用。产品包的 exports、正式安装包和镜像保持独立消费所需的最小依赖。目录按实际拥有者与阅读路径建立，现行布局在迁移前供对照。[源码布局](../design/engineering/layout.md#tools) · [工具与宿主](../design/engineering/workspace.md#tooling)
 
 <a id="test-architecture"></a>
 
 ## 测试架构与目录
 
-按测试读者实际需要的内容选择位置。`tests/support/` 和 `tests/fixtures/` 都是可选目录。Vitest、Playwright 的 `test.extend` 通过 API 定义 fixture 的创建、使用和释放，可以直接写在所属套件。Vite 维护包含源码和配置的真实测试项目，运行时在副本上操作。[Vitest 测试上下文](https://vitest.dev/guide/test-context) · [Playwright fixtures](https://playwright.dev/docs/test-fixtures) · [Vite 测试工程实践](https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md)
+执行[测试布局规范](../design/engineering/layout.md#test-placement)。迁移时按维护范围安排以下文件。Vite 也用完整的样板工程验证开发与构建行为，修改样本的场景在副本上运行。[Vite 测试实践](https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md)
 
 | 内容 | 建议位置与实际例子 |
 | --- | --- |
-| 单个场景的值或辅助 | 简短输入和预期结果直接放在用例。专属准备代码随套件维护，例如数据库的连接选项与种子数据归 `tests/integration/database/`，提取已打包应用的代码归 `tests/artifacts/`。 |
-| 多个套件共用的测试代码 | 共用面确立后才提到 `tests/support/`，按用途命名。桌面的 `electron.ts` 供窗口和性能套件使用，`window-observation.ts` 供开发退出与制品测试使用，适合留在这里。只用于开发测试的启动器、控制器与 worker 随 `tests/tools/dev/` 维护。 |
-| 需要按原样读取、安装或运行的输入 | 同一套件拥有的样本放在套件内的 `fixtures/`，例如 `tests/consumers/fixtures/node/` 保留独立清单与源码。多个套件共用的最小 Electron 应用保留在 `tests/fixtures/runtime/`。修改源码或数据库的用例操作独立副本，稳定输入受版本控制。 |
+| 单个场景或套件的辅助 | 数据库选项和种子数据从 `tests/support/database.ts` 迁到 `tests/integration/database/`，制品解包准备归 `tests/artifacts/`，开发测试的控制器、worker 与启动器归 `tests/tools/dev/`。小型辅助可写在测试文件里。 |
+| 工程级测试辅助 | 桌面的 `tests/support/electron.ts` 管理 Electron 测试宿主、应用和 profile，`window-observation.ts` 负责系统窗口观测。两者都有跨套件调用，按各自的独立职责保留。 |
+| 需要按原样读取、安装或运行的输入 | 公共包从 `tests/fixtures/consumers/<宿主>/` 迁到 `tests/consumers/fixtures/<宿主>/`。共用的最小 Electron 应用从 `tests/fixtures/runtime/` 迁到 `tests/fixtures/desktop-app/`。专用的测量负载由性能入口装配，样板只保存输入。 |
 | 测试运行时资源 | page、context、临时 profile、数据库连接和子进程由使用它们的 fixture 按需创建并释放。共享安装可以用套件或 worker 作用域，可写资源随实例隔离。测试报告、解包结果和临时数据库由本次运行拥有。 |
 
 | 所验证的行为 | 位置、环境与取舍 |
 | --- | --- |
 | 单一模块的纯行为 | 与实现共同维护的 `src/**/*.test.ts(x)` 就近验证规范编码、错误、转换和状态。生产构建排除测试。工具自身的轻量判断可以就近验证，涉及真实 CLI、文件或进程的用例归所属工程 `tests/tools/<工作流>`。 |
 | 仓库和命令的工程行为 | 根 `tests/workspace` 保留真实的跨项目禁止依赖、错误制品恢复或 CI 选错环境等仍由项目负责的风险。旧 Turbo 任务名、依赖边清单、文件后缀断言和退役 hooks 的内部行为随其拥有者删除。用“只改 CSS”和“从旧缓存恢复后是否多出文件”核对实际结果。项目输入或自有声明可能漏检时，在正式编译入口验证其覆盖。 |
-| 桌面集成、启动与开发 | `tests/integration` 在启动测试运行器前选定与绑定匹配的 Electron Node 宿主，使用真实 SQLite、归档和原生文件。`tests/e2e` 通过实际 Electron 检查窗口、preload 与 utility process。`tests/tools/dev` 区分轻量取消/失败与真实 HMR/关闭。只给会改源码的用例准备独立、可写的最小工程，使用真实公共入口和必要依赖。只验证拒绝退出、保留 profile 或停止失败的场景使用已准备的只读程序与独立运行目录。正式产品入口就绪后，由产品承担业务端到端场景，工程载体只保留具有独立故障含义的编译和启动检查。 |
+| 桌面集成、启动与开发 | 数据库、归档和原生文件集成用例在运行器启动前选定与绑定匹配的 Electron Node 宿主。现有 `tests/e2e/windows.test.ts` 验证测试载体的窗口、沙箱 preload 与 utility process 接入，归 `tests/integration/electron/window-startup.test.ts` 并由 Playwright 启动真实 Electron。`tests/e2e` 用于正式用户流程。`tests/tools/dev` 区分轻量取消/失败与真实 HMR 和应用关闭。只给会改源码的用例准备独立、可写的最小工程，使用真实公共入口和必要依赖。只验证拒绝退出、保留 profile 或停止失败的场景使用已准备的只读程序与独立运行目录。正式产品入口就绪后，由产品承担业务端到端场景，工程载体只保留具有独立故障含义的编译和启动检查。 |
 | 公共包与 UI | 六包共用安装机制，各包拥有消费者的 manifest、依赖集合、源样例和断言。保留 `tests/consumers` 的仓库外 tarball 验证。UI 的表单、焦点、IME、虚拟选择、Toast 等行为按交互主题归 `tests/browser`，使用与交付相同的 Solid 编译和完整样式，从源码获得快反馈。公开子路径、类型、样式级联与安装后行为在实际制品的代表用例验证。RPC 保留 Node 父子 IPC 与沙箱 Electron MessagePort 两个真实传输环境。 |
 | 制品、性能与外部数据 | `tests/artifacts` 从已生成的收据定位同一份 ZIP、应用或 AppImage，用外部方式核对真实启动、退出与 fuses。`tests/performance` 独立保存数据输入、环境、原始采样与查询计划。大负载准备和测量代码归性能场景，仅由性能入口装配。来源扩展拥有匿名样本，导入器拥有已声明格式样本，宿主拥有真实安装与激活，发行验收另核对安装和升级。 |
 
