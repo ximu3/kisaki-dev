@@ -10,7 +10,7 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 
 当前任务入口为 AGENTS.md，设计、规范和实施资料集中于 refactor。[当前工程与开发](development.md)维护源码职责、环境准备与可运行命令。正式项目文档待 W23 交付；接口声明、代码注释、发行说明和许可材料随所属实现与版本维护。
 
-[全项目工程现代化](engineering-modernization.md)已在迁移分支实施，采用 Vite+ 与 TypeScript 7.1 Beta。工具、测试和源码开发按实际宿主组织，新的 CI 按完整候选差异选择专项作业。现有本地结果与远端切换分别记录，首个正式 7.1、六目标新基线及保护切换按取得的证据完成。历史运行与设计决定见[全项目审视](modernization-audit.md)。
+[全项目工程现代化](engineering-modernization.md)已在迁移分支实施，采用 Vite+ 与 TypeScript 7.1 Beta。工具、测试和源码开发按实际宿主组织，新的 CI 按完整候选差异选择专项作业。Windows、macOS、Linux 的两种架构已通过[迁移分支六目标 CI](https://github.com/ximu3/kisaki-dev/actions/runs/43601249062)。主线切换待正式 7.1.x 验收，保护规则按授权调整。历史运行与设计决定见[全项目审视](modernization-audit.md)。
 
 [当前工程验证](../verification/evidence/w00/README.md)已取得本机 Windows x64 和 CI 六目标结果，覆盖工程载体的构建、原生与 Electron 运行、开发回归、打包及制品运行。
 
