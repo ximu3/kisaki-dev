@@ -8,6 +8,7 @@ import { writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+/** Parent-selected disposable directory and role for this synthetic process-tree worker. */
 const [directory, role] = process.argv.slice(2)
 if (!directory) {
   throw new Error('The fixture directory is required')
@@ -21,7 +22,7 @@ if (role === 'leaf') {
   const child = spawn(
     process.execPath,
     [...process.execArgv, fileURLToPath(import.meta.url), directory, 'leaf'],
-    { windowsHide: true, stdio: ['ignore', 'ignore', 'ignore', 'ipc'] },
+    { windowsHide: true, stdio: ['ignore', 'inherit', 'inherit', 'ipc'] },
   )
 
   await new Promise<void>((resolve, reject) => {

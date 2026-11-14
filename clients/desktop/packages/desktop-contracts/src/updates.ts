@@ -147,29 +147,38 @@ export interface UpdatesApi {
   installAndRestart(call?: CallOptions): Promise<void>
 }
 
+/** Validated application release version used by update candidates and receipts. */
 const version = v.pipe(v.unknown(), v.transform(parseApplicationVersion))
 
+/** HTTP location used by release files without granting network access. */
 const url = v.pipe(v.unknown(), v.transform(parseHttpUrl))
 
+/** Canonical padded Base64 SHA-512 value used by application update files. */
 const sha512 = v.pipe(
   text,
   v.check((value) => /^[A-Za-z0-9+/]{85}[AQgw]==$/.test(value), 'Invalid SHA-512 digest'),
 )
 
+/** Release-file address, optional known size and expected complete-byte digest. */
 const file = v.strictObject({ url, size: v.nullable(nonnegativeInteger), sha512 })
 
+/** Nonempty release-file list with distinct download addresses. */
 const files = v.pipe(
   v.array(file),
   v.minLength(1),
   v.check((values) => unique(values, (value) => value.url)),
 )
 
+/** Validated application update whose prepared identity is ready for later adoption checks. */
 const prepared = v.pipe(v.unknown(), v.transform(parsePreparedApplicationUpdate))
 
+/** Validated available application release with its actual file identities. */
 const release = v.pipe(v.unknown(), v.transform(parseApplicationRelease))
 
+/** Safe failure details used by application update state. */
 const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
 
+/** Optional task identity associated with an update operation. */
 const taskRef = v.exactOptional(v.pipe(v.unknown(), v.transform(parseTaskRunRef)))
 
 /**

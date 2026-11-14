@@ -23,6 +23,7 @@ export function bindTextControl(
   props: TextValueProps,
   element: Accessor<HTMLInputElement | HTMLTextAreaElement>,
 ) {
+  /** Live text value and owner-directed updates shared by native text controls. */
   const [value, change] = createValue(
     () => props.value,
     () => props.defaultValue ?? '',

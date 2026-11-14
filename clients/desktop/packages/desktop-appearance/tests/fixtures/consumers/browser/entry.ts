@@ -8,7 +8,10 @@ import { tokens } from '@kisaki3/desktop-appearance/tokens'
 import { parseTokenValues } from '@kisaki3/desktop-appearance/values'
 import { summary } from './consumer.js'
 
+/** Parsed light-theme token values applied to the real browser validation page. */
 const values = parseTokenValues(defaults.light)
+
+/** Native CSS property used to verify each token kind in the browser. */
 const properties = {
   color: 'color',
   radius: 'border-radius',

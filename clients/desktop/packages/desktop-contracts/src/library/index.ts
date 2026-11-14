@@ -49,6 +49,10 @@ export {
   parseExternalIdentity,
   parseExternalIdentities,
   parseLanguageTag,
+  parseAliases,
+  parseExternalLinks,
+  parseLanguages,
+  parseCharacterMeasure,
   parseEntryTagChange,
   parseEntryCollectionChange,
   isWorkType,
@@ -432,6 +436,7 @@ export {
 export {
   parseFileTrackSelection,
   parseFilePlaybackChoicesUpdate,
+  parseFilePlaybackChoices,
   parsePreferredFileInput,
   parsePreferredPartFiles,
 } from './holdings/preferences'

@@ -176,18 +176,22 @@ export type PlaybackOverrideChange =
       }
     }
 
+/** Finite positive values used by text metrics and display scale. */
 const positive = v.pipe(v.number(), v.finite(), v.gtValue(0))
 
+/** Canonical playback language preferences deduplicated in priority order. */
 const languageList = v.pipe(
   v.array(v.pipe(v.unknown(), v.transform(parseLanguageTag))),
   v.transform((values) => [...new Set(values)]),
 )
 
+/** Application-level game-panel choices, separate from launch configuration. */
 export const gamePreferenceEntries = {
   showPanelOnStart: v.boolean(),
   panelAlwaysOnTop: v.boolean(),
 }
 
+/** Complete saved anime playback choices used by global settings and usage overrides. */
 export const playbackPreferenceEntries = {
   audioLanguages: languageList,
   subtitleLanguages: languageList,
@@ -200,6 +204,7 @@ export const playbackPreferenceEntries = {
   autoMarkWatched: v.boolean(),
 }
 
+/** Original-page arrangement, progression, fitting and image-adjustment preferences. */
 export const readingPageEntries = {
   arrangement: v.picklist(['single', 'spread']),
   progression: v.picklist(['document', 'ltr', 'rtl']),
@@ -211,6 +216,7 @@ export const readingPageEntries = {
   contrast: v.pipe(nonnegativeNumber, v.maxValue(2)),
 }
 
+/** Author-font choice or a complete validated application font reference. */
 const readingFont = v.pipe(
   v.unknown(),
   v.transform((value): ReadingTextPreferences['font'] => {
@@ -227,6 +233,7 @@ const readingFont = v.pipe(
   }),
 )
 
+/** Reflowable-text typography and layout preferences with explicit document-following choices. */
 export const readingTextEntries = {
   pagesPerView: v.union([v.literal(1), v.literal(2)]),
   writingMode: v.picklist(['document', 'horizontal-tb', 'vertical-rl', 'vertical-lr']),
@@ -251,6 +258,7 @@ function color(token: '--foreground' | '--background') {
   )
 }
 
+/** Document, theme or complete custom foreground/background reading colors. */
 const colors = v.variant('type', [
   v.strictObject({ type: v.literal('document') }),
   v.strictObject({ type: v.literal('theme') }),
@@ -261,6 +269,7 @@ const colors = v.variant('type', [
   }),
 ])
 
+/** One complete reading configuration, keeping page, text and color settings together. */
 export const readingPreferenceEntries = {
   flow: v.picklist(['paginated', 'continuous']),
   pages: v.strictObject(readingPageEntries),
@@ -268,6 +277,7 @@ export const readingPreferenceEntries = {
   colors,
 }
 
+/** Field-local reading edits with whole font and color choices. */
 export const readingChangeEntries = {
   flow: readingPreferenceEntries.flow,
   pages: v.strictObject(optionalFields(readingPageEntries)),
@@ -275,6 +285,7 @@ export const readingChangeEntries = {
   colors,
 }
 
+/** Independent per-medium usage edits and the application-wide foreground grace period. */
 export const usageChangeEntries = {
   foregroundGracePeriodMs: nonnegativeNumber,
   game: v.strictObject(optionalFields(gamePreferenceEntries)),

@@ -415,22 +415,28 @@ export interface TagsApi {
   readonly entries: TagEntriesApi
 }
 
+/** Nonblank organizer name normalized by trimming only its outer whitespace. */
 const name = v.pipe(
   nonemptyText,
   v.transform((value) => value.trim()),
 )
 
+/** Optional organizer description with blank values represented as null. */
 const description = v.pipe(
   v.nullable(text),
   v.transform((value) => (value === null || value.trim().length === 0 ? null : value)),
 )
 
+/** Tag metadata fields shared by creation, edits and comparison baselines. */
 export const tagEntries = { name, description, isNsfw: v.boolean() }
 
+/** Collection metadata fields, including its optional primary image. */
 const collectionEntries = { ...tagEntries, primaryImageId: v.nullable(id) }
 
+/** Complete saved dynamic membership definition with its own validation contract. */
 const dynamicRules = v.pipe(v.unknown(), v.transform(parseDynamicRules))
 
+/** Explicit or scope-owned ordering available to organizer lists. */
 const sort = v.union([
   v.strictObject({ type: v.literal('scope') }),
   v.strictObject({
@@ -440,11 +446,13 @@ const sort = v.union([
   }),
 ])
 
+/** Typed collection member input with an optional membership note. */
 const memberSchema = v.strictObject({
   entry: entryRefSchema,
   note: v.exactOptional(v.nullable(text)),
 })
 
+/** Typed tag-application input with optional note and spoiler state. */
 const tagEntrySchema = v.strictObject({
   ...memberSchema.entries,
   isSpoiler: v.exactOptional(v.boolean()),

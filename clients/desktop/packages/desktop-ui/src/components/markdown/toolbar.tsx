@@ -27,6 +27,7 @@ import { runMarkdownCommand } from './commands'
 import type { MarkdownCommand } from './commands'
 import styles from './styles.module.css'
 
+/** Lucide glyph assigned to each supported Markdown editing command. */
 const icons: Record<MarkdownCommand, LucideIcon> = {
   bold: Bold,
   italic: Italic,
@@ -42,6 +43,7 @@ const icons: Record<MarkdownCommand, LucideIcon> = {
   redo: Redo2,
 }
 
+/** Default toolbar command order derived from the supported icon map. */
 const standardCommands = Object.freeze(Object.keys(icons) as MarkdownCommand[])
 
 /** Host action applied to the mounted editor, identified uniquely within its toolbar. */
@@ -120,7 +122,9 @@ function commandAction<C extends MarkdownCommand>(
  */
 export function MarkdownToolbar<C extends MarkdownCommand>(props: ToolbarProps<C>): JSX.Element {
   let root!: HTMLDivElement
+  /** Current command and custom-action catalog keyed by stable toolbar identities. */
   const buttons = createMemo(() => {
+    /** Caller toolbar configuration captured for this reactive catalog rebuild. */
     const config = props.config
     // Omitting the configuration requires a label provider for the entire standard set.
     const items =
@@ -137,7 +141,9 @@ export function MarkdownToolbar<C extends MarkdownCommand>(props: ToolbarProps<C
     return result
   })
 
+  /** Toolbar action serving as the remembered keyboard focus target. */
   const [focusedId, setFocusedId] = createSignal<string>()
+  /** Action identities currently available under editor state and read-only policy. */
   const enabled = createMemo(() => {
     const state = props.state
     return Array.from(buttons().values())
@@ -151,6 +157,7 @@ export function MarkdownToolbar<C extends MarkdownCommand>(props: ToolbarProps<C
    * Chooses the remembered enabled action or the first available action as the toolbar's tab entry.
    */
   const tabStop = () => enabled().find((id) => id === focusedId()) ?? enabled()[0]
+  /** Horizontal keyboard navigation over the toolbar's enabled buttons. */
   const navigate = createFocusNavigation(
     () => root,
     'button',

@@ -10,8 +10,10 @@ import { copyFile, mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promis
 import { dirname, join, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
 
+/** Installed dependency-cruiser entry used to inspect the synthetic import graph. */
 const executable = resolve('node_modules/dependency-cruiser/bin/dependency-cruiser.mjs')
 
+/** Synthetic imports exercising project, runtime and public-package dependency boundaries. */
 const cases: {
   name: string
   from: string
@@ -89,7 +91,7 @@ const cases: {
   {
     name: 'runtime-does-not-import-engineering',
     from: 'clients/desktop/app/native/node/engineering.ts',
-    to: 'packages/tooling/src/process.ts',
+    to: 'packages/tooling/src/process/index.ts',
     source: "export type { Value } from '@kisaki3/tooling/process'\n",
   },
   {
@@ -107,12 +109,15 @@ const cases: {
     name: 'engineering tools use private package exports',
     allowed: true,
     from: 'clients/desktop/app/tools/process.ts',
-    to: 'packages/tooling/src/process.ts',
+    to: 'packages/tooling/src/process/index.ts',
     source: "export type { Value } from '@kisaki3/tooling/process'\n",
   },
 ]
 
+/** Isolated source root containing only the dependency-boundary test cases. */
 let directory: string
+
+/** Dependency-cruiser graph and rule violations collected for the current suite. */
 let result: {
   modules: { source: string }[]
   summary: { violations: { from: string; rule: { name: string } }[] }
@@ -155,7 +160,7 @@ beforeAll(async () => {
     JSON.stringify({
       name: '@kisaki3/tooling',
       type: 'module',
-      exports: { './process': './src/process.ts' },
+      exports: { './process': './src/process/index.ts' },
     }),
   )
 

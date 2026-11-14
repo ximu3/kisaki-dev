@@ -185,6 +185,7 @@ export interface EntryGroupsResult {
   readonly groups: readonly EntryGroupResult[]
 }
 
+/** Collection or unclassified group identity used by grouped library listings. */
 export const groupSchema = v.union([
   v.strictObject({ type: v.literal('collection'), id }),
   v.strictObject({ type: v.literal('unclassified') }),

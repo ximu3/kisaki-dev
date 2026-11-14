@@ -18,7 +18,10 @@ export function setDragPreview(options: {
 }): void {
   setCustomNativeDragPreview({
     nativeSetDragImage: options.nativeSetDragImage,
+    /** Keeps the drag image clear of the pointer during native preview capture. */
     getOffset: pointerOutsideOfPreview({ x: '12px', y: '8px' }),
+
+    /** Creates the labeled preview inside the library-owned native drag-image container. */
     render: ({ container }) => {
       const preview = container.ownerDocument.createElement('div')
       preview.className = classes(surface.staticSurface, styles.preview)

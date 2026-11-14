@@ -10,6 +10,8 @@
 
 clients/desktop/app/native 是桌面应用内部的私有原生工程，采用 Rust、Node-API 与 napi-rs。它由应用 workspace 管理 Node 侧依赖和任务，由自己的 Cargo manifest、锁文件和工具链文件管理 Rust 构建，随本体版本交付。当前每个目标生成一个原生绑定，能力在工程内部按职责组织。
 
+同一目标绑定还提供 SQLite 的公开扩展入口。数据库通过驱动的 `loadExtension` 加载本体自身的绝对路径，使用驱动传入的 SQLite 扩展 ABI 登记 ICU4X 名称比较；Node 文件能力继续通过 Node-API 消费。比较和配置状态归各数据库连接，ICU 与语言数据随 Cargo 锁文件交付。[SQLite 扩展 ABI](https://sqlite.org/loadext.html) 与 [ICU4X Collator](https://docs.rs/icu_collator/2.4.0/icu_collator/) 支持这两个独立消费边界。
+
 | 拥有者              | 职责                                                                                               |
 | ------------------- | -------------------------------------------------------------------------------------------------- |
 | native/src          | 系统调用、平台差异、原生资源与 Node-API 绑定。按能力组织实现，绑定只处理实际的语言、值和环境边界。 |

@@ -3,7 +3,7 @@
   "compilerOptions": {
     "incremental": true,
     "tsBuildInfoFile": "../../.cache/typescript/tools.tsbuildinfo",
-    "lib": ["ES2023", "DOM"]
+    "lib": ["ES2023", "ES2024.Promise", "DOM"]
   },
   "include": [
     "../../tools/**/*.ts",

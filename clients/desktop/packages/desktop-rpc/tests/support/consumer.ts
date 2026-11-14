@@ -8,6 +8,7 @@ import { expect, onTestFinished } from 'vitest'
 import base from '@kisaki3/eslint-config/base'
 import { runPnpm } from '@kisaki3/tooling/process'
 
+/** RPC package root whose tarball and sample sources feed isolated consumers. */
 const root = resolve(import.meta.dirname, '../..')
 
 /**

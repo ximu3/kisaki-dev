@@ -17,10 +17,14 @@ export type CrosshairProps<Datum> = VisCrosshairProps<Datum>
  */
 export function Crosshair<Datum>(props: CrosshairProps<Datum>): JSX.Element {
   const [local, rest] = splitProps(props, ['duration', 'template'])
+  /** Motion-aware crosshair transition duration with its zero-duration default. */
   const duration = createChartDuration(() => local.duration, 0)
+  /** Stable tooltip renderer reused across crosshair samples. */
   const render = createTooltipViewport()
 
+  /** Reactive crosshair-template binding that keeps the tooltip viewport stable. */
   const content = createMemo((): Pick<VisCrosshairProps<Datum>, 'template'> => {
+    /** Current caller template captured for this reactive binding pass. */
     const template = local.template
     return template
       ? {

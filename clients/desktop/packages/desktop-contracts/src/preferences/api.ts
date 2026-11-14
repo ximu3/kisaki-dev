@@ -242,43 +242,54 @@ export interface PreferencesApi {
   onInvalidated(listener: () => void): Disposable
 }
 
+/** Validated saved interface-translation identity. */
 const translated = v.pipe(v.unknown(), v.transform(parseUiTranslationRef))
 
+/** Validated saved theme identity independent of current resource availability. */
 const theme = v.pipe(v.unknown(), v.transform(parseThemeRef))
 
+/** Complete navigation-page order with distinct stable page references. */
 export const order = v.pipe(
   v.array(v.pipe(v.unknown(), v.transform(parsePageRef))),
   v.check((pages) => unique(pages, (page) => JSON.stringify(page))),
 )
 
+/** Interface translation and main-window close choices shared by preference reads and edits. */
 export const generalEntries = {
   uiTranslation: translated,
   closeMainWindow: v.picklist(['background', 'quit']),
 }
 
+/** Saved theme, mode and interface-scale fields owned by application appearance. */
 export const appearanceEntries = {
   theme,
   mode: v.picklist(['system', 'light', 'dark']),
   interfaceScale: v.pipe(integer, v.minValue(75), v.maxValue(200)),
 }
 
+/** Saved page order and nonnegative visible-navigation limit. */
 const navigationEntries = { order, visibleLimit: nonnegativeInteger }
 
+/** Saved sensitive-content visibility and automatic holding-refresh choices. */
 export const libraryEntries = { showNsfw: v.boolean(), autoRefreshHoldings: v.boolean() }
 
+/** Application-wide remembered volume and mute state, separate from usage overrides. */
 export const playbackEntries = {
   volumePercent: v.pipe(v.number(), v.finite(), v.minValue(0), v.maxValue(100)),
   muted: v.boolean(),
 }
 
+/** Saved automatic-check and prerelease choices for application updates. */
 export const updateEntries = { autoCheck: v.boolean(), allowPrerelease: v.boolean() }
 
+/** Non-secret proxy mode, endpoint and bypass fields shared by reads and edits. */
 const networkEntries = {
   mode: v.picklist(['system', 'direct', 'manual']),
   endpoint: v.nullable(v.pipe(v.unknown(), v.transform(parseProxyEndpoint))),
   bypassRules: text,
 }
 
+/** Enabled intent and canonical accelerator list for one native shortcut action. */
 export const shortcutFields = {
   enabled: v.boolean(),
   accelerators: v.pipe(
@@ -289,6 +300,7 @@ export const shortcutFields = {
   ),
 }
 
+/** Complete shortcut settings keyed by the fixed native action catalog. */
 const shortcuts = Object.fromEntries(
   shortcutKeys.map((key): [ShortcutKey, v.GenericSchema<unknown, ShortcutPreferences>] => [
     key,
@@ -296,10 +308,12 @@ const shortcuts = Object.fromEntries(
   ]),
 ) as Record<ShortcutKey, v.GenericSchema<unknown, ShortcutPreferences>>
 
+/** Field-local shortcut updates for the same fixed action catalog. */
 const shortcutChanges = Object.fromEntries(
   shortcutKeys.map((key) => [key, v.exactOptional(v.strictObject(optionalFields(shortcutFields)))]),
 )
 
+/** Complete application timing and independent per-medium usage preferences. */
 const usageEntries = {
   foregroundGracePeriodMs: nonnegativeNumber,
   game: v.strictObject(gamePreferenceEntries),
@@ -308,6 +322,7 @@ const usageEntries = {
   novel: v.strictObject(readingPreferenceEntries),
 }
 
+/** Explicit submitted preference fields, including protected credential write values. */
 const changes = {
   general: v.strictObject(optionalFields(generalEntries)),
   appearance: v.strictObject(optionalFields(appearanceEntries)),
@@ -325,6 +340,7 @@ const changes = {
   ),
 }
 
+/** Field-local comparison values whose credential baseline is opaque saved state. */
 const expected = {
   ...changes,
   network: v.strictObject(
@@ -335,6 +351,7 @@ const expected = {
   ),
 }
 
+/** Reading-editor field paths shared by comic and novel preference navigation. */
 const readingKeys = [
   'flow',
   'colors',
@@ -342,6 +359,7 @@ const readingKeys = [
   ...Object.keys(readingTextEntries).map((key) => `text.${key}`),
 ] as readonly ReadingPreferenceKey[]
 
+/** Closed native preference-field catalog used by navigation and search. */
 export const preferenceKeys: readonly PreferenceKey[] = Object.freeze([
   ...Object.keys(generalEntries).map((key) => `general.${key}`),
   ...Object.keys(appearanceEntries).map((key) => `appearance.${key}`),

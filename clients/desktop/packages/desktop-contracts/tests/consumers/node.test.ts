@@ -6,6 +6,7 @@ import { promisify } from 'node:util'
 import { runPnpm } from '@kisaki3/tooling/process'
 import { consumerTest, lintConsumer } from '../support/consumer'
 
+/** Isolated Node consumer fixtures that install and exercise the actual contracts tarball. */
 const test = consumerTest('node')
 
 test('Node globals alone support the complete public type graph and actual value consumption', async ({

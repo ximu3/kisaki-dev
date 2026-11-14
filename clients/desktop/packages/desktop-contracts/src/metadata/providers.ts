@@ -270,13 +270,16 @@ export interface MetadataProvidersApi {
   ): Promise<Registration<string>>
 }
 
+/** Canonical language preferences deduplicated while retaining caller priority. */
 const languages = v.pipe(
   v.array(languageSchema),
   v.transform((values) => [...new Set(values)]),
 )
 
+/** Optional continuation cursor and preferred languages for source-page requests. */
 const paging = { cursor: v.exactOptional(text), preferredLanguages: v.exactOptional(languages) }
 
+/** Nonempty distinct source namespaces declared by a metadata provider. */
 const sources = v.pipe(
   v.tupleWithRest([identitySchema.entries.source], identitySchema.entries.source),
   v.check((values) => unique(values, (value) => value)),

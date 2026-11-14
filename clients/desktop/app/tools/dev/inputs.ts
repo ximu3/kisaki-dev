@@ -88,6 +88,7 @@ export async function startInputWatcher(
   const runtimeInputs = [
     join(appRoot, 'native'),
     join(appRoot, 'assets'),
+    join(appRoot, 'drizzle'),
     ...['main', 'preload', 'extension-host', 'renderer'].map((name) =>
       join(sourceRoot, 'config', 'vite', `vite.config.${name}.ts`),
     ),
@@ -99,6 +100,8 @@ export async function startInputWatcher(
 
   const watcher = watch([...packageInputs, ...runtimeInputs], {
     ignoreInitial: true,
+
+    /** Excludes inputs that do not belong to live development preparation. */
     ignored: (path) => !isDevelopmentInput(path),
   })
   let initialized = false
@@ -117,7 +120,10 @@ export async function startInputWatcher(
         options.onChange('packages')
       } else if (containsPath(join(appRoot, 'native'), path)) {
         options.onChange('native')
-      } else if (containsPath(join(appRoot, 'assets'), path)) {
+      } else if (
+        containsPath(join(appRoot, 'assets'), path) ||
+        containsPath(join(appRoot, 'drizzle'), path)
+      ) {
         options.onChange('resources')
       } else if (runtimeInputs.some((input) => containsPath(input, path))) {
         options.onChange('configuration')

@@ -6,6 +6,7 @@ import { dirname, join } from 'node:path'
 import { tmpdir } from 'node:os'
 import { startInputWatcher } from '../../tools/dev/inputs'
 
+/** Hoisted repository and application roots used by the isolated input watcher. */
 const paths = vi.hoisted(() => ({ appRoot: '', repositoryRoot: '' }))
 vi.mock(import('../../tools/lib/paths'), async (importOriginal) => ({
   ...(await importOriginal()),
@@ -19,8 +20,13 @@ vi.mock(import('../../tools/lib/paths'), async (importOriginal) => ({
   },
 }))
 
+/** Suite-owned preparation watcher closed before its temporary workspace is removed. */
 let inputs: Awaited<ReturnType<typeof startInputWatcher>> | undefined
+
+/** Observed preparation categories in their actual delivery order. */
 const changes: string[] = []
+
+/** Watcher failures retained for the suite's final assertion. */
 const errors: unknown[] = []
 
 beforeAll(async () => {
@@ -31,6 +37,7 @@ beforeAll(async () => {
     'app/config/typescript',
     'app/native',
     'app/assets',
+    'app/drizzle',
     'app/src/main',
     'package/src',
     'package/tools',
@@ -50,7 +57,10 @@ beforeAll(async () => {
     paths.appRoot,
     [{ name: '@kisaki3/watch-fixture', path: join(paths.repositoryRoot, 'package') }],
     {
+      /** Records the preparation category selected by the actual watcher. */
       onChange: (change) => changes.push(change),
+
+      /** Retains watcher failures for the fixture's final assertion. */
       onError: (cause) => errors.push(cause),
     },
   )
@@ -83,6 +93,7 @@ test('package, resource and configuration changes select their actual preparatio
     ['app/config/typescript/tsconfig.main.json', 'configuration'],
     ['app/native/src.rs', 'native'],
     ['app/assets/font.json', 'resources'],
+    ['app/drizzle/migration.sql', 'resources'],
     ['package/src/value.ts', 'packages'],
     ['package/config/typescript/tsconfig.lib.json', 'packages'],
   ] as const) {

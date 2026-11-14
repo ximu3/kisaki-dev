@@ -4,6 +4,10 @@ import { test, expect } from 'vitest'
 
 import { parseLibraryWriteGraph, parseLibraryWriteResult } from './write'
 
+/**
+ * Synthetic graph connecting new works, parts, people, tags and prepared resources by input-local
+ * keys.
+ */
 const graph = {
   entries: {
     create: [

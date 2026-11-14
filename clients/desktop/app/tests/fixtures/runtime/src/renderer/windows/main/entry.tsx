@@ -6,6 +6,7 @@ import './styles.css'
 
 /** Renders a button-driven counter with state local to the fixture component. */
 function Counter() {
+  /** Local counter state used to observe component interaction and hot-update preservation. */
   const [count, setCount] = createSignal(0)
 
   return (

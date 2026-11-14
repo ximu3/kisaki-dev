@@ -8,6 +8,7 @@ import { ESLint } from 'eslint'
 import base from '@kisaki3/eslint-config/base'
 import { runPnpm } from '@kisaki3/tooling/process'
 
+/** Localization package root used to locate the actual packed consumer input. */
 const packageRoot = resolve(import.meta.dirname, '../..')
 
 /**

@@ -8,6 +8,7 @@ import type { LucideIconName } from './names.generated'
 
 export type { LucideIconName } from './names.generated'
 
+/** Validator over the host's pinned Lucide names and published aliases. */
 const name = v.picklist(lucideIconNames)
 
 /** Parses a name from the host's fixed Lucide catalog, including supported upstream aliases. */

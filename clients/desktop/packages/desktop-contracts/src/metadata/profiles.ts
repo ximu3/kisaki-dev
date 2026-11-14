@@ -265,11 +265,13 @@ export interface MetadataProfilesApi {
   onInvalidated(listener: () => void): Disposable
 }
 
+/** Nonempty ordered provider identities that reject repeated participants. */
 const providerIds = v.pipe(
   v.tupleWithRest([id], id),
   v.check((ids) => unique(ids, (value) => value)),
 )
 
+/** Collection-valued metadata fields that admit collection adoption strategies. */
 const collectionFields = new Set([
   'aliases',
   'externalLinks',
@@ -416,6 +418,7 @@ export function parseMetadataProfileDefinition(
   return value as MetadataProfileDefinition
 }
 
+/** Canonical preferred languages deduplicated in their first supplied order. */
 const languages = v.pipe(
   v.array(languageSchema),
   v.transform((values) => [...new Set(values)]),

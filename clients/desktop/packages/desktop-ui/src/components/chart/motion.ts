@@ -12,6 +12,7 @@ export function createChartDuration(
   duration: Accessor<number | undefined>,
   fallback = 140,
 ): Accessor<number> {
+  /** Reactive reduced-motion state observed from the owning document's media query. */
   const [reduced, setReduced] = createSignal(false)
   onMount(() => {
     const query = window.matchMedia('(prefers-reduced-motion: reduce)')

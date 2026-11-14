@@ -11,6 +11,7 @@ import { parsePackagePath } from '@kisaki3/extension-distribution/manifest'
 import { parseSearchTarget } from './ui/navigation'
 import { DesktopError } from './errors'
 
+/** Native search domains, separate from extension-defined result identities. */
 export const searchCategories = Object.freeze([
   'catalog',
   'notes',
@@ -88,6 +89,7 @@ export interface SearchApi {
   ): Promise<SearchResult<T>>
 }
 
+/** Target kinds permitted by each native search category. */
 const targetTypes = {
   catalog: ['entry', 'part', 'collection', 'tag'],
   notes: ['note'],
@@ -100,6 +102,7 @@ const targetTypes = {
   preferences: ['preference'],
 } satisfies Record<SearchCategory, readonly SearchTarget['type'][]>
 
+/** Native Lucide or extension-owned file icon with its actual resource ownership retained. */
 const icon = v.variant('type', [
   v.strictObject({
     type: v.literal('lucide'),

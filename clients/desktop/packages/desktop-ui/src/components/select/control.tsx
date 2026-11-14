@@ -34,6 +34,7 @@ export interface MultiSelectProps extends ChoiceFieldProps, ChipLabels {
 
 /** Creates a reactive option lookup that preserves missing keys as disabled display records. */
 function resolveKeys(options: Accessor<readonly SelectionOption[]>) {
+  /** Reactive option catalog used to resolve selected keys without losing their records. */
   const catalog = createMemo(() => new Map(options().map((option) => [option.value, option])))
   return (key: string): SelectionOption =>
     catalog().get(key) ?? { value: key, label: key, disabled: true }
@@ -47,7 +48,9 @@ function resolveKeys(options: Accessor<readonly SelectionOption[]>) {
  */
 export function Select(props: SelectProps): JSX.Element {
   const [local, rest] = splitProps(props, ['value', 'defaultValue', 'onValueChange'])
+  /** Current option-key resolver bound to the selection control's option source. */
   const resolve = resolveKeys(() => rest.options)
+  /** Live single-selection key and change requests delegated to its value owner. */
   const [value, change] = createValue(
     () => local.value,
     () => local.defaultValue ?? '',
@@ -75,17 +78,20 @@ export function MultiSelect(props: MultiSelectProps): JSX.Element {
     ['value', 'defaultValue', 'onValueChange'],
     ['removeLabel', 'scrollPreviousLabel', 'scrollNextLabel'],
   )
+  /** Live multiple-selection keys and change requests delegated to their value owner. */
   const [value, change] = createValue(
     () => local.value,
     () => local.defaultValue ?? [],
     (next) => local.onValueChange?.(next),
   )
+  /** Current option-key resolver bound to the selection control's option source. */
   const resolve = resolveKeys(() => rest.options)
 
   return (
     <SelectionField
       {...rest}
       chips={mergeProps(labels, {
+        /** Requests removal of one selected key while preserving the other selected values. */
         remove: (key: string) => change(value().filter((item) => item !== key)),
       })}
       selected={value().map(resolve)}

@@ -8,11 +8,13 @@ import { createPresentation } from '../popup/presentation'
  */
 export function createSelectionPopup() {
   const id = createUniqueId()
+  /** Locally owned requested visibility of the selection popup. */
   const [open, setOpen] = createSignal(false)
   let node!: HTMLDivElement
 
   /** Returns the attached popup element for positioning and exit measurement. */
   const panel = () => node
+  /** Presence reader retaining the popup surface through its exit transition. */
   const present = createPresentation(open, panel)
   /** Retains the mounted native popup element. */
   const attach = (element: HTMLDivElement) => {

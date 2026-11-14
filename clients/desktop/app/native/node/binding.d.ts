@@ -10,6 +10,16 @@ export interface FileOperationResult {
 }
 
 /**
+ * Inspects the actual backing filesystem of an existing absolute path.
+ *
+ * No files are created. Unknown classification is not evidence of local filesystem support.
+ *
+ * # Errors
+ * Returns InvalidArg for non-absolute or NUL-containing paths; platform inspection failures reject.
+ */
+export declare function getFilesystemLocation(path: string): Promise<'local' | 'network' | 'unknown'>
+
+/**
  * Queues an atomic, non-replacing move within one filesystem.
  *
  * The worker reports platform failures through FileOperationResult. Once queued, the

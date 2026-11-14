@@ -19,6 +19,7 @@ import { prepareGeneration } from './generation'
 import { watchPrograms } from './programs'
 import type { ProgramWatch } from './programs'
 
+/** Opt-in diagnostics for development generation adoption and resource shutdown. */
 const debug = debuglog('kisaki:development')
 
 /** Ready application process whose lifetime is supplied by the launch owner. */
@@ -59,6 +60,9 @@ export interface DevelopmentBuild {
   processId: number
 }
 
+/** Startup failed and its process owner could not confirm closure of the runtime's readers. */
+export class UnconfirmedApplicationExit extends AggregateError {}
+
 /**
  * Watching session owning a renderer, input watchers and the application processes started from completed compiler output.
  *
@@ -97,8 +101,8 @@ export interface DevelopmentOptions {
   /** Absolute root containing the program source and Vite configurations. */
   sourceRoot: string
   /**
-   * Launches the expected build and resolves with an application that has completed startup
-   * readiness.
+   * Launches the expected build and resolves with a ready application. A failed start closes its
+   * readers before rejection. UnconfirmedApplicationExit means those readers may remain live.
    */
   launch: (options: DevelopmentLaunchOptions) => Promise<DevelopmentApplication>
   /** Persistent absolute profile directory; defaults to the desktop app's .local/development. */
@@ -135,6 +139,7 @@ export async function startDevelopmentSession(
   const controller = new AbortController()
   const signal = controller.signal
   let session: DevelopmentSession | undefined
+
   /** Forwards cancellation until the first application is ready. */
   const cancelPreparation = () => {
     controller.abort(options.signal?.reason)
@@ -162,13 +167,12 @@ export async function startDevelopmentSession(
     let child: DevelopmentApplication | undefined
     let current: DevelopmentBuild | undefined
     let generation = 0
-    let adopted: { compiler: ProgramWatch; revision: number } | undefined
+    let adoptedDigest: string | undefined
     let runtimeChanged = true
     let replacing = false
     let retainOutputs = false
 
-    let stopping = false
-    let stopped = false
+    let phase: 'open' | 'closing' | 'closed' = 'open'
     let terminalFailure = false
     let stopPromise: Promise<'cancelled' | 'stopped'> | undefined
     const shutdownFailures: unknown[] = []
@@ -178,26 +182,16 @@ export async function startDevelopmentSession(
     let requestVersion = 0
     const pending = new Set<PreparationChange | 'runtime'>(['packages', 'resources', 'native'])
 
-    let resolveReady!: () => void
-    let rejectReady!: (cause: unknown) => void
-    let resolveClosed!: () => void
-    let rejectClosed!: (cause: unknown) => void
-    const ready = new Promise<void>((resolve, reject) => {
-      resolveReady = resolve
-      rejectReady = reject
-    })
-    const closed = new Promise<void>((resolve, reject) => {
-      resolveClosed = resolve
-      rejectClosed = reject
-    })
-    void ready.catch(() => undefined)
-    void closed.catch(() => undefined)
+    const ready = Promise.withResolvers<void>()
+    const closed = Promise.withResolvers<void>()
+    void ready.promise.catch(() => undefined)
+    void closed.promise.catch(() => undefined)
 
     /** Reports a nonrecoverable watcher failure while preserving ownership of active resources. */
     function failSession(cause: unknown): void {
       terminalFailure = true
       pending.clear()
-      rejectReady(cause)
+      ready.reject(cause)
       shutdownFailures.push(cause)
       options.onState?.('failed', cause)
     }
@@ -209,7 +203,7 @@ export async function startDevelopmentSession(
         compilerDirectory,
         buildId,
         (state, cause) => {
-          if (stopping || stopped || terminalFailure) {
+          if (phase !== 'open' || terminalFailure) {
             return
           }
           if (state === 'ready') {
@@ -226,20 +220,23 @@ export async function startDevelopmentSession(
     async function restartApplication(): Promise<void> {
       const owner = compilers
       const batch = owner?.current
-      if (stopping || !owner || !batch) {
+      if (phase !== 'open' || !owner || !batch) {
         return
       }
-      if (!runtimeChanged && adopted?.compiler === owner && adopted.revision === batch.revision) {
+      if (!runtimeChanged && adoptedDigest === batch.digest) {
         options.onState?.('ready')
         return
       }
 
       const candidate = join(sessionDirectory, `runtime-${++generation}`)
+
       /** Releases an unused runtime before any process takes ownership. */
       const discard = () => rm(candidate, { recursive: true, force: true })
+
       /** Checks the compiler completion token before handing its copied output to a process. */
       const isCurrent = () =>
-        !stopping && owner === compilers && owner.current?.revision === batch.revision
+        phase === 'open' && owner === compilers && owner.current?.revision === batch.revision
+
       let prepared = false
 
       try {
@@ -283,37 +280,37 @@ export async function startDevelopmentSession(
           startupTimeoutMs: 30_000,
         })
       } catch (cause) {
-        retainOutputs = true
-        throw cause
+        if (cause instanceof UnconfirmedApplicationExit) {
+          retainOutputs = true
+          throw cause
+        }
+        return rethrowAfterCleanup(cause, discard, 'Application startup and runtime cleanup failed')
       }
       current = { buildId, directory: candidate, processId: child.pid }
-      adopted = { compiler: owner, revision: batch.revision }
+      adoptedDigest = batch.digest
       runtimeChanged = false
 
       const launched = child
       void launched.exited.then((result) => {
-        if (result.code !== 0) {
-          retainOutputs = true
-        }
-        if (child !== launched || replacing || stopping) {
+        if (child !== launched || replacing || phase !== 'open') {
           return
         }
         child = undefined
         current = undefined
         if (result.code !== 0) {
-          options.onState?.('failed', new Error('Development application exited unsuccessfully'))
+          failSession(new Error(`Development application exited (${result.signal ?? result.code})`))
         }
         void session!.stop().catch((cause: unknown) => options.onState?.('failed', cause))
       }, failSession)
 
       options.signal?.removeEventListener('abort', cancelPreparation)
-      resolveReady()
+      ready.resolve()
       options.onState?.('ready')
     }
 
     /** Runs selected preparation work serially; compilers independently observe their module inputs. */
     async function drain(): Promise<void> {
-      while (pending.size && !stopping && !terminalFailure) {
+      while (pending.size && phase === 'open' && !terminalFailure) {
         const selected = new Set(pending)
         pending.clear()
         const started = requestVersion
@@ -351,6 +348,12 @@ export async function startDevelopmentSession(
               cwd: repositoryRoot,
               signal,
             })
+            if (current && phase === 'open') {
+              // Package builds replace complete export trees, including content-named chunks.
+              const client = renderer!.environments.client
+              client.moduleGraph.invalidateAll()
+              client.hot.send({ type: 'full-reload' })
+            }
             selected.delete('packages')
           }
           if (selected.has('resources')) {
@@ -374,7 +377,7 @@ export async function startDevelopmentSession(
           }
           if (!isCancellation(cause, signal)) {
             options.onState?.('failed', cause)
-            if (stopping || signal.aborted) {
+            if (phase !== 'open' || signal.aborted) {
               shutdownFailures.push(cause)
             }
           }
@@ -388,110 +391,144 @@ export async function startDevelopmentSession(
 
     /** Coalesces real input or compiler completion events into the owned preparation loop. */
     function enqueue(kind: PreparationChange | 'runtime'): void {
-      if (stopped || terminalFailure) {
+      if (phase === 'closed' || terminalFailure) {
         return
       }
       pending.add(kind)
       requestVersion += 1
       waitForChange = false
-      if (stopping || workLoop) {
+      if (phase !== 'open' || workLoop) {
         return
       }
       workLoop = drain().finally(() => {
         workLoop = undefined
-        if (pending.size && !waitForChange && !stopping && !terminalFailure) {
+        if (pending.size && !waitForChange && phase === 'open' && !terminalFailure) {
           enqueue('runtime')
         }
       })
     }
 
-    session = {
-      ready: ready,
-      closed: closed,
-      /** Reads the renderer's current address, including configuration restarts. */
-      get rendererUrl() {
-        return renderer?.resolvedUrls?.local[0] ?? rendererAddress
-      },
-      /** Reads the currently owned application and runtime directory. */
-      get current() {
-        return current
-      },
-      /** Stops preparation, confirms application exit, and closes every remaining resource owner. */
-      stop() {
-        if (stopped) {
-          return Promise.resolve('stopped')
+    /** Coordinates one application decision, then cancels work and releases each tool once. */
+    function stop(force: boolean): Promise<'cancelled' | 'stopped'> {
+      if (phase === 'closed') {
+        return closed.promise.then(() => 'stopped')
+      }
+      if (stopPromise) {
+        return force
+          ? stopPromise.then(
+              (outcome) => (outcome === 'cancelled' ? stop(true) : outcome),
+              () => stop(true),
+            )
+          : stopPromise
+      }
+      phase = 'closing'
+      stopPromise = finish(force).finally(() => {
+        stopPromise = undefined
+        if (phase === 'open' && pending.size && !terminalFailure) {
+          enqueue('runtime')
         }
-        if (stopPromise) {
-          return stopPromise
-        }
-        stopping = true
-        if (!current) {
-          controller.abort(new Error('Development startup cancelled'))
-        }
-        stopPromise = (async () => {
-          await workLoop
-          debug('Stopping application %s', child?.pid ?? 'not started')
-          if (child && (await child.stop()) === 'cancelled') {
+      })
+      return stopPromise
+    }
+
+    /** Preserves a refused or failed quit; an accepted stop has one terminal teardown result. */
+    async function finish(force: boolean): Promise<'cancelled' | 'stopped'> {
+      // A restart already negotiating application exit owns that decision until it settles.
+      if (replacing) {
+        await workLoop
+      }
+      const application = child
+      if (application) {
+        debug('Stopping application %s', application.pid)
+        try {
+          if (force) {
+            await application.terminate()
+          } else if ((await application.stop()) === 'cancelled') {
+            phase = 'open'
             pending.add('runtime')
             return 'cancelled'
           }
+        } catch (cause) {
+          phase = 'open'
+          throw cause
+        }
+        child = undefined
+        current = undefined
+      }
+
+      options.signal?.removeEventListener('abort', cancelPreparation)
+      controller.abort(new Error('Development session stopped'))
+      await workLoop
+      const failures = [...shutdownFailures]
+      const remaining = child as DevelopmentApplication | undefined
+      if (remaining) {
+        // A launch can complete as cancellation is delivered; its returned handle owns cleanup.
+        try {
+          await remaining.terminate()
           child = undefined
           current = undefined
-          options.signal?.removeEventListener('abort', cancelPreparation)
-          controller.abort(new Error('Development session stopping'))
+        } catch (cause) {
+          failures.push(cause)
+          retainOutputs = true
+        }
+      }
+      const results = await Promise.allSettled([
+        inputs?.close(),
+        compilers?.close(),
+        renderer?.close(),
+      ])
+      for (const result of results) {
+        if (result.status === 'rejected') {
+          failures.push(result.reason)
+        }
+      }
+      if (!retainOutputs && results.every((result) => result.status === 'fulfilled')) {
+        try {
+          await rm(sessionDirectory, { recursive: true, force: true })
+        } catch (cause) {
+          failures.push(cause)
+        }
+      } else {
+        failures.push(
+          new Error(
+            `Development outputs retained because closure is unconfirmed: ${sessionDirectory}`,
+          ),
+        )
+      }
 
-          const failures = [...shutdownFailures]
-          shutdownFailures.length = 0
-          let ownersClosed = true
-          for (const resource of [inputs, compilers, renderer]) {
-            try {
-              await resource?.close()
-            } catch (cause) {
-              failures.push(cause)
-              ownersClosed = false
-            }
-          }
-          if (ownersClosed && !retainOutputs) {
-            try {
-              await rm(sessionDirectory, { recursive: true, force: true })
-            } catch (cause) {
-              failures.push(cause)
-            }
-          }
-          if (retainOutputs) {
-            options.onState?.(
-              'failed',
-              new Error(
-                `Development outputs retained because reader shutdown is unconfirmed: ${sessionDirectory}`,
-              ),
-            )
-          }
-          rejectReady(new Error('Development session stopped before readiness'))
-          if (failures.length) {
-            const cause = new AggregateError(failures, 'Development session shutdown failed')
-            rejectClosed(cause)
-            throw cause
-          }
-          stopped = true
-          resolveClosed()
-          options.onState?.('stopped')
-          return 'stopped'
-        })().finally(() => {
-          stopPromise = undefined
-          if (!stopped && !signal.aborted) {
-            stopping = false
-            if (pending.size) {
-              enqueue('runtime')
-            }
-          }
-        })
-        return stopPromise
+      phase = 'closed'
+      ready.reject(signal.reason)
+      if (failures.length) {
+        const cause =
+          failures.length === 1
+            ? failures[0]
+            : new AggregateError(failures, 'Development session shutdown failed')
+        closed.reject(cause)
+        throw cause
+      }
+      closed.resolve()
+      options.onState?.('stopped')
+      return 'stopped'
+    }
+
+    session = {
+      ready: ready.promise,
+      closed: closed.promise,
+      /** Reads the address of the live renderer server. */
+      get rendererUrl() {
+        return renderer?.resolvedUrls?.local[0] ?? rendererAddress
       },
-      /** Confirms forced termination before completing the same session teardown. */
+      /** Reads the adopted process and its runtime directory. */
+      get current() {
+        return current
+      },
+      /** Requests normal, cancellable application exit. */
+      stop() {
+        return stop(false)
+      },
+      /** Forces the owned application to exit before teardown. */
       async terminate() {
-        stopping = true
-        await child?.terminate()
-        await session!.stop()
+        await stop(true)
       },
     }
 

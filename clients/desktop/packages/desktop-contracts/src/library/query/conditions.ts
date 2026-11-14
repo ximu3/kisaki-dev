@@ -374,19 +374,25 @@ function numberTest<T extends v.GenericSchema<unknown, number>>(schema: T) {
   return v.strictObject({ op: v.literal('range'), bounds: numericBounds(schema) })
 }
 
+/** Tests whether a complete field value is present, preserving zero and false as known values. */
 export const presenceSchema = v.strictObject({ op: v.picklist(['present', 'absent']) })
 
+/** Exact or substring text predicate with a nonblank search value. */
 export const textTestSchema = v.strictObject({
   op: v.picklist(['equals', 'contains']),
   value: nonemptyText,
 })
 
+/** Text-value or presence predicate used for optional relationship notes. */
 const textOrPresence = v.union([textTestSchema, presenceSchema])
 
+/** Validated ordered civil-date bounds for absolute and calendar ranges. */
 const dateBoundsSchema = v.pipe(v.unknown(), v.transform(parseDateBounds))
 
+/** Absolute civil-date range that must contain every possible day of a partial date. */
 const dateRangeSchema = v.strictObject({ op: v.literal('absoluteRange'), bounds: dateBoundsSchema })
 
+/** Range predicate over a known year, month or day component. */
 const componentRangeSchema = v.union([
   v.strictObject({
     op: v.literal('componentRange'),
@@ -405,19 +411,23 @@ const componentRangeSchema = v.union([
   }),
 ])
 
+/** Presence predicate for one date component without inferring the other components. */
 const componentPresenceSchema = v.strictObject({
   op: v.picklist(['componentPresent', 'componentAbsent']),
   component: v.picklist(['year', 'month', 'day']),
 })
 
+/** Date predicates that require known components or meaningful date bounds. */
 const knownDateTestSchema = v.union([
   dateRangeSchema,
   componentRangeSchema,
   componentPresenceSchema,
 ])
 
+/** Civil-date predicates combining value presence, component tests and absolute ranges. */
 export const dateTestSchema = v.union([knownDateTestSchema, presenceSchema])
 
+/** Civil-date predicates extended with a recurring month-and-day birthday range. */
 const birthdayTestSchema = v.union([
   dateTestSchema,
   v.strictObject({
@@ -427,6 +437,7 @@ const birthdayTestSchema = v.union([
   }),
 ])
 
+/** Nonempty half-open UTC instant range with at least one bound. */
 const instantRangeSchema = v.pipe(
   v.strictObject({
     op: v.literal('instantRange'),
@@ -440,13 +451,16 @@ const instantRangeSchema = v.pipe(
   ),
 )
 
+/** Timestamp or display-calendar range predicates over known instants. */
 const knownInstantTestSchema = v.union([
   instantRangeSchema,
   v.strictObject({ op: v.literal('calendarRange'), bounds: dateBoundsSchema }),
 ])
 
+/** Instant predicates that retain absence as a distinct query condition. */
 const instantTestSchema = v.union([knownInstantTestSchema, presenceSchema])
 
+/** Real part kind and applicable anime classifications contributing to a count. */
 export const partCountScopeSchema = v.variant('partType', [
   v.strictObject({
     partType: v.literal('animeEpisode'),
@@ -459,12 +473,16 @@ export const partCountScopeSchema = v.variant('partType', [
   v.strictObject({ partType: v.picklist(['comicVolume', 'comicChapter', 'novelVolume']) }),
 ])
 
+/** Counted part facts: registration, completion, file association or accessible content. */
 export const partMeasure = v.picklist(['registered', 'completed', 'withFiles', 'accessible'])
 
+/** An explicit true or false predicate over a supported query fact. */
 const booleanTest = v.strictObject({ op: v.literal('is'), value: v.boolean() })
 
+/** Nonnegative count range or explicit count-presence predicate. */
 const nullableCountTest = v.union([numberTest(nonnegativeInteger), presenceSchema])
 
+/** Character-measure predicates that preserve numeric, textual and absent meanings. */
 const measureTest = v.union([
   numberTest(nonnegativeNumber),
   textTestSchema,
@@ -472,34 +490,43 @@ const measureTest = v.union([
   v.strictObject({ op: v.literal('kind'), value: v.picklist(['number', 'text']) }),
 ])
 
+/** Optional character-binding condition applied to the same person relation. */
 const characterQualifier = v.union([
   v.strictObject({ type: v.picklist(['none', 'any']) }),
   v.strictObject({ type: v.literal('oneOf'), refs: selections(characterRefSchema) }),
 ])
 
+/** Character condition for a relation view that requires a character binding. */
 const characterOnlyQualifier = v.union([
   v.strictObject({ type: v.literal('any') }),
   v.strictObject({ type: v.literal('oneOf'), refs: selections(characterRefSchema) }),
 ])
 
+/** Optional relationship-note predicate evaluated on the matched relation. */
 const noteWhere = { note: v.exactOptional(textOrPresence) }
 
+/** Optional character-role selection, including an unspecified role. */
 const characterRolesWhere = {
   characterRoles: v.exactOptional(selections(v.nullable(v.picklist(characterRoles)))),
 }
 
+/** Optional responsibility selection applied to the matched person relation. */
 const personRolesWhere = { personRoles: v.exactOptional(selections(v.picklist(personRoles))) }
 
+/** Optional work-medium selection applied to relation endpoints. */
 const workTypesWhere = { workTypes: v.exactOptional(selections(v.picklist(workTypes))) }
 
+/** Optional exact work and work-medium selections applied to the same relation. */
 const worksWhere = { ...workTypesWhere, works: v.exactOptional(selections(workRefSchema)) }
 
+/** Person, character and character-role qualifiers evaluated on one participation fact. */
 const personCharacterWhere = {
   ...personRolesWhere,
   ...characterRolesWhere,
   character: v.exactOptional(characterQualifier),
 }
 
+/** Optional credited-organization role selection applied to the matched relation. */
 const organizationWhere = {
   organizationRoles: v.exactOptional(selections(v.picklist(organizationRoles))),
 }
@@ -509,6 +536,7 @@ function relationTest<T extends v.GenericSchema, W extends v.ObjectEntries>(targ
   return v.strictObject({ targets: setTest(target), where: v.exactOptional(v.strictObject(where)) })
 }
 
+/** Closed field-to-predicate mapping used to validate every supported entry query condition. */
 const conditionSchemas: Readonly<
   Record<EntryCondition['field'], v.GenericSchema<unknown, object>>
 > = {

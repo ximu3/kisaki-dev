@@ -414,25 +414,31 @@ export interface ExtensionsApi {
   onInvalidated(listener: () => void): Disposable
 }
 
+/** Validated extension distribution identity used by management operations. */
 const extensionId = v.pipe(
   v.unknown(),
   v.transform((value) => parseExternalValue(parseId, value, 'Invalid extension identity')),
 )
 
+/** Canonical extension release version used by artifact and installed-state values. */
 const version = v.pipe(
   v.unknown(),
   v.transform((value) => parseExternalValue(parseVersion, value, 'Invalid extension version')),
 )
 
+/** Lowercase complete-artifact SHA-256 digest used by acquisition and adoption. */
 const sha256 = v.pipe(text, v.regex(/^[a-f0-9]{64}$/))
 
+/** Canonical supported target set retained with an extension artifact. */
 const targets = v.pipe(
   v.unknown(),
   v.transform((value) => parseExternalValue(normalizeTargets, value, 'Invalid extension targets')),
 )
 
+/** Safe extension-management failure details suitable for public snapshots. */
 const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
 
+/** Validated repository signing key used by explicit trust bindings. */
 const publicKey = v.pipe(
   v.unknown(),
   v.transform((value) =>
@@ -440,12 +446,16 @@ const publicKey = v.pipe(
   ),
 )
 
+/** Absolute package-file path selected by a local installation operation. */
 const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
 
+/** HTTP repository address validated without acquiring remote content. */
 const url = v.pipe(v.unknown(), v.transform(parseHttpUrl))
 
+/** Editable repository address and pinned trust fields shared by creation and updates. */
 const repositoryEntries = { url, declaredId: extensionId, trustedPublicKey: publicKey }
 
+/** Exact repository coordinates identifying one downloadable extension artifact. */
 const repositorySource = {
   type: v.literal('repository'),
   repositoryId: id,
@@ -454,33 +464,43 @@ const repositorySource = {
   sha256,
 }
 
+/** Repository artifact or explicit local package selected for acquisition. */
 const source = v.variant('type', [
   v.strictObject(repositorySource),
   v.strictObject({ type: v.literal('file'), path }),
 ])
 
+/**
+ * Acquisition provenance that retains the repository identity and signing key used during
+ * preparation.
+ */
 const preparedSource = v.variant('type', [
   v.strictObject({ ...repositorySource, declaredId: extensionId, trustedPublicKey: publicKey }),
   v.strictObject({ type: v.literal('file'), path }),
 ])
 
+/** Exact artifact identity shared by installed, candidate and prepared extension values. */
 const artifact = { extensionId, version, sha256, targets }
 
+/** Runtime activation phase or failure, independent of installed enabled intent. */
 const activation = v.variant('status', [
   v.strictObject({ status: v.picklist(['inactive', 'activating', 'active', 'deactivating']) }),
   v.strictObject({ status: v.literal('failed'), error }),
 ])
 
+/** Successful activation-instance identity or an explicitly failed activation attempt. */
 const activationResult = v.variant('outcome', [
   v.strictObject({ extensionId, outcome: v.literal('activated'), instanceId: id }),
   v.strictObject({ extensionId, outcome: v.literal('failed'), error }),
 ])
 
+/** Availability and validation status of the installed package bytes. */
 const packageState = v.variant('status', [
   v.strictObject({ status: v.picklist(['available', 'missing']) }),
   v.strictObject({ status: v.literal('invalid'), error }),
 ])
 
+/** One unmet compatibility condition with its required and optional observed values. */
 const compatibilityIssue = v.pipe(
   v.strictObject({
     condition: v.picklist(['target', 'apiVersion', 'nodeVersion', 'electronVersion']),
@@ -498,6 +518,7 @@ const compatibilityIssue = v.pipe(
   v.transform((value): CompatibilityIssue => ({ ...value, actual: value.actual })),
 )
 
+/** Artifact compatibility assessment with nonempty issue details when incompatible. */
 const compatibility = v.variant('status', [
   v.strictObject({ status: v.picklist(['compatible', 'unavailable']) }),
   v.strictObject({
@@ -506,6 +527,10 @@ const compatibility = v.variant('status', [
   }),
 ])
 
+/**
+ * Installed identity and saved choices with independent package, compatibility and prepared-update
+ * states.
+ */
 const summary = {
   id: extensionId,
   version,
@@ -523,6 +548,11 @@ const summary = {
 /** Parses exact repository coordinates or an explicit absolute package-file path. */
 export function parseExtensionPackageSource(input: unknown): ExtensionPackageSource {
   return parseValue(source, input, 'Invalid extension package source')
+}
+
+/** Parses an artifact's exact identity independently from acquisition or installation state. */
+export function parseExtensionArtifactIdentity(input: unknown): ExtensionArtifactIdentity {
+  return parseValue(v.strictObject(artifact), input, 'Invalid extension artifact identity')
 }
 
 /**

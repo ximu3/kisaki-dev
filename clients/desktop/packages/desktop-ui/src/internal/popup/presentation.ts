@@ -20,6 +20,7 @@ export function createPresentation(
   open: Accessor<boolean>,
   element: Accessor<HTMLElement | undefined>,
 ): Accessor<boolean> {
+  /** Presence state that keeps closing content mounted until its transition ends. */
   const [retained, retain] = createSignal(open())
 
   createEffect(

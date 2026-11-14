@@ -73,6 +73,7 @@ export function MarkdownPreview(props: MarkdownPreviewProps): JSX.Element {
     return `<img src="${markdown.utils.escapeHtml(resolved)}" alt="${alt}"${title ? ` title="${markdown.utils.escapeHtml(title)}"` : ''} loading="lazy">`
   }
 
+  /** Rendered Markdown HTML derived from the current text and this preview's document identity. */
   const html = createMemo(() => markdown.render(local.value, { docId: id }))
 
   return (

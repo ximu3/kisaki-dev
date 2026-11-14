@@ -63,6 +63,7 @@ export interface ToastEntry {
   durationMs: number
 }
 
+/** Currently registered toast API used by imperative toast calls. */
 let current: ToastApi | undefined
 
 /** Install one Toaster in the document, then call from components, events or UI functions. */
@@ -91,6 +92,7 @@ export function createToastController(
     throw new Error('Only one Toaster may be installed in a document.')
   }
 
+  /** Reactive toast queue owned by this controller instance. */
   const [entries, setEntries] = createSignal<ToastEntry[]>([])
   let nextId = 0
   /** Begins dismissal of an existing message identified by its queue ID. */
@@ -105,7 +107,9 @@ export function createToastController(
     /** Appends an independent reactive message and returns handles bound to that queue entry. */
     show(message, options = {}) {
       const id = nextId++
+      /** Live message value observed by a toast handle and its rendered entry. */
       const [value, replace] = createSignal(message, { equals: false })
+      /** Terminal state preventing an ended toast handle from becoming active again. */
       const [ended, setEnded] = createSignal(false)
       arrange(() =>
         setEntries((items) => [

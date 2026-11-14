@@ -62,6 +62,7 @@ test(
     const root = process.cwd()
     const directory = await mkdtemp(join(tmpdir(), 'kisaki-task-inputs-'))
     onTestFinished(() => rm(directory, { recursive: true, force: true }))
+    /** Promise-based command runner for the isolated task-selection repository. */
     const execute = promisify(execFile)
     const options = {
       signal,
@@ -76,7 +77,7 @@ test(
       { path: 'clients/desktop/packages/desktop-appearance/README.md', desktop: [] },
       {
         path: 'clients/desktop/packages/desktop-appearance/src/styles.css',
-        desktop: [],
+        desktop: ['test:artifacts', 'test:dev', 'test:e2e', 'test:native'],
         consumers: [
           'desktop-appearance',
           'desktop-contracts',
@@ -101,12 +102,12 @@ test(
       },
       {
         path: 'clients/desktop/packages/extension-distribution/src/node/signing.ts',
-        desktop: [],
+        desktop: ['test:artifacts', 'test:dev', 'test:e2e', 'test:native'],
         consumers: ['extension-distribution', 'desktop-contracts', 'desktop-localization'],
       },
       {
         path: 'clients/desktop/packages/desktop-contracts/src/library/catalog.ts',
-        desktop: [],
+        desktop: ['test:artifacts', 'test:dev', 'test:e2e', 'test:native'],
         consumers: ['desktop-contracts', 'desktop-localization'],
       },
       {

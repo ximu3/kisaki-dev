@@ -9,6 +9,7 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
+/** Checkout root whose repository-local hook installation is managed by this command. */
 const projectRoot = fileURLToPath(new URL('..', import.meta.url))
 
 /** The outcome of installing or removing this repository's hooks. */

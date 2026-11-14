@@ -33,7 +33,7 @@ fn failure(reason: &str, error: Option<io::Error>) -> FileOperationResult {
 }
 
 /// Recognizes absolute platform paths that contain no NUL bytes.
-fn valid_path(path: &str) -> bool {
+pub(crate) fn valid_path(path: &str) -> bool {
     Path::new(path).is_absolute() && !path.contains('\0')
 }
 

@@ -3,7 +3,6 @@
 import { build, loadConfigFromFile } from 'vite'
 import type { InlineConfig } from 'vite'
 import { join } from 'node:path'
-import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
 /** Independently compiled desktop programs with separate runtime environments. */
 export const programNames = ['main', 'preload', 'extension-host', 'renderer'] as const
@@ -76,26 +75,9 @@ export async function buildProgram(
     buildId,
     mode,
   )) {
-    const result = await build({
+    await build({
       ...config,
-      plugins: [
-        {
-          name: 'desktop-finite-build',
-          /** Keeps this finite entry from acquiring a persistent compiler. */
-          configResolved(resolved) {
-            if (resolved.build.watch) {
-              throw new Error('Finite program builds do not support watch mode')
-            }
-          },
-        },
-      ],
+      build: { ...config.build, watch: null },
     })
-    if (!Array.isArray(result) && !('output' in result)) {
-      return rethrowAfterCleanup(
-        new Error('A finite program build returned a watcher'),
-        () => result.close(),
-        'Unexpected build watcher cleanup failed',
-      )
-    }
   }
 }

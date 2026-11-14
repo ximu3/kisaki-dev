@@ -5,7 +5,7 @@ export default defineConfig({
     fsModuleCachePath: 'node_modules/.vitest-cache',
     environment: 'node',
     globals: false,
-    include: ['tests/tools/dev/**/*.test.ts'],
+    include: ['tests/tools/dev/session.test.ts'],
     testTimeout: 240_000,
     hookTimeout: 240_000,
     fileParallelism: false,

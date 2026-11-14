@@ -12,9 +12,13 @@ import { appRoot } from '../../../tools/lib/paths'
 import { hostTarget } from '../../../tools/lib/targets'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
+/** Prepared native binding selected for the current host target. */
 const binding = join(appRoot, 'out', 'native', hostTarget(), 'kisaki-native.node')
+
+/** Paths that the host-native absolute-path contract rejects before scheduling work. */
 const invalidPaths = process.platform === 'win32' ? ['relative', '\\drive-rooted'] : ['relative']
 
+/** Temporary filesystem root owned by the current native operation case. */
 let directory: string
 
 beforeEach(async () => {

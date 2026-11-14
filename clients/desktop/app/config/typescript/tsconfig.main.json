@@ -1,15 +1,14 @@
 {
   "extends": "@kisaki3/typescript-config/node.json",
   "compilerOptions": {
-    "skipLibCheck": false,
     "incremental": true,
     "tsBuildInfoFile": "../../.cache/typescript/main.tsbuildinfo",
     "lib": ["ES2023", "DOM"]
   },
   "include": [
+    "../../src/main/**/*.ts",
     "../../tests/fixtures/runtime/src/main/**/*.ts",
-    "../../tests/fixtures/runtime/src/shared/**/*.ts",
-    "../../native/node/**/*.ts"
+    "../../tests/fixtures/runtime/src/shared/**/*.ts"
   ],
-  "exclude": []
+  "exclude": ["../../src/**/*.test.ts"]
 }

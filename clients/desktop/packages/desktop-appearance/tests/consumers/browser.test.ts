@@ -8,8 +8,10 @@ import { chromium } from '@playwright/test'
 import { readPnpm, runPnpm } from '@kisaki3/tooling/process'
 import { consumerTest, lintConsumer } from '../support/consumer'
 
+/** Appearance package root whose packed CSS and token exports are consumed by this suite. */
 const packageRoot = resolve(import.meta.dirname, '../..')
 
+/** Packed appearance consumer fixtures owning the browser, page and preview server. */
 const test = consumerTest('browser')
   .extend('browser', { scope: 'file' }, async ({}, { onCleanup }) => {
     const browser = await chromium.launch()

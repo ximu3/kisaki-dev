@@ -127,7 +127,7 @@ A19、A29 和 A30 验证[应用搜索排序](../../design/domains/search.md#resu
 
 A19 和 A29 验证标注搜索结果携带完整 AnnotationRef，经[原生导航](../../design/communication.md#capabilities)打开已保存内容；不会直接启动游戏或打开源文件，也不为此增加公开 deeplink。展示柜的最近加入区块与普通查询使用相同有效加入日期：空 added_date 回退到创建日期，部分日期保持原精度，筛选、排序和定位一致。
 
-A19、A27 和 A30 按[名称比较的确定序列](../../design/domains/library/query/README.md#name-order)核对数据库排序与纯比较结果一致，包括中文码点、兼容字符、组合重音、各类 Nd、前导零、数字后的文字、标点及超安全整数。等价名称使用稳定 ID，降序不把缺省项移到前面，ID 补序保持；切换四种界面语言后顺序不变。对同一固定资料分别调用 list、locate 与应用搜索，在相同相关性档次内取得一致顺序。Unicode 数据或键编码升级的索引重建保留原字段与身份，不将比较相等的条目合并。
+A19、A27 和 A30 按[资料库名称排序](../../design/domains/library/query/README.md#name-order)验证语言差异、数字排序、等价名称的 ID 补序及缺省位置。同 locale 切换界面译本保留顺序；实际 locale 改变、回退或引擎修订更新后验证索引重建、重开和原始名称保留。同一范围的 list、locate 和应用搜索使用相同的名称比较。
 
 <a id="onboarding-commit"></a>
 
