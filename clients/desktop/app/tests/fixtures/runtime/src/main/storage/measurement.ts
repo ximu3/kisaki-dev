@@ -63,16 +63,15 @@ function compareEntries(left: FixtureEntry, right: FixtureEntry): number {
 function resultSet(
   connection: Database.Database,
   name: string,
-  prefix: string,
   where: string,
   expected: FixtureEntry[],
 ): QueryCase[] {
   expected.sort(compareEntries)
   const offset = Math.max(0, expected.length - 200)
-  const listSql = `${prefix} select e.id from entries e where ${where} order by e.effective_sort_name,e.id limit 200 offset ${offset}`
-  const countSql = `${prefix} select count(*) as total from entries e where ${where}`
+  const listSql = `select e.id from entries e where ${where} order by e.effective_sort_name,e.id limit 200 offset ${offset}`
+  const countSql = `select count(*) as total from entries e where ${where}`
   const target = expected[Math.floor(expected.length * 0.8)]!
-  const locateSql = `${prefix} select count(*) as position from entries e where (${where}) and (e.effective_sort_name,e.id) < (?,?)`
+  const locateSql = `select count(*) as position from entries e where (${where}) and (e.effective_sort_name,e.id) < (?,?)`
   const list = connection.prepare(listSql)
   const count = connection.prepare(countSql)
   const locate = connection.prepare(locateSql)
@@ -179,9 +178,8 @@ export async function measureStorage(profile: string, resources: string) {
       { length: 100 },
       (_, index) => `'${fixtureId('tag', index)}'`,
     ).join(',')
-    const dynamicCandidates = `select entry_id from entry_tags where tag_id in (${dynamicTags})`
-    // EXISTS keeps ordered outer scans; NOT IN builds its own set without a second GROUP BY.
-    const dynamicPrefix = `with dynamic_members as (${dynamicCandidates} group by entry_id)`
+    // Probe each entry's own tag list once, rather than seeking every selected tag for every entry.
+    const matchesDynamic = `exists (select 1 from entry_tags t indexed by entry_tags_entry where t.entry_id=e.id and t.tag_id in (${dynamicTags}))`
     /** Evaluates the fixture's hundred tag rules independently of SQL. */
     const isDynamic = (entry: FixtureEntry) =>
       entry.ordinal % 200 < 100 || (entry.ordinal + 73) % 200 < 100
@@ -189,30 +187,21 @@ export async function measureStorage(profile: string, resources: string) {
       ...resultSet(
         connection,
         'mixed-rated',
-        '',
         "e.type in ('anime','comic','novel') and e.id in (select entry_id from entry_evaluations where rating >= 70)",
         entries.filter(
           (entry) => ['anime', 'comic', 'novel'].includes(entry.type) && entry.ordinal % 101 >= 70,
         ),
       ),
-      ...resultSet(
-        connection,
-        'dynamic-union-100',
-        dynamicPrefix,
-        'exists (select 1 from dynamic_members where dynamic_members.entry_id=e.id)',
-        entries.filter(isDynamic),
-      ),
+      ...resultSet(connection, 'dynamic-union-100', matchesDynamic, entries.filter(isDynamic)),
       ...resultSet(
         connection,
         'unclassified',
-        `with dynamic_members as (${dynamicCandidates})`,
-        'e.id not in (select entry_id from dynamic_members) and e.id not in (select entry_id from collection_members)',
+        `not ${matchesDynamic} and e.id not in (select entry_id from collection_members)`,
         entries.filter((entry) => !isDynamic(entry) && entry.ordinal % 5 !== 0),
       ),
       ...resultSet(
         connection,
         'same-relation',
-        '',
         `e.id in (select work_id from work_person_links where person_id = '${fixtureId('person', 0)}' and role = 'voiceActor' and character_id is not null)`,
         entries.filter((entry) => prepared.voiceWorks.has(entry.id)),
       ),
