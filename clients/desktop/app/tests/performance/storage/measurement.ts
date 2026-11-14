@@ -193,7 +193,7 @@ export async function measureStorage(profile: string, resources: string) {
       ...resultSet(
         connection,
         'mixed-rated',
-        "e.type in ('anime','comic','novel') and e.id in (select entry_id from entry_evaluations where rating >= 70)",
+        "e.type in ('anime','comic','novel') and exists (select 1 from entry_evaluations r where r.entry_id = e.id and r.rating >= 70)",
         entries.filter(
           (entry) => ['anime', 'comic', 'novel'].includes(entry.type) && entry.ordinal % 101 >= 70,
         ),

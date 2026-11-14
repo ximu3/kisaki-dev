@@ -36,9 +36,14 @@ export async function prepareArtifactWorkspace(archivePath: string): Promise<Art
     let resourceDirectory: string
     let fusePath: string
     if (process.platform === 'win32') {
-      await promisify(execFile)('tar.exe', ['-xf', archivePath, '-C', directory], {
-        windowsHide: true,
-      })
+      // Git for Windows also supplies GNU tar. System32 owns the ZIP-capable Windows bsdtar.
+      await promisify(execFile)(
+        join(process.env.SystemRoot!, 'System32', 'tar.exe'),
+        ['-xf', archivePath, '-C', directory],
+        {
+          windowsHide: true,
+        },
+      )
 
       executablePath = join(directory, 'Kisaki.exe')
       resourceDirectory = join(directory, 'resources')
