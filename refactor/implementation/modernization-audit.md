@@ -38,6 +38,21 @@
 
 在 `1c5f541` 另外追踪了 19 个 `tests/support` 源文件的导入及按路径启动的子进程。桌面的 `database.ts` 只有数据库集成套件消费，`artifact-workspace.ts` 只有制品套件消费。开发控制器、worker 和启动器属于开发会话用例。相比之下，`electron.ts` 由窗口与性能套件共用，`window-observation.ts` 由开发与制品套件共用。根 `tests/support/workspace.ts` 的两处消费者都是正在审视的工作区检查。迁移时按剩余调用方决定就近移动、共享或删除。六包的 11 份消费者样板各有真实工程清单，保留这些输入可以检出本仓已发生的声明依赖遗漏。[数据库集成用例](../../clients/desktop/app/tests/integration/database/storage.test.ts) · [Electron 启动与清理](../../clients/desktop/app/tests/support/electron.ts) · [根工作区辅助](../../tests/support/workspace.ts)
 
+<a id="ci-review"></a>
+
+## CI 专项审视
+
+2026-11-14 以 `0a2bdbe` 的五份工作流、任务输入、消费者与制品用例为代码基线，读取实际远端保护配置以及同一 CI 工作流最近 40 次已结束的 PR 运行（编号 165–204）。评判依据是发现错误所需的环境、开发者等候时间和可交付证据。目标组织、命名和迁移验收见[CI 方案](engineering-modernization.md#ci-design)。
+
+| 已核实的事实 | 对设计的影响 |
+| --- | --- |
+| 40 次运行中 20 次成功、6 次失败、14 次取消，7 次有重跑。从事件创建到最终完成，20 次成功运行的中位数为 17 分 41.5 秒。从最后一次尝试开始计算是 17 分 05 秒。样本来自 5 条分支，从创建起算的口径包含等待重跑的时间，20 次成功中的统计不代表全项目 SLA。 | 分别测量基础反馈、最终合并结论、一次尝试和累计计算时间。取消过时工作应保留，取消数本身不说明故障率或所费金额。[运行历史](https://github.com/ximu3/kisaki-dev/actions/workflows/ci.yml) |
+| 完整运行 #202 用时 17 分 17 秒，9 个作业累计 63 分 51 秒。全仓作业 76 秒，桌面选择作业 19 秒。Windows ARM64 作业 16 分 15 秒，其中桌面步骤 11 分 32 秒、四项开发场景 5 分 59 秒、四个窗口 5.9 秒。较窄的 #195 在 2 分 59 秒内完成。 | 优先改变重环境的选择，基础检查可以一次跑全。将 Node、真实浏览器、Electron Node、实际 Electron 和最终制品分别绑定到所需风险。只在需要的平台准备 Chromium、图形和安装格式工具。[完整运行](https://github.com/ximu3/kisaki-dev/actions/runs/43562359494) · [ARM64 日志](https://github.com/ximu3/kisaki-dev/actions/runs/43562359494/job/132348837785) · [窄改动](https://github.com/ximu3/kisaki-dev/actions/runs/43387908836) |
+| 当前代码路由跨 4 份 YAML，两处独立检出、安装和判定范围，桌面作业再用多个布尔量选择同一套任务。原生、窗口、开发、制品四类桌面任务中只要一类被选中，或者私有工程工具测试被选中，就扩为六目标。外观 CSS 用例明确要求触发四类桌面任务。纯文档的两个实际 Git 引用 `fa634d0..b5a6b49` 返回零项桌面任务，`refactor/` 又在 Prettier 忽略清单中。 | 选择职责集中到一个可本地检查的入口。保留文档快速分流，增加实际的文档验证，识别作为构建或验收输入的非文档文件。删除专用 Turbo 查询和复述旧矩阵的断言，保留输出完整性、编译覆盖和失败结果等真正的保证。[当前选择](../../.github/workflows/verification-desktop.yml) · [CSS 选择用例](../../tests/workspace/tasks.test.ts) · [格式范围](../../.prettierignore) |
+| #202 六份桌面上传合计 1,748,078,395 字节。#204 的 Intel Mac 已完成桌面验证，上传阶段 DNS 失败导致必需检查失败，该平台重跑 10 分 17 秒才成功。目前上传和可选缓存保存都位于作业成功标记之前。[首次尝试](https://github.com/ximu3/kisaki-dev/actions/runs/43565501268/job/132358470362) · [重跑](https://github.com/ximu3/kisaki-dev/actions/runs/43565501268/job/132362722365) | 普通 PR 把诊断传输故障单列。下游实际使用的 tarball、发行文件、收据或索引仍需成功交接，丢失后重新生成的字节须重新验证。 |
+| 远端 main 要求严格同步、线性历史，管理员同样受约束。仅 squash 合并，默认使用 PR 标题。实际必需检查为 `verify / Required checks` 与 `PR title`。现有标题作业在同步和编辑事件都安装根工程依赖。同一批标题运行中，成功任务约 19–34 秒。[标题运行实例](https://github.com/ximu3/kisaki-dev/actions/runs/43565501237) | 保留单独的标题语义与代码门禁。标题最新版与当前 SHA 对应，代码检查设置变化时并行迁移保护名称。稳定终结作业负责阻止意外跳过，独立平台失败仍然可见。 |
+| 当前已保留只读 PR、固定 Action SHA、冻结锁文件、不同目标的缓存空间、匹配的真实宿主、完整 PR 差异和过时取消。性能任务为显式入口，Windows x64 的真实跨卷验证与另五目标的同卷跳过分别记录。[W06 证据](../verification/evidence/w06/README.md) | 延续这些具体保证。现场系统下限、Wayland/GPU、签名、安装升级、真实服务和账号验收按相应发布单位取得。已有基础 CI 结果只证明它执行过的范围。 |
+
 ## 需要处理的实质问题
 
 | 事项 | 依据与影响 | 建议与验收 |

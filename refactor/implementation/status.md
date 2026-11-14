@@ -10,7 +10,7 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 
 当前任务入口为 AGENTS.md，设计、规范和实施资料集中于 refactor。[当前工程与开发](development.md)维护源码职责、环境准备与可运行命令。正式项目文档待 W23 交付；接口声明、代码注释、发行说明和许可材料随所属实现与版本维护。
 
-[全项目工程设计与现代化重构](engineering-modernization.md)已明确评审范围，覆盖工具链、源码与工程工具边界、测试组织、开发、CI、构建、发行及维护。方案提出 Vite+ 与 TypeScript 7.1 的终态选择。[全项目审视](modernization-audit.md#engineering-review)记录现有工具、测试、样板和调用关系。当前处于方案评审阶段，正式切换与归档待实施验收。
+[全项目工程设计与现代化重构](engineering-modernization.md)已明确评审范围，覆盖工具链、源码与工程工具边界、测试组织、开发、CI、构建、发行及维护。方案提出 Vite+ 与 TypeScript 7.1 的终态选择。[全项目审视](modernization-audit.md#engineering-review)记录现有工具、测试、样板和调用关系。[CI 专项方案](engineering-modernization.md#ci-design)另行规定事件、范围、工作流命名及保护迁移。当前运行仍使用已部署的工作流，正式切换与归档待实施验收。
 
 [当前工程验证](../verification/evidence/w00/README.md)已取得本机 Windows x64 和 CI 六目标结果，覆盖工程载体的构建、原生与 Electron 运行、开发回归、打包及制品运行。
 
@@ -84,7 +84,7 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 | 本地设备     | Windows 10 22H2 x64（build 19045）、Ryzen 9 7945HX、约 32 GB 内存；RTX 4060 Laptop GPU 8 GB 与 AMD 集成显卡。 |
 | 本地执行条件 | 普通用户权限的交互桌面；测试使用独立资料与目录。                                                              |
 | 标准 CI      | Windows、macOS、Linux 的 x64 与 arm64；各目标配置原生构建、基础运行和载体验证，实际结果由证据记录。           |
-| 反馈目标     | [4／10／25 分钟](../design/engineering/workspace.md#ci-feedback)。                                            |
+| 反馈目标     | 现行 [4／10／25 分钟](../design/engineering/workspace.md#ci-feedback)。拟迁移后以[普通 PR 基础反馈约 3 分钟](engineering-modernization.md#ci-design)为目标，待实测。                                            |
 
 <a id="w00"></a>
 
