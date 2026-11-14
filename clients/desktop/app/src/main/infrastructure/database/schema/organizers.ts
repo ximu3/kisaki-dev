@@ -13,7 +13,7 @@ import {
 } from 'drizzle-orm/sqlite-core'
 import { parseDynamicRules } from '@kisaki3/desktop-contracts/library'
 import { storedJsonColumn } from '../codecs/json'
-import { attachments } from './attachments'
+import { attachments } from './attachments/metadata'
 import { entries } from './catalog'
 import { orderedName } from '../name-order'
 import { booleanValue, nonempty, idColumn, safeInteger, timestamps } from './constraints'

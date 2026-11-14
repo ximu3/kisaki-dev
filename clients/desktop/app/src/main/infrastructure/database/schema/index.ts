@@ -1,6 +1,6 @@
 /** @fileoverview Exposes formal storage tables and the separately configured preference singleton. */
 
-export { attachments } from './attachments'
+export { attachments } from './attachments/metadata'
 export {
   entries,
   nameOrderState,
@@ -91,7 +91,7 @@ export {
   animeAnnotationContentAttachments,
   comicAnnotationContentAttachments,
   novelAnnotationContentAttachments,
-} from './attachment-references'
+} from './attachments/markdown-references'
 export { gameSaveBackups, gameBackupRecoveries } from './backups'
 export { metadataProfiles, scanConfigs, showcaseSections } from './configuration'
 export { taskRuns, scanRuns } from './history'

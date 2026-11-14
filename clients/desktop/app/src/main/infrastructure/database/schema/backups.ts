@@ -2,7 +2,7 @@
 
 import { desc, sql } from 'drizzle-orm'
 import { primaryKey, check, index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { attachments } from './attachments'
+import { attachments } from './attachments/metadata'
 import { games } from './catalog'
 import { gameLaunchConfigs } from './holdings'
 import { booleanValue, enumValue, idColumn, safeInteger } from './constraints'

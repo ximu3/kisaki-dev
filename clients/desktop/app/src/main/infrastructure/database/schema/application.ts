@@ -11,7 +11,7 @@ import {
 } from '@kisaki3/desktop-contracts/extensions'
 import { parseJsonValue } from '@kisaki3/desktop-contracts/json'
 import { storedJsonColumn } from '../codecs/json'
-import { attachments } from './attachments'
+import { attachments } from './attachments/metadata'
 import { booleanValue, nonempty, idColumn, timestamps } from './constraints'
 
 /** Stores user-owned light and dark theme definitions under one stable theme identity. */

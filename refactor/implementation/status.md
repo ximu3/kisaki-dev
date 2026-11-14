@@ -36,7 +36,7 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 | [W03 桌面合同与本地化](work-packages.md#w03) | 实现与适用验收已完成。合同包交付接口、值约束与规范编码，展示柜采用单项保存、明确批量创建与共用引导输入；实际业务操作和界面由 W08、W22 实现。本地化包交付英语、关联类型、译本校验与格式化。两个包均通过制品和独立消费验证，见[本机及 CI 证据](../verification/evidence/w03/README.md)。项目文档待 W23，尚未公开发布。 |
 | [W04 desktop-rpc](work-packages.md#w04)                       | 实现与适用验收已完成。环境无关的 RPC 包通过帧与连接机制、制品、独立声明以及 Node 父子 IPC 和 Electron 窗口的真实通道验证，见[验证记录](../verification/evidence/w04/README.md)。项目文档待 W23，尚未公开发布。                               |
 | [W05 desktop-ui](work-packages.md#w05) | 31 个组件家族与共同样式已完成，静态字段标题、可搜索单选与多选、原生分段日期、虚拟列表、稳定内容的浮层、通知队列和内置格式栏已通过独立制品消费验收。范围见[验证记录](../verification/evidence/w05/README.md)。项目文档待 W23，尚未公开发布。 |
-| [W06 存储与原生基础](work-packages.md#w06)                    | 正式存储与文件设施已实现，名称排序采用生效软件语言，本机完整负载满足 50 ms 同步预算。重构后的六目标运行待核验，见[验证记录](../verification/evidence/w06/README.md)。 |
+| [W06 存储与原生基础](work-packages.md#w06)                    | 实现与适用验收已完成。正式存储、文件设施和随生效软件语言切换的索引通过六目标运行与制品验收；本机完整负载满足 50 ms 单次同步预算。见[验证记录](../verification/evidence/w06/README.md)。 |
 | [W07 应用运行与设置](work-packages.md#w07)                    | 未开始。                                                                                                                                                                                                                                     |
 | [W08 资料与记录](work-packages.md#w08)                        | 未开始。                                                                                                                                                                                                                                     |
 | [W09 Vantage](work-packages.md#w09)                           | 未开始；分项结果见[项目交付](delivery-checklist.md#projects)。                                                                                                                                                                               |
@@ -61,7 +61,6 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 
 ## 待取得的运行与外部输入
 
-- W06 尚需取得重构后的六目标运行与制品结果。
 - W09–W12 尚需取得完整实现、目标制品及主要后端结果。固定 libmpv 源码补丁已有依据，正式媒体、颜色、截图和 GPU 接入待验收。
 - W21 尚需真实宿主、资源、安装与来源消费。Google OAuth 应用审核、AniList 高级评分和部分导入器真实样本的缺项见[交付清单](delivery-checklist.md#extensions)与[来源证据](../verification/evidence/extensions.md)。
 - 跨文件系统移动已在 Windows x64 取得运行证据；其余五个 CI 目标因测试根同属一个文件系统而跳过。完整平台组合、系统下限、签署与随包权利材料按所属交付继续验证。

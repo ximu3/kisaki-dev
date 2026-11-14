@@ -8,7 +8,7 @@ import {
   parseReadingAnnotationLocation,
 } from '@kisaki3/desktop-contracts/library'
 import { storedJsonColumn } from '../codecs/json'
-import { attachments } from './attachments'
+import { attachments } from './attachments/metadata'
 import { entries, games, animes, comics, novels } from './catalog'
 import { animeFiles, comicFiles, novelFiles } from './holdings'
 import { idColumn, safeInteger, timestamps } from './constraints'

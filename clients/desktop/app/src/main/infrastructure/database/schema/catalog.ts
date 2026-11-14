@@ -15,7 +15,7 @@ import type { AnySQLiteColumn } from 'drizzle-orm/sqlite-core'
 import { entryTypes } from '@kisaki3/desktop-contracts/library'
 import type { EntryType } from '@kisaki3/desktop-contracts/library'
 import { aliases, externalLinks, languages, partialDate, characterMeasure } from '../codecs/catalog'
-import { attachments } from './attachments'
+import { attachments } from './attachments/metadata'
 import { orderedText, orderedName } from '../name-order'
 import { booleanValue, enumValue, nonempty, idColumn, safeInteger, timestamps } from './constraints'
 

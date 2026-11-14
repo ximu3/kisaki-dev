@@ -24,7 +24,16 @@
 
 工程载体在窗口出现前，用实际资源目录中的迁移和原生驱动完成初始化、写入、关闭及重开。main 打包驱动的 JavaScript，nativeBinding 指向外置的对应目标绑定。制品检查核对 SQL、snapshot、Unicode 许可和原生文件的完整字节集合与摘要；构建不重新生成迁移。
 
-重构后的六目标 CI 待本 PR 实测。本机 Windows x64 的跨文件系统用例使用两个实际文件系统。SMB／NFS 实际挂载、真实掉电、平台签署与产品发行不在本次观察范围内。
+2026-11-14，[六目标 CI 与必需检查](https://github.com/ximu3/kisaki-dev/actions/runs/43562359494)在实现提交 `7aa9399` 通过。每个目标均通过 5 项工程工具用例、4 项开发场景、4 个真实窗口及最终制品的外部启动与关闭。Linux x64 另验证了 6 个公共包的 29 项独立消费用例。
+
+| 目标 | Electron Node 存储与文件 | 构建格式 | 实际启动载体 |
+| --- | --- | --- | --- |
+| [Windows x64](https://github.com/ximu3/kisaki-dev/actions/runs/43562359494/job/132348837834) | 15 项通过，含真实跨卷拒绝 | ZIP、NSIS | ZIP |
+| [Windows ARM64](https://github.com/ximu3/kisaki-dev/actions/runs/43562359494/job/132348837785) | 14 项通过；跨卷跳过 | ZIP、NSIS | ZIP |
+| [macOS x64](https://github.com/ximu3/kisaki-dev/actions/runs/43562359494/job/132348837821)／[ARM64](https://github.com/ximu3/kisaki-dev/actions/runs/43562359494/job/132348837811) | 各 14 项通过；跨卷跳过 | ZIP、DMG | ZIP 中的应用 |
+| [Linux x64](https://github.com/ximu3/kisaki-dev/actions/runs/43562359494/job/132348837844)／[ARM64](https://github.com/ximu3/kisaki-dev/actions/runs/43562359494/job/132348837788) | 各 14 项通过；跨卷跳过 | AppImage、deb、rpm | AppImage |
+
+跨卷检查使用两个实际文件系统；另五个目标的测试目录同卷。本机 Windows x64 也验证了跨卷拒绝后原文件保留。SMB／NFS 实际挂载、真实掉电、安装器安装、平台签署与产品发行不在本次观察范围内。
 
 ## 完整负载与查询
 

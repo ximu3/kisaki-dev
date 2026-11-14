@@ -1,8 +1,8 @@
-/** @fileoverview Declares immutable attachment identities and their stored file metadata. */
+/** @fileoverview Declares the immutable metadata and identity of each registered attachment. */
 
 import { sql } from 'drizzle-orm'
 import { primaryKey, check, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import { idColumn, safeInteger, nonempty } from './constraints'
+import { idColumn, safeInteger, nonempty } from '../constraints'
 
 /** Stores immutable attachment identities, byte digests and optional image dimensions. */
 export const attachments = sqliteTable(
