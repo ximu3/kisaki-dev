@@ -10,7 +10,7 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 
 当前任务入口为 AGENTS.md，设计、规范和实施资料集中于 refactor。[当前工程与开发](development.md)维护源码职责、环境准备与可运行命令。正式项目文档待 W23 交付；接口声明、代码注释、发行说明和许可材料随所属实现与版本维护。
 
-[Vite+ 与 TypeScript 7.1 重构方案](engineering-modernization.md)已提出整仓 JS/TS 工具链选择，并记录六个公共包的隔离构建与声明消费结果。[全项目现代化审视](modernization-audit.md)记录已实现能力、设计与待取得的外部运行证据。当前处于方案评审阶段，正式切换与归档待实施验收。
+[全项目工程设计与现代化重构](engineering-modernization.md)已明确评审范围，覆盖工具链、源码与工程工具边界、测试组织、开发、CI、构建、发行及维护。方案提出 Vite+ 与 TypeScript 7.1 的终态选择。[全项目审视](modernization-audit.md#engineering-review)记录现有工具、测试、样板和调用关系。当前处于方案评审阶段，正式切换与归档待实施验收。
 
 [当前工程验证](../verification/evidence/w00/README.md)已取得本机 Windows x64 和 CI 六目标结果，覆盖工程载体的构建、原生与 Electron 运行、开发回归、打包及制品运行。
 

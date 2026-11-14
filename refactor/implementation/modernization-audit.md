@@ -1,6 +1,6 @@
 # Kisaki 全项目现代化审视
 
-2026-11-14，审查基线为本地提交 `156fc17`。本文记录仓库中的实现、设计与验收范围，以及采用新能力会改变的具体行为。JS/TS 工具选择和重构验收由[工程重构方案](engineering-modernization.md)维护。产品功能和平台支持范围的调整属于独立决策。
+2026-11-14，首次全仓盘点基线为 `156fc17`。测试与工程工具的专项审查基线为 `01575c3`。本文记录实现、设计、证据和各项调整的影响。整个项目的工程职责、目录、工具链和验收由[工程重构方案](engineering-modernization.md)维护。产品功能和平台支持范围的调整属于独立决策。
 
 ## 覆盖与证据边界
 
@@ -19,6 +19,22 @@
 | W00–W25、R01–R32、A01–A33、样本、发行与文档 | 核对实施状态、工程说明、工作包、交付清单、13 篇场景文档和证据目录。基线的证据目录有 1,016 个文件，涵盖 107 个主题目录，含 145 篇 Markdown。历史试件的格式、版本、代码和摘要保留来源身份。Web 客户端、官网和候选服务端按各自项目启动时的能力选型。[覆盖矩阵](../verification/coverage.md) · [验证证据](../verification/evidence/README.md) · [工作包](work-packages.md) |
 
 现有桌面源码中的 Drizzle 表、codec、文件与归档、Rust 平台操作分别核对。测试辅助、运行载体、preload、renderer 与 extension-host 示例按各自运行环境检查。工程方案中的新发布包与 lint 试验仅覆盖已说明的 Windows x64 范围。
+
+<a id="engineering-review"></a>
+
+## 测试与工程工具的补充审查
+
+2026-11-14 在提交 `01575c3` 对照工作区清单、任务、运行器配置、导入和实际调用方复核。工具计数包含各层 `tools/` 自有 TS 源码与 `packages/tooling/src`，测试计数包含就近用例与 `tests/` 下的 `*.test.ts(x)`。样板、配置、测试辅助和历史探针分别按用途审阅。下表是现状与迁移理由，目标归属见[工程架构](engineering-modernization.md#engineering-architecture)和[测试架构](engineering-modernization.md#test-architecture)。
+
+| 审阅范围 | 核实的事实与建议 |
+| --- | --- |
+| 工程工具 | 50 个源码文件分布于根工具 3 个、私有 tooling 7 个、桌面工具 26 个、六个公共包的工具 14 个。检查了这 50 个工具及 274 个产品 TS/TSX 模块中的静态字面导入，未发现工具直接导入测试目录或产品代码直接导入工程工具。桌面常规 `check:boundaries` 通过。直接以开发会话用例为入口运行现有 `depcruise`，`engineering-does-not-import-tests` 把 `tests/tools` 误判为工程工具，对它导入测试辅助报出 3 个错误。拟用的私有 `testing` 子路径也须限制导入者。以实际解析后的源码范围确定工程、测试与运行三侧，并用包图检查间接路径。[布局](../design/engineering/layout.md#tools) · [当前图规则](../../.dependency-cruiser.json) |
+| 构建与清理 | 六个公共包的 `tools/clean.ts` 都在包根清理 `dist` 与 `out`。根任务的 `prepare:build` 和各包构建函数还会分别清理 `dist`。RPC、分发包可直接构建，另四包确实有资源组装或源生成任务。移除重复清理时，仍用真实产物从 A→B→A 核对陈旧文件消失，区分重新构建与缓存命中。[打包工具](../../packages/tooling/src/package.ts) · [RPC 构建](../../clients/desktop/packages/desktop-rpc/tools/build.ts) · [UI 构建](../../clients/desktop/packages/desktop-ui/tools/build.ts) · [已有缓存用例](../../tests/workspace/cache.test.ts) |
+| 桌面开发、原生与制品 | `tools/dev` 既拥有应用生命周期，又监听、重建依赖包并通知 renderer 刷新。`tests/tools/dev` 的四个真实场景共用一个准备流程，复制 `clients`、`packages`、Electron 和原生缓存，再离线安装。源码直连后可以移除这部分包重建责任。只对实际编辑源文件的场景支付可写工作区准备成本，命令树退出、拒绝关闭、失败恢复和最终制品启动各留下自己的证据。[开发准备](../../clients/desktop/app/tests/support/development/workspace.ts) · [开发场景](../../clients/desktop/app/tests/tools/dev/session.test.ts) · [制品用例](../../clients/desktop/app/tests/artifacts/desktop.test.ts) |
+| 全部测试与宿主 | 91 个用例文件中，56 个随产品源码就近维护。按项目计，根工程 6 个、私有 tooling 3 个、桌面 15 个、六个公共包 67 个。根工作区检查里有 Turbo 任务图可达性、源码后缀和模拟导入图等断言。替换被测机制时，按失败后果决定是否留下等价用例。原生文件与 SQLite 用实际 ABI，窗口和焦点用真实界面，性能保留独立负载与查询计划。[根工作区检查](../../tests/workspace/tasks.test.ts) · [原生宿主配置](../../clients/desktop/app/config/vitest/vitest.config.native.ts) |
+| 消费者、夹具与隔离 | 六个公共包都有 `tests/support/consumer.ts`，共维护 11 个带清单的独立消费者样板工程。六处共有临时目录、复制样板、安装 tarball、ESLint 接入及清理。样板的依赖和宿主不同，RPC 验证父子 IPC 与 Electron，UI 还组装 CSS 与浏览器页面。应抽出重复的安装/清理，将各包的能力断言与外部样板留在包内。[合同包](../../clients/desktop/packages/desktop-contracts/tests/support/consumer.ts) · [RPC 包](../../clients/desktop/packages/desktop-rpc/tests/support/consumer.ts) · [UI 包](../../clients/desktop/packages/desktop-ui/tests/support/consumer.ts) |
+| UI 行为与发布消费 | UI 的 `tests/consumers/browser.test.ts` 单文件含 13 项测试。公开声明、CSS 级联与 Tailwind 互操作属于制品合同，表单、IME、焦点、虚拟选择等主要验证控件行为。拆开其触发条件与运行位置后，样式或键盘行为能单独获得反馈，发行候选仍能证明外部应用消费了真实 JS、CSS 与声明。[浏览器用例](../../clients/desktop/packages/desktop-ui/tests/consumers/browser.test.ts) |
+| 扩展、独立项目与证据 | 对照作者模板、SDK/CLI 交付、33 个官方扩展、四个独立项目和对应工作包。区分作者使用的命令、项目维护工具、测试用样板、源码试件和实际制品。借用历史证据时注明输入和适用范围，发布前的真实宿主、图形后端或容器结果由所属项目取得。[作者开发](../design/extensions/development.md) · [原生工程](../design/projects/native-runtime.md) · [阅读交付](../design/projects/kana/distribution.md) · [relay 交付](../design/projects/oauth-relay/deployment.md#release) |
 
 ## 需要处理的实质问题
 

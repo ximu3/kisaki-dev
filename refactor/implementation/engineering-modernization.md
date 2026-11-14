@@ -1,19 +1,67 @@
-# 全项目 Vite+ 与 TypeScript 7.1 重构方案
+# Kisaki 全项目工程设计与现代化重构方案
 
-**状态　方案待确认。** 2026-11-14。建议全面采用 Vite+ 管理 Kisaki 的 JavaScript 和 TypeScript 工程，选定 TypeScript 7.1 作为项目编译器。工作区可以立即用精确版本 `7.1.0-beta` 开始迁移。主线默认采用首个通过本文验收的 7.1.x 正式版。当前工程命令与已交付状态分别见[开发说明](development.md)和[实施状态](status.md)。跨产品、平台、扩展与运行时的发现见[全项目现代化审视](modernization-audit.md)。
+**范围已明确，实施方案待确认。** 本轮覆盖从干净检出、开发调试、构建、测试到发布和维护的整个工程。根仓、桌面应用、公共包、私有工程包和官方扩展各自的源码、配置、工具、测试与制品都在范围内。四个独立项目按各自的宿主和发布单位接续。现行命令和交付结果分别见[开发说明](development.md)与[实施状态](status.md)。
+
+JS/TS 建议采用 Vite+ 作为工程入口、TypeScript 7.1 作为编译器。迁移分支可用精确版本 `7.1.0-beta`，主线采用首个通过验收的 7.1.x 正式版。工具选型、`tools` 的职责和 `tests` 的组织共同服务于同一目标。开发者能从一次改动找到负责的源码，运行与之相关的检查，并辨认最终交付的是哪份文件。现有工程的主要问题与取舍见[全项目审视](modernization-audit.md#engineering-review)。
 
 ## 统一范围与工具归属
 
-根仓、桌面应用、全部公共包、私有工具及后续官方扩展共用一套命令、一份工作区锁文件和一个任务执行器。每个工作区只在实际拥有构建或测试配置的项目设置相应选项。独立仓库采用同样的 JS/TS 工程约定，各自锁定版本、验证和交付。现代化、简洁、清晰、干净与克制共同决定取舍。一次性重做成本不影响选型，反馈时间、运行资源、兼容责任和长期维护计入成果质量。[根协作规范](../../AGENTS.md) · [判断与取舍](../design/engineering/conventions.md#judgment)
+根仓、桌面应用、全部公共包、私有工具及后续官方扩展共用锁文件和任务执行器。根配置拥有共同默认值，各项目维护与其宿主或产物有关的配置。独立仓库采用同样的 JS/TS 工程约定，各自锁定版本、验证和交付。现代化、简洁、清晰、干净与克制共同决定取舍。一次性重做成本不影响选型，反馈时间、运行资源、兼容责任和长期维护计入成果质量。[根协作规范](../../AGENTS.md) · [判断与取舍](../design/engineering/conventions.md#judgment)
 
 | 职责 | 终态选择 | 迁移与退役 |
 | --- | --- | --- |
 | 环境、依赖、脚本 | 工程宿主建议选 Node 26 LTS 和 pnpm 12，分别验证后锁定补丁。pnpm 管 workspace、catalog、`packageManager` 和 `pnpm-lock.yaml`。公共包 Node 消费下限与 Electron 内置 Node 分别维护。开发与 CI 调用项目锁定的 `vp`。 | Vite+ 和它管理的 Vite、Vitest、Oxc 版本共同升级。按官方迁移规则处理 Vite 核心别名和需要它的 peer。普通 TS 脚本通过 `vpx` 或 Node 支持的原生入口执行，真实 Node、子进程和 Electron 模式通过后清理直接的 tsx、jiti 接入。 |
 | 调度与缓存 | `vp run` / Vite Task 是唯一 JS/TS 任务执行器。包之间按清单依赖拓扑执行。耗时且可重建的纯产物才开启缓存，声明其输出与影响结果的环境。 | 移除 Turbo 包、`turbo.json`、专用 GraphQL、两处重复的选择逻辑和只验证旧图形状的用例。缓存不可用时可冷构建并交付正确结果。跨 CI 作业复用先测正确性与节省的总时间，原生缓存含目标及工具链身份。[Vite Task](https://viteplus.dev/guide/run) · [GitHub Actions 缓存支持范围](https://viteplus.dev/guide/github-actions-cache) |
-| 类型、lint、格式 | `vp exec tsc -b` 调用项目锁定的 TS 7.1，负责项目引用、类型诊断与编译器版本。`vp lint --type-aware` 使用配套 Oxlint 和 tsgolint，`vp fmt` 使用 Oxfmt。 | 每份源码只做一次正式类型检查。`vp check` 若用作格式/lint 入口，关闭它的额外 type-check。迁移必要的异步、公共合同和宿主边界检查后删除 ESLint、typescript-eslint、Prettier、对应配置包和消费者内的旧 API 调用。跨模块间接依赖由一个图检查看住，简单导入限制放在 Oxlint。[统一检查](https://viteplus.dev/guide/check) · [类型感知规则](https://oxc.rs/docs/guide/usage/linter/type-aware) |
+| 类型、lint、格式 | 各项目用锁定的 TS 7.1 检查自己的配置和引用，根任务按工作区实际依赖调用这些类型入口。仓库根的 `tsc -b` 仅覆盖根工具、配置和测试。`vp lint --type-aware` 使用配套 Oxlint 和 tsgolint，`vp fmt` 使用 Oxfmt。 | 每份源码只做一次正式类型检查。`vp check` 若用作格式/lint 入口，关闭它的额外 type-check。迁移必要的异步、公共合同和宿主边界检查后删除 ESLint、typescript-eslint、Prettier、对应配置包和消费者内的旧 API 调用。跨模块间接依赖由一个图检查看住，简单导入限制放在 Oxlint。[统一检查](https://viteplus.dev/guide/check) · [类型感知规则](https://oxc.rs/docs/guide/usage/linter/type-aware) |
 | 开发、应用与库构建 | 应用使用 Vite+ 的 Vite/Rolldown 入口与 Solid 插件，公共库使用 `vp pack`，由底层 tsdown 生成 ESM、CSS 与声明。`pnpm pack` 从完成的公共包目录生成供外部消费的 tarball。 | 迁移并清理独立 tsdown CLI、重复配置和重复清理 `dist` 的步骤。开发态在工作区通过同一公开子路径解析源码，发行消费者走构建后的 exports。保留字体、样式组装、许可、沙箱 preload 和其他确有产品语义的步骤。[Vite+ 库构建](https://viteplus.dev/guide/pack) · [官方迁移规则](https://viteplus.dev/guide/migrate-rules) |
 | 测试、提交与交付 | `vp test` 运行 Vitest 用例。Playwright 保有真实浏览器、键盘与 Electron 的验证，`vp run` 调度对应入口。GitHub Actions 拥有作业与平台选择。 | 使用 `vp staged` 与可选的本地 hook 取代重复的 Husky/lint-staged 接入，覆盖部分暂存、用户已有 hook 和 worktree 后再删除旧实现。公共发布包继续检查实际 tarball 和声明解析。按发行是否消费标题决定其自动检查。[Vite+ 提交钩子](https://viteplus.dev/guide/commit-hooks) |
 | 原生与专用交付 | Rust 编译、格式和 Clippy 由 Cargo 负责，Node-API 绑定由 napi-rs 交付。Electron 的最终格式、fuses、签署、安装与升级归 electron-builder 及平台工具。SQLite、Drizzle 迁移继续使用原生驱动和正式迁移器。 | Vite+ 汇集运行命令。Vantage 与 libmpv-node 的 JS 接入采用统一约定，原生后端按实际平台验收。Kana 的阅读内核、oauth-relay 的 Node/Hono 服务分别保留浏览器与容器交付。这四个独立仓库的实际迁移由各自项目验证。[独立项目范围](../design/projects/README.md) |
+
+<a id="engineering-architecture"></a>
+
+## 工程架构与工具组织
+
+pnpm 声明项目与依赖。`vp run` 根据项目图执行有限任务，Vite 管理源码编译和监听。包与应用的构建输出明确目录、目标和依赖。测试从正常入口调用被测能力或读取本次产物。CI 决定哪些宿主需要工作，发布流程接收已经验证的候选字节。自定义代码集中在需要 Kisaki 语义的操作上，例如不可覆盖的输出清理、可拒绝的退出、运行资源装配、原生声明核对及平台签署。
+
+| 工程位置 | 终态责任与迁移动作 |
+| --- | --- |
+| 根清单、配置、`tools/`、`.github/workflows/` | 根入口负责跨项目验证选择和发行协调。用一处变更判定把代表性改动映射到所需宿主，Actions 管 runner、权限、顺序与证据交付，本地调用相同的项目命令。依赖边界由一份规则维护，环境信息随真正需要复现的运行记录。待 `vp staged` 的隔离 Git 用例验证部分暂存、已有 hooks 和 worktree 后，退役旧 hook 安装器及配套测试。 |
+| `packages/tooling` 与私有配置 | 保留多项目确实使用的 CLI 信号、命令树取消、独立错误交付和按所属目录清理。`pnpm pack`、publint、ATTW 直接消费同一 tarball，只有输入、清理或退出状态需要项目约束时才保留适配。跨包测试专用的安装辅助从下节的私有测试入口消费。类型基线按宿主管理，旧 ESLint 配置包和导入在最后一个调用方迁移后删除。 |
+| 桌面 `tools/build`、`resources`、`native`、`package` | 分别拥有程序构建、字体/图标/迁移资源、Cargo 及 Node-API 绑定、平台打包。按目标交接外置资源、原生文件和完成清单。一个步骤写入一个输出目录，输出的拥有者待最后一个读取进程退出后清理。缓存恢复后核对完整文件集。只被单个流程使用的路径、摘要或类型归回该流程，多个流程使用的纯事实才留在 `tools/lib`。 |
+| 桌面 `tools/dev` | Vite 拥有源码图、renderer HMR、程序编译结果。桌面会话拥有启动、采用完成的程序、协商重启/退出、取消和释放。移除为生成依赖 `dist` 而建立的全包监听、重新构建与刷新链。资源、原生输入仍交给各自的准备工具。退出被拒绝时当前窗口和进程继续工作，确认退出后释放它读取的运行目录。开发会话分配独占的运行和输出目录，调用者可传入预先构建的资源、原生绑定及隔离 profile。[开发会话](../../clients/desktop/app/tools/dev/session.ts) |
+| 各公共包的 `tools` | 六份相同的 `clean.ts` 收敛为一次受限清理，项目声明自己的可重建输出。RPC 和分发包的普通库构建直接交给 `vp pack`。合同包保留 Lucide 名称生成与一致性核对，本地化包保留 ICU 消息声明生成，外观包保留视觉 token 到 CSS 的生成、Tailwind 入口和许可说明，UI 包保留组件样式和许可组装。只保留有独立读者的 CLI 或程序化入口。 |
+| 官方扩展、作者 SDK/CLI 与独立项目 | SDK/CLI 的作者命令、模板和 `.kisx` 打包是交付给用户的产品，随所属包的 `src` 发布。第一方扩展的维护脚本归项目 `tools`，源码模板与测试用消费者工程分别维护。Vantage 和 libmpv-node 的 Rust 单测、集成测试遵循 Cargo 的发现规则，JS 包验证实际绑定和平台制品。Kana 拥有真实格式与浏览器布局验证，relay 拥有 HTTP、容器、配置与停止测试。独立仓库各自落地并登记可取得的运行证据。[作者工具](../design/extensions/development.md#templates) · [原生工程](../design/projects/native-runtime.md) · [Cargo 测试](https://doc.rust-lang.org/cargo/guide/tests.html) |
+
+导入方向是实施约束。用例可以调用工具、源码或已构建制品。工程工具可以依赖已声明的私有工程包和允许的纯合同。所有测试专用入口、样板和运行器只供测试侧使用。产品包的 exports、正式安装包和镜像保持独立消费所需的最小依赖。目录按实际拥有者与阅读路径建立，现行布局在迁移前供对照。[源码布局](../design/engineering/layout.md#tools) · [工具与宿主](../design/engineering/workspace.md#tooling)
+
+<a id="test-architecture"></a>
+
+## 测试架构与目录
+
+| 所验证的行为 | 位置、环境与取舍 |
+| --- | --- |
+| 单一模块的纯行为 | 与实现共同维护的 `src/**/*.test.ts(x)` 就近验证规范编码、错误、转换和状态。生产构建排除测试。工具自身的轻量判断可以就近验证，涉及真实 CLI、文件或进程的用例归所属工程 `tests/tools/<工作流>`。 |
+| 仓库和命令的工程行为 | 根 `tests/workspace` 保留真实的跨项目禁止依赖、错误制品恢复或 CI 选错环境等仍由项目负责的风险。旧 Turbo 任务名、依赖边清单、文件后缀断言和退役 hooks 的内部行为随其拥有者删除。用“只改 CSS”和“从旧缓存恢复后是否多出文件”核对实际结果。项目输入或自有声明可能漏检时，在正式编译入口验证其覆盖。 |
+| 桌面集成、启动与开发 | `tests/integration` 在启动测试运行器前选定与绑定匹配的 Electron Node 宿主，使用真实 SQLite、归档和原生文件。`tests/e2e` 通过实际 Electron 检查窗口、preload 与 utility process。`tests/tools/dev` 区分轻量取消/失败与真实 HMR/关闭。只给会改源码的用例准备独立、可写的最小工程，使用真实公共入口和必要依赖。只验证拒绝退出、保留 profile 或停止失败的场景使用已准备的只读程序与独立运行目录。正式产品入口就绪后，由产品承担业务端到端场景，工程载体只保留具有独立故障含义的编译和启动检查。 |
+| 公共包与 UI | 六包共用安装机制，各包拥有消费者的 manifest、依赖集合、源样例和断言。保留 `tests/consumers` 的仓库外 tarball 验证。UI 的表单、焦点、IME、虚拟选择、Toast 等行为按交互主题归 `tests/browser`，使用与交付相同的 Solid 编译和完整样式，从源码获得快反馈。公开子路径、类型、样式级联与安装后行为在实际制品的代表用例验证。RPC 保留 Node 父子 IPC 与沙箱 Electron MessagePort 两个真实传输环境。 |
+| 制品、性能与外部数据 | `tests/artifacts` 从已生成的收据定位同一份 ZIP、应用或 AppImage，用外部方式核对真实启动、退出与 fuses。`tests/performance` 独立保存数据输入、环境、原始采样与查询计划。大负载准备和测量代码归性能场景，仅由性能入口装配。来源扩展拥有匿名样本，导入器拥有已声明格式样本，宿主拥有真实安装与激活，发行验收另核对安装和升级。 |
+
+建议复用现有私有工程包，为六个公共包提供一个仅供测试导入的 `@kisaki3/tooling/testing/consumer` 入口。调用方传入样板目录及本次所需的归档映射，拥有运行作用域和断言。共用入口只负责外部目录、安装与释放，在安装失败时回收已取得的资源。按样板实际声明的直接与传递依赖选用归档，Node 纯消费者仍独立于浏览器和 Electron。生成全量声明导入、Node 或浏览器编译、Solid 页面和 Electron IPC 留在对应包。类型感知 lint 在装有实际依赖的样板目录执行，`tsc` 以 `skipLibCheck: false` 检查最终公开声明及其依赖。
+
+只读归档与依赖可在兼容的套件或 worker 内复用。页面、可写 profile、数据库和源码编辑副本按实例独立，先关闭进程、监听器和服务，再清理所属目录。测试样板是维护输入，`dist`、`out` 是构建产物，缓存、持久开发资料、测试报告和发布留存各有清理范围。故障留下足以定位的诊断。测试范围由所需宿主与可观察结果决定，`vp test` 使用 Vitest 的项目配置，真实浏览器和 Electron 采用 Playwright 自有 fixture 寿命。[Vitest 项目](https://vitest.dev/guide/projects.html) · [Playwright fixtures](https://playwright.dev/docs/test-fixtures) · [数据隔离](../verification/acceptance.md#isolation)
+
+## 维护与发行
+
+开发入口应从干净检出开始可复现。锁定的工具、平台输入和生成代码都有明确拥有者，公共生成器提供更新和核对入口。本地与 CI 调用同一工作流，资源准备以完成结果交接。依赖升级和弃用按受影响的运行端与消费者验证，源码、配置、IDE 和文档一起退役旧入口。[依赖维护](../design/engineering/workspace.md#dependencies)
+
+从已检查的提交构建候选，按发行身份留存文件、摘要、许可和必要来源。普通 PR 报告运行结果，发行候选承担安装、升级、签署与制品可取回的验证。将运行失败与上传失败分别呈现，允许从仍可取回且摘要相同的候选重试交付。正式发布按所属项目授权和版本流程执行。[发行流程](../design/engineering/releases.md#publish) · [验证材料](../design/engineering/documentation.md#evidence)
+
+## 实施顺序
+
+1. 从现有入口确认输入、输出、宿主、调用方与清理责任，固定代表改动、公开产物和现有通过或失败的基线。当前开发说明继续记录实际可运行的命令。
+2. 建立 Vite+、TS 7.1 和测试宿主入口，用公共包的完整消费路径迁移一遍。随后迁移全部六包与私有工程能力，核对冷构建和缓存恢复，再删除等价包装和旧依赖。
+3. 迁移桌面源码开发、资源、原生绑定与测试结构，重点复测失败恢复、拒绝退出、子进程清理及制品身份。CI 复用这些入口，按改动影响选择环境。从普通 PR 到发行候选分别验证时间、正确性与证据交付。
+4. 随已确认的工作包接续 SDK、CLI、扩展、独立项目与运行架构。同步正式规范、入口、配置、CI、IDE 与贡献说明，登记实际外部条件和证据。每次退役一条旧路径，检查其全部调用方、样板与说明。
 
 ## 选择依据
 
@@ -40,9 +88,12 @@ Windows x64 使用 Vite+ `1.6.0` 与 `typescript@7.1.0-beta`。以下为隔离�
 
 ## 切换与验收
 
+- [ ] **工程职责与目录。** 按上表逐族核对根、桌面、私有工程包、公共包及作者工具的入口、配置、测试和输出所有者。用实际依赖图核对运行端、工程与测试的导入边界，从制品核对公开 exports、安装包内容和作者模板。Vite Task 是唯一 JS/TS 任务调度器，退役的工具同时清理脚本、包导出、任务配置、缓存项、类型项目、样板与文档入口。
+- [ ] **测试、共享准备与隔离。** 从同一份已验证 tarball 运行各包仍承诺的独立消费者，共用准备能在成功、取消和失败时清理。快速场景和真实开发场景分别运行，至少核对一次源码恢复、应用拒绝退出、测试运行中断后的进程回收，以及开发资料未被清理。按工程基线分开记录环境准备、编译和场景自身耗时，列出消除的复制或安装次数。长期用例只保留能发现具体错误的部分。
+
 - [ ] **建立一套可复现的版本与入口。** 根仓用 pnpm 严格安装并冻结锁文件，记录 Node、Vite+、TypeScript 和声明生成器实际版本。准备阶段以 7.1 Beta 检查差距。正式版发布后以精确 7.1.x 重跑全部项目引用、消费者类型、失败退出码及关键 lint 诊断。IDE 使用工作区编译器，必要配置跟随项目。
 - [ ] **完成开发、构建和制品消费。** 按真实依赖顺序完成六包及桌面构建，实际工程统一用 `vp run`、`vp pack`、`vp test`、`vp lint` 和 `vp fmt`。能删除旧文件、恢复缓存、隔离原生目标。公共包通过严格的独立 tarball 安装、声明、CSS、许可和实际宿主消费。源码路径的 Solid 状态保留、编译失败恢复、主进程重启或拒绝退出正常。完成后从所有清单、工作流、说明和测试辅助移除废弃的直接依赖与入口。
 - [ ] **完成 CI 分流和平台交付。** 文档改动只做相关文档检查。外观 CSS 做样式消费与浏览器。SQL 与迁移使用真实驱动。Windows 命令树回收使用 Windows。公共合同验证受影响的外部消费者，共用 ABI、Electron 或打包策略的变化按实际影响扩大范围。保留稳定的必需检查和可诊断的失败结果。发行候选在 Windows、macOS、Linux 的 x64、ARM64 上核对适用的安装、运行与升级。冷缓存与热缓存分别衡量实际反馈时间。
-- [ ] **核对关联范围。** 完整数据上验证语言切换期间窗口可响应、同语言无重建、重开与回滚正确、列表分页和定位一致。梳理哪些包有实际外部发布承诺，涉及公共合同或独立仓库范围的调整由对应项目确认。按[全项目审视](modernization-audit.md)将 Linux 资料根分类、UI 语言匹配、凭据接入和平台基线归入相应工作包。对影响外部功能或数据目录支持的建议先确定方向，分别记录实际采纳、延期和验收证据。
+- [ ] **核对关联范围。** 完整数据上验证语言切换期间窗口可响应、同语言无重建、重开与回滚正确、列表分页和定位一致。梳理哪些包有实际外部发布承诺，涉及公共合同或独立仓库范围的调整由对应项目确认。按[全项目审视](modernization-audit.md)将 Linux 资料根分类、UI 语言匹配、凭据接入和平台基线归入相应工作包。对影响外部功能或数据目录支持的建议先确定方向，分别记录实际采纳、延期和验收证据。核对 SDK、CLI、官方扩展和四个独立项目各自的工具、样板、目标及发布责任，按已有源码、设计或真实运行结果登记阶段。
 
-全部已确认范围实施并通过验收后，将长期规则并入所属设计和开发说明，更新[实施状态](status.md)，再将本方案和配套审视一同移至 `refactor/implementation/archive/`，修正引用并记录归档日期。
+全部已确认范围实施并通过验收后，将长期规则并入[工程布局](../design/engineering/layout.md)、[工作区](../design/engineering/workspace.md)、[构建与交付](../design/engineering/build.md)、[验收标准](../verification/acceptance.md)、作者与独立项目的工程说明、实际开发命令，更新[实施状态](status.md)，再将本方案和配套审视一同移至 `refactor/implementation/archive/`，修正引用并记录归档日期。
