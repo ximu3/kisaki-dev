@@ -41,9 +41,8 @@
 
 ## 需要保留的差异与文档落点
 
-- **来源账号接入（W21）。** MangaDex 公开资料可以匿名读取。实现个人书单、导入或同步时，再核实第三方应用能否注册浏览器授权。现有个人客户端方案要求把密码交给应用，与 RFC 9700 第 2.4 节冲突。MAL 的 PKCE 支持按其注册端点单独核对。[MangaDex 账号设计](../design/extensions/sources/mangadex.md#account) · [上游公共客户端说明](https://gitlab.com/mangadex-pub/mangadex-api-docs/-/raw/main/02-authentication/public-clients.md) · [RFC 9700 第 2.4 节](https://www.rfc-editor.org/rfc/rfc9700.html#section-2.4)
 - **文件格式和来源合同。** 曾经发行的用户数据仍需能导入。Anx 的 MD5、KOReader 的分段摘要、YACReader 的局部 SHA-1 是历史关联线索，不能承担完整性或认证。保留格式语义和损失报告。NDL 已停止书影 API，当前设计已去掉相应调用。三份官方译本以 BCP 47、ICU 消息与用户选定的译本为入口。[Anx](../design/extensions/importers/anx.md) · [KOReader](../design/extensions/importers/koreader.md) · [YACReader](../design/extensions/importers/yacreader.md) · [NDL](../design/extensions/sources/ndl.md) · [译本](../design/extensions/languages.md)
 - **受控通信与网络。** JSON RPC 处理有界控制消息，字节由流与资源入口承担。Electron `net.request` 当前设计依赖代理认证、重定向事件、多值头和增量上传，换用更短的 fetch 调用须先证明这些语义。扩展 Webview 的文档隔离、MessagePort 身份、签名索引和取消归属继续保留。[网络](../design/engineering/network.md) · [协议](../design/engineering/protocols.md) · [Webview](../design/extensions/webview.md) · [扩展分发](../design/extensions/distribution.md)
 - **工程文档的迁移范围。** 建议获确认后同步更新工程 workspace、layout、build 和 conventions，公共 UI、扩展作者模板、开发说明、工程验收与实施状态。扩展作者仍可选框架及运行接入，Vite+ 负责第一方模板的工程默认值。历史测量保留原提交和工具版本。W20–W25 以及独立项目的发布承诺按所属工作包继续核对。[工程目录](../design/engineering/README.md) · [作者工具](../design/extensions/development.md) · [工作包](work-packages.md) · [文档归属](../design/engineering/documentation.md)
 
-Linux 文件系统和 UI 键入是现有源码问题。凭据、独立仓库、来源个人功能和正式发行由各自工作包接续。归档时按[工程重构方案](engineering-modernization.md)记录本轮已采纳的调整和验收结果。
+Linux 文件系统和 UI 键入是现有源码问题。凭据保护、独立仓库和正式发行由各自工作包接续。归档时按[工程重构方案](engineering-modernization.md)记录本轮已采纳的调整和验收结果。
