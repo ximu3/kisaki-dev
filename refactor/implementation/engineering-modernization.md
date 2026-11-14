@@ -158,7 +158,7 @@ Windows x64 使用 Node 26.13.1、pnpm 12.18.0、Vite+ 1.6.0、TypeScript 7.1.0-
 
 ## 迁移前隔离试验
 
-Windows x64 使用 Vite+ `1.6.0` 与 `typescript@7.1.0-beta`。以下为隔离试验，项目依赖清单、锁文件和 CI 仍按[当前工程](development.md)运行。
+Windows x64 使用 Vite+ `1.6.0` 与 `typescript@7.1.0-beta`。以下为正式迁移前的隔离试验。迁移分支的实际命令见[开发说明](development.md)。
 
 - **项目图与类型。** 在现有依赖上逐一运行仓库声明的 35 份分项 TS 配置，`tsc -p --noEmit` 全部通过。复制六个公共包的实际源码和依赖清单后，`vp run -r --dry-run --json build` 给出了预期拓扑，包括外观和分发先于合同、合同先于本地化、外观先于 UI。随后从工作区根执行 `vp run -r build`，六个包的构建任务全部成功。仓库中直接调用旧 TS 根入口 `readConfigFile` 与 `transpileModule` 的两处仍须迁移，前者的配置复述测试可随旧机制删除，后者交由正式编译入口处理。[仓库类型检查](https://github.com/ximu3/kisaki-dev/blob/fac8ff6/tests/workspace/typecheck-coverage.test.ts) · [Electron 消费样本](../../clients/desktop/packages/desktop-ui/tests/consumers/electron.test.ts)
 - **发布包与消费。** 六个公共包通过 `vp pack` 生成 73 对 JS/声明入口。试验显式指定 7.1 Beta 原生声明生成器，并为每包提供包根的声明构建配置。类型检查和声明生成各有独立结果。原有深层配置触发 TS6059，分发包的声明配置还须覆盖纯入口及 `node/signing`。完成外观和 UI 的 CSS 与许可组装后，从重新打出的六个 tarball 提取并检验公开入口。16 份实际消费者类型配置全部通过，RPC 的公开 ESM 也由 Node 实际加载。试验复用了已安装的外部依赖。UI 包需使声明直接引用的 `@types/throttle-debounce` 对消费者可解析，本次在试验清单显式列入后，浏览器与 NodeNext 两种解析均通过。既有声明中也能看到这项引用。

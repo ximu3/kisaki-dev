@@ -66,8 +66,11 @@ export default defineConfig({
     ],
   },
   staged: {
-    '*.{ts,tsx}': ['vp fmt --check', 'vp lint --type-aware'],
-    '*.{json,yaml,yml,css,html,md}': 'vp fmt --check',
+    '*.{ts,tsx}': [
+      'vp fmt --check --no-error-on-unmatched-pattern',
+      'vp lint --type-aware --no-error-on-unmatched-pattern',
+    ],
+    '*.{json,yaml,yml,css,html,md}': 'vp fmt --check --no-error-on-unmatched-pattern',
   },
   test: {
     include: ['tools/**/*.test.ts', 'tests/**/*.test.ts'],

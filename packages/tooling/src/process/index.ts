@@ -167,21 +167,17 @@ export async function run(
 }
 
 /** Resolves the pnpm executable that launched the current project task. */
-function pnpmCommand(args: string[]): { command: string; args: string[] } {
+function pnpmExecutable(): string {
   const executable = process.env.npm_execpath
   if (!executable) {
     throw new Error('Run this workflow through its pnpm project task')
   }
-
-  return executable.endsWith('.exe')
-    ? { command: executable, args }
-    : { command: process.execPath, args: [executable, ...args] }
+  return executable
 }
 
 /** Runs a pnpm task with inherited diagnostics and waits for child closure. */
 export async function runPnpm(args: string[], options: ProcessOptions = {}): Promise<void> {
-  const invocation = pnpmCommand(args)
-  await run(invocation.command, invocation.args, options)
+  await run(pnpmExecutable(), args, options)
 }
 
 /**
@@ -195,6 +191,5 @@ export async function readPnpm(
   cwd: string,
   options: ProcessOptions = {},
 ): Promise<string> {
-  const invocation = pnpmCommand(args)
-  return execute(invocation.command, invocation.args, { ...options, cwd }, true)
+  return execute(pnpmExecutable(), args, { ...options, cwd }, true)
 }
