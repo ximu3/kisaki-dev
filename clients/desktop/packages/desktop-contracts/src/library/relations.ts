@@ -66,7 +66,12 @@ export type OrganizationRole = (typeof organizationRoles)[number]
 
 /** Person responsibility that can be qualified by a specific character. */
 export type CharacterPersonRole =
-  'characterCreator' | 'characterDesign' | 'drawing' | 'illustration' | 'voiceActor' | 'other'
+  | 'characterCreator'
+  | 'characterDesign'
+  | 'drawing'
+  | 'illustration'
+  | 'voiceActor'
+  | 'other'
 
 /** Person responsibility applicable to every work medium. */
 type CommonPersonRole =

@@ -62,7 +62,9 @@ export interface CompletionStatistics {
 
   readonly groups: readonly {
     readonly date:
-      CalendarDate | { readonly year: number; readonly month: number } | { readonly year: number }
+      | CalendarDate
+      | { readonly year: number; readonly month: number }
+      | { readonly year: number }
     readonly completionCount: number
     readonly workCount: number
   }[]

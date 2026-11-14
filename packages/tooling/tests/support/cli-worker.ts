@@ -1,6 +1,6 @@
 /** @fileoverview Exercises CLI cancellation and a simultaneous cleanup failure in an owned child. */
 
-import { runCli } from '../../src/cli'
+import { runCli } from '@kisaki3/tooling/cli'
 
 await runCli(async (signal) => {
   process.emit('SIGINT')

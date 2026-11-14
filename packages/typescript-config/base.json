@@ -18,6 +18,7 @@
     "skipLibCheck": true,
     "noEmit": true,
     "lib": ["ES2023"],
-    "types": []
+    "types": [],
+    "allowImportingTsExtensions": true
   }
 }

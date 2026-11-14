@@ -1,6 +1,6 @@
 /** @fileoverview Verifies CFI scalar and exact numeric syntax independently of document content and JavaScript number precision. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { parseCfiPoint } from './cfi'
 import { DesktopError } from '../errors'
 

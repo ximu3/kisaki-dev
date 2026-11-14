@@ -1,6 +1,6 @@
 /** @fileoverview Checks preparation input selection while program modules remain compiler-owned. */
 
-import { afterAll, beforeAll, expect, test, vi } from 'vitest'
+import { afterAll, beforeAll, expect, test, vi } from 'vite-plus/test'
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { tmpdir } from 'node:os'
@@ -39,31 +39,20 @@ beforeAll(async () => {
     'app/assets',
     'app/drizzle',
     'app/src/main',
-    'package/src',
-    'package/tools',
-    'package/config/typescript',
-    'package/config/vitest',
   ]) {
     await mkdir(join(paths.repositoryRoot, directory), { recursive: true })
   }
   await writeFile(join(paths.appRoot, 'package.json'), '{"type":"module"}')
   await writeFile(join(paths.appRoot, 'tsconfig.json'), '{}')
   await writeFile(join(paths.repositoryRoot, 'pnpm-lock.yaml'), 'lockfileVersion: 9\n')
-  await writeFile(
-    join(paths.repositoryRoot, 'package/package.json'),
-    '{"name":"@kisaki3/watch-fixture"}',
-  )
-  inputs = await startInputWatcher(
-    paths.appRoot,
-    [{ name: '@kisaki3/watch-fixture', path: join(paths.repositoryRoot, 'package') }],
-    {
-      /** Records the preparation category selected by the actual watcher. */
-      onChange: (change) => changes.push(change),
+  inputs = await startInputWatcher(paths.appRoot, {
+    watchAssets: true,
+    /** Records the preparation category selected by the actual watcher. */
+    onChange: (change) => changes.push(change),
 
-      /** Retains watcher failures for the fixture's final assertion. */
-      onError: (cause) => errors.push(cause),
-    },
-  )
+    /** Retains watcher failures for the fixture's final assertion. */
+    onError: (cause) => errors.push(cause),
+  })
 })
 
 afterAll(async () => {
@@ -73,14 +62,8 @@ afterAll(async () => {
   }
 })
 
-test('package, resource and configuration changes select their actual preparation owner', async () => {
-  for (const file of [
-    'app/src/main/entry.ts',
-    'package/src/value.test.ts',
-    'package/src/README.md',
-    'package/config/vitest/consumers.ts',
-    'app/native/target/generated.json',
-  ]) {
+test('resource and configuration changes select their actual preparation owner', async () => {
+  for (const file of ['app/src/main/entry.ts', 'app/native/target/generated.json']) {
     const path = join(paths.repositoryRoot, file)
     await mkdir(dirname(path), { recursive: true })
     await writeFile(path, 'excluded from preparation\n')
@@ -94,8 +77,6 @@ test('package, resource and configuration changes select their actual preparatio
     ['app/native/src.rs', 'native'],
     ['app/assets/font.json', 'resources'],
     ['app/drizzle/migration.sql', 'resources'],
-    ['package/src/value.ts', 'packages'],
-    ['package/config/typescript/tsconfig.lib.json', 'packages'],
   ] as const) {
     const before = changes.filter((change) => change === kind).length
     await writeFile(join(paths.repositoryRoot, file), 'changed input\n')

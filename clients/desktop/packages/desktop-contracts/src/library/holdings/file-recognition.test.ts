@@ -1,6 +1,6 @@
 /** @fileoverview Checks file-recognition definition shape and complete target constraints. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { parseFileRecognitionDefinition } from './file-recognition'
 
 test('disabled rules still require legal target fields and complete chapter scope', () => {

@@ -19,34 +19,36 @@
   ],
   "exports": {
     "./tokens": {
+      "kisaki-source": "./src/tokens.ts",
       "types": "./dist/tokens.d.ts",
       "import": "./dist/tokens.js"
     },
     "./values": {
+      "kisaki-source": "./src/values.ts",
       "types": "./dist/values.d.ts",
       "import": "./dist/values.js"
     },
     "./defaults": {
+      "kisaki-source": "./src/defaults.ts",
       "types": "./dist/defaults.d.ts",
       "import": "./dist/defaults.js"
     },
-    "./styles.css": "./dist/styles.css",
-    "./tailwind.css": "./dist/tailwind.css"
+    "./styles.css": {
+      "kisaki-source": "./src/styles.css",
+      "default": "./dist/styles.css"
+    },
+    "./tailwind.css": {
+      "kisaki-source": "./src/tailwind.css",
+      "default": "./dist/tailwind.css"
+    }
   },
   "scripts": {
-    "prepare:build": "kisaki-package prepare-build",
-    "build": "tsx tools/build.ts",
-    "pack": "kisaki-package pack",
-    "typecheck": "tsc -b",
-    "lint": "eslint . --max-warnings 0",
-    "check:boundaries": "pnpm --workspace-root exec tsx tools/boundaries.ts clients/desktop/packages/desktop-appearance",
-    "test": "vitest run",
-    "test:consumers": "vitest run --config config/vitest/consumers.ts",
-    "check:package": "kisaki-package check",
-    "clean": "tsx tools/clean.ts"
+    "typecheck:project": "tsc -b",
+    "clean:outputs": "kisaki-package clean",
+    "test:unit": "vp test run",
+    "generate:styles": "vpx tools/styles.ts --generate"
   },
   "devDependencies": {
-    "@kisaki3/eslint-config": "workspace:*",
     "@kisaki3/tooling": "workspace:*",
     "@kisaki3/typescript-config": "workspace:*",
     "@playwright/test": "1.64.1",
@@ -54,14 +56,8 @@
     "@types/css-tree": "3.2.0",
     "@types/node": "catalog:",
     "css-tree": "3.2.1",
-    "eslint": "catalog:",
-    "jiti": "catalog:",
     "tailwindcss": "4.3.3",
-    "tsdown": "0.23.0",
-    "tsx": "catalog:",
     "typescript": "catalog:",
-    "typescript-eslint": "catalog:",
-    "vite": "catalog:",
-    "vitest": "catalog:"
+    "vite-plus": "catalog:"
   }
 }

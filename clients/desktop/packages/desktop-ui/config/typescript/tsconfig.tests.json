@@ -6,5 +6,5 @@
     "tsBuildInfoFile": "../../.cache/typescript/tests.tsbuildinfo"
   },
   "include": ["../../tests/**/*.ts", "../../src/**/*.test.ts"],
-  "exclude": ["../../tests/fixtures"]
+  "exclude": ["../../tests/consumers/fixtures", "../../tests/fixtures"]
 }

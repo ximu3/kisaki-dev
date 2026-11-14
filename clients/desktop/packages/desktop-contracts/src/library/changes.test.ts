@@ -1,6 +1,6 @@
 /** @fileoverview Verifies library change facts retain applicable identity context across part-kind corrections. */
 
-import { test, expect } from 'vitest'
+import { test, expect } from 'vite-plus/test'
 
 import { parseLibraryChange } from './changes'
 import { DesktopError } from '../errors'

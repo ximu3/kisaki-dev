@@ -7,7 +7,7 @@ import { spawn } from 'node:child_process'
 import type { SpawnOptions } from 'node:child_process'
 import { basename } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { stopProcessGroup } from './unix'
+import { stopProcessGroup } from './unix.ts'
 
 /** Working directory, environment and cancellation for one finite child command. */
 export interface ProcessOptions {
@@ -22,6 +22,8 @@ export interface ProcessOptions {
 /** A failed child command's exit status and captured diagnostics. */
 export class CommandFailed extends Error {
   readonly exitCode: number
+  readonly stdout: string
+  readonly stderr: string
 
   /**
    * Records a positive exit code and any captured output; missing or nonpositive codes become 1.
@@ -30,11 +32,13 @@ export class CommandFailed extends Error {
     command: string,
     code: number | null,
     signal: string | null,
-    readonly stdout = '',
-    readonly stderr = '',
+    stdout = '',
+    stderr = '',
   ) {
     super(`Tool failed: ${basename(command)} (${signal ?? code})`)
     this.exitCode = code && code > 0 ? code : 1
+    this.stdout = stdout
+    this.stderr = stderr
   }
 }
 

@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from 'vite-plus/test/config'
 import electronManifest from 'electron/package.json' with { type: 'json' }
 
 if (

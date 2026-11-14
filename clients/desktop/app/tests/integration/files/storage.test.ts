@@ -1,6 +1,6 @@
 /** @fileoverview Checks bounded file and archive work against real handles, native publication and filesystem identities. */
 
-import { afterEach, beforeEach, expect, test } from 'vitest'
+import { afterEach, beforeEach, expect, test } from 'vite-plus/test'
 import { createHash } from 'node:crypto'
 import { link, mkdir, mkdtemp, readFile, readdir, rm, symlink, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'

@@ -93,7 +93,8 @@ export type DateTest =
 
 /** Civil-date predicate extended with a recurring month-and-day birthday range. */
 export type BirthdayTest =
-  DateTest | { readonly op: 'monthDayRange'; readonly from: MonthDate; readonly to: MonthDate }
+  | DateTest
+  | { readonly op: 'monthDayRange'; readonly from: MonthDate; readonly to: MonthDate }
 
 /**
  * Predicate over an instant's calendar date, UTC timestamp or presence.
@@ -252,7 +253,12 @@ export type EntryCondition =
     }
   | ({
       readonly field:
-        'originalName' | 'sortName' | 'description' | 'aliases' | 'externalLinks' | 'addedDate'
+        | 'originalName'
+        | 'sortName'
+        | 'description'
+        | 'aliases'
+        | 'externalLinks'
+        | 'addedDate'
     } & Presence)
   | ({
       readonly field:
@@ -280,7 +286,10 @@ export type EntryCondition =
   | ({ readonly field: 'gender' } & EnumTest<Gender | null>)
   | ({ readonly field: 'bloodType' } & EnumTest<BloodType | null>)
   | ({ readonly field: 'age' | 'height' | 'weight' | 'bust' | 'waist' | 'hips' } & (
-      NumberTest | TextTest | Presence | { readonly op: 'kind'; readonly value: 'number' | 'text' }
+      | NumberTest
+      | TextTest
+      | Presence
+      | { readonly op: 'kind'; readonly value: 'number' | 'text' }
     ))
   | ({ readonly field: 'cupSize' } & (TextTest | Presence))
   | ({ readonly field: 'effectiveAddedDate' } & Exclude<DateTest, { readonly op: 'absent' }>)

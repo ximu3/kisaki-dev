@@ -1,0 +1,11 @@
+{
+  "extends": "@kisaki3/typescript-config/solid.json",
+  "compilerOptions": {
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"],
+    "customConditions": ["kisaki-source"],
+    "incremental": true,
+    "tsBuildInfoFile": "../../.cache/typescript/workshop.tsbuildinfo"
+  },
+  "include": ["../../tests/fixtures/workshop/**/*"]
+}

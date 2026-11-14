@@ -1,5 +1,6 @@
 /** @fileoverview Selection buttons keep native focus while navigating a logical listbox. */
 
+import { printableKey } from '../typeahead'
 import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { assignRef, callHandler } from '../dom'
@@ -107,8 +108,8 @@ export function SelectionTrigger(props: SelectionTriggerProps): JSX.Element {
             local.onChoose(local.collection.get(key)!)
           }
         } else if (
-          event.key.length === 1 &&
-          event.key !== ' ' &&
+          !event.isComposing &&
+          printableKey(event.key) &&
           !event.ctrlKey &&
           !event.altKey &&
           !event.metaKey
@@ -117,7 +118,7 @@ export function SelectionTrigger(props: SelectionTriggerProps): JSX.Element {
           if (!local.popup.open()) {
             show()
           }
-          local.collection.type(event.key)
+          local.collection.type(event.key, event.currentTarget)
         }
       }}
     />

@@ -5,8 +5,8 @@
     "tsBuildInfoFile": "../../.cache/typescript/extension-host.tsbuildinfo"
   },
   "include": [
-    "../../tests/fixtures/runtime/src/extension-host/**/*.ts",
-    "../../tests/fixtures/runtime/src/shared/**/*.ts"
+    "../../tests/fixtures/desktop-app/src/extension-host/**/*.ts",
+    "../../tests/fixtures/desktop-app/src/shared/**/*.ts"
   ],
   "exclude": []
 }

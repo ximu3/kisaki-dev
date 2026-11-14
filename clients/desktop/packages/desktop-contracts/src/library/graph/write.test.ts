@@ -1,6 +1,6 @@
 /** @fileoverview Verifies complete graph identity, endpoint ownership, relation consistency and creation results. */
 
-import { test, expect } from 'vitest'
+import { test, expect } from 'vite-plus/test'
 
 import { parseLibraryWriteGraph, parseLibraryWriteResult } from './write'
 

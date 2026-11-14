@@ -3,40 +3,34 @@ name: PR title
 on:
   pull_request:
     types: [opened, synchronize, reopened, edited]
+  merge_group:
 
 permissions:
   contents: read
-
-env:
-  # Optional cache restoration should fall back before consuming the feedback budget.
-  SEGMENT_DOWNLOAD_TIMEOUT_MINS: '2'
+  pull-requests: read
 
 concurrency:
-  group: pr-title-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}
+  group: pr-title-${{ github.event.pull_request.number || github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}
   cancel-in-progress: true
 
 jobs:
   title:
     name: PR title
     runs-on: ubuntu-22.04
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
-      - name: Check out repository
-        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
-        with:
-          persist-credentials: false
-      - name: Set up Node.js
-        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
-        with:
-          node-version-file: .node-version
-          package-manager-cache: false
-      - name: Set up pnpm
-        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
-        with:
-          cache: true
-      - name: Install title-check dependencies
-        run: pnpm install --filter @kisaki3/workspace --frozen-lockfile --ignore-scripts
-      - name: Check PR title
+      - name: Check the current squash title
+        if: github.event_name == 'pull_request'
         env:
-          PR_TITLE: ${{ github.event.pull_request.title }}
-        run: printf '%s\n' "$PR_TITLE" | pnpm exec commitlint
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          title=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$NUMBER" --jq .title)
+          pattern='^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([^()]+\))?!?: [^[:space:]].*'
+          if ! [[ "$title" =~ $pattern && ${#title} -le 100 && "$title" != *. ]]; then
+            echo 'Use a conventional squash title, up to 100 characters, with a subject and no trailing period.'
+            exit 1
+          fi
+      - name: Accept titles checked on the member PRs
+        if: github.event_name == 'merge_group'
+        run: echo 'Each member PR passed its title check before entering the merge queue.'

@@ -1,6 +1,6 @@
 /** @fileoverview Checks generic catalog values independently of any English product messages. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { DesktopError } from './errors'
 import { parseMessageCatalog, parseExtensionUiTranslationDefinition } from './i18n'
 

@@ -2,9 +2,9 @@
 
 import { join } from 'node:path'
 import { createRequire } from 'node:module'
-import { test } from 'vitest'
+import { test } from 'vite-plus/test'
 import { run } from '@kisaki3/tooling/process'
-import { prepareConsumer } from '../support/consumer'
+import { prepareConsumer } from './consumer'
 
 test('parent and child exchange nested calls, cancellation, errors and release on IPC loss', async ({
   signal,

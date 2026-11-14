@@ -13,5 +13,5 @@
     "../../native/node/**/*.test.ts",
     "../../tools/**/*.test.ts"
   ],
-  "exclude": ["../../tests/fixtures/runtime/src/**"]
+  "exclude": ["../../tests/fixtures/desktop-app/src/**"]
 }

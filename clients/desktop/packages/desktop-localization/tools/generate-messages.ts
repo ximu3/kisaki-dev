@@ -69,5 +69,5 @@ export async function writeMessageTypes(signal?: AbortSignal): Promise<void> {
 }
 
 if (import.meta.main) {
-  await runCli(writeMessageTypes)
+  await runCli(process.argv.includes('--check') ? checkMessageTypes : writeMessageTypes)
 }

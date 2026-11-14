@@ -134,7 +134,8 @@ type AtLeastOne<T> = { [K in keyof T]: Required<Pick<T, K>> & Partial<Omit<T, K>
  * Complete work-character coverage, either all legal relations or a union of work-type conditions.
  */
 export type WorkCharacterMetadataScope =
-  'all' | NonEmptyArray<{ readonly workTypes: NonEmptyArray<WorkType> }>
+  | 'all'
+  | NonEmptyArray<{ readonly workTypes: NonEmptyArray<WorkType> }>
 
 /**
  * Intersecting work-type, responsibility and character-presence constraints on person-work
@@ -211,7 +212,8 @@ export type MetadataRelationScopes<T extends EntryType = EntryType> = {
  */
 export type MetadataSessionRelationScopes<T extends EntryType = EntryType> = {
   readonly [K in ScopedMetadataRelationKey<T>]?:
-    MetadataRelationScopeValues[K] | (K extends 'entryTags' | 'volumeChapters' ? never : null)
+    | MetadataRelationScopeValues[K]
+    | (K extends 'entryTags' | 'volumeChapters' ? never : null)
 }
 
 /**

@@ -1,10 +1,11 @@
 /** @fileoverview Verifies NodeNext declarations and actual packed pure values in a standalone Node consumer. */
 
-import { expect } from 'vitest'
+import { lintConsumer } from '@kisaki3/tooling/testing/consumer'
+import { expect } from 'vite-plus/test'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { runPnpm } from '@kisaki3/tooling/process'
-import { consumerTest, lintConsumer } from '../support/consumer'
+import { consumerTest } from './consumer'
 
 /** Isolated Node consumer fixtures that install and exercise the actual contracts tarball. */
 const test = consumerTest('node')
@@ -15,7 +16,7 @@ test('Node globals alone support the complete public type graph and actual value
 }) => {
   await runPnpm(['build'], { cwd: consumerDirectory, signal })
 
-  expect((await lintConsumer(consumerDirectory)).flatMap((item) => item.messages)).toEqual([])
+  await lintConsumer(consumerDirectory)
 
   const { stdout } = await promisify(execFile)(
     process.execPath,

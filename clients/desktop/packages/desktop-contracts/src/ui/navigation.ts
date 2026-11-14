@@ -88,10 +88,13 @@ export type SearchTarget =
       }
     }[PartType]
   | { [K in 'collection' | 'tag' | 'note']: { readonly type: K; readonly id: string } }[
-      'collection' | 'tag' | 'note']
+      | 'collection'
+      | 'tag'
+      | 'note']
   | { readonly type: 'annotation'; readonly ref: AnnotationRef }
   | { [K in 'metadataProfile' | 'scanConfig']: { readonly type: K; readonly id: string } }[
-      'metadataProfile' | 'scanConfig']
+      | 'metadataProfile'
+      | 'scanConfig']
   | { readonly type: 'launchConfig'; readonly gameId: string; readonly id: string }
   | { readonly type: 'theme'; readonly ref: ThemeRef }
   | { readonly type: 'font'; readonly id: string }

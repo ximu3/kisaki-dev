@@ -51,7 +51,7 @@ fn location(path: &str) -> io::Result<&'static str> {
     })
 }
 
-/// Classifies Linux network mounts by their kernel filesystem type; FUSE remains unverified.
+/// Classifies recognized local and shared Linux filesystems by their statfs magic.
 #[cfg(target_os = "linux")]
 fn location(path: &str) -> io::Result<&'static str> {
     let path = std::ffi::CString::new(path)?;
@@ -63,10 +63,13 @@ fn location(path: &str) -> io::Result<&'static str> {
     // SAFETY: statfs initialized the complete output on success.
     let information = unsafe { information.assume_init() };
     Ok(match information.f_type as u64 {
-        0x6969 | 0xff53_4d42 | 0xfe53_4d42 | 0x517b | 0x0102_1997 | 0x5346_414f | 0x6b41_4653
-        | 0x7375_7245 | 0x564c | 0x00c3_6400 => "network",
-        0x6573_5546 => "unknown",
-        _ => "local",
+        // Known shared filesystems, including OCFS2 and GFS2.
+        0x7461_636f | 0x0116_1970 | 0x6969 | 0xff53_4d42 | 0xfe53_4d42 | 0x517b | 0x0102_1997
+        | 0x5346_414f | 0x6b41_4653 | 0x7375_7245 | 0x564c | 0x00c3_6400 => "network",
+        // ext2/3/4, XFS, Btrfs, F2FS, JFS, ZFS and bcachefs.
+        0xef53 | 0x5846_5342 | 0x9123_683e | 0xf2f5_2010 | 0x3153_464a | 0x2fc1_2fc1
+        | 0xca45_1a4e => "local",
+        _ => "unknown",
     })
 }
 

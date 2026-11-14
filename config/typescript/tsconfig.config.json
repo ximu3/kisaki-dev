@@ -2,7 +2,9 @@
   "extends": "@kisaki3/typescript-config/node.json",
   "compilerOptions": {
     "incremental": true,
-    "tsBuildInfoFile": "../../.cache/typescript/config.tsbuildinfo"
+    "tsBuildInfoFile": "../../.cache/typescript/config.tsbuildinfo",
+    "allowJs": true,
+    "checkJs": true
   },
-  "include": ["../../*.config.ts", "../../vitest.config.*.ts", "../**/*.ts"]
+  "include": ["../../*.config.ts", "../**/*.ts", "../../.pnpmfile.mjs"]
 }

@@ -1,6 +1,6 @@
 /** @fileoverview Verifies entry condition value semantics, field constraints and relation qualifiers. */
 
-import { test, expect } from 'vitest'
+import { test, expect } from 'vite-plus/test'
 
 import { parseEntryCondition } from './conditions'
 

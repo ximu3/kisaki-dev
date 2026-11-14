@@ -8,7 +8,7 @@ import { dirname, join } from 'node:path'
 import sharp from 'sharp'
 import pngToIco from 'png-to-ico'
 import { appRoot } from '../lib/paths'
-import type { DesktopTarget } from '../lib/runtime-manifest'
+import type { DesktopTarget } from '../lib/targets'
 import { removeOutputs } from '@kisaki3/tooling/output'
 import { copyFonts } from './fonts'
 import type { FontInput } from './fonts'
@@ -34,8 +34,8 @@ async function prepareIcons(icons: string): Promise<void> {
 export async function prepareResources(
   target: DesktopTarget,
   signal?: AbortSignal,
+  output = join(appRoot, 'out', 'resources', target),
 ): Promise<string> {
-  const output = join(appRoot, 'out', 'resources', target)
   const fontInputs = JSON.parse(
     await readFile(join(appRoot, 'assets', 'fonts', 'inputs.json'), 'utf8'),
   ) as FontInput[]

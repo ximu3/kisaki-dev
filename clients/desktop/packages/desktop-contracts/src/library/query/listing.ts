@@ -140,7 +140,8 @@ export function parseEntryGroupsResult(input: unknown): EntryGroupsResult {
 
 /** Group identity independent of its display name and a view's expanded state. */
 export type EntryGroupKey =
-  { readonly type: 'collection'; readonly id: string } | { readonly type: 'unclassified' }
+  | { readonly type: 'collection'; readonly id: string }
+  | { readonly type: 'unclassified' }
 
 /** Requested entry interval, projected fields and optional group restriction. */
 export interface EntryListOptions {

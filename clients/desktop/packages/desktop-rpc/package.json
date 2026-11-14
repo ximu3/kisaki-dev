@@ -23,35 +23,22 @@
   "sideEffects": false,
   "exports": {
     ".": {
+      "kisaki-source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
   },
   "scripts": {
-    "prepare:build": "kisaki-package prepare-build",
-    "build": "tsx tools/build.ts",
-    "pack": "kisaki-package pack",
-    "check:package": "kisaki-package check",
-    "typecheck": "tsc -b",
-    "lint": "eslint . --max-warnings 0",
-    "check:boundaries": "pnpm --workspace-root exec tsx tools/boundaries.ts clients/desktop/packages/desktop-rpc",
-    "test": "vitest run",
-    "test:consumers": "vitest run --config config/vitest/consumers.ts",
-    "clean": "tsx tools/clean.ts"
+    "typecheck:project": "tsc -b",
+    "clean:outputs": "kisaki-package clean",
+    "test:unit": "vp test run"
   },
   "devDependencies": {
-    "@kisaki3/eslint-config": "workspace:*",
     "@kisaki3/tooling": "workspace:*",
     "@kisaki3/typescript-config": "workspace:*",
     "@types/node": "catalog:",
     "electron": "catalog:",
-    "eslint": "catalog:",
-    "jiti": "catalog:",
-    "tsdown": "0.23.0",
-    "tsx": "catalog:",
     "typescript": "catalog:",
-    "typescript-eslint": "catalog:",
-    "vite": "catalog:",
-    "vitest": "catalog:"
+    "vite-plus": "catalog:"
   }
 }

@@ -1,20 +1,17 @@
 /** @fileoverview Checks session shutdown outcomes at the command boundary without starting external tools. */
 
-import { expect, test, vi } from 'vitest'
+import { expect, test, vi } from 'vite-plus/test'
 import { mkdtemp, readdir, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { runPnpm } from '@kisaki3/tooling/process'
+import { prepareResources } from '../../../tools/resources/prepare'
 import { startDevelopmentSession } from '../../../tools/dev/session'
 import { hostTarget } from '../../../tools/lib/targets'
 
 /** Redirects the session's outputs to the test-owned root. */
 const paths = vi.hoisted(() => ({ appRoot: process.cwd(), repositoryRoot: process.cwd() }))
 vi.mock('../../../tools/lib/paths', () => paths)
-vi.mock('@kisaki3/tooling/process', () => ({ runPnpm: vi.fn() }))
-vi.mock('../../../tools/dev/dependencies', () => ({
-  desktopDependencies: vi.fn().mockResolvedValue([]),
-}))
+vi.mock('../../../tools/resources/prepare', () => ({ prepareResources: vi.fn() }))
 vi.mock('../../../tools/dev/electron-executable', () => ({ electronExecutable: vi.fn() }))
 vi.mock('../../../tools/dev/renderer', () => ({
   startRenderer: vi.fn().mockResolvedValue({
@@ -34,13 +31,12 @@ test.each(['cancelled', 'failed'] as const)(
     paths.repositoryRoot = root
     const started = Promise.withResolvers<void>()
     const failure = new Error('Preparation failed while stopping')
-    vi.mocked(runPnpm).mockImplementationOnce(
-      (_args, options) =>
+    vi.mocked(prepareResources).mockImplementationOnce(
+      (_target, signal) =>
         new Promise((_resolve, reject) => {
-          const signal = options!.signal!
-          signal.addEventListener(
+          signal!.addEventListener(
             'abort',
-            () => reject(outcome === 'failed' ? failure : signal.reason),
+            () => reject(outcome === 'failed' ? failure : signal!.reason),
             { once: true },
           )
           started.resolve()

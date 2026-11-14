@@ -1,6 +1,6 @@
 # Kisaki 全项目工程设计与现代化重构方案
 
-**范围已明确，实施方案待确认。** 本轮覆盖从干净检出、开发调试、构建、测试到发布和维护的整个工程。根仓、桌面应用、公共包、私有工程包和官方扩展各自的源码、配置、工具、测试与制品都在范围内。四个独立项目按各自的宿主和发布单位接续。现行命令和交付结果分别见[开发说明](development.md)与[实施状态](status.md)。
+**迁移分支正在实施。** 本轮覆盖从干净检出、开发调试、构建、测试到发布和维护的整个工程。根仓、桌面应用、公共包、私有工程包和官方扩展各自的源码、配置、工具、测试与制品都在范围内。四个独立项目按各自的宿主和发布单位接续。现行命令和交付结果分别见[开发说明](development.md)与[实施状态](status.md)。
 
 JS/TS 建议采用 Vite+ 作为工程入口、TypeScript 7.1 作为编译器。迁移分支可用精确版本 `7.1.0-beta`，主线采用首个通过验收的 7.1.x 正式版。工具选型、`tools` 的职责和 `tests` 的组织共同服务于同一目标。开发者能从一次改动找到负责的源码，运行与之相关的检查，并辨认最终交付的是哪份文件。现有工程的主要问题与取舍见[全项目审视](modernization-audit.md#engineering-review)。
 
@@ -137,7 +137,7 @@ pnpm 声明项目与依赖，`vp run` 执行工作区任务，Vite 管理编译�
 
 2026-11-14 查询 npm，`typescript@latest` 为 `7.0.2`，`beta` 为 `7.1.0-beta`，`rc` 为 `7.0.1-rc`。7.1 正式版的计划日期是 11 月 24 日。7.0 已提供 Go 原生编译器，7.1 提供新的 AST 与同步、异步工具 API。选 7.1 的理由是它能承担本仓项目检查、声明生成和工具 API 的迁移，并减少先引入 7.0、随后再改工具 API 的重复工作。预览版的实测用于开发分支，正式默认版本以实际发布和验收结果为准。[npm 发布标签](https://registry.npmjs.org/-/package/typescript/dist-tags) · [7.1 Beta 公告](https://devblogs.microsoft.com/typescript/announcing-typescript-7-1-beta/) · [发布计划](https://github.com/microsoft/TypeScript/issues/63703)
 
-Turbo 当前用于上游构建顺序和产物恢复的做法成立。选择 Vite+ 是因为这两项职责可归入已有 Vite、Vitest 和库构建入口。它不会自行修好 CI 分流。当前选择测试要求外观 CSS 触发原生、开发、窗口和制品检查，随后 CI 将其扩至六目标。应由一个 CI 决策入口依据改动风险选择宿主和目标，Vite Task 负责执行选中的任务与其构建依赖。[现有选择用例](../../tests/workspace/tasks.test.ts) · [现有目标分配](../../.github/workflows/verification-desktop.yml)
+Turbo 当前用于上游构建顺序和产物恢复的做法成立。选择 Vite+ 是因为这两项职责可归入已有 Vite、Vitest 和库构建入口。它不会自行修好 CI 分流。当前选择测试要求外观 CSS 触发原生、开发、窗口和制品检查，随后 CI 将其扩至六目标。应由一个 CI 决策入口依据改动风险选择宿主和目标，Vite Task 负责执行选中的任务与其构建依赖。[现有选择用例](https://github.com/ximu3/kisaki-dev/blob/fac8ff6/tests/workspace/tasks.test.ts) · [现有目标分配](https://github.com/ximu3/kisaki-dev/blob/fac8ff6/.github/workflows/verification-desktop.yml)
 
 | 运行基线 | 对应要求 |
 | --- | --- |
@@ -145,11 +145,22 @@ Turbo 当前用于上游构建顺序和产物恢复的做法成立。选择 Vite
 | Windows ARM64 上 4 项开发场景合计约 6 分钟，4 个窗口合计 5.9 秒。Intel Mac 的开发服务器曾读到重建中的残缺包。[Windows 日志](https://github.com/ximu3/kisaki-dev/actions/runs/43562359494/job/132348837785) · [热更新失败](https://github.com/ximu3/kisaki-dev/actions/runs/43564036464/job/132353969000) | 日常编辑使用源码。保留真实的语法错误修复、界面热更新与可取消退出。将这些场景放在能发现对应问题的改动与平台上。 |
 | 完整负载中 16 个代表查询最慢 44.611 ms。同一份 5 万条目数据的本机补测中，采用中文、瑞典语、英语分别同步占用约 464、454、433 ms。再次采用相同中文为 0.002 ms。[存储测量](../verification/evidence/w06/README.md) | 数据库执行位置是本轮关联的运行架构改动。main 选择 i18n 实际生效的 locale，串行数据库执行端持有连接，完成重建后发布对应顺序。用窗口响应和查询正确性验收。 |
 
-## 已取得的迁移证据
+## 迁移分支实测
+
+Windows x64 使用 Node 26.13.1、pnpm 12.18.0、Vite+ 1.6.0、TypeScript 7.1.0-beta 和 Electron 45.3.2。六个公共包通过源码构建、实际 tarball 的 publint、ATTW 和独立消费。开发态与包外消费者使用相同子路径，tarball 只包含分发条件。TypeScript 6.0.3 仅为 dependency-cruiser 18 的 AST 解析依赖，工作区检查和声明构建均使用 7.1。
+
+- 常规检查通过 9 个项目类型任务、依赖图、格式、类型感知 lint 及 141 项快速测试。UI 的 9 项源码交互在真实 Chromium 运行，覆盖土耳其语大小写、补充平面汉字、焦点、IME 与虚拟列表。独立 tarball 的 Node、浏览器、Electron 和 Tailwind 验证分别由各包拥有。
+- Electron Node 的 15 项集成、4 个实际窗口、4 项开发恢复与退出用例通过。开发测试按需复制可写载体与受改动的合同包，复用已安装的依赖和准备好的原生资源，每个场景分配独立 profile。20 次启动和完整存储负载在 Windows x64 通过。制品验收从同一 ZIP 解包，核对 fuses 后从外部启动和关闭。
+- 5 万条目上，数据库执行线程切换中文、瑞典语与英语分别用时 488、477、475 ms，再次采用英语为 0.003 ms。窗口发往主进程的 519 次 IPC 往返 P95 为 2.10 ms，最大 8.64 ms。16 个代表性查询的最大采样为 49.01 ms。此前一次并行实测最高 50.38 ms，越过 50 ms 预算。原生性能仍随设备和同期负载核对。
+- 首次发行前的全项目规则已经并入[共用工程规范](../design/engineering/conventions.md#before-first-release)。本体开发数据使用当前初始迁移，Linux 资料根只接纳可确认的本地类型。第三方导入格式、真实已发表制品、目标宿主和发行后的前向升级各自按实际合同处理。
+
+远端新工作流、正式 7.1.x 及各发行单位的发布前证据按实际取得的结果登记。正式签署、安装升级、平台保护切换与生产发布仍按所属工作包与授权推进。
+
+## 迁移前隔离试验
 
 Windows x64 使用 Vite+ `1.6.0` 与 `typescript@7.1.0-beta`。以下为隔离试验，项目依赖清单、锁文件和 CI 仍按[当前工程](development.md)运行。
 
-- **项目图与类型。** 在现有依赖上逐一运行仓库声明的 35 份分项 TS 配置，`tsc -p --noEmit` 全部通过。复制六个公共包的实际源码和依赖清单后，`vp run -r --dry-run --json build` 给出了预期拓扑，包括外观和分发先于合同、合同先于本地化、外观先于 UI。随后从工作区根执行 `vp run -r build`，六个包的构建任务全部成功。仓库中直接调用旧 TS 根入口 `readConfigFile` 与 `transpileModule` 的两处仍须迁移，前者的配置复述测试可随旧机制删除，后者交由正式编译入口处理。[仓库类型检查](../../tests/workspace/typecheck-coverage.test.ts) · [Electron 消费样本](../../clients/desktop/packages/desktop-ui/tests/consumers/electron.test.ts)
+- **项目图与类型。** 在现有依赖上逐一运行仓库声明的 35 份分项 TS 配置，`tsc -p --noEmit` 全部通过。复制六个公共包的实际源码和依赖清单后，`vp run -r --dry-run --json build` 给出了预期拓扑，包括外观和分发先于合同、合同先于本地化、外观先于 UI。随后从工作区根执行 `vp run -r build`，六个包的构建任务全部成功。仓库中直接调用旧 TS 根入口 `readConfigFile` 与 `transpileModule` 的两处仍须迁移，前者的配置复述测试可随旧机制删除，后者交由正式编译入口处理。[仓库类型检查](https://github.com/ximu3/kisaki-dev/blob/fac8ff6/tests/workspace/typecheck-coverage.test.ts) · [Electron 消费样本](../../clients/desktop/packages/desktop-ui/tests/consumers/electron.test.ts)
 - **发布包与消费。** 六个公共包通过 `vp pack` 生成 73 对 JS/声明入口。试验显式指定 7.1 Beta 原生声明生成器，并为每包提供包根的声明构建配置。类型检查和声明生成各有独立结果。原有深层配置触发 TS6059，分发包的声明配置还须覆盖纯入口及 `node/signing`。完成外观和 UI 的 CSS 与许可组装后，从重新打出的六个 tarball 提取并检验公开入口。16 份实际消费者类型配置全部通过，RPC 的公开 ESM 也由 Node 实际加载。试验复用了已安装的外部依赖。UI 包需使声明直接引用的 `@types/throttle-debounce` 对消费者可解析，本次在试验清单显式列入后，浏览器与 NodeNext 两种解析均通过。既有声明中也能看到这项引用。
 - **缓存与真实运行。** 重复输入命中缓存，改动输入后重新执行。输入相同且输出文件缺失时，缓存命中并恢复正确字节。A→B→A 样例末次重新执行并交付正确内容。`vp test` 对已打包 RPC 的一个行为样本通过。正式验收另需实际的 Solid 热更新、Electron 流程、并发、锁文件变更和目标环境隔离。Vite+ 官方将 GitHub Actions 间的任务缓存复用列为实验能力。[缓存输入与输出](https://viteplus.dev/guide/automatic-data-tracking) · [跨作业缓存](https://viteplus.dev/guide/github-actions-cache)
 - **lint 与格式。** Oxlint 曾实际检出未等待的 Promise。本次将项目规则直接映射到 Oxlint 后，523 个维护中的 TS/TSX 文件报告 544 条诊断，其中 527 条来自仓库内的独立消费者样板。它们应在装有实际 tarball 的工程内做类型感知 lint。其余 17 条留待按具体规则核对，其中包括 Playwright 的参数约定。Oxfmt `0.78.0` 只读扫描时有 23 个已跟踪文件会变化，其中一个是 Cargo.toml。保留格式选择与生成文件忽略范围，将首次格式差异独立审阅，Rust 工具继续拥有其工程文件。

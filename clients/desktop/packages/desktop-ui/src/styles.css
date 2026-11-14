@@ -1,6 +1,7 @@
 /* Public cascade order precedes the appearance defaults and every component family. */
 
 @layer theme, base, components, utilities;
+@import '@kisaki3/desktop-appearance/styles.css';
 
 @layer theme {
   :root,

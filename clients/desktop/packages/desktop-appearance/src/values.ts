@@ -1,6 +1,6 @@
 /** @fileoverview Parses complete visual values without evaluating formulas or consulting a host. */
 
-import { generate, ident, lexer, parse, walk } from 'css-tree'
+import { generate, ident, lexer, parse, walk } from 'css-tree/dist/csstree.esm'
 import type { CssNode, Value } from 'css-tree'
 import { tokens } from './tokens'
 import type { TokenKind, TokenName, TokenValues } from './tokens'

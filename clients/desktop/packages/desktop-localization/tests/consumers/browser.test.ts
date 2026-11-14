@@ -1,11 +1,12 @@
 /** @fileoverview Verifies packed declarations and ICU formatting in browser and iframe consumers. */
 
-import { expect } from 'vitest'
+import { lintConsumer } from '@kisaki3/tooling/testing/consumer'
+import { expect } from 'vite-plus/test'
 import { join } from 'node:path'
-import { build, preview } from 'vite'
+import { build, preview } from 'vite-plus'
 import { chromium } from '@playwright/test'
 import { runPnpm } from '@kisaki3/tooling/process'
-import { consumerTest, lintConsumer } from '../support/consumer'
+import { consumerTest } from './consumer'
 
 /** Packed localization consumer fixtures owning the browser and its built test site. */
 const test = consumerTest('browser')
@@ -56,7 +57,7 @@ test('browser globals support typed calls from the published localization packag
 }) => {
   await runPnpm(['typecheck'], { cwd: consumerDirectory, signal })
 
-  expect((await lintConsumer(consumerDirectory)).flatMap((item) => item.messages)).toEqual([])
+  await lintConsumer(consumerDirectory)
 })
 
 test('localized messages and literal tags run in the main document and an iframe', async ({

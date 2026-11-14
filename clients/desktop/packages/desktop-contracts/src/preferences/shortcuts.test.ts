@@ -1,6 +1,6 @@
 /** @fileoverview Checks canonical shortcut syntax and conflicts between effective key combinations. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { parseAccelerator, findShortcutConflicts, shortcutKeys } from './shortcuts'
 import type { ShortcutPreferences, ShortcutsPreferences } from './shortcuts'
 import { DesktopError } from '../errors'

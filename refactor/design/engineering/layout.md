@@ -55,26 +55,22 @@ kisaki/
 ├── server/
 ├── packages/
 │   ├── typescript-config/
-│   ├── eslint-config/
 │   └── tooling/
 ├── tools/
 │   ├── release/
 │   ├── boundaries.ts
-│   ├── host-environment.ts
-│   └── hooks.ts
+│   └── ci/
 ├── tests/
 ├── config/
 │   └── typescript/
 ├── .github/workflows/
-├── .husky/
+├── .vite-hooks/
 ├── artifacts/                       # Ignored verified delivery outputs
 ├── package.json
 ├── pnpm-workspace.yaml
 ├── pnpm-lock.yaml
-├── turbo.json
+├── vite.config.ts
 ├── tsconfig.json
-├── eslint.config.ts
-├── .prettierrc.json
 ├── LICENSE
 ├── README.md
 ├── CONTRIBUTING.md
@@ -98,19 +94,19 @@ Node 与 TypeScript 工程共用根 pnpm workspace、pnpm-lock.yaml 和任务入
 
 app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm workspace 成员或独立发行项。它拥有完整的 Node 消费入口，Node 源码纳入应用检查和 main 构建，Rust 构建由自身 manifest 与锁文件管理；内部布局、类型、加载和测试归属见[本体私有原生能力](native.md)。
 
-各工程遵守[通用配置归属](conventions.md#configuration-layout)。仓库根目录保留实际默认入口，包括 tsconfig.json、eslint.config.ts、lint-staged.config.ts、commitlint.config.ts、.dependency-cruiser.json 和 vitest.config.ts。共享 TypeScript 与 ESLint 规则由 packages 中的对应私有包提供，各项目默认配置选择自身的环境与范围。
+各工程遵守[通用配置归属](conventions.md#configuration-layout)。根目录保留 tsconfig.json、vite.config.ts 和包管理器入口。各工程在 vite.config.ts 声明运行、构建及测试的项目差异。
 
 依赖检查读取根 tsconfig.json 的有效编译选项，模块入口由所属包的 imports 与 exports 解析。根工具、配置、测试的三个类型项目归根 config/typescript；消费者等测试变体配置归实际执行它的工程，由所属命令显式指定。
 
 应用根目录保留实际默认入口：tsconfig.json 关联 config/typescript 中的环境项目，vitest.config.ts 负责常规 Node 测试，playwright.config.ts 选择需要真实 Electron 的窗口集成和端到端测试。四个程序的构建配置归 config/vite，由构建与开发工作流直接指定；其他测试配置按工具归 config/vitest 与 config/playwright。config 保存工具配置，tools 实现执行流程，tests 拥有用例与测试辅助。配置迁移同时维护相对路径、类型检查、开发监听和构建身份输入，不增加只有转发含义的根配置。
 
-八个公共包各自在 config/typescript 保存库源码、工具及适用的构建配置类型项目，由各包根目录的 tsconfig.json 组织；同包 tsdown.config.ts 保留为实际构建入口。官方扩展的 kisx.config.ts 与 eslint.config.ts 使用扩展工程自身 tsconfig.json 的 Node 环境，运行源码按实际宿主划分，具体见[工作区类型配置](workspace.md#workspace)。作者模板和合成消费者采用相同归属规则；消费者样板的 Node、Webview 与 Solid 各自保留默认类型入口，工程工具类型配置归其 config/typescript。
+八个公共包各自在 config/typescript 保存库源码、工具及适用的构建配置类型项目，由各包根目录的 tsconfig.json 组织；同包 vite.config.ts 保留为实际构建入口。官方扩展的 kisx.config.ts 与 vite.config.ts 使用扩展工程自身 tsconfig.json 的 Node 环境，运行源码按实际宿主划分，具体见[工作区类型配置](workspace.md#workspace)。作者模板和合成消费者采用相同归属规则；消费者样板的 Node、Webview 与 Solid 各自保留默认类型入口，工程工具类型配置归其 config/typescript。
 
-根 package.json 为私有，只声明根工具和任务；运行包直接声明实际依赖。各工程保留自己的 UI 框架、运行环境和发行节奏。分类目录、工具 fixture 和普通配置文件不自动成为工作区包，成员布局遵守 [Turborepo 目录规则](https://turborepo.dev/docs/crafting-your-repository/structuring-a-repository#declaring-directories-for-packages)。
+根 package.json 为私有，只声明根工具和任务；运行包直接声明实际依赖。各工程保留自己的 UI 框架、运行环境和发行节奏。分类目录、工具 fixture 和普通配置文件不自动成为工作区包，成员布局遵守 [pnpm 工作区](https://pnpm.io/workspaces)。
 
 八个公共包均位于 clients/desktop/packages，desktop-appearance、desktop-ui 和 desktop-rpc 由实际桌面与扩展需求推动演进，同时保留纯视觉、组件与环境无关机制的边界。FontRef 仍由 desktop-contracts/fonts 拥有，桌面主题与资源选择仍由 desktop-contracts/appearance 组合。Web 与官网按自身目标设计界面，不因同仓而共用桌面样式或组件。
 
-根 packages 只承载当前真实共享的私有工程能力：typescript-config、eslint-config 与 tooling，不预设跨客户端的产品公共包。真实共同能力出现后，依据相同含义、实际消费者和维护责任判断是否提取；不为保持目录形式而重复实现已经成立的共同机制。目录位置不改变公开包独立版本、许可、exports 和仓库外消费的责任。官方扩展使用与第三方相同的产品合同，不读取应用私有实现，也不随桌面预装。
+根 packages 只承载当前真实共享的私有工程能力：typescript-config 与 tooling，不预设跨客户端的产品公共包。真实共同能力出现后，依据相同含义、实际消费者和维护责任判断是否提取；不为保持目录形式而重复实现已经成立的共同机制。目录位置不改变公开包独立版本、许可、exports 和仓库外消费的责任。官方扩展使用与第三方相同的产品合同，不读取应用私有实现，也不随桌面预装。
 
 工具按实际维护范围归属工程，内部目录、命令入口和工作流分工遵守[tools 结构](#tools)。工具源码、运行源码、测试样本与构建输出分别管理。
 
@@ -122,7 +118,7 @@ app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm wo
 
 | 位置                      | 负责的工作                                                                                          |
 | ------------------------- | --------------------------------------------------------------------------------------------------- |
-| 根 tools                  | release 管理跨项目发行与元数据，hooks.ts 管理仓库 Git hooks，boundaries.ts 执行各工程范围的共同依赖规则，host-environment.ts 输出验证环境信息。 |
+| 根 tools | ci 选择所需宿主并检查文档引用，boundaries.ts 核对依赖边界，release 管理跨项目发行。 |
 | packages/tooling          | 多个工程共用的所属输出清理、命令执行和 CLI 收尾函数，以及这些函数自己的测试。                           |
 | clients/desktop/app/tools | 桌面开发会话、程序构建、资源准备、私有原生编译、打包与工程输出清理。                                |
 | 公共包或扩展自身的 tools  | 本工程的准备、生成与工程输入输出校验；运行代码仍在其 src。                                          |
@@ -133,15 +129,12 @@ app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm wo
 
 ```text
 tools/
-├── hooks.ts
+├── ci/
 ├── boundaries.ts
-├── host-environment.ts
 └── release/
 ```
 
-hooks.ts 管理本仓库 Git hooks 的安装与卸载，实际 hook 入口位于 .husky。其集成测试归根 tests/tools/hooks，使用隔离 Git 仓库验证配置冲突、重复安装、卸载和 worktree 行为。它与本体的运行事件或扩展 hook 无关。
-
-host-environment.ts 输出验证进程的 Node 版本、系统、架构、CPU 与内存事实。仓库和桌面工作流调用同一入口，将结果保存到各自验证报告；输出字段由该文件统一维护。
+`tools/ci/` 使用 Node 和 Git 读取候选改动、选择所需场景并核对文档引用。工作流负责 runner、事件、权限和结果汇总。
 
 各公共包通过自身 tests/consumers 验证公开制品，在仓库外的隔离工程中核对所属入口的声明、样式与 Node、Webview 或 Solid 消费。消费者样板以 `tests/consumers/fixtures/<宿主>/` 为固定位置。该包拥有消费合同、样板及断言，安装与清理采用共同的测试机制。各公共包的 tarball 输出归自身 out/package，公共打包与检查机制由私有 tooling 命令提供。包结构与类型制品检查直接复用 publint、Are the Types Wrong 等现成工具，执行关系见[测试任务](#test-tasks)。
 

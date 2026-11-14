@@ -3,8 +3,8 @@
  * external runtime built-ins.
  */
 
-import { expect, onTestFinished, test } from 'vitest'
-import { build, normalizePath } from 'vite'
+import { expect, onTestFinished, test } from 'vite-plus/test'
+import { build, normalizePath } from 'vite-plus'
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -54,7 +54,7 @@ test.each(['main', 'extension-host'] as const)(
     )
 
     const config = programConfig(
-      join(appRoot, 'tests/fixtures/runtime'),
+      join(appRoot, 'tests/fixtures/desktop-app'),
       program,
       join(directory, 'output'),
       'fixture',

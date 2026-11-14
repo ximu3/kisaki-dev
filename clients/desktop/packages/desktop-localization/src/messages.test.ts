@@ -1,6 +1,6 @@
 /** @fileoverview Checks ICU argument compatibility against an explicit source catalog. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { getMessageParameterContract, validateMessageCatalog } from './messages'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 

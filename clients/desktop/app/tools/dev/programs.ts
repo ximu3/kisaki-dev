@@ -1,6 +1,6 @@
 /** @fileoverview Owns native Vite program watchers and their completed output inventories. */
 
-import { build } from 'vite'
+import { build, defaultClientConditions, defaultServerConditions } from 'vite-plus'
 import { join } from 'node:path'
 import { removeOutputs } from '@kisaki3/tooling/output'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
@@ -97,6 +97,8 @@ export async function watchPrograms(
     for (const [index, { program, config }] of entries.entries()) {
       const watcher = await build({
         ...config,
+        resolve: { conditions: ['kisaki-source', ...defaultClientConditions] },
+        ssr: { resolve: { conditions: ['kisaki-source', ...defaultServerConditions] } },
         build: { ...config.build, emptyOutDir: false, watch: {} },
         plugins: [
           {

@@ -23,22 +23,16 @@
   "sideEffects": false,
   "exports": {
     ".": {
+      "kisaki-source": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
   },
   "scripts": {
-    "prepare:build": "kisaki-package prepare-build",
-    "build": "tsx tools/build.ts",
-    "pack": "kisaki-package pack",
-    "check:package": "kisaki-package check",
-    "typecheck": "tsc -b",
-    "lint": "eslint . --max-warnings 0",
-    "check:boundaries": "pnpm --workspace-root exec tsx tools/boundaries.ts clients/desktop/packages/desktop-localization",
-    "test": "vitest run",
-    "test:consumers": "vitest run --config config/vitest/consumers.ts",
-    "generate:messages": "tsx tools/generate-messages.ts",
-    "clean": "tsx tools/clean.ts"
+    "typecheck:project": "tsc -b",
+    "clean:outputs": "kisaki-package clean",
+    "test:unit": "vp test run",
+    "generate:messages": "vpx tools/generate-messages.ts"
   },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "3.5.22",
@@ -46,18 +40,11 @@
     "intl-messageformat": "12.1.4"
   },
   "devDependencies": {
-    "@kisaki3/eslint-config": "workspace:*",
     "@kisaki3/tooling": "workspace:*",
     "@kisaki3/typescript-config": "workspace:*",
     "@playwright/test": "1.64.1",
     "@types/node": "catalog:",
-    "eslint": "catalog:",
-    "jiti": "catalog:",
-    "tsdown": "0.23.0",
-    "tsx": "catalog:",
     "typescript": "catalog:",
-    "typescript-eslint": "catalog:",
-    "vite": "catalog:",
-    "vitest": "catalog:"
+    "vite-plus": "catalog:"
   }
 }

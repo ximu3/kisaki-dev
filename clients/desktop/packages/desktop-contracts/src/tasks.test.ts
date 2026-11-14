@@ -1,6 +1,6 @@
 /** @fileoverview Checks terminal task capabilities and legal finished-event values. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { parseTaskState } from './tasks'
 import { parseNativeEventPayload } from './events'
 import { DesktopError } from './errors'

@@ -16,7 +16,12 @@ export type MoveFailureReason =
 
 /** Stable failures from synchronizing one existing regular file. */
 export type FileSyncFailureReason =
-  'invalidArgument' | 'pathMissing' | 'wrongType' | 'unsupported' | 'permissionDenied' | 'ioFailure'
+  | 'invalidArgument'
+  | 'pathMissing'
+  | 'wrongType'
+  | 'unsupported'
+  | 'permissionDenied'
+  | 'ioFailure'
 
 /** A failed non-replacing move with a stable reason and optional platform error code. */
 export class FileMoveError extends Error {

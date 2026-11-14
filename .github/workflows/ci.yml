@@ -2,18 +2,198 @@ name: CI
 
 on:
   pull_request:
+    types: [opened, reopened, synchronize, edited]
+  push:
+    branches: [main]
+  merge_group:
   workflow_dispatch:
+    inputs:
+      target:
+        description: Target host
+        type: choice
+        options: [all, linux-x64, linux-arm64, macos-x64, macos-arm64, windows-x64, windows-arm64]
+      suite:
+        description: Verification scenario
+        type: choice
+        options: [all, browser, consumers, native, windows, dev, process, artifacts, performance]
 
 permissions:
   contents: read
+  checks: read
+  pull-requests: read
+
+concurrency:
+  group: ci-${{ github.event.action == 'edited' && !github.event.changes.base && github.run_id || github.ref }}-${{ github.event_name }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  verify:
-    concurrency:
-      group: ci-${{ github.ref }}
-      cancel-in-progress: true
-    uses: ./.github/workflows/verification.yml
-    with:
-      base: ${{ github.event.pull_request.base.sha || '' }}
-      head: ${{ github.sha }}
-      complete: ${{ github.event_name == 'workflow_dispatch' }}
+  plan:
+    name: Plan
+    if: github.event.action != 'edited' || github.event.changes.base
+    runs-on: ubuntu-22.04
+    outputs:
+      reused: ${{ steps.prior.outputs.reused }}
+      code: ${{ steps.plan.outputs.code }}
+      selected: ${{ steps.plan.outputs.selected }}
+      matrix: ${{ steps.plan.outputs.matrix }}
+      installers: ${{ steps.plan.outputs.installers }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - name: Find the verified merge tree
+        id: prior
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tree=$(git rev-parse 'HEAD^{tree}')
+          pulls=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls")
+          for number in $(jq -r '.[] | select(.merged_at and .base.ref == "main") | .number' <<< "$pulls"); do
+            prior_head=$(jq -r --argjson n "$number" '.[] | select(.number == $n) | .head.sha' <<< "$pulls")
+            if candidate=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/pull/$number/merge" --jq .object.sha 2>/dev/null); then
+              commit=$(gh api "repos/$GITHUB_REPOSITORY/git/commits/$candidate")
+              if [[ $(jq -r .tree.sha <<< "$commit") == "$tree" && $(jq -r '.parents[1].sha' <<< "$commit") == "$prior_head" ]]; then
+                checks=$(gh api "repos/$GITHUB_REPOSITORY/commits/$candidate/check-runs?per_page=100")
+                if jq -e 'any(.check_runs[]; .name == "Required checks" and .app.slug == "github-actions" and .conclusion == "success")' <<< "$checks" >/dev/null; then
+                  echo 'reused=true' >> "$GITHUB_OUTPUT"
+                  echo "Reused PR #$number, verified tree $tree ($candidate)." >> "$GITHUB_STEP_SUMMARY"
+                  break
+                fi
+              fi
+            fi
+          done
+      - id: plan
+        if: steps.prior.outputs.reused != 'true'
+        name: Select checks from the candidate tree
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha || github.event.before }}
+          HEAD: ${{ github.sha }}
+          REQUEST_TARGET: ${{ inputs.target }}
+          REQUEST_SUITE: ${{ inputs.suite }}
+        run: node tools/ci/plan.ts "$BASE" "$HEAD"
+
+  check:
+    name: Checks (linux-x64)
+    needs: plan
+    if: needs.plan.outputs.reused != 'true'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - name: Check document links
+        run: node tools/ci/documentation.ts
+      - if: needs.plan.outputs.code == 'true'
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
+      - if: needs.plan.outputs.code == 'true'
+        run: pnpm install --frozen-lockfile
+      - if: needs.plan.outputs.code == 'true'
+        run: pnpm run check
+
+  test:
+    name: Test (${{ matrix.label }}, ${{ matrix.target }})
+    needs: plan
+    if: needs.plan.outputs.selected == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version-file: .node-version
+          architecture: ${{ matrix.arch }}
+          package-manager-cache: false
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
+      - if: runner.os == 'macOS'
+        run: echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> "$GITHUB_ENV"
+      - run: pnpm install --frozen-lockfile
+      - name: Prepare Linux desktop
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y xvfb openbox wmctrl libfuse2 rpm
+      - name: Prepare Chromium
+        if: contains(matrix.suites, 'browser') || contains(matrix.suites, 'consumers') || contains(matrix.suites, 'dev')
+        run: pnpm --filter @kisaki3/desktop exec playwright install --with-deps chromium
+      - name: Run selected scenarios
+        shell: bash
+        env:
+          SUITES: ${{ toJSON(matrix.suites) }}
+          PACKAGES: ${{ toJSON(matrix.packages) }}
+          KISAKI_VERIFY_INSTALLERS: ${{ needs.plan.outputs.installers == 'true' && '1' || '0' }}
+        run: |
+          suite() { jq -e --arg name "$1" 'index($name) != null' <<< "$SUITES" > /dev/null; }
+          tasks=()
+          if suite process; then tasks+=('@kisaki3/tooling#test:unit'); fi
+          if suite native; then tasks+=('@kisaki3/desktop#check:native' '@kisaki3/desktop#test:native'); fi
+          if suite browser; then tasks+=('@kisaki3/desktop-ui#test:browser'); fi
+          if suite consumers; then
+            while IFS= read -r pkg; do tasks+=("$pkg#test:consumers"); done < <(jq -r '.[]' <<< "$PACKAGES")
+          fi
+          for name in windows dev artifacts performance; do
+            if suite "$name"; then tasks+=("@kisaki3/desktop#test:$name"); fi
+          done
+          prefix=()
+          if [[ "$RUNNER_OS" == Linux ]]; then
+            export XDG_SESSION_TYPE=x11
+            prefix=(xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh)
+          fi
+          for task in "${tasks[@]}"; do
+            "${prefix[@]}" pnpm exec vp run "$task"
+          done
+      - name: Retain failure diagnostics
+        if: failure()
+        continue-on-error: true
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: diagnostics-${{ matrix.target }}
+          path: |
+            clients/desktop/app/test-results/
+            clients/desktop/packages/*/test-results/
+          retention-days: 5
+          if-no-files-found: ignore
+
+  gate:
+    name: ${{ github.event.action == 'edited' && !github.event.changes.base && 'Metadata edit' || 'Required checks' }}
+    if: always()
+    needs: [plan, check, test]
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Verify required job outcomes
+        if: github.event.action != 'edited' || github.event.changes.base
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          jq -e '
+            .plan.result == "success" and
+            ((.plan.outputs.reused == "true" and .check.result == "skipped" and .test.result == "skipped") or
+             (.check.result == "success" and
+              ((.plan.outputs.selected == "true" and .test.result == "success") or
+               (.plan.outputs.selected == "false" and .test.result == "skipped"))))
+          ' <<< "$RESULTS"
+
+  # Keep the currently protected check on the same candidate until the repository switches its rule.
+  compatibility:
+    name: ${{ github.event.action == 'edited' && !github.event.changes.base && 'Metadata compatibility' || 'verify / Required checks' }}
+    needs: gate
+    if: always()
+    runs-on: ubuntu-22.04
+    steps:
+      - env:
+          RESULT: ${{ needs.gate.result }}
+        run: test "$RESULT" = success

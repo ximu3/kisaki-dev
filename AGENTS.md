@@ -22,6 +22,8 @@
 
 **按终态设计和实现。** 从已确认的目标、合同和资源归属推导方案，现有结构与目标冲突时重做受影响的部分。工作包可以分步实施，交付时正式入口须完整履行承诺，失败与清理也有确定的结果。同类问题在共同拥有层修正，同步受影响的调用方、测试和说明，清理失去用途的旧路径。见[终态与整体一致](refactor/design/engineering/conventions.md#final-state)和[工作包边界](refactor/implementation/work-packages.md#boundary)。
 
+**首次发行前，无须向后兼容本项目的历史实现。** 接口、数据格式、配置、命令和目录均可按目标重做。同步更新全部调用方，重建开发样本，删除失去用途的旧路径。各发行单位的起点及已有外部约定见[首次发行前的兼容范围](refactor/design/engineering/conventions.md#before-first-release)。
+
 **防御和测试要极度克制。** 只为终态中仍有明确后果、现有保证尚未覆盖的真实风险保留防御分支。能从模型或流程中消除错误状态时，修正根因并清理相应的补救分支。外部输入、权限、持久化和副作用的风险由所属边界处理，内部调用直接依赖已有保证。删去重复校验和只为假想异常设置的分支。
 
 日常改动默认不追加防御或回归用例。修复可用已有检查或一次性复现核实。只有关键行为需要持续验证、其余检查会漏掉具体错误时，才保留能检出它的最小用例。同一保证在所属层验证，接入只核对新增风险。见[边界与投入](refactor/design/engineering/conventions.md#proportionality)和[验证范围](refactor/verification/acceptance.md#verification-scope)。
