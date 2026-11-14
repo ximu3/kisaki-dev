@@ -118,16 +118,22 @@ async function runFixture(): Promise<void> {
       nodeIntegration: false,
     },
   })
-  if (process.argv.includes('--cancel-first-close')) {
-    window.once('close', (event) => {
-      event.preventDefault()
+  let declineClose = process.argv.includes('--cancel-first-close')
+  window.on('close', (event) => {
+    // The fixture has no renderer-owned close work. Main either declines or commits teardown.
+    event.preventDefault()
+    if (declineClose) {
+      declineClose = false
       const pids = app
         .getAppMetrics()
         .filter((metric) => metric.type === 'Utility')
         .map((metric) => metric.pid)
       writeFileSync(join(app.getPath('userData'), 'cancelled-hosts.json'), JSON.stringify(pids))
-    })
-  }
+      process.send?.({ type: 'fixture-cancelled' })
+    } else {
+      window.destroy()
+    }
+  })
 
   ipcMain.handle('fixture:identity', () => ({
     kind,
@@ -144,15 +150,6 @@ async function runFixture(): Promise<void> {
       window.close()
     }
   }
-
-  window.on('close', (event) => {
-    queueMicrotask(() => {
-      debug('Window close requested: prevented=%s', event.defaultPrevented)
-      if (event.defaultPrevented) {
-        process.send?.({ type: 'fixture-cancelled' })
-      }
-    })
-  })
 
   app.on('before-quit', (event) => {
     debug('Application before-quit: canQuit=%s', canQuit)
