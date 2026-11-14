@@ -36,6 +36,8 @@
 | UI 行为与发布消费 | UI 的 `tests/consumers/browser.test.ts` 单文件含 13 项测试。公开声明、CSS 级联与 Tailwind 互操作属于制品合同，表单、IME、焦点、虚拟选择等主要验证控件行为。拆开其触发条件与运行位置后，样式或键盘行为能单独获得反馈，发行候选仍能证明外部应用消费了真实 JS、CSS 与声明。[浏览器用例](../../clients/desktop/packages/desktop-ui/tests/consumers/browser.test.ts) |
 | 扩展、独立项目与证据 | 对照作者模板、SDK/CLI 交付、33 个官方扩展、四个独立项目和对应工作包。区分作者使用的命令、项目维护工具、测试用样板、源码试件和实际制品。借用历史证据时注明输入和适用范围，发布前的真实宿主、图形后端或容器结果由所属项目取得。[作者开发](../design/extensions/development.md) · [原生工程](../design/projects/native-runtime.md) · [阅读交付](../design/projects/kana/distribution.md) · [relay 交付](../design/projects/oauth-relay/deployment.md#release) |
 
+在 `1c5f541` 另外追踪了 19 个 `tests/support` 源文件的导入及按路径启动的子进程。桌面的 `database.ts` 只有数据库集成套件消费，`artifact-workspace.ts` 只有制品套件消费。开发控制器、worker 和启动器属于开发会话用例。相比之下，`electron.ts` 由窗口与性能套件共用，`window-observation.ts` 由开发与制品套件共用。根 `tests/support/workspace.ts` 的两处消费者都是正在审视的工作区检查。迁移时按剩余调用方决定就近移动、共享或删除。六包的 11 份消费者样板各有真实工程清单，保留这些输入可以检出本仓已发生的声明依赖遗漏。[数据库集成用例](../../clients/desktop/app/tests/integration/database/storage.test.ts) · [Electron 启动与清理](../../clients/desktop/app/tests/support/electron.ts) · [根工作区辅助](../../tests/support/workspace.ts)
+
 ## 需要处理的实质问题
 
 | 事项 | 依据与影响 | 建议与验收 |

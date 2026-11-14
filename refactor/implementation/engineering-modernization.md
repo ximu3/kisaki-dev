@@ -21,7 +21,7 @@ JS/TS 建议采用 Vite+ 作为工程入口、TypeScript 7.1 作为编译器。�
 
 ## 工程架构与工具组织
 
-pnpm 声明项目与依赖。`vp run` 根据项目图执行有限任务，Vite 管理源码编译和监听。包与应用的构建输出明确目录、目标和依赖。测试从正常入口调用被测能力或读取本次产物。CI 决定哪些宿主需要工作，发布流程接收已经验证的候选字节。自定义代码集中在需要 Kisaki 语义的操作上，例如不可覆盖的输出清理、可拒绝的退出、运行资源装配、原生声明核对及平台签署。
+pnpm 声明项目与依赖，`vp run` 执行工作区任务，Vite 管理编译和监听。简单命令直接写在 `package.json`，需要声明任务依赖、输入与输出时使用 Vite+ 配置。有独立维护逻辑才设 `tools/`，例如生成与校验 ICU 声明、装配平台资源或管理应用的可取消退出。按工作流命名，由最近的项目拥有。只做标准库构建的项目可以没有这个目录。Vite 自身也将需要编程的发行操作放在独立脚本中。[Vite+ 任务](https://viteplus.dev/guide/run) · [Vite 发行脚本](https://github.com/vitejs/vite/blob/main/scripts/prepare-release.ts)
 
 | 工程位置 | 终态责任与迁移动作 |
 | --- | --- |
@@ -29,7 +29,7 @@ pnpm 声明项目与依赖。`vp run` 根据项目图执行有限任务，Vite �
 | `packages/tooling` 与私有配置 | 保留多项目确实使用的 CLI 信号、命令树取消、独立错误交付和按所属目录清理。`pnpm pack`、publint、ATTW 直接消费同一 tarball，只有输入、清理或退出状态需要项目约束时才保留适配。跨包测试专用的安装辅助从下节的私有测试入口消费。类型基线按宿主管理，旧 ESLint 配置包和导入在最后一个调用方迁移后删除。 |
 | 桌面 `tools/build`、`resources`、`native`、`package` | 分别拥有程序构建、字体/图标/迁移资源、Cargo 及 Node-API 绑定、平台打包。按目标交接外置资源、原生文件和完成清单。一个步骤写入一个输出目录，输出的拥有者待最后一个读取进程退出后清理。缓存恢复后核对完整文件集。只被单个流程使用的路径、摘要或类型归回该流程，多个流程使用的纯事实才留在 `tools/lib`。 |
 | 桌面 `tools/dev` | Vite 拥有源码图、renderer HMR、程序编译结果。桌面会话拥有启动、采用完成的程序、协商重启/退出、取消和释放。移除为生成依赖 `dist` 而建立的全包监听、重新构建与刷新链。资源、原生输入仍交给各自的准备工具。退出被拒绝时当前窗口和进程继续工作，确认退出后释放它读取的运行目录。开发会话分配独占的运行和输出目录，调用者可传入预先构建的资源、原生绑定及隔离 profile。[开发会话](../../clients/desktop/app/tools/dev/session.ts) |
-| 各公共包的 `tools` | 六份相同的 `clean.ts` 收敛为一次受限清理，项目声明自己的可重建输出。RPC 和分发包的普通库构建直接交给 `vp pack`。合同包保留 Lucide 名称生成与一致性核对，本地化包保留 ICU 消息声明生成，外观包保留视觉 token 到 CSS 的生成、Tailwind 入口和许可说明，UI 包保留组件样式和许可组装。只保留有独立读者的 CLI 或程序化入口。 |
+| 各公共包的 `tools` | 六份相同的 `clean.ts` 收敛为一次受限清理，项目声明自己的可重建输出。RPC 和分发包改为直接执行 `vp pack`，清理与构建两层包装退役后移除这两个包的 `tools/`。合同包保留 Lucide 名称生成与一致性核对，本地化包保留 ICU 消息声明生成，外观包保留视觉 token 到 CSS 的生成、Tailwind 入口和许可说明，UI 包保留组件样式和许可组装。只保留有独立读者的 CLI 或程序化入口。 |
 | 官方扩展、作者 SDK/CLI 与独立项目 | SDK/CLI 的作者命令、模板和 `.kisx` 打包是交付给用户的产品，随所属包的 `src` 发布。第一方扩展的维护脚本归项目 `tools`，源码模板与测试用消费者工程分别维护。Vantage 和 libmpv-node 的 Rust 单测、集成测试遵循 Cargo 的发现规则，JS 包验证实际绑定和平台制品。Kana 拥有真实格式与浏览器布局验证，relay 拥有 HTTP、容器、配置与停止测试。独立仓库各自落地并登记可取得的运行证据。[作者工具](../design/extensions/development.md#templates) · [原生工程](../design/projects/native-runtime.md) · [Cargo 测试](https://doc.rust-lang.org/cargo/guide/tests.html) |
 
 导入方向是实施约束。用例可以调用工具、源码或已构建制品。工程工具可以依赖已声明的私有工程包和允许的纯合同。所有测试专用入口、样板和运行器只供测试侧使用。产品包的 exports、正式安装包和镜像保持独立消费所需的最小依赖。目录按实际拥有者与阅读路径建立，现行布局在迁移前供对照。[源码布局](../design/engineering/layout.md#tools) · [工具与宿主](../design/engineering/workspace.md#tooling)
@@ -37,6 +37,15 @@ pnpm 声明项目与依赖。`vp run` 根据项目图执行有限任务，Vite �
 <a id="test-architecture"></a>
 
 ## 测试架构与目录
+
+按测试读者实际需要的内容选择位置。`tests/support/` 和 `tests/fixtures/` 都是可选目录。Vitest、Playwright 的 `test.extend` 通过 API 定义 fixture 的创建、使用和释放，可以直接写在所属套件。Vite 维护包含源码和配置的真实测试项目，运行时在副本上操作。[Vitest 测试上下文](https://vitest.dev/guide/test-context) · [Playwright fixtures](https://playwright.dev/docs/test-fixtures) · [Vite 测试工程实践](https://github.com/vitejs/vite/blob/main/CONTRIBUTING.md)
+
+| 内容 | 建议位置与实际例子 |
+| --- | --- |
+| 单个场景的值或辅助 | 简短输入和预期结果直接放在用例。专属准备代码随套件维护，例如数据库的连接选项与种子数据归 `tests/integration/database/`，提取已打包应用的代码归 `tests/artifacts/`。 |
+| 多个套件共用的测试代码 | 共用面确立后才提到 `tests/support/`，按用途命名。桌面的 `electron.ts` 供窗口和性能套件使用，`window-observation.ts` 供开发退出与制品测试使用，适合留在这里。只用于开发测试的启动器、控制器与 worker 随 `tests/tools/dev/` 维护。 |
+| 需要按原样读取、安装或运行的输入 | 同一套件拥有的样本放在套件内的 `fixtures/`，例如 `tests/consumers/fixtures/node/` 保留独立清单与源码。多个套件共用的最小 Electron 应用保留在 `tests/fixtures/runtime/`。修改源码或数据库的用例操作独立副本，稳定输入受版本控制。 |
+| 测试运行时资源 | page、context、临时 profile、数据库连接和子进程由使用它们的 fixture 按需创建并释放。共享安装可以用套件或 worker 作用域，可写资源随实例隔离。测试报告、解包结果和临时数据库由本次运行拥有。 |
 
 | 所验证的行为 | 位置、环境与取舍 |
 | --- | --- |
@@ -48,7 +57,7 @@ pnpm 声明项目与依赖。`vp run` 根据项目图执行有限任务，Vite �
 
 建议复用现有私有工程包，为六个公共包提供一个仅供测试导入的 `@kisaki3/tooling/testing/consumer` 入口。调用方传入样板目录及本次所需的归档映射，拥有运行作用域和断言。共用入口只负责外部目录、安装与释放，在安装失败时回收已取得的资源。按样板实际声明的直接与传递依赖选用归档，Node 纯消费者仍独立于浏览器和 Electron。生成全量声明导入、Node 或浏览器编译、Solid 页面和 Electron IPC 留在对应包。类型感知 lint 在装有实际依赖的样板目录执行，`tsc` 以 `skipLibCheck: false` 检查最终公开声明及其依赖。
 
-只读归档与依赖可在兼容的套件或 worker 内复用。页面、可写 profile、数据库和源码编辑副本按实例独立，先关闭进程、监听器和服务，再清理所属目录。测试样板是维护输入，`dist`、`out` 是构建产物，缓存、持久开发资料、测试报告和发布留存各有清理范围。故障留下足以定位的诊断。测试范围由所需宿主与可观察结果决定，`vp test` 使用 Vitest 的项目配置，真实浏览器和 Electron 采用 Playwright 自有 fixture 寿命。[Vitest 项目](https://vitest.dev/guide/projects.html) · [Playwright fixtures](https://playwright.dev/docs/test-fixtures) · [数据隔离](../verification/acceptance.md#isolation)
+正式产品模板归产品源码，测试样板归消费套件。移动样板或辅助模块时，同步相对导入、子进程启动路径、运行器发现规则、类型项目和构建输入。只读样板、测试报告与可发布文件各有明确的输出边界。[Vitest 测试项目](https://vitest.dev/guide/projects.html) · [数据隔离](../verification/acceptance.md#isolation)
 
 ## 维护与发行
 
