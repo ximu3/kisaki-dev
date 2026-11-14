@@ -1,6 +1,6 @@
 /** @fileoverview Enabled-item navigation with actual DOM order and bounded typeahead lifetime. */
 
-import { onCleanup } from 'solid-js'
+import { createTypeahead, printableKey } from './typeahead'
 import type { Accessor } from 'solid-js'
 
 /**
@@ -26,9 +26,8 @@ export function createFocusNavigation(
   orientation: Accessor<'horizontal' | 'vertical'>,
   moved?: (item: HTMLElement) => void,
 ) {
-  let search = ''
-  let timer: ReturnType<typeof setTimeout> | undefined
-  onCleanup(() => clearTimeout(timer))
+  /** Prefix search scoped to this focus group. */
+  const typeahead = createTypeahead()
 
   return (event: KeyboardEvent) => {
     if (event.isComposing || event.altKey || event.ctrlKey || event.metaKey) {
@@ -53,20 +52,11 @@ export function createFocusNavigation(
       target = items[0]
     } else if (event.key === 'End') {
       target = items.at(-1)
-    } else if (event.key.length === 1 && event.key !== ' ') {
-      clearTimeout(timer)
-      search += event.key.toLocaleLowerCase()
-      timer = setTimeout(() => {
-        search = ''
-      }, 700)
-
-      const prefix = [...search].every((character) => character === search[0]) ? search[0]! : search
+    } else if (printableKey(event.key)) {
+      const matches = typeahead(event.key, root())
       const ordered = [...items.slice(current + 1), ...items.slice(0, current + 1)]
       target = ordered.find((item) =>
-        (item.getAttribute('aria-label') ?? item.textContent ?? '')
-          .trim()
-          .toLocaleLowerCase()
-          .startsWith(prefix),
+        matches(item.getAttribute('aria-label') ?? item.textContent ?? ''),
       )
     }
 

@@ -7,9 +7,9 @@
     "types": ["vite/client"]
   },
   "include": [
-    "../../tests/fixtures/runtime/src/renderer/**/*.ts",
-    "../../tests/fixtures/runtime/src/renderer/**/*.tsx",
-    "../../tests/fixtures/runtime/src/shared/**/*.ts"
+    "../../tests/fixtures/desktop-app/src/renderer/**/*.ts",
+    "../../tests/fixtures/desktop-app/src/renderer/**/*.tsx",
+    "../../tests/fixtures/desktop-app/src/shared/**/*.ts"
   ],
   "exclude": []
 }

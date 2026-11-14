@@ -4,5 +4,5 @@
     "incremental": true,
     "tsBuildInfoFile": "../../.cache/typescript/electron.tsbuildinfo"
   },
-  "include": ["../../tests/fixtures/electron/**/*.ts"]
+  "include": ["../../tests/consumers/fixtures/electron/**/*.ts"]
 }

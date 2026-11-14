@@ -154,7 +154,10 @@ export type FieldAdoption = 'fill' | 'overwrite'
  * Update touches corresponding existing members. Owned part lists can only append missing parts.
  */
 export type IngestRelationUpdate<K extends keyof MetadataRelationAttributeValues> = K extends
-  'workVolumes' | 'workChapters' | 'workEpisodes' | 'workExtras'
+  | 'workVolumes'
+  | 'workChapters'
+  | 'workEpisodes'
+  | 'workExtras'
   ? {
       readonly mode: 'append'
     }

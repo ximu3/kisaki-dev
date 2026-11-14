@@ -1,12 +1,13 @@
 /** @fileoverview Exercises the packed pure entrypoints in an independent Node-only consumer. */
 
-import { expect } from 'vitest'
+import { lintConsumer } from '@kisaki3/tooling/testing/consumer'
+import { expect } from 'vite-plus/test'
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { runPnpm } from '@kisaki3/tooling/process'
-import { consumerTest, lintConsumer } from '../support/consumer'
+import { consumerTest } from './consumer'
 
 /** Isolated Node fixtures that install and exercise the actual appearance tarball. */
 const test = consumerTest('node')
@@ -16,7 +17,7 @@ test('NodeNext declarations and pure entrypoints work without browser dependenci
   signal,
 }) => {
   await runPnpm(['build'], { cwd: consumerDirectory, signal })
-  expect((await lintConsumer(consumerDirectory)).flatMap((item) => item.messages)).toEqual([])
+  await lintConsumer(consumerDirectory)
 
   const { stdout } = await promisify(execFile)(
     process.execPath,

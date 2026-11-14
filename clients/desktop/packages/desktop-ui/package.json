@@ -19,141 +19,169 @@
   ],
   "exports": {
     "./alert": {
+      "kisaki-source": "./src/components/alert/index.ts",
       "types": "./dist/alert.d.ts",
       "import": "./dist/alert.js"
     },
     "./badge": {
+      "kisaki-source": "./src/components/badge/index.ts",
       "types": "./dist/badge.d.ts",
       "import": "./dist/badge.js"
     },
     "./button": {
+      "kisaki-source": "./src/components/button/index.ts",
       "types": "./dist/button.d.ts",
       "import": "./dist/button.js"
     },
     "./chart": {
+      "kisaki-source": "./src/components/chart/index.ts",
       "types": "./dist/chart.d.ts",
       "import": "./dist/chart.js"
     },
     "./checkbox": {
+      "kisaki-source": "./src/components/checkbox/index.ts",
       "types": "./dist/checkbox.d.ts",
       "import": "./dist/checkbox.js"
     },
     "./collapsible": {
+      "kisaki-source": "./src/components/collapsible/index.ts",
       "types": "./dist/collapsible.d.ts",
       "import": "./dist/collapsible.js"
     },
     "./combobox": {
+      "kisaki-source": "./src/components/combobox/index.ts",
       "types": "./dist/combobox.d.ts",
       "import": "./dist/combobox.js"
     },
     "./dialog": {
+      "kisaki-source": "./src/components/dialog/index.ts",
       "types": "./dist/dialog.d.ts",
       "import": "./dist/dialog.js"
     },
     "./drag": {
+      "kisaki-source": "./src/components/drag/index.ts",
       "types": "./dist/drag.d.ts",
       "import": "./dist/drag.js"
     },
     "./empty-state": {
+      "kisaki-source": "./src/components/empty-state/index.ts",
       "types": "./dist/empty-state.d.ts",
       "import": "./dist/empty-state.js"
     },
     "./field": {
+      "kisaki-source": "./src/components/field/index.ts",
       "types": "./dist/field.d.ts",
       "import": "./dist/field.js"
     },
     "./image": {
+      "kisaki-source": "./src/components/image/index.ts",
       "types": "./dist/image.d.ts",
       "import": "./dist/image.js"
     },
     "./input": {
+      "kisaki-source": "./src/components/input/index.ts",
       "types": "./dist/input.d.ts",
       "import": "./dist/input.js"
     },
     "./link": {
+      "kisaki-source": "./src/components/link/index.ts",
       "types": "./dist/link.d.ts",
       "import": "./dist/link.js"
     },
     "./markdown": {
+      "kisaki-source": "./src/components/markdown/index.ts",
       "types": "./dist/markdown.d.ts",
       "import": "./dist/markdown.js"
     },
     "./menu": {
+      "kisaki-source": "./src/components/menu/index.ts",
       "types": "./dist/menu.d.ts",
       "import": "./dist/menu.js"
     },
     "./popover": {
+      "kisaki-source": "./src/components/popover/index.ts",
       "types": "./dist/popover.d.ts",
       "import": "./dist/popover.js"
     },
     "./progress": {
+      "kisaki-source": "./src/components/progress/index.ts",
       "types": "./dist/progress.d.ts",
       "import": "./dist/progress.js"
     },
     "./radio-group": {
+      "kisaki-source": "./src/components/radio-group/index.ts",
       "types": "./dist/radio-group.d.ts",
       "import": "./dist/radio-group.js"
     },
     "./scroll-area": {
+      "kisaki-source": "./src/components/scroll-area/index.ts",
       "types": "./dist/scroll-area.d.ts",
       "import": "./dist/scroll-area.js"
     },
     "./segmented-control": {
+      "kisaki-source": "./src/components/segmented-control/index.ts",
       "types": "./dist/segmented-control.d.ts",
       "import": "./dist/segmented-control.js"
     },
     "./select": {
+      "kisaki-source": "./src/components/select/index.ts",
       "types": "./dist/select.d.ts",
       "import": "./dist/select.js"
     },
     "./separator": {
+      "kisaki-source": "./src/components/separator/index.ts",
       "types": "./dist/separator.d.ts",
       "import": "./dist/separator.js"
     },
     "./slider": {
+      "kisaki-source": "./src/components/slider/index.ts",
       "types": "./dist/slider.d.ts",
       "import": "./dist/slider.js"
     },
     "./spinner": {
+      "kisaki-source": "./src/components/spinner/index.ts",
       "types": "./dist/spinner.d.ts",
       "import": "./dist/spinner.js"
     },
     "./switch": {
+      "kisaki-source": "./src/components/switch/index.ts",
       "types": "./dist/switch.d.ts",
       "import": "./dist/switch.js"
     },
     "./table": {
+      "kisaki-source": "./src/components/table/index.ts",
       "types": "./dist/table.d.ts",
       "import": "./dist/table.js"
     },
     "./tabs": {
+      "kisaki-source": "./src/components/tabs/index.ts",
       "types": "./dist/tabs.d.ts",
       "import": "./dist/tabs.js"
     },
     "./textarea": {
+      "kisaki-source": "./src/components/textarea/index.ts",
       "types": "./dist/textarea.d.ts",
       "import": "./dist/textarea.js"
     },
     "./toast": {
+      "kisaki-source": "./src/components/toast/index.ts",
       "types": "./dist/toast.d.ts",
       "import": "./dist/toast.js"
     },
     "./tooltip": {
+      "kisaki-source": "./src/components/tooltip/index.ts",
       "types": "./dist/tooltip.d.ts",
       "import": "./dist/tooltip.js"
     },
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": {
+      "kisaki-source": "./src/styles.css",
+      "default": "./dist/styles.css"
+    }
   },
   "scripts": {
-    "prepare:build": "kisaki-package prepare-build",
-    "build": "tsx tools/build.ts",
-    "pack": "kisaki-package pack",
-    "typecheck": "tsc -b",
-    "lint": "eslint . --max-warnings 0",
-    "check:boundaries": "pnpm --workspace-root exec tsx tools/boundaries.ts clients/desktop/packages/desktop-ui",
-    "test:consumers": "vitest run --config config/vitest/consumers.ts",
-    "check:package": "kisaki-package check",
-    "clean": "tsx tools/clean.ts"
+    "typecheck:project": "tsc -b",
+    "clean:outputs": "kisaki-package clean",
+    "test:browser": "vp test run"
   },
   "peerDependencies": {
     "solid-js": "^1.9.0"
@@ -175,6 +203,7 @@
     "@tanstack/solid-virtual": "3.13.48",
     "@types/d3-scale": "4.0.9",
     "@types/d3-selection": "3.0.12",
+    "@types/throttle-debounce": "5.0.2",
     "@unovis/solid": "1.7.1",
     "@unovis/ts": "1.7.1",
     "csstype": "3.2.3",
@@ -183,26 +212,19 @@
     "markdown-it": "15.0.3"
   },
   "devDependencies": {
-    "@kisaki3/eslint-config": "workspace:*",
     "@kisaki3/tooling": "workspace:*",
     "@kisaki3/typescript-config": "workspace:*",
     "@playwright/test": "1.64.1",
     "@tailwindcss/cli": "4.3.3",
-    "@tsdown/css": "0.23.0",
     "@types/culori": "4.0.1",
     "@types/node": "catalog:",
     "electron": "catalog:",
-    "eslint": "catalog:",
-    "jiti": "catalog:",
     "solid-js": "catalog:",
     "tailwindcss": "4.3.3",
-    "tsdown": "0.23.0",
-    "tsx": "catalog:",
     "typescript": "catalog:",
-    "typescript-eslint": "catalog:",
     "unplugin-solid": "1.0.0",
     "vite": "catalog:",
     "vite-plugin-solid": "catalog:",
-    "vitest": "catalog:"
+    "vite-plus": "catalog:"
   }
 }

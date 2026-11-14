@@ -9,9 +9,10 @@ import { join } from 'node:path'
 import electronManifest from 'electron/package.json' with { type: 'json' }
 import { appRoot, buildDirectory } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
-import type { DesktopBuild, DesktopTarget } from '../lib/runtime-manifest'
+import type { DesktopBuild } from './manifest'
+import type { DesktopTarget } from '../lib/targets'
 import { removeOutputs } from '@kisaki3/tooling/output'
-import { runtimeFiles } from './files'
+import { runtimeFiles } from './manifest'
 import { buildProgram, programNames } from './programs'
 
 /**

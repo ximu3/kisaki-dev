@@ -1,6 +1,6 @@
 /** @fileoverview Verifies partial-date preservation, calendar validity and exact era-text round trips. */
 
-import { test, expect } from 'vitest'
+import { test, expect } from 'vite-plus/test'
 
 import { parsePartialDate, isLeapYear, parseCalendarDate, toEraYear, parseEraYear } from './date'
 

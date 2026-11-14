@@ -17,7 +17,8 @@ export type NonEmptyArray<T> = readonly [T, ...T[]]
  * Each domain defines the units and comparison rules.
  */
 export type Bounds<T> =
-  { readonly min: T; readonly max?: T } | { readonly min?: T; readonly max: T }
+  | { readonly min: T; readonly max?: T }
+  | { readonly min?: T; readonly max: T }
 
 /**
  * Optional cancellation signal for one capability call.

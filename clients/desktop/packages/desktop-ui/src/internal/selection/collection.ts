@@ -1,7 +1,8 @@
 /** @fileoverview Logical option navigation independent of mounted or virtualized rows. */
 
-import { createMemo, createSignal, onCleanup } from 'solid-js'
+import { createMemo, createSignal } from 'solid-js'
 import type { Accessor } from 'solid-js'
+import { createTypeahead } from '../typeahead'
 import type { SelectionOption } from './types'
 
 /**
@@ -32,9 +33,8 @@ export function createSelection(source: Accessor<readonly SelectionOption[]>) {
     return option && !option.disabled ? option.value : undefined
   }
 
-  let search = ''
-  let timer: ReturnType<typeof setTimeout> | undefined
-  onCleanup(() => clearTimeout(timer))
+  /** Timed prefix search for this selection control. */
+  const typeahead = createTypeahead()
 
   /** Sets the logical highlighted key, or clears it when undefined is supplied. */
   const highlight = (value: string | undefined) => setHighlighted(value)
@@ -61,20 +61,12 @@ export function createSelection(source: Accessor<readonly SelectionOption[]>) {
    *
    * No match preserves the current active choice.
    */
-  const type = (character: string) => {
-    clearTimeout(timer)
-    search += character.toLocaleLowerCase()
-    timer = setTimeout(() => {
-      search = ''
-    }, 700)
-    const repeated = [...search].every((letter) => letter === search[0])
-    const prefix = repeated ? character.toLocaleLowerCase() : search
+  const type = (character: string, control: HTMLElement) => {
+    const matches = typeahead(character, control)
     const items = enabled()
     const start = items.findIndex((option) => option.value === active())
     const ordered = [...items.slice(start + 1), ...items.slice(0, start + 1)]
-    highlight(
-      ordered.find((item) => item.label.toLocaleLowerCase().startsWith(prefix))?.value ?? active(),
-    )
+    highlight(ordered.find((item) => matches(item.label))?.value ?? active())
   }
 
   return { options, get, positionOf, enabled, active, highlight, move, type }

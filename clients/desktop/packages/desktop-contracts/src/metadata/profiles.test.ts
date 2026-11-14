@@ -1,6 +1,6 @@
 /** @fileoverview Verifies metadata profiles select valid fields, rules and declared participants. */
 
-import { test, expect } from 'vitest'
+import { test, expect } from 'vite-plus/test'
 
 import { parseMetadataProfileDefinition } from './profiles'
 

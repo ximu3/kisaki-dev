@@ -3,7 +3,7 @@
  * imports across project scopes.
  */
 
-import { afterAll, beforeAll, expect, test } from 'vitest'
+import { afterAll, beforeAll, expect, test } from 'vite-plus/test'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { copyFile, mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises'

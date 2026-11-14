@@ -21,13 +21,13 @@ interface DesktopFixtures {
   desktop: ElectronApplication
   profile: string
   kind: WindowKind
-  storagePerformance: boolean
+  storagePerformance: string
 }
 
 /** Playwright fixtures that own the prepared Electron process and its isolated profile. */
 export const test = base.extend<DesktopFixtures>({
   kind: ['main', { option: true }],
-  storagePerformance: [false, { option: true }],
+  storagePerformance: ['', { option: true }],
 
   /** Owns an isolated profile for the consuming test and removes it after teardown. */
   profile: async ({}, use) => {
@@ -63,7 +63,7 @@ export const test = base.extend<DesktopFixtures>({
         join(runtime, 'main/entry.js'),
         `--profile=${profile}`,
         `--window=${kind}`,
-        ...(storagePerformance ? ['--storage-performance'] : []),
+        ...(storagePerformance ? ['--storage-performance=' + storagePerformance] : []),
       ],
       env,
     })

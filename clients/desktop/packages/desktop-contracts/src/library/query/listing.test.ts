@@ -1,6 +1,6 @@
 /** @fileoverview Verifies query result intervals, counts and target location stay internally consistent. */
 
-import { test, expect } from 'vitest'
+import { test, expect } from 'vite-plus/test'
 import { parseEntryQuery } from './definition'
 import type { EntryQuery } from './definition'
 

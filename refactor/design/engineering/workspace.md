@@ -24,7 +24,7 @@
 | 拖拽排序       | Pragmatic Drag and Drop    | 核心与辅助包的固定版本见 [拖拽实现](../ui/virtualization.md#dependency)          |
 | 系统与功能图标 | Lucide 1.x | lucide-solid 与 @lucide/icons 均为 1.72.0；名称合同见 [UI 图标值](../extensions/webview.md#icons) |
 
-原生窗口、公共 UI 和官方扩展统一使用 Solid 1.9，并遵守该版本的 API 与 owner 生命周期。应用使用 Vite 8.3.3 和 vite-plugin-solid 2.11.14；公共 Solid 库使用 tsdown 0.23.0，以及 unplugin-solid 1.0.0 提供的公开 Rolldown 接入。unplugin-solid 3.x 不用于 Solid 1.9。
+原生窗口、公共 UI 和官方扩展采用 Solid 1.9。应用使用 Vite+ 提供的 Vite 和兼容的 vite-plugin-solid，公共 Solid 库由 vp pack 与 unplugin-solid 的 Rolldown 插件编译。具体版本以工作区 catalog 与锁文件为准。
 
 Solid 的活跃属性、快照、派生值和副作用保持区别，不能为统一外观采用会改变其响应性的解构或封装。
 
@@ -143,9 +143,9 @@ desktop-ui 通过 props、事件、回调和普通呈现值接入行为，不导
 
 公共组件的原生交互、状态、表单、组合、目录与公开入口由[UI 包规范](../ui/package.md)定义。desktop-appearance 维护共同默认视觉值，desktop-ui 维护组件样式；应用通过公开入口消费。视觉核对沿[既有体验](../ui/components.md#existing-ui)开展，类型、样式消费和实际呈现分别验证。
 
-desktop-ui 使用 CSS Modules 编写组件样式，组织、状态与宿主覆盖遵守[UI 样式合同](../ui/package.md#styles)。src/styles.css 接入 desktop-appearance 的普通 CSS 并声明层叠顺序；tsdown 提取各组件的局部样式，统一生成 dist/styles.css，通过包的样式入口交付。消费者直接使用构建后的类名映射和普通 CSS，无须安装 Tailwind 或处理 CSS Modules 源文件。
+desktop-ui 使用 CSS Modules 编写组件样式，组织、状态与宿主覆盖遵守[UI 样式合同](../ui/package.md#styles)。src/styles.css 接入 desktop-appearance 的普通 CSS 并声明层叠顺序；vp pack 提取各组件的局部样式，统一生成 dist/styles.css，通过包的样式入口交付。消费者直接使用构建后的类名映射和普通 CSS，无须安装 Tailwind 或处理 CSS Modules 源文件。
 
-CSS 构建采用与 tsdown 0.23.0 同版的 @tsdown/css 0.23.0，通过公开模块处理与合并输出选项接入。上游仍将 [CSS 支持](https://tsdown.dev/options/css)标为实验性，升级时核对局部类名、层叠、资源与最终消费行为；基础可行性见[UI 包验证](../../verification/evidence/desktop-ui/README.md#styles)。多入口的样式归集、CSS 副作用、导出路径和资源地址随正式 tarball 一起验证。
+`vp pack` 提取组件 CSS Modules，组装工具按声明的层叠顺序生成公开样式。真实 tarball 验证类名、层叠、资源与无框架消费，各组件交互使用同一份源码样式。
 
 UI 成品包含组件自身必要的基础规则，文档级重置由实际宿主统一安排。应用页面继续使用 Tailwind，扩展页面按自身工程选择样式工具。使用 Tailwind 的工程只处理自身代码及实际共享组件，并通过 desktop-appearance 采用同一视觉映射与[层叠顺序](../ui/package.md#styles)；桌面的具体位置遵守[窗口样式组织](layout.md#renderer-styles)。
 
@@ -157,35 +157,35 @@ CSS 提供明确的消费入口，并通过副作用配置确保构建保留；�
 
 ## 工作区与项目配置
 
-Kisaki 中的 Node 与 TypeScript 工程采用一个根 pnpm workspace、一份 pnpm-lock.yaml，由根 Turborepo 调度实际项目。完整交付布局包含桌面应用、八个公共包、33 个官方扩展和三个私有工程包，共 45 个成员工程，另有仓库根工程。实际登记随所属工作包维护，clients、desktop 等分类目录不登记为包。未来对应工程实际建立后优先加入同一工作区，不提前登记空工程。成员按 manifest 中的唯一 name 识别，包作用域与发布资格遵守[项目身份](repository.md#identity)，目录分类不替代包身份。
+Kisaki 中的 Node 与 TypeScript 工程采用一个根 pnpm workspace、一份 pnpm-lock.yaml，由项目锁定的 Vite+ 调度实际项目。完整交付布局包含桌面应用、八个公共包、33 个官方扩展和三个私有工程包，共 45 个成员工程，另有仓库根工程。实际登记随所属工作包维护，clients、desktop 等分类目录不登记为包。未来对应工程实际建立后优先加入同一工作区，不提前登记空工程。成员按 manifest 中的唯一 name 识别，包作用域与发布资格遵守[项目身份](repository.md#identity)，目录分类不替代包身份。
 
-通用检查通过 pnpm 读取已登记成员，同时独立枚举维护目录中的 package.json 核对漏登记；workspace 只登记实际工程，证据、生成输出和测试试件按各自用途组织。源码覆盖与依赖扫描从整个维护树发现输入，不维护桌面、官网或服务端的平行目录清单。TypeScript 工程以默认 tsconfig.json 及其 references 表达 typecheck 的检查范围，结构检查不解析脚本中的编译器命令文本。桌面公共包的数量、许可和发布约束留在桌面范围，私有工程规则只指向实际工程包，不替尚未建立的产品库决定许可或私有身份。
+workspace 按实际工程登记。根检查运行各项目声明的类型入口，自有声明由所属项目完整检查。独立安装的消费者样板在仓库外验证自己的配置、公开声明和实际运行环境。
 
 | 位置                   | 负责内容                                                             |
 | ---------------------- | -------------------------------------------------------------------- |
 | 根 package.json        | 固定包管理器版本，声明仓库维护工具和统一任务入口，不参与产品发行版本 |
 | 根 pnpm-workspace.yaml | 声明实际成员，以及确有一致性要求的 catalog 版本范围                  |
 | 根 pnpm-lock.yaml      | 保存工作区的依赖解析结果，供安装与依赖图核对                         |
-| 根 turbo.json          | 声明任务依赖、输出和缓存规则                                         |
+| 根与项目 vite.config.ts          | 声明任务依赖、输出和缓存规则                                         |
 | 各项目 package.json    | 声明自己的版本、实际依赖、公开入口和项目脚本                         |
 
-根目录只保留仓库级工具及根工具实际使用的依赖，应用和库的依赖由使用者声明。Electron 属于桌面应用，Solid 属于实际使用它的项目，组件库依据公开合同声明 peer。一个锁文件可以记录各项目需要的不同依赖版本；catalog 只统一需要共同兼容的范围，不迫使未来 Web 或官网采用桌面的框架。依赖归属依据 [Turborepo 依赖管理建议](https://turborepo.dev/docs/crafting-your-repository/managing-dependencies)。
+根目录只保留仓库级工具及根工具实际使用的依赖，应用和库的依赖由使用者声明。Electron 属于桌面应用，Solid 属于实际使用它的项目，组件库依据公开合同声明 peer。一个锁文件可以记录各项目需要的不同依赖版本；catalog 只统一需要共同兼容的范围，不迫使未来 Web 或官网采用桌面的框架。依赖归属依据 [pnpm 工作区](https://pnpm.io/workspaces)。
 
 工程用途包括已确认的构建与测试工具链、类型检查、配置加载、资产准备和上游 peer 约束。具备这些用途的依赖应保留，不能仅因产品源码没有直接 import、某阶段尚无对应测试用例或希望减少声明数量而删除。清理前先核对实际拥有者及使用方式。
 
 各依赖声明块按包名排序，脚本按开发、构建与打包、验证、维护组织，同类任务相邻。工具默认入口可直接发现，需要选择其他宿主或输入范围时显式指定配置。条件 exports 的顺序具有匹配语义，不能机械排序；不为固定字段顺序增加结构快照测试。已经进入共同 catalog 的版本由消费者引用 catalog，不另写一份等价版本。
 
-packages/typescript-config 提供共同严格性和纯环境、Node、浏览器、Solid 配置；packages/eslint-config 提供共同 lint 规则和适用的环境规则；packages/tooling 提供命令执行、所属输出清理、错误传递和 CLI 收尾。三者均为私有工程依赖，消费者通过 workspace devDependencies 与 exports 使用，固定工程宿主直接加载 JSON 或 TypeScript 源码，不要求预构建。公共包继续交付构建后的 exports，产品运行代码、公开声明和仓库外作者模板不引用私有工程包。格式规则由仓库根统一维护，各项目的默认配置负责本项目的范围与环境选择。
+packages/typescript-config 提供纯环境、Node、浏览器和 Solid 的共同严格基线。根 vite.config.ts 拥有 Oxlint、Oxfmt 和暂存文件规则。packages/tooling 提供工程命令、进程、取消、错误交付和输出清理。
 
-类型感知 lint 使用 TypeScript Project Service 读取实际类型项目与 references，跨项目暂存文件也按各自环境检查。lint 与 root:lint 通过 ^build 准备依赖包声明，缓存输入包含所用 TypeScript 配置和共享规则；构建前置不扩大其他运行验收范围。仓库外消费者样板在安装实际 tarball 后执行完整规则，仓库内采用语法检查。具体配置与入口见[共用工程包](../../implementation/development.md#shared-tooling)。
+类型感知 lint 使用工作区锁定的 Oxlint 与 tsgolint，按实际类型项目分析源码。仓库外消费者在安装实际 tarball 后执行类型检查与 lint。
 
 各项目限定自己的 Node、DOM、Electron、Solid 和测试环境。其他语言工程保留对应工具链与锁文件，不为目录一致而改用 pnpm 管理原生依赖。出现无法在共同工具链中可靠开发与验证的真实约束时，再明确调整工作区边界。
 
-官方扩展的 kisx.config.ts 与 eslint.config.ts 由各自根 tsconfig.json 在 Node 环境共同检查。defineConfig 的实现保持纯粹，不要求消费它的构建配置另建纯环境项目。Node、Webview、共享合同与测试源码按真实运行环境划分配置，只为实际源码建立类型项目。
+官方扩展的 kisx.config.ts 与 vite.config.ts 由各自根 tsconfig.json 在 Node 环境共同检查。defineConfig 的实现保持纯粹，不要求消费它的构建配置另建纯环境项目。Node、Webview、共享合同与测试源码按真实运行环境划分配置，只为实际源码建立类型项目。
 
 仓库根 tsconfig.json 以空 files 和 references 组织 config/typescript 中的 tsconfig.tools.json、tsconfig.config.json 和 tsconfig.tests.json，三者均使用 Node 类型与 ES2023 库。需要 DOM 的浏览器回调由实际拥有者的类型项目检查，消费者样板使用各自配置。
 
-配置类型项目覆盖根工具入口及 config 中的 TypeScript 配置。Turbo 调度各 workspace 与根 root:typecheck，后者通过 tsc -b 检查这三个项目，增量信息归根 .cache/typescript。
+配置类型项目覆盖根工具入口及 config 中的 TypeScript 配置。Vite Task 调度各 workspace 与根 typecheck:project，后者通过 tsc -b 检查这三个项目，增量信息归根 .cache/typescript。
 
 共同规则继承 @kisaki3/typescript-config，依赖检查读取根 tsconfig.json 的编译选项，按所属 package.json 的 imports 与 exports 解析模块入口，不另维护私有别名映射。
 
@@ -193,7 +193,7 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 
 八个公共包各自通过工程根目录的 tsconfig.json，以空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置；desktop-ui 的 tsdown 配置同样归 Node 工具项目。
 
-同包根目录的 tsdown.config.ts 显式读取 config/typescript/tsconfig.lib.json；增量信息写入该包 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](conventions.md#configuration-layout)。
+同包根目录的 vite.config.ts 为 vp pack 指定包根的 tsconfig.pack.json；增量信息写入该包 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](conventions.md#configuration-layout)。
 
 共享锁文件与工具升级可能扩大验证范围。开发入口按实际目标启动，desktop:dev 只启动桌面及必要依赖；项目脚本执行具体任务，根任务统一调度。版本、发行说明与部署仍按各自发行单位管理，不因一次安装或同仓提交而合并版本。
 
@@ -204,14 +204,14 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 | 拥有者                       | 唯一负责的事实或行为                                                               |
 | ---------------------------- | ---------------------------------------------------------------------------------- |
 | pnpm                         | workspace 成员、各包实际依赖、统一锁文件、catalog、安装与 tarball 打包             |
-| Turborepo                    | 从真实依赖形成任务顺序、受影响范围、并发与合格任务的缓存                           |
-| TypeScript、ESLint、Prettier | 类型与环境检查、代码规范和导入规则、统一排版                                       |
-| tsdown                       | 公开 TypeScript/Solid 包的代码、类型声明与声明过的样式输出                         |
+| Vite Task                    | 从实际工作区依赖形成任务顺序，调度选定操作并恢复可缓存的产物                           |
+| TypeScript、Oxlint、Oxfmt | 类型与环境检查、代码规范和导入规则、统一排版                                       |
+| Vite+ pack                   | 公开 TypeScript/Solid 包的代码、类型声明与声明过的样式输出                         |
 | Vite 与桌面 tools            | 各 Electron 程序和 renderer 的编译、开发服务器、桌面生命周期与资源装配             |
 | electron-builder             | 平台安装包、签名接入与 electron-updater 所需元数据                                 |
 | kisx                         | 扩展项目开发与打包、 registry 资料处理、校验和签名                                 |
 | GitHub Actions               | 事件、runner、任务依赖、权限、制品流转和发布部署                                   |
-| 根 tools 与私有工程包        | 根工具拥有 Git hooks、验证环境信息与跨项目发行；私有包提供实际共用的配置和工程函数 |
+| 根 tools 与私有工程包        | 根工具拥有 CI 选择、文档引用、导入边界与跨项目发行；私有包提供实际共用的配置和工程函数 |
 
 根 packageManager 固定 pnpm 版本，开发工具使用一致的 Node 版本和锁文件；Electron 内置 Node 的版本另行记录。CI 使用 frozen-lockfile 安装，检查过程不自动升级依赖。
 
@@ -219,11 +219,11 @@ packages/typescript-config 提供共同严格性和纯环境、Node、浏览器�
 
 公开库默认交付 ESM、d.ts 和所需 CSS，并区分 Node、DOM、Solid 与纯定义入口。通过 publint、Are the Types Wrong 和实际 tarball 消费检查制品。sandbox preload 将非 Electron 依赖完整打包为可加载的 CommonJS；其他程序按 [Electron 加载规则](https://www.electronjs.org/docs/latest/tutorial/esm) 检查，不机械统一为 ESM。
 
-tsdown 生成声明不能代替完整 typecheck。根 TypeScript 配置只规定共同严格性，各项目限制实际可用的 globals、模块和测试类型，手写 d.ts 也作为源码检查。ESLint 检查局部导入规则，dependency-cruiser 检查进程边界、私有依赖、循环及绕过路径。各工程的 check:boundaries 只扫描自己的源码范围，并通过 ^build 等待实际公共依赖；根 root:boundaries 拥有根工具、测试和配置。共同规则由根 .dependency-cruiser.json 维护，tools/boundaries.ts 在仓库坐标下执行对应范围，避免全仓扫描与其他工程的输出准备并行。格式和 lint 共享配置只保留必要的环境差异。
+`vp pack` 生成交付声明，`tsc -b` 检查项目源码。根 dependency-cruiser 规则覆盖运行端、私有工程包、工具、测试、循环及未声明导入。依赖图按工作区真实入口解析，同时核对类型导入。
 
 自维护源码按[TypeScript 要求](conventions.md#source-language)检查，范围包含产品代码、工具、配置、测试、模板和本体私有原生入口。源码类型配置保持 allowJs: false，结构检查核对未进入 typecheck 的目录，生成产物和第三方发行内容按自己的归属检查。
 
-项目 manifest 和版本 PR 提供版本事实，Turbo 安排依赖任务，CI 调用项目自身的构建入口。根 tools 校验发行输入、生成元数据并执行交付，不另行推导版本或依赖图。所有工具采用经过兼容验证的锁定版本，TypeScript 和声明检查使用同一编译器。
+项目 manifest 和版本 PR 提供版本事实，Vite Task 安排依赖任务，CI 调用项目自身的构建入口。根 tools 校验发行输入、生成元数据并执行交付，不另行推导版本或依赖图。所有工具采用经过兼容验证的锁定版本，TypeScript 和声明检查使用同一编译器。
 
 <a id="declaration-checks"></a>
 
@@ -247,59 +247,19 @@ UI 与其他包遵守同一分工，不另设仅为跳过依赖声明的配置�
 
 ### 任务名称与项目入口
 
-根定向脚本按范围、动作和限定方式命名，例如 desktop:packages:pack、desktop:test:native、root:typecheck。真正覆盖全仓的 build、typecheck、lint、test、check、clean 保留聚合名称。包内已有工程上下文，采用 build:native、prepare:resources、check:package 等动作在前的名称，不重复项目名前缀。根工程自身的维护动作同样使用 install:hooks 等本地名称。
-
-包级 prepare:build 是不缓存的输出准备任务，清理该包的 dist；build 依赖它和实际上游 build，正常编译及缓存恢复均取得干净目录。包内直接执行 build 时同样准备自己的输出，生成声明、CSS 和许可材料后才完成。pack 在独立的可重建目录生成一次实际 tarball，check:package 对该文件执行 publint／Are the Types Wrong；同包 test:consumers 依赖制品检查并安装同一文件，根 desktop:test:consumers 通过 Turbo 聚合调度。test:* 用于执行测试断言，工程载体的生成分别命名为 build:fixture 和 package:fixture。
-
-使用与 pnpm 内置命令同名的脚本时明确写 pnpm run，例如 pnpm run pack 和 pnpm run clean。
-
-各项目按需要提供 typecheck、lint、test 和 build，根 Turbo 根据实际 manifest 与锁文件中的依赖调度。根任务统一调度 workspace 和已登记的根实际任务；root:lint 只检查根工程，项目 eslint.config.ts 负责自身文件，并以 import.meta.dirname 显式绑定 parserOptions.tsconfigRootDir，使跨项目的暂存文件检查使用同一规则。
-
-根 turbo.json 定义共同任务，桌面特有任务由应用 turbo.json 继承并配置。依赖其他项目输出的任务明确声明上游 build；只读取源码的检查登记实际读取的共享输入，不制造空 build。格式检查无需先构建整个仓库。八个公共包各有自己的输出，桌面各程序独立构建，不维护额外的 target JSON 或依赖邻接表，也不把全部监听绑定到单一进程。
-
-测试任务按[输入与执行阶段](layout.md#test-tasks)声明常规、消费者、端到端和最终制品等范围，项目脚本直接启动对应运行器与配置。独立任务入口用于表达构建依赖、环境和 CI 门槛，不要求对应一个工具模块；工程能力由 tools 实现，测试场景与专用辅助由 tests 拥有。
+项目清单声明自己的操作。需要前置依赖和产物缓存的任务由同项目 `vite.config.ts` 声明。`vp run <包名>#<任务名>` 运行一个任务及其依赖。根 `check` 先构建公共包，再执行各项目的类型检查、静态规则、格式与快速测试。浏览器、Electron、原生集成、制品和性能各有独立命令。
 
 <a id="ci-selection"></a>
 
 ### CI 选择与验证编排
 
-普通 CI 使用 Turbo 的任务输入与依赖图分别选择常规检查、公共包消费者、浏览器、原生、桌面窗口、开发会话和最终制品任务。当前通用 Chromium 交互在 Ubuntu x64 参考环境执行一次；具有平台差异的原生与桌面任务在六个实际目标执行。开发会话针对构建、监听与生命周期输入。首次交付、发行前及明确的完整验收仍覆盖所需目标和后端；手动 CI 入口请求完整代码与运行检查。全局工具链变化、缺失或不可解析的基线按该完整范围处理，选择工具失败则让检查失败。
-
-性能采样独立于自动 CI，完整代码检查也不隐含启动采样。有明确性能疑问、相关实现变化或产品验收目标时，由实施者选择对应测量并显式调用；普通修改不为形成报告而采样。现有 `desktop:test:performance` 保留为测量入口，采样口径由其测试配置维护，不增加类型／运行时变更分类器。
-
-PR 的比较范围是目标分支与当前版本之间的全部改动。affected 决定需要运行的任务，缓存决定被选中的可缓存任务是否复用既有结果。手动代码验证请求完整范围。
-
-桌面应用、desktop-rpc 和 desktop-ui 的真实运行验收共用 catalog 固定的 Electron。桌面工程的 prepare:electron 调用随 Electron 提供的 install-electron，确认当前平台的二进制已就绪。需要启动开发 Electron 的任务在同一 Turbo 图中共享这一个准备步骤。构建清单记录实际安装的 Electron 版本。
-
-构建准备与回归选择分别表达。test:native 通过 Turbo 依赖 build:native 与 prepare:resources；desktop:test:e2e 和 desktop:test:performance 依赖 build:fixture；test:dev 依赖 build:native，test:artifacts 依赖 package:fixture。应用包内脚本是实际叶操作，根入口通过同一任务图完成准备。具体 inputs 由各实际任务的 turbo.json 声明，验证查询只读取 Turbo 结果，不另维护包依赖图或路径分类器。未改变但被选中任务依赖的构建，不使其他验证范围一起扩大；输入清单随运行器、配置、辅助和资源依赖同步更新。
-
-CI 的工作流按工程职责划分，执行任务按目标环境划分，步骤表达该环境中的验证阶段。根 verification.yml 传递比较基线、目标提交和完整验证请求，调用 verification-repository.yml 与 verification-desktop.yml，并拥有最终 Required checks；工程工作流拥有自己的输入判断、工具链、环境、缓存和报告。后续工程进入实际范围时增加对应的可调用工作流与根层调用，不预建空工程，也不要求沿用桌面工具链或六目标矩阵。
-
-每个可调用验证工作流返回 selected 与 verified：选中并完整执行返回 true／true；有依据地不选择返回 false／空。Required checks 对 needs 中的每个工程使用同一判断，工作流状态必须成功，缺失、取消、失败或错误跳过均不通过；矩阵整体状态负责覆盖全部目标。接入新工程时显式增加调用和 needs，并使用独立的工程缓存与报告命名空间，不依赖不同 workflow 的 job ID 恰好不同。
-
-编排文件由所属工作流直接比较 Git 输入：事件入口与共同协调器变动触发全部工程，工程工作流只触发自身完整验证。标题工作流独立验证标题，不进入产品任务的全局输入。桌面与公共包的生产任务排除 Markdown、Vitest 配置、测试类型配置和测试文件；开发监听同时排除生成目录与本地状态，生产配置与新增生产文件继续触发相应构建。任务图与真实监听分别验证这些边界。
-
-工作流通过 tools/host-environment.ts 记录运行环境。CI 选择适用任务，在一次 Turbo 调度中串行执行，资源、原生构建与工程载体由实际依赖准备。同一生产任务只运行一次；打包继续核对完成清单和实际字节，不另行记录文件修改时间证明构建复用。
-
-Turbo 摘要只用于任务选择与计算结果复用。桌面 buildId 关联同一组程序，源码会话使用独立会话标识；[发行来源](build.md#pipeline)由固定提交、版本和目标记录，运行字节使用 SHA-256。根依赖的私有工程包沿 Turbo 的全局摘要语义纳入，局部任务的 inputs 排除不改写全局规则。
-
-仓库工作流调度各 workspace 自己的常规检查与测试。桌面公共包的打包、产物检查和包内消费者由桌面工作流的 Linux x64 参考目标调度，各公共包拥有自己的 out/package/package.tgz 和 test-results/consumers，检查与消费者使用同一 tarball。公共包拥有独立可运行的构建、类型、lint 和适用测试入口；纯合同与 Node 启动器验证归其所属包，不依附桌面开发回归。共同 Node 环境可统一调度这些任务，独立的发布、权限或宿主要求出现后再建立相应工作流边界。
-
-桌面工作流自行选择套件与目标。仅浏览器交互或桌面包消费者被选中时运行 Linux x64 参考目标；具有平台差异的检查被选中时，继续覆盖既定六目标。每个目标在同一 runner 内准备环境并执行选中的包消费者、浏览器、原生、窗口、开发与制品步骤。需要有限应用构建时只构建一次，所选运行检查与打包消费同一输出；开发回归复用其中已准备的原生编译输出，仅开发检查时单独准备原生输出。编辑源码与依赖的开发回归使用同一锁文件离线准备的独立副本；命令取消期间的独立错误在会话接入层验证。日常制品运行只构建对应的 ZIP 或 AppImage，打包政策变更及显式完整验证生成全部支持的安装格式。打包核对既有 build.json 的目标、完整文件集合和摘要，缺失或改写均失败。根 desktop:package:fixture 通过同一任务图保持独立可运行；外部实际制品可以通过显式收据交给包内 test:artifacts 叶操作验证。
+`tools/ci/plan.ts` 用完整候选树差异选择需要证明的行为。文档检查核对链接及锚点，代码检查在 Linux x64 运行。公共包变化沿清单依赖选择实际 tarball 消费者。UI 交互进入 Chromium，存储进入 Electron Node，工程进程与平台制品进入匹配宿主。共享 ABI 和无法归属的运行输入覆盖六目标。计划失败或应执行的作业没有成功时，门禁阻止合并。
 
 <a id="task-cache"></a>
 
 ### 任务缓存与依赖安装
 
-只有结果由完整输入决定的有限任务才使用缓存，纯逻辑包的单测复用这一规则。输入需要包含影响输出的共享配置、环境变量、工具、平台、架构和 ABI，恢复时只写入本任务的输出，所属不缓存的准备任务先清理可重建目录。缓存命中与重新构建交付相同文件集合。根工程、桌面工具和 Node 启动器等现场进程与文件系统验证继续实际执行。依赖实时外部信息或输入不明的任务不使用缓存；watch、现场原生验证、下载实时校验、签名、发布和部署不能通过重放缓存代替执行。外部 PR 无权写入可信缓存，也不能取得发行凭据。
-
-pnpm 官方 Action 管理安装所需的 store 缓存，随后仍执行 frozen-lockfile 安装；setup-node 不重复管理同一包缓存。Turbo 保存项目任务声明的输出与成功日志，仓库内上游公共包的构建属于任务依赖，不接管包安装。缓存归档恢复、实际任务命中和现场测试执行分别记录。可选缓存恢复使用官方分片下载超时设置限制等待；失败后执行正常安装或任务，具体预算由工作流配置拥有，不改变验证断言。
-
-CI 使用 GitHub Actions 官方 cache 恢复和保存 .turbo/cache，按工程命名空间、操作系统、架构与 Node 版本分组，提交作为保存键，只恢复同工程命名空间的旧键；具体结果仍由 Turbo 根据完整输入命中，不接入额外远端服务或凭据。仓库任务与各工程目标任务分别保存自己的缓存，避免竞争同一不可变键。fork PR 只恢复缓存，保存仅用于本仓库分支；主键已命中时不重复保存，恢复旧前缀后可以保存当前主键，GitHub 分支作用域限制仍然生效。
-
-缓存预算配置由实际调用缓存的工作流拥有，不能假定调用方顶层 env 自动传递。缓存不包含用户资料、密钥或现场运行证据。
-
-根实际使用的私有工程依赖参与 Turbo 全局哈希，因此共同工程源码变更可以使全仓任务失效；项目局部源码则按实际依赖图传播。验收分别记录冷运行、热命中、输入失效、输出恢复和真实 CI 跨运行恢复，不能以本机命中代替 CI 证据。
+Vite Task 缓存可重建的公共包构建。构建任务拥有完整的 JavaScript、声明、样式和许可文件，跟踪工具读取的输入并显式纳入锁文件。独立消费、原生运行、打包验证和性能采样实际执行。冻结安装以 pnpm 锁文件为准，跨作业恢复仅在已核实输入、目标、恢复正确性和时间收益后启用。
 
 <a id="ci-feedback"></a>
 
@@ -311,11 +271,7 @@ CI 使用 GitHub Actions 官方 cache 恢复和保存 .turbo/cache，按工程�
 
 ### 桌面开发会话
 
-源码开发通过公开包的构建 exports 接入依赖。包构建包含声明、样式与资源装配，依赖顺序和缓存由 Turbo 任务图管理。公共包源码或构建配置变化时，准备流程调用对应依赖构建；程序模块的依赖图、监听、编译及 renderer HMR 由 Vite 拥有。资源、Rust 输入与构建配置的变更由开发会话安排其所属准备流程。
-
-persistent 任务不能作为等待完成的依赖，with 也不是就绪屏障。首次包准备等待有限任务完成，程序就绪来自编译器公开的完成事件。调度行为遵守 [Turbo 任务规则](https://turborepo.dev/docs/crafting-your-repository/configuring-tasks)和 [Vite 构建监听](https://vite.dev/guide/build#rebuild-on-files-changes)。工具日志用于诊断，不用日志文字或固定等待推断构建完成。
-
-renderer 通过 Vite 正常解析 workspace ESM 导出并使用 HMR，依赖变化需要时刷新页面。main、preload 与 extension-host 使用 Vite 的 Node 或沙箱构建配置，成功编译后由唯一会话拥有者安排受控重启。编译工作区可以重建；实际启动的程序和原生资源使用完成的运行目录，旧进程退出后释放其目录。
+源码开发按包的公开子路径使用 `kisaki-source` 条件。Vite 监听实际导入的源码，renderer 使用 Solid HMR，main、preload 和 extension-host 在成功编译后采用新程序。生产条件与发布 tarball 使用已构建的 exports。打包移除工作区专用条件。字体、迁移与 Rust 输入由其拥有者准备，测试可提供只读资源与绑定。
 
 源码会话以独立 buildId 关联各程序，运行代际分别持有进程与目录。编译失败报告实际错误，不采用失败结果；修复后继续构建。开发期允许错误提示与必要重载，不承诺失败后整套旧公共依赖持续可用。用户数据、持久 profile 与尚未释放的运行资源仍由各自拥有者保护。
 
@@ -325,7 +281,7 @@ renderer 通过 Vite 正常解析 workspace ESM 导出并使用 HMR，依赖变�
 
 ### 输出访问与开发收尾
 
-同一工作副本内，使用相同构建输出的独立任务顺序执行，不提供跨命令互斥、排队或冲突检测。运行检查、有限构建或打包前停止会重建相同依赖的开发会话；执行 clean 前停止相关任务。独立流程需要并行时使用不同工作副本，单次任务内的依赖顺序、合法并行和缓存由 Turbo 的实际依赖图决定。
+同一工作副本中，共享输出由其拥有者按依赖顺序写入。开发会话的编译与运行目录逐次分配，停止读者后清理。独立的构建或打包命令需要并行写同一目标时使用不同工作副本。
 
 普通构建、资源准备和打包在所属可重建目录完成。输出只有在整项操作成功后才有效；失败阻止后续消费，重跑重新准备目录。已经核验且仍需交付的文件保存到固定来源目录，发布继续消费同一份文件。
 
@@ -355,7 +311,7 @@ Kisaki 和四个独立项目启用依赖图与安全告警。Dependabot 在支�
 
 每项完整、可独立验证的变更从最新 main 建立短分支，并通过一个 PR 交付。必要 CI 通过后，由维护者自审并 Squash 合并，GitHub 自动删除已合并的远端分支。main 通过原生分支保护要求 PR、同步最新主线及必需检查通过，管理员同样遵守；审批人数为 0，不要求另一人 Approve。仓库仅启用 Squash，主线禁止强制推送与删除。只有本人和受邀协作者可以创建 PR；受托 agent 使用明确授权的身份。公开反馈另有入口，见 [协作身份](repository.md)。
 
-ci.yml 接收 PR 和手动事件，再调用 verification.yml 协调代码验证。verification-repository.yml 与 verification-desktop.yml 分别执行仓库和桌面验证，通过 GitHub 原生 workflow_call 输入与输出连接；workflow 文件直接位于 .github/workflows，以 verification-<工程>.yml 表达归属。PR 使用 GitHub 的默认事件：打开、源分支提交变化及重新打开时执行代码验证。标题和正文编辑只触发独立的标题检查，保持代码验证的运行和结果。
+`ci.yml` 拥有 PR 候选的计划、基础检查、按风险选择的目标及汇总。手动运行可以指定宿主和场景。`pr-title.yml` 以只读权限核对当前 PR 标题。正式发行流程在所属工作包交付，按摘要验证并交接实际候选。
 
 日常验证在 PR 合并前完成。严格合并门禁使代码在进入主线前完成对当前合并结果的验证，合入后沿用这些证据；main push 不触发普通 CI。明确请求的完整验证由手动入口执行，正式发行按所属工作包验收。
 
@@ -375,20 +331,12 @@ Vitest 的转换缓存由启动测试的工程拥有，通过 fsModuleCachePath 
 
 真正改变公开合同、数据或部署兼容性时使用 ! 和 BREAKING CHANGE footer，内部改名不自动构成 breaking change。提交类型不决定版本号。
 
-PR 标题作为 Squash 标题，正文遵守 [PR 描述规范](documentation.md#pull-request-descriptions)。合并前整理最终说明，不拼接临时提交消息。独立标题工作流复用根 commitlint 与 conventional 配置，在 PR 打开、提交变化、重新打开及编辑时检查当前标题；只安装根检查所需依赖，不执行桌面构建或安装脚本。合并者确认最终 Squash 标题；如在合并界面改写，仍须符合上述提交规范。中间迭代不逐条强制检查提交消息，也不设置 commit-msg hook。
+PR 标题作为 Squash 标题，正文遵守[PR 描述规范](documentation.md#pull-request-descriptions)。标题作业只读取 GitHub 事件对应的当前标题，按约定核对类型、主题、末尾标点与长度。合并者核对最终标题。
 
 <a id="hooks"></a>
 
 ## 本地 hooks
 
-Husky 和 lint-staged 提供 pre-commit，只执行 Prettier check 与 ESLint，不使用 --write、--fix、git add 或 stage_fixed。修复格式后由用户自行暂存。lint-staged 负责文件列表、长参数和部分暂存内容的隐藏与恢复，必须验证失败时的恢复行为。
+仓库在 `.vite-hooks/pre-commit` 调用 `pnpm exec vp staged`。根配置对暂存源码运行格式检查和类型感知 lint，其余支持的文件按格式规则检查。开发者自行审阅和暂存修改。
 
-默认 hooks 限定为上述 pre-commit 检查，文件选择与命令参数由 lint-staged 管理。提交规范通过 PR 标题检查与合并确认落实，版本、发行说明和 tag 由发行流程管理。
-
-hooks 的安装入口只管理本项目的 hook 文件和仓库本地 core.hooksPath。没有显式配置时设置为本项目路径；本地已经使用本项目路径时，重复安装幂等完成。其他显式配置，包括空值或继承的设置，按冲突报告，由用户处理后重试，不保存或接管原配置。无关本地配置保持不变。
-
-安装和卸载不得修改 --global、--system、用户 Husky 初始化文件、用户目录或 PATH。命令按仓库本地配置的实际作用范围执行；多个 worktree 共用该配置时，安装与卸载作用于整个仓库，并明确说明这一范围，不维护逐 worktree 的安装归属或引用计数。
-
-卸载只移除仍指向本项目的本地 core.hooksPath。当前值已由用户改写时，保留新值并报告。之后只清理自身 hook 文件、脚本和依赖，不恢复第三方配置，也不删除 stash 等恢复资料。
-
-CI、源码压缩包和未安装开发依赖的环境都要有明确、不会重复执行的行为。hook 清理只处理可确认由本项目拥有的文件，备份及其他配置按实际归属保留，不重置全局设置。CLI 生成的 workspace 遵循相同原则，可以独立安装、提交和卸载 hooks，不引用 Kisaki 私有路径。
+`pnpm install:hooks` 通过 Vite+ 安装当前仓库的 dispatcher，`pnpm uninstall:hooks` 撤销。Git worktree 共享仓库本地配置，已有 hook 的归属以 `git config --show-origin --get core.hooksPath` 和 `vp hooks status` 为准。[Vite+ hooks](https://viteplus.dev/guide/commit-hooks)

@@ -1,10 +1,11 @@
 /** @fileoverview Verifies packed pure declarations and behavior in an independent browser project. */
 
-import { expect } from 'vitest'
-import { build, preview } from 'vite'
+import { lintConsumer } from '@kisaki3/tooling/testing/consumer'
+import { expect } from 'vite-plus/test'
+import { build, preview } from 'vite-plus'
 import { chromium } from '@playwright/test'
 import { runPnpm } from '@kisaki3/tooling/process'
-import { consumerTest, lintConsumer } from '../support/consumer'
+import { consumerTest } from './consumer'
 
 /** Packed distribution consumer fixtures owning the browser and its preview site. */
 const test = consumerTest('browser')
@@ -41,7 +42,7 @@ test('all pure declarations compile without Node or DOM globals', async ({
   signal,
 }) => {
   await runPnpm(['typecheck'], { cwd: consumerDirectory, signal })
-  expect((await lintConsumer(consumerDirectory)).flatMap((item) => item.messages)).toEqual([])
+  await lintConsumer(consumerDirectory)
 })
 
 test('pure entries run in Chromium without Node polyfills', async ({ page, siteUrl }) => {

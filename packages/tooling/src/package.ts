@@ -1,4 +1,4 @@
-#!/usr/bin/env -S node --import tsx
+#!/usr/bin/env node
 /** @fileoverview Prepares public outputs and checks the tarball consumed by external package tests. */
 
 import { createRequire } from 'node:module'
@@ -7,9 +7,9 @@ import { dirname, join } from 'node:path'
 import { parseArgs } from 'node:util'
 import { publint } from 'publint'
 import { formatMessage } from 'publint/utils'
-import { runCli } from './cli'
-import { removeOutputs } from './output'
-import { run, runPnpm } from './process'
+import { runCli } from './cli.ts'
+import { removeOutputs } from './output.ts'
+import { run, runPnpm } from './process/index.ts'
 
 /**
  * Creates the tarball consumed by package checks in a clean, disposable output directory.
@@ -56,17 +56,17 @@ async function checkPackage(project: string, signal: AbortSignal): Promise<void>
 await runCli(async (signal) => {
   const { positionals } = parseArgs({ allowPositionals: true })
   if (positionals.length !== 1) {
-    throw new Error('Usage: kisaki-package <prepare-build|pack|check>')
+    throw new Error('Usage: kisaki-package <clean|pack|check>')
   }
 
   const operation = positionals[0]
-  if (operation === 'prepare-build') {
-    await removeOutputs(process.cwd(), ['dist'], signal)
+  if (operation === 'clean') {
+    await removeOutputs(process.cwd(), ['dist', 'out'], signal)
   } else if (operation === 'pack') {
     await packPackage(process.cwd(), signal)
   } else if (operation === 'check') {
     await checkPackage(process.cwd(), signal)
   } else {
-    throw new Error('Usage: kisaki-package <prepare-build|pack|check>')
+    throw new Error('Usage: kisaki-package <clean|pack|check>')
   }
 })

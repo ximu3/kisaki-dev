@@ -41,5 +41,5 @@ export async function writeIconNames(signal?: AbortSignal): Promise<void> {
 }
 
 if (import.meta.main) {
-  await runCli(writeIconNames)
+  await runCli(process.argv.includes('--check') ? checkIconNames : writeIconNames)
 }

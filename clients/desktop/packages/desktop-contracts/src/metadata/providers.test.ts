@@ -1,6 +1,6 @@
 /** @fileoverview Verifies declared provider methods and per-context field capabilities without executing them. */
 
-import { test, expect } from 'vitest'
+import { test, expect } from 'vite-plus/test'
 
 import { parseMetadataProviderCapabilities, validateMetadataProvider } from './providers'
 

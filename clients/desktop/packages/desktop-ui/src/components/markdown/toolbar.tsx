@@ -63,7 +63,8 @@ export interface MarkdownToolbarAction {
 
 /** Built-in formatting command or fully described host toolbar action. */
 export type MarkdownToolbarItem<C extends MarkdownCommand = MarkdownCommand> =
-  C | MarkdownToolbarAction
+  | C
+  | MarkdownToolbarAction
 
 /**
  * Complete toolbar order or a factory deriving it from standard commands.

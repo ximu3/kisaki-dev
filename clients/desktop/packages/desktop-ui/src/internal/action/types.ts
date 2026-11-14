@@ -4,7 +4,13 @@
  * Shared visual emphasis for an action or link, independent of its native interaction semantics.
  */
 export type ActionVariant =
-  'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | 'text'
+  | 'default'
+  | 'destructive'
+  | 'outline'
+  | 'secondary'
+  | 'ghost'
+  | 'link'
+  | 'text'
 
 /**
  * Action geometry preset following interface scale, with square hit areas for icon-only variants.

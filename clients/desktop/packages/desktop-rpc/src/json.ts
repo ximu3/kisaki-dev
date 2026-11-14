@@ -4,7 +4,12 @@ import { RpcError } from './errors'
 
 /** Finite ordinary JSON data shared by JSON IPC and structured-clone transports. */
 export type JsonValue =
-  null | boolean | number | string | readonly JsonValue[] | { readonly [key: string]: JsonValue }
+  | null
+  | boolean
+  | number
+  | string
+  | readonly JsonValue[]
+  | { readonly [key: string]: JsonValue }
 
 /**
  * Copies ordinary JSON data into a validated snapshot.

@@ -25,7 +25,7 @@
 | refactor/implementation             | 工作包、实施依赖和实际进度                                                                             |
 | refactor/verification               | 验收标准、要求覆盖情况和验证证据                                                                       |
 
-规范描述正式职责、行为、接口和约束，必要时说明这些约束的理由。[简洁、清晰、干净与克制](conventions.md#quality)在协作入口、共用规范和设计入口中优先呈现，具体规则仍由所属主题维护。文档自身减少重复概念和间接导航，保留读者理解职责、前提和结果所需的说明。使用文档描述已经交付的能力；设计要求、实现状态和验证结果分别记录，不能相互代替。
+规范描述正式职责、行为、接口和约束，必要时说明这些约束的理由。[现代化、简洁、清晰、干净与克制](conventions.md#quality)在协作入口、共用规范和设计入口中优先呈现，具体规则仍由所属主题维护。文档自身减少重复概念和间接导航，保留读者理解职责、前提和结果所需的说明。使用文档描述已经交付的能力；设计要求、实现状态和验证结果分别记录，不能相互代替。
 
 通用文档，包括 README、CONTRIBUTING、CONVENTIONS、ARCHITECTURE、AGENTS、共用规范、skill 指引与设计正文，只描述当前有效的规则、能力、使用方法和必要依据。实施状态集中说明当前完成度、未闭合事项及证据入口；验证证据保存支持现行判断的来源、比较和结果。普通修改经过由 Git 历史与 PR 承载，必要的取舍理由在所属规则处直接说明。
 
@@ -113,7 +113,7 @@ SKILL.md 统一提供任务到参考文档的导航，references 直接按实际
 
 执行具体任务时，只读取相关参考文档。例如，修改标签替换操作时，阅读 data/operations.md 及对应测试；调整统计页的详情弹窗时，阅读 ui/composition.md 和 ui/state.md；处理扩展更新时，阅读 extensions/lifecycle.md 和 engineering/packages.md；修改新库初始化时，阅读 data/schema.md 和 engineering/testing.md。
 
-参考文档通过链接引用项目说明、适用规范、公共类型和既有工程入口。实施期间读取 refactor 的共用要求；项目文档交付后，CONTRIBUTING 说明开发与交付流程，CONVENTIONS 维护该项目的完整工程与编写规范。skill 补充资料选择、任务步骤和验证方法，工程工作流归 tools，测试专用辅助归 tests/support。
+参考文档通过链接引用项目说明、适用规范、公共类型和既有工程入口。实施期间读取 refactor 的共用要求；项目文档交付后，CONTRIBUTING 说明开发与交付流程，CONVENTIONS 维护该项目的完整工程与编写规范。skill 补充资料选择、任务步骤和验证方法，工程工作流归所属项目的 `tools/`，测试辅助和样板按[测试归属](layout.md#test-placement)就近维护。
 
 <a id="lifecycle"></a>
 

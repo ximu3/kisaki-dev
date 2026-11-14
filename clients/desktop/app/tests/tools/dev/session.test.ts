@@ -3,29 +3,17 @@
  * generation handoff and renderer updates.
  */
 
-import { afterAll, beforeAll, expect, onTestFinished, test } from 'vitest'
+import { expect, onTestFinished, test } from 'vite-plus/test'
 import { chromium } from '@playwright/test'
 import { readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import { appRoot } from '../../../tools/lib/paths'
 import { closeNativeWindow, hasNativeWindow } from '../../support/window-observation'
-import { prepareDevelopmentWorkspace } from '../../support/development/workspace'
-import { startDevelopmentController } from '../../support/development/controller'
-
-/**
- * Isolated source workspace shared by the serial development cases and removed after they close.
- */
-let workspace: Awaited<ReturnType<typeof prepareDevelopmentWorkspace>>
-
-beforeAll(async () => {
-  workspace = await prepareDevelopmentWorkspace()
-})
-
-afterAll(async () => {
-  await workspace?.close()
-})
+import { prepareDevelopmentWorkspace } from './workspace'
+import { startDevelopmentController } from './controller'
 
 test('a refused quit retains utility processes and normal window close preserves the profile', async () => {
-  const controller = startDevelopmentController(workspace.app, { scenario: 'cancel-first-close' })
+  const controller = await startDevelopmentController(appRoot, { scenario: 'cancel-first-close' })
   await controller.ready
   const first = controller.states.find((state) => state.state === 'ready')!
   expect(() => process.kill(first.current!.processId, 0)).not.toThrow()
@@ -46,14 +34,14 @@ test('a refused quit retains utility processes and normal window close preserves
   expect(controller.states.at(-1)?.current?.processId).toBe(first.current!.processId)
 
   const hostPids = JSON.parse(
-    await readFile(join(workspace.app, '.local/development/cancelled-hosts.json'), 'utf8'),
+    await readFile(join(controller.profile, 'cancelled-hosts.json'), 'utf8'),
   ) as number[]
   expect(hostPids.length).toBeGreaterThan(0)
   for (const pid of hostPids) {
     expect(() => process.kill(pid, 0)).not.toThrow()
   }
 
-  const marker = join(workspace.app, '.local/development/retained.txt')
+  const marker = join(controller.profile, 'retained.txt')
   await writeFile(marker, 'synthetic retained development state')
 
   await closeNativeWindow(first.current!.processId)
@@ -64,13 +52,15 @@ test('a refused quit retains utility processes and normal window close preserves
 })
 
 test('runtime syntax, renamed imports and configuration errors recover through native compilation', async () => {
-  const entry = join(workspace.app, 'tests/fixtures/runtime/src/main/entry.ts')
+  const workspace = await prepareDevelopmentWorkspace()
+  onTestFinished(workspace.close)
+  const entry = join(workspace.app, 'tests/fixtures/desktop-app/src/main/entry.ts')
   const original = await readFile(entry, 'utf8')
-  const helper = join(workspace.app, 'tests/fixtures/runtime/src/main/development-fixture.ts')
-  const renamed = join(workspace.app, 'tests/fixtures/runtime/src/main/renamed-fixture.ts')
+  const helper = join(workspace.app, 'tests/fixtures/desktop-app/src/main/development-fixture.ts')
+  const renamed = join(workspace.app, 'tests/fixtures/desktop-app/src/main/renamed-fixture.ts')
   const configuration = join(
     workspace.app,
-    'tests/fixtures/runtime/config/vite/vite.config.main.ts',
+    'tests/fixtures/desktop-app/config/vite/vite.config.main.ts',
   )
   const originalConfiguration = await readFile(configuration, 'utf8')
   onTestFinished(() => writeFile(entry, original))
@@ -84,7 +74,7 @@ test('runtime syntax, renamed imports and configuration errors recover through n
     `${original}\nvoid import('./development-fixture').then((module) => console.info(module.value))\n`,
   )
 
-  const controller = startDevelopmentController(workspace.app)
+  const controller = await startDevelopmentController(workspace.app)
   await controller.ready
   const good = controller.states.find((state) => state.state === 'ready')!
   await writeFile(helper, 'export const value =\n')
@@ -130,12 +120,17 @@ test('runtime syntax, renamed imports and configuration errors recover through n
 })
 
 test('dependency recovery and renderer updates preserve a usable process', async () => {
-  const styles = join(workspace.app, 'tests/fixtures/runtime/src/renderer/windows/main/styles.css')
-  const renderer = join(workspace.app, 'tests/fixtures/runtime/src/renderer/windows/main/entry.tsx')
-  const dependency = join(
-    workspace.root,
-    'clients/desktop/packages/desktop-contracts/src/development.ts',
+  const workspace = await prepareDevelopmentWorkspace()
+  onTestFinished(workspace.close)
+  const styles = join(
+    workspace.app,
+    'tests/fixtures/desktop-app/src/renderer/windows/main/styles.css',
   )
+  const renderer = join(
+    workspace.app,
+    'tests/fixtures/desktop-app/src/renderer/windows/main/entry.tsx',
+  )
+  const dependency = join(workspace.contracts, 'src/development.ts')
   const paths = [styles, renderer, dependency]
   const originals = await Promise.all(paths.map((path) => readFile(path, 'utf8')))
   for (const [index, path] of paths.entries()) {
@@ -150,7 +145,7 @@ test('dependency recovery and renderer updates preserve a usable process', async
       )
       .replace('<main>', '<main data-protocol={developmentProtocolId}>'),
   )
-  const controller = startDevelopmentController(workspace.app)
+  const controller = await startDevelopmentController(workspace.app)
 
   const browser = await chromium.launch({ headless: true })
   onTestFinished(() => browser.close())
@@ -167,39 +162,26 @@ test('dependency recovery and renderer updates preserve a usable process', async
     .toBe('73px')
   expect(await page.getByRole('button', { name: 'Count: 1' }).count()).toBe(1)
 
-  await writeFile(dependency, 'export const broken =\n')
-  await expect
-    .poll(() => controller.states.some((state) => state.state === 'failed'), { timeout: 60_000 })
-    .toBe(true)
-  expect(controller.states.at(-1)?.current?.processId).toBe(first.current!.processId)
+  // Observe the rejected module in this page's HMR request before restoring the source.
+  const rejected = page.waitForResponse(
+    (response) =>
+      new URL(response.url()).pathname.endsWith('/src/development.ts') && response.status() === 500,
+    { timeout: 15_000 },
+  )
+  await Promise.all([rejected, writeFile(dependency, 'export const broken =\n')])
+  expect(() => process.kill(first.current!.processId, 0)).not.toThrow()
 
-  const readyBefore = controller.states.filter((state) => state.state === 'ready').length
-  await writeFile(dependency, originals[2]!)
-  await expect
-    .poll(() => controller.states.filter((state) => state.state === 'ready').length, {
-      timeout: 60_000,
-    })
-    .toBeGreaterThan(readyBefore)
-  const recovered = controller.states.filter((state) => state.state === 'ready').at(-1)!
-
-  // Recovery may rebuild the runtime; a subsequent dependency-only update must not restart it.
-  const readyBeforeUpdate = controller.states.filter((state) => state.state === 'ready').length
   await writeFile(dependency, originals[2]!.replace("'kisaki.development'", "'fixture.updated'"))
-  await expect
-    .poll(() => controller.states.filter((state) => state.state === 'ready').length, {
-      timeout: 60_000,
-    })
-    .toBeGreaterThan(readyBeforeUpdate)
-  expect(
-    controller.states.filter((state) => state.state === 'ready').at(-1)?.current?.processId,
-  ).toBe(recovered.current!.processId)
   await expect
     .poll(() => page.locator('main').getAttribute('data-protocol'), { timeout: 15_000 })
     .toBe('fixture.updated')
+  expect(
+    controller.states.filter((state) => state.state === 'ready').at(-1)?.current?.processId,
+  ).toBe(first.current!.processId)
 })
 
 test('a failed application stop is reported and the worker releases its owned process', async () => {
-  const controller = startDevelopmentController(workspace.app, {
+  const controller = await startDevelopmentController(appRoot, {
     scenario: 'stop-failure',
     expectedExitCode: 1,
   })

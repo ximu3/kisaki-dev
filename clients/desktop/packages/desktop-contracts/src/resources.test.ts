@@ -1,6 +1,6 @@
 /** @fileoverview Checks URL credential policy and preservation of the caller's prepared attachment handle. */
 
-import { test, expect } from 'vitest'
+import { test, expect } from 'vite-plus/test'
 
 import { parseFileInput, parsePreparedAttachment } from './resources'
 import { DesktopError } from './errors'

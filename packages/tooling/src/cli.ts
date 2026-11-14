@@ -3,8 +3,8 @@
  * operations to process exit status.
  */
 
-import { CommandFailed } from './process'
-import { isCancellation } from './errors'
+import { CommandFailed } from './process/index.ts'
+import { isCancellation } from './errors.ts'
 
 /**
  * Waits for a CLI action and maps its outcome to process.exitCode.

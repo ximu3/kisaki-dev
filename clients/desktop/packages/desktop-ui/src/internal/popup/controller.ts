@@ -7,7 +7,12 @@ import type { Accessor } from 'solid-js'
 
 /** Preferred physical popup side with start or end alignment interpreted by Floating UI. */
 export type PopupPlacement =
-  'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'right-start' | 'left-start'
+  | 'bottom-start'
+  | 'bottom-end'
+  | 'top-start'
+  | 'top-end'
+  | 'right-start'
+  | 'left-start'
 
 /**
  * Connects native popup visibility, dismissal and collision-aware placement within the current

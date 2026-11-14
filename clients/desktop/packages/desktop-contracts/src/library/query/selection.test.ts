@@ -1,6 +1,6 @@
 /** @fileoverview Verifies fixed grouped selections retain explicit expanded endpoints and failure boundaries. */
 
-import { test, expect } from 'vitest'
+import { test, expect } from 'vite-plus/test'
 
 import { parseEntrySelection } from './selection'
 import { parseEntryGroupsResult } from './listing'

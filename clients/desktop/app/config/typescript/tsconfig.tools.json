@@ -9,7 +9,7 @@
     "../../tools/**/*.ts",
     "../../*.config.ts",
     "../**/*.ts",
-    "../../tests/fixtures/runtime/config/**/*.ts"
+    "../../tests/fixtures/desktop-app/config/**/*.ts"
   ],
   "exclude": []
 }

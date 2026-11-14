@@ -6,8 +6,8 @@
     "lib": ["ES2023", "DOM"]
   },
   "include": [
-    "../../tests/fixtures/runtime/src/preload/**/*.ts",
-    "../../tests/fixtures/runtime/src/shared/**/*.ts"
+    "../../tests/fixtures/desktop-app/src/preload/**/*.ts",
+    "../../tests/fixtures/desktop-app/src/shared/**/*.ts"
   ],
   "exclude": []
 }

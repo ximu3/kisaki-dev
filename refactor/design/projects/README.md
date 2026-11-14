@@ -2,7 +2,7 @@
 
 四个项目分别维护仓库、公共合同、版本与发行，由[所属工作包](../../implementation/work-packages.md#independent-projects)完成实现与验收，[W23](../../implementation/work-packages.md#w23)按项目完成正式文档。项目自身的技术规则在本目录定义；Kisaki 的业务归属和接入规则见[应用接入](../engineering/integrations.md)。
 
-四个项目以[简洁、清晰、干净与克制](../engineering/conventions.md#quality)为首要原则，落实[终态实现与整体一致性](../engineering/conventions.md#final-state)，遵守[可读性](../engineering/conventions.md#readability-principle)和[原生原则](../engineering/conventions.md#simplicity-native)。按各自技术栈复用成熟能力并保留原有语义，名称、目录、接口和说明共同表达职责与协作关系。适配承担实际的消费、资源和平台边界，具体取舍由所属项目说明。
+四个项目以[现代化、简洁、清晰、干净与克制](../engineering/conventions.md#quality)为首要原则，落实[终态实现与整体一致性](../engineering/conventions.md#final-state)，遵守[可读性](../engineering/conventions.md#readability-principle)和[原生原则](../engineering/conventions.md#simplicity-native)。按实际目标采用现代平台与工具的公开能力，保留所依赖的语义，名称、目录、接口和说明共同表达职责与协作关系。适配承担实际的消费、资源和平台边界，具体取舍由所属项目说明。
 
 | 项目                                 | 责任与阅读入口                                |
 | ------------------------------------ | --------------------------------------------- |

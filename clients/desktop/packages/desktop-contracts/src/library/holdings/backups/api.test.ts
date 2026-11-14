@@ -1,6 +1,6 @@
 /** @fileoverview Verifies explicit operation intent at the backup creation boundary. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { parseGameBackupCreateInput } from './api'
 import { DesktopError } from '../../../errors'
 

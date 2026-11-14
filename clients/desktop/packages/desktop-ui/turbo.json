@@ -1,8 +1,0 @@
-{
-  "extends": ["//"],
-  "tasks": {
-    "test:consumers": {
-      "dependsOn": ["check:package", "^pack", "@kisaki3/desktop#prepare:electron"]
-    }
-  }
-}

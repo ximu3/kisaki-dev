@@ -6,6 +6,6 @@
     "tsBuildInfoFile": "../../.cache/typescript/shared.tsbuildinfo",
     "types": []
   },
-  "include": ["../../tests/fixtures/runtime/src/shared/**/*.ts"],
+  "include": ["../../tests/fixtures/desktop-app/src/shared/**/*.ts"],
   "exclude": []
 }

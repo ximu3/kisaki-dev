@@ -11,12 +11,15 @@ const repositoryRoot = fileURLToPath(new URL('..', import.meta.url))
 /**
  * Checks an explicit workspace project or the repository-owned tools, tests and configuration.
  *
- * The owning Turbo task prepares its public dependencies before this read-only check runs.
+ * Package builds provide the public exports before the workspace graph is checked.
  */
 export async function checkBoundaries(project?: string, signal?: AbortSignal): Promise<void> {
   const inputs = project
     ? [project]
     : [
+        'clients/desktop/app',
+        'clients/desktop/packages',
+        'packages',
         'tools',
         'tests',
         'config',

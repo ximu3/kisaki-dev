@@ -3,7 +3,9 @@
     {
       "name": "ui-only-consumes-appearance-within-desktop",
       "severity": "error",
-      "from": { "path": "^clients/desktop/packages/desktop-ui/src/" },
+      "from": {
+        "path": "^clients/desktop/packages/desktop-ui/src/"
+      },
       "to": {
         "path": "^clients/desktop/(app|extensions)/|^clients/desktop/packages/(?!desktop-ui/|desktop-appearance/)"
       }
@@ -11,13 +13,19 @@
     {
       "name": "ui-has-no-node-runtime",
       "severity": "error",
-      "from": { "path": "^clients/desktop/packages/desktop-ui/src/" },
-      "to": { "dependencyTypes": ["core"] }
+      "from": {
+        "path": "^clients/desktop/packages/desktop-ui/src/"
+      },
+      "to": {
+        "dependencyTypes": ["core"]
+      }
     },
     {
       "name": "rpc-has-no-host-or-product-dependencies",
       "severity": "error",
-      "from": { "path": "^clients/desktop/packages/desktop-rpc/src/" },
+      "from": {
+        "path": "^clients/desktop/packages/desktop-rpc/src/"
+      },
       "to": {
         "path": "^clients/desktop/(app|extensions)/|^clients/desktop/packages/(?!desktop-rpc/)|(^|/)node_modules/(electron|solid-js)/"
       }
@@ -25,8 +33,12 @@
     {
       "name": "rpc-has-no-node-runtime",
       "severity": "error",
-      "from": { "path": "^clients/desktop/packages/desktop-rpc/src/" },
-      "to": { "dependencyTypes": ["core"] }
+      "from": {
+        "path": "^clients/desktop/packages/desktop-rpc/src/"
+      },
+      "to": {
+        "dependencyTypes": ["core"]
+      }
     },
     {
       "name": "contracts-have-no-node-runtime",
@@ -159,20 +171,21 @@
       "severity": "error",
       "from": {
         "path": "(^|/)(src|native/node)/",
-        "pathNot": "^packages/(tooling|typescript-config|eslint-config)/"
+        "pathNot": "(^|/)(tests|fixtures)/|\\.test\\.tsx?$|^packages/(tooling|typescript-config)/"
       },
       "to": {
-        "path": "^packages/(tooling|typescript-config|eslint-config)/|(^|/)(tools|tests)/"
+        "path": "^packages/(tooling|typescript-config)/|(^|/)(tools|tests)/"
       }
     },
     {
       "name": "engineering-does-not-import-tests",
       "severity": "error",
       "from": {
-        "path": "(^|/)tools/|^packages/[^/]+/src/"
+        "path": "(^|/)tools/|^packages/[^/]+/src/",
+        "pathNot": "(^|/)(tests|fixtures)/|\\.test\\.tsx?$|^packages/tooling/src/testing/"
       },
       "to": {
-        "path": "(^|/)tests/"
+        "path": "(^|/)tests/|^packages/tooling/src/testing/"
       }
     }
   ],
@@ -182,7 +195,7 @@
       "fileName": "tsconfig.json"
     },
     "doNotFollow": {
-      "path": "^refactor/|^artifacts/|(^|/)(node_modules|dist|out|target|test-results|playwright-report|coverage|\\.git|\\.cache|\\.local|\\.turbo|\\.vitest)/|(^|/)tests/.*fixtures/|\\.test\\.tsx?$"
+      "path": "^refactor/|^artifacts/|(^|/)(node_modules|dist|out|target|test-results|playwright-report|coverage|\\.git|\\.cache|\\.local|\\.vitest)/|(^|/)tests/.*fixtures/|\\.test\\.tsx?$"
     },
     "enhancedResolveOptions": {
       "conditionNames": ["types", "import", "node", "default"],

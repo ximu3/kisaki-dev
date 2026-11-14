@@ -2,7 +2,7 @@
 
 验收检查真实产品行为、完整调用、持久化、界面、性能和最终制品。纯逻辑、技术原型、真实应用和发行文件各自提供对应范围的证据，不能互相替代。本篇规定设计验证与实现验收的要求。设计验证证据随对应设计记录，实施验收结果记录在实施状态中。
 
-[简洁、清晰、干净与克制](../design/engineering/conventions.md#quality)具有同等首要地位，并与[终态实现与整体一致性](../design/engineering/conventions.md#final-state)共同约束质量判断。先判断机制、限制和验证投入是否必要且相称，再按完整职责与相关场景核对模型、接口、实现、测试和说明；既有规范与检查方式同样接受复核。
+[现代化、简洁、清晰、干净与克制](../design/engineering/conventions.md#quality)具有同等首要地位，并与[终态实现与整体一致性](../design/engineering/conventions.md#final-state)共同约束质量判断。先判断机制、限制和验证投入是否必要且相称，再按完整职责与相关场景核对模型、接口、实现、测试和说明；既有规范与检查方式同样接受复核。
 
 [可读性](../design/engineering/conventions.md#readability-principle)同样构成交付门槛。核对代码、模块组织、目录、命名、配置和文档能否支持完整的理解与维护路径：从入口定位拥有者，追踪正常流程及相关失败和收尾，并确定修改影响。[编码风格与逻辑分段](../design/engineering/conventions.md#logical-sections)覆盖源码、测试、工具、配置与设计示例。自动格式和静态检查提供各自证据，实际可读性由逐项审阅判断。
 
@@ -204,12 +204,12 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | pnpm desktop:build                                   | 编译桌面各程序与依赖，不签名、发布或生成安装包                              |
 | pnpm desktop:package --target windows-x64            | 为明确目标准备完整资源并打包，CI 另提供适用的签名环境                       |
 | pnpm desktop:test:artifacts                          | 对明确提供的最终桌面制品执行结构与实际运行测试                              |
-| pnpm desktop:test:e2e                                | 在真实开发应用中运行桌面完整工作流测试                                      |
+| pnpm desktop:test:windows                                | 在真实开发应用中运行桌面完整工作流测试                                      |
 | pnpm typecheck / pnpm lint / pnpm test               | 调度根工程及实际 workspace 的对应检查；test 为明确配置的常规测试            |
 | pnpm format:check                                    | 全仓格式检查，不先构建依赖                                                  |
 | pnpm format / pnpm lint:fix                          | 显式修改，开发者审阅后自行暂存                                              |
 | pnpm check                                           | 类型、lint、格式及常规测试的统一入口                                        |
-| pnpm build                                           | 通过 Turbo 按实际依赖编译工作区，不隐含正式发行                             |
+| pnpm build                                           | 通过 Vite Task 按实际依赖编译工作区，不隐含正式发行                             |
 | pnpm desktop:test:consumers                          | 调度各包消费者任务及前置准备，核对实际 tarball 的结构、声明、样式与作者接入 |
 | `pnpm release:check --base <commit> --head <commit>` | 只读检查本次明确版本变化、依赖、所属说明语言要求并输出发行矩阵              |
 | pnpm release:notes:build                             | 从源说明生成可检查的发布正文和静态元数据，不上传                            |
@@ -220,7 +220,7 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 
 工程操作命令落到[app/tools 对应工作流](../design/engineering/layout.md#desktop-tools)，测试命令按[任务分工](../design/engineering/layout.md#test-tasks)直接启动所属运行器和配置。test:e2e 选择应用 tests/e2e，test:artifacts 选择 tests/artifacts；原生与数据库任务在启动前选定匹配宿主。
 
-公共包的 check:package 检查自身 tarball 的结构与声明，同包 test:consumers 在 tests/consumers 验证真实仓库外消费，根 desktop:test:consumers 通过 Turbo 调度这些任务及其前置准备。正式 .kisx 的安装与宿主接入由应用 tests/e2e 验证，不能用 tarball 消费替代。
+公共包的 check:package 检查自身 tarball 的结构与声明，同包 test:consumers 在 tests/consumers 验证真实仓库外消费，根 desktop:test:consumers 通过 Vite Task 调度这些任务及其前置准备。正式 .kisx 的安装与宿主接入由应用 tests/e2e 验证，不能用 tarball 消费替代。
 
 消费者和最终制品任务明确接收待验证文件、版本和构建身份，并核对适用目标，缺失或不匹配时失败。CI 先完成对应构建、打包与适用签名，再执行消费和制品任务，并保存检查与用例的实际结果；测试不重建或替换待发行制品。普通 test 的默认范围与这些任务分别配置，必需但未执行的检查不能计为通过。
 

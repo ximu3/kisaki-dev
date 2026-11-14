@@ -1,13 +1,12 @@
 /** @fileoverview Actual Electron verifies modal interaction and capability teardown in an isolated profile. */
 
-import { expect } from '@playwright/test'
-import { _electron } from '@playwright/test'
-import { onTestFinished } from 'vitest'
+import { expect, _electron } from '@playwright/test'
+import { onTestFinished } from 'vite-plus/test'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { createRequire } from 'node:module'
-import ts from 'typescript'
-import { consumerTest as test, packageRoot } from '../support/consumer'
+import { transformWithOxc } from 'vite-plus'
+import { consumerTest as test, packageRoot } from './consumer'
 
 // Electron's Node entry returns its executable path; its declarations describe the running host.
 /** Executable path of the selected Electron runtime used by the packed UI consumer. */
@@ -18,14 +17,12 @@ test('Electron consumes the same packed UI in a sandboxed document with native m
   siteUrl,
   resultsDirectory,
 }) => {
-  const input = await readFile(join(packageRoot, 'tests/fixtures/electron/main.ts'), 'utf8')
-  const script = join(consumerDirectory, 'electron-main.js')
-  await writeFile(
-    script,
-    ts.transpileModule(input, {
-      compilerOptions: { target: ts.ScriptTarget.ES2023, module: ts.ModuleKind.ESNext },
-    }).outputText,
+  const input = await readFile(
+    join(packageRoot, 'tests/consumers/fixtures/electron/main.ts'),
+    'utf8',
   )
+  const script = join(consumerDirectory, 'electron-main.js')
+  await writeFile(script, (await transformWithOxc(input, 'main.ts', { lang: 'ts' })).code)
 
   await mkdir(join(consumerDirectory, 'profile'))
   const application = await _electron.launch({

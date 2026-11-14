@@ -7,7 +7,7 @@ import { spawn } from 'node:child_process'
 import type { SpawnOptions } from 'node:child_process'
 import { basename } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { stopProcessGroup } from './unix'
+import { stopProcessGroup } from './unix.ts'
 
 /** Working directory, environment and cancellation for one finite child command. */
 export interface ProcessOptions {
@@ -22,6 +22,8 @@ export interface ProcessOptions {
 /** A failed child command's exit status and captured diagnostics. */
 export class CommandFailed extends Error {
   readonly exitCode: number
+  readonly stdout: string
+  readonly stderr: string
 
   /**
    * Records a positive exit code and any captured output; missing or nonpositive codes become 1.
@@ -30,11 +32,13 @@ export class CommandFailed extends Error {
     command: string,
     code: number | null,
     signal: string | null,
-    readonly stdout = '',
-    readonly stderr = '',
+    stdout = '',
+    stderr = '',
   ) {
     super(`Tool failed: ${basename(command)} (${signal ?? code})`)
     this.exitCode = code && code > 0 ? code : 1
+    this.stdout = stdout
+    this.stderr = stderr
   }
 }
 
@@ -163,21 +167,17 @@ export async function run(
 }
 
 /** Resolves the pnpm executable that launched the current project task. */
-function pnpmCommand(args: string[]): { command: string; args: string[] } {
+function pnpmExecutable(): string {
   const executable = process.env.npm_execpath
   if (!executable) {
     throw new Error('Run this workflow through its pnpm project task')
   }
-
-  return executable.endsWith('.exe')
-    ? { command: executable, args }
-    : { command: process.execPath, args: [executable, ...args] }
+  return executable
 }
 
 /** Runs a pnpm task with inherited diagnostics and waits for child closure. */
 export async function runPnpm(args: string[], options: ProcessOptions = {}): Promise<void> {
-  const invocation = pnpmCommand(args)
-  await run(invocation.command, invocation.args, options)
+  await run(pnpmExecutable(), args, options)
 }
 
 /**
@@ -191,6 +191,5 @@ export async function readPnpm(
   cwd: string,
   options: ProcessOptions = {},
 ): Promise<string> {
-  const invocation = pnpmCommand(args)
-  return execute(invocation.command, invocation.args, { ...options, cwd }, true)
+  return execute(pnpmExecutable(), args, { ...options, cwd }, true)
 }

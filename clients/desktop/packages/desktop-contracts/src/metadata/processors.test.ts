@@ -1,6 +1,6 @@
 /** @fileoverview Verifies field processor results retain key coverage and valid partial outcomes. */
 
-import { test, expect } from 'vitest'
+import { test, expect } from 'vite-plus/test'
 import { parseFieldProcessingInput, parseFieldProcessingResult } from './processors'
 
 test('processor results cannot smuggle fields, omit complete items or replace failure with source values', () => {

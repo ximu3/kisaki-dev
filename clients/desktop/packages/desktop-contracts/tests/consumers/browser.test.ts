@@ -1,11 +1,12 @@
 /** @fileoverview Checks packed desktop contracts in a browser type environment, a document and an iframe. */
 
-import { expect } from 'vitest'
+import { lintConsumer } from '@kisaki3/tooling/testing/consumer'
+import { expect } from 'vite-plus/test'
 import { join } from 'node:path'
-import { build, preview } from 'vite'
+import { build, preview } from 'vite-plus'
 import { chromium } from '@playwright/test'
 import { runPnpm } from '@kisaki3/tooling/process'
-import { consumerTest, lintConsumer } from '../support/consumer'
+import { consumerTest } from './consumer'
 
 /** Packed-contract consumer fixtures owning the browser and its built test site. */
 const test = consumerTest('browser')
@@ -56,7 +57,7 @@ test('browser globals support the published desktop contracts', async ({
 }) => {
   await runPnpm(['typecheck'], { cwd: consumerDirectory, signal })
 
-  expect((await lintConsumer(consumerDirectory)).flatMap((item) => item.messages)).toEqual([])
+  await lintConsumer(consumerDirectory)
 })
 
 test('links and locales run in the main document and catalog values run in an iframe', async ({

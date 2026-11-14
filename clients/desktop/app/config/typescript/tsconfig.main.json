@@ -3,12 +3,12 @@
   "compilerOptions": {
     "incremental": true,
     "tsBuildInfoFile": "../../.cache/typescript/main.tsbuildinfo",
-    "lib": ["ES2023", "DOM"]
+    "lib": ["ES2023", "ES2024.Promise", "DOM"]
   },
   "include": [
     "../../src/main/**/*.ts",
-    "../../tests/fixtures/runtime/src/main/**/*.ts",
-    "../../tests/fixtures/runtime/src/shared/**/*.ts"
+    "../../tests/fixtures/desktop-app/src/main/**/*.ts",
+    "../../tests/fixtures/desktop-app/src/shared/**/*.ts"
   ],
   "exclude": ["../../src/**/*.test.ts"]
 }

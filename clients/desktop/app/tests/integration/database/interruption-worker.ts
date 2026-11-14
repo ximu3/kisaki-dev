@@ -3,7 +3,7 @@
 import { sql } from 'drizzle-orm'
 import { initializeDatabase } from '../../../src/main/infrastructure/database'
 import { entries } from '../../../src/main/infrastructure/database/schema'
-import { storageOptions } from '../../support/database'
+import { storageOptions } from './sample'
 
 /** The parent test's isolated profile whose interrupted transaction will be reopened. */
 const directory = process.argv[2]

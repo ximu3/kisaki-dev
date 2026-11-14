@@ -5,7 +5,7 @@
 
 import { isAbsolute, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import type { DesktopTarget } from './runtime-manifest'
+import type { DesktopTarget } from './targets'
 
 /**
  * The desktop engineering package root, resolved from this module rather than the working

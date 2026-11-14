@@ -4,7 +4,7 @@ import { mkdir } from 'node:fs/promises'
 import { join } from 'node:path'
 import { appRoot } from '../lib/paths'
 import { hostTarget, targetTriples } from '../lib/targets'
-import type { DesktopTarget } from '../lib/runtime-manifest'
+import type { DesktopTarget } from '../lib/targets'
 import { removeOutputs } from '@kisaki3/tooling/output'
 import { run, runPnpm } from '@kisaki3/tooling/process'
 import { checkDeclarations } from './declarations'
@@ -20,12 +20,11 @@ export async function buildNative(
   target: DesktopTarget,
   updateDeclarations = false,
   signal?: AbortSignal,
+  output = join(appRoot, 'out', 'native', target),
 ): Promise<string> {
   if (target !== hostTarget()) {
     throw new Error('Native builds require the matching target runner')
   }
-
-  const output = join(appRoot, 'out', 'native', target)
 
   await removeOutputs(appRoot, [output], signal)
   await mkdir(output, { recursive: true })

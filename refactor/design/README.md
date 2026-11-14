@@ -2,7 +2,7 @@
 
 理解整体先读[产品](product.md)、[架构](architecture.md)和[通信](communication.md)，具体实现按下表进入所属主题。
 
-所有主题以[简洁、清晰、干净与克制](engineering/conventions.md#quality)为首要原则，从实际目标与完整职责形成设计，并落实[终态实现与整体一致性](engineering/conventions.md#final-state)。[可读性](engineering/conventions.md#readability-principle)、[编码风格与逻辑分段](engineering/conventions.md#logical-sections)和[原生能力](engineering/conventions.md#simplicity-native)约束表达与实现；既有设计、限制和验证要求同样接受必要性与维护成本的审查。
+所有主题以[现代化、简洁、清晰、干净与克制](engineering/conventions.md#quality)为首要原则，从实际目标与完整职责形成设计，并落实[终态实现与整体一致性](engineering/conventions.md#final-state)。[可读性](engineering/conventions.md#readability-principle)、[编码风格与逻辑分段](engineering/conventions.md#logical-sections)和[原生能力](engineering/conventions.md#simplicity-native)约束表达与实现；既有设计、限制和验证要求同样接受必要性与维护成本的审查。
 
 | 主题     | 入口                                                            |
 | -------- | --------------------------------------------------------------- |

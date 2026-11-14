@@ -1,6 +1,6 @@
 /** @fileoverview Exercises the shared JSON boundary and the exact shapes of wire-version-one messages. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { parseRpcFrame, type RpcFrame } from './frames'
 import { parseJsonValue } from './json'
 

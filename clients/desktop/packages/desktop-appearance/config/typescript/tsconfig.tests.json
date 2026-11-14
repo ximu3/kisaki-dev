@@ -5,6 +5,6 @@
     "tsBuildInfoFile": "../../.cache/typescript/tests.tsbuildinfo",
     "lib": ["ES2023", "DOM"]
   },
-  "include": ["../../src/**/*.test.ts", "../../tests/**/*.ts"],
-  "exclude": ["../../tests/fixtures/**"]
+  "include": ["../../src/**/*.test.ts", "../../tests/**/*.ts", "../../src/css-tree.d.ts"],
+  "exclude": ["../../tests/consumers/fixtures/**"]
 }

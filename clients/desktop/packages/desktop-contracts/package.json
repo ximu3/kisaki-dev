@@ -23,142 +23,166 @@
   "sideEffects": false,
   "exports": {
     "./errors": {
+      "kisaki-source": "./src/errors.ts",
       "types": "./dist/errors.d.ts",
       "import": "./dist/errors.js"
     },
     "./json": {
+      "kisaki-source": "./src/json.ts",
       "types": "./dist/json.d.ts",
       "import": "./dist/json.js"
     },
     "./operations": {
+      "kisaki-source": "./src/operations.ts",
       "types": "./dist/operations.d.ts",
       "import": "./dist/operations.js"
     },
     "./date": {
+      "kisaki-source": "./src/date.ts",
       "types": "./dist/date.d.ts",
       "import": "./dist/date.js"
     },
     "./geometry": {
+      "kisaki-source": "./src/geometry.ts",
       "types": "./dist/geometry.d.ts",
       "import": "./dist/geometry.js"
     },
     "./paths": {
+      "kisaki-source": "./src/paths.ts",
       "types": "./dist/paths.d.ts",
       "import": "./dist/paths.js"
     },
     "./text-rules": {
+      "kisaki-source": "./src/text-rules.ts",
       "types": "./dist/text-rules.d.ts",
       "import": "./dist/text-rules.js"
     },
     "./library": {
+      "kisaki-source": "./src/library/index.ts",
       "types": "./dist/library.d.ts",
       "import": "./dist/library.js"
     },
     "./metadata": {
+      "kisaki-source": "./src/metadata/index.ts",
       "types": "./dist/metadata.d.ts",
       "import": "./dist/metadata.js"
     },
     "./ingest": {
+      "kisaki-source": "./src/ingest/index.ts",
       "types": "./dist/ingest.d.ts",
       "import": "./dist/ingest.js"
     },
     "./scanner": {
+      "kisaki-source": "./src/scanner/index.ts",
       "types": "./dist/scanner.d.ts",
       "import": "./dist/scanner.js"
     },
     "./sessions": {
+      "kisaki-source": "./src/sessions/index.ts",
       "types": "./dist/sessions.d.ts",
       "import": "./dist/sessions.js"
     },
     "./tasks": {
+      "kisaki-source": "./src/tasks.ts",
       "types": "./dist/tasks.d.ts",
       "import": "./dist/tasks.js"
     },
     "./resources": {
+      "kisaki-source": "./src/resources.ts",
       "types": "./dist/resources.d.ts",
       "import": "./dist/resources.js"
     },
     "./attachments": {
+      "kisaki-source": "./src/attachments.ts",
       "types": "./dist/attachments.d.ts",
       "import": "./dist/attachments.js"
     },
     "./images": {
+      "kisaki-source": "./src/images.ts",
       "types": "./dist/images.d.ts",
       "import": "./dist/images.js"
     },
     "./appearance": {
+      "kisaki-source": "./src/appearance.ts",
       "types": "./dist/appearance.d.ts",
       "import": "./dist/appearance.js"
     },
     "./fonts": {
+      "kisaki-source": "./src/fonts.ts",
       "types": "./dist/fonts.d.ts",
       "import": "./dist/fonts.js"
     },
     "./preferences": {
+      "kisaki-source": "./src/preferences/index.ts",
       "types": "./dist/preferences.d.ts",
       "import": "./dist/preferences.js"
     },
     "./search": {
+      "kisaki-source": "./src/search.ts",
       "types": "./dist/search.d.ts",
       "import": "./dist/search.js"
     },
     "./onboarding": {
+      "kisaki-source": "./src/onboarding.ts",
       "types": "./dist/onboarding.d.ts",
       "import": "./dist/onboarding.js"
     },
     "./updates": {
+      "kisaki-source": "./src/updates.ts",
       "types": "./dist/updates.d.ts",
       "import": "./dist/updates.js"
     },
     "./extensions": {
+      "kisaki-source": "./src/extensions.ts",
       "types": "./dist/extensions.d.ts",
       "import": "./dist/extensions.js"
     },
     "./events": {
+      "kisaki-source": "./src/events.ts",
       "types": "./dist/events.d.ts",
       "import": "./dist/events.js"
     },
     "./ui": {
+      "kisaki-source": "./src/ui/index.ts",
       "types": "./dist/ui.d.ts",
       "import": "./dist/ui.js"
     },
     "./deeplink": {
+      "kisaki-source": "./src/deeplink.ts",
       "types": "./dist/deeplink.d.ts",
       "import": "./dist/deeplink.js"
     },
     "./development": {
+      "kisaki-source": "./src/development.ts",
       "types": "./dist/development.d.ts",
       "import": "./dist/development.js"
     },
     "./i18n": {
+      "kisaki-source": "./src/i18n.ts",
       "types": "./dist/i18n.d.ts",
       "import": "./dist/i18n.js"
     },
     "./network": {
+      "kisaki-source": "./src/network.ts",
       "types": "./dist/network.d.ts",
       "import": "./dist/network.js"
     },
     "./private-data": {
+      "kisaki-source": "./src/private-data.ts",
       "types": "./dist/private-data.d.ts",
       "import": "./dist/private-data.js"
     },
     "./app": {
+      "kisaki-source": "./src/app.ts",
       "types": "./dist/app.d.ts",
       "import": "./dist/app.js"
     }
   },
   "scripts": {
-    "prepare:build": "kisaki-package prepare-build",
-    "build": "tsx tools/build.ts",
-    "pack": "kisaki-package pack",
-    "check:package": "kisaki-package check",
-    "typecheck": "tsc -b",
-    "lint": "eslint . --max-warnings 0",
-    "check:boundaries": "pnpm --workspace-root exec tsx tools/boundaries.ts clients/desktop/packages/desktop-contracts",
-    "test": "vitest run",
-    "generate:icon-names": "tsx tools/generate-icon-names.ts",
-    "test:consumers": "vitest run --config config/vitest/consumers.ts",
-    "clean": "tsx tools/clean.ts"
+    "typecheck:project": "tsc -b",
+    "clean:outputs": "kisaki-package clean",
+    "test:unit": "vp test run",
+    "generate:icon-names": "vpx tools/generate-icon-names.ts"
   },
   "dependencies": {
     "@eslint-community/regexpp": "4.12.2",
@@ -169,19 +193,12 @@
     "valibot": "1.5.0"
   },
   "devDependencies": {
-    "@kisaki3/eslint-config": "workspace:*",
     "@kisaki3/tooling": "workspace:*",
     "@kisaki3/typescript-config": "workspace:*",
     "@lucide/icons": "1.72.0",
     "@playwright/test": "1.64.1",
     "@types/node": "catalog:",
-    "eslint": "catalog:",
-    "jiti": "catalog:",
-    "tsdown": "0.23.0",
-    "tsx": "catalog:",
     "typescript": "catalog:",
-    "typescript-eslint": "catalog:",
-    "vite": "catalog:",
-    "vitest": "catalog:"
+    "vite-plus": "catalog:"
   }
 }

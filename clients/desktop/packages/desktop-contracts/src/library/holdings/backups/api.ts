@@ -137,7 +137,8 @@ export interface GameBackupRecoveryManifest {
   readonly target: { readonly path: string; readonly kind: 'file' | 'directory' }
 
   readonly before:
-    { readonly type: 'absent' } | { readonly type: 'present'; readonly treeDigest: string }
+    | { readonly type: 'absent' }
+    | { readonly type: 'present'; readonly treeDigest: string }
   readonly after: { readonly treeDigest: string }
   /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number

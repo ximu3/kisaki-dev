@@ -2,7 +2,7 @@
 
 本目录规定 Kisaki 的产品范围、数据模型、接口、运行行为、界面和工程交付。设计正文说明系统应如何工作，[工作包](implementation/work-packages.md)安排实施依赖，[验收标准](verification/acceptance.md)规定完成条件，[实施状态](implementation/status.md)记录实际进度与证据。
 
-简洁、清晰、干净与克制是本目录同等首要的设计标准。设计讨论、实施改动与验收均从[全局设计与一致性](design/engineering/conventions.md#global-design)确定粒度和影响范围。所有主题及其限制、验证要求遵守[共用工程规范](design/engineering/conventions.md#quality)，具体产品与技术语义由所属主题定义。
+现代化、简洁、清晰、干净与克制是本目录同等首要的设计标准。设计讨论、实施改动与验收均从[全局设计与一致性](design/engineering/conventions.md#global-design)确定粒度和影响范围。所有主题及其限制、验证要求遵守[共用工程规范](design/engineering/conventions.md#quality)，具体产品与技术语义由所属主题定义。
 
 界面与资源的对照工程位于 `F:/project/3/kisaki`。
 
