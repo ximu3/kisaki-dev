@@ -46,6 +46,17 @@ type Target = keyof typeof runners
 /** All supported runner identities in deterministic reporting order. */
 const targets = Object.keys(runners) as Target[]
 
+/** These inputs build the SQLite collation used by the measured name indexes and ordered queries. */
+const nativeCollationInputs = new Set([
+  'native/src/collation.rs',
+  'native/src/lib.rs',
+  'native/build.rs',
+  'native/Cargo.toml',
+  'native/Cargo.lock',
+  'native/rust-toolchain.toml',
+  'tools/native/build.ts',
+])
+
 /** Reads the workspace package dependency edges that affect external tarball consumers. */
 function publicPackages() {
   const root = 'clients/desktop/packages'
@@ -144,6 +155,9 @@ export function planChecks(
             ['native', 'window-startup', 'dev-session', 'fixture-artifacts'],
             targets,
           )
+          if (nativeCollationInputs.has(part)) {
+            add('SQLite collation used by the storage workload', ['performance'])
+          }
         } else if (
           /^(?:drizzle\/|src\/main\/(?:infrastructure\/database|features\/preferences)|tests\/integration\/database)/.test(
             part,
@@ -196,17 +210,18 @@ export function planChecks(
         add('Owned subprocess cancellation', ['tooling', 'dev-session'], hosts)
       } else if (
         file.startsWith('packages/tooling/src/testing/') ||
-        file.startsWith('packages/config/')
+        file.startsWith('packages/config/') ||
+        file === '.gitignore'
       ) {
         for (const pkg of packages) {
           consumers.add(pkg.name)
         }
-        add('Shared library configuration or packed installation', ['consumers'])
+        add('Shared library configuration or consumer checks', ['consumers'])
         if (file.startsWith('packages/config/vite/')) {
           add('Shared UI library build', ['browser'])
         }
       } else if (
-        /^(?:tests\/workspace\/|tools\/(?:boundaries|check-doc-links)\.ts$|\.dependency-cruiser\.json|\.gitignore|\.gitattributes|LICENSE$)/.test(
+        /^(?:tests\/workspace\/|tools\/(?:boundaries|check-doc-links)\.ts$|\.dependency-cruiser\.json|\.gitattributes|LICENSE$)/.test(
           file,
         )
       ) {

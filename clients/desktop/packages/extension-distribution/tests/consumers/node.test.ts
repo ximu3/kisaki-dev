@@ -17,7 +17,7 @@ test('NodeNext declarations and signing execute from the installed tarball', asy
   signal,
 }) => {
   await runPnpm(['build'], { cwd: consumerDirectory, signal })
-  await lintConsumer(consumerDirectory)
+  await lintConsumer(consumerDirectory, signal)
 
   const { stdout } = await promisify(execFile)(
     process.execPath,

@@ -177,7 +177,7 @@ workspace 按实际工程登记。根检查运行各项目声明的类型入口�
 
 `packages/config` 按工具导出 TypeScript 预设与共用的 Vite 库配置。根 vite.config.ts 拥有 lint、格式与暂存文件规则。工程进程、取消、错误交付与输出清理归 `packages/tooling`。
 
-类型感知 lint 使用工作区锁定的 Oxlint 与 tsgolint，按实际类型项目分析源码。仓库外消费者在安装实际 tarball 后执行类型检查与 lint。
+类型感知 lint 使用工作区锁定的 Oxlint 与 tsgolint，按实际类型项目分析源码。桌面工程载体、UI 展示样板和测试宿主随仓库检查。具有独立 package.json 的消费者样板在仓库外安装实际 tarball 后执行类型检查和 lint，使用根配置的完整规则和安装目录中的类型声明。
 
 各项目限定自己的 Node、DOM、Electron、Solid 和测试环境。其他语言工程保留对应工具链与锁文件，不为目录一致而改用 pnpm 管理原生依赖。出现无法在共同工具链中可靠开发与验证的真实约束时，再明确调整工作区边界。
 

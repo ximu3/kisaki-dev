@@ -1,6 +1,16 @@
 /** @fileoverview Configures repository checks, formatting, staged files and CI task execution. */
 
-import { defineConfig } from 'vite-plus'
+import { globSync } from 'node:fs'
+import { dirname } from 'node:path'
+import { defineConfig, normalizePath } from 'vite-plus'
+
+/** Standalone consumer projects are linted with their own installed tarballs and type declarations. */
+const installedConsumerInputs = globSync(
+  'clients/desktop/packages/*/tests/consumers/fixtures/*/package.json',
+  {
+    cwd: import.meta.dirname,
+  },
+).map((manifest) => `${normalizePath(dirname(manifest))}/**`)
 
 /** Native task graph roots selected together for the current CI target. */
 const targetTasks = process.env.KISAKI_CI_TASKS
@@ -49,7 +59,7 @@ export default defineConfig({
       '**/playwright-report/**',
       '**/*.generated.ts',
       '**/binding.d.ts',
-      '**/tests/**/fixtures/**',
+      ...installedConsumerInputs,
     ],
     rules: {
       curly: ['error', 'all'],

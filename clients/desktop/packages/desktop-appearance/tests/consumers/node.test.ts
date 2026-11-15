@@ -17,7 +17,7 @@ test('NodeNext declarations and pure entrypoints work without browser dependenci
   signal,
 }) => {
   await runPnpm(['build'], { cwd: consumerDirectory, signal })
-  await lintConsumer(consumerDirectory)
+  await lintConsumer(consumerDirectory, signal)
 
   const { stdout } = await promisify(execFile)(
     process.execPath,

@@ -34,3 +34,14 @@ test('shared native ABI changes cover every target and a manual reproduction sta
     })),
   ).toEqual([{ target: 'macos-x64', suites: ['dev-session'] }])
 })
+
+test('changing the SQLite collation adds the storage workload on its measurement host', () => {
+  const collation = planChecks(['clients/desktop/app/native/src/collation.rs'])
+  expect(collation.matrix.filter((row) => row.suites.includes('native'))).toHaveLength(6)
+  expect(
+    collation.matrix.filter((row) => row.suites.includes('performance')).map((row) => row.target),
+  ).toEqual(['linux-x64'])
+
+  const files = planChecks(['clients/desktop/app/native/src/files.rs'])
+  expect(files.matrix.some((row) => row.suites.includes('performance'))).toBe(false)
+})

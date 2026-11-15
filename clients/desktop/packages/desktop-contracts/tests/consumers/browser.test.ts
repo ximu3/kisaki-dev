@@ -57,7 +57,7 @@ test('browser globals support the published desktop contracts', async ({
 }) => {
   await runPnpm(['typecheck'], { cwd: consumerDirectory, signal })
 
-  await lintConsumer(consumerDirectory)
+  await lintConsumer(consumerDirectory, signal)
 })
 
 test('links and locales run in the main document and catalog values run in an iframe', async ({

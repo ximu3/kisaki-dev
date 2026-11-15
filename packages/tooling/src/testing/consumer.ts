@@ -1,6 +1,6 @@
 /** @fileoverview Installs packed workspace packages in an independent consumer and owns its temporary directory. */
 
-import { cp, mkdtemp, readdir, readFile, realpath, rm, writeFile } from 'node:fs/promises'
+import { cp, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -68,21 +68,20 @@ export async function installConsumer(
   return directory
 }
 
-/** Runs typed lint against the installed package graph and the consumer's own TypeScript projects. */
+/** Applies the workspace's lint rules to consumer sources using their installed declarations and type projects. */
 export async function lintConsumer(directory: string, signal?: AbortSignal): Promise<void> {
   const bin = join(dirname(fileURLToPath(import.meta.resolve('vite-plus/package.json'))), 'bin/vp')
-  const sources = (await readdir(directory)).filter((name) => /\.tsx?$/.test(name))
+  const workspace = fileURLToPath(new URL('../../../../', import.meta.url))
   await run(
     process.execPath,
     [
       bin,
       'lint',
-      '--type-aware',
-      '-D',
-      'typescript/no-unsafe-argument',
-      '-D',
-      'typescript/no-floating-promises',
-      ...sources,
+      '--config',
+      join(workspace, 'vite.config.ts'),
+      '--ignore-path',
+      join(workspace, '.gitignore'),
+      '.',
     ],
     { cwd: directory, signal },
   )
