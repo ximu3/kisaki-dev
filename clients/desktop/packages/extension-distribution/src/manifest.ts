@@ -41,9 +41,7 @@ export function parsePackagePath(input: unknown, path: FieldPath = []): string {
   const value = parseString(input, path)
   const segments = value.split('/')
   if (
-    [...value].some(
-      (character) => character.charCodeAt(0) < 32 || character.charCodeAt(0) === 127,
-    ) ||
+    /(?=\p{ASCII})\p{Control}/u.test(value) ||
     /[\\:]/.test(value) ||
     segments.some((segment) => !segment || segment === '.' || segment === '..')
   ) {

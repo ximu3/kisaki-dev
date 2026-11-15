@@ -2,7 +2,7 @@
 
 import type { ErrorSummary } from './errors'
 import type { Listener, Disposable } from './operations'
-import { parseValue, text, id } from './validation'
+import { asciiControl, parseValue, text, id } from './validation'
 import { DesktopError } from './errors'
 import * as v from 'valibot'
 
@@ -131,9 +131,7 @@ export function parseHttpUrl(input: unknown): string {
       url.username ||
       url.password ||
       value.trim() !== value ||
-      [...value].some(
-        (character) => character.charCodeAt(0) < 32 || character.charCodeAt(0) === 127,
-      )
+      asciiControl.test(value)
     ) {
       throw new TypeError('Invalid HTTP address')
     }
@@ -162,9 +160,8 @@ export function parseProxyEndpoint(input: unknown): ProxyEndpoint {
       url.search ||
       url.hash ||
       value.trim() !== value ||
-      [...value].some(
-        (character) => character.charCodeAt(0) <= 32 || character.charCodeAt(0) === 127,
-      )
+      value.includes(' ') ||
+      asciiControl.test(value)
     ) {
       throw new TypeError('Invalid proxy endpoint')
     }
