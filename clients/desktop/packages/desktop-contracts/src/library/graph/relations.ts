@@ -198,6 +198,7 @@ export interface GraphRelations {
   }[]
 }
 
+/** Editable participation attributes shared by graph relation operations. */
 export const properties = { note: v.nullable(text), isSpoiler: v.boolean() }
 
 /** Builds a relation edit schema with applicable attributes and complete binding baselines. */

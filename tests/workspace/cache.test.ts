@@ -59,6 +59,7 @@ await appendFile('calls.log', name + '\\n')
   await writeFile(join(directory, 'input.txt'), 'a')
   await readPnpm(['install', '--lockfile-only', '--offline', '--ignore-scripts'], directory)
 
+  /** Promise-based command runner for the isolated cache-restoration workspace. */
   const execute = promisify(execFile)
   const options = { cwd: directory, windowsHide: true, encoding: 'utf8' as const }
   await execute('git', ['init', '--quiet'], options)

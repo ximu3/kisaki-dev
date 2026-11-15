@@ -52,6 +52,7 @@ export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
   /** Returns the explicit default or first enabled option for initialization and form reset. */
   const baseline = () =>
     local.defaultValue ?? local.options.find((option) => !option.disabled)?.value ?? ''
+  /** Live segment selection and change requests using the group's initial baseline. */
   const [value, change] = createValue(
     () => local.value,
     baseline,

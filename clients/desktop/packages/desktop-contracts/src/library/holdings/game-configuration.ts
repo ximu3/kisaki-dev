@@ -148,8 +148,10 @@ export interface GameLaunchConfigsApi {
   ): Promise<void>
 }
 
+/** Validated absolute launch, monitoring, working-directory or save location. */
 const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
 
+/** Explicit file, URL or command launch choice that may retain incomplete saved fields. */
 const launch = v.variant('type', [
   v.strictObject({ type: v.literal('file'), path: v.nullable(path) }),
   v.strictObject({
@@ -174,6 +176,7 @@ const launch = v.variant('type', [
   }),
 ])
 
+/** Independent directory, file or process-name monitoring choice. */
 const monitor = v.union([
   v.strictObject({ type: v.picklist(['directory', 'file']), path: v.nullable(path) }),
   v.strictObject({
@@ -187,6 +190,7 @@ const monitor = v.union([
   }),
 ])
 
+/** Complete saved launch, monitoring, timing and backup choices for one game configuration. */
 export const gameDefinitionSchema = v.strictObject({
   launch,
   monitor,

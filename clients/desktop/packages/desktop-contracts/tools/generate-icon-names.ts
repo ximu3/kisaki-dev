@@ -5,6 +5,7 @@ import { join } from 'node:path'
 import { lucideIconNames } from '@lucide/icons/dynamic'
 import { runCli } from '@kisaki3/tooling/cli'
 
+/** Owned generated TypeScript catalog consumed by the public icon-name contract. */
 const destination = join(import.meta.dirname, '../src/ui/icons/names.generated.ts')
 
 /** Renders a deterministic name catalog and its derived type without importing icon geometry at runtime. */

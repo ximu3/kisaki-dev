@@ -25,7 +25,8 @@ import {
   unique,
 } from '../validation'
 import {
-  externalLinkSchema,
+  aliasesSchema,
+  externalLinksSchema,
   identitiesSchema,
   partialDateSchema,
   partTypes,
@@ -343,25 +344,30 @@ export interface VolumeChaptersApi {
   move(volumeId: string, input: MoveInput, call?: CallOptions): Promise<void>
 }
 
+/** Descriptive part facts and exact source identities shared by all five real part kinds. */
 export const partCommonEntries = {
   name: v.nullable(text),
   originalName: v.nullable(text),
-  aliases: v.array(text),
+  aliases: aliasesSchema,
 
   description: v.nullable(text),
   primaryImageId: v.nullable(id),
 
-  externalLinks: v.array(externalLinkSchema),
+  externalLinks: externalLinksSchema,
   externalIdentities: identitiesSchema,
   releaseDate: v.nullable(partialDateSchema),
 }
 
+/** Regular or special episode classification, independent of display numbering. */
 export const episodeTypeSchema = v.picklist(['regular', 'special'])
 
+/** Content-role vocabulary for anime extras outside the episode catalog. */
 export const extraTypeSchema = v.picklist(['opening', 'ending', 'promotion', 'interview', 'other'])
 
+/** Optional declared part count whose known value is a nonnegative safe integer. */
 const nullableCount = v.nullable(nonnegativeInteger)
 
+/** Per-kind numbering, classification and declared-count fields used by part creation and edits. */
 export const partSpecificEntries = {
   novelVolume: { numberLabel: v.nullable(text), declaredPageCount: nullableCount },
 

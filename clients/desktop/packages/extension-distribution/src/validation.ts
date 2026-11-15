@@ -27,12 +27,15 @@ export function parseJson(text: string): JsonValue {
   visit(
     text,
     {
+      /** Starts property-name tracking for the next registry or manifest object. */
       onObjectBegin() {
         objects.push(new Set())
       },
+      /** Releases property-name tracking when the current object ends. */
       onObjectEnd() {
         objects.pop()
       },
+      /** Validates scalar property names and rejects duplicates with their exact input path. */
       onObjectProperty(name, _offset, _length, _line, _character, path) {
         parseString(name, [...path(), name], false)
         const names = objects.at(-1)!
@@ -44,6 +47,7 @@ export function parseJson(text: string): JsonValue {
         }
         names.add(name)
       },
+      /** Validates scalar string content and finite numeric values before normalization. */
       onLiteralValue(value: unknown, _offset, _length, _line, _character, path) {
         if (typeof value === 'string') {
           parseString(value, path(), false)
@@ -51,6 +55,7 @@ export function parseJson(text: string): JsonValue {
           rejectFormat(path(), 'Expected a finite JSON number')
         }
       },
+      /** Reports invalid JSON syntax using the parser's one-based source location. */
       onError(_error, _offset, _length, line, character) {
         throw new DistributionError(
           'invalid-json',

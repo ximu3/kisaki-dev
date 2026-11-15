@@ -58,7 +58,8 @@ export function startDevelopmentController(
   const states: DevelopmentObservation[] = []
   const observations: { elapsedMs: number; observation: DevelopmentObservation }[] = []
   let output = ''
-  let resolveReady!: () => void
+
+  const readiness = Promise.withResolvers<void>()
   child.on('message', (message: DevelopmentObservation) => {
     states.push(message)
     observations.push({ elapsedMs: performance.now() - start, observation: message })
@@ -66,7 +67,7 @@ export function startDevelopmentController(
       observations.shift()
     }
     if (message.state === 'ready') {
-      resolveReady()
+      readiness.resolve()
     }
   })
 
@@ -80,20 +81,16 @@ export function startDevelopmentController(
     child.once('error', reject)
     child.once('close', resolve)
   })
-  let startupTimeout: ReturnType<typeof setTimeout>
-  const ready = new Promise<void>((resolve, reject) => {
-    resolveReady = resolve
-    startupTimeout = setTimeout(
-      () => reject(new Error(`Development worker ${child.pid} startup timed out`)),
-      developmentStartupTimeoutMs,
-    )
-    void closed.then(
-      (code) => reject(new Error(`Development worker exited before readiness (${code})`)),
-      reject,
-    )
-  })
+  const startupTimeout = setTimeout(
+    () => readiness.reject(new Error(`Development worker ${child.pid} startup timed out`)),
+    developmentStartupTimeoutMs,
+  )
+  void closed.then(
+    (code) => readiness.reject(new Error(`Development worker exited before readiness (${code})`)),
+    readiness.reject,
+  )
   // Startup cancellation need not await ready; keep its rejection available without an unhandled promise.
-  void ready.then(
+  void readiness.promise.then(
     () => clearTimeout(startupTimeout),
     () => clearTimeout(startupTimeout),
   )
@@ -153,7 +150,7 @@ export function startDevelopmentController(
   return {
     process: child,
     states,
-    ready,
+    ready: readiness.promise,
     closed,
     /** Returns the retained tail of combined worker stdout and stderr. */
     get output() {

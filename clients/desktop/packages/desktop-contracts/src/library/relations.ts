@@ -45,6 +45,7 @@ export const personRoles = Object.freeze([
 /** Credited responsibility held by a person in a particular work. */
 export type PersonRole = (typeof personRoles)[number]
 
+/** Credited organization responsibilities with per-medium compatibility owned by this module. */
 export const organizationRoles = Object.freeze([
   'creator',
   'originalCreator',
@@ -390,20 +391,26 @@ export interface RelationsApi {
   >
 }
 
+/** Typed reference to an independently identified character entry. */
 export const characterRefSchema = v.strictObject({ type: v.literal('character'), id })
 
+/** Typed reference to an independently identified person entry. */
 export const personRefSchema = v.strictObject({ type: v.literal('person'), id })
 
+/** Typed reference to an independently identified organization entry. */
 export const organizationRefSchema = v.strictObject({ type: v.literal('organization'), id })
 
+/** Editable participation notes and spoiler state, separate from endpoint identity. */
 export const relationPropertyEntries = { note: v.nullable(text), isSpoiler: v.boolean() }
 
+/** Work-character endpoints and optional character role for one association. */
 export const workCharacterBindingEntries = {
   work: workRefSchema,
   character: characterRefSchema,
   role: v.nullable(v.picklist(characterRoles)),
 }
 
+/** Credited person responsibility with an optional character endpoint in the same work. */
 export const personWorkBindingEntries = {
   work: workRefSchema,
   person: personRefSchema,
@@ -411,18 +418,21 @@ export const personWorkBindingEntries = {
   role: v.picklist(personRoles),
 }
 
+/** Credited organization responsibility for one work endpoint. */
 export const organizationWorkBindingEntries = {
   work: workRefSchema,
   organization: organizationRefSchema,
   role: v.picklist(organizationRoles),
 }
 
+/** Two work endpoints and a relation direction as expressed by the caller. */
 export const workRelationBindingEntries = {
   from: workRefSchema,
   to: workRefSchema,
   type: v.picklist(workRelationTypes),
 }
 
+/** Medium restrictions for specialized person roles; absent roles apply to every work medium. */
 const personRoleWorkTypes: Readonly<Partial<Record<PersonRole, readonly WorkType[]>>> = {
   director: ['game', 'anime'],
   scenario: ['game', 'anime', 'comic'],
@@ -439,6 +449,9 @@ const personRoleWorkTypes: Readonly<Partial<Record<PersonRole, readonly WorkType
   voiceActor: ['game', 'anime'],
 }
 
+/**
+ * Medium restrictions for specialized organization roles; absent roles apply to every work medium.
+ */
 const organizationRoleWorkTypes: Readonly<Partial<Record<OrganizationRole, readonly WorkType[]>>> =
   {
     developer: ['game'],
@@ -449,6 +462,7 @@ const organizationRoleWorkTypes: Readonly<Partial<Record<OrganizationRole, reado
     imprint: ['comic', 'novel'],
   }
 
+/** Person responsibilities that may carry a character endpoint. */
 const characterPersonRoles: readonly PersonRole[] = [
   'characterCreator',
   'characterDesign',
@@ -491,6 +505,7 @@ export function canUseWorkRelation(type: WorkRelationType, from: WorkType, to: W
   return true
 }
 
+/** Opposite-endpoint names for every supported work-relation direction. */
 const inverse: Readonly<Record<WorkRelationType, WorkRelationType>> = {
   sequel: 'prequel',
   prequel: 'sequel',
@@ -526,6 +541,7 @@ const inverse: Readonly<Record<WorkRelationType, WorkRelationType>> = {
   related: 'related',
 }
 
+/** Directions normalized by swapping endpoints into their canonical stored form. */
 const reverseTypes: readonly WorkRelationType[] = [
   'prequel',
   'mainStory',

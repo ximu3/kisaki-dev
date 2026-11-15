@@ -45,6 +45,7 @@ export type XYContainerProps<Datum> = Omit<
  */
 export function XYContainer<Datum>(props: XYContainerProps<Datum>): JSX.Element {
   const [local, rest] = splitProps(props, ['onRenderComplete', 'duration'])
+  /** Reactive chart-transition duration honoring the current reduced-motion preference. */
   const duration = createChartDuration(() => local.duration)
 
   return (
@@ -89,6 +90,7 @@ export type SingleContainerProps<Datum> = Omit<
  */
 export function SingleContainer<Datum>(props: SingleContainerProps<Datum>): JSX.Element {
   const [local, rest] = splitProps(props, ['onRenderComplete', 'duration'])
+  /** Reactive chart-transition duration honoring the current reduced-motion preference. */
   const duration = createChartDuration(() => local.duration)
 
   return (

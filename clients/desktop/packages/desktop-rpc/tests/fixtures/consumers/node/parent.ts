@@ -6,14 +6,30 @@ import { once } from 'node:events'
 import { RpcConnection } from '@kisaki3/desktop-rpc'
 import { ipcTransport } from './ipc.js'
 
+/** Owned child process running the packed RPC consumer with JSON IPC serialization. */
 const child = fork(new URL('./child.js', import.meta.url), [], { serialization: 'json' })
+
+/** Child-process completion observed before the parent fixture finishes. */
 const exited = once(child, 'exit')
+
+/** Cancellation owner triggered when the child reports that its work has started. */
 const cancel = new AbortController()
+
+/** Parent-side packed RPC connection used to verify bidirectional calls and cancellation. */
 const rpc = new RpcConnection(ipcTransport(child), {
   protocol: { id: 'fixture.child', version: 1 },
   handshake: { role: 'initiator', context: null },
-  methods: { echo: (args) => args },
-  notifications: { topics: { started: () => cancel.abort() }, onError: console.error },
+  methods: {
+    /** Returns the reverse-call payload without changing its JSON value. */
+    echo: (args) => args,
+  },
+  notifications: {
+    topics: {
+      /** Requests cancellation after the child confirms its work has started. */
+      started: () => cancel.abort(),
+    },
+    onError: console.error,
+  },
 })
 
 try {

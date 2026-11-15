@@ -9,6 +9,7 @@ import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import { cleanOutputs } from '../../tools/clean'
 
+/** Hoisted application root redirected to the disposable cleanup fixture. */
 const paths = vi.hoisted(() => ({ appRoot: '' }))
 // The mocked output root confines cleanup to the isolated test directory.
 vi.mock('../../tools/lib/paths', () => paths)

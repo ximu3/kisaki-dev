@@ -5,7 +5,10 @@ import type { CssNode, Value } from 'css-tree'
 import { tokens } from './tokens'
 import type { TokenKind, TokenName, TokenValues } from './tokens'
 
+/** Standalone color grammar that excludes inherited and context-dependent token values. */
 const colorSyntax = '<hex-color> | <named-color> | transparent | <color-function>'
+
+/** CSS value grammar owned by each appearance token kind. */
 const syntaxes: Readonly<Record<TokenKind, string>> = {
   color: colorSyntax,
   radius: '<length [0,∞]>',
@@ -18,6 +21,7 @@ const syntaxes: Readonly<Record<TokenKind, string>> = {
   'letter-spacing': 'normal | <length>',
 }
 
+/** Explicit color-function names admitted by standalone color-token validation. */
 const colorFunctions = new Set([
   'rgb',
   'rgba',

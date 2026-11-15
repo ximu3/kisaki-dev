@@ -8,6 +8,30 @@ import {
   parseExternalIdentities,
   parseEntryTagChange,
 } from './catalog'
+import { parsePartCreate } from './parts'
+
+test('entries and parts share nonblank alias items while allowing an empty list', () => {
+  for (const aliases of [[], ['Original', ' 別名 ']]) {
+    expect(parseEntryCreate({ type: 'anime', name: 'Work', aliases }).aliases).toEqual(aliases)
+    expect(
+      parsePartCreate({
+        type: 'animeEpisode',
+        work: { type: 'anime', id: 'work' },
+        data: { aliases },
+      }).data.aliases,
+    ).toEqual(aliases)
+  }
+  for (const aliases of [[''], ['Valid', '   ']]) {
+    expect(() => parseEntryCreate({ type: 'anime', name: 'Work', aliases })).toThrow()
+    expect(() =>
+      parsePartCreate({
+        type: 'animeEpisode',
+        work: { type: 'anime', id: 'work' },
+        data: { aliases },
+      }),
+    ).toThrow()
+  }
+})
 
 test('creates all entry kinds without inventing work state or catalog facts', () => {
   for (const type of ['game', 'anime', 'comic', 'novel', 'character', 'person', 'organization']) {

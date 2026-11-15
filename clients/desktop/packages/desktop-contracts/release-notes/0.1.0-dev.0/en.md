@@ -2,6 +2,8 @@
 - Preserve known object kinds and resource ownership through reads and writes. Keyed results retain their value types and distinguish fixed inputs from optional or dynamic collections.
 - Provide independent showcase edits and explicit atomic creation batches; onboarding reuses complete section values.
 - Define metadata participation and adoption, scanning, tasks, sessions, resources, views, preferences, application and extension management, and typed fact events.
+- Expose scan-scope and extension-artifact identity parsing for independent persistence boundaries.
+- Share nonblank alias validation for entries and parts, and expose standalone catalog value and saved playback choice parsers.
 - Share a generated Lucide name catalog across extension contributions and search icons while preserving package-file ownership.
 - Provide strict native and extension deeplink round trips, versioned development control values, generic message catalogs and translation registration.
 - Keep interface value validation independent from application execution, defaults and localization resources; verify packed NodeNext and browser consumers.

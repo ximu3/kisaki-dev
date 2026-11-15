@@ -1,5 +1,6 @@
 /** @fileoverview Complete ISO calendar dates use UTC arithmetic independent of daylight saving. */
 
+/** Milliseconds per civil-day step used by the calendar's UTC date arithmetic. */
 const dayMs = 86_400_000
 
 /**

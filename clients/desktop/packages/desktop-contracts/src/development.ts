@@ -15,8 +15,10 @@ import { parseAbsolutePath } from './paths'
 import { parseExtensionViewDocument } from './ui/views'
 import { parseApplicationVersion } from './app'
 
+/** Wire identity of the desktop extension-development control protocol. */
 export const developmentProtocolId = 'kisaki.development'
 
+/** Current development-control wire version, independent of application release versions. */
 export const developmentProtocolVersion = 1
 
 /**
@@ -108,22 +110,28 @@ export interface DevelopmentApi {
   stop(call?: CallOptions): Promise<DevelopmentStopResult>
 }
 
+/** Validated extension identity carried by development control messages. */
 const extensionId = v.pipe(
   v.unknown(),
   v.transform((value) => parseExternalValue(parseId, value, 'Invalid extension identity')),
 )
 
+/** Validated extension build version reported through development control. */
 const version = v.pipe(
   v.unknown(),
   v.transform((value) => parseExternalValue(parseVersion, value, 'Invalid development version')),
 )
 
+/** Validated application release version used by development handshakes. */
 const appVersion = v.pipe(v.unknown(), v.transform(parseApplicationVersion))
 
+/** Safe failure details carried by development control results. */
 const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
 
+/** Exact extension and positive build generation addressed by one control operation. */
 const ref = v.strictObject({ extensionId, buildId: positiveInteger })
 
+/** Adoption outcome for one exact development build, retaining failed-adoption details. */
 const buildResult = v.variant('outcome', [
   v.strictObject({ extensionId, buildId: positiveInteger, outcome: v.literal('adopted') }),
   v.strictObject({
@@ -134,6 +142,7 @@ const buildResult = v.variant('outcome', [
   }),
 ])
 
+/** Validated activation outcome kept separate from build adoption. */
 const activation = v.pipe(v.unknown(), v.transform(parseExtensionActivationResult))
 
 /**

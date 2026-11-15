@@ -111,7 +111,9 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
   ])
   const attributes = mergeProps(fieldAttributes(props), rest)
   const popup = createSelectionPopup()
+  /** Identity and visibility controls supplied by this selection field's popup owner. */
   const { id, open, setOpen, present } = popup
+  /** Live search text delegated to the caller or owned locally by the field. */
   const [query, setQuery] = createValue(
     () => local.search?.query,
     () => '',
@@ -123,6 +125,9 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
   let mirror!: HTMLSelectElement
 
   const empty = { options: [] as readonly SelectionOption[], loading: false }
+  /**
+   * Visible candidate records retained through exit, with loading distinct from an empty result.
+   */
   const candidates = createMemo<typeof empty>((last) => {
     if (!present()) {
       return empty
@@ -135,6 +140,7 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
       return { options: empty.options, loading: true }
     }
     const options = local.options
+    /** Current caller filter or filtering policy captured for this candidate computation. */
     const filter = search?.filter
     const searchText = query()
     const text = searchText.trim()
@@ -160,8 +166,11 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
     ),
   )
 
+  /** Current selected option records indexed by stable value. */
   const selected = createMemo(() => new Map(local.selected.map((option) => [option.value, option])))
+  /** Ordered selected records derived from the current identity map. */
   const records = createMemo(() => Array.from(selected().values()))
+  /** Selected identities derived from the same record snapshot. */
   const keys = createMemo(() => Array.from(selected().keys()))
   /** Builds the field summary from selected labels with a placeholder fallback. */
   const summary = () =>

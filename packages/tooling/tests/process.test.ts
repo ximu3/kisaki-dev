@@ -11,7 +11,10 @@ import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { run } from '@kisaki3/tooling/process'
 
+/** Module-scoped dependency resolver used to locate the test TypeScript loader. */
 const require = createRequire(import.meta.url)
+
+/** Absolute loader URL forwarded to isolated command-worker processes. */
 const loader = pathToFileURL(require.resolve('tsx')).href
 
 test('an explicit environment preserves removals from the parent environment', async () => {

@@ -6,11 +6,15 @@ import { removeOutputs } from '@kisaki3/tooling/output'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 import { appRoot } from '../lib/paths'
 import { programConfigurations } from '../build/programs'
+import { sha256 } from '../lib/sha256'
 
 /** One compiler batch whose output files are ready to copy into a runtime directory. */
 export interface ProgramOutput {
+  /** Compilation generation used to reject output copied across a concurrent rebuild. */
   revision: number
   files: readonly string[]
+  /** Identity of the completed file names and bytes, independent of rebuild notifications. */
+  digest: string
 }
 
 /** Compiler owner exposing completed output and deterministic shutdown. */
@@ -55,7 +59,7 @@ export async function watchPrograms(
     entries.push(...configs.map((config) => ({ program, config })))
   }
 
-  const outputs = new Map<number, string[]>()
+  const outputs = new Map<number, Map<string, string>>()
   const unsettled = new Set(entries.map((_entry, index) => index))
   const watchers: ViteWatcher[] = []
   let revision = 0
@@ -63,9 +67,17 @@ export async function watchPrograms(
 
   /** Returns the exact last-written files only after every compiler has completed successfully. */
   function current(): ProgramOutput | undefined {
-    return unsettled.size
-      ? undefined
-      : { revision, files: [...new Set([...outputs.values()].flat())] }
+    if (unsettled.size) {
+      return undefined
+    }
+    const files = [...new Map([...outputs.values()].flatMap((output) => [...output]))].sort(
+      ([left], [right]) => (left < right ? -1 : Number(left > right)),
+    )
+    return {
+      revision,
+      files: files.map(([file]) => file),
+      digest: sha256(Buffer.from(JSON.stringify(files))),
+    }
   }
 
   /** Waits for every owned watcher and preserves all shutdown failures. */
@@ -107,7 +119,15 @@ export async function watchPrograms(
             writeBundle(_options, bundle) {
               outputs.set(
                 index,
-                Object.keys(bundle).map((file) => join(program, file)),
+                new Map(
+                  Object.entries(bundle).map(([file, output]) => {
+                    const source = output.type === 'chunk' ? output.code : output.source
+                    return [
+                      join(program, file),
+                      sha256(typeof source === 'string' ? Buffer.from(source) : source),
+                    ]
+                  }),
+                ),
               )
               unsettled.delete(index)
               if (!closed && current()) {

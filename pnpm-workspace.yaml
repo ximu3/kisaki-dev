@@ -25,3 +25,7 @@ allowBuilds:
   electron-winstaller: false
   esbuild: true
   sharp: true
+
+minimumReleaseAgeExclude:
+  # This exact ZIP release passed the streamed-size and cancellation checks.
+  - '@zip.js/zip.js@2.25.0'

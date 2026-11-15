@@ -31,6 +31,7 @@ export function NativeInput(props: NativeInputProps): JSX.Element {
   ])
 
   let input!: HTMLInputElement
+  /** Text-value dispatcher shared by the input owner and native form integration. */
   const update = bindTextControl(local, () => input)
 
   return (

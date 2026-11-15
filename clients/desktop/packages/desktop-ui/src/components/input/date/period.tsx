@@ -27,10 +27,13 @@ interface PeriodProps {
 /** Renders a virtualized period selector, including ranges spanning all 9,999 supported years. */
 export function PeriodSelect(props: PeriodProps): JSX.Element {
   const popup = createSelectionPopup()
+  /** Presence and visibility controls inherited from this period selector's popup owner. */
   const { present, setOpen } = popup
+  /** Reactive viewport reference used by the period list virtualizer. */
   const [viewport, setViewport] = createSignal<HTMLDivElement>()
   let trigger!: HTMLButtonElement
 
+  /** Visible formatted period choices derived from the current bounds. */
   const options = createMemo(() =>
     present()
       ? Array.from({ length: props.last - props.first + 1 }, (_, index) => {
@@ -39,19 +42,28 @@ export function PeriodSelect(props: PeriodProps): JSX.Element {
         })
       : [],
   )
+  /** Current trigger height used to size virtualized period rows while present. */
   const rowHeight = createMemo(() => (present() ? parseFloat(getComputedStyle(trigger).height) : 0))
   const collection = createSelection(options)
   const rows = createVirtualizer({
+    /** Reads the live period-option count for virtual geometry. */
     get count() {
       return options().length
     },
+    /** Enables measurement while the period popup remains present. */
     get enabled() {
       return present()
     },
+
+    /** Reads the current period-list viewport when it is mounted. */
     getScrollElement: () => viewport() ?? null,
     estimateSize: rowHeight,
+
+    /** Measures actual row border-box height from resize data or computed CSS pixels. */
     measureElement: (element, entry) =>
       entry?.borderBoxSize[0]?.blockSize ?? parseFloat(getComputedStyle(element).height),
+
+    /** Keeps each period row keyed by its actual year or month value. */
     getItemKey: (index) => props.first + index,
     overscan: 3,
   })

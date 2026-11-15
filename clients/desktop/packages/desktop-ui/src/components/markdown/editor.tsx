@@ -16,6 +16,7 @@ import { editorTheme } from './theme'
 import { MarkdownToolbar } from './toolbar'
 import type { MarkdownToolbarConfig } from './toolbar'
 
+/** CodeMirror syntax color and emphasis rules resolved through host appearance tokens. */
 const highlighting = HighlightStyle.define([
   { tag: tags.heading, color: 'var(--primary)', fontWeight: '600' },
   { tag: tags.link, color: 'var(--primary)', textDecoration: 'underline' },
@@ -114,6 +115,7 @@ export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
 
   let parent!: HTMLDivElement
   let view!: EditorView
+  /** Reactive editor-state snapshot used by toolbar and command availability. */
   const [state, setState] = createSignal<EditorState>()
 
   onMount(() => {

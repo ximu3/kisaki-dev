@@ -76,6 +76,7 @@ import { VirtualChoices } from './virtual.js'
 import '@kisaki3/desktop-ui/styles.css'
 import './page.css'
 
+/** Deferred rich-content showcase that keeps heavy adapters outside the initial consumer view. */
 const Resources = lazy(() => import('./resources.js'))
 
 /** Provides an inert test hook until its fixture owner installs an active implementation. */
@@ -106,6 +107,8 @@ function ToastOwner(): JSX.Element {
         message: 'Preparing sample',
         action: {
           label: 'Inspect sample',
+
+          /** Records execution of the synthetic fixture action without navigating away. */
           onClick: () => {
             document.body.dataset.action = 'inspected'
           },
@@ -130,8 +133,11 @@ function ToastOwner(): JSX.Element {
  * Exercises native form, reset and controlled-value behavior across the packed control families.
  */
 function Controls(): JSX.Element {
+  /** Caller-owned form value used to verify controlled updates and reset behavior. */
   const [external, setExternal] = createSignal('original')
+  /** Reactive disabled state applied across the synthetic native form controls. */
   const [disabled, setDisabled] = createSignal(false)
+  /** Whether the synthetic form prevents its next native reset. */
   const [cancelReset, setCancelReset] = createSignal(false)
   window.fixture.setExternal = setExternal
 
@@ -295,12 +301,18 @@ function Controls(): JSX.Element {
 
 /** Owns synthetic form validation and field-reveal policy for feedback component acceptance. */
 function Validation(): JSX.Element {
+  /** Draft title edited by the synthetic field-feedback form. */
   const [title, setTitle] = createSignal('')
+  /** Draft description edited by the synthetic field-feedback form. */
   const [description, setDescription] = createSignal('')
 
+  /** Whether the feedback fixture has crossed its explicit validation boundary. */
   const [submitted, setSubmitted] = createSignal(false)
+  /** Focused field identity supplied to the feedback fixture. */
   const [active, setActive] = createSignal<string | null | undefined>(null)
+  /** Editable error detail used to exercise clipping and complete tooltip feedback. */
   const [long, setLong] = createSignal('Enter a title.')
+  /** Current fixture tab used to verify retained form drafts and focus transitions. */
   const [tab, setTab] = createSignal('basic')
   let feedback!: HTMLDivElement
 
@@ -312,6 +324,7 @@ function Validation(): JSX.Element {
       `${language}: ${'请填写可辨认的名称。請填寫可辨認的名稱。判別できる名前を入力してください。 Provide a recognizable title. '.repeat(8)}`,
     )
 
+  /** Current validation issues derived from submitted state and the same draft fields. */
   const issues = createMemo<FieldIssue[]>(() =>
     submitted()
       ? [
@@ -405,6 +418,7 @@ function Validation(): JSX.Element {
  * Exercises searchable choices whose committed records survive replacement of the candidate list.
  */
 function Candidate(): JSX.Element {
+  /** Reactive option catalog used to verify selection changes and disabled entries. */
   const [options, setOptions] = createSignal([
     { value: 'a', label: 'Alpha' },
     { value: 'd', label: 'Disabled', disabled: true },
@@ -456,8 +470,11 @@ function Candidate(): JSX.Element {
 
 /** Exercises native modal nesting, menus and local popup focus and close behavior. */
 function Interactions(): JSX.Element {
+  /** Caller-owned boolean value shared by the fixture's checkable controls. */
   const [checked, setChecked] = createSignal(false)
+  /** Caller-owned radio selection used to verify native grouping behavior. */
   const [radio, setRadio] = createSignal('one')
+  /** Fixture switch controlling whether a requested interaction is prevented. */
   const [block, setBlock] = createSignal(false)
 
   return (
@@ -562,7 +579,9 @@ function Interactions(): JSX.Element {
  * lifetimes.
  */
 function App(): JSX.Element {
+  /** Whether the synthetic feedback-owning component remains mounted. */
   const [owner, setOwner] = createSignal(true)
+  /** Whether the independently loaded rich-resource showcase is displayed. */
   const [resources, setResources] = createSignal(false)
 
   window.fixture.setOwner = setOwner

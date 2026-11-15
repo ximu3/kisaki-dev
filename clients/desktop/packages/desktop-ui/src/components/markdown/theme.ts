@@ -2,6 +2,7 @@
 
 import { EditorView } from '@codemirror/view'
 
+/** CodeMirror surface and interaction styling driven by the shared host tokens. */
 export const editorTheme = EditorView.theme({
   '&': {
     flex: '1 1 auto',

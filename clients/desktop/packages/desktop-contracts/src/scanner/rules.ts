@@ -7,6 +7,7 @@ import type { NonEmptyArray } from '../operations'
 import type { WorkClues } from '../metadata/fields'
 import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
 
+/** Nonempty date-component extraction expressions that preserve unknown components. */
 const dateOutput = v.pipe(
   v.strictObject({
     year: v.exactOptional(nonemptyText),
@@ -16,8 +17,10 @@ const dateOutput = v.pipe(
   v.check((value) => Object.keys(value).length > 0),
 )
 
+/** Source and source-item extraction expressions before their results are interpreted. */
 const identityOutput = v.strictObject({ source: nonemptyText, sourceId: nonemptyText })
 
+/** Nonempty clue-extraction outputs for names, dates and exact source identities. */
 const outputSchema = v.pipe(
   v.strictObject({
     name: v.exactOptional(nonemptyText),

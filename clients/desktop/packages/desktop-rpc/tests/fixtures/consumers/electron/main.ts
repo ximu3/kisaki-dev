@@ -13,16 +13,17 @@ async function verifyChannel(window: BrowserWindow): Promise<void> {
   const { RpcConnection } = await import('@kisaki3/desktop-rpc')
   const { port1, port2 } = new MessageChannelMain()
   const cancel = new AbortController()
+  /** Removes this fixture's port and window listeners. */
   let detach: () => void
   const rpc = new RpcConnection(
     {
+      /** Attaches real Electron port delivery and window closure to the transport callbacks. */
       start(receive, closed) {
         /** Forwards Electron port data to the RPC receive callback. */
         const message = (event: Electron.MessageEvent) => receive(event.data)
         port1.on('message', message)
         port1.once('close', closed)
         window.once('closed', closed)
-        /** Removes this fixture's port and window listeners. */
         detach = () => {
           port1.off('message', message)
           port1.off('close', closed)
@@ -30,7 +31,10 @@ async function verifyChannel(window: BrowserWindow): Promise<void> {
         }
         port1.start()
       },
+
+      /** Posts one encoded frame through the actual main-process message port. */
       send: (frame) => port1.postMessage(frame),
+      /** Detaches the fixture listeners and closes the owned Electron message port. */
       close() {
         detach()
         port1.close()
@@ -38,9 +42,18 @@ async function verifyChannel(window: BrowserWindow): Promise<void> {
     },
     {
       protocol: { id: 'fixture.window', version: 1 },
-      handshake: { role: 'acceptor', accept: () => 'main' },
+      handshake: {
+        role: 'acceptor',
+        /** Accepts the isolated consumer peer with its synthetic main-process context. */
+        accept: () => 'main',
+      },
       notifications: {
-        topics: { editing: () => cancel.abort(), waiting: () => window.destroy() },
+        topics: {
+          /** Cancels the request after the renderer confirms that editing has begun. */
+          editing: () => cancel.abort(),
+          /** Closes the fixture window after its pending request is established. */
+          waiting: () => window.destroy(),
+        },
         onError: console.error,
       },
     },

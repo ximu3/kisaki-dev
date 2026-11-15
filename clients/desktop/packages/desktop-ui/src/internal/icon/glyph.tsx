@@ -45,6 +45,7 @@ export function Icon(props: {
   )
 }
 
+/** Semantic feedback states mapped to their shared decorative glyphs. */
 const statusIcons = {
   info: Info,
   success: CircleCheck,

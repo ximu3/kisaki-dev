@@ -69,6 +69,7 @@ export interface GraphTagCreate {
 /** An ordinary tag edit paired with an existing saved identity. */
 export type GraphTagUpdate = { readonly id: string } & TagUpdate
 
+/** An input-local graph key resolved within the same atomic write request. */
 export const keySchema = v.strictObject({ key: id })
 
 /** Encodes a graph entry reference with separate namespaces for create keys and saved IDs. */

@@ -67,15 +67,19 @@ export interface ViewResourcesApi {
   ): Promise<ViewResourceBinding<K>>
 }
 
+/** Opaque resource identity whose access and lifetime are checked by the owning runtime. */
 const resourceSchema = v.strictObject({ id })
 
+/** HTTP token syntax accepted for an explicitly supplied request header name. */
 const headerName = v.pipe(text, v.regex(/^[!#$%&'*+.^_`|~0-9A-Za-z-]+$/))
 
+/** Request header text that excludes line breaks and NUL. */
 const headerValue = v.pipe(
   text,
   v.check((value) => !/[\r\n\0]/.test(value)),
 )
 
+/** Local-path, HTTP-request or owned-resource input selected for file preparation. */
 const fileInputSchema = v.variant('type', [
   v.strictObject({ type: v.literal('path'), path: nonemptyText }),
   v.strictObject({

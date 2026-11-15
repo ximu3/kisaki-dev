@@ -6,6 +6,7 @@ import { promisify } from 'node:util'
 import { runPnpm } from '@kisaki3/tooling/process'
 import { consumerTest, lintConsumer } from '../support/consumer'
 
+/** Isolated Node fixtures for the actual localization tarball and its public dependencies. */
 const test = consumerTest('node')
 
 test('Node globals alone support the complete public type graph and actual localization consumption', async ({

@@ -12,7 +12,7 @@
     "./cli": "./src/cli.ts",
     "./errors": "./src/errors.ts",
     "./output": "./src/output.ts",
-    "./process": "./src/process.ts"
+    "./process": "./src/process/index.ts"
   },
   "scripts": {
     "typecheck": "tsc -b",
@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@arethetypeswrong/cli": "0.18.5",
+    "@seydx/win-job": "0.1.0",
     "publint": "0.3.25",
     "tsx": "catalog:"
   },

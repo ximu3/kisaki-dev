@@ -32,6 +32,7 @@ interface MultipleComboboxProps extends ChoiceFieldProps, ChoiceSearchProps, Chi
 /** Single or multiple searchable selection props with matching value and callback shapes. */
 export type ComboboxProps = SingleComboboxProps | MultipleComboboxProps
 
+/** Search-owned combobox properties kept separate from the underlying selection control. */
 const searchProps = [
   'query',
   'onQueryChange',
@@ -49,6 +50,7 @@ function SingleCombobox(props: SingleComboboxProps): JSX.Element {
     ['multiple', 'value', 'defaultValue', 'onValueChange'],
     searchProps,
   )
+  /** Live single-selection value and change requests for the searchable control. */
   const [value, change] = createValue(
     () => local.value,
     () => local.defaultValue ?? null,
@@ -75,6 +77,7 @@ function MultipleCombobox(props: MultipleComboboxProps): JSX.Element {
     searchProps,
     ['removeLabel', 'scrollPreviousLabel', 'scrollNextLabel'],
   )
+  /** Live multiple-selection values and change requests for the searchable control. */
   const [values, change] = createValue(
     () => local.value,
     () => local.defaultValue ?? [],

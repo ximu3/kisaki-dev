@@ -14,7 +14,9 @@ import { OutgoingCalls } from './outgoing'
  * resources. Each instance serves one connection lifetime.
  */
 export class RpcConnection {
+  /** Completes readiness with the accepted peer context. */
   #resolveReady!: (context: JsonValue) => void
+  /** Rejects readiness when the handshake cannot be completed. */
   #rejectReady!: (error: RpcError) => void
   /** Resolves with the peer's verified context, or rejects if the handshake ends unsuccessfully. */
   readonly ready = new Promise<JsonValue>((resolve, reject) => {
@@ -22,6 +24,7 @@ export class RpcConnection {
     this.#rejectReady = reject
   })
 
+  /** Completes connection-lifetime observation with its local release reason. */
   #resolveClosed!: (reason: RpcError) => void
   /** Resolves once with the local reason when the connection and its listeners have been released. */
   readonly closed = new Promise<RpcError>((resolve) => {

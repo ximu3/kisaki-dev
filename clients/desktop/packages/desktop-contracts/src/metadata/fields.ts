@@ -17,6 +17,7 @@ import type { PartialDate } from '../date'
 import * as v from 'valibot'
 import { parseFileInput } from '../resources'
 import {
+  aliasesSchema,
   identitySchema,
   languageSchema,
   entryCommonEntries,
@@ -282,6 +283,7 @@ export type SourceEntry<T extends EntryType = EntryType> = {
   }
 }[T]
 
+/** Source-provided image candidate with optional preview, dimensions and source-scoped identity. */
 const imageCandidateSchema = v.strictObject({
   image: v.pipe(v.unknown(), v.transform(parseFileInput)),
   thumbnail: v.exactOptional(v.pipe(v.unknown(), v.transform(parseFileInput))),
@@ -303,8 +305,10 @@ const imageCandidateSchema = v.strictObject({
   ),
 })
 
+/** Ordered image candidates retained for later preparation and adoption. */
 const images = v.array(imageCandidateSchema)
 
+/** Editable source relation attributes separated from participant identity. */
 export const metadataRelationAttributeEntries = {
   workCharacters: {
     role: v.nullable(v.picklist(characterRoles)),
@@ -322,6 +326,9 @@ export const metadataRelationAttributeEntries = {
   workExtras: {},
 } satisfies Record<keyof MetadataRelationMembers, v.ObjectEntries>
 
+/**
+ * Metadata facts shared by entry kinds, using image candidates in place of saved attachment IDs.
+ */
 const commonFields = {
   name: entryCommonEntries.name,
   originalName: entryCommonEntries.originalName,
@@ -361,7 +368,7 @@ export function metadataPartEntries(type: PartType): v.ObjectEntries {
 
 /** Returns schemas for original matching evidence applicable to an entry kind. */
 export function identificationEntries(type: EntryType): v.ObjectEntries {
-  const common = { name: nonemptyText, originalName: nonemptyText, aliases: v.array(nonemptyText) }
+  const common = { name: nonemptyText, originalName: nonemptyText, aliases: aliasesSchema }
   if (type === 'game') {
     return { ...common, releaseDate: partialDateSchema }
   }
@@ -388,7 +395,7 @@ export function partIdentificationEntries(type: PartType): v.ObjectEntries {
   return {
     name: nonemptyText,
     originalName: nonemptyText,
-    aliases: v.array(nonemptyText),
+    aliases: aliasesSchema,
     releaseDate: partialDateSchema,
     ...(type === 'animeExtra'
       ? { type: v.picklist(['opening', 'ending', 'promotion', 'interview', 'other']) }

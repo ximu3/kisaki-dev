@@ -21,12 +21,17 @@ export function createDraggable(
   createEffect(() => {
     const current = options()
     if (current) {
+      /** Library disposer for the active drag-source registration. */
       const stop = draggable({
         ...current,
+
+        /** Marks the source as dragging before forwarding the native start notification. */
         onDragStart: (event) => {
           current.element.dataset.uiDragging = ''
           current.onDragStart?.(event)
         },
+
+        /** Clears source drag presentation before forwarding the native drop notification. */
         onDrop: (event) => {
           delete current.element.dataset.uiDragging
           current.onDrop?.(event)

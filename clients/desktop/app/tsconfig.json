@@ -3,6 +3,9 @@
   "files": [],
   "references": [
     {
+      "path": "./config/typescript/tsconfig.native.json"
+    },
+    {
       "path": "./config/typescript/tsconfig.shared.json"
     },
     {

@@ -14,6 +14,7 @@ export function createValue<T>(
   initial: Accessor<T>,
   changed: (value: T) => void,
 ): readonly [Accessor<T>, (value: T) => void] {
+  /** Locally owned fallback value initialized once without capturing reactive dependencies. */
   const [local, setLocal] = createSignal<T>(untrack(initial))
 
   return [

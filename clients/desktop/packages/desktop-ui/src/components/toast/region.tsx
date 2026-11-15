@@ -49,6 +49,7 @@ export function Toaster(props: ToasterProps): JSX.Element {
     resize.observe(track)
     resize.observe(region)
 
+    /** Disposer for modal-host observation while this toast region is mounted. */
     const stop = observeModalHost(region.ownerDocument, (host) => {
       untrack(() => {
         if (region.matches(':popover-open')) {
@@ -136,6 +137,7 @@ function ToastItem(props: {
   let started = 0
   let hovered = false
   let focused = false
+  /** Local visual exit state for a toast whose reading time has elapsed. */
   const [expiring, setExpiring] = createSignal(false)
 
   onMount(() => {

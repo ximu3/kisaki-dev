@@ -12,10 +12,16 @@ if (
 export default defineConfig({
   test: {
     fsModuleCachePath: 'node_modules/.vitest-cache',
-    include: ['tests/integration/database/**/*.test.ts', 'tests/integration/native/**/*.test.ts'],
+    include: [
+      'tests/integration/database/**/*.test.ts',
+      'tests/integration/native/**/*.test.ts',
+      'tests/integration/files/**/*.test.ts',
+    ],
     environment: 'node',
     pool: 'forks',
     globals: false,
     testTimeout: 30_000,
+    // Preparing a durable database uses the same budget as the native operation cases.
+    hookTimeout: 30_000,
   },
 })

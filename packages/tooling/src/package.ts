@@ -43,6 +43,7 @@ async function checkPackage(project: string, signal: AbortSignal): Promise<void>
   }
 
   signal.throwIfAborted()
+  /** Module-scoped resolver for the installed package-verification command entry points. */
   const require = createRequire(import.meta.url)
   const manifestPath = require.resolve('@arethetypeswrong/cli/package.json')
   const manifest = JSON.parse(await readFile(manifestPath, 'utf8')) as { bin: { attw: string } }

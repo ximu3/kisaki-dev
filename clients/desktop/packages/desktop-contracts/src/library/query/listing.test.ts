@@ -6,6 +6,7 @@ import type { EntryQuery } from './definition'
 
 import { parseEntryListResult, entryLocateOffset, parseEntryLocateResult } from './listing'
 
+/** Mixed game/person query reused by the interval and group-listing validation cases. */
 const query: EntryQuery = {
   scope: { type: 'library' },
   search: '',

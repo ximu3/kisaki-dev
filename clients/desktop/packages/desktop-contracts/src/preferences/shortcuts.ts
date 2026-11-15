@@ -4,6 +4,7 @@ import { parseValue, nonemptyText } from '../validation'
 import { DesktopError } from '../errors'
 import * as v from 'valibot'
 
+/** Native action identities whose shortcut settings are persisted by preferences. */
 export const shortcutKeys = Object.freeze([
   'main.search',
   'main.preferences',
@@ -63,6 +64,7 @@ export type ShortcutsPreferences = Readonly<Record<ShortcutKey, ShortcutPreferen
 /** Desktop operating-system identity used to interpret effective shortcut modifiers. */
 export type DesktopPlatform = 'win32' | 'darwin' | 'linux'
 
+/** Accepted modifier spellings mapped to their canonical Electron accelerator names. */
 const modifiers = new Map(
   Object.entries({
     cmd: 'Command',
@@ -80,6 +82,7 @@ const modifiers = new Map(
   }),
 )
 
+/** Stable modifier order used when encoding equivalent accelerator spellings. */
 const modifierOrder = [
   'CommandOrControl',
   'Command',
@@ -91,6 +94,7 @@ const modifierOrder = [
   'Super',
 ]
 
+/** Named non-modifier keys accepted by the Electron accelerator contract. */
 const keyNames = [
   'Plus',
   'Space',
@@ -131,6 +135,7 @@ const keyNames = [
   'numdiv',
 ]
 
+/** Case-insensitive lookup retaining each accepted named key's canonical spelling. */
 const keys = new Map(keyNames.map((key) => [key.toLowerCase(), key]))
 
 keys.set('enter', 'Return')

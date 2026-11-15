@@ -39,6 +39,7 @@ jobs:
       e2e: ${{ steps.affected.outputs.e2e }}
       dev: ${{ steps.affected.outputs.dev }}
       artifacts: ${{ steps.affected.outputs.artifacts }}
+      installers: ${{ steps.affected.outputs.installers }}
       tooling: ${{ steps.affected.outputs.tooling }}
       consumers: ${{ steps.affected.outputs.consumers }}
       consumer-packages: ${{ steps.affected.outputs.consumer-packages }}
@@ -124,6 +125,13 @@ jobs:
           fi
 
           echo "complete=$complete" >> "$GITHUB_OUTPUT"
+
+          # Exercise all installer formats on explicit complete runs and packaging-policy changes.
+          installers=0
+          if [[ "$REQUEST_COMPLETE" == true || -z "$TURBO_SCM_BASE" ]] || ! git diff --quiet "$TURBO_SCM_BASE" "$TURBO_SCM_HEAD" -- clients/desktop/app/electron-builder.yml clients/desktop/app/tools/package clients/desktop/app/tools/lib/distribution.ts; then
+            installers=1
+          fi
+          echo "installers=$installers" >> "$GITHUB_OUTPUT"
 
           requiresAllTargets=false
           for task in native e2e dev artifacts; do
@@ -268,6 +276,7 @@ jobs:
           TEST_E2E: ${{ needs.select.outputs.e2e }}
           TEST_DEV: ${{ needs.select.outputs.dev }}
           TEST_ARTIFACTS: ${{ needs.select.outputs.artifacts }}
+          KISAKI_VERIFY_INSTALLERS: ${{ needs.select.outputs.installers }}
         run: |
           tasks=()
           if [[ "$TEST_NATIVE" == true ]]; then tasks+=(check:native test:native); fi

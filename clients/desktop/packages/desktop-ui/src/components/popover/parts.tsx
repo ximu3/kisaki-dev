@@ -22,6 +22,7 @@ interface PopoverState {
   change: (value: boolean) => void
 }
 
+/** Popover state shared by the trigger and content within their owning Solid tree. */
 const PopoverContext = createContext<PopoverState>()
 
 /**
@@ -38,6 +39,7 @@ export interface PopoverProps extends ParentProps {
 
 /** Establishes local popup identity and state within its actual document and modal ancestry. */
 export function Popover(props: PopoverProps): JSX.Element {
+  /** Live popover visibility and change requests delegated to its value owner. */
   const [open, change] = createValue(
     () => props.open,
     () => props.defaultOpen ?? false,
@@ -105,10 +107,15 @@ export function PopoverContent(props: PopoverContentProps): JSX.Element {
 
   let node!: HTMLDivElement
   createPopup({
+    /** Reads the currently mounted popover surface. */
     element: () => node,
+
+    /** Reads the current popover anchor for positioning. */
     anchor: () => state.anchor!,
     open: state.open,
     change: state.change,
+
+    /** Reads the caller's preferred placement with the shared default. */
     placement: () => local.placement ?? 'bottom-start',
   })
 

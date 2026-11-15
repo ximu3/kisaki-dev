@@ -150,6 +150,7 @@ export interface NotesApi {
   readonly entries: NoteEntriesApi
 }
 
+/** Editable independent note content, optional image and blank-normalized title. */
 const noteFields = {
   title: v.pipe(
     v.nullable(text),
@@ -162,6 +163,7 @@ const noteFields = {
 /** Encodes an entry's kind and identity for association comparison. */
 const entryKey = (ref: EntryRef): string => JSON.stringify([ref.type, ref.id])
 
+/** Distinct typed entry links supplied for one note. */
 const entries = v.pipe(
   v.array(entryRefSchema),
   v.check((refs) => unique(refs, entryKey)),

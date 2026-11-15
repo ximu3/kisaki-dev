@@ -10,6 +10,7 @@ import { parseIdentificationClues } from '../metadata/fields'
 import { parseValue } from '../validation'
 import { workTypes } from '../library/catalog'
 
+/** Validated absolute candidate location supplied to a work recognizer. */
 const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
 
 /**
@@ -66,6 +67,7 @@ export interface WorkRecognizersApi {
   ): Promise<Registration<string>>
 }
 
+/** Original work-identification clues, validated independently from resolved metadata. */
 export const clues = v.pipe(
   v.unknown(),
   v.transform((value) => parseIdentificationClues('game', value)),

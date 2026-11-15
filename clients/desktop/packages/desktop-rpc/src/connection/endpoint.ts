@@ -91,6 +91,7 @@ export interface RpcEndpoint {
   readonly errors?: RpcErrorCodec
 }
 
+/** Safe public RPC failure encoding and decoding used when an endpoint supplies no custom codec. */
 export const defaultErrorCodec: RpcErrorCodec = {
   encode: safeFailure,
   /**

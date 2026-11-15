@@ -10,6 +10,7 @@ export default defineConfig(
   {
     ...node,
     files: [
+      'src/main/**/*.ts',
       'tests/fixtures/runtime/src/main/**/*.ts',
       'tests/fixtures/runtime/src/extension-host/**/*.ts',
       'native/node/**/*.ts',

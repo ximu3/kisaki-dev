@@ -23,6 +23,7 @@ export interface ImageProps extends Omit<JSX.ImgHTMLAttributes<HTMLImageElement>
 export function Image(props: ImageProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'fallback', 'src', 'alt', 'onLoad', 'onError'])
 
+  /** Image-load failure state used to select the current fallback presentation. */
   const [failed, setFailed] = createSignal(false)
   createEffect(() => {
     void local.src

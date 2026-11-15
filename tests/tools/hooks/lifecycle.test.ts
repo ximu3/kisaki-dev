@@ -10,8 +10,13 @@ import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { configureHooks } from '../../../tools/hooks'
 
+/** Disposable root containing each hook scenario's isolated repository and configuration. */
 let directory: string
+
+/** Temporary Git repository whose local hook settings are exercised by the current case. */
 let repository: string
+
+/** Synthetic global Git configuration kept inside the test-owned directory. */
 let globalConfig: string
 
 /** Runs Git in the synthetic repository and retains nonzero statuses for explicit assertions. */

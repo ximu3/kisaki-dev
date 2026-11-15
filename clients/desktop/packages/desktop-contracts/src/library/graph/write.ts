@@ -139,16 +139,21 @@ export interface LibraryWriteResult<G extends LibraryWriteGraph = LibraryWriteGr
   readonly changed: boolean
 }
 
+/**
+ * Requires an explicitly supplied section before its owning graph parser validates the contents.
+ */
 const present = v.pipe(
   v.unknown(),
   v.check((value) => value !== undefined),
 )
 
+/** Initial create/update section shape before object-kind-specific graph validation. */
 const rawActions = v.strictObject({
   create: v.exactOptional(v.array(v.unknown())),
   update: v.exactOptional(v.array(v.unknown())),
 })
 
+/** Top-level graph envelope preserving each section for its owned validation stage. */
 const rawGraphSchema = v.strictObject({
   entries: v.exactOptional(rawActions),
   parts: v.exactOptional(rawActions),

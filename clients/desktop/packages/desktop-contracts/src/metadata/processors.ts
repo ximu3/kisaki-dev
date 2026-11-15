@@ -152,6 +152,7 @@ function parseProcessingPartContext(input: unknown): ProcessingPartContext {
   ) as ProcessingPartContext
 }
 
+/** Optional read-only entry, part and related-entry context supplied to a field processor. */
 const contextSchema = v.strictObject({
   entry: v.exactOptional(v.pipe(v.unknown(), v.transform(parseProcessingEntryContext))),
   part: v.exactOptional(v.pipe(v.unknown(), v.transform(parseProcessingPartContext))),

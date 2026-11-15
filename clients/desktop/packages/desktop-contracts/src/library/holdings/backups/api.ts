@@ -342,12 +342,16 @@ export interface GameBackupsApi {
   readonly recoveries: GameBackupRecoveriesApi
 }
 
+/** Validated absolute source or recovery destination path. */
 const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
 
+/** Content-tree root kind retained by backup and recovery values. */
 const kind = v.picklist(['file', 'directory'])
 
+/** Explicit terminal decisions that resolve a pending backup recovery. */
 const resolution = v.picklist(['restored', 'rolledBack', 'keptCurrent'])
 
+/** Current launch configuration or saved occurrence snapshot chosen as the backup source. */
 const backupSource = v.variant('type', [
   v.strictObject({ type: v.literal('config'), launchConfigId: id }),
   v.strictObject({ type: v.literal('snapshot'), launchConfigId: id, launchConfigName: text, path }),

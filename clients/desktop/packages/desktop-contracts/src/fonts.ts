@@ -191,6 +191,7 @@ export interface FontsApi {
   onInvalidated(listener: () => void): Disposable
 }
 
+/** Finite font metric range whose default lies between its bounds. */
 const metric = v.pipe(
   v.strictObject({
     min: v.pipe(v.number(), v.finite()),
@@ -200,16 +201,19 @@ const metric = v.pipe(
   v.check((value) => value.min <= value.default && value.default <= value.max),
 )
 
+/** Font metric range restricted to positive values for weight and width. */
 const positiveMetric = v.pipe(
   metric,
   v.check((value) => value.min > 0),
 )
 
+/** Four-character OpenType axis tag and its validated default and bounds. */
 const axis = v.pipe(
   v.strictObject({ ...metric.entries, tag: v.pipe(text, v.regex(/^[\x20-\x7e]{4}$/)) }),
   v.check((value) => value.min <= value.default && value.default <= value.max),
 )
 
+/** Font-face identity, style, metric ranges and distinct variation axes. */
 const face = v.strictObject({
   index: nonnegativeInteger,
   family: nonemptyText,
@@ -226,6 +230,7 @@ const face = v.strictObject({
   ),
 })
 
+/** Nonempty font-face metadata with contiguous source face indexes. */
 const metadata = v.strictObject({
   faces: v.pipe(
     v.tupleWithRest([face], face),
@@ -233,6 +238,7 @@ const metadata = v.strictObject({
   ),
 })
 
+/** An immutable font attachment paired with its validated face metadata. */
 const file = v.strictObject({ attachmentId: id, metadata })
 
 /** Parses a stable font reference without checking current family or resource availability. */

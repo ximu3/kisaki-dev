@@ -48,6 +48,7 @@ interface ParsedCandidateObjects extends ParsedObjects {
   readonly parts?: Readonly<Partial<Record<string, readonly ParsedCandidateNode[]>>>
 }
 
+/** Provider-local object key and optional exact source identities carried by metadata objects. */
 const identityEntries = {
   key: id,
   identity: v.exactOptional(identitySchema),
@@ -146,7 +147,9 @@ export function objectsSchema(
   root: EntryType,
   composed: boolean,
 ): v.GenericSchema<unknown, ParsedObjects> {
+  /** Selected entry-schema builder for source or composed metadata groups. */
   const entry = composed ? candidateEntry : sourceEntry
+  /** Selected part-schema builder for source or composed metadata groups. */
   const part = composed ? candidatePart : sourcePart
   const related = Object.fromEntries(
     entryTypes.map((type) => [type, v.exactOptional(v.array(entry(type)))]),

@@ -26,6 +26,7 @@ test('malformed envelopes and data that a native transport would coerce are reje
   cycle.push(cycle)
   const accessor = Object.defineProperty({}, 'secret', {
     enumerable: true,
+    /** Throws if frame validation incorrectly evaluates the hostile property accessor. */
     get() {
       throw new Error('getter ran')
     },

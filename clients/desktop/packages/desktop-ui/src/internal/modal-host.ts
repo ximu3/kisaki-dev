@@ -6,6 +6,7 @@ interface ModalHosts {
   listeners: Set<(host: HTMLDialogElement | undefined) => void>
 }
 
+/** Document-scoped modal hosts shared by overlays and persistent feedback surfaces. */
 const documents = new WeakMap<Document, ModalHosts>()
 
 /** Returns the document's existing modal registry or creates its empty registry. */

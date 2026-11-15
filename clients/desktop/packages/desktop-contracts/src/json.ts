@@ -18,6 +18,7 @@ export function parseJsonValue(input: unknown): JsonValue {
 
   /** A mutable output object or array receiving validated child values. */
   type Container = Record<string, JsonValue> | JsonValue[]
+
   /** An iterative traversal step that copies a value or leaves its ancestor scope. */
   type Visit =
     | {
@@ -124,14 +125,17 @@ export function parseStrictJson(source: string): unknown {
   visit(
     source,
     {
+      /** Starts duplicate-property tracking for the next JSON object. */
       onObjectBegin() {
         objects.push(new Set())
       },
 
+      /** Releases property-name tracking when the current JSON object ends. */
       onObjectEnd() {
         objects.pop()
       },
 
+      /** Rejects a repeated property name within the same JSON object. */
       onObjectProperty(name) {
         const names = objects.at(-1)!
         if (names.has(name)) {
@@ -140,6 +144,7 @@ export function parseStrictJson(source: string): unknown {
         names.add(name)
       },
 
+      /** Rejects numeric literals that resolve to non-finite JavaScript values. */
       onLiteralValue(value: unknown) {
         if (typeof value === 'number' && !Number.isFinite(value)) {
           invalid()

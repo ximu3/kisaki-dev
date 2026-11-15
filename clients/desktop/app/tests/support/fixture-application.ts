@@ -1,10 +1,12 @@
 /** @fileoverview Owns the test carrier's local IPC handshake and process lifetime. */
 
 import { spawn } from 'node:child_process'
+import { once } from 'node:events'
 import { debuglog } from 'node:util'
-import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
+import { UnconfirmedApplicationExit } from '../../tools/dev/session'
 import type { DevelopmentApplication, DevelopmentLaunchOptions } from '../../tools/dev/session'
 
+/** Opt-in diagnostics for fixture startup, readiness and confirmed process closure. */
 const debug = debuglog('kisaki:fixture-launch')
 
 /**
@@ -29,15 +31,13 @@ export async function launchFixtureApplication(
   })
   child.stdout!.pipe(process.stdout, { end: false })
   child.stderr!.pipe(process.stderr, { end: false })
+  await once(child, 'spawn')
 
   const exited = new Promise<{ code: number | null; signal: NodeJS.Signals | null }>(
     (resolve, reject) => {
       child.once('error', reject)
-      child.once('exit', (code, signal) =>
-        debug('Application %d exited: %s', child.pid, signal ?? code),
-      )
       child.once('close', (code, signal) => {
-        debug('Application %d streams closed', child.pid)
+        debug('Application %d streams closed: %s', child.pid, signal ?? code)
         resolve({ code, signal })
       })
     },
@@ -53,11 +53,12 @@ export async function launchFixtureApplication(
   }
 
   let timer: ReturnType<typeof setTimeout> | undefined
+  /** Rejects the startup wait with the caller's cancellation reason. */
   let abort: (() => void) | undefined
+  /** Accepts readiness only when the fixture reports the requested build identity. */
   let message: ((value: unknown) => void) | undefined
   try {
     await new Promise<void>((resolve, reject) => {
-      /** Accepts readiness only when the fixture reports the requested build identity. */
       message = (value) => {
         if (
           value &&
@@ -74,7 +75,6 @@ export async function launchFixtureApplication(
       }
 
       child.on('message', message)
-      /** Rejects the startup wait with the caller's cancellation reason. */
       abort = () => reject(options.signal.reason)
       options.signal.addEventListener('abort', abort, { once: true })
       timer = setTimeout(
@@ -91,7 +91,18 @@ export async function launchFixtureApplication(
       }
     })
   } catch (cause) {
-    return rethrowAfterCleanup(cause, terminate, 'Fixture startup and termination failed')
+    try {
+      await terminate()
+    } catch (failure) {
+      throw new UnconfirmedApplicationExit(
+        [cause, failure],
+        'Fixture startup and termination failed',
+        {
+          cause: failure,
+        },
+      )
+    }
+    throw cause
   } finally {
     clearTimeout(timer)
     if (abort) {
@@ -121,16 +132,13 @@ export async function launchFixtureApplication(
           return 'exited' as const
         }
 
+        /** Recognizes the fixture's explicit cancellation acknowledgement during normal close. */
         let cancelled: ((value: unknown) => void) | undefined
         let deadline: ReturnType<typeof setTimeout> | undefined
         try {
           return await Promise.race([
             exited.then(() => 'exited' as const),
             new Promise<'cancelled'>((resolve, reject) => {
-              /**
-               * Recognizes the fixture's explicit cancellation acknowledgement and resolves the
-               * close decision.
-               */
               cancelled = (value) => {
                 if (
                   value &&

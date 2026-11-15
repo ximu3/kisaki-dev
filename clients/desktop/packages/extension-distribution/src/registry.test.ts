@@ -15,6 +15,7 @@ import {
 } from './registry'
 import { artifact, manifest, registry, release } from '../tests/support/fixtures'
 
+/** Fixed synthetic desktop environment used by registry release-selection cases. */
 const host: CompatibilityEnvironment = {
   target: 'windows-x64',
   apiVersion: '1.2.0',

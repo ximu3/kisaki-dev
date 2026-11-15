@@ -7,8 +7,13 @@ import { RpcError } from '../errors'
 import type { RpcFrame } from '../frames'
 import type { RpcTransport } from '../transport'
 
+/** Synthetic application protocol identity shared by the connection cases. */
 const protocol = { id: 'fixture', version: 1 }
+
+/** Valid initiating frame used to exercise handshake state transitions. */
 const hello = { type: 'hello', wireVersion: 1, protocol, context: 'client' }
+
+/** Synthetic accepting endpoint with a stable server handshake context. */
 const acceptor: RpcEndpoint = {
   protocol,
   handshake: {
@@ -20,7 +25,9 @@ const acceptor: RpcEndpoint = {
 
 /** Creates an RPC connection with a controllable transport and automatic test cleanup. */
 function fixture(endpoint: RpcEndpoint = acceptor) {
+  /** Delivers a test-controlled frame through the connection's actual transport subscription. */
   let receive!: (frame: unknown) => void
+  /** Notifies the connection that the controlled transport has been lost. */
   let lost!: () => void
   const transport = {
     /** Captures receive and close callbacks for test-controlled transport delivery. */
@@ -28,7 +35,9 @@ function fixture(endpoint: RpcEndpoint = acceptor) {
       receive = message
       lost = closed
     },
+    /** Records frames handed to the controlled transport. */
     send: vi.fn<(frame: RpcFrame) => void>(),
+    /** Records release of the controlled transport. */
     close: vi.fn<() => void>(),
   } satisfies RpcTransport
   const rpc = new RpcConnection(transport, endpoint)
@@ -38,6 +47,7 @@ function fixture(endpoint: RpcEndpoint = acceptor) {
 }
 
 test('a bound acceptor rejects a different wire, endpoint version or unauthorized context exactly once', async () => {
+  /** Handshake callback that denies the synthetic peer with a safe permission failure. */
   const accept = vi.fn(() => {
     throw new RpcError('PermissionDenied', 'Peer denied')
   })
@@ -56,6 +66,7 @@ test('a bound acceptor rejects a different wire, endpoint version or unauthorize
     [{ ...hello, protocol: { ...protocol, version: 2 } }, 'ProtocolMismatch'],
     [hello, 'PermissionDenied'],
   ] as const) {
+    /** Synthetic rejecting connection and its frame-delivery and transport controls. */
     const { rpc, receive, transport } = fixture({
       protocol,
       handshake: { role: 'acceptor', accept },
@@ -76,6 +87,7 @@ test('a bound acceptor rejects a different wire, endpoint version or unauthorize
 })
 
 test('the initiator waits for a valid acceptance and preserves a safe rejection', async () => {
+  /** Handshake callback that rejects a mismatched synthetic instance. */
   const accepts = vi.fn(() => {
     throw new RpcError('InstanceExpired', 'Wrong peer')
   })
@@ -117,9 +129,13 @@ test('a silent peer has ten seconds to handshake and an early request closes imm
 })
 
 test('a nested call can use the same ID in the other direction and completed replies have no effect', async () => {
+  /** Synthetic connection exercising reverse calls while a remote method remains active. */
   const { rpc, receive, transport } = fixture({
     ...acceptor,
-    methods: { nested: () => rpc.request('callback') },
+    methods: {
+      /** Calls back through the same connection while the incoming request remains active. */
+      nested: () => rpc.request('callback'),
+    },
   })
   receive(hello)
   await expect(rpc.ready).resolves.toBe('client')
@@ -144,6 +160,7 @@ test('a nested call can use the same ID in the other direction and completed rep
 })
 
 test('abort requests the remote outcome and never retroactively changes completed calls', async () => {
+  /** Synthetic connection and controls used to verify transport-owned request lifetime. */
   const { rpc, receive, transport } = fixture()
   receive(hello)
   await rpc.ready
@@ -169,16 +186,22 @@ test('abort requests the remote outcome and never retroactively changes complete
 })
 
 test('only own methods execute, exceptions stay local and notification failures have no reply', async () => {
+  /** Observer-error spy used to verify notification failures remain outside request results. */
   const onError = vi.fn()
+  /** Synthetic endpoint separating private method failures from notification observer failures. */
   const { rpc, receive, transport } = fixture({
     ...acceptor,
     methods: {
+      /** Throws a private failure to verify the default codec does not expose its message. */
       broken: () => {
         throw new Error('private message')
       },
     },
     notifications: {
-      topics: { changed: () => Promise.reject(new Error('observer failed')) },
+      topics: {
+        /** Rejects notification delivery so the observer-error owner can report it independently. */
+        changed: () => Promise.reject(new Error('observer failed')),
+      },
       onError,
     },
   })
@@ -203,11 +226,18 @@ test('endpoint codecs receive the method and deliver its safe partial result', a
   const restored = Object.assign(new RpcError(partial.code, partial.message), {
     partialResult: [1],
   })
+  /** Error encoder spy returning the fixture's explicit partial result. */
   const encode = vi.fn(() => partial)
+  /** Error decoder spy restoring the fixture's domain failure. */
   const decode = vi.fn(() => restored)
+  /** Synthetic connection using the explicitly supplied domain error codec. */
   const { rpc, receive, transport } = fixture({
     ...acceptor,
     methods: {
+      /**
+       * Throws the fixture domain failure so the configured error codec owns its wire
+       * representation.
+       */
       edit() {
         throw failure
       },
@@ -236,6 +266,7 @@ test('correlation violations close the connection and terminate outstanding wait
     { type: 'success', id: 2 },
     { type: 'new-frame' },
   ]) {
+    /** Synthetic connection and receive callback used to exercise terminal connection handling. */
     const { rpc, receive } = fixture()
     receive(hello)
     await rpc.ready
@@ -248,11 +279,13 @@ test('correlation violations close the connection and terminate outstanding wait
 })
 
 test('disconnect releases both directions; late work and old callbacks cannot settle a new connection', async () => {
+  /** Completes the old method after disconnection to verify that late work stays isolated. */
   let finish!: () => void
   let executing!: AbortSignal
   const old = fixture({
     ...acceptor,
     methods: {
+      /** Captures the method cancellation signal and leaves completion under test control. */
       work: (_args, signal) => {
         executing = signal
         return new Promise<void>((resolve) => {

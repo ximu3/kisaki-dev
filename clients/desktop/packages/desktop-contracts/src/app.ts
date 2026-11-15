@@ -17,6 +17,7 @@ import {
 import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
 import { parseWorkRef } from './library/catalog'
 
+/** Stable application and protocol identities for production and isolated development. */
 export const applicationIdentities = Object.freeze({
   production: { appId: 'me.kisaki', scheme: 'kisaki' },
   development: { appId: 'me.kisaki.dev', scheme: 'kisaki-dev' },
@@ -238,10 +239,13 @@ export interface AppApi {
   copyEnvironment(call?: CallOptions): Promise<void>
 }
 
+/** Supported data-location modes exposed by the application contract. */
 const mode = v.picklist(['normal', 'portable'])
 
+/** Validated absolute path used by application location reports. */
 const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
 
+/** Safe error summary used by application state snapshots. */
 const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
 
 /**

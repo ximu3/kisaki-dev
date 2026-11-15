@@ -39,6 +39,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
     'style',
   ])
   const field = fieldAttributes(props)
+  /** Live number-input text and change requests that preserve the caller's editing value. */
   const [value, change] = createValue(
     () => local.value,
     () => local.defaultValue ?? '',

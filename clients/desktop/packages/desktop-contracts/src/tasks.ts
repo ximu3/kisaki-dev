@@ -28,6 +28,7 @@ export interface TaskRunRef {
   readonly taskRunId: string
 }
 
+/** Task lifecycle vocabulary shared by live observations and independently retained history. */
 export const taskRunStatuses = Object.freeze([
   'queued',
   'running',
@@ -236,6 +237,7 @@ export interface TasksApi {
   onInvalidated(listener: () => void): Disposable
 }
 
+/** Phase-only or bounded quantitative progress with a strictly positive total. */
 const progress = v.union([
   v.strictObject({ phase: nonemptyText }),
   v.pipe(

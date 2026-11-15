@@ -3,11 +3,11 @@
  * capture and structured failures.
  */
 
-import { execFile, spawn } from 'node:child_process'
-import type { ChildProcess } from 'node:child_process'
+import { spawn } from 'node:child_process'
+import type { SpawnOptions } from 'node:child_process'
 import { basename } from 'node:path'
-import { setTimeout as delay } from 'node:timers/promises'
-import { promisify } from 'node:util'
+import { fileURLToPath } from 'node:url'
+import { stopProcessGroup } from './unix'
 
 /** Working directory, environment and cancellation for one finite child command. */
 export interface ProcessOptions {
@@ -39,82 +39,6 @@ export class CommandFailed extends Error {
 }
 
 /**
- * Sends a Unix process-group signal, or probes the group when the signal is zero.
- *
- * Returns false for a missing group or a Darwin group with no live members. Other signal failures
- * reject the operation.
- */
-async function signalGroup(group: number, signal: NodeJS.Signals | 0): Promise<boolean> {
-  try {
-    process.kill(-group, signal)
-    return true
-  } catch (cause) {
-    const code = (cause as NodeJS.ErrnoException).code
-    if (code === 'ESRCH') {
-      return false
-    }
-    if (process.platform === 'darwin' && code === 'EPERM') {
-      // Darwin excludes zombies from group signals and can return EPERM while their group is reaped.
-      const { stdout } = await promisify(execFile)('/bin/ps', ['-axo', 'pgid=,stat='])
-      const live = stdout
-        .trim()
-        .split('\n')
-        .some((line) => {
-          const [pgid, state] = line.trim().split(/\s+/)
-          return Number(pgid) === group && !state?.startsWith('Z')
-        })
-      if (!live) {
-        return false
-      }
-    }
-
-    throw cause
-  }
-}
-
-/**
- * Requests termination of a running child command and its process tree.
- *
- * Windows awaits taskkill. Unix allows five seconds after SIGTERM before sending SIGKILL. The
- * caller separately waits for the child's close event.
- */
-async function stopCommand(child: ChildProcess): Promise<void> {
-  if (!child.pid || child.exitCode !== null || child.signalCode !== null) {
-    return
-  }
-
-  if (process.platform === 'win32') {
-    try {
-      await promisify(execFile)('taskkill', ['/PID', String(child.pid), '/T', '/F'], {
-        windowsHide: true,
-      })
-    } catch (cause) {
-      if (child.exitCode === null && child.signalCode === null) {
-        throw cause
-      }
-    }
-
-    return
-  }
-
-  if (!(await signalGroup(child.pid, 'SIGTERM'))) {
-    return
-  }
-
-  const deadline = Date.now() + 5_000
-  while (Date.now() < deadline) {
-    if (!(await signalGroup(child.pid, 0))) {
-      return
-    }
-
-    await delay(50)
-  }
-
-  // The owned group gets five seconds to stop normally before forced termination.
-  await signalGroup(child.pid, 'SIGKILL')
-}
-
-/**
  * Runs a command until its streams close and pending termination handling settles.
  *
  * Capture uses one shared 1 MiB budget for stdout and stderr; overflow requests cancellation.
@@ -135,13 +59,22 @@ async function execute(
   const signal = AbortSignal.any(signals)
   signal.throwIfAborted()
 
-  const child = spawn(command, args, {
+  const windows = process.platform === 'win32'
+  const stdio = capture ? 'pipe' : 'inherit'
+  const launch: SpawnOptions = {
     windowsHide: true,
     ...(options.cwd ? { cwd: options.cwd } : {}),
     ...(options.env ? { env: options.env } : {}),
-    detached: process.platform !== 'win32',
-    stdio: ['ignore', capture ? 'pipe' : 'inherit', capture ? 'pipe' : 'inherit'],
-  })
+    detached: !windows,
+    stdio: windows ? ['ignore', stdio, stdio, 'ipc'] : ['ignore', stdio, stdio],
+  }
+  const child = windows
+    ? spawn(
+        process.execPath,
+        [fileURLToPath(new URL('./windows.ts', import.meta.url)), command, ...args],
+        launch,
+      )
+    : spawn(command, args, launch)
 
   let failure: unknown
   let stopping: Promise<void> | undefined
@@ -151,7 +84,15 @@ async function execute(
 
   /** Starts one termination request and retains any failure while the child closes. */
   const cancel = () => {
-    stopping ??= stopCommand(child).catch((cause: unknown) => {
+    if (windows) {
+      // Ending the job owner closes the kernel's last job handle, including all inherited writers.
+      child.kill('SIGKILL')
+      return
+    }
+    if (!child.pid) {
+      return
+    }
+    stopping ??= stopProcessGroup(child.pid).catch((cause: unknown) => {
       failure = cause
       // Keep output ownership until closure, but report a failed termination request immediately.
       console.error(

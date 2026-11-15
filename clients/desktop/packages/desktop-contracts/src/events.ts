@@ -160,8 +160,10 @@ export interface NativeEventPublisher<K extends NativeEventName> {
   emit(payload: NativeEventMap[K]): void
 }
 
+/** Completed task outcomes that may produce a terminal fact event. */
 const terminal = v.picklist(['completed', 'failed', 'cancelled', 'interrupted'])
 
+/** Optional safe failure details attached to terminal task facts. */
 const error = v.nullable(v.pipe(v.unknown(), v.transform(parseErrorSummary)))
 
 /**
@@ -218,6 +220,7 @@ export function parseTaskFinished(input: unknown): TaskFinished {
   return value
 }
 
+/** Payload validators keyed by the actual native fact-event catalog. */
 const nativeParsers: { readonly [K in NativeEventName]: (input: unknown) => NativeEventMap[K] } = {
   /** Parses the application's readiness timestamp. */
   'app.ready': (input) =>
@@ -247,6 +250,7 @@ const nativeParsers: { readonly [K in NativeEventName]: (input: unknown) => Nati
   'sessions.novel.sessionEnded': (input) => parseSessionEnded('novel', input),
 }
 
+/** Frozen native event names derived from the payload-validator catalog. */
 export const nativeEventNames: readonly NativeEventName[] = Object.freeze(
   Object.keys(nativeParsers) as NativeEventName[],
 )

@@ -39,6 +39,7 @@ export function Checkbox(props: CheckboxProps): JSX.Element {
   ])
 
   let input!: HTMLInputElement
+  /** Checked-state dispatcher shared by the checkbox owner and native form integration. */
   const update = bindCheckedControl(local, () => input)
 
   onMount(() =>

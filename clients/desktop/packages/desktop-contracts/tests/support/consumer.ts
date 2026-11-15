@@ -8,6 +8,7 @@ import { ESLint } from 'eslint'
 import base from '@kisaki3/eslint-config/base'
 import { runPnpm } from '@kisaki3/tooling/process'
 
+/** Contracts package root whose completed tarball supplies isolated consumer fixtures. */
 const packageRoot = resolve(import.meta.dirname, '../..')
 
 /**

@@ -37,6 +37,7 @@ export function Switch(props: SwitchProps): JSX.Element {
   ])
 
   let input!: HTMLInputElement
+  /** Checked-state dispatcher shared by the switch owner and native form integration. */
   const update = bindCheckedControl(local, () => input)
 
   return (

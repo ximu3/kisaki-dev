@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 
+/** The sandbox preload entry belonging to each independently built fixture window. */
 const preloadEntries = {
   main: 'src/preload/main.ts',
   reader: 'src/preload/reader.ts',
@@ -14,6 +15,8 @@ export default defineConfig({
     lib: {
       entry: preloadEntries,
       formats: ['cjs'],
+
+      /** Keeps each sandbox preload in its named CommonJS file. */
       fileName: (_format, name) => `${name}.cjs`,
     },
     // Sandbox preload may require only Electron's allowed built-ins. Each entry is bundled alone.

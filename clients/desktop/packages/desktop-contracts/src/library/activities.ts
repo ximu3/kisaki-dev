@@ -201,8 +201,10 @@ export interface ActivitiesApi {
   ): Promise<ActivityStatistics>
 }
 
+/** UTC start and end times with independently recorded effective milliseconds. */
 const timingEntries = { startedAt: timestamp, endedAt: timestamp, durationMs: nonnegativeInteger }
 
+/** Nonempty actual activity interval whose effective duration does not exceed elapsed time. */
 const timingSchema = v.pipe(
   v.strictObject(timingEntries),
   v.check(
@@ -211,6 +213,7 @@ const timingSchema = v.pipe(
   ),
 )
 
+/** Current file, part or launch-configuration references permitted for each work medium. */
 const contexts = {
   game: v.strictObject({ launchConfigId: v.nullable(id) }),
 

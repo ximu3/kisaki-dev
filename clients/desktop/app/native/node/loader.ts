@@ -36,7 +36,11 @@ export function loadNative(modulePath: string): NativeCapabilities {
 
   try {
     const binding = createRequire(import.meta.url)(modulePath) as typeof Binding
-    if (typeof binding.moveNoReplace !== 'function' || typeof binding.syncFile !== 'function') {
+    if (
+      typeof binding.moveNoReplace !== 'function' ||
+      typeof binding.syncFile !== 'function' ||
+      typeof binding.getFilesystemLocation !== 'function'
+    ) {
       throw new TypeError('The native module does not provide the required capabilities')
     }
 

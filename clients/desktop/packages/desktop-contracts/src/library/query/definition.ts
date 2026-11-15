@@ -45,11 +45,13 @@ export interface DynamicRules {
   readonly referenceLabels: readonly QueryReferenceLabel[]
 }
 
+/** Fixed query entrances that intersect the remaining rules, search and visibility. */
 const entryScopeSchema = v.union([
   v.strictObject({ type: v.picklist(['library', 'favorites', 'unclassified']) }),
   v.strictObject({ type: v.picklist(['collection', 'tag', 'note']), id }),
 ])
 
+/** Validated reusable entry-rule groups in their supplied order. */
 const queryRulesSchema = v.array(v.pipe(v.unknown(), v.transform(parseEntryRule)))
 
 /**

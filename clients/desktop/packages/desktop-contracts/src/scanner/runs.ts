@@ -141,16 +141,20 @@ export interface ScanRunsApi {
   onInvalidated(listener: () => void): Disposable
 }
 
+/** Validated absolute candidate or traversal-issue location in a scan report. */
 export const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
 
+/** Safe scan failure details retained in reports and history. */
 export const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
 
+/** Traversal completion, discovered candidate count and path-specific discovery issues. */
 export const discovery = v.strictObject({
   finished: v.boolean(),
   candidateCount: nonnegativeInteger,
   issues: v.array(v.strictObject({ path, error })),
 })
 
+/** Saved scan-run phases, including explicit interruption. */
 const statuses = ['active', 'completed', 'failed', 'cancelled', 'interrupted'] as const
 
 /** Parses an ingest result and requires its root to be a work. */
@@ -163,6 +167,10 @@ function parseWorkAddResult(input: unknown): IngestAddResult<WorkType> {
   return value as IngestAddResult<WorkType>
 }
 
+/**
+ * Candidate content-registration outcome that preserves skipped, unstarted and partial-failure
+ * meanings.
+ */
 const localContent = v.variant('status', [
   v.strictObject({ status: v.literal('included') }),
   v.strictObject({ status: v.literal('skipped') }),
@@ -277,8 +285,8 @@ export function requireCompleteScanResult<T extends WorkType>(
   return result
 }
 
-/** Parses same-medium scan history and requires completed runs to account for all discovered work. */
-export function parseScanRun(input: unknown): ScanRun {
+/** Parses one scan's exact full or incremental coverage without inventing missing paths. */
+export function parseScanScope(input: unknown): ScanScope {
   const relative = v.pipe(v.unknown(), v.transform(parseRelativePath))
   const scope = v.union([
     v.strictObject({ type: v.literal('full') }),
@@ -290,12 +298,17 @@ export function parseScanRun(input: unknown): ScanRun {
       ),
     }),
   ])
+  return parseValue(scope, input, 'Invalid scan scope')
+}
+
+/** Parses same-medium scan history and requires completed runs to account for all discovered work. */
+export function parseScanRun(input: unknown): ScanRun {
   const value = parseValue(
     v.strictObject({
       id,
       scanConfigId: id,
       configSnapshot: v.pipe(v.unknown(), v.transform(parseScanConfigSnapshot)),
-      scope,
+      scope: v.pipe(v.unknown(), v.transform(parseScanScope)),
       description: v.nullable(text),
       status: v.picklist(statuses),
       result: v.nullable(v.pipe(v.unknown(), v.transform(parseScanResult))),

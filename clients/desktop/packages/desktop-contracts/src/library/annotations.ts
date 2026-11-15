@@ -238,17 +238,22 @@ export interface AnnotationsApi {
   delete(refs: AnnotationRef | NonEmptyArray<AnnotationRef>, call?: CallOptions): Promise<void>
 }
 
+/** Stable annotation identity qualified by its owning work medium. */
 export const annotationRefSchema = v.strictObject({ workType: v.picklist(workTypes), id })
 
+/** Optional annotation title with blank input normalized to an absent title. */
 export const nullableTitleSchema = v.pipe(
   v.nullable(text),
   v.transform((value) => value?.trim() || null),
 )
 
+/** Validated source location used by comic and novel annotations. */
 const readingLocation = v.pipe(v.unknown(), v.transform(parseReadingAnnotationLocation))
 
+/** Validated file-local video position or range used by anime annotations. */
 const playbackLocation = v.pipe(v.unknown(), v.transform(parsePlaybackAnnotationLocation))
 
+/** Annotation-target fields owned by each medium, including its image and location requirements. */
 const targetEntries = {
   game: { imageId: id },
   anime: { fileId: v.nullable(id), location: playbackLocation, imageId: v.nullable(id) },
@@ -268,6 +273,7 @@ const targetEntries = {
   },
 }
 
+/** Complete per-medium annotation target validators used by explicit target changes. */
 const targetSchemas = {
   game: v.strictObject(targetEntries.game),
   anime: v.strictObject(targetEntries.anime),

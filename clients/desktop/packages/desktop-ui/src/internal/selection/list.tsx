@@ -47,7 +47,9 @@ interface ListProps extends SelectionListProps {
  */
 export function SelectionList(props: ListProps): JSX.Element {
   let list!: HTMLDivElement
+  /** Popup identity and presence readers used by the selection list. */
   const { id, open, present } = props.popup
+  /** Displayed selection retained while the popup completes its exit transition. */
   const selected = displayedWhileOpen(open, () => props.selected)
 
   createEffect(() => {
@@ -82,6 +84,7 @@ export function SelectionList(props: ListProps): JSX.Element {
 
   onMount(() => {
     props.listRef?.(list)
+    /** Observed row height used by the list's virtual geometry. */
     const [height, setHeight] = createSignal(0)
     const size = new ResizeObserver(() => setHeight(list.clientHeight))
     size.observe(list)

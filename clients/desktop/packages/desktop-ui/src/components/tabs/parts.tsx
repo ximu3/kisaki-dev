@@ -16,6 +16,7 @@ import { createFocusNavigation } from '../../internal/focus'
 import styles from './styles.module.css'
 import segmented from '../../internal/segmented.module.css'
 
+/** Selection, tab registration and keyboard-entry state shared by the tabs compound parts. */
 const TabsContext = createContext<{
   id: string
 
@@ -65,11 +66,13 @@ export function Tabs(props: TabsProps): JSX.Element {
     'class',
   ])
 
+  /** Live selected-tab value and change requests delegated to its value owner. */
   const [value, change] = createValue(
     () => local.value,
     () => local.defaultValue ?? '',
     (next) => local.onValueChange?.(next),
   )
+  /** Current tab identities in registration order for selection and keyboard entry. */
   const [registered, setRegistered] = createSignal<string[]>([])
   /** Returns the first registered enabled-tab value, or an empty value while none exist. */
   const first = () => registered()[0] ?? ''
@@ -78,14 +81,24 @@ export function Tabs(props: TabsProps): JSX.Element {
     <TabsContext.Provider
       value={{
         id: createUniqueId(),
+
+        /** Reads the selected tab, using the first registered tab when no value is selected. */
         value: () => value() || first(),
         change,
+
+        /** Reads the registered tab that should receive keyboard entry. */
         focusValue: () => (registered().includes(value()) ? value() : first()),
+
+        /** Registers a tab identity and returns its matching registration cleanup. */
         register: (item) => {
           setRegistered((items) => [...items, item])
           return () => setRegistered((items) => items.filter((value) => value !== item))
         },
+
+        /** Reads the caller's tab-list orientation with its horizontal default. */
         orientation: () => local.orientation ?? 'horizontal',
+
+        /** Reads the caller's selection-activation mode with its automatic default. */
         activation: () => local.activation ?? 'automatic',
       }}
     >
@@ -106,6 +119,7 @@ export function TabList(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element 
   let list!: HTMLDivElement
   const [local, rest] = splitProps(props, ['class', 'onKeyDown', 'ref'])
 
+  /** Orientation-aware tab navigation that applies automatic activation when selected. */
   const navigate = createFocusNavigation(
     () => list,
     '[role="tab"]',

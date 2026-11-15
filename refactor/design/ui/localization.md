@@ -34,7 +34,7 @@ type UiTranslationRef =
   { type: 'builtin'; id: 'en' } | { type: 'extension'; extensionId: string; id: string }
 ```
 
-preferences 保存具体 UiTranslationRef。i18n 根据这份引用及当前登记计算有效语言。两个译本即使 locale 相同，切换引用也会刷新使用中的消息。
+preferences 保存具体 UiTranslationRef。i18n 根据这份引用及当前登记计算有效语言。两个译本即使 locale 相同，切换引用也会刷新使用中的消息。main 将实际生效的 locale 同步给[资料库名称排序](../domains/library/query/README.md#name-order)：生效语言变化时采用对应索引并使列表重新读取，同语言译本共享顺序。
 
 messages 是按领域嵌套的纯数据。分组使用普通对象的自有、可枚举数据属性，字符串保存 ICU 源文。每级键是非空且不含点的路径段，叶子的完整路径标识消息。源码可以分文件维护，宿主从汇总后的树派生索引。
 

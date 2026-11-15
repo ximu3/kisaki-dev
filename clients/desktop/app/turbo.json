@@ -9,8 +9,11 @@
       "cache": false
     },
     "test:native": {
-      "dependsOn": ["build:native", "prepare:resources", "prepare:electron"],
+      "dependsOn": ["^build", "build:native", "prepare:resources", "prepare:electron"],
       "inputs": [
+        "src/**",
+        "!src/**/*.test.ts",
+        "drizzle/**",
         "native/**",
         "!native/target/**",
         "!**/*.md",
@@ -21,16 +24,21 @@
         "config/vitest/vitest.config.native.ts",
         "tests/integration/native/**",
         "tests/integration/database/**",
+        "tests/support/database.ts",
         "!tests/fixtures/runtime/src/**/*.test.ts",
         "!tests/fixtures/runtime/src/**/*.test.tsx",
         "!tools/**/*.test.ts",
-        "!native/**/*.test.ts"
+        "!native/**/*.test.ts",
+        "tests/integration/files/**"
       ],
       "cache": false
     },
     "test:e2e": {
       "dependsOn": ["build:fixture", "prepare:electron"],
       "inputs": [
+        "src/**",
+        "!src/**/*.test.ts",
+        "drizzle/**",
         "tests/fixtures/runtime/src/**",
         "native/**",
         "!native/target/**",
@@ -58,6 +66,9 @@
     "test:artifacts": {
       "dependsOn": ["package:fixture", "prepare:electron"],
       "inputs": [
+        "src/**",
+        "!src/**/*.test.ts",
+        "drizzle/**",
         "electron-builder.yml",
         "$TURBO_ROOT$/LICENSE",
         "tests/fixtures/runtime/src/**",
@@ -89,6 +100,9 @@
     "test:performance": {
       "dependsOn": ["build:fixture", "prepare:electron"],
       "inputs": [
+        "src/**",
+        "!src/**/*.test.ts",
+        "drizzle/**",
         "tests/fixtures/runtime/src/**",
         "native/**",
         "!native/target/**",
@@ -114,9 +128,12 @@
       "cache": false
     },
     "test:dev": {
-      "dependsOn": ["build:native", "prepare:electron"],
+      "dependsOn": ["^build", "build:native", "prepare:electron"],
       "env": ["TSDOWN_*", "MACOSX_DEPLOYMENT_TARGET"],
       "inputs": [
+        "src/**",
+        "!src/**/*.test.ts",
+        "drizzle/**",
         "tools/dev/**",
         "tools/build/**",
         "tools/resources/**",
@@ -130,10 +147,9 @@
         "config/typescript/**",
         "tsconfig.json",
         "config/vitest/vitest.config.dev.ts",
-        "tests/tools/dev/**",
+        "tests/tools/dev/session.test.ts",
         "tests/support/development/**",
         "tests/support/fixture-application.ts",
-        "tests/support/preparation-worker.ts",
         "tests/support/window-observation.ts",
         "!tests/fixtures/runtime/src/**/*.test.ts",
         "!tests/fixtures/runtime/src/**/*.test.tsx",
@@ -148,6 +164,9 @@
       "dependsOn": ["^build", "build:native", "prepare:resources"],
       "env": ["$TURBO_EXTENDS$", "MACOSX_DEPLOYMENT_TARGET"],
       "inputs": [
+        "src/**",
+        "!src/**/*.test.ts",
+        "drizzle/**",
         "tests/fixtures/runtime/src/**",
         "native/**",
         "!native/target/**",
@@ -171,8 +190,16 @@
     },
     "package:fixture": {
       "dependsOn": ["build:fixture"],
-      "env": ["KISAKI_MAC_SIGNING_IDENTITY", "MACOSX_DEPLOYMENT_TARGET", "TSDOWN_*"],
+      "env": [
+        "KISAKI_VERIFY_INSTALLERS",
+        "KISAKI_MAC_SIGNING_IDENTITY",
+        "MACOSX_DEPLOYMENT_TARGET",
+        "TSDOWN_*"
+      ],
       "inputs": [
+        "src/**",
+        "!src/**/*.test.ts",
+        "drizzle/**",
         "electron-builder.yml",
         "$TURBO_ROOT$/LICENSE",
         "tests/fixtures/runtime/src/**",
@@ -210,7 +237,14 @@
       "cache": false
     },
     "prepare:resources": {
-      "inputs": ["assets/**", "!**/*.md", "tools/resources/**", "tools/lib/**", "package.json"],
+      "inputs": [
+        "assets/**",
+        "!**/*.md",
+        "tools/resources/**",
+        "tools/lib/**",
+        "package.json",
+        "drizzle/**"
+      ],
       "outputs": ["out/resources/**"],
       "cache": false
     },

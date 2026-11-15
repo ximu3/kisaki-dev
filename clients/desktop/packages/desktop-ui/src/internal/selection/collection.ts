@@ -10,7 +10,9 @@ import type { SelectionOption } from './types'
  * Navigation uses enabled stable keys, and owner cleanup clears the typeahead timer.
  */
 export function createSelection(source: Accessor<readonly SelectionOption[]>) {
+  /** Reactive snapshot of the current option source. */
   const options = createMemo(source)
+  /** Option records indexed by stable value with their one-based collection positions. */
   const entries = createMemo(
     () =>
       new Map(options().map((option, index) => [option.value, { option, position: index + 1 }])),
@@ -19,8 +21,10 @@ export function createSelection(source: Accessor<readonly SelectionOption[]>) {
   const get = (value: string) => entries().get(value)?.option
   /** Reads an option's one-based position in the complete supplied collection. */
   const positionOf = (value: string) => entries().get(value)?.position
+  /** Current options available for keyboard selection. */
   const enabled = createMemo(() => options().filter((option) => !option.disabled))
 
+  /** Highlighted option identity maintained independently from the selected values. */
   const [highlighted, setHighlighted] = createSignal<string>()
   /** Returns the highlighted key only while its current option exists and is enabled. */
   const active = () => {

@@ -217,8 +217,10 @@ export interface ContentDirectoriesApi {
   ): Promise<HoldingsRelocationResult<Args[0]['type']>>
 }
 
+/** Canonical absolute directory location used by registered holding inputs. */
 export const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
 
+/** Complete directory traversal limits and include/exclude filters. */
 const discoverySchema = v.strictObject({
   maxDepth: v.nullable(positiveInteger),
   include: v.array(v.pipe(v.unknown(), v.transform(parsePathFilter))),

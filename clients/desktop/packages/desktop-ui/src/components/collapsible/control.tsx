@@ -38,6 +38,7 @@ export function Collapsible(props: CollapsibleProps): JSX.Element {
     'onToggle',
   ])
 
+  /** Live disclosure state and change requests delegated to the controlled or local owner. */
   const [open, change] = createValue(
     () => local.open,
     () => local.defaultOpen ?? false,

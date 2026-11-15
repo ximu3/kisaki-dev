@@ -5,6 +5,7 @@ import {
   validateExtensionUiTranslationDefinition,
 } from '@kisaki3/desktop-localization'
 
+/** Observed translation, fallback, literal-text and locale results from the installed package. */
 export const summary = {
   english: createTranslator('en')('library.selection', { count: 2 }),
   translated: createTranslator('zh-CN', { actions: { save: '保存' } })('actions.save'),

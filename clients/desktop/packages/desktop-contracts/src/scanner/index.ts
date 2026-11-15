@@ -10,7 +10,13 @@ export {
 
 export { parseRecognitionInput, parseRecognitionResult } from './recognizers'
 
-export { parseScanResult, requireCompleteScanResult, parseScanRun, parseScanRunQuery } from './runs'
+export {
+  parseScanScope,
+  parseScanResult,
+  requireCompleteScanResult,
+  parseScanRun,
+  parseScanRunQuery,
+} from './runs'
 
 export { parseScannerState } from './api'
 

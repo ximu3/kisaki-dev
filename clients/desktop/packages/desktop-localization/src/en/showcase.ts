@@ -1,5 +1,6 @@
 /** @fileoverview Defines English names and explanations for built-in showcase presets. */
 
+/** Canonical English names and explanations for native showcase presets. */
 export const showcaseMessages = {
   presets: {
     recentlyUsed: {

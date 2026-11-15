@@ -20,6 +20,7 @@ export interface MoveInput<T = string> {
   readonly before: T | null
 }
 
+/** A nonempty ordered identity sequence that rejects repeated members. */
 const uniqueIds = v.pipe(
   v.tupleWithRest([id], id),
   v.check((items) => unique(items, (item) => item)),

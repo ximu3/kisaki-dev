@@ -21,6 +21,7 @@ import {
 import { workTypes, languageSchema } from '../library/catalog'
 import { parseMetadataProfileDefinition } from '../metadata/profiles'
 
+/** Validated absolute root location for a saved scan configuration. */
 const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
 
 /**

@@ -35,7 +35,9 @@ interface SelectedChipsProps extends ChipLabels {
  * Resize observation and wheel handling are released with the component owner.
  */
 export function SelectedChips(props: SelectedChipsProps): JSX.Element {
+  /** Observed availability of scrolling toward earlier selected chips. */
   const [canPrevious, setCanPrevious] = createSignal(false)
+  /** Observed availability of scrolling toward later selected chips. */
   const [canNext, setCanNext] = createSignal(false)
   let group!: HTMLDivElement
   let viewport!: HTMLDivElement

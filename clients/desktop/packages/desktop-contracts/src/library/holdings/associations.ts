@@ -49,8 +49,10 @@ export interface FileAssociationEdit<T extends FileWorkType = FileWorkType> {
   }
 }
 
+/** Saved automatic or manual intent for a registered file's part associations. */
 export const mode = v.picklist(['automatic', 'manual'])
 
+/** Real part kinds that each file-bearing work medium may associate directly. */
 export const filePartTypes: { readonly [K in FileWorkType]: readonly FilePartType<K>[] } = {
   anime: ['animeEpisode', 'animeExtra'],
   comic: ['comicVolume', 'comicChapter'],

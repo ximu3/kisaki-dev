@@ -8,6 +8,7 @@ import { createValue, onFormReset } from '../../internal/state'
 import { ChoiceRow } from '../../internal/choice/row'
 import styles from './styles.module.css'
 
+/** Native form identity and selection ownership shared by a radio group's options. */
 const RadioContext = createContext<{
   /** Reads the shared native form-field name for this radio group. */
   name: Accessor<string>
@@ -56,6 +57,7 @@ export function RadioGroup(props: RadioGroupProps): JSX.Element {
 
   const field = fieldAttributes(props, () => local.label)
   const name = createUniqueId()
+  /** Live radio selection and change requests shared by the group's native options. */
   const [value, change] = createValue(
     () => local.value,
     () => local.defaultValue ?? '',
@@ -75,10 +77,15 @@ export function RadioGroup(props: RadioGroupProps): JSX.Element {
   return (
     <RadioContext.Provider
       value={{
+        /** Reads the caller-supplied or generated native form-group name. */
         name: () => props.name ?? name,
         value,
         change,
+
+        /** Reads required state from the control or inherited field owner. */
         required: () => local.required ?? field.required ?? false,
+
+        /** Reads the native form identity explicitly associated with the radio group. */
         form: () => props.form,
       }}
     >

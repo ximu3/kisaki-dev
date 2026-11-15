@@ -35,16 +35,25 @@ export function Field(props: FieldProps): JSX.Element {
   ])
 
   const id = local.id ?? createUniqueId()
+  /** Registration state for the field's accessible label. */
   const [label, setLabel] = createSignal(false)
+  /** Registration state for the field's accessible description. */
   const [description, setDescription] = createSignal(false)
+  /** Registration state for the field's accessible error message. */
   const [error, setError] = createSignal(false)
 
   return (
     <FieldContext.Provider
       value={{
         id,
+
+        /** Reads the field's current explicit invalid state. */
         invalid: () => !!local.invalid,
+
+        /** Reads the field's current required state for nested controls. */
         required: () => !!local.required,
+
+        /** Reads the field's current disabled state for nested controls. */
         disabled: () => !!local.disabled,
         label,
         setLabel,

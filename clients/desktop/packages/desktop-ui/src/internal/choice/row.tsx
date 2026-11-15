@@ -10,6 +10,7 @@ import styles from './styles.module.css'
  * A bare control retains external labeling support.
  */
 export function ChoiceRow(props: { label?: JSX.Element; children: JSX.Element }): JSX.Element {
+  /** Resolved child control retained by the surrounding choice-row presentation. */
   const control = children(() => props.children)
 
   return (

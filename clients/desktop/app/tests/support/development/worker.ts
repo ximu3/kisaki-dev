@@ -9,15 +9,19 @@ import { launchFixtureApplication } from '../fixture-application'
 import { startDevelopmentSession } from '../../../tools/dev/session'
 import type { DevelopmentSession } from '../../../tools/dev/session'
 
+/** Cancellation owner for initial development preparation. */
 const controller = new AbortController()
+
+/** Fault or lifecycle scenario selected by the parent test. */
 const scenario = process.argv[2]
 
-let rejectStop!: (cause: unknown) => void
-const stopFailure = new Promise<never>((_resolve, reject) => {
-  rejectStop = reject
-})
+/** Rejects the controller wait when an application declines to complete its stop operation. */
+const stopFailure = Promise.withResolvers<never>()
 
+/** Development session owned and closed by this child process. */
 let session: DevelopmentSession | undefined
+
+/** Records whether the worker must report an unsuccessful terminal outcome. */
 let failed = false
 
 /**
@@ -36,7 +40,7 @@ function stop(): void {
           rendererUrl: session?.rendererUrl,
         })
       }
-    }, rejectStop)
+    }, stopFailure.reject)
   } else {
     controller.abort(new Error('Fixture development session stopped'))
   }
@@ -72,13 +76,13 @@ const message = (value: unknown) => {
   if (value.type === 'stop') {
     stop()
   } else if (value.type === 'cleanup') {
-    void cleanup().catch(rejectStop)
+    void cleanup().catch(stopFailure.reject)
   }
 }
 
 /** Requests test-session cleanup when the parent IPC channel disconnects. */
 const disconnected = () => {
-  void cleanup().catch(rejectStop)
+  void cleanup().catch(stopFailure.reject)
 }
 
 process.on('message', message)
@@ -87,6 +91,7 @@ process.once('disconnect', disconnected)
 try {
   session = await startDevelopmentSession({
     sourceRoot: fileURLToPath(new URL('../../fixtures/runtime', import.meta.url)),
+    /** Launches the real carrier and wraps only the lifecycle fault selected by the parent test. */
     async launch(options) {
       const application = await launchFixtureApplication({
         ...options,
@@ -117,6 +122,10 @@ try {
       }
     },
     signal: controller.signal,
+    /**
+     * Forwards session state and diagnostic messages to the parent while its IPC channel is
+     * connected.
+     */
     onState(state, error) {
       if (process.connected) {
         process.send?.(
@@ -137,7 +146,7 @@ try {
   })
 
   // A failed stop leaves the session owned, so closed alone cannot report that failure.
-  await Promise.race([session.closed, stopFailure])
+  await Promise.race([session.closed, stopFailure.promise])
 } catch (cause) {
   if (!isCancellation(cause, controller.signal)) {
     failed = true

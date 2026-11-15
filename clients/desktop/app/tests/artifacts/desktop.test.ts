@@ -65,6 +65,7 @@ test('the exact packaged carrier retains production fuses and starts and closes 
 
   const workspace = await prepareArtifactWorkspace(join(dirname(receiptPath), file.path))
   const { directory, executablePath, resourceDirectory, fusePath } = workspace
+  /** Cleanup handle assigned when this test owns a started packaged process. */
   let closeApplication: (() => Promise<void>) | undefined = undefined
   onTestFinished(async () => {
     // Retain the extraction when process closure cannot be confirmed.

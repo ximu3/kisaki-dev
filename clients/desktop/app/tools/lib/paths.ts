@@ -7,7 +7,13 @@ import { isAbsolute, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { DesktopTarget } from './runtime-manifest'
 
+/**
+ * The desktop engineering package root, resolved from this module rather than the working
+ * directory.
+ */
 export const appRoot = fileURLToPath(new URL('../..', import.meta.url))
+
+/** The containing Kisaki checkout used by workspace-level engineering tasks. */
 export const repositoryRoot = resolve(appRoot, '../../..')
 
 /**

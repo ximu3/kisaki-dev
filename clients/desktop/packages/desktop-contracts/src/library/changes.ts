@@ -175,6 +175,7 @@ export interface LibraryChanged {
   readonly changes: NonEmptyArray<LibraryChange>
 }
 
+/** Library capability areas whose saved projections can be invalidated by committed changes. */
 export const libraryInvalidationAreas = Object.freeze([
   'entries',
   'parts',
@@ -201,28 +202,33 @@ export interface LibraryInvalidation {
   readonly areas: NonEmptyArray<LibraryInvalidationArea>
 }
 
+/** Entry identity, saved name and external coordinates retained with a change fact. */
 const entrySnapshot = v.strictObject({
   ref: entryRefSchema,
   name: nonemptyText,
   externalIdentities: identitiesSchema,
 })
 
+/** Part identity, optional saved name and external coordinates retained with a change fact. */
 const partSnapshot = v.strictObject({
   ref: partRefSchema,
   name: v.nullable(text),
   externalIdentities: identitiesSchema,
 })
 
+/** Distinct local identities in a committed change payload, allowing an empty set. */
 const ids = v.pipe(
   v.array(id),
   v.check((values) => unique(values, (value) => value)),
 )
 
+/** Nonempty distinct local identities for change facts that require affected objects. */
 const nonemptyIds = v.pipe(
   v.tupleWithRest([id], id),
   v.check((values) => unique(values, (value) => value)),
 )
 
+/** Distinct typed entry references retained in library change notifications. */
 const entries = v.pipe(
   v.array(entryRefSchema),
   v.check((values) => unique(values, (value) => value.id)),

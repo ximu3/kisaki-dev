@@ -13,7 +13,10 @@ import {
 } from './signing'
 import { registry } from '../../tests/support/fixtures'
 
+/** Ephemeral registry key pair owned by the signing test cases. */
 const keys = generateRegistryKeyPair()
+
+/** Synthetic pinned repository identity paired with the test-generated public key. */
 const trust = { id: 'sample.registry', publicKey: keys.publicKey }
 
 test('Node Ed25519 independently verifies the exact purpose-prefixed JCS payload', () => {

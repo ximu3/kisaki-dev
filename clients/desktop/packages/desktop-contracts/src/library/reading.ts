@@ -162,6 +162,7 @@ export type ReadingPositionInput = ReadingPosition | 'start'
 /** Playback target in file-local seconds or the transient start instruction. */
 export type PlaybackPositionInput = number | 'start'
 
+/** Persistent source anchors whose coordinates remain specific to their document format. */
 const anchorSchema = v.variant('type', [
   v.strictObject({
     type: v.literal('epubCfi'),
@@ -190,6 +191,7 @@ const anchorSchema = v.variant('type', [
   }),
 ])
 
+/** Canonical relative document member identity preserving its original spelling. */
 const memberPath = v.pipe(
   nonemptyText,
   v.check(
@@ -200,6 +202,7 @@ const memberPath = v.pipe(
   ),
 )
 
+/** Original page identity independent of rendered page numbering and display layout. */
 const pageSchema = v.variant('type', [
   v.strictObject({ type: v.literal('memberPath'), path: memberPath }),
   v.strictObject({ type: v.literal('pageIndex'), index: nonnegativeInteger }),
@@ -207,6 +210,10 @@ const pageSchema = v.variant('type', [
   v.strictObject({ type: v.literal('kf8Document'), index: nonnegativeInteger }),
 ])
 
+/**
+ * Persistent reading location expressed as a source anchor or normalized point on an original
+ * page.
+ */
 const positionSchema = v.variant('type', [
   v.strictObject({ type: v.literal('anchor'), anchor: anchorSchema }),
   v.strictObject({

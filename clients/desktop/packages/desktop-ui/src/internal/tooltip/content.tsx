@@ -39,14 +39,19 @@ export function TooltipSurface(props: TooltipSurfaceProps): JSX.Element {
   onMount(() => onCleanup(local.reading.connect(content.ownerDocument)))
 
   createPopup({
+    /** Reads the currently mounted tooltip surface. */
     element: () => content,
     anchor: local.anchor,
     open: local.reading.open,
+
+    /** Dismisses the tooltip through its reading-state owner when closure is requested. */
     change: (open) => {
       if (!open) {
         local.reading.dismiss()
       }
     },
+
+    /** Reads the tooltip's preferred placement with the shared default. */
     placement: () => local.placement ?? 'bottom-start',
     restoreFocus: false,
   })

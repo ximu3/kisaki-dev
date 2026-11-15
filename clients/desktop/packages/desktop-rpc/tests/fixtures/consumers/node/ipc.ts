@@ -9,7 +9,9 @@ import type { RpcTransport } from '@kisaki3/desktop-rpc'
  * Send failures and disconnects are reported through the channel's own lifetime callbacks.
  */
 export function ipcTransport(channel: ChildProcess | NodeJS.Process): RpcTransport {
+  /** Reports send failures to the close callback captured by start. */
   let failed: (cause: Error) => void
+  /** Removes the message, disconnect and error listeners installed for this transport. */
   let detach: () => void
 
   return {
@@ -19,7 +21,6 @@ export function ipcTransport(channel: ChildProcess | NodeJS.Process): RpcTranspo
       channel.on('message', receive)
       channel.on('disconnect', closed)
       channel.on('error', closed)
-      /** Removes the message, disconnect and error listeners installed for this transport. */
       detach = () => {
         channel.off('message', receive)
         channel.off('disconnect', closed)

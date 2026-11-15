@@ -58,6 +58,7 @@ export function FormFeedback(props: FormFeedbackProps): JSX.Element {
     'class',
   ])
 
+  /** Remembered issue identity used to retain relevant feedback across focus changes. */
   const [remembered, setRemembered] = createSignal<string | null>(null)
   createEffect(() => {
     if (local.activeFieldId !== undefined) {
@@ -65,6 +66,7 @@ export function FormFeedback(props: FormFeedbackProps): JSX.Element {
     }
   })
 
+  /** Current issue matching the remembered feedback identity. */
   const current = createMemo(() => local.issues.find((issue) => issue.id === remembered()))
   /**
    * Returns the explicit form message, active issue summary or formatted issue count in priority
@@ -99,6 +101,7 @@ function FeedbackPrompt(props: {
   const id = createUniqueId()
   let trigger!: HTMLButtonElement
   let message!: HTMLSpanElement
+  /** Observed text-clipping state controlling whether the full feedback tooltip is needed. */
   const [clipped, setClipped] = createSignal(false)
   /** Returns supplemental error detail only when it differs from the visible summary. */
   const detail = () => (props.detail === props.text ? undefined : props.detail)

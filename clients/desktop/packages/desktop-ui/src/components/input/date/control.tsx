@@ -71,24 +71,30 @@ export function DateInput(props: DateInputProps): JSX.Element {
     ],
   )
   const field = fieldAttributes(props)
+  /** Live native date text and change requests delegated to its value owner. */
   const [value, change] = createValue(
     () => local.value,
     () => local.defaultValue ?? '',
     (next) => local.onValueChange?.(next),
   )
+  /** Locally owned visibility of the calendar picker. */
   const [open, setOpen] = createSignal(false)
   const id = createUniqueId()
   let input!: HTMLInputElement
   let trigger!: HTMLButtonElement
   let picker: HTMLDivElement | undefined
+  /** Presence reader retaining the calendar during its exit transition. */
   const present = createPresentation(open, () => picker)
 
   /** Checks whether disabled or readonly state prevents calendar interaction. */
   const blocked = () => (props.disabled ?? field.disabled) || props.readOnly
+  /** Valid current minimum date text, absent when the supplied bound cannot be parsed. */
   const min = createMemo(() => (parseDate(calendar.min ?? '') ? calendar.min : undefined))
+  /** Valid current maximum date text with the native calendar's supported upper fallback. */
   const max = createMemo(() => (parseDate(calendar.max ?? '') ? calendar.max! : '9999-12-31'))
 
   // Ask the same native date constraint implementation about a day without disturbing the edited segments.
+  /** Detached native date input reflecting the current bounds and step for validity checks. */
   const constraints = createMemo(() => {
     const candidate = document.createElement('input')
     candidate.type = 'date'

@@ -2,6 +2,7 @@
 
 import { createTranslator } from '@kisaki3/desktop-localization'
 
+/** Partial Chinese translation used to verify real browser fallback behavior. */
 const t = createTranslator('zh-Hans', { actions: { save: '保存' } })
 document.querySelector('#summary')!.textContent = JSON.stringify({
   translated: t('actions.save'),

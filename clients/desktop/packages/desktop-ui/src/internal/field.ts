@@ -28,6 +28,7 @@ export interface FieldContextValue {
   setError: (value: boolean) => void
 }
 
+/** Form-field labels, descriptions and validation state inherited by nested controls. */
 export const FieldContext = createContext<FieldContextValue>()
 
 /**

@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url'
 import { runCli } from '@kisaki3/tooling/cli'
 import { runPnpm } from '@kisaki3/tooling/process'
 
+/** Checkout root resolved from this engineering entry for dependency-boundary inspection. */
 const repositoryRoot = fileURLToPath(new URL('..', import.meta.url))
 
 /**
