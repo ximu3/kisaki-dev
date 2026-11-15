@@ -4,15 +4,13 @@
 
 ## 实施进展
 
-截至 2026-11-14，工作包按真实依赖和完整责任组织。本体业务就绪后，W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 1.9、原生能力上的自研通用 UI、组件子路径与 CSS Modules、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
+截至 2026-11-15，工作包按真实依赖和完整责任组织。本体业务就绪后，W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 1.9、原生能力上的自研通用 UI、组件子路径与 CSS Modules、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
 
 W00 工程实现与适用验收已完成并合入主线，当前职责见[工程能力](#w00)。仓库维护桌面工程工具、原生文件能力、资源、两个私有工程包，以及 desktop-appearance、extension-distribution、desktop-contracts、desktop-localization、desktop-rpc 和 desktop-ui，workspace 共 10 个项目（含根工程）。产品能力按下表工作包实施。
 
 当前任务入口为 AGENTS.md，设计、规范和实施资料集中于 refactor。[当前工程与开发](development.md)维护源码职责、环境准备与可运行命令。正式项目文档待 W23 交付；接口声明、代码注释、发行说明和许可材料随所属实现与版本维护。
 
-[全项目工程现代化](engineering-modernization.md)已在迁移分支实施，采用 Vite+ 与 TypeScript 7.1 Beta。工具、测试和源码开发按实际宿主组织，新的 CI 按完整候选差异选择专项作业。Windows、macOS、Linux 的两种架构已通过[迁移分支六目标 CI](https://github.com/ximu3/kisaki-dev/actions/runs/43601249062)。主线切换待正式 7.1.x 验收，保护规则按授权调整。历史运行与设计决定见[全项目审视](modernization-audit.md)。
-
-[工作区配置与任务重构](workspace-config-and-tasks.md)已接入迁移分支。六个公共包共用 `@kisaki3/config`，CI 按目标复用一次准备的构建。制品验收直接读取指定归档。当前候选的目标作业和必需检查见 [PR #39](https://github.com/ximu3/kisaki-dev/pull/39/checks)。
+工作区采用 Vite+，主线编译器锁定为 `7.1.0-beta`。升级到 7.1.x 正式版时重新验证项目引用、声明和仓库外消费。六个公共包共用 `@kisaki3/config`，CI 按改动选择宿主，在每个目标内复用构建，制品验收直接读取指定归档。选型、工作区调整与运行证据见[工程重构归档](archive/engineering-modernization/README.md)和 [PR #39 的检查](https://github.com/ximu3/kisaki-dev/pull/39/checks)。
 
 [当前工程验证](../verification/evidence/w00/README.md)已取得本机 Windows x64 和 CI 六目标结果，覆盖工程载体的构建、原生与 Electron 运行、开发回归、打包及制品运行。
 
@@ -86,7 +84,7 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 | 本地设备     | Windows 10 22H2 x64（build 19045）、Ryzen 9 7945HX、约 32 GB 内存；RTX 4060 Laptop GPU 8 GB 与 AMD 集成显卡。 |
 | 本地执行条件 | 普通用户权限的交互桌面；测试使用独立资料与目录。                                                              |
 | 标准 CI      | Windows、macOS、Linux 的 x64 与 arm64；各目标配置原生构建、基础运行和载体验证，实际结果由证据记录。           |
-| 反馈目标     | 现行 [4／10／25 分钟](../design/engineering/workspace.md#ci-feedback)。拟迁移后以[普通 PR 基础反馈约 3 分钟](engineering-modernization.md#ci-design)为目标，待实测。                                            |
+| 反馈目标     | 普通 PR 以约 3 分钟给出基础结果，全部必需检查按改动范围核对[工程反馈预算](../design/engineering/workspace.md#ci-feedback)。 |
 
 <a id="w00"></a>
 
