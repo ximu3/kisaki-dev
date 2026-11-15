@@ -101,6 +101,9 @@ export async function prepareWorkload(storage: Storage, directory: string) {
   }
   const works = entries.filter(isFixtureWork)
   const voiceWorks = new Set<string>()
+  const animeStatistics = entries
+    .filter((entry) => entry.type === 'anime')
+    .map(({ id }) => ({ id, duration: 0, parts: 0, files: 0 }))
 
   /** Writes complete fixture rows in short batches, yielding the database worker between batches. */
   async function insert(
@@ -193,14 +196,20 @@ export async function prepareWorkload(storage: Storage, directory: string) {
     await insert(
       `insert into ${table} (id,${owner},name,sort_order,created_at,updated_at) values (?,?,?,?,?,?)`,
       workload.parts[table],
-      (index) => [
-        fixtureId(table, index),
-        fixtureId(type, index % workload.entries[type]),
-        `分部 ${index}`,
-        Math.floor(index / workload.entries[type]),
-        index,
-        index,
-      ],
+      (index) => {
+        const local = index % workload.entries[type]
+        if (type === 'anime') {
+          animeStatistics[local]!.parts += 1
+        }
+        return [
+          fixtureId(table, index),
+          fixtureId(type, local),
+          `分部 ${index}`,
+          Math.floor(index / workload.entries[type]),
+          index,
+          index,
+        ]
+      },
     )
   }
   await insert(
@@ -282,9 +291,13 @@ export async function prepareWorkload(storage: Storage, directory: string) {
       `insert into ${table} (id,${owner},path,availability,created_at,updated_at${type === 'anime' ? '' : ',kind'}) values (?,?,?,?,?,?${type === 'anime' ? '' : ',?'})`,
       workload.files[table],
       (index) => {
+        const local = index % workload.entries[type]
+        if (type === 'anime') {
+          animeStatistics[local]!.files += 1
+        }
         const values = [
           fixtureId(table, index),
-          fixtureId(type, index % workload.entries[type]),
+          fixtureId(type, local),
           join(directory, 'media', `中文・深層/${type}/${index}.${extension}`),
           JSON.stringify(
             index % 2 ? { status: 'unchecked' } : { status: 'accessible', checkedAt: 1 },
@@ -318,12 +331,10 @@ export async function prepareWorkload(storage: Storage, directory: string) {
     comic: 'comic_reading_activity',
     novel: 'novel_reading_activity',
   } as const
-  const activityTotals = new Map<string, number>()
   const activityInputs: Record<WorkType, number[]> = { game: [], anime: [], comic: [], novel: [] }
   for (let index = 0; index < workload.activities; index += 1) {
     const work = works[index % works.length]!
     activityInputs[work.type].push(index)
-    activityTotals.set(work.id, (activityTotals.get(work.id) ?? 0) + 500 + (index % 500))
   }
   for (const type of ['game', 'anime', 'comic', 'novel'] as const) {
     await insert(
@@ -331,12 +342,17 @@ export async function prepareWorkload(storage: Storage, directory: string) {
       activityInputs[type].length,
       (offset) => {
         const index = activityInputs[type][offset]!
+        const work = works[index % works.length]!
+        const duration = 500 + (index % 500)
+        if (work.type === 'anime') {
+          animeStatistics[work.local]!.duration += duration
+        }
         return [
           fixtureId('activity', index),
-          works[index % works.length]!.id,
+          work.id,
           index * 1000,
           index * 1000 + 1000,
-          500 + (index % 500),
+          duration,
           JSON.stringify(
             type === 'game'
               ? { launchConfigName: '保存時の設定' }
@@ -409,7 +425,7 @@ export async function prepareWorkload(storage: Storage, directory: string) {
   return {
     entries,
     voiceWorks,
-    activityTotals,
+    animeStatistics,
     inputSha256: inputHash.digest('hex'),
     preparationMs: performance.now() - start,
   }

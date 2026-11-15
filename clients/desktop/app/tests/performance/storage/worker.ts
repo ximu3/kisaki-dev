@@ -1,13 +1,9 @@
-/** @fileoverview Runs the full synthetic storage workload and writes its report from a dedicated Electron worker. */
+/** @fileoverview Runs the storage workload in an Electron worker and returns its finished JSON report. */
 
-import { workerData } from 'node:worker_threads'
-import { writeFile } from 'node:fs/promises'
-import { join } from 'node:path'
+import { parentPort, workerData } from 'node:worker_threads'
 import { measureStorage } from './measurement'
-
-/** Isolated profile and prepared resources supplied by the performance test. */
-const { profile, resources } = workerData as { profile: string; resources: string }
+import type { StorageMeasurementInput } from './measurement'
 
 /** Completed workload including index rebuilds, query plans and environment. */
-const report = await measureStorage(profile, resources)
-await writeFile(join(profile, 'storage-performance.json'), JSON.stringify(report, null, 2))
+const report = await measureStorage(workerData as StorageMeasurementInput)
+parentPort!.postMessage(JSON.stringify(report, null, 2))

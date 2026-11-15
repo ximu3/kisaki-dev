@@ -8,7 +8,6 @@ import { fileURLToPath } from 'node:url'
 import { debuglog } from 'node:util'
 import { loadNative } from '#native'
 import { verifyStorage } from './storage'
-import { Worker } from 'node:worker_threads'
 
 /** Opt-in diagnostics for the fixture window and utility-process lifetime. */
 const debug = debuglog('kisaki:fixture')
@@ -190,16 +189,6 @@ async function runFixture(): Promise<void> {
   )
   window.show()
   process.send?.({ type: 'fixture-ready', buildId: __KISAKI_BUILD_ID__ })
-  const performanceWorker = argument('storage-performance')
-  if (performanceWorker) {
-    const measurement = new Worker(performanceWorker, { workerData: { profile, resources } })
-    await new Promise<void>((resolve, reject) => {
-      measurement.once('error', reject)
-      measurement.once('exit', (code) =>
-        code === 0 ? resolve() : reject(new Error('Storage worker exited with status ' + code)),
-      )
-    })
-  }
 }
 
 // Leave module evaluation unblocked so Electron can reach app readiness.

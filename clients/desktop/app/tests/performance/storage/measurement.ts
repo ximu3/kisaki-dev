@@ -12,9 +12,16 @@ import type Database from 'better-sqlite3'
 import { initializeDatabase } from '../../../src/main/infrastructure/database'
 import { entries as entryTable } from '../../../src/main/infrastructure/database/schema'
 import { getPreferenceDefaults } from '../../../src/main/features/preferences/defaults'
+import { animeStatisticsSql, verifySparseAnimeStatistics } from './anime-statistics'
 import { fixtureId, prepareWorkload, workerMedianBudgetMs, workload } from './workload'
 import type { FixtureEntry } from './workload'
 import manifest from '../../../package.json' with { type: 'json' }
+
+/** Isolated profile and deployed resources for one Electron storage measurement. */
+export interface StorageMeasurementInput {
+  readonly profile: string
+  readonly resources: string
+}
 
 /** Raw samples and timing distribution for repeated execution of one worker operation. */
 interface SampleDistribution {
@@ -130,7 +137,7 @@ function resultSet(
 }
 
 /** Builds and measures the fixed fixture; every connection is closed before returning a report. */
-export async function measureStorage(profile: string, resources: string) {
+export async function measureStorage({ profile, resources }: StorageMeasurementInput) {
   assert(
     process.platform === 'win32' || process.platform === 'darwin' || process.platform === 'linux',
   )
@@ -147,8 +154,11 @@ export async function measureStorage(profile: string, resources: string) {
   const loop = monitorEventLoopDelay({ resolution: 1 })
   try {
     storage.adoptLocale('en')
+    verifySparseAnimeStatistics(storage.db.$client, directory)
+
     const prepared = await prepareWorkload(storage, directory)
     storage.close()
+
     storage = initializeDatabase(options)
     storage.adoptLocale('en')
     const localeSamples: { locale: string; elapsedMs: number }[] = []
@@ -157,6 +167,7 @@ export async function measureStorage(profile: string, resources: string) {
       storage.adoptLocale(locale)
       localeSamples.push({ locale, elapsedMs: performance.now() - start })
     }
+
     const connection = storage.db.$client
     const entries = prepared.entries
     const observedCounts: Record<string, number> = {}
@@ -277,24 +288,16 @@ export async function measureStorage(profile: string, resources: string) {
         ),
     })
 
-    const statisticsSql = `with activity as (select anime_id,sum(duration_ms) as duration from anime_watch_activity group by anime_id), ranked as (select a.entry_id as id,coalesce(activity.duration,0) as duration from animes a left join activity on activity.anime_id=a.entry_id order by duration desc,a.entry_id limit 200) select id,(select count(*) from anime_episodes where anime_id=ranked.id) as parts,(select count(*) from anime_files where anime_id=ranked.id) as files,duration from ranked order by duration desc,id`
-    const statistics = connection.prepare(statisticsSql)
-    const expectedStatistics = entries
-      .filter((entry) => entry.type === 'anime')
-      .map((entry) => ({
-        id: entry.id,
-        parts: 8,
-        files: 5,
-        duration: prepared.activityTotals.get(entry.id)!,
-      }))
-      .sort(
+    const statistics = connection.prepare(animeStatisticsSql)
+    const expectedStatistics = prepared.animeStatistics
+      .toSorted(
         (left, right) =>
           right.duration - left.duration || (left.id < right.id ? -1 : Number(left.id > right.id)),
       )
       .slice(0, 200)
     queries.push({
       name: 'part-file-activity-statistics',
-      statement: statisticsSql,
+      statement: animeStatisticsSql,
       parameters: [],
       expectedRows: 200,
       /** Computes activity ordering and the selected rows' part and file counts. */
@@ -330,6 +333,7 @@ export async function measureStorage(profile: string, resources: string) {
 
     const results: QueryMeasurement[] = []
     const writeSamplesMs: number[] = []
+
     /** Measures a durable short transaction that restores the fixture's original favorite state. */
     const write = storage.db.$client.transaction(() => {
       connection
@@ -339,6 +343,7 @@ export async function measureStorage(profile: string, resources: string) {
         .prepare('update entry_evaluations set favorite=1-favorite where entry_id=?')
         .run(entries[0]!.id)
     })
+
     loop.enable()
     for (const query of queries) {
       const firstStart = performance.now()

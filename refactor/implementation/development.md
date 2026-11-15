@@ -44,7 +44,7 @@ desktop-localization 的英语 ICU 源文位于 src/en，按领域维护并由 i
 
 `tests/fixtures/desktop-app` 验证四个 renderer/preload 入口、main、utility process、Solid 热更新及资源加载。运行必须提供测试拥有的绝对资料目录；窗口名称对应编译入口，本地消息供测试控制使用。产品窗口、公开通信和扩展宿主按所属工作包实现。
 
-载体通过数据库执行线程打开当前基线、读取偏好并采用窗口语言。性能负载由 `tests/performance/storage` 单独编译，带有测量参数的运行才加载它。
+载体通过数据库执行线程打开当前基线、读取偏好并采用窗口语言。存储性能用例通过 Playwright 在 Electron 主进程中启动独立编译的测量 worker。worker 返回完整报告并正常退出后，用例将报告保存为附件。执行失败时，原始错误传回用例。
 
 `tools/dev/session` 拥有编译器、服务器、运行目录与进程。Vite 按公开子路径的 `kisaki-source` 条件直接编译工作区源码，renderer 使用 Solid HMR。非程序资源和原生绑定由各自的准备工具处理。程序编译成功后安排受控重启，拒绝退出时原进程及其运行目录继续使用。
 
@@ -128,7 +128,7 @@ pnpm exec vp run @kisaki3/desktop#package:fixture --target windows-x64
 
 浏览器首次准备由所属工程执行：开发回归使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`，公共包消费者使用 `pnpm --filter <包名> exec playwright install chromium`。已建立的公共包使用同一锁定 Playwright 版本，可复用该版本的浏览器安装。
 
-存储测量可单独运行 `pnpm exec vp run @kisaki3/desktop#test:performance storage.test.ts`。每条查询核对首读结果，预热 3 次后采样 31 次。短事务另采样 31 次。按操作分别计算中位数，上限为 100 ms。已知命中条目的零基位置以 `.position` 报告。作业日志列出查询首读及各项中位数、P95 和最大值，`test-results/performance` 保存全部样本、输入与迁移摘要、SQLite 配置和执行计划。
+存储测量可单独运行 `pnpm exec vp run @kisaki3/desktop#test:performance storage.test.ts`。每条查询核对首读结果，预热 3 次后采样 31 次。短事务另采样 31 次。按操作分别计算中位数，上限为 100 ms。已知命中条目的零基位置以 `.position` 报告。动画排行按观看时长降序、同分按 ID 排列，分部数合计剧集和附加内容，缺少活动、分部或文件的动画保留零值。作业日志列出查询首读及各项中位数、P95 和最大值，`test-results/performance` 保存全部样本、输入与迁移摘要、SQLite 配置和执行计划。
 
 同一负载期间，窗口到 main 的 IPC 往返按 P95 ≤ 100 ms 验收。主进程单次同步工作的定位要求见[性能预算](../design/engineering/performance.md#measurement)。
 
