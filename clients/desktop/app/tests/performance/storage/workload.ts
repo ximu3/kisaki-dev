@@ -49,8 +49,10 @@ export const workload = {
   dynamicCollections: 100,
   warmups: 3,
   samples: 31,
-  synchronousBudgetMs: 50,
 } as const
+
+/** Maximum median duration of each repeated query or short transaction on the database worker. */
+export const workerMedianBudgetMs = 100
 
 /** Independent fixture facts retained for result verification outside measured SQL work. */
 export interface FixtureEntry {
@@ -100,7 +102,7 @@ export async function prepareWorkload(storage: Storage, directory: string) {
   const works = entries.filter(isFixtureWork)
   const voiceWorks = new Set<string>()
 
-  /** Writes complete fixture rows in short batches, yielding the main event loop between batches. */
+  /** Writes complete fixture rows in short batches, yielding the database worker between batches. */
   async function insert(
     statement: string,
     count: number,

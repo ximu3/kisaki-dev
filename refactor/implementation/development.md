@@ -124,11 +124,13 @@ pnpm exec vp run @kisaki3/desktop#package:fixture --target windows-x64
 | `pnpm exec vp run @kisaki3/desktop#test:window-startup`         | 先构建，在隔离资料中验证四个 Electron 编译入口与进程隔离                     |
 | `pnpm exec vp run @kisaki3/desktop#test:dev-session`         | 准备原生输出，在隔离源码副本中验证开发工作流与浏览器 HMR                     |
 | `pnpm exec vp run @kisaki3/desktop#test:fixture-artifacts`   | 先构建并打包工程载体，保留 fuses，从外部观察启动与关闭                       |
-| `pnpm exec vp run @kisaki3/desktop#test:performance` | 先构建，测量 20 次载体启动及完整存储负载；查询结果、计划、分布与固定同步预算分别核对 |
+| `pnpm exec vp run @kisaki3/desktop#test:performance` | 先构建，测量 20 次载体启动及完整存储负载，核对查询结果、worker 操作中位数与窗口 IPC P95 |
 
 浏览器首次准备由所属工程执行：开发回归使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`，公共包消费者使用 `pnpm --filter <包名> exec playwright install chromium`。已建立的公共包使用同一锁定 Playwright 版本，可复用该版本的浏览器安装。
 
-存储测量可单独运行 `pnpm exec vp run @kisaki3/desktop#test:performance storage.test.ts`。数据规模、采样数和 50 ms 同步预算由`tests/performance/storage/workload.ts` 预先固定；输入清单、实际迁移摘要、SQLite 配置、EXPLAIN 与完整结果断言一并进入 `test-results/performance`。结果适用于所测设备与存储查询；后续业务、IPC 和输入响应由所属工作包接续。
+存储测量可单独运行 `pnpm exec vp run @kisaki3/desktop#test:performance storage.test.ts`。每条查询核对首读结果，预热 3 次后采样 31 次。短事务另采样 31 次。按操作分别计算中位数，上限为 100 ms。已知命中条目的零基位置以 `.position` 报告。作业日志列出查询首读及各项中位数、P95 和最大值，`test-results/performance` 保存全部样本、输入与迁移摘要、SQLite 配置和执行计划。
+
+同一负载期间，窗口到 main 的 IPC 往返按 P95 ≤ 100 ms 验收。主进程单次同步工作的定位要求见[性能预算](../design/engineering/performance.md#measurement)。
 
 desktop-contracts 和 desktop-localization 的独立消费者同时安装所需公共依赖的实际 tarball，由 Vite Task 准备；尚未公开的依赖通过临时消费者的 pnpm-workspace.yaml 指向这些包，不使用源码别名。
 

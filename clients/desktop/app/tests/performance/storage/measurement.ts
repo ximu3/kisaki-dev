@@ -12,22 +12,26 @@ import type Database from 'better-sqlite3'
 import { initializeDatabase } from '../../../src/main/infrastructure/database'
 import { entries as entryTable } from '../../../src/main/infrastructure/database/schema'
 import { getPreferenceDefaults } from '../../../src/main/features/preferences/defaults'
-import { fixtureId, prepareWorkload, workload } from './workload'
+import { fixtureId, prepareWorkload, workerMedianBudgetMs, workload } from './workload'
 import type { FixtureEntry } from './workload'
 import manifest from '../../../package.json' with { type: 'json' }
 
-/** One already validated statement, with complete SQL and plan retained as reproducible evidence. */
-interface QueryMeasurement {
+/** Raw samples and timing distribution for repeated execution of one worker operation. */
+interface SampleDistribution {
+  readonly samplesMs: readonly number[]
+  readonly medianMs: number
+  readonly p95Ms: number
+  readonly maxMs: number
+}
+
+/** One validated query with its first read, repeated samples and reproducible execution plan. */
+interface QueryMeasurement extends SampleDistribution {
   readonly name: string
   readonly statement: string
   readonly parameters: readonly (string | number | Buffer)[]
   readonly expectedRows: number
   readonly plan: unknown
   readonly firstReadMs: number
-  readonly samplesMs: readonly number[]
-  readonly medianMs: number
-  readonly p95Ms: number
-  readonly maxMs: number
 }
 
 /** A measured synchronous operation and its separately executed result assertion. */
@@ -59,7 +63,18 @@ function compareEntries(left: FixtureEntry, right: FixtureEntry): number {
   )
 }
 
-/** Creates list, total and locate statements from one predicate and independently calculated members. */
+/** Summarizes the workload's 31 samples without reordering the recorded observations. */
+function summarizeSamples(samplesMs: readonly number[]): SampleDistribution {
+  const sorted = samplesMs.toSorted((left, right) => left - right)
+  return {
+    samplesMs,
+    medianMs: sorted[Math.floor(sorted.length / 2)]!,
+    p95Ms: sorted[Math.ceil(sorted.length * 0.95) - 1]!,
+    maxMs: sorted.at(-1)!,
+  }
+}
+
+/** Measures a distant page, total and zero-based position of a known member under one predicate. */
 function resultSet(
   connection: Database.Database,
   name: string,
@@ -71,10 +86,11 @@ function resultSet(
   const listSql = `select e.id from entries e where ${where} order by e.effective_sort_name,e.id limit 200 offset ${offset}`
   const countSql = `select count(*) as total from entries e where ${where}`
   const target = expected[Math.floor(expected.length * 0.8)]!
-  const locateSql = `select count(*) as position from entries e where (${where}) and (e.effective_sort_name,e.id) < (?,?)`
+  const positionSql = `select count(*) as position from entries e where (${where}) and (e.effective_sort_name,e.id) < (?,?)`
   const list = connection.prepare(listSql)
   const count = connection.prepare(countSql)
-  const locate = connection.prepare(locateSql)
+  const position = connection.prepare(positionSql)
+
   return [
     {
       name: `${name}.list`,
@@ -95,18 +111,18 @@ function resultSet(
       statement: countSql,
       parameters: [],
       expectedRows: 1,
-      /** Counts the same complete predicate used by list and locate. */
+      /** Counts all members of the measured set. */
       run: () => count.get(),
       /** Checks the complete membership count. */
       verify: (value) => assert.deepEqual(value, { total: expected.length }),
     },
     {
-      name: `${name}.locate`,
-      statement: locateSql,
+      name: `${name}.position`,
+      statement: positionSql,
       parameters: [target.name, target.id],
       expectedRows: 1,
-      /** Locates the fixed target under the same predicate and ordering. */
-      run: () => locate.get(target.name, target.id),
+      /** Counts members preceding the known target's sort key and identity. */
+      run: () => position.get(target.name, target.id),
       /** Confirms the target's independently computed zero-based position. */
       verify: (value) => assert.deepEqual(value, { position: Math.floor(expected.length * 0.8) }),
     },
@@ -341,7 +357,6 @@ export async function measureStorage(profile: string, resources: string) {
         samplesMs.push(performance.now() - start)
         await setImmediate()
       }
-      const sorted = [...samplesMs].sort((left, right) => left - right)
       results.push({
         name: query.name,
         statement: query.statement,
@@ -349,10 +364,7 @@ export async function measureStorage(profile: string, resources: string) {
         expectedRows: query.expectedRows,
         plan: connection.prepare(`explain query plan ${query.statement}`).all(...query.parameters),
         firstReadMs,
-        samplesMs,
-        medianMs: sorted[Math.floor(sorted.length / 2)]!,
-        p95Ms: sorted[Math.ceil(sorted.length * 0.95) - 1]!,
-        maxMs: sorted.at(-1)!,
+        ...summarizeSamples(samplesMs),
       })
       await setImmediate()
     }
@@ -374,6 +386,7 @@ export async function measureStorage(profile: string, resources: string) {
     )
     return {
       workload,
+      workerMedianBudgetMs,
       inputSha256: prepared.inputSha256,
       observedCounts,
       migrations,
@@ -396,7 +409,7 @@ export async function measureStorage(profile: string, resources: string) {
       mode: 'Actual Electron database worker, production fixture build, one full isolated database, reopened connection and warm OS cache; fixture preparation excluded',
       preparationMs: prepared.preparationMs,
       queries: results,
-      writeSamplesMs,
+      shortTransaction: summarizeSamples(writeSamplesMs),
       localeSamples,
       eventLoop: { p95Ms: loop.percentile(95) / 1e6, maxMs: loop.max / 1e6 },
       memory: process.memoryUsage(),
