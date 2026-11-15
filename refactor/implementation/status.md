@@ -73,7 +73,7 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 
 ## 仓库与合并
 
-公开开发远端为 [ximu3/kisaki-dev](https://github.com/ximu3/kisaki-dev)，承载源码、PR、CI、候选制品与跨仓联调。main 使用分支保护、最新主线要求、`verify / Required checks` 与 `PR title` 门禁；管理员同样遵守，只允许 Squash，已合并远端分支自动删除。协作规则见[工作区合同](../design/engineering/workspace.md#collaboration)。
+公开开发远端为 [ximu3/kisaki-dev](https://github.com/ximu3/kisaki-dev)，承载源码、PR、CI、候选制品与跨仓联调。main 要求同步最新主线并通过 GitHub Actions 的 `verify / Required checks`。分支保护同样约束管理员。仓库只允许 Squash 合并，自动删除已合并的远端分支。协作规则见[工作区合同](../design/engineering/workspace.md#collaboration)。
 
 正式仓库接续、npm 发行和服务部署按[仓库合同](../design/engineering/repository.md)与实际授权执行。旧 ximu3/kisaki 的存档和同名重建尚未执行，四个独立项目的正式开发仓库与交付制品尚未登记；项目开发仓库及 oauth-relay 最终源码仓库采用 public 可见性。
 
@@ -99,6 +99,6 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 | 开发协调         | Vite 原生程序监听与 HMR、包及资源准备、实际运行目录、失败恢复及唯一进程拥有者。        |
 | 原生基础         | Rust／Node-API 文件同步和不覆盖移动、加载与错误合同。                               |
 | 验证入口         | 普通 Node、Electron Node 模式、独立四入口载体、开发会话、制品及可选启动与内存采样。 |
-| CI 与门禁        | 实际输入选择、六目标工程运行、严格合并门禁、独立 PR 标题检查。                      |
+| CI 与门禁        | 实际输入选择、六目标工程运行及严格的代码合并门禁。                                  |
 
 公共包及其仓库外消费、产品端点、正式窗口和宿主由各自完整工作包交付。[工程验证](../verification/evidence/w00/README.md)记录实际源码范围、本机 Windows x64 和 CI 六目标结果。正式签署和完整产品验收继续按所属工作包执行。

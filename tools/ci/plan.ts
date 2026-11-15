@@ -206,7 +206,7 @@ export function planChecks(
           add('Shared UI library build', ['browser'])
         }
       } else if (
-        /^(?:tests\/workspace\/|tools\/(?:boundaries|check-doc-links)\.ts$|\.dependency-cruiser\.json|\.gitignore|\.gitattributes|LICENSE$|\.github\/workflows\/pr-title\.yml)/.test(
+        /^(?:tests\/workspace\/|tools\/(?:boundaries|check-doc-links)\.ts$|\.dependency-cruiser\.json|\.gitignore|\.gitattributes|LICENSE$)/.test(
           file,
         )
       ) {

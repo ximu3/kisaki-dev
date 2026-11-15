@@ -16,7 +16,7 @@ JS/TS 建议采用 Vite+ 作为工程入口、TypeScript 7.1 作为编译器。�
 | 调度与缓存 | `vp run` / Vite Task 是唯一 JS/TS 任务执行器。包之间按清单依赖拓扑执行。耗时且可重建的纯产物才开启缓存，声明其输出与影响结果的环境。 | 移除 Turbo 包、`turbo.json`、专用 GraphQL、两处重复的选择逻辑和只验证旧图形状的用例。缓存不可用时可冷构建并交付正确结果。跨 CI 作业复用先测正确性与节省的总时间，原生缓存含目标及工具链身份。[Vite Task](https://viteplus.dev/guide/run) · [GitHub Actions 缓存支持范围](https://viteplus.dev/guide/github-actions-cache) |
 | 类型、lint、格式 | 各项目用锁定的 TS 7.1 检查自己的配置和引用，根任务按工作区实际依赖调用这些类型入口。仓库根的 `tsc -b` 仅覆盖根工具、配置和测试。`vp lint --type-aware` 使用配套 Oxlint 和 tsgolint，`vp fmt` 使用 Oxfmt。 | 每份源码只做一次正式类型检查。`vp check` 若用作格式/lint 入口，关闭它的额外 type-check。迁移必要的异步、公共合同和宿主边界检查后删除 ESLint、typescript-eslint、Prettier、对应配置包和消费者内的旧 API 调用。跨模块间接依赖由一个图检查看住，简单导入限制放在 Oxlint。[统一检查](https://viteplus.dev/guide/check) · [类型感知规则](https://oxc.rs/docs/guide/usage/linter/type-aware) |
 | 开发、应用与库构建 | 应用使用 Vite+ 的 Vite/Rolldown 入口与 Solid 插件，公共库使用 `vp pack`，由底层 tsdown 生成 ESM、CSS 与声明。`pnpm pack` 从完成的公共包目录生成供外部消费的 tarball。 | 迁移并清理独立 tsdown CLI、重复配置和重复清理 `dist` 的步骤。开发态在工作区通过同一公开子路径解析源码，发行消费者走构建后的 exports。保留字体、样式组装、许可、沙箱 preload 和其他确有产品语义的步骤。[Vite+ 库构建](https://viteplus.dev/guide/pack) · [官方迁移规则](https://viteplus.dev/guide/migrate-rules) |
-| 测试、提交与交付 | `vp test` 运行 Vitest 用例。Playwright 保有真实浏览器、键盘与 Electron 的验证，`vp run` 调度对应入口。GitHub Actions 拥有作业与平台选择。 | 使用 `vp staged` 与可选的本地 hook 取代重复的 Husky/lint-staged 接入，覆盖部分暂存、用户已有 hook 和 worktree 后再删除旧实现。公共发布包继续检查实际 tarball 和声明解析。当前 squash 合并默认采用 PR 标题，保留独立且轻量的格式检查。[Vite+ 提交钩子](https://viteplus.dev/guide/commit-hooks) |
+| 测试、提交与交付 | `vp test` 运行 Vitest 用例。Playwright 保有真实浏览器、键盘与 Electron 的验证，`vp run` 调度对应入口。GitHub Actions 拥有作业与平台选择。 | 使用 `vp staged` 与可选的本地 hook 取代重复的 Husky/lint-staged 接入，覆盖部分暂存、用户已有 hook 和 worktree 后再删除旧实现。公共发布包继续检查实际 tarball 和声明解析。[Vite+ 提交钩子](https://viteplus.dev/guide/commit-hooks) |
 | 原生与专用交付 | Rust 编译、格式和 Clippy 由 Cargo 负责，Node-API 绑定由 napi-rs 交付。Electron 的最终格式、fuses、签署、安装与升级归 electron-builder 及平台工具。SQLite、Drizzle 迁移继续使用原生驱动和正式迁移器。 | Vite+ 汇集运行命令。Vantage 与 libmpv-node 的 JS 接入采用统一约定，原生后端按实际平台验收。Kana 的阅读内核、oauth-relay 的 Node/Hono 服务分别保留浏览器与容器交付。这四个独立仓库的实际迁移由各自项目验证。[独立项目范围](../design/projects/README.md) |
 
 <a id="engineering-architecture"></a>
@@ -71,12 +71,11 @@ pnpm 声明项目与依赖，`vp run` 执行工作区任务，Vite 管理编译�
 
 ### 文件、作业与入口命名
 
-工作流按触发事件、凭据和交付责任组织。GitHub 要求工作流 YAML 直接放在 `.github/workflows/`。正式目标保留下面三个入口，发行能力到所属工作包落地时建立。[GitHub 工作流文件规则](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
+工作流按触发事件、凭据和交付责任组织。GitHub 要求工作流 YAML 直接放在 `.github/workflows/`。发行入口随所属工作包建立。[GitHub 工作流文件规则](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
 
 | 目标文件与显示名 | 持有的工作 | 现有文件如何处理 |
 | --- | --- | --- |
 | `ci.yml` · CI | PR 代码验证与手动兼容检查。一次选择，执行基础和选中的测试，再给出合并结论。 | 保留 `ci.yml`，吸收 `verification-repository.yml` 和 `verification-desktop.yml` 的实际作业，退役仅负责转发与汇总的 `verification.yml`。三份旧文件在替代入口通过真实 PR 对照后删除。 |
-| `pr-title.yml` · PR title | 以当前 SHA 和最新标题检查 squash 标题格式。规则放在一个受信入口，轻量运行。 | 保留现有文件与检查名，去掉整套工程安装。若合并者在界面改写标题，由合并者核对最终文字。 |
 | `release.yml` · Release | 由获授权的版本触发取得候选、完成签署和验收、留存并按摘要交付。按发布单位和通道控制并发，保护凭据只进入需要的作业。 | 建立真实发行能力时提供。在普通 PR 和手动代码验证中保留只读权限。 |
 
 `ci.yml` 的作业 ID 是 `plan`、`workspace`、`target` 和 `gate`，分别显示为 `Select checks`、`Workspace checks`、`Target checks (<目标>)` 和 `Required checks`。计划摘要列明每个目标的套件和选择理由，目标作业一次运行所选任务的共同依赖图，日志标明包与任务。分支保护按实际发布的检查名核对。[GitHub 作业语法](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobs)
@@ -86,7 +85,6 @@ pnpm 声明项目与依赖，`vp run` 执行工作区任务，Vite 管理编译�
 ### 事件与合并结果
 
 - **PR 的代码树。** 打开、重新打开、推送提交或改换目标分支时，检出本次合并候选 SHA，以对应的目标分支提交为基线。一次比较覆盖整份 PR，记录两个 SHA、改动路径及选择理由。新候选取消同一 PR 的旧代码作业。单改标题或正文时保留当前代码结论。监听 `edited` 时只对改换 base 启动代码验证。纯元数据事件使用独立的取消组和结果名称，保留正在运行或已失败的代码门禁。严格保护 main，目标分支前进后核对最新合并候选。启用合并队列时，按 `merge_group` 的基线和候选 SHA 验证代码，为该组所有受保护检查提供适用结果。[GitHub PR 与合并队列事件](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
-- **PR 标题。** 当前远端仅允许 squash，默认提交标题来自 PR 标题，且 `PR title` 是必需检查。保留这个快速元数据检查，为新 SHA 建立结果，标题变化时重新验证。以只读事件数据和一份受信的标题规则检查既定格式，依赖范围限于该规则。正文编辑期间，合并者仍能看到当前标题和代码的真实结果。标题不决定包版本。[Squash 配置](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-commit-squashing-for-pull-requests)
 - **主线与手动运行。** PR 已在最新合并树通过时，普通 main push 复用该代码树的结果。遇到绕过 PR、紧急修复或无法关联的树，按实际差异补验。提供手动完整验证和明确的宿主复现入口，绑定指定提交、目标与场景。发行只从受保护的实际提交和对应版本进入候选流程。
 - **选择与汇总。** 一个轻量步骤在安装项目依赖前读取 Git 差异，处理增加、删除、改名两端和混合改动。基本集合只区分文档与代码，专用检查按下表取并集。用项目清单、锁文件中的依赖关系及任务实际输入处理间接影响。例外集中在一处。无法取得可信的比较基线时执行只读完整兼容检查。已知项目中的新增路径按该项目的默认集合覆盖，无法归属的运行输入按其支持范围扩大到完整兼容。选择逻辑或必需工作流自身改变时，由维护者审阅其差异并验证下表的代表改动。策略无法读取输入或执行失败时，门禁失败。受保护的代码工作流始终产生稳定检查名。计划成功、基础检查成功、每项计划的附加作业成功才允许合并。明确未选择可以跳过，应执行而跳过、取消、失败或结果缺失都不能标绿。矩阵使用计划生成的精确目标行，选中步骤的失败退出码传播到作业。汇总分别处理空矩阵和非空矩阵。以 GitHub 的作业与矩阵结果核对完成情况，矩阵中同名布尔输出无需承担逐目标证明。[必需检查与路径过滤](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onpull_requestpull_request_targetpathspaths-ignore) · [作业结果](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#needs-context)
 
@@ -118,7 +116,7 @@ pnpm 声明项目与依赖，`vp run` 执行工作区任务，Vite 管理编译�
 
 ### 迁移验收
 
-先在隔离 PR 中用同一候选树对照新旧范围，核对文档、CSS、公共合同、SQL、Windows 进程、共用 ABI、CI 自改以及改名/删除。再验证基础失败、单平台失败、合法空矩阵、意外跳过、取消及上传失效时的汇总结论。使用真实 PR 核对改标题、改正文、推送、改目标及重新打开时的状态。远端目前绑定 GitHub Actions 提供的 `verify / Required checks` 和 `PR title`。更名前在同一候选并行报告新旧检查，核对实际名称、来源 App 和阻断效果后，经仓库授权切换保护配置，最后移除旧入口。
+先在隔离 PR 中用同一候选树对照新旧范围，核对文档、CSS、公共合同、SQL、Windows 进程、共用 ABI、CI 自改以及改名/删除。再验证基础失败、单平台失败、合法空矩阵、意外跳过、取消及上传失效时的汇总结论。使用真实 PR 核对改标题、改正文、推送、改目标及重新打开时的状态。代码门禁更名前在同一候选并行报告新旧检查，核对实际名称、来源 App 和阻断效果后，经仓库授权切换保护配置，最后移除旧入口。现行保护配置见[实施状态](status.md)。
 
 普通 PR 的基础反馈目标约 3 分钟。仅涉及快速路径时，该反馈也应给出合并结论。平台专项与发行单列时间。分别记录事件创建至基础结果、至全部必需检查，以及每次尝试的排队、准备、断言、上传和累计 runner 时间。冷、热缓存与重跑分别比较。完整兼容及发行按实际范围报告，选中任务的正确性、失败可定位性和缺失证据的处理同样属于验收。
 

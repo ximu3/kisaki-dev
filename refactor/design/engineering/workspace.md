@@ -311,15 +311,15 @@ Kisaki 和四个独立项目启用依赖图与安全告警。Dependabot 在支�
 
 每项完整、可独立验证的变更从最新 main 建立短分支，并通过一个 PR 交付。必要 CI 通过后，由维护者自审并 Squash 合并，GitHub 自动删除已合并的远端分支。main 通过原生分支保护要求 PR、同步最新主线及必需检查通过，管理员同样遵守；审批人数为 0，不要求另一人 Approve。仓库仅启用 Squash，主线禁止强制推送与删除。只有本人和受邀协作者可以创建 PR；受托 agent 使用明确授权的身份。公开反馈另有入口，见 [协作身份](repository.md)。
 
-`ci.yml` 拥有 PR 候选的计划、基础检查、按风险选择的目标及汇总。手动运行可以指定宿主和场景。`pr-title.yml` 以只读权限核对当前 PR 标题。正式发行流程在所属工作包交付，按摘要验证并交接实际候选。
+`ci.yml` 拥有 PR 候选的计划、基础检查、按风险选择的目标及汇总。手动运行可以指定宿主和场景。正式发行流程在所属工作包交付，按摘要验证并交接实际候选。
 
 日常验证在 PR 合并前完成。main push 核对已验证候选与主线的代码树及检查结果，匹配时复用，缺少对应结果时按基线补验。手动入口可指定目标与套件，正式发行按所属工作包验收。
 
 常规 PR 合入 main。目标分支变更时以新的基线重新核对候选，纯标题和正文编辑保留原有代码检查结果。
 
-实际代码验证根据依赖图及 Git 基线选择变更项目和下游；共享配置、锁文件变化或影响范围无法可靠判断时扩大检查。每次实际验证都执行汇总任务，确认所有应运行任务已经成功完成，不能把应执行却被 skipped 的任务算作通过。同一 PR 的新代码验证可以取消过时验证；标题检查使用独立取消组。
+实际代码验证根据依赖图及 Git 基线选择变更项目和下游。共享配置、锁文件变化或影响范围无法可靠判断时扩大检查。汇总任务确认所有应运行任务成功完成。同一 PR 的新代码验证可以取消过时验证。
 
-pr-title.yml 独立检查 PR 标题，与代码验证使用不同取消组。仓库合并规则应要求 `verify / Required checks` 与 `PR title` 两项；工作流拆分或任务改名时同步核对实际检查名称和仓库配置。元信息编辑不能用一次空验证替代失败的代码检查，正文修改也不能清除无效标题的失败结果。
+main 的必需检查绑定 GitHub Actions 的代码汇总结论。工作流调整检查名时，同步核对仓库保护配置和实际发布的检查名。
 
 纯规则使用普通 Node 下的 Vitest，Solid 组件及其组合在真实浏览器中验证。公共包的仓库外 tarball 消费由 Node 测试任务驱动 Playwright，核对实际构建、声明、样式与交互；包内浏览器用例可使用 Vitest Browser Mode。数据库使用与 Electron 匹配的原生环境，正式制品另行验证。公开包消费和扩展真实安装各自完成。
 
@@ -327,11 +327,11 @@ Vitest 的转换缓存由启动测试的工程拥有，通过 fsModuleCachePath 
 
 普通 PR 只有读取权限，不接触发行密钥。版本 PR 额外检查版本、依赖、所属语言要求的发行说明和交付物。过时的普通检查可以取消；发行绑定合并后的最终 SHA 并重新验证，不能以 PR 临时合并构建作为正式版本证据。
 
-提交消息采用 Conventional Commits 1.0.0，格式为 type(scope)!: description。描述使用简短英文动词短语，正常小写，保留 API 和专名的正确拼写，末尾不加句号。type 支持 feat、fix、refactor、perf、docs、test、build、ci、style、chore 和 revert；style 仅用于排版，版本准备使用 chore(release): version packages。scope 采用稳定项目名或领域名，不强制枚举目录。
+提交消息以 Conventional Commits 1.0.0 为协作约定，格式为 type(scope)!: description。描述使用简短英文动词短语，正常小写，保留 API 和专名的正确拼写，末尾不加句号。type 支持 feat、fix、refactor、perf、docs、test、build、ci、style、chore 和 revert；style 仅用于排版，版本准备使用 chore(release): version packages。scope 采用稳定项目名或领域名，不强制枚举目录。
 
 真正改变公开合同、数据或部署兼容性时使用 ! 和 BREAKING CHANGE footer，内部改名不自动构成 breaking change。提交类型不决定版本号。
 
-PR 标题作为 Squash 标题，正文遵守[PR 描述规范](documentation.md#pull-request-descriptions)。标题作业只读取 GitHub 事件对应的当前标题，按约定核对类型、主题、末尾标点与长度。合并者核对最终标题。
+作者按提交约定撰写 PR 标题，建议控制在 100 个字符以内。Squash 默认采用 PR 标题，由合并者确认最终提交标题。正文遵守[PR 描述规范](documentation.md#pull-request-descriptions)。
 
 <a id="hooks"></a>
 
