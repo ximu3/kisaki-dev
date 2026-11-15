@@ -15,9 +15,6 @@ export default defineConfig({
     lib: {
       entry: preloadEntries,
       formats: ['cjs'],
-
-      /** Keeps each sandbox preload in its named CommonJS file. */
-      fileName: (_format, name) => `${name}.cjs`,
     },
     // Sandbox preload may require only Electron's allowed built-ins. Each entry is bundled alone.
     rolldownOptions: {

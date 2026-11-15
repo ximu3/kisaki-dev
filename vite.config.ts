@@ -62,7 +62,7 @@ export default defineConfig({
       ...installedConsumerInputs,
     ],
     rules: {
-      curly: ['error', 'all'],
+      curly: 'error',
       'no-nested-ternary': 'error',
       'typescript/consistent-type-imports': 'error',
       'typescript/no-deprecated': 'error',

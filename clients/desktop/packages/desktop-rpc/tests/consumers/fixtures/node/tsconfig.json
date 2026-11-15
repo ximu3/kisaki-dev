@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "target": "ES2023",
-    "rootDir": ".",
     "outDir": ".cache/node",
     "module": "NodeNext",
     "exactOptionalPropertyTypes": true,
