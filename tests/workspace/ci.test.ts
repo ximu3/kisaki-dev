@@ -35,12 +35,23 @@ test('shared native ABI changes cover every target and a manual reproduction sta
   ).toEqual([{ target: 'macos-x64', suites: ['dev-session'] }])
 })
 
-test('changing the SQLite collation adds the storage workload on its measurement host', () => {
+test('a public preference parser change reaches its desktop database consumer', () => {
+  const plan = planChecks(['clients/desktop/packages/desktop-contracts/src/preferences/api.ts'])
+  const linux = plan.matrix.find((row) => row.target === 'linux-x64')!
+  expect(linux.tasks).toContain('@kisaki3/desktop#test:native')
+})
+
+test('the measurement host checks changes to storage ordering and its performance task', () => {
   const collation = planChecks(['clients/desktop/app/native/src/collation.rs'])
   expect(collation.matrix.filter((row) => row.suites.includes('native'))).toHaveLength(6)
   expect(
     collation.matrix.filter((row) => row.suites.includes('performance')).map((row) => row.target),
   ).toEqual(['linux-x64'])
+
+  const tasks = planChecks(['clients/desktop/app/vite.config.ts'])
+  expect(tasks.matrix.find((row) => row.target === 'linux-x64')!.tasks).toContain(
+    '@kisaki3/desktop#test:performance',
+  )
 
   const files = planChecks(['clients/desktop/app/native/src/files.rs'])
   expect(files.matrix.some((row) => row.suites.includes('performance'))).toBe(false)

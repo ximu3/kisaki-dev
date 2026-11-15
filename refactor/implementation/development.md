@@ -13,7 +13,7 @@
 | 根 `tools`                              | CI 选择、文档引用与依赖边界                                      |
 | 根 `tests/workspace`                                     | 跨工程导入边界与代表性 CI 场景选择                   |
 | `packages/config`、`packages/tooling` | TypeScript 预设与 Vite 库配置、输出清理、命令执行、错误交付和消费者安装                    |
-| `clients/desktop/app/tools`                              | 桌面程序构建、资源准备、原生编译、开发会话、打包与输出清理                       |
+| `clients/desktop/app/tools` | 桌面程序构建、资源准备、原生编译、开发会话与打包 |
 | `clients/desktop/app/src/main/infrastructure/database`    | 正式 schema、逐值 codec、连接、同步事务、初始化与资料库语言排序          |
 | `clients/desktop/app/src/main/infrastructure/files`       | 实际路径比较、本地资料根检查、有限字节准备、不覆盖发布与流式 ZIP                |
 | `clients/desktop/app/src/main/features/preferences`       | 初始化与 getDefaults 共用的产品默认配置定义                                   |
@@ -106,7 +106,7 @@ pnpm exec vp run @kisaki3/desktop#package:fixture --target windows-x64
 
 开发测试仅在需要改写文件时复制载体和目标包的源码，只读依赖复用本机安装。窗口拒绝退出及停止失败的场景直接使用固定载体，按次分配 profile、编译目录及运行目录。
 
-同一工作副本中，共享输出的构建、运行与打包顺序执行。任务内依赖和合法并行由 Vite Task 管理。有限输出位于 `out/<target>`，开发会话位于 `out/development/<target>/session-*`，载体位于 `dist/<target>`。停止相关任务后用 `pnpm run clean` 清理声明输出。各项目指定自己的输出目录，工程工具按项目边界执行清理。
+同一工作副本中，共享输出的构建、运行与打包顺序执行。任务内依赖和合法并行由 Vite Task 管理。有限输出位于 `out/<target>`，开发会话位于 `out/development/<target>/session-*`，载体位于 `dist/<target>`。停止相关任务后运行 `pnpm run clean`。桌面和六个公共包各自在项目目录调用 `kisaki-clean`，清理 dist 和 out。
 
 <a id="verification"></a>
 
@@ -142,7 +142,7 @@ Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 Ap
 
 对已打包制品，运行 `pnpm exec vp run @kisaki3/desktop#test:artifacts`。设置 `KISAKI_ARTIFACT_RECEIPT` 指定收据，默认读取 `dist/<target>/artifacts.json`。用例核对归档摘要、包内构建身份、安全 fuses 和实际启停。Windows 使用窗口句柄，macOS 使用系统辅助功能，Linux X11 使用窗口管理器观察。
 
-根 TypeScript 项目检查工具、配置和测试；桌面项目按 main、preload、renderer、utility process、shared、native、tools 和 tests 分环境检查。native 项目拥有 Node 绑定源码及生成声明，main 消费其实际入口。测试载体也遵守自己的实际运行环境。自有声明至少由一个 `skipLibCheck: false` 的实际项目完整检查，规则见[类型分工](../design/engineering/workspace.md#declaration-checks)。
+根 TypeScript 项目检查工具、配置和测试。桌面项目按 main、preload、renderer、utility process、shared、native、tools 和 tests 分环境检查。native 项目拥有 Node 绑定源码及生成声明，main 消费其实际入口。工程载体的程序源码归对应运行环境，四份 Vite 构建配置归 tools 项目。每份自有声明至少由一个 `skipLibCheck: false` 的实际项目完整检查，规则见[类型分工](../design/engineering/workspace.md#declaration-checks)。
 
 两个私有工程包通过 exports 直接消费。`pnpm lint` 运行类型感知 Oxlint 及全仓依赖边界检查。`tools/boundaries.ts` 按真实包导出核对循环、未声明依赖、运行代码与测试归属。dependency-cruiser 18 自用的 TypeScript 6 解析依赖由 packageExtensions 限定，项目检查和公开声明统一使用锁定的 TypeScript 7.1。
 
@@ -168,7 +168,7 @@ Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 Ap
 
 `ci.yml` 在安装依赖前用 `tools/ci/plan.ts` 比较基线和候选，选择 Linux 基础检查及所需宿主。模板、配置、SQL 和原生输入按实际使用者判断，删除和改名计入完整差异。共享 ABI 或缺少基线时覆盖六个宿主目标，手动运行可以指定目标与场景。局部复现可以执行相同的项目命令。
 
-SQLite 名称排序的 Rust 实现、编译入口或锁定依赖变更时，六个目标验证原生接入，Linux x64 另行运行完整存储负载。
+桌面存储与文件设施直接或间接使用的公共包发生代码变更时，Linux x64 运行 Electron Node 集成测试。单改外观样式时，验证对应的浏览器和 tarball 消费。桌面任务定义、SQLite 名称排序的 Rust 实现、编译入口或锁定依赖变更时，六个目标验证原生接入，Linux x64 另行运行性能任务。
 
 `Select checks` 读取改动并生成目标与任务。Linux x64 上的 `Workspace checks` 执行文档链接检查，代码改动还执行冻结安装和 `pnpm check`。每个 `Target checks (<目标>)` 作业将选中任务一次交给 Vite Task，按同一依赖图准备和复用程序与归档。计划摘要列出套件，日志带包名与任务名。
 

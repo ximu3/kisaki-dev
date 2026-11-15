@@ -157,7 +157,7 @@ CSS 提供明确的消费入口，并通过副作用配置确保构建保留；�
 
 ## 工作区与项目配置
 
-Kisaki 中的 Node 与 TypeScript 工程采用一个根 pnpm workspace、一份 pnpm-lock.yaml，由项目锁定的 Vite+ 调度实际项目。完整交付布局包含桌面应用、八个公共包、33 个官方扩展和三个私有工程包，共 45 个成员工程，另有仓库根工程。实际登记随所属工作包维护，clients、desktop 等分类目录不登记为包。未来对应工程实际建立后优先加入同一工作区，不提前登记空工程。成员按 manifest 中的唯一 name 识别，包作用域与发布资格遵守[项目身份](repository.md#identity)，目录分类不替代包身份。
+Kisaki 中的 Node 与 TypeScript 工程共用根 pnpm workspace 和 pnpm-lock.yaml，由项目锁定的 Vite+ 调度。完整交付时有 44 个成员工程，包括桌面应用、八个公共包、33 个官方扩展，以及 config 和 tooling 两个私有工程包。仓库根工程另计。成员随所属工作包建立，按 manifest 中的唯一 name 登记。后续 Node 与 TypeScript 工程建立时优先加入同一工作区。包作用域与发布资格遵守[项目身份](repository.md#identity)。
 
 workspace 按实际工程登记。根检查运行各项目声明的类型入口，自有声明由所属项目完整检查。独立安装的消费者样板在仓库外验证自己的配置、公开声明和实际运行环境。
 
@@ -191,7 +191,7 @@ workspace 按实际工程登记。根检查运行各项目声明的类型入口�
 
 桌面应用的 tsconfig.json 以空 files 和 references 组织 main、preload、renderer、extension-host、shared、native、tools 和 tests 环境项目。具体配置位于 config/typescript，继续独立限制类型与源码范围；typecheck 使用 tsc -b，增量信息写入应用 .cache/typescript，保持 noEmit。编辑器通过默认入口发现这些项目，结构检查沿实际执行入口和项目引用核对源码覆盖。其余构建和测试配置的归属见[应用布局](layout.md#workspace)。
 
-八个公共包各自通过工程根目录的 tsconfig.json，以空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置；desktop-ui 的 tsdown 配置同样归 Node 工具项目。
+八个公共包各自通过工程根目录的 tsconfig.json，以空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具和包根的 vite.config.ts。
 
 公共包的 `vp pack` 从包根的 `tsconfig.pack.json` 读取声明构建配置，增量信息写入该包的 `.cache/typescript/pack.tsbuildinfo`。`tsc -b` 的各类型项目在同一目录使用各自的增量文件。新增环境随实际源码建立，配置遵守[共同归属](conventions.md#configuration-layout)。
 
@@ -253,7 +253,7 @@ UI 与其他包遵守同一分工，不另设仅为跳过依赖声明的配置�
 
 ### CI 选择与验证编排
 
-`tools/ci/plan.ts` 用完整候选树差异选择需要证明的行为。文档检查核对链接及锚点，代码检查在 Linux x64 运行。公共包变化沿清单依赖选择实际 tarball 消费者。UI 交互进入 Chromium，存储进入 Electron Node，工程进程与平台制品进入匹配宿主。共享 ABI 和无法归属的运行输入覆盖六目标。计划失败或应执行的作业没有成功时，门禁阻止合并。
+`tools/ci/plan.ts` 用完整候选树差异选择需要证明的行为。文档检查核对链接及锚点，代码检查在 Linux x64 运行。公共包变化沿清单中的运行依赖选择受影响的 tarball 消费者和桌面集成测试。UI 交互进入 Chromium，存储进入 Electron Node，工程进程与平台制品进入匹配宿主。任务定义变化时在相应宿主执行受影响的任务。共享 ABI 和无法归属的运行输入覆盖六目标。计划失败或应执行的作业没有成功时，门禁阻止合并。
 
 <a id="task-cache"></a>
 
