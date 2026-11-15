@@ -72,7 +72,7 @@ desktop-contracts/i18n 定义通用目录形状、译本引用、登记与语言
 
 同一参数的多种用法取允许类型的交集。交集为空时，英语基准构建失败。业务值与 PartialDate 先按自身语义格式化，再传给消息。
 
-ICU 格式化使用 [intl-messageformat](https://formatjs.github.io/docs/intl-messageformat/)，语法与复数规则由该库处理；类型生成由本地化包维护。纯格式化接收明确的语言和消息快照，不管理全局选择或扩展登记；本体 i18n 将有效译本与响应式调用接续到该能力。公开值使用 ICU 文本，内部 AST 留在实现中。验收分别覆盖类型生成及 Node、浏览器、Webview 的真实格式化消费。
+ICU 格式化使用 [intl-messageformat](https://formatjs.github.io/docs/intl-messageformat/)，语法与复数规则由该库处理；类型生成由本地化包维护。纯格式化接收明确的语言和消息快照，不管理全局选择或扩展登记；本体 i18n 向格式化函数提供当前生效的译本，并在译本变化时更新界面文字。公开值使用 ICU 文本，内部 AST 留在实现中。验收分别覆盖类型生成及 Node、浏览器、Webview 的真实格式化消费。
 
 解析与格式化统一采用 ignoreTag: true。t 返回普通字符串，标签和插值文本按字面值呈现。链接或其他视觉结构由界面组件提供。
 

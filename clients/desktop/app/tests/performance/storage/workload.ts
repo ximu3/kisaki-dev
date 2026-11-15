@@ -54,7 +54,7 @@ export const workload = {
 /** Maximum median duration of each repeated query or short transaction on the database worker. */
 export const workerMedianBudgetMs = 100
 
-/** Independent fixture facts retained for result verification outside measured SQL work. */
+/** Entry data retained by the fixture to check query results outside the timed operation. */
 export interface FixtureEntry {
   readonly id: string
   readonly type: EntryType

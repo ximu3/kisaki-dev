@@ -348,7 +348,7 @@ type PlaybackSettingResult = {
 )
 ```
 
-sessionId、animeId 和 fileId 固定本次实际目标；scope 使用这些 ID 指明文件或作品范围，application 表示应用记住的上次音量／静音，global 表示完整播放默认配置。saved 只包含已经持久成立的那一项及实际保存值，不复制整套偏好、临时轨道 ID 或运行快照。FileTrackSelection 直接使用[轨道合同](anime.md#tracks)，实际轨道种类由 field 限定。
+sessionId、animeId 和 fileId 固定本次实际目标；scope 使用这些 ID 指明文件或作品范围，application 表示应用记住的上次音量／静音，global 表示完整播放默认配置。saved 只包含本次已保存的设置项及其值，不复制整套偏好、临时轨道 ID 或运行快照。FileTrackSelection 直接使用[轨道合同](anime.md#tracks)，实际轨道种类由 field 限定。
 
 | 结果                             | Promise 与机器字段                                                                           |
 | -------------------------------- | -------------------------------------------------------------------------------------------- |
@@ -534,7 +534,7 @@ sessions.game.terminate(sessionId): `Promise<void>` 明确强制终止已经确�
 | 方法                                        | 确定输入与结果                                                                                                                                                                                                                   |
 | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | sessions.recordings.list()                  | 返回按 endedAt、sessionId 稳定排列的摘要数组；每项包含 sessionId、WorkRef、实际目标、endedAt、未保存的 activityIds、是否有 position，以及安全错误摘要，不返回内部快照或引擎对象。                                                |
-| sessions.recordings.retry(sessionId)        | 返回 `{ sessionId, savedActivityIds, positionSaved, remainingActivityIds, positionPending, issues }`。只尝试仍未完成的单位；任一失败时以 RecordingSaveFailed 拒绝，并通过同类型 partialResult 交付已经成立的结果，快照继续保留。 |
+| sessions.recordings.retry(sessionId)        | 返回 `{ sessionId, savedActivityIds, positionSaved, remainingActivityIds, positionPending, issues }`。只尝试仍未完成的单位；任一失败时以 RecordingSaveFailed 拒绝，并用同类型的 partialResult 报告已保存项、待保存项和遇到的问题，继续保留快照。 |
 | sessions.recordings.discard(sessionId)      | 用户明确选择后丢弃该 ID 剩余的未提交单位，返回 void；已经保存的活动和位置保持不变。                                                                                                                                              |
 | sessions.recordings.onInvalidated(listener) | 返回 Disposable；待保存范围变化后通知原生界面重读，不承载保存命令。                                                                                                                                                              |
 

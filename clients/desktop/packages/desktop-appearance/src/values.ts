@@ -21,7 +21,7 @@ const syntaxes: Readonly<Record<TokenKind, string>> = {
   'letter-spacing': 'normal | <length>',
 }
 
-/** Explicit color-function names admitted by standalone color-token validation. */
+/** CSS color functions allowed in a standalone color token. */
 const colorFunctions = new Set([
   'rgb',
   'rgba',

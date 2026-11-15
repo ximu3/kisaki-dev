@@ -25,7 +25,7 @@ export const libraryMessages = {
 
   status: { planned: 'Planned', active: 'In progress', onHold: 'On hold', unset: 'Not set' },
   selection: '{count, plural, one {# item selected} other {# items selected}}',
-  noMatch: 'No matching items in the current visible scope.',
+  noMatch: 'No matching items in this view.',
   conflict: 'The saved values have changed. Review your changes before saving again.',
   completion: { recorded: 'Completion recorded for {name}.', unknownDate: 'Date not recorded' },
 } as const

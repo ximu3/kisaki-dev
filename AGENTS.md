@@ -4,7 +4,7 @@
 
 沟通默认使用简体中文。
 
-**讨论首先要有独立见解。** 主动查证关键事实，检验提问中的假设和自己的初步看法，判断依据是否足以支持结论。需要取舍时，明确说出自己的主张和理由。有分歧就坦诚说明，证据支持现状就建议保留。见[讨论与独立判断](refactor/design/engineering/conventions.md#discussion)。
+**讨论首先要有独立见解。** 主动查证关键事实，检验提问中的假设和自己的初步看法。需要取舍时，明确说出自己的主张和理由。有分歧就坦诚说明，证据支持现状就建议保留。见[讨论与独立判断](refactor/design/engineering/conventions.md#discussion)。
 
 ## 任务入口
 
@@ -16,7 +16,7 @@
 
 ## 工作原则
 
-**从全局出发思考、讨论、设计、改动和审阅。** 从完整目标和使用路径找到事实与规则的拥有者，横向比较所有同类对象和入口，统一模型粒度、命名、交互、风格与验证尺度。共有问题在共同拥有层解决，沿全部受影响的消费者落实到终态。差异须能由对象语义、资源归属或运行环境解释。具体判断与审查方法见[全局设计与一致性](refactor/design/engineering/conventions.md#global-design)。
+**从全局出发思考、讨论、设计、改动和审阅。** 从完整的使用流程找出谁维护数据、谁定义规则。比较所有同类对象和入口，让同类对象按相同层次建模，并采用一致的命名、交互、风格和验收标准。遇到共有问题，在定义规则的模块修正，并更新所有受影响的调用方。差异须能由对象语义、资源归属或运行环境解释。具体判断与审查方法见[全局设计与一致性](refactor/design/engineering/conventions.md#global-design)。
 
 **整体判断优先于机械执行。** 要求或方案出现原则、正确性、整体质量或技术实践问题时，按[整体判断](refactor/design/engineering/conventions.md#judgment)说明依据、影响、选项与建议，由用户决定方向。涉及模型、主要行为、公开合同、架构边界或交付范围的取舍遵守[实施讨论规则](refactor/implementation/work-packages.md#unexpected-issues)。既定合同内的修复与验证由实施者完成。
 
@@ -24,7 +24,7 @@
 
 **质量与终态优先于实施成本。** 设计、实现、重构、规范、文档与验证，不以工作量、实施耗时或重做成本降低已确认目标和整体质量，或保留已知问题与不一致。运行性能、资源占用和长期维护复杂度仍按成果质量评估，具体遵守[判断与取舍](refactor/design/engineering/conventions.md#judgment)。
 
-**按终态设计和实现。** 从已确认的目标、合同和资源归属推导方案，现有结构与目标冲突时重做受影响的部分。工作包可以分步实施，交付时正式入口须完整履行承诺，失败与清理也有确定的结果。同类问题在共同拥有层修正，同步受影响的调用方、测试和说明，清理失去用途的旧路径。见[终态与整体一致](refactor/design/engineering/conventions.md#final-state)和[工作包边界](refactor/implementation/work-packages.md#boundary)。
+**按终态设计和实现。** 从已确认的目标、合同和资源归属推导方案，现有结构与目标冲突时重做受影响的部分。工作包可以分步实施。交付时，正式入口须支持全部约定操作，明确失败后保留的结果，并完成约定的资源清理。同类问题在负责共用规则的模块中修正，同步受影响的调用方、测试和说明，清理失去用途的旧路径。见[终态与整体一致](refactor/design/engineering/conventions.md#final-state)和[工作包边界](refactor/implementation/work-packages.md#boundary)。
 
 **首次发行前，无须向后兼容本项目的历史实现。** 接口、数据格式、配置、命令和目录均可按目标重做。同步更新全部调用方，重建开发样本，删除失去用途的旧路径。各发行单位的起点及已有外部约定见[首次发行前的兼容范围](refactor/design/engineering/conventions.md#before-first-release)。
 

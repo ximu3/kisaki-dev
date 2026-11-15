@@ -68,7 +68,7 @@ type OnboardingResourceRef =
   | { type: 'showcaseSection'; sectionId: string }
 ```
 
-handled 中没有对应项目表示尚未处理。正式配置尚未保存或扩展尚未完成安装时，不能提前记为 applied；配置或安装已经成立后，运行采用与激活问题单独报告，不撤销已经成立的处理结果。偏好采用的 resources 为空数组；其他成果引用描述已经采用的结果，即使资源后来被删除或不可用，记录仍然保留。展示时从实际拥有者读取当前情况，不抹去既有历史。扩展启用状态、激活状态、版本、准备状态和任务结果都不复制进引导记录。
+handled 中没有对应项目表示尚未处理。配置保存或扩展安装完成后才能记为 applied。配置生效或扩展激活时遇到的问题单独报告，保留已完成的处理记录。偏好采用的 resources 为空数组；其他成果引用描述已经采用的结果，即使资源后来被删除或不可用，记录仍然保留。展示时从实际拥有者读取当前情况，不抹去既有历史。扩展启用状态、激活状态、版本、准备状态和任务结果都不复制进引导记录。
 
 修改处理状态时只更新相关内容，不能用旧的完整快照覆盖后来产生的结果。处理记录与当前业务现状分别表达事实；再次采用必须来自用户新的明确选择。
 
@@ -108,7 +108,7 @@ preferences、metadataProfiles、scanner 和 showcase 的一次 apply，以本�
 
 提交进行中，界面不重复发起同组操作。失败时正常反馈并保留输入。重新打开引导时，读取当前 handled 与成果，按已保存状态展示。
 
-扩展按 items 顺序逐项安装，再核对该项 expectedHandled 并保存处理记录；安装与引导记录不构成跨文件系统事务。首个未完成项停止后续项目，保留此前成果。安装已成立但处理记录冲突或保存失败时，结果保留实际 extensionId；用户修正后重新采用同一包时，安装器核对已安装版本与包身份，不能仅因缺少 handled 重装或改装另一版本。安装及所选启用状态已经保存时可以记 applied，激活失败作为运行问题返回。译本安装不会代替语言选择。
+扩展按 items 顺序逐项安装，再核对该项 expectedHandled 并保存处理记录；安装与引导记录不构成跨文件系统事务。首个未完成项停止后续项目，保留此前成果。安装成功，但处理记录冲突或保存失败时，结果保留实际 extensionId；用户修正后重新采用同一包时，安装器核对已安装版本与包身份，不能仅因缺少 handled 重装或改装另一版本。安装及所选启用状态已经保存时可以记 applied，激活失败作为运行问题返回。译本安装不会代替语言选择。
 
 ScanConfig 与引导处理记录先提交，再由 scanner 建立监听并执行初始核对。监听失败时，界面说明配置已经建立、监听暂不可用；重试针对实际运行，不重复创建配置。引导记录不再复制安装、配置或执行状态。
 
@@ -133,11 +133,11 @@ onboarding 在同一事务写入 `handled[itemId] = { outcome: 'applied', handle
 
 普通配置 create/update 中，`expected: { defaultProfileId?: string | null }` 只用于 metadata.profiles 设置 isDefault 为 true 的操作：比较同类型当前默认的真实 ID，null 表示要求当前无默认；其他修改不接受这个条件。引导表单设默认时必须提供它，一次采用同类型多份默认方案为 InvalidInput。现有来源能力的可用性按正式保存规则判断，不要求引导安装器或网络调用进入事务。
 
-apply 返回 `{ group, items }`，每个结果保留输入顺序，并含 `{ itemId, outcome, resources, issues }`。outcome 为 applied、notApplied 或 notStarted；resources 仅包含已经成立的成果，issues 为 `{ stage: 'installation' | 'commit' | 'runtime', error: ErrorSummary }[]`。成功时全部为 applied，可以有运行问题。
+apply 返回 `{ group, items }`，每个结果保留输入顺序，并含 `{ itemId, outcome, resources, issues }`。outcome 为 applied、notApplied 或 notStarted；resources 仅列出已确认的成果引用，issues 为 `{ stage: 'installation' | 'commit' | 'runtime', error: ErrorSummary }[]`。成功时全部为 applied，可以有运行问题。
 
 OnboardingApplyResult 按输入 group 保留成果引用类型：preferences 的资源数组为空，其余组分别返回扩展、资料方案、扫描配置或展示区块引用。
 
-完整失败通过 ExecutionFailure<OnboardingApplyResult> 交付已经形成的报告：同库事务失败时全部 notApplied 且没有新资源；扩展安装已成立而标记失败时为 notApplied，但保留 extensionId，后续未执行项为 notStarted。未知的安装提交结果按原安装合同表达，不能伪造资源引用。
+完整失败通过 ExecutionFailure<OnboardingApplyResult> 交付已经形成的报告：同库事务失败时全部 notApplied 且没有新资源；扩展已安装但保存处理标记失败时为 notApplied，但保留 extensionId，后续未执行项为 notStarted。未知的安装提交结果按原安装合同表达，不能伪造资源引用。
 
 输入或目录归属错误为 InvalidInput；必要资源缺失为 NotFound；handled 或业务基线不符为 Conflict；实际安装、持久化或运行错误由拥有者提供稳定分类。提交前取消不写同库配置；提交后的取消不撤销成果，也不重复创建。skip 接收非空且 itemId 不重复的 items，每项仅含 { itemId, expectedHandled }；在短事务中比较所选项目的处理基线，只将尚未采用的项目记为 skipped。已经 applied 或 skipped 且基线相符的项目保留原结果与时间，无变化不发失效；并发采用使旧基线冲突，不能被 skip 覆盖。
 

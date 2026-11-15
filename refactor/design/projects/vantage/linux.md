@@ -54,14 +54,14 @@ KWin 采用脚本主动连接 Rust 侧有限端点、接收明确工作并回传
 
 组件协议使用 Vantage 自有的 D-Bus 命名空间和明确版本，值只表达窗口事实、有限控制、观察与采集接续。它与 Kisaki RPC、业务条目和账号无关。实际连接身份、同一用户会话范围和组件启用仍遵守[访问边界](#access)。
 
-GNOME 组件使用总线名 dev.ximu.Vantage.Gnome1，在 /dev/ximu/Vantage/Gnome 导出同名接口；Open 创建绑定实际 sender 的会话对象。会话提供当前快照、观察、restore／focus／requestClose 和一次采集目标解析；观察对象交付初始快照后通过定向信号接续变化。Close 或 sender 断开只回收相应会话，组件停用回收全部所属资源。具体方法与 D-Bus 类型见[GNOME 协议蓝本](../../../verification/evidence/platform-closure/gnome.xml)；XML 列出接口类型，动态会话和观察分别使用创建操作返回的 object path。
+GNOME 组件使用总线名 dev.ximu.Vantage.Gnome1，在 /dev/ximu/Vantage/Gnome 导出同名接口；Open 创建绑定实际 sender 的会话对象。会话提供当前快照、观察、restore／focus／requestClose 和一次采集目标解析；观察对象先交付初始快照，再通过定向信号通知变化。Close 或 sender 断开只回收相应会话，组件停用回收全部所属资源。具体方法与 D-Bus 类型见[GNOME 协议蓝本](../../../verification/evidence/platform-closure/gnome.xml)；XML 列出接口类型，动态会话和观察分别使用创建操作返回的 object path。
 
 KWin 脚本只使用其实际提供的 callDBus、QTimer 和窗口对象能力，不假定它能导出 GNOME 式服务端。消费程序的 Rust 后端在自己的进程内，通过 /dev/ximu/Vantage/KWinClient 导出 dev.ximu.Vantage.KWinClient1；服务名使用 dev.ximu.Vantage.KWinClient.c 加唯一连接后缀。脚本通过会话总线发现相应名称，向实际宿主建立连接；宿主核对 sender 是当前 org.kde.KWin 的拥有者，名称前缀只用于发现。
 
 | KWin 方向       | 明确职责                                                                                 |
 | --------------- | ---------------------------------------------------------------------------------------- |
 | Open            | 核对协议及组件实例，建立新的 channel；新实例使旧连接和窗口令牌失效                       |
-| PublishSnapshot | 交付原生窗口与前台的当前事实，先有初始快照，再接续后续变化                               |
+| PublishSnapshot | 脚本先向宿主发送原生窗口和前台状态的初始快照，此后随状态变化更新快照                               |
 | TakeRequest     | 取得一个有限控制请求；队列为空时作有界等待并回复空结果，不忙循环，也不在桌面线程同步等待 |
 | Complete        | 按 request id 返回处理结果，不把结果丢失后的重发当作恢复                                 |
 | Close           | 结束本连接的等待和资源，其他消费者继续独立运行                                           |

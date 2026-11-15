@@ -32,6 +32,6 @@ python refactor/verification/evidence/kana-api/check-contracts.py
 
 此外读取了 [WHATWG 编码名称](https://encoding.spec.whatwg.org/encodings.json)、[CSS 字体加载](https://drafts.csswg.org/css-font-loading/)和 [HTTP 范围条件](https://www.rfc-editor.org/rfc/rfc9110.html#name-if-range)。六项来源的 URL、时间与指纹保存于 [source-contract.json](source-contract.json)；TextEncoding 的 39 个规范名称与编码表去除 replacement 后的集合一致。这只是名称核对，未运行 39 种文本解码。
 
-验证的 tarball 只有声明入口，没有运行脚本、worker、Wasm 或样式。它不能证明 Node 运行时导入、浏览器加载、字体释放、取消接续、顺序调度、位置恢复或正式包资产正确。浏览器机制及 PDF／ZIP 读取结果见[阅读路线验证](../kana/reading-route.md)。
+验证的 tarball 只有声明入口，没有运行脚本、worker、Wasm 或样式。Node 运行时导入、浏览器加载、字体释放、取消后的处理、顺序调度、位置恢复和正式包资产均未在这次试验中验证。浏览器机制及 PDF／ZIP 读取结果见[阅读路线验证](../kana/reading-route.md)。
 
 回调参数与纯值的静态约束也不能替代运行行为：observe 的初始交付、重入、回调抛错和关闭最终通知还须在实际 Reader 中验证。void 返回类型不会排除 async 函数，Reader 仍按通知合同处理，不等待调用方返回的 Promise；纯函数声明存在不代表解析器或数值校验已经运行。

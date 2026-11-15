@@ -9,15 +9,16 @@ export const scannerMessages = {
     },
     multiBracketPrefix: {
       name: 'Multiple bracketed prefixes',
-      description: 'Remove at least two leading bracketed notes; a real title must remain.',
+      description: 'Remove two or more leading bracketed notes if a title follows them.',
     },
     releaseYearSuffix: {
       name: 'Release year suffix',
-      description: 'Interpret a final four-digit parenthesized year as the release year.',
+      description:
+        'Use a four-digit year in parentheses at the end of the name as the release year.',
     },
     versionSuffix: {
       name: 'Version suffix',
-      description: 'Remove a final underscore followed by a v-prefixed dotted numeric version.',
+      description: 'Remove a trailing _v followed by a dotted version number, as in Title_v1.2.',
     },
     languageSuffix: {
       name: 'Language suffix',
@@ -38,7 +39,7 @@ export const scannerMessages = {
     },
     parenSuffix: {
       name: 'Single parenthesized suffix',
-      description: 'Remove a final ordinary parenthesized note without interpreting a date.',
+      description: 'Remove the final parenthesized note as plain text, even if it contains a year.',
     },
   },
 } as const

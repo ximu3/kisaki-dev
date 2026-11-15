@@ -17,10 +17,10 @@ import { parseSessionStarted, parseSessionEnded } from './sessions/api'
 import { parseId } from '@kisaki3/extension-distribution/metadata'
 
 /**
- * A terminal scanning fact with the actual report and any failure.
+ * The scan's final status, report and any error.
  *
- * The scanning report and managed task can finish separately. This fact does not establish that
- * TaskRun or failed-history persistence succeeded.
+ * The scan may finish before its managed task. This event can still be delivered if saving the
+ * history fails.
  */
 export interface ScannerFinished {
   readonly scanRunId: string
@@ -33,9 +33,9 @@ export interface ScannerFinished {
 }
 
 /**
- * A terminal managed-task fact with its business result and any failure.
+ * The managed task's final status, result and any error.
  *
- * The notification retains formed results independently of history-persistence success.
+ * The event includes the task result even if saving its history fails.
  */
 export interface TaskFinished<Result = JsonValue> {
   readonly taskRunId: string
@@ -198,7 +198,7 @@ export function parseScannerFinished(input: unknown): ScannerFinished {
 /**
  * Parses a task terminal fact, requiring a safe error for failure and interruption.
  *
- * Parsing the fact does not establish history-persistence success.
+ * A valid event can describe a task whose history could not be saved.
  */
 export function parseTaskFinished(input: unknown): TaskFinished {
   const value = parseValue(

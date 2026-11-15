@@ -111,7 +111,7 @@ export type RecoveryAction = 'continue' | 'rollback' | 'keepCurrent'
 export type RecoveryResolution = 'restored' | 'rolledBack' | 'keptCurrent'
 
 /**
- * Known target-disk facts, protection references and recovery outcome from restoration.
+ * The target's known state on disk, the protection backup and any recovery outcome.
  *
  * Target state is independent of task success and committed recovery resolution.
  */
@@ -304,7 +304,7 @@ export interface GameBackupsApi {
   /**
    * Confirms the fixed target, protects existing content and restores verified bytes.
    *
-   * Failure or cancellation retains known target and recovery facts in any valid partial result.
+   * On failure or cancellation, any partial result includes the known target state and recovery details.
    */
   restore(input: GameBackupRestoreInput, call?: CallOptions): Promise<GameBackupRestoreResult>
 

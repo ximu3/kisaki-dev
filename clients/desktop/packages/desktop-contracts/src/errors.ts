@@ -106,8 +106,8 @@ export function parseErrorSummary(input: unknown): ErrorSummary {
 /**
  * Parses a call failure using the operation's result parser.
  *
- * Present partial results must be valid, including when the error code is unknown. A malformed
- * result rejects the failure rather than discarding reported facts.
+ * If a partial result is present, it must pass the operation's parser even for an unknown error
+ * code. A malformed partial result makes the entire failure payload invalid.
  */
 export function parseExecutionFailure<Result>(
   input: unknown,

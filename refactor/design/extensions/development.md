@@ -114,4 +114,4 @@ desktop-contracts/development 拥有纯类型、方法与通知、协议版本�
 
 项目只声明实际导入的包和框架。运行类型从 SDK 的公共作者入口取得，UI、视觉和工具能力分别从其正式入口取得。模板声明自身实际使用的 SDK、视觉、组件和工具依赖，通过公开 exports 消费。官方 UI 基于 Solid，第三方扩展可以使用 Vue 等其他框架。
 
-必须使用真实 tarball 在仓库外验证安装，并覆盖独立项目、工作区成员、类型检查、开发、build、pack 和真实 .kisx 安装。仓库维护流程还要验证在没有源码的情况下维护 registry。重点检查作者类型入口、Node、Webview、CSS、Solid peer 和 CLI 模板，确保 SDK 的纯合同、运行入口与真实宿主完整协作。dist 目录存在本身不能证明公开包可用。
+必须使用真实 tarball 在仓库外验证安装，并覆盖独立项目、工作区成员、类型检查、开发、build、pack 和真实 .kisx 安装。仓库维护流程还要验证在没有源码的情况下维护 registry。重点检查作者类型入口、Node、Webview、CSS、Solid peer 和 CLI 模板，确保 SDK 的纯合同、运行入口与真实宿主完整协作。

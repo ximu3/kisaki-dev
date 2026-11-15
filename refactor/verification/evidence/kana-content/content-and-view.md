@@ -34,7 +34,7 @@ python refactor/verification/evidence/kana-content/run-probe.py
 
 结果保存于 [browser-contract.json](browser-contract.json)，包括各次源／视图矩形、像素尺寸、采样值、运行时版本、失败分支及源码指纹。源中的 beginRead／finishRead 是实验控制协议，用于在 Electron 主进程实际 capturePage 时保持范围；它不是新增正式公开 API，也不是完整 readView 实现。
 
-其中 a.svg／b.svg 是实验色块画面的身份，切换通过改变实际绘制内容完成；它们不是从真实图片目录读取的文件。此处检验视图读取与画面更新的接续，没有证明真实文件授权或源地址恢复链路。
+其中 a.svg／b.svg 是实验色块画面的身份，切换通过改变实际绘制内容完成；它们不是从真实图片目录读取的文件。本次检验了读取视图与更新画面的先后关系。真实文件授权和从源地址恢复位置仍待验证。
 
 ## 文字观察和映射
 

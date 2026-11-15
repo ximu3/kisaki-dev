@@ -1,4 +1,4 @@
-/** @fileoverview Provides SQLite constraints shared by formal tables, without adding business operations. */
+/** @fileoverview Defines SQLite constraints shared by the application's tables. */
 
 import { sql } from 'drizzle-orm'
 import type { AnySQLiteColumn } from 'drizzle-orm/sqlite-core'

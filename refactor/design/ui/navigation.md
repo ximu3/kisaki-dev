@@ -120,7 +120,7 @@ start 编码为 JSON 字符串，不增加 fromStart、page、time、cfi 或短�
 
 通知携带可序列化业务目标。新增结果通知打开实际条目或任务，应用内导航直接使用原生请求。Windows 可以采用[协议激活](https://learn.microsoft.com/en-us/dotnet/api/microsoft.toolkit.uwp.notifications.toastcontentbuilder.setprotocolactivation?view=win-comm-toolkit-dotnet-7.1)；各平台按安装身份验证运行中与冷启动投递，确保一次点击只触发一次导航。
 
-先请求 A 再请求 B 时，迟到的 A 不能把界面拉回。取消后不能被迟到响应重新打开，观察页关闭也不能使后台操作失去归属。导航共用可见性、归属、窗口复用和草稿确认规则。目标不存在或不可见时，统一提示“当前可见范围内，没有相应记录。”；参数错误明确说明无法执行。普通失败不强制打开主窗口，普通导航不产生 TaskRun 或历史中心记录。
+先请求 A 再请求 B 时，迟到的 A 不能把界面拉回。取消后不能被迟到响应重新打开，观察页关闭也不能使后台操作失去归属。导航共用可见性、归属、窗口复用和草稿确认规则。目标不存在或不可见时，统一提示“当前范围内没有匹配的记录。”参数错误时说明无法执行的原因。普通失败不强制打开主窗口，普通导航不产生 TaskRun 或历史中心记录。
 
 反馈遵循[入口责任](components.md#notifications)：后台 add 使用桌面通知，进入界面的操作使用局部 Toast。同一结果不重复提示，也不按窗口焦点切换渠道。
 

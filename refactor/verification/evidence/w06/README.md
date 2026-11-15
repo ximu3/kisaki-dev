@@ -64,7 +64,7 @@
 
 ### 2026-11-15 数据库 worker 测量
 
-同一台 Linux x64 runner（AMD EPYC 7763）使用 Electron 45.3.2、SQLite 3.53.4、WAL、FULL 和 32 MiB 页缓存，连续运行现行查询与慢查询对照。两轮的桌面构建、迁移和业务输入一致。对照把百标签动态并集改为先取得命中条目 ID，再按名称排序，结果断言全部成立。现行列表沿名称索引读取，对照计划使用临时 B 树排序。[Linux 同机对照](https://github.com/ximu3/kisaki-dev/actions/runs/43691494772/job/132743084412) · [两轮原始报告](https://github.com/ximu3/kisaki-dev/actions/runs/43691494772/artifacts/14151939214)
+同一台 Linux x64 runner（AMD EPYC 7763）使用 Electron 45.3.2、SQLite 3.53.4、WAL、FULL 和 32 MiB 页缓存，连续运行现行查询与慢查询对照。两轮的桌面构建、迁移和业务输入一致。对照把百标签动态并集改为先取得命中条目 ID，再按名称排序，所有查询结果都与预期一致。现行列表沿名称索引读取，对照计划使用临时 B 树排序。[Linux 同机对照](https://github.com/ximu3/kisaki-dev/actions/runs/43691494772/job/132743084412) · [两轮原始报告](https://github.com/ximu3/kisaki-dev/actions/runs/43691494772/artifacts/14151939214)
 
 | 运行 | 百标签列表中位数 ms | 列表采样超过 100 ms | 短事务中位数 ms | 窗口 IPC P95 ms | 验收结果 |
 | --- | ---: | ---: | ---: | ---: | --- |

@@ -95,13 +95,13 @@ Windows ZIP 制品验收直接调用系统 `tar.exe`。Git Bash 的 GNU tar 曾�
 
 样板的存储检查观察部署后的 worker 能否打开库、返回实际的偏好记录、采用语言并关闭。翻译偏好初值的具体字段由数据库集成用例验证。这样既保留对 worker 漏回记录的检查，也使产品默认值的变化只影响负责它的用例。[样板的存储接入](../../clients/desktop/app/tests/fixtures/desktop-app/src/main/storage/index.ts) · [数据库初值用例](../../clients/desktop/app/tests/integration/database/storage.test.ts)
 
-后续产品工作包按被测对象接续入口。
+后续工作包按测试所要验证的对象选择程序入口。
 
 - **桌面产品。** 正式入口归 `clients/desktop/app/src/`。窗口和产品启动性能用例运行这份源码的构建，制品用例从指定的真实应用候选启动并观察结果。制品验证保留从部署路径打开数据库、加载原生资源和执行迁移的覆盖。偏好初值归数据库集成用例，W06 查询负载与预算归存储性能套件。[构建与制品](../design/engineering/build.md#pipeline) · [数据库用例](../../clients/desktop/app/tests/integration/database/storage.test.ts) · [性能口径](../design/engineering/performance.md#measurement)
 - **开发会话。** 建议由 `tests/tools/dev/fixtures/electron-app/` 拥有可编辑的小应用。计数器用来观察热更新后页面状态能否保留，故意写坏又修复模块用来观察进程交接，拒绝关闭用来观察旧进程和运行目录的寿命。这些场景持续验证开发工具，修改源码的用例各自使用副本。[开发会话用例](../../clients/desktop/app/tests/tools/dev/session.test.ts)
 - **构建规则。** 包入口解析用例保留有意让 Node 与浏览器导出不同值的最小依赖，用正式程序的构建配置编译它。preload 配置重载用例自己创建和修改所需的配置与入口。两者都能直接观察目标规则，无须维护完整的窗口应用。[包入口解析](../../clients/desktop/app/tests/tools/build/programs.test.ts) · [preload 配置重载](../../clients/desktop/app/tests/tools/build/preload.test.ts)
 
-W07 交付时，分别从隔离的源码会话和指定的打包候选核对窗口、存储与退出，再退役已由这些用例接替的工程载体入口和任务依赖。开发会话样板直接按上述职责归位。W20 接续真实候选验收安装与更新。工程载体的历史记录保留其原有输入和测量口径。[实施状态](status.md) · [W20 制品验收](work-packages.md#w20)
+W07 交付时，分别从隔离的源码会话和指定的打包候选核对窗口、存储与退出，再退役已由这些用例接替的工程载体入口和任务依赖。开发会话样板直接按上述职责归位。W20 使用真实发行候选验证安装与更新。工程载体的历史记录保留其原有输入和测量口径。[实施状态](status.md) · [W20 制品验收](work-packages.md#w20)
 
 <a id="migration-acceptance"></a>
 
@@ -111,4 +111,4 @@ W07 交付时，分别从隔离的源码会话和指定的打包候选核对窗�
 
 六份实际 tarball 对照基线保留 76 个公开子路径，各入口的条件顺序和目标文件一致。Windows x64 的完整目标作业在同一依赖图内完成原生、窗口、开发会话、浏览器、仓库外消费、制品和性能验证。原生编译、资源准备、桌面构建各执行一次。独立制品验收使用已有 ZIP，从包内核对构建 ID 后实际启动和关闭，验收前后的收据与 ZIP 摘要一致。
 
-当前候选的六目标运行见 [PR #39 的检查](https://github.com/ximu3/kisaki-dev/pull/39/checks)。正式 7.1.x 的主线切换与真正的产品入口分别按[实施状态](status.md)和[工作包](work-packages.md#w07)接续。
+当前候选的六目标运行见 [PR #39 的检查](https://github.com/ximu3/kisaki-dev/pull/39/checks)。主线切换到 7.1.x 正式版的进度见[实施状态](status.md)。桌面产品入口由[W07](work-packages.md#w07)交付。

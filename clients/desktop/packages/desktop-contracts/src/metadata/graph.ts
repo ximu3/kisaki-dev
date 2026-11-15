@@ -298,7 +298,7 @@ export function validateGraph(
     if (!unique(businessKeys, (value) => value)) {
       throw new DesktopError(
         'InvalidInput',
-        'Metadata relationship arrays must not repeat a business fact',
+        'Each relationship may appear only once in its metadata array',
       )
     }
   }

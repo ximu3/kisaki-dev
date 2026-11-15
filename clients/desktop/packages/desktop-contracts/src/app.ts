@@ -39,7 +39,7 @@ export interface ApplicationEnvironment {
 export type DataMode = 'normal' | 'portable'
 
 /**
- * Current data-root facts and the portable mode available for the next launch.
+ * The current data directory, portable-mode availability and the mode selected for the next launch.
  *
  * The current root is fixed for this process. Changing nextMode leaves both directories and their
  * contents in place.
@@ -97,7 +97,7 @@ export type DesktopEntryState =
   | { readonly status: 'available'; readonly registered: boolean }
   | { readonly status: 'unavailable'; readonly error: ErrorSummary }
 
-/** Operating-system integration and data-location facts for the running application. */
+/** The running app's system registrations and data directories. */
 export interface SystemIntegrationState {
   readonly loginItem: LoginItemState
   readonly protocol: ProtocolIntegrationState
@@ -108,7 +108,7 @@ export interface SystemIntegrationState {
 /** Reads and changes actual system registration and next-launch data selection. */
 export interface SystemIntegrationApi {
   /**
-   * Reads actual operating-system integration and data-location facts.
+   * Reads the login item, protocol registration, desktop entry and data-directory settings.
    *
    * Unsupported operations and failed reads remain explicit states.
    */
@@ -216,7 +216,10 @@ export interface ApplicationExitApi {
    */
   restart(call?: CallOptions): Promise<ApplicationExitResult>
 
-  /** Resumes normal acceptance while preserving ended content and saved facts. */
+  /**
+   * Cancels the exit and accepts new work again. Ended sessions stay closed and saved changes
+   * are kept.
+   */
   cancel(call?: CallOptions): Promise<void>
 
   /** Continues waiting for accepted close work without sending another round of exit requests. */
@@ -276,7 +279,8 @@ export function parseApplicationEnvironment(input: unknown): ApplicationEnvironm
 }
 
 /**
- * Parses current and next-launch data-location facts, preserving unavailable marker-read states.
+ * Parses the current data directory and next-launch mode, including a failed read of the
+ * portable-mode marker.
  */
 export function parseDataLocationState(input: unknown): DataLocationState {
   return parseValue(

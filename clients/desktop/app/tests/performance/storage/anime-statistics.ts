@@ -20,7 +20,7 @@ export const animeStatisticsSql = `
     (select count(*) from anime_files where anime_id = ranked.id) as files
   from ranked order by duration desc, id`
 
-/** Checks ties and missing facts on the empty schema, then restores it before the full workload. */
+/** Checks tied durations and anime with no activity, parts or files, then rolls back the test rows. */
 export function verifySparseAnimeStatistics(
   connection: Database.Database,
   directory: string,

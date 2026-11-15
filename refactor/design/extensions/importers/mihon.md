@@ -100,7 +100,7 @@ read=true 不提供分部完成日期、次数或活动；全部章节已读也�
 
 Tachiyomi 基线不包含服务 10–12。放弃、unfinished、considering 和未知状态没有本体同义状态，报告该状态未采用，保留已有当前状态和历史；其他所选字段独立处理。重读只设置 active，不凭该标记生成过去完成次数。
 
-Kitsu 的两代量尺来自[固定版本 9612d95](https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/kitsu/Kitsu.kt)与[固定版本 49991d3](https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/track/kitsu/Kitsu.kt)。数值 8 可能是 40 或 80 分，不能按数值大小自动判断。来源系列负责版本默认；已知跨版本恢复而量尺不明时，只要求明确该项实际量尺或跳过该评分，不更改其他记录。float 编码误差按源量尺容差还原，非法值不裁剪。
+Kitsu 的两代量尺来自[固定版本 9612d95](https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/track/kitsu/Kitsu.kt)与[固定版本 49991d3](https://github.com/mihonapp/mihon/blob/49991d38d97e21746dcc9e5f2c177bccb94c93b3/app/src/main/java/eu/kanade/tachiyomi/data/track/kitsu/Kitsu.kt)。数值 8 可能是 40 或 80 分，不能按数值大小自动判断。按来源版本系列选择默认评分量尺。如果已知备份跨版本恢复过，且某项评分的量尺无法确定，就请用户指定该项量尺或跳过该评分。其他记录照常处理。float 编码误差按源量尺容差还原，非法值不裁剪。
 
 Komga（6）、Kavita（8）、Suwayomi（9）的记录属于自建服务或阅读服务上的系列进度，本项不将其“目前章节全读完”变成整部作品完成，也没有评分可采用；可用链接只作普通来源线索。追踪 private 不转换为不存在的 Work 私密字段，lastChapterRead／totalChapters 不转换成前 N 话的标记、目录或完成次数。
 
@@ -108,7 +108,7 @@ Komga（6）、Kavita（8）、Suwayomi（9）的记录属于自建服务或阅�
 
 完成日期和历史时刻是毫秒时间值；0 为未知，不能导成 1970-01-01。按用户本次选择的来源日期时区取得 CalendarDate，默认本机时区；非法或矛盾日期报告该字段问题。startedReadingDate 不成为阅读活动或完成日期。Part 范围只采用对应布尔完成标记，不提升为 Work 评分、状态或历史。
 
-同一 Work 在本次对应多条来源记录时，先合并兼容的本人事实；互相矛盾的评分或状态报告该项，不按处理顺序覆盖。一次完成快照不能因多个源站、格式或译组重复初始化。已有历史保留，空历史初始化带 expected.completionCount: 0；本项没有逐次完成明细，不提供将快照向非空历史反复追加的选项。
+同一 Work 在本次对应多条来源记录时，先合并彼此一致的个人记录；互相矛盾的评分或状态报告该项，不按处理顺序覆盖。一次完成快照不能因多个源站、格式或译组重复初始化。已有历史保留，空历史初始化带 expected.completionCount: 0；本项没有逐次完成明细，不提供将快照向非空历史反复追加的选项。
 
 <a id="organization-notes"></a>
 

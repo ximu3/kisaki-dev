@@ -63,7 +63,7 @@ PathFilter 使用[相对路径过滤](scanner.md#path-filters)合同，不在 ho
 
 ## 为已有作品登记本地内容
 
-library.holdings.registerLocalContent 承接已经明确作品的一份目录或文件输入。它核对真实位置、作品归属和当前登记，复用各媒介的完整写入规则；不创建作品、不获取元数据，也不修改作品个人值。scanner 在 registerExistingContent 开启且取得准确身份对应后使用此入口，普通明确目标的调用使用同一规则。
+library.holdings.registerLocalContent 为指定作品登记一个目录或文件。登记前核对实际位置、所属作品和已有记录，复用各媒介的完整写入规则；不创建作品、不获取元数据，也不修改作品个人值。scanner 在 registerExistingContent 开启且取得准确身份对应后使用此入口，普通明确目标的调用使用同一规则。
 
 ```ts
 type LocalContentInput = { type: 'directory' | 'file'; path: string }

@@ -283,7 +283,7 @@ clients/desktop/app/tests/
 
 公共包按合同使用 `tests/integration`、`tests/browser`、`tests/consumers` 或 `tests/tools`。官方扩展将来源响应与格式样本放在验证它们的套件中，真实组件行为归 `tests/browser`。正式 `.kisx` 的完整安装和用户操作由宿主端到端用例验证。CLI 交付给作者的模板归 `src/templates`。
 
-测试输入保持可复用，写入测试先在独立临时目录创建副本。数据库、profile、Git 仓库、构建输出、trace 和报告属于运行状态，不能写回 fixture 或使用个人资料。support 只提供测试机制，生产代码不导入它；业务断言保留在用例中，已有不变量由其拥有层验证，接入只补充自身新增的风险。
+测试输入保持可复用，写入测试先在独立临时目录创建副本。数据库、profile、Git 仓库、构建输出、trace 和报告属于运行状态，不能写回 fixture 或使用个人资料。support 只提供测试机制，生产代码不导入它；业务断言保留在用例中，已有保证在负责实现的模块中验证，接入测试只补充新引入的风险。
 
 一个消费者样板工程表达一种实际承诺的宿主或依赖条件，如 Node、浏览器或 Solid。每个样板在 `tests/consumers/fixtures/<宿主>/` 保存独立的 `package.json`、类型配置和源码，同一工程可以服务多个用例。运行时临时安装、启动和清理由对应测试作用域管理。
 

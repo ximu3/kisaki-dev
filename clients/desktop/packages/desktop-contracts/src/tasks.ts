@@ -134,7 +134,7 @@ export interface TaskExecutionContext<Result> extends ExecutionContext {
   reportProgress(progress: TaskProgress): void
 
   /**
-   * Persists a validated snapshot of established business facts.
+   * Validates and saves the result the task has produced so far.
    *
    * Callers await this checkpoint and handle persistence failure.
    */
@@ -162,9 +162,9 @@ export interface TaskHistoryFilter {
 /** Managed task execution, lightweight control observation and independent history access. */
 export interface TasksApi {
   /**
-   * Admits and owns the callback's execution through business completion and task-owner cleanup.
+   * Runs the callback and waits for its work and the task's cleanup to finish.
    *
-   * Cancellation preserves established facts and valid partial results.
+   * Cancellation preserves completed work and any valid partial result.
    */
   run<Result, Input = JsonValue>(
     definition: TaskDefinition<Input>,

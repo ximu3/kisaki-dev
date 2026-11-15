@@ -140,7 +140,7 @@ export const workCompletionRecords = sqliteTable(
   ],
 )
 
-/** Creates occurrence facts and independently retained context names. */
+/** Defines activity start and end times, duration and the context names recorded at the time. */
 function activityFields() {
   return {
     id: idColumn(),
