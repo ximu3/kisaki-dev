@@ -57,25 +57,48 @@ const nativeCollationInputs = new Set([
   'tools/native/build.ts',
 ])
 
-/** Reads the workspace package dependency edges that affect external tarball consumers. */
+/** Reads package identity and runtime dependencies before the workspace is installed. */
+function readPackage(directory: string) {
+  const manifest = JSON.parse(readFileSync(join(directory, 'package.json'), 'utf8')) as {
+    name: string
+    dependencies?: Record<string, string>
+  }
+  return { name: manifest.name, dependencies: Object.keys(manifest.dependencies ?? {}) }
+}
+
+/** Finds the tarball consumers and desktop runtime reached by each public package. */
 function publicPackages() {
   const root = 'clients/desktop/packages'
-  return readdirSync(root, { withFileTypes: true })
+  const desktop = readPackage('clients/desktop/app')
+  const packages = readdirSync(root, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
-    .map(({ name }) => {
-      const pkg = JSON.parse(readFileSync(join(root, name, 'package.json'), 'utf8')) as {
-        name: string
-        dependencies?: Record<string, string>
-      }
-      const fixtures = join(root, name, 'tests/consumers/fixtures')
+    .map(({ name: directory }) => {
+      const fixtures = join(root, directory, 'tests/consumers/fixtures')
       return {
-        name: pkg.name,
-        directory: name,
-        dependencies: Object.keys(pkg.dependencies ?? {}),
+        ...readPackage(join(root, directory)),
+        directory,
         browser: existsSync(join(fixtures, 'browser')),
         electron: existsSync(join(fixtures, 'electron')),
       }
     })
+
+  return packages.map((pkg) => {
+    const affected = new Set([pkg.name])
+    // Iteration visits each newly added dependent and its own readers.
+    for (const name of affected) {
+      for (const reader of packages) {
+        if (reader.dependencies.includes(name)) {
+          affected.add(reader.name)
+        }
+      }
+    }
+
+    return {
+      ...pkg,
+      affected,
+      usedByDesktop: desktop.dependencies.some((name) => affected.has(name)),
+    }
+  })
 }
 
 /** Forms the union of the required suites and transitive public consumers for added and removed paths. */
@@ -87,7 +110,6 @@ export function planChecks(
 ) {
   const packages = publicPackages()
   const consumers = new Set<string>()
-  const changedPackages = new Set<string>()
   const rows = new Map<Target, Set<Suite>>()
   const reasons = new Set<string>()
   const code =
@@ -111,7 +133,7 @@ export function planChecks(
     for (const pkg of packages) {
       consumers.add(pkg.name)
     }
-    add(reason, ['browser', 'consumers'])
+    add(reason, ['browser', 'consumers', 'performance'])
     add(
       reason,
       ['tooling', 'native', 'window-startup', 'dev-session', 'fixture-artifacts'],
@@ -121,7 +143,6 @@ export function planChecks(
 
   if (full) {
     compatibility('Full compatibility requested or no usable Git baseline')
-    add('Complete storage workload', ['performance'])
     installers = true
   } else {
     for (const file of paths.filter(
@@ -134,29 +155,32 @@ export function planChecks(
         if (file.includes('/tests/browser/')) {
           add('Browser interaction scenarios', ['browser'])
         } else {
-          consumers.add(member.name)
-          if (!file.includes('/tests/')) {
-            changedPackages.add(member.name)
+          const testInput = file.includes('/tests/') || /\.test\.tsx?$/.test(file)
+          for (const name of testInput ? [member.name] : member.affected) {
+            consumers.add(name)
           }
           add('Public package or consumer changed', ['consumers'])
           if (member.directory === 'desktop-ui' || member.directory === 'desktop-appearance') {
             add('Rendered appearance and controls', ['browser'])
           }
+          if (member.usedByDesktop && !testInput && !/\.(?:css|md)$|\/LICENSE$/.test(file)) {
+            add('Public package consumed by desktop storage and files', ['native'])
+          }
         }
       } else if (file.startsWith('clients/desktop/app/')) {
         const part = file.slice('clients/desktop/app/'.length)
+        const taskDefinition = part === 'package.json' || part === 'vite.config.ts'
         if (
-          /^(?:native\/|package\.json|vite\.config\.ts|tools\/native\/|config\/vitest\/native\.ts)/.test(
-            part,
-          )
+          taskDefinition ||
+          /^(?:native\/|tools\/native\/|config\/vitest\/native\.ts$)/.test(part)
         ) {
           add(
             'Native ABI, host or command contract',
             ['native', 'window-startup', 'dev-session', 'fixture-artifacts'],
             targets,
           )
-          if (nativeCollationInputs.has(part)) {
-            add('SQLite collation used by the storage workload', ['performance'])
+          if (taskDefinition || nativeCollationInputs.has(part)) {
+            add('Performance task or native storage workload input', ['performance'])
           }
         } else if (
           /^(?:drizzle\/|src\/main\/(?:infrastructure\/database|features\/preferences)|tests\/integration\/database)/.test(
@@ -217,8 +241,12 @@ export function planChecks(
           consumers.add(pkg.name)
         }
         add('Shared library configuration or consumer checks', ['consumers'])
-        if (file.startsWith('packages/config/vite/')) {
-          add('Shared UI library build', ['browser'])
+        if (
+          file.startsWith('packages/config/vite/') ||
+          file.startsWith('packages/config/typescript/') ||
+          file === 'packages/config/package.json'
+        ) {
+          add('Shared library build consumed by UI and storage', ['browser', 'native'])
         }
       } else if (
         /^(?:tests\/workspace\/|tools\/(?:boundaries|check-doc-links)\.ts$|\.dependency-cruiser\.json|\.gitattributes|LICENSE$)/.test(
@@ -228,15 +256,6 @@ export function planChecks(
         reasons.add('Repository checks')
       } else {
         compatibility('Shared tooling, workflow or unclassified input')
-      }
-    }
-  }
-  for (let previous = -1; previous !== changedPackages.size;) {
-    previous = changedPackages.size
-    for (const pkg of packages) {
-      if (pkg.dependencies.some((name) => changedPackages.has(name))) {
-        changedPackages.add(pkg.name)
-        consumers.add(pkg.name)
       }
     }
   }

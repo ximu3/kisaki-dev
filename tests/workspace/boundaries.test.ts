@@ -95,10 +95,16 @@ const cases: {
     source: "export type { Value } from '@kisaki3/tooling/process'\n",
   },
   {
-    name: 'engineering-does-not-import-tests',
+    name: 'no-test-imports-outside-tests',
     from: 'clients/desktop/app/tools/runtime.ts',
     to: 'clients/desktop/app/tests/support/value.ts',
     source: "export type { Value } from '../tests/support/value'\n",
+  },
+  {
+    name: 'no-test-imports-outside-tests',
+    from: 'clients/desktop/app/src/main/preferences.ts',
+    to: 'clients/desktop/app/src/main/defaults.test.ts',
+    source: "export type { Value } from './defaults.test'\n",
   },
   {
     name: 'no-undeclared-packages',

@@ -12,9 +12,6 @@ files:
   - distribution.json
   - build.json
   - LICENSE
-extraResources:
-  - from: resources
-    to: resources
 
 electronFuses:
   runAsNode: false
@@ -27,7 +24,6 @@ electronFuses:
 
 win:
   target: [nsis, zip]
-  executableName: Kisaki
 nsis:
   oneClick: false
   allowToChangeInstallationDirectory: true

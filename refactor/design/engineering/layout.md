@@ -59,6 +59,7 @@ kisaki/
 ├── tools/
 │   ├── release/
 │   ├── boundaries.ts
+│   ├── check-doc-links.ts
 │   └── ci/
 ├── tests/
 ├── config/
@@ -80,7 +81,7 @@ kisaki/
 └── refactor/                     # Design, implementation and acceptance
 ```
 
-clients/desktop/app 作为名为 @kisaki3/desktop 的私有应用 workspace，使用统一 package.json 管理 main、preload、renderer、extension-host 和 shared 等程序源码。clients、desktop、packages 与 extensions 负责目录分类，registry 保存分发资料。图中的目录表达完整交付的归属，业务内部层次按实际协作需要展开；实施与能力状态由[状态页](../../implementation/status.md)记录。完整交付的工作区由桌面应用、八个公开包、33 个扩展项目和三个私有工程包组成，成员模式如下。对应模式和 manifest 随所属对象的完整实现建立：
+clients/desktop/app 是名为 @kisaki3/desktop 的私有应用 workspace，使用一份 package.json 管理 main、preload、renderer、extension-host 和 shared。clients、desktop、packages 与 extensions 负责目录分类，registry 保存分发资料。图中的目录表达完整交付的归属，业务内部层次按实际协作需要展开。[状态页](../../implementation/status.md)记录实施进展。[工作区成员](workspace.md#workspace)按以下模式登记，对应的模式和 manifest 随所属工程建立。
 
 ```yaml
 packages:
@@ -118,9 +119,9 @@ app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm wo
 
 | 位置                      | 负责的工作                                                                                          |
 | ------------------------- | --------------------------------------------------------------------------------------------------- |
-| 根 tools | ci 选择所需宿主并检查文档引用，boundaries.ts 核对依赖边界，release 管理跨项目发行。 |
+| 根 tools | ci 选择验证任务与宿主，check-doc-links.ts 检查文档引用，boundaries.ts 核对依赖边界，release 管理跨项目发行。 |
 | packages/tooling          | 多个工程共用的所属输出清理、命令执行和 CLI 收尾函数，以及这些函数自己的测试。                           |
-| clients/desktop/app/tools | 桌面开发会话、程序构建、资源准备、私有原生编译、打包与工程输出清理。                                |
+| clients/desktop/app/tools | 桌面开发会话、程序构建、资源准备、私有原生编译与打包。 |
 | 公共包或扩展自身的 tools  | 本工程的准备、生成与工程输入输出校验；运行代码仍在其 src。                                          |
 | extension-cli/src         | 面向扩展作者的正式 CLI 和程序化工作流，作为产品能力交付。                                           |
 | 独立项目自身的 tools      | 该项目已有规范确定的构建和交付流程，本体通过正式制品消费。                                          |
@@ -131,6 +132,7 @@ app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm wo
 tools/
 ├── ci/
 ├── boundaries.ts
+├── check-doc-links.ts
 └── release/
 ```
 
@@ -146,7 +148,7 @@ cli.ts 处理参数、建立运行上下文、调用工作流并呈现结果与�
 
 不同工程按公开入口协作，不借用另一项目的工具私有实现；生产运行代码不反向依赖 tools。测试可以调用被测工具的工作流或消费其产物，工程实现不导入测试用例、fixture 或 tests/support。仅供测试使用的准备与清理归测试拥有者；工具与运行代码确有共同机制时，归入能同时服务二者的正式模块，由工具消费。
 
-packages/tooling/src 中的 output.ts 按项目归属清理可重建输出，process/ 执行命令并处理显式取消和进程收尾，cli.ts 在 CLI 调用期间安装信号处理并呈现退出状态。工具及其测试分别通过 `@kisaki3/tooling/output`、`@kisaki3/tooling/process`、`@kisaki3/tooling/cli` 引用，入口由包 exports 唯一定义。这些普通函数由实际工作流调用，不提供命令调度入口，不属于八个公共包，也不被生产运行代码消费。
+`@kisaki3/tooling/output` 按项目归属清理可重建输出，桌面和公共包的 clean 脚本通过同一模块提供的 `kisaki-clean` 删除本工程的 dist 和 out。`@kisaki3/tooling/process` 执行命令并处理取消与收尾，`@kisaki3/tooling/cli` 在 CLI 调用期间安装信号处理并呈现退出状态。
 
 输出范围与清理的验证归 packages/tooling/tests/output.test.ts，真实命令树的取消验证归同包 tests/process.test.ts，均使用隔离目录和子进程。桌面开发会话的交接与关闭验证归本体 tests/tools/dev。
 
@@ -166,10 +168,13 @@ clients/desktop/app/tools/
 │   ├── cli.ts
 │   ├── session.ts
 │   ├── inputs.ts
-│   ├── renderer.ts
+│   ├── programs.ts
+│   ├── renderer/
+│   │   ├── index.ts
+│   │   ├── entry-client.ts
+│   │   └── protocol.ts
 │   ├── electron-executable.ts
-│   ├── prepare-runtime.ts
-│   └── dependencies.ts
+│   └── prepare-runtime.ts
 ├── build/
 │   ├── cli.ts
 │   ├── coordinator.ts
@@ -188,7 +193,6 @@ clients/desktop/app/tools/
 │   ├── cli.ts
 │   ├── distribution.ts
 │   └── packager.ts
-├── clean.ts
 └── lib/
     ├── paths.ts
     ├── targets.ts
@@ -201,11 +205,10 @@ clients/desktop/app/tools/
 | dev/electron-executable.ts       | 定位项目依赖中的开发 Electron 可执行文件，由开发流程和需要该宿主的测试复用。                                                                                                                                                                                                 |
 | build/coordinator.ts | `buildDesktop` 负责一次完整桌面构建。它接入已准备的资源与原生绑定，给各程序传入同一个构建 ID，等待全部编译结束并汇总失败。编译成功且必需文件齐全时写出 `build.json`。 |
 | build/manifest.ts | 定义 `build.json`，清点运行目录中的文件与摘要。构建方写出清单，打包方与测试按同一份清单核对输入。 |
-| build/programs.ts                | 依据调用方指定源码根下 config/vite 中的 vite.config.*.ts 调用 Vite 公共 API，完成 main、preload、renderer 和 extension-host 的有限构建，返回实际模块输入。开发与正式构建采用同一份程序配置。                                                                                 |
+| build/programs.ts | 从指定源码根的 config/vite 读取四个程序的构建配置。每个沙箱 preload 独立编译，全部输出写入完成后返回。开发与正式构建采用同一份程序配置。 |
 | resources/prepare.ts             | 按固定输入准备图标、字体、Kana 资源、独立媒体包和数据库迁移资源，拥有对应资源目录的写入与校验；私有原生制品由 native 工作流负责。                                                                                                                                            |
 | native/build.ts、declarations.ts | 编译目标绑定、生成与核对声明、准备所需原生资源，具体规则见[私有原生交付](native.md#delivery)。                                                                                                                                                                               |
 | package/packager.ts              | 在所需构建就绪后调用 electron-builder 生成目标安装或归档文件，消费应用的 electron-builder.yml 与实际存在的打包专用输入；签名按已有环境与策略执行，不隐含公开发布。                                                                                                           |
-| clean.ts                         | 只清理本工程声明的构建输出，核对实际目标与目录范围；缓存清理与开发资料重置保持独立操作。                                                                                                                                                                                     |
 | lib | 提供跨工作流的工程路径、目标解析和 SHA-256 计算。 |
 
 桌面的开发接入、build:fixture 和 package:fixture 分别由所属工作流执行，类型与测试任务直接调用所属运行器与配置；从根用 `vp run @kisaki3/desktop#<任务>` 选择桌面操作。resources 与 native 的显式入口和内部调用复用同一工作流。不同目标、开发、构建与测试环境按[输出与清理规则](build.md#outputs)分离。

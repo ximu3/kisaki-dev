@@ -174,18 +174,17 @@
         "pathNot": "(^|/)(tests|fixtures)/|\\.test\\.tsx?$|^packages/(tooling|config)/"
       },
       "to": {
-        "path": "^packages/(tooling|config)/|(^|/)(tools|tests)/"
+        "path": "^packages/(tooling|config)/|(^|/)tools/"
       }
     },
     {
-      "name": "engineering-does-not-import-tests",
+      "name": "no-test-imports-outside-tests",
       "severity": "error",
       "from": {
-        "path": "(^|/)tools/|^packages/[^/]+/src/",
         "pathNot": "(^|/)(tests|fixtures)/|\\.test\\.tsx?$|^packages/tooling/src/testing/"
       },
       "to": {
-        "path": "(^|/)tests/|^packages/tooling/src/testing/"
+        "path": "(^|/)(tests|fixtures)/|\\.test\\.tsx?$|^packages/tooling/src/testing/"
       }
     }
   ],
