@@ -29,18 +29,17 @@ on:
           ]
 
 permissions:
+  actions: read
   contents: read
-  checks: read
   pull-requests: read
 
 concurrency:
-  group: ci-${{ github.event.action == 'edited' && !github.event.changes.base && github.run_id || github.ref }}-${{ github.event_name }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  group: ci-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' && (github.event.action != 'edited' || github.event.changes.base != null) }}
 
 jobs:
   plan:
     name: Select checks
-    if: github.event.action != 'edited' || github.event.changes.base
     runs-on: ubuntu-22.04
     outputs:
       reused: ${{ steps.prior.outputs.reused }}
@@ -53,32 +52,62 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
+      - name: Identify the candidate
+        id: candidate
+        if: github.event_name == 'pull_request' || github.event_name == 'push'
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          tree=$(git rev-parse 'HEAD^{tree}')
+          echo "identity=$BASE-$tree" >> "$GITHUB_OUTPUT"
+          printf 'base %s\ntree %s\ncheckout %s\n' "$BASE" "$tree" "$GITHUB_SHA" > "$RUNNER_TEMP/candidate.txt"
+      - name: Retain PR candidate identity
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: pr-${{ github.event.pull_request.number }}-${{ steps.candidate.outputs.identity }}
+          path: ${{ runner.temp }}/candidate.txt
+          overwrite: true
+          retention-days: 7
+      - name: Check the previous PR result
+        id: prior
+        if: github.event_name == 'push' || (github.event.action == 'edited' && !github.event.changes.base)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          IDENTITY: ${{ steps.candidate.outputs.identity }}
+        run: |
+          if [[ "$GITHUB_EVENT_NAME" == push ]]; then
+            pulls=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls")
+            read -r PR_NUMBER PR_HEAD <<< "$(jq -r --arg sha "$GITHUB_SHA" \
+              'first(.[] | select(.merged_at and .base.ref == "main" and .merge_commit_sha == $sha) | [.number,.head.sha] | @tsv) // empty' <<< "$pulls")"
+            [[ -n "$PR_HEAD" ]] || exit 0
+          fi
+
+          runs=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/ci.yml/runs?event=pull_request&head_sha=$PR_HEAD&per_page=100")
+          previous=$(jq -c --arg head "$PR_HEAD" --argjson current "$GITHUB_RUN_ID" \
+            '[.workflow_runs[] | select(.id < $current and .head_sha == $head)] | max_by(.updated_at,.id)' <<< "$runs")
+          [[ $(jq -r .status <<< "$previous") == completed ]] || exit 0
+          run=$(jq -r .id <<< "$previous")
+          receipt="pr-$PR_NUMBER-$IDENTITY"
+          artifacts=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run/artifacts?name=$receipt&per_page=100")
+          jq -e --arg name "$receipt" 'any(.artifacts[]; .name == $name and (.expired | not))' <<< "$artifacts" >/dev/null || exit 0
+
+          result=$(jq -r .conclusion <<< "$previous")
+          url=$(jq -r .html_url <<< "$previous")
+          echo "PR #$PR_NUMBER at $PR_HEAD has a matching candidate in [run $run]($url): $result." >> "$GITHUB_STEP_SUMMARY"
+          if [[ "$result" == success ]]; then
+            echo 'reused=true' >> "$GITHUB_OUTPUT"
+          elif [[ "$GITHUB_EVENT_NAME" == pull_request ]]; then
+            exit 1
+          fi
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        if: steps.prior.outputs.reused != 'true'
         with:
           node-version-file: .node-version
           package-manager-cache: false
-      - name: Find the verified merge tree
-        id: prior
-        if: github.event_name == 'push'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          tree=$(git rev-parse 'HEAD^{tree}')
-          pulls=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls")
-          for number in $(jq -r '.[] | select(.merged_at and .base.ref == "main") | .number' <<< "$pulls"); do
-            prior_head=$(jq -r --argjson n "$number" '.[] | select(.number == $n) | .head.sha' <<< "$pulls")
-            if candidate=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/pull/$number/merge" --jq .object.sha 2>/dev/null); then
-              commit=$(gh api "repos/$GITHUB_REPOSITORY/git/commits/$candidate")
-              if [[ $(jq -r .tree.sha <<< "$commit") == "$tree" && $(jq -r '.parents[1].sha' <<< "$commit") == "$prior_head" ]]; then
-                checks=$(gh api "repos/$GITHUB_REPOSITORY/commits/$candidate/check-runs?per_page=100")
-                if jq -e 'any(.check_runs[]; .name == "Required checks" and .app.slug == "github-actions" and .conclusion == "success")' <<< "$checks" >/dev/null; then
-                  echo 'reused=true' >> "$GITHUB_OUTPUT"
-                  echo "Reused PR #$number, verified tree $tree ($candidate)." >> "$GITHUB_STEP_SUMMARY"
-                  break
-                fi
-              fi
-            fi
-          done
       - id: plan
         if: steps.prior.outputs.reused != 'true'
         name: Select checks from the candidate tree
@@ -178,13 +207,12 @@ jobs:
           if-no-files-found: ignore
 
   gate:
-    name: ${{ github.event.action == 'edited' && !github.event.changes.base && 'Metadata edit' || 'Required checks' }}
+    name: ${{ github.event_name == 'workflow_dispatch' && 'Requested checks' || 'Required checks' }}
     if: always()
     needs: [plan, workspace, target]
     runs-on: ubuntu-22.04
     steps:
       - name: Verify required job outcomes
-        if: github.event.action != 'edited' || github.event.changes.base
         env:
           RESULTS: ${{ toJSON(needs) }}
         run: |
@@ -195,14 +223,3 @@ jobs:
               ((.plan.outputs.selected == "true" and .target.result == "success") or
                (.plan.outputs.selected == "false" and .target.result == "skipped"))))
           ' <<< "$RESULTS"
-
-  # Keep the currently protected check on the same candidate until the repository switches its rule.
-  legacy-required:
-    name: ${{ github.event.action == 'edited' && !github.event.changes.base && 'Metadata compatibility' || 'verify / Required checks' }}
-    needs: gate
-    if: always()
-    runs-on: ubuntu-22.04
-    steps:
-      - env:
-          RESULT: ${{ needs.gate.result }}
-        run: test "$RESULT" = success

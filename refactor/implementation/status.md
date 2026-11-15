@@ -71,7 +71,7 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 
 ## 仓库与合并
 
-公开开发远端为 [ximu3/kisaki-dev](https://github.com/ximu3/kisaki-dev)，承载源码、PR、CI、候选制品与跨仓联调。main 要求同步最新主线并通过 GitHub Actions 的 `verify / Required checks`。分支保护同样约束管理员。仓库只允许 Squash 合并，自动删除已合并的远端分支。协作规则见[工作区合同](../design/engineering/workspace.md#collaboration)。
+公开开发远端为 [ximu3/kisaki-dev](https://github.com/ximu3/kisaki-dev)，承载源码、PR、CI、候选制品与跨仓联调。main 要求同步最新主线并通过 GitHub Actions 的 `Required checks`。分支保护同样约束管理员。仓库只允许 Squash 合并，自动删除已合并的远端分支。协作规则见[工作区合同](../design/engineering/workspace.md#collaboration)。
 
 正式仓库接续、npm 发行和服务部署按[仓库合同](../design/engineering/repository.md)与实际授权执行。旧 ximu3/kisaki 的存档和同名重建尚未执行，四个独立项目的正式开发仓库与交付制品尚未登记；项目开发仓库及 oauth-relay 最终源码仓库采用 public 可见性。
 
