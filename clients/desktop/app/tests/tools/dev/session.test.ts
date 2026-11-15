@@ -5,6 +5,7 @@
 
 import { expect, onTestFinished, test } from 'vite-plus/test'
 import { chromium } from '@playwright/test'
+import type { Page } from '@playwright/test'
 import { readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { appRoot } from '../../../tools/lib/paths'
@@ -152,7 +153,8 @@ test('dependency recovery and renderer updates preserve a usable process', async
   await controller.ready
   const first = controller.states.find((state) => state.state === 'ready')!
   const page = await browser.newPage()
-  await page.goto(new URL('main/index.html', first.rendererUrl!).href)
+  const url = new URL('main/index.html', first.rendererUrl!).href
+  await page.goto(url)
   await page.getByRole('button', { name: 'Count: 0' }).waitFor()
   await page.getByRole('button').click()
 
@@ -162,19 +164,42 @@ test('dependency recovery and renderer updates preserve a usable process', async
     .toBe('73px')
   expect(await page.getByRole('button', { name: 'Count: 1' }).count()).toBe(1)
 
-  // Observe the rejected module in this page's HMR request before restoring the source.
-  const rejected = page.waitForResponse(
-    (response) =>
-      new URL(response.url()).pathname.endsWith('/src/development.ts') && response.status() === 500,
-    { timeout: 15_000 },
-  )
-  await Promise.all([rejected, writeFile(dependency, 'export const broken =\n')])
+  /** Waits for a particular document to receive the compiler error for the editable dependency. */
+  const waitForRejection = (document: Page) =>
+    document.waitForResponse(
+      (response) =>
+        new URL(response.url()).pathname.endsWith('/src/development.ts') &&
+        response.status() === 500,
+      { timeout: 15_000 },
+    )
+
+  await Promise.all([waitForRejection(page), writeFile(dependency, 'export const broken =\n')])
   expect(() => process.kill(first.current!.processId, 0)).not.toThrow()
 
-  await writeFile(dependency, originals[2]!.replace("'kisaki.development'", "'fixture.updated'"))
-  await expect
-    .poll(() => page.locator('main').getAttribute('data-protocol'), { timeout: 15_000 })
-    .toBe('fixture.updated')
+  // Open a second document against the broken source. Let it connect to HMR after the repair.
+  const openingPage = await browser.newPage()
+  const repairedEntry = 'main[data-protocol="fixture.updated"]'
+  const connect = Promise.withResolvers<void>()
+  await openingPage.route(
+    '**/@vite/client',
+    async (route) => {
+      await connect.promise
+      await route.continue()
+    },
+    { times: 1 },
+  )
+  try {
+    await Promise.all([
+      waitForRejection(openingPage),
+      openingPage.goto(url, { waitUntil: 'commit' }),
+    ])
+    await writeFile(dependency, originals[2]!.replace("'kisaki.development'", "'fixture.updated'"))
+    await page.locator(repairedEntry).waitFor({ timeout: 15_000 })
+  } finally {
+    connect.resolve()
+  }
+
+  await openingPage.locator(repairedEntry).waitFor({ timeout: 15_000 })
   expect(
     controller.states.filter((state) => state.state === 'ready').at(-1)?.current?.processId,
   ).toBe(first.current!.processId)

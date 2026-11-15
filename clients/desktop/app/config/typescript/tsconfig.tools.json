@@ -11,5 +11,6 @@
     "../../*.config.ts",
     "../**/*.ts",
     "../../tests/fixtures/desktop-app/config/**/*.ts"
-  ]
+  ],
+  "exclude": ["../../tools/dev/renderer/entry-client.ts"]
 }
