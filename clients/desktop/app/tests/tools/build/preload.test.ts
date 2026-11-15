@@ -1,6 +1,6 @@
 /** @fileoverview Verifies that repeated preload builds consume the current Vite entry configuration. */
 
-import { expect, onTestFinished, test, vi } from 'vitest'
+import { expect, onTestFinished, test, vi } from 'vite-plus/test'
 import { createRequire } from 'node:module'
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'

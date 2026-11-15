@@ -95,7 +95,7 @@ pages.arrangement 和 text.pagesPerView 表达明确的单面／双面选择。�
 
 文档规定的独立页、左右槽位与最后一面内容不足，仍按作者页位规则解释。该差异来自源内容，不把空槽位当作一张源页。连续正文不采用分页的面数。
 
-视口与明确留白使阅读区域无法成立时，本次操作按 layoutUnavailable／insufficientSpace 失败，保留最后可信位置与所选设置。窗口隐藏、再次可见及失败对 Reader 的影响遵守[错误合同](api.md#errors)。用户可以调整面数或窗口后重新布局。
+视口扣除指定留白后容不下阅读区域时，本次操作按 layoutUnavailable／insufficientSpace 失败，保留最后可信位置与所选设置。窗口隐藏、再次可见及失败对 Reader 的影响遵守[错误合同](api.md#errors)。用户可以调整面数或窗口后重新布局。
 
 <a id="feedback"></a>
 

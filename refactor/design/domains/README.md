@@ -1,6 +1,6 @@
 # 领域能力
 
-各领域遵守[简洁、清晰、干净与克制](../engineering/conventions.md#quality)的首要原则，按事实、完整操作与资源寿命明确拥有者，并以[终态实现与整体一致性](../engineering/conventions.md#final-state)核对交付；共同语义在所属合同统一定义，各入口直接引用。
+各领域遵守[现代化、简洁、清晰、干净与克制](../engineering/conventions.md#quality)的首要原则，按事实、完整操作与资源寿命明确拥有者，并以[终态实现与整体一致性](../engineering/conventions.md#final-state)核对交付；共同语义在所属合同统一定义，各入口直接引用。
 
 阅读从[条目与分部](catalog.md)、[公共值](values.md)建立模型，再按任务进入[完整操作](library/write/README.md)或[查询](library/query/README.md)及对应领域。名称、结构和说明共同遵守[可读性准则](../engineering/conventions.md#readability-principle)。
 

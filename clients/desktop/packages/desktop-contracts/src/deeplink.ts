@@ -11,7 +11,15 @@ import type { WorkType, EntryType, ExternalIdentity } from './library/catalog'
 import type { IdentificationClues } from './metadata/fields'
 import type { ExecutionContext, Registration } from './operations'
 import * as v from 'valibot'
-import { parseExternalValue, parseRecord, parseValue, omitFields, id, text } from './validation'
+import {
+  asciiControl,
+  parseExternalValue,
+  parseRecord,
+  parseValue,
+  omitFields,
+  id,
+  text,
+} from './validation'
 import { parseId } from '@kisaki3/extension-distribution/metadata'
 import { DesktopError } from './errors'
 import { parseNativeViewTarget, parseEntryIdentifier, entrySelectionEntries } from './ui/navigation'
@@ -290,13 +298,7 @@ function requireKeys(values: object, allowed: readonly string[]): void {
  */
 export function parse(input: string): DeeplinkRequest {
   const source = parseValue(text, input, 'Invalid application link')
-  if (
-    source.trim() !== source ||
-    [...source].some(
-      (character) =>
-        character.charCodeAt(0) < 32 || character.charCodeAt(0) === 127 || character === '\\',
-    )
-  ) {
+  if (source.trim() !== source || source.includes('\\') || asciiControl.test(source)) {
     invalid()
   }
 

@@ -85,7 +85,10 @@ export const novelFileRecognitionProfiles = recognitionProfiles(
   'novel',
 )
 
-/** Creates directory facts shared by all four media. Equivalent-path policy belongs to file access. */
+/**
+ * Defines the ID, path and timestamps for all four directory tables.
+ * The file-access layer checks whether paths identify the same directory.
+ */
 function directoryFields() {
   return { id: idColumn(), path: text('path').notNull(), ...timestamps() }
 }
@@ -197,7 +200,7 @@ export const gameLaunchConfigs = sqliteTable(
   ],
 )
 
-/** Creates actual file facts, with availability separate from saved identity and associations. */
+/** Defines the file columns. A file keeps its ID and associations when it becomes unavailable. */
 function fileFields() {
   return {
     id: idColumn(),

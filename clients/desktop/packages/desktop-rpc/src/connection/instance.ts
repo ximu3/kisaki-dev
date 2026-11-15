@@ -260,9 +260,9 @@ export class RpcConnection {
   }
 
   /**
-   * Admits an increasing peer request ID and dispatches an owned method.
+   * Checks that the peer's request ID increases, then dispatches the request to the local method.
    *
-   * Unknown methods or exhausted local IDs receive a failure reply. Each admitted method receives
+   * Unknown methods or exhausted local IDs receive a failure reply. Each accepted request receives
    * its own cancellation signal.
    */
   #receiveRequest(frame: Extract<RpcFrame, { type: 'request' }>, endpoint: RpcEndpoint): void {

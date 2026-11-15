@@ -221,7 +221,7 @@ export interface OnboardingApi {
   /**
    * Finishes the guide presentation and records first completion when applicable.
    *
-   * Unfinished business retains its actual outcome.
+   * Closing the guide leaves unfinished items in their recorded state.
    */
   complete(input: { readonly mode: OnboardingMode }, call?: CallOptions): Promise<OnboardingState>
 

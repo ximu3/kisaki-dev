@@ -1,6 +1,6 @@
 /** @fileoverview Verifies metadata read requests preserve field scope and independently requested relations. */
 
-import { test, expect } from 'vitest'
+import { test, expect } from 'vite-plus/test'
 import { parseMetadataReadRequest, requireMetadataRequestSupport } from './requests'
 
 import { parseMetadataReadResult } from './responses'

@@ -1,12 +1,12 @@
+/** @fileoverview Verifies the prepared engineering fixture in real Electron windows. */
+
 import { defineConfig } from '@playwright/test'
 
 export default defineConfig({
-  testDir: 'tests/e2e',
+  testDir: 'tests/integration/electron',
   testMatch: '**/*.test.ts',
   workers: 1,
-  timeout: 30_000,
-  retries: 0,
-  outputDir: 'test-results/e2e',
-  reporter: [['list'], ['json', { outputFile: 'test-results/e2e/results.json' }]],
+  outputDir: 'test-results/window-startup',
+  reporter: [['list'], ['json', { outputFile: 'test-results/window-startup/results.json' }]],
   use: { trace: 'retain-on-failure', screenshot: 'only-on-failure' },
 })

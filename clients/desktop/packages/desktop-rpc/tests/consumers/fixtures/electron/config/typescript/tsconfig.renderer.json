@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "noEmit": true,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "lib": ["ES2023", "DOM"],
+    "customConditions": ["browser"]
+  },
+  "include": ["../../renderer.ts"]
+}

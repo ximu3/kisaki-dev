@@ -1,6 +1,6 @@
 /** @fileoverview Verifies prepared extension receipts preserve pinned trust and exact artifact identity. */
 
-import { test, expect } from 'vitest'
+import { test, expect } from 'vite-plus/test'
 import { generateKeyPairSync } from 'node:crypto'
 
 import {

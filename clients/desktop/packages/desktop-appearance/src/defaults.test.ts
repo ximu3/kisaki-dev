@@ -1,6 +1,6 @@
 /** @fileoverview Checks complete default branches and the separation from desktop resource identities. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { defaults } from './defaults'
 import { tokens } from './tokens'
 

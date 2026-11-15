@@ -4,9 +4,8 @@ import { randomUUID } from 'node:crypto'
 import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import { isAbsolute, join } from 'node:path'
 import { debuglog } from 'node:util'
-import { runPnpm } from '@kisaki3/tooling/process'
 import { isCancellation, rethrowAfterCleanup } from '@kisaki3/tooling/errors'
-import { appRoot, repositoryRoot } from '../lib/paths'
+import { appRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
 import { prepareResources } from '../resources/prepare'
 import { buildNative } from '../native/build'
@@ -14,8 +13,7 @@ import { startRenderer } from './renderer'
 import { startInputWatcher } from './inputs'
 import type { PreparationChange } from './inputs'
 import { electronExecutable } from './electron-executable'
-import { desktopDependencies } from './dependencies'
-import { prepareGeneration } from './generation'
+import { prepareRuntime } from './prepare-runtime'
 import { watchPrograms } from './programs'
 import type { ProgramWatch } from './programs'
 
@@ -107,6 +105,8 @@ export interface DevelopmentOptions {
   launch: (options: DevelopmentLaunchOptions) => Promise<DevelopmentApplication>
   /** Persistent absolute profile directory; defaults to the desktop app's .local/development. */
   profile?: string
+  /** Read-only resource directory and native file already prepared for this host. */
+  prepared?: { resources: string; nativeBinding: string }
   /** Cancels preparation until the first ready application; later lifetime uses the session handle. */
   signal?: AbortSignal
   /**
@@ -160,8 +160,11 @@ export async function startDevelopmentSession(
     const compilerDirectory = join(sessionDirectory, 'compiler')
     await mkdir(profile, { recursive: true })
     electronExecutable()
-    let members = await desktopDependencies(signal)
-    renderer = await startRenderer(options.sourceRoot, members, buildId)
+    const resources = options.prepared?.resources ?? join(sessionDirectory, 'resources')
+    const nativeDirectory = join(sessionDirectory, 'native')
+    const nativeBinding =
+      options.prepared?.nativeBinding ?? join(nativeDirectory, 'kisaki-native.node')
+    renderer = await startRenderer(options.sourceRoot, buildId)
     let rendererAddress = renderer.resolvedUrls!.local[0]!
 
     let child: DevelopmentApplication | undefined
@@ -180,7 +183,9 @@ export async function startDevelopmentSession(
     let workLoop: Promise<void> | undefined
     let waitForChange = false
     let requestVersion = 0
-    const pending = new Set<PreparationChange | 'runtime'>(['packages', 'resources', 'native'])
+    const pending = new Set<PreparationChange | 'runtime'>(
+      options.prepared ? [] : ['resources', 'native'],
+    )
 
     const ready = Promise.withResolvers<void>()
     const closed = Promise.withResolvers<void>()
@@ -240,7 +245,7 @@ export async function startDevelopmentSession(
       let prepared = false
 
       try {
-        await prepareGeneration(compilerDirectory, batch.files, target, candidate)
+        await prepareRuntime(compilerDirectory, batch.files, resources, nativeBinding, candidate)
         if (isCurrent()) {
           const previous = current?.directory
           if (child) {
@@ -317,52 +322,21 @@ export async function startDevelopmentSession(
         options.onState?.('building')
         try {
           if (selected.has('configuration')) {
-            const nextMembers = await desktopDependencies(signal)
-            const nextInputs = await startInputWatcher(options.sourceRoot, nextMembers, {
-              signal,
-              onChange: enqueue,
-              onError: failSession,
-            })
-            try {
-              await inputs!.close()
-            } catch (cause) {
-              await rethrowAfterCleanup(
-                cause,
-                () => nextInputs.close(),
-                'Input watch replacement and cleanup failed',
-              )
-            }
-            inputs = nextInputs
-            members = nextMembers
             await compilers?.close()
             compilers = undefined
             await renderer?.close()
             renderer = undefined
-            renderer = await startRenderer(options.sourceRoot, members, buildId)
+            renderer = await startRenderer(options.sourceRoot, buildId)
             rendererAddress = renderer.resolvedUrls!.local[0]!
-            selected.add('packages')
             selected.delete('configuration')
           }
-          if (selected.has('packages')) {
-            await runPnpm(['exec', 'turbo', 'run', 'build', '--filter=@kisaki3/desktop^...'], {
-              cwd: repositoryRoot,
-              signal,
-            })
-            if (current && phase === 'open') {
-              // Package builds replace complete export trees, including content-named chunks.
-              const client = renderer!.environments.client
-              client.moduleGraph.invalidateAll()
-              client.hot.send({ type: 'full-reload' })
-            }
-            selected.delete('packages')
-          }
           if (selected.has('resources')) {
-            await prepareResources(target, signal)
+            await prepareResources(target, signal, resources)
             runtimeChanged = true
             selected.delete('resources')
           }
           if (selected.has('native')) {
-            await buildNative(target, false, signal)
+            await buildNative(target, false, signal, nativeDirectory)
             runtimeChanged = true
             selected.delete('native')
           }
@@ -532,7 +506,8 @@ export async function startDevelopmentSession(
       },
     }
 
-    inputs = await startInputWatcher(options.sourceRoot, members, {
+    inputs = await startInputWatcher(options.sourceRoot, {
+      watchAssets: !options.prepared,
       signal,
       onChange: enqueue,
       onError: failSession,

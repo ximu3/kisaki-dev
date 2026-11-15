@@ -28,7 +28,7 @@ export type LucideIconName = (typeof lucideIconNames)[number]
 export async function checkIconNames(): Promise<void> {
   if ((await readFile(destination, 'utf8')) !== renderIconNames()) {
     throw new Error(
-      'Lucide icon names are stale. Run pnpm generate:icon-names in desktop-contracts.',
+      'Lucide icon names are stale. Run pnpm exec vp run @kisaki3/desktop-contracts#generate:icon-names.',
     )
   }
 }
@@ -41,5 +41,5 @@ export async function writeIconNames(signal?: AbortSignal): Promise<void> {
 }
 
 if (import.meta.main) {
-  await runCli(writeIconNames)
+  await runCli(process.argv.includes('--check') ? checkIconNames : writeIconNames)
 }

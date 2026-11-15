@@ -62,7 +62,7 @@ GraphQL 变量承载用户输入，不拼接查询文本。普通字段按请求
 
 分页依赖 hasNextPage、实际页位置和已取得的对象，不使用 total 或 lastPage 控制结束。total 可以是估计值，不能据此补造成员或判定分页尚未结束；字段与分页样本见[接口核验](../../../verification/evidence/anime-platforms/live-api.md)。
 
-只完成部分页、重复页、预算耗尽或发生 GraphQL errors 时，不交付半份成功集合。HTTP 200 不能代替 GraphQL 成功判断；已完成且独立的字段可以沿共同 partialResult 保留，失败部分缺席，不改成空数组。
+只完成部分页、重复页、预算耗尽或发生 GraphQL errors 时，不交付半份成功集合。即使 HTTP 返回 200，也要核对 GraphQL 响应中的错误。已独立读出的字段可通过 partialResult 返回，读取失败的部分保持缺席，不用空数组代替。
 
 <a id="fields"></a>
 

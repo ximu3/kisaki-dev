@@ -1,0 +1,23 @@
+{
+  "name": "desktop-ui-browser-consumer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -b",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@kisaki3/desktop-ui": "0.1.0-dev.0",
+    "lucide-solid": "1.72.0",
+    "solid-js": "1.9.19",
+    "@tanstack/solid-virtual": "3.13.48"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "typescript": "7.1.0-beta",
+    "vite": "8.3.7",
+    "vite-plugin-solid": "2.11.16",
+    "@tailwindcss/cli": "4.3.3",
+    "tailwindcss": "4.3.3"
+  }
+}

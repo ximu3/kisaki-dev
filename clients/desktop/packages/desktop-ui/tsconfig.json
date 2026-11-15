@@ -1,10 +1,23 @@
 {
   "files": [],
   "references": [
-    { "path": "./config/typescript/tsconfig.lib.json" },
-    { "path": "./config/typescript/tsconfig.declarations.json" },
-    { "path": "./config/typescript/tsconfig.tools.json" },
-    { "path": "./config/typescript/tsconfig.tests.json" },
-    { "path": "./config/typescript/tsconfig.electron.json" }
+    {
+      "path": "./config/typescript/tsconfig.lib.json"
+    },
+    {
+      "path": "./config/typescript/tsconfig.declarations.json"
+    },
+    {
+      "path": "./config/typescript/tsconfig.tools.json"
+    },
+    {
+      "path": "./config/typescript/tsconfig.tests.json"
+    },
+    {
+      "path": "./config/typescript/tsconfig.electron.json"
+    },
+    {
+      "path": "./config/typescript/tsconfig.workshop.json"
+    }
   ]
 }

@@ -31,7 +31,7 @@ Webview 默认只获得配置状态和变更标记。未提交新值表示保持
 
 [Electron safeStorage](https://www.electronjs.org/docs/latest/api/safe-storage) 使用 Windows DPAPI、macOS Keychain 和 Linux 实际可用的秘密后端。[DPAPI](https://learn.microsoft.com/en-us/windows/win32/api/dpapi/nf-dpapi-cryptprotectdata) 通常与登录用户及计算机关联，但存在漫游例外，因此不能承诺同一登录用户下的其他程序无法读取。macOS 需要保持一致签名，Linux 需要核实真实后端。
 
-实现必须遵循冻结运行时公开的可用性、保护强度和必要重加密合同，不启用 setUsePlainTextEncryption、basic 或自建弱保护回退，也不能仅凭某个字符串判断缺席就推定底层已经降级。
+主进程在 app 就绪后使用 `isAsyncEncryptionAvailable()` 检查保护能力。写入调用 `encryptStringAsync`，读取调用 `decryptStringAsync`。系统返回 `shouldReEncrypt` 时，以本次读到的 revision 为条件保存新密文，避免覆盖并发替换的凭据。Linux 使用已确认的秘密后端，保护不可用时保留原值并向调用方报告原因。
 
 移动数据目录不会改变保护策略，应用不会拆出并导出操作系统密钥。一致迁移必须包含数据库、所需持久文件，以及运行时要求的应用侧状态，不能只复制数据库。辅助系统保护状态也不是能脱离系统使用的随行密钥。在相同且有效的保护环境中，应用不主动清除凭据；跨机器、用户或保护条件后，凭据可能无法读取，但资料仍可使用。备份恢复不承诺恢复登录。
 

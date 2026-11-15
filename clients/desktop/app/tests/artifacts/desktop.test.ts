@@ -3,7 +3,7 @@
  * startup and shutdown behavior.
  */
 
-import { expect, onTestFailed, onTestFinished, test } from 'vitest'
+import { expect, onTestFailed, onTestFinished, test } from 'vite-plus/test'
 import { spawn } from 'node:child_process'
 import { getCurrentFuseWire, FuseState, FuseV1Options } from '@electron/fuses'
 import { extractFile, listPackage } from '@electron/asar'
@@ -15,9 +15,9 @@ import type { ArtifactReceipt } from '../../tools/package/packager'
 import { sha256 } from '../../tools/lib/sha256'
 import { hasNativeWindow, closeNativeWindow } from '../support/window-observation'
 import { electronExecutable } from '../../tools/dev/electron-executable'
-import { prepareArtifactWorkspace } from '../support/artifact-workspace'
-import type { DesktopBuild } from '../../tools/lib/runtime-manifest'
-import type { DistributionKind, DistributionManifest } from '../../tools/lib/distribution'
+import { prepareArtifactWorkspace } from './workspace'
+import type { DesktopBuild } from '../../tools/build/manifest'
+import type { DistributionKind, DistributionManifest } from '../../tools/package/distribution'
 
 /**
  * Waits for process closure until the deadline and releases its timer on every outcome.
@@ -43,7 +43,7 @@ async function waitForExit(
 
 test('the exact packaged carrier retains production fuses and starts and closes externally', async () => {
   const receiptPath =
-    process.env.KISAKI_ARTIFACT_RECEIPT ?? join(appRoot, 'dist', hostTarget(), 'artifacts.json')
+    process.env.KISAKI_ARTIFACT_RECEIPT || join(appRoot, 'dist', hostTarget(), 'artifacts.json')
   const receipt = JSON.parse(await readFile(receiptPath, 'utf8')) as ArtifactReceipt
   expect(receipt.target).toBe(hostTarget())
   expect(receipt.buildId).toMatch(/\S/)
@@ -84,7 +84,11 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     linux: 'appimage',
   }
   const expectedCarrier = carriers[process.platform]
-  expect(distribution).toMatchObject({ kind: expectedCarrier, target: receipt.target })
+  expect(distribution).toMatchObject({
+    kind: expectedCarrier,
+    target: receipt.target,
+    testOnly: receipt.testOnly,
+  })
 
   if (process.platform === 'linux') {
     const applicationDirectory = dirname(resourceDirectory)

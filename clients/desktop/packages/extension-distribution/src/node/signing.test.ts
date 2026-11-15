@@ -1,6 +1,6 @@
 /** @fileoverview Verifies registry trust, RFC8785 signing payloads and downloaded-resource integrity. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { createHash, createPublicKey, generateKeyPairSync, verify } from 'node:crypto'
 import {
   generateRegistryKeyPair,

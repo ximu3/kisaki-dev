@@ -1,6 +1,6 @@
 /** @fileoverview Checks strict JSON retains unique decoded keys and dense arrays. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { parseStrictJson, parseJsonValue } from './json'
 import { DesktopError } from './errors'
 

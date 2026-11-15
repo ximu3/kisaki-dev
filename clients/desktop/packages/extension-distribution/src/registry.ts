@@ -41,7 +41,7 @@ import {
 export const registrySchemaVersion = 1
 
 /**
- * Location and integrity facts for one downloadable resource.
+ * The URL, byte length and SHA-256 digest of a downloadable resource.
  *
  * Raw references preserve signed URL spelling; verified references resolve against the final index
  * response URL.
@@ -62,7 +62,7 @@ export interface RegistryArtifact extends FileReference, CompatibilityDeclaratio
 }
 
 /**
- * One version's publication facts, localized notes and target-specific artifacts.
+ * Publication details, localized notes and target-specific artifacts for one release.
  *
  * At least one artifact is required, and each target belongs to only one artifact.
  */
@@ -451,9 +451,9 @@ export function assertCommonMetadata(manifests: readonly ExtensionManifest[]): v
 /**
  * Checks retained releases against the preceding registry snapshot.
  *
- * Retained versions preserve full identity, publication facts and artifact facts, including
- * existing target sets. Adding targets to a retained version is rejected. Deletions, URL relocation
- * and note corrections are allowed.
+ * Retained releases keep their exact version string, publication time and default locale, and
+ * cannot gain targets. Each retained artifact keeps its contents, metadata and target set.
+ * Deletions, URL relocation and corrections to release notes are allowed.
  */
 export function assertRegistryUpdate(previous: RegistryDocument, next: RegistryDocument): void {
   for (const [extensionIndex, extension] of next.extensions.entries()) {
@@ -474,7 +474,7 @@ export function assertRegistryUpdate(previous: RegistryDocument, next: RegistryD
       ) {
         throw new DistributionError(
           'immutable-release',
-          'A retained release changed its identity or publication facts',
+          'A retained release changed its version string, publication time or default locale',
           ['extensions', extensionIndex, 'releases', releaseIndex],
         )
       }

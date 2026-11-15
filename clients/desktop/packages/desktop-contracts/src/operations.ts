@@ -17,14 +17,15 @@ export type NonEmptyArray<T> = readonly [T, ...T[]]
  * Each domain defines the units and comparison rules.
  */
 export type Bounds<T> =
-  { readonly min: T; readonly max?: T } | { readonly min?: T; readonly max: T }
+  | { readonly min: T; readonly max?: T }
+  | { readonly min?: T; readonly max: T }
 
 /**
  * Optional cancellation signal for one capability call.
  *
- * The receiving endpoint binds the actual caller instance. Operations finish required commit or
- * cleanup before settling and preserve completed facts. Cancelling an observation or wait ends that
- * call while leaving observed work running.
+ * The receiving endpoint binds the actual caller instance. Operations finish the required commit or
+ * cleanup before settling. Work already completed remains in effect. Cancelling an observation
+ * or wait ends that call while the observed work continues.
  */
 export interface CallOptions {
   readonly signal?: AbortSignal

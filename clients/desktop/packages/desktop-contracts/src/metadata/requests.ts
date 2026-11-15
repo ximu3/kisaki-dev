@@ -125,8 +125,8 @@ export function requireMetadataRequestSupport<T extends EntryType>(
   }
 
   const wantedParts:
-    Partial<Record<'episode' | 'extra' | 'volume' | 'chapter', RequestedFields>> | undefined =
-    request.objects && 'parts' in request.objects ? request.objects.parts : undefined
+    | Partial<Record<'episode' | 'extra' | 'volume' | 'chapter', RequestedFields>>
+    | undefined = request.objects && 'parts' in request.objects ? request.objects.parts : undefined
   const offeredParts: typeof wantedParts =
     available.objects && 'parts' in available.objects ? available.objects.parts : undefined
   for (const slot of ['episode', 'extra', 'volume', 'chapter'] as const) {

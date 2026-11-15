@@ -1,6 +1,6 @@
 /** @fileoverview Verifies normalized rectangles and quads reject degeneracy and out-of-bounds coordinates. */
 
-import { test, expect } from 'vitest'
+import { test, expect } from 'vite-plus/test'
 
 import { parseNormalizedQuad, parseNormalizedRect } from './geometry'
 import { DesktopError } from './errors'

@@ -1,6 +1,6 @@
 /** @fileoverview Checks package format, normalized values and strict JSON failure locations. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { normalizeManifest, parseManifest, parsePackagePath } from './manifest'
 import { manifest } from '../tests/support/fixtures'
 

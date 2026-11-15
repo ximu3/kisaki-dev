@@ -1,4 +1,6 @@
-/* Shared visual derivations and document typography. Defaults are prepended at build time. */
+/* Default palettes, shared visual derivations and document typography. */
+
+@import './defaults.generated.css';
 
 @layer theme {
   :root,

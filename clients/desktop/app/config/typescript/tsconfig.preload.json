@@ -1,13 +1,12 @@
 {
-  "extends": "@kisaki3/typescript-config/node.json",
+  "extends": "@kisaki3/config/typescript/node.json",
   "compilerOptions": {
     "incremental": true,
     "tsBuildInfoFile": "../../.cache/typescript/preload.tsbuildinfo",
     "lib": ["ES2023", "DOM"]
   },
   "include": [
-    "../../tests/fixtures/runtime/src/preload/**/*.ts",
-    "../../tests/fixtures/runtime/src/shared/**/*.ts"
-  ],
-  "exclude": []
+    "../../tests/fixtures/desktop-app/src/preload/**/*.ts",
+    "../../tests/fixtures/desktop-app/src/shared/**/*.ts"
+  ]
 }

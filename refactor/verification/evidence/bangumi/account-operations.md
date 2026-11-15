@@ -34,7 +34,7 @@ EpisodeCollectionType 明确包含 0 未收藏、1 想看、2 看过、3 抛弃�
 
 [固定 v0 schema](https://github.com/bangumi/api/blob/a7055f2dca7286d6963aaa7928345eeca6293e2b/open-api/v0.yaml)为人物和角色的 collect 路径都声明 POST 与 DELETE。当前[官方路由代码](https://github.com/bangumi/server/blob/4223d14057fea5078595e40470f8602d3301abb5/web/routes.go)登记了 POST，DELETE 则处于等待软删除的注释中。两者存在实际差异，不能只看 schema 就宣称撤回收藏已可用。
 
-对上述 collect 地址发出的匿名 GET 均返回 404，未返回 Allow；GET 不属于这两个写入方法，所以此结果不能证明 POST 或 DELETE 的线上可用性。后续[授权账号验证](authenticated-collections.md)实际执行了角色重复收藏、未收藏对象的取消请求和非法编号的路由对照：POST 可调用或进入参数校验，DELETE 返回默认 404。未新增无法撤回的收藏，原记录保持不变；该验证不等于完成了新增后撤回的闭环。
+对上述 collect 地址发出的匿名 GET 均返回 404，未返回 Allow；GET 不属于这两个写入方法，所以此结果不能证明 POST 或 DELETE 的线上可用性。后续[授权账号验证](authenticated-collections.md)实际执行了角色重复收藏、未收藏对象的取消请求和非法编号的路由对照：POST 可调用或进入参数校验，DELETE 返回默认 404。为保留原记录，本次没有新增无法撤回的收藏。“新增收藏后再撤回”仍未验证。
 
 目录 API 支持按编号读取目录与完整分页的 subject 成员，以及有权限时创建、编辑目录和成员、收藏或取消收藏目录。索引收藏不是作品 favorite。目录 subject 仍可能是单卷或本体不支持的对象，来源成员记录不能自行扩大本体合集只收纳 Entry 的范围。
 

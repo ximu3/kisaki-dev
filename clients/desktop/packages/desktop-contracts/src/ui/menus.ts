@@ -24,7 +24,8 @@ export interface ExtensionMenuItemPresentation {
  * Loading messages require a live handle and are outside this result shape.
  */
 export type ExtensionMenuFeedback =
-  void | (ToastMessage & { readonly type: Exclude<ToastMessage['type'], 'loading'> })
+  | void
+  | (ToastMessage & { readonly type: Exclude<ToastMessage['type'], 'loading'> })
 
 /**
  * Node-owned menu contribution with live callbacks.

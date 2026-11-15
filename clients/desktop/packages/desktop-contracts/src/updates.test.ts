@@ -1,6 +1,6 @@
 /** @fileoverview Checks application release identity and complete prepared-file metadata. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import {
   parseApplicationRelease,
   parsePreparedApplicationUpdate,

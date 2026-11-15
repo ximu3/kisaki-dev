@@ -1,6 +1,6 @@
 /** @fileoverview Verifies native forward migrations, failed migration rollback and rejection of unrelated database formats. */
 
-import { expect, onTestFinished, test } from 'vitest'
+import { expect, onTestFinished, test } from 'vite-plus/test'
 import { copyFile, cp, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -8,7 +8,7 @@ import Database from 'better-sqlite3'
 import { eq, sql } from 'drizzle-orm'
 import { DatabaseFormatError, initializeDatabase } from '../../../src/main/infrastructure/database'
 import { entries } from '../../../src/main/infrastructure/database/schema'
-import { storageOptions } from '../../support/database'
+import { storageOptions } from './sample'
 
 /** Creates an owned directory and registers cleanup after all test connections have closed. */
 async function fixtureDirectory(): Promise<string> {

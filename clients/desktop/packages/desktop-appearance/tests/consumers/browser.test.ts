@@ -1,12 +1,13 @@
 /** @fileoverview Exercises packed declarations, values and styles in an independent browser project. */
 
-import { expect } from 'vitest'
+import { lintConsumer } from '@kisaki3/tooling/testing/consumer'
+import { expect } from 'vite-plus/test'
 import { readFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
-import { build, preview } from 'vite'
+import { build, preview } from 'vite-plus'
 import { chromium } from '@playwright/test'
-import { readPnpm, runPnpm } from '@kisaki3/tooling/process'
-import { consumerTest, lintConsumer } from '../support/consumer'
+import { runPnpm } from '@kisaki3/tooling/process'
+import { consumerTest } from './installation'
 
 /** Appearance package root whose packed CSS and token exports are consumed by this suite. */
 const packageRoot = resolve(import.meta.dirname, '../..')
@@ -24,7 +25,7 @@ const test = consumerTest('browser')
     return page
   })
   .extend('siteUrl', { scope: 'file' }, async ({ consumerDirectory }, { onCleanup }) => {
-    await readPnpm(
+    await runPnpm(
       [
         'exec',
         'tailwindcss',
@@ -33,7 +34,7 @@ const test = consumerTest('browser')
         '-o',
         join(consumerDirectory, 'utilities.css'),
       ],
-      packageRoot,
+      { cwd: packageRoot },
     )
     await build({ root: consumerDirectory, configFile: false, logLevel: 'warn' })
 
@@ -57,7 +58,7 @@ test('Bundler declarations work with and without browser globals', async ({
   signal,
 }) => {
   await runPnpm(['typecheck'], { cwd: consumerDirectory, signal })
-  expect((await lintConsumer(consumerDirectory)).flatMap((item) => item.messages)).toEqual([])
+  await lintConsumer(consumerDirectory)
 })
 
 test('ordinary CSS works by itself, preserves document controls and has complete light and dark defaults', async ({

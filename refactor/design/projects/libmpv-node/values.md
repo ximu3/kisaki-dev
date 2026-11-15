@@ -145,7 +145,7 @@ undefined、函数、symbol、循环数据和不属于合同的实例不能直�
 
 用 MpvConversionError 表达已经取得完整原生值，但无法交付所承诺的普通输出。该错误属于 binding 来源，code 为 valueConversion，reason 区分 invalidUtf8、duplicateMapKey 与 unexpectedShape。operation 标明 command、getProperty、getPropertyText、observeProperty 或 observePropertyText，不自动附带命令参数、完整路径或原始内容。[流提供器合同](streams.md#errors)定义的 openStream 同样使用该错误，保留无法转换的 URI。
 
-这个错误只在已经保留有效原生结果时成立。对于 command，它说明已收到成功命令回复，随后发生转换失败；不说明文件加载或画面已经就绪，也不能当作命令尚未执行。原生命令失败、输入不合法、未知原生格式或无法取得有效结果的失败，不伪造这一错误及其结果快照。
+只有取得并保留有效的原生结果后，才会报告这个转换错误。对于 command，它说明已收到成功命令回复，随后发生转换失败；不说明文件加载或画面已经就绪，也不能当作命令尚未执行。原生命令失败、输入不合法、未知原生格式或无法取得有效结果的失败，不伪造这一错误及其结果快照。
 
 提供 getNativeValue()：从错误私有持有的那次结果生成一份独立 MpvNode 副本。它不重新调用 mpv，不访问已失效的事件缓冲，也不保留整个 Mpv。重复调用会再次复制，修改返回字节不会改写内部保存的结果。
 

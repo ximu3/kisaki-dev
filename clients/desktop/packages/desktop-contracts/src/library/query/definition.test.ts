@@ -1,6 +1,6 @@
 /** @fileoverview Verifies complete query validation across scopes, disabled groups and applicable sort fields. */
 
-import { test, expect } from 'vitest'
+import { test, expect } from 'vite-plus/test'
 
 import { parseEntryQuery } from './definition'
 import type { EntryQuery } from './definition'

@@ -152,7 +152,8 @@ function validateRequestedFields(
 
   for (const [relation, members] of Object.entries(relations ?? {})) {
     const wanted = request.relations?.[relation as keyof typeof request.relations] as
-      { readonly fields: readonly string[] } | undefined
+      | { readonly fields: readonly string[] }
+      | undefined
     if (!wanted) {
       throw new DesktopError(
         'InvalidInput',

@@ -67,7 +67,7 @@ export interface ViewClientIpc<
   N extends object = ViewNotifications,
 > {
   /**
-   * Invokes the named private operation and waits for its actual result, failure or cancellation.
+   * Invokes the named private operation. The call settles when it completes, fails or is cancelled.
    *
    * The transport does not automatically retry the operation.
    */

@@ -1,0 +1,26 @@
+/** @fileoverview Runs storage and filesystem integration checks under the matching Electron Node host. */
+
+import { defineConfig } from 'vite-plus/test/config'
+import electronManifest from 'electron/package.json' with { type: 'json' }
+
+if (
+  process.versions.electron !== electronManifest.version ||
+  process.env.ELECTRON_RUN_AS_NODE !== '1' ||
+  !(Number(process.versions.napi) >= 8)
+) {
+  throw new Error('Native tests must start under the selected development Electron Node host')
+}
+
+export default defineConfig({
+  test: {
+    fsModuleCachePath: 'node_modules/.vitest-cache',
+    include: [
+      'tests/integration/database/**/*.test.ts',
+      'tests/integration/native/**/*.test.ts',
+      'tests/integration/files/**/*.test.ts',
+    ],
+    testTimeout: 30_000,
+    // Preparing a durable database uses the same budget as the native operation cases.
+    hookTimeout: 30_000,
+  },
+})

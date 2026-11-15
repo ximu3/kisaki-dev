@@ -3,7 +3,14 @@
  * explicit target selection.
  */
 
-import type { DesktopTarget } from './runtime-manifest'
+/** An operating-system and native-architecture pair supported by the desktop application. */
+export type DesktopTarget =
+  | 'windows-x64'
+  | 'windows-arm64'
+  | 'macos-x64'
+  | 'macos-arm64'
+  | 'linux-x64'
+  | 'linux-arm64'
 
 /** The six supported toolchain targets, shared by resource, native and package workflows. */
 export const targetTriples: Record<DesktopTarget, string> = {

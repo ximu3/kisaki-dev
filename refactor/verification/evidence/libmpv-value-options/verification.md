@@ -26,7 +26,7 @@ node refactor/verification/evidence/libmpv-value-options/runtime-probe.mjs
 
 观察结果包括：普通 JavaScript 类失去身份、私有字节未被序列化、公开 entries 保留数据但失去类身份；纯判别数据中的重复项、字节、bigint、负零和 NaN 语义通过消息往返；无原型对象克隆后恢复普通原型但保留自有特殊字段；来自另一个 realm 的 Uint8Array 不通过本 realm 的 instanceof，而内建类型识别可以确认它。
 
-错误样例私有持有结果，并通过原型访问器显式读取。默认 inspect 和 JSON.stringify 没有展开该结果；经消息克隆后，自定义错误字段和访问器丢失，而显式提取的数据可以再次传递。这只是实际 Node 行为，不保证任意日志框架都不会主动调用访问器，也不证明真实 addon 的错误实现已成立。
+错误样例私有持有结果，并通过原型访问器显式读取。默认 inspect 和 JSON.stringify 没有展开该结果；经消息克隆后，自定义错误字段和访问器丢失，而显式提取的数据可以再次传递。这些观察限于上述 Node 操作。其他日志框架可能主动调用访问器，真实 addon 的错误返回仍待验证。
 
 样例类用于检查消息克隆和默认诊断中的类、字节与错误行为。
 

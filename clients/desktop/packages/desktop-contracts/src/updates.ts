@@ -96,7 +96,7 @@ export type ApplicationUpdateOperation = { readonly taskRef?: TaskRunRef } & (
 /**
  * Current application version, last check, verified preparation and active update operation.
  *
- * Checking or preparing retains independent prior check and preparation facts.
+ * Starting a check or preparing an update preserves the last check result and any verified update.
  */
 export interface ApplicationUpdateState {
   readonly currentVersion: string
@@ -107,7 +107,7 @@ export interface ApplicationUpdateState {
 
 /** Desktop release discovery, artifact preparation and explicit installation handoff. */
 export interface UpdatesApi {
-  /** Reads release-check, verified-preparation and active-operation facts independently. */
+  /** Reads the last check result, any verified update and the operation currently in progress. */
   getState(call?: CallOptions): Promise<ApplicationUpdateState>
 
   /**

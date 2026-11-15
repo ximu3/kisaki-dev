@@ -58,7 +58,10 @@ export type IngestIssue = { readonly message: string } & (
       readonly code: 'associationSkipped'
       readonly relation: IngestRelationRef
       readonly reason:
-        'missingEndpoint' | 'ambiguousEndpoint' | 'invalidDimension' | 'incompleteRange'
+        | 'missingEndpoint'
+        | 'ambiguousEndpoint'
+        | 'invalidDimension'
+        | 'incompleteRange'
       readonly endpoints?: readonly (EntryRef | PartRef | ExternalIdentity)[]
     }
   | {

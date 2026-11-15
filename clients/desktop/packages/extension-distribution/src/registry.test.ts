@@ -1,6 +1,6 @@
 /** @fileoverview Exercises platform release selection, immutable history and manifest/reference consistency. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import type { CompatibilityEnvironment } from './compatibility'
 import {
   assertCommonMetadata,

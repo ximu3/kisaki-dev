@@ -1,0 +1,16 @@
+{
+  "name": "appearance-browser-consumer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -b"
+  },
+  "dependencies": {
+    "@kisaki3/desktop-appearance": "0.1.0-dev.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "4.3.3",
+    "typescript": "7.1.0-beta",
+    "vite": "8.3.7"
+  }
+}

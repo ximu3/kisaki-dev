@@ -159,8 +159,8 @@ export interface SessionInteractionOptions extends CallOptions {
 /**
  * Confirmed start-event context for each work medium.
  *
- * Lifecycle facts retain fixed target information; timing and engine controls remain in live
- * session state.
+ * The start event identifies the target at launch. Read the live session for timing and engine
+ * controls.
  */
 export interface SessionStartedMap {
   readonly game: Pick<
@@ -181,7 +181,7 @@ export interface SessionEndReasonMap {
 }
 
 /**
- * Confirmed session-end facts with an independent final-recording failure when applicable.
+ * When and why each session ended, with any error from saving its final recording.
  *
  * A detached game has already saved its final recording.
  */
@@ -287,8 +287,8 @@ export type RecordingIssue =
   | { readonly kind: 'position'; readonly error: ErrorSummary }
 
 /**
- * Confirmed unsaved facts retained after an ended session, with the original work and target
- * context.
+ * Activity records and positions still waiting to be saved after a session ends, identified by
+ * their original work and target.
  */
 export type PendingRecording = {
   readonly sessionId: string
@@ -409,7 +409,7 @@ export interface AnimeSessionsApi extends SessionControls {
    * Prepares the target file, ends the previous session and waits for recording and resource
    * cleanup.
    *
-   * Failure after the old session ends retains previousEnded facts.
+   * If the switch fails after the old session ends, the partial result has outcome `previousEnded`.
    */
   switchFile(
     sessionId: string,
@@ -540,9 +540,9 @@ export interface ComicSessionsApi extends SessionControls {
   open(input: ComicOpenInput, call?: SessionInteractionOptions): Promise<ComicSession>
 
   /**
-   * Prepares and switches the comic file through the shared file-switch lifecycle.
+   * Switches comic files and preserves a pause in time tracking.
    *
-   * Preserves timing pause and retains previousEnded facts on failure after the prior session ends.
+   * If the switch fails after the old session ends, the partial result has outcome `previousEnded`.
    */
   switchFile(
     sessionId: string,
@@ -572,9 +572,9 @@ export interface NovelSessionsApi extends SessionControls {
   open(input: NovelOpenInput, call?: SessionInteractionOptions): Promise<NovelSession>
 
   /**
-   * Prepares and switches the novel file through the shared file-switch lifecycle.
+   * Switches novel files and preserves a pause in time tracking.
    *
-   * Preserves timing pause and retains previousEnded facts on failure after the prior session ends.
+   * If the switch fails after the old session ends, the partial result has outcome `previousEnded`.
    */
   switchFile(
     sessionId: string,
@@ -595,25 +595,26 @@ export interface NovelSessionsApi extends SessionControls {
 }
 
 /**
- * Native access to unsaved confirmed recording facts retained in the current process.
+ * Lets the native UI inspect, retry or discard recordings held in memory after a save failure.
  *
- * Discarding remaining facts requires the user's explicit choice.
+ * Discarding unsaved recordings requires the user's explicit choice.
  */
 export interface SessionRecordingsApi {
   /**
-   * Reads recording facts retained after save failure, independently of active content sessions.
+   * Lists recordings that still need saving, including those from sessions that have ended.
    */
   list(call?: CallOptions): Promise<readonly PendingRecording[]>
 
   /**
-   * Retries retained recording facts and reports committed and remaining units.
+   * Retries saving the pending activity records and file position. Reports what was saved and what
+   * remains pending.
    *
    * Retry preserves unresolved work without reopening content or duplicating committed activities.
    */
   retry(sessionId: string, call?: CallOptions): Promise<RecordingRetryResult>
 
   /**
-   * Discards the session's remaining unsaved facts after the user's explicit choice.
+   * Discards the session's unsaved recordings when the user chooses to do so.
    *
    * Already saved records remain intact.
    */
@@ -622,8 +623,8 @@ export interface SessionRecordingsApi {
   /**
    * Subscribes to pending-recording invalidation and returns the subscription lifetime.
    *
-   * Callers subscribe before reading and refresh the list without implicitly retrying or discarding
-   * facts.
+   * Subscribe before reading the list. Refreshing it leaves pending recordings available for retry
+   * or discard.
    */
   onInvalidated(listener: () => void): Disposable
 }
@@ -992,7 +993,7 @@ const ids = v.pipe(
   v.check((values) => unique(values, (value) => value)),
 )
 
-/** Safe activity- or position-persistence failure details kept separate from successful facts. */
+/** A save error for a particular activity or file position. */
 const issue = v.variant('kind', [
   v.strictObject({
     kind: v.literal('activity'),

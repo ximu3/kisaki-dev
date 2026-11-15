@@ -43,7 +43,7 @@ Novel 类型对应小说；Manga、Manhwa、Manhua、OEL 及其他明确漫画�
 
 名称结果由共同 matching 核对，不能把第一条或唯一名称命中当作已确定身份。SAO 的 Novel 搜索实际返回大量模糊候选，搜索参数不保证精确同名。分页沿实际 page、per_page、total_hits 与成员读取；Author 搜索实测没有按请求的 3 条限量返回，不能以请求页长计算完成。
 
-Publisher 的反查返回作品与连载刊物两个集合；Author 的作品反查需要继续读取 Series，确认媒介及真实署名。不能截取前若干结果后宣布关系完整。必要分页、目标类型或关系详情读取失败时，不以半份集合支持替换；可独立成立的普通字段按共同 partialResult 规则保留。
+Publisher 的反查返回作品与连载刊物两个集合；Author 的作品反查需要继续读取 Series，确认媒介及真实署名。不能截取前若干结果后宣布关系完整。读取必要分页、目标类型或关系详情失败时，不能用读到的部分替换原关系集合。已经独立读到的普通字段按共同的 partialResult 规则返回。
 
 <a id="fields"></a>
 
@@ -97,7 +97,7 @@ Person 根的 personWorks 固定为 comic、novel 中本页映射的 creator、d
 | Spin-Off                          | spinOff，沿实际直接表达，不靠对方的另一标签猜反向含义                                   |
 | Adapted From                      | 当前作品指向原作的 sourceMaterial                                                       |
 | Alternate Version                 | 有明确不同演绎语义时采用 alternativeVersion；普通再版不能另建作品                       |
-| Part of Anthology／Full Anthology | 仅在两个端点都是明确独立作品且收录语义成立时，采用 includedWork／compilation 的相应方向 |
+| Part of Anthology／Full Anthology | 仅在两端都是独立作品且来源明确指出收录关系时，采用 includedWork／compilation 的相应方向 |
 | Other                             | 来源明确给出的普通直接联系，使用 related                                                |
 
 未知标签报告未采用，不一律降成 related；推荐结果不进入 workRelations。同一事实沿本体关系方向规范化，冲突不靠新增重复关系掩盖。Series.anime.start／end 是动画对应的漫画章节范围文字，没有动画身份，不能作为发行日期或凭此创建动画关系。

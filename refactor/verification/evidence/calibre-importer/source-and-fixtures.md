@@ -2,7 +2,7 @@
 
 核验日期：2026-10-17。当前最新正式发布为 [v9.16.0](https://github.com/kovidgoyal/calibre/releases/tag/v9.16.0)，发布于 2026-10-09；标签经 GitHub tag 对象解析到提交 61c4027d2bfe737e0177e09952ee4942042a5892。本次固定读取该提交，不把 master 当来源合同。用户表示没有现成书库，因此采用合成样本，没有安装或运行 calibre，也没有读取真实用户库。
 
-[完整方案](../../../design/extensions/importers/calibre.md)已确认。[结构化记录](2026-10-17-verification.json)保存 40 次公开 HTTP 读取、36 个固定源文件及校验值；[合成检查结果](synthetic-results.json)记录 63 项检查。来源事实、方案选择、探针通过与正式实现验收分别成立。
+[完整方案](../../../design/extensions/importers/calibre.md)已确认。[结构化记录](2026-10-17-verification.json)保存 40 次公开 HTTP 读取、36 个固定源文件及校验值；[合成检查结果](synthetic-results.json)记录 63 项检查。这些结果说明方案所依据的源码和合成样本检查情况。正式导入器仍需单独验收。
 
 ## SQLite 与 OPF
 

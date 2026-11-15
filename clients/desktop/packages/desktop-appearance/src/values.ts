@@ -1,6 +1,6 @@
 /** @fileoverview Parses complete visual values without evaluating formulas or consulting a host. */
 
-import { generate, ident, lexer, parse, walk } from 'css-tree'
+import { generate, ident, lexer, parse, walk } from 'css-tree/dist/csstree.esm'
 import type { CssNode, Value } from 'css-tree'
 import { tokens } from './tokens'
 import type { TokenKind, TokenName, TokenValues } from './tokens'
@@ -21,7 +21,7 @@ const syntaxes: Readonly<Record<TokenKind, string>> = {
   'letter-spacing': 'normal | <length>',
 }
 
-/** Explicit color-function names admitted by standalone color-token validation. */
+/** CSS color functions allowed in a standalone color token. */
 const colorFunctions = new Set([
   'rgb',
   'rgba',

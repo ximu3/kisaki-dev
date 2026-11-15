@@ -1,6 +1,6 @@
 /** @fileoverview Verifies desktop error classification at the shared visual-value boundary. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { defaults } from '@kisaki3/desktop-appearance/defaults'
 import { parseViewAppearance } from './appearance'
 import { DesktopError } from './errors'

@@ -1,7 +1,7 @@
 /** @fileoverview Configures and compiles desktop programs through Vite's public build API. */
 
-import { build, loadConfigFromFile } from 'vite'
-import type { InlineConfig } from 'vite'
+import { build, loadConfigFromFile } from 'vite-plus'
+import type { InlineConfig } from 'vite-plus'
 import { join } from 'node:path'
 
 /** Independently compiled desktop programs with separate runtime environments. */

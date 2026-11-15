@@ -4,6 +4,9 @@ import * as v from 'valibot'
 import { DesktopError } from './errors'
 import { DistributionError } from '@kisaki3/extension-distribution/errors'
 
+/** C0 control characters and DEL are invalid in raw application and network addresses. */
+export const asciiControl = /(?=\p{ASCII})\p{Control}/u
+
 /** Unicode scalar text retained without trimming or rejecting legitimate empty content. */
 export const text = v.pipe(
   v.string(),

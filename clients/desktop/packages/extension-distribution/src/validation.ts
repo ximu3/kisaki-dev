@@ -9,7 +9,12 @@ import type { FieldPath } from './errors'
  * signing.
  */
 export type JsonValue =
-  null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue }
+  | null
+  | boolean
+  | number
+  | string
+  | JsonValue[]
+  | { [key: string]: JsonValue }
 
 /** Throws invalid-format at the supplied document field path. */
 export function rejectFormat(path: FieldPath, message: string): never {

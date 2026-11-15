@@ -18,7 +18,7 @@ CSV 没有可靠媒介、内容粒度、作品母体或系列身份。标题中�
 
 ## 输入合同与身份
 
-支持下述 Goodreads Library Export CSV 表头系列，不承接官网用于导入 Goodreads 的 14 列示例。输入至少包含 Book Id、Title、Exclusive Shelf；其他已知列缺席按未知处理。按列名读取，不依赖顺序；未知列说明未采用，重复表头、破损引号或无法可靠分行在写入前拒绝。
+支持下列带有 Goodreads Library Export 表头的 CSV。官网的 14 列示例用于向 Goodreads 导入数据，超出这里的导出格式范围。输入至少包含 Book Id、Title、Exclusive Shelf；其他已知列缺席按未知处理。按列名读取，不依赖顺序；未知列说明未采用，重复表头、破损引号或无法可靠分行在写入前拒绝。
 
 采用普通依赖 [csv-parse](https://csv.js.org/parse/)进行流式读取，支持 UTF-8 与 UTF-8 BOM、标准 CSV 引号、逗号和带引号的换行。字段值先保持文本，再由对应语义解析；不让 CSV 库自动把标识、日期、评分和正文全部转换为数字。正文保留有效空白，文件与单字段限制沿宿主既有边界，输入文件始终只读。
 

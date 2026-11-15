@@ -1,6 +1,6 @@
 /** @fileoverview Verifies backup manifest integrity and canonical tree bytes against an independent hash calculation. */
 
-import { test, expect } from 'vitest'
+import { test, expect } from 'vite-plus/test'
 import { createHash } from 'node:crypto'
 import type { GameBackupArchiveEntry } from './archive'
 

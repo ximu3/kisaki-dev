@@ -13,7 +13,7 @@
 
 ## 授权流程
 
-授权接入使用前缀 /{application}/{provider} 和 GET /authorize、GET /callback、POST /token。authorization_code 与 refresh_token 由 grant_type 区分。client_id 使用上游实际登记值；配置匹配只说明参数符合接入登记，不能作为调用者身份认证。
+授权接入使用前缀 /{application}/{provider} 和 GET /authorize、GET /callback、POST /token。authorization_code 与 refresh_token 由 grant_type 区分。client_id 使用在上游登记的值。匹配配置只能确认请求参数与登记一致，无法确认调用方的身份。
 
 authorize 首先校验 application/provider、client_id、客户端 redirect_uri、scope、state 和 S256 challenge。全部本地校验通过且有可用容量后，才创建短期会话，生成独立的上游 state，并用该接入登记的 relay HTTPS 回调构造授权地址。客户端 state 原样保留在会话中，不将其复用为上游关联值。
 

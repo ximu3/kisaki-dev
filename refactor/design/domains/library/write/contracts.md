@@ -105,7 +105,7 @@ ErrorSummary.code 的传输类型保留 string，以便同一通信机制承载�
 | TargetChanged       | 异步准备采用的实际目标或资源依据变化，原准备结果不可继续采用；不作为普通字段 Conflict 的别名                                                      |
 | InUse               | 受影响的真实 Work／Part／文件／配置仍被使用，先结束相关会话                                                                                       |
 | Busy                | 操作合同不允许同时进行的运行已存在；只有明确允许的等待入口可以复用等待                                                                            |
-| ResourceLimit       | 所属操作的行数、字节、解码或在途资源预算不足；按[容量边界](../../../engineering/performance.md#results)拒绝接纳或结束后续工作，保留已经成立的事实 |
+| ResourceLimit       | 所属操作的行数、字节、解码或在途资源预算不足；按[容量边界](../../../engineering/performance.md#results)拒绝接纳本次操作或停止后续步骤，保留能确认的已完成结果 |
 | PermissionDenied    | 真实调用入口未开放所需能力，或当前操作缺少必要的系统权限；不以业务参数扩大能力，也不推断用户已经拒绝授权                                          |
 | Cancelled           | 执行者已经按取消合同结束本次操作，可能保留合法 partialResult；不是未写入证明                                                                      |
 | ConnectionClosed    | 当前连接无法继续交付结果；已发出的写入结果可能未知，不自动重放                                                                                    |

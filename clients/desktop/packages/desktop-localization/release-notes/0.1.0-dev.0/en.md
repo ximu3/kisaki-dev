@@ -1,3 +1,3 @@
-- Publish the domain English catalog, generated message and argument types, and translation validation.
+- Publish English messages for each domain, generated types for message keys and arguments, and checks for translations.
 - Format isolated catalog snapshots with English fallback and literal markup, without application language state.
-- Verify packed NodeNext, browser and iframe consumers.
+- Verify that NodeNext projects, browsers and iframes can use the packed library.

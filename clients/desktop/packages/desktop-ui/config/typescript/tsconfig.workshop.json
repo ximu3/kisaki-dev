@@ -1,0 +1,10 @@
+{
+  "extends": "@kisaki3/config/typescript/solid.json",
+  "compilerOptions": {
+    "types": ["vite/client"],
+    "customConditions": ["kisaki-source", "browser"],
+    "incremental": true,
+    "tsBuildInfoFile": "../../.cache/typescript/workshop.tsbuildinfo"
+  },
+  "include": ["../../tests/fixtures/workshop/**/*"]
+}

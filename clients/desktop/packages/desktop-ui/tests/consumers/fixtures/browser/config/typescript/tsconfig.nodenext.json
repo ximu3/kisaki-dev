@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.browser.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "customConditions": [],
+    "tsBuildInfoFile": "../../.cache/nodenext.tsbuildinfo"
+  }
+}

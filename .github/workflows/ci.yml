@@ -2,18 +2,224 @@ name: CI
 
 on:
   pull_request:
+    types: [opened, reopened, synchronize, edited]
+  push:
+    branches: [main]
+  merge_group:
   workflow_dispatch:
+    inputs:
+      target:
+        description: Target host
+        type: choice
+        options: [all, linux-x64, linux-arm64, macos-x64, macos-arm64, windows-x64, windows-arm64]
+      suite:
+        description: Verification scenario
+        type: choice
+        options:
+          [
+            all,
+            browser,
+            consumers,
+            native,
+            window-startup,
+            dev-session,
+            tooling,
+            fixture-artifacts,
+            performance,
+          ]
 
 permissions:
+  actions: read
   contents: read
+  pull-requests: read
+
+concurrency:
+  group: ci-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' && (github.event.action != 'edited' || github.event.changes.base != null) }}
 
 jobs:
-  verify:
-    concurrency:
-      group: ci-${{ github.ref }}
-      cancel-in-progress: true
-    uses: ./.github/workflows/verification.yml
-    with:
-      base: ${{ github.event.pull_request.base.sha || '' }}
-      head: ${{ github.sha }}
-      complete: ${{ github.event_name == 'workflow_dispatch' }}
+  plan:
+    name: Select checks
+    runs-on: ubuntu-22.04
+    outputs:
+      reused: ${{ steps.prior.outputs.reused }}
+      code: ${{ steps.plan.outputs.code }}
+      selected: ${{ steps.plan.outputs.selected }}
+      matrix: ${{ steps.plan.outputs.matrix }}
+      installers: ${{ steps.plan.outputs.installers }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Identify the candidate
+        id: candidate
+        if: github.event_name == 'pull_request' || github.event_name == 'push'
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          tree=$(git rev-parse 'HEAD^{tree}')
+          echo "identity=$BASE-$tree" >> "$GITHUB_OUTPUT"
+          printf 'base %s\ntree %s\ncheckout %s\n' "$BASE" "$tree" "$GITHUB_SHA" > "$RUNNER_TEMP/candidate.txt"
+      - name: Retain PR candidate identity
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: pr-${{ github.event.pull_request.number }}-${{ steps.candidate.outputs.identity }}
+          path: ${{ runner.temp }}/candidate.txt
+          overwrite: true
+          retention-days: 7
+      - name: Check the previous PR result
+        id: prior
+        if: github.event_name == 'push' || (github.event.action == 'edited' && !github.event.changes.base)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          IDENTITY: ${{ steps.candidate.outputs.identity }}
+        run: |
+          if [[ "$GITHUB_EVENT_NAME" == push ]]; then
+            pulls=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls")
+            read -r PR_NUMBER PR_HEAD <<< "$(jq -r --arg sha "$GITHUB_SHA" \
+              'first(.[] | select(.merged_at and .base.ref == "main" and .merge_commit_sha == $sha) | [.number,.head.sha] | @tsv) // empty' <<< "$pulls")"
+            [[ -n "$PR_HEAD" ]] || exit 0
+          fi
+
+          runs=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/ci.yml/runs?event=pull_request&head_sha=$PR_HEAD&per_page=100")
+          previous=$(jq -c --arg head "$PR_HEAD" --argjson current "$GITHUB_RUN_ID" \
+            '[.workflow_runs[] | select(.id < $current and .head_sha == $head)] | max_by(.updated_at,.id)' <<< "$runs")
+          [[ $(jq -r .status <<< "$previous") == completed ]] || exit 0
+          run=$(jq -r .id <<< "$previous")
+          receipt="pr-$PR_NUMBER-$IDENTITY"
+          artifacts=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run/artifacts?name=$receipt&per_page=100")
+          jq -e --arg name "$receipt" 'any(.artifacts[]; .name == $name and (.expired | not))' <<< "$artifacts" >/dev/null || exit 0
+
+          result=$(jq -r .conclusion <<< "$previous")
+          url=$(jq -r .html_url <<< "$previous")
+          echo "PR #$PR_NUMBER at $PR_HEAD has a matching candidate in [run $run]($url): $result." >> "$GITHUB_STEP_SUMMARY"
+          if [[ "$result" == success ]]; then
+            echo 'reused=true' >> "$GITHUB_OUTPUT"
+          elif [[ "$GITHUB_EVENT_NAME" == pull_request ]]; then
+            exit 1
+          fi
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        if: steps.prior.outputs.reused != 'true'
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - id: plan
+        if: steps.prior.outputs.reused != 'true'
+        name: Select checks from the candidate tree
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha || github.event.before }}
+          HEAD: ${{ github.sha }}
+          REQUEST_TARGET: ${{ inputs.target }}
+          REQUEST_SUITE: ${{ inputs.suite }}
+        run: node tools/ci/plan.ts "$BASE" "$HEAD"
+
+  workspace:
+    name: Workspace checks
+    needs: plan
+    if: needs.plan.outputs.reused != 'true'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - name: Check document links
+        run: node tools/check-doc-links.ts
+      - if: needs.plan.outputs.code == 'true'
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
+      - if: needs.plan.outputs.code == 'true'
+        run: pnpm install --frozen-lockfile
+      - if: needs.plan.outputs.code == 'true'
+        run: pnpm run check
+
+  target:
+    name: Target checks
+    needs: plan
+    if: needs.plan.outputs.selected == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ${{ fromJSON(needs.plan.outputs.matrix).*.target }}
+        include: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version-file: .node-version
+          architecture: ${{ matrix.arch }}
+          package-manager-cache: false
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
+      - name: Set macOS deployment target
+        if: runner.os == 'macOS'
+        run: echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> "$GITHUB_ENV"
+      - run: pnpm install --frozen-lockfile
+      - name: Prepare Linux desktop
+        if: matrix.x11
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb openbox wmctrl
+      - name: Prepare Linux packaging
+        if: runner.os == 'Linux' && contains(matrix.suites, 'fixture-artifacts')
+        run: |
+          sudo apt-get install -y libfuse2
+          if [[ "$KISAKI_VERIFY_INSTALLERS" == 1 ]]; then sudo apt-get install -y rpm; fi
+        env:
+          KISAKI_VERIFY_INSTALLERS: ${{ needs.plan.outputs.installers == 'true' && '1' || '0' }}
+      - name: Prepare Chromium
+        if: matrix.chromium
+        run: pnpm --filter @kisaki3/desktop exec playwright install --with-deps chromium
+      - name: Run selected checks
+        shell: bash
+        env:
+          KISAKI_CI_TASKS: ${{ toJSON(matrix.tasks) }}
+          X11: ${{ matrix.x11 }}
+          KISAKI_VERIFY_INSTALLERS: ${{ needs.plan.outputs.installers == 'true' && '1' || '0' }}
+        run: |
+          prefix=()
+          if [[ "$X11" == true ]]; then
+            export XDG_SESSION_TYPE=x11
+            prefix=(xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh)
+          fi
+          "${prefix[@]}" pnpm exec vp run --concurrency-limit 1 --log labeled ci:target
+      - name: Retain failure diagnostics
+        if: failure()
+        continue-on-error: true
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: diagnostics-${{ matrix.target }}
+          path: |
+            clients/desktop/app/test-results/
+            clients/desktop/packages/*/test-results/
+          retention-days: 5
+          if-no-files-found: ignore
+
+  gate:
+    name: ${{ github.event_name == 'workflow_dispatch' && 'Requested checks' || 'Required checks' }}
+    if: always()
+    needs: [plan, workspace, target]
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Verify required job outcomes
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          jq -e '
+            .plan.result == "success" and
+            ((.plan.outputs.reused == "true" and .workspace.result == "skipped" and .target.result == "skipped") or
+             (.workspace.result == "success" and
+              ((.plan.outputs.selected == "true" and .target.result == "success") or
+               (.plan.outputs.selected == "false" and .target.result == "skipped"))))
+          ' <<< "$RESULTS"

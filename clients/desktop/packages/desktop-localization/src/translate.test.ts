@@ -1,6 +1,6 @@
 /** @fileoverview Checks catalog snapshots, fallback language and complete source-call validation. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { createTranslator, validateExtensionUiTranslationDefinition } from './translate'
 

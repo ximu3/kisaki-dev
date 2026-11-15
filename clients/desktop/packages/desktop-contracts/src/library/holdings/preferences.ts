@@ -61,7 +61,8 @@ export interface FilePreferenceChangeByType {
 
 /** The work-wide or directly associated part scope of a preferred-file choice. */
 export type PreferredFileScope<T extends FileWorkType = FileWorkType> =
-  { readonly type: 'work' } | { readonly type: 'part'; readonly part: PartRef<FilePartType<T>> }
+  | { readonly type: 'work' }
+  | { readonly type: 'part'; readonly part: PartRef<FilePartType<T>> }
 
 /** An explicit preferred-file choice or clearing within one scope, with an optional baseline. */
 export interface PreferredFileInput<T extends FileWorkType = FileWorkType> {
@@ -79,7 +80,8 @@ export interface PreferredPartFile<T extends FileWorkType = FileWorkType> {
 
 /** The work or file owning a complete saved usage override. */
 export type UsagePreferenceTarget =
-  { readonly type: 'work' } | { readonly type: 'file'; readonly fileId: string }
+  | { readonly type: 'work' }
+  | { readonly type: 'file'; readonly fileId: string }
 
 /**
  * Saved work and file usage overrides and effective configuration selection.

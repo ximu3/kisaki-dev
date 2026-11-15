@@ -1,6 +1,6 @@
 /** @fileoverview Checks literal path and glob filter syntax without evaluating file matches. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { parsePathFilter } from './paths'
 
 test('path filters reject ambiguous recursion and parent traversal', () => {

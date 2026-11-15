@@ -46,7 +46,7 @@ Fate 的 multi search 第 1、2、63 页分别返回 20、20、14 项，共 1,25
 
 ## 认证、回读与清理边界
 
-官方 [Account States](https://developer.themoviedb.org/reference/movie-account-states) 列有 guest_session_id 参数，但同一个有效游客凭据调用该端点得到 401／3；评分写入和游客列表读取则成功。不能把这个结果推成普通用户 session 也不可用，更不能据 401 填充未评分、未收藏或不在待看。
+官方 [Account States](https://developer.themoviedb.org/reference/movie-account-states) 列有 guest_session_id 参数，但同一个有效游客凭据调用该端点得到 401／3；评分写入和游客列表读取则成功。这个结果只适用于测试的会话。普通用户 session 的可用性还要单独核对，401 也无法说明用户是否评分、收藏或加入待看。
 
 评分列表可短暂保留旧值。后续实现需要有界回读和真实结果判断，不能因为第一次读到旧值立即重发写入。游客空列表返回 404／34，只能结合这个明确的测试场景解释，不能为普通账号清单或单项状态建立“404 等于空”的通用规则。
 

@@ -1,6 +1,6 @@
 /** @fileoverview Verifies lossless application links, exact positions and rejection of malformed or injected routes. */
 
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect } from 'vite-plus/test'
 
 import { parse as parseLink, format as formatLink } from './deeplink'
 

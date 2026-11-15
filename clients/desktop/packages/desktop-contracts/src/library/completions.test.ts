@@ -1,6 +1,6 @@
 /** @fileoverview Checks separate historical facts and mutually consistent completion baselines. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { parseCompletionCreateMany } from './completions'
 import { DesktopError } from '../errors'
 

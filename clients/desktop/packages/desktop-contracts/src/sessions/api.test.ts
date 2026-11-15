@@ -1,6 +1,6 @@
 /** @fileoverview Verifies session target constraints, lifecycle facts and partial recording or playback outcomes. */
 
-import { test, expect, describe, it } from 'vitest'
+import { test, expect, describe, it } from 'vite-plus/test'
 
 import { parseNativeEventPayload } from '../events'
 import {

@@ -1,6 +1,6 @@
 /** @fileoverview Checks the public application environment excludes private data paths. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { parseApplicationEnvironment } from './app'
 import { DesktopError } from './errors'
 

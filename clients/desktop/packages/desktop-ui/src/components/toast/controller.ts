@@ -3,7 +3,7 @@
 import { createSignal, onCleanup } from 'solid-js'
 import type { Accessor } from 'solid-js'
 
-/** Message presentation status independent of the underlying operation's actual outcome. */
+/** The status displayed by a toast. The operation that published it tracks its own result. */
 export type ToastType = 'loading' | 'info' | 'success' | 'warning' | 'error'
 
 /**
@@ -28,7 +28,7 @@ export interface ToastOptions {
   durationMs?: number
 }
 
-/** Control handle for a message whose updates and dismissal become inert after it ends. */
+/** Updates or dismisses a toast. After the toast ends, calls on the handle have no effect. */
 export interface ToastHandle {
   /**
    * Replaces a live message and resets its display duration.

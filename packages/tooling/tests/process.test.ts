@@ -3,19 +3,11 @@
  * child-process trees.
  */
 
-import { expect, onTestFinished, test, vi } from 'vitest'
-import { createRequire } from 'node:module'
+import { expect, onTestFinished, test, vi } from 'vite-plus/test'
 import { mkdtemp, readFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
-import { pathToFileURL } from 'node:url'
 import { run } from '@kisaki3/tooling/process'
-
-/** Module-scoped dependency resolver used to locate the test TypeScript loader. */
-const require = createRequire(import.meta.url)
-
-/** Absolute loader URL forwarded to isolated command-worker processes. */
-const loader = pathToFileURL(require.resolve('tsx')).href
 
 test('an explicit environment preserves removals from the parent environment', async () => {
   vi.stubEnv('KISAKI_COMMAND_REMOVED', 'parent-only')
@@ -23,13 +15,9 @@ test('an explicit environment preserves removals from the parent environment', a
   delete env.KISAKI_COMMAND_REMOVED
 
   try {
-    await run(
-      process.execPath,
-      ['--import', loader, resolve('tests/support/environment-worker.ts')],
-      {
-        env,
-      },
-    )
+    await run(process.execPath, [resolve('tests/support/environment-worker.ts')], {
+      env,
+    })
   } finally {
     vi.unstubAllEnvs()
   }
@@ -40,11 +28,9 @@ test('cancelling a command waits for the command and its descendant to exit', as
   onTestFinished(() => rm(directory, { recursive: true, force: true }))
   const controller = new AbortController()
 
-  const operation = run(
-    process.execPath,
-    ['--import', loader, resolve('tests/support/command-worker.ts'), directory],
-    { signal: controller.signal },
-  )
+  const operation = run(process.execPath, [resolve('tests/support/command-worker.ts'), directory], {
+    signal: controller.signal,
+  })
   const cancelled = expect(operation).rejects.toMatchObject({ name: 'AbortError' })
   onTestFinished(async () => {
     controller.abort()

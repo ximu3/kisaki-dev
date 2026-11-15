@@ -1,6 +1,6 @@
 /** @fileoverview Checks the scalar order used by canonical identity encodings. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { compareIdentityText } from './scalar-order'
 
 test('orders supplementary code points after BMP scalars and rejects unpaired surrogates', () => {

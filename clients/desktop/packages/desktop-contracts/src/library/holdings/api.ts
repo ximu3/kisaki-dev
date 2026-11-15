@@ -37,7 +37,7 @@ export interface HoldingsApi {
    * Registers actual local input for a fixed work and rechecks any identity precondition before
    * commit.
    *
-   * Initial-refresh issues are reported separately from established registrations.
+   * An initial refresh can fail after registration succeeds. The result reports both outcomes.
    */
   registerLocalContent<T extends WorkType>(
     work: WorkRef<T>,
@@ -49,7 +49,7 @@ export interface HoldingsApi {
   /**
    * Completes discovery and maintenance while preserving held data and manual associations.
    *
-   * Reports actual per-file availability and adoption outcomes.
+   * Reports each file's availability and which changes were applied.
    */
   refresh<T extends FileWorkType>(
     work: EntryRef<T>,

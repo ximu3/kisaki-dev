@@ -1,6 +1,6 @@
 /** @fileoverview Verifies formal schema constraints, codecs, transactions and durable reopening on the actual Electron driver. */
 
-import { afterEach, beforeEach, expect, test } from 'vitest'
+import { afterEach, beforeEach, expect, test } from 'vite-plus/test'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -8,7 +8,7 @@ import { eq, sql } from 'drizzle-orm'
 import { initializeDatabase } from '../../../src/main/infrastructure/database'
 import type { Storage } from '../../../src/main/infrastructure/database'
 import * as tables from '../../../src/main/infrastructure/database/schema'
-import { seedStorage, storageOptions } from '../../support/database'
+import { seedStorage, storageOptions } from './sample'
 
 /** Disposable database directory owned by the current storage case. */
 let directory: string

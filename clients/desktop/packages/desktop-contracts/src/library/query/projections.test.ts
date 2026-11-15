@@ -1,6 +1,6 @@
 /** @fileoverview Verifies mixed entry projections preserve requested and applicable field boundaries. */
 
-import { test, expect } from 'vitest'
+import { test, expect } from 'vite-plus/test'
 
 import { parseEntryListOptions } from './listing'
 import type { EntryQuery } from './definition'

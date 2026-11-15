@@ -4,15 +4,17 @@
 
 ## 实施进展
 
-截至 2026-11-14，工作包按真实依赖和完整责任组织。本体业务就绪后，W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 1.9、原生能力上的自研通用 UI、组件子路径与 CSS Modules、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
+截至 2026-11-15，工作包按真实依赖和完整责任组织。本体业务就绪后，W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 1.9、原生能力上的自研通用 UI、组件子路径与 CSS Modules、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
 
-W00 工程实现与适用验收已完成并合入主线，当前职责见[工程能力](#w00)。仓库维护桌面工程工具、原生文件能力、资源、三个私有工程包，以及 desktop-appearance、extension-distribution、desktop-contracts、desktop-localization、desktop-rpc 和 desktop-ui，workspace 共 11 个项目（含根工程）。产品能力按下表工作包实施。
+W00 工程实现与适用验收已完成并合入主线，当前职责见[工程能力](#w00)。仓库维护桌面工程工具、原生文件能力、资源、两个私有工程包，以及 desktop-appearance、extension-distribution、desktop-contracts、desktop-localization、desktop-rpc 和 desktop-ui，workspace 共 10 个项目（含根工程）。产品能力按下表工作包实施。
 
 当前任务入口为 AGENTS.md，设计、规范和实施资料集中于 refactor。[当前工程与开发](development.md)维护源码职责、环境准备与可运行命令。正式项目文档待 W23 交付；接口声明、代码注释、发行说明和许可材料随所属实现与版本维护。
 
+工作区采用 Vite+，主线编译器锁定为 `7.1.0-beta`。升级到 7.1.x 正式版时重新验证项目引用、声明和仓库外消费。六个公共包共用 `@kisaki3/config`，CI 按改动选择宿主，在每个目标内复用构建，制品验收直接读取指定归档。选型、工作区调整与运行证据见[工程重构归档](archive/engineering-modernization/README.md)和 [PR #39 的检查](https://github.com/ximu3/kisaki-dev/pull/39/checks)。
+
 [当前工程验证](../verification/evidence/w00/README.md)已取得本机 Windows x64 和 CI 六目标结果，覆盖工程载体的构建、原生与 Electron 运行、开发回归、打包及制品运行。
 
-各公共包从同一份已检查的 tarball 验证独立消费，根入口通过 Turbo 调度。外观、分发、桌面合同与本地化分别见 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md) 和 [W03](../verification/evidence/w03/README.md)。[W04](../verification/evidence/w04/README.md) 另以 Node 父子进程和 Electron 窗口验证两种消息通道及其寿命。[W05](../verification/evidence/w05/README.md) 验证公共 UI 的完整组件、普通样式与浏览器／Electron 消费。
+各公共包从同一份已检查的 tarball 验证独立消费，根入口通过 Vite Task 调度。外观、分发、桌面合同与本地化分别见 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md) 和 [W03](../verification/evidence/w03/README.md)。[W04](../verification/evidence/w04/README.md) 另以 Node 父子进程和 Electron 窗口验证两种消息通道及其寿命。[W05](../verification/evidence/w05/README.md) 验证公共 UI 的完整组件、普通样式与浏览器／Electron 消费。
 
 原生／SQLite、4 项 Electron 入口和制品运行已有本机及六目标 CI 结果，跨文件系统用例按实际测试根记录。最新跨平台检查由对应 PR 记录。
 
@@ -36,7 +38,7 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 | [W03 桌面合同与本地化](work-packages.md#w03) | 实现与适用验收已完成。合同包交付接口、值约束与规范编码，展示柜采用单项保存、明确批量创建与共用引导输入；实际业务操作和界面由 W08、W22 实现。本地化包交付英语、关联类型、译本校验与格式化。两个包均通过制品和独立消费验证，见[本机及 CI 证据](../verification/evidence/w03/README.md)。项目文档待 W23，尚未公开发布。 |
 | [W04 desktop-rpc](work-packages.md#w04)                       | 实现与适用验收已完成。环境无关的 RPC 包通过帧与连接机制、制品、独立声明以及 Node 父子 IPC 和 Electron 窗口的真实通道验证，见[验证记录](../verification/evidence/w04/README.md)。项目文档待 W23，尚未公开发布。                               |
 | [W05 desktop-ui](work-packages.md#w05) | 31 个组件家族与共同样式已完成，静态字段标题、可搜索单选与多选、原生分段日期、虚拟列表、稳定内容的浮层、通知队列和内置格式栏已通过独立制品消费验收。范围见[验证记录](../verification/evidence/w05/README.md)。项目文档待 W23，尚未公开发布。 |
-| [W06 存储与原生基础](work-packages.md#w06)                    | 实现与适用验收已完成。正式存储、文件设施和随生效软件语言切换的索引通过六目标运行与制品验收；本机完整负载满足 50 ms 单次同步预算。见[验证记录](../verification/evidence/w06/README.md)。 |
+| [W06 存储与原生基础](work-packages.md#w06)                    | 实现与适用验收已完成。正式存储、文件设施和随生效软件语言切换的索引通过六目标运行与制品验收。完整负载在 Windows x64 和 Linux x64 通过，Linux 同机对照验证了 worker 中位数门槛能拦住持续慢查询。见[验证记录](../verification/evidence/w06/README.md)。 |
 | [W07 应用运行与设置](work-packages.md#w07)                    | 未开始。                                                                                                                                                                                                                                     |
 | [W08 资料与记录](work-packages.md#w08)                        | 未开始。                                                                                                                                                                                                                                     |
 | [W09 Vantage](work-packages.md#w09)                           | 未开始；分项结果见[项目交付](delivery-checklist.md#projects)。                                                                                                                                                                               |
@@ -69,7 +71,7 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 
 ## 仓库与合并
 
-公开开发远端为 [ximu3/kisaki-dev](https://github.com/ximu3/kisaki-dev)，承载源码、PR、CI、候选制品与跨仓联调。main 使用分支保护、最新主线要求、`verify / Required checks` 与 `PR title` 门禁；管理员同样遵守，只允许 Squash，已合并远端分支自动删除。协作规则见[工作区合同](../design/engineering/workspace.md#collaboration)。
+公开开发远端为 [ximu3/kisaki-dev](https://github.com/ximu3/kisaki-dev)，承载源码、PR、CI、候选制品与跨仓联调。main 要求同步最新主线并通过 GitHub Actions 的 `Required checks`。分支保护同样约束管理员。仓库只允许 Squash 合并，自动删除已合并的远端分支。协作规则见[工作区合同](../design/engineering/workspace.md#collaboration)。
 
 正式仓库接续、npm 发行和服务部署按[仓库合同](../design/engineering/repository.md)与实际授权执行。旧 ximu3/kisaki 的存档和同名重建尚未执行，四个独立项目的正式开发仓库与交付制品尚未登记；项目开发仓库及 oauth-relay 最终源码仓库采用 public 可见性。
 
@@ -82,7 +84,7 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 | 本地设备     | Windows 10 22H2 x64（build 19045）、Ryzen 9 7945HX、约 32 GB 内存；RTX 4060 Laptop GPU 8 GB 与 AMD 集成显卡。 |
 | 本地执行条件 | 普通用户权限的交互桌面；测试使用独立资料与目录。                                                              |
 | 标准 CI      | Windows、macOS、Linux 的 x64 与 arm64；各目标配置原生构建、基础运行和载体验证，实际结果由证据记录。           |
-| 反馈目标     | [4／10／25 分钟](../design/engineering/workspace.md#ci-feedback)。                                            |
+| 反馈目标     | 普通 PR 以约 3 分钟给出基础结果，全部必需检查按改动范围核对[工程反馈预算](../design/engineering/workspace.md#ci-feedback)。 |
 
 <a id="w00"></a>
 
@@ -90,11 +92,11 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 
 | 交付项           | 当前源码职责                                                                        |
 | ---------------- | ----------------------------------------------------------------------------------- |
-| Workspace 与检查 | 根工程、桌面工程和三个私有工程包；实际类型项目、依赖边界、格式、hooks 与任务选择。  |
+| Workspace 与检查 | 根工程、桌面工程和两个私有工程包；实际类型项目、依赖边界、格式、hooks 与任务选择。  |
 | 构建与资源       | 干净的构建与缓存输出、固定字体和图标、SQLite 与私有原生资源、独立构建标识和最终字节摘要。 |
 | 开发协调         | Vite 原生程序监听与 HMR、包及资源准备、实际运行目录、失败恢复及唯一进程拥有者。        |
 | 原生基础         | Rust／Node-API 文件同步和不覆盖移动、加载与错误合同。                               |
 | 验证入口         | 普通 Node、Electron Node 模式、独立四入口载体、开发会话、制品及可选启动与内存采样。 |
-| CI 与门禁        | 实际输入选择、六目标工程运行、严格合并门禁、独立 PR 标题检查。                      |
+| CI 与门禁        | 实际输入选择、六目标工程运行及严格的代码合并门禁。                                  |
 
 公共包及其仓库外消费、产品端点、正式窗口和宿主由各自完整工作包交付。[工程验证](../verification/evidence/w00/README.md)记录实际源码范围、本机 Windows x64 和 CI 六目标结果。正式签署和完整产品验收继续按所属工作包执行。

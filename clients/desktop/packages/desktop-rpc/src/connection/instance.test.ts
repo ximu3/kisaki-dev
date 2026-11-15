@@ -1,6 +1,6 @@
 /** @fileoverview Drives the public message pump through handshake, concurrent calls, cancellation and channel loss. */
 
-import { expect, onTestFinished, test, vi } from 'vitest'
+import { expect, onTestFinished, test, vi } from 'vite-plus/test'
 import { RpcConnection } from './instance'
 import type { RpcEndpoint } from './endpoint'
 import { RpcError } from '../errors'

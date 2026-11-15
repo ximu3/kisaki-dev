@@ -10,7 +10,7 @@ worker 及专用适配放在实际拥有者旁边：PDF 接入归 formats/pdf，
 
 包同时交付实际需要的脚本、声明、样式、PDF worker、Expat worker／Wasm、libiconv Wasm 与固定编码表、本地标准实体目录、字体／字符映射和解码资源。源码与构建输出分开；第三方资源从固定依赖准备到发行目录，保留来源和许可，不散落在示例与 Kisaki 工程中各复制一份。libiconv 的源码、CP932 差异、重建步骤和可替换资产接入随发行维护。运行不依赖 CDN 或消费者的开发机路径。消费方通过 assetsBaseUrl 指定资源部署位置，完整输入与消费验证见下文。
 
-tools 拥有本项目实际的准备、构建、装配和制品检查流程，CLI 只承接参数；CI 调用同一流程。examples 使用公开包展示最小无框架阅读接入；tests/consumers 验证打包产物、声明以及浏览器构建消费，不通过跨仓库源码路径掩盖缺失导出和资源。纯函数测试可以邻近源码，真实布局和交互验证放在 tests/browser，格式样本及来源、许可和预期值放在 tests/fixtures。docs 保存公共合同及接入说明，release-notes 遵守技术项目的[英语基准与按需译文](../../engineering/releases.md#notes)。
+tools 负责准备、构建、装配和检查制品。CLI 传入参数，CI 调用同一流程。examples 使用公开包展示最小无框架阅读接入；tests/consumers 验证打包产物、声明以及浏览器构建消费，不通过跨仓库源码路径掩盖缺失导出和资源。纯函数测试可以邻近源码，真实布局和交互验证放在 tests/browser，格式样本及来源、许可和预期值放在 tests/fixtures。docs 保存公共合同及接入说明，release-notes 遵守技术项目的[英语基准与按需译文](../../engineering/releases.md#notes)。
 
 <a id="assets"></a>
 

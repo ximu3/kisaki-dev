@@ -52,7 +52,9 @@ export async function checkMessageTypes(): Promise<void> {
   const path = join(import.meta.dirname, '../src/contracts.generated.ts')
   const output = renderMessageTypes(englishMessages)
   if ((await readFile(path, 'utf8')).replaceAll('\r\n', '\n') !== output) {
-    throw new Error('Message types are stale; run generate:messages')
+    throw new Error(
+      'Message types are stale. Run pnpm exec vp run @kisaki3/desktop-localization#generate:messages.',
+    )
   }
 }
 
@@ -69,5 +71,5 @@ export async function writeMessageTypes(signal?: AbortSignal): Promise<void> {
 }
 
 if (import.meta.main) {
-  await runCli(writeMessageTypes)
+  await runCli(process.argv.includes('--check') ? checkMessageTypes : writeMessageTypes)
 }

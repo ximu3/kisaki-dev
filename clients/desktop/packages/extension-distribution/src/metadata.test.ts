@@ -1,6 +1,6 @@
 /** @fileoverview Verifies opaque identities and static text matching across locales and writing systems. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import {
   normalizeLocalizedText,
   normalizeLocale,

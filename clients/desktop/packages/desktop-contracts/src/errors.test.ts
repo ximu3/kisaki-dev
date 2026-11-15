@@ -1,6 +1,6 @@
 /** @fileoverview Verifies safe failures preserve unknown categories and only valid partial business results. */
 
-import { expect, test } from 'vitest'
+import { expect, test } from 'vite-plus/test'
 import { DesktopError, parseExecutionFailure } from './errors'
 import { parsePlaybackSettingResult } from './sessions/api'
 

@@ -153,7 +153,7 @@ export interface ScanConfigsApi {
   /**
    * Removes the saved configuration and future watch input.
    *
-   * Accepted work and established library facts retain their own lifetimes.
+   * Accepted scans continue under their captured configuration. Existing library records stay intact.
    */
   delete(id: string, call?: CallOptions): Promise<void>
 

@@ -6,7 +6,12 @@ import { visit } from 'jsonc-parser'
 
 /** Plain persisted desktop data. RPC frame values are independently owned by the environment-neutral transport package. */
 export type JsonValue =
-  null | boolean | number | string | readonly JsonValue[] | { readonly [key: string]: JsonValue }
+  | null
+  | boolean
+  | number
+  | string
+  | readonly JsonValue[]
+  | { readonly [key: string]: JsonValue }
 
 /**
  * Validates and copies finite ordinary JSON data.
