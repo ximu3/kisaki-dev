@@ -42,7 +42,7 @@ test('all pure declarations compile without Node or DOM globals', async ({
   signal,
 }) => {
   await runPnpm(['typecheck'], { cwd: consumerDirectory, signal })
-  await lintConsumer(consumerDirectory)
+  await lintConsumer(consumerDirectory, signal)
 })
 
 test('pure entries run in Chromium without Node polyfills', async ({ page, siteUrl }) => {

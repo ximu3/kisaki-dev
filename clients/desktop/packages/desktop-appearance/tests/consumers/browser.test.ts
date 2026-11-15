@@ -58,7 +58,7 @@ test('Bundler declarations work with and without browser globals', async ({
   signal,
 }) => {
   await runPnpm(['typecheck'], { cwd: consumerDirectory, signal })
-  await lintConsumer(consumerDirectory)
+  await lintConsumer(consumerDirectory, signal)
 })
 
 test('ordinary CSS works by itself, preserves document controls and has complete light and dark defaults', async ({

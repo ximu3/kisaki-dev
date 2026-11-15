@@ -13,7 +13,10 @@ export default defineLibrary({
   },
   pack: {
     platform: 'browser',
-    hooks: { 'build:done': () => assembleStyles() },
+    hooks: {
+      /** Writes the published stylesheets after the token and value modules have been built. */
+      'build:done': () => assembleStyles(),
+    },
     deps: {
       alwaysBundle: ['css-tree'],
       onlyBundle: ['css-tree', 'mdn-data'],

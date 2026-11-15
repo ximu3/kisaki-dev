@@ -16,7 +16,7 @@ test('Node globals alone support the complete public type graph and actual value
 }) => {
   await runPnpm(['build'], { cwd: consumerDirectory, signal })
 
-  await lintConsumer(consumerDirectory)
+  await lintConsumer(consumerDirectory, signal)
 
   const { stdout } = await promisify(execFile)(
     process.execPath,

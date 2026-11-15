@@ -41,7 +41,10 @@ export default defineLibrary({
   },
   pack: {
     platform: 'browser',
-    hooks: { 'build:done': () => assembleStyles() },
+    hooks: {
+      /** Assembles the published stylesheet after the component build has emitted its CSS. */
+      'build:done': () => assembleStyles(),
+    },
     plugins: [solid()],
     deps: {
       onlyBundle: ['@unovis/solid', '@unovis/ts'],

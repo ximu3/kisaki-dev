@@ -35,9 +35,15 @@ test('worker operation medians meet their budget and the window reaches main dur
     (async () => {
       while (measuringStorage) {
         const start = performance.now()
-        await page.evaluate(() =>
-          (window as typeof window & { fixture: { ping(): Promise<boolean> } }).fixture.ping(),
-        )
+        await page.evaluate(() => {
+          const carrier = window as typeof window & {
+            fixture: {
+              /** Resolves when main services this window's IPC probe. */
+              ping(): Promise<boolean>
+            }
+          }
+          return carrier.fixture.ping()
+        })
         latencies.push(performance.now() - start)
         await setTimeout(100)
       }

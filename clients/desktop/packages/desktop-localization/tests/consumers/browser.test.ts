@@ -57,7 +57,7 @@ test('browser globals support typed calls from the published localization packag
 }) => {
   await runPnpm(['typecheck'], { cwd: consumerDirectory, signal })
 
-  await lintConsumer(consumerDirectory)
+  await lintConsumer(consumerDirectory, signal)
 })
 
 test('localized messages and literal tags run in the main document and an iframe', async ({

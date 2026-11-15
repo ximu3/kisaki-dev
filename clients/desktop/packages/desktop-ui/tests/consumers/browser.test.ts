@@ -14,7 +14,7 @@ test('packed declarations pass complete Bundler and NodeNext checks and typed co
   signal,
 }) => {
   await runPnpm(['typecheck'], { cwd: consumerDirectory, signal })
-  await lintConsumer(consumerDirectory)
+  await lintConsumer(consumerDirectory, signal)
 })
 
 test('Markdown, charts and drag load as complete capabilities and release their instances', async ({
