@@ -113,12 +113,13 @@ jobs:
         run: pnpm run check
 
   target:
-    name: Target checks (${{ matrix.target }})
+    name: Target checks
     needs: plan
     if: needs.plan.outputs.selected == 'true'
     strategy:
       fail-fast: false
       matrix:
+        target: ${{ fromJSON(needs.plan.outputs.matrix).*.target }}
         include: ${{ fromJSON(needs.plan.outputs.matrix) }}
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 60
