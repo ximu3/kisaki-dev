@@ -193,7 +193,7 @@ workspace 按实际工程登记。根检查运行各项目声明的类型入口�
 
 八个公共包各自通过工程根目录的 tsconfig.json，以空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置；desktop-ui 的 tsdown 配置同样归 Node 工具项目。
 
-同包根目录的 vite.config.ts 为 vp pack 指定包根的 tsconfig.pack.json；增量信息写入该包 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](conventions.md#configuration-layout)。
+公共包的 `vp pack` 从包根的 `tsconfig.pack.json` 读取声明构建配置，增量信息写入该包的 `.cache/typescript/pack.tsbuildinfo`。`tsc -b` 的各类型项目在同一目录使用各自的增量文件。新增环境随实际源码建立，配置遵守[共同归属](conventions.md#configuration-layout)。
 
 共享锁文件与工具升级可能扩大验证范围。开发入口按实际目标启动，`@kisaki3/desktop#dev` 只启动桌面及必要依赖；项目脚本执行具体任务，根任务统一调度。版本、发行说明与部署仍按各自发行单位管理，不因一次安装或同仓提交而合并版本。
 
@@ -259,7 +259,7 @@ UI 与其他包遵守同一分工，不另设仅为跳过依赖声明的配置�
 
 ### 任务缓存与依赖安装
 
-Vite Task 缓存可重建的公共包构建。构建任务拥有完整的 JavaScript、声明、样式和许可文件，跟踪工具读取的输入并显式纳入锁文件。独立消费、原生运行、打包验证和性能采样实际执行。冻结安装以 pnpm 锁文件为准，跨作业恢复仅在已核实输入、目标、恢复正确性和时间收益后启用。
+公共包的打包任务拥有 `dist`，Vite Task 跟踪工具读取的输入并显式纳入锁文件，命中时恢复 JavaScript、声明、样式和许可文件。有生成源码的包先运行 `check:generated`，该任务仅缓存核对结果。独立消费、原生运行、打包验证和性能采样实际执行。冻结安装以 pnpm 锁文件为准，跨作业恢复仅在已核实输入、目标、恢复正确性和时间收益后启用。
 
 <a id="ci-feedback"></a>
 

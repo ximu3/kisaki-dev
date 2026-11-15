@@ -20,6 +20,13 @@ interface LibraryOptions {
 /** Workspace production dependencies supply built exports before a reader starts. */
 const dependencyBuilds = { task: 'build', from: 'dependencies' } as const
 
+/** Both source validation and packaging depend on the files they read and the locked build tools. */
+const buildInputs = [
+  { auto: true },
+  { pattern: 'pnpm-lock.yaml', base: 'workspace' as const },
+  { pattern: 'packages/config/vite/**', base: 'workspace' as const },
+]
+
 /** Resolves TypeScript from the configuration package that declares the compiler. */
 const compiler = createRequire(import.meta.resolve('typescript/package.json'))
 
@@ -108,16 +115,17 @@ export function defineLibrary({
             dependsOn: [dependencyBuilds],
             cache: false,
           },
+          'check:generated': {
+            command: generated.command + ' --check',
+            dependsOn: [dependencyBuilds],
+            cache: { input: buildInputs, output: [] },
+          },
         }),
         build: {
-          command: generated ? [generated.command + ' --check', 'vp pack'] : 'vp pack',
-          dependsOn: [dependencyBuilds],
+          command: 'vp pack',
+          dependsOn: generated ? ['check:generated'] : [dependencyBuilds],
           cache: {
-            input: [
-              { auto: true },
-              { pattern: 'pnpm-lock.yaml', base: 'workspace' },
-              { pattern: 'packages/config/vite/**', base: 'workspace' },
-            ],
+            input: buildInputs,
             output: ['dist/**'],
           },
         },

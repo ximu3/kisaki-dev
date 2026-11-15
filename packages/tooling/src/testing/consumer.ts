@@ -2,8 +2,9 @@
 
 import { cp, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
-import { dirname, join } from 'node:path'
+import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { searchForWorkspaceRoot } from 'vite-plus'
 import { stringify } from 'yaml'
 import { run, runPnpm } from '../process/index.ts'
 
@@ -70,8 +71,8 @@ export async function installConsumer(
 
 /** Applies the workspace's lint rules to consumer sources using their installed declarations and type projects. */
 export async function lintConsumer(directory: string, signal?: AbortSignal): Promise<void> {
-  const bin = join(dirname(fileURLToPath(import.meta.resolve('vite-plus/package.json'))), 'bin/vp')
-  const workspace = fileURLToPath(new URL('../../../../', import.meta.url))
+  const bin = fileURLToPath(import.meta.resolve('vite-plus/bin'))
+  const workspace = searchForWorkspaceRoot(import.meta.dirname)
   await run(
     process.execPath,
     [

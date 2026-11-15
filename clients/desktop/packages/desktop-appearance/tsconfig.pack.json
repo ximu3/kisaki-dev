@@ -1,7 +1,8 @@
 {
   "extends": "./config/typescript/tsconfig.lib.json",
   "compilerOptions": {
-    "rootDir": "."
+    "rootDir": ".",
+    "tsBuildInfoFile": "./.cache/typescript/pack.tsbuildinfo"
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"]
