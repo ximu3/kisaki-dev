@@ -43,7 +43,7 @@ async function waitForExit(
 
 test('the exact packaged carrier retains production fuses and starts and closes externally', async () => {
   const receiptPath =
-    process.env.KISAKI_ARTIFACT_RECEIPT ?? join(appRoot, 'dist', hostTarget(), 'artifacts.json')
+    process.env.KISAKI_ARTIFACT_RECEIPT || join(appRoot, 'dist', hostTarget(), 'artifacts.json')
   const receipt = JSON.parse(await readFile(receiptPath, 'utf8')) as ArtifactReceipt
   expect(receipt.target).toBe(hostTarget())
   expect(receipt.buildId).toMatch(/\S/)
@@ -84,7 +84,11 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     linux: 'appimage',
   }
   const expectedCarrier = carriers[process.platform]
-  expect(distribution).toMatchObject({ kind: expectedCarrier, target: receipt.target })
+  expect(distribution).toMatchObject({
+    kind: expectedCarrier,
+    target: receipt.target,
+    testOnly: receipt.testOnly,
+  })
 
   if (process.platform === 'linux') {
     const applicationDirectory = dirname(resourceDirectory)

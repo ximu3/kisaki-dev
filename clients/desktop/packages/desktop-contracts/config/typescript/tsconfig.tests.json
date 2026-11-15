@@ -1,9 +1,10 @@
 {
-  "extends": "@kisaki3/typescript-config/node.json",
+  "extends": "@kisaki3/config/typescript/node.json",
   "compilerOptions": {
     "incremental": true,
     "tsBuildInfoFile": "../../.cache/typescript/tests.tsbuildinfo",
-    "lib": ["ES2023", "DOM"]
+    "lib": ["ES2023", "DOM"],
+    "customConditions": ["node"]
   },
   "include": ["../../src/**/*.test.ts", "../../tests/**/*.ts"],
   "exclude": ["../../tests/consumers/fixtures/**"]

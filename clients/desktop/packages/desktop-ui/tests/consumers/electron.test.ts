@@ -6,7 +6,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { createRequire } from 'node:module'
 import { transformWithOxc } from 'vite-plus'
-import { consumerTest as test, packageRoot } from './consumer'
+import { consumerTest as test, packageRoot } from './environment'
 
 // Electron's Node entry returns its executable path; its declarations describe the running host.
 /** Executable path of the selected Electron runtime used by the packed UI consumer. */

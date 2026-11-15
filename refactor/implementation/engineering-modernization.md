@@ -4,6 +4,8 @@
 
 JS/TS 建议采用 Vite+ 作为工程入口、TypeScript 7.1 作为编译器。迁移分支可用精确版本 `7.1.0-beta`，主线采用首个通过验收的 7.1.x 正式版。工具选型、`tools` 的职责和 `tests` 的组织共同服务于同一目标。开发者能从一次改动找到负责的源码，运行与之相关的检查，并辨认最终交付的是哪份文件。现有工程的主要问题与取舍见[全项目审视](modernization-audit.md#engineering-review)。
 
+后续的[工作区配置与任务重构](workspace-config-and-tasks.md)以 `0c0f363` 为基线，单独维护共享配置的命名与归属、命令设计和验收条件。
+
 ## 统一范围与工具归属
 
 根仓、桌面应用、全部公共包、私有工具及后续官方扩展共用锁文件和任务执行器。根配置拥有共同默认值，各项目维护与其宿主或产物有关的配置。独立仓库采用同样的 JS/TS 工程约定，各自锁定版本、验证和交付。现代化、简洁、清晰、干净与克制共同决定取舍。一次性重做成本不影响选型，反馈时间、运行资源、兼容责任和长期维护计入成果质量。[根协作规范](../../AGENTS.md) · [判断与取舍](../design/engineering/conventions.md#judgment)
@@ -46,7 +48,7 @@ pnpm 声明项目与依赖，`vp run` 执行工作区任务，Vite 管理编译�
 | --- | --- |
 | 单个场景或套件的辅助 | 数据库选项和种子数据从 `tests/support/database.ts` 迁到 `tests/integration/database/`，制品解包准备归 `tests/artifacts/`，开发测试的控制器、worker 与启动器归 `tests/tools/dev/`。小型辅助可写在测试文件里。 |
 | 工程级测试辅助 | 桌面的 `tests/support/electron.ts` 管理 Electron 测试宿主、应用和 profile，`window-observation.ts` 负责系统窗口观测。两者都有跨套件调用，按各自的独立职责保留。 |
-| 需要按原样读取、安装或运行的输入 | 公共包从 `tests/fixtures/consumers/<宿主>/` 迁到 `tests/consumers/fixtures/<宿主>/`。共用的最小 Electron 应用从 `tests/fixtures/runtime/` 迁到 `tests/fixtures/desktop-app/`。专用的测量负载由性能入口装配，样板只保存输入。 |
+| 需要按原样读取、安装或运行的输入 | 公共包的独立消费者归 `tests/consumers/fixtures/<宿主>/`。桌面的开发会话使用可编辑的 Electron 样板，产品窗口、启动与制品验证使用应用本身。基线载体与各套件的目标输入见[桌面产品入口与工程测试输入](workspace-config-and-tasks.md#electron-test-inputs)。专用的测量负载由性能入口装配。 |
 | 测试运行时资源 | page、context、临时 profile、数据库连接和子进程由使用它们的 fixture 按需创建并释放。共享安装可以用套件或 worker 作用域，可写资源随实例隔离。测试报告、解包结果和临时数据库由本次运行拥有。 |
 
 | 所验证的行为 | 位置、环境与取舍 |
@@ -57,7 +59,7 @@ pnpm 声明项目与依赖，`vp run` 执行工作区任务，Vite 管理编译�
 | 公共包与 UI | 六包共用安装机制，各包拥有消费者的 manifest、依赖集合、源样例和断言。保留 `tests/consumers` 的仓库外 tarball 验证。UI 的表单、焦点、IME、虚拟选择、Toast 等行为按交互主题归 `tests/browser`，使用与交付相同的 Solid 编译和完整样式，从源码获得快反馈。公开子路径、类型、样式级联与安装后行为在实际制品的代表用例验证。RPC 保留 Node 父子 IPC 与沙箱 Electron MessagePort 两个真实传输环境。 |
 | 制品、性能与外部数据 | `tests/artifacts` 从已生成的收据定位同一份 ZIP、应用或 AppImage，用外部方式核对真实启动、退出与 fuses。`tests/performance` 独立保存数据输入、环境、原始采样与查询计划。大负载准备和测量代码归性能场景，仅由性能入口装配。来源扩展拥有匿名样本，导入器拥有已声明格式样本，宿主拥有真实安装与激活，发行验收另核对安装和升级。 |
 
-建议复用现有私有工程包，为六个公共包提供一个仅供测试导入的 `@kisaki3/tooling/testing/consumer` 入口。调用方传入样板目录及本次所需的归档映射，拥有运行作用域和断言。共用入口只负责外部目录、安装与释放，在安装失败时回收已取得的资源。按样板实际声明的直接与传递依赖选用归档，Node 纯消费者仍独立于浏览器和 Electron。生成全量声明导入、Node 或浏览器编译、Solid 页面和 Electron IPC 留在对应包。类型感知 lint 在装有实际依赖的样板目录执行，`tsc` 以 `skipLibCheck: false` 检查最终公开声明及其依赖。
+私有工程包为六个公共包提供一个仅供测试导入的 `@kisaki3/tooling/testing/consumer` 入口。调用方传入样板目录和包根，从 workspace 运行依赖取得归档映射，拥有运行作用域和断言。共用入口只负责外部目录、安装与释放，在安装失败时回收已取得的资源。按样板实际声明的直接与传递依赖选用归档，Node 纯消费者仍独立于浏览器和 Electron。生成全量声明导入、Node 或浏览器编译、Solid 页面和 Electron IPC 留在对应包。类型感知 lint 在装有实际依赖的样板目录执行，`tsc` 以 `skipLibCheck: false` 检查最终公开声明及其依赖。
 
 正式产品模板归产品源码，测试样板归消费套件。移动样板或辅助模块时，同步相对导入、子进程启动路径、运行器发现规则、类型项目和构建输入。只读样板、测试报告与可发布文件各有明确的输出边界。[Vitest 测试项目](https://vitest.dev/guide/projects.html) · [数据隔离](../verification/acceptance.md#isolation)
 
@@ -77,7 +79,7 @@ pnpm 声明项目与依赖，`vp run` 执行工作区任务，Vite 管理编译�
 | `pr-title.yml` · PR title | 以当前 SHA 和最新标题检查 squash 标题格式。规则放在一个受信入口，轻量运行。 | 保留现有文件与检查名，去掉整套工程安装。若合并者在界面改写标题，由合并者核对最终文字。 |
 | `release.yml` · Release | 由获授权的版本触发取得候选、完成签署和验收、留存并按摘要交付。按发布单位和通道控制并发，保护凭据只进入需要的作业。 | 建立真实发行能力时提供。在普通 PR 和手动代码验证中保留只读权限。 |
 
-`ci.yml` 的作业 ID 采用 `plan`、`check`、`test`、`gate`。在界面中，`Plan` 说明选择理由，`Checks (linux-x64)` 给出基础反馈，`Test (<场景>, <目标>)` 显示实际断言和环境，例如 `Test (native, windows-arm64)`。`Required checks` 稳定汇总必需作业。同目标且共用一次环境准备的套件合成一行，步骤写明动作，例如 `Load native binding`、`Start desktop windows` 或 `Run development recovery`。其余作业按验证场景独立，摘要列出每项结论。文件名用职责，job ID 只在文件内引用，分支保护使用 GitHub 实际发布的检查名。[GitHub 作业语法](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobs)
+`ci.yml` 的作业 ID 是 `plan`、`workspace`、`target` 和 `gate`，分别显示为 `Select checks`、`Workspace checks`、`Target checks (<目标>)` 和 `Required checks`。计划摘要列明每个目标的套件和选择理由，目标作业一次运行所选任务的共同依赖图，日志标明包与任务。分支保护按实际发布的检查名核对。[GitHub 作业语法](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobs)
 
 变更到场景与目标的选择由 `tools/ci/plan.ts` 拥有，输入是事件、基础与候选提交，输出仅包含必需作业、套件、目标和选择理由。由工作流把任务和目标映射到已声明的 runner 与本地命令。使用已固定的 Node 原生能力、Git 和受版本控制的项目清单，能在安装 workspace 之前执行。范围例子贴近所属实现，任务体继续使用各项目已有的正式命令。工作流负责检出、runner、事件和调用顺序。共享准备只有在实际重复后才提取为单一 action 或可复用工作流。`release.yml` 的作业直接用 `Build`、`Sign`、`Verify`、`Publish` 加上适用的发布单位或目标，按实际产物交接拆分。
 

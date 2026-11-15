@@ -5,7 +5,13 @@
   "type": "module",
   "license": "MIT",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      }
+    }
   },
   "engines": {
     "node": ">=24.11.1"
@@ -29,15 +35,15 @@
     }
   },
   "scripts": {
-    "typecheck:project": "tsc -b",
-    "clean:outputs": "kisaki-package clean",
-    "test:unit": "vp test run"
+    "clean": "kisaki-clean"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
+    "@kisaki3/config": "workspace:*",
     "@kisaki3/tooling": "workspace:*",
-    "@kisaki3/typescript-config": "workspace:*",
     "@types/node": "catalog:",
     "electron": "catalog:",
+    "publint": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
   }

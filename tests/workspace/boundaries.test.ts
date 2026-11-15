@@ -129,8 +129,8 @@ beforeAll(async () => {
   for (const file of [
     '.dependency-cruiser.json',
     'tsconfig.json',
-    'packages/typescript-config/package.json',
-    'packages/typescript-config/base.json',
+    'packages/config/package.json',
+    'packages/config/typescript/base.json',
     'clients/desktop/app/package.json',
   ]) {
     const target = join(directory, file)
@@ -164,7 +164,7 @@ beforeAll(async () => {
     }),
   )
 
-  for (const member of ['typescript-config', 'tooling']) {
+  for (const member of ['config', 'tooling']) {
     await symlink(join(directory, 'packages', member), join(scope, member), 'junction')
   }
 

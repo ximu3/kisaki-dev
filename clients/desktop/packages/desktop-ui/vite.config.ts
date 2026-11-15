@@ -1,61 +1,55 @@
-import { defineConfig } from 'vite-plus'
-import { typescriptExecutable } from '@kisaki3/tooling/typescript'
+/** @fileoverview Builds public Solid components, assembles their styles and selects real UI test hosts. */
+
+import { defineLibrary } from '@kisaki3/config/vite/library'
 import solid from 'unplugin-solid/rolldown'
-
 import { assembleStyles } from './tools/styles'
-import manifest from './package.json' with { type: 'json' }
 
-export default defineConfig({
+export default defineLibrary({
+  entries: {
+    './alert': './src/components/alert/index.ts',
+    './badge': './src/components/badge/index.ts',
+    './button': './src/components/button/index.ts',
+    './chart': './src/components/chart/index.ts',
+    './checkbox': './src/components/checkbox/index.ts',
+    './collapsible': './src/components/collapsible/index.ts',
+    './combobox': './src/components/combobox/index.ts',
+    './dialog': './src/components/dialog/index.ts',
+    './drag': './src/components/drag/index.ts',
+    './empty-state': './src/components/empty-state/index.ts',
+    './field': './src/components/field/index.ts',
+    './image': './src/components/image/index.ts',
+    './input': './src/components/input/index.ts',
+    './link': './src/components/link/index.ts',
+    './markdown': './src/components/markdown/index.ts',
+    './menu': './src/components/menu/index.ts',
+    './popover': './src/components/popover/index.ts',
+    './progress': './src/components/progress/index.ts',
+    './radio-group': './src/components/radio-group/index.ts',
+    './scroll-area': './src/components/scroll-area/index.ts',
+    './segmented-control': './src/components/segmented-control/index.ts',
+    './select': './src/components/select/index.ts',
+    './separator': './src/components/separator/index.ts',
+    './slider': './src/components/slider/index.ts',
+    './spinner': './src/components/spinner/index.ts',
+    './switch': './src/components/switch/index.ts',
+    './table': './src/components/table/index.ts',
+    './tabs': './src/components/tabs/index.ts',
+    './textarea': './src/components/textarea/index.ts',
+    './toast': './src/components/toast/index.ts',
+    './tooltip': './src/components/tooltip/index.ts',
+    './styles.css': './src/styles.css',
+  },
   pack: {
-    hooks: { 'build:done': () => assembleStyles() },
-    entry: Object.fromEntries(
-      Object.entries(manifest.exports)
-        .filter(([, entry]) => entry['kisaki-source'].endsWith('.ts'))
-        .map(([subpath, entry]) => [
-          subpath === '.' ? 'index' : subpath.slice(2),
-          entry['kisaki-source'],
-        ]),
-    ),
-    tsconfig: 'tsconfig.pack.json',
     platform: 'browser',
-    target: 'es2023',
-    format: 'esm',
-    dts: { generator: 'tsgo', tsgo: { path: typescriptExecutable() } },
+    hooks: { 'build:done': () => assembleStyles() },
+    plugins: [solid()],
     deps: {
       onlyBundle: ['@unovis/solid', '@unovis/ts'],
       dts: { alwaysBundle: ['@unovis/solid', '@unovis/ts'] },
     },
-    plugins: [solid()],
     css: { fileName: 'components.css', modules: { generateScopedName: 'kui_[hash]_[local]' } },
   },
-  test: {
-    include: ['tests/browser/**/*.test.{ts,tsx}'],
-    fileParallelism: false,
-    testTimeout: 60_000,
-    hookTimeout: 60_000,
-    environment: 'node',
-  },
-  run: {
-    tasks: {
-      build: {
-        command: 'vp pack',
-        dependsOn: [{ task: 'build', from: 'dependencies' }],
-        cache: {
-          input: [{ auto: true }, { pattern: 'pnpm-lock.yaml', base: 'workspace' }],
-          output: ['dist/**'],
-        },
-      },
-      archive: { command: 'kisaki-package pack', dependsOn: ['build'], cache: false },
-      'check:package': { command: 'kisaki-package check', dependsOn: ['archive'], cache: false },
-      'test:consumers': {
-        command: 'vp test run --config config/vitest/consumers.ts',
-        dependsOn: [
-          '@kisaki3/desktop#prepare:electron',
-          'check:package',
-          '@kisaki3/desktop-appearance#archive',
-        ],
-        cache: false,
-      },
-    },
-  },
+  browserTests: true,
+  consumerHookTimeout: 180_000,
+  prepareConsumers: ['@kisaki3/desktop#prepare:electron'],
 })

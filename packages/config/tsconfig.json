@@ -1,0 +1,9 @@
+{
+  "extends": "./typescript/node.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "incremental": true,
+    "tsBuildInfoFile": ".cache/typescript/config.tsbuildinfo"
+  },
+  "include": ["vite/**/*.ts"]
+}

@@ -1,5 +1,5 @@
 {
-  "extends": "@kisaki3/typescript-config/solid.json",
+  "extends": "@kisaki3/config/typescript/solid.json",
   "compilerOptions": {
     "incremental": true,
     "tsBuildInfoFile": "../../.cache/typescript/lib.tsbuildinfo"

@@ -1,9 +1,11 @@
+#!/usr/bin/env node
 /**
  * @fileoverview Removes declared, reproducible outputs within their owning projects.
  */
 
 import { rm } from 'node:fs/promises'
 import { isAbsolute, relative, resolve, sep } from 'node:path'
+import { runCli } from './cli.ts'
 
 /** Resolves an output to a strict descendant of its owning project. */
 function projectOutput(project: string, output: string): string {
@@ -31,4 +33,14 @@ export async function removeOutputs(
     signal?.throwIfAborted()
     await rm(projectOutput(project, output), { recursive: true, force: true })
   }
+}
+
+if (import.meta.main) {
+  await runCli(async (signal) => {
+    if (process.argv.length > 2) {
+      throw new Error('Usage: kisaki-clean')
+    }
+
+    await removeOutputs(process.cwd(), ['dist', 'out'], signal)
+  })
 }

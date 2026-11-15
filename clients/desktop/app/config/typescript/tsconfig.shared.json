@@ -1,11 +1,9 @@
 {
-  "extends": "@kisaki3/typescript-config/base.json",
+  "extends": "@kisaki3/config/typescript/base.json",
   "compilerOptions": {
     "skipLibCheck": false,
     "incremental": true,
-    "tsBuildInfoFile": "../../.cache/typescript/shared.tsbuildinfo",
-    "types": []
+    "tsBuildInfoFile": "../../.cache/typescript/shared.tsbuildinfo"
   },
-  "include": ["../../tests/fixtures/desktop-app/src/shared/**/*.ts"],
-  "exclude": []
+  "include": ["../../tests/fixtures/desktop-app/src/shared/**/*.ts"]
 }

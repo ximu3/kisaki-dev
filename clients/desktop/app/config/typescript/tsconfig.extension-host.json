@@ -1,12 +1,12 @@
 {
-  "extends": "@kisaki3/typescript-config/node.json",
+  "extends": "@kisaki3/config/typescript/node.json",
   "compilerOptions": {
     "incremental": true,
-    "tsBuildInfoFile": "../../.cache/typescript/extension-host.tsbuildinfo"
+    "tsBuildInfoFile": "../../.cache/typescript/extension-host.tsbuildinfo",
+    "customConditions": ["node"]
   },
   "include": [
     "../../tests/fixtures/desktop-app/src/extension-host/**/*.ts",
     "../../tests/fixtures/desktop-app/src/shared/**/*.ts"
-  ],
-  "exclude": []
+  ]
 }

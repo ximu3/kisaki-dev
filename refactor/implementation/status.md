@@ -12,6 +12,8 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 
 [全项目工程现代化](engineering-modernization.md)已在迁移分支实施，采用 Vite+ 与 TypeScript 7.1 Beta。工具、测试和源码开发按实际宿主组织，新的 CI 按完整候选差异选择专项作业。Windows、macOS、Linux 的两种架构已通过[迁移分支六目标 CI](https://github.com/ximu3/kisaki-dev/actions/runs/43601249062)。主线切换待正式 7.1.x 验收，保护规则按授权调整。历史运行与设计决定见[全项目审视](modernization-audit.md)。
 
+[工作区配置与任务重构](workspace-config-and-tasks.md)已接入迁移分支。六个公共包共用 `@kisaki3/config`，CI 按目标复用一次准备的构建。制品验收直接读取指定归档。当前候选的目标作业和必需检查见 [PR #39](https://github.com/ximu3/kisaki-dev/pull/39/checks)。
+
 [当前工程验证](../verification/evidence/w00/README.md)已取得本机 Windows x64 和 CI 六目标结果，覆盖工程载体的构建、原生与 Electron 运行、开发回归、打包及制品运行。
 
 各公共包从同一份已检查的 tarball 验证独立消费，根入口通过 Vite Task 调度。外观、分发、桌面合同与本地化分别见 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md) 和 [W03](../verification/evidence/w03/README.md)。[W04](../verification/evidence/w04/README.md) 另以 Node 父子进程和 Electron 窗口验证两种消息通道及其寿命。[W05](../verification/evidence/w05/README.md) 验证公共 UI 的完整组件、普通样式与浏览器／Electron 消费。

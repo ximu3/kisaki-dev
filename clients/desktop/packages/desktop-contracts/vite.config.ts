@@ -1,50 +1,40 @@
-import { defineConfig } from 'vite-plus'
-import { typescriptExecutable } from '@kisaki3/tooling/typescript'
-import { checkIconNames } from './tools/generate-icon-names'
-import manifest from './package.json' with { type: 'json' }
+/** @fileoverview Declares the public desktop contract entries and verifies the generated icon names. */
 
-export default defineConfig({
-  pack: {
-    hooks: { 'build:prepare': () => checkIconNames() },
-    entry: Object.fromEntries(
-      Object.entries(manifest.exports)
-        .filter(([, entry]) => entry['kisaki-source'].endsWith('.ts'))
-        .map(([subpath, entry]) => [
-          subpath === '.' ? 'index' : subpath.slice(2),
-          entry['kisaki-source'],
-        ]),
-    ),
-    tsconfig: 'tsconfig.pack.json',
-    target: 'es2023',
-    format: 'esm',
-    fixedExtension: false,
-    dts: { generator: 'tsgo', tsgo: { path: typescriptExecutable() } },
+import { defineLibrary } from '@kisaki3/config/vite/library'
+
+export default defineLibrary({
+  entries: {
+    './errors': './src/errors.ts',
+    './json': './src/json.ts',
+    './operations': './src/operations.ts',
+    './date': './src/date.ts',
+    './geometry': './src/geometry.ts',
+    './paths': './src/paths.ts',
+    './text-rules': './src/text-rules.ts',
+    './library': './src/library/index.ts',
+    './metadata': './src/metadata/index.ts',
+    './ingest': './src/ingest/index.ts',
+    './scanner': './src/scanner/index.ts',
+    './sessions': './src/sessions/index.ts',
+    './tasks': './src/tasks.ts',
+    './resources': './src/resources.ts',
+    './attachments': './src/attachments.ts',
+    './images': './src/images.ts',
+    './appearance': './src/appearance.ts',
+    './fonts': './src/fonts.ts',
+    './preferences': './src/preferences/index.ts',
+    './search': './src/search.ts',
+    './onboarding': './src/onboarding.ts',
+    './updates': './src/updates.ts',
+    './extensions': './src/extensions.ts',
+    './events': './src/events.ts',
+    './ui': './src/ui/index.ts',
+    './deeplink': './src/deeplink.ts',
+    './development': './src/development.ts',
+    './i18n': './src/i18n.ts',
+    './network': './src/network.ts',
+    './private-data': './src/private-data.ts',
+    './app': './src/app.ts',
   },
-  test: {
-    include: ['src/**/*.test.{ts,tsx}'],
-    environment: 'node',
-  },
-  run: {
-    tasks: {
-      build: {
-        command: 'vp pack',
-        dependsOn: [{ task: 'build', from: 'dependencies' }],
-        cache: {
-          input: [{ auto: true }, { pattern: 'pnpm-lock.yaml', base: 'workspace' }],
-          output: ['dist/**'],
-        },
-      },
-      archive: { command: 'kisaki-package pack', dependsOn: ['build'], cache: false },
-      'check:package': { command: 'kisaki-package check', dependsOn: ['archive'], cache: false },
-      'test:consumers': {
-        command: 'vp test run --config config/vitest/consumers.ts',
-        dependsOn: [
-          'check:package',
-          '@kisaki3/desktop-appearance#archive',
-          '@kisaki3/extension-distribution#archive',
-        ],
-        cache: false,
-      },
-    },
-  },
+  generated: { task: 'generate:icon-names', command: 'vpx tools/generate-icon-names.ts' },
 })

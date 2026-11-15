@@ -1,3 +1,5 @@
+/** @fileoverview Bundles the storage workload for the Electron performance worker. */
+
 import { defineConfig } from 'vite-plus'
 
 export default defineConfig({
@@ -12,5 +14,5 @@ export default defineConfig({
     },
     rolldownOptions: { external: [/^node:/] },
   },
-  ssr: { target: 'node', noExternal: true },
+  ssr: { noExternal: true },
 })

@@ -1,3 +1,5 @@
+/** @fileoverview Builds and serves the four Solid fixture windows with their document policies. */
+
 import { defineConfig } from 'vite'
 import solid from 'vite-plugin-solid'
 import { fileURLToPath } from 'node:url'
@@ -29,7 +31,7 @@ export default defineConfig(({ mode }) => ({
       },
     },
   ],
-  server: { host: '127.0.0.1', port: 0, strictPort: false },
+  server: { host: '127.0.0.1', port: 0 },
   build: {
     target: 'chrome156',
     rolldownOptions: {

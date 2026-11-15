@@ -43,21 +43,43 @@
     }
   },
   "scripts": {
-    "typecheck:project": "tsc -b",
-    "clean:outputs": "kisaki-package clean",
-    "test:unit": "vp test run",
-    "generate:styles": "vpx tools/styles.ts --generate"
+    "generate:styles": "vpx tools/styles.ts --generate",
+    "clean": "kisaki-clean"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
+    "@kisaki3/config": "workspace:*",
     "@kisaki3/tooling": "workspace:*",
-    "@kisaki3/typescript-config": "workspace:*",
     "@playwright/test": "1.64.1",
     "@tailwindcss/cli": "4.3.3",
     "@types/css-tree": "3.2.0",
     "@types/node": "catalog:",
     "css-tree": "3.2.1",
+    "publint": "catalog:",
     "tailwindcss": "4.3.3",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
+  },
+  "publishConfig": {
+    "exports": {
+      "./tokens": {
+        "types": "./dist/tokens.d.ts",
+        "import": "./dist/tokens.js"
+      },
+      "./values": {
+        "types": "./dist/values.d.ts",
+        "import": "./dist/values.js"
+      },
+      "./defaults": {
+        "types": "./dist/defaults.d.ts",
+        "import": "./dist/defaults.js"
+      },
+      "./styles.css": {
+        "default": "./dist/styles.css"
+      },
+      "./tailwind.css": {
+        "default": "./dist/tailwind.css"
+      }
+    }
   }
 }

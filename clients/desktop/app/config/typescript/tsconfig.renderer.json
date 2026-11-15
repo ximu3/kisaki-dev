@@ -1,5 +1,5 @@
 {
-  "extends": "@kisaki3/typescript-config/solid.json",
+  "extends": "@kisaki3/config/typescript/solid.json",
   "compilerOptions": {
     "skipLibCheck": false,
     "incremental": true,
@@ -10,6 +10,5 @@
     "../../tests/fixtures/desktop-app/src/renderer/**/*.ts",
     "../../tests/fixtures/desktop-app/src/renderer/**/*.tsx",
     "../../tests/fixtures/desktop-app/src/shared/**/*.ts"
-  ],
-  "exclude": []
+  ]
 }

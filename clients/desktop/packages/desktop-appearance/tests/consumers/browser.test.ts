@@ -6,8 +6,8 @@ import { readFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { build, preview } from 'vite-plus'
 import { chromium } from '@playwright/test'
-import { readPnpm, runPnpm } from '@kisaki3/tooling/process'
-import { consumerTest } from './consumer'
+import { runPnpm } from '@kisaki3/tooling/process'
+import { consumerTest } from './installation'
 
 /** Appearance package root whose packed CSS and token exports are consumed by this suite. */
 const packageRoot = resolve(import.meta.dirname, '../..')
@@ -25,7 +25,7 @@ const test = consumerTest('browser')
     return page
   })
   .extend('siteUrl', { scope: 'file' }, async ({ consumerDirectory }, { onCleanup }) => {
-    await readPnpm(
+    await runPnpm(
       [
         'exec',
         'tailwindcss',
@@ -34,7 +34,7 @@ const test = consumerTest('browser')
         '-o',
         join(consumerDirectory, 'utilities.css'),
       ],
-      packageRoot,
+      { cwd: packageRoot },
     )
     await build({ root: consumerDirectory, configFile: false, logLevel: 'warn' })
 

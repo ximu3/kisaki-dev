@@ -4,11 +4,11 @@ import { afterAll, beforeAll, expect, test, vi } from 'vite-plus/test'
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { tmpdir } from 'node:os'
-import { startInputWatcher } from '../../tools/dev/inputs'
+import { startInputWatcher } from '../../../tools/dev/inputs'
 
 /** Hoisted repository and application roots used by the isolated input watcher. */
 const paths = vi.hoisted(() => ({ appRoot: '', repositoryRoot: '' }))
-vi.mock(import('../../tools/lib/paths'), async (importOriginal) => ({
+vi.mock(import('../../../tools/lib/paths'), async (importOriginal) => ({
   ...(await importOriginal()),
   /** Exposes the isolated application's preparation inputs. */
   get appRoot() {

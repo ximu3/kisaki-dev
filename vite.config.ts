@@ -1,12 +1,21 @@
+/** @fileoverview Configures repository checks, formatting, staged files and CI task execution. */
+
 import { defineConfig } from 'vite-plus'
 
+/** Native task graph roots selected together for the current CI target. */
+const targetTasks = process.env.KISAKI_CI_TASKS
+  ? (JSON.parse(process.env.KISAKI_CI_TASKS) as string[])
+  : undefined
+
 export default defineConfig({
+  run: {
+    tasks: targetTasks
+      ? { 'ci:target': { command: [], dependsOn: targetTasks, cache: false } }
+      : {},
+  },
   fmt: {
     singleQuote: true,
     semi: false,
-    trailingComma: 'all',
-    printWidth: 100,
-    endOfLine: 'lf',
     sortPackageJson: false,
     ignorePatterns: [
       'refactor/**',
@@ -28,7 +37,7 @@ export default defineConfig({
   },
   lint: {
     plugins: ['typescript'],
-    options: { typeAware: true, typeCheck: false },
+    options: { typeAware: true },
     ignorePatterns: [
       'refactor/**',
       '**/.local/**',
@@ -68,13 +77,12 @@ export default defineConfig({
   staged: {
     '*.{ts,tsx}': [
       'vp fmt --check --no-error-on-unmatched-pattern',
-      'vp lint --type-aware --no-error-on-unmatched-pattern',
+      'vp lint --no-error-on-unmatched-pattern',
     ],
     '*.{json,yaml,yml,css,html,md}': 'vp fmt --check --no-error-on-unmatched-pattern',
   },
   test: {
     include: ['tools/**/*.test.ts', 'tests/**/*.test.ts'],
-    environment: 'node',
     testTimeout: 30_000,
   },
 })

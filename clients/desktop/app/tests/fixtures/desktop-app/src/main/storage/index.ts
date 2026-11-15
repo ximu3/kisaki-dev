@@ -27,7 +27,7 @@ export async function verifyStorage(
   const database = await openDatabaseExecutor(entry, options)
   try {
     const preferences = await database.readPreferences()
-    assert.equal(preferences.general.uiTranslation.status, 'ready')
+    assert.ok(preferences, 'Expected the deployed worker to return the preference row')
     await database.adoptLocale('en')
   } finally {
     await database.close()

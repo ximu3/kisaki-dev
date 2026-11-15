@@ -1,10 +1,11 @@
+/** @fileoverview Builds the independent utility process used by the engineering fixture. */
+
 import { defineConfig } from 'vite'
 
 export default defineConfig({
   build: {
     ssr: true,
     target: 'node24',
-    minify: false,
     lib: {
       entry: 'src/extension-host/entry.ts',
       formats: ['es'],
@@ -13,5 +14,5 @@ export default defineConfig({
     },
     rolldownOptions: { external: [/^node:/] },
   },
-  ssr: { target: 'node', noExternal: true },
+  ssr: { noExternal: true },
 })

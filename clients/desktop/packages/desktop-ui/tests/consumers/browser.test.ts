@@ -6,7 +6,7 @@ import { expect as browserExpect } from '@playwright/test'
 import { join } from 'node:path'
 import { readFile } from 'node:fs/promises'
 import { runPnpm } from '@kisaki3/tooling/process'
-import { consumerTest as test, packageRoot } from './consumer'
+import { consumerTest as test, packageRoot } from './environment'
 import type {} from '../fixtures/workshop/api'
 
 test('packed declarations pass complete Bundler and NodeNext checks and typed consumer lint', async ({

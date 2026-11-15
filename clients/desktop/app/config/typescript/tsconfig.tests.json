@@ -1,10 +1,11 @@
 {
-  "extends": "@kisaki3/typescript-config/solid.json",
+  "extends": "@kisaki3/config/typescript/solid.json",
   "compilerOptions": {
     "incremental": true,
     "tsBuildInfoFile": "../../.cache/typescript/tests.tsbuildinfo",
     "types": ["node", "vite/client"],
-    "lib": ["ES2023", "ES2024.Promise", "DOM", "DOM.Iterable"]
+    "lib": ["ES2023", "ES2024.Promise", "DOM", "DOM.Iterable"],
+    "customConditions": ["node"]
   },
   "include": [
     "../../src/**/*.test.ts",

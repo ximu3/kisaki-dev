@@ -1,10 +1,8 @@
 /**
- * @fileoverview Runs finite commands and pnpm tasks with cancellation, optional output
- * capture and structured failures.
+ * @fileoverview Runs finite commands and pnpm tasks with inherited diagnostics and cancellation.
  */
 
 import { spawn } from 'node:child_process'
-import type { SpawnOptions } from 'node:child_process'
 import { basename } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { stopProcessGroup } from './unix.ts'
@@ -19,72 +17,46 @@ export interface ProcessOptions {
   signal?: AbortSignal | undefined
 }
 
-/** A failed child command's exit status and captured diagnostics. */
+/** A failed child command's exit status. */
 export class CommandFailed extends Error {
   readonly exitCode: number
-  readonly stdout: string
-  readonly stderr: string
 
-  /**
-   * Records a positive exit code and any captured output; missing or nonpositive codes become 1.
-   */
-  constructor(
-    command: string,
-    code: number | null,
-    signal: string | null,
-    stdout = '',
-    stderr = '',
-  ) {
+  /** Preserves a positive child exit status, using 1 for signal or startup failure. */
+  constructor(command: string, code: number | null, signal: string | null) {
     super(`Tool failed: ${basename(command)} (${signal ?? code})`)
     this.exitCode = code && code > 0 ? code : 1
-    this.stdout = stdout
-    this.stderr = stderr
   }
 }
 
 /**
- * Runs a command until its streams close and pending termination handling settles.
- *
- * Capture uses one shared 1 MiB budget for stdout and stderr; overflow requests cancellation.
- * Nonzero exits reject with CommandFailed. Startup and termination failures are reported after
- * child closure.
+ * Runs a finite command with inherited diagnostics, waiting for closure and owned termination.
+ * Startup failures and nonzero exit statuses reject the operation.
  */
-async function execute(
+export async function run(
   command: string,
   args: string[],
-  options: ProcessOptions,
-  capture: boolean,
-): Promise<string> {
-  const limit = new AbortController()
-  const signals = [limit.signal]
-  if (options.signal) {
-    signals.push(options.signal)
-  }
-  const signal = AbortSignal.any(signals)
-  signal.throwIfAborted()
+  options: ProcessOptions = {},
+): Promise<void> {
+  const { signal } = options
+  signal?.throwIfAborted()
 
   const windows = process.platform === 'win32'
-  const stdio = capture ? 'pipe' : 'inherit'
-  const launch: SpawnOptions = {
+  const launch = {
     windowsHide: true,
     ...(options.cwd ? { cwd: options.cwd } : {}),
     ...(options.env ? { env: options.env } : {}),
     detached: !windows,
-    stdio: windows ? ['ignore', stdio, stdio, 'ipc'] : ['ignore', stdio, stdio],
   }
   const child = windows
     ? spawn(
         process.execPath,
         [fileURLToPath(new URL('./windows.ts', import.meta.url)), command, ...args],
-        launch,
+        { ...launch, stdio: ['ignore', 'inherit', 'inherit', 'ipc'] },
       )
-    : spawn(command, args, launch)
+    : spawn(command, args, { ...launch, stdio: ['ignore', 'inherit', 'inherit'] })
 
   let failure: unknown
   let stopping: Promise<void> | undefined
-  let stdout = ''
-  let stderr = ''
-  let size = 0
 
   /** Starts one termination request and retains any failure while the child closes. */
   const cancel = () => {
@@ -106,31 +78,13 @@ async function execute(
     })
   }
 
-  signal.addEventListener('abort', cancel, { once: true })
-  if (signal.aborted) {
+  signal?.addEventListener('abort', cancel, { once: true })
+  if (signal?.aborted) {
     cancel()
   }
   child.once('error', (cause) => {
     failure = cause
   })
-
-  /** Appends a captured chunk, requesting cancellation when the shared 1 MiB limit is exceeded. */
-  function collect(value: string, error: boolean): void {
-    size += Buffer.byteLength(value)
-    if (size > 1024 * 1024) {
-      limit.abort(new Error('Captured tool output exceeds 1 MiB'))
-      return
-    }
-
-    if (error) {
-      stderr += value
-    } else {
-      stdout += value
-    }
-  }
-
-  child.stdout?.setEncoding('utf8').on('data', (value: string) => collect(value, false))
-  child.stderr?.setEncoding('utf8').on('data', (value: string) => collect(value, true))
 
   try {
     const result = await new Promise<{ code: number | null; signal: string | null }>((resolve) => {
@@ -141,29 +95,13 @@ async function execute(
     if (failure) {
       throw failure
     }
-    signal.throwIfAborted()
+    signal?.throwIfAborted()
     if (result.code !== 0) {
-      throw new CommandFailed(command, result.code, result.signal, stdout, stderr)
+      throw new CommandFailed(command, result.code, result.signal)
     }
-
-    return stdout
   } finally {
-    signal.removeEventListener('abort', cancel)
+    signal?.removeEventListener('abort', cancel)
   }
-}
-
-/**
- * Runs a finite command with inherited standard output and error.
- *
- * Settles after child streams close and cancellation handling ends. Startup, termination and
- * nonzero-exit failures reject the operation.
- */
-export async function run(
-  command: string,
-  args: string[],
-  options: ProcessOptions = {},
-): Promise<void> {
-  await execute(command, args, options, false)
 }
 
 /** Resolves the pnpm executable that launched the current project task. */
@@ -178,18 +116,4 @@ function pnpmExecutable(): string {
 /** Runs a pnpm task with inherited diagnostics and waits for child closure. */
 export async function runPnpm(args: string[], options: ProcessOptions = {}): Promise<void> {
   await run(pnpmExecutable(), args, options)
-}
-
-/**
- * Runs pnpm in the supplied directory and returns its captured standard output.
- *
- * Stdout and stderr share a 1 MiB limit. The explicit directory takes precedence over options.cwd;
- * completion and failure follow {@link run}.
- */
-export async function readPnpm(
-  args: string[],
-  cwd: string,
-  options: ProcessOptions = {},
-): Promise<string> {
-  return execute(pnpmExecutable(), args, { ...options, cwd }, true)
 }

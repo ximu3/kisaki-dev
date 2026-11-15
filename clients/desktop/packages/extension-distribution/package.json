@@ -5,7 +5,33 @@
   "type": "module",
   "license": "MIT",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "exports": {
+      "./manifest": {
+        "types": "./dist/manifest.d.ts",
+        "import": "./dist/manifest.js"
+      },
+      "./registry": {
+        "types": "./dist/registry.d.ts",
+        "import": "./dist/registry.js"
+      },
+      "./metadata": {
+        "types": "./dist/metadata.d.ts",
+        "import": "./dist/metadata.js"
+      },
+      "./compatibility": {
+        "types": "./dist/compatibility.d.ts",
+        "import": "./dist/compatibility.js"
+      },
+      "./errors": {
+        "types": "./dist/errors.d.ts",
+        "import": "./dist/errors.js"
+      },
+      "./node/signing": {
+        "types": "./dist/node/signing.d.ts",
+        "import": "./dist/node/signing.js"
+      }
+    }
   },
   "engines": {
     "node": ">=24.11.1"
@@ -54,9 +80,7 @@
     }
   },
   "scripts": {
-    "typecheck:project": "tsc -b",
-    "clean:outputs": "kisaki-package clean",
-    "test:unit": "vp test run"
+    "clean": "kisaki-clean"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "0.10.1",
@@ -65,11 +89,13 @@
     "semver": "7.8.5"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
+    "@kisaki3/config": "workspace:*",
     "@kisaki3/tooling": "workspace:*",
-    "@kisaki3/typescript-config": "workspace:*",
     "@playwright/test": "1.64.1",
     "@types/node": "catalog:",
     "@types/semver": "7.8.0",
+    "publint": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
   }

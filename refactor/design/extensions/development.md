@@ -57,7 +57,7 @@ registry.json 保存待签名正文，dist/index.json 保存采用同一业务�
 
 启动前确定独立的开发 profile 和身份，为数据库、浏览器会话、锁及 .local 持久数据划定开发范围。正常重开保留测试资料、设置与凭据。显式开发项目在相同 ID 下优先加载，安装记录保持原样；同仓项目也须经过显式选择。应用核对 manifest、API 与运行条件后逐项激活，并分别报告进程、连接和激活状态。
 
-默认由 CLI 启动器拥有它启动的应用实例。同仓 desktop:dev 则由源码应用启动器拥有应用进程，并组合相同的程序化 dev 会话。一个进程只能有一个启动、重启和退出拥有者。工具不能另起第二个 Electron，也不能扫描普通实例后自动附加。
+默认由 CLI 启动器拥有它启动的应用实例。同仓 `@kisaki3/desktop#dev` 则由源码应用启动器拥有应用进程，并组合相同的程序化 dev 会话。一个进程只能有一个启动、重启和退出拥有者。工具不能另起第二个 Electron，也不能扫描普通实例后自动附加。
 
 <a id="reload"></a>
 
@@ -90,7 +90,7 @@ Node 构建成功后，默认自动重建共享宿主：撤销旧贡献和调用
 
 ## 父子开发连接
 
-唯一启动器通过 Node child_process.spawn 建立 JSON 父子 IPC，直接启动所选应用并拥有该实际进程。源码 desktop:dev 与独立 kisx dev 消费 extension-cli/extension 的同一启动能力，程序化构建监听使用启动器交给它的连接，不再启动第二个应用。显式开发模式、隔离 profile、就绪、逐项采用和目录释放使用[开发控制合同](../engineering/protocols.md#development)，通过 desktop-rpc 传递；Node 保持实际消息边界，连接绑定启动器拥有的进程。技术取舍与平台范围见[验证记录](../../verification/evidence/development-ipc/2026-10-26/README.md)。
+唯一启动器通过 Node child_process.spawn 建立 JSON 父子 IPC，直接启动所选应用并拥有该实际进程。源码 `@kisaki3/desktop#dev` 与独立 kisx dev 消费 extension-cli/extension 的同一启动能力，程序化构建监听使用启动器交给它的连接，不再启动第二个应用。显式开发模式、隔离 profile、就绪、逐项采用和目录释放使用[开发控制合同](../engineering/protocols.md#development)，通过 desktop-rpc 传递；Node 保持实际消息边界，连接绑定启动器拥有的进程。技术取舍与平台范围见[验证记录](../../verification/evidence/development-ipc/2026-10-26/README.md)。
 
 desktop-contracts/development 拥有纯类型、方法与通知、协议版本和启动传参；CLI 与应用使用 desktop-rpc，Node 负责传输和消息边界。SDK 不因此获得宿主重启或安装管理能力。Vite HTTP 和 HMR 只使用本会话登记的本机来源与文档映射；按[开发视图规则](webview.md#development)保留每视图来源，施加精确资源 CSP 和有限开发例外。正式包仍使用包内入口，不放宽 iframe 资源或实例桥接边界。每一层连接按自己的生命周期清理，文档刷新不代表重新执行业务。
 

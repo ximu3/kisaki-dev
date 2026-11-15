@@ -7,7 +7,7 @@ import { join } from 'node:path'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { runPnpm } from '@kisaki3/tooling/process'
-import { consumerTest } from './consumer'
+import { consumerTest } from './installation'
 
 /** Isolated Node consumer fixtures for the actual distribution tarball. */
 const test = consumerTest('node')

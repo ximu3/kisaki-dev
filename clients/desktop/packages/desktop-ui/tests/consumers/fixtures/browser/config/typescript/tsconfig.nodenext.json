@@ -2,7 +2,7 @@
   "extends": "./tsconfig.browser.json",
   "compilerOptions": {
     "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "customConditions": [],
     "tsBuildInfoFile": "../../.cache/nodenext.tsbuildinfo"
   }
 }

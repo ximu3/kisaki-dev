@@ -34,7 +34,7 @@ kisaki/
 │   │   │   ├── drizzle.config.ts
 │   │   │   ├── drizzle/
 │   │   │   ├── tsconfig.json
-│   │   │   ├── vitest.config.ts
+│   │   │   ├── vite.config.ts
 │   │   │   ├── playwright.config.ts
 │   │   │   └── package.json
 │   │   ├── packages/
@@ -54,7 +54,7 @@ kisaki/
 ├── site/
 ├── server/
 ├── packages/
-│   ├── typescript-config/
+│   ├── config/
 │   └── tooling/
 ├── tools/
 │   ├── release/
@@ -98,7 +98,7 @@ app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm wo
 
 依赖检查读取根 tsconfig.json 的有效编译选项，模块入口由所属包的 imports 与 exports 解析。根工具、配置、测试的三个类型项目归根 config/typescript；消费者等测试变体配置归实际执行它的工程，由所属命令显式指定。
 
-应用根目录保留实际默认入口：tsconfig.json 关联 config/typescript 中的环境项目，vitest.config.ts 负责常规 Node 测试，playwright.config.ts 选择需要真实 Electron 的窗口集成和端到端测试。四个程序的构建配置归 config/vite，由构建与开发工作流直接指定；其他测试配置按工具归 config/vitest 与 config/playwright。config 保存工具配置，tools 实现执行流程，tests 拥有用例与测试辅助。配置迁移同时维护相对路径、类型检查、开发监听和构建身份输入，不增加只有转发含义的根配置。
+应用根目录保留实际默认入口：tsconfig.json 关联 config/typescript 中的环境项目，vite.config.ts 拥有任务和命名 Vitest 项目，playwright.config.ts 选择需要真实 Electron 的窗口集成和端到端测试。四个程序的构建配置归 config/vite，由构建与开发工作流直接指定；其他测试配置按工具归 config/vitest 与 config/playwright。config 保存工具配置，tools 实现执行流程，tests 拥有用例与测试辅助。配置迁移同时维护相对路径、类型检查、开发监听和构建身份输入，不增加只有转发含义的根配置。
 
 八个公共包各自在 config/typescript 保存库源码、工具及适用的构建配置类型项目，由各包根目录的 tsconfig.json 组织；同包 vite.config.ts 保留为实际构建入口。官方扩展的 kisx.config.ts 与 vite.config.ts 使用扩展工程自身 tsconfig.json 的 Node 环境，运行源码按实际宿主划分，具体见[工作区类型配置](workspace.md#workspace)。作者模板和合成消费者采用相同归属规则；消费者样板的 Node、Webview 与 Solid 各自保留默认类型入口，工程工具类型配置归其 config/typescript。
 
@@ -106,7 +106,7 @@ app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm wo
 
 八个公共包均位于 clients/desktop/packages，desktop-appearance、desktop-ui 和 desktop-rpc 由实际桌面与扩展需求推动演进，同时保留纯视觉、组件与环境无关机制的边界。FontRef 仍由 desktop-contracts/fonts 拥有，桌面主题与资源选择仍由 desktop-contracts/appearance 组合。Web 与官网按自身目标设计界面，不因同仓而共用桌面样式或组件。
 
-根 packages 只承载当前真实共享的私有工程能力：typescript-config 与 tooling，不预设跨客户端的产品公共包。真实共同能力出现后，依据相同含义、实际消费者和维护责任判断是否提取；不为保持目录形式而重复实现已经成立的共同机制。目录位置不改变公开包独立版本、许可、exports 和仓库外消费的责任。官方扩展使用与第三方相同的产品合同，不读取应用私有实现，也不随桌面预装。
+根 packages 只承载当前真实共享的私有工程能力：config 与 tooling，不预设跨客户端的产品公共包。真实共同能力出现后，依据相同含义、实际消费者和维护责任判断是否提取；不为保持目录形式而重复实现已经成立的共同机制。目录位置不改变公开包独立版本、许可、exports 和仓库外消费的责任。官方扩展使用与第三方相同的产品合同，不读取应用私有实现，也不随桌面预装。
 
 工具按实际维护范围归属工程，内部目录、命令入口和工作流分工遵守[tools 结构](#tools)。工具源码、运行源码、测试样本与构建输出分别管理。
 
@@ -134,9 +134,9 @@ tools/
 └── release/
 ```
 
-`tools/ci/` 使用 Node 和 Git 读取候选改动、选择所需场景并核对文档引用。工作流负责 runner、事件、权限和结果汇总。
+`tools/ci/plan.ts` 用 Node 和 Git 根据候选改动选择各目标的验证任务。`tools/check-doc-links.ts` 检查仓库文档的本地路径与锚点。工作流负责事件、权限、runner 和结果汇总。
 
-各公共包通过自身 tests/consumers 验证公开制品，在仓库外的隔离工程中核对所属入口的声明、样式与 Node、Webview 或 Solid 消费。消费者样板以 `tests/consumers/fixtures/<宿主>/` 为固定位置。该包拥有消费合同、样板及断言，安装与清理采用共同的测试机制。各公共包的 tarball 输出归自身 out/package，公共打包与检查机制由私有 tooling 命令提供。包结构与类型制品检查直接复用 publint、Are the Types Wrong 等现成工具，执行关系见[测试任务](#test-tasks)。
+各公共包通过自身 tests/consumers 验证公开制品，在仓库外的隔离工程中核对所属入口的声明、样式与 Node、Webview 或 Solid 消费。消费者样板以 `tests/consumers/fixtures/<宿主>/` 为固定位置。该包拥有消费合同、样板及断言，安装与清理采用共同的测试机制。各公共包的 tarball 输出归自身 out/package，打包与制品检查任务由 `@kisaki3/config/vite/library` 配置。包结构与类型制品检查直接复用 publint、Are the Types Wrong 等现成工具，执行关系见[测试任务](#test-tasks)。
 
 公共包通过自己的 pack 任务交付 tarball，跨包消费者依赖实际使用的包任务，不维护另一份包收据清单。跨项目版本差、依赖、说明检查和正式发行元数据生成属于 release，遵守[发行合同](releases.md)，文件按实际协作需要组织。工程操作自身所需的输入校验、资源摘要核对和输出完整性检查归操作实现，不能依赖运行测试才能保证。测试通过正常、失败和边界场景验证这些行为；根工具不代替各项目自己的业务测试和构建。
 
@@ -208,7 +208,7 @@ clients/desktop/app/tools/
 | clean.ts                         | 只清理本工程声明的构建输出，核对实际目标与目录范围；缓存清理与开发资料重置保持独立操作。                                                                                                                                                                                     |
 | lib | 提供跨工作流的工程路径、目标解析和 SHA-256 计算。 |
 
-桌面的开发接入、build:fixture 和 package:fixture 分别由所属工作流执行，类型与测试任务直接调用所属运行器与配置；根 desktop:* 命令调度应用的相应任务。resources 与 native 的显式入口和内部调用复用同一工作流。不同目标、开发、构建与测试环境按[输出与清理规则](build.md#outputs)分离。
+桌面的开发接入、build:fixture 和 package:fixture 分别由所属工作流执行，类型与测试任务直接调用所属运行器与配置；从根用 `vp run @kisaki3/desktop#<任务>` 选择桌面操作。resources 与 native 的显式入口和内部调用复用同一工作流。不同目标、开发、构建与测试环境按[输出与清理规则](build.md#outputs)分离。
 
 `DesktopTarget`、目标解析与 Rust triple 映射共同归 `lib/targets.ts`。构建清单归 `build/manifest.ts`，安装载体的分发元数据归 `package/distribution.ts`。部署后的运行资源路径由 main/app/paths 负责。
 
@@ -287,13 +287,13 @@ clients/desktop/app/tests/
 
 一个消费者样板工程表达一种实际承诺的宿主或依赖条件，如 Node、浏览器或 Solid。每个样板在 `tests/consumers/fixtures/<宿主>/` 保存独立的 `package.json`、类型配置和源码，同一工程可以服务多个用例。运行时临时安装、启动和清理由对应测试作用域管理。
 
-各工程的测试配置显式选择目录、globals 和运行环境，测试类型不泄漏到运行源码。运行构建与声明生成排除测试源码，样本中的项目 manifest 不登记为 workspace 成员。目录命名不代替正确的运行环境，也不改变[验证覆盖要求](../../verification/acceptance.md#runtime-coverage)。
+测试范围、宿主和全局 API 按[配置归属](conventions.md#configuration-layout)选取，各工程只声明适用的覆盖。测试类型限定在对应测试项目中。运行构建与声明生成排除测试源码，样本中的项目 manifest 不登记为 workspace 成员。目录命名不代替正确的运行环境，也不改变[验证覆盖要求](../../verification/acceptance.md#runtime-coverage)。
 
 <a id="test-tasks"></a>
 
 ### 测试任务与执行
 
-测试命令由所属工程的 package scripts 定义，直接启动现成运行器和选定配置。普通 test 的默认范围明确记录；test:consumers、test:e2e、test:artifacts 等任务按不同输入、环境和执行阶段分别配置，具体仓库命令见[任务入口](../../verification/acceptance.md#commands)。命令可以是薄脚本，不因此新增同名工具或跨运行器的统一调度程序。
+测试命令由所属工程的 package scripts 或 Vite Task 定义，直接启动现成运行器和选定配置。普通 test 的默认范围明确记录；test:consumers、test:e2e、test:artifacts 等任务按不同输入、环境和执行阶段分别配置，具体仓库命令见[任务入口](../../verification/acceptance.md#commands)。命令可以是薄脚本，不因此新增同名工具或跨运行器的统一调度程序。
 
 消费者测试接收已经打包的公共包，最终制品测试接收已经完成打包与适用签名的目标文件。任务系统声明相应构建依赖、制品输入、运行环境、缓存条件与 CI 门槛；测试核对本次输入的路径、版本、构建身份及适用目标，缺失或不匹配时失败，不在用例中重建或替换待验证的产品制品。消费者自身的临时工程仍可按用例需要构建。
 

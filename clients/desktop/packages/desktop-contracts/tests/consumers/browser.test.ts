@@ -6,7 +6,7 @@ import { join } from 'node:path'
 import { build, preview } from 'vite-plus'
 import { chromium } from '@playwright/test'
 import { runPnpm } from '@kisaki3/tooling/process'
-import { consumerTest } from './consumer'
+import { consumerTest } from './installation'
 
 /** Packed-contract consumer fixtures owning the browser and its built test site. */
 const test = consumerTest('browser')

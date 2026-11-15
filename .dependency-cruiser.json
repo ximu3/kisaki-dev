@@ -171,10 +171,10 @@
       "severity": "error",
       "from": {
         "path": "(^|/)(src|native/node)/",
-        "pathNot": "(^|/)(tests|fixtures)/|\\.test\\.tsx?$|^packages/(tooling|typescript-config)/"
+        "pathNot": "(^|/)(tests|fixtures)/|\\.test\\.tsx?$|^packages/(tooling|config)/"
       },
       "to": {
-        "path": "^packages/(tooling|typescript-config)/|(^|/)(tools|tests)/"
+        "path": "^packages/(tooling|config)/|(^|/)(tools|tests)/"
       }
     },
     {

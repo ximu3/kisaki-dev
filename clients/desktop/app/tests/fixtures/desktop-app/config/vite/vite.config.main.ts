@@ -1,10 +1,11 @@
+/** @fileoverview Builds the engineering fixture main process and the deployed SQLite worker. */
+
 import { defineConfig } from 'vite'
 
 export default defineConfig({
   build: {
     ssr: true,
     target: 'node24',
-    minify: false,
     lib: {
       entry: {
         entry: 'src/main/entry.ts',
@@ -17,5 +18,5 @@ export default defineConfig({
     // Bundle the driver's JavaScript; initializeDatabase supplies the deployed nativeBinding path.
     rolldownOptions: { external: [/^node:/, 'electron'] },
   },
-  ssr: { target: 'node', noExternal: true },
+  ssr: { noExternal: true },
 })

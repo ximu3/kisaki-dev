@@ -1,3 +1,5 @@
+/** @fileoverview Runs storage and filesystem integration checks under the matching Electron Node host. */
+
 import { defineConfig } from 'vite-plus/test/config'
 import electronManifest from 'electron/package.json' with { type: 'json' }
 
@@ -17,9 +19,6 @@ export default defineConfig({
       'tests/integration/native/**/*.test.ts',
       'tests/integration/files/**/*.test.ts',
     ],
-    environment: 'node',
-    pool: 'forks',
-    globals: false,
     testTimeout: 30_000,
     // Preparing a durable database uses the same budget as the native operation cases.
     hookTimeout: 30_000,

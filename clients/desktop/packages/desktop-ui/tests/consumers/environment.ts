@@ -9,14 +9,8 @@ import { runPnpm } from '@kisaki3/tooling/process'
 import { join, resolve } from 'node:path'
 import { installConsumer } from '@kisaki3/tooling/testing/consumer'
 
-/** This package's root and completed distribution artifacts. */
+/** This package's root for the independent tarball installation. */
 export const packageRoot = resolve(import.meta.dirname, '../..')
-
-/** The checked tarballs belonging to this external consumer. */
-const archives = {
-  '@kisaki3/desktop-ui': join(packageRoot, 'out/package/package.tgz'),
-  '@kisaki3/desktop-appearance': join(packageRoot, '../desktop-appearance/out/package/package.tgz'),
-}
 
 /** Isolates installation, browser pages and evidence for the public UI consumer. */
 export const consumerTest = test
@@ -28,7 +22,7 @@ export const consumerTest = test
   .extend('consumerDirectory', { scope: 'file' }, async ({}, { onCleanup }) => {
     const directory = await installConsumer(
       join(import.meta.dirname, 'fixtures/browser'),
-      archives,
+      packageRoot,
       onCleanup,
     )
     await cp(join(packageRoot, 'tests/fixtures/workshop'), directory, { recursive: true })

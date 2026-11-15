@@ -15,7 +15,18 @@ on:
       suite:
         description: Verification scenario
         type: choice
-        options: [all, browser, consumers, native, windows, dev, process, artifacts, performance]
+        options:
+          [
+            all,
+            browser,
+            consumers,
+            native,
+            window-startup,
+            dev-session,
+            tooling,
+            fixture-artifacts,
+            performance,
+          ]
 
 permissions:
   contents: read
@@ -28,7 +39,7 @@ concurrency:
 
 jobs:
   plan:
-    name: Plan
+    name: Select checks
     if: github.event.action != 'edited' || github.event.changes.base
     runs-on: ubuntu-22.04
     outputs:
@@ -78,8 +89,8 @@ jobs:
           REQUEST_SUITE: ${{ inputs.suite }}
         run: node tools/ci/plan.ts "$BASE" "$HEAD"
 
-  check:
-    name: Checks (linux-x64)
+  workspace:
+    name: Workspace checks
     needs: plan
     if: needs.plan.outputs.reused != 'true'
     runs-on: ubuntu-22.04
@@ -93,7 +104,7 @@ jobs:
           node-version-file: .node-version
           package-manager-cache: false
       - name: Check document links
-        run: node tools/ci/documentation.ts
+        run: node tools/check-doc-links.ts
       - if: needs.plan.outputs.code == 'true'
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
       - if: needs.plan.outputs.code == 'true'
@@ -101,8 +112,8 @@ jobs:
       - if: needs.plan.outputs.code == 'true'
         run: pnpm run check
 
-  test:
-    name: Test (${{ matrix.label }}, ${{ matrix.target }})
+  target:
+    name: Target checks (${{ matrix.target }})
     needs: plan
     if: needs.plan.outputs.selected == 'true'
     strategy:
@@ -125,37 +136,33 @@ jobs:
         run: echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> "$GITHUB_ENV"
       - run: pnpm install --frozen-lockfile
       - name: Prepare Linux desktop
-        if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y xvfb openbox wmctrl libfuse2 rpm
+        if: matrix.x11
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb openbox wmctrl
+      - name: Prepare Linux packaging
+        if: runner.os == 'Linux' && contains(matrix.suites, 'fixture-artifacts')
+        run: |
+          sudo apt-get install -y libfuse2
+          if [[ "$KISAKI_VERIFY_INSTALLERS" == 1 ]]; then sudo apt-get install -y rpm; fi
+        env:
+          KISAKI_VERIFY_INSTALLERS: ${{ needs.plan.outputs.installers == 'true' && '1' || '0' }}
       - name: Prepare Chromium
-        if: contains(matrix.suites, 'browser') || contains(matrix.suites, 'consumers') || contains(matrix.suites, 'dev')
+        if: matrix.chromium
         run: pnpm --filter @kisaki3/desktop exec playwright install --with-deps chromium
-      - name: Run selected scenarios
+      - name: Run selected checks
         shell: bash
         env:
-          SUITES: ${{ toJSON(matrix.suites) }}
-          PACKAGES: ${{ toJSON(matrix.packages) }}
+          KISAKI_CI_TASKS: ${{ toJSON(matrix.tasks) }}
+          X11: ${{ matrix.x11 }}
           KISAKI_VERIFY_INSTALLERS: ${{ needs.plan.outputs.installers == 'true' && '1' || '0' }}
         run: |
-          suite() { jq -e --arg name "$1" 'index($name) != null' <<< "$SUITES" > /dev/null; }
-          tasks=()
-          if suite process; then tasks+=('@kisaki3/tooling#test:unit'); fi
-          if suite native; then tasks+=('@kisaki3/desktop#check:native' '@kisaki3/desktop#test:native'); fi
-          if suite browser; then tasks+=('@kisaki3/desktop-ui#test:browser'); fi
-          if suite consumers; then
-            while IFS= read -r pkg; do tasks+=("$pkg#test:consumers"); done < <(jq -r '.[]' <<< "$PACKAGES")
-          fi
-          for name in windows dev artifacts performance; do
-            if suite "$name"; then tasks+=("@kisaki3/desktop#test:$name"); fi
-          done
           prefix=()
-          if [[ "$RUNNER_OS" == Linux ]]; then
+          if [[ "$X11" == true ]]; then
             export XDG_SESSION_TYPE=x11
             prefix=(xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh)
           fi
-          for task in "${tasks[@]}"; do
-            "${prefix[@]}" pnpm exec vp run "$task"
-          done
+          "${prefix[@]}" pnpm exec vp run --concurrency-limit 1 --log labeled ci:target
       - name: Retain failure diagnostics
         if: failure()
         continue-on-error: true
@@ -171,7 +178,7 @@ jobs:
   gate:
     name: ${{ github.event.action == 'edited' && !github.event.changes.base && 'Metadata edit' || 'Required checks' }}
     if: always()
-    needs: [plan, check, test]
+    needs: [plan, workspace, target]
     runs-on: ubuntu-22.04
     steps:
       - name: Verify required job outcomes
@@ -181,14 +188,14 @@ jobs:
         run: |
           jq -e '
             .plan.result == "success" and
-            ((.plan.outputs.reused == "true" and .check.result == "skipped" and .test.result == "skipped") or
-             (.check.result == "success" and
-              ((.plan.outputs.selected == "true" and .test.result == "success") or
-               (.plan.outputs.selected == "false" and .test.result == "skipped"))))
+            ((.plan.outputs.reused == "true" and .workspace.result == "skipped" and .target.result == "skipped") or
+             (.workspace.result == "success" and
+              ((.plan.outputs.selected == "true" and .target.result == "success") or
+               (.plan.outputs.selected == "false" and .target.result == "skipped"))))
           ' <<< "$RESULTS"
 
   # Keep the currently protected check on the same candidate until the repository switches its rule.
-  compatibility:
+  legacy-required:
     name: ${{ github.event.action == 'edited' && !github.event.changes.base && 'Metadata compatibility' || 'verify / Required checks' }}
     needs: gate
     if: always()

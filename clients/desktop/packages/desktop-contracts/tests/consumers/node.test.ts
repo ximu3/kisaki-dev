@@ -5,7 +5,7 @@ import { expect } from 'vite-plus/test'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { runPnpm } from '@kisaki3/tooling/process'
-import { consumerTest } from './consumer'
+import { consumerTest } from './installation'
 
 /** Isolated Node consumer fixtures that install and exercise the actual contracts tarball. */
 const test = consumerTest('node')

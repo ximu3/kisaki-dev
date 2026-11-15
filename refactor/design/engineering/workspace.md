@@ -175,7 +175,7 @@ workspace 按实际工程登记。根检查运行各项目声明的类型入口�
 
 各依赖声明块按包名排序，脚本按开发、构建与打包、验证、维护组织，同类任务相邻。工具默认入口可直接发现，需要选择其他宿主或输入范围时显式指定配置。条件 exports 的顺序具有匹配语义，不能机械排序；不为固定字段顺序增加结构快照测试。已经进入共同 catalog 的版本由消费者引用 catalog，不另写一份等价版本。
 
-packages/typescript-config 提供纯环境、Node、浏览器和 Solid 的共同严格基线。根 vite.config.ts 拥有 Oxlint、Oxfmt 和暂存文件规则。packages/tooling 提供工程命令、进程、取消、错误交付和输出清理。
+`packages/config` 按工具导出 TypeScript 预设与共用的 Vite 库配置。根 vite.config.ts 拥有 lint、格式与暂存文件规则。工程进程、取消、错误交付与输出清理归 `packages/tooling`。
 
 类型感知 lint 使用工作区锁定的 Oxlint 与 tsgolint，按实际类型项目分析源码。仓库外消费者在安装实际 tarball 后执行类型检查与 lint。
 
@@ -185,17 +185,17 @@ packages/typescript-config 提供纯环境、Node、浏览器和 Solid 的共同
 
 仓库根 tsconfig.json 以空 files 和 references 组织 config/typescript 中的 tsconfig.tools.json、tsconfig.config.json 和 tsconfig.tests.json，三者均使用 Node 类型与 ES2023 库。需要 DOM 的浏览器回调由实际拥有者的类型项目检查，消费者样板使用各自配置。
 
-配置类型项目覆盖根工具入口及 config 中的 TypeScript 配置。Vite Task 调度各 workspace 与根 typecheck:project，后者通过 tsc -b 检查这三个项目，增量信息归根 .cache/typescript。
+配置类型项目覆盖根入口和 config 中的 TypeScript 配置。根 `typecheck` 调用成员的同名任务，再用 `tsc -b` 检查根项目，增量信息归根 .cache/typescript。
 
-共同规则继承 @kisaki3/typescript-config，依赖检查读取根 tsconfig.json 的编译选项，按所属 package.json 的 imports 与 exports 解析模块入口，不另维护私有别名映射。
+共同规则继承 `@kisaki3/config/typescript/<预设>.json`，依赖检查读取根 tsconfig.json 的编译选项，按所属 package.json 的 imports 与 exports 解析模块入口，不另维护私有别名映射。
 
-桌面应用的 tsconfig.json 以空 files 和 references 组织 main、preload、renderer、extension-host、shared、tools 和 tests 七个环境项目。具体配置位于 config/typescript，继续独立限制类型与源码范围；typecheck 使用 tsc -b，增量信息写入应用 .cache/typescript，保持 noEmit。编辑器通过默认入口发现这些项目，结构检查沿实际执行入口和项目引用核对源码覆盖。其余构建和测试配置的归属见[应用布局](layout.md#workspace)。
+桌面应用的 tsconfig.json 以空 files 和 references 组织 main、preload、renderer、extension-host、shared、native、tools 和 tests 环境项目。具体配置位于 config/typescript，继续独立限制类型与源码范围；typecheck 使用 tsc -b，增量信息写入应用 .cache/typescript，保持 noEmit。编辑器通过默认入口发现这些项目，结构检查沿实际执行入口和项目引用核对源码覆盖。其余构建和测试配置的归属见[应用布局](layout.md#workspace)。
 
 八个公共包各自通过工程根目录的 tsconfig.json，以空 files 和 references 组织类型项目，typecheck 使用 tsc -b。各包 config/typescript 中的 tsconfig.lib.json 负责库源码，tsconfig.tools.json 负责 Node 工具及适用的构建配置；desktop-ui 的 tsdown 配置同样归 Node 工具项目。
 
 同包根目录的 vite.config.ts 为 vp pack 指定包根的 tsconfig.pack.json；增量信息写入该包 .cache/typescript。新增环境按实际源码需要建立，不提前加入运行源码；配置遵守[共同归属](conventions.md#configuration-layout)。
 
-共享锁文件与工具升级可能扩大验证范围。开发入口按实际目标启动，desktop:dev 只启动桌面及必要依赖；项目脚本执行具体任务，根任务统一调度。版本、发行说明与部署仍按各自发行单位管理，不因一次安装或同仓提交而合并版本。
+共享锁文件与工具升级可能扩大验证范围。开发入口按实际目标启动，`@kisaki3/desktop#dev` 只启动桌面及必要依赖；项目脚本执行具体任务，根任务统一调度。版本、发行说明与部署仍按各自发行单位管理，不因一次安装或同仓提交而合并版本。
 
 <a id="tooling"></a>
 
@@ -229,7 +229,7 @@ packages/typescript-config 提供纯环境、Node、浏览器和 Solid 的共同
 
 ## 实现与公开声明的类型检查
 
-共同基线使用 strict: true 与 skipLibCheck: true。常规应用、公共包源码、工具、配置及测试完整检查自有 TypeScript 和实际调用，不让每个消费项目重复完整检查相同的依赖声明。源码严格性、声明交付责任与任务并发分别判断，采用依据及代表性测量见[必要性复核](../../verification/evidence/w00/declaration-checks.md)。
+共同基线采用固定 TypeScript 版本默认开启的 strict，使用 skipLibCheck: true。常规应用、公共包源码、工具、配置及测试完整检查自有 TypeScript 和实际调用，不让每个消费项目重复完整检查相同的依赖声明。源码严格性、声明交付责任与任务并发分别判断，采用依据及代表性测量见[必要性复核](../../verification/evidence/w00/declaration-checks.md)。
 
 skipLibCheck 跳过全部 .d.ts 的完整检查，包括自有和第三方声明；TypeScript 仍读取声明并依据它检查调用。该选项不修复错误声明，可能掩盖声明内部冲突，不能被用来证明声明本身准确。
 
@@ -247,7 +247,7 @@ UI 与其他包遵守同一分工，不另设仅为跳过依赖声明的配置�
 
 ### 任务名称与项目入口
 
-项目清单声明自己的操作。需要前置依赖和产物缓存的任务由同项目 `vite.config.ts` 声明。`vp run <包名>#<任务名>` 运行一个任务及其依赖。根 `check` 先构建公共包，再执行各项目的类型检查、静态规则、格式与快速测试。浏览器、Electron、原生集成、制品和性能各有独立命令。
+根清单提供 `build`、`typecheck`、`lint`、`test`、`check` 与 `clean`。成员清单拥有叶操作，需要前置依赖或缓存的任务在所属 vite.config.ts 中声明。`vp run <包名>#<任务>` 运行单包任务和前置操作，`--filter` 选择多个成员。实际读取公共导出的类型检查、lint 和测试先准备所需构建。浏览器、真实桌面、制品和性能分别验证。
 
 <a id="ci-selection"></a>
 
@@ -313,9 +313,9 @@ Kisaki 和四个独立项目启用依赖图与安全告警。Dependabot 在支�
 
 `ci.yml` 拥有 PR 候选的计划、基础检查、按风险选择的目标及汇总。手动运行可以指定宿主和场景。`pr-title.yml` 以只读权限核对当前 PR 标题。正式发行流程在所属工作包交付，按摘要验证并交接实际候选。
 
-日常验证在 PR 合并前完成。严格合并门禁使代码在进入主线前完成对当前合并结果的验证，合入后沿用这些证据；main push 不触发普通 CI。明确请求的完整验证由手动入口执行，正式发行按所属工作包验收。
+日常验证在 PR 合并前完成。main push 核对已验证候选与主线的代码树及检查结果，匹配时复用，缺少对应结果时按基线补验。手动入口可指定目标与套件，正式发行按所属工作包验收。
 
-常规 PR 合入 main。更换目标分支后，通过重新打开 PR 或更新源分支提交，按新的目标分支发起代码验证；原运行的比较基线保持其触发时的值。
+常规 PR 合入 main。目标分支变更时以新的基线重新核对候选，纯标题和正文编辑保留原有代码检查结果。
 
 实际代码验证根据依赖图及 Git 基线选择变更项目和下游；共享配置、锁文件变化或影响范围无法可靠判断时扩大检查。每次实际验证都执行汇总任务，确认所有应运行任务已经成功完成，不能把应执行却被 skipped 的任务算作通过。同一 PR 的新代码验证可以取消过时验证；标题检查使用独立取消组。
 
@@ -339,4 +339,4 @@ PR 标题作为 Squash 标题，正文遵守[PR 描述规范](documentation.md#p
 
 仓库在 `.vite-hooks/pre-commit` 调用 `pnpm exec vp staged`。根配置对暂存源码运行格式检查和类型感知 lint，其余支持的文件按格式规则检查。开发者自行审阅和暂存修改。
 
-`pnpm install:hooks` 通过 Vite+ 安装当前仓库的 dispatcher，`pnpm uninstall:hooks` 撤销。Git worktree 共享仓库本地配置，已有 hook 的归属以 `git config --show-origin --get core.hooksPath` 和 `vp hooks status` 为准。[Vite+ hooks](https://viteplus.dev/guide/commit-hooks)
+`pnpm exec vp hooks enable` 通过 Vite+ 安装当前仓库的 dispatcher，`pnpm exec vp hooks disable` 撤销。Git worktree 共享仓库本地配置，已有 hook 的归属以 `git config --show-origin --get core.hooksPath` 和 `vp hooks status` 为准。[Vite+ hooks](https://viteplus.dev/guide/commit-hooks)

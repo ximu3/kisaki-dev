@@ -6,6 +6,9 @@ importers:
   .:
     configDependencies: {}
     packageManagerDependencies:
+      '@pnpm/exe':
+        specifier: 12.18.0
+        version: 12.18.0
       pnpm:
         specifier: 12.18.0
         version: 12.18.0
@@ -89,6 +92,11 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@pnpm/exe@12.18.0':
+    resolution: {integrity: sha512-3t/p83vw9SXsJML6suMBThCtwCl4lUGp/ILcxECU1In+G+NmFwMV9D+2TcvU7kX8tbrHRoYhs3eOPepEVdD7tQ==}
+    engines: {node: '>=18'}
+    hasBin: true
+
   pnpm@12.18.0:
     resolution: {integrity: sha512-nXiC1dyCFH7PxOBiqjSDTgrQKWcQoYN6ERWuASEn02txCeMhrBWYod0KZVl2gbHpmRfhLtDXSerpEYeUM2O+sw==}
     engines: {node: '>=18'}
@@ -138,6 +146,23 @@ snapshots:
   '@pnpm/exe.win32-x64@12.18.0':
     optional: true
 
+  '@pnpm/exe@12.18.0':
+    optionalDependencies:
+      '@pnpm/exe.android-arm64': 12.18.0
+      '@pnpm/exe.android-x64': 12.18.0
+      '@pnpm/exe.darwin-arm64': 12.18.0
+      '@pnpm/exe.darwin-x64': 12.18.0
+      '@pnpm/exe.freebsd-x64': 12.18.0
+      '@pnpm/exe.linux-arm64': 12.18.0
+      '@pnpm/exe.linux-arm64-musl': 12.18.0
+      '@pnpm/exe.linux-ppc64': 12.18.0
+      '@pnpm/exe.linux-riscv64': 12.18.0
+      '@pnpm/exe.linux-s390x': 12.18.0
+      '@pnpm/exe.linux-x64': 12.18.0
+      '@pnpm/exe.linux-x64-musl': 12.18.0
+      '@pnpm/exe.win32-arm64': 12.18.0
+      '@pnpm/exe.win32-x64': 12.18.0
+
   pnpm@12.18.0:
     optionalDependencies:
       '@pnpm/exe.android-arm64': 12.18.0
@@ -164,12 +189,18 @@ settings:
 
 catalogs:
   default:
+    '@arethetypeswrong/cli':
+      specifier: 0.18.5
+      version: 0.18.5
     '@types/node':
       specifier: 24.19.2
       version: 24.19.2
     electron:
       specifier: 45.3.2
       version: 45.3.2
+    publint:
+      specifier: 0.3.25
+      version: 0.3.25
     solid-js:
       specifier: 1.9.19
       version: 1.9.19
@@ -189,18 +220,16 @@ overrides:
 
 packageExtensionsChecksum: sha256-A6LwFSh/yhHYALTgYOl4ziesnQJ2yeAJ4QK9Pv6bRH8=
 
-pnpmfileChecksum: sha256-TFmHErSfaoQNhefG3qJz+eostPm3Ce+23EoEjHGbOPs=
-
 importers:
 
   .:
     devDependencies:
+      '@kisaki3/config':
+        specifier: workspace:*
+        version: link:packages/config
       '@kisaki3/tooling':
         specifier: workspace:*
         version: link:packages/tooling
-      '@kisaki3/typescript-config':
-        specifier: workspace:*
-        version: link:packages/typescript-config
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.2
@@ -253,12 +282,12 @@ importers:
       '@fontsource-variable/noto-sans-sc':
         specifier: 5.3.1
         version: 5.3.1
+      '@kisaki3/config':
+        specifier: workspace:*
+        version: link:../../../packages/config
       '@kisaki3/tooling':
         specifier: workspace:*
         version: link:../../../packages/tooling
-      '@kisaki3/typescript-config':
-        specifier: workspace:*
-        version: link:../../../packages/typescript-config
       '@napi-rs/cli':
         specifier: 3.10.9
         version: 3.10.9(@emnapi/core@1.11.2)(@emnapi/runtime@1.11.3)(@types/node@24.19.2)(supports-color@7.2.0)
@@ -277,9 +306,6 @@ importers:
       chokidar:
         specifier: 6.0.0
         version: 6.0.0
-      cross-env:
-        specifier: 10.1.0
-        version: 10.1.0
       drizzle-kit:
         specifier: 1.0.0-rc.5
         version: 1.0.0-rc.5(drizzle-orm@1.0.0-rc.5(@types/better-sqlite3@9.6.0)(better-sqlite3@13.0.3)(valibot@1.5.0(typescript@7.1.0-beta)))
@@ -325,12 +351,15 @@ importers:
 
   clients/desktop/packages/desktop-appearance:
     devDependencies:
+      '@arethetypeswrong/cli':
+        specifier: 'catalog:'
+        version: 0.18.5
+      '@kisaki3/config':
+        specifier: workspace:*
+        version: link:../../../../packages/config
       '@kisaki3/tooling':
         specifier: workspace:*
         version: link:../../../../packages/tooling
-      '@kisaki3/typescript-config':
-        specifier: workspace:*
-        version: link:../../../../packages/typescript-config
       '@playwright/test':
         specifier: 1.64.1
         version: 1.64.1
@@ -346,6 +375,9 @@ importers:
       css-tree:
         specifier: 3.2.1
         version: 3.2.1
+      publint:
+        specifier: 'catalog:'
+        version: 0.3.25
       tailwindcss:
         specifier: 4.3.3
         version: 4.3.3
@@ -377,12 +409,15 @@ importers:
         specifier: 1.5.0
         version: 1.5.0(typescript@7.1.0-beta)
     devDependencies:
+      '@arethetypeswrong/cli':
+        specifier: 'catalog:'
+        version: 0.18.5
+      '@kisaki3/config':
+        specifier: workspace:*
+        version: link:../../../../packages/config
       '@kisaki3/tooling':
         specifier: workspace:*
         version: link:../../../../packages/tooling
-      '@kisaki3/typescript-config':
-        specifier: workspace:*
-        version: link:../../../../packages/typescript-config
       '@lucide/icons':
         specifier: 1.72.0
         version: 1.72.0
@@ -392,6 +427,9 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.2
+      publint:
+        specifier: 'catalog:'
+        version: 0.3.25
       typescript:
         specifier: 'catalog:'
         version: 7.1.0-beta
@@ -411,18 +449,24 @@ importers:
         specifier: 12.1.4
         version: 12.1.4
     devDependencies:
+      '@arethetypeswrong/cli':
+        specifier: 'catalog:'
+        version: 0.18.5
+      '@kisaki3/config':
+        specifier: workspace:*
+        version: link:../../../../packages/config
       '@kisaki3/tooling':
         specifier: workspace:*
         version: link:../../../../packages/tooling
-      '@kisaki3/typescript-config':
-        specifier: workspace:*
-        version: link:../../../../packages/typescript-config
       '@playwright/test':
         specifier: 1.64.1
         version: 1.64.1
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.2
+      publint:
+        specifier: 'catalog:'
+        version: 0.3.25
       typescript:
         specifier: 'catalog:'
         version: 7.1.0-beta
@@ -432,18 +476,24 @@ importers:
 
   clients/desktop/packages/desktop-rpc:
     devDependencies:
+      '@arethetypeswrong/cli':
+        specifier: 'catalog:'
+        version: 0.18.5
+      '@kisaki3/config':
+        specifier: workspace:*
+        version: link:../../../../packages/config
       '@kisaki3/tooling':
         specifier: workspace:*
         version: link:../../../../packages/tooling
-      '@kisaki3/typescript-config':
-        specifier: workspace:*
-        version: link:../../../../packages/typescript-config
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.2
       electron:
         specifier: 'catalog:'
         version: 45.3.2(supports-color@7.2.0)
+      publint:
+        specifier: 'catalog:'
+        version: 0.3.25
       typescript:
         specifier: 'catalog:'
         version: 7.1.0-beta
@@ -523,12 +573,15 @@ importers:
         specifier: 15.0.3
         version: 15.0.3
     devDependencies:
+      '@arethetypeswrong/cli':
+        specifier: 'catalog:'
+        version: 0.18.5
+      '@kisaki3/config':
+        specifier: workspace:*
+        version: link:../../../../packages/config
       '@kisaki3/tooling':
         specifier: workspace:*
         version: link:../../../../packages/tooling
-      '@kisaki3/typescript-config':
-        specifier: workspace:*
-        version: link:../../../../packages/typescript-config
       '@playwright/test':
         specifier: 1.64.1
         version: 1.64.1
@@ -544,6 +597,9 @@ importers:
       electron:
         specifier: 'catalog:'
         version: 45.3.2(supports-color@7.2.0)
+      publint:
+        specifier: 'catalog:'
+        version: 0.3.25
       solid-js:
         specifier: 'catalog:'
         version: 1.9.19
@@ -581,12 +637,15 @@ importers:
         specifier: 7.8.5
         version: 7.8.5
     devDependencies:
+      '@arethetypeswrong/cli':
+        specifier: 'catalog:'
+        version: 0.18.5
+      '@kisaki3/config':
+        specifier: workspace:*
+        version: link:../../../../packages/config
       '@kisaki3/tooling':
         specifier: workspace:*
         version: link:../../../../packages/tooling
-      '@kisaki3/typescript-config':
-        specifier: workspace:*
-        version: link:../../../../packages/typescript-config
       '@playwright/test':
         specifier: 1.64.1
         version: 1.64.1
@@ -596,42 +655,50 @@ importers:
       '@types/semver':
         specifier: 7.8.0
         version: 7.8.0
-      typescript:
-        specifier: 'catalog:'
-        version: 7.1.0-beta
-      vite-plus:
-        specifier: 'catalog:'
-        version: 1.6.0(@arethetypeswrong/core@0.18.5)(@types/node@24.19.2)(@vitest/ui@5.1.0)(esbuild@0.28.2)(jiti@2.7.0)(playwright@1.64.1)(publint@0.3.25)(tsx@4.23.15)(typescript@7.1.0-beta)(yaml@2.9.1)
-
-  packages/tooling:
-    dependencies:
-      '@arethetypeswrong/cli':
-        specifier: 0.18.5
-        version: 0.18.5
-      '@seydx/win-job':
-        specifier: 0.1.0
-        version: 0.1.0
       publint:
-        specifier: 0.3.25
+        specifier: 'catalog:'
         version: 0.3.25
       typescript:
         specifier: 'catalog:'
         version: 7.1.0-beta
-    devDependencies:
-      '@kisaki3/typescript-config':
-        specifier: workspace:*
-        version: link:../typescript-config
-      '@types/node':
-        specifier: 'catalog:'
-        version: 24.19.2
       vite-plus:
         specifier: 'catalog:'
         version: 1.6.0(@arethetypeswrong/core@0.18.5)(@types/node@24.19.2)(@vitest/ui@5.1.0)(esbuild@0.28.2)(jiti@2.7.0)(playwright@1.64.1)(publint@0.3.25)(tsx@4.23.15)(typescript@7.1.0-beta)(yaml@2.9.1)
+
+  packages/config:
+    dependencies:
+      typescript:
+        specifier: 'catalog:'
+        version: 7.1.0-beta
+      vite-plus:
+        specifier: 'catalog:'
+        version: 1.6.0(@arethetypeswrong/core@0.18.5)(@types/node@24.19.2)(@vitest/ui@5.1.0)(esbuild@0.28.2)(jiti@2.7.0)(playwright@1.64.1)(publint@0.3.25)(tsx@4.23.15)(typescript@7.1.0-beta)(yaml@2.9.1)
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+
+  packages/tooling:
+    dependencies:
+      '@seydx/win-job':
+        specifier: 0.1.0
+        version: 0.1.0
       yaml:
         specifier: 2.9.1
         version: 2.9.1
-
-  packages/typescript-config: {}
+    devDependencies:
+      '@kisaki3/config':
+        specifier: workspace:*
+        version: link:../config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.19.2
+      typescript:
+        specifier: 'catalog:'
+        version: 7.1.0-beta
+      vite-plus:
+        specifier: 'catalog:'
+        version: 1.6.0(@arethetypeswrong/core@0.18.5)(@types/node@24.19.2)(@vitest/ui@5.1.0)(esbuild@0.28.2)(jiti@2.7.0)(playwright@1.64.1)(publint@0.3.25)(tsx@4.23.15)(typescript@7.1.0-beta)(yaml@2.9.1)
 
 packages:
 
@@ -888,9 +955,6 @@ packages:
 
   '@emotion/weak-memoize@0.4.0':
     resolution: {integrity: sha512-snKqtPW01tN0ui7yu9rGv69aJXr/a/Ywvl11sUjNtEcRc+ng/mQriFL0wLXMef74iHa/EkftbDzU9F8iFbH+zg==}
-
-  '@epic-web/invariant@1.0.0':
-    resolution: {integrity: sha512-lrTPqgvfFQtR/eY/qkIzp98OGdNJu0m5ji3q/nJI8v3SXkRKEnWiOxMmbvcSoAIzv/cGiuvRy57k4suKQSAdwA==}
 
   '@esbuild/aix-ppc64@0.28.2':
     resolution: {integrity: sha512-XExcO+dvLKvVtNTibSTBej1NCAbaGhWn9Ww1ZPx80qsahhPFe/8jgWP0IchNe0F3HwkU7n8ejhH8bjonqht8mQ==}
@@ -3498,11 +3562,6 @@ packages:
   cross-dirname@0.1.0:
     resolution: {integrity: sha512-+R08/oI0nl3vfPcqftZRpytksBXDzOUveBq/NBVx0sUp1axwzPQrKinNx5yd5sxPu8j1wIy8AfnVQ+5eFdha6Q==}
 
-  cross-env@10.1.0:
-    resolution: {integrity: sha512-GsYosgnACZTADcmEyJctkJIoqAhHjttw7RsFrVoJNXbsWWqaq6Ym+7kZjq6mS45O0jij6vtiReppKQEtqWy6Dw==}
-    engines: {node: '>=20'}
-    hasBin: true
-
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
@@ -5645,7 +5704,7 @@ snapshots:
       commander: 10.0.1
       marked: 9.1.6
       marked-terminal: 7.3.1(marked@9.1.6)
-      semver: 7.8.5
+      semver: 7.8.6
 
   '@arethetypeswrong/core@0.18.5':
     dependencies:
@@ -5654,7 +5713,7 @@ snapshots:
       cjs-module-lexer: 1.4.3
       fflate: 0.8.3
       lru-cache: 11.5.3
-      semver: 7.8.5
+      semver: 7.8.6
       typescript: 5.6.1-rc
       validate-npm-package-name: 5.0.1
 
@@ -6068,8 +6127,6 @@ snapshots:
   '@emotion/utils@1.4.2': {}
 
   '@emotion/weak-memoize@0.4.0': {}
-
-  '@epic-web/invariant@1.0.0': {}
 
   '@esbuild/aix-ppc64@0.28.2':
     optional: true
@@ -8237,11 +8294,6 @@ snapshots:
 
   cross-dirname@0.1.0:
     optional: true
-
-  cross-env@10.1.0:
-    dependencies:
-      '@epic-web/invariant': 1.0.0
-      cross-spawn: 7.0.6
 
   cross-spawn@7.0.6:
     dependencies:

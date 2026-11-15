@@ -5,7 +5,7 @@ import { expect } from 'vite-plus/test'
 import { build, preview } from 'vite-plus'
 import { chromium } from '@playwright/test'
 import { runPnpm } from '@kisaki3/tooling/process'
-import { consumerTest } from './consumer'
+import { consumerTest } from './installation'
 
 /** Packed distribution consumer fixtures owning the browser and its preview site. */
 const test = consumerTest('browser')

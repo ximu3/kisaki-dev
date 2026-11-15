@@ -1,7 +1,7 @@
 /** @fileoverview Selects repository checks and host-specific scenarios from the complete candidate diff. */
 
 import { execFileSync } from 'node:child_process'
-import { appendFileSync, readFileSync, readdirSync } from 'node:fs'
+import { appendFileSync, existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 
 /** Supported native runner identities and their Actions labels. */
@@ -19,15 +19,26 @@ const suites = [
   'browser',
   'consumers',
   'native',
-  'windows',
-  'dev',
-  'process',
-  'artifacts',
+  'window-startup',
+  'dev-session',
+  'tooling',
+  'fixture-artifacts',
   'performance',
 ] as const
 
 /** Scenario dispatched to a runner. */
 type Suite = (typeof suites)[number]
+
+/** Project tasks for suites whose inputs are independent of the selected consumer packages. */
+const suiteTasks: Record<Exclude<Suite, 'consumers'>, string[]> = {
+  browser: ['@kisaki3/desktop-ui#test:browser'],
+  native: ['@kisaki3/desktop#check:native', '@kisaki3/desktop#test:native'],
+  'window-startup': ['@kisaki3/desktop#test:window-startup'],
+  'dev-session': ['@kisaki3/desktop#test:dev-session'],
+  tooling: ['@kisaki3/tooling#test'],
+  'fixture-artifacts': ['@kisaki3/desktop#test:fixture-artifacts'],
+  performance: ['@kisaki3/desktop#test:performance'],
+}
 
 /** Platform and architecture selected as a single native host. */
 type Target = keyof typeof runners
@@ -45,7 +56,14 @@ function publicPackages() {
         name: string
         dependencies?: Record<string, string>
       }
-      return { name: pkg.name, directory: name, dependencies: Object.keys(pkg.dependencies ?? {}) }
+      const fixtures = join(root, name, 'tests/consumers/fixtures')
+      return {
+        name: pkg.name,
+        directory: name,
+        dependencies: Object.keys(pkg.dependencies ?? {}),
+        browser: existsSync(join(fixtures, 'browser')),
+        electron: existsSync(join(fixtures, 'electron')),
+      }
     })
 }
 
@@ -83,7 +101,11 @@ export function planChecks(
       consumers.add(pkg.name)
     }
     add(reason, ['browser', 'consumers'])
-    add(reason, ['process', 'native', 'windows', 'dev', 'artifacts'], targets)
+    add(
+      reason,
+      ['tooling', 'native', 'window-startup', 'dev-session', 'fixture-artifacts'],
+      targets,
+    )
   }
 
   if (full) {
@@ -113,13 +135,13 @@ export function planChecks(
       } else if (file.startsWith('clients/desktop/app/')) {
         const part = file.slice('clients/desktop/app/'.length)
         if (
-          /^(?:native\/|package\.json|vite\.config\.ts|tools\/native\/|config\/vitest\/vitest\.config\.native)/.test(
+          /^(?:native\/|package\.json|vite\.config\.ts|tools\/native\/|config\/vitest\/native\.ts)/.test(
             part,
           )
         ) {
           add(
             'Native ABI, host or command contract',
-            ['native', 'windows', 'dev', 'artifacts'],
+            ['native', 'window-startup', 'dev-session', 'fixture-artifacts'],
             targets,
           )
         } else if (
@@ -133,10 +155,14 @@ export function planChecks(
             add('Native SQLite driver', ['native'], ['macos-arm64', 'windows-x64'])
           }
         } else if (/^(?:tools\/package|electron-builder|tests\/artifacts)/.test(part)) {
-          add('Desktop packaging and external artifact', ['artifacts'], targets)
+          add('Desktop packaging and external artifact', ['fixture-artifacts'], targets)
           installers = true
         } else if (/^(?:tools\/dev|tests\/tools\/dev)/.test(part)) {
-          add('Source rebuild and lifecycle', ['dev'], ['linux-x64', 'macos-x64', 'windows-x64'])
+          add(
+            'Source rebuild and lifecycle',
+            ['dev-session'],
+            ['linux-x64', 'macos-x64', 'windows-x64'],
+          )
         } else if (
           part.includes('performance') ||
           part.includes('/measurement') ||
@@ -152,11 +178,11 @@ export function planChecks(
             ['linux-x64', 'macos-arm64', 'windows-x64'],
           )
         } else if (part.startsWith('src/renderer/')) {
-          add('Desktop renderer and window', ['windows'])
+          add('Desktop renderer and window', ['window-startup'])
         } else {
           add(
             'Desktop build, resources or runtime entry',
-            ['native', 'windows', 'dev', 'artifacts'],
+            ['native', 'window-startup', 'dev-session', 'fixture-artifacts'],
             ['linux-x64', 'macos-x64', 'windows-x64'],
           )
         }
@@ -167,14 +193,20 @@ export function planChecks(
         } else if (file.endsWith('/unix.ts')) {
           hosts = ['linux-x64', 'macos-arm64']
         }
-        add('Owned subprocess cancellation', ['process', 'dev'], hosts)
-      } else if (file.startsWith('packages/tooling/src/testing/') || file === '.pnpmfile.mjs') {
+        add('Owned subprocess cancellation', ['tooling', 'dev-session'], hosts)
+      } else if (
+        file.startsWith('packages/tooling/src/testing/') ||
+        file.startsWith('packages/config/')
+      ) {
         for (const pkg of packages) {
           consumers.add(pkg.name)
         }
-        add('Packed installation and manifest', ['consumers'])
+        add('Shared library configuration or packed installation', ['consumers'])
+        if (file.startsWith('packages/config/vite/')) {
+          add('Shared UI library build', ['browser'])
+        }
       } else if (
-        /^(?:tests\/workspace\/|tools\/boundaries\.ts|\.dependency-cruiser\.json|\.gitignore|\.gitattributes|LICENSE$|\.github\/workflows\/pr-title\.yml)/.test(
+        /^(?:tests\/workspace\/|tools\/(?:boundaries|check-doc-links)\.ts$|\.dependency-cruiser\.json|\.gitignore|\.gitattributes|LICENSE$|\.github\/workflows\/pr-title\.yml)/.test(
           file,
         )
       ) {
@@ -209,14 +241,32 @@ export function planChecks(
     if (!selected.length) {
       return []
     }
+    const selectedConsumers = selected.includes('consumers')
+      ? packages.filter((pkg) => consumers.has(pkg.name))
+      : []
+    const tasks = selected.flatMap((suite) =>
+      suite === 'consumers'
+        ? selectedConsumers.map((pkg) => pkg.name + '#test:consumers').sort()
+        : suiteTasks[suite],
+    )
+    const browserConsumers = selectedConsumers.some((pkg) => pkg.browser)
+    const electronConsumers = selectedConsumers.some((pkg) => pkg.electron)
+
     return [
       {
         target,
         runner: runners[target],
         arch: target.split('-')[1]!,
         suites: selected,
-        label: selected.join(', '),
-        packages: [...consumers].sort(),
+        tasks,
+        chromium:
+          selected.includes('browser') || selected.includes('dev-session') || browserConsumers,
+        x11:
+          target.startsWith('linux-') &&
+          (electronConsumers ||
+            selected.some((suite) =>
+              ['window-startup', 'dev-session', 'fixture-artifacts', 'performance'].includes(suite),
+            )),
       },
     ]
   })
@@ -270,7 +320,7 @@ if (import.meta.main) {
         '## Verification plan',
         ...plan.reasons.map((reason) => '- ' + reason),
         '',
-        ...plan.matrix.map((row) => '- ' + row.target + ' · ' + row.label),
+        ...plan.matrix.map((row) => '- ' + row.target + ' · ' + row.suites.join(', ')),
         '',
       ].join('\n'),
     )

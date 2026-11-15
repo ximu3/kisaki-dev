@@ -179,9 +179,7 @@
     }
   },
   "scripts": {
-    "typecheck:project": "tsc -b",
-    "clean:outputs": "kisaki-package clean",
-    "test:browser": "vp test run"
+    "clean": "kisaki-clean"
   },
   "peerDependencies": {
     "solid-js": "^1.9.0"
@@ -212,13 +210,15 @@
     "markdown-it": "15.0.3"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
+    "@kisaki3/config": "workspace:*",
     "@kisaki3/tooling": "workspace:*",
-    "@kisaki3/typescript-config": "workspace:*",
     "@playwright/test": "1.64.1",
     "@tailwindcss/cli": "4.3.3",
     "@types/culori": "4.0.1",
     "@types/node": "catalog:",
     "electron": "catalog:",
+    "publint": "catalog:",
     "solid-js": "catalog:",
     "tailwindcss": "4.3.3",
     "typescript": "catalog:",
@@ -226,5 +226,136 @@
     "vite": "catalog:",
     "vite-plugin-solid": "catalog:",
     "vite-plus": "catalog:"
+  },
+  "publishConfig": {
+    "exports": {
+      "./alert": {
+        "types": "./dist/alert.d.ts",
+        "import": "./dist/alert.js"
+      },
+      "./badge": {
+        "types": "./dist/badge.d.ts",
+        "import": "./dist/badge.js"
+      },
+      "./button": {
+        "types": "./dist/button.d.ts",
+        "import": "./dist/button.js"
+      },
+      "./chart": {
+        "types": "./dist/chart.d.ts",
+        "import": "./dist/chart.js"
+      },
+      "./checkbox": {
+        "types": "./dist/checkbox.d.ts",
+        "import": "./dist/checkbox.js"
+      },
+      "./collapsible": {
+        "types": "./dist/collapsible.d.ts",
+        "import": "./dist/collapsible.js"
+      },
+      "./combobox": {
+        "types": "./dist/combobox.d.ts",
+        "import": "./dist/combobox.js"
+      },
+      "./dialog": {
+        "types": "./dist/dialog.d.ts",
+        "import": "./dist/dialog.js"
+      },
+      "./drag": {
+        "types": "./dist/drag.d.ts",
+        "import": "./dist/drag.js"
+      },
+      "./empty-state": {
+        "types": "./dist/empty-state.d.ts",
+        "import": "./dist/empty-state.js"
+      },
+      "./field": {
+        "types": "./dist/field.d.ts",
+        "import": "./dist/field.js"
+      },
+      "./image": {
+        "types": "./dist/image.d.ts",
+        "import": "./dist/image.js"
+      },
+      "./input": {
+        "types": "./dist/input.d.ts",
+        "import": "./dist/input.js"
+      },
+      "./link": {
+        "types": "./dist/link.d.ts",
+        "import": "./dist/link.js"
+      },
+      "./markdown": {
+        "types": "./dist/markdown.d.ts",
+        "import": "./dist/markdown.js"
+      },
+      "./menu": {
+        "types": "./dist/menu.d.ts",
+        "import": "./dist/menu.js"
+      },
+      "./popover": {
+        "types": "./dist/popover.d.ts",
+        "import": "./dist/popover.js"
+      },
+      "./progress": {
+        "types": "./dist/progress.d.ts",
+        "import": "./dist/progress.js"
+      },
+      "./radio-group": {
+        "types": "./dist/radio-group.d.ts",
+        "import": "./dist/radio-group.js"
+      },
+      "./scroll-area": {
+        "types": "./dist/scroll-area.d.ts",
+        "import": "./dist/scroll-area.js"
+      },
+      "./segmented-control": {
+        "types": "./dist/segmented-control.d.ts",
+        "import": "./dist/segmented-control.js"
+      },
+      "./select": {
+        "types": "./dist/select.d.ts",
+        "import": "./dist/select.js"
+      },
+      "./separator": {
+        "types": "./dist/separator.d.ts",
+        "import": "./dist/separator.js"
+      },
+      "./slider": {
+        "types": "./dist/slider.d.ts",
+        "import": "./dist/slider.js"
+      },
+      "./spinner": {
+        "types": "./dist/spinner.d.ts",
+        "import": "./dist/spinner.js"
+      },
+      "./switch": {
+        "types": "./dist/switch.d.ts",
+        "import": "./dist/switch.js"
+      },
+      "./table": {
+        "types": "./dist/table.d.ts",
+        "import": "./dist/table.js"
+      },
+      "./tabs": {
+        "types": "./dist/tabs.d.ts",
+        "import": "./dist/tabs.js"
+      },
+      "./textarea": {
+        "types": "./dist/textarea.d.ts",
+        "import": "./dist/textarea.js"
+      },
+      "./toast": {
+        "types": "./dist/toast.d.ts",
+        "import": "./dist/toast.js"
+      },
+      "./tooltip": {
+        "types": "./dist/tooltip.d.ts",
+        "import": "./dist/tooltip.js"
+      },
+      "./styles.css": {
+        "default": "./dist/styles.css"
+      }
+    }
   }
 }
