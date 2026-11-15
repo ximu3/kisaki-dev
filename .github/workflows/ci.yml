@@ -133,7 +133,8 @@ jobs:
           architecture: ${{ matrix.arch }}
           package-manager-cache: false
       - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
-      - if: runner.os == 'macOS'
+      - name: Set macOS deployment target
+        if: runner.os == 'macOS'
         run: echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> "$GITHUB_ENV"
       - run: pnpm install --frozen-lockfile
       - name: Prepare Linux desktop
