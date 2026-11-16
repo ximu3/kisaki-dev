@@ -1,13 +1,22 @@
 /** @fileoverview Compares actual filesystem locations while preserving spelling and unresolved path information. */
 
 import { realpath, stat } from 'node:fs/promises'
-import { dirname, parse, sep } from 'node:path'
-import type { BigIntStats } from 'node:fs'
+import { dirname, join, normalize, parse, sep } from 'node:path'
 import { isAbsoluteHostPath } from '#host-path'
-import type { NativeFiles } from '#native'
+import { FilesystemQueryError, type NativeFiles } from '#native'
 
 /** A confirmed relationship between two locations, or an explicit inability to establish it. */
 export type PathRelation = 'same' | 'contains' | 'within' | 'separate' | 'unknown'
+
+/** Extracts the host root, including the server and share of an extended Windows UNC path. */
+function pathRoot(path: string): string {
+  const root = parse(path).root
+  if (process.platform === 'win32' && root.toUpperCase() === '\\\\?\\UNC\\') {
+    const share = parse('\\\\' + path.slice(root.length)).root
+    return root + share.slice(2)
+  }
+  return root
+}
 
 /** Normalizes separators, current-directory segments and drive spelling without folding linked '..' segments. */
 export function normalizeAbsolutePath(input: string): string {
@@ -18,68 +27,105 @@ export function normalizeAbsolutePath(input: string): string {
     process.platform === 'win32'
       ? input.replaceAll('/', '\\').replace(/^[a-z]:/u, (drive) => drive.toUpperCase())
       : input
-  const root = parse(path).root
+  const root = pathRoot(path)
   const pieces = path
     .slice(root.length)
     .split(sep)
     .filter((piece) => piece !== '' && piece !== '.')
-  return root + pieces.join(sep)
+  const normalizedRoot = normalize(root)
+  return (normalizedRoot.endsWith(sep) ? normalizedRoot : normalizedRoot + sep) + pieces.join(sep)
 }
 
-/** Compares actual device and file identities after resolving links through the filesystem. */
-function sameIdentity(left: BigIntStats, right: BigIntStats): boolean {
+/** Observes a traversable position, keeping the chosen route through every surviving link. */
+async function inspectPosition(path: string) {
+  await stat(path)
+  let root = pathRoot(path)
+  let names = path.slice(root.length).split(sep).filter(Boolean)
+  if (names.includes('..')) {
+    let current = root
+    for (const name of names) {
+      if (name !== '..') {
+        current = join(current, name)
+        continue
+      }
+
+      // Ask the host where '..' leads before removing any part of the registered route.
+      const parent = dirname(current)
+      const [reached, expected] = await Promise.all([
+        realpath(current + sep + '..'),
+        realpath(parent),
+      ])
+      current = reached === expected ? parent : reached
+    }
+    root = pathRoot(current)
+    names = current.slice(root.length).split(sep).filter(Boolean)
+  }
+  return { root, names }
+}
+
+/** Verifies differently cased Windows root spellings against the actual mounted directories. */
+async function sameRoot(first: string, second: string): Promise<boolean> {
+  if (first === second) {
+    return true
+  }
+  if (process.platform !== 'win32' || first.toUpperCase() !== second.toUpperCase()) {
+    return false
+  }
+  const [left, right] = await Promise.all([
+    stat(first, { bigint: true }),
+    stat(second, { bigint: true }),
+  ])
   return left.dev === right.dev && left.ino === right.ino
 }
 
-/** Checks the ancestors of an existing canonical path without relying on textual prefixes. */
-async function isAncestor(owner: BigIntStats, child: string): Promise<boolean> {
-  let path = dirname(child)
-  while (true) {
-    if (sameIdentity(owner, await stat(path, { bigint: true }))) {
-      return true
-    }
-    const parent = dirname(path)
-    if (parent === path) {
-      return false
-    }
-    path = parent
-  }
-}
-
 /**
- * Establishes equality and containment using actual names and file identities.
+ * Compares registered positions by the directory entries selected at each step.
  *
- * Identical normalized positions compare equal even while offline. Unavailable differing paths
- * remain unknown; case sensitivity is never inferred from the operating-system name.
+ * Identical normalized positions compare equal while offline. A failed filesystem observation
+ * leaves the relationship unknown. Containment follows the chosen entry through a linked directory.
  */
-export async function comparePaths(first: string, second: string): Promise<PathRelation> {
-  const left = normalizeAbsolutePath(first)
-  const right = normalizeAbsolutePath(second)
-  if (left === right) {
+export async function comparePaths(
+  first: string,
+  second: string,
+  native: NativeFiles,
+): Promise<PathRelation> {
+  const firstPath = normalizeAbsolutePath(first)
+  const secondPath = normalizeAbsolutePath(second)
+  if (firstPath === secondPath) {
     return 'same'
   }
 
   try {
-    const [leftPath, rightPath] = await Promise.all([realpath(left), realpath(right)])
-    const [leftInfo, rightInfo] = await Promise.all([
-      stat(leftPath, { bigint: true }),
-      stat(rightPath, { bigint: true }),
+    const [left, right] = await Promise.all([
+      inspectPosition(firstPath),
+      inspectPosition(secondPath),
     ])
-    if (sameIdentity(leftInfo, rightInfo)) {
+    if (!(await sameRoot(left.root, right.root))) {
+      return 'separate'
+    }
+
+    let parent = left.root
+    const sharedLength = Math.min(left.names.length, right.names.length)
+    for (let index = 0; index < sharedLength; index++) {
+      const firstName = left.names[index]!
+      const secondName = right.names[index]!
+      if (
+        firstName !== secondName &&
+        !(await native.sameDirectoryEntry(parent, firstName, secondName))
+      ) {
+        return 'separate'
+      }
+      parent = join(parent, firstName)
+    }
+
+    if (left.names.length === right.names.length) {
       return 'same'
     }
-    if (leftInfo.isDirectory() && (await isAncestor(leftInfo, rightPath))) {
-      return 'contains'
-    }
-    if (rightInfo.isDirectory() && (await isAncestor(rightInfo, leftPath))) {
-      return 'within'
-    }
-    return 'separate'
+    return left.names.length < right.names.length ? 'contains' : 'within'
   } catch (error) {
     if (
-      error instanceof Error &&
-      'code' in error &&
-      ['ENOENT', 'ENOTDIR', 'EACCES', 'EPERM', 'ENODEV', 'ESTALE'].includes(String(error.code))
+      (error instanceof FilesystemQueryError && error.reason !== 'invalidArgument') ||
+      (error instanceof Error && 'syscall' in error && 'code' in error)
     ) {
       return 'unknown'
     }
