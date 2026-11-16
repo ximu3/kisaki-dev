@@ -54,9 +54,6 @@ export const workload = {
 /** Maximum median duration of each repeated query or short transaction on the database worker. */
 export const workerMedianBudgetMs = 100
 
-/** Rows per transaction when preparing the fixture, before any timed query or short write. */
-const seedBatchSize = 4096
-
 /** Entry data retained by the fixture to check query results outside the timed operation. */
 export interface FixtureEntry {
   readonly id: string
@@ -83,7 +80,7 @@ export function isFixtureWork(
   )
 }
 
-/** Seeds bounded batches outside measurement while preserving foreign keys and FULL durability. */
+/** Builds the fixed tables before sampling, with foreign keys and FULL durability enabled. */
 export async function prepareWorkload(storage: Storage, directory: string) {
   const start = performance.now()
   const connection = storage.db.$client
@@ -108,7 +105,7 @@ export async function prepareWorkload(storage: Storage, directory: string) {
     .filter((entry) => entry.type === 'anime')
     .map(({ id }) => ({ id, duration: 0, parts: 0, files: 0 }))
 
-  /** Writes complete fixture rows in short batches, yielding the database worker between batches. */
+  /** Commits one fixture table at a time and yields the worker between prepared statements. */
   async function insert(
     statement: string,
     count: number,
@@ -116,9 +113,10 @@ export async function prepareWorkload(storage: Storage, directory: string) {
   ): Promise<void> {
     const prepared = connection.prepare(statement)
     inputHash.update(statement)
-    /** Writes and fingerprints one bounded fixture batch inside the real driver transaction. */
-    const batch = connection.transaction((from: number, to: number) => {
-      for (let index = from; index < to; index += 1) {
+
+    /** Inserts and fingerprints the table's rows within one durable transaction. */
+    const populate = connection.transaction(() => {
+      for (let index = 0; index < count; index += 1) {
         const row = values(index)
         inputHash.update(
           JSON.stringify(
@@ -132,10 +130,9 @@ export async function prepareWorkload(storage: Storage, directory: string) {
         prepared.run(...row)
       }
     })
-    for (let from = 0; from < count; from += seedBatchSize) {
-      batch(from, Math.min(from + seedBatchSize, count))
-      await setImmediate()
-    }
+
+    populate()
+    await setImmediate()
   }
 
   await insert(

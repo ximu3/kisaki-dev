@@ -13,6 +13,8 @@ test('worker operation medians meet their budget and the window reaches main dur
   desktop,
   profile,
 }, info) => {
+  // The watchdog includes creating the full fixture on the host's local filesystem.
+  test.setTimeout(15 * 60_000)
   const runtime = buildDirectory(hostTarget())
   await info.attach('build.json', {
     body: await readFile(join(runtime, 'build.json')),
@@ -99,8 +101,7 @@ test('worker operation medians meet their budget and the window reaches main dur
 
   expect(latencies.length).toBeGreaterThan(1)
   const ordered = latencies.toSorted((left, right) => left - right)
-  expect(
-    ordered[Math.ceil(ordered.length * 0.95) - 1],
-    'window-to-main IPC P95',
-  ).toBeLessThanOrEqual(100)
+  const ipcP95Ms = ordered[Math.ceil(ordered.length * 0.95) - 1]!
+  console.info('Window-to-main IPC P95 (ms):', ipcP95Ms)
+  expect(ipcP95Ms, 'window-to-main IPC P95').toBeLessThanOrEqual(100)
 })

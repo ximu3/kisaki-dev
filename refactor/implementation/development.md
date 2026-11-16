@@ -132,7 +132,9 @@ pnpm exec vp run @kisaki3/desktop#package:fixture --target windows-x64
 
 浏览器首次准备由所属工程执行：开发回归使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`，公共包消费者使用 `pnpm --filter <包名> exec playwright install chromium`。已建立的公共包使用同一锁定 Playwright 版本，可复用该版本的浏览器安装。
 
-存储测量可单独运行 `pnpm exec vp run @kisaki3/desktop#test:performance storage.test.ts`。每条查询核对首读结果，预热 3 次后采样 31 次。短事务另采样 31 次。按操作分别计算中位数，上限为 100 ms。已知命中条目的零基位置以 `.position` 报告。动画排行按观看时长降序、同分按 ID 排列，分部数合计剧集和附加内容，缺少活动、分部或文件的动画保留零值。作业日志列出查询首读及各项中位数、P95 和最大值，`test-results/performance` 保存全部样本、输入与迁移摘要、SQLite 配置和执行计划。
+存储测量可单独运行 `pnpm exec vp run @kisaki3/desktop#test:performance storage.test.ts`。固定样本按表在持久事务中建立，日志单列准备耗时和输入摘要。此用例的 15 分钟总超时覆盖造数、测量和结果交付。每条查询核对首读结果，预热 3 次后采样 31 次。短事务另采样 31 次。按操作分别计算中位数，上限为 100 ms。
+
+已知命中条目的零基位置以 `.position` 报告。动画排行按观看时长降序、同分按 ID 排列，分部数合计剧集和附加内容，缺少活动、分部或文件的动画保留零值。作业日志列出查询首读及各项中位数、P95 和最大值，`test-results/performance` 保存全部样本、输入与迁移摘要、SQLite 配置和执行计划。
 
 同一负载期间，窗口到 main 的 IPC 往返按 P95 ≤ 100 ms 验收。主进程单次同步工作的定位要求见[性能预算](../design/engineering/performance.md#measurement)。
 
@@ -168,7 +170,7 @@ Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 Ap
 
 在候选检出运行 `pnpm --config.verify-deps-before-run=false exec node tools/ci/plan.ts <base> <head>` 可在安装依赖前查看变更文件、工程范围和各目标任务。按[自动验证规则](../design/engineering/workspace.md#ci-selection)，单改 desktop-rpc 触发 Linux 公共包验证，单改 desktop-appearance 的 CSS 还会沿合同包依赖触发六目标桌面验证。手动 CI 可以选择目标和套件，例如 `target=all`、`suite=performance` 在六个实际宿主运行同一份性能负载。
 
-`Select checks` 读取改动并生成目标与任务。Linux x64 上的 `Workspace checks` 执行文档链接检查，代码改动还执行冻结安装和 `pnpm check`。每个 `Target checks (<目标>)` 作业将选中任务一次交给 Vite Task，按同一依赖图准备和复用程序与归档。计划摘要列出套件，日志带包名与任务名。
+`Select checks` 读取改动并生成目标与任务。Linux x64 上的 `Workspace checks` 执行文档链接检查，代码改动还执行冻结安装和 `pnpm check`。`Public package checks (linux-x64)` 独立报告公共包的消费和浏览器结果。`Target checks (<目标>)` 运行桌面组或指定的诊断套件。每个作业将任务一次交给 Vite Task，共用前置构建。完成性能测量的作业将含输入摘要、采样和执行计划的 Playwright 报告保存为 `performance-<目标>`，保留 7 天。
 
 `Required checks` 汇总 PR、合并队列和主线的验证结果。仅编辑 PR 标题或正文时，CI 等候正在运行的验证，核对 PR 编号、源码提交、基线提交和候选文件树后沿用先前的结果。缺少匹配记录时重新验证。主线推送可复用同一候选的成功结果。手动选择场景的运行单独报告 `Requested checks`。
 

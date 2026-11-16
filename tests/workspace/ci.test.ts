@@ -30,10 +30,9 @@ test('a desktop dependency, shared input or removed project selects the complete
       [file, 'clients/desktop/packages/desktop-rpc/package.json'],
       projects,
     )
-    expect(matrix).toHaveLength(6)
-    expect(
-      matrix.every((row) => row.tasks.includes('@kisaki3/desktop#verify') && row.packaging),
-    ).toBe(true)
+    const desktop = matrix.filter((row) => row.tasks.includes('@kisaki3/desktop#verify'))
+    expect(new Set(desktop.map((row) => row.target)).size).toBe(6)
+    expect(desktop.every((row) => row.packaging && !row.checks.includes('libraries'))).toBe(true)
     expect(
       matrix.filter((row) => row.checks.includes('libraries')).map((row) => row.target),
     ).toEqual(['linux-x64'])
@@ -41,7 +40,7 @@ test('a desktop dependency, shared input or removed project selects the complete
 })
 
 test('a missing baseline verifies every host; manual performance runs can target one or all', () => {
-  expect(planChecks(undefined, projects).matrix).toHaveLength(6)
+  expect(new Set(planChecks(undefined, projects).matrix.map((row) => row.target)).size).toBe(6)
 
   const single = planChecks(undefined, projects, 'macos-x64', 'performance')
   expect(single.matrix.map(({ target, tasks }) => [target, tasks])).toEqual([

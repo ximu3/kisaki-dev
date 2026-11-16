@@ -6,7 +6,7 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { createRequire } from 'node:module'
 import { runPnpm } from '@kisaki3/tooling/process'
-import { consumerTest as test, packageRoot } from './environment'
+import { consumerTest as test } from './environment'
 
 test.override('host', 'electron')
 
@@ -25,8 +25,9 @@ test('Electron consumes the same packed UI in a sandboxed document with native m
   await mkdir(join(consumerDirectory, 'profile'))
   const application = await _electron.launch({
     executablePath,
+    cwd: consumerDirectory,
     args: [
-      consumerDirectory,
+      '.',
       `--ui-consumer-url=${siteUrl}`,
       `--user-data-dir=${join(consumerDirectory, 'profile')}`,
     ],
@@ -60,7 +61,7 @@ test('Electron consumes the same packed UI in a sandboxed document with native m
   await expect(page.locator('body')).toHaveAttribute('data-resources-released', 'true')
 
   await page.screenshot({
-    path: join(packageRoot, 'test-results/consumers/electron.png'),
+    path: join(resultsDirectory, 'electron.png'),
     fullPage: true,
   })
 })

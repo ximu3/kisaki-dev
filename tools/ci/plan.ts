@@ -42,14 +42,17 @@ export function verificationProjects() {
   const desktopInputs = new Set(listProjects('@kisaki3/desktop...').map((project) => project.name))
   return {
     libraries: libraries.map((project) => project.name).sort(),
-    independent: libraries
+    independentRoots: libraries
       .filter((project) => !desktopInputs.has(project.name))
       .map((project) => relative('.', project.path).split(sep).join('/') + '/'),
   }
 }
 
 /** Classifies the complete diff at project boundaries. Missing baselines require every host. */
-function verificationScope(paths: readonly string[] | undefined, independent: readonly string[]) {
+function verificationScope(
+  paths: readonly string[] | undefined,
+  independentRoots: readonly string[],
+) {
   if (!paths) {
     return 'desktop'
   }
@@ -57,7 +60,7 @@ function verificationScope(paths: readonly string[] | undefined, independent: re
   if (!inputs.length) {
     return 'docs'
   }
-  return inputs.every((file) => independent.some((root) => file.startsWith(root)))
+  return inputs.every((file) => independentRoots.some((root) => file.startsWith(root)))
     ? 'libraries'
     : 'desktop'
 }
@@ -111,43 +114,39 @@ export function planChecks(
     throw new Error('Unknown suite ' + requestedSuite)
   }
 
-  const scope = verificationScope(paths, projects.independent)
+  const scope = verificationScope(paths, projects.independentRoots)
   const matrix = Object.entries(runners).flatMap(([target, runner]) => {
     if (scope === 'docs' || (requestedTarget !== 'all' && target !== requestedTarget)) {
       return []
     }
-    const selected: (keyof typeof checks)[] = []
+    const groups: (keyof typeof checks)[][] = []
     if (requestedSuite !== 'all') {
-      selected.push(requestedSuite as keyof typeof checks)
+      groups.push([requestedSuite as keyof typeof checks])
     } else {
       if (target === 'linux-x64' || requestedTarget !== 'all') {
-        selected.push('libraries')
+        groups.push(['libraries'])
       }
       if (scope === 'desktop') {
-        selected.push('desktop')
         // The Linux x64 workspace check already runs the private tooling suite on this host.
-        if (target !== 'linux-x64') {
-          selected.push('tooling')
-        }
+        groups.push(target === 'linux-x64' ? ['desktop'] : ['desktop', 'tooling'])
       }
     }
-    if (!selected.length) {
-      return []
-    }
 
-    const requirements: Check[] = selected.map((name) => checks[name])
-    return [
-      {
+    return groups.map((selected) => {
+      const requirements: Check[] = selected.map((name) => checks[name])
+      const label = selected.includes('libraries') ? 'Public package checks' : 'Target checks'
+      return {
+        name: `${label} (${target})`,
         target,
         runner,
         arch: target.split('-')[1]!,
         checks: selected,
         tasks: requirements.flatMap((check) => check.tasks),
-        chromium: [...new Set(requirements.flatMap((check) => check.chromium ?? []))],
+        chromium: requirements.find((check) => check.chromium)?.chromium,
         x11: target.startsWith('linux-') && requirements.some((check) => check.window),
         packaging: requirements.some((check) => check.packaging),
-      },
-    ]
+      }
+    })
   })
   return { scope, code: scope !== 'docs', matrix }
 }

@@ -27,6 +27,7 @@ export const consumerTest = test
       onCleanup,
     )
     if (host === 'electron') {
+      // The browser consumer checks the shared workshop. This fixture owns the Electron window.
       await lintConsumer(directory)
     }
 
