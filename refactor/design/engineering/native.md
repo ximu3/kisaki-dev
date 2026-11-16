@@ -37,7 +37,10 @@ clients/desktop/app/
 │   ├── src/
 │   │   ├── lib.rs
 │   │   ├── files.rs
-│   │   ├── filesystem.rs
+│   │   ├── filesystem/
+│   │   │   ├── mod.rs
+│   │   │   ├── entries.rs
+│   │   │   └── location.rs
 │   │   └── collation.rs
 │   └── node/
 │       ├── index.ts
@@ -48,7 +51,7 @@ clients/desktop/app/
 └── tests/integration/native/
 ```
 
-同一个 Cargo crate 交付这些能力。`build.rs` 配置 Node-API 链接并记录锁定的 ICU 组件版本。`files.rs` 实现文件移动和同步，`filesystem.rs` 识别路径所在的文件系统，`collation.rs` 在 SQLite 连接上注册名称比较器。平台差异由对应能力处理。
+同一个 Cargo crate 交付这些能力。`build.rs` 配置 Node-API 链接并记录锁定的 ICU 组件版本。`files.rs` 实现文件移动和同步，`filesystem/` 拥有目录项判等、挂载识别和查询错误。`collation.rs` 在 SQLite 连接上注册名称比较器。
 
 node/index.ts 只列出实际公开导出，loader.ts 拥有加载入口，files.ts 拥有文件能力确需的 Node 适配。Node 源码遵守[TypeScript 要求](conventions.md#source-language)，纳入应用的类型检查、依赖检查和 main 构建，不另登记嵌套的 pnpm workspace 或独立 npm 发行项。
 
@@ -91,6 +94,12 @@ app/tools/native 按[工具目录与工作流](layout.md#tools)提供本地与 C
 Rust 单元测试贴近所属模块，crate 集成测试按 Cargo 约定放在 `native/tests`。Node 适配的纯单元测试贴近 TypeScript 源码。应用的 `tests/integration/native` 从 `#native` 验证真实绑定、错误及适用的取消与清理行为。原生构建核对生成声明，制品测试验证装配后的加载和调用。样本归属见[测试结构](layout.md#tests)，运行环境与隔离见[测试要求](../../verification/acceptance.md#environments)。
 
 验证同时覆盖原生规则、Node 消费边界、具体业务接入和最终六目标制品：类型消费不加载二进制，缺失或错误目标制品准确失败，操作行为与公开声明相符，适用资源在失败和退出时释放。各能力按相同分工覆盖自己的行为与应用装配。
+
+## 文件系统查询
+
+`getFilesystemLocation(path)` 在工作线程查询既有绝对位置所在的卷或挂载，返回 local、network 或 unknown。unknown 表示已取得挂载信息、其类型尚不能确认。打开路径或读取系统信息失败时，Node 入口交付 FilesystemQueryError，保留原因及操作系统提供的错误码。
+
+`sameDirectoryEntry(parent, first, second)` 在一个绝对目录中查找两个单段名称，按实际选中的目录项判等。Windows 查询带 OPEN_REPARSE_POINT 打开的句柄的规范名称。Linux 以 O_PATH 和 O_NOFOLLOW 同时持有两个目录项，比较内核返回的句柄路径。macOS 在 APFS 和 HFS+ 上使用链接 ID；其他卷的多链接文件根据父目录中可确认的名称判断。查询未能区分目录项时，文件设施保留[位置关系未确定](../domains/file-maintenance.md#operations)的结果。[Windows 句柄路径](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfinalpathnamebyhandlew) · [Linux 路径查找](https://docs.kernel.org/filesystems/path-lookup.html) · [Darwin 链接 ID](https://github.com/apple-oss-distributions/xnu/blob/main/bsd/man/man2/getattrlist.2)
 
 <a id="files"></a>
 

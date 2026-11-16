@@ -39,7 +39,8 @@ export function loadNative(modulePath: string): NativeCapabilities {
     if (
       typeof binding.moveNoReplace !== 'function' ||
       typeof binding.syncFile !== 'function' ||
-      typeof binding.getFilesystemLocation !== 'function'
+      typeof binding.getFilesystemLocation !== 'function' ||
+      typeof binding.sameDirectoryEntry !== 'function'
     ) {
       throw new TypeError('The native module does not provide the required capabilities')
     }

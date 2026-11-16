@@ -5,4 +5,4 @@ mod files;
 mod filesystem;
 
 pub use files::{move_no_replace, sync_file};
-pub use filesystem::get_filesystem_location;
+pub use filesystem::{get_filesystem_location, same_directory_entry};

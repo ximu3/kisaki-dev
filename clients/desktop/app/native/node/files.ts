@@ -5,6 +5,21 @@
 
 import type * as Binding from './binding'
 
+/** Reasons for a failed filesystem observation, including arguments rejected before lookup. */
+export type FilesystemQueryFailureReason = 'invalidArgument' | `${Binding.FilesystemQueryReason}`
+
+/** A volume or directory-entry lookup that could not deliver an observation. */
+export class FilesystemQueryError extends Error {
+  /** Preserves the classified cause and the OS code supplied by the filesystem. */
+  constructor(
+    readonly reason: FilesystemQueryFailureReason,
+    readonly systemCode: number | undefined,
+  ) {
+    super('Could not query the filesystem')
+    this.name = 'FilesystemQueryError'
+  }
+}
+
 /** Failure reasons returned by the platform's atomic move operation. */
 export type MoveFailureReason =
   | 'targetExists'
@@ -53,8 +68,11 @@ export class FileSyncError extends Error {
  * Paths follow native platform rules; Windows drive-rooted paths without a drive prefix are rejected.
  */
 export interface NativeFiles {
-  /** Inspects an existing path's actual volume or mount without opening a database. */
+  /** Reads an existing path's mount classification on a worker. Failures reject with FilesystemQueryError. */
   getFilesystemLocation(path: string): Promise<'local' | 'network' | 'unknown'>
+
+  /** Compares sibling entries without following their final links. Failures reject with FilesystemQueryError. */
+  sameDirectoryEntry(parent: string, first: string, second: string): Promise<boolean>
 
   /**
    * Moves an absolute source to an absent target within the same filesystem.
@@ -73,6 +91,25 @@ export interface NativeFiles {
   syncFile(path: string): Promise<void>
 }
 
+/** Delivers a native observation or a typed rejection for its argument or lookup failure. */
+async function filesystemQuery<T extends string | boolean>(
+  query: () => Promise<T | Binding.FilesystemQueryFailure>,
+): Promise<T> {
+  let result: T | Binding.FilesystemQueryFailure
+  try {
+    result = await query()
+  } catch (cause) {
+    if (cause instanceof Error && 'code' in cause && cause.code === 'InvalidArg') {
+      throw new FilesystemQueryError('invalidArgument', undefined)
+    }
+    throw cause
+  }
+  if (typeof result === 'object') {
+    throw new FilesystemQueryError(result.reason, result.systemCode)
+  }
+  return result
+}
+
 /**
  * Creates application-facing file operations from the supplied native binding.
  *
@@ -83,7 +120,12 @@ export function createNativeFiles(binding: typeof Binding): NativeFiles {
   return {
     /** Returns the native observation of the existing path's backing filesystem. */
     getFilesystemLocation(path) {
-      return binding.getFilesystemLocation(path)
+      return filesystemQuery(() => binding.getFilesystemLocation(path))
+    },
+
+    /** Asks the common parent which entries its two names select. */
+    sameDirectoryEntry(parent, first, second) {
+      return filesystemQuery(() => binding.sameDirectoryEntry(parent, first, second))
     },
 
     /**

@@ -7,7 +7,7 @@ import { afterEach, beforeEach, expect, test } from 'vite-plus/test'
 import { chmod, mkdtemp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { loadNative, FileMoveError, FileSyncError } from '#native'
+import { loadNative, FileMoveError, FileSyncError, FilesystemQueryError } from '#native'
 import { appRoot } from '../../../tools/lib/paths'
 import { hostTarget } from '../../../tools/lib/targets'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
@@ -53,6 +53,25 @@ test('moves files and directories without replacing existing targets', async () 
   })
 
   await files.moveNoReplace(source, join(directory, 'moved-directory'))
+})
+
+test('preserves the cause and OS code of a volume lookup failure', async () => {
+  const { files } = loadNative(binding)
+  const missing = files.getFilesystemLocation(join(directory, 'missing'))
+  await expect(missing).rejects.toBeInstanceOf(FilesystemQueryError)
+  await expect(missing).rejects.toMatchObject({ reason: 'pathMissing', systemCode: 2 })
+
+  const file = join(directory, 'ordinary-file')
+  await writeFile(file, 'content')
+  await expect(files.getFilesystemLocation(join(file, 'child'))).rejects.toMatchObject(
+    process.platform === 'win32'
+      ? { reason: 'pathMissing', systemCode: 3 }
+      : { reason: 'notDirectory', systemCode: 20 },
+  )
+  await expect(files.getFilesystemLocation('relative')).rejects.toMatchObject({
+    reason: 'invalidArgument',
+    systemCode: undefined,
+  })
 })
 
 test('racing moves publish exactly one source and leave the other intact', async () => {

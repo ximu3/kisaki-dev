@@ -24,6 +24,8 @@
 
 同一个缺盘符的位置分别从 C 盘和 F 盘的工作目录提交，均被拒绝。带盘符路径与 UNC 共享路径通过语法检查。向原生文件同步发出请求后取消暂存，操作等到同步结束才返回原取消原因，准备目录为空。[文件设施用例](../../../../clients/desktop/app/tests/integration/files/storage.test.ts)
 
+Windows x64 的登记位置复验覆盖两个不同名称的硬链接、目录联接及其子文件、同一离线共享根的两种写法。在默认 NTFS 目录中，名称的大小写变体得到 same；在单独启用大小写敏感的目录中，指向同一文件的 `Book.epub` 和 `book.epub` 得到 separate。资料根卷查询对缺失文件和以普通文件作为父目录的输入均报告 pathMissing，保留 Windows 错误码 2 和 3。[原生错误用例](../../../../clients/desktop/app/tests/integration/native/files.test.ts)
+
 ## 运行与制品
 
 本机 `pnpm check`、`pnpm desktop:test:native` 与 Rust 格式／Clippy 检查通过。Electron Node 模式执行了 15 项存储和文件用例。4 个真实窗口入口、4 项隔离开发回归和 2 项 Node 取消结果检查均通过；保留生产 fuses 的最终制品可正常启动和关闭。desktop-contracts 与 desktop-localization 的实际 tarball 共通过 6 项 Node／浏览器独立消费检查。

@@ -2,9 +2,19 @@
 
 import { afterEach, beforeEach, expect, test } from 'vite-plus/test'
 import { createHash } from 'node:crypto'
-import { link, mkdir, mkdtemp, readFile, readdir, rm, symlink, writeFile } from 'node:fs/promises'
+import {
+  link,
+  mkdir,
+  mkdtemp,
+  readFile,
+  readdir,
+  realpath,
+  rm,
+  symlink,
+  writeFile,
+} from 'node:fs/promises'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { join, sep } from 'node:path'
 import { Readable } from 'node:stream'
 import { loadNative } from '#native'
 import {
@@ -95,13 +105,17 @@ test('cancellation during file synchronization releases the stage before returni
   expect(await readdir(directory)).toEqual([])
 })
 
-test('uses actual filesystem identities for links, containment, case and unavailable locations', async () => {
+test('compares registered directory entries, their containment and unavailable positions', async () => {
   if (process.platform === 'win32') {
     for (const path of ['\\shelf\\book', '/shelf/book', 'C:shelf\\book']) {
-      await expect(comparePaths(path, path)).rejects.toThrow(TypeError)
+      await expect(comparePaths(path, path, native)).rejects.toThrow(TypeError)
     }
     expect(normalizeAbsolutePath('c:/shelf/./../book')).toBe('C:\\shelf\\..\\book')
     expect(normalizeAbsolutePath('//server/share/shelf')).toBe('\\\\server\\share\\shelf')
+    const root = '//localhost/kisaki-w06-unavailable'
+    expect(normalizeAbsolutePath(root)).toBe('\\\\localhost\\kisaki-w06-unavailable\\')
+    expect(await comparePaths(root, root + '/.', native)).toBe('same')
+    expect(normalizeAbsolutePath('//?/UNC/server/share')).toBe('\\\\?\\UNC\\server\\share\\')
   }
 
   await assertLocalDataDirectory(directory, native)
@@ -109,26 +123,38 @@ test('uses actual filesystem identities for links, containment, case and unavail
   await mkdir(child)
   const alias = join(directory, 'alias')
   await symlink(child, alias, process.platform === 'win32' ? 'junction' : 'dir')
-  expect(await comparePaths(child, alias)).toBe('same')
-  expect(await comparePaths(directory, alias)).toBe('contains')
-  expect(await comparePaths(child, directory)).toBe('within')
-  expect(await comparePaths(child, join(directory, 'unavailable'))).toBe('unknown')
+  expect(await comparePaths(child, alias, native)).toBe('separate')
+  expect(await comparePaths(directory, alias, native)).toBe('contains')
+  expect(await comparePaths(child, directory, native)).toBe('within')
+  expect(await comparePaths(child, join(directory, 'unavailable'), native)).toBe('unknown')
 
   const file = join(child, 'Case.txt')
   const hardLink = join(child, 'hard-link')
   await writeFile(file, 'same bytes')
   await link(file, hardLink)
-  expect(await comparePaths(file, hardLink)).toBe('same')
+  expect(await comparePaths(file, hardLink, native)).toBe('separate')
+  expect(await comparePaths(file, join(alias, 'Case.txt'), native)).toBe('separate')
+  expect(await comparePaths(alias, join(alias, 'Case.txt'), native)).toBe('contains')
+
+  await mkdir(join(child, 'nested'))
+  const viaParent = [alias, 'nested', '..', 'Case.txt'].join(sep)
+  expect(await comparePaths(viaParent, join(alias, 'Case.txt'), native)).toBe('same')
+
+  const deepLink = join(await realpath(directory), 'deep-link')
+  await symlink(join(child, 'nested'), deepLink, process.platform === 'win32' ? 'junction' : 'dir')
+  const linkedParent = deepLink + sep + '..'
+  expect(await comparePaths(linkedParent, await realpath(linkedParent), native)).toBe('same')
+
   let caseSensitive = true
   try {
-    await writeFile(join(child, 'case.txt'), 'another file', { flag: 'wx' })
+    await link(file, join(child, 'case.txt'))
   } catch (error) {
     if (!(error instanceof Error) || !('code' in error) || error.code !== 'EEXIST') {
       throw error
     }
     caseSensitive = false
   }
-  expect(await comparePaths(file, join(child, 'case.txt'))).toBe(
+  expect(await comparePaths(file, join(child, 'case.txt'), native)).toBe(
     caseSensitive ? 'separate' : 'same',
   )
 })

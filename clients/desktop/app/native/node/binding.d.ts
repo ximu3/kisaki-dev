@@ -9,15 +9,37 @@ export interface FileOperationResult {
   systemCode?: number
 }
 
+/** A filesystem metadata lookup failure with its original operating-system code. */
+export interface FilesystemQueryFailure {
+  /** Stable outcome of the attempted lookup. */
+  reason: FilesystemQueryReason
+  /** Native code for diagnostics when the operating system supplied one. */
+  systemCode?: number
+}
+
+/** Stable causes shared by volume and directory-entry lookups. */
+export declare const enum FilesystemQueryReason {
+  /** The host could not find the requested location. */
+  PathMissing = 'pathMissing',
+  /** A path component required as a directory was another kind of entry. */
+  NotDirectory = 'notDirectory',
+  /** The host denied access to the requested metadata. */
+  PermissionDenied = 'permissionDenied',
+  /** The filesystem cannot provide the observation. */
+  Unsupported = 'unsupported',
+  /** Another I/O error prevented lookup. */
+  IoFailure = 'ioFailure',
+}
+
 /**
  * Inspects the actual backing filesystem of an existing absolute path.
  *
  * No files are created. Unknown classification is not evidence of local filesystem support.
  *
  * # Errors
- * Returns InvalidArg for non-absolute or NUL-containing paths; platform inspection failures reject.
+ * Returns InvalidArg before queueing an invalid path. Platform failures retain their cause and code.
  */
-export declare function getFilesystemLocation(path: string): Promise<'local' | 'network' | 'unknown'>
+export declare function getFilesystemLocation(path: string): Promise<'local' | 'network' | 'unknown' | FilesystemQueryFailure>
 
 /**
  * Queues an atomic, non-replacing move within one filesystem.
@@ -29,6 +51,14 @@ export declare function getFilesystemLocation(path: string): Promise<'local' | '
  * Returns InvalidArg before queueing if either path is not absolute for the platform or contains NUL.
  */
 export declare function moveNoReplace(source: string, target: string): Promise<FileOperationResult>
+
+/**
+ * Looks up two individual names in one existing absolute directory and compares their entries.
+ *
+ * # Errors
+ * Returns InvalidArg before queueing invalid paths or names. Lookup failures retain their OS code.
+ */
+export declare function sameDirectoryEntry(parent: string, first: string, second: string): Promise<boolean | FilesystemQueryFailure>
 
 /**
  * Queues platform synchronization for an existing regular file.

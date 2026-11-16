@@ -1,6 +1,7 @@
 //! Determines the backing filesystem of an existing path on a worker before database access.
 
-use napi::bindgen_prelude::AsyncTask;
+use super::FilesystemQueryFailure;
+use napi::bindgen_prelude::{AsyncTask, Either};
 use napi::{Env, Error, Result, Status, Task};
 use napi_derive::napi;
 use std::io;
@@ -33,17 +34,25 @@ fn location(path: &str) -> io::Result<&'static str> {
     })
 }
 
-/// Reads the mounted filesystem's local flag on macOS.
+/// Reads the actual Darwin mount containing a path.
 #[cfg(target_os = "macos")]
-fn location(path: &str) -> io::Result<&'static str> {
-    let path = std::ffi::CString::new(path)?;
+pub(super) fn mount_info(path: &std::path::Path) -> io::Result<libc::statfs> {
+    use std::os::unix::ffi::OsStrExt;
+
+    let path = std::ffi::CString::new(path.as_os_str().as_bytes())?;
     let mut information = std::mem::MaybeUninit::<libc::statfs>::uninit();
     // SAFETY: The path is NUL-terminated and the output has the exact statfs layout.
     if unsafe { libc::statfs(path.as_ptr(), information.as_mut_ptr()) } != 0 {
         return Err(io::Error::last_os_error());
     }
     // SAFETY: statfs initialized the complete output on success.
-    let information = unsafe { information.assume_init() };
+    Ok(unsafe { information.assume_init() })
+}
+
+/// Reads the mounted filesystem's local flag on macOS.
+#[cfg(target_os = "macos")]
+fn location(path: &str) -> io::Result<&'static str> {
+    let information = mount_info(std::path::Path::new(path))?;
     Ok(if information.f_flags & (libc::MNT_LOCAL as u32) != 0 {
         "local"
     } else {
@@ -79,22 +88,23 @@ pub struct FilesystemTask {
 }
 
 impl Task for FilesystemTask {
-    /// The verified local, network or unknown classification.
-    type Output = String;
+    /// The observed mount classification or its original I/O error.
+    type Output = io::Result<&'static str>;
 
-    /// The plain classification delivered to Node.
-    type JsValue = String;
+    /// The classification or structured failure delivered to Node.
+    type JsValue = Either<String, FilesystemQueryFailure>;
 
     /// Obtains the actual filesystem without opening or mutating a database.
     fn compute(&mut self) -> Result<Self::Output> {
-        location(&self.path)
-            .map(str::to_owned)
-            .map_err(|error| Error::from_reason(error.to_string()))
+        Ok(location(&self.path))
     }
 
     /// Delivers the completed filesystem observation.
     fn resolve(&mut self, _env: Env, output: Self::Output) -> Result<Self::JsValue> {
-        Ok(output)
+        Ok(match output {
+            Ok(location) => Either::A(location.to_owned()),
+            Err(error) => Either::B(error.into()),
+        })
     }
 }
 
@@ -103,8 +113,8 @@ impl Task for FilesystemTask {
 /// No files are created. Unknown classification is not evidence of local filesystem support.
 ///
 /// # Errors
-/// Returns InvalidArg for non-absolute or NUL-containing paths; platform inspection failures reject.
-#[napi(ts_return_type = "Promise<'local' | 'network' | 'unknown'>")]
+/// Returns InvalidArg before queueing an invalid path. Platform failures retain their cause and code.
+#[napi(ts_return_type = "Promise<'local' | 'network' | 'unknown' | FilesystemQueryFailure>")]
 pub fn get_filesystem_location(path: String) -> Result<AsyncTask<FilesystemTask>> {
     if !crate::files::valid_path(&path) {
         return Err(Error::new(
