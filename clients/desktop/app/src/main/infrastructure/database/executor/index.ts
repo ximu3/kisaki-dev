@@ -3,23 +3,33 @@
 import { Worker } from 'node:worker_threads'
 import type { DatabaseOptions, Storage } from '../initialize'
 import type { UiLocale } from '@kisaki3/desktop-contracts/i18n'
+import { DesktopError, type ErrorSummary } from '@kisaki3/desktop-contracts/errors'
 
 /** Storage initialization and every operation complete before the next command is accepted. */
 export type DatabaseCommand =
-  | { type: 'preferences' }
   | { type: 'adopt-locale'; locale: UiLocale }
+  | { type: 'operation'; name: string; args: readonly unknown[] }
   | { type: 'close' }
+
+/** Calls a complete synchronous worker operation with its declared input and result. */
+export type DatabaseCall<Operations> = <K extends keyof Operations & string>(
+  name: K,
+  ...args: Operations[K] extends (...args: infer A) => unknown ? A : never
+) => Promise<Operations[K] extends (...args: never[]) => infer R ? R : never>
 
 /** The actual decoded singleton row returned by the database. */
 export type PreferenceRow = Storage['preferences']['$inferSelect']
 
 /** Opens the deployed worker, returning a handle only after schema and preferences are ready. */
-export async function openDatabaseExecutor(entry: URL, options: DatabaseOptions) {
+export async function openDatabaseExecutor<Operations = never>(
+  entry: URL,
+  options: DatabaseOptions,
+) {
   const worker = new Worker(entry, { workerData: options })
   const ready = Promise.withResolvers<void>()
   const exited = Promise.withResolvers<void>()
   void exited.promise.catch(() => undefined)
-  let pending: PromiseWithResolvers<PreferenceRow | undefined> | undefined
+  let pending: PromiseWithResolvers<unknown> | undefined
   let failure: Error | undefined
   let closeAcknowledged = false
   let closing: Promise<void> | undefined
@@ -34,12 +44,20 @@ export async function openDatabaseExecutor(entry: URL, options: DatabaseOptions)
   worker.on('error', fail)
   worker.on(
     'message',
-    (message: { ready?: boolean; closed?: boolean; value?: PreferenceRow; error?: Error }) => {
+    (message: {
+      ready?: boolean
+      closed?: boolean
+      value?: unknown
+      error?: Error
+      failure?: ErrorSummary
+    }) => {
       if (message.closed) {
         closeAcknowledged = true
       }
       if (message.ready) {
         ready.resolve()
+      } else if (message.failure) {
+        pending?.reject(new DesktopError(message.failure.code, message.failure.message))
       } else if (message.error) {
         pending?.reject(message.error)
       } else {
@@ -66,7 +84,7 @@ export async function openDatabaseExecutor(entry: URL, options: DatabaseOptions)
   }
 
   /** Preserves FIFO order, lets later requests continue after a rejected operation and drains before closing. */
-  function request(command: DatabaseCommand): Promise<PreferenceRow | undefined> {
+  function request(command: DatabaseCommand): Promise<unknown> {
     if (closing) {
       return Promise.reject(new Error('Database executor is closing'))
     }
@@ -74,7 +92,7 @@ export async function openDatabaseExecutor(entry: URL, options: DatabaseOptions)
       if (failure) {
         throw failure
       }
-      pending = Promise.withResolvers<PreferenceRow | undefined>()
+      pending = Promise.withResolvers<unknown>()
       try {
         worker.postMessage(command)
         return await pending.promise
@@ -90,16 +108,15 @@ export async function openDatabaseExecutor(entry: URL, options: DatabaseOptions)
   }
 
   return {
-    /** Returns the initialized preference row for main's effective-language selection. */
-    async readPreferences() {
-      return (await request({ type: 'preferences' }))!
-    },
+    /** Executes an operation from the table installed by the application's worker entry. */
+    call: ((name: string, ...args: unknown[]) =>
+      request({ type: 'operation', name, args })) as DatabaseCall<Operations>,
     /** Resolves after the comparator and all name indexes have committed the effective language. */
     async adoptLocale(locale: UiLocale) {
       await request({ type: 'adopt-locale', locale })
     },
     /** Drains accepted work, closes SQLite and waits for the worker to exit. */
-    close() {
+    close(this: void) {
       return (closing ??= request({ type: 'close' }).then(
         async () => {
           await exited.promise

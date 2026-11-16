@@ -1,0 +1,76 @@
+/** @fileoverview Reads immutable attachment metadata and rechecks all real foreign keys before reclaiming it. */
+
+import { count, eq, sql } from 'drizzle-orm'
+import type { Attachment } from '@kisaki3/desktop-contracts/attachments'
+import type { ListOptions } from '@kisaki3/desktop-contracts/operations'
+import { attachments } from '../database/schema/attachments/metadata'
+import type { Storage, StorageTransaction } from '../database'
+
+/** Registers prepared bytes within the transaction committing the owner's actual references. */
+export function adoptAttachments(tx: StorageTransaction, values: readonly Attachment[]) {
+  for (const { sizeBytes, ...metadata } of values) {
+    tx.insert(attachments)
+      .values({ ...metadata, byteSize: sizeBytes })
+      .onConflictDoNothing()
+      .run()
+  }
+}
+
+/** Projects the storage column into the public byte-size unit. */
+function attachment(row: typeof attachments.$inferSelect): Attachment {
+  const { byteSize, ...metadata } = row
+  return { ...metadata, sizeBytes: byteSize }
+}
+
+/** Builds metadata and collection operations for the initialized storage schema. */
+export function attachmentStorage(storage: Storage) {
+  const db = storage.db
+  const references = db.all<{ owner: string; field: string }>(
+    sql`select m.name owner, f."from" field from sqlite_schema m, pragma_foreign_key_list(m.name) f where m.type='table' and f."table"='attachments'`,
+  )
+  const unreferenced = sql.join(
+    references.map(
+      ({ owner, field }) =>
+        sql`not exists(select 1 from ${sql.identifier(owner)} where ${sql.identifier(field)}=${attachments.id})`,
+    ),
+    sql` and `,
+  )
+  return {
+    /** Reads immutable attachment metadata by identity. */
+    getAttachment(id: string) {
+      const row = db.select().from(attachments).where(eq(attachments.id, id)).get()
+      return row ? attachment(row) : null
+    },
+    /** Reads an ordered metadata interval with its count. */
+    listAttachments(options: ListOptions) {
+      return db.transaction((tx) => ({
+        items: tx
+          .select()
+          .from(attachments)
+          .orderBy(attachments.id)
+          .limit(options.limit)
+          .offset(options.offset)
+          .all()
+          .map(attachment),
+        total: tx.select({ n: count() }).from(attachments).get()!.n,
+      }))
+    },
+    /** Lists registered identities for reconciliation against the managed file layout. */
+    attachmentIds() {
+      return db
+        .select({ id: attachments.id })
+        .from(attachments)
+        .all()
+        .map((row) => row.id)
+    },
+    /** Deletes only the metadata row when no business owner still references it. */
+    reclaimAttachment(id: string) {
+      return (
+        db
+          .delete(attachments)
+          .where(sql`${attachments.id}=${id} and ${unreferenced}`)
+          .run().changes > 0
+      )
+    },
+  }
+}

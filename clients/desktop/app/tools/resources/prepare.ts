@@ -11,6 +11,7 @@ import { appRoot } from '../lib/paths'
 import type { DesktopTarget } from '../lib/targets'
 import { removeOutputs } from '@kisaki3/tooling/output'
 import { copyFonts } from './fonts'
+import { copyMediaRuntime } from './media'
 import type { FontInput } from './fonts'
 
 /** Resolves resource dependencies from the desktop package's declared installation. */
@@ -45,6 +46,7 @@ export async function prepareResources(
 
   await prepareIcons(join(output, 'icons'))
   await copyFonts(fontInputs, join(output, 'fonts'))
+  await copyMediaRuntime(join(output, 'media'))
   await cp(join(appRoot, 'drizzle'), join(output, 'drizzle'), { recursive: true })
   await cp(join(appRoot, 'assets', 'licenses'), join(output, 'licenses'), { recursive: true })
 

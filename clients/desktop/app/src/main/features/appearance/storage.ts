@@ -1,0 +1,106 @@
+/** @fileoverview Persists complete user themes with field and token comparison inside short writes. */
+
+import { eq } from 'drizzle-orm'
+import { randomUUID } from 'node:crypto'
+import { isDeepStrictEqual } from 'node:util'
+import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import {
+  parseUserThemeCreate,
+  parseUserThemeUpdate,
+  type Theme,
+  type UserThemeCreate,
+  type UserThemeUpdate,
+} from '@kisaki3/desktop-contracts/appearance'
+import type { Storage, StorageTransaction } from '../../infrastructure/database'
+import { themes } from '../../infrastructure/database/schema/application'
+import { ready } from '../../infrastructure/database/codecs/json'
+import { adoptNewFont, type NewFont } from '../fonts/storage'
+
+/** Decodes the stored user theme without treating a damaged branch as a new default. */
+function readTheme(db: Storage['db'] | StorageTransaction, id: string): Theme<'user'> | null {
+  const row = db.select().from(themes).where(eq(themes.id, id)).get()
+  if (!row) {
+    return null
+  }
+  if (row.light.status === 'invalid' || row.dark.status === 'invalid') {
+    throw new DesktopError('DataIntegrityError', 'The saved theme is invalid')
+  }
+  return {
+    ref: { type: 'user', id },
+    ...parseUserThemeCreate({ name: row.name, light: row.light.value, dark: row.dark.value }),
+  }
+}
+
+/** Worker operations for independently stored user theme definitions. */
+export function themeStorage({ db }: Storage) {
+  return {
+    /** Reads the specified user theme from its stable identity. */
+    getTheme: (id: string) => readTheme(db, id),
+    /** Queries user theme names without decoding full branches. */
+    listThemes: () =>
+      db
+        .select({ id: themes.id, name: themes.name })
+        .from(themes)
+        .orderBy(themes.name, themes.id)
+        .all()
+        .map(({ id, name }) => ({ ref: { type: 'user' as const, id }, name })),
+    /** Commits the new theme and any fonts imported for its private slots together. */
+    createTheme(input: UserThemeCreate, copiedFonts: readonly NewFont[] = []) {
+      const { name, light, dark } = parseUserThemeCreate(input)
+      const id = randomUUID()
+      const now = Date.now()
+      db.transaction((tx) => {
+        for (const font of copiedFonts) {
+          adoptNewFont(tx, font)
+        }
+        tx.insert(themes)
+          .values({
+            id,
+            name,
+            light: ready(light),
+            dark: ready(dark),
+            createdAt: now,
+            updatedAt: now,
+          })
+          .run()
+      })
+      return { type: 'user' as const, id }
+    },
+    /** Checks the original values of submitted tokens before the update. */
+    updateTheme(id: string, input: UserThemeUpdate) {
+      const { changes, expected } = parseUserThemeUpdate(input)
+      db.transaction((tx) => {
+        const old = readTheme(tx, id)
+        if (!old) {
+          throw new DesktopError('NotFound', 'The theme does not exist')
+        }
+        const conflict =
+          (expected?.name !== undefined && expected.name !== old.name) ||
+          (['light', 'dark'] as const).some((branch) =>
+            Object.entries(expected?.[branch] ?? {}).some(
+              ([key, value]) =>
+                !isDeepStrictEqual(value, old[branch][key as keyof typeof old.light]),
+            ),
+          )
+        if (conflict) {
+          throw new DesktopError('Conflict', 'A theme field you edited has changed')
+        }
+        tx.update(themes)
+          .set({
+            name: changes.name ?? old.name,
+            light: ready({ ...old.light, ...changes.light }),
+            dark: ready({ ...old.dark, ...changes.dark }),
+            updatedAt: Date.now(),
+          })
+          .where(eq(themes.id, id))
+          .run()
+      })
+    },
+    /** Removes the theme row and reports a missing identity. */
+    deleteTheme(id: string) {
+      if (!db.delete(themes).where(eq(themes.id, id)).run().changes) {
+        throw new DesktopError('NotFound', 'The theme does not exist')
+      }
+    },
+  }
+}

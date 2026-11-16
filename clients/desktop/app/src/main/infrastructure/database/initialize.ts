@@ -150,6 +150,25 @@ export function initializeDatabase(options: DatabaseOptions) {
   }
 }
 
+/** Checks an existing target library's migration chain in a read-only connection before a mode switch. */
+export function verifyExistingLibrary(
+  path: string,
+  options: Pick<DatabaseOptions, 'nativeBinding' | 'migrationsDirectory'>,
+): void {
+  const connection = new Database(path, {
+    readonly: true,
+    fileMustExist: true,
+    nativeBinding: options.nativeBinding,
+  })
+  try {
+    if (!prepareFormat(connection, options.migrationsDirectory)) {
+      throw new DatabaseFormatError('The selected library has no complete migration baseline')
+    }
+  } finally {
+    connection.close()
+  }
+}
+
 /** The initialized connection and singleton mappings owned by one application instance. */
 export type Storage = ReturnType<typeof initializeDatabase>
 
