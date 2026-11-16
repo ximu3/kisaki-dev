@@ -19,7 +19,7 @@ export default defineLibrary({
     },
     deps: {
       alwaysBundle: ['css-tree'],
-      onlyBundle: ['css-tree', 'mdn-data'],
+      onlyBundle: ['css-tree'],
     },
   },
 })

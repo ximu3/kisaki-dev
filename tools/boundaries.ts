@@ -24,7 +24,7 @@ export async function checkBoundaries(project?: string, signal?: AbortSignal): P
           .filter((entry) => entry.isFile() && entry.name.endsWith('.ts'))
           .map((entry) => entry.name),
       ]
-  await runPnpm(['exec', 'depcruise', '--config', '.dependency-cruiser.json', ...inputs], {
+  await runPnpm(['exec', 'depcruise', ...inputs], {
     cwd: repositoryRoot,
     signal,
   })

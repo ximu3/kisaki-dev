@@ -9,6 +9,7 @@ import { promisify } from 'node:util'
 import { copyFile, mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises'
 import { dirname, join, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
+import { listProjects } from '../../tools/workspace'
 
 /** Installed dependency-cruiser entry used to inspect the synthetic import graph. */
 const executable = resolve('node_modules/dependency-cruiser/bin/dependency-cruiser.mjs')
@@ -112,6 +113,43 @@ const cases: {
     source: "export { value } from 'undeclared-tool'\n",
   },
   {
+    name: 'desktop-native-is-main-only',
+    from: 'clients/desktop/app/tests/fixtures/desktop-app/src/renderer/entry.ts',
+    to: 'clients/desktop/app/native/node/index.ts',
+    source: "export type { Value } from '#native'\n",
+  },
+  {
+    name: 'use-desktop-native-import',
+    from: 'clients/desktop/app/src/main/binding.ts',
+    to: 'clients/desktop/app/native/node/files.ts',
+    source: "import '../../native/node/files'\n",
+  },
+  {
+    name: 'use-workspace-exports-from-@kisaki3/desktop-contracts',
+    from: 'clients/desktop/packages/desktop-contracts/src/manifest.test.ts',
+    to: 'clients/desktop/packages/extension-distribution/src/internal.ts',
+    source: "export type { Value } from '../../extension-distribution/src/internal'\n",
+  },
+  {
+    name: 'declare-workspace-dependencies-from-@kisaki3/desktop-rpc',
+    from: 'clients/desktop/packages/desktop-rpc/tools/manifest.ts',
+    to: 'clients/desktop/packages/extension-distribution/dist/manifest.d.ts',
+    source: "export type { Value } from '@kisaki3/extension-distribution/manifest'\n",
+  },
+  {
+    name: 'use-workspace-exports-from-@fixture/workspace',
+    from: 'tools/output.ts',
+    to: 'packages/tooling/src/process/index.ts',
+    source: "export type { Value } from '../packages/tooling/src/process'\n",
+  },
+  {
+    name: 'main consumes the native package import',
+    allowed: true,
+    from: 'clients/desktop/app/src/main/files.ts',
+    to: 'clients/desktop/app/native/node/index.ts',
+    source: "export type { Value } from '#native'\n",
+  },
+  {
     name: 'engineering tools use private package exports',
     allowed: true,
     from: 'clients/desktop/app/tools/process.ts',
@@ -131,13 +169,15 @@ let result: {
 
 beforeAll(async () => {
   directory = await mkdtemp(join(tmpdir(), 'kisaki-boundaries-'))
+  const members = listProjects().filter((project) => project.directory)
 
   for (const file of [
-    '.dependency-cruiser.json',
+    '.dependency-cruiser.ts',
+    'tools/workspace.ts',
+    'pnpm-workspace.yaml',
     'tsconfig.json',
-    'packages/config/package.json',
     'packages/config/typescript/base.json',
-    'clients/desktop/app/package.json',
+    ...members.map((project) => project.directory + '/package.json'),
   ]) {
     const target = join(directory, file)
     await mkdir(dirname(target), { recursive: true })
@@ -147,7 +187,12 @@ beforeAll(async () => {
   // Ancestor availability must not substitute for the importing project's declaration.
   await writeFile(
     join(directory, 'package.json'),
-    JSON.stringify({ private: true, devDependencies: { 'undeclared-tool': '1.0.0' } }),
+    JSON.stringify({
+      name: '@fixture/workspace',
+      private: true,
+      type: 'module',
+      devDependencies: { '@kisaki3/tooling': 'workspace:*', 'undeclared-tool': '1.0.0' },
+    }),
   )
 
   const undeclared = join(directory, 'node_modules', 'undeclared-tool')
@@ -158,20 +203,10 @@ beforeAll(async () => {
   )
   await writeFile(join(undeclared, 'index.js'), 'exports.value = 1\n')
 
-  const scope = join(directory, 'node_modules', '@kisaki3')
-  await mkdir(scope, { recursive: true })
-  await mkdir(join(directory, 'packages', 'tooling'), { recursive: true })
-  await writeFile(
-    join(directory, 'packages', 'tooling', 'package.json'),
-    JSON.stringify({
-      name: '@kisaki3/tooling',
-      type: 'module',
-      exports: { './process': './src/process/index.ts' },
-    }),
-  )
-
-  for (const member of ['config', 'tooling']) {
-    await symlink(join(directory, 'packages', member), join(scope, member), 'junction')
+  for (const member of members) {
+    const link = join(directory, 'node_modules', member.name)
+    await mkdir(dirname(link), { recursive: true })
+    await symlink(join(directory, member.directory), link, 'junction')
   }
 
   const files: [string, string][] = cases.flatMap(({ from, to, source }) => {
@@ -188,26 +223,12 @@ beforeAll(async () => {
     await writeFile(file, content)
   }
 
-  let output: string
-  try {
-    output = (
-      await promisify(execFile)(
-        process.execPath,
-        [executable, '--config', '.dependency-cruiser.json', '--output-type', 'json', '.'],
-        { cwd: directory, windowsHide: true },
-      )
-    ).stdout
-  } catch (cause) {
-    if (!cause || typeof cause !== 'object' || !('stdout' in cause)) {
-      throw cause
-    }
-    output = String(cause.stdout)
-    if (!output.trim()) {
-      throw cause
-    }
-  }
-
-  result = JSON.parse(output) as typeof result
+  const { stdout } = await promisify(execFile)(
+    process.execPath,
+    [executable, '--output-type', 'json', 'clients', 'packages', 'tools'],
+    { cwd: directory, windowsHide: true },
+  )
+  result = JSON.parse(stdout) as typeof result
   expect(result.summary.violations.map((violation) => violation.rule.name)).not.toContain(
     'no-unresolved',
   )

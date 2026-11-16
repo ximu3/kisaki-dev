@@ -147,7 +147,7 @@ Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 Ap
 
 根 TypeScript 项目检查工具、配置和测试。桌面项目按 main、preload、renderer、utility process、shared、native、tools 和 tests 分环境检查。native 项目拥有 Node 绑定源码及生成声明，main 消费其实际入口。工程载体的程序源码归对应运行环境，四份 Vite 构建配置归 tools 项目。每份自有声明至少由一个 `skipLibCheck: false` 的实际项目完整检查，规则见[类型分工](../design/engineering/workspace.md#declaration-checks)。
 
-两个私有工程包通过 exports 直接消费。`pnpm lint` 运行类型感知 Oxlint 及全仓依赖边界检查。`tools/boundaries.ts` 从 pnpm 取得实际成员目录，连同根工程输入按真实包导出核对循环、未声明依赖、运行代码与测试归属。dependency-cruiser 18 自用的 TypeScript 6 解析依赖由 packageExtensions 限定，项目检查和公开声明统一使用锁定的 TypeScript 7.1。
+`pnpm lint` 运行类型感知 Oxlint 和全仓依赖边界检查。`tools/boundaries.ts` 选择工作区成员及根工程输入，`.dependency-cruiser.ts` 定义[包与运行端的导入规则](../design/engineering/workspace.md#tooling)。dependency-cruiser 18 的解析器通过 packageExtensions 使用 TypeScript 6，项目检查和公开声明使用锁定的 TypeScript 7.1。
 
 `pnpm exec vp run --dry-run --json <包名>#<任务名>` 显示任务与依赖。增量类型信息归各包 `.cache/typescript`。
 
