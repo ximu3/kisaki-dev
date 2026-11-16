@@ -253,14 +253,14 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
       }
       return loginItem()
     },
-    /** Registers this carrier's scheme and returns the resulting association. */
+    /** Creates the user desktop entry for a supported movable carrier. */
     async registerDesktopEntry() {
       if (process.platform === 'linux' && paths.carrier === 'appimage') {
         await writeEntry(desktopFile, entryFile)
       }
       return desktopEntry()
     },
-    /** Creates the user desktop entry for a supported movable carrier. */
+    /** Registers this carrier's scheme and returns the resulting association. */
     async registerProtocol() {
       if (process.platform === 'linux') {
         if (paths.carrier === 'appimage' || !app.isPackaged) {

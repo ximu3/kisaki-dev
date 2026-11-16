@@ -73,14 +73,15 @@ export const test = base.extend<DesktopFixtures>({
     try {
       await use(application)
     } finally {
-      const deadline =
-        info.status !== info.expectedStatus
-          ? setTimeout(() => {
-              if (child.exitCode === null && child.signalCode === null) {
-                child.kill('SIGKILL')
-              }
-            }, 5_000)
-          : undefined
+      const passed = info.status === info.expectedStatus
+      const deadline = setTimeout(
+        () => {
+          if (child.exitCode === null && child.signalCode === null) {
+            child.kill('SIGKILL')
+          }
+        },
+        passed ? 15_000 : 5_000,
+      )
       try {
         if (child.exitCode === null && child.signalCode === null) {
           await application.close()
@@ -89,6 +90,12 @@ export const test = base.extend<DesktopFixtures>({
       } finally {
         clearTimeout(deadline)
       }
+    }
+    if (info.status === info.expectedStatus && child.exitCode !== 0) {
+      await info.attach('runtime-log', { path: join(profile, 'logs', 'runtime.log') })
+      throw new Error(
+        `Desktop application failed to exit normally (${child.signalCode ?? child.exitCode})`,
+      )
     }
   },
 })

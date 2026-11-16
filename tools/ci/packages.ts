@@ -86,9 +86,14 @@ const packageChecks: Readonly<Record<string, PackageChecks>> = {
     targets: nativeTargets,
     macosDeploymentTarget: '13.0',
     tasks: {
-      verify: { chromium: true, window: true, linuxPackages: linuxPackaging, performanceReport },
+      verify: {
+        chromium: true,
+        window: true,
+        linuxPackages: [...linuxPackaging, 'xdg-utils'],
+        performanceReport,
+      },
       'verify:native': {},
-      'test:window-startup': { window: true },
+      'test:window-startup': { window: true, linuxPackages: ['xdg-utils'] },
       'test:dev-session': { chromium: true, window: true, linuxPackages: ['wmctrl'] },
       'test:candidate-artifacts': { window: true, linuxPackages: linuxPackaging },
       'test:performance': { window: true, performanceReport },

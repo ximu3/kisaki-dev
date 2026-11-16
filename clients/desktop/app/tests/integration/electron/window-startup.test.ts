@@ -142,4 +142,7 @@ test('saving and selecting a theme preserves the independent preference draft an
   await expect(
     editor.getByRole('combobox', { name: 'Theme', exact: true }).locator('option:checked'),
   ).toHaveText('Sample theme')
+  await page.keyboard.press('Escape')
+  await expect(editor).not.toBeVisible()
+  await expect(page.getByRole('button', { name: 'Application menu' })).toBeFocused()
 })
