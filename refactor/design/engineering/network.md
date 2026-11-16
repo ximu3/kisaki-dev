@@ -24,7 +24,7 @@ iframe 共用承载窗口的实际 Electron Session；独立 origin 隔离浏览
 
 宿主 HTTP 按本页的无自动 Cookie 规则运行，浏览器请求遵守标准 CORS、credentials、第三方 Cookie 与存储策略；两者分别管理账号状态。Webview 浏览器存储只用于该浏览器上下文，官方账号与凭据使用各自的正式存储入口。webSecurity 保持启用。
 
-网络偏好变化须覆盖这些实际 Session，并通过真实 HTTP／WSS 连接验证旧连接退出、新配置采用和采用失败时拒绝继续联网。验证同时覆盖宿主 HTTP 与浏览器请求；采用失败时保持未就绪状态。用户通过外部链接打开的系统浏览器自行管理网络与账号。
+网络偏好变化覆盖这些实际 Session。已建立的浏览器 WebSocket 按原生寿命沿原路由传输，直至对端、页面或浏览器关闭它；重连按届时的有效代理建立。更改代理保留视图和编辑草稿。用户通过外部链接打开的系统浏览器自行管理网络与账号。
 
 <a id="options"></a>
 
@@ -63,7 +63,7 @@ NetworkResponse 提供 url、redirected、status、statusText、ok、headers、b
 
 代理模式为 system、direct 或 manual，默认使用 system。选择值及凭据由 [preferences](../domains/preferences.md#network) 保存，app 的[固定绑定](../architecture.md#app-composition)将偏好变化交给 network 的完整采用入口。配置结构合法表示可以开始采用，连接和认证结果由实际请求确定。
 
-偏好保存后，network 采用新设置并重建受影响的连接。这一步可以中断在途请求；新请求等待新配置就绪，已中断请求不自动重放。采用失败时保留用户选择，报告网络未就绪，请求不得改走旧代理或直连。system 模式允许的直连行为按系统设置执行。
+偏好保存后，network 中止在途宿主 HTTP，清理 Chromium 的 HTTP 连接池并采用新设置。新的宿主请求等待路由就绪，浏览器的新 HTTP 请求和 WebSocket 握手只在路由就绪后放行。采用失败时保留用户选择并报告网络未就绪，阻止新请求与新连接；已建立的浏览器 WebSocket 继续遵守上述寿命。已中断请求不自动重放。system 模式允许的直连行为按系统设置执行。
 
 setProxy 返回不代表所有既有连接都已切换，接入必须验证实际连接行为。HTTP 错误状态仍作为正常响应交给业务处理；连接、TLS、超时等传输失败则报告网络错误。响应提供准确的最终地址，供 registry 等业务解析相对资源。
 

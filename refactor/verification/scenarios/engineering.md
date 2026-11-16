@@ -84,6 +84,10 @@ A15 验证两份历史各自保存与完成：所需起始记录未保存时不�
 
 A15 验证 scanner.finished 和 tasks.finished 分别表达实际边界，扫描结束不提前释放仍在托管的运行关联，也不让完整 scan 提前返回。TaskRun 终态保存失败时，当前观察者和等待者得到实际失败；上下文释放后，list、get 与新观察或等待把最后非终态历史投影为 interrupted，保留最后检查点和空 finishedAt。筛选、计数和明确清理使用同一判断，扫描完整报告继续独立可读。
 
+## 网络设置与连接寿命
+
+W07 在真实 Electron Session 中验证[网络路由](../../design/engineering/network.md#webview)。先建立 WSS 并传递消息，再切换代理，分别核对已有 WSS 仍能收到原服务器的新消息、新 HTTP 和新握手采用新代理。路由采用失败时核对新请求被阻止、已建立 WSS 的寿命独立。宿主在途 HTTP 取消后不自动重放。
+
 <a id="events"></a>
 
 ## 事实订阅、连接与接纳

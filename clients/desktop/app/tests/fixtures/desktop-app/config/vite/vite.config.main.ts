@@ -1,4 +1,4 @@
-/** @fileoverview Builds the engineering fixture main process and the deployed SQLite worker. */
+/** @fileoverview Builds the editable main-process input for the development-session fixture. */
 
 import { defineConfig } from 'vite'
 
@@ -7,13 +7,9 @@ export default defineConfig({
     ssr: true,
     target: 'node24',
     lib: {
-      entry: {
-        entry: 'src/main/entry.ts',
-        database: '../../../src/main/infrastructure/database/executor/worker.ts',
-      },
+      entry: { entry: 'src/main/entry.ts' },
       formats: ['es'],
     },
-    // Bundle the driver's JavaScript; initializeDatabase supplies the deployed nativeBinding path.
     rolldownOptions: { external: [/^node:/, 'electron'] },
   },
   ssr: { noExternal: true },

@@ -90,7 +90,7 @@ const packageChecks: Readonly<Record<string, PackageChecks>> = {
       'verify:native': {},
       'test:window-startup': { window: true },
       'test:dev-session': { chromium: true, window: true, linuxPackages: ['wmctrl'] },
-      'test:fixture-artifacts': { window: true, linuxPackages: linuxPackaging },
+      'test:candidate-artifacts': { window: true, linuxPackages: linuxPackaging },
       'test:performance': { window: true, performanceReport },
     },
   },

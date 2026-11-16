@@ -214,7 +214,7 @@ clients/desktop/app/tools/
 | package/packager.ts              | 在所需构建就绪后调用 electron-builder 生成目标安装或归档文件，消费应用的 electron-builder.yml 与实际存在的打包专用输入；签名按已有环境与策略执行，不隐含公开发布。                                                                                                           |
 | lib | 提供跨工作流的工程路径、目标解析和 SHA-256 计算。 |
 
-桌面的开发接入、build:fixture 和 package:fixture 分别由所属工作流执行，类型与测试任务直接调用所属运行器与配置；从根用 `vp run @kisaki3/desktop#<任务>` 选择桌面操作。resources 与 native 的显式入口和内部调用复用同一工作流。不同目标、开发、构建与测试环境按[输出与清理规则](build.md#outputs)分离。
+桌面的开发接入、build 和 package:candidate 分别由所属工作流执行，类型与测试任务直接调用所属运行器与配置；从根用 `vp run @kisaki3/desktop#<任务>` 选择桌面操作。resources 与 native 的显式入口和内部调用复用同一工作流。不同目标、开发、构建与测试环境按[输出与清理规则](build.md#outputs)分离。
 
 `DesktopTarget`、目标解析与 Rust triple 映射共同归 `lib/targets.ts`。构建清单归 `build/manifest.ts`，安装载体的分发元数据归 `package/distribution.ts`。部署后的运行资源路径由 main/app/paths 负责。
 

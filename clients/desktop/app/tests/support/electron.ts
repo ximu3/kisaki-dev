@@ -8,6 +8,7 @@ import type { ElectronApplication } from '@playwright/test'
 import { mkdtemp, readFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import { once } from 'node:events'
 import electronManifest from 'electron/package.json' with { type: 'json' }
 import { buildDirectory } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
@@ -38,7 +39,7 @@ export const test = base.extend<DesktopFixtures>({
   },
 
   /** Launches the verified host build and closes its actual Electron process after the test. */
-  desktop: async ({ profile, kind }, use) => {
+  desktop: async ({ profile, kind }, use, info) => {
     const runtime = buildDirectory(hostTarget())
     const build = JSON.parse(await readFile(join(runtime, 'build.json'), 'utf8')) as {
       target: string
@@ -66,7 +67,13 @@ export const test = base.extend<DesktopFixtures>({
       await use(application)
     } finally {
       if (child.exitCode === null) {
-        await application.close()
+        if (info.status === info.expectedStatus) {
+          await application.close()
+        } else {
+          const stopped = once(child, 'close')
+          child.kill('SIGKILL')
+          await stopped
+        }
       }
     }
   },

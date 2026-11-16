@@ -20,7 +20,7 @@ test('worker operation medians meet their budget and the window reaches main dur
   })
 
   const page = await desktop.firstWindow()
-  await page.locator('#root').waitFor({ state: 'attached' })
+  await page.getByRole('button', { name: 'Task center', exact: true }).waitFor()
 
   let measuringStorage = true
   const latencies: number[] = []
@@ -36,13 +36,40 @@ test('worker operation medians meet their budget and the window reaches main dur
       while (measuringStorage) {
         const start = performance.now()
         await page.evaluate(() => {
-          const carrier = window as typeof window & {
-            fixture: {
-              /** Resolves when main services this window's IPC probe. */
-              ping(): Promise<boolean>
+          // A resize queries the actual native window state. Observe its own request and reply.
+          return new Promise<void>((resolve, reject) => {
+            const send = (
+              Object.getOwnPropertyDescriptor(MessagePort.prototype, 'postMessage') as {
+                value: MessagePort['postMessage']
+              }
+            ).value
+            MessagePort.prototype.postMessage = function (this: MessagePort, frame: unknown) {
+              if (
+                frame &&
+                typeof frame === 'object' &&
+                'method' in frame &&
+                frame.method === 'window.state' &&
+                'id' in frame
+              ) {
+                MessagePort.prototype.postMessage = send
+                /** Completes the latency sample only for the matching real window-state response. */
+                const reply = (event: MessageEvent<{ id?: number; type: string }>) => {
+                  if (event.data.id !== frame.id) {
+                    return
+                  }
+                  this.removeEventListener('message', reply)
+                  if (event.data.type === 'success') {
+                    resolve()
+                  } else {
+                    reject(new Error('Native window state query failed'))
+                  }
+                }
+                this.addEventListener('message', reply)
+              }
+              send.call(this, frame)
             }
-          }
-          return carrier.fixture.ping()
+            window.dispatchEvent(new Event('resize'))
+          })
         })
         latencies.push(performance.now() - start)
         await setTimeout(100)

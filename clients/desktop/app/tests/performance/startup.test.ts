@@ -14,7 +14,7 @@ import { buildDirectory } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
-/** Fixed twenty-process sampling count for the carrier's single-entry storage profile. */
+/** Fixed twenty-process sampling count for the native application and its retained test profile. */
 const sampleCount = 20
 
 test('measures twenty fresh processes and confirms all observed child processes exit', async ({
@@ -112,7 +112,7 @@ test('measures twenty fresh processes and confirms all observed child processes 
     osRelease: release(),
     cpu: cpus()[0]?.model,
     memoryBytes: totalmem(),
-    mode: 'fresh processes, warm OS disk cache, isolated retained profile, windows, native modules and one storage fixture entry',
+    mode: 'fresh processes, warm OS disk cache, isolated retained profile, native main window, deployed native modules and migrated library',
     build: JSON.parse(await readFile(join(runtime, 'build.json'), 'utf8')) as unknown,
     samples,
     medianMs: median,
