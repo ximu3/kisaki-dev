@@ -14,12 +14,14 @@ export interface Project {
 }
 
 /** Reads native pnpm workspace selectors, including their transitive dependency edges. */
-export function listProjects(filter?: string): Project[] {
+export function listProjects(...filters: string[]): Project[] {
   const pnpm = process.env.npm_execpath
   if (!pnpm) {
     throw new Error('Run workspace tools through pnpm')
   }
-  const selection = filter ? ['--filter', filter, '--fail-if-no-match'] : ['--recursive']
+  const selection = filters.length
+    ? [...filters.flatMap((filter) => ['--filter', filter]), '--fail-if-no-match']
+    : ['--recursive']
   const output = execFileSync(pnpm, [...selection, 'list', '--depth', '-1', '--json'], {
     cwd: repositoryRoot,
     encoding: 'utf8',

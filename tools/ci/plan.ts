@@ -1,84 +1,81 @@
-/** @fileoverview Plans GitHub Actions jobs from affected projects and their registered verification groups. */
+/** @fileoverview Expands affected packages or a manual task request into native GitHub Actions jobs. */
 
 import { execFileSync } from 'node:child_process'
 import { appendFileSync } from 'node:fs'
-import { workspaceVerification } from './groups.ts'
-import { selectGroups } from './projects.ts'
-import { repositoryRoot } from '../workspace.ts'
+import { runners, verificationPackages } from './packages.ts'
+import type { VerificationPackage } from './packages.ts'
+import { selectPackages } from './selection.ts'
+import type { PackageSelection } from './selection.ts'
+import { listProjects, repositoryRoot } from '../workspace.ts'
 
-/** Creates one independent runner job per selected group and host, or only the requested diagnostic. */
+/** Manual workflow inputs. An omitted task uses the package's complete check. */
+export interface CheckRequest {
+  package?: string | undefined
+  task?: string | undefined
+  target?: string | undefined
+}
+
+/** Creates one job for each selected package and host. A named task belongs to one package. */
 export function planChecks(
-  paths: readonly string[] | undefined,
-  { workspace, groups }: ReturnType<typeof workspaceVerification>,
-  requestedTarget = 'all',
-  requestedSuite = 'all',
+  selection: PackageSelection,
+  packages: readonly VerificationPackage[],
+  request: CheckRequest = {},
 ) {
-  if (
-    requestedTarget !== 'all' &&
-    !groups.some((group) => Object.hasOwn(group.manualTargets ?? group.targets, requestedTarget))
-  ) {
-    throw new Error('Unknown host ' + requestedTarget)
+  if (request.task && !request.package) {
+    throw new Error('Select a workspace package for task ' + request.task)
   }
-  if (
-    requestedSuite !== 'all' &&
-    !groups.some(
-      (group) =>
-        group.name === requestedSuite || Object.hasOwn(group.diagnostics ?? {}, requestedSuite),
-    )
-  ) {
-    throw new Error('Unknown verification group or suite ' + requestedSuite)
+  const requestedTarget = request.target === 'all' ? undefined : request.target
+  const manual = !!(request.package || requestedTarget)
+  const names = new Set(selection.projects.map((project) => project.name))
+  const selected = manual
+    ? packages.filter((project) => !request.package || project.name === request.package)
+    : packages.filter((project) => names.has(project.name))
+  if (request.package && !selected.length) {
+    throw new Error('No target checks registered for ' + request.package)
   }
 
-  const selection = selectGroups(paths, workspace, groups)
-  const matrix = selection.groups.flatMap((group) => {
-    const diagnostic = group.diagnostics?.[requestedSuite]
-    if (requestedSuite !== 'all' && requestedSuite !== group.name && !diagnostic) {
-      return []
+  const matrix = selected.flatMap((project) => {
+    const task = request.task || project.defaultTask
+    if (!Object.hasOwn(project.tasks, task)) {
+      throw new Error(
+        `Unknown task ${project.name}#${task}. Available tasks: ${Object.keys(project.tasks).join(', ')}`,
+      )
     }
-    let hosts = Object.entries(
-      requestedTarget !== 'all' || requestedSuite !== 'all'
-        ? (group.manualTargets ?? group.targets)
-        : group.targets,
-    )
-    if (!hosts.length) {
-      throw new Error('No verification hosts for ' + group.name)
-    }
-    if (requestedTarget !== 'all') {
-      hosts = hosts.filter(([target]) => target === requestedTarget)
-    }
+    const environment = project.tasks[task]!
+    const targets = manual ? (project.manualTargets ?? project.targets) : project.targets
+    const hosts = requestedTarget ? targets.filter((target) => target === requestedTarget) : targets
 
-    const diagnostics = group.members
-      .map((project) => project.directory + '/test-results/')
-      .join('\n')
-    return hosts.map(([target, runner]) => {
-      const check = diagnostic ?? group.verify(target)
-      if (!check.tasks.length) {
-        throw new Error(`No verification tasks for ${group.name} on ${target}`)
-      }
+    return hosts.map((target) => {
       const linux = target.startsWith('linux-')
-      const x11 = linux && !!check.window
+      const x11 = linux && !!environment.window
       return {
-        group: group.name,
-        label: [group.name, ...(diagnostic ? [requestedSuite] : []), target].join(' · '),
+        package: project.name,
+        task: project.name + '#' + task,
+        label: [project.name, ...(task === project.defaultTask ? [] : [task]), target].join(', '),
         target,
-        runner,
+        runner: runners[target],
         arch: target.split('-')[1]!,
-        tasks: check.tasks,
-        chromium: check.chromium,
+        chromium: environment.chromium,
         x11,
         systemPackages: [
-          ...(x11 ? ['xvfb', 'openbox', 'wmctrl'] : []),
-          ...(linux ? (check.linuxPackages ?? []) : []),
+          ...(x11 ? ['xvfb', 'openbox'] : []),
+          ...(linux ? (environment.linuxPackages ?? []) : []),
         ],
-        performanceReport: check.performanceReport,
-        diagnostics,
+        macosDeploymentTarget: target.startsWith('macos-')
+          ? project.macosDeploymentTarget
+          : undefined,
+        artifactName: encodeURIComponent(project.name) + '-' + target,
+        performanceReport:
+          environment.performanceReport && project.directory + '/' + environment.performanceReport,
+        diagnostics: project.directory + '/test-results/',
       }
     })
   })
-  if (requestedSuite !== 'all' && !matrix.length) {
-    throw new Error(`Suite ${requestedSuite} does not run on ${requestedTarget}`)
+  if (requestedTarget && !matrix.length) {
+    throw new Error(`No selected package runs on ${requestedTarget}`)
   }
-  return { scope: selection.scope, code: selection.scope !== 'docs', matrix }
+  const scope = manual ? 'requested' : selection.scope
+  return { scope, code: scope !== 'docs', matrix }
 }
 
 /** Gets both sides of moves and deletions, or requests full verification without a usable baseline. */
@@ -105,12 +102,12 @@ function changedPaths(base: string | undefined, head: string): string[] | undefi
 if (import.meta.main) {
   const [base, head = 'HEAD'] = process.argv.slice(2)
   const paths = changedPaths(base, head)
-  const plan = planChecks(
-    paths,
-    workspaceVerification(),
-    process.env.REQUEST_TARGET || 'all',
-    process.env.REQUEST_SUITE || 'all',
-  )
+  const workspace = listProjects()
+  const plan = planChecks(selectPackages(paths, workspace), verificationPackages(workspace), {
+    package: process.env.REQUEST_PACKAGE,
+    task: process.env.REQUEST_TASK,
+    target: process.env.REQUEST_TARGET,
+  })
   console.log(JSON.stringify({ base, head, paths, ...plan }, null, 2))
 
   if (process.env.GITHUB_OUTPUT) {
@@ -130,7 +127,7 @@ if (import.meta.main) {
         '',
         'Scope: ' + plan.scope,
         '',
-        ...plan.matrix.map((row) => '- ' + row.label + ' · ' + row.tasks.join(', ')),
+        ...plan.matrix.map((row) => `- \`${row.task}\` on ${row.target}`),
         '',
       ].join('\n'),
     )

@@ -54,7 +54,7 @@ main 拥有事实与操作，renderer 拥有视图，preload 只开放窗口最�
 
 ## 验证与交付
 
-测试按[数据隔离规则](refactor/verification/acceptance.md#isolation)使用专用样本和独立的数据目录。Node、浏览器、Electron Node 模式与实际 Electron 分别运行。声明检查遵守[类型分工](refactor/design/engineering/workspace.md#declaration-checks)。普通 check 负责全仓基础检查。自动 CI 按[工程及其宿主](refactor/design/engineering/workspace.md#ci-selection)执行完整验证组，单项复现按具体行为选择。
+测试按[数据隔离规则](refactor/verification/acceptance.md#isolation)使用专用样本和独立的数据目录。Node、浏览器、Electron Node 模式与实际 Electron 分别运行。声明检查遵守[类型分工](refactor/design/engineering/workspace.md#declaration-checks)。普通 check 负责全仓基础检查。自动 CI 按[包及其宿主](refactor/design/engineering/workspace.md#ci-selection)运行各包的完整验证入口，单项复现按包、任务和宿主选择。
 
 工作包界定交付范围，[实施状态](refactor/implementation/status.md)记录实际进度，在交付状态变化时更新。验证材料按[实际用途](refactor/design/engineering/documentation.md#evidence)维护。通用文档维护现行规则与必要依据，Git 与 PR 承载修改经过，见[文档归属](refactor/design/engineering/documentation.md#owners)。
 

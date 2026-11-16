@@ -1,4 +1,4 @@
-/** @fileoverview Configures repository checks, formatting, staged files and CI task execution. */
+/** @fileoverview Configures repository checks, formatting and staged files. */
 
 import { globSync } from 'node:fs'
 import { dirname } from 'node:path'
@@ -13,17 +13,7 @@ const installedConsumerInputs = globSync('**/tests/consumers/fixtures/*/package.
   ],
 }).map((manifest) => `${normalizePath(dirname(manifest))}/**`)
 
-/** Native task graph roots selected together for the current CI target. */
-const targetTasks = process.env.KISAKI_CI_TASKS
-  ? (JSON.parse(process.env.KISAKI_CI_TASKS) as string[])
-  : undefined
-
 export default defineConfig({
-  run: {
-    tasks: targetTasks
-      ? { 'ci:target': { command: [], dependsOn: targetTasks, cache: false } }
-      : {},
-  },
   fmt: {
     singleQuote: true,
     semi: false,

@@ -8,27 +8,16 @@ on:
   merge_group:
   workflow_dispatch:
     inputs:
+      package:
+        description: Workspace package name (leave empty for all packages)
+        type: string
+      task:
+        description: Task in the selected package (leave empty for its complete check)
+        type: string
       target:
         description: Target host
         type: choice
         options: [all, linux-x64, linux-arm64, macos-x64, macos-arm64, windows-x64, windows-arm64]
-      suite:
-        description: Verification group or individual suite
-        type: choice
-        options:
-          [
-            all,
-            public packages,
-            desktop,
-            browser,
-            consumers,
-            native,
-            window-startup,
-            dev-session,
-            tooling,
-            fixture-artifacts,
-            performance,
-          ]
 
 permissions:
   actions: read
@@ -117,8 +106,9 @@ jobs:
         env:
           BASE: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha || github.event.before }}
           HEAD: ${{ github.sha }}
+          REQUEST_PACKAGE: ${{ inputs.package }}
+          REQUEST_TASK: ${{ inputs.task }}
           REQUEST_TARGET: ${{ inputs.target }}
-          REQUEST_SUITE: ${{ inputs.suite }}
         # Planning uses only pnpm's workspace manifests. Target jobs own frozen installation.
         run: pnpm --config.verify-deps-before-run=false exec node tools/ci/plan.ts "$BASE" "$HEAD"
 
@@ -167,8 +157,10 @@ jobs:
           package-manager-cache: false
       - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
       - name: Set macOS deployment target
-        if: runner.os == 'macOS'
-        run: echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> "$GITHUB_ENV"
+        if: matrix.macosDeploymentTarget
+        env:
+          DEPLOYMENT_TARGET: ${{ matrix.macosDeploymentTarget }}
+        run: echo "MACOSX_DEPLOYMENT_TARGET=$DEPLOYMENT_TARGET" >> "$GITHUB_ENV"
       - run: pnpm install --frozen-lockfile
       - name: Prepare Linux system packages
         if: matrix.systemPackages[0]
@@ -181,13 +173,13 @@ jobs:
       - name: Prepare Chromium
         if: matrix.chromium
         env:
-          PROJECT: ${{ matrix.chromium }}
+          PROJECT: ${{ matrix.package }}
         shell: bash
         run: pnpm --filter "$PROJECT" exec playwright install --with-deps chromium
-      - name: Run selected checks
+      - name: Run package check
         shell: bash
         env:
-          KISAKI_CI_TASKS: ${{ toJSON(matrix.tasks) }}
+          TASK: ${{ matrix.task }}
           X11: ${{ matrix.x11 }}
         run: |
           prefix=()
@@ -195,13 +187,13 @@ jobs:
             export XDG_SESSION_TYPE=x11
             prefix=(xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh)
           fi
-          "${prefix[@]}" pnpm exec vp run --concurrency-limit 1 --log labeled ci:target
+          "${prefix[@]}" pnpm exec vp run --concurrency-limit 1 --log labeled "$TASK"
       - name: Retain performance measurements
         if: success() && matrix.performanceReport
         continue-on-error: true
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
-          name: performance-${{ matrix.group }}-${{ matrix.target }}
+          name: performance-${{ matrix.artifactName }}
           path: ${{ matrix.performanceReport }}
           retention-days: 7
       - name: Retain failure diagnostics
@@ -209,7 +201,7 @@ jobs:
         continue-on-error: true
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
-          name: diagnostics-${{ matrix.group }}-${{ matrix.target }}
+          name: diagnostics-${{ matrix.artifactName }}
           path: ${{ matrix.diagnostics }}
           retention-days: 5
           if-no-files-found: ignore

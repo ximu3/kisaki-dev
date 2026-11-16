@@ -10,7 +10,7 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 
 当前任务入口为 AGENTS.md，设计、规范和实施资料集中于 refactor。[当前工程与开发](development.md)维护源码职责、环境准备与可运行命令。正式项目文档待 W23 交付；接口声明、代码注释、发行说明和许可材料随所属实现与版本维护。
 
-工作区采用 Vite+，主线编译器锁定为 `7.1.0-beta`。升级到 7.1.x 正式版时重新验证项目引用、声明和仓库外消费。六个公共包共用 `@kisaki3/config`，CI 按[工程和宿主](../design/engineering/workspace.md#ci-selection)运行验证组，在每个目标内复用构建，制品验收直接读取指定归档。工具链选型与迁移见[工程重构归档](archive/engineering-modernization/README.md)和 [PR #39 的检查](https://github.com/ximu3/kisaki-dev/pull/39/checks)。
+工作区采用 Vite+，主线编译器锁定为 `7.1.0-beta`。升级到 7.1.x 正式版时重新验证项目引用、声明和仓库外消费。六个公共包共用 `@kisaki3/config`，CI 按[包和宿主](../design/engineering/workspace.md#ci-selection)独立运行本地任务，制品验收直接读取指定归档。工具链选型与迁移见[工程重构归档](archive/engineering-modernization/README.md)和 [PR #39 的检查](https://github.com/ximu3/kisaki-dev/pull/39/checks)。
 
 [当前工程验证](../verification/evidence/w00/README.md)已取得本机 Windows x64 和 CI 六目标结果，覆盖工程载体的构建、原生与 Electron 运行、开发回归、打包及制品运行。
 
@@ -97,6 +97,6 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 | 开发协调         | Vite 原生程序监听与 HMR、包及资源准备、实际运行目录、失败恢复及唯一进程拥有者。        |
 | 原生基础         | Rust／Node-API 文件同步和不覆盖移动、加载与错误合同。                               |
 | 验证入口         | 普通 Node、Electron Node 模式、独立四入口载体、开发会话、制品及可选启动与内存采样。 |
-| CI 与门禁 | 工作区及公共包验证、按工程依赖选择的六目标桌面验证，以及严格的代码合并门禁。 |
+| CI 与门禁 | 全仓基础检查、按包依赖选中的公共包及六目标桌面和工具验证、独立的手动诊断，以及代码合并门禁。 |
 
 公共包及其仓库外消费、产品端点、正式窗口和宿主由各自完整工作包交付。[工程验证](../verification/evidence/w00/README.md)记录实际源码范围、本机 Windows x64 和 CI 六目标结果。正式签署和完整产品验收继续按所属工作包执行。
