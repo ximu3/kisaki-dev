@@ -91,11 +91,15 @@ export default defineConfig({
         dependsOn: ['build:fixture', 'prepare:electron'],
         cache: false,
       },
+      'verify:native': {
+        command: [],
+        dependsOn: ['check:native', 'test:native'],
+        cache: false,
+      },
       verify: {
         command: [],
         dependsOn: [
-          'check:native',
-          'test:native',
+          'verify:native',
           'test:window-startup',
           'test:dev-session',
           'test:fixture-artifacts',
