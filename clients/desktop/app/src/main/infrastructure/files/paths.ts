@@ -1,8 +1,9 @@
 /** @fileoverview Compares actual filesystem locations while preserving spelling and unresolved path information. */
 
 import { realpath, stat } from 'node:fs/promises'
-import { dirname, isAbsolute, parse, sep } from 'node:path'
+import { dirname, parse, sep } from 'node:path'
 import type { BigIntStats } from 'node:fs'
+import { isAbsoluteHostPath } from '#host-path'
 import type { NativeFiles } from '#native'
 
 /** A confirmed relationship between two locations, or an explicit inability to establish it. */
@@ -10,7 +11,7 @@ export type PathRelation = 'same' | 'contains' | 'within' | 'separate' | 'unknow
 
 /** Normalizes separators, current-directory segments and drive spelling without folding linked '..' segments. */
 export function normalizeAbsolutePath(input: string): string {
-  if (!isAbsolute(input) || input.includes('\0')) {
+  if (!isAbsoluteHostPath(input)) {
     throw new TypeError('Expected an absolute filesystem path without NUL')
   }
   const path =

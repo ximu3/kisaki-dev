@@ -4,7 +4,7 @@
  */
 
 import { createRequire } from 'node:module'
-import { isAbsolute } from 'node:path'
+import { isAbsoluteHostPath } from '#host-path'
 import { createNativeFiles } from './files'
 import type { NativeFiles } from './files'
 import type * as Binding from './binding'
@@ -30,7 +30,7 @@ export class NativeLoadError extends Error {
  * failures throw NativeLoadError with their cause.
  */
 export function loadNative(modulePath: string): NativeCapabilities {
-  if (!isAbsolute(modulePath)) {
+  if (!isAbsoluteHostPath(modulePath)) {
     throw new TypeError('Expected an absolute native module path')
   }
 

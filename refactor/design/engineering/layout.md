@@ -14,6 +14,7 @@ kisaki/
 │   ├── desktop/
 │   │   ├── app/
 │   │   │   ├── src/
+│   │   │   │   ├── host-path.ts
 │   │   │   │   ├── main/
 │   │   │   │   ├── preload/
 │   │   │   │   ├── renderer/

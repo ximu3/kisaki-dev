@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "imports": {
+    "#host-path": "./src/host-path.ts",
     "#native": "./native/node/index.ts"
   },
   "license": "AGPL-3.0-only",

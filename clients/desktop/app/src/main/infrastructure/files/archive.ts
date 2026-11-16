@@ -7,6 +7,7 @@ import { crc32 } from 'node:zlib'
 import { PassThrough, Readable, Transform, Writable } from 'node:stream'
 import { finished, pipeline } from 'node:stream/promises'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import { isAbsoluteHostPath } from '#host-path'
 import type { NativeFiles } from '#native'
 import { stageFile } from './storage'
 import type { StagedFile } from './storage'
@@ -223,6 +224,9 @@ export async function readArchive(
   visit: (member: ArchiveMember, data: Readable | null) => Promise<void>,
   signal?: AbortSignal,
 ): Promise<void> {
+  if (!isAbsoluteHostPath(path)) {
+    throw new TypeError('Expected an absolute archive path')
+  }
   const budget = new ArchiveBudget(limits)
   signal?.throwIfAborted()
   const zip = await openPromise(path, {
@@ -342,6 +346,9 @@ export async function createArchive(
   limits: ArchiveLimits,
   signal?: AbortSignal,
 ): Promise<StagedFile> {
+  if (!isAbsoluteHostPath(temporaryRoot)) {
+    throw new TypeError('Expected an absolute archive preparation root')
+  }
   const budget = new ArchiveBudget(limits)
   const controller = new AbortController()
   const cancellation = signal ? AbortSignal.any([signal, controller.signal]) : controller.signal

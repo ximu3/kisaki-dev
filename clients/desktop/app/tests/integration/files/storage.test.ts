@@ -10,6 +10,7 @@ import { loadNative } from '#native'
 import {
   assertLocalDataDirectory,
   comparePaths,
+  normalizeAbsolutePath,
   createArchive,
   readArchive,
   publishStoredFile,
@@ -75,7 +76,34 @@ test('publishes durable bytes once and cleans only its own preparation on limits
   expect(await readdir(temporary)).toEqual([])
 })
 
+test('cancellation during file synchronization releases the stage before returning', async () => {
+  const controller = new AbortController()
+  const reason = new Error('Cancelled during file synchronization')
+  const files = {
+    ...native,
+    /** Requests cancellation immediately after submitting the real file barrier. */
+    syncFile(path: string) {
+      const synchronized = native.syncFile(path)
+      controller.abort(reason)
+      return synchronized
+    },
+  }
+
+  await expect(
+    stageFile(directory, Readable.from(['bytes']), files, 5, controller.signal),
+  ).rejects.toBe(reason)
+  expect(await readdir(directory)).toEqual([])
+})
+
 test('uses actual filesystem identities for links, containment, case and unavailable locations', async () => {
+  if (process.platform === 'win32') {
+    for (const path of ['\\shelf\\book', '/shelf/book', 'C:shelf\\book']) {
+      await expect(comparePaths(path, path)).rejects.toThrow(TypeError)
+    }
+    expect(normalizeAbsolutePath('c:/shelf/./../book')).toBe('C:\\shelf\\..\\book')
+    expect(normalizeAbsolutePath('//server/share/shelf')).toBe('\\\\server\\share\\shelf')
+  }
+
   await assertLocalDataDirectory(directory, native)
   const child = join(directory, 'Child')
   await mkdir(child)
