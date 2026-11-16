@@ -1,348 +1,123 @@
-/** @fileoverview Selects repository checks and host-specific scenarios from the complete candidate diff. */
+/** @fileoverview Plans GitHub Actions jobs from affected projects and their registered verification groups. */
 
 import { execFileSync } from 'node:child_process'
-import { appendFileSync, existsSync, readFileSync, readdirSync } from 'node:fs'
-import { join } from 'node:path'
+import { appendFileSync } from 'node:fs'
+import { workspaceVerification } from './groups.ts'
+import { selectGroups } from './projects.ts'
+import { repositoryRoot } from '../workspace.ts'
 
-/** Supported native runner identities and their Actions labels. */
-const runners = {
-  'linux-x64': 'ubuntu-22.04',
-  'linux-arm64': 'ubuntu-22.04-arm',
-  'windows-x64': 'windows-2025',
-  'windows-arm64': 'windows-11-arm',
-  'macos-x64': 'macos-15-intel',
-  'macos-arm64': 'macos-15',
-} as const
-
-/** Validation actions implemented by the repository and its desktop projects. */
-const suites = [
-  'browser',
-  'consumers',
-  'native',
-  'window-startup',
-  'dev-session',
-  'tooling',
-  'fixture-artifacts',
-  'performance',
-] as const
-
-/** Scenario dispatched to a runner. */
-type Suite = (typeof suites)[number]
-
-/** Project tasks for suites whose inputs are independent of the selected consumer packages. */
-const suiteTasks: Record<Exclude<Suite, 'consumers'>, string[]> = {
-  browser: ['@kisaki3/desktop-ui#test:browser'],
-  native: ['@kisaki3/desktop#check:native', '@kisaki3/desktop#test:native'],
-  'window-startup': ['@kisaki3/desktop#test:window-startup'],
-  'dev-session': ['@kisaki3/desktop#test:dev-session'],
-  tooling: ['@kisaki3/tooling#test'],
-  'fixture-artifacts': ['@kisaki3/desktop#test:fixture-artifacts'],
-  performance: ['@kisaki3/desktop#test:performance'],
-}
-
-/** Platform and architecture selected as a single native host. */
-type Target = keyof typeof runners
-
-/** All supported runner identities in deterministic reporting order. */
-const targets = Object.keys(runners) as Target[]
-
-/** These inputs build the SQLite collation used by the measured name indexes and ordered queries. */
-const nativeCollationInputs = new Set([
-  'native/src/collation.rs',
-  'native/src/lib.rs',
-  'native/build.rs',
-  'native/Cargo.toml',
-  'native/Cargo.lock',
-  'native/rust-toolchain.toml',
-  'tools/native/build.ts',
-])
-
-/** Reads package identity and runtime dependencies before the workspace is installed. */
-function readPackage(directory: string) {
-  const manifest = JSON.parse(readFileSync(join(directory, 'package.json'), 'utf8')) as {
-    name: string
-    dependencies?: Record<string, string>
-  }
-  return { name: manifest.name, dependencies: Object.keys(manifest.dependencies ?? {}) }
-}
-
-/** Finds the tarball consumers and desktop runtime reached by each public package. */
-function publicPackages() {
-  const root = 'clients/desktop/packages'
-  const desktop = readPackage('clients/desktop/app')
-  const packages = readdirSync(root, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory())
-    .map(({ name: directory }) => {
-      const fixtures = join(root, directory, 'tests/consumers/fixtures')
-      return {
-        ...readPackage(join(root, directory)),
-        directory,
-        browser: existsSync(join(fixtures, 'browser')),
-        electron: existsSync(join(fixtures, 'electron')),
-      }
-    })
-
-  return packages.map((pkg) => {
-    const affected = new Set([pkg.name])
-    // Iteration visits each newly added dependent and its own readers.
-    for (const name of affected) {
-      for (const reader of packages) {
-        if (reader.dependencies.includes(name)) {
-          affected.add(reader.name)
-        }
-      }
-    }
-
-    return {
-      ...pkg,
-      affected,
-      usedByDesktop: desktop.dependencies.some((name) => affected.has(name)),
-    }
-  })
-}
-
-/** Forms the union of the required suites and transitive public consumers for added and removed paths. */
+/** Creates one independent runner job per selected group and host, or only the requested diagnostic. */
 export function planChecks(
-  paths: readonly string[],
-  full = false,
+  paths: readonly string[] | undefined,
+  { workspace, groups }: ReturnType<typeof workspaceVerification>,
   requestedTarget = 'all',
   requestedSuite = 'all',
 ) {
-  const packages = publicPackages()
-  const consumers = new Set<string>()
-  const rows = new Map<Target, Set<Suite>>()
-  const reasons = new Set<string>()
-  const code =
-    full || paths.some((file) => !file.endsWith('.md') || file.includes('/release-notes/'))
-  let installers = false
-
-  /** Assigns the selected scenarios to hosts and records their reason once. */
-  function add(reason: string, checks: readonly Suite[], hosts: readonly Target[] = ['linux-x64']) {
-    reasons.add(reason)
-    for (const host of hosts) {
-      const selected = rows.get(host) ?? new Set<Suite>()
-      for (const check of checks) {
-        selected.add(check)
-      }
-      rows.set(host, selected)
-    }
-  }
-
-  /** Expands a shared ABI or unknown runtime change to its complete compatibility surface. */
-  function compatibility(reason: string) {
-    for (const pkg of packages) {
-      consumers.add(pkg.name)
-    }
-    add(reason, ['browser', 'consumers', 'performance'])
-    add(
-      reason,
-      ['tooling', 'native', 'window-startup', 'dev-session', 'fixture-artifacts'],
-      targets,
-    )
-  }
-
-  if (full) {
-    compatibility('Full compatibility requested or no usable Git baseline')
-    installers = true
-  } else {
-    for (const file of paths.filter(
-      (path) => !path.endsWith('.md') || path.includes('/release-notes/'),
-    )) {
-      const member = packages.find((pkg) =>
-        file.startsWith('clients/desktop/packages/' + pkg.directory + '/'),
-      )
-      if (member) {
-        if (file.includes('/tests/browser/')) {
-          add('Browser interaction scenarios', ['browser'])
-        } else {
-          const testInput = file.includes('/tests/') || /\.test\.tsx?$/.test(file)
-          for (const name of testInput ? [member.name] : member.affected) {
-            consumers.add(name)
-          }
-          add('Public package or consumer changed', ['consumers'])
-          if (member.directory === 'desktop-ui' || member.directory === 'desktop-appearance') {
-            add('Rendered appearance and controls', ['browser'])
-          }
-          if (member.usedByDesktop && !testInput && !/\.(?:css|md)$|\/LICENSE$/.test(file)) {
-            add('Public package consumed by desktop storage and files', ['native'])
-          }
-        }
-      } else if (file.startsWith('clients/desktop/app/')) {
-        const part = file.slice('clients/desktop/app/'.length)
-        const taskDefinition = part === 'package.json' || part === 'vite.config.ts'
-        if (
-          taskDefinition ||
-          /^(?:native\/|tools\/native\/|config\/vitest\/native\.ts$)/.test(part)
-        ) {
-          add(
-            'Native ABI, host or command contract',
-            ['native', 'window-startup', 'dev-session', 'fixture-artifacts'],
-            targets,
-          )
-          if (taskDefinition || nativeCollationInputs.has(part)) {
-            add('Performance task or native storage workload input', ['performance'])
-          }
-        } else if (
-          /^(?:drizzle\/|src\/main\/(?:infrastructure\/database|features\/preferences)|tests\/integration\/database)/.test(
-            part,
-          )
-        ) {
-          add('Database and migration behavior', ['native'])
-          if (/name-order|connection|initialize|drizzle\/|executor/.test(part)) {
-            add('Storage workload and system durability', ['performance'])
-            add('Native SQLite driver', ['native'], ['macos-arm64', 'windows-x64'])
-          }
-        } else if (/^(?:tools\/package|electron-builder|tests\/artifacts)/.test(part)) {
-          add('Desktop packaging and external artifact', ['fixture-artifacts'], targets)
-          installers = true
-        } else if (/^(?:tools\/dev|tests\/tools\/dev)/.test(part)) {
-          add(
-            'Source rebuild and lifecycle',
-            ['dev-session'],
-            ['linux-x64', 'macos-x64', 'windows-x64'],
-          )
-        } else if (
-          part.includes('performance') ||
-          part.includes('/measurement') ||
-          part.includes('/workload')
-        ) {
-          add('Performance workload', ['performance'])
-        } else if (
-          /^(?:tests\/integration\/(?:files|native)|src\/main\/infrastructure\/files)/.test(part)
-        ) {
-          add(
-            'Filesystem behavior on each OS',
-            ['native'],
-            ['linux-x64', 'macos-arm64', 'windows-x64'],
-          )
-        } else if (part.startsWith('src/renderer/')) {
-          add('Desktop renderer and window', ['window-startup'])
-        } else {
-          add(
-            'Desktop build, resources or runtime entry',
-            ['native', 'window-startup', 'dev-session', 'fixture-artifacts'],
-            ['linux-x64', 'macos-x64', 'windows-x64'],
-          )
-        }
-      } else if (file.startsWith('packages/tooling/src/process/')) {
-        let hosts: readonly Target[] = targets
-        if (file.endsWith('/windows.ts')) {
-          hosts = targets.filter((host) => host.startsWith('windows-'))
-        } else if (file.endsWith('/unix.ts')) {
-          hosts = ['linux-x64', 'macos-arm64']
-        }
-        add('Owned subprocess cancellation', ['tooling', 'dev-session'], hosts)
-      } else if (
-        file.startsWith('packages/tooling/src/testing/') ||
-        file.startsWith('packages/config/') ||
-        file === '.gitignore'
-      ) {
-        for (const pkg of packages) {
-          consumers.add(pkg.name)
-        }
-        add('Shared library configuration or consumer checks', ['consumers'])
-        if (
-          file.startsWith('packages/config/vite/') ||
-          file.startsWith('packages/config/typescript/') ||
-          file === 'packages/config/package.json'
-        ) {
-          add('Shared library build consumed by UI and storage', ['browser', 'native'])
-        }
-      } else if (
-        /^(?:tests\/workspace\/|tools\/(?:boundaries|check-doc-links)\.ts$|\.dependency-cruiser\.json|\.gitattributes|LICENSE$)/.test(
-          file,
-        )
-      ) {
-        reasons.add('Repository checks')
-      } else {
-        compatibility('Shared tooling, workflow or unclassified input')
-      }
-    }
-  }
-
-  if (requestedTarget !== 'all' && !targets.includes(requestedTarget as Target)) {
+  if (
+    requestedTarget !== 'all' &&
+    !groups.some((group) => Object.hasOwn(group.manualTargets ?? group.targets, requestedTarget))
+  ) {
     throw new Error('Unknown host ' + requestedTarget)
   }
-  if (requestedSuite !== 'all' && !suites.includes(requestedSuite as Suite)) {
-    throw new Error('Unknown suite ' + requestedSuite)
+  if (
+    requestedSuite !== 'all' &&
+    !groups.some(
+      (group) =>
+        group.name === requestedSuite || Object.hasOwn(group.diagnostics ?? {}, requestedSuite),
+    )
+  ) {
+    throw new Error('Unknown verification group or suite ' + requestedSuite)
   }
-  const hosts = requestedTarget === 'all' ? targets : [requestedTarget as Target]
-  const matrix = hosts.flatMap((target) => {
-    let selected = [...(rows.get(target) ?? [])]
-    if (full && (requestedSuite !== 'all' || requestedTarget !== 'all')) {
-      selected = requestedSuite === 'all' ? [...suites] : [requestedSuite as Suite]
-    }
-    if (!selected.length) {
+
+  const selection = selectGroups(paths, workspace, groups)
+  const matrix = selection.groups.flatMap((group) => {
+    const diagnostic = group.diagnostics?.[requestedSuite]
+    if (requestedSuite !== 'all' && requestedSuite !== group.name && !diagnostic) {
       return []
     }
-    const selectedConsumers = selected.includes('consumers')
-      ? packages.filter((pkg) => consumers.has(pkg.name))
-      : []
-    const tasks = selected.flatMap((suite) =>
-      suite === 'consumers'
-        ? selectedConsumers.map((pkg) => pkg.name + '#test:consumers').sort()
-        : suiteTasks[suite],
+    let hosts = Object.entries(
+      requestedTarget !== 'all' || requestedSuite !== 'all'
+        ? (group.manualTargets ?? group.targets)
+        : group.targets,
     )
-    const browserConsumers = selectedConsumers.some((pkg) => pkg.browser)
-    const electronConsumers = selectedConsumers.some((pkg) => pkg.electron)
+    if (!hosts.length) {
+      throw new Error('No verification hosts for ' + group.name)
+    }
+    if (requestedTarget !== 'all') {
+      hosts = hosts.filter(([target]) => target === requestedTarget)
+    }
 
-    return [
-      {
+    const diagnostics = group.members
+      .map((project) => project.directory + '/test-results/')
+      .join('\n')
+    return hosts.map(([target, runner]) => {
+      const check = diagnostic ?? group.verify(target)
+      if (!check.tasks.length) {
+        throw new Error(`No verification tasks for ${group.name} on ${target}`)
+      }
+      const linux = target.startsWith('linux-')
+      const x11 = linux && !!check.window
+      return {
+        group: group.name,
+        label: [group.name, ...(diagnostic ? [requestedSuite] : []), target].join(' · '),
         target,
-        runner: runners[target],
+        runner,
         arch: target.split('-')[1]!,
-        suites: selected,
-        tasks,
-        chromium:
-          selected.includes('browser') || selected.includes('dev-session') || browserConsumers,
-        x11:
-          target.startsWith('linux-') &&
-          (electronConsumers ||
-            selected.some((suite) =>
-              ['window-startup', 'dev-session', 'fixture-artifacts', 'performance'].includes(suite),
-            )),
-      },
-    ]
+        tasks: check.tasks,
+        chromium: check.chromium,
+        x11,
+        systemPackages: [
+          ...(x11 ? ['xvfb', 'openbox', 'wmctrl'] : []),
+          ...(linux ? (check.linuxPackages ?? []) : []),
+        ],
+        performanceReport: check.performanceReport,
+        diagnostics,
+      }
+    })
   })
-  return {
-    code,
-    matrix,
-    reasons: [...reasons],
-    installers,
+  if (requestedSuite !== 'all' && !matrix.length) {
+    throw new Error(`Suite ${requestedSuite} does not run on ${requestedTarget}`)
   }
+  return { scope: selection.scope, code: selection.scope !== 'docs', matrix }
+}
+
+/** Gets both sides of moves and deletions, or requests full verification without a usable baseline. */
+function changedPaths(base: string | undefined, head: string): string[] | undefined {
+  if (!base || /^0+$/.test(base) || process.env.GITHUB_EVENT_NAME === 'workflow_dispatch') {
+    return undefined
+  }
+  try {
+    execFileSync('git', ['cat-file', '-e', base + '^{commit}'], {
+      cwd: repositoryRoot,
+      stdio: 'ignore',
+    })
+  } catch {
+    return undefined
+  }
+  return execFileSync('git', ['diff', '--no-renames', '--name-only', '-z', base, head, '--'], {
+    cwd: repositoryRoot,
+    encoding: 'utf8',
+  })
+    .split('\0')
+    .filter(Boolean)
 }
 
 if (import.meta.main) {
   const [base, head = 'HEAD'] = process.argv.slice(2)
-  const full = !base || /^0+$/.test(base) || process.env.GITHUB_EVENT_NAME === 'workflow_dispatch'
-  let hasBase = !full
-  if (hasBase) {
-    try {
-      execFileSync('git', ['cat-file', '-e', base + '^{commit}'], { stdio: 'ignore' })
-    } catch {
-      hasBase = false
-    }
-  }
-  const paths = hasBase
-    ? execFileSync('git', ['diff', '--no-renames', '--name-only', '-z', base!, head, '--'], {
-        encoding: 'utf8',
-      })
-        .split('\0')
-        .filter(Boolean)
-    : []
+  const paths = changedPaths(base, head)
   const plan = planChecks(
     paths,
-    !hasBase,
+    workspaceVerification(),
     process.env.REQUEST_TARGET || 'all',
     process.env.REQUEST_SUITE || 'all',
   )
   console.log(JSON.stringify({ base, head, paths, ...plan }, null, 2))
+
   if (process.env.GITHUB_OUTPUT) {
     for (const [key, value] of Object.entries({
       code: plan.code,
       selected: plan.matrix.length > 0,
       matrix: plan.matrix,
-      installers: plan.installers,
     })) {
       appendFileSync(process.env.GITHUB_OUTPUT, key + '=' + JSON.stringify(value) + '\n')
     }
@@ -352,9 +127,10 @@ if (import.meta.main) {
       process.env.GITHUB_STEP_SUMMARY,
       [
         '## Verification plan',
-        ...plan.reasons.map((reason) => '- ' + reason),
         '',
-        ...plan.matrix.map((row) => '- ' + row.target + ' · ' + row.suites.join(', ')),
+        'Scope: ' + plan.scope,
+        '',
+        ...plan.matrix.map((row) => '- ' + row.label + ' · ' + row.tasks.join(', ')),
         '',
       ].join('\n'),
     )

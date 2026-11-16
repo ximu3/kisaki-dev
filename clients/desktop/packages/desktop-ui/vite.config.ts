@@ -54,5 +54,4 @@ export default defineLibrary({
   },
   browserTests: true,
   consumerHookTimeout: 180_000,
-  prepareConsumers: ['@kisaki3/desktop#prepare:electron'],
 })

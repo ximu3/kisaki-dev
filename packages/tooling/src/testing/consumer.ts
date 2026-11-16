@@ -61,9 +61,10 @@ export async function installConsumer(
     }
   }
   await writeFile(file, JSON.stringify(manifest))
+  // Keep writable installations inside this fixture even when pnpm uses a global virtual store.
   await writeFile(
     join(directory, 'pnpm-workspace.yaml'),
-    stringify({ autoInstallPeers: false, overrides }),
+    stringify({ autoInstallPeers: false, virtualStoreDir: 'node_modules/.pnpm', overrides }),
   )
   await runPnpm(['install', '--no-frozen-lockfile', '--ignore-scripts'], { cwd: directory, signal })
   return directory

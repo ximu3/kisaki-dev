@@ -488,9 +488,6 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.2
-      electron:
-        specifier: 'catalog:'
-        version: 45.3.2(supports-color@7.2.0)
       publint:
         specifier: 'catalog:'
         version: 0.3.25
@@ -594,9 +591,6 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.2
-      electron:
-        specifier: 'catalog:'
-        version: 45.3.2(supports-color@7.2.0)
       publint:
         specifier: 'catalog:'
         version: 0.3.25

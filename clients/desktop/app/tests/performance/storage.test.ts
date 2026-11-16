@@ -71,6 +71,12 @@ test('worker operation medians meet their budget and the window reaches main dur
   }
 
   const report = JSON.parse(raw) as Awaited<ReturnType<typeof measureStorage>>
+  console.info(
+    'Storage fixture preparation (ms):',
+    report.preparationMs,
+    'input:',
+    report.inputSha256,
+  )
   const operations = [
     ...report.queries,
     { name: 'durable short transaction', ...report.shortTransaction },
@@ -93,8 +99,7 @@ test('worker operation medians meet their budget and the window reaches main dur
 
   expect(latencies.length).toBeGreaterThan(1)
   const ordered = latencies.toSorted((left, right) => left - right)
-  expect(
-    ordered[Math.ceil(ordered.length * 0.95) - 1],
-    'window-to-main IPC P95',
-  ).toBeLessThanOrEqual(100)
+  const ipcP95Ms = ordered[Math.ceil(ordered.length * 0.95) - 1]!
+  console.info('Window-to-main IPC P95 (ms):', ipcP95Ms)
+  expect(ipcP95Ms, 'window-to-main IPC P95').toBeLessThanOrEqual(100)
 })

@@ -5,12 +5,13 @@ import { dirname } from 'node:path'
 import { defineConfig, normalizePath } from 'vite-plus'
 
 /** Standalone consumer projects are linted with their own installed tarballs and type declarations. */
-const installedConsumerInputs = globSync(
-  'clients/desktop/packages/*/tests/consumers/fixtures/*/package.json',
-  {
-    cwd: import.meta.dirname,
-  },
-).map((manifest) => `${normalizePath(dirname(manifest))}/**`)
+const installedConsumerInputs = globSync('**/tests/consumers/fixtures/*/package.json', {
+  cwd: import.meta.dirname,
+  exclude: [
+    'refactor/**',
+    '**/{.git,.cache,.local,node_modules,dist,out,target,artifacts,test-results,playwright-report,coverage}/**',
+  ],
+}).map((manifest) => `${normalizePath(dirname(manifest))}/**`)
 
 /** Native task graph roots selected together for the current CI target. */
 const targetTasks = process.env.KISAKI_CI_TASKS

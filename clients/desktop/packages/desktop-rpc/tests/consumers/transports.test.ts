@@ -1,7 +1,6 @@
 /** @fileoverview Exercises the same package archive over Node JSON IPC and an actual Electron window port. */
 
 import { join, resolve } from 'node:path'
-import { createRequire } from 'node:module'
 import { onTestFinished, test } from 'vite-plus/test'
 import { run, runPnpm } from '@kisaki3/tooling/process'
 import { installConsumer, lintConsumer } from '@kisaki3/tooling/testing/consumer'
@@ -36,11 +35,7 @@ test('sandboxed window and main exchange structured clones and release waits on 
   signal,
 }) => {
   const directory = await prepareConsumer('electron', signal)
-  const executable: unknown = createRequire(import.meta.url)('electron')
-  if (typeof executable !== 'string') {
-    throw new Error('Expected the installed Electron executable')
-  }
-  await run(executable, [directory, `--user-data-dir=${join(directory, 'profile')}`], {
+  await runPnpm(['exec', 'electron', '.', `--user-data-dir=${join(directory, 'profile')}`], {
     cwd: directory,
     signal,
   })

@@ -13,11 +13,13 @@ on:
         type: choice
         options: [all, linux-x64, linux-arm64, macos-x64, macos-arm64, windows-x64, windows-arm64]
       suite:
-        description: Verification scenario
+        description: Verification group or individual suite
         type: choice
         options:
           [
             all,
+            public packages,
+            desktop,
             browser,
             consumers,
             native,
@@ -46,7 +48,6 @@ jobs:
       code: ${{ steps.plan.outputs.code }}
       selected: ${{ steps.plan.outputs.selected }}
       matrix: ${{ steps.plan.outputs.matrix }}
-      installers: ${{ steps.plan.outputs.installers }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
@@ -108,6 +109,8 @@ jobs:
         with:
           node-version-file: .node-version
           package-manager-cache: false
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
+        if: steps.prior.outputs.reused != 'true'
       - id: plan
         if: steps.prior.outputs.reused != 'true'
         name: Select checks from the candidate tree
@@ -116,7 +119,8 @@ jobs:
           HEAD: ${{ github.sha }}
           REQUEST_TARGET: ${{ inputs.target }}
           REQUEST_SUITE: ${{ inputs.suite }}
-        run: node tools/ci/plan.ts "$BASE" "$HEAD"
+        # Planning uses only pnpm's workspace manifests. Target jobs own frozen installation.
+        run: pnpm --config.verify-deps-before-run=false exec node tools/ci/plan.ts "$BASE" "$HEAD"
 
   workspace:
     name: Workspace checks
@@ -148,7 +152,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: ${{ fromJSON(needs.plan.outputs.matrix).*.target }}
+        label: ${{ fromJSON(needs.plan.outputs.matrix).*.label }}
         include: ${{ fromJSON(needs.plan.outputs.matrix) }}
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 60
@@ -166,27 +170,25 @@ jobs:
         if: runner.os == 'macOS'
         run: echo "MACOSX_DEPLOYMENT_TARGET=13.0" >> "$GITHUB_ENV"
       - run: pnpm install --frozen-lockfile
-      - name: Prepare Linux desktop
-        if: matrix.x11
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb openbox wmctrl
-      - name: Prepare Linux packaging
-        if: runner.os == 'Linux' && contains(matrix.suites, 'fixture-artifacts')
-        run: |
-          sudo apt-get install -y libfuse2
-          if [[ "$KISAKI_VERIFY_INSTALLERS" == 1 ]]; then sudo apt-get install -y rpm; fi
+      - name: Prepare Linux system packages
+        if: matrix.systemPackages[0]
         env:
-          KISAKI_VERIFY_INSTALLERS: ${{ needs.plan.outputs.installers == 'true' && '1' || '0' }}
+          PACKAGES: ${{ join(matrix.systemPackages, ' ') }}
+        run: |
+          read -ra packages <<< "$PACKAGES"
+          sudo apt-get update
+          sudo apt-get install -y "${packages[@]}"
       - name: Prepare Chromium
         if: matrix.chromium
-        run: pnpm --filter @kisaki3/desktop exec playwright install --with-deps chromium
+        env:
+          PROJECT: ${{ matrix.chromium }}
+        shell: bash
+        run: pnpm --filter "$PROJECT" exec playwright install --with-deps chromium
       - name: Run selected checks
         shell: bash
         env:
           KISAKI_CI_TASKS: ${{ toJSON(matrix.tasks) }}
           X11: ${{ matrix.x11 }}
-          KISAKI_VERIFY_INSTALLERS: ${{ needs.plan.outputs.installers == 'true' && '1' || '0' }}
         run: |
           prefix=()
           if [[ "$X11" == true ]]; then
@@ -194,15 +196,21 @@ jobs:
             prefix=(xvfb-run --auto-servernum sh -c 'openbox & exec "$@"' sh)
           fi
           "${prefix[@]}" pnpm exec vp run --concurrency-limit 1 --log labeled ci:target
+      - name: Retain performance measurements
+        if: success() && matrix.performanceReport
+        continue-on-error: true
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: performance-${{ matrix.group }}-${{ matrix.target }}
+          path: ${{ matrix.performanceReport }}
+          retention-days: 7
       - name: Retain failure diagnostics
         if: failure()
         continue-on-error: true
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
-          name: diagnostics-${{ matrix.target }}
-          path: |
-            clients/desktop/app/test-results/
-            clients/desktop/packages/*/test-results/
+          name: diagnostics-${{ matrix.group }}-${{ matrix.target }}
+          path: ${{ matrix.diagnostics }}
           retention-days: 5
           if-no-files-found: ignore
 

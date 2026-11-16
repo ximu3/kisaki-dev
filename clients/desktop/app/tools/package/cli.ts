@@ -10,14 +10,14 @@ await runCli(async (signal) => {
     options: {
       target: { type: 'string' },
       'test-only': { type: 'boolean', default: false },
-      installers: { type: 'boolean', default: false },
+      'smoke-only': { type: 'boolean', default: false },
     },
   })
   const target = values.target ? parseTarget(values.target) : hostTarget()
 
   const receiptPath = await packageDesktop(target, {
     testOnly: values['test-only'],
-    installers: values.installers || process.env.KISAKI_VERIFY_INSTALLERS === '1',
+    smokeOnly: values['smoke-only'],
     signal,
   })
 

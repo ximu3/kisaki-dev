@@ -88,7 +88,7 @@ pnpm exec vp run @kisaki3/desktop#package:fixture --target windows-x64
 
 `buildId` 是同次程序构建的独立标识，源码开发使用自己的会话标识。打包从完成的 `build.json` 核对目标、完整文件集合和 SHA-256 摘要。`@kisaki3/desktop#package:fixture` 通过 Vite Task 准备并打包工程载体。
 
-工程载体打包固定标记 `testOnly`。默认生成实际启动验证使用的 ZIP 或 AppImage；`pnpm exec vp run @kisaki3/desktop#package:fixture --installers` 生成目标平台全部格式。构建和打包均不发布。正式签署、安装升级及发行接入由 W20 验收。
+工程载体打包固定标记 `testOnly`，默认生成目标平台的全部格式。局部复现可用 `pnpm exec vp run @kisaki3/desktop#package:fixture --smoke-only` 只生成实际启停所用的 ZIP 或 AppImage。构建和打包均不发布。正式签署、安装升级及发行接入由 W20 验收。
 
 `pnpm exec vp run @kisaki3/desktop#build:fixture --program preload` 单独验证 preload 编译。`build:native` 编译私有绑定；需要更新生成声明时显式添加 `--update-declarations` 并审阅变化。`check:native` 执行固定 Rust 工具链的格式与 Clippy 检查。
 
@@ -112,9 +112,9 @@ pnpm exec vp run @kisaki3/desktop#package:fixture --target windows-x64
 
 ## 检查与运行环境
 
-六个公共包共用 `@kisaki3/config/vite/library`。从根运行 `pnpm exec vp run --filter "./clients/desktop/packages/*" pack` 生成各包的 `out/package/package.tgz`。同一选择器配合 `check:package` 检查归档，配合 `test:consumers` 安装并运行仓库外的消费者。RPC 与 UI 的消费者还需要桌面工程的 `prepare:electron`。
+六个公共包共用 `@kisaki3/config/vite/library`。从根运行 `pnpm exec vp run --filter "./clients/desktop/packages/*" pack` 生成各包的 `out/package/package.tgz`。同一选择器配合 `check:package` 检查归档，配合 `test:consumers` 安装并运行仓库外的消费者。RPC 和 UI 的 Electron 样板分别从自己的临时工程启动锁定的 Electron，结束后随工程清理。UI 的浏览器和 Electron 样板复用同一份展示代码。
 
-用例、固定样例和报告分别归各包的 `tests/consumers`、`tests/consumers/fixtures` 和 `test-results/consumers`。该验证独立于普通 check，由桌面 CI 的 Linux x64 目标执行。普通 CI 将影响分析选中的包传给实际消费者任务；完整检查入口执行全部公共包。
+用例、固定样例和报告分别归各包的 `tests/consumers`、`tests/consumers/fixtures` 和 `test-results/consumers`。当前桌面工作区的代码 PR 在 Linux x64 执行所有公共包的 `verify`，包含各包的独立消费和 UI 的浏览器用例。`pnpm exec vp run --concurrency-limit 1 @kisaki3/desktop#verify` 在当前宿主顺序执行完整桌面验证，让性能采样独占测试时段。常规 `pnpm check` 独立报告。
 
 每个库用自己的 `vite.config.ts` 声明公开子路径与源文件，共享配置据此选择编译入口并生成开发与发布 exports。pnpm 打包时采用 `publishConfig.exports`。运行依赖按 workspace 清单准备传递依赖的 tarball，安装使用这些归档的绝对路径。
 
@@ -132,7 +132,9 @@ pnpm exec vp run @kisaki3/desktop#package:fixture --target windows-x64
 
 浏览器首次准备由所属工程执行：开发回归使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`，公共包消费者使用 `pnpm --filter <包名> exec playwright install chromium`。已建立的公共包使用同一锁定 Playwright 版本，可复用该版本的浏览器安装。
 
-存储测量可单独运行 `pnpm exec vp run @kisaki3/desktop#test:performance storage.test.ts`。每条查询核对首读结果，预热 3 次后采样 31 次。短事务另采样 31 次。按操作分别计算中位数，上限为 100 ms。已知命中条目的零基位置以 `.position` 报告。动画排行按观看时长降序、同分按 ID 排列，分部数合计剧集和附加内容，缺少活动、分部或文件的动画保留零值。作业日志列出查询首读及各项中位数、P95 和最大值，`test-results/performance` 保存全部样本、输入与迁移摘要、SQLite 配置和执行计划。
+存储测量可单独运行 `pnpm exec vp run @kisaki3/desktop#test:performance storage.test.ts`。固定样本按表在持久事务中建立，日志单列准备耗时和输入摘要。套件的 180 秒单项超时覆盖造数、测量和结果交付。每条查询核对首读结果，预热 3 次后采样 31 次。短事务另采样 31 次。按操作分别计算中位数，上限为 100 ms。
+
+已知命中条目的零基位置以 `.position` 报告。动画排行按观看时长降序、同分按 ID 排列，分部数合计剧集和附加内容，缺少活动、分部或文件的动画保留零值。作业日志列出查询首读及各项中位数、P95 和最大值，`test-results/performance` 保存全部样本、输入与迁移摘要、SQLite 配置和执行计划。
 
 同一负载期间，窗口到 main 的 IPC 往返按 P95 ≤ 100 ms 验收。主进程单次同步工作的定位要求见[性能预算](../design/engineering/performance.md#measurement)。
 
@@ -144,7 +146,7 @@ Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 Ap
 
 根 TypeScript 项目检查工具、配置和测试。桌面项目按 main、preload、renderer、utility process、shared、native、tools 和 tests 分环境检查。native 项目拥有 Node 绑定源码及生成声明，main 消费其实际入口。工程载体的程序源码归对应运行环境，四份 Vite 构建配置归 tools 项目。每份自有声明至少由一个 `skipLibCheck: false` 的实际项目完整检查，规则见[类型分工](../design/engineering/workspace.md#declaration-checks)。
 
-两个私有工程包通过 exports 直接消费。`pnpm lint` 运行类型感知 Oxlint 及全仓依赖边界检查。`tools/boundaries.ts` 按真实包导出核对循环、未声明依赖、运行代码与测试归属。dependency-cruiser 18 自用的 TypeScript 6 解析依赖由 packageExtensions 限定，项目检查和公开声明统一使用锁定的 TypeScript 7.1。
+两个私有工程包通过 exports 直接消费。`pnpm lint` 运行类型感知 Oxlint 及全仓依赖边界检查。`tools/boundaries.ts` 从 pnpm 取得实际成员目录，连同根工程输入按真实包导出核对循环、未声明依赖、运行代码与测试归属。dependency-cruiser 18 自用的 TypeScript 6 解析依赖由 packageExtensions 限定，项目检查和公开声明统一使用锁定的 TypeScript 7.1。
 
 `pnpm exec vp run --dry-run --json <包名>#<任务名>` 显示任务与依赖。增量类型信息归各包 `.cache/typescript`。
 
@@ -166,11 +168,9 @@ Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 Ap
 
 ## CI 与交付
 
-`ci.yml` 在安装依赖前用 `tools/ci/plan.ts` 比较基线和候选，选择 Linux 基础检查及所需宿主。模板、配置、SQL 和原生输入按实际使用者判断，删除和改名计入完整差异。共享 ABI 或缺少基线时覆盖六个宿主目标，手动运行可以指定目标与场景。局部复现可以执行相同的项目命令。
+在候选检出运行 `pnpm --config.verify-deps-before-run=false exec node tools/ci/plan.ts <base> <head>` 可在安装依赖前查看变更文件、工程范围和各目标任务。按[自动验证规则](../design/engineering/workspace.md#ci-selection)，单改 desktop-rpc 触发 Linux 公共包验证，单改 desktop-appearance 的 CSS 还会沿合同包依赖触发六目标桌面验证。手动 CI 可以选择目标和套件，例如 `target=all`、`suite=performance` 在六个实际宿主运行同一份性能负载。
 
-桌面存储与文件设施直接或间接使用的公共包发生代码变更时，Linux x64 运行 Electron Node 集成测试。单改外观样式时，验证对应的浏览器和 tarball 消费。桌面任务定义、SQLite 名称排序的 Rust 实现、编译入口或锁定依赖变更时，六个目标验证原生接入，Linux x64 另行运行性能任务。
-
-`Select checks` 读取改动并生成目标与任务。Linux x64 上的 `Workspace checks` 执行文档链接检查，代码改动还执行冻结安装和 `pnpm check`。每个 `Target checks (<目标>)` 作业将选中任务一次交给 Vite Task，按同一依赖图准备和复用程序与归档。计划摘要列出套件，日志带包名与任务名。
+`Select checks` 读取改动并生成目标与任务。Linux x64 上的 `Workspace checks` 执行文档链接检查，代码改动还执行冻结安装和 `pnpm check`。`Target checks (public packages · linux-x64)` 独立报告公共包的消费和浏览器结果。各 `Target checks (desktop · <目标>)` 运行桌面组。手动选择单项时，矩阵标签包含套件名。每个作业将任务一次交给 Vite Task，共用前置构建。完成桌面性能测量的作业将含输入摘要、采样和执行计划的 Playwright 报告保存为 `performance-desktop-<目标>`，保留 7 天。
 
 `Required checks` 汇总 PR、合并队列和主线的验证结果。仅编辑 PR 标题或正文时，CI 等候正在运行的验证，核对 PR 编号、源码提交、基线提交和候选文件树后沿用先前的结果。缺少匹配记录时重新验证。主线推送可复用同一候选的成功结果。手动选择场景的运行单独报告 `Requested checks`。
 
