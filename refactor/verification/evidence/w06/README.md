@@ -18,6 +18,12 @@
 
 基础设施的失败结果与文件所有权在接口处说明。附件提交、正文引用提取、内容文件维护和存档恢复业务分别归 W07、W08、W13、W15；本记录不将设施验证扩张为这些业务已完成。
 
+### 初始化、路径与暂存取消
+
+2026-11-16，Windows x64 的 Electron 45.3.2 通过 17 项存储与原生集成用例。在隔离目录中，构建后的数据库 worker 正常初始化空库，对只有视图、含 `sqlite3_notes` 用户表、只有通用迁移记录表或设置了应用版本的外部文件均返回格式错误，前后文件字节相同。本体首个迁移失败后能用原文件重试。[迁移用例](../../../../clients/desktop/app/tests/integration/database/migrations.test.ts)
+
+同一个缺盘符的位置分别从 C 盘和 F 盘的工作目录提交，均被拒绝。带盘符路径与 UNC 共享路径通过语法检查。向原生文件同步发出请求后取消暂存，操作等到同步结束才返回原取消原因，准备目录为空。[文件设施用例](../../../../clients/desktop/app/tests/integration/files/storage.test.ts)
+
 ## 运行与制品
 
 本机 `pnpm check`、`pnpm desktop:test:native` 与 Rust 格式／Clippy 检查通过。Electron Node 模式执行了 15 项存储和文件用例。4 个真实窗口入口、4 项隔离开发回归和 2 项 Node 取消结果检查均通过；保留生产 fuses 的最终制品可正常启动和关闭。desktop-contracts 与 desktop-localization 的实际 tarball 共通过 6 项 Node／浏览器独立消费检查。

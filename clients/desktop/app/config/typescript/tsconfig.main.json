@@ -7,6 +7,7 @@
     "customConditions": ["node"]
   },
   "include": [
+    "../../src/host-path.ts",
     "../../src/main/**/*.ts",
     "../../tests/fixtures/desktop-app/src/main/**/*.ts",
     "../../tests/fixtures/desktop-app/src/shared/**/*.ts"

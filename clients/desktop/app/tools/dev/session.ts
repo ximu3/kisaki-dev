@@ -2,9 +2,10 @@
 
 import { randomUUID } from 'node:crypto'
 import { mkdir, mkdtemp, rm } from 'node:fs/promises'
-import { isAbsolute, join } from 'node:path'
+import { join } from 'node:path'
 import { debuglog } from 'node:util'
 import { isCancellation, rethrowAfterCleanup } from '@kisaki3/tooling/errors'
+import { isAbsoluteHostPath } from '#host-path'
 import { appRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
 import { prepareResources } from '../resources/prepare'
@@ -125,11 +126,11 @@ export interface DevelopmentOptions {
 export async function startDevelopmentSession(
   options: DevelopmentOptions,
 ): Promise<DevelopmentSession> {
-  if (!isAbsolute(options.sourceRoot)) {
+  if (!isAbsoluteHostPath(options.sourceRoot)) {
     throw new Error('Development source root must be an absolute path')
   }
   const profile = options.profile ?? join(appRoot, '.local', 'development')
-  if (!isAbsolute(profile)) {
+  if (!isAbsoluteHostPath(profile)) {
     throw new Error('Development profile must be an absolute path')
   }
   options.signal?.throwIfAborted()

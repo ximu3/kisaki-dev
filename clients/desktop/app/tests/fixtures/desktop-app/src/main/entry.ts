@@ -7,6 +7,7 @@ import { dirname, extname, isAbsolute, join, relative, resolve } from 'node:path
 import { fileURLToPath } from 'node:url'
 import { debuglog } from 'node:util'
 import { loadNative } from '#native'
+import { isAbsoluteHostPath } from '#host-path'
 import { verifyStorage } from './storage'
 
 /** Opt-in diagnostics for the fixture window and utility-process lifetime. */
@@ -18,7 +19,7 @@ const argument = (name: string) =>
 
 /** Explicit isolated data directory supplied by the test or development-session owner. */
 const profile = argument('profile')
-if (!profile || !isAbsolute(profile)) {
+if (!profile || !isAbsoluteHostPath(profile)) {
   throw new Error('The engineering fixture requires an explicit isolated profile')
 }
 

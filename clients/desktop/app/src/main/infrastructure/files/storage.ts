@@ -2,11 +2,12 @@
 
 import { createHash } from 'node:crypto'
 import { mkdir, mkdtemp, open, rm } from 'node:fs/promises'
-import { dirname, join, isAbsolute } from 'node:path'
+import { dirname, join } from 'node:path'
 import { Transform } from 'node:stream'
 import type { Readable } from 'node:stream'
 import { finished, pipeline } from 'node:stream/promises'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import { isAbsoluteHostPath } from '#host-path'
 import type { NativeFiles } from '#native'
 
 /** Completed bytes held in one exclusively owned preparation directory. */
@@ -20,6 +21,9 @@ export interface StagedFile {
 
 /** Synchronizes a POSIX namespace; Windows publication uses native write-through moves. */
 export async function syncDirectory(path: string): Promise<void> {
+  if (!isAbsoluteHostPath(path)) {
+    throw new TypeError('Expected an absolute directory path')
+  }
   if (process.platform === 'win32') {
     return
   }
@@ -55,7 +59,7 @@ export async function publishPath(
 
 /** Maps an opaque attachment identity to a fixed, portable path without using content as identity. */
 export function storedFilePath(root: string, id: string): string {
-  if (!isAbsolute(root) || id.length === 0 || /[\uD800-\uDFFF]/u.test(id)) {
+  if (!isAbsoluteHostPath(root) || id.length === 0 || /[\uD800-\uDFFF]/u.test(id)) {
     throw new TypeError('Expected an absolute storage root and a nonempty scalar identity')
   }
   const key = createHash('sha256').update(id, 'utf8').digest('hex')
@@ -65,8 +69,8 @@ export function storedFilePath(root: string, id: string): string {
 /**
  * Copies a byte stream into an owned temporary file, hashing and enforcing its actual byte limit.
  *
- * Success includes file synchronization. Failure or cancellation closes streams and removes only
- * this preparation; input ownership is consumed for this operation.
+ * Takes ownership of the input. Failure releases the streams and preparation. Cancellation
+ * waits for pending synchronization before cleanup. On success the caller owns the file and its disposal.
  */
 export async function stageFile(
   temporaryRoot: string,
@@ -75,9 +79,6 @@ export async function stageFile(
   byteLimit: number,
   signal?: AbortSignal,
 ): Promise<StagedFile> {
-  if (!isAbsolute(temporaryRoot) || !Number.isSafeInteger(byteLimit) || byteLimit < 0) {
-    throw new TypeError('Expected an absolute preparation root and a nonnegative safe byte limit')
-  }
   const hash = createHash('sha256')
   let byteSize = 0
   let directory: string | undefined
@@ -92,6 +93,9 @@ export async function stageFile(
   }
 
   try {
+    if (!isAbsoluteHostPath(temporaryRoot) || !Number.isSafeInteger(byteLimit) || byteLimit < 0) {
+      throw new TypeError('Expected an absolute preparation root and a nonnegative safe byte limit')
+    }
     signal?.throwIfAborted()
     await mkdir(temporaryRoot, { recursive: true })
     directory = await mkdtemp(join(temporaryRoot, 'file-'))
@@ -123,6 +127,8 @@ export async function stageFile(
     signal?.throwIfAborted()
     await native.syncFile(path)
     await syncDirectory(directory)
+    signal?.throwIfAborted()
+
     return { path, byteSize, sha256: hash.digest('hex'), dispose }
   } catch (error) {
     source.destroy()

@@ -38,6 +38,10 @@ SQLite 事务只保证数据库修改的原子性。涉及文件字节时，先�
 
 schema 是数据库结构的定义来源。空库与已有本体数据库共用一条 SQL 迁移链：空库执行全部迁移，已有库只执行尚未应用的部分，不另生成一份仅供新库使用的最新建表 SQL。
 
+认领新库时，在同一个 SQLite 事务中确认库内没有用户定义的表、索引、视图或触发器，且 `application_id` 与 `user_version` 均为零，再写入 Kisaki 的 `application_id`。Drizzle 随后建立迁移记录表。
+
+首个迁移中断后，带有本体标识的空库或仅有空迁移记录表的本体库可以重试。已迁移的本体库按名称和摘要核对历史。其他格式保留原文件并报告错误，包括只有通用空迁移记录表、没有本体标识的文件。
+
 database/initialize.ts 在本体业务装配前调用所选 better-sqlite3 适配器的原生 migrate()，遵循 [Drizzle 运行时迁移流程](https://orm.drizzle.team/docs/migrations)。迁移文件由 app/paths 定位，已执行记录与待执行判定由 Drizzle 管理。
 
 onboarding_state 的固定初始行写入初始迁移，由 migrate() 执行插入，初值遵守[引导状态](../domains/onboarding.md#state)。preferences 在全部迁移完成后、首行不存在时执行一次普通插入，按当前版本的[偏好默认值](../domains/preferences.md#storage)保存完整配置。先迁移再插入，是为了让当前版本的写入代码使用当前数据库结构；初值来自当前默认定义，已有偏好不重新覆盖。

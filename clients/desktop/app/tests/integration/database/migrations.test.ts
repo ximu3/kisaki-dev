@@ -77,7 +77,7 @@ test('runs a forward migration once and retains previous data and user choices a
   expect(storage.db.select().from(entries).get()?.name).toBe('Saved')
 })
 
-test('can retry an initial failed migration and rejects unrelated or changed migration histories', async () => {
+test('can retry an initial failed migration and rejects changed migration histories', async () => {
   const directory = await fixtureDirectory()
   const options = storageOptions(directory)
   const migrations = join(directory, 'migrations')
@@ -100,12 +100,30 @@ test('can retry an initial failed migration and rejects unrelated or changed mig
   await copyFile(join(options.migrationsDirectory, baseline!, 'migration.sql'), file)
   const reopened = initializeDatabase(isolated)
   reopened.close()
+})
 
-  const unrelatedPath = join(directory, 'unrelated.sqlite')
-  const unrelated = new Database(unrelatedPath, { nativeBinding: options.nativeBinding })
-  unrelated.exec("create table user_data (value text); insert into user_data values ('Keep');")
-  unrelated.close()
-  const bytes = await readFile(unrelatedPath)
-  expect(() => initializeDatabase({ ...options, path: unrelatedPath })).toThrow(DatabaseFormatError)
-  expect(await readFile(unrelatedPath)).toEqual(bytes)
+test('preserves foreign SQLite schemas and application metadata byte for byte', async () => {
+  const directory = await fixtureDirectory()
+  const options = storageOptions(directory)
+  for (const [name, schema] of [
+    ['view', "create view shelf_titles as select 'Keep' as title"],
+    ['version', 'pragma user_version = 1'],
+    ['table', "create table sqlite3_notes (value text); insert into sqlite3_notes values ('Keep')"],
+    [
+      'ledger',
+      'create table __drizzle_migrations (id integer primary key, hash text not null, created_at numeric, name text, applied_at text)',
+    ],
+  ] as const) {
+    const path = join(directory, name + '.sqlite')
+    const unrelated = new Database(path, { nativeBinding: options.nativeBinding })
+    try {
+      unrelated.exec(schema)
+    } finally {
+      unrelated.close()
+    }
+
+    const before = await readFile(path)
+    expect(() => initializeDatabase({ ...options, path })).toThrow(DatabaseFormatError)
+    expect(await readFile(path)).toEqual(before)
+  }
 })
