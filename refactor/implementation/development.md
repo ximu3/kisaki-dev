@@ -114,7 +114,7 @@ pnpm exec vp run @kisaki3/desktop#package:fixture --target windows-x64
 
 六个公共包共用 `@kisaki3/config/vite/library`。从根运行 `pnpm exec vp run --filter "./clients/desktop/packages/*" pack` 生成各包的 `out/package/package.tgz`。同一选择器配合 `check:package` 检查归档，配合 `test:consumers` 安装并运行仓库外的消费者。RPC 和 UI 的 Electron 样板分别从自己的临时工程启动锁定的 Electron，结束后随工程清理。UI 的浏览器和 Electron 样板复用同一份展示代码。
 
-用例、固定样例和报告分别归各包的 `tests/consumers`、`tests/consumers/fixtures` 和 `test-results/consumers`。普通代码 PR 在 Linux x64 执行所有公共包的 `verify`，包含各包的独立消费和 UI 的浏览器用例。桌面的 `pnpm exec vp run @kisaki3/desktop#verify` 在当前宿主执行完整桌面验证。常规 `pnpm check` 独立报告。
+用例、固定样例和报告分别归各包的 `tests/consumers`、`tests/consumers/fixtures` 和 `test-results/consumers`。当前桌面工作区的代码 PR 在 Linux x64 执行所有公共包的 `verify`，包含各包的独立消费和 UI 的浏览器用例。`pnpm exec vp run --concurrency-limit 1 @kisaki3/desktop#verify` 在当前宿主顺序执行完整桌面验证，让性能采样独占测试时段。常规 `pnpm check` 独立报告。
 
 每个库用自己的 `vite.config.ts` 声明公开子路径与源文件，共享配置据此选择编译入口并生成开发与发布 exports。pnpm 打包时采用 `publishConfig.exports`。运行依赖按 workspace 清单准备传递依赖的 tarball，安装使用这些归档的绝对路径。
 
@@ -170,7 +170,7 @@ Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 Ap
 
 在候选检出运行 `pnpm --config.verify-deps-before-run=false exec node tools/ci/plan.ts <base> <head>` 可在安装依赖前查看变更文件、工程范围和各目标任务。按[自动验证规则](../design/engineering/workspace.md#ci-selection)，单改 desktop-rpc 触发 Linux 公共包验证，单改 desktop-appearance 的 CSS 还会沿合同包依赖触发六目标桌面验证。手动 CI 可以选择目标和套件，例如 `target=all`、`suite=performance` 在六个实际宿主运行同一份性能负载。
 
-`Select checks` 读取改动并生成目标与任务。Linux x64 上的 `Workspace checks` 执行文档链接检查，代码改动还执行冻结安装和 `pnpm check`。`Public package checks (linux-x64)` 独立报告公共包的消费和浏览器结果。`Target checks (<目标>)` 运行桌面组或指定的诊断套件。每个作业将任务一次交给 Vite Task，共用前置构建。完成性能测量的作业将含输入摘要、采样和执行计划的 Playwright 报告保存为 `performance-<目标>`，保留 7 天。
+`Select checks` 读取改动并生成目标与任务。Linux x64 上的 `Workspace checks` 执行文档链接检查，代码改动还执行冻结安装和 `pnpm check`。`Target checks (public packages · linux-x64)` 独立报告公共包的消费和浏览器结果。各 `Target checks (desktop · <目标>)` 运行桌面组。手动选择单项时，矩阵标签包含套件名。每个作业将任务一次交给 Vite Task，共用前置构建。完成桌面性能测量的作业将含输入摘要、采样和执行计划的 Playwright 报告保存为 `performance-desktop-<目标>`，保留 7 天。
 
 `Required checks` 汇总 PR、合并队列和主线的验证结果。仅编辑 PR 标题或正文时，CI 等候正在运行的验证，核对 PR 编号、源码提交、基线提交和候选文件树后沿用先前的结果。缺少匹配记录时重新验证。主线推送可复用同一候选的成功结果。手动选择场景的运行单独报告 `Requested checks`。
 

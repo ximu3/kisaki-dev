@@ -13,6 +13,8 @@ import { initializeDatabase } from '../../../src/main/infrastructure/database'
 import { entries as entryTable } from '../../../src/main/infrastructure/database/schema'
 import { getPreferenceDefaults } from '../../../src/main/features/preferences/defaults'
 import { animeStatisticsSql, verifySparseAnimeStatistics } from './anime-statistics'
+import { pageStatement, positionStatement } from './selection'
+import type { EntrySelection } from './selection'
 import { fixtureId, prepareWorkload, workerMedianBudgetMs, workload } from './workload'
 import type { FixtureEntry } from './workload'
 import manifest from '../../../package.json' with { type: 'json' }
@@ -81,19 +83,19 @@ function summarizeSamples(samplesMs: readonly number[]): SampleDistribution {
   }
 }
 
-/** Measures a distant page, total and zero-based position of a known member under one predicate. */
+/** Measures a distant page, total and zero-based position against one set of eligible entries. */
 function resultSet(
   connection: Database.Database,
   name: string,
-  where: string,
+  selection: EntrySelection,
   expected: FixtureEntry[],
 ): QueryCase[] {
   expected.sort(compareEntries)
   const offset = Math.max(0, expected.length - 200)
-  const listSql = `select e.id from entries e where ${where} order by e.effective_sort_name,e.id limit 200 offset ${offset}`
-  const countSql = `select count(*) as total from entries e where ${where}`
+  const listSql = pageStatement(selection, offset)
+  const countSql = `select count(*) as total from (${selection.ids})`
   const target = expected[Math.floor(expected.length * 0.8)]!
-  const positionSql = `select count(*) as position from entries e where (${where}) and (e.effective_sort_name,e.id) < (?,?)`
+  const positionSql = positionStatement(selection)
   const list = connection.prepare(listSql)
   const count = connection.prepare(countSql)
   const position = connection.prepare(positionSql)
@@ -102,10 +104,10 @@ function resultSet(
     {
       name: `${name}.list`,
       statement: listSql,
-      parameters: [],
+      parameters: [200, offset],
       expectedRows: Math.min(200, expected.length),
       /** Reads the requested distant interval in its stable order. */
-      run: () => list.all(),
+      run: () => list.all(200, offset),
       /** Compares every returned identity against the fixture's independent interval. */
       verify: (value) =>
         assert.deepEqual(
@@ -211,8 +213,9 @@ export async function measureStorage({ profile, resources }: StorageMeasurementI
       { length: 100 },
       (_, index) => `'${fixtureId('tag', index)}'`,
     ).join(',')
-    // Probe each entry's own tag list once, rather than seeking every selected tag for every entry.
-    const matchesDynamic = `exists (select 1 from entry_tags t indexed by entry_tags_entry where t.entry_id=e.id and t.tag_id in (${dynamicTags}))`
+    // The entry-ordered covering index supports both distinct enumeration and a single-entry probe.
+    const tagged = `select entry_id as id from entry_tags indexed by entry_tags_entry
+      where tag_id in (${dynamicTags})`
     /** Evaluates the fixture's hundred tag rules independently of SQL. */
     const isDynamic = (entry: FixtureEntry) =>
       entry.ordinal % 200 < 100 || (entry.ordinal + 73) % 200 < 100
@@ -220,22 +223,39 @@ export async function measureStorage({ profile, resources }: StorageMeasurementI
       ...resultSet(
         connection,
         'mixed-rated',
-        "e.type in ('anime','comic','novel') and exists (select 1 from entry_evaluations r where r.entry_id = e.id and r.rating >= 70)",
+        {
+          ids: `select entry_id as id from entry_evaluations where rating >= 70
+          intersect select id from entries where type in ('anime', 'comic', 'novel') order by id`,
+        },
         entries.filter(
           (entry) => ['anime', 'comic', 'novel'].includes(entry.type) && entry.ordinal % 101 >= 70,
         ),
       ),
-      ...resultSet(connection, 'dynamic-union-100', matchesDynamic, entries.filter(isDynamic)),
+      ...resultSet(
+        connection,
+        'dynamic-union-100',
+        {
+          ids: `select distinct id from (${tagged})`,
+          probe: `exists (select 1 from (${tagged}) t where t.id = e.id)`,
+        },
+        entries.filter(isDynamic),
+      ),
       ...resultSet(
         connection,
         'unclassified',
-        `not ${matchesDynamic} and e.id not in (select entry_id from collection_members)`,
+        {
+          ids: `select id from entries except ${tagged}
+          except select entry_id from collection_members order by id`,
+        },
         entries.filter((entry) => !isDynamic(entry) && entry.ordinal % 5 !== 0),
       ),
       ...resultSet(
         connection,
         'same-relation',
-        `e.id in (select work_id from work_person_links where person_id = '${fixtureId('person', 0)}' and role = 'voiceActor' and character_id is not null)`,
+        {
+          ids: `select distinct work_id as id from work_person_links
+          where person_id = '${fixtureId('person', 0)}' and role = 'voiceActor' and character_id is not null`,
+        },
         entries.filter((entry) => prepared.voiceWorks.has(entry.id)),
       ),
     ]
