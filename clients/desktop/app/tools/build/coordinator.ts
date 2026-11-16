@@ -13,7 +13,7 @@ import type { DesktopBuild } from './manifest'
 import type { DesktopTarget } from '../lib/targets'
 import { removeOutputs } from '@kisaki3/tooling/output'
 import { runtimeFiles } from './manifest'
-import { buildProgram, programNames } from './programs'
+import { buildProgram, sourcePrograms } from './programs'
 
 /**
  * Assembles a complete desktop runtime from prepared resources and native bindings.
@@ -59,7 +59,7 @@ export async function buildDesktop(
 
   // Wait for every compiler before reporting completion or failure.
   const results = await Promise.allSettled(
-    programNames.map((program) =>
+    sourcePrograms(sourceRoot).map((program) =>
       buildProgram(sourceRoot, program, join(output, program), buildId),
     ),
   )
@@ -93,7 +93,8 @@ export async function buildDesktop(
   const files = await runtimeFiles(output)
   for (const required of [
     'main/entry.js',
-    'extension-host/entry.js',
+    'main/database.js',
+    ...(sourcePrograms(sourceRoot).includes('extension-host') ? ['extension-host/entry.js'] : []),
     'preload/main.cjs',
     'preload/reader.cjs',
     'preload/player.cjs',

@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { removeOutputs } from '@kisaki3/tooling/output'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 import { appRoot } from '../lib/paths'
-import { programConfigurations } from '../build/programs'
+import { programConfigurations, sourcePrograms } from '../build/programs'
 import { sha256 } from '../lib/sha256'
 
 /** One compiler batch whose output files are ready to copy into a runtime directory. */
@@ -48,7 +48,7 @@ export async function watchPrograms(
 ): Promise<ProgramWatch> {
   await removeOutputs(appRoot, [directory])
   const entries = []
-  for (const program of ['main', 'preload', 'extension-host'] as const) {
+  for (const program of sourcePrograms(sourceRoot).filter((name) => name !== 'renderer')) {
     const configs = await programConfigurations(
       sourceRoot,
       program,

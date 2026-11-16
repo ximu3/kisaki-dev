@@ -126,6 +126,8 @@ async function writeBuilderConfig(context: PackagingContext): Promise<string> {
   const config = parseDocument(await readFile(join(appRoot, 'electron-builder.yml'), 'utf8'))
 
   config.set('electronVersion', build.electronVersion)
+  config.set('appId', testOnly ? 'me.kisaki.dev' : 'me.kisaki')
+  config.set('protocols', [{ name: 'Kisaki', schemes: [testOnly ? 'kisaki-dev' : 'kisaki'] }])
   config.set('directories', {
     app: staging,
     output,

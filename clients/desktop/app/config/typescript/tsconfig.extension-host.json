@@ -6,7 +6,7 @@
     "customConditions": ["node"]
   },
   "include": [
-    "../../tests/fixtures/desktop-app/src/extension-host/**/*.ts",
-    "../../tests/fixtures/desktop-app/src/shared/**/*.ts"
+    "../../src/shared/build.d.ts",
+    "../../tests/fixtures/desktop-app/src/extension-host/**/*.ts"
   ]
 }
