@@ -1,6 +1,6 @@
 # 本体私有原生能力
 
-本页规定桌面本体自维护原生能力的工程、消费、类型、运行和交付边界。各项能力在同一规则下提供可直接消费的 Node 接口，应用负责产品流程与宿主接入。Vantage、libmpv-node 等独立项目继续按各自已确立的规范交付，本体通过其公开包消费。
+桌面本体的私有原生工程提供文件系统操作和资料库名称排序。Vantage、libmpv-node 等独立项目按各自规范交付，本体通过其公开包接入。
 
 先使用 Node、Electron 和现有依赖能够完整提供的能力；私有绑定只补足实际缺口，如不覆盖移动或平台要求的同步原语。增加 Rust 实现须能说明所需语义或已测得的收益，不将“原生优先”理解为把已有标准能力重新写成原生模块。
 
@@ -36,18 +36,19 @@ clients/desktop/app/
 │   ├── rust-toolchain.toml
 │   ├── src/
 │   │   ├── lib.rs
-│   │   └── files.rs
-│   ├── node/
-│   │   ├── index.ts
-│   │   ├── loader.ts
-│   │   ├── binding.d.ts
-│   │   └── files.ts
-│   └── tests/
+│   │   ├── files.rs
+│   │   ├── filesystem.rs
+│   │   └── collation.rs
+│   └── node/
+│       ├── index.ts
+│       ├── loader.ts
+│       ├── binding.d.ts
+│       └── files.ts
 ├── tools/native/
 └── tests/integration/native/
 ```
 
-native 使用一个 Cargo crate；build.rs 执行 napi-build 的构建接入，lib.rs 声明实际模块与原生导出，files.rs 是当前文件能力的实现。能力需要多文件协作时再拆为同名目录，平台实现归相应能力内部。crate 拆分依据独立职责、依赖和测试需要，不为每项能力建立一份原生工程。
+同一个 Cargo crate 交付这些能力。`build.rs` 配置 Node-API 链接并记录锁定的 ICU 组件版本。`files.rs` 实现文件移动和同步，`filesystem.rs` 识别路径所在的文件系统，`collation.rs` 在 SQLite 连接上注册名称比较器。平台差异由对应能力处理。
 
 node/index.ts 只列出实际公开导出，loader.ts 拥有加载入口，files.ts 拥有文件能力确需的 Node 适配。Node 源码遵守[TypeScript 要求](conventions.md#source-language)，纳入应用的类型检查、依赖检查和 main 构建，不另登记嵌套的 pnpm workspace 或独立 npm 发行项。
 
@@ -87,7 +88,7 @@ app/tools/native 按[工具目录与工作流](layout.md#tools)提供本地与 C
 
 加载器只采用装配给定的制品及其声明的运行依赖，缺失或不匹配时明确失败。启动不现场编译、联网下载或搜索开发机的其他输出。Node 入口和原生制品属于同一次本体构建，打包流程核对二者的构建身份、目标与资源，实际加载和调用由对应集成及最终制品用例验证。
 
-Rust 单元测试贴近所属模块，crate 集成测试位于 native/tests，遵守 Cargo 的发现规则。Node 适配的纯单元测试贴近 TypeScript 源码；应用 tests/integration/native 负责入口、声明、错误、真实绑定及适用的取消与环境清理验证，tests/tools/native 验证原生构建工作流。目录与样本归属遵守[测试结构](layout.md#tests)，运行环境与隔离遵守[测试要求](../../verification/acceptance.md#environments)。
+Rust 单元测试贴近所属模块，crate 集成测试按 Cargo 约定放在 `native/tests`。Node 适配的纯单元测试贴近 TypeScript 源码。应用的 `tests/integration/native` 从 `#native` 验证真实绑定、错误及适用的取消与清理行为。原生构建核对生成声明，制品测试验证装配后的加载和调用。样本归属见[测试结构](layout.md#tests)，运行环境与隔离见[测试要求](../../verification/acceptance.md#environments)。
 
 验证同时覆盖原生规则、Node 消费边界、具体业务接入和最终六目标制品：类型消费不加载二进制，缺失或错误目标制品准确失败，操作行为与公开声明相符，适用资源在失败和退出时释放。各能力按相同分工覆盖自己的行为与应用装配。
 

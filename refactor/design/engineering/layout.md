@@ -249,42 +249,11 @@ clients/desktop/app/tools/
 | `tests/tools` | 验证本工程维护工具的 CLI、工作流和真实副作用。 |
 | 根 `tests/workspace` | 验证仓库负责的工作区约束，例如依赖边界和验证范围。 |
 
-用例按主要验证目的归档。公开包消费、最终制品、性能、工程工具和仓库共同约束分别由 `consumers`、`artifacts`、`performance`、`tools` 和根 `workspace` 套件负责。其余场景按被测行为归 `integration`、`browser` 或 `e2e`。宿主和运行器在配置中声明，一项保证由所属套件验证。
+测试目录按实际用例建立。少量内聚用例保留在一个文件，多文件场景按能力或工作流组织。组合验证归负责组合行为的工程，例如组件样式归 UI 包，作者生成与打包流程归 CLI，应用操作归本体。
 
-只建立工程实际需要的目录。测试目录内部按能力、场景或工具组织，少量内聚用例保持单文件，多文件协作时再形成子目录；不要求与 src 的每一级路径机械镜像。组合验证归负责组合行为的工程：组件样式归 UI 包，作者生成与打包流程归 CLI，应用操作归本体。使用多个包本身不改变测试归属。根 tests 负责根工具和仓库共同约束。
+根工具需要独立验证 CLI 或文件副作用时，用例归根 `tests/tools`。工作区导入与 CI 选择的样本和辅助代码归 `tests/workspace`。
 
-根 `tests/tools` 验证仓库工具的 CLI 与文件副作用，`tests/workspace` 验证仓库共同约束。工作区成员或维护文件的读取只服务于这组检查时，辅助代码随 `tests/workspace/` 维护。下列目录按实际用例建立。
-
-```text
-tests/
-├── tools/
-│   ├── hooks/
-│   └── release/
-└── workspace/
-```
-
-本体测试按需要的环境与结果组织。`tests/integration/native` 验证绑定的 Node 消费合同，`tests/integration/electron` 验证真实窗口与进程边界，`tests/tools/native` 验证编译及制品准备。以下展示适用的测试位置。
-
-```text
-clients/desktop/app/tests/
-├── integration/
-│   ├── database/
-│   ├── electron/
-│   ├── files/
-│   └── native/
-├── browser/
-├── e2e/
-├── artifacts/
-├── performance/
-├── tools/
-│   ├── dev/
-│   ├── build/
-│   ├── resources/
-│   ├── native/
-│   └── package/
-├── fixtures/
-└── support/
-```
+本体的 `tests/integration/native` 验证绑定的 Node 消费合同，`tests/integration/electron` 验证真实窗口与进程边界。构建和开发会话的用例按工作流归 `tests/tools/build` 与 `tests/tools/dev`。
 
 公共包按合同使用 `tests/integration`、`tests/browser`、`tests/consumers` 或 `tests/tools`。官方扩展将来源响应与格式样本放在验证它们的套件中，真实组件行为归 `tests/browser`。正式 `.kisx` 的完整安装和用户操作由宿主端到端用例验证。CLI 交付给作者的模板归 `src/templates`。
 

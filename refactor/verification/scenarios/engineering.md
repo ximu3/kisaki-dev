@@ -8,7 +8,7 @@
 
 ## 本体私有原生入口与交付
 
-A24、A26、A28 和 A31 按[本体私有原生规范](../../design/engineering/native.md)验证 Rust 实现、Node 入口和应用接入的职责。消费方从 `#native` 引用实际能力、类型与错误，文件设施不持有另一份绑定声明或加载实现。preload、renderer、extension-host 和 shared 不能绕过入口导入私有原生代码。
+A24、A26、A28 和 A31 按[本体私有原生规范](../../design/engineering/native.md)验证 Rust 实现、Node 入口和应用接入的职责。main 从 `#native` 引用能力、类型与错误，原生模块内部可以相对导入。边界检查须检出 main 绕过入口读取私有实现，以及 preload、renderer、extension-host 或 shared 导入本体原生模块的情况。
 
 类型消费者在没有 .node 的环境中完成类型检查。原生构建生成的声明与受版本控制的声明一致，实际调用的参数、结果和错误与声明相符。应用装配从明确部署路径加载对应制品；缺失、架构不符或不能加载时提供安全错误，不搜索其他构建目录或现场编译。开发输出与不同目标构建互不覆盖，最终应用使用与本次构建身份相符的绑定和配套资源。
 
@@ -40,13 +40,15 @@ A26、A31 和 A32 按[配置归属](../../design/engineering/conventions.md#conf
 
 按[tools 结构](../../design/engineering/layout.md#tools)核对工具归属、CLI 与工作流依赖，以及样本和输出位置。通过明确参数调用工作流与通过 CLI 调用应采用同一实现；模块导入不启动任务，工作流失败由 CLI 在清理后报告非零退出状态。工程实现不导入测试用例、fixture 或 tests/support；测试可以调用被测工作流和消费产物。工具本身保留必要的输入与输出校验，用例通过正常和失败场景验证其行为。fixture 不被生成制品覆盖，独立临时目录在资源释放后清理，本地与 CI 采用同一实现。
 
+在隔离工作区内从已声明依赖的公开子路径导入，检查应通过。改为相对路径读取另一个包的源码，或导入能解析但未声明的工作区包，检查应报告导入方与目标。就近单测和类型导入同样参与验证。
+
 按[桌面工具布局](../../design/engineering/layout.md#desktop-tools)核对 dev、build、resources、native、package 和 clean 的实际调用与输出。开发与有限构建复用 Vite 程序配置，资源与原生制品各有唯一写入者，打包消费已就绪输出，测试通过既有运行器和所属配置执行。
 
 ### 测试归属与运行环境
 
 按[测试任务](../../design/engineering/layout.md#test-tasks)核对常规、消费者和最终制品任务的输入及执行阶段。消费者任务接收实际 tarball，制品任务接收指定目标和构建身份的最终文件；输入缺失或不匹配时失败，用例不重建或替换待验证的产品制品。项目脚本、依赖任务和测试配置共同表达运行条件，没有另一份通用测试调度逻辑。包结构检查沿用现成工具，其结果与消费用例均进入任务结论。
 
-按[测试结构](../../design/engineering/layout.md#tests)核对根、本体、公共包和扩展各自的用例。纯逻辑单测不依赖真实 I/O 或 DOM；原生与数据库套件在运行器启动前选定匹配的 Electron 宿主与 ABI，浏览器与 Electron 用例在对应真实环境执行。根 tests/tools/hooks 只操作隔离 Git 仓库；本体 tests/integration/native 与 tests/tools/native 分别验证运行接口和构建流程。测试按主要验证目的归档，运行环境由配置表达，不复制交叉分类的相同用例。测试、fixture 和消费者样板不进入运行输出、公开声明或 workspace 成员清单。
+按[测试结构](../../design/engineering/layout.md#tests)核对用例和样本的工程归属。纯逻辑用例使用普通 Node，原生与数据库套件在启动运行器前选定匹配的 Electron 宿主与 ABI，浏览器与 Electron 窗口用例在相应的真实环境执行。检查正式制品和工作区成员清单，确认测试源码与独立消费者样板只用于验证。
 
 <a id="ci-events"></a>
 

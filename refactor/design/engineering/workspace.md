@@ -185,7 +185,7 @@ workspace 按实际工程登记。根检查运行各项目声明的类型入口�
 
 仓库根 tsconfig.json 以空 files 和 references 组织 config/typescript 中的 tsconfig.tools.json、tsconfig.config.json 和 tsconfig.tests.json，三者均使用 Node 类型与 ES2023 库。需要 DOM 的浏览器回调由实际拥有者的类型项目检查，消费者样板使用各自配置。
 
-配置类型项目覆盖根入口和 config 中的 TypeScript 配置。根 `typecheck` 调用成员的同名任务，再用 `tsc -b` 检查根项目，增量信息归根 .cache/typescript。
+配置类型项目覆盖根 Vite 入口和 config 中的 TypeScript 配置。Node 直接加载的依赖检查配置与根工具同属 NodeNext 项目。根 `typecheck` 调用成员的同名任务，再用 `tsc -b` 检查根项目，增量信息归根 .cache/typescript。
 
 共同规则继承 `@kisaki3/config/typescript/<预设>.json`，依赖检查读取根 tsconfig.json 的编译选项，按所属 package.json 的 imports 与 exports 解析模块入口，不另维护私有别名映射。
 
@@ -219,7 +219,7 @@ workspace 按实际工程登记。根检查运行各项目声明的类型入口�
 
 公开库默认交付 ESM、d.ts 和所需 CSS，并区分 Node、DOM、Solid 与纯定义入口。通过 publint、Are the Types Wrong 和实际 tarball 消费检查制品。sandbox preload 将非 Electron 依赖完整打包为可加载的 CommonJS；其他程序按 [Electron 加载规则](https://www.electronjs.org/docs/latest/tutorial/esm) 检查，不机械统一为 ESM。
 
-`vp pack` 生成交付声明，`tsc -b` 检查项目源码。根 dependency-cruiser 规则覆盖运行端、私有工程包、工具、测试、循环及未声明导入。依赖图按工作区真实入口解析，同时核对类型导入。
+`vp pack` 生成交付声明，`tsc -b` 检查项目源码。根 dependency-cruiser 配置按 pnpm 成员目录和包清单核对[跨包导入](conventions.md#module-imports)，并检查循环依赖、运行端、工程工具和测试的边界。类型导入与运行时导入遵守相同的归属。桌面工程载体使用对应运行端的规则。
 
 自维护源码按[TypeScript 要求](conventions.md#source-language)检查，范围包含产品代码、工具、配置、测试、模板和本体私有原生入口。源码类型配置保持 allowJs: false，结构检查核对未进入 typecheck 的目录，生成产物和第三方发行内容按自己的归属检查。
 
