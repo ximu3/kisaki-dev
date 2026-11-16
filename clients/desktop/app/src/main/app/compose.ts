@@ -46,6 +46,7 @@ export async function compose(paths: AppPaths, open: (target: NativeViewTarget) 
     await log.record('failed', error)
     throw error
   })
+  void log.record('storage-open')
   const teardown: Array<() => void | Promise<void>> = [() => log.record('closed'), database.close]
   /** Releases all acquired resources even when an individual cleanup fails. */
   async function release() {

@@ -22,9 +22,29 @@ export async function createRuntimeLog(root: string) {
     await rename(file, join(directory, 'runtime.previous.log'))
   }
   let pending = Promise.resolve()
+  const startupSteps = new Set<string>()
 
   /** Serializes safe process milestones and records only the stable category of a failure. */
-  function record(event: 'opening' | 'ready' | 'closing' | 'closed' | 'failed', cause?: unknown) {
+  function record(
+    event:
+      | 'opening'
+      | 'ready'
+      | 'closing'
+      | 'closed'
+      | 'failed'
+      | 'storage-open'
+      | 'document-loading'
+      | 'document-loaded'
+      | 'window-connected'
+      | 'window-ready',
+    cause?: unknown,
+  ) {
+    if (!['failed', 'closing', 'closed'].includes(event)) {
+      if (startupSteps.has(event)) {
+        return pending
+      }
+      startupSteps.add(event)
+    }
     const item = {
       time: new Date().toISOString(),
       event,

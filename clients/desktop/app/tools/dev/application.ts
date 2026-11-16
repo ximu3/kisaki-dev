@@ -9,7 +9,25 @@ import {
   parseDevelopmentReady,
   parseDevelopmentStopResult,
 } from '@kisaki3/desktop-contracts/development'
-import type { DevelopmentApplication, DevelopmentLaunchOptions } from './session'
+import {
+  startDevelopmentSession,
+  type DevelopmentApplication,
+  type DevelopmentLaunchOptions,
+  type DevelopmentOptions,
+} from './session'
+import { appRoot } from '../lib/paths'
+
+/** Starts the complete source program with a budget covering a cold developer toolchain and the real renderer graph. */
+export function startSourceSession(
+  options: Pick<DevelopmentOptions, 'signal' | 'onState' | 'profile' | 'prepared'> = {},
+) {
+  return startDevelopmentSession({
+    ...options,
+    sourceRoot: appRoot,
+    launch: launchApplication,
+    startupTimeoutMs: 90_000,
+  })
+}
 
 /** Owns the actual child and reports a cancelled stop without discarding its running directory. */
 export async function launchApplication(

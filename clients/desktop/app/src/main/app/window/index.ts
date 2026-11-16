@@ -188,6 +188,7 @@ export async function createWindow(
     const methods: Record<string, RpcMethod> = {
       /** Acknowledges that this document can receive navigation and close requests. */
       'window.ready': () => {
+        void application.log.record('window-ready')
         ready.resolve()
       },
       /** Reads the bound window identity, native state and effective language snapshot. */
@@ -425,6 +426,7 @@ export async function createWindow(
     }
     void rpc.ready
       .then(() => {
+        void application.log.record('window-connected')
         subscriptions.push(
           application.onUpdated(() => rpc.notify('window.changed', null)),
           appearance.onChanged(() => rpc.notify('appearance.changed', null)),
@@ -473,7 +475,9 @@ export async function createWindow(
     return (disposal ??= destroy())
   }
   try {
+    void application.log.record('document-loading')
     await window.loadURL(documentUrl)
+    void application.log.record('document-loaded')
   } catch (error) {
     await dispose()
     throw error

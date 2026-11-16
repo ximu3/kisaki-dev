@@ -106,6 +106,8 @@ export interface DevelopmentOptions {
   launch: (options: DevelopmentLaunchOptions) => Promise<DevelopmentApplication>
   /** Persistent absolute profile directory; defaults to the desktop app's .local/development. */
   profile?: string
+  /** Maximum wait for the launched input's ready notification, including a cold renderer's compilation. */
+  startupTimeoutMs?: number
   /** Read-only resource directory and native file already prepared for this host. */
   prepared?: { resources: string; nativeBinding: string }
   /** Cancels preparation until the first ready application; later lifetime uses the session handle. */
@@ -283,7 +285,7 @@ export async function startDevelopmentSession(
           profile,
           buildId,
           signal,
-          startupTimeoutMs: 30_000,
+          startupTimeoutMs: options.startupTimeoutMs ?? 30_000,
         })
       } catch (cause) {
         if (cause instanceof UnconfirmedApplicationExit) {

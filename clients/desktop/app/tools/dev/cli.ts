@@ -3,15 +3,11 @@
 import { parseArgs } from 'node:util'
 import { resolve } from 'node:path'
 import { runCli } from '@kisaki3/tooling/cli'
-import { appRoot } from '../lib/paths'
-import { startDevelopmentSession } from './session'
-import { launchApplication } from './application'
+import { startSourceSession } from './application'
 
 await runCli(async (signal) => {
   const { values } = parseArgs({ options: { profile: { type: 'string' } } })
-  const session = await startDevelopmentSession({
-    sourceRoot: appRoot,
-    launch: launchApplication,
+  const session = await startSourceSession({
     signal,
     ...(values.profile && { profile: resolve(values.profile) }),
     /** Reports rebuild progress and errors to the source-session owner. */
