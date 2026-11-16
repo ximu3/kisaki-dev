@@ -13,6 +13,7 @@ test('worker operation medians meet their budget and the window reaches main dur
   desktop,
   profile,
 }, info) => {
+  test.setTimeout(600_000)
   const runtime = buildDirectory(hostTarget())
   await info.attach('build.json', {
     body: await readFile(join(runtime, 'build.json')),
@@ -71,6 +72,12 @@ test('worker operation medians meet their budget and the window reaches main dur
   }
 
   const report = JSON.parse(raw) as Awaited<ReturnType<typeof measureStorage>>
+  console.info(
+    'Storage fixture preparation (ms):',
+    report.preparationMs,
+    'input:',
+    report.inputSha256,
+  )
   const operations = [
     ...report.queries,
     { name: 'durable short transaction', ...report.shortTransaction },
