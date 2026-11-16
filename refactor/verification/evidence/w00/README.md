@@ -4,7 +4,7 @@
 
 ## 验证对象
 
-Workspace 登记根工程、桌面工程和三个私有工程包。桌面构建显式消费 tests/fixtures/runtime，覆盖原生文件操作、资源准备、编译、开发协调、打包和检查。测试载体的四个窗口名称对应独立编译入口，本地消息用于测试进程控制。
+此次验收使用根工程、桌面工程和当时的三个私有工程包。桌面构建以 `tests/fixtures/runtime` 为输入，覆盖原生文件操作、资源准备、编译、开发协调、打包和检查。测试载体的四个窗口名称对应独立编译入口，本地消息用于测试进程控制。
 
 ## 本机结果
 
@@ -42,23 +42,32 @@ Workspace 登记根工程、桌面工程和三个私有工程包。桌面构建�
 
 ## 工程输出与开发编排
 
-2026-11-12，在 Windows 10 x64、Node 24.11.1、pnpm 11.11.0、Turbo 2.11.10、Vite 8.3.3 和 Electron 45.0.0 下核对当前工程流程。
+2026-11-02，在 Vite 8.3.3 下从独立 Node 进程调用 `ec15952` 的有限编译入口。传入监听配置后，构建在写出文件前拒绝执行，进程正常退出。[该提交的编译实现](https://github.com/ximu3/kisaki-dev/blob/ec15952adb13db37b2d5ff7425ebb0c3ab3744c4/clients/desktop/app/tools/build/programs.ts)
+
+Node 与浏览器条件导出的选择由[隔离包解析用例](../../../../clients/desktop/app/tests/tools/build/programs.test.ts)验证，各 preload 入口独立生成 CommonJS 的行为由[配置重载用例](../../../../clients/desktop/app/tests/tools/build/preload.test.ts)验证。
+
+2026-11-12，在 Windows 10 x64、Node 24.11.1、pnpm 11.11.0、Turbo 2.11.10、Vite 8.3.3 和 Electron 45.0.0 下得到以下结果。
 
 | 范围 | 实现与实际验证 |
 | --- | --- |
-| 普通输出与缓存 | 公共包、资源、原生与有限构建使用可重建目录。公共包的不缓存准备任务先清理 dist，再编译或恢复缓存。实际 A→B→A 回归使用当前任务定义，最终仅有 A 文件，构建记录确认第三次使用缓存。 |
+| 普通输出与缓存 | 公共包、资源、原生与有限构建使用可重建目录。公共包先清理 dist，再编译或恢复缓存。A→B→A 回归最后只留下 A 的文件，构建记录确认第三次命中缓存。 |
 | 依赖边界 | 各工程在自己的公共依赖构建完成后扫描所属源码，根工具、测试和配置单独检查，规则仍由同一配置提供。清空包输出后强制执行全部边界检查通过；实际任务图核对该前置关系。 |
 | 开发编译 | Vite 原生监听 Node 程序模块，renderer 直接消费 workspace exports 和 HMR。准备监听只覆盖包构建、资源、原生及配置。六项真实会话回归通过，包含语法和导入改名修复、配置错误恢复、依赖与样式更新、退出取消及独立失败交付。 |
 | 运行与交付身份 | 有限构建与源码会话使用独立标识，缓存键不进入运行合同。实际进程读取完成的运行目录，退出后释放；打包核对已完成清单的目标与文件摘要。中间目录备份、公共依赖副本及无人消费的中间收据已移除。 |
 | 本机运行 | 原生与 SQLite 共 6 项、四类 Electron 窗口共 4 项、开发会话 6 项、Windows ZIP／NSIS 制品外部运行 1 项通过。六个公共包共 29 项仓库外消费通过，覆盖完整声明、浏览器及适用的 Electron 接入。 |
 
-`pnpm check` 覆盖类型、lint、按工程执行的依赖边界、格式和普通测试。公共包消费、原生、窗口、开发和制品验证在一次 Turbo 图中按顺序执行，共 39 个任务成功，前置输出由实际依赖共享。跨平台运行由对应 PR 记录；本机结果不代替其他目标或正式签署验收。
+此次 `pnpm check` 覆盖类型、lint、按工程执行的依赖边界、格式和普通测试。公共包消费、原生、窗口、开发和制品验证在一次 Turbo 任务图中按顺序执行，共 39 个任务成功。开发会话的停止失败、取消与资源回收另见[关闭复核](development.md#shutdown)。
 
-## 依据与适用范围
+## Vite+ 迁移验收
 
-- [编译与包解析](build-tools.md)
-- [开发监听与隔离副本](development.md)
-- [类型与声明检查](declaration-checks.md)
-- [工程依赖风险评估](dependencies.md)
+迁移验收使用 Node 26.13.1 和 pnpm 12.18.0。三个全新检出各自冻结安装，随后分别从源码运行 `typecheck`、`lint`、`test`。另核对了 38 个直接继承预设的类型项目的有效选项和文件范围。六个公共包的实际 tarball 保留了 76 个公开子路径，导出条件顺序和目标文件与迁移前一致。[迁移验收记录](https://github.com/ximu3/kisaki-dev/blob/fb934e0d8c6077ac382702d6ca550983e9d214de/refactor/implementation/archive/engineering-modernization/workspace-config-and-tasks.md#migration-acceptance) · [六目标检查](https://github.com/ximu3/kisaki-dev/pull/39/checks)
 
-本页结果适用于所列本机和 CI 工程载体。产品业务、公共包消费、正式宿主、签署和安装升级由[工作包](../../../implementation/work-packages.md)及[状态页](../../../implementation/status.md)分别登记。启动观察的负载包括窗口与原生模块。
+## 依赖使用范围
+
+2026-11-11 的工程依赖风险评估对应 W05 的锁文件、ZIP 解压入口和 lint 工具。[当时的评估](https://github.com/ximu3/kisaki-dev/blob/a9c679efe4ab3f7db064479af448c31d5eb73035/refactor/verification/evidence/w00/dependencies.md) · [对应锁文件](https://github.com/ximu3/kisaki-dev/blob/a9c679efe4ab3f7db064479af448c31d5eb73035/pnpm-lock.yaml)
+
+2026-11-16 核对 `1073fda7` 时，Windows 制品测试使用系统 `tar.exe` 解压 ZIP。锁文件中 `@electron/asar` 引入 `glob@13.0.6` 和 `minimatch@10.2.6`，`app-builder-lib` 与 `@electron/universal` 分别使用 `minimatch@10.2.6` 和 `minimatch@9.0.9`。[制品解压入口](https://github.com/ximu3/kisaki-dev/blob/1073fda7adab99a558466ddb87f7055c3525220f/clients/desktop/app/tests/artifacts/workspace.ts) · [该次锁文件](https://github.com/ximu3/kisaki-dev/blob/1073fda7adab99a558466ddb87f7055c3525220f/pnpm-lock.yaml)
+
+## 适用范围
+
+各次结果以所列版本、输入和宿主为准。桌面启动观察使用包含窗口与原生模块的工程载体。正式产品、签署及安装升级的验收进度见[实施状态](../../../implementation/status.md)。

@@ -8,7 +8,7 @@
 
 network 通过公开的 net.request 实现 HTTP 能力。本体以异步接口调用，Node SDK 通过 RPC 传递请求值和正文流；extension-host 不依赖 Electron 或主进程私有实现。官方扩展使用同一入口。第三方扩展自行创建 Node 网络客户端时，由作者负责其网络设置，宿主代理不会自动覆盖这些流量。
 
-原生认证、重定向事件和流控制集中在 network 内部。公开接口不暴露 ClientRequest 或 Session，不使用 Electron 私有 API，也不改写来源的 Cookie 或 Authorization。
+network 内部通过 Electron 的公开接口处理认证、重定向事件和流控制。ClientRequest 与 Session 由主进程持有，调用方提供的 Cookie 和 Authorization 原样发送。[Electron 宿主接口实测](../../verification/evidence/w03/README.md#electron-host)
 
 跨进程传输分别处理请求体、响应元信息和正文流，并保障背压、取消、断连和扩展实例释放。各端根据合同建立标准对象，不能直接序列化 Response 或 ReadableStream。集成测试需要检查状态变化、吞吐、内存和 IPC 开销。
 

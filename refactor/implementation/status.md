@@ -10,9 +10,9 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 
 当前任务入口为 AGENTS.md，设计、规范和实施资料集中于 refactor。[当前工程与开发](development.md)维护源码职责、环境准备与可运行命令。正式项目文档待 W23 交付；接口声明、代码注释、发行说明和许可材料随所属实现与版本维护。
 
-工作区采用 Vite+，主线编译器锁定为 `7.1.0-beta`。升级到 7.1.x 正式版时重新验证项目引用、声明和仓库外消费。六个公共包共用 `@kisaki3/config`，CI 按[包和宿主](../design/engineering/workspace.md#ci-selection)独立运行本地任务，制品验收直接读取指定归档。工具链选型与迁移见[工程重构归档](archive/engineering-modernization/README.md)和 [PR #39 的检查](https://github.com/ximu3/kisaki-dev/pull/39/checks)。
+工作区采用 Vite+，主线编译器锁定为 `7.1.0-beta`。升级到 7.1.x 正式版时重跑全部项目引用，用仓库外消费者检查发布声明，同时确认检查失败会返回非零退出码、类型感知 lint 能检出未等待的 Promise。六个公共包共用 `@kisaki3/config`，CI 按[包和宿主](../design/engineering/workspace.md#ci-selection)独立运行本地任务，制品验收直接读取指定归档。[工具链迁移 PR #39](https://github.com/ximu3/kisaki-dev/pull/39)
 
-[当前工程验证](../verification/evidence/w00/README.md)已取得本机 Windows x64 和 CI 六目标结果，覆盖工程载体的构建、原生与 Electron 运行、开发回归、打包及制品运行。
+[W00 验收](../verification/evidence/w00/README.md)已取得本机 Windows x64 和 CI 六目标结果，覆盖工程载体的构建、原生与 Electron 运行、开发回归、打包及制品运行。
 
 各公共包从同一份已检查的 tarball 验证独立消费，根入口通过 Vite Task 调度。外观、分发、桌面合同与本地化分别见 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md) 和 [W03](../verification/evidence/w03/README.md)。[W04](../verification/evidence/w04/README.md) 另以 Node 父子进程和 Electron 窗口验证两种消息通道及其寿命。[W05](../verification/evidence/w05/README.md) 验证公共 UI 的完整组件、普通样式与浏览器／Electron 消费。
 
@@ -21,10 +21,6 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 错误传递覆盖启动与停止失败、取消期间的独立命令错误、操作与清理错误的保留，以及测试清理的结果交付。故障通过测试边界注入，完整诊断由失败钩子统一输出。本机 6 项开发回归、4 项 Electron 入口和制品运行通过；两轮 Linux arm64 重复验证共 100 次场景执行通过。实际范围、历史观察及归因限制见[关闭验证](../verification/evidence/w00/development.md#shutdown)。
 
 完整产品、签署、公证、安装升级、系统支持下限和主要后端验收仍待完成。npm、正式下载、更新索引及生产服务尚未发布。各对象按[验收标准](../verification/acceptance.md)登记自己的结果。
-
-工程输出使用可重建目录与统一缓存准备，边界检查按实际工程等待公共依赖；源码开发直接消费公开导出，程序由 Vite 监听编译。当前实现与本机验证见[工程流程](../verification/evidence/w00/README.md#engineering-workflows)。
-
-现行设计与已交付实现已完成跨模块复核，合同、输入归属、原生错误、请求范围和编辑边界的修正通过本机常规检查及公共包消费验证。[复核记录](../verification/evidence/project-review/README.md)说明覆盖、判断依据、实际验证与保留的未完成范围。
 
 <a id="progress"></a>
 

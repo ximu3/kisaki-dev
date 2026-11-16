@@ -238,7 +238,7 @@ preferences.navigation 保存一份完整 order 和 visibleLimit。visibleLimit 
 
 快捷键注册失败时保留选择并显示未生效，用户可修改后重试。冲突检查覆盖动作所有可能重叠的范围，包括游戏尚未开始的情况。按住时是否重复触发由实际动作决定。
 
-冲突比较遵循所用 Electron 版本的[按键映射](https://github.com/electron/electron/blob/v45.0.0/shell/common/keyboard_util.cc)和[Accelerator 解析](https://github.com/electron/electron/blob/v45.0.0/shell/browser/ui/accelerator_util.cc)：Option 与 Alt、Command 与 Super 使用相同修饰位，CommandOrControl 按平台选择；`!`、Plus 等符号包含对应基础键与 Shift。保存的实际写法继续保留，比较时使用解析后的按键身份。
+冲突按 Electron 解析后的按键身份比较。Option 与 Alt、Command 与 Super 分别使用相同修饰位，CommandOrControl 按平台选择。`!`、Plus 等符号包含对应的基础键与 Shift。保存时保留用户录入的写法。[按键映射](https://github.com/electron/electron/blob/v45.0.0/shell/common/keyboard_util.cc) · [Accelerator 解析](https://github.com/electron/electron/blob/v45.0.0/shell/browser/ui/accelerator_util.cc) · [Windows 注册实测](../../verification/evidence/w03/README.md#electron-host)
 
 | 场景/动作          | 默认                                       |
 | ------------------ | ------------------------------------------ |
