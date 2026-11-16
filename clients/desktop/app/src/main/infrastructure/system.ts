@@ -5,7 +5,7 @@ import { homedir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { execFile } from 'node:child_process'
-import { promisify, isDeepStrictEqual } from 'node:util'
+import { promisify } from 'node:util'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
   applicationIdentities,
@@ -67,16 +67,17 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
     'applications',
     desktopName,
   )
-  /** Quotes one executable or argument for the desktop entry's Exec field. */
-  const quote = (value: string) =>
-    '"' +
-    value
-      .replace(/([\\"$`])/g, '\\$1')
-      .replaceAll('\\', '\\\\')
-      .replaceAll('\n', '\\n')
-      .replaceAll('\r', '\\r')
-      .replaceAll('%', '%%') +
-    '"'
+  /** Encodes one Exec argument, quoting reserved characters and preserving plain executable paths for XDG launchers. */
+  function quote(value: string) {
+    const literal = value.replaceAll('%', '%%')
+    if (value.length && !/[\s"'\\><~|&;$*?#()`]/u.test(value)) {
+      return literal
+    }
+    const quoted = literal.replace(/([\\"$`])/g, '\\$1')
+    return (
+      '"' + quoted.replaceAll('\\', '\\\\').replaceAll('\n', '\\n').replaceAll('\r', '\\r') + '"'
+    )
+  }
   const launch = [executable, ...args].map(quote).join(' ')
   const header = '[Desktop Entry]\nType=Application\nName=Kisaki\n'
   const loginFile = header + 'Exec=' + launch + ' --login\n'
@@ -103,14 +104,17 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
           settingsAvailable: true,
         }
       }
+      // openAtLogin compares the complete command. launchItems exposes enabled state but its
+      // arguments come from Chromium's positional GetArgs(), which excludes switches.
       const item = info.launchItems.find(
         (item) =>
-          item.path.toLowerCase() === executable.toLowerCase() &&
-          isDeepStrictEqual(item.args, loginArgs),
+          item.name === appId &&
+          item.scope === 'user' &&
+          item.path.toLowerCase() === executable.toLowerCase(),
       )
       return {
         status: 'available',
-        registered: !!item,
+        registered: info.openAtLogin,
         permission: item?.enabled === false ? 'denied' : 'allowed',
         settingsAvailable: true,
       }

@@ -67,18 +67,27 @@ export const test = base.extend<DesktopFixtures>({
       env,
     })
     const child = application.process()
+    const stopped = once(child, 'close')
+    void stopped.catch(() => {})
 
     try {
       await use(application)
     } finally {
-      if (child.exitCode === null) {
-        if (info.status === info.expectedStatus) {
+      const deadline =
+        info.status !== info.expectedStatus
+          ? setTimeout(() => {
+              if (child.exitCode === null && child.signalCode === null) {
+                child.kill('SIGKILL')
+              }
+            }, 5_000)
+          : undefined
+      try {
+        if (child.exitCode === null && child.signalCode === null) {
           await application.close()
-        } else {
-          const stopped = once(child, 'close')
-          child.kill('SIGKILL')
-          await stopped
         }
+        await stopped
+      } finally {
+        clearTimeout(deadline)
       }
     }
   },

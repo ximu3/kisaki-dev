@@ -1,6 +1,8 @@
 /** @fileoverview Checks the visible system-integration state and exercises registrations only in isolated OS scopes. */
 
 import { join } from 'node:path'
+import { execFile } from 'node:child_process'
+import { promisify } from 'node:util'
 import { test, expect } from '../../support/electron'
 import { buildDirectory } from '../../../tools/lib/paths'
 import { hostTarget } from '../../../tools/lib/targets'
@@ -38,9 +40,21 @@ test.describe('disposable OS account', () => {
       await expect(login).not.toBeChecked()
       await settings.getByRole('button', { name: 'Register', exact: true }).click()
       await expect(settings.getByText(/^Configured ·/)).toBeVisible()
-      await desktop.evaluate(async ({ shell }) => {
-        await shell.openExternal('kisaki-dev://view/tasks')
-      })
+      if (process.platform === 'linux') {
+        // Observe the external desktop dispatcher's exit as well as delivery to the actual window.
+        await promisify(execFile)('xdg-open', ['kisaki-dev://view/tasks'], {
+          env: {
+            ...process.env,
+            XDG_CONFIG_HOME: join(profile, 'xdg/config'),
+            XDG_DATA_HOME: join(profile, 'xdg/data'),
+          },
+          timeout: 15_000,
+        })
+      } else {
+        await desktop.evaluate(async ({ shell }) => {
+          await shell.openExternal('kisaki-dev://view/tasks')
+        })
+      }
       await expect(page.getByRole('dialog', { name: 'Task center' })).toBeVisible()
     } finally {
       if (process.platform === 'win32') {
