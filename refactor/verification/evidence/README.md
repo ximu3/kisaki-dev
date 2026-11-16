@@ -9,14 +9,13 @@
 | W00 工程与验收           | [工程载体的本机与平台验证](w00/README.md)                                                               |
 | W01 视觉包               | [公开值、样式与独立消费者验证](w01/README.md)                                                           |
 | W02 分发协议包           | [格式、兼容选版、签名与独立消费者验证](w02/README.md)                                                   |
-| W03 桌面合同与本地化     | [接口、值约束、消息格式化与两个包的独立消费](w03/README.md)                                             |
+| W03 桌面合同与本地化     | [接口、消息格式化与两个包的独立消费](w03/README.md) · [宿主 HTTP 与快捷键的 Electron 对照](w03/README.md#electron-host) |
 | W04 通信机制             | [有限帧、连接寿命和两种真实通道的制品消费](w04/README.md)                                               |
 | W05 公共 UI | [完整组件、样式与浏览器／Electron 制品消费](w05/README.md) |
 | W06 存储与原生基础 | [正式 schema、迁移、文件资源和完整负载查询](w06/README.md) |
 | 原生 UI 能力             | [固定 Electron 环境的表单与浮层行为](native-ui/README.md)                                               |
 | UI 包接入                | [CSS Modules、表单提交与模态提示范围](desktop-ui/README.md)                                             |
-| 构建与开发               | [Node 构建与解析](w00/build-tools.md) · [输入监听与隔离副本](w00/development.md)                        |
-| 声明检查                 | [声明检查分工](w00/declaration-checks.md)                                                               |
+| 构建与开发               | [编译、输出与开发编排](w00/README.md#engineering-workflows) · [开发会话的失败与关闭](w00/development.md#shutdown) |
 | AppImage 启动            | [采用配置与实际进程隔离](appimage-policy/2026-10-26/README.md)                                          |
 | 开发连接                 | [Node 传输与实际退出](development-ipc/2026-10-26/README.md)                                             |
 | 官方来源、迁移格式与译本 | [逐项证据](extensions.md)                                                                               |

@@ -22,6 +22,16 @@ A03、A04、A23、A31 的证据限于 W03 的接口、值校验、规范编码�
 
 工作包交付与新规范复核的远端结果分别见 [PR #24 检查页](https://github.com/ximu3/kisaki-dev/pull/24/checks)和 [PR #25 检查页](https://github.com/ximu3/kisaki-dev/pull/25/checks)。
 
+<a id="electron-host"></a>
+
+## Electron 宿主对照
+
+2026-11-12，在 Windows x64 的独立 Electron 45.0.0 进程和隔离资料目录中核对了网络与快捷键合同的宿主行为。[原始环境与结果](https://github.com/ximu3/kisaki-dev/blob/a9c679efe4ab3f7db064479af448c31d5eb73035/refactor/verification/evidence/project-review/README.md#L48-L73)
+
+宿主 HTTP 探针连接本机服务。显式提供的 Cookie 和 Authorization 得到保留，`credentials: 'omit'` 与 `useSessionCookies: false` 下未读写 Session Cookie。响应中的两条 Set-Cookie 分别保留，其中的 Expires 日期含逗号。分块上传与手动跟随重定向取得了预期内容及最终地址。代理采用、Webview 的 HTTP／WSS 连接和 SDK 跨进程传输仍由所属工作包验收。[宿主 HTTP 合同](../../../design/engineering/network.md)
+
+Windows 实际注册时，Option 与 Alt、`!` 与 `Shift+1`、`Plus` 与 `Shift+=` 分别对应同一个快捷键。Command 与 Super 使用相同修饰位的依据来自该版本共用的原生解析器。[Electron 45 按键映射](https://github.com/electron/electron/blob/v45.0.0/shell/common/keyboard_util.cc) · [Accelerator 解析](https://github.com/electron/electron/blob/v45.0.0/shell/browser/ui/accelerator_util.cc)
+
 ## 实现依据
 
 - [Valibot](https://valibot.dev/api/strictObject/) 1.5.0 实现严格对象与 exactOptional 校验；复杂公共值显式声明类型，schema 留在拥有者内部。数据库 codec 将显式消费所属值规则。

@@ -229,13 +229,13 @@ workspace 按实际工程登记。根检查运行各项目声明的类型入口�
 
 ## 实现与公开声明的类型检查
 
-共同基线采用固定 TypeScript 版本默认开启的 strict，使用 skipLibCheck: true。常规应用、公共包源码、工具、配置及测试完整检查自有 TypeScript 和实际调用，不让每个消费项目重复完整检查相同的依赖声明。源码严格性、声明交付责任与任务并发分别判断，采用依据及代表性测量见[必要性复核](../../verification/evidence/w00/declaration-checks.md)。
+共同基线采用锁定 TypeScript 版本默认开启的 `strict`。常规应用、公共包源码、工具、配置及测试使用 `skipLibCheck: true` 检查自有源码和实际调用，减少各消费项目重复检查依赖声明的开销。[TypeScript 性能说明](https://github.com/microsoft/TypeScript/wiki/Performance#skipping-dts-checking)
 
-skipLibCheck 跳过全部 .d.ts 的完整检查，包括自有和第三方声明；TypeScript 仍读取声明并依据它检查调用。该选项不修复错误声明，可能掩盖声明内部冲突，不能被用来证明声明本身准确。
+`skipLibCheck` 跳过所有 `.d.ts` 文件的内部检查，包括自有和第三方声明。TypeScript 仍读取这些声明来检查调用，声明文件内部的类型冲突须由完整声明检查检出。[TypeScript 选项](https://www.typescriptlang.org/tsconfig/skipLibCheck.html)
 
-公共包的最终 d.ts 由实际仓库外消费者使用 skipLibCheck: false 完整检查，覆盖所属 Node、Webview 和 Solid 入口及实际解析环境。消费者使用打包后的公开入口，不指向源码，也不继承私有工程配置。声明生成成功不能代替消费验证，依赖升级中的真实不相容仍须处理。
+公共包的仓库外消费者使用独立类型配置，从实际 tarball 的公开入口导入，以 `skipLibCheck: false` 完整检查最终声明。消费验证覆盖该包承诺的 Node、Webview 和 Solid 入口及其解析环境，依赖升级产生的声明冲突由所属包处理。
 
-每份自有 .d.ts 必须有至少一个实际执行、使用 skipLibCheck: false 的类型检查拥有者；普通消费方可复用这个保证。当前构建全局声明归 shared，窗口全局声明归 renderer，原生绑定源码与声明归 native；原生声明同时核对实际 Rust 生成结果。main 按应用基线检查实际调用。结构检查沿真实任务入口和项目引用检查此项覆盖。新增声明随拥有者维护，不为每个调用入口重复建立声明检查项目。
+每份自有 `.d.ts` 至少由一个实际运行的类型项目以 `skipLibCheck: false` 完整检查。构建全局声明归 shared，窗口全局声明归 renderer，原生绑定源码与声明归 native。原生声明同时与 Rust 生成结果核对。main 按应用基线检查实际调用。新增声明时，沿正式类型检查任务和项目引用核对它的归属。
 
 UI 与其他包遵守同一分工，不另设仅为跳过依赖声明的配置项目。工具声明间接引用的其他打包器或运行时，不因此成为产品依赖。不得用任意断言、复制第三方定义或泄漏错误声明绕过问题。TypeScript、解析器和声明生成器保持相容，解析器支持范围检查继续生效，不使用双编译器或兼容 shim。
 
