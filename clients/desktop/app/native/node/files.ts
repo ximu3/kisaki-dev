@@ -3,6 +3,7 @@
  * typed file errors.
  */
 
+import { nativeHostPath } from '#host-path'
 import type * as Binding from './binding'
 
 /** Reasons for a failed filesystem observation, including arguments rejected before lookup. */
@@ -71,8 +72,8 @@ export interface NativeFiles {
   /** Reads an existing path's mount classification on a worker. Failures reject with FilesystemQueryError. */
   getFilesystemLocation(path: string): Promise<'local' | 'network' | 'unknown'>
 
-  /** Compares sibling entries without following their final links. Failures reject with FilesystemQueryError. */
-  sameDirectoryEntry(parent: string, first: string, second: string): Promise<boolean>
+  /** Compares Windows volume roots or entries in an established common parent, preserving each final link. */
+  sameDirectoryEntry(first: string, second: string): Promise<boolean>
 
   /**
    * Moves an absolute source to an absent target within the same filesystem.
@@ -89,6 +90,15 @@ export interface NativeFiles {
    * synchronization belongs to the caller.
    */
   syncFile(path: string): Promise<void>
+}
+
+/** Selects the native lookup spelling or rejects an invalid metadata query. */
+function queryPath(input: string): string {
+  const path = nativeHostPath(input)
+  if (path === undefined) {
+    throw new FilesystemQueryError('invalidArgument', undefined)
+  }
+  return path
 }
 
 /** Delivers a native observation or a typed rejection for its argument or lookup failure. */
@@ -113,19 +123,19 @@ async function filesystemQuery<T extends string | boolean>(
 /**
  * Creates application-facing file operations from the supplied native binding.
  *
- * The binding validates platform paths before queueing work. This adapter converts argument and
- * completion failures to the declared Node error types.
+ * Each operation passes its fully qualified lookup paths to the binding and delivers its
+ * argument and completion failures through the declared Node error types.
  */
 export function createNativeFiles(binding: typeof Binding): NativeFiles {
   return {
     /** Returns the native observation of the existing path's backing filesystem. */
     getFilesystemLocation(path) {
-      return filesystemQuery(() => binding.getFilesystemLocation(path))
+      return filesystemQuery(() => binding.getFilesystemLocation(queryPath(path)))
     },
 
-    /** Asks the common parent which entries its two names select. */
-    sameDirectoryEntry(parent, first, second) {
-      return filesystemQuery(() => binding.sameDirectoryEntry(parent, first, second))
+    /** Looks up both entries through the access paths selected by the caller. */
+    sameDirectoryEntry(first, second) {
+      return filesystemQuery(() => binding.sameDirectoryEntry(queryPath(first), queryPath(second)))
     },
 
     /**
@@ -133,19 +143,14 @@ export function createNativeFiles(binding: typeof Binding): NativeFiles {
      * errors.
      */
     async moveNoReplace(source, target) {
-      try {
-        const result = await binding.moveNoReplace(source, target)
-        if (result.reason) {
-          throw new FileMoveError(
-            result.reason as MoveFailureReason,
-            result.systemCode ?? undefined,
-          )
-        }
-      } catch (cause) {
-        if (cause instanceof Error && 'code' in cause && cause.code === 'InvalidArg') {
-          throw new TypeError('Expected absolute paths without NUL', { cause })
-        }
-        throw cause
+      const from = nativeHostPath(source)
+      const to = nativeHostPath(target)
+      if (from === undefined || to === undefined) {
+        throw new TypeError('Expected fully qualified filesystem paths without NUL')
+      }
+      const result = await binding.moveNoReplace(from, to)
+      if (result.reason) {
+        throw new FileMoveError(result.reason as MoveFailureReason, result.systemCode)
       }
     },
 
@@ -154,19 +159,13 @@ export function createNativeFiles(binding: typeof Binding): NativeFiles {
      * errors.
      */
     async syncFile(path) {
-      try {
-        const result = await binding.syncFile(path)
-        if (result.reason) {
-          throw new FileSyncError(
-            result.reason as FileSyncFailureReason,
-            result.systemCode ?? undefined,
-          )
-        }
-      } catch (cause) {
-        if (cause instanceof Error && 'code' in cause && cause.code === 'InvalidArg') {
-          throw new FileSyncError('invalidArgument', undefined)
-        }
-        throw cause
+      const lookup = nativeHostPath(path)
+      if (lookup === undefined) {
+        throw new FileSyncError('invalidArgument', undefined)
+      }
+      const result = await binding.syncFile(lookup)
+      if (result.reason) {
+        throw new FileSyncError(result.reason as FileSyncFailureReason, result.systemCode)
       }
     },
   }

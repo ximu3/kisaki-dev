@@ -53,12 +53,12 @@ export declare function getFilesystemLocation(path: string): Promise<'local' | '
 export declare function moveNoReplace(source: string, target: string): Promise<FileOperationResult>
 
 /**
- * Looks up two individual names in one existing absolute directory and compares their entries.
+ * Compares entries in an established common directory, or two Windows volume roots.
  *
  * # Errors
- * Returns InvalidArg before queueing invalid paths or names. Lookup failures retain their OS code.
+ * Returns InvalidArg for invalid paths. Lookup failures retain their OS code.
  */
-export declare function sameDirectoryEntry(parent: string, first: string, second: string): Promise<boolean | FilesystemQueryFailure>
+export declare function sameDirectoryEntry(first: string, second: string): Promise<boolean | FilesystemQueryFailure>
 
 /**
  * Queues platform synchronization for an existing regular file.

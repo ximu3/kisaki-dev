@@ -16,7 +16,10 @@ import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 const binding = join(appRoot, 'out', 'native', hostTarget(), 'kisaki-native.node')
 
 /** Paths that the host-native absolute-path contract rejects before scheduling work. */
-const invalidPaths = process.platform === 'win32' ? ['relative', '\\drive-rooted'] : ['relative']
+const invalidPaths =
+  process.platform === 'win32'
+    ? ['relative', '\\drive-rooted', '\\\\?\\UNC\\localhost']
+    : ['relative']
 
 /** Temporary filesystem root owned by the current native operation case. */
 let directory: string
@@ -68,10 +71,12 @@ test('preserves the cause and OS code of a volume lookup failure', async () => {
       ? { reason: 'pathMissing', systemCode: 3 }
       : { reason: 'notDirectory', systemCode: 20 },
   )
-  await expect(files.getFilesystemLocation('relative')).rejects.toMatchObject({
-    reason: 'invalidArgument',
-    systemCode: undefined,
-  })
+  for (const path of invalidPaths) {
+    await expect(files.getFilesystemLocation(path)).rejects.toMatchObject({
+      reason: 'invalidArgument',
+      systemCode: undefined,
+    })
+  }
 })
 
 test('racing moves publish exactly one source and leave the other intact', async () => {

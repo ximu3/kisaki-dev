@@ -26,6 +26,8 @@
 
 Windows x64 的登记位置复验覆盖两个不同名称的硬链接、目录联接及其子文件、同一离线共享根的两种写法。在默认 NTFS 目录中，名称的大小写变体得到 same；在单独启用大小写敏感的目录中，指向同一文件的 `Book.epub` 和 `book.epub` 得到 separate。资料根卷查询对缺失文件和以普通文件作为父目录的输入均报告 pathMissing，保留 Windows 错误码 2 和 3。[原生错误用例](../../../../clients/desktop/app/tests/integration/native/files.test.ts)
 
+在同一隔离样本上，普通盘符、卷 GUID 及各自的命名空间写法取得相同的文件位置与父子关系。通过本机回环 SMB 读取同一份样本，普通和扩展 UNC 也能判等，共享根被识别为 network 并拒作数据库资料根。349 字符的长路径与 `\\?\` 写法相等。本机 `\\.\` 写法无法打开该长路径，比较返回 unknown。短路径的尾点文件按各命名空间实际打开的目录项区分。缺少共享名的扩展 UNC 在查询前被拒绝。[路径用例](../../../../clients/desktop/app/tests/integration/files/storage.test.ts)
+
 ## 运行与制品
 
 本机 `pnpm check`、`pnpm desktop:test:native` 与 Rust 格式／Clippy 检查通过。Electron Node 模式执行了 15 项存储和文件用例。4 个真实窗口入口、4 项隔离开发回归和 2 项 Node 取消结果检查均通过；保留生产 fuses 的最终制品可正常启动和关闭。desktop-contracts 与 desktop-localization 的实际 tarball 共通过 6 项 Node／浏览器独立消费检查。

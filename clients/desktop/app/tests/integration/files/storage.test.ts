@@ -14,7 +14,7 @@ import {
   writeFile,
 } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
-import { join, sep } from 'node:path'
+import { join, parse, sep, toNamespacedPath } from 'node:path'
 import { Readable } from 'node:stream'
 import { loadNative } from '#native'
 import {
@@ -106,18 +106,6 @@ test('cancellation during file synchronization releases the stage before returni
 })
 
 test('compares registered directory entries, their containment and unavailable positions', async () => {
-  if (process.platform === 'win32') {
-    for (const path of ['\\shelf\\book', '/shelf/book', 'C:shelf\\book']) {
-      await expect(comparePaths(path, path, native)).rejects.toThrow(TypeError)
-    }
-    expect(normalizeAbsolutePath('c:/shelf/./../book')).toBe('C:\\shelf\\..\\book')
-    expect(normalizeAbsolutePath('//server/share/shelf')).toBe('\\\\server\\share\\shelf')
-    const root = '//localhost/kisaki-w06-unavailable'
-    expect(normalizeAbsolutePath(root)).toBe('\\\\localhost\\kisaki-w06-unavailable\\')
-    expect(await comparePaths(root, root + '/.', native)).toBe('same')
-    expect(normalizeAbsolutePath('//?/UNC/server/share')).toBe('\\\\?\\UNC\\server\\share\\')
-  }
-
   await assertLocalDataDirectory(directory, native)
   const child = join(directory, 'Child')
   await mkdir(child)
@@ -140,6 +128,14 @@ test('compares registered directory entries, their containment and unavailable p
   const viaParent = [alias, 'nested', '..', 'Case.txt'].join(sep)
   expect(await comparePaths(viaParent, join(alias, 'Case.txt'), native)).toBe('same')
 
+  if (process.platform !== 'win32') {
+    await mkdir(join(child, 'nested', 'volume'))
+    await symlink('nested/volume', join(child, 'jump'))
+    const viaLink = [alias, 'jump', '..'].join(sep)
+    expect(await comparePaths(viaLink, join(alias, 'nested'), native)).toBe('same')
+    expect(await comparePaths(alias, viaLink, native)).toBe('contains')
+  }
+
   const deepLink = join(await realpath(directory), 'deep-link')
   await symlink(join(child, 'nested'), deepLink, process.platform === 'win32' ? 'junction' : 'dir')
   const linkedParent = deepLink + sep + '..'
@@ -158,6 +154,53 @@ test('compares registered directory entries, their containment and unavailable p
     caseSensitive ? 'separate' : 'same',
   )
 })
+
+test.runIf(process.platform === 'win32')(
+  'compares Windows drive and share roots across access spellings',
+  async () => {
+    for (const path of [
+      '\\shelf\\book',
+      '/shelf/book',
+      'C:shelf\\book',
+      '//?/c:book',
+      '//?/UNC',
+      '//?/UNC/localhost',
+      '//./UNC/localhost/',
+    ]) {
+      await expect(comparePaths(path, path, native)).rejects.toThrow(TypeError)
+    }
+    expect(normalizeAbsolutePath('c:/shelf/./../book')).toBe('C:\\shelf\\..\\book')
+    expect(normalizeAbsolutePath('//?/c:/shelf')).toBe('\\\\?\\C:\\shelf')
+    expect(await comparePaths('C:\\missing', '//?/c:/missing', native)).toBe('same')
+
+    const root = '//localhost/kisaki-w06-unavailable'
+    expect(normalizeAbsolutePath(root)).toBe('\\\\localhost\\kisaki-w06-unavailable\\')
+    expect(await comparePaths(root, root + '/.', native)).toBe('same')
+    expect(await comparePaths(root, '//?/UNC/localhost/kisaki-w06-unavailable/', native)).toBe(
+      'same',
+    )
+    expect(normalizeAbsolutePath('//?/UNC/server/share')).toBe('\\\\?\\UNC\\server\\share\\')
+
+    const book = join(directory, 'Book.epub')
+    const alternate = join(directory, 'Shelf.epub')
+    await writeFile(book, 'one book')
+    await link(book, alternate)
+    expect(await comparePaths(book, toNamespacedPath(book), native)).toBe('same')
+    expect(await comparePaths(directory, toNamespacedPath(book), native)).toBe('contains')
+    expect(await comparePaths(toNamespacedPath(book), directory, native)).toBe('within')
+    expect(await comparePaths(toNamespacedPath(parse(book).root), book, native)).toBe('contains')
+    expect(await comparePaths(book, toNamespacedPath(alternate), native)).toBe('separate')
+
+    // Node and the verbatim namespace preserve a trailing dot. The Win32 device spelling trims it.
+    const dotted = toNamespacedPath(book + '.')
+    await writeFile(dotted, 'another book', { flag: 'wx' })
+    const device = dotted.replace('\\\\?\\', '\\\\.\\')
+    expect(await readFile(device, 'utf8')).toBe('one book')
+    expect(await comparePaths(book + '.', dotted, native)).toBe('same')
+    expect(await comparePaths(dotted, device, native)).toBe('separate')
+    expect(await comparePaths(device, book, native)).toBe('same')
+  },
+)
 
 test('round trips Unicode names, empty directories and empty files and rejects corrupted CRC', async () => {
   const archive = await createArchive(

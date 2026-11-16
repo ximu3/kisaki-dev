@@ -8,7 +8,7 @@ use napi_derive::napi;
 use std::io;
 use std::path::{Path, PathBuf};
 
-/// Reads the normalized name of the opened entry, including a reparse point itself.
+/// Reads the NT volume and normalized path of the opened entry, including a reparse point itself.
 #[cfg(windows)]
 fn entry_path(path: &Path) -> io::Result<Vec<u16>> {
     use std::fs::OpenOptions;
@@ -16,7 +16,7 @@ fn entry_path(path: &Path) -> io::Result<Vec<u16>> {
     use std::os::windows::io::AsRawHandle;
     use windows_sys::Win32::Storage::FileSystem::{
         FILE_FLAG_BACKUP_SEMANTICS, FILE_FLAG_OPEN_REPARSE_POINT, GetFinalPathNameByHandleW,
-        VOLUME_NAME_NONE,
+        VOLUME_NAME_NT,
     };
 
     let file = OpenOptions::new()
@@ -31,7 +31,7 @@ fn entry_path(path: &Path) -> io::Result<Vec<u16>> {
                 file.as_raw_handle(),
                 name.as_mut_ptr(),
                 name.len() as u32,
-                VOLUME_NAME_NONE,
+                VOLUME_NAME_NT,
             )
         } as usize;
         if length == 0 {
@@ -46,7 +46,7 @@ fn entry_path(path: &Path) -> io::Result<Vec<u16>> {
     }
 }
 
-/// Compares the names Windows resolved in the caller's common parent directory.
+/// Compares Windows volume roots or entries in the caller's established common directory.
 #[cfg(windows)]
 fn same_entry(left: &Path, right: &Path) -> io::Result<bool> {
     Ok(entry_path(left)? == entry_path(right)?)
@@ -185,31 +185,23 @@ impl Task for EntryComparison {
     }
 }
 
-/// Checks whether a name is exactly one ordinary component of a host path.
-fn valid_name(name: &str) -> bool {
-    let path = Path::new(name);
-    !name.contains('\0') && path.file_name() == Some(path.as_os_str())
-}
-
-/// Looks up two individual names in one existing absolute directory and compares their entries.
+/// Compares entries in an established common directory, or two Windows volume roots.
 ///
 /// # Errors
-/// Returns InvalidArg before queueing invalid paths or names. Lookup failures retain their OS code.
+/// Returns InvalidArg for invalid paths. Lookup failures retain their OS code.
 #[napi(ts_return_type = "Promise<boolean | FilesystemQueryFailure>")]
-pub fn same_directory_entry(
-    parent: String,
-    first: String,
-    second: String,
-) -> Result<AsyncTask<EntryComparison>> {
-    if !valid_path(&parent) || !valid_name(&first) || !valid_name(&second) {
+pub fn same_directory_entry(first: String, second: String) -> Result<AsyncTask<EntryComparison>> {
+    if [&first, &second]
+        .iter()
+        .any(|path| !valid_path(path) || (!cfg!(windows) && Path::new(path).file_name().is_none()))
+    {
         return Err(Error::new(
             Status::InvalidArg,
-            "Expected an absolute parent and two entry names",
+            "Expected two absolute paths to named directory entries",
         ));
     }
-    let parent = Path::new(&parent);
     Ok(AsyncTask::new(EntryComparison {
-        left: parent.join(first),
-        right: parent.join(second),
+        left: PathBuf::from(first),
+        right: PathBuf::from(second),
     }))
 }

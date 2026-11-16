@@ -13,6 +13,24 @@ export type PathFilter =
   | { readonly kind: 'path'; readonly path: string }
   | { readonly kind: 'glob'; readonly pattern: string; readonly ignoreCase: boolean }
 
+/** Checks a Windows input's drive, UNC share or named volume without consulting the current host. */
+function hasWindowsRoot(value: string): boolean {
+  let path = value.replaceAll('/', '\\')
+  if (path.startsWith('\\\\?\\') || path.startsWith('\\\\.\\')) {
+    const device = path.slice(4)
+    if (/^UNC(?:\\|$)/iu.test(device)) {
+      path = '\\\\' + device.slice(4)
+    } else if (/^[A-Za-z]:/u.test(device)) {
+      path = device
+    } else {
+      return /^(?!\.{1,2}\\)[^\\:]+\\/u.test(device)
+    }
+  }
+  return (
+    /^[A-Za-z]:\\/u.test(path) || /^\\\\(?!\.{1,2}\\)[^\\]+\\+(?!\.{1,2}(?:\\|$))[^\\]+/u.test(path)
+  )
+}
+
 /**
  * Checks absolute path syntax while preserving the supplied spelling.
  *
@@ -20,14 +38,7 @@ export type PathFilter =
  */
 export function parseAbsolutePath(input: unknown): string {
   const value = parseValue(nonemptyText, input, 'Invalid absolute path')
-  if (
-    value.includes('\0') ||
-    !(
-      value.startsWith('/') ||
-      /^[A-Za-z]:[\\/]/.test(value) ||
-      /^\\\\[^\\/]+[\\/][^\\/]+/.test(value)
-    )
-  ) {
+  if (value.includes('\0') || !(value.startsWith('/') || hasWindowsRoot(value))) {
     throw new DesktopError('InvalidInput', 'An explicit absolute filesystem path is required')
   }
 
