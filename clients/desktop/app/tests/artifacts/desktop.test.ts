@@ -237,4 +237,14 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     await closeNativeWindow(moved.pid)
     expect(await waitForExit(moved.closed, 15_000)).toBe(0)
   }
+  console.info(
+    'Verified desktop carrier:',
+    JSON.stringify({
+      target: receipt.target,
+      version: receipt.version,
+      buildId: receipt.buildId,
+      path: file.path,
+      sha256: file.sha256,
+    }),
+  )
 })

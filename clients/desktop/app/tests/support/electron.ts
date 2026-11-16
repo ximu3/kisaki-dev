@@ -55,6 +55,10 @@ export const test = base.extend<DesktopFixtures>({
       ),
     )
     delete env.ELECTRON_RUN_AS_NODE
+    if (process.platform === 'linux') {
+      env.XDG_CONFIG_HOME = join(profile, 'xdg/config')
+      env.XDG_DATA_HOME = join(profile, 'xdg/data')
+    }
 
     const application = await _electron.launch({
       chromiumSandbox: true,
