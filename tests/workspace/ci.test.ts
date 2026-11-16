@@ -72,7 +72,7 @@ test('shared or unowned inputs use the full native plan, including the tooling h
   ])
   expect(tooling.every((row) => row.task === '@kisaki3/tooling#test')).toBe(true)
   const changed = plan(['packages/tooling/src/process/index.ts'])
-  expect(changed.scope).toBe('packages')
+  expect(changed.scope).toBe('affected')
   expect(changed.matrix.filter((row) => row.package === '@kisaki3/tooling')).toEqual(tooling)
 })
 
@@ -102,7 +102,7 @@ test('another product registers its own tasks and host coverage', () => {
   }
   expect(() => verificationPackages([...workspace, service])).toThrow(service.name)
 
-  const selected = { scope: 'packages', projects: [service] } as const
+  const selected = { scope: 'affected', projects: [service] } as const
   const registered = [...packages, service]
   expect(planChecks(selected, registered).matrix).toMatchObject([
     { task: service.name + '#verify' },

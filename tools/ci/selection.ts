@@ -5,7 +5,7 @@ import type { Project } from '../workspace.ts'
 
 /** Candidate packages included by the diff and the reason for their selection. */
 export interface PackageSelection {
-  scope: 'docs' | 'packages' | 'full'
+  scope: 'docs' | 'affected' | 'full'
   projects: readonly Project[]
 }
 
@@ -39,5 +39,5 @@ export function selectPackages(
     return { scope: 'docs', projects: [] }
   }
   const filters = [...changed].map((name) => '...' + name)
-  return { scope: 'packages', projects: listProjects(...filters) }
+  return { scope: 'affected', projects: listProjects(...filters) }
 }
