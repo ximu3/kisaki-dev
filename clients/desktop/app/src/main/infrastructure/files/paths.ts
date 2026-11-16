@@ -1,81 +1,77 @@
 /** @fileoverview Compares actual filesystem locations while preserving spelling and unresolved path information. */
 
 import { realpath, stat } from 'node:fs/promises'
-import { dirname, join, normalize, parse, sep } from 'node:path'
-import { isAbsoluteHostPath } from '#host-path'
+import { join, sep } from 'node:path'
+import { nativeHostPath, parseHostPath, type HostPath } from '#host-path'
 import { FilesystemQueryError, type NativeFiles } from '#native'
 
 /** A confirmed relationship between two locations, or an explicit inability to establish it. */
 export type PathRelation = 'same' | 'contains' | 'within' | 'separate' | 'unknown'
 
-/** Extracts the host root, including the server and share of an extended Windows UNC path. */
-function pathRoot(path: string): string {
-  const root = parse(path).root
-  if (process.platform === 'win32' && root.toUpperCase() === '\\\\?\\UNC\\') {
-    const share = parse('\\\\' + path.slice(root.length)).root
-    return root + share.slice(2)
-  }
-  return root
-}
-
 /** Normalizes separators, current-directory segments and drive spelling without folding linked '..' segments. */
 export function normalizeAbsolutePath(input: string): string {
-  if (!isAbsoluteHostPath(input)) {
-    throw new TypeError('Expected an absolute filesystem path without NUL')
-  }
-  const path =
-    process.platform === 'win32'
-      ? input.replaceAll('/', '\\').replace(/^[a-z]:/u, (drive) => drive.toUpperCase())
-      : input
-  const root = pathRoot(path)
-  const pieces = path
-    .slice(root.length)
-    .split(sep)
-    .filter((piece) => piece !== '' && piece !== '.')
-  const normalizedRoot = normalize(root)
-  return (normalizedRoot.endsWith(sep) ? normalizedRoot : normalizedRoot + sep) + pieces.join(sep)
+  return parseHostPath(input).path
 }
 
-/** Observes a traversable position, keeping the chosen route through every surviving link. */
-async function inspectPosition(path: string) {
-  await stat(path)
-  let root = pathRoot(path)
-  let names = path.slice(root.length).split(sep).filter(Boolean)
-  if (names.includes('..')) {
-    let current = root
-    for (const name of names) {
-      if (name !== '..') {
-        current = join(current, name)
-        continue
-      }
+/** Uses Node's lookup namespace for literal names and leaves parent traversal to the host. */
+function lexicalPosition(position: HostPath): string {
+  if (position.names.length === 0) {
+    return position.volume
+  }
+  if (position.names.includes('..')) {
+    return position.path
+  }
+  return position.lookupRoot + position.names.join(sep)
+}
 
-      // Ask the host where '..' leads before removing any part of the registered route.
-      const parent = dirname(current)
-      const [reached, expected] = await Promise.all([
-        realpath(current + sep + '..'),
-        realpath(parent),
-      ])
-      current = reached === expected ? parent : reached
+/** Locates the host's observed parent through the nearest surviving registered ancestor. */
+async function registeredParent(current: HostPath): Promise<string> {
+  const reached = await realpath(current.path + sep + '..')
+  const names = current.names.slice(0, -1)
+  while (names.length > 0) {
+    const route = current.root + names.join(sep)
+    const physical = await realpath(route)
+    if (reached === physical) {
+      return route
     }
-    root = pathRoot(current)
-    names = current.slice(root.length).split(sep).filter(Boolean)
+
+    const prefix = physical.endsWith(sep) ? physical : physical + sep
+    if (reached.startsWith(prefix)) {
+      return join(route, reached.slice(prefix.length))
+    }
+    names.pop()
   }
-  return { root, names }
+  return reached
 }
 
-/** Verifies differently cased Windows root spellings against the actual mounted directories. */
-async function sameRoot(first: string, second: string): Promise<boolean> {
-  if (first === second) {
-    return true
+/** Observes the lookup route, retaining explicit links outside any consumed parent traversal. */
+async function inspectPosition(input: HostPath) {
+  // Node selects the Windows lookup spelling before handing parent traversal to the filesystem.
+  const position =
+    process.platform === 'win32' && input.names.includes('..')
+      ? parseHostPath(nativeHostPath(input.path)!)
+      : input
+  // A reachable descendant observes its root. Differently named roots are compared by native handles.
+  if (position.names.length === 0) {
+    return position
   }
-  if (process.platform !== 'win32' || first.toUpperCase() !== second.toUpperCase()) {
-    return false
+  await stat(position.path)
+  if (!position.names.includes('..')) {
+    return position
   }
-  const [left, right] = await Promise.all([
-    stat(first, { bigint: true }),
-    stat(second, { bigint: true }),
-  ])
-  return left.dev === right.dev && left.ino === right.ino
+
+  let current = position.root
+  for (const name of position.names) {
+    if (name !== '..') {
+      current = join(current, name)
+    } else {
+      const route = parseHostPath(current)
+      if (route.names.length > 0) {
+        current = await registeredParent(route)
+      }
+    }
+  }
+  return parseHostPath(current)
 }
 
 /**
@@ -89,9 +85,9 @@ export async function comparePaths(
   second: string,
   native: NativeFiles,
 ): Promise<PathRelation> {
-  const firstPath = normalizeAbsolutePath(first)
-  const secondPath = normalizeAbsolutePath(second)
-  if (firstPath === secondPath) {
+  const firstPath = parseHostPath(first)
+  const secondPath = parseHostPath(second)
+  if (lexicalPosition(firstPath) === lexicalPosition(secondPath)) {
     return 'same'
   }
 
@@ -100,22 +96,22 @@ export async function comparePaths(
       inspectPosition(firstPath),
       inspectPosition(secondPath),
     ])
-    if (!(await sameRoot(left.root, right.root))) {
+    if (
+      left.volume !== right.volume &&
+      !(await native.sameDirectoryEntry(left.lookupRoot, right.lookupRoot))
+    ) {
       return 'separate'
     }
 
-    let parent = left.root
+    let leftEntry = left.lookupRoot
+    let rightEntry = right.lookupRoot
     const sharedLength = Math.min(left.names.length, right.names.length)
     for (let index = 0; index < sharedLength; index++) {
-      const firstName = left.names[index]!
-      const secondName = right.names[index]!
-      if (
-        firstName !== secondName &&
-        !(await native.sameDirectoryEntry(parent, firstName, secondName))
-      ) {
+      leftEntry = join(leftEntry, left.names[index]!)
+      rightEntry = join(rightEntry, right.names[index]!)
+      if (leftEntry !== rightEntry && !(await native.sameDirectoryEntry(leftEntry, rightEntry))) {
         return 'separate'
       }
-      parent = join(parent, firstName)
     }
 
     if (left.names.length === right.names.length) {

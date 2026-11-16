@@ -99,7 +99,7 @@ Rust 单元测试贴近所属模块，crate 集成测试按 Cargo 约定放在 `
 
 `getFilesystemLocation(path)` 在工作线程查询既有绝对位置所在的卷或挂载，返回 local、network 或 unknown。unknown 表示已取得挂载信息、其类型尚不能确认。打开路径或读取系统信息失败时，Node 入口交付 FilesystemQueryError，保留原因及操作系统提供的错误码。
 
-`sameDirectoryEntry(parent, first, second)` 在一个绝对目录中查找两个单段名称，按实际选中的目录项判等。Windows 查询带 OPEN_REPARSE_POINT 打开的句柄的规范名称。Linux 以 O_PATH 和 O_NOFOLLOW 同时持有两个目录项，比较内核返回的句柄路径。macOS 在 APFS 和 HFS+ 上使用链接 ID；其他卷的多链接文件根据父目录中可确认的名称判断。查询未能区分目录项时，文件设施保留[位置关系未确定](../domains/file-maintenance.md#operations)的结果。[Windows 句柄路径](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfinalpathnamebyhandlew) · [Linux 路径查找](https://docs.kernel.org/filesystems/path-lookup.html) · [Darwin 链接 ID](https://github.com/apple-oss-distributions/xnu/blob/main/bsd/man/man2/getattrlist.2)
+`sameDirectoryEntry(first, second)` 接收两个绝对访问路径。文件设施先确定共同的登记父目录，再沿各自的路径查找两个名称。Windows 也用这项能力核对不同名称的卷根，在 OPEN_REPARSE_POINT 句柄上取得包含 NT 卷名的规范路径。Linux 以 O_PATH 和 O_NOFOLLOW 同时持有两个目录项，比较内核返回的句柄路径。macOS 在 APFS 和 HFS+ 上使用链接 ID。其他卷的多链接文件根据父目录中可确认的名称判断。查询未能区分目录项时，文件设施保留[位置关系未确定](../domains/file-maintenance.md#operations)的结果。[Windows 句柄路径](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfinalpathnamebyhandlew) · [Linux 路径查找](https://docs.kernel.org/filesystems/path-lookup.html) · [Darwin 链接 ID](https://github.com/apple-oss-distributions/xnu/blob/main/bsd/man/man2/getattrlist.2)
 
 <a id="files"></a>
 
