@@ -2,6 +2,7 @@
 
 /** Canonical English labels for observable task phases and terminal outcomes. */
 export const taskMessages = {
+  queued: 'Queued',
   running: 'Running',
   pausing: 'Pausing',
   paused: 'Paused',

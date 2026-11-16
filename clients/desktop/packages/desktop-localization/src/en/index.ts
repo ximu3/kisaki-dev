@@ -6,6 +6,7 @@ import { taskMessages } from './tasks'
 import { resourceMessages } from './resources'
 import { scannerMessages } from './scanner'
 import { showcaseMessages } from './showcase'
+import { runtimeMessages } from './runtime'
 
 /** English source catalog shared by call-type generation and translation validation. */
 export const englishMessages = {
@@ -15,4 +16,5 @@ export const englishMessages = {
   resources: resourceMessages,
   scanner: scannerMessages,
   showcase: showcaseMessages,
+  runtime: runtimeMessages,
 } as const
