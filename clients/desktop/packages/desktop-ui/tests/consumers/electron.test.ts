@@ -2,33 +2,31 @@
 
 import { expect, _electron } from '@playwright/test'
 import { onTestFinished } from 'vite-plus/test'
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { createRequire } from 'node:module'
-import { transformWithOxc } from 'vite-plus'
+import { runPnpm } from '@kisaki3/tooling/process'
 import { consumerTest as test, packageRoot } from './environment'
 
-// Electron's Node entry returns its executable path; its declarations describe the running host.
-/** Executable path of the selected Electron runtime used by the packed UI consumer. */
-const electron = createRequire(import.meta.url)('electron') as string
+test.override('host', 'electron')
 
 test('Electron consumes the same packed UI in a sandboxed document with native modal scope', async ({
   consumerDirectory,
   siteUrl,
   resultsDirectory,
+  signal,
 }) => {
-  const input = await readFile(
-    join(packageRoot, 'tests/consumers/fixtures/electron/main.ts'),
-    'utf8',
-  )
-  const script = join(consumerDirectory, 'electron-main.js')
-  await writeFile(script, (await transformWithOxc(input, 'main.ts', { lang: 'ts' })).code)
+  await runPnpm(['exec', 'install-electron'], { cwd: consumerDirectory, signal })
+  // In Node, the consumer's Electron package exports the path to its own executable.
+  const executablePath = createRequire(join(consumerDirectory, 'package.json'))(
+    'electron',
+  ) as string
 
   await mkdir(join(consumerDirectory, 'profile'))
   const application = await _electron.launch({
-    executablePath: electron,
+    executablePath,
     args: [
-      script,
+      consumerDirectory,
       `--ui-consumer-url=${siteUrl}`,
       `--user-data-dir=${join(consumerDirectory, 'profile')}`,
     ],

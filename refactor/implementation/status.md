@@ -4,13 +4,13 @@
 
 ## 实施进展
 
-截至 2026-11-15，工作包按真实依赖和完整责任组织。本体业务就绪后，W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 1.9、原生能力上的自研通用 UI、组件子路径与 CSS Modules、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
+截至 2026-11-16，工作包按真实依赖和完整责任组织。本体业务就绪后，W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 1.9、原生能力上的自研通用 UI、组件子路径与 CSS Modules、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
 
 W00 工程实现与适用验收已完成并合入主线，当前职责见[工程能力](#w00)。仓库维护桌面工程工具、原生文件能力、资源、两个私有工程包，以及 desktop-appearance、extension-distribution、desktop-contracts、desktop-localization、desktop-rpc 和 desktop-ui，workspace 共 10 个项目（含根工程）。产品能力按下表工作包实施。
 
 当前任务入口为 AGENTS.md，设计、规范和实施资料集中于 refactor。[当前工程与开发](development.md)维护源码职责、环境准备与可运行命令。正式项目文档待 W23 交付；接口声明、代码注释、发行说明和许可材料随所属实现与版本维护。
 
-工作区采用 Vite+，主线编译器锁定为 `7.1.0-beta`。升级到 7.1.x 正式版时重新验证项目引用、声明和仓库外消费。六个公共包共用 `@kisaki3/config`，CI 按改动选择宿主，在每个目标内复用构建，制品验收直接读取指定归档。选型、工作区调整与运行证据见[工程重构归档](archive/engineering-modernization/README.md)和 [PR #39 的检查](https://github.com/ximu3/kisaki-dev/pull/39/checks)。
+工作区采用 Vite+，主线编译器锁定为 `7.1.0-beta`。升级到 7.1.x 正式版时重新验证项目引用、声明和仓库外消费。六个公共包共用 `@kisaki3/config`，CI 按[工程和宿主](../design/engineering/workspace.md#ci-selection)运行验证组，在每个目标内复用构建，制品验收直接读取指定归档。工具链选型与迁移见[工程重构归档](archive/engineering-modernization/README.md)和 [PR #39 的检查](https://github.com/ximu3/kisaki-dev/pull/39/checks)。
 
 [当前工程验证](../verification/evidence/w00/README.md)已取得本机 Windows x64 和 CI 六目标结果，覆盖工程载体的构建、原生与 Electron 运行、开发回归、打包及制品运行。
 
@@ -97,6 +97,6 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 | 开发协调         | Vite 原生程序监听与 HMR、包及资源准备、实际运行目录、失败恢复及唯一进程拥有者。        |
 | 原生基础         | Rust／Node-API 文件同步和不覆盖移动、加载与错误合同。                               |
 | 验证入口         | 普通 Node、Electron Node 模式、独立四入口载体、开发会话、制品及可选启动与内存采样。 |
-| CI 与门禁        | 实际输入选择、六目标工程运行及严格的代码合并门禁。                                  |
+| CI 与门禁 | 工作区及公共包验证、按工程依赖选择的六目标桌面验证，以及严格的代码合并门禁。 |
 
 公共包及其仓库外消费、产品端点、正式窗口和宿主由各自完整工作包交付。[工程验证](../verification/evidence/w00/README.md)记录实际源码范围、本机 Windows x64 和 CI 六目标结果。正式签署和完整产品验收继续按所属工作包执行。

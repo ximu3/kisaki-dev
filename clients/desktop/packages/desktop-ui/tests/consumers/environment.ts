@@ -7,24 +7,29 @@ import { chromium } from '@playwright/test'
 import { preview } from 'vite-plus'
 import { runPnpm } from '@kisaki3/tooling/process'
 import { join, resolve } from 'node:path'
-import { installConsumer } from '@kisaki3/tooling/testing/consumer'
+import { installConsumer, lintConsumer } from '@kisaki3/tooling/testing/consumer'
 
 /** This package's root for the independent tarball installation. */
 export const packageRoot = resolve(import.meta.dirname, '../..')
 
 /** Isolates installation, browser pages and evidence for the public UI consumer. */
 export const consumerTest = test
+  .extend<'host', 'browser' | 'electron'>('host', { scope: 'file' }, 'browser')
   .extend('resultsDirectory', { scope: 'file' }, async () => {
     const directory = join(packageRoot, 'test-results/consumers')
     await mkdir(directory, { recursive: true })
     return directory
   })
-  .extend('consumerDirectory', { scope: 'file' }, async ({}, { onCleanup }) => {
+  .extend('consumerDirectory', { scope: 'file' }, async ({ host }, { onCleanup }) => {
     const directory = await installConsumer(
-      join(import.meta.dirname, 'fixtures/browser'),
+      join(import.meta.dirname, 'fixtures', host),
       packageRoot,
       onCleanup,
     )
+    if (host === 'electron') {
+      await lintConsumer(directory)
+    }
+
     await cp(join(packageRoot, 'tests/fixtures/workshop'), directory, { recursive: true })
     return directory
   })

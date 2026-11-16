@@ -1,4 +1,4 @@
-/** @fileoverview Isolated Electron document consumer of the already-built browser fixture. */
+/** @fileoverview Opens the installed UI consumer's workshop in a sandboxed Electron window. */
 
 import { app, BrowserWindow } from 'electron'
 

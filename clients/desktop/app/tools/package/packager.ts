@@ -40,16 +40,15 @@ interface PackagingContext {
 /**
  * Packages a verified runtime on its matching target runner and returns the artifact receipt path.
  *
- * Checks the target and runtime byte inventory before packaging. Ordinary fixture runs build the
- * smoke carrier; installer checks and release builds produce every target format. The receipt
- * records completed files before temporary staging cleanup.
+ * Checks the target and runtime byte inventory, then produces every target format. A test fixture
+ * may request just its smoke carrier. The receipt records completed files before staging cleanup.
  */
 export async function packageDesktop(
   target: DesktopTarget,
-  options: { testOnly?: boolean; installers?: boolean; signal?: AbortSignal } = {},
+  options: { testOnly?: boolean; smokeOnly?: boolean; signal?: AbortSignal } = {},
 ): Promise<string> {
   const { testOnly = false, signal } = options
-  const installers = !testOnly || options.installers
+  const installers = !testOnly || !options.smokeOnly
   if (target !== hostTarget()) {
     throw new Error('Package on the corresponding native target runner')
   }

@@ -14,9 +14,6 @@
       "path": "./config/typescript/tsconfig.tests.json"
     },
     {
-      "path": "./config/typescript/tsconfig.electron.json"
-    },
-    {
       "path": "./config/typescript/tsconfig.workshop.json"
     }
   ]

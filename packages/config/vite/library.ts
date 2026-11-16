@@ -13,7 +13,6 @@ interface LibraryOptions {
   generated?: { task: string; command: string }
   pack?: PackUserConfig
   browserTests?: boolean
-  prepareConsumers?: string[]
   consumerHookTimeout?: number
 }
 
@@ -40,14 +39,13 @@ const tsc = join(dirname(platform), 'lib', process.platform === 'win32' ? 'tsc.e
 
 /**
  * Configures compilation, source and published exports, package checks and independent consumers.
- * Package-specific hooks, plugins, browser tests and host preparation belong to the caller.
+ * Package-specific hooks, plugins and browser tests belong to the caller.
  */
 export function defineLibrary({
   entries,
   generated,
   pack,
   browserTests = false,
-  prepareConsumers = [],
   consumerHookTimeout = 120_000,
 }: LibraryOptions) {
   const sources = Object.entries(entries)
@@ -151,7 +149,12 @@ export function defineLibrary({
         },
         'test:consumers': {
           command: 'vp test run --project consumers ' + consumerReport,
-          dependsOn: ['check:package', ...prepareConsumers],
+          dependsOn: ['check:package'],
+          cache: false,
+        },
+        verify: {
+          command: [],
+          dependsOn: browserTests ? ['test:consumers', 'test:browser'] : ['test:consumers'],
           cache: false,
         },
       },

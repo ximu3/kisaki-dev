@@ -88,7 +88,7 @@ pnpm exec vp run @kisaki3/desktop#package:fixture --target windows-x64
 
 `buildId` 是同次程序构建的独立标识，源码开发使用自己的会话标识。打包从完成的 `build.json` 核对目标、完整文件集合和 SHA-256 摘要。`@kisaki3/desktop#package:fixture` 通过 Vite Task 准备并打包工程载体。
 
-工程载体打包固定标记 `testOnly`。默认生成实际启动验证使用的 ZIP 或 AppImage；`pnpm exec vp run @kisaki3/desktop#package:fixture --installers` 生成目标平台全部格式。构建和打包均不发布。正式签署、安装升级及发行接入由 W20 验收。
+工程载体打包固定标记 `testOnly`，默认生成目标平台的全部格式。局部复现可用 `pnpm exec vp run @kisaki3/desktop#package:fixture --smoke-only` 只生成实际启停所用的 ZIP 或 AppImage。构建和打包均不发布。正式签署、安装升级及发行接入由 W20 验收。
 
 `pnpm exec vp run @kisaki3/desktop#build:fixture --program preload` 单独验证 preload 编译。`build:native` 编译私有绑定；需要更新生成声明时显式添加 `--update-declarations` 并审阅变化。`check:native` 执行固定 Rust 工具链的格式与 Clippy 检查。
 
@@ -112,9 +112,9 @@ pnpm exec vp run @kisaki3/desktop#package:fixture --target windows-x64
 
 ## 检查与运行环境
 
-六个公共包共用 `@kisaki3/config/vite/library`。从根运行 `pnpm exec vp run --filter "./clients/desktop/packages/*" pack` 生成各包的 `out/package/package.tgz`。同一选择器配合 `check:package` 检查归档，配合 `test:consumers` 安装并运行仓库外的消费者。RPC 与 UI 的消费者还需要桌面工程的 `prepare:electron`。
+六个公共包共用 `@kisaki3/config/vite/library`。从根运行 `pnpm exec vp run --filter "./clients/desktop/packages/*" pack` 生成各包的 `out/package/package.tgz`。同一选择器配合 `check:package` 检查归档，配合 `test:consumers` 安装并运行仓库外的消费者。RPC 和 UI 的 Electron 样板分别从自己的临时工程启动锁定的 Electron，结束后随工程清理。UI 的浏览器和 Electron 样板复用同一份展示代码。
 
-用例、固定样例和报告分别归各包的 `tests/consumers`、`tests/consumers/fixtures` 和 `test-results/consumers`。该验证独立于普通 check，由桌面 CI 的 Linux x64 目标执行。普通 CI 将影响分析选中的包传给实际消费者任务；完整检查入口执行全部公共包。
+用例、固定样例和报告分别归各包的 `tests/consumers`、`tests/consumers/fixtures` 和 `test-results/consumers`。普通代码 PR 在 Linux x64 执行所有公共包的 `verify`，包含各包的独立消费和 UI 的浏览器用例。桌面的 `pnpm exec vp run @kisaki3/desktop#verify` 在当前宿主执行完整桌面验证。常规 `pnpm check` 独立报告。
 
 每个库用自己的 `vite.config.ts` 声明公开子路径与源文件，共享配置据此选择编译入口并生成开发与发布 exports。pnpm 打包时采用 `publishConfig.exports`。运行依赖按 workspace 清单准备传递依赖的 tarball，安装使用这些归档的绝对路径。
 
@@ -166,9 +166,7 @@ Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 Ap
 
 ## CI 与交付
 
-`ci.yml` 在安装依赖前用 `tools/ci/plan.ts` 比较基线和候选，选择 Linux 基础检查及所需宿主。模板、配置、SQL 和原生输入按实际使用者判断，删除和改名计入完整差异。共享 ABI 或缺少基线时覆盖六个宿主目标，手动运行可以指定目标与场景。局部复现可以执行相同的项目命令。
-
-桌面存储与文件设施直接或间接使用的公共包发生代码变更时，Linux x64 运行 Electron Node 集成测试。单改外观样式时，验证对应的浏览器和 tarball 消费。桌面任务定义、SQLite 名称排序的 Rust 实现、编译入口或锁定依赖变更时，六个目标验证原生接入，Linux x64 另行运行性能任务。
+在候选检出运行 `pnpm --config.verify-deps-before-run=false exec node tools/ci/plan.ts <base> <head>` 可在安装依赖前查看变更文件、工程范围和各目标任务。按[自动验证规则](../design/engineering/workspace.md#ci-selection)，单改 desktop-rpc 触发 Linux 公共包验证，单改 desktop-appearance 的 CSS 还会沿合同包依赖触发六目标桌面验证。手动 CI 可以选择目标和套件，例如 `target=all`、`suite=performance` 在六个实际宿主运行同一份性能负载。
 
 `Select checks` 读取改动并生成目标与任务。Linux x64 上的 `Workspace checks` 执行文档链接检查，代码改动还执行冻结安装和 `pnpm check`。每个 `Target checks (<目标>)` 作业将选中任务一次交给 Vite Task，按同一依赖图准备和复用程序与归档。计划摘要列出套件，日志带包名与任务名。
 

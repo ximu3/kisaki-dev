@@ -1,58 +1,55 @@
-/** @fileoverview Verifies representative PR changes select the hosts that can observe their failures. */
+/** @fileoverview Verifies automatic project coverage and explicit target or suite selection. */
 
 import { expect, test } from 'vite-plus/test'
-import { planChecks } from '../../tools/ci/plan'
+import { planChecks, verificationProjects } from '../../tools/ci/plan'
 
-test('documentation needs no host and mixed changes retain each required scenario', () => {
-  const docs = planChecks(['refactor/README.md'])
+/** Actual project membership and downstream reach from this checkout's locked pnpm. */
+const projects = verificationProjects()
+
+test('documentation alone needs no host; an independent library runs the Linux public checks', () => {
+  const docs = planChecks(['refactor/README.md', 'AGENTS.md'], projects)
   expect(docs.code).toBe(false)
   expect(docs.matrix).toEqual([])
 
-  const checker = planChecks(['tools/check-doc-links.ts'])
-  expect(checker.code).toBe(true)
-  expect(checker.matrix).toEqual([])
-
-  const changes = planChecks([
-    'clients/desktop/packages/desktop-appearance/src/styles.css',
-    'packages/tooling/src/process/windows.ts',
-  ])
-  const linux = changes.matrix.find((row) => row.target === 'linux-x64')!
-  expect(linux.suites).toEqual(['consumers', 'browser'])
-  expect(linux.tasks).toContain('@kisaki3/desktop-ui#test:consumers')
-  expect(
-    changes.matrix.filter((row) => row.suites.includes('tooling')).map((row) => row.target),
-  ).toEqual(['windows-x64', 'windows-arm64'])
-})
-
-test('shared native ABI changes cover every target and a manual reproduction stays on its host', () => {
-  const native = planChecks(['clients/desktop/app/native/src/lib.rs'])
-  expect(native.matrix.filter((row) => row.suites.includes('native'))).toHaveLength(6)
-  expect(
-    planChecks([], true, 'macos-x64', 'dev-session').matrix.map(({ target, suites }) => ({
-      target,
-      suites,
-    })),
-  ).toEqual([{ target: 'macos-x64', suites: ['dev-session'] }])
-})
-
-test('a public preference parser change reaches its desktop database consumer', () => {
-  const plan = planChecks(['clients/desktop/packages/desktop-contracts/src/preferences/api.ts'])
-  const linux = plan.matrix.find((row) => row.target === 'linux-x64')!
-  expect(linux.tasks).toContain('@kisaki3/desktop#test:native')
-})
-
-test('the measurement host checks changes to storage ordering and its performance task', () => {
-  const collation = planChecks(['clients/desktop/app/native/src/collation.rs'])
-  expect(collation.matrix.filter((row) => row.suites.includes('native'))).toHaveLength(6)
-  expect(
-    collation.matrix.filter((row) => row.suites.includes('performance')).map((row) => row.target),
-  ).toEqual(['linux-x64'])
-
-  const tasks = planChecks(['clients/desktop/app/vite.config.ts'])
-  expect(tasks.matrix.find((row) => row.target === 'linux-x64')!.tasks).toContain(
-    '@kisaki3/desktop#test:performance',
+  const changes = planChecks(
+    ['refactor/README.md', 'clients/desktop/packages/desktop-rpc/src/frames.test.ts'],
+    projects,
   )
+  expect(changes.matrix.map((row) => row.target)).toEqual(['linux-x64'])
+  expect(changes.matrix[0]!.tasks).toEqual(projects.libraries.map((name) => name + '#verify'))
+})
 
-  const files = planChecks(['clients/desktop/app/native/src/files.rs'])
-  expect(files.matrix.some((row) => row.suites.includes('performance'))).toBe(false)
+test('a desktop dependency, shared input or removed project selects the complete desktop matrix', () => {
+  for (const file of [
+    'clients/desktop/packages/desktop-appearance/src/styles.css',
+    'clients/desktop/app/release-notes/next/en.md',
+    'pnpm-lock.yaml',
+    'clients/desktop/packages/removed/package.json',
+  ]) {
+    const { matrix } = planChecks(
+      [file, 'clients/desktop/packages/desktop-rpc/package.json'],
+      projects,
+    )
+    expect(matrix).toHaveLength(6)
+    expect(
+      matrix.every((row) => row.tasks.includes('@kisaki3/desktop#verify') && row.packaging),
+    ).toBe(true)
+    expect(
+      matrix.filter((row) => row.checks.includes('libraries')).map((row) => row.target),
+    ).toEqual(['linux-x64'])
+  }
+})
+
+test('a missing baseline verifies every host; manual performance runs can target one or all', () => {
+  expect(planChecks(undefined, projects).matrix).toHaveLength(6)
+
+  const single = planChecks(undefined, projects, 'macos-x64', 'performance')
+  expect(single.matrix.map(({ target, tasks }) => [target, tasks])).toEqual([
+    ['macos-x64', ['@kisaki3/desktop#test:performance']],
+  ])
+  const all = planChecks(undefined, projects, 'all', 'performance')
+  expect(all.matrix).toHaveLength(6)
+  expect(
+    all.matrix.every((row) => row.tasks.length === 1 && row.checks.includes('performance')),
+  ).toBe(true)
 })

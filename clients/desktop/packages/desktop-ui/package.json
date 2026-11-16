@@ -217,7 +217,6 @@
     "@tailwindcss/cli": "4.3.3",
     "@types/culori": "4.0.1",
     "@types/node": "catalog:",
-    "electron": "catalog:",
     "publint": "catalog:",
     "solid-js": "catalog:",
     "tailwindcss": "4.3.3",

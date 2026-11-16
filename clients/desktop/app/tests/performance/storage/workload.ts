@@ -54,6 +54,9 @@ export const workload = {
 /** Maximum median duration of each repeated query or short transaction on the database worker. */
 export const workerMedianBudgetMs = 100
 
+/** Rows per transaction when preparing the fixture, before any timed query or short write. */
+const seedBatchSize = 4096
+
 /** Entry data retained by the fixture to check query results outside the timed operation. */
 export interface FixtureEntry {
   readonly id: string
@@ -129,8 +132,8 @@ export async function prepareWorkload(storage: Storage, directory: string) {
         prepared.run(...row)
       }
     })
-    for (let from = 0; from < count; from += 250) {
-      batch(from, Math.min(from + 250, count))
+    for (let from = 0; from < count; from += seedBatchSize) {
+      batch(from, Math.min(from + seedBatchSize, count))
       await setImmediate()
     }
   }

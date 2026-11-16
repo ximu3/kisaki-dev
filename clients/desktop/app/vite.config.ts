@@ -91,6 +91,18 @@ export default defineConfig({
         dependsOn: ['build:fixture', 'prepare:electron'],
         cache: false,
       },
+      verify: {
+        command: [],
+        dependsOn: [
+          'check:native',
+          'test:native',
+          'test:window-startup',
+          'test:dev-session',
+          'test:fixture-artifacts',
+          'test:performance',
+        ],
+        cache: false,
+      },
     },
   },
 })

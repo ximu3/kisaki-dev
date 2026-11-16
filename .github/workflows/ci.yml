@@ -46,7 +46,6 @@ jobs:
       code: ${{ steps.plan.outputs.code }}
       selected: ${{ steps.plan.outputs.selected }}
       matrix: ${{ steps.plan.outputs.matrix }}
-      installers: ${{ steps.plan.outputs.installers }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
@@ -108,6 +107,8 @@ jobs:
         with:
           node-version-file: .node-version
           package-manager-cache: false
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
+        if: steps.prior.outputs.reused != 'true'
       - id: plan
         if: steps.prior.outputs.reused != 'true'
         name: Select checks from the candidate tree
@@ -116,7 +117,8 @@ jobs:
           HEAD: ${{ github.sha }}
           REQUEST_TARGET: ${{ inputs.target }}
           REQUEST_SUITE: ${{ inputs.suite }}
-        run: node tools/ci/plan.ts "$BASE" "$HEAD"
+        # Planning uses only pnpm's workspace manifests. Target jobs own frozen installation.
+        run: pnpm --config.verify-deps-before-run=false exec node tools/ci/plan.ts "$BASE" "$HEAD"
 
   workspace:
     name: Workspace checks
@@ -142,13 +144,12 @@ jobs:
         run: pnpm run check
 
   target:
-    name: Target checks
+    name: Target checks (${{ matrix.target }})
     needs: plan
     if: needs.plan.outputs.selected == 'true'
     strategy:
       fail-fast: false
       matrix:
-        target: ${{ fromJSON(needs.plan.outputs.matrix).*.target }}
         include: ${{ fromJSON(needs.plan.outputs.matrix) }}
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 60
@@ -172,21 +173,22 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y xvfb openbox wmctrl
       - name: Prepare Linux packaging
-        if: runner.os == 'Linux' && contains(matrix.suites, 'fixture-artifacts')
-        run: |
-          sudo apt-get install -y libfuse2
-          if [[ "$KISAKI_VERIFY_INSTALLERS" == 1 ]]; then sudo apt-get install -y rpm; fi
-        env:
-          KISAKI_VERIFY_INSTALLERS: ${{ needs.plan.outputs.installers == 'true' && '1' || '0' }}
+        if: runner.os == 'Linux' && matrix.packaging
+        run: sudo apt-get install -y libfuse2 rpm
       - name: Prepare Chromium
-        if: matrix.chromium
-        run: pnpm --filter @kisaki3/desktop exec playwright install --with-deps chromium
+        if: matrix.chromium[0]
+        env:
+          PROJECTS: ${{ join(matrix.chromium, ' ') }}
+        shell: bash
+        run: |
+          for project in $PROJECTS; do
+            pnpm --filter "$project" exec playwright install --with-deps chromium
+          done
       - name: Run selected checks
         shell: bash
         env:
           KISAKI_CI_TASKS: ${{ toJSON(matrix.tasks) }}
           X11: ${{ matrix.x11 }}
-          KISAKI_VERIFY_INSTALLERS: ${{ needs.plan.outputs.installers == 'true' && '1' || '0' }}
         run: |
           prefix=()
           if [[ "$X11" == true ]]; then

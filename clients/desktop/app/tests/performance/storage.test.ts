@@ -13,7 +13,6 @@ test('worker operation medians meet their budget and the window reaches main dur
   desktop,
   profile,
 }, info) => {
-  test.setTimeout(600_000)
   const runtime = buildDirectory(hostTarget())
   await info.attach('build.json', {
     body: await readFile(join(runtime, 'build.json')),
