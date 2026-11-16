@@ -35,8 +35,8 @@ export interface NetworkPreferences {
 /**
  * Readiness of the host network route after applying saved preferences.
  *
- * A failed apply blocks networking instead of silently retaining an old route or switching to
- * direct access.
+ * A failed apply blocks new HTTP requests and WebSocket handshakes. Established browser
+ * WebSockets retain their original route until they close.
  */
 export type NetworkState =
   | { readonly status: 'ready' }
