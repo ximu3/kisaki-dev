@@ -33,6 +33,8 @@ Vite 管理 renderer HMR 和 Node 程序模块的构建监听。Chokidar 只观�
 
 2026-11-03 的 [macOS x64 运行](https://github.com/ximu3/kisaki-dev/actions/runs/41573308593/job/125711459529)在 ready 后约 1.48 秒记录取消结果，一秒的默认轮询已经失败。测试收尾复用了尚未完成的停止请求，仍得到取消结果，随后强制终止工作进程并留下会话目录，影响后续目录断言。当前用例显式提供 15 秒观察预算；测试清理等待在途请求完成，载体拒绝第一次关闭后再完成正常关闭，并核对工作进程的预期退出码。普通停止仍允许取消。
 
+2026-11-16，macOS ARM64 的配置修复用例在约 6.7 秒时记录到 `stopped` 和应用正常退出，测试工作进程随后仍需强制终止。日志未记录使进程存活的具体资源。同一提交的定点复验和完整作业复跑均正常收尾，本机 Windows x64 重复该用例也通过。[首次失败](https://github.com/ximu3/kisaki-dev/actions/runs/43808866913/job/133105940131) · [定点复验](https://github.com/ximu3/kisaki-dev/actions/runs/43809489522/job/133108324111) · [完整复跑](https://github.com/ximu3/kisaki-dev/actions/runs/43808866913/job/133110136603)
+
 本机 Windows x64、Node 24.11.1、Electron 45.0.0、Vitest 5.0.5 的类型、lint、格式和 6 项开发回归通过。同次 macOS 运行还保留了取消命令期间的 kill EPERM，未将它改写为取消成功；该观察与上述轮询、测试清理问题分别记录，跨平台复核由对应 PR 保留。
 
 macOS 在 SIGTERM 后探测进程组时可能报告 EPERM。Darwin 查到进程组后会跳过僵尸进程，找不到可发信号的成员时也返回该错误。共用命令运行器遇到这个结果时核对进程表。组内仍有可运行成员时保留原始错误，已退出的成员由系统回收。见 [XNU 进程组信号实现](https://github.com/apple-oss-distributions/xnu/blob/main/bsd/kern/kern_sig.c)。

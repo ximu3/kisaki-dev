@@ -1,15 +1,12 @@
 /** @fileoverview Runs shared dependency rules against the source scope owned by one project. */
 
 import { readdir } from 'node:fs/promises'
-import { fileURLToPath } from 'node:url'
 import { runCli } from '@kisaki3/tooling/cli'
 import { runPnpm } from '@kisaki3/tooling/process'
-
-/** Checkout root resolved from this engineering entry for dependency-boundary inspection. */
-const repositoryRoot = fileURLToPath(new URL('..', import.meta.url))
+import { listProjects, repositoryRoot } from './workspace.ts'
 
 /**
- * Checks an explicit workspace project or the repository-owned tools, tests and configuration.
+ * Checks one explicit project, or all workspace members and repository-owned tools and configuration.
  *
  * Package builds provide the public exports before the workspace graph is checked.
  */
@@ -17,9 +14,9 @@ export async function checkBoundaries(project?: string, signal?: AbortSignal): P
   const inputs = project
     ? [project]
     : [
-        'clients/desktop/app',
-        'clients/desktop/packages',
-        'packages',
+        ...listProjects()
+          .map((project) => project.directory)
+          .filter(Boolean),
         'tools',
         'tests',
         'config',

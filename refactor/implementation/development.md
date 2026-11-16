@@ -132,7 +132,7 @@ pnpm exec vp run @kisaki3/desktop#package:fixture --target windows-x64
 
 浏览器首次准备由所属工程执行：开发回归使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`，公共包消费者使用 `pnpm --filter <包名> exec playwright install chromium`。已建立的公共包使用同一锁定 Playwright 版本，可复用该版本的浏览器安装。
 
-存储测量可单独运行 `pnpm exec vp run @kisaki3/desktop#test:performance storage.test.ts`。固定样本按表在持久事务中建立，日志单列准备耗时和输入摘要。此用例的 15 分钟总超时覆盖造数、测量和结果交付。每条查询核对首读结果，预热 3 次后采样 31 次。短事务另采样 31 次。按操作分别计算中位数，上限为 100 ms。
+存储测量可单独运行 `pnpm exec vp run @kisaki3/desktop#test:performance storage.test.ts`。固定样本按表在持久事务中建立，日志单列准备耗时和输入摘要。套件的 180 秒单项超时覆盖造数、测量和结果交付。每条查询核对首读结果，预热 3 次后采样 31 次。短事务另采样 31 次。按操作分别计算中位数，上限为 100 ms。
 
 已知命中条目的零基位置以 `.position` 报告。动画排行按观看时长降序、同分按 ID 排列，分部数合计剧集和附加内容，缺少活动、分部或文件的动画保留零值。作业日志列出查询首读及各项中位数、P95 和最大值，`test-results/performance` 保存全部样本、输入与迁移摘要、SQLite 配置和执行计划。
 
@@ -146,7 +146,7 @@ Linux CI 还准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 Ap
 
 根 TypeScript 项目检查工具、配置和测试。桌面项目按 main、preload、renderer、utility process、shared、native、tools 和 tests 分环境检查。native 项目拥有 Node 绑定源码及生成声明，main 消费其实际入口。工程载体的程序源码归对应运行环境，四份 Vite 构建配置归 tools 项目。每份自有声明至少由一个 `skipLibCheck: false` 的实际项目完整检查，规则见[类型分工](../design/engineering/workspace.md#declaration-checks)。
 
-两个私有工程包通过 exports 直接消费。`pnpm lint` 运行类型感知 Oxlint 及全仓依赖边界检查。`tools/boundaries.ts` 按真实包导出核对循环、未声明依赖、运行代码与测试归属。dependency-cruiser 18 自用的 TypeScript 6 解析依赖由 packageExtensions 限定，项目检查和公开声明统一使用锁定的 TypeScript 7.1。
+两个私有工程包通过 exports 直接消费。`pnpm lint` 运行类型感知 Oxlint 及全仓依赖边界检查。`tools/boundaries.ts` 从 pnpm 取得实际成员目录，连同根工程输入按真实包导出核对循环、未声明依赖、运行代码与测试归属。dependency-cruiser 18 自用的 TypeScript 6 解析依赖由 packageExtensions 限定，项目检查和公开声明统一使用锁定的 TypeScript 7.1。
 
 `pnpm exec vp run --dry-run --json <包名>#<任务名>` 显示任务与依赖。增量类型信息归各包 `.cache/typescript`。
 

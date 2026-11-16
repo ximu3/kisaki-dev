@@ -1,36 +1,12 @@
-/** @fileoverview Resolves workspace ownership and selects the verification groups reached by a Git diff. */
+/** @fileoverview Maps changed project files to verification groups using registered ownership and dependencies. */
 
-import { execFileSync } from 'node:child_process'
-import { relative, sep } from 'node:path'
-
-/** A registered workspace project and its repository-relative directory. */
-export interface Project {
-  name: string
-  directory: string
-}
+import type { Project } from '../workspace.ts'
 
 /** The projects a group verifies and the project changes that can affect it. */
 export interface ProjectGroup {
   name: string
-  members: readonly string[]
+  members: readonly Project[]
   inputs: readonly string[]
-}
-
-/** Reads native pnpm workspace selectors, including their transitive dependency edges. */
-export function listProjects(filter?: string): Project[] {
-  const pnpm = process.env.npm_execpath
-  if (!pnpm) {
-    throw new Error('Run the verification planner through pnpm')
-  }
-  const selection = filter ? ['--filter', filter, '--fail-if-no-match'] : ['--recursive']
-  const output = execFileSync(pnpm, [...selection, 'list', '--depth', '-1', '--json'], {
-    encoding: 'utf8',
-  })
-  const projects = JSON.parse(output) as { name: string; path: string }[]
-  return projects.map(({ name, path }) => ({
-    name,
-    directory: relative('.', path).split(sep).join('/'),
-  }))
 }
 
 /**
@@ -42,12 +18,16 @@ export function selectGroups<Group extends ProjectGroup>(
   workspace: readonly Project[],
   groups: readonly Group[],
 ) {
-  const members = new Set(groups.flatMap((group) => group.members))
-  const products = workspace
-    .filter((project) => project.directory && !project.directory.startsWith('packages/'))
+  const owners = groups
+    .flatMap((group) => group.members)
     .sort((left, right) => right.directory.length - left.directory.length)
-  for (const project of products) {
-    if (!members.has(project.name)) {
+  const names = new Set(owners.map((project) => project.name))
+  for (const project of workspace) {
+    if (
+      project.directory &&
+      !project.directory.startsWith('packages/') &&
+      !names.has(project.name)
+    ) {
       throw new Error('No verification group owns workspace project ' + project.name)
     }
   }
@@ -60,7 +40,7 @@ export function selectGroups<Group extends ProjectGroup>(
     if (/^(?:[^/]+|refactor\/.+)\.md$/.test(path)) {
       continue
     }
-    const owner = products.find((project) => path.startsWith(project.directory + '/'))
+    const owner = owners.find((project) => path.startsWith(project.directory + '/'))
     if (!owner) {
       return { scope: 'full', groups }
     }
@@ -70,7 +50,7 @@ export function selectGroups<Group extends ProjectGroup>(
     scope: changed.size ? 'projects' : 'docs',
     groups: groups.filter(
       (group) =>
-        group.members.some((name) => changed.has(name)) ||
+        group.members.some((project) => changed.has(project.name)) ||
         group.inputs.some((name) => changed.has(name)),
     ),
   }

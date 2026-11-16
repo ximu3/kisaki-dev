@@ -13,8 +13,6 @@ test('worker operation medians meet their budget and the window reaches main dur
   desktop,
   profile,
 }, info) => {
-  // The watchdog includes creating the full fixture on the host's local filesystem.
-  test.setTimeout(15 * 60_000)
   const runtime = buildDirectory(hostTarget())
   await info.attach('build.json', {
     body: await readFile(join(runtime, 'build.json')),

@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process'
 import { appendFileSync } from 'node:fs'
 import { workspaceVerification } from './groups.ts'
 import { selectGroups } from './projects.ts'
+import { repositoryRoot } from '../workspace.ts'
 
 /** Creates one independent runner job per selected group and host, or only the requested diagnostic. */
 export function planChecks(
@@ -39,16 +40,21 @@ export function planChecks(
         ? (group.manualTargets ?? group.targets)
         : group.targets,
     )
+    if (!hosts.length) {
+      throw new Error('No verification hosts for ' + group.name)
+    }
     if (requestedTarget !== 'all') {
       hosts = hosts.filter(([target]) => target === requestedTarget)
     }
 
-    const diagnostics = workspace
-      .filter((project) => group.members.includes(project.name))
+    const diagnostics = group.members
       .map((project) => project.directory + '/test-results/')
       .join('\n')
     return hosts.map(([target, runner]) => {
       const check = diagnostic ?? group.verify(target)
+      if (!check.tasks.length) {
+        throw new Error(`No verification tasks for ${group.name} on ${target}`)
+      }
       const linux = target.startsWith('linux-')
       const x11 = linux && !!check.window
       return {
@@ -81,11 +87,15 @@ function changedPaths(base: string | undefined, head: string): string[] | undefi
     return undefined
   }
   try {
-    execFileSync('git', ['cat-file', '-e', base + '^{commit}'], { stdio: 'ignore' })
+    execFileSync('git', ['cat-file', '-e', base + '^{commit}'], {
+      cwd: repositoryRoot,
+      stdio: 'ignore',
+    })
   } catch {
     return undefined
   }
   return execFileSync('git', ['diff', '--no-renames', '--name-only', '-z', base, head, '--'], {
+    cwd: repositoryRoot,
     encoding: 'utf8',
   })
     .split('\0')

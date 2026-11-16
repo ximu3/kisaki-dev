@@ -1,6 +1,6 @@
 /** @fileoverview Declares the current verification groups, their hosts and their local task entry points. */
 
-import { listProjects } from './projects.ts'
+import { listProjects } from '../workspace.ts'
 import type { ProjectGroup } from './projects.ts'
 
 /** Native runners for the six desktop targets. */
@@ -24,7 +24,7 @@ export interface Check {
 
 /** One deliverable group's automatic verification and its available manual diagnostics. */
 export interface VerificationGroup extends ProjectGroup {
-  /** Automatic target identities and their Actions runner labels. */
+  /** Automatic OS-architecture targets and their Actions runner labels, such as linux-x64. */
   targets: Readonly<Record<string, string>>
   /** Wider supported host selection for explicit reproduction of a representative check. */
   manualTargets?: Readonly<Record<string, string>>
@@ -39,8 +39,7 @@ export function workspaceVerification() {
   const app = '@kisaki3/desktop'
   const ui = '@kisaki3/desktop-ui'
   const libraries = listProjects('./clients/desktop/packages/*')
-    .map((project) => project.name)
-    .sort()
+  const libraryNames = libraries.map((project) => project.name).sort()
   const libraryInputs = listProjects('{./clients/desktop/packages/*}...').map(
     (project) => project.name,
   )
@@ -57,14 +56,14 @@ export function workspaceVerification() {
       manualTargets: desktopRunners,
       /** All public tarballs and the UI browser suite share one independent feedback job. */
       verify: () => ({
-        tasks: libraries.map((name) => name + '#verify'),
+        tasks: libraryNames.map((name) => name + '#verify'),
         chromium: ui,
         window: true,
       }),
       diagnostics: {
         browser: { tasks: [ui + '#test:browser'], chromium: ui },
         consumers: {
-          tasks: libraries.map((name) => name + '#test:consumers'),
+          tasks: libraryNames.map((name) => name + '#test:consumers'),
           chromium: ui,
           window: true,
         },
@@ -72,7 +71,7 @@ export function workspaceVerification() {
     },
     {
       name: 'desktop',
-      members: [app],
+      members: workspace.filter((project) => project.name === app),
       inputs: desktopInputs,
       targets: desktopRunners,
       /** Linux x64 already runs the tooling tests in Workspace checks. Other hosts exercise their own processes. */

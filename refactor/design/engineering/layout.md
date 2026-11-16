@@ -60,6 +60,7 @@ kisaki/
 │   ├── release/
 │   ├── boundaries.ts
 │   ├── check-doc-links.ts
+│   ├── workspace.ts
 │   └── ci/
 ├── tests/
 ├── config/
@@ -133,10 +134,11 @@ tools/
 ├── ci/
 ├── boundaries.ts
 ├── check-doc-links.ts
+├── workspace.ts
 └── release/
 ```
 
-`tools/ci/projects.ts` 通过 pnpm 确认工作区归属和依赖，`groups.ts` 登记实际交付组的验证入口和宿主条件，`plan.ts` 将候选差异或手动请求展开为作业。`tools/check-doc-links.ts` 检查仓库文档的本地路径与锚点。工作流负责事件、权限、runner 和结果汇总。
+`tools/workspace.ts` 通过 pnpm 读取实际成员和依赖范围，供边界检查和 CI 共用。`tools/ci/groups.ts` 登记交付组、验证入口和宿主条件，`projects.ts` 按文件归属选择相关组，`plan.ts` 将候选差异或手动请求展开为作业。`tools/check-doc-links.ts` 检查仓库文档的本地路径与锚点。工作流负责事件、权限、runner 和结果汇总。
 
 各公共包通过自身 tests/consumers 验证公开制品，在仓库外的隔离工程中核对所属入口的声明、样式与 Node、Webview 或 Solid 消费。消费者样板以 `tests/consumers/fixtures/<宿主>/` 为固定位置。该包拥有消费合同、样板及断言，安装与清理采用共同的测试机制。各公共包的 tarball 输出归自身 out/package，打包与制品检查任务由 `@kisaki3/config/vite/library` 配置。包结构与类型制品检查直接复用 publint、Are the Types Wrong 等现成工具，执行关系见[测试任务](#test-tasks)。
 

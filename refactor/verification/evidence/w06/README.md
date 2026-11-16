@@ -79,6 +79,25 @@
 
 Windows x64 的真实 Electron 测量通过线程消息交付完整报告。在同一宿主另外核对了发送报告后抛错或非零退出、正常退出却缺少报告，以及测量期间关闭宿主的结果。用例只接受正常退出的完整结果，worker 抛出的错误保留名称、消息和堆栈。
 
+<a id="six-target-workload"></a>
+
+### 2026-11-16 六目标完整负载
+
+候选 `58c0cfd2` 在 Windows、macOS、Linux 的 x64 和 ARM64 上运行同一工程载体和存储负载。六份报告的输入 SHA-256 均为 `b59c621eb0a6fb508f25ad282ddc0ae244580e2933090c9bab645b4d2b04aa3d`。各目标核对 16 条查询的实际结果，预热 3 次并重复采样 31 次，另测 31 次持久短事务。下表的最高中位数均来自未分类条目的定位。计时来自各自 runner，跨设备数值分别验收。[六目标运行和报告](https://github.com/ximu3/kisaki-dev/actions/runs/43808885499)
+
+| 目标 | 样本准备 s | 最高操作中位数 ms | 窗口 IPC P95 ms |
+| --- | ---: | ---: | ---: |
+| Windows x64 | 22.25 | 23.12 | 2.50 |
+| Windows ARM64 | 37.25 | 24.37 | 4.89 |
+| macOS x64 | 34.14 | 56.29 | 11.93 |
+| macOS ARM64 | 14.36 | 21.98 | 6.19 |
+| Linux x64 | 16.31 | 17.99 | 2.43 |
+| Linux ARM64 | 19.85 | 21.11 | 2.80 |
+
+同一提交的完整桌面作业也在六个目标通过了这套测量。原先每 250 行提交一批时，Windows x64 仅造数就用了 394 秒。固定样本现按表提交，仍使用正式驱动、外键、WAL 和 FULL。查询、短事务与窗口响应保留各自原定的 100 ms 门槛。[完整桌面运行](https://github.com/ximu3/kisaki-dev/actions/runs/43808866913) · [Windows 造数对照](https://github.com/ximu3/kisaki-dev/actions/runs/43801290297/job/133082008379)
+
+Intel Mac 的一次实测中，未分类定位中位数为 150.06 ms。现在计数从去重后的成员 ID 集合读取，远端分页在同一条 SQL 中取得真实总数、从较近的一端沿名称索引读取，并按名称和 ID 返回页面。定位按相同资格和严格的同名 ID 次序计数。Windows x64 的同库对照覆盖首页、中段、末页、不满一页、越界、空集及已知成员的零基位置。[原执行结果](https://github.com/ximu3/kisaki-dev/actions/runs/43804610038/job/133092498958) · [优化后的 Intel Mac 测量](https://github.com/ximu3/kisaki-dev/actions/runs/43808885499/job/133105994751)
+
 ## 复现与依据
 
 以下命令对应 2026-11-14 的工程版本。

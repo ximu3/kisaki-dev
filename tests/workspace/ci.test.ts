@@ -46,7 +46,7 @@ test('another delivery group verifies its own project and joins changes to its d
   const service = { name: '@fixture/service', directory: 'service' }
   const group: VerificationGroup = {
     name: 'service',
-    members: [service.name],
+    members: [service],
     inputs: ['@kisaki3/desktop-rpc'],
     targets: { 'linux-x64': 'ubuntu-24.04' },
     /** Runs the sample project through its declared entry. */
