@@ -57,6 +57,7 @@ export const test = base.extend<DesktopFixtures>({
     delete env.ELECTRON_RUN_AS_NODE
 
     const application = await _electron.launch({
+      chromiumSandbox: true,
       executablePath: electronExecutable(),
       args: [join(runtime, 'main/entry.js'), `--profile=${profile}`, `--window=${kind}`],
       env,

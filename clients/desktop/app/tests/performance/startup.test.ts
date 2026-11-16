@@ -34,6 +34,7 @@ test('measures twenty fresh processes and confirms all observed child processes 
     const { application, start } = await test.step(`${sample}: launch`, async () => {
       const start = performance.now()
       const application = await _electron.launch({
+        chromiumSandbox: true,
         executablePath: electronExecutable(),
         args: [join(runtime, 'main/entry.js'), `--profile=${profile}`],
         env,
