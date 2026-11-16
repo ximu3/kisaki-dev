@@ -44,6 +44,11 @@ export default defineConfig({
   },
   run: {
     tasks: {
+      dev: {
+        command: 'vpx tools/dev/cli.ts',
+        dependsOn: [dependencyBuilds, 'prepare:electron'],
+        cache: false,
+      },
       build: {
         command: 'vpx tools/build/cli.ts',
         dependsOn: [dependencyBuilds, 'build:native', 'prepare:resources'],
@@ -70,7 +75,7 @@ export default defineConfig({
       'test:dev-session': {
         command:
           'vp test run --project dev-session --no-file-parallelism --reporter=default --reporter=json --outputFile.json=test-results/dev-session/results.json',
-        dependsOn: ['prepare:electron', 'build:native', 'prepare:resources'],
+        dependsOn: [dependencyBuilds, 'prepare:electron', 'build:native', 'prepare:resources'],
         cache: false,
       },
       'test:artifacts': {

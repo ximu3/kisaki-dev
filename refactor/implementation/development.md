@@ -73,7 +73,7 @@ pnpm exec vp hooks enable
 
 ## 工程构建与资源
 
-从源码运行 `pnpm --filter @kisaki3/desktop dev`，开发资料默认保存在桌面工程的 `.local/development`。传入 `--profile <绝对路径>` 可选择隔离资料。有限构建与打包使用同一正式程序输入。
+从源码运行 `pnpm exec vp run @kisaki3/desktop#dev`。该任务先构建启动器消费的公共包并准备 Electron。开发资料默认保存在桌面工程的 `.local/development`，传入 `--profile <绝对路径>` 可选择隔离资料。有限构建与打包使用同一正式程序输入。
 
 ```sh
 pnpm exec vp run @kisaki3/desktop#build --target windows-x64

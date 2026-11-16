@@ -15,7 +15,6 @@
     "email": "152481053+ximu3@users.noreply.github.com"
   },
   "scripts": {
-    "dev": "vpx tools/dev/cli.ts",
     "generate:migrations": "drizzle-kit generate",
     "prepare:electron": "install-electron",
     "prepare:resources": "vpx tools/resources/cli.ts",
