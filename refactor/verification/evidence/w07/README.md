@@ -1,6 +1,6 @@
 # W07 应用运行与设置验证
 
-验证范围见 [W07](../../../implementation/work-packages.md#w07)。2026-11-16 在 Windows 10 22H2 x64（10.0.19045）使用 Node 26.13.1、pnpm 12.18.0 和 Electron 45.3.2 验证。源码会话、真实窗口和打包制品分别使用用例拥有的资料目录。
+验证范围见 [W07](../../../implementation/work-packages.md#w07)。源码会话、真实窗口和打包制品分别使用用例拥有的资料目录，运行版本为 Node 26.13.1、pnpm 12.18.0 和 Electron 45.3.2。
 
 ## 运行与资源
 
@@ -36,8 +36,27 @@ pnpm exec vp run --concurrency-limit 1 @kisaki3/desktop#verify
 
 ## Windows x64 实测
 
-工作区 `pnpm check`、desktop-contracts 与 desktop-localization 各自的制品及仓库外消费检查通过。桌面完整验证通过 5 项开发会话、23 项 Electron Node 模式、9 项真实 Electron、2 项性能和 1 项归档制品用例，并完成原生格式、Clippy 和绑定声明核对。20 次新进程启动使用保留的隔离资料和暖磁盘缓存，中位数为 722 ms，P95 为 782 ms。存储测量期间窗口到 main 的 IPC 往返 P95 为 2.41 ms。
+2026-11-17 在 Windows 10 22H2 x64（10.0.19045）通过工作区 `pnpm check` 和桌面完整验证。5 项开发会话、23 项 Electron Node 模式、10 项真实 Electron、2 项性能和 1 项归档制品用例通过，原生格式、Clippy 和绑定声明一致。系统字体来自 DirectWrite，本机单次读取 185 个不同字体族约用 2 ms。主题编辑器选用系统字体后正常保存和退出。
 
-本轮隔离候选版本为 `0.1.0-dev.0`，buildId 为 `a1f7e3a4-7be9-4771-a291-9b83aa041293`。实际解包运行的 Windows x64 ZIP 的 SHA-256 为 `4efbac3d76f6aa9747a3e0ab006fcba137e423e7581c227f243baf5fcf939eab`。NSIS 和 ZIP 均完成打包，启停与便携运行证据来自 ZIP。
+20 次新进程启动采用保留的隔离资料和暖磁盘缓存，中位数为 623 ms，P95 为 674 ms。存储负载期间窗口到 main 的 IPC 往返 P95 为 2.12 ms。本机制品版本为 `0.1.0-dev.0`，buildId 为 `48f61a04-8a56-4cdd-a8a7-78538d7f428a`。NSIS 和 ZIP 均完成打包，启停与便携运行使用 SHA-256 为 `a52ba0f604a5ceab60f513f63c8071a8f3f27a644a04829f2df20030259f9f8e` 的 ZIP。
 
-Windows arm64、macOS 与 Linux 各架构的本轮结果待取得。系统登录项实际获准、协议登记与系统通知投递也须按对应平台、载体和隔离账号记录。
+<a id="six-targets"></a>
+
+## 六目标开发制品
+
+2026-11-17，提交 `bd644b16` 的六个原生目标均通过完整桌面验证和制品启停。Windows 实际运行 ZIP 中的程序，macOS 运行从 ZIP 解出的 .app，Linux 运行 AppImage。各目标均从空资料创建数据库，重开后读取已保存的关闭偏好，再验证便携资料。Linux 使用 Xvfb 和 Openbox，macOS 与 Windows 使用 runner 的原生窗口会话。[CI 矩阵](https://github.com/ximu3/kisaki-dev/actions/runs/44014501511)
+
+表中启动时间来自每个宿主的 20 个新进程，IPC 为完整存储负载期间从窗口到 main 的往返时间。构建身份与文件摘要由实际运行制品的用例输出在对应作业中。
+
+| 原生宿主 | 启动中位数 / P95（ms） | IPC P95（ms） | 实际运行归档的 SHA-256 |
+| --- | ---: | ---: | --- |
+| [Windows Server 2025 x64 · 26100](https://github.com/ximu3/kisaki-dev/actions/runs/44014501511/job/133809207362) | 658 / 680 | 3.29 | `aa27ad8e6badca388db38c5a5626a67dba38a5d0d45b4ee810a2244d281e3ffa` |
+| [Windows 11 arm64 · 26200](https://github.com/ximu3/kisaki-dev/actions/runs/44014501511/job/133809207438) | 670 / 782 | 3.60 | `f3594d240d59beaac9973e8652f6743dd388ca24928cb2e03b59a261fd04e19f` |
+| [macOS 15.7.9 x64](https://github.com/ximu3/kisaki-dev/actions/runs/44014501511/job/133809207440) | 1568 / 1926 | 6.21 | `9776d9ec7276837660bf259ce005dd07f62a6d6105bc27f4ec87c3fe51a31792` |
+| [macOS 15.8.2 arm64](https://github.com/ximu3/kisaki-dev/actions/runs/44014501511/job/133809207515) | 739 / 1021 | 9.47 | `f9834012080a33e53943e3b9bc7b9bd2d234d7a9a47d09f624142cd7d9e8e67e` |
+| [Ubuntu 22.04.5 x64 · X11](https://github.com/ximu3/kisaki-dev/actions/runs/44014501511/job/133809207403) | 692 / 715 | 5.32 | `e940408648aa14b37f367cc3721cc0137e0f3a135acdead46bb7794df8ec368c` |
+| [Ubuntu 22.04.5 arm64 · X11](https://github.com/ximu3/kisaki-dev/actions/runs/44014501511/job/133809207374) | 588 / 602 | 4.36 | `56c25770569d825d637252af63bf2ec4122eccecccc2a0c1ad5fcc763155d418` |
+
+Windows 与 Linux 双架构在一次性账号中从系统集成界面登记并撤销登录项，随后由操作系统打开 `kisaki-dev://view/tasks`，并在已运行的窗口确认任务中心出现。Linux 双架构还在独立 D-Bus 和 X11 会话中由 dunst 激活真实通知，接收方得到发出通知时指定的任务目标。
+
+上述登录项用例核对登记状态，重新登录后的后台自启与系统许可变化仍待实测。macOS 登录项登记、正式安装身份下的协议关联和系统通知投递仍需在对应安装环境核验。当前通知目标留在运行进程内，应用完全退出后从通知恢复目标的接入与实测仍待完成。
