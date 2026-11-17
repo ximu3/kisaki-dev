@@ -44,18 +44,18 @@ pnpm exec vp run --concurrency-limit 1 @kisaki3/desktop#verify
 
 ## 六目标开发制品
 
-2026-11-17，提交 `615d9351` 的六个原生目标均通过完整桌面验证和制品启停。Windows 实际运行 ZIP 中的程序，macOS 运行从 ZIP 解出的 .app，Linux 运行 AppImage。各目标均从空资料创建数据库，重开后读取已保存的关闭偏好，再验证便携资料。Linux 使用 Xvfb 和 Openbox，macOS 与 Windows 使用 runner 的原生窗口会话。[CI 矩阵](https://github.com/ximu3/kisaki-dev/actions/runs/44020314278)
+2026-11-17，提交 `32309210` 的六个原生目标均通过完整桌面验证和制品启停。Windows 实际运行 ZIP 中的程序，macOS 运行从 ZIP 解出的 .app，Linux 运行 AppImage。各目标均从空资料创建数据库，重开后读取已保存的关闭偏好，再验证便携资料。Linux 使用 Xvfb 和 Openbox，macOS 与 Windows 使用 runner 的原生窗口会话。[CI 矩阵](https://github.com/ximu3/kisaki-dev/actions/runs/44069724930)
 
-表中启动时间来自每个宿主的 20 个新进程，IPC 为完整存储负载期间从窗口到 main 的往返时间。构建身份与文件摘要由实际运行制品的用例输出在对应作业中。
+表中启动时间来自每个宿主的 20 个新进程，IPC 为完整存储负载期间任务中心刷新时 `tasks.types` 的窗口往返时间。构建身份与文件摘要由实际运行制品的用例输出在对应作业中。
 
 | 原生宿主 | 启动中位数 / P95（ms） | IPC P95（ms） | 实际运行归档的 SHA-256 |
 | --- | ---: | ---: | --- |
-| [Windows Server 2025 x64 · 26100](https://github.com/ximu3/kisaki-dev/actions/runs/44020314278/job/133828106683) | 543 / 571 | 3.03 | `6a104dbe5aee26e3aa23783b36cb36a2ff7a3bb9c3c0cee0048c55c3808f4b3e` |
-| [Windows 11 arm64 · 26200](https://github.com/ximu3/kisaki-dev/actions/runs/44020314278/job/133828106679) | 696 / 767 | 3.63 | `7d901a0faaac758b79619067860d780a5ae3f4b4c183229847f304133cfe2d5d` |
-| [macOS 15.7.9 x64](https://github.com/ximu3/kisaki-dev/actions/runs/44020314278/job/133828106778) | 1218 / 1519 | 6.26 | `2e300f5a9b479d1fb4ac3957ee79a6609693e6753f80a694ecb79b76b3b4281b` |
-| [macOS 15.8.2 arm64](https://github.com/ximu3/kisaki-dev/actions/runs/44020314278/job/133828106663) | 1068 / 1370 | 14.92 | `6421a33738c4bb910fb4bfe76c53860134192f4d698caebae2717cad71bcb64f` |
-| [Ubuntu 22.04.5 x64 · X11](https://github.com/ximu3/kisaki-dev/actions/runs/44020314278/job/133828106601) | 571 / 662 | 3.11 | `81f9cc9a5a92c7dc3bfb69ab0cb0b0a6f0575485e7c4b5f19a857a2055c77050` |
-| [Ubuntu 22.04.5 arm64 · X11](https://github.com/ximu3/kisaki-dev/actions/runs/44020314278/job/133828106700) | 592 / 608 | 3.34 | `0923102e4cacaed9dd3041a7a56879e6d734eb10c4229eb3c84af1a41e0efd20` |
+| [Windows Server 2025 x64 · 26100](https://github.com/ximu3/kisaki-dev/actions/runs/44069724930/job/133992797055) | 503 / 537 | 10.75 | `2751e27c868e55b807c0d903355cdc939e5dc0d006ed05cf4a93fc96a6486d33` |
+| [Windows 11 arm64 · 26200](https://github.com/ximu3/kisaki-dev/actions/runs/44069724930/job/133992796927) | 618 / 691 | 12.59 | `3af8790b93a5b201319dda5480f6193127dd60e21d615160544f3a0e79be70a3` |
+| [macOS 15.7.9 x64](https://github.com/ximu3/kisaki-dev/actions/runs/44069724930/job/133992796953) | 1865 / 2627 | 38.06 | `fb7f7db0687e7647459d73627d7672228e4c84587ef454ba9aa1f3f915df68e6` |
+| [macOS 15.8.2 arm64](https://github.com/ximu3/kisaki-dev/actions/runs/44069724930/job/133992796941) | 658 / 788 | 24.43 | `5e336c5a44a8d830df3bb88aa6832aeb7333c9895db5f2f607f6db5c2f0a4740` |
+| [Ubuntu 22.04.5 x64 · X11](https://github.com/ximu3/kisaki-dev/actions/runs/44069724930/job/133992796948) | 671 / 688 | 14.97 | `414cdc40c8c5a8e0a4c2dd059d205d9b779a8ccb01205abe3d046e17251aed5d` |
+| [Ubuntu 22.04.5 arm64 · X11](https://github.com/ximu3/kisaki-dev/actions/runs/44069724930/job/133992796859) | 596 / 615 | 14.33 | `f9833bc537c0d283fdada492a684729b2414626d1772b697bb9dda0a3aecdab7` |
 
 Windows 与 Linux 双架构在一次性账号中从系统集成界面登记并撤销登录项，随后由操作系统打开 `kisaki-dev://view/tasks`，并在已运行的窗口确认任务中心出现。Linux 双架构还在独立 D-Bus 和 X11 会话中由 dunst 激活真实通知，接收方得到发出通知时指定的任务目标。
 
@@ -69,14 +69,16 @@ Windows 双架构在一次性账号中使用开发身份，由独立 COM 客户�
 
 ## 附件回收与编辑器核验
 
-2026-11-17 在 Windows 10 x64、Electron 45.3.2 上，以同一隔离资料依次建立空库、3,000 条笔记、同一批笔记各引用一个有效附件的三个样本。各组先运行一次准备，随后测量三个新进程从启动到任务中心入口可操作的时间，磁盘缓存保持暖态。
+2026-11-17 在 Windows 10 x64、Electron 45.3.2 上，以同一隔离资料依次建立空库、3,000 条笔记、同一批笔记各引用一个有效附件的三个样本。各组先运行一次准备，随后测量三个新进程从启动到任务中心入口可操作的时间，磁盘缓存保持暖态。实际资料规模的影响在同轮样本之间比较。
 
-| 样本 | 修正前中位数 | 回收改为分批维护后的中位数 |
-| --- | ---: | ---: |
-| 空库 | 565 ms | 574 ms |
-| 3,000 条笔记 | 576 ms | 578 ms |
-| 上述笔记共引用 3,000 个附件 | 2,581 ms | 594 ms |
+| 样本 | 修正前中位数 | 附件修正候选 | `32309210` 候选 |
+| --- | ---: | ---: | ---: |
+| 空库 | 565 ms | 574 ms | 688 ms |
+| 3,000 条笔记 | 576 ms | 578 ms | 632 ms |
+| 上述笔记共引用 3,000 个附件 | 2,581 ms | 594 ms | 679 ms |
 
-单独将一个已引用附件的文件位置设为目录，应用仍完成启动，笔记保留该附件 ID。窗口保存缩放 115 后、回包前输入的 125 保持待保存。无效缩放的错误文本关联到输入框，提交回到该字段。逐键填入多个音轨语言、主题保存期间继续编辑、保存快捷键，以及取消字体准备后打开另一份草稿均在真实窗口复验。在 960 像素宽的主窗口中用鼠标选择系统字体后，列表立即收起，“保存并选用”可直接点击。Windows 主窗口最大化按钮的系统命中结果为 `HTMAXBUTTON`，真实窗口用例向目标窗口查询该命中，不移动系统指针。存储负载下的窗口往返改为观察任务中心“刷新”触发的 `tasks.types` 请求与对应回复，覆盖各平台的实际读取。本次 Windows x64 候选的 IPC P95 为 6.47 ms，实际启停 ZIP 的 buildId 为 `fa2b1221-3120-4a59-8ed5-238afbe59f91`，SHA-256 为 `0a0bacc8a1a35c922bf1d59c02295d5e41b944802569ff3295eeeec392f7e8b1`。
+单独将一个已引用附件的文件位置设为目录，应用仍完成启动，笔记保留该附件 ID。窗口保存缩放 115 后、回包前输入的 125 保持待保存。无效缩放的错误文本关联到输入框，提交回到该字段。逐键填入多个音轨语言、主题保存期间继续编辑、保存快捷键，以及取消字体准备后打开另一份草稿均在真实窗口复验。在 960 像素宽的主窗口中用鼠标选择系统字体后，列表立即收起，“保存并选用”可直接点击。Windows 主窗口最大化按钮的系统命中结果为 `HTMAXBUTTON`，真实窗口用例向目标窗口查询该命中，不移动系统指针。存储负载下的窗口往返改为观察任务中心“刷新”触发的 `tasks.types` 请求与对应回复，覆盖各平台的实际读取。本机 `32309210` 候选的 IPC P95 为 8.51 ms，实际启停 ZIP 的 buildId 为 `89282d96-558e-403d-8e09-8a91b2a17cf7`，SHA-256 为 `ba5209d5b55b1acf478bf56c8c6a4fcf041f8f679be69fd92943027f769bd8b3`。
+
+六目标运行均验证了主题选项提交后列表关闭及按创建时间清理任务历史。Windows Server 2025 x64 与 Windows 11 arm64 都取得了系统最大化按钮命中，Linux 双架构核对了开发桌面项名、应用清单和实际 AppImage 入口。
 
 Linux 登记另以隔离 XDG 目录核对可移动 AppImage 的换路径登记及旧登录项撤销。凭据适配按固定 Electron 的暂不可用错误注入复验。这两组核对覆盖登记文件与错误转换。安装及真实系统登录仍按[六目标范围](#six-targets)登记。
