@@ -9,6 +9,9 @@ import { selectPaths, launchArgument, type AppPaths } from './app/paths'
 import { createWindow } from './app/window'
 import { developmentControl } from './app/development'
 import { windowKinds, type WindowKind } from '../shared/window-api/protocol'
+import { applicationIdentities } from '@kisaki3/desktop-contracts/app'
+import { loadNative } from '#native'
+import { createNotifications } from './infrastructure/notifications'
 
 /** Privileged scheme declarations must precede Electron readiness and session creation. */
 protocol.registerSchemesAsPrivileged([
@@ -45,6 +48,11 @@ let restore = () => {
   focusRequested = true
 }
 
+/** System activation starts a receiver; the delivered action decides which window to reveal. */
+function notificationLaunch(args: readonly string[]) {
+  return args.includes('--gapplication-service') || args.some((arg) => /^[-/]embedding$/i.test(arg))
+}
+
 app.on('open-url', (event, url) => {
   event.preventDefault()
   activation.receive(url)
@@ -54,7 +62,7 @@ app.on('second-instance', (_event, args) => {
   const url = args.find((arg) => /^kisaki(?:-dev)?:\/\//.test(arg))
   if (url) {
     activation.receive(url)
-  } else {
+  } else if (!notificationLaunch(args)) {
     restore()
   }
 })
@@ -78,15 +86,30 @@ async function run(paths: AppPaths) {
     !app.isPackaged && process.send
       ? developmentControl(async () => (await stop.promise)())
       : undefined
-  await app.whenReady()
+  const { appId } = applicationIdentities[paths.isolated ? 'development' : 'production']
+  const native = loadNative(join(paths.resources, 'native', 'kisaki-native.node'))
+  const notifications = createNotifications(
+    appId,
+    {
+      /** Shows the window once its document is ready. */
+      activate: () => restore(),
+      /** Passes desktop URLs to the public link parser. */
+      openUrl: activation.receive,
+      /** Only this installation's validated navigation target can reach the window. */
+      notification: (input) => activation.notification(appId, input),
+    },
+    native,
+  )
   let view: Awaited<ReturnType<typeof createWindow>> | undefined
-  const application = await compose(paths, async (target) => {
-    if (!view) {
-      throw new Error('The main window is unavailable')
-    }
-    show()
-    await view.navigate(target)
-  })
+  let application: Awaited<ReturnType<typeof compose>>
+  try {
+    await app.whenReady()
+    await notifications.ready(app.isPackaged)
+    application = await compose(paths, native, notifications)
+  } catch (cause) {
+    await notifications.close()
+    throw cause
+  }
   let tray: Tray | undefined
   /** Restores and focuses the active native window. */
   const show = () => {
@@ -230,9 +253,10 @@ async function run(paths: AppPaths) {
     }
     await activation.ready(async (request) => {
       if (
-        request.scheme !== (paths.isolated ? 'kisaki-dev' : 'kisaki') ||
-        request.type !== 'view' ||
-        !['preferences', 'tasks'].includes(request.target.type)
+        request.type !== 'notification' &&
+        (request.scheme !== (paths.isolated ? 'kisaki-dev' : 'kisaki') ||
+          request.type !== 'view' ||
+          !['preferences', 'tasks'].includes(request.target.type))
       ) {
         throw new Error('This destination is unavailable')
       }
@@ -242,6 +266,7 @@ async function run(paths: AppPaths) {
     if (
       focusRequested ||
       (!process.argv.includes('--login') &&
+        !notificationLaunch(process.argv) &&
         !(process.platform === 'darwin' && app.getLoginItemSettings().wasOpenedAtLogin))
     ) {
       show()

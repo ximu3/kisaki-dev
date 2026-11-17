@@ -118,7 +118,7 @@ start 编码为 JSON 字符串，不增加 fromStart、page、time、cfi 或短�
 
 待交付的相同原生规范请求可以合并，参数顺序不同仍可视为同一请求，但不建立永久去重表。扩展请求不由宿主合并或重排参数，重复资源的处理由扩展业务决定。Windows 与 Linux 处理冷启动参数和 second-instance；macOS 在启动早期同步监听 open-url，再进行异步初始化。单实例机制避免重复打开数据库，制品按 [Electron 接入规则](https://www.electronjs.org/docs/latest/tutorial/launch-app-from-url-in-another-app)验证。
 
-通知携带可序列化业务目标。新增结果通知打开实际条目或任务，应用内导航直接使用原生请求。Windows 可以采用[协议激活](https://learn.microsoft.com/en-us/dotnet/api/microsoft.toolkit.uwp.notifications.toastcontentbuilder.setprotocolactivation?view=win-comm-toolkit-dotnet-7.1)；各平台按安装身份验证运行中与冷启动投递，确保一次点击只触发一次导航。
+系统通知携带应用身份和可序列化的原生导航目标。操作系统保留点击载荷，运行端按同一份 NativeViewTarget 合同校验，在窗口就绪后导航一次。新增结果通知打开实际条目或任务；普通重启只恢复应用，后续点击仍可交回原目标。各平台的登记、接收与实测归属见[通知激活身份](../engineering/build.md#notification-activation)。
 
 先请求 A 再请求 B 时，迟到的 A 不能把界面拉回。取消后不能被迟到响应重新打开，观察页关闭也不能使后台操作失去归属。导航共用可见性、归属、窗口复用和草稿确认规则。目标不存在或不可见时，统一提示“当前范围内没有匹配的记录。”参数错误时说明无法执行的原因。普通失败不强制打开主窗口，普通导航不产生 TaskRun 或历史中心记录。
 

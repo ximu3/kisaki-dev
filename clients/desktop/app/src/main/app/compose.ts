@@ -2,7 +2,7 @@
 
 import { session } from 'electron'
 import { join } from 'node:path'
-import { loadNative } from '#native'
+import type { NativeCapabilities } from '#native'
 import { assertLocalDataDirectory } from '../infrastructure/files'
 import { openDatabaseExecutor } from '../infrastructure/database'
 import { createEvents } from '../infrastructure/events'
@@ -10,10 +10,9 @@ import { createPreferences } from '../features/preferences'
 import { getPreferenceDefaults } from '../features/preferences/defaults'
 import { createTasks } from '../features/tasks'
 import { createI18n } from '../infrastructure/i18n'
-import { createNotifications } from '../infrastructure/notifications'
+import type { createNotifications } from '../infrastructure/notifications'
 import { systemIntegration } from '../infrastructure/system'
 import { createRuntimeLog } from '../infrastructure/log'
-import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 import { createNetwork } from '../infrastructure/network'
 import { createResources } from '../infrastructure/resources'
 import { createAttachments } from '../infrastructure/attachments'
@@ -26,9 +25,12 @@ import { bindSettings } from './bindings'
 import type { DesktopPlatform } from '@kisaki3/desktop-contracts/preferences'
 
 /** Opens the chosen library before exposing any product operation to a document. */
-export async function compose(paths: AppPaths, open: (target: NativeViewTarget) => Promise<void>) {
+export async function compose(
+  paths: AppPaths,
+  native: NativeCapabilities,
+  notifications: ReturnType<typeof createNotifications>,
+) {
   const nativePath = join(paths.resources, 'native', 'kisaki-native.node')
-  const native = loadNative(nativePath)
   await assertLocalDataDirectory(paths.data, native.files)
   const log = await createRuntimeLog(paths.data)
   await log.record('opening')
@@ -75,7 +77,6 @@ export async function compose(paths: AppPaths, open: (target: NativeViewTarget) 
           }
         }),
     })
-    const notifications = createNotifications(open)
     teardown.push(notifications.close)
     const i18n = createI18n()
     const preferences = createPreferences(database.call, defaults, () => i18n.t)

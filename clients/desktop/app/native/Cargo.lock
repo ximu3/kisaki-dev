@@ -491,6 +491,7 @@ dependencies = [
 name = "kisaki-native"
 version = "0.1.0-dev.0"
 dependencies = [
+ "cc",
  "font-kit",
  "icu_collator",
  "icu_locale_core",

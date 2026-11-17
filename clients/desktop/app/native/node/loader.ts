@@ -14,6 +14,10 @@ export interface NativeCapabilities {
   files: NativeFiles
   /** Reads the installed font families on the native worker pool. */
   listFontFamilies: typeof Binding.listFontFamilies
+  /** Connects the OS receiver before activation can reach the application. */
+  setNotificationReceiver: typeof Binding.setNotificationReceiver
+  /** Returns OS acceptance or denied permission for one native submission. */
+  postNotification(appId: string, identifier: string, title: string, body: string): Promise<boolean>
 }
 
 /** Failure to load a usable native module, retaining the original loading or export error. */
@@ -43,12 +47,30 @@ export function loadNative(modulePath: string): NativeCapabilities {
       typeof binding.syncFile !== 'function' ||
       typeof binding.getFilesystemLocation !== 'function' ||
       typeof binding.sameDirectoryEntry !== 'function' ||
-      typeof binding.listFontFamilies !== 'function'
+      typeof binding.listFontFamilies !== 'function' ||
+      typeof binding.setNotificationReceiver !== 'function' ||
+      typeof binding.postSystemNotification !== 'function'
     ) {
       throw new TypeError('The native module does not provide the required capabilities')
     }
 
-    return { files: createNativeFiles(binding), listFontFamilies: binding.listFontFamilies }
+    return {
+      files: createNativeFiles(binding),
+      listFontFamilies: binding.listFontFamilies,
+      setNotificationReceiver: binding.setNotificationReceiver,
+      /** Adapts the platform's completion callback to the application promise. */
+      postNotification(appId, identifier, title, body) {
+        return new Promise((resolve, reject) => {
+          binding.postSystemNotification(appId, identifier, title, body, (error, accepted) => {
+            if (error) {
+              reject(error)
+            } else {
+              resolve(accepted === true)
+            }
+          })
+        })
+      },
+    }
   } catch (cause) {
     throw new NativeLoadError(cause)
   }

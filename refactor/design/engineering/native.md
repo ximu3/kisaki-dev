@@ -1,6 +1,6 @@
 # 本体私有原生能力
 
-桌面本体的私有原生工程提供文件系统操作、系统字体族读取和资料库名称排序。字体目录由 font-kit 在工作线程读取，各系统分别使用 DirectWrite、Core Text 和 Fontconfig。Vantage、libmpv-node 等独立项目按各自规范交付，本体通过其公开包接入。
+桌面本体的私有原生工程提供文件系统操作、系统字体族读取、Windows 与 macOS 通知接入，以及资料库名称排序。字体目录由 font-kit 在工作线程读取，各系统分别使用 DirectWrite、Core Text 和 Fontconfig。Vantage、libmpv-node 等独立项目按各自规范交付，本体通过其公开包接入。
 
 先使用 Node、Electron 和现有依赖能够完整提供的能力；私有绑定只补足实际缺口，如不覆盖移动或平台要求的同步原语。增加 Rust 实现须能说明所需语义或已测得的收益，不将“原生优先”理解为把已有标准能力重新写成原生模块。
 
@@ -38,6 +38,7 @@ clients/desktop/app/
 │   │   ├── lib.rs
 │   │   ├── files.rs
 │   │   ├── fonts.rs
+│   │   ├── notifications/
 │   │   ├── filesystem/
 │   │   │   ├── mod.rs
 │   │   │   ├── entries.rs
@@ -52,7 +53,7 @@ clients/desktop/app/
 └── tests/integration/native/
 ```
 
-同一个 Cargo crate 交付这些能力。`build.rs` 配置 Node-API 链接并记录锁定的 ICU 组件版本。`files.rs` 实现文件移动和同步，`filesystem/` 拥有目录项判等、挂载识别和查询错误。`fonts.rs` 读取系统字体族，`collation.rs` 在 SQLite 连接上注册名称比较器。
+同一个 Cargo crate 交付这些能力。`build.rs` 配置 Node-API 链接并记录锁定的 ICU 组件版本。`files.rs` 实现文件移动和同步，`filesystem/` 拥有目录项判等、挂载识别和查询错误。`fonts.rs` 读取系统字体族，`collation.rs` 在 SQLite 连接上注册名称比较器。`notifications/` 以平台 SDK 提交通知并转交默认点击，安装登记和运行期连接的分工见[通知激活身份](build.md#notification-activation)。导航目标的编码与校验归 main。
 
 node/index.ts 只列出实际公开导出，loader.ts 拥有加载入口，files.ts 拥有文件能力确需的 Node 适配。Node 源码遵守[TypeScript 要求](conventions.md#source-language)，纳入应用的类型检查、依赖检查和 main 构建，不另登记嵌套的 pnpm workspace 或独立 npm 发行项。
 
