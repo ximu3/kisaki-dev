@@ -176,7 +176,7 @@ test('prepared images and fonts survive independent holds and only adopted font 
   const { root, storage, options } = await library()
   const resources = createResources()
   const runtime = join(appRoot, 'out/resources', hostTarget())
-  const files = loadNative(options.collationExtension).files
+  const { files, listFontFamilies } = loadNative(options.collationExtension)
   const attachments = createAttachments(
     root,
     files,
@@ -190,7 +190,13 @@ test('prepared images and fonts survive independent holds and only adopted font 
     dispatch(attachmentStorage(storage)),
   )
   const images = createImages(runtime, attachments, resources)
-  const fonts = createFonts(runtime, attachments, resources, dispatch(fontStorage(storage)))
+  const fonts = createFonts(
+    runtime,
+    attachments,
+    resources,
+    dispatch(fontStorage(storage)),
+    listFontFamilies,
+  )
   const source = await images.prepare({ type: 'path', path: join(runtime, 'icons/icon.ico') })
   const cropped = await images.transform(source.resource, {
     rotationDegrees: 90,

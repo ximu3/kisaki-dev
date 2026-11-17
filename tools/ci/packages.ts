@@ -30,6 +30,8 @@ interface TaskEnvironment {
 interface PackageChecks {
   defaultTask: string
   targets: readonly Target[]
+  /** Build dependencies shared by this package's Linux checks. */
+  linuxPackages?: readonly string[]
   manualTargets?: readonly Target[]
   tasks: Readonly<Record<string, TaskEnvironment>>
   macosDeploymentTarget?: string
@@ -69,6 +71,9 @@ function libraryChecks(name: string): PackageChecks {
 /** Linux tools for building the desktop formats and observing their native windows. */
 const linuxPackaging = ['wmctrl', 'libfuse2', 'rpm']
 
+/** Desktop services exercised on a private Linux display and session bus. */
+const linuxIntegration = ['xdg-utils', 'dbus-daemon', 'dunst']
+
 /** Playwright measurements retained after the desktop performance task succeeds. */
 const performanceReport = 'test-results/performance/results.json'
 
@@ -84,16 +89,17 @@ const packageChecks: Readonly<Record<string, PackageChecks>> = {
   '@kisaki3/desktop': {
     defaultTask: 'verify',
     targets: nativeTargets,
+    linuxPackages: ['libfontconfig1-dev', 'libfreetype-dev'],
     macosDeploymentTarget: '13.0',
     tasks: {
       verify: {
         chromium: true,
         window: true,
-        linuxPackages: [...linuxPackaging, 'xdg-utils'],
+        linuxPackages: [...linuxPackaging, ...linuxIntegration],
         performanceReport,
       },
       'verify:native': {},
-      'test:window-startup': { window: true, linuxPackages: ['xdg-utils'] },
+      'test:window-startup': { window: true, linuxPackages: linuxIntegration },
       'test:dev-session': { chromium: true, window: true, linuxPackages: ['wmctrl'] },
       'test:candidate-artifacts': { window: true, linuxPackages: linuxPackaging },
       'test:performance': { window: true, performanceReport },

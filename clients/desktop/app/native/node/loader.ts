@@ -12,6 +12,8 @@ import type * as Binding from './binding'
 /** Application-facing capabilities backed by the selected desktop native module. */
 export interface NativeCapabilities {
   files: NativeFiles
+  /** Reads the installed font families on the native worker pool. */
+  listFontFamilies: typeof Binding.listFontFamilies
 }
 
 /** Failure to load a usable native module, retaining the original loading or export error. */
@@ -40,12 +42,13 @@ export function loadNative(modulePath: string): NativeCapabilities {
       typeof binding.moveNoReplace !== 'function' ||
       typeof binding.syncFile !== 'function' ||
       typeof binding.getFilesystemLocation !== 'function' ||
-      typeof binding.sameDirectoryEntry !== 'function'
+      typeof binding.sameDirectoryEntry !== 'function' ||
+      typeof binding.listFontFamilies !== 'function'
     ) {
       throw new TypeError('The native module does not provide the required capabilities')
     }
 
-    return { files: createNativeFiles(binding) }
+    return { files: createNativeFiles(binding), listFontFamilies: binding.listFontFamilies }
   } catch (cause) {
     throw new NativeLoadError(cause)
   }

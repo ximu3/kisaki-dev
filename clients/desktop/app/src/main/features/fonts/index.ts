@@ -6,7 +6,7 @@ import { createRequire } from 'node:module'
 import { join } from 'node:path'
 import { randomUUID } from 'node:crypto'
 import type * as Fontkit from 'fontkit'
-import type * as FontList from 'font-list'
+import type { NativeCapabilities } from '#native'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
   parseFontFileMetadata,
@@ -92,6 +92,7 @@ export function createFonts(
   attachments: ReturnType<typeof createAttachments>,
   resources: ReturnType<typeof createResources>,
   call: DatabaseCall<ReturnType<typeof fontStorage>>,
+  listFontFamilies: NativeCapabilities['listFontFamilies'],
 ) {
   const decoder = createRequire(join(runtime, 'media', 'index.cjs'))
   /** Notifies consumers after a committed library change. */
@@ -235,10 +236,9 @@ export function createFonts(
       invalidated.emit()
     },
     /** Returns distinct installed family names as reported by the host's font system. */
-    async listSystem() {
-      const installed = await (decoder('font-list') as typeof FontList).getFonts({
-        disableQuoting: true,
-      })
+    async listSystem(options?: CallOptions) {
+      options?.signal?.throwIfAborted()
+      const installed = await listFontFamilies(options?.signal)
       return [...new Set(installed)].sort((a, b) => a.localeCompare(b))
     },
     /** Reads one bounded interval of user font summaries. */

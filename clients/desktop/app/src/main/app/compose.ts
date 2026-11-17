@@ -94,7 +94,13 @@ export async function compose(paths: AppPaths, open: (target: NativeViewTarget) 
       database.call,
     )
     const images = createImages(paths.resources, attachments, resources)
-    const fonts = createFonts(paths.resources, attachments, resources, database.call)
+    const fonts = createFonts(
+      paths.resources,
+      attachments,
+      resources,
+      database.call,
+      native.listFontFamilies,
+    )
     const appearance = createAppearance(fonts, database.call)
     teardown.push(appearance.close)
     const bindings = await bindSettings(

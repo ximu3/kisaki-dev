@@ -41,6 +41,9 @@ export declare const enum FilesystemQueryReason {
  */
 export declare function getFilesystemLocation(path: string): Promise<'local' | 'network' | 'unknown' | FilesystemQueryFailure>
 
+/** Queues a cancellable read of installed font family names. */
+export declare function listFontFamilies(signal?: AbortSignal | undefined | null): Promise<string[]>
+
 /**
  * Queues an atomic, non-replacing move within one filesystem.
  *

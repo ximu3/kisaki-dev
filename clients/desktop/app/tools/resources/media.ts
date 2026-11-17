@@ -48,5 +48,4 @@ export async function copyMediaRuntime(destination: string) {
   }
   await copyPackage('sharp', appRoot)
   await copyPackage('fontkit', appRoot)
-  await copyPackage('font-list', appRoot)
 }

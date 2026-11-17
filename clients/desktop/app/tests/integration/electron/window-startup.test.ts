@@ -129,6 +129,9 @@ test('saving and selecting a theme preserves the independent preference draft an
   const themes = page.getByRole('dialog', { name: 'Themes', exact: true })
   await themes.getByRole('button', { name: 'New theme' }).click()
   await themes.getByLabel('Name', { exact: true }).fill('Sample theme')
+  await themes.getByRole('button', { name: '--font-sans', exact: true }).click()
+  // In this empty user library, the first option after the default comes from the OS catalog.
+  await page.getByRole('listbox').getByRole('option').nth(1).click()
   await themes.getByRole('button', { name: 'Save and use' }).click()
   await expect(themes.getByText('Sample theme', { exact: true })).toBeVisible()
   await page.keyboard.press('Escape')

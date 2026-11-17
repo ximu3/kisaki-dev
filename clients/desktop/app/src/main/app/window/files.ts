@@ -119,7 +119,7 @@ export function createFileMethods(
     /** Reads the font name and its complete verified file set. */
     'fonts.get': async ([id]) => parseJsonValue(await fonts.get(textArgument(id))),
     /** Lists distinct family names from the actual operating-system font catalog. */
-    'fonts.system': async () => parseJsonValue(await fonts.listSystem()),
+    'fonts.system': async (_args, signal) => parseJsonValue(await fonts.listSystem({ signal })),
     /** Prepares selected native files for this editor and returns null on cancellation. */
     'fonts.choose': async (_args, signal) => {
       const { canceled, filePaths } = await dialog.showOpenDialog(window, {

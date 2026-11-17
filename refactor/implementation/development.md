@@ -18,7 +18,7 @@
 | `clients/desktop/app/src/main/infrastructure/files`       | 实际路径比较、本地资料根检查、有限字节准备、不覆盖发布与流式 ZIP                |
 | `clients/desktop/app/src/main/features/preferences`       | 按字段保存偏好、并发基线和代理凭据，初始化与恢复默认共用产品值                                   |
 | `clients/desktop/app/drizzle`                            | Drizzle Kit 生成并审阅的 SQL 迁移及 snapshot，随资源原样交付                    |
-| `clients/desktop/app/native`                             | Rust 文件同步、不覆盖移动与实际文件系统识别，Node 加载、声明与错误转换          |
+| `clients/desktop/app/native` | 文件系统操作、资料库名称排序、系统字体族读取及 Node 加载与声明 |
 | `clients/desktop/app/assets`                             | 锁定字体、第三方许可与图标源稿                                    |
 | `clients/desktop/app/tests`                              | 工程用例、隔离载体，以及原生、Electron、开发、制品和性能验证                     |
 | `clients/desktop/packages/desktop-appearance`            | 视觉词表、纯值解析、亮暗默认值、普通 CSS 与可选 Tailwind 映射                    |
@@ -56,7 +56,7 @@ desktop-localization 的英语 ICU 源文位于 src/en，按领域维护并由 i
 
 ## 准备与协作
 
-使用 `.node-version` 和根 `packageManager` 指定的 Node、pnpm。Rust 由 `clients/desktop/app/native/rust-toolchain.toml` 固定。Windows 需要 Visual Studio C++ 工具链，macOS 需要 Xcode Command Line Tools，Linux 需要对应系统构建工具。开发 Node 与 Electron 内置 Node 分开验证。
+使用 `.node-version` 和根 `packageManager` 指定的 Node、pnpm。Rust 由 `clients/desktop/app/native/rust-toolchain.toml` 固定。Windows 需要 Visual Studio C++ 工具链，macOS 需要 Xcode Command Line Tools，Linux 需要系统构建工具及 Fontconfig、FreeType 开发包。开发 Node 与 Electron 内置 Node 分开验证。
 
 ```sh
 pnpm install --frozen-lockfile
@@ -143,7 +143,7 @@ ZIP 读取按需访问中央目录，写入逐成员消费流。拥有者提供�
 
 desktop-contracts 和 desktop-localization 的独立消费者同时安装所需公共依赖的实际 tarball，由 Vite Task 准备；尚未公开的依赖通过临时消费者的 pnpm-workspace.yaml 指向这些包，不使用源码别名。
 
-Linux CI 准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 AppImage 的 FUSE 条件。窗口用例使用 xdg-utils 登记并打开开发协议链接。Electron Node 模式在启动测试前选定，测试内部不修改 ABI。
+Linux CI 准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 AppImage 的 FUSE 条件。窗口用例使用 xdg-utils 登记并打开开发协议链接，另在独立 Xvfb 和 D-Bus 会话中用 dunst 接收并激活系统通知。Electron Node 模式在启动测试前选定，测试内部不修改 ABI。
 
 对已打包制品，运行 `pnpm exec vp run @kisaki3/desktop#test:artifacts`。设置 `KISAKI_ARTIFACT_RECEIPT` 指定收据，默认读取 `dist/<target>/artifacts.json`。用例核对归档摘要、包内构建身份、安全 fuses 和实际启停。Windows 使用窗口句柄，macOS 使用系统辅助功能，Linux X11 使用窗口管理器观察。
 
