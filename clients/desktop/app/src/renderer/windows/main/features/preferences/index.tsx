@@ -467,6 +467,7 @@ export function PreferenceEditor(props: {
           <FontSelector
             api={api}
             label={label(leaf)}
+            errorId={errorId()}
             fallback="document"
             value={current()}
             change={change}

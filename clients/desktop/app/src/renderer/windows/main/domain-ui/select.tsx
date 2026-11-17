@@ -7,6 +7,7 @@ import type { MainClient } from '../../../infrastructure/api'
 export function WindowSelect<V extends string>(props: {
   api: MainClient
   label: string
+  id?: string | undefined
   errorId?: string | undefined
   value: V
   options: readonly { value: V; label: string; disabled?: boolean }[]
@@ -14,6 +15,7 @@ export function WindowSelect<V extends string>(props: {
 }) {
   return (
     <Select
+      id={props.id}
       class="window-select"
       aria-label={props.label}
       aria-invalid={props.errorId ? true : undefined}

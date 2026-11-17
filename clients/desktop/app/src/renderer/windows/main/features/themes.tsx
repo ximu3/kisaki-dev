@@ -355,15 +355,20 @@ export function Themes(props: {
                 /** Replaces only the edited token in its current branch. */
                 const change = (v: unknown) =>
                   modify({ ...value(), [scheme()]: { ...value()[scheme()], [key]: v } })
+                const title = key.slice(2).replaceAll('-', ' ')
+                /** Identifies the single labeled control independently of its popup contents. */
+                const fieldId = () => 'theme-field-' + scheme() + '/' + key
                 return (
-                  <label class="setting">
-                    <span>{key.slice(2).replaceAll('-', ' ')}</span>
+                  <div class="setting">
+                    <label for={fieldId()}>{title}</label>
                     <Show
                       when={typeof token() === 'string'}
                       fallback={
                         <FontSelector
                           api={api}
-                          label={key}
+                          id={fieldId()}
+                          label={title}
+                          errorId={validation.errorId(scheme() + '/' + key)}
                           fallback="default"
                           value={token()}
                           change={change}
@@ -373,16 +378,15 @@ export function Themes(props: {
                       }
                     >
                       <input
-                        id={'theme-field-' + scheme() + '/' + key}
+                        id={fieldId()}
                         aria-invalid={validation.errorId(scheme() + '/' + key) ? true : undefined}
                         aria-describedby={validation.errorId(scheme() + '/' + key)}
                         onFocus={() => validation.focus(scheme() + '/' + key)}
-                        aria-label={key}
                         value={typeof token() === 'string' ? (token() as string) : ''}
                         onInput={(e) => change(e.currentTarget.value)}
                       />
                     </Show>
-                  </label>
+                  </div>
                 )
               }}
             </For>

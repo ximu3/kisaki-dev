@@ -159,9 +159,10 @@ export function SystemSettings(props: { api: MainClient; report: (error: unknown
                   <p>
                     {api.t('runtime.portablePath')} {location().path}
                   </p>
-                  <label class="setting">
-                    {api.t('runtime.destination')}
+                  <div class="setting">
+                    <label for="data-location-destination">{api.t('runtime.destination')}</label>
                     <WindowSelect<DataModeChange['target']>
+                      id="data-location-destination"
                       api={api}
                       label={api.t('runtime.destination')}
                       value={target()}
@@ -171,7 +172,7 @@ export function SystemSettings(props: { api: MainClient; report: (error: unknown
                       ]}
                       change={setTarget}
                     />
-                  </label>
+                  </div>
                   <label class="setting">
                     {api.t('runtime.portable')}
                     <input

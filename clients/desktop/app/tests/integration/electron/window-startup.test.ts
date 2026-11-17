@@ -3,6 +3,7 @@
 import { test, expect } from '../../support/electron'
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import { captionHit } from '../../support/window-observation'
 import { appRoot } from '../../../tools/lib/paths'
 import { hostTarget } from '../../../tools/lib/targets'
 
@@ -26,6 +27,32 @@ for (const kind of ['main', 'reader', 'player', 'game-panel'] as const) {
           node: typeof (globalThis as { process?: unknown }).process,
         })),
       ).toEqual({ scale: '100', language: 'en', node: 'undefined' })
+      if (kind === 'main' && process.platform === 'win32') {
+        const point = await page.evaluate(() => {
+          const overlay = (
+            navigator as Navigator & {
+              windowControlsOverlay: {
+                visible: boolean
+                /** Returns the space reserved for application content between native caption controls. */
+                getTitlebarAreaRect(): DOMRect
+              }
+            }
+          ).windowControlsOverlay
+          const area = overlay.getTitlebarAreaRect()
+          return {
+            visible: overlay.visible,
+            x: ((area.right + innerWidth) * devicePixelRatio) / 2,
+            y: (area.height * devicePixelRatio) / 2,
+          }
+        })
+        expect(point.visible).toBe(true)
+        const handle = await desktop.evaluate(({ BrowserWindow }) =>
+          BrowserWindow.getAllWindows()[0]!.getNativeWindowHandle().readBigUInt64LE().toString(),
+        )
+
+        expect(await captionHit(handle, point.x, point.y)).toBe(9) // HTMAXBUTTON
+      }
+
       const renderer = await desktop.evaluate(({ app, BrowserWindow }) => {
         const pid = BrowserWindow.getAllWindows()[0]!.webContents.getOSProcessId()
         return { pid, sandboxed: app.getAppMetrics().find((item) => item.pid === pid)?.sandboxed }
@@ -137,9 +164,11 @@ test('saving and selecting a theme preserves the independent preference draft an
   const themes = page.getByRole('dialog', { name: 'Themes', exact: true })
   await themes.getByRole('button', { name: 'New theme' }).click()
   await themes.getByLabel('Name', { exact: true }).fill('Sample theme')
-  await themes.getByRole('button', { name: '--font-sans', exact: true }).click()
+  const font = themes.getByRole('button', { name: 'font sans', exact: true })
+  await font.click()
   // In this empty user library, the first option after the default comes from the OS catalog.
   await page.getByRole('listbox').getByRole('option').nth(1).click()
+  await expect(font).toHaveAttribute('aria-expanded', 'false')
   await themes.getByRole('button', { name: 'Save and use' }).click()
   await expect(themes.getByText('Sample theme', { exact: true })).toBeVisible()
   await page.keyboard.press('Escape')

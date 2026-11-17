@@ -29,6 +29,8 @@ export async function listFontOptions(api: MainClient) {
 export function FontSelector(props: {
   api: MainClient
   label: string
+  id?: string | undefined
+  errorId?: string | undefined
   fallback: 'default' | 'document'
   value: unknown
   change: (value: FontRef | { type: 'default' | 'document' }) => void
@@ -63,7 +65,10 @@ export function FontSelector(props: {
     }
   return (
     <Combobox
+      id={props.id}
       aria-label={props.label}
+      aria-invalid={props.errorId ? true : undefined}
+      aria-describedby={props.errorId}
       options={options()}
       value={selected()}
       searchLabel={props.api.t('runtime.fields.search')}
