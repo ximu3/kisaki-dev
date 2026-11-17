@@ -10,7 +10,7 @@ export function notificationTarget(appId: string, target: NativeViewTarget) {
   return `${appId}/notification/${randomUUID()}/${data}`
 }
 
-/** Ignores other senders and restores only navigation targets belonging to this application identity. */
+/** Matches the application identity and validates the stored destination before navigation. */
 export function readNotificationTarget(appId: string, input: unknown): NativeViewTarget | null {
   const prefix = appId + '/notification/'
   if (typeof input !== 'string' || !input.startsWith(prefix)) {

@@ -11,6 +11,7 @@ typedef void (*KisakiNotificationCompletion)(void *, int);
 
 /// The host application's delegate, installed before launch completes.
 @interface KisakiNotificationDelegate : NSObject <UNUserNotificationCenterDelegate>
+/// Delivers the stable identifier to the process's retained Node receiver.
 @property(nonatomic, assign) KisakiNotificationClick receive;
 @end
 
@@ -40,6 +41,9 @@ static KisakiNotificationDelegate *receiver;
 
 /// Detaching the delegate leaves delivered requests and their targets in Notification Center.
 int kisaki_set_notification_receiver(const char *app_id, KisakiNotificationClick receive) {
+    if (receive && ![NSBundle.mainBundle.bundleIdentifier isEqualToString:[NSString stringWithUTF8String:app_id]]) {
+        return 0;
+    }
     UNUserNotificationCenter *center = UNUserNotificationCenter.currentNotificationCenter;
     if (receive) {
         receiver = [KisakiNotificationDelegate new];
@@ -55,6 +59,8 @@ int kisaki_set_notification_receiver(const char *app_id, KisakiNotificationClick
 /// Requests OS delivery and reports the actual authorization and scheduling outcome.
 void kisaki_post_notification(const char *app_id, const char *identifier, const char *title, const char *body,
                               void *context, KisakiNotificationCompletion complete) {
+    // The center resolves the bundle identity already checked when the receiver connected.
+    (void)app_id;
     UNUserNotificationCenter *center = UNUserNotificationCenter.currentNotificationCenter;
     UNMutableNotificationContent *content = [UNMutableNotificationContent new];
     content.title = [NSString stringWithUTF8String:title];

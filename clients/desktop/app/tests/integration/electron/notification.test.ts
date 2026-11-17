@@ -42,6 +42,8 @@ const registered = test.extend({
 })
 
 registered.describe('disposable Windows notification identity', () => {
+  // The external client compiles the SDK interface on this host before invoking COM.
+  registered.describe.configure({ timeout: 60_000 })
   registered.skip(
     process.platform !== 'win32' || process.env.RUNNER_ENVIRONMENT !== 'github-hosted',
     'Requires an isolated Windows account for the development COM identity',

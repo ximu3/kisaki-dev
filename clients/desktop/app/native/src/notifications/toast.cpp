@@ -29,8 +29,12 @@ DWORD registration = 0;
 
 /// The two application identities have independent installation and activation lifetimes.
 const wchar_t *class_id(std::wstring_view app_id) {
-    if (app_id == L"me.kisaki") return L"{FA2B87ED-E2BE-44D5-A0D4-845CE29A35FB}";
-    if (app_id == L"me.kisaki.dev") return L"{1982CC5E-9D53-4DDE-B53D-226C1B20E8A9}";
+    if (app_id == L"me.kisaki") {
+        return L"{FA2B87ED-E2BE-44D5-A0D4-845CE29A35FB}";
+    }
+    if (app_id == L"me.kisaki.dev") {
+        return L"{1982CC5E-9D53-4DDE-B53D-226C1B20E8A9}";
+    }
     return nullptr;
 }
 
@@ -38,18 +42,26 @@ const wchar_t *class_id(std::wstring_view app_id) {
 bool owns_server(const wchar_t *id) {
     const auto key = std::wstring(L"CLSID\\") + id + L"\\LocalServer32";
     DWORD bytes = 0;
-    if (RegGetValueW(HKEY_CLASSES_ROOT, key.c_str(), nullptr, RRF_RT_REG_SZ, nullptr, nullptr, &bytes) != ERROR_SUCCESS) return false;
+    if (RegGetValueW(HKEY_CLASSES_ROOT, key.c_str(), nullptr, RRF_RT_REG_SZ, nullptr, nullptr, &bytes) != ERROR_SUCCESS) {
+        return false;
+    }
     std::vector<wchar_t> command(bytes / sizeof(wchar_t) + 1);
-    if (RegGetValueW(HKEY_CLASSES_ROOT, key.c_str(), nullptr, RRF_RT_REG_SZ, nullptr, command.data(), &bytes) != ERROR_SUCCESS) return false;
+    if (RegGetValueW(HKEY_CLASSES_ROOT, key.c_str(), nullptr, RRF_RT_REG_SZ, nullptr, command.data(), &bytes) != ERROR_SUCCESS) {
+        return false;
+    }
 
     int count = 0;
     auto args = CommandLineToArgvW(command.data(), &count);
-    if (!args) return false;
+    if (!args) {
+        return false;
+    }
     std::filesystem::path server = count ? args[0] : L"";
     LocalFree(args);
     std::wstring executable(32768, L'\0');
     const auto length = GetModuleFileNameW(nullptr, executable.data(), static_cast<DWORD>(executable.size()));
-    if (!length || length == executable.size()) return false;
+    if (!length || length == executable.size()) {
+        return false;
+    }
     executable.resize(length);
     std::error_code error;
     return std::filesystem::equivalent(executable, server, error);
@@ -58,11 +70,15 @@ bool owns_server(const wchar_t *id) {
 /// Windows delivers both running and cold clicks to this one installed notification receiver.
 class Activator final : public RuntimeClass<RuntimeClassFlags<ClassicCom>, INotificationActivationCallback> {
 public:
+    /// Binds the receiver to this AUMID for the lifetime of the COM request.
     Activator(std::wstring app_id, Click receive) : app_id_(std::move(app_id)), receive_(receive) {}
 
+    /// Delivers the clicked toast's launch value to the validated host receiver.
     HRESULT STDMETHODCALLTYPE Activate(LPCWSTR app_id, LPCWSTR arguments,
                                       const NOTIFICATION_USER_INPUT_DATA *, ULONG) noexcept override {
-        if (!app_id || app_id_ != app_id || !arguments) return E_INVALIDARG;
+        if (!app_id || app_id_ != app_id || !arguments) {
+            return E_INVALIDARG;
+        }
         try {
             receive_(winrt::to_string(arguments).c_str());
             return S_OK;
@@ -79,10 +95,14 @@ private:
 /// Supplies a fresh activation object for each COM request to the running process.
 class Factory final : public RuntimeClass<RuntimeClassFlags<ClassicCom>, IClassFactory> {
 public:
+    /// Retains the application identity and callback for subsequent OS activations.
     Factory(std::wstring app_id, Click receive) : app_id_(std::move(app_id)), receive_(receive) {}
 
+    /// Creates an unaggregated instance of the SDK's requested activation interface.
     HRESULT STDMETHODCALLTYPE CreateInstance(IUnknown *outer, REFIID iid, void **object) noexcept override {
-        if (outer) return CLASS_E_NOAGGREGATION;
+        if (outer) {
+            return CLASS_E_NOAGGREGATION;
+        }
         try {
             auto activation = Make<Activator>(app_id_, receive_);
             return activation ? activation->QueryInterface(iid, object) : E_OUTOFMEMORY;
@@ -91,6 +111,7 @@ public:
         }
     }
 
+    /// The desktop lifecycle owns process exit independently of individual class-factory clients.
     HRESULT STDMETHODCALLTYPE LockServer(BOOL) noexcept override { return S_OK; }
 
 private:
@@ -100,7 +121,10 @@ private:
 
 /// Balances WinRT apartment initialization on the background submission thread.
 struct Apartment {
+    /// Enters the multithreaded apartment for this WinRT call.
     Apartment() { winrt::init_apartment(winrt::apartment_type::multi_threaded); }
+
+    /// Releases the thread's apartment reference on every completion path.
     ~Apartment() { winrt::uninit_apartment(); }
 };
 
@@ -139,14 +163,20 @@ extern "C" int kisaki_set_notification_receiver(const char *app_id, Click receiv
             CoRevokeClassObject(registration);
             registration = 0;
         }
-        if (!receive) return 1;
+        if (!receive) {
+            return 1;
+        }
         const auto identity = winrt::to_hstring(app_id);
         const auto id = class_id(identity);
-        if (!id || !owns_server(id)) return 0;
+        if (!id || !owns_server(id)) {
+            return 0;
+        }
         CLSID clsid;
         winrt::check_hresult(CLSIDFromString(id, &clsid));
         const auto factory = Make<Factory>(std::wstring(identity), receive);
-        if (!factory) return -1;
+        if (!factory) {
+            return -1;
+        }
         winrt::check_hresult(CoRegisterClassObject(clsid, factory.Get(), CLSCTX_LOCAL_SERVER,
                                                    REGCLS_MULTIPLEUSE, &registration));
         return 1;
