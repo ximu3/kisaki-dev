@@ -46,7 +46,7 @@ export function createCloseConfirmation(api: MainClient) {
     setBusy(true)
     try {
       await item.guard.save()
-      finish(true)
+      finish(!item.guard.dirty)
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : String(cause))
     } finally {
@@ -54,6 +54,8 @@ export function createCloseConfirmation(api: MainClient) {
     }
   }
   return {
+    /** Reports whether the confirmation owns the active keyboard scope. */
+    active: () => !!pending(),
     /** Returns immediately for clean editors and coalesces a repeated request for the current draft. */
     ask(guard: EditorGuard) {
       if (!guard.dirty) {

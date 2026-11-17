@@ -273,6 +273,7 @@ async function run(paths: AppPaths) {
     }
     application.events.publisher('app.ready').emit({ readyAt: Date.now() })
     await application.log.record('ready')
+    application.recoverAttachments()
     await ready?.()
   } catch (error) {
     if (released) {
@@ -289,8 +290,11 @@ async function run(paths: AppPaths) {
 
 try {
   const paths = selectPaths()
+  const identity = applicationIdentities[paths.isolated ? 'development' : 'production']
   if (process.platform === 'win32') {
-    app.setAppUserModelId(paths.isolated ? 'me.kisaki.dev' : 'me.kisaki')
+    app.setAppUserModelId(identity.appId)
+  } else if (process.platform === 'linux') {
+    app.setDesktopName(identity.appId + '.desktop')
   }
   if (app.requestSingleInstanceLock()) {
     void run(paths).catch(failed)

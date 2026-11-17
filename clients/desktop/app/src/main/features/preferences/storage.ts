@@ -7,12 +7,11 @@ import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { parseNetworkPreferences } from '@kisaki3/desktop-contracts/network'
 import {
   findShortcutConflicts,
-  shortcutKeys,
+  effectiveShortcutBindings,
   type DesktopPlatform,
   type PreferencesChanges,
   type PreferencesExpected,
   type PreferencesSnapshot,
-  type ShortcutsPreferences,
 } from '@kisaki3/desktop-contracts/preferences'
 import type { Storage } from '../../infrastructure/database'
 import type { PreferenceRow } from '../../infrastructure/database/executor'
@@ -168,19 +167,7 @@ export function preferenceStorage(storage: Storage) {
         }
         const result = snapshot(tx.select().from(table).get()!)
         if (changes.shortcuts) {
-          const bindings = Object.fromEntries(
-            shortcutKeys.map((key) => {
-              const saved = result.shortcuts[key]
-              return [
-                key,
-                {
-                  enabled: saved.enabled,
-                  accelerators:
-                    saved.accelerators.status === 'ready' ? saved.accelerators.value : [],
-                },
-              ]
-            }),
-          ) as ShortcutsPreferences
+          const bindings = effectiveShortcutBindings(result.shortcuts)
           if (findShortcutConflicts(bindings, process.platform as DesktopPlatform).length) {
             throw new DesktopError('InvalidInput', 'Shortcut bindings overlap')
           }

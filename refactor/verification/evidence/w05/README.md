@@ -60,3 +60,5 @@ UI 制品为包内 `out/package/package.tgz`。`test-results/consumers` 保存�
 | 合同类型 | 构建后声明的 NodeNext 与 Bundler 消费通过。已有消费夹具核对读取与写入保持对象种类、主题来源、资源归属和请求键；动态集合与可选输入的结果项保留可能缺席的类型。 |
 
 这些运行支持当前桌面 Chromium 能力基线。其他浏览器引擎、SSR、产品窗口与扩展 Webview 的完整业务接入分别按实际支持范围和所属工作包处理；该包尚未公开发布，成篇项目文档归 W23。
+
+表单重置另在 Electron 45.3.2 与原生输入框同窗核对。调用 `form.reset()` 后同一轮输入新值，公共 Input 和原生字段都保持新值，公共回调按重置、后续输入的顺序交付。持续复验见[浏览器表单用例](../../../../clients/desktop/packages/desktop-ui/tests/browser/forms.test.ts)。

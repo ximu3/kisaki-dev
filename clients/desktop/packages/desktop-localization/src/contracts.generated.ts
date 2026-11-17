@@ -135,7 +135,18 @@ export interface MessageArguments {
   readonly "runtime.emptyTasks": never
   readonly "runtime.searchTasks": never
   readonly "runtime.clear": never
-  readonly "runtime.clearConfirm": never
+  readonly "runtime.clearAll": never
+  readonly "runtime.clearBefore": never
+  readonly "runtime.beforeDate": never
+  readonly "runtime.noOptions": never
+  readonly "runtime.scaleRange": { readonly "max": number; readonly "min": number }
+  readonly "runtime.enterName": never
+  readonly "runtime.addFontFile": never
+  readonly "runtime.shortcutOverlap": never
+  readonly "runtime.proxyAddressNeeded": never
+  readonly "runtime.socksCredentials": never
+  readonly "runtime.invalidField": { readonly "field": string | number }
+  readonly "runtime.fieldErrors": { readonly "count": number }
   readonly "runtime.detail": never
   readonly "runtime.history": never
   readonly "runtime.input": never

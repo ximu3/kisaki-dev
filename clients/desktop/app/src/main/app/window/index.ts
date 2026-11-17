@@ -5,12 +5,12 @@ import { windowGeometry } from '../../infrastructure/windows/geometry'
 import { randomUUID } from 'node:crypto'
 import { join } from 'node:path'
 import { serveDocument } from '../../infrastructure/windows/document'
+import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 import { toggle, textArgument } from './values'
 import { runWindowCall } from './admission'
 import { createFileMethods } from './files'
 import { RpcConnection, RpcError, type RpcMethod } from '@kisaki3/desktop-rpc'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
-import { parseJsonValue } from '@kisaki3/desktop-contracts/json'
 import { parseListOptions } from '@kisaki3/desktop-contracts/operations'
 import { parseTaskQuery, parseTaskRunRef } from '@kisaki3/desktop-contracts/tasks'
 import { parsePreferencesUpdate } from '@kisaki3/desktop-contracts/preferences'
@@ -21,7 +21,12 @@ import {
   parseAppearancePreviewInput,
   type AppearancePreview,
 } from '@kisaki3/desktop-contracts/appearance'
-import { windowProtocol, windowErrors, type WindowKind } from '../../../shared/window-api/protocol'
+import {
+  rpcData,
+  windowProtocol,
+  windowErrors,
+  type WindowKind,
+} from '../../../shared/window-api/protocol'
 import { parseDataModeChange, type ApplicationExitApi } from '@kisaki3/desktop-contracts/app'
 import { environment, copyEnvironment } from '../../infrastructure/environment'
 import type { Application } from '../compose'
@@ -69,7 +74,8 @@ export async function createWindow(
     show: false,
     title: 'Kisaki',
     ...(kind === 'main' && {
-      frame: process.platform === 'darwin',
+      frame: process.platform !== 'linux',
+      ...(process.platform === 'win32' && { titleBarOverlay: { height: 36 } }),
       titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'hidden',
       autoHideMenuBar: true,
     }),
@@ -193,7 +199,7 @@ export async function createWindow(
       },
       /** Reads the bound window identity, native state and effective language snapshot. */
       'window.state': () =>
-        parseJsonValue({
+        rpcData({
           startupDeadline: application.presentationDeadline,
           kind,
           platform: process.platform,
@@ -217,15 +223,32 @@ export async function createWindow(
       /** Resolves the effective branch and acquires font URLs for this document. */
       'appearance.get': async () => {
         const read = await appearance.forView(view)
-        return parseJsonValue({ value: read.appearance, issues: read.issues, hold: keep(read) })
+        return rpcData({ value: read.appearance, issues: read.issues, hold: keep(read) })
       },
       /** Reads the palette and scale available before document font loading finishes. */
-      'appearance.base': async () => parseJsonValue(await appearance.base()),
+      'appearance.base': async () => rpcData(await appearance.base()),
       /** Releases the identified hold in this document without affecting other readers. */
       'resources.release': async ([id]) => release(textArgument(id)),
     }
     if (kind === 'main') {
       Object.assign(methods, {
+        /** Applies Chromium's resolved colors to native Windows caption controls. */
+        'window.caption': ([color, symbolColor]) => {
+          if (
+            process.platform !== 'win32' ||
+            typeof color !== 'string' ||
+            typeof symbolColor !== 'string' ||
+            !/^#[0-9a-f]{8}$/.test(color) ||
+            !/^#[0-9a-f]{8}$/.test(symbolColor)
+          ) {
+            throw new DesktopError('InvalidInput', 'Invalid window caption')
+          }
+          window.setTitleBarOverlay({
+            color,
+            symbolColor,
+            height: Math.round((36 * application.saved.appearance.interfaceScale) / 100),
+          })
+        },
         /** Starts the shared normal exit workflow from the main window. */
         'app.quit': () => {
           setImmediate(() => app.quit())
@@ -239,61 +262,60 @@ export async function createWindow(
         /** Cancels a pending exit while preserving work already completed. */
         'app.cancelExit': () => lifecycle.cancel(),
         /** Reads the current close attempt and its progress. */
-        'app.exitState': async () => parseJsonValue(await lifecycle.getState()),
+        'app.exitState': async () => rpcData(await lifecycle.getState()),
         /** Reads saved preference fields and the opaque proxy credential revision. */
-        'preferences.get': async () => parseJsonValue(await preferences.get()),
+        'preferences.get': async () => rpcData(await preferences.get()),
         /** Reads the complete default values for a reset draft. */
-        'preferences.defaults': async () => parseJsonValue(await preferences.getDefaults()),
+        'preferences.defaults': async () => rpcData(await preferences.getDefaults()),
         /** Reads labels and search destinations from the preference owner. */
-        'preferences.fields': async () => parseJsonValue(await preferences.listFields()),
+        'preferences.fields': async () => rpcData(await preferences.listFields()),
         /** Validates the submitted fields and commits them against their baselines. */
         'preferences.update': async ([value], signal) =>
-          parseJsonValue(await preferences.update(parsePreferencesUpdate(value), { signal })),
+          rpcData(await preferences.update(parsePreferencesUpdate(value), { signal })),
         /** Lists built-in and registered translations by stable identity. */
-        'translations.list': () => parseJsonValue(application.i18n.list()),
+        'translations.list': () => rpcData(application.i18n.list()),
         /** Reads whether new requests can use the selected network route. */
-        'network.state': async () => parseJsonValue(await application.network.getState()),
+        'network.state': async () => rpcData(await application.network.getState()),
         /** Reads one filtered interval of summaries and its total. */
         'tasks.list': async ([query, options]) =>
-          parseJsonValue(await tasks.list(parseTaskQuery(query), parseListOptions(options))),
+          rpcData(await tasks.list(parseTaskQuery(query), parseListOptions(options))),
         /** Reads a full task record, returning null when history is absent. */
-        'tasks.get': async ([ref]) => parseJsonValue(await tasks.get(parseTaskRunRef(ref))),
+        'tasks.get': async ([ref]) => rpcData(await tasks.get(parseTaskRunRef(ref))),
         /** Reads only the distinct type values for the task filter. */
-        'tasks.types': async () => parseJsonValue(await tasks.types()),
+        'tasks.types': async () => rpcData(await tasks.types()),
         /** Waits for a terminal record independently of the underlying execution. */
         'tasks.wait': async ([ref], signal) =>
-          parseJsonValue(await tasks.wait(parseTaskRunRef(ref), { signal })),
+          rpcData(await tasks.wait(parseTaskRunRef(ref), { signal })),
         /** Acquires an ordered, lightweight task observation for this document. */
         'tasks.observe': async ([ref]) =>
           keep(
             await tasks.observe(parseTaskRunRef(ref), (state) =>
-              rpc.notify('tasks.state', parseJsonValue(state)),
+              rpc.notify('tasks.state', rpcData(state)),
             ),
           ),
         /** Requests a pause at the next business checkpoint. */
-        'tasks.pause': async ([ref]) => parseJsonValue(await tasks.pause(parseTaskRunRef(ref))),
+        'tasks.pause': async ([ref]) => rpcData(await tasks.pause(parseTaskRunRef(ref))),
         /** Releases a reached pause or withdraws a pending one. */
-        'tasks.resume': async ([ref]) => parseJsonValue(await tasks.resume(parseTaskRunRef(ref))),
+        'tasks.resume': async ([ref]) => rpcData(await tasks.resume(parseTaskRunRef(ref))),
         /** Requests cancellation and returns the acknowledged control state. */
-        'tasks.cancel': async ([ref]) => parseJsonValue(await tasks.cancel(parseTaskRunRef(ref))),
+        'tasks.cancel': async ([ref]) => rpcData(await tasks.cancel(parseTaskRunRef(ref))),
         /** Clears matching finished history while protecting admitted runs. */
         'tasks.clear': async ([filter]) => {
           return tasks.clearHistory(parseTaskQuery(filter ?? {}))
         },
         /** Lists available theme identities with names resolved for this window. */
         'themes.list': async () =>
-          parseJsonValue(
+          rpcData(
             (await appearance.themes.list()).map((theme) => ({
               ref: theme.ref,
               name: appearance.themes.displayName(theme, application.i18n.current.locale),
             })),
           ),
         /** Reads a complete theme definition without acquiring font files. */
-        'themes.get': async ([ref]) =>
-          parseJsonValue(await appearance.themes.get(parseThemeRef(ref))),
+        'themes.get': async ([ref]) => rpcData(await appearance.themes.get(parseThemeRef(ref))),
         /** Creates a user theme and adopts any required private font copies atomically. */
         'themes.clone': async ([ref, name], signal) =>
-          parseJsonValue(
+          rpcData(
             await appearance.themes.clone(
               parseThemeRef(ref),
               { name: textArgument(name) },
@@ -302,7 +324,7 @@ export async function createWindow(
           ),
         /** Creates an independent user theme with both color branches. */
         'themes.create': async ([input]) =>
-          parseJsonValue(await appearance.themes.create(parseUserThemeCreate(input))),
+          rpcData(await appearance.themes.create(parseUserThemeCreate(input))),
         /** Compares the edited name and individual tokens before committing the theme. */
         'themes.update': async ([id, input]) =>
           appearance.themes.update(textArgument(id), parseUserThemeUpdate(input)),
@@ -332,14 +354,13 @@ export async function createWindow(
         },
         ...files!.methods,
         /** Reads system registration and the actual current and next data locations. */
-        'system.get': async () => parseJsonValue(await system.getState()),
+        'system.get': async () => rpcData(await system.getState()),
         /** Applies a login-item choice and rereads the operating-system state. */
-        'system.login': async ([enable]) =>
-          parseJsonValue(await system.setLoginItem(toggle(enable))),
+        'system.login': async ([enable]) => rpcData(await system.setLoginItem(toggle(enable))),
         /** Requests protocol registration and reads the resulting handler association. */
-        'system.protocol': async () => parseJsonValue(await system.registerProtocol()),
+        'system.protocol': async () => rpcData(await system.registerProtocol()),
         /** Registers the movable Linux desktop entry when supported. */
-        'system.desktopEntry': async () => parseJsonValue(await system.registerDesktopEntry()),
+        'system.desktopEntry': async () => rpcData(await system.registerDesktopEntry()),
         /** Opens the operating-system settings for the selected integration. */
         'system.settings': async ([target]) => {
           if (target !== 'loginItem' && target !== 'protocol') {
@@ -349,9 +370,9 @@ export async function createWindow(
         },
         /** Prepares the explicitly selected data location for the next launch. */
         'system.portable': async ([change]) =>
-          parseJsonValue(await system.setDataMode(parseDataModeChange(change))),
+          rpcData(await system.setDataMode(parseDataModeChange(change))),
         /** Reads the shareable version, operating system and process architecture. */
-        'app.environment': () => parseJsonValue(environment()),
+        'app.environment': () => rpcData(environment()),
         /** Copies the shareable environment fields to the system clipboard. */
         'app.copyEnvironment': () => copyEnvironment(),
       } satisfies Record<string, RpcMethod>)
@@ -502,11 +523,11 @@ export async function createWindow(
       return (await connection.request('window.confirmClose')) === true
     },
     /** Delivers a navigation target to the actual ready window. */
-    async navigate(target: unknown) {
+    async navigate(target: NativeViewTarget) {
       if (!connection) {
         throw new DesktopError('ConnectionClosed', 'The window is not ready for navigation')
       }
-      await connection.request('window.navigate', [parseJsonValue(target)])
+      await connection.request('window.navigate', [rpcData(target)])
     },
   }
 }

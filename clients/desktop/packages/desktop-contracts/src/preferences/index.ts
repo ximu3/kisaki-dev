@@ -1,9 +1,16 @@
 /** @fileoverview Publishes the preferences capability contract. */
 
-export { parsePreferenceKey, parsePreferences, parsePreferencesUpdate, preferenceKeys } from './api'
+export {
+  effectiveShortcutBindings,
+  parsePreferenceKey,
+  parsePreferences,
+  parsePreferencesUpdate,
+  preferenceKeys,
+} from './api'
 
 export {
   parseAccelerator,
+  acceleratorIdentity,
   parseShortcutPreferences,
   findShortcutConflicts,
   shortcutKeys,

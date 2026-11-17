@@ -1,6 +1,7 @@
 /** @fileoverview Edits grouped preference drafts and commits only changed fields with their original baselines. */
 
 import {
+  batch,
   createEffect,
   createSignal,
   createResource,
@@ -11,12 +12,23 @@ import {
   Match,
 } from 'solid-js'
 import { ShortcutRecorder } from './recorder'
-import { matchesShortcut } from '../../../../infrastructure/shortcuts'
+import type { FieldIssue } from '@kisaki3/desktop-ui/field'
+import { createUniqueId } from 'solid-js'
+import { createEditorValidation } from '../../domain-ui/validation'
+import { EditorFooter } from '../../domain-ui/editor-footer'
+import { createSubmission } from '../../domain-ui/submission'
+import { WindowSelect } from '../../domain-ui/select'
 import { FontSelector, listFontOptions } from '../../domain-ui/fonts/selection'
 import { Button } from '@kisaki3/desktop-ui/button'
+import { manualProxyIssue } from '@kisaki3/desktop-contracts/network'
+import {
+  effectiveShortcutBindings,
+  findShortcutConflicts,
+} from '@kisaki3/desktop-contracts/preferences'
+import { interfaceScaleRange } from '@kisaki3/desktop-contracts/appearance'
 import { preferenceKeys, type PreferenceKey } from '@kisaki3/desktop-contracts/preferences'
 import type { englishMessages } from '@kisaki3/desktop-localization'
-import { fieldPath, fieldValue, editField, updateInput, type FieldEdit } from './draft'
+import { fieldPath, fieldValue, draftValue, editField, updateInput, type FieldEdit } from './draft'
 import type { MainClient } from '../../../../infrastructure/api'
 
 /** Fixed enumerations shown by the corresponding typed preference field. */
@@ -35,7 +47,6 @@ const choices: Record<string, readonly string[]> = {
 /** Dialog body whose resource-management routes preserve this editor's separate draft. */
 export function PreferenceEditor(props: {
   field?: PreferenceKey | undefined
-  active: boolean
   api: MainClient
   onSave: (save: () => Promise<void>) => void
   dirty: (changed: boolean) => void
@@ -43,6 +54,7 @@ export function PreferenceEditor(props: {
   report: (error: unknown) => void
 }) {
   const { api } = props
+  const formId = createUniqueId()
   /** Tracks the displayed section independently of the common draft. */
   const [group, setGroup] = createSignal('general')
   /** Stores each dirty field with its first editing baseline. */
@@ -100,10 +112,19 @@ export function PreferenceEditor(props: {
   /** Resolves the edited value before consulting the saved snapshot. */
   const value = (path: string[]) => {
     const edit = edits().find((edit) => JSON.stringify(edit.path) === JSON.stringify(path))
-    return edit ? edit.value : fieldValue(saved(), path)
+    return edit ? edit.value : draftValue(path, fieldValue(saved(), path))
   }
   /** Changes one field while retaining its first comparison baseline. */
-  const edit = (path: string[], next: unknown) => set(editField(edits(), saved()!, path, next))
+  const edit = (path: string[], next: unknown) =>
+    set(
+      editField(
+        edits(),
+        saved()!,
+        path,
+        next,
+        submitted.some((item) => JSON.stringify(item.path) === JSON.stringify(path)),
+      ),
+    )
   /** Formats a native preference field label in the effective language. */
   const label = (key: string) =>
     api.t(
@@ -117,18 +138,117 @@ export function PreferenceEditor(props: {
       ('runtime.choices.' +
         key) as `runtime.choices.${keyof typeof englishMessages.runtime.choices}`,
     )
-  /** Prevents duplicate commits while the preference save is in progress. */
-  const [busy, setBusy] = createSignal(false)
-  /** Checks and commits all dirty groups as one preference edit. */
-  const save = async () => {
-    setBusy(true)
-    try {
-      mutate(await api.call('preferences.update', updateInput(edits())))
-      set([])
-    } finally {
-      setBusy(false)
+  let mounted = true
+  onCleanup(() => {
+    mounted = false
+  })
+
+  let submitted: readonly FieldEdit[] = []
+  /** Associates constraint failures from any edited group with the field that can correct them. */
+  function inspect(): FieldIssue[] {
+    const result: FieldIssue[] = []
+    for (const item of edits()) {
+      try {
+        updateInput([item])
+      } catch {
+        const id =
+          item.path[0] === 'shortcuts' ? item.path.slice(0, 2).join('.') : item.path.join('.')
+        const input = document
+          .getElementById('preference-' + id)
+          ?.querySelector<HTMLInputElement>('input:invalid')
+        const summary =
+          id === 'appearance.interfaceScale'
+            ? api.t('runtime.scaleRange', interfaceScaleRange)
+            : input?.validationMessage ||
+              api.t('runtime.invalidField', { field: label(item.path.at(-1)!) })
+        if (!result.some((issue) => issue.id === id)) {
+          result.push({ id, summary })
+        }
+      }
     }
+    const base = saved()
+    if (result.length || !base || !edits().length) {
+      return result
+    }
+
+    const changes = updateInput(edits()).changes
+    if (changes.shortcuts) {
+      const conflicts = findShortcutConflicts(
+        effectiveShortcutBindings(base.shortcuts, changes.shortcuts),
+        api.platform,
+      )
+      for (const key of new Set(conflicts.flatMap(({ first, second }) => [first, second]))) {
+        result.push({ id: 'shortcuts.' + key, summary: api.t('runtime.shortcutOverlap') })
+      }
+    }
+    const route = base.network.status === 'ready' ? base.network.value : defaults()?.network
+    if (changes.network && route) {
+      const network = { ...route, ...changes.network }
+      const issue = manualProxyIssue(network.mode, network.endpoint, network.credentials !== null)
+      if (issue) {
+        result.push({
+          id: 'network.' + issue,
+          summary: api.t(
+            issue === 'endpoint' ? 'runtime.proxyAddressNeeded' : 'runtime.socksCredentials',
+          ),
+        })
+      }
+    }
+    return result
   }
+
+  /** Reveals the group before moving focus to the first control of the erroneous setting. */
+  function locate(key: string) {
+    setGroup(key.split('.')[0]!)
+    queueMicrotask(() => {
+      const row = document.getElementById('preference-' + key)
+      row?.scrollIntoView({ block: 'nearest' })
+      row?.querySelector<HTMLElement>('input,button')?.focus()
+    })
+  }
+
+  const validation = createEditorValidation(api, inspect, locate)
+
+  const { busy, save } = createSubmission(async () => {
+    if (!validation.validate()) {
+      return
+    }
+    if (!edits().length) {
+      return
+    }
+    submitted = edits()
+    try {
+      const result = await api.call('preferences.update', updateInput(submitted))
+      if (!mounted) {
+        return
+      }
+      const remaining = edits()
+        .filter((item) => !submitted.includes(item))
+        .flatMap((item) => {
+          const previous = submitted.find(
+            (sent) => JSON.stringify(sent.path) === JSON.stringify(item.path),
+          )
+          return previous ? editField([], result, item.path, item.value) : [item]
+        })
+      batch(() => {
+        mutate(result)
+        set(remaining)
+        validation.clear()
+      })
+    } catch (cause) {
+      if (mounted) {
+        set(
+          edits().filter(
+            (item) =>
+              JSON.stringify(draftValue(item.path, item.original)) !== JSON.stringify(item.value),
+          ),
+        )
+      }
+      throw cause
+    } finally {
+      submitted = []
+    }
+  })
   props.onSave(save)
   /** Replaces only this section's draft with its current defaults. */
   const reset = () => {
@@ -149,24 +269,11 @@ export function PreferenceEditor(props: {
           ]
         : [path]
       for (const field of fields) {
-        changed = editField(changed, saved()!, field, fieldValue(base, field))
+        changed = editField(changed, saved()!, field, draftValue(field, fieldValue(base, field)))
       }
     }
     set(changed)
   }
-  /** Handles the configured save binding for the active editor only. */
-  const keyHandler = (event: KeyboardEvent) => {
-    if (
-      props.active &&
-      matchesShortcut(event, saved()?.shortcuts['editor.save'], api.platform) &&
-      edits().length
-    ) {
-      event.preventDefault()
-      void save().catch(props.report)
-    }
-  }
-  window.addEventListener('keydown', keyHandler)
-  onCleanup(() => window.removeEventListener('keydown', keyHandler))
   let focused: PreferenceKey | undefined
   createEffect(() => {
     const key = props.field
@@ -178,12 +285,7 @@ export function PreferenceEditor(props: {
       return
     }
     focused = key
-    setGroup(fieldPath(key)[0]!)
-    queueMicrotask(() => {
-      const row = document.getElementById('preference-' + key)
-      row?.scrollIntoView({ block: 'nearest' })
-      row?.querySelector<HTMLElement>('input,button,select')?.focus()
-    })
+    locate(key)
   })
   const groups = [
     'general',
@@ -207,34 +309,35 @@ export function PreferenceEditor(props: {
     const current = () => value(path)
     /** Replaces the entire editing unit represented by this control. */
     const change = (v: unknown) => edit(path, v)
+    /** Connects this setting's controls to its own accessible correction text. */
+    const errorId = () => validation.errorId(key)
     const list = key === 'network.mode' ? ['system', 'direct', 'manual'] : choices[leaf]
     /** Displays stable resource identities and preserves an unavailable selection. */
-    const selectRef = (items: readonly { ref: unknown; name: unknown }[]) => {
+    const selectRef = (items: () => readonly { ref: unknown; name: string }[]) => {
       /** Encodes the currently selected identity for its option key. */
-      const serial = () => JSON.stringify(current())
+      const serial = () => JSON.stringify(current()) ?? 'unavailable'
       return (
-        <select
-          aria-label={label(leaf)}
+        <WindowSelect
+          errorId={errorId()}
+          api={api}
+          label={label(leaf)}
           value={serial()}
-          onChange={(e) => change(JSON.parse(e.currentTarget.value))}
-        >
-          <Show when={!items.some((item) => JSON.stringify(item.ref) === serial())}>
-            <option value={serial()}>{api.t('runtime.unavailable')}</option>
-          </Show>
-          <For each={items}>
-            {(item) => (
-              <option value={JSON.stringify(item.ref)}>
-                {typeof item.name === 'string' ? item.name : JSON.stringify(item.name)}
-              </option>
-            )}
-          </For>
-        </select>
+          options={[
+            ...(!items().some((item) => JSON.stringify(item.ref) === serial())
+              ? [{ value: serial(), label: api.t('runtime.unavailable'), disabled: true }]
+              : []),
+            ...items().map((item) => ({ value: JSON.stringify(item.ref), label: item.name })),
+          ]}
+          change={(key) => change(JSON.parse(key))}
+        />
       )
     }
     if (key.startsWith('shortcuts.')) {
       return (
         <div class="tool-row">
           <input
+            aria-invalid={errorId() ? true : undefined}
+            aria-describedby={errorId()}
             type="checkbox"
             aria-label={label('enabled')}
             checked={Boolean(value([...path, 'enabled']))}
@@ -249,12 +352,12 @@ export function PreferenceEditor(props: {
       )
     }
     if (key === 'general.uiTranslation') {
-      return selectRef(translations() ?? [])
+      return selectRef(() => translations() ?? [])
     }
     if (key === 'appearance.theme') {
       return (
         <div>
-          {selectRef(themes() ?? [])}
+          {selectRef(() => themes() ?? [])}
           <Button variant="ghost" onClick={() => props.manage('themes')}>
             {api.t('runtime.manageThemes')}
           </Button>
@@ -266,12 +369,16 @@ export function PreferenceEditor(props: {
         <div class="secret">
           <span>{current() ? api.t('runtime.configured') : api.t('runtime.none')}</span>
           <input
+            aria-invalid={errorId() ? true : undefined}
+            aria-describedby={errorId()}
             aria-label={api.t('runtime.username')}
             value={username()}
             onInput={(e) => setUsername(e.currentTarget.value)}
             autocomplete="off"
           />
           <input
+            aria-invalid={errorId() ? true : undefined}
+            aria-describedby={errorId()}
             type="password"
             aria-label={api.t('runtime.password')}
             value={password()}
@@ -321,25 +428,29 @@ export function PreferenceEditor(props: {
       const color = () => current() as { type: string; foreground?: string; background?: string }
       return (
         <div>
-          <select
-            aria-label={label(leaf)}
+          <WindowSelect
+            errorId={errorId()}
+            api={api}
+            label={label(leaf)}
             value={color().type}
-            onChange={(e) =>
+            options={['document', 'theme', 'custom'].map((value) => ({
+              value,
+              label: choice(value),
+            }))}
+            change={(type) =>
               change(
-                e.currentTarget.value === 'custom'
-                  ? { type: 'custom', foreground: '#222222', background: '#ffffff' }
-                  : { type: e.currentTarget.value },
+                type === 'custom'
+                  ? { type, foreground: '#222222', background: '#ffffff' }
+                  : { type },
               )
             }
-          >
-            <For each={['document', 'theme', 'custom']}>
-              {(v) => <option value={v}>{choice(v)}</option>}
-            </For>
-          </select>
+          />
           <Show when={color().type === 'custom'}>
             <For each={['foreground', 'background'] as const}>
               {(k) => (
                 <input
+                  aria-invalid={errorId() ? true : undefined}
+                  aria-describedby={errorId()}
                   aria-label={k}
                   value={color()[k] ?? ''}
                   onInput={(e) => change({ ...color(), [k]: e.currentTarget.value })}
@@ -370,25 +481,24 @@ export function PreferenceEditor(props: {
     }
     if (list) {
       return (
-        <select
-          aria-label={label(leaf)}
+        <WindowSelect
+          errorId={errorId()}
+          api={api}
+          label={label(leaf)}
           value={String(current())}
-          onChange={(e) => change(e.currentTarget.value)}
-        >
-          <For each={list}>{(v) => <option value={v}>{choice(v)}</option>}</For>
-        </select>
+          options={list.map((value) => ({ value, label: choice(value) }))}
+          change={change}
+        />
       )
     }
-    if (leaf === 'paragraphSpacing') {
+    if (leaf === 'paragraphSpacing' || leaf === 'audioLanguages' || leaf === 'subtitleLanguages') {
       return (
         <input
+          aria-invalid={errorId() ? true : undefined}
+          aria-describedby={errorId()}
           aria-label={label(leaf)}
           value={String(current())}
-          onInput={(e) =>
-            change(
-              e.currentTarget.value === 'document' ? 'document' : Number(e.currentTarget.value),
-            )
-          }
+          onInput={(e) => change(e.currentTarget.value)}
         />
       )
     }
@@ -396,6 +506,8 @@ export function PreferenceEditor(props: {
       <Switch
         fallback={
           <input
+            aria-invalid={errorId() ? true : undefined}
+            aria-describedby={errorId()}
             aria-label={label(leaf)}
             value={typeof current() === 'string' ? (current() as string) : ''}
             onInput={(e) =>
@@ -406,6 +518,8 @@ export function PreferenceEditor(props: {
       >
         <Match when={typeof current() === 'boolean'}>
           <input
+            aria-invalid={errorId() ? true : undefined}
+            aria-describedby={errorId()}
             type="checkbox"
             aria-label={label(leaf)}
             checked={Boolean(current())}
@@ -414,36 +528,42 @@ export function PreferenceEditor(props: {
         </Match>
         <Match when={typeof current() === 'number'}>
           <input
+            aria-invalid={errorId() ? true : undefined}
+            aria-describedby={errorId()}
             type="number"
-            step="any"
+            required
+            min={leaf === 'interfaceScale' ? interfaceScaleRange.min : undefined}
+            max={leaf === 'interfaceScale' ? interfaceScaleRange.max : undefined}
+            step={leaf === 'interfaceScale' ? 1 : 'any'}
             aria-label={label(leaf)}
             value={Number(current())}
             onInput={(e) => change(e.currentTarget.valueAsNumber)}
-          />
-        </Match>
-        <Match when={Array.isArray(current())}>
-          <input
-            aria-label={label(leaf)}
-            value={(current() as string[]).join(', ')}
-            onInput={(e) =>
-              change(
-                e.currentTarget.value
-                  .split(',')
-                  .map((v) => v.trim())
-                  .filter(Boolean),
-              )
-            }
           />
         </Match>
       </Switch>
     )
   }
   return (
-    <div class="settings">
+    <form
+      id={formId}
+      class="settings"
+      onFocusIn={(event) => {
+        const row = (event.target as HTMLElement).closest<HTMLElement>('.setting')
+        if (!row && !(event.target as HTMLElement).closest('footer')) {
+          validation.focus(null)
+        }
+      }}
+      novalidate
+      onSubmit={(event) => {
+        event.preventDefault()
+        void save().catch(props.report)
+      }}
+    >
       <nav aria-label={api.t('runtime.section')}>
         <For each={groups}>
           {(section) => (
             <button
+              type="button"
               aria-current={group() === section ? 'page' : undefined}
               onClick={() => setGroup(section)}
             >
@@ -470,7 +590,11 @@ export function PreferenceEditor(props: {
                     .join(' · ')
                 : [...path.slice(1, -1).map(label), label(leaf)].join(' · ')
               return (
-                <div class="setting" id={'preference-' + key}>
+                <div
+                  class="setting"
+                  onFocusIn={() => validation.focus(key)}
+                  id={'preference-' + key}
+                >
                   <span>{title}</span>
                   {control(key)}
                 </div>
@@ -497,20 +621,25 @@ export function PreferenceEditor(props: {
           )}
         </Show>
       </section>
-      <footer>
+      <EditorFooter>
+        <validation.Feedback />
         <Button variant="ghost" disabled={busy()} onClick={reset}>
           {api.t('runtime.reset')}
         </Button>
-        <Button variant="outline" disabled={!edits().length || busy()} onClick={() => set([])}>
+        <Button
+          variant="outline"
+          disabled={!edits().length || busy()}
+          onClick={() => {
+            set([])
+            validation.clear()
+          }}
+        >
           {api.t('runtime.discard')}
         </Button>
-        <Button
-          disabled={!edits().length || busy()}
-          onClick={() => void save().catch(props.report)}
-        >
+        <Button type="submit" form={formId} disabled={!edits().length || busy()}>
           {api.t('actions.save')}
         </Button>
-      </footer>
-    </div>
+      </EditorFooter>
+    </form>
   )
 }

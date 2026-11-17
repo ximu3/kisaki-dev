@@ -59,7 +59,7 @@ export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
     (next) => local.onValueChange?.(next),
   )
   let group!: HTMLFieldSetElement
-  onFormReset(
+  const flushReset = onFormReset(
     () => group,
     () => {
       change(baseline())
@@ -93,6 +93,7 @@ export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
               required={local.required ?? field.required}
               onChange={(event) => {
                 if (event.currentTarget.checked) {
+                  flushReset()
                   change(option.value)
                 }
               }}

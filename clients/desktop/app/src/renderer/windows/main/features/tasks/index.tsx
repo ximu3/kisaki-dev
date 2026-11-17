@@ -1,6 +1,7 @@
 /** @fileoverview Presents active tasks and finished history in the task dialog and observes live rows until they leave the view. */
 
 import { createEffect, createResource, createSignal, For, onCleanup, Show } from 'solid-js'
+import { WindowSelect } from '../../domain-ui/select'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { Tabs, TabList, Tab, TabPanel } from '@kisaki3/desktop-ui/tabs'
 import {
@@ -151,10 +152,26 @@ export function TaskCenter(props: {
       select(props.target)
     }
   })
-  /** Confirms and clears durable finished history without cancelling live work. */
-  const clear = async () => {
-    if (confirm(api.t('runtime.clearConfirm'))) {
-      await api.call('tasks.clear', {})
+  /** Chooses the creation-time scope before the user confirms irreversible history cleanup. */
+  const [clearing, setClearing] = createSignal(false)
+  const [scope, setScope] = createSignal<'all' | 'before'>('all')
+  const [cutoff, setCutoff] = createSignal('')
+  const [busy, setBusy] = createSignal(false)
+
+  /** Converts the selected local calendar date to the exclusive creation-time boundary. */
+  async function clear() {
+    if (busy()) {
+      return
+    }
+    setBusy(true)
+    try {
+      const filter =
+        scope() === 'before' ? { createdBefore: new Date(cutoff() + 'T00:00:00').getTime() } : {}
+      await api.call('tasks.clear', filter)
+      setClearing(false)
+      refresh()
+    } finally {
+      setBusy(false)
     }
   }
 
@@ -202,28 +219,32 @@ export function TaskCenter(props: {
               setOffset(0)
             }}
           />
-          <select
-            aria-label={api.t('runtime.type')}
-            value={type()}
-            onChange={(e) => {
-              setType(e.currentTarget.value)
+          <WindowSelect
+            api={api}
+            label={api.t('runtime.type')}
+            value={type() ? 'type:' + type() : 'all'}
+            options={[
+              { value: 'all', label: api.t('runtime.allTypes') },
+              ...(types() ?? []).map((v) => ({ value: 'type:' + v, label: v })),
+            ]}
+            change={(value) => {
+              setType(value === 'all' ? '' : value.slice(5))
               setOffset(0)
             }}
-          >
-            <option value="">{api.t('runtime.allTypes')}</option>
-            <For each={types()}>{(type) => <option value={type}>{type}</option>}</For>
-          </select>
-          <select
-            aria-label={api.t('runtime.filter')}
-            value={status()}
-            onChange={(e) => {
-              setStatus(e.currentTarget.value as TaskRunStatus | '')
+          />
+          <WindowSelect<TaskRunStatus | 'all'>
+            api={api}
+            label={api.t('runtime.filter')}
+            value={status() || 'all'}
+            options={[
+              { value: 'all', label: api.t('runtime.all') },
+              ...statuses.map((v) => ({ value: v, label: api.t(`tasks.${v}`) })),
+            ]}
+            change={(value) => {
+              setStatus(value === 'all' ? '' : value)
               setOffset(0)
             }}
-          >
-            <option value="">{api.t('runtime.all')}</option>
-            <For each={statuses}>{(v) => <option value={v}>{api.t(`tasks.${v}`)}</option>}</For>
-          </select>
+          />
         </div>
         <div class="task-results">
           <Show
@@ -329,7 +350,11 @@ export function TaskCenter(props: {
         <Button
           variant="outline"
           disabled={!counts()?.[1]?.total}
-          onClick={() => void clear().catch(props.report)}
+          onClick={() => {
+            setScope('all')
+            setCutoff('')
+            setClearing(true)
+          }}
         >
           <Trash2 />
           {api.t('runtime.clear')}
@@ -339,6 +364,51 @@ export function TaskCenter(props: {
           {api.t('runtime.refresh')}
         </Button>
       </footer>
+      <Dialog open={clearing()} onOpenChange={setClearing}>
+        <DialogContent>
+          <DialogHeader closeLabel={api.t('actions.close')}>
+            <DialogTitle>{api.t('runtime.clear')}</DialogTitle>
+          </DialogHeader>
+          <DialogBody>
+            <form
+              onSubmit={(event) => {
+                event.preventDefault()
+                void clear().catch(props.report)
+              }}
+            >
+              <WindowSelect<'all' | 'before'>
+                api={api}
+                label={api.t('runtime.history')}
+                value={scope()}
+                options={[
+                  { value: 'all', label: api.t('runtime.clearAll') },
+                  { value: 'before', label: api.t('runtime.clearBefore') },
+                ]}
+                change={setScope}
+              />
+              <Show when={scope() === 'before'}>
+                <label class="setting">
+                  {api.t('runtime.beforeDate')}
+                  <input
+                    type="date"
+                    required
+                    value={cutoff()}
+                    onInput={(event) => setCutoff(event.currentTarget.value)}
+                  />
+                </label>
+              </Show>
+              <footer>
+                <Button variant="outline" disabled={busy()} onClick={() => setClearing(false)}>
+                  {api.t('actions.cancel')}
+                </Button>
+                <Button type="submit" disabled={busy() || (scope() === 'before' && !cutoff())}>
+                  {api.t('runtime.clear')}
+                </Button>
+              </footer>
+            </form>
+          </DialogBody>
+        </DialogContent>
+      </Dialog>
       <Dialog
         open={!!selected()}
         onOpenChange={(v) => {

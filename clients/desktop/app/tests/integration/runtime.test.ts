@@ -284,5 +284,7 @@ test('prepared images and fonts survive independent holds and only adopted font 
   await original.dispose()
   expect(previews.current).toBeDefined()
   await replacement.dispose()
-  expect((await attachments.cleanup()).removedCount).toBe(1)
+  await attachments.drain()
+  expect(await attachments.get(user.files[0].attachmentId)).toBeNull()
+  expect((await attachments.cleanup()).removedCount).toBe(0)
 })

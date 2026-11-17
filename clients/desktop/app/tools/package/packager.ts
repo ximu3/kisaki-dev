@@ -12,6 +12,7 @@ import { runtimeFiles } from '../build/manifest'
 import type { DesktopBuild } from '../build/manifest'
 import type { DesktopTarget } from '../lib/targets'
 import type { DistributionKind, DistributionManifest } from './distribution'
+import { applicationIdentities } from '@kisaki3/desktop-contracts/app'
 import { sha256 } from '../lib/sha256'
 import { removeOutputs } from '@kisaki3/tooling/output'
 import { runPnpm } from '@kisaki3/tooling/process'
@@ -126,8 +127,12 @@ async function writeBuilderConfig(context: PackagingContext): Promise<string> {
   const config = parseDocument(await readFile(join(appRoot, 'electron-builder.yml'), 'utf8'))
 
   config.set('electronVersion', build.electronVersion)
-  config.set('appId', testOnly ? 'me.kisaki.dev' : 'me.kisaki')
-  config.set('protocols', [{ name: 'Kisaki', schemes: [testOnly ? 'kisaki-dev' : 'kisaki'] }])
+  const identity = applicationIdentities[testOnly ? 'development' : 'production']
+  config.set('appId', identity.appId)
+  if (build.target.startsWith('linux-')) {
+    config.set('extraMetadata', { desktopName: identity.appId + '.desktop' })
+  }
+  config.set('protocols', [{ name: 'Kisaki', schemes: [identity.scheme] }])
   config.set('directories', {
     app: staging,
     output,

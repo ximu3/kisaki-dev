@@ -57,13 +57,21 @@ test('fixed tools open above the current page and a saved preference survives a 
   await page.getByRole('button', { name: 'Application menu' }).click()
   await page.getByRole('menuitem', { name: 'Preferences', exact: true }).click()
   await dialog.getByRole('button', { name: 'Appearance', exact: true }).click()
-  await dialog.getByRole('spinbutton', { name: 'Interface scale (%)' }).fill('120')
-  await dialog.getByRole('button', { name: 'Save', exact: true }).click()
+  const scale = dialog.getByRole('spinbutton', { name: 'Interface scale (%)' })
+  await scale.fill('120')
+  await scale.evaluate((input: HTMLInputElement) => {
+    input.form!.requestSubmit()
+    input.value = '130'
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+  })
   await expect
     .poll(() =>
       page.evaluate(() => document.documentElement.style.getPropertyValue('--interface-scale')),
     )
     .toBe('120')
+  await expect(scale).toHaveValue('130')
+  await dialog.getByRole('button', { name: 'Discard changes' }).click()
+  await expect(scale).toHaveValue('120')
   await page.reload()
   await expect(tasks).toBeVisible()
   await expect
@@ -142,9 +150,9 @@ test('saving and selecting a theme preserves the independent preference draft an
   await expect(scale).toHaveValue('115')
   await editor.getByRole('button', { name: 'Discard changes' }).click()
   await expect(scale).toHaveValue('100')
-  await expect(
-    editor.getByRole('combobox', { name: 'Theme', exact: true }).locator('option:checked'),
-  ).toHaveText('Sample theme')
+  await expect(editor.getByRole('combobox', { name: 'Theme', exact: true })).toHaveText(
+    'Sample theme',
+  )
   await page.keyboard.press('Escape')
   await expect(editor).not.toBeVisible()
   await expect(page.getByRole('button', { name: 'Application menu' })).toBeFocused()

@@ -1,6 +1,7 @@
 /** @fileoverview Shows observed system registrations and commits explicit changes outside preference drafts. */
 
 import { createResource, createSignal, onCleanup, Show } from 'solid-js'
+import { WindowSelect } from '../domain-ui/select'
 import { Button } from '@kisaki3/desktop-ui/button'
 import type { MainClient } from '../../../infrastructure/api'
 import type { DataModeChange } from '@kisaki3/desktop-contracts/app'
@@ -160,13 +161,16 @@ export function SystemSettings(props: { api: MainClient; report: (error: unknown
                   </p>
                   <label class="setting">
                     {api.t('runtime.destination')}
-                    <select
+                    <WindowSelect<DataModeChange['target']>
+                      api={api}
+                      label={api.t('runtime.destination')}
                       value={target()}
-                      onChange={(e) => setTarget(e.currentTarget.value as DataModeChange['target'])}
-                    >
-                      <option value="existing">{api.t('runtime.existing')}</option>
-                      <option value="empty">{api.t('runtime.emptyDirectory')}</option>
-                    </select>
+                      options={[
+                        { value: 'existing', label: api.t('runtime.existing') },
+                        { value: 'empty', label: api.t('runtime.emptyDirectory') },
+                      ]}
+                      change={setTarget}
+                    />
                   </label>
                   <label class="setting">
                     {api.t('runtime.portable')}

@@ -197,7 +197,7 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
     )
   }
   onMount(() => createEffect(sync))
-  onFormReset(
+  const flushReset = onFormReset(
     () => mirror,
     () => {
       local.onReset()
@@ -211,6 +211,7 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
    * lists stay open.
    */
   const choose = (option: SelectionOption) => {
+    flushReset()
     if (!local.chips) {
       setOpen(false)
       trigger.focus({ preventScroll: true })
@@ -280,7 +281,10 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
             removeLabel={chips().removeLabel}
             scrollPreviousLabel={chips().scrollPreviousLabel}
             scrollNextLabel={chips().scrollNextLabel}
-            onRemove={chips().remove}
+            onRemove={(key) => {
+              flushReset()
+              chips().remove(key)
+            }}
             focusTrigger={() => (local.search && open() ? searchFocus() : trigger.focus())}
           />
         )}

@@ -64,7 +64,7 @@ export function RadioGroup(props: RadioGroupProps): JSX.Element {
     (next) => local.onValueChange?.(next),
   )
   let group!: HTMLFieldSetElement
-  onFormReset(
+  const flushReset = onFormReset(
     () => group,
     () => {
       change(local.defaultValue ?? '')
@@ -80,7 +80,11 @@ export function RadioGroup(props: RadioGroupProps): JSX.Element {
         /** Reads the caller-supplied or generated native form-group name. */
         name: () => props.name ?? name,
         value,
-        change,
+        /** Applies an accepted reset before the new radio selection. */
+        change(next) {
+          flushReset()
+          change(next)
+        },
 
         /** Reads required state from the control or inherited field owner. */
         required: () => local.required ?? field.required ?? false,

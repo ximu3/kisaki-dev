@@ -4,7 +4,7 @@
 
 ## 实施进展
 
-截至 2026-11-16，工作包按真实依赖和完整责任组织。本体业务就绪后，W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 1.9、原生能力上的自研通用 UI、组件子路径与 CSS Modules、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
+截至 2026-11-17，工作包按真实依赖和完整责任组织。本体业务就绪后，W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 1.9、原生能力上的自研通用 UI、组件子路径与 CSS Modules、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
 
 W00 工程实现与适用验收已完成并合入主线，当前职责见[工程能力](#w00)。仓库维护桌面工程工具、原生文件能力、资源、两个私有工程包，以及 desktop-appearance、extension-distribution、desktop-contracts、desktop-localization、desktop-rpc 和 desktop-ui，workspace 共 10 个项目（含根工程）。产品能力按下表工作包实施。
 
@@ -35,7 +35,7 @@ W00 工程实现与适用验收已完成并合入主线，当前职责见[工程
 | [W04 desktop-rpc](work-packages.md#w04)                       | 实现与适用验收已完成。环境无关的 RPC 包通过帧与连接机制、制品、独立声明以及 Node 父子 IPC 和 Electron 窗口的真实通道验证，见[验证记录](../verification/evidence/w04/README.md)。项目文档待 W23，尚未公开发布。                               |
 | [W05 desktop-ui](work-packages.md#w05) | 31 个组件家族与共同样式已完成，静态字段标题、可搜索单选与多选、原生分段日期、虚拟列表、稳定内容的浮层、通知队列和内置格式栏已通过独立制品消费验收。范围见[验证记录](../verification/evidence/w05/README.md)。项目文档待 W23，尚未公开发布。 |
 | [W06 存储与原生基础](work-packages.md#w06) | 实现与适用验收已完成。正式存储、文件设施和随生效软件语言切换的索引通过六目标运行与制品验收。[完整存储负载](../verification/evidence/w06/README.md#six-target-workload)在六个目标通过，Linux 同机对照验证了 worker 中位数门槛能拦住持续慢查询。 |
-| [W07 应用运行与设置](work-packages.md#w07) | 运行端实现与[六目标自动验收](../verification/evidence/w07/README.md#six-targets)完成，包含正式窗口、任务与历史、设置、网络、文件准备和通知目标恢复。W20 负责安装身份下的通知登记与真实冷启动验收。系统登录许可、实际后台自启仍待实测。 |
+| [W07 应用运行与设置](work-packages.md#w07) | 运行端实现与[六目标自动验收](../verification/evidence/w07/README.md#six-targets)完成，包含正式窗口、任务与历史、设置、网络、文件准备和通知目标恢复。W20 负责安装身份下的通知登记与真实冷启动验收。[回收与编辑器修正](../verification/evidence/w07/README.md#附件回收与编辑器核验)已有 Windows x64 复验，当前修订的其余宿主待核对。系统登录许可、实际后台自启仍待实测。 |
 | [W08 资料与记录](work-packages.md#w08)                        | 未开始。                                                                                                                                                                                                                                     |
 | [W09 Vantage](work-packages.md#w09)                           | 未开始；分项结果见[项目交付](delivery-checklist.md#projects)。                                                                                                                                                                               |
 | [W10 Kana](work-packages.md#w10)                              | 未开始；分项结果见[项目交付](delivery-checklist.md#projects)。                                                                                                                                                                               |

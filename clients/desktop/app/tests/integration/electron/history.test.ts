@@ -37,7 +37,14 @@ test.use({
           result: { adopted: 2, skipped: 1 },
           finishedAt: 8,
         })
-        history.startTask({ ...base, id: 'unfinished', title: 'Interrupted import' })
+        const recent = Date.UTC(2000, 0, 1)
+        history.startTask({
+          ...base,
+          id: 'unfinished',
+          title: 'Interrupted import',
+          createdAt: recent,
+          startedAt: recent,
+        })
         history.checkpointTask('unfinished', { adopted: 1 })
       } finally {
         storage.close()
@@ -68,4 +75,13 @@ test('reopens recorded task results and returns to the same filtered history', a
   await page.keyboard.press('Escape')
   await expect(page.getByRole('searchbox')).toHaveValue('Interrupted')
   await expect(details).toBeFocused()
+
+  await page.getByRole('button', { name: 'Clear history', exact: true }).click()
+  const clear = page.getByRole('dialog', { name: 'Clear history', exact: true })
+  await clear.getByRole('combobox', { name: 'History' }).click()
+  await clear.getByRole('option', { name: 'Finished tasks created before a date' }).click()
+  await clear.getByLabel('Created before', { exact: true }).fill('1990-01-01')
+  await clear.getByRole('button', { name: 'Clear history', exact: true }).click()
+  await expect(page.getByRole('tab', { name: 'Finished (1)' })).toBeVisible()
+  await expect(details).toBeVisible()
 })

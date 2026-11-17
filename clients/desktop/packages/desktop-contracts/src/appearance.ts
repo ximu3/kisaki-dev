@@ -363,8 +363,15 @@ const themeRef = v.variant('type', [
 /** Resolved light or dark appearance used after evaluating the saved mode. */
 const colorScheme = v.picklist(['light', 'dark'])
 
-/** Allowed integer interface scaling percentages from 75 through 200. */
-const scale = v.pipe(integer, v.minValue(75), v.maxValue(200))
+/** Inclusive percent range shared by the appearance contract and its native editor. */
+export const interfaceScaleRange = { min: 75, max: 200 } as const
+
+/** Allowed integer interface scale, independently of text and content zoom. */
+const scale = v.pipe(
+  integer,
+  v.minValue(interfaceScaleRange.min),
+  v.maxValue(interfaceScaleRange.max),
+)
 
 /** Package- or data-scoped extension resource path used by appearance definitions. */
 const extensionFile = v.strictObject({

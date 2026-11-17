@@ -2,10 +2,10 @@
 
 import { randomUUID } from 'node:crypto'
 import { createReadStream } from 'node:fs'
-import { mkdir, readdir, rm, stat, rename, rmdir, lstat, open } from 'node:fs/promises'
+import { mkdir, readdir, rm, rename, rmdir, open } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { Readable } from 'node:stream'
-import type { Attachment, AttachmentCleanupResult } from '@kisaki3/desktop-contracts/attachments'
+import type { Attachment } from '@kisaki3/desktop-contracts/attachments'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
   parseFileInput,
@@ -24,6 +24,7 @@ import {
   type StagedFile,
 } from '../files'
 import type { DatabaseCall } from '../database/executor'
+import { createCollection, directory, entryInfo } from './collection'
 import type { attachmentStorage } from './storage'
 import type { createResources } from '../resources'
 import type { createNetwork } from '../network'
@@ -43,6 +44,7 @@ export function createAttachments(
   resources: ReturnType<typeof createResources>,
   network: Pick<ReturnType<typeof createNetwork>, 'fetch'>,
   call: DatabaseCall<ReturnType<typeof attachmentStorage>>,
+  report: (cause: unknown) => void = console.error,
 ) {
   const root = join(dataRoot, 'attachments')
   const temporary = join(dataRoot, 'staging')
@@ -50,30 +52,12 @@ export function createAttachments(
   const preparations = new Map<string, Attachment>()
   let queue = Promise.resolve()
 
-  /** Requires the physical managed directory before traversing it for a write or collection. */
-  async function directory(path: string) {
-    const info = await lstat(path).catch((error: NodeJS.ErrnoException) => {
-      if (error.code === 'ENOENT') {
-        return null
-      }
-      throw error
-    })
-    if (info && !info.isDirectory()) {
-      throw new DesktopError('PathConflict', 'An attachment directory has been replaced')
-    }
-  }
-
   /** Resolves the private layout without following an externally replaced shard or file link. */
   async function managedPath(id: string) {
     const path = storedFilePath(root, id)
     await directory(root)
     await directory(dirname(path))
-    const info = await lstat(path).catch((error: NodeJS.ErrnoException) => {
-      if (error.code === 'ENOENT') {
-        return null
-      }
-      throw error
-    })
+    const info = await entryInfo(path)
     if (info && !info.isFile()) {
       throw new DesktopError('PathConflict', 'The attachment path is not a managed file')
     }
@@ -103,6 +87,8 @@ export function createAttachments(
     return result
   }
 
+  const collection = createCollection(root, held, owned, call, report)
+
   /** Retains one attachment until all resources derived from this acquisition end. */
   function hold(metadata: Attachment, prepared: boolean) {
     held.set(metadata.id, (held.get(metadata.id) ?? 0) + 1)
@@ -120,6 +106,7 @@ export function createAttachments(
             if ((prepared || wasPrepared) && !(await call('getAttachment', metadata.id))) {
               await rm(await managedPath(metadata.id), { force: true })
             }
+            collection.released(metadata.id)
           }
         }),
     )
@@ -173,21 +160,32 @@ export function createAttachments(
 
   return {
     stage,
-    /** Clears exclusively owned stages from an earlier process before opening this app to callers. */
-    async cleanInterruptedStages() {
-      await mkdir(temporary, { recursive: true })
-      await directory(temporary)
-      for (const dir of await readdir(temporary, { withFileTypes: true })) {
-        if (!dir.isDirectory() || !/^file-[a-zA-Z0-9]{6}$/.test(dir.name)) {
-          continue
+    /** Snapshots former staging directories before this process starts accepting file inputs. */
+    async interruptedStages() {
+      if (!(await directory(temporary))) {
+        return []
+      }
+      return (await readdir(temporary, { withFileTypes: true }))
+        .filter((dir) => dir.isDirectory() && /^file-[a-zA-Z0-9]{6}$/.test(dir.name))
+        .map((dir) => dir.name)
+    },
+    /** Completes cleanup of the captured stages independently of this process's live preparations. */
+    async cleanInterruptedStages(stages: readonly string[], signal: AbortSignal) {
+      for (const name of stages) {
+        signal.throwIfAborted()
+        const path = join(temporary, name)
+        try {
+          await directory(temporary)
+          await directory(path)
+          const members = await readdir(path, { withFileTypes: true })
+          if (members.some((file) => file.name !== 'content' || !file.isFile())) {
+            continue
+          }
+          await rm(join(path, 'content'), { force: true })
+          await rmdir(path)
+        } catch (cause) {
+          report(cause)
         }
-        const path = join(temporary, dir.name)
-        const members = await readdir(path, { withFileTypes: true })
-        if (members.some((file) => file.name !== 'content' || !file.isFile())) {
-          continue
-        }
-        await rm(join(path, 'content'), { force: true })
-        await rmdir(path)
       }
     },
     /** Pins only the final referenced IDs until the owner's transaction adopts their metadata and references. */
@@ -308,54 +306,12 @@ export function createAttachments(
         await file.dispose()
       }
     },
-    /** Rechecks database references and live holds before removing known managed file names. */
-    cleanup(signal?: AbortSignal): Promise<AttachmentCleanupResult> {
-      return owned(async () => {
-        const issues: Array<{ attachmentId: string; error: { code: string; message: string } }> = []
-        let removedCount = 0
-        let reclaimedBytes = 0
-        await mkdir(root, { recursive: true })
-        await directory(root)
-        const ids = await call('attachmentIds')
-        const protectedPaths = new Set([...held.keys()].map((id) => storedFilePath(root, id)))
-        for (const id of ids) {
-          signal?.throwIfAborted()
-          const path = await managedPath(id)
-          if (held.has(id) || !(await call('reclaimAttachment', id))) {
-            protectedPaths.add(path)
-            continue
-          }
-          try {
-            const info = await stat(path).catch(() => null)
-            await rm(path, { force: true })
-            reclaimedBytes += info?.size ?? 0
-            removedCount++
-          } catch {
-            protectedPaths.add(path)
-            issues.push({
-              attachmentId: id,
-              error: { code: 'WriteFailed', message: 'The attachment file could not be removed' },
-            })
-          }
-        }
-        for (const prefix of await readdir(root, { withFileTypes: true })) {
-          if (!prefix.isDirectory() || !/^[0-9a-f]{2}$/.test(prefix.name)) {
-            continue
-          }
-          const directory = join(root, prefix.name)
-          for (const file of await readdir(directory, { withFileTypes: true })) {
-            signal?.throwIfAborted()
-            const path = join(directory, file.name)
-            if (file.isFile() && /^[0-9a-f]{62}$/.test(file.name) && !protectedPaths.has(path)) {
-              const info = await stat(path)
-              await rm(path)
-              reclaimedBytes += info.size
-              removedCount++
-            }
-          }
-        }
-        return { removedCount, reclaimedBytes, issues }
-      })
+    retire: collection.retire,
+    cleanup: collection.cleanup,
+    /** Waits for admitted reclamation and acquisitions before closing the database. */
+    async drain() {
+      await queue
+      await collection.drain()
     },
   }
 }

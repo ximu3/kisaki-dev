@@ -30,8 +30,11 @@ export function AppShell(
   }>,
 ) {
   const { api } = props
-  /** Reads the current platform and native maximize state for the title bar. */
-  const [windowState, { refetch: refreshWindow }] = createResource(() => api.call('window.state'))
+  /** Reads the maximize state for the Linux caption buttons. */
+  const [windowState, { refetch: refreshWindow }] = createResource(
+    () => api.platform === 'linux',
+    () => api.call('window.state'),
+  )
   /** Reads the active count for the fixed task-center trigger. */
   const [active, { refetch: refreshCount }] = createResource(() =>
     api.call(
@@ -61,7 +64,7 @@ export function AppShell(
       <header data-platform={api.platform} class="titlebar flex shrink-0 items-center">
         <img src="kisaki-app://window/brand/icon.png" alt="Kisaki" class="brand-icon" />
         <div class="grow" />
-        <Show when={windowState()?.platform !== 'darwin'}>
+        <Show when={api.platform === 'linux'}>
           <div class="window-buttons">
             <Button
               variant="ghost"

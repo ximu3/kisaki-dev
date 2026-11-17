@@ -22,6 +22,7 @@ import { createAppearance } from '../features/appearance'
 import type { ApplicationOperations } from './database-worker'
 import type { AppPaths } from './paths'
 import { bindSettings } from './bindings'
+import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type { DesktopPlatform } from '@kisaki3/desktop-contracts/preferences'
 
 /** Opens the chosen library before exposing any product operation to a document. */
@@ -93,6 +94,7 @@ export async function compose(
       resources,
       network,
       database.call,
+      (cause) => void log.record('attachment-cleanup-failed', cause),
     )
     const images = createImages(paths.resources, attachments, resources)
     const fonts = createFonts(
@@ -113,8 +115,35 @@ export async function compose(
       (locale) => database.adoptLocale(locale),
     )
     teardown.push(bindings.dispose)
-    await attachments.cleanInterruptedStages()
-    await attachments.cleanup()
+    const interrupted = await attachments.interruptedStages().catch(async (cause) => {
+      await log.record('attachment-cleanup-failed', cause)
+      return []
+    })
+    const maintenance = new AbortController()
+    let recovery: Promise<void> | undefined
+    /** Reconciles the previous process's leftovers after the first window is ready. */
+    function recoverAttachments() {
+      recovery = (async () => {
+        await attachments.cleanInterruptedStages(interrupted, maintenance.signal)
+        const result = await attachments.cleanup(maintenance.signal)
+        for (const issue of result.issues) {
+          await log.record('attachment-cleanup-failed', issue.error)
+        }
+      })().catch(async (cause) => {
+        const stopped =
+          maintenance.signal.aborted &&
+          (cause === maintenance.signal.reason ||
+            (cause instanceof DesktopError && cause.code === 'Cancelled'))
+        if (!stopped) {
+          await log.record('attachment-cleanup-failed', cause)
+        }
+      })
+    }
+    teardown.push(async () => {
+      maintenance.abort()
+      await recovery
+      await attachments.drain()
+    })
 
     return {
       paths,
@@ -128,6 +157,7 @@ export async function compose(
       network,
       resources,
       attachments,
+      recoverAttachments,
       images,
       fonts,
       appearance,

@@ -198,8 +198,9 @@ export function createFonts(
         additions.map((item) => item.metadata),
         expected,
       )
+      attachments.retire(result.released)
       invalidated.emit()
-      return result
+      return result.font
     } finally {
       await Promise.all(cleanups.map((dispose) => dispose()))
     }
@@ -258,7 +259,7 @@ export function createFonts(
     },
     /** Removes the user font and invalidates the library. */
     async delete(id: string) {
-      await call('deleteFont', id)
+      attachments.retire(await call('deleteFont', id))
       invalidated.emit()
     },
     /** Acquires a fixed definition and independent holds on all its files. */

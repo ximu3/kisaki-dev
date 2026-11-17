@@ -8,6 +8,9 @@
   -webkit-app-region: drag;
   user-select: none;
 }
+.titlebar[data-platform='win32'] {
+  height: env(titlebar-area-height, 2.57rem);
+}
 .brand-icon {
   width: 1.43rem;
   height: 1.43rem;
@@ -157,7 +160,7 @@ input[type='checkbox'] {
   min-width: 5rem;
 }
 .task-tools input:not([type='search']),
-.task-tools select {
+.task-tools .window-select {
   width: 9rem;
 }
 .task-results {
@@ -230,17 +233,17 @@ input[type='checkbox'] {
   max-width: 100%;
 }
 .setting input:not([type='checkbox']),
-.setting select {
+.setting .window-select {
   width: min(15rem, 100%);
 }
-.settings footer,
-.management footer {
-  grid-column: 1/-1;
-  justify-content: flex-end;
-  padding: 0.7rem 0 0.25rem;
-  position: sticky;
-  bottom: 0;
-  background: var(--dialog);
+.editor-footer-slot:empty {
+  display: none;
+}
+.editor-footer {
+  align-items: center;
+}
+.editor-footer > :first-child {
+  margin-inline-end: auto;
 }
 .order {
   list-style: none;

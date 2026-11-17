@@ -142,7 +142,7 @@ export function DateInput(props: DateInputProps): JSX.Element {
     () => input,
     () => setOpen(false),
   )
-  onFormReset(
+  const flushReset = onFormReset(
     () => input,
     () => {
       change(local.defaultValue ?? '')
@@ -175,7 +175,9 @@ export function DateInput(props: DateInputProps): JSX.Element {
         class={classes(frame.editor, styles.editor)}
         onInput={(event) => {
           if (!input.validity.badInput && (!input.value || parseDate(input.value))) {
-            change(input.value)
+            const next = input.value
+            flushReset()
+            change(next)
             sync()
           } else {
             validate()

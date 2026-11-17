@@ -20,7 +20,15 @@ async function requireProtection() {
 /** Encrypts a new secret before the transaction that commits it. */
 export async function protectSecret(value: string) {
   await requireProtection()
-  return safeStorage.encryptStringAsync(value)
+  try {
+    return await safeStorage.encryptStringAsync(value)
+  } catch (cause) {
+    throw new DesktopError(
+      'CredentialProtectionUnavailable',
+      'System credential protection could not encrypt the value',
+      { cause },
+    )
+  }
 }
 
 /** Opens one saved secret and reports the system's key-rotation request to its owner. */
@@ -29,6 +37,17 @@ export async function openSecret(ciphertext: Uint8Array) {
   try {
     return await safeStorage.decryptStringAsync(Buffer.from(ciphertext))
   } catch (cause) {
+    // Electron 45 exposes OSCrypt's temporary failure as a distinct rejection message.
+    if (
+      cause instanceof Error &&
+      cause.message.startsWith('safeStorage.decryptStringAsync is temporarily unavailable.')
+    ) {
+      throw new DesktopError(
+        'CredentialProtectionUnavailable',
+        'System credential protection is temporarily unavailable',
+        { cause },
+      )
+    }
     throw new DesktopError('CredentialUnreadable', 'The saved credential cannot be opened', {
       cause,
     })

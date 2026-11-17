@@ -10,6 +10,7 @@ import { extractFile, listPackage } from '@electron/asar'
 import { readFile, readdir, mkdir, writeFile, cp } from 'node:fs/promises'
 import Database from 'better-sqlite3'
 import { dirname, isAbsolute, join, sep } from 'node:path'
+import { applicationIdentities } from '@kisaki3/desktop-contracts/app'
 import { appRoot } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
 import type { ArtifactReceipt } from '../../tools/package/packager'
@@ -91,12 +92,14 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     testOnly: receipt.testOnly,
   })
 
+  const desktopName =
+    applicationIdentities[receipt.testOnly ? 'development' : 'production'].appId + '.desktop'
   if (process.platform === 'linux') {
     const applicationDirectory = dirname(resourceDirectory)
     const desktopEntries = (await readdir(applicationDirectory)).filter((path) =>
       path.endsWith('.desktop'),
     )
-    expect(desktopEntries).toHaveLength(1)
+    expect(desktopEntries).toEqual([desktopName])
 
     const desktopEntry = await readFile(join(applicationDirectory, desktopEntries[0]!), 'utf8')
     expect(desktopEntry.match(/^Exec=(.*)$/m)?.[1]).toBe('AppRun %U')
@@ -117,7 +120,18 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     const bytes = path.startsWith('resources/')
       ? await readFile(join(resourceDirectory, path))
       : extractFile(asar, path.split('/').join(sep))
-    expect(sha256(bytes), path).toBe(digest)
+    if (process.platform === 'linux' && path === 'package.json') {
+      // Linux packaging adds one flavor-specific field to the verified neutral runtime manifest.
+      const { desktopName: installedName, ...neutral } = JSON.parse(bytes.toString()) as Record<
+        string,
+        unknown
+      >
+      expect(installedName).toBe(desktopName)
+      expect(sha256(Buffer.from(JSON.stringify(neutral, null, 2))), path).toBe(digest)
+      expect(bytes).toEqual(Buffer.from(JSON.stringify({ ...neutral, desktopName }, null, 2)))
+    } else {
+      expect(sha256(bytes), path).toBe(digest)
+    }
   }
 
   const fuses = await getCurrentFuseWire(fusePath)

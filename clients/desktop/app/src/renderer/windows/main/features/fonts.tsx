@@ -1,6 +1,10 @@
 /** @fileoverview Manages a file-backed user font collection and releases draft preparations when editing ends. */
 
-import { createEffect, createResource, createSignal, For, Show, onCleanup } from 'solid-js'
+import { batch, createEffect, createResource, createSignal, For, Show, onCleanup } from 'solid-js'
+import { createUniqueId } from 'solid-js'
+import { createEditorValidation } from '../domain-ui/validation'
+import { EditorFooter } from '../domain-ui/editor-footer'
+import { createSubmission } from '../domain-ui/submission'
 import { Button } from '@kisaki3/desktop-ui/button'
 import type { Font } from '@kisaki3/desktop-contracts/fonts'
 import type { FontChoice } from '../../../../shared/window-api'
@@ -16,6 +20,7 @@ export function Fonts(props: {
   report: (error: unknown) => void
 }) {
   const { api } = props
+  const formId = createUniqueId()
   /** Holds the user font-name search in this instance. */
   const [search, setSearch] = createSignal('')
   /** Tracks the current interval of matching library rows. */
@@ -33,8 +38,19 @@ export function Fonts(props: {
   const [added, setAdded] = createSignal<readonly FontChoice[]>([])
   /** Tracks which original attachments the submitted file set retains. */
   const [kept, setKept] = createSignal<string[]>([])
-  /** Disables a second save while the complete edit is committing. */
-  const [busy, setBusy] = createSignal(false)
+  let session = 0
+  let preparing = 0
+  const validation = createEditorValidation(
+    api,
+    () => [
+      ...(!name().trim() ? [{ id: 'name', summary: api.t('runtime.enterName') }] : []),
+      ...(!kept().length && !added().length
+        ? [{ id: 'files', summary: api.t('runtime.addFontFile') }]
+        : []),
+    ],
+    (key) => queueMicrotask(() => document.getElementById('font-field-' + key)?.focus()),
+  )
+
   /** Rereads the catalog after independent font changes. */
   const changed = () => void refetch()
   api.topics.addEventListener('fonts.changed', changed)
@@ -45,12 +61,20 @@ export function Fonts(props: {
     return Promise.all(files.map((file) => api.call('resources.release', file.id)))
   }
   onCleanup(() => {
+    session++
     api.topics.removeEventListener('fonts.changed', changed)
     void release().catch(props.report)
   })
   /** Opens a fresh edit from one saved font or an empty import. */
   const open = async (id: string | null) => {
+    const owner = ++session
+    preparing = 0
+    validation.clear()
+    await release()
     const value = id ? await api.call('fonts.get', id) : null
+    if (owner !== session) {
+      return
+    }
     if (id && !value) {
       throw new Error(api.t('runtime.unavailable'))
     }
@@ -59,10 +83,6 @@ export function Fonts(props: {
     setKept(value?.files.map((f) => f.attachmentId) ?? [])
     props.dirty(false)
   }
-  let editing = true
-  onCleanup(() => {
-    editing = false
-  })
   createEffect(() => {
     const id = props.target
     if (id) {
@@ -70,8 +90,8 @@ export function Fonts(props: {
     }
   })
   /** Keeps verified files in this draft or releases a late result after the editor closes. */
-  const add = (choices: readonly FontChoice[]) => {
-    if (!editing) {
+  const add = (owner: number, choices: readonly FontChoice[]) => {
+    if (owner !== session) {
       for (const file of choices) {
         void api.call('resources.release', file.id).catch(props.report)
       }
@@ -85,53 +105,82 @@ export function Fonts(props: {
   }
   /** Uses the native picker and retains its verified selections. */
   const choose = async () => {
-    const choices = await api.call('fonts.choose')
-    if (choices) {
-      add(choices)
-    }
-  }
-  /** A real drop or clipboard File supplies its own bytes through the document's binary port. */
-  async function receive(files: FileList) {
-    if (font() === undefined) {
-      await open(null)
-    }
-    for (const file of files) {
-      const source = await fileInput(file)
-      try {
-        add([await api.call('fonts.prepareInput', source.id)])
-      } finally {
-        source.dispose()
-      }
-    }
-  }
-  /** Submits one complete font edit and releases the accepted draft. */
-  const save = async () => {
-    setBusy(true)
+    const owner = session
+    preparing++
     try {
-      const old = font()
-      if (old) {
-        await api.call(
-          'fonts.editFiles',
-          old.id,
-          name(),
-          kept(),
-          added().map((f) => f.id),
-          old,
-        )
-      } else {
-        await api.call(
-          'fonts.import',
-          name(),
-          added().map((f) => f.id),
-        )
+      const choices = await api.call('fonts.choose')
+      if (choices) {
+        add(owner, choices)
       }
-      await release()
-      props.dirty(false)
-      setFont(undefined)
     } finally {
-      setBusy(false)
+      if (owner === session) {
+        preparing--
+      }
     }
   }
+  /** Retains dropped files only until the particular edit that received them ends. */
+  async function receive(files: FileList) {
+    const opening = font() === undefined ? open(null) : null
+    const owner = session
+    await opening
+    if (owner !== session) {
+      return
+    }
+    preparing++
+    try {
+      for (const file of files) {
+        if (owner !== session) {
+          break
+        }
+        const source = await fileInput(file)
+        try {
+          if (owner === session) {
+            add(owner, [await api.call('fonts.prepareInput', source.id)])
+          }
+        } finally {
+          source.dispose()
+        }
+      }
+    } finally {
+      if (owner === session) {
+        preparing--
+      }
+    }
+  }
+
+  /** Commits a fixed file set and adopts its saved identities into any subsequent edits. */
+  const { save, busy } = createSubmission(async () => {
+    const old = font()
+    if (old === undefined) {
+      return
+    }
+    if (!validation.validate()) {
+      return
+    }
+    const owner = session
+    const sentName = name(),
+      sentKept = kept(),
+      sentAdded = added()
+    const ids = sentAdded.map((file) => file.id)
+    const saved = old
+      ? await api.call('fonts.editFiles', old.id, sentName, sentKept, ids, old)
+      : await api.call('fonts.import', sentName, ids)
+    if (owner !== session) {
+      return
+    }
+
+    const adopted = added().filter((file) => sentAdded.includes(file))
+    const later =
+      name() !== sentName || kept() !== sentKept || added() !== sentAdded || preparing > 0
+    const retained = new Set([...kept(), ...adopted.map((file) => file.attachmentId)])
+    batch(() => {
+      setAdded(added().filter((file) => !sentAdded.includes(file)))
+      setKept(saved.files.map((file) => file.attachmentId).filter((id) => retained.has(id)))
+      setFont(later ? saved : undefined)
+      props.dirty(later)
+    })
+    await Promise.all(adopted.map((file) => api.call('resources.release', file.id)))
+  })
   props.onSave(save)
   return (
     <section
@@ -215,68 +264,93 @@ export function Fonts(props: {
           </>
         }
       >
-        <label class="setting">
-          {api.t('runtime.name')}
-          <input
-            value={name()}
-            onInput={(e) => {
-              setName(e.currentTarget.value)
-              props.dirty(true)
-            }}
-          />
-        </label>
-        <h3>{api.t('runtime.files')}</h3>
-        <For each={font()?.files.filter((f) => kept().includes(f.attachmentId))}>
-          {(file) => (
-            <div class="setting">
-              {file.metadata.faces[0].fullName}
-              <Button
-                onClick={() => {
-                  setKept(kept().filter((id) => id !== file.attachmentId))
-                  props.dirty(true)
-                }}
-              >
-                {api.t('runtime.remove')}
-              </Button>
-            </div>
-          )}
-        </For>
-        <For each={added()}>
-          {(file) => (
-            <div class="setting">
-              <FontPreview file={file} report={props.report} />
-              <Button
-                onClick={() => {
-                  setAdded(added().filter((f) => f !== file))
-                  void api.call('resources.release', file.id).catch(props.report)
-                }}
-              >
-                {api.t('runtime.remove')}
-              </Button>
-            </div>
-          )}
-        </For>
-        <Button variant="outline" onClick={() => void choose().catch(props.report)}>
-          {api.t('runtime.choose')}
-        </Button>
-        <footer>
+        <form
+          id={formId}
+          novalidate
+          onSubmit={(event) => {
+            event.preventDefault()
+            void save().catch(props.report)
+          }}
+        >
+          <label class="setting">
+            {api.t('runtime.name')}
+            <input
+              id="font-field-name"
+              required
+              aria-invalid={validation.errorId('name') ? true : undefined}
+              aria-describedby={validation.errorId('name')}
+              onFocus={() => validation.focus('name')}
+              value={name()}
+              onInput={(e) => {
+                setName(e.currentTarget.value)
+                props.dirty(true)
+              }}
+            />
+          </label>
+          <h3>{api.t('runtime.files')}</h3>
+          <For each={font()?.files.filter((f) => kept().includes(f.attachmentId))}>
+            {(file) => (
+              <div class="setting">
+                {file.metadata.faces[0].fullName}
+                <Button
+                  onClick={() => {
+                    setKept(kept().filter((id) => id !== file.attachmentId))
+                    props.dirty(true)
+                  }}
+                >
+                  {api.t('runtime.remove')}
+                </Button>
+              </div>
+            )}
+          </For>
+          <For each={added()}>
+            {(file) => (
+              <div class="setting">
+                <FontPreview file={file} report={props.report} />
+                <Button
+                  onClick={() => {
+                    setAdded(added().filter((f) => f !== file))
+                    void api.call('resources.release', file.id).catch(props.report)
+                  }}
+                >
+                  {api.t('runtime.remove')}
+                </Button>
+              </div>
+            )}
+          </For>
           <Button
-            variant="ghost"
-            onClick={() => {
-              void release().catch(props.report)
-              props.dirty(false)
-              setFont(undefined)
-            }}
+            id="font-field-files"
+            variant="outline"
+            aria-describedby={validation.errorId('files')}
+            aria-invalid={validation.errorId('files') ? true : undefined}
+            onFocus={() => validation.focus('files')}
+            onClick={() => void choose().catch(props.report)}
           >
-            {api.t('actions.cancel')}
+            {api.t('runtime.choose')}
           </Button>
-          <Button
-            disabled={busy() || !name().trim() || (!kept().length && !added().length)}
-            onClick={() => void save().catch(props.report)}
-          >
-            {api.t('actions.save')}
-          </Button>
-        </footer>
+          <EditorFooter>
+            <validation.Feedback />
+            <Button
+              variant="ghost"
+              onClick={() => {
+                session++
+                preparing = 0
+                void release().catch(props.report)
+                props.dirty(false)
+                setFont(undefined)
+              }}
+            >
+              {api.t('actions.cancel')}
+            </Button>
+            <Button
+              disabled={busy() || !name().trim() || (!kept().length && !added().length)}
+              type="submit"
+              form={formId}
+            >
+              {api.t('actions.save')}
+            </Button>
+          </EditorFooter>
+        </form>
       </Show>
     </section>
   )

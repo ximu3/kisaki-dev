@@ -79,7 +79,6 @@ export async function buildDesktop(
         version: manifest.version,
         type: manifest.type,
         main: 'main/entry.js',
-        desktopName: 'me.kisaki.desktop',
         description: manifest.description,
         homepage: manifest.homepage,
         author: manifest.author,

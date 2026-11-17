@@ -98,7 +98,7 @@ export function fontStorage({ db }: Storage) {
         if (id === null) {
           const created = randomUUID()
           adoptNewFont(tx, { id: created, name: name!, files: files!, attachments: prepared })
-          return readFont(tx, created)!
+          return { font: readFont(tx, created)!, released: [] as string[] }
         }
         const original = id ? readFont(tx, id) : null
         if (id && !original) {
@@ -133,14 +133,29 @@ export function fontStorage({ db }: Storage) {
           adoptAttachments(tx, prepared)
           replaceFiles(tx, fontId, files)
         }
-        return readFont(tx, fontId)!
+        const font = readFont(tx, fontId)!
+        const retained = new Set(font.files.map((file) => file.attachmentId))
+        return {
+          font,
+          released: original!.files
+            .map((file) => file.attachmentId)
+            .filter((key) => !retained.has(key)),
+        }
       })
     },
     /** Deletes the user font while foreign keys release only its file links. */
     deleteFont(id: string) {
-      if (!db.delete(fonts).where(eq(fonts.id, id)).run().changes) {
-        throw new DesktopError('NotFound', 'The font does not exist')
-      }
+      return db.transaction((tx) => {
+        const released = tx
+          .select({ id: fontAttachments.attachmentId })
+          .from(fontAttachments)
+          .where(eq(fontAttachments.fontId, id))
+          .all()
+        if (!tx.delete(fonts).where(eq(fonts.id, id)).run().changes) {
+          throw new DesktopError('NotFound', 'The font does not exist')
+        }
+        return released.map((row) => row.id)
+      })
     },
   }
 }

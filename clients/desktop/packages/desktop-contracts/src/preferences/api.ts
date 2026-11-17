@@ -14,7 +14,7 @@ import type { NetworkPreferences, ProxyCredentials } from '../network'
 import type { StoredDefinition, CallOptions, Disposable } from '../operations'
 import * as v from 'valibot'
 import { parseUiTranslationRef } from '../i18n'
-import { parseThemeRef } from '../appearance'
+import { interfaceScaleRange, parseThemeRef } from '../appearance'
 import { parsePageRef } from '../ui/pages'
 import {
   unique,
@@ -264,7 +264,11 @@ export const generalEntries = {
 export const appearanceEntries = {
   theme,
   mode: v.picklist(['system', 'light', 'dark']),
-  interfaceScale: v.pipe(integer, v.minValue(75), v.maxValue(200)),
+  interfaceScale: v.pipe(
+    integer,
+    v.minValue(interfaceScaleRange.min),
+    v.maxValue(interfaceScaleRange.max),
+  ),
 }
 
 /** Saved page order and nonnegative visible-navigation limit. */
@@ -411,6 +415,28 @@ export function parsePreferences(input: unknown, platform?: DesktopPlatform): Pr
   }
 
   return value
+}
+
+/** Resolves each shortcut's saved usable combinations and any explicitly edited fields. */
+export function effectiveShortcutBindings(
+  saved: PreferencesSnapshot['shortcuts'],
+  edits?: PreferencesChanges['shortcuts'],
+): ShortcutsPreferences {
+  return Object.fromEntries(
+    shortcutKeys.map((key) => {
+      const original = saved[key]
+      const change = edits?.[key]
+      return [
+        key,
+        {
+          enabled: change?.enabled ?? original.enabled,
+          accelerators:
+            change?.accelerators ??
+            (original.accelerators.status === 'ready' ? original.accelerators.value : []),
+        },
+      ]
+    }),
+  ) as ShortcutsPreferences
 }
 
 /**

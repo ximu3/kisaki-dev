@@ -50,6 +50,14 @@ test('native controls submit, reset, cancel reset, follow external values and ho
   await page.getByRole('button', { name: 'Reset controls' }).click()
   await browserExpect(page.locator('#query')).toHaveValue('seed')
   await browserExpect(page.locator('#external')).toHaveValue('original')
+  const edited = await page.locator('#query').evaluate(async (input: HTMLInputElement) => {
+    input.form!.reset()
+    input.value = 'after reset'
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    await new Promise<void>((resolve) => setTimeout(resolve, 0))
+    return input.value
+  })
+  expect(edited).toBe('after reset')
   await browserExpect(page.getByLabel('Comfortable', { exact: true })).toBeChecked()
   await browserExpect(page.getByLabel('List', { exact: true })).toBeChecked()
   await browserExpect(page.locator('select[name="multi"]')).toHaveValues(['a', 'c'])

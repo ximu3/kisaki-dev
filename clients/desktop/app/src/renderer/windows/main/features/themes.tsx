@@ -1,6 +1,13 @@
 /** @fileoverview Edits complete light and dark theme drafts and manages the editor's application-wide preview. */
 
 import { createEffect, createSignal, createResource, For, Show, onCleanup } from 'solid-js'
+import { EditorFooter } from '../domain-ui/editor-footer'
+import { createSubmission } from '../domain-ui/submission'
+import type { FieldIssue } from '@kisaki3/desktop-ui/field'
+import { parseUserThemeUpdate } from '@kisaki3/desktop-contracts/appearance'
+import { createUniqueId } from 'solid-js'
+import { createEditorValidation } from '../domain-ui/validation'
+import { WindowSelect } from '../domain-ui/select'
 import { FontSelector, listFontOptions } from '../domain-ui/fonts/selection'
 import { Button } from '@kisaki3/desktop-ui/button'
 import type {
@@ -22,6 +29,7 @@ export function Themes(props: {
   report: (error: unknown) => void
 }) {
   const { api } = props
+  const formId = createUniqueId()
   /** Reads stable theme identities for the manager list. */
   const [catalog, { refetch }] = createResource(() => api.call('themes.list'))
   /** Reads user-owned font identities for the branch editors. */
@@ -44,10 +52,41 @@ export function Themes(props: {
   /** Holds only this editor's application preview identity. */
   const [preview, setPreview] = createSignal<string>()
   let previewRequest = 0
-  /** Keeps save actions disabled while a theme operation is pending. */
-  const [busy, setBusy] = createSignal(false)
+  let session = 0
   /** Tracks whether the current editor needs a close decision. */
   const [modified, setModified] = createSignal(false)
+  /** Validates both saved branches, including tokens in the currently hidden editor. */
+  function inspect(): FieldIssue[] {
+    const value = draft()
+    if (!value) {
+      return []
+    }
+    const errors: FieldIssue[] = []
+    if (!value.name.trim()) {
+      errors.push({ id: 'name', summary: api.t('runtime.enterName') })
+    }
+    for (const branch of ['light', 'dark'] as const) {
+      for (const [token, setting] of Object.entries(value[branch])) {
+        try {
+          parseUserThemeUpdate({ changes: { [branch]: { [token]: setting } } })
+        } catch {
+          errors.push({
+            id: branch + '/' + token,
+            summary: api.t('runtime.invalidField', { field: token }),
+          })
+        }
+      }
+    }
+    return errors
+  }
+
+  const validation = createEditorValidation(api, inspect, (id) => {
+    if (id !== 'name') {
+      setScheme(id.startsWith('light/') ? 'light' : 'dark')
+    }
+    queueMicrotask(() => document.getElementById('theme-field-' + id)?.focus())
+  })
+
   /** Updates the editor and the owning dialog's dirty state together. */
   const notify = (dirty: boolean) => {
     setModified(dirty)
@@ -73,6 +112,7 @@ export function Themes(props: {
   api.topics.addEventListener('themes.changed', refresh)
   api.topics.addEventListener('preview.ended', ended)
   onCleanup(() => {
+    session++
     end()
     api.topics.removeEventListener('themes.changed', refresh)
     api.topics.removeEventListener('preview.ended', ended)
@@ -106,8 +146,13 @@ export function Themes(props: {
     if (modified() && !confirm(api.t('runtime.discardQuestion'))) {
       return
     }
+    validation.clear()
+    const owner = ++session
     const target = mode === 'copy' ? await api.call('themes.clone', ref, name!) : ref
     const theme = await api.call('themes.get', target)
+    if (owner !== session) {
+      return
+    }
     if (!theme) {
       throw new Error(api.t('runtime.unavailable'))
     }
@@ -122,54 +167,60 @@ export function Themes(props: {
     notify(mode === 'new')
   }
   /** Saves the definition and optionally selects it against the captured original selection. */
-  const save = async (use: boolean) => {
+  const { save, busy } = createSubmission(async (use: boolean) => {
+    if (!draft()) {
+      return
+    }
+    const owner = session
+    if (!validation.validate()) {
+      return
+    }
     const value = draft()!
     const old = original()
-    setBusy(true)
-    try {
-      const selected = use ? (await api.call('preferences.get')).appearance.theme : undefined
-      let ref: ThemeRef
-      if (old) {
-        const changes: Record<string, unknown> = {},
-          expected: Record<string, unknown> = {}
-        if (old.name !== value.name) {
-          changes.name = value.name
-          expected.name = old.name
-        }
-        for (const branch of ['light', 'dark'] as const) {
-          const keys = (Object.keys(value[branch]) as (keyof UserAppearanceTokens)[]).filter(
-            (key) => JSON.stringify(value[branch][key]) !== JSON.stringify(old[branch][key]),
-          )
-          if (keys.length) {
-            changes[branch] = Object.fromEntries(keys.map((k) => [k, value[branch][k]]))
-            expected[branch] = Object.fromEntries(keys.map((k) => [k, old[branch][k]]))
-          }
-        }
-        await api.call('themes.update', old.ref.id, { changes, expected } as UserThemeUpdate)
-        ref = old.ref
-      } else {
-        ref = await api.call('themes.create', value)
+    const selected = use ? (await api.call('preferences.get')).appearance.theme : undefined
+    let ref: ThemeRef
+    if (old) {
+      const changes: Record<string, unknown> = {},
+        expected: Record<string, unknown> = {}
+      if (old.name !== value.name) {
+        changes.name = value.name
+        expected.name = old.name
       }
+      for (const branch of ['light', 'dark'] as const) {
+        const keys = (Object.keys(value[branch]) as (keyof UserAppearanceTokens)[]).filter(
+          (key) => JSON.stringify(value[branch][key]) !== JSON.stringify(old[branch][key]),
+        )
+        if (keys.length) {
+          changes[branch] = Object.fromEntries(keys.map((k) => [k, value[branch][k]]))
+          expected[branch] = Object.fromEntries(keys.map((k) => [k, old[branch][k]]))
+        }
+      }
+      await api.call('themes.update', old.ref.id, { changes, expected } as UserThemeUpdate)
+      ref = old.ref
+    } else {
+      ref = await api.call('themes.create', value)
+    }
+    if (owner === session) {
       setOriginal({ ...value, ref: ref as Theme<'user'>['ref'] })
-      notify(false)
-      if (use) {
-        try {
-          await api.call('preferences.update', {
-            changes: { appearance: { theme: ref } },
-            ...(selected?.status === 'ready' && {
-              expected: { appearance: { theme: selected.value } },
-            }),
-          })
-        } catch (cause) {
-          throw new Error(api.t('runtime.savedConflict'), { cause })
-        }
+      notify(draft() !== value)
+    }
+    if (use) {
+      try {
+        await api.call('preferences.update', {
+          changes: { appearance: { theme: ref } },
+          ...(selected?.status === 'ready' && {
+            expected: { appearance: { theme: selected.value } },
+          }),
+        })
+      } catch (cause) {
+        throw new Error(api.t('runtime.savedConflict'), { cause })
       }
+    }
+    if (owner === session && draft() === value) {
       end()
       setDraft(undefined)
-    } finally {
-      setBusy(false)
     }
-  }
+  })
   props.onSave(() => save(false))
   /** Last requested directory target scrolled into view for this dialog. */
   let focused: ThemeRef | undefined
@@ -246,29 +297,42 @@ export function Themes(props: {
         }
       >
         {(value) => (
-          <>
+          <form
+            id={formId}
+            novalidate
+            onSubmit={(event) => {
+              event.preventDefault()
+              void save(false).catch(props.report)
+            }}
+          >
             <div class="tool-row">
               <label>
                 {api.t('runtime.name')}{' '}
                 <input
+                  id="theme-field-name"
+                  required
+                  aria-invalid={validation.errorId('name') ? true : undefined}
+                  aria-describedby={validation.errorId('name')}
+                  onFocus={() => validation.focus('name')}
                   value={value().name}
                   onInput={(e) => modify({ ...value(), name: e.currentTarget.value })}
                 />
               </label>
-              <select
-                aria-label={api.t('runtime.section')}
+              <WindowSelect<ColorScheme>
+                api={api}
+                label={api.t('runtime.section')}
                 value={scheme()}
-                onChange={(e) => {
-                  const branch = e.currentTarget.value as ColorScheme
+                options={[
+                  { value: 'light', label: api.t('runtime.light') },
+                  { value: 'dark', label: api.t('runtime.dark') },
+                ]}
+                change={(branch) => {
                   setScheme(branch)
                   if (preview()) {
                     void applyPreview(value(), branch).catch(props.report)
                   }
                 }}
-              >
-                <option value="light">{api.t('runtime.light')}</option>
-                <option value="dark">{api.t('runtime.dark')}</option>
-              </select>
+              />
               <label>
                 <input
                   type="checkbox"
@@ -309,6 +373,10 @@ export function Themes(props: {
                       }
                     >
                       <input
+                        id={'theme-field-' + scheme() + '/' + key}
+                        aria-invalid={validation.errorId(scheme() + '/' + key) ? true : undefined}
+                        aria-describedby={validation.errorId(scheme() + '/' + key)}
+                        onFocus={() => validation.focus(scheme() + '/' + key)}
                         aria-label={key}
                         value={typeof token() === 'string' ? (token() as string) : ''}
                         onInput={(e) => change(e.currentTarget.value)}
@@ -318,11 +386,13 @@ export function Themes(props: {
                 )
               }}
             </For>
-            <footer>
+            <EditorFooter>
+              <validation.Feedback />
               <Button
                 variant="ghost"
                 onClick={() => {
                   if (!modified() || confirm(api.t('runtime.discardQuestion'))) {
+                    session++
                     end()
                     notify(false)
                     setDraft(undefined)
@@ -331,14 +401,14 @@ export function Themes(props: {
               >
                 {api.t('actions.cancel')}
               </Button>
-              <Button disabled={busy()} onClick={() => void save(false).catch(props.report)}>
+              <Button type="submit" form={formId} disabled={busy()}>
                 {api.t('actions.save')}
               </Button>
               <Button disabled={busy()} onClick={() => void save(true).catch(props.report)}>
                 {api.t('runtime.saveUse')}
               </Button>
-            </footer>
-          </>
+            </EditorFooter>
+          </form>
         )}
       </Show>
     </section>

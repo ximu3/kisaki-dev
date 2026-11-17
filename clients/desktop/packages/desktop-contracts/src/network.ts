@@ -204,6 +204,21 @@ export function parseProxyCredentialState(input: unknown): ProxyCredentialState 
   )
 }
 
+/** Identifies the manual route field that needs correction once individual inputs have been parsed. */
+export function manualProxyIssue(
+  mode: NetworkPreferences['mode'],
+  endpoint: ProxyEndpoint | null,
+  authenticated: boolean,
+) {
+  if (mode !== 'manual') {
+    return null
+  }
+  if (endpoint === null) {
+    return 'endpoint'
+  }
+  return authenticated && endpoint.startsWith('socks5:') ? 'credentials' : null
+}
+
 /**
  * Parses complete network preferences and checks manual proxy requirements.
  *
@@ -220,11 +235,7 @@ export function parseNetworkPreferences(input: unknown): NetworkPreferences {
     input,
     'Invalid network preferences',
   )
-  if (
-    value.mode === 'manual' &&
-    (value.endpoint === null ||
-      (value.endpoint.startsWith('socks5:') && value.credentials !== null))
-  ) {
+  if (manualProxyIssue(value.mode, value.endpoint, value.credentials !== null)) {
     throw new DesktopError(
       'InvalidInput',
       'Manual proxy configuration is incomplete or authentication is unsupported',

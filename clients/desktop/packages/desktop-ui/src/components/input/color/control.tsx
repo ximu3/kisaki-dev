@@ -98,7 +98,8 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
   const commit = (next: Partial<Hsv>) => {
     const updated = { ...color(), ...next }
     setColor(updated)
-    change((updated.alpha ?? 1) < 1 ? formatHex8(updated) : formatHex(updated))
+    input.value = (updated.alpha ?? 1) < 1 ? formatHex8(updated) : formatHex(updated)
+    input.dispatchEvent(new Event('input', { bubbles: true }))
   }
   /** Maps pointer coordinates on the color plane to bounded saturation and brightness values. */
   const paint = (event: PointerEvent & { currentTarget: HTMLDivElement }) => {

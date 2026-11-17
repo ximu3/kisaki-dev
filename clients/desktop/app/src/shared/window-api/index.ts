@@ -3,6 +3,7 @@
 import type { WindowKind } from './protocol'
 import type { MessageCatalog, UiTranslation } from '@kisaki3/desktop-contracts/i18n'
 import type {
+  DesktopPlatform,
   Preferences,
   PreferencesSnapshot,
   PreferencesUpdate,
@@ -45,6 +46,7 @@ import type {
 /** Document-owned handle to a file selected and validated by the main process. */
 export interface FontChoice {
   id: string
+  attachmentId: string
   url: string
   metadata: FontFileMetadata
 }
@@ -64,7 +66,7 @@ export interface ImageChoice {
 export interface WindowState {
   startupDeadline: number
   kind: WindowKind
-  platform: string
+  platform: DesktopPlatform
   buildId: string
   maximized: boolean
   locale: string
@@ -93,6 +95,8 @@ export interface WindowApi {
 
 /** The main window's settings, task center and native management capabilities. */
 export interface MainWindowApi extends WindowApi {
+  /** Adopts the resolved Chromium colors and height of the Windows system caption. */
+  'window.caption'(background: string, foreground: string): void
   /** Starts the shared normal exit workflow from the main window. */
   'app.quit'(): void
   /** Restarts the application after the normal close workflow succeeds. */
@@ -163,7 +167,13 @@ export interface MainWindowApi extends WindowApi {
   /** Commits the chosen name and the verified files held by this document. */
   'fonts.import'(name: string, files: readonly string[]): Font
   /** Commits a validated name or retained-file edit against its original values. */
-  'fonts.update'(id: string, input: FontUpdate): Font
+  'fonts.update'(
+    id: string,
+    input: {
+      changes: { name?: string; files?: readonly { attachmentId: string }[] }
+      expected?: NonNullable<FontUpdate['expected']>
+    },
+  ): Font
   /** Resolves retained and newly prepared files before committing the edited font. */
   'fonts.editFiles'(
     id: string,

@@ -12,16 +12,11 @@ import {
   ErrorBoundary,
   onCleanup,
 } from 'solid-js'
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogHeader,
-  DialogBody,
-} from '@kisaki3/desktop-ui/dialog'
+import { Dialog, DialogContent, DialogTitle, DialogHeader } from '@kisaki3/desktop-ui/dialog'
 import { connect, type MainClient } from '../../infrastructure/api'
 import { createCloseConfirmation, type EditorGuard } from '../../infrastructure/closing'
 import { matchesShortcut } from '../../infrastructure/shortcuts'
+import { EditorBody } from './domain-ui/editor-footer'
 import { AppShell, type Management } from './app/shell'
 import { TaskCenter } from './features/tasks'
 import { PreferenceEditor } from './features/preferences'
@@ -127,6 +122,19 @@ function MainWindow(props: { api: MainClient }) {
   }
   /** Routes application keyboard preferences only while the native page is the active surface. */
   function keydown(event: KeyboardEvent) {
+    if (confirmation.active() || event.repeat) {
+      return
+    }
+    const editor = nested() ? nestedEditor : baseEditor
+    if (
+      page() &&
+      editor.state.dirty &&
+      matchesShortcut(event, bindings()?.['editor.save'], api.platform)
+    ) {
+      event.preventDefault()
+      void editor.state.save().catch(report)
+      return
+    }
     if (!page() && matchesShortcut(event, bindings()?.['main.preferences'], api.platform)) {
       event.preventDefault()
       void open('preferences').catch(report)
@@ -217,7 +225,7 @@ function MainWindow(props: { api: MainClient }) {
           <DialogHeader closeLabel={api.t('actions.close')}>
             <DialogTitle>{api.t(`runtime.${page() ?? 'preferences'}`)}</DialogTitle>
           </DialogHeader>
-          <DialogBody class={page() === 'tasks' ? 'task-body' : undefined}>
+          <EditorBody class={page() === 'tasks' ? 'task-body' : undefined}>
             <Switch>
               <Match when={page() === 'tasks'}>
                 <TaskCenter api={api} target={task()} report={report} />
@@ -229,7 +237,6 @@ function MainWindow(props: { api: MainClient }) {
                       ? (destination() as Extract<NativeViewTarget, { type: 'preferences' }>).key
                       : undefined
                   }
-                  active={!nested()}
                   api={api}
                   dirty={baseEditor.dirty}
                   onSave={baseEditor.onSave}
@@ -255,7 +262,7 @@ function MainWindow(props: { api: MainClient }) {
                 {message()}
               </p>
             </Show>
-          </DialogBody>
+          </EditorBody>
         </DialogContent>
       </Dialog>
       <Dialog
@@ -276,14 +283,14 @@ function MainWindow(props: { api: MainClient }) {
           <DialogHeader closeLabel={api.t('actions.close')}>
             <DialogTitle>{api.t(`runtime.${nested() ?? 'themes'}`)}</DialogTitle>
           </DialogHeader>
-          <DialogBody>
+          <EditorBody>
             <Manager page={nested()} editor={nestedEditor} />
             <Show when={message()}>
               <p role="alert" class="problem">
                 {message()}
               </p>
             </Show>
-          </DialogBody>
+          </EditorBody>
         </DialogContent>
       </Dialog>
       <confirmation.Content />

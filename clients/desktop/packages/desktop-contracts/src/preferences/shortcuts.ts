@@ -230,6 +230,32 @@ const shiftedKeyCodes = new Map(
   }),
 )
 
+/** Resolves a saved spelling to Electron's effective modifier and key identity on this platform. */
+export function acceleratorIdentity(accelerator: string, platform: DesktopPlatform): string {
+  const parts = parseAccelerator(accelerator).split('+')
+  const keyCode = parts.pop()!
+  const effective = new Set(
+    parts.map((part) => {
+      if (part === 'CommandOrControl') {
+        return platform === 'darwin' ? 'Super' : 'Control'
+      }
+      if (part === 'Command') {
+        return 'Super'
+      }
+      if (part === 'Option') {
+        return 'Alt'
+      }
+
+      return part
+    }),
+  )
+  const shiftedCode = shiftedKeyCodes.get(keyCode)
+  if (shiftedCode !== undefined) {
+    effective.add('Shift')
+  }
+  return [...effective].sort().join('+') + ':' + (shiftedCode ?? keyCode)
+}
+
 /**
  * Finds enabled bindings with the same effective combination in potentially overlapping scopes.
  *
@@ -247,32 +273,11 @@ export function findShortcutConflicts(
     }
 
     for (const accelerator of preferences[key].accelerators) {
-      const parts = parseAccelerator(accelerator).split('+')
-      const keyCode = parts.pop()!
-      const effective = new Set(
-        parts.map((part) => {
-          if (part === 'CommandOrControl') {
-            return platform === 'darwin' ? 'Super' : 'Control'
-          }
-          if (part === 'Command') {
-            return 'Super'
-          }
-          if (part === 'Option') {
-            return 'Alt'
-          }
-
-          return part
-        }),
-      )
-      const shiftedCode = shiftedKeyCodes.get(keyCode)
-      if (shiftedCode !== undefined) {
-        effective.add('Shift')
-      }
       active.push({
         key,
         scope: key.split('.')[0]!,
         accelerator,
-        identity: [...effective].sort().join('+') + ':' + (shiftedCode ?? keyCode),
+        identity: acceleratorIdentity(accelerator, platform),
       })
     }
   }

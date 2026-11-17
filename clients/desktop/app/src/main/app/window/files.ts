@@ -4,13 +4,13 @@ import { dialog, type BrowserWindow } from 'electron'
 import { randomUUID } from 'node:crypto'
 import type { RpcMethod } from '@kisaki3/desktop-rpc'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
-import { parseJsonValue } from '@kisaki3/desktop-contracts/json'
 import { parseListOptions } from '@kisaki3/desktop-contracts/operations'
 import { parseImageTransform, type PreparedImage } from '@kisaki3/desktop-contracts/images'
 import { parseFontUpdate, type PreparedFontFile } from '@kisaki3/desktop-contracts/fonts'
 import type { ViewResourcesApi, ViewResourceBinding } from '@kisaki3/desktop-contracts/resources'
 import { receiveFile } from '../../infrastructure/files/input'
 import type { Application } from '../compose'
+import { rpcData } from '../../../shared/window-api/protocol'
 import { textArgument } from './values'
 
 /** Installs the binary input channel and exposes only operations on this document's actual preparations. */
@@ -41,7 +41,12 @@ export function createFileMethods(
         },
       })
       preparedFonts.set(id, file)
-      return { id, url: binding.urls.font, metadata: file.metadata }
+      return {
+        id,
+        attachmentId: file.attachmentId,
+        url: binding.urls.font,
+        metadata: file.metadata,
+      }
     } catch (error) {
       await binding?.dispose()
       await file.dispose()
@@ -91,7 +96,7 @@ export function createFileMethods(
         },
       })
       preparedImages.set(id, image)
-      return parseJsonValue({
+      return rpcData({
         id,
         attachmentId: image.attachmentId,
         width: image.width,
@@ -110,16 +115,16 @@ export function createFileMethods(
   const methods = {
     /** Searches the user font collection one bounded interval at a time. */
     'fonts.list': async ([search, options]) =>
-      parseJsonValue(
+      rpcData(
         await fonts.list(
           { search: typeof search === 'string' ? search : '' },
           parseListOptions(options),
         ),
       ),
     /** Reads the font name and its complete verified file set. */
-    'fonts.get': async ([id]) => parseJsonValue(await fonts.get(textArgument(id))),
+    'fonts.get': async ([id]) => rpcData(await fonts.get(textArgument(id))),
     /** Lists distinct family names from the actual operating-system font catalog. */
-    'fonts.system': async (_args, signal) => parseJsonValue(await fonts.listSystem({ signal })),
+    'fonts.system': async (_args, signal) => rpcData(await fonts.listSystem({ signal })),
     /** Prepares selected native files for this editor and returns null on cancellation. */
     'fonts.choose': async (_args, signal) => {
       const { canceled, filePaths } = await dialog.showOpenDialog(window, {
@@ -138,7 +143,7 @@ export function createFileMethods(
           added.push(prepared.id)
           result.push(prepared)
         }
-        return parseJsonValue(result)
+        return rpcData(result)
       } catch (error) {
         await Promise.all(added.map(release))
         throw error
@@ -149,7 +154,7 @@ export function createFileMethods(
       const input = takeInput(token)
       try {
         const file = await fonts.prepare(input, { signal })
-        return parseJsonValue(await fontResult(file))
+        return rpcData(await fontResult(file))
       } finally {
         input.destroy()
       }
@@ -166,7 +171,7 @@ export function createFileMethods(
         }
         return file
       })
-      return parseJsonValue(
+      return rpcData(
         await fonts.import(
           { name: textArgument(name), files: [files[0]!, ...files.slice(1)] },
           { signal },
@@ -179,7 +184,7 @@ export function createFileMethods(
       if (value.changes.files?.some((file) => !('attachmentId' in file))) {
         throw new DesktopError('InvalidReference', 'Choose font files in this window')
       }
-      return parseJsonValue(await fonts.update(textArgument(id), value, { signal }))
+      return rpcData(await fonts.update(textArgument(id), value, { signal }))
     },
     /** Deletes the font record and removes its references to attachment bytes. */
     'fonts.delete': async ([id]) => fonts.delete(textArgument(id)),
@@ -220,7 +225,7 @@ export function createFileMethods(
           ...(filesChanged && { files: baseline.files }),
         },
       })
-      return parseJsonValue(await fonts.update(textArgument(id), input, { signal }))
+      return rpcData(await fonts.update(textArgument(id), input, { signal }))
     },
     /** Prepares a user-selected image and binds its preview to this document. */
     'images.choose': async (_args, signal) => {

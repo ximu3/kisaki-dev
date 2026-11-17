@@ -1,6 +1,10 @@
 /** @fileoverview Relates native keyboard events to the saved Electron accelerator vocabulary. */
 
-import { parseAccelerator } from '@kisaki3/desktop-contracts/preferences'
+import {
+  acceleratorIdentity,
+  parseAccelerator,
+  type DesktopPlatform,
+} from '@kisaki3/desktop-contracts/preferences'
 import type { PreferencesSnapshot } from '@kisaki3/desktop-contracts/preferences'
 
 /** DOM key names whose Electron spelling differs. */
@@ -49,7 +53,7 @@ export function recordedKey(event: KeyboardEvent) {
 export function matchesShortcut(
   event: KeyboardEvent,
   binding: PreferencesSnapshot['shortcuts'][keyof PreferencesSnapshot['shortcuts']] | undefined,
-  platform: string,
+  platform: DesktopPlatform,
 ) {
   if (event.defaultPrevented || !binding?.enabled || binding.accelerators.status !== 'ready') {
     return false
@@ -58,13 +62,8 @@ export function matchesShortcut(
   if (!key) {
     return false
   }
+  const identity = acceleratorIdentity(key, platform)
   return binding.accelerators.value.some(
-    (value) =>
-      parseAccelerator(
-        value
-          .replace('CommandOrControl', platform === 'darwin' ? 'Super' : 'Control')
-          .replace('Command', 'Super')
-          .replace('Option', 'Alt'),
-      ) === key,
+    (value) => acceleratorIdentity(value, platform) === identity,
   )
 }

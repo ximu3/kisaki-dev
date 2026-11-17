@@ -3,7 +3,8 @@
 import { app, shell } from 'electron'
 import { homedir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
-import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
+import { randomUUID } from 'node:crypto'
+import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
@@ -79,7 +80,9 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
     )
   }
   const launch = [executable, ...args].map(quote).join(' ')
-  const header = '[Desktop Entry]\nType=Application\nName=Kisaki\n'
+  const owner =
+    'X-Kisaki-Owner=' + appId + (paths.isolated ? '/' + encodeURIComponent(paths.data) : '')
+  const header = '[Desktop Entry]\nType=Application\nName=Kisaki\n' + owner + '\n'
   const loginFile = header + 'Exec=' + launch + ' --login\n'
   const entryFile = header + 'Exec=' + launch + ' %U\nMimeType=x-scheme-handler/' + scheme + ';\n'
 
@@ -89,7 +92,7 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
       if (process.platform === 'linux') {
         return {
           status: 'available',
-          registered: (await readRegistration(autostart)) === loginFile,
+          registered: ownsEntry(await readRegistration(autostart)),
           permission: 'notApplicable',
           settingsAvailable: false,
         }
@@ -217,15 +220,32 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
     }
   }
 
+  /** Identifies this application's registration across moves of its executable. */
+  function ownsEntry(contents: string | null) {
+    return contents?.split(/\r?\n/).includes(owner) ?? false
+  }
+
   /** Publishes the explicit Linux registration while preserving entries owned by other programs. */
   async function writeEntry(path: string, contents: string) {
     const old = await readRegistration(path)
-    if (old !== null && old !== contents) {
-      throw new DesktopError('Conflict', 'This desktop entry belongs to another launcher')
+    if (old === contents) {
+      return
     }
     if (old === null) {
       await mkdir(dirname(path), { recursive: true })
       await writeFile(path, contents, { flag: 'wx' })
+      return
+    }
+    if (!ownsEntry(old)) {
+      throw new DesktopError('Conflict', 'This desktop entry belongs to another launcher')
+    }
+
+    const replacement = path + '.' + randomUUID()
+    try {
+      await writeFile(replacement, contents, { flag: 'wx' })
+      await rename(replacement, path)
+    } finally {
+      await rm(replacement, { force: true })
     }
   }
 
@@ -245,7 +265,7 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
       if (process.platform === 'linux') {
         if (enabled) {
           await writeEntry(autostart, loginFile)
-        } else if ((await readRegistration(autostart)) === loginFile) {
+        } else if (ownsEntry(await readRegistration(autostart))) {
           await rm(autostart)
         }
       } else {
