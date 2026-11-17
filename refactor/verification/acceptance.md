@@ -6,13 +6,13 @@
 
 [可读性](../design/engineering/conventions.md#readability-principle)同样构成交付门槛。核对代码、模块组织、目录、命名、配置和文档能否支持完整的理解与维护路径：从入口定位拥有者，追踪正常流程及相关失败和收尾，并确定修改影响。[编码风格与逻辑分段](../design/engineering/conventions.md#logical-sections)覆盖源码、测试、工具、配置与设计示例。自动格式和静态检查提供各自证据，实际可读性由逐项审阅判断。
 
-审阅按[全局设计与一致性](../design/engineering/conventions.md#global-design)将规格、实现和消费者放在同一条使用路径上核对，比较同类入口的粒度、风格与实际结果。源码审查核对文件归属、目录层次、拆分依据与跨文件协作，再逐段核对[编码风格](../design/engineering/conventions.md#coding-style)、控制流、状态与副作用。记录实际覆盖的范围、必要修正及仍待决定的问题。
+审阅按[全局设计与一致性](../design/engineering/conventions.md#global-design)将规格、实现和消费者放在同一条使用路径上核对，比较同类入口的粒度、风格与实际结果。涉及选型或交互时，按[原生优先](../design/engineering/conventions.md#native-first)核对平台已经保证的行为，以及产品自行承担的职责。源码审查核对文件归属、目录层次、拆分依据与跨文件协作，再逐段核对[编码风格](../design/engineering/conventions.md#coding-style)、控制流、状态与副作用。记录实际覆盖的范围、必要修正及仍待决定的问题。
 
 <a id="verification-scope"></a>
 
 ## 验证范围与投入
 
-遵守[简洁、原生与克制](../design/engineering/conventions.md#simplicity-native)。自动 CI 按[包及其依赖](../design/engineering/workspace.md#ci-selection)选择受影响的包和宿主。单项复现和人工验收按实际行为、合同与宿主条件取证。本篇场景规定完整交付的覆盖要求，各次修改按影响取得或复用证据。
+验证投入遵守[简洁与克制](../design/engineering/conventions.md#proportionality)。自动 CI 按[包及其依赖](../design/engineering/workspace.md#ci-selection)选择受影响的包和宿主。单项复现和人工验收按实际行为、合同与宿主条件取证。本篇场景规定完整交付的覆盖要求，各次修改按影响取得或复用证据。
 
 文档、注释和等价组织调整通常核对内容、链接、解析与适用的静态检查；运行输入或宿主行为改变时再执行相关运行验证。构建身份或文件摘要变化本身不是全量回归的充分理由。先核对本次的实现、依赖和运行环境，再说明上一次的验证结果还能用于哪些部分。旧记录保留当时的输入和实测结果。
 

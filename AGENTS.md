@@ -10,7 +10,7 @@
 
 **先建立完整的设计理解。** 开展设计讨论、实施或审阅前，必须全面、深入阅读 `refactor/`，理解整体目标及各部分之间的关系与约束。从 [refactor/README.md](refactor/README.md) 出发，沿目录与交叉引用通读设计、实施和验收要求，结合当前工作包核对职责、依赖、公开合同与交付边界；不能仅凭摘要、关键词检索或局部条文作出判断。
 
-**主动评估现代方案，以实际效果决定采用。** 技术选型、架构、API、交互和可访问性从今天的目标与平台能力出发。优先考察现代原生能力、公开 API 和持续维护的工具，包括有望改善体验或减少自建机制的新方案。查阅当前官方文档和维护者说明，结合目标版本与代表场景核实收益和限制。满足交付要求且整体更优的现代方案优先采用。具体取舍见[判断与取舍](refactor/design/engineering/conventions.md#judgment)。
+**主动评估现代方案，以实际效果决定采用。** 从产品目标出发，关注技术与设计的新进展，主动寻找有望改进架构、API、交互或可访问性的现代方案。查阅当前官方文档和维护者说明，核对目标版本的支持范围与工具的维护状况。在代表场景中比较可行方案的收益与限制，采用满足交付要求且整体效果更好的方案。具体依据见[判断与取舍](refactor/design/engineering/conventions.md#judgment)。
 
 代码、组织与说明遵守[共用工程规范](refactor/design/engineering/conventions.md)，环境准备、可运行命令和当前源码职责见[当前工程与开发](refactor/implementation/development.md)。
 
@@ -21,6 +21,8 @@
 **整体判断优先于机械执行。** 要求或方案出现原则、正确性、整体质量或技术实践问题时，按[整体判断](refactor/design/engineering/conventions.md#judgment)说明依据、影响、选项与建议，由用户决定方向。涉及模型、主要行为、公开合同、架构边界或交付范围的取舍遵守[实施讨论规则](refactor/implementation/work-packages.md#unexpected-issues)。既定合同内的修复与验证由实施者完成。
 
 **现代化、简洁、清晰、干净与克制具有同等首要地位。** 设计、实现、审阅和交付都以这些[共同原则](refactor/design/engineering/conventions.md#quality)为准。
+
+**[原生优先](refactor/design/engineering/conventions.md#native-first)。** 技术选型与交互设计从目标环境的现代原生能力出发。实现沿用语言、框架和运行时的类型与生命周期约定。
 
 **质量与终态优先于实施成本。** 设计、实现、重构、规范、文档与验证，不以工作量、实施耗时或重做成本降低已确认目标和整体质量，或保留已知问题与不一致。运行性能、资源占用和长期维护复杂度仍按成果质量评估，具体遵守[判断与取舍](refactor/design/engineering/conventions.md#judgment)。
 

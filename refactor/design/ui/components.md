@@ -16,13 +16,13 @@
 
 ## 系统能力与控件语义
 
-简洁与原生体验共同约束界面。常见任务沿用户能够辨认的对象和动作完成，默认值减少不必要的选择，必要信息在作出决定的位置表达；内部模块、协议和实施阶段不成为用户必须学习的概念。
+界面交互遵循[原生优先](../engineering/conventions.md#native-first)。常见任务按用户能够辨认的对象和动作组织，默认值减少不必要的选择，作决定所需的信息在相应操作处呈现。
 
 文件与目录选择、保存位置、文件管理器定位、系统通知和原生菜单优先使用 Electron 与操作系统提供的能力。标准编辑、窗口和应用菜单动作优先使用适用的 Menu role；用户已经熟悉的快捷键、系统授权与平台行为保持有效。应用自己的资料选择器和业务 Dialog 负责业务信息与选择。系统能力不可用时，界面反馈实际结果。
 
 公共控件以语义 HTML、浏览器原生交互和 Solid 状态为基础，组件选型与组合遵守[公共 UI 包规范](package.md#ownership)。控件保留原生的 disabled、表单、选择、撤销、键盘和可访问性行为。文本输入期间尊重输入法组合，快捷键只在所属作用域处理，不抢占编辑器和系统的已有操作；焦点移动、滚动和选择以用户当前操作为依据。
 
-统一视觉词表与交互含义，不要求各平台的窗口按钮、菜单顺序、修饰键或系统对话框完全同形。沿用既有界面整体风格，并在目标平台核对其窗口管理、键盘和辅助技术行为；影响既有主要交互的调整按[实施讨论规则](../../implementation/work-packages.md#unexpected-issues)处理。
+统一视觉词表与交互含义，不要求各平台的窗口按钮、菜单顺序、修饰键或系统对话框完全同形。Windows 主窗口通过 Electron Window Controls Overlay 保留系统窗口按钮与命中区域，标题栏颜色和高度随当前外观采用。沿用既有界面整体风格，并在目标平台核对其窗口管理、键盘和辅助技术行为；影响既有主要交互的调整按[实施讨论规则](../../implementation/work-packages.md#unexpected-issues)处理。
 
 具体能力以 [Electron 系统对话框](https://www.electronjs.org/docs/latest/api/dialog)、[标准菜单角色](https://www.electronjs.org/docs/latest/tutorial/application-menu#using-standard-os-menu-roles)和 [W3C 控件语义说明](https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/)为依据；库的可访问性声明不能代替本产品中的实际交互验证。
 
