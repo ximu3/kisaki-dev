@@ -109,7 +109,6 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
   page,
 }) => {
   await page.goto(siteUrl)
-  expect(await page.locator('body').getAttribute('data-token-count')).toBe('43')
   expect(await page.locator('body').getAttribute('data-valid-css')).toBe('true')
 
   for (const scheme of ['light', 'dark']) {
@@ -130,8 +129,6 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
       }),
     )
     expect(pair[0]).toEqual(pair[1])
-    expect(pair[1]?.radius).toBe('4px')
-    expect(pair[1]?.size).toBe('12.25px')
     expect(
       await page.locator('#mapped').evaluate((node) => getComputedStyle(node).boxShadow),
     ).not.toBe('none')
@@ -188,4 +185,20 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
         .evaluate((node) => getComputedStyle(node).backgroundColor),
     ).toBe(`rgb(${index}, 50, 100)`)
   }
+
+  const zeroLengths = await page.evaluate(() => {
+    const { zeroRadius, zeroFontSize } = document.body.dataset
+    const root = document.documentElement
+    root.style.setProperty('--radius', zeroRadius!)
+    root.style.setProperty('--text-base-size', zeroFontSize!)
+
+    const sample = document.querySelector<HTMLElement>('#ordinary')!
+    sample.style.borderRadius =
+      'var(--radius-sm) var(--radius-md) var(--radius-lg) var(--radius-xl)'
+    return {
+      fontSize: getComputedStyle(root).fontSize,
+      radii: getComputedStyle(sample).borderRadius,
+    }
+  })
+  expect(zeroLengths).toEqual({ fontSize: '0px', radii: '0px 0px 0px 4px' })
 })

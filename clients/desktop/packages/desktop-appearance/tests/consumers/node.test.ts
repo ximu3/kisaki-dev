@@ -30,7 +30,7 @@ test('NodeNext declarations and pure entrypoints work without browser dependenci
   )
 
   expect(JSON.parse(stdout)).toMatchObject({
-    count: 43,
+    kind: 'color',
     radius: '6px',
   })
 

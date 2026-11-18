@@ -5,8 +5,7 @@ import './utilities.css'
 import './page.css'
 import { defaults } from '@kisaki3/desktop-appearance/defaults'
 import { tokens } from '@kisaki3/desktop-appearance/tokens'
-import { parseTokenValues } from '@kisaki3/desktop-appearance/values'
-import { summary } from './consumer.js'
+import { parseTokenValue, parseTokenValues } from '@kisaki3/desktop-appearance/values'
 
 /** Parsed light-theme token values applied to the real browser validation page. */
 const values = parseTokenValues(defaults.light)
@@ -23,9 +22,11 @@ const properties = {
   'letter-spacing': 'letter-spacing',
 }
 
-document.body.dataset.tokenCount = String(summary.count)
 document.body.dataset.validCss = String(
   Object.entries(tokens).every(([name, kind]) =>
     CSS.supports(properties[kind], values[name as keyof typeof values]),
   ),
 )
+
+document.body.dataset.zeroRadius = parseTokenValue('--radius', '0')
+document.body.dataset.zeroFontSize = parseTokenValue('--text-base-size', '0')

@@ -20,7 +20,6 @@ const font: FontTokenName = '--font-sans'
 
 /** Observed catalog and value results exposed by the packed appearance consumer. */
 export const summary = {
-  count: Object.keys(tokens).length,
   radius: parseTokenValue('--radius', values['--radius']),
   kind: tokens[visual],
   font: values[font],

@@ -84,8 +84,8 @@ function hasValidShadowBlur(value: Value): boolean {
 /**
  * Parses a known base token into a standalone CSS value.
  *
- * Normalizes whitespace and comments. Unknown names, invalid syntax, formulas and references throw
- * TypeError. Consumers own font resources and style application.
+ * Normalizes whitespace, comments and standalone zero lengths. Unknown names, invalid syntax,
+ * formulas and references throw TypeError. Consumers own font resources and style application.
  */
 export function parseTokenValue(name: TokenName, input: unknown): string {
   if (!Object.hasOwn(tokens, name)) {
@@ -96,11 +96,12 @@ export function parseTokenValue(name: TokenName, input: unknown): string {
   }
 
   const kind = tokens[name]
-  if (lexer.match(syntaxes[kind], input).error) {
+  const syntax = syntaxes[kind]
+  // Match the original text first: parsing alone can repair incomplete CSS functions.
+  if (lexer.match(syntax, input).error) {
     throw new TypeError(`Invalid value for appearance token ${name}`)
   }
 
-  // Match the original text first: parsing alone can repair incomplete CSS functions.
   let ast: CssNode
   try {
     ast = parse(input, { context: 'value' })
@@ -117,6 +118,17 @@ export function parseTokenValue(name: TokenName, input: unknown): string {
     (kind === 'shadow' && !hasValidShadowBlur(ast))
   ) {
     throw new TypeError(`Invalid value for appearance token ${name}`)
+  }
+
+  // CSS math needs a dimension even where the token grammar accepts a unitless zero.
+  const literal = ast.children.first
+  if (
+    literal?.type === 'Number' &&
+    literal === ast.children.last &&
+    Number(literal.value) === 0 &&
+    lexer.match(syntax, ast).isType(literal, 'length')
+  ) {
+    return '0px'
   }
 
   return generate(ast)

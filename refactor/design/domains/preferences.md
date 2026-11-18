@@ -66,7 +66,7 @@ interface UsagePreferences {
 | usage.novel.colors                             | 阅读配色，默认 { type: 'theme' }；作为小说全局默认独立保存                                                                         |
 | playback.volumePercent                         | 0–100 的有限数，包含两端，单位为百分比，默认 100；应用记住的上次播放音量                                                           |
 | playback.muted                                 | boolean，默认 false；应用记住的上次静音选择                                                                                        |
-| shortcuts                                      | 按本文件固定配置键保存 { enabled, accelerators }；初值采用 [快捷键目录](../ui/navigation.md) 的平台默认，未绑定为 []               |
+| shortcuts                                      | 按固定配置键保存加速键列表。初值采用[快捷键目录](../ui/navigation.md)的平台默认，`[]` 表示未绑定 |
 | network.mode                                   | system / direct / manual；默认 system                                                                                              |
 | network.endpoint                               | HTTP/HTTPS/SOCKS5 的单个明确端点或 null，默认 null；不包含用户名/密码，manual 模式要求有效端点                                     |
 | network.bypassRules                            | Electron 公开 bypass 语法字符串，默认空字符串；非 manual 模式保留但不采用                                                          |
@@ -273,7 +273,9 @@ get 表达保存的意图，实际外观、网络连接、播放控制或快捷�
 | 网络     | 代理模式、手动代理与认证                             |
 | 更新偏好 | 自动检查、接收预发布版本；更新操作由独立 Dialog 负责 |
 
-同一个偏好编辑器共用一份草稿，切换分组不会丢失修改。保存只提交实际变更，放弃丢弃当前草稿，“恢复本组默认”也只调整该组草稿。偏好编辑没有临时预览，语言、主题选择、缩放、导航和快捷键都在保存后生效；阅读和播放默认值按各自时机采用。涉及重启、连接或注册的配置，应分别说明保存状态与实际采用状态。
+八个分组使用标题下方的公共横排页签。页签超宽时由其所在容器接收横向滚动和滚轮输入，正文共用一个纵向视口。底部固定保存与放弃操作。单字段恢复采用字段标题末端的小号描边按钮。作品使用直接呈现「暂离宽限」和四个单列入口。字段说明宽限内返回会计入暂离时间，并说明适用范围。游戏、动画、漫画、小说各进入一个子 Dialog。漫画和小说共用阅读编辑界面，各自保有完整阅读设置。定位字段时先选中所属页签，按需打开子 Dialog 或显示手动代理字段，再聚焦控件。
+
+切换偏好页签保留父草稿。每个作品子 Dialog 打开时读取该媒介在父草稿中的值。确定回填本次修改，取消回到父草稿，其他媒介的编辑继续保留。最终由偏好窗口保存实际变更，放弃回到当前保存值。草稿字段值偏离产品默认时，恢复按钮跟随标题，恢复后回焦。导航顺序按整列恢复，快捷键按单个动作恢复默认列表。语言、主题、缩放、导航和快捷键在保存后生效。阅读和播放默认值按各自时机采用。播放器的音量与静音由播放器即时保存。
 
 preferences 负责选择资源，appearance 管理主题，fonts 管理字体，attachments 管理字节。主题和字体选择器可以提供通往相应管理界面的入口，直接复用所属模块的创建、编辑、导入和删除能力。打开管理界面时保留偏好草稿，管理操作独立保存，返回后刷新资源目录。新建或修改资源不会自动提交偏好；用户明确选用后，才按当前编辑意图更新选择草稿。不可用的选择仍如实保留。应用字体在主题编辑器中设定，阅读正文字体在阅读偏好中设定，不另加全局界面字体覆盖。
 
@@ -282,6 +284,8 @@ preferences 负责选择资源，appearance 管理主题，fonts 管理字体，
 扫描器、资料方案、启动配置、扩展私有设置、系统集成和更新操作都在各自界面管理。偏好页按当前任务提供相关入口，不承担所有模块的管理导航。更新偏好可以打开既有更新 Dialog；该 Dialog 使用正式偏好，打开或关闭都不提交偏好草稿。没有打开作品时，用户仍可编辑全局阅读和播放默认值；作品及文件自定义则在对应入口编辑，各处使用相同合同。
 
 导航顺序和常显数量在共同草稿保存后生效；侧栏“更多”面板中的拖动则可在完成后即时提交。两处复用展示与移动逻辑，排序组件本身不负责持久化，并发冲突按实际修改单位检测。
+
+应用菜单中的主题模式和敏感内容默认可见范围分别即时提交 `appearance.mode` 和 `library.showNsfw`。菜单和偏好页共用保存值和逐字段并发基线。主题模式经外观模块采用，敏感内容按当前查看的可见范围采用。 [应用菜单](../ui/navigation.md#menus)
 
 <a id="visibility"></a>
 
@@ -301,13 +305,15 @@ library.showNsfw 默认 true。全局修改会更新仍在使用默认范围的�
 
 network.mode 支持 system、direct 和 manual，默认 system。手动模式接受一个明确的 HTTP、HTTPS 或 SOCKS5 端点、Electron bypass 规则及适用的认证，用户名和密码不能嵌入 URL。复杂 PAC 或路由由系统模式处理。切换模式保留手动配置，但启用 manual 时必须确保配置有效。
 
+「直连地址」用单行输入保存 Electron 规则串。匹配规则的地址直接连接，多条规则用逗号分隔。代理认证与其他手动路由字段同级，右侧提供「配置」，已有凭据时在其左侧提供「移除」，标题旁沿用字段的恢复默认操作。[Electron 代理配置](https://github.com/electron/electron/blob/v45.3.2/docs/api/structures/proxy-config.md#proxyconfig-object)
+
 HTTP 认证使用公开底层能力。SOCKS5 不提供 Chromium 不支持的认证输入，具体限制见[Chromium 代理文档](https://github.com/chromium/chromium/blob/main/net/docs/proxy.md)。network 只在 ClientRequest login 的代理标记、主机和端口均匹配时提供代理凭据，网站登录仍由扩展负责。
 
 凭据不进入 network JSON，也不保存到 extension_secrets。preferences 中的 proxy_credentials_ciphertext 与 proxy_credentials_revision 必须同时有值或同时为空。保存复用[凭据保护](../extensions/private-data.md)：先准备密文，再与普通字段一起在短事务中核对并写入。codec 不执行加解密。
 
 读取 network.credentials 只得到 null 或 { revision }，不能取得用户名、密码或密文。changes 没有 credentials 时保持原值，传 null 时删除，传完整 { username, password } 时替换，不能混合不同快照中的用户名和密码。替换或删除必须在 expected.network.credentials 中提供同次读取的原状态。只有实际修改凭据时才核对局部 revision，替换产生新标记，不增加全行版本。
 
-原生设置使用完整读写合同，SDK 的普通偏好能力没有凭据读写入口。保存失败保留草稿，不能部分提交。保存成功后，由 network 采用配置并按需重建连接；运行采用失败要如实报告，不能暗中改为直连。系统保护不可用或密文不可读时，按凭据合同处理。
+「配置」打开代理认证子 Dialog，使用一份暂存草稿编辑用户名和密码。「确定」回填偏好草稿，「取消」放弃本次编辑。已经保存的凭据以空输入打开，直接确定保留原值。已输入的两项清空、使用「移除」或恢复默认时，将偏好草稿中的凭据设为 null。切到 SOCKS5 后，仍可移除草稿中的凭据。由父表单统一保存。SDK 的普通偏好能力没有凭据读写入口。保存失败保留草稿，不能部分提交。保存成功后，由 network 采用配置并按需重建连接；运行采用失败要如实报告，不能暗中改为直连。系统保护不可用或密文不可读时，按凭据合同处理。
 
 <a id="overrides"></a>
 
@@ -394,6 +400,6 @@ type ShortcutKey =
   | `game.${'addAnnotation' | 'toggleAnnotations' | 'togglePanel' | 'toggleTiming' | 'viewWork'}`
 ```
 
-每个固定快捷键保存 { enabled, accelerators }：enabled 默认 true，accelerators 为经过校验和去重的 Electron Accelerator 数组，[] 表示未绑定。默认组合、系统级范围与注册寿命见[导航与快捷键](../ui/navigation.md)，getDefaults 返回同一套完整值。该目录管理本体快捷键配置，动作由原生界面和会话执行；基础输入框、菜单与 Dialog 维护自己的按键行为。
+每个固定动作保存经过校验和去重的 Electron Accelerator 数组。清空列表并保存即停用，恢复默认值取回平台默认组合。默认组合、系统级范围与注册寿命见[导航与快捷键](../ui/navigation.md)。`getDefaults` 返回同一套完整列表。已保存的无效列表报告为不可用。原生界面和会话执行所属动作，基础输入框、菜单与 Dialog 维护自己的按键行为。
 
 游戏面板还提供返回实际游戏、标注、作品详情、计时和置顶切换等操作；新建标注须先采集游戏图像。需要在游戏前台操作的动作支持系统绑定，先依据前台游戏或面板确定目标。前台面板直接对应自身会话；前台游戏进程被多个会话观察时，在这些会话中选择。没有前台归属但只有一个会话时使用该会话；多个会话无法明确区分时让用户选择，不能广播或任意选取。
