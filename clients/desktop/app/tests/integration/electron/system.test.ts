@@ -14,7 +14,10 @@ test('system integration reports the selected data root from the actual native a
   const page = await desktop.firstWindow()
   await page.getByRole('button', { name: 'Application menu' }).click()
   await page.getByRole('menuitem', { name: 'System integration' }).click()
-  await expect(page.getByRole('dialog').getByText(profile, { exact: true })).toBeVisible()
+  const settings = page.getByRole('dialog', { name: 'System integration' })
+  await expect(settings.getByRole('switch', { name: 'Start at login' })).toBeVisible()
+  await expect(settings.getByRole('button', { name: 'Startup settings' })).toHaveCount(0)
+  await expect(settings.getByText(profile, { exact: true })).toBeVisible()
 })
 
 test.describe('disposable OS account', () => {
@@ -30,7 +33,7 @@ test.describe('disposable OS account', () => {
     await page.getByRole('button', { name: 'Application menu' }).click()
     await page.getByRole('menuitem', { name: 'System integration' }).click()
     const settings = page.getByRole('dialog', { name: 'System integration' })
-    const login = settings.getByRole('checkbox', { name: 'Start at login' })
+    const login = settings.getByRole('switch', { name: 'Start at login' })
     await expect(login).not.toBeChecked()
     const args = [join(buildDirectory(hostTarget()), 'main', 'entry.js'), '--profile=' + profile]
     try {
@@ -38,8 +41,11 @@ test.describe('disposable OS account', () => {
       await expect(login).toBeChecked()
       await login.click()
       await expect(login).not.toBeChecked()
-      await settings.getByRole('button', { name: 'Register', exact: true }).click()
-      await expect(settings.getByText(/^Configured ·/)).toBeVisible()
+      const protocol = settings.getByRole('group', { name: 'Kisaki links' })
+      await protocol.getByRole('button', { name: 'Register', exact: true }).click()
+      await expect(
+        protocol.getByText(/opens kisaki-dev:\/\/ links|kisaki-dev:\/\/ is registered/),
+      ).toBeVisible()
       if (process.platform === 'linux') {
         // Observe the external desktop dispatcher's exit as well as delivery to the actual window.
         await promisify(execFile)('xdg-open', ['kisaki-dev://view/tasks'], {

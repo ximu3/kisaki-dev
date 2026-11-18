@@ -2,6 +2,7 @@
 
 import { defineConfig } from 'vite'
 import solid from 'vite-plugin-solid'
+import tailwind from '@tailwindcss/vite'
 import { fileURLToPath } from 'node:url'
 import { resolve } from 'node:path'
 
@@ -13,6 +14,7 @@ export default defineConfig(({ mode }) => ({
   base: './',
   plugins: [
     solid(),
+    tailwind(),
     {
       name: 'desktop-development-csp',
       /** Adds Vite's development-only allowances to the fixture document policy. */

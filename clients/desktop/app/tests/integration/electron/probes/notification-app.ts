@@ -11,9 +11,12 @@ import { createNotifications } from '../../../../src/main/infrastructure/notific
 import { readNotificationTarget } from '../../../../src/main/infrastructure/notifications/target'
 import { receivePortalAction, verifyPortalHandoff } from './notification-portal'
 
-/** The fresh receiver has its own profile even when the session bus launches it from another directory. */
+/** Selects the cold receiver path when the private session bus starts this process. */
 const restoring = process.argv.includes('--restore-notification')
+
+/** Gives each notification actor a separate profile under the private session's data root. */
 const profile = join(process.env.XDG_DATA_HOME!, restoring ? 'receiver' : 'sender')
+
 mkdirSync(profile, { recursive: true })
 app.setPath('userData', profile)
 
