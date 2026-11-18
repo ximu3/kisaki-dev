@@ -5,6 +5,7 @@ import type {
   UiTranslationRef,
   ExtensionUiTranslationDefinition,
   MessageCatalog,
+  UiTranslation,
 } from '@kisaki3/desktop-contracts/i18n'
 import {
   createTranslator,
@@ -12,25 +13,27 @@ import {
 } from '@kisaki3/desktop-localization'
 import { createSignal } from './events'
 
-/** Tracks accepted translation resources without changing the user's durable selection. */
-export function createI18n() {
-  const english = {
+/** A listed translation and the message catalog it supplies to the running application. */
+type TranslationEntry = UiTranslation & { messages: MessageCatalog }
+
+/** Tracks launch-provided and live instance translations against the saved selection. */
+export function createI18n(builtin?: TranslationEntry) {
+  const english: TranslationEntry = {
     ref: { type: 'builtin', id: 'en' } as const,
     name: 'English',
     locale: 'en',
-    messages: {} as MessageCatalog,
+    messages: {},
   }
-  const translations = new Map<
-    string,
-    typeof english | (ExtensionUiTranslationDefinition & { ref: UiTranslationRef })
-  >()
+  const translations = new Map([[JSON.stringify(english.ref), english]])
+  if (builtin) {
+    translations.set(JSON.stringify(builtin.ref), builtin)
+  }
   /** Signals a change of effective messages, including same-locale replacements. */
   const changed = createSignal<void>()
   /** Notifies translation pickers when a registration appears or disappears. */
   const directory = createSignal<void>()
   let selection: UiTranslationRef = english.ref
-  let effective: { ref: UiTranslationRef; name: string; locale: string; messages: MessageCatalog } =
-    english
+  let effective = english
   let translator = createTranslator('en')
 
   /** Resolves the stable reference after selection, registration or instance release. */
@@ -55,7 +58,7 @@ export function createI18n() {
     },
     /** Returns translation names and identities without transferring every catalog. */
     list() {
-      return [english, ...translations.values()].map(({ ref, name, locale }) => ({
+      return [...translations.values()].map(({ ref, name, locale }) => ({
         ref,
         name,
         locale,

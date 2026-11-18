@@ -1,0 +1,24 @@
+/* Window controls and dialogs use the actual boundary below the native title bar. */
+
+:root {
+  --dialog-region-top: calc(
+    env(titlebar-area-y, 0px) + env(titlebar-area-height, var(--main-titlebar-height))
+  );
+}
+
+@layer components {
+  .titlebar {
+    height: var(--dialog-region-top);
+    font-size: calc(var(--main-titlebar-height) / 2.25);
+    padding-inline-start: calc(env(titlebar-area-x, 0px) + 0.75em);
+    app-region: drag;
+  }
+  .titlebar[data-platform='darwin'] {
+    padding-inline-start: 82px;
+  }
+
+  .titlebar-brand {
+    width: 1.25em;
+    height: 1.25em;
+  }
+}

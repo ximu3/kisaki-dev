@@ -15,6 +15,8 @@ import {
   parseTaskProgress,
   parseTaskQuery,
   type TaskRun,
+  type TaskHistoryFilter,
+  type TaskRunRef,
   type TaskRunStatus,
   type TaskState,
   type TasksApi,
@@ -161,6 +163,15 @@ export async function createTasks(
     options?.signal?.throwIfAborted()
     const live = active.get(id)
     return live ? live[action]() : state(id, (await retained(id)).status)
+  }
+
+  /** Protects admitted work and publishes every committed history deletion. */
+  async function clearHistory(filter: TaskHistoryFilter, id?: string) {
+    const removed = await call('clearTasks', filter, [...active.keys()], id)
+    if (removed) {
+      invalidated.emit()
+    }
+    return removed
   }
 
   const api: TasksApi = {
@@ -352,11 +363,7 @@ export async function createTasks(
       if (Object.keys(submitted).some((key) => key !== 'types' && key !== 'createdBefore')) {
         throw new DesktopError('InvalidInput', 'Unsupported task history cleanup filter')
       }
-      const removed = await call('clearTasks', submitted, [...active.keys()])
-      if (removed) {
-        invalidated.emit()
-      }
-      return removed
+      return clearHistory(submitted)
     },
     onInvalidated: invalidated.on,
   }
@@ -364,6 +371,8 @@ export async function createTasks(
     ...api,
     /** Supplies the native task center with the actual choices for its type filter. */
     types: () => call('taskTypes'),
+    /** Removes the selected ended record without changing execution or business data. */
+    deleteHistory: (ref: TaskRunRef) => clearHistory({}, ref.taskRunId),
     /** Closes or reopens task admission during a cancellable application exit. */
     setAccepting(value: boolean) {
       accepting = value

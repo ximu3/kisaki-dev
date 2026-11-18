@@ -1,0 +1,186 @@
+/** @fileoverview Owns a font edit's file set, inspected preparations and persistence baseline. */
+
+import { batch, createMemo, createSignal, onCleanup } from 'solid-js'
+import type { Font } from '@kisaki3/desktop-contracts/fonts'
+import type { FontChoice, FontFileChoice } from '../../../../../shared/window-api'
+import type { MainClient } from '../../../../infrastructure/api'
+import { fileInput } from '../../../../infrastructure/file-input'
+import { errorMessage, reportError } from '../../../../infrastructure/notifications'
+
+/** One attempted file addition and its current preparation outcome. */
+type FileDraft = { key: number; name: string } & (
+  | { status: 'pending' }
+  | { status: 'ready'; file: FontChoice }
+  | { status: 'failed'; error: string }
+)
+
+/** Keeps confirmed and uncommitted files separate until one explicit save succeeds. */
+export function createFontDraft(api: MainClient, initial: Font | null) {
+  const [original, setOriginal] = createSignal(initial)
+  const [name, setName] = createSignal(initial?.name ?? '')
+  const [kept, setKept] = createSignal(initial?.files.map((file) => file.attachmentId) ?? [])
+  const [files, setFiles] = createSignal<readonly FileDraft[]>([])
+  const [choosing, setChoosing] = createSignal(false)
+  const preparing = () => choosing() || files().some((file) => file.status === 'pending')
+  const added = createMemo(() => files().filter((file) => file.status === 'ready'))
+  const dirty = () =>
+    choosing() ||
+    files().length > 0 ||
+    name() !== (original()?.name ?? '') ||
+    kept().length !== (original()?.files.length ?? 0)
+
+  let active = true
+  let nameEdited = false
+  let nextKey = 0
+  let submitted: readonly FontChoice[] = []
+  const owned = new Set<FontChoice>()
+
+  async function release(file: FontChoice) {
+    if (owned.delete(file)) {
+      await api.call('resources.release', file.id)
+    }
+  }
+  onCleanup(() => {
+    active = false
+    for (const file of owned) {
+      if (!submitted.includes(file)) {
+        void release(file).catch(reportError)
+      }
+    }
+  })
+
+  function adopt(key: number, result: FontFileChoice) {
+    if ('file' in result) {
+      owned.add(result.file)
+      if (!active) {
+        void release(result.file).catch(reportError)
+        return
+      }
+      if (!nameEdited && !name()) {
+        setName(result.file.metadata.faces[0].family)
+      }
+    }
+    if (active) {
+      const outcome: FileDraft =
+        'file' in result
+          ? { key, ...result, status: 'ready' }
+          : { key, ...result, status: 'failed' }
+      setFiles((items) =>
+        items.some((item) => item.key === key)
+          ? items.map((item) => (item.key === key ? outcome : item))
+          : [...items, outcome],
+      )
+    }
+  }
+
+  async function choose() {
+    setChoosing(true)
+    try {
+      const selected = await api.call('fonts.choose')
+      batch(() => {
+        for (const result of selected ?? []) {
+          adopt(nextKey++, result)
+        }
+      })
+    } finally {
+      if (active) {
+        setChoosing(false)
+      }
+    }
+  }
+
+  async function receive(incoming: readonly File[]) {
+    const work = incoming.map((file) => ({ file, key: nextKey++ }))
+    setFiles((items) => [
+      ...items,
+      ...work.map(({ file, key }) => ({ key, name: file.name, status: 'pending' as const })),
+    ])
+    for (const { file, key } of work) {
+      if (!active) {
+        return
+      }
+      try {
+        const input = await fileInput(file)
+        try {
+          if (active) {
+            const prepared = await api.call('fonts.prepareInput', input.id)
+            adopt(key, { name: file.name, file: prepared })
+          }
+        } finally {
+          input.dispose()
+        }
+      } catch (cause) {
+        adopt(key, { name: file.name, error: errorMessage(cause) })
+      }
+    }
+  }
+
+  function remove(key: number) {
+    const entry = files().find((item) => item.key === key)
+    setFiles((items) => items.filter((item) => item !== entry))
+    if (entry?.status === 'ready' && !submitted.includes(entry.file)) {
+      void release(entry.file).catch(reportError)
+    }
+  }
+
+  function rename(value: string) {
+    nameEdited = true
+    setName(value)
+  }
+
+  function toggle(id: string) {
+    setKept((ids) => (ids.includes(id) ? ids.filter((key) => key !== id) : [...ids, id]))
+  }
+
+  async function save() {
+    const old = original()
+    const sentName = name()
+    const retained =
+      old?.files.map((file) => file.attachmentId).filter((id) => kept().includes(id)) ?? []
+    const addedFiles = added()
+    submitted = addedFiles.map((entry) => entry.file)
+    try {
+      const ids = submitted.map((file) => file.id)
+      const result = old
+        ? await api.call('fonts.editFiles', old.id, sentName, retained, ids, old)
+        : await api.call('fonts.import', sentName, ids)
+      if (active) {
+        batch(() => {
+          setOriginal(result)
+          setKept(result.files.map((file) => file.attachmentId))
+          setFiles((current) =>
+            current.filter((entry) => !addedFiles.some(({ key }) => key === entry.key)),
+          )
+        })
+      }
+      return result
+    } finally {
+      const sent = submitted
+      submitted = []
+      const retained = new Set(added().map((entry) => entry.file))
+      await Promise.all(
+        sent
+          .filter((file) => !active || !retained.has(file))
+          .map((file) => release(file).catch(reportError)),
+      )
+    }
+  }
+
+  return {
+    original,
+    name,
+    rename,
+    kept,
+    files,
+    choosing,
+    preparing,
+    dirty,
+    count: () => kept().length + added().length,
+    failed: () => files().some((file) => file.status === 'failed'),
+    choose,
+    receive,
+    remove,
+    toggle,
+    save,
+  }
+}

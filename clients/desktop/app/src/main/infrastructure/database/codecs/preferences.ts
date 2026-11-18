@@ -39,10 +39,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 /** Identifies selections and executable bindings that must retain an explicit invalid state. */
 function isProtectedField(path: readonly string[]): boolean {
-  return (
-    identityFields.has(path.join('.')) ||
-    (path[0] === 'shortcuts' && path.at(-1) === 'accelerators')
-  )
+  return identityFields.has(path.join('.')) || (path[0] === 'shortcuts' && path.length === 2)
 }
 
 /** Validates one field through its actual public edit boundary and returns the normalized value. */

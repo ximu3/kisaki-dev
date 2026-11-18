@@ -2,4 +2,3 @@
 
 @import 'tailwindcss' source(none);
 @import '@kisaki3/desktop-appearance/tailwind.css';
-@source "../windows";

@@ -62,9 +62,12 @@ export type UserAppearanceTokens = Readonly<
   Record<VisualTokenName, string> & Record<FontTokenName, UserThemeFont>
 >
 
+/** Saved mode choices shared by appearance validation and controls. */
+export const appearanceModes = ['system', 'light', 'dark'] as const
+
 /** The saved theme identity, color-mode choice and interface scale. */
 export interface AppearancePreferences {
-  readonly mode: 'system' | ColorScheme
+  readonly mode: (typeof appearanceModes)[number]
   /** Integer UI scale in percent, from 75 through 200; text and content zoom remain separate. */
   readonly interfaceScale: number
   readonly theme: ThemeRef
@@ -466,7 +469,7 @@ export function parseAppearanceTokens(input: unknown): AppearanceTokens {
 export function parseAppearancePreferences(input: unknown): AppearancePreferences {
   return parseValue(
     v.strictObject({
-      mode: v.picklist(['system', 'light', 'dark']),
+      mode: v.picklist(appearanceModes),
       interfaceScale: scale,
       theme: themeRef,
     }),

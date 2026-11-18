@@ -1,6 +1,6 @@
 /** @fileoverview Binds native windows to verified documents, scoped resource URLs and explicitly selected RPC methods. */
 
-import { app, BrowserWindow, MessageChannelMain, session } from 'electron'
+import { BrowserWindow, MessageChannelMain, session } from 'electron'
 import { windowGeometry } from '../../infrastructure/windows/geometry'
 import { randomUUID } from 'node:crypto'
 import { join } from 'node:path'
@@ -31,6 +31,9 @@ import { parseDataModeChange, type ApplicationExitApi } from '@kisaki3/desktop-c
 import { environment, copyEnvironment } from '../../infrastructure/environment'
 import type { Application } from '../compose'
 
+/** Height of the main window's chrome in DIP at 100% interface scale. */
+const baseTitlebarHeight = 31.5
+
 /** Creates one native window with its document session and closes every old endpoint on navigation. */
 export async function createWindow(
   application: Application,
@@ -51,6 +54,11 @@ export async function createWindow(
     ? new URL(kind + '/index.html', devUrl).href
     : 'kisaki-app://window/' + kind + '/index.html'
   const geometry = await windowGeometry(paths.data, kind)
+  const controlsOverlay = kind === 'main' && process.platform !== 'darwin'
+  const titlebarHeight = () =>
+    Math.round((baseTitlebarHeight * application.saved.appearance.interfaceScale) / 100)
+  let overlayHeight = titlebarHeight()
+
   if (devUrl) {
     const hmr = 'ws://' + new URL(devUrl).host
     const policy = [
@@ -69,13 +77,13 @@ export async function createWindow(
       }),
     )
   }
+
   const window = new BrowserWindow({
     ...geometry.options,
     show: false,
     title: 'Kisaki',
     ...(kind === 'main' && {
-      frame: process.platform !== 'linux',
-      ...(process.platform === 'win32' && { titleBarOverlay: { height: 36 } }),
+      ...(controlsOverlay && { titleBarOverlay: { height: overlayHeight } }),
       titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'hidden',
       autoHideMenuBar: true,
     }),
@@ -204,22 +212,10 @@ export async function createWindow(
           kind,
           platform: process.platform,
           buildId: __KISAKI_BUILD_ID__,
-          maximized: window.isMaximized(),
+          titlebarHeight: kind === 'main' ? titlebarHeight() : null,
           locale: application.i18n.current.locale,
           messages: application.i18n.current.messages,
         }),
-      /** Minimizes only the native window bound to this connection. */
-      'window.minimize': () => window.minimize(),
-      /** Toggles the bound window between maximized and restored bounds. */
-      'window.maximize': () => {
-        if (window.isMaximized()) {
-          window.unmaximize()
-        } else {
-          window.maximize()
-        }
-      },
-      /** Requests the configured close behavior for this native window. */
-      'window.close': () => window.close(),
       /** Resolves the effective branch and acquires font URLs for this document. */
       'appearance.get': async () => {
         const read = await appearance.forView(view)
@@ -232,10 +228,10 @@ export async function createWindow(
     }
     if (kind === 'main') {
       Object.assign(methods, {
-        /** Applies Chromium's resolved colors to native Windows caption controls. */
+        /** Applies the document's resolved colors to the native overlay. */
         'window.caption': ([color, symbolColor]) => {
           if (
-            process.platform !== 'win32' ||
+            !controlsOverlay ||
             typeof color !== 'string' ||
             typeof symbolColor !== 'string' ||
             !/^#[0-9a-f]{8}$/.test(color) ||
@@ -245,13 +241,8 @@ export async function createWindow(
           }
           window.setTitleBarOverlay({
             color,
-            symbolColor,
-            height: Math.round((36 * application.saved.appearance.interfaceScale) / 100),
+            ...(process.platform === 'win32' && { symbolColor }),
           })
-        },
-        /** Starts the shared normal exit workflow from the main window. */
-        'app.quit': () => {
-          setImmediate(() => app.quit())
         },
         /** Restarts the application after the normal close workflow succeeds. */
         'app.restart': () => {
@@ -303,6 +294,8 @@ export async function createWindow(
         'tasks.clear': async ([filter]) => {
           return tasks.clearHistory(parseTaskQuery(filter ?? {}))
         },
+        /** Removes one ended record by run identity. */
+        'tasks.delete': async ([ref]) => tasks.deleteHistory(parseTaskRunRef(ref)),
         /** Lists available theme identities with names resolved for this window. */
         'themes.list': async () =>
           rpcData(
@@ -473,6 +466,8 @@ export async function createWindow(
   /** Ends the native window after its document's accepted writes and resources finish. */
   async function destroy() {
     destroying = true
+    await overlaySettings?.dispose()
+
     if (!window.isDestroyed()) {
       await geometry.save(window).catch(console.error)
     }
@@ -495,6 +490,17 @@ export async function createWindow(
   function dispose() {
     return (disposal ??= destroy())
   }
+
+  const overlaySettings = controlsOverlay
+    ? application.onUpdated(() => {
+        const height = titlebarHeight()
+        if (height !== overlayHeight) {
+          window.setTitleBarOverlay({ height })
+          overlayHeight = height
+        }
+      })
+    : undefined
+
   try {
     void application.log.record('document-loading')
     await window.loadURL(documentUrl)

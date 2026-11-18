@@ -4,11 +4,14 @@
 export interface MessageArguments {
   readonly "actions.save": never
   readonly "actions.cancel": never
+  readonly "actions.confirm": never
+  readonly "actions.reset": never
   readonly "actions.close": never
   readonly "actions.create": never
   readonly "actions.delete": never
   readonly "actions.retry": never
   readonly "actions.edit": never
+  readonly "actions.configure": never
   readonly "actions.open": never
   readonly "library.types.game": never
   readonly "library.types.anime": never
@@ -40,6 +43,10 @@ export interface MessageArguments {
   readonly "tasks.failed": never
   readonly "tasks.cancelled": never
   readonly "tasks.interrupted": never
+  readonly "tasks.types.directoryScan": never
+  readonly "tasks.types.libraryScan": never
+  readonly "tasks.types.libraryRefresh": never
+  readonly "tasks.unrecognizedType": { readonly "type": string | number }
   readonly "resources.unavailable": never
   readonly "resources.captureUnavailable": never
   readonly "scanner.presets.bracketBoth.name": never
@@ -80,42 +87,125 @@ export interface MessageArguments {
   readonly "showcase.presets.favoriteOrganizations.description": never
   readonly "showcase.presets.collections.name": never
   readonly "showcase.presets.collections.description": never
+  readonly "runtime.notifications": never
+  readonly "runtime.calendar": never
+  readonly "runtime.month": never
+  readonly "runtime.year": never
+  readonly "runtime.nextMonth": never
+  readonly "runtime.previousMonth": never
+  readonly "runtime.invalidDate": never
+  readonly "runtime.increase": never
+  readonly "runtime.decrease": never
+  readonly "runtime.picker": never
+  readonly "runtime.hue": never
+  readonly "runtime.saturation": never
+  readonly "runtime.brightness": never
+  readonly "runtime.alpha": never
+  readonly "runtime.invalidValue": never
+  readonly "runtime.invalidColor": never
+  readonly "runtime.project": never
+  readonly "runtime.loading": never
+  readonly "runtime.noMatches": never
+  readonly "runtime.retry": never
+  readonly "runtime.editFont": never
+  readonly "runtime.copySuffix": { readonly "name": string | number }
+  readonly "runtime.resetField": never
+  readonly "runtime.libraryFont": never
+  readonly "runtime.systemFonts": never
+  readonly "runtime.fontWeight": never
+  readonly "runtime.fontSample": never
+  readonly "runtime.addFiles": never
+  readonly "runtime.fontKept": never
+  readonly "runtime.fontAdded": never
+  readonly "runtime.fontRemoved": never
+  readonly "runtime.restoreFile": never
+  readonly "runtime.removeFile": { readonly "name": string | number }
+  readonly "runtime.previewFileFailed": { readonly "reason": string | number }
+  readonly "runtime.removeFailedFiles": never
+  readonly "runtime.fontFileFailed": { readonly "name": string | number; readonly "reason": string | number }
+  readonly "runtime.themeBuiltin": never
+  readonly "runtime.themeUser": never
+  readonly "runtime.themeExtension": never
+  readonly "runtime.currentTheme": never
+  readonly "runtime.themePreview": never
+  readonly "runtime.fontPreview": never
+  readonly "runtime.previewItem": { readonly "name": string | number }
+  readonly "runtime.editItem": { readonly "name": string | number }
+  readonly "runtime.deleteItem": { readonly "name": string | number }
+  readonly "runtime.duplicateItem": { readonly "name": string | number }
+  readonly "runtime.useThemeItem": { readonly "name": string | number }
+  readonly "runtime.themeBranch": never
+  readonly "runtime.themeSample": never
+  readonly "runtime.removeBinding": { readonly "binding": string | number; readonly "name": string | number }
+  readonly "runtime.recordBinding": { readonly "name": string | number }
+  readonly "runtime.unbound": never
+  readonly "runtime.previousBindings": never
+  readonly "runtime.nextBindings": never
+  readonly "runtime.bindingExists": never
+  readonly "runtime.foregroundGracePeriodDescription": never
+  readonly "runtime.usageGroups.playback": never
+  readonly "runtime.usageGroups.tracks": never
+  readonly "runtime.usageTitles.game": never
+  readonly "runtime.usageTitles.anime": never
+  readonly "runtime.usageTitles.comic": never
+  readonly "runtime.usageTitles.novel": never
+  readonly "runtime.clearSearch": never
   readonly "runtime.allTypes": never
+  readonly "runtime.allStatuses": never
+  readonly "runtime.task": never
+  readonly "runtime.fontWidth": never
+  readonly "runtime.preparingFonts": never
+  readonly "runtime.savedNotApplied": { readonly "reason": string | number }
   readonly "runtime.loadingFonts": never
   readonly "runtime.noMatchingFonts": never
-  readonly "runtime.approvalNeeded": never
-  readonly "runtime.handlerUnknown": never
-  readonly "runtime.defaultHandler": never
-  readonly "runtime.otherHandler": never
+  readonly "runtime.startupNeedsApproval": never
+  readonly "runtime.startupDisabled": never
+  readonly "runtime.linksUnregistered": { readonly "scheme": string | number }
+  readonly "runtime.linksDefaultUnknown": { readonly "scheme": string | number }
+  readonly "runtime.linksOpenInKisaki": { readonly "scheme": string | number }
+  readonly "runtime.linksOpenInOtherApp": { readonly "scheme": string | number }
   readonly "runtime.restartApp": never
   readonly "runtime.unsaved": never
+  readonly "runtime.unsavedDescription": never
   readonly "runtime.keepEditing": never
-  readonly "runtime.proxyLifetime": never
   readonly "runtime.exitPending": never
   readonly "runtime.cancelExit": never
   readonly "runtime.continueWaiting": never
   readonly "runtime.mainWindow": never
   readonly "runtime.editor": never
-  readonly "runtime.recordShortcut": never
   readonly "runtime.pressShortcut": never
-  readonly "runtime.shortcutClear": never
   readonly "runtime.register": never
-  readonly "runtime.openSettings": never
+  readonly "runtime.startupSettings": never
+  readonly "runtime.defaultAppSettings": never
+  readonly "runtime.makeDefaultApp": never
   readonly "runtime.desktopEntry": never
-  readonly "runtime.normalPath": never
-  readonly "runtime.portablePath": never
+  readonly "runtime.desktopEntryAvailable": never
+  readonly "runtime.desktopEntryReady": never
+  readonly "runtime.addDesktopEntry": never
+  readonly "runtime.normalMode": never
+  readonly "runtime.portableMode": never
   readonly "runtime.destination": never
   readonly "runtime.existing": never
   readonly "runtime.emptyDirectory": never
   readonly "runtime.about": never
+  readonly "runtime.appVersion": never
+  readonly "runtime.operatingSystem": never
+  readonly "runtime.architecture": never
+  readonly "runtime.taskCreated": never
+  readonly "runtime.taskStarted": never
+  readonly "runtime.taskFinished": never
+  readonly "runtime.taskRunId": never
+  readonly "runtime.taskOutput": never
+  readonly "runtime.taskInformation": never
+  readonly "runtime.taskDescription": never
+  readonly "runtime.deleteTaskAction": never
+  readonly "runtime.deleteTask": { readonly "name": string | number }
+  readonly "runtime.useAtStartup": never
   readonly "runtime.copyEnvironment": never
   readonly "runtime.copied": never
-  readonly "runtime.minimize": never
-  readonly "runtime.maximize": never
-  readonly "runtime.restoreWindow": never
   readonly "runtime.appMenu": never
-  readonly "runtime.active": { readonly "count": number }
-  readonly "runtime.finished": { readonly "count": number }
+  readonly "runtime.activeTasks": never
+  readonly "runtime.finishedTasks": never
   readonly "runtime.noActive": never
   readonly "runtime.noFinished": never
   readonly "runtime.phase": never
@@ -163,9 +253,8 @@ export interface MessageArguments {
   readonly "runtime.discardQuestion": never
   readonly "runtime.saved": never
   readonly "runtime.unavailable": never
+  readonly "runtime.unavailableResource": { readonly "name": string | number }
   readonly "runtime.choose": never
-  readonly "runtime.chooseTheme": never
-  readonly "runtime.clone": never
   readonly "runtime.preview": never
   readonly "runtime.saveUse": never
   readonly "runtime.savedConflict": never
@@ -175,7 +264,6 @@ export interface MessageArguments {
   readonly "runtime.selectTheme": never
   readonly "runtime.light": never
   readonly "runtime.dark": never
-  readonly "runtime.networkReady": never
   readonly "runtime.networkFailed": never
   readonly "runtime.networkApplying": never
   readonly "runtime.newFont": never
@@ -186,7 +274,6 @@ export interface MessageArguments {
   readonly "runtime.protocol": never
   readonly "runtime.portable": never
   readonly "runtime.data": never
-  readonly "runtime.restart": never
   readonly "runtime.remove": never
   readonly "runtime.removeConfirm": never
   readonly "runtime.systemFont": never
@@ -194,16 +281,14 @@ export interface MessageArguments {
   readonly "runtime.defaultFont": never
   readonly "runtime.username": never
   readonly "runtime.password": never
-  readonly "runtime.replace": never
-  readonly "runtime.clearCredentials": never
-  readonly "runtime.configured": never
-  readonly "runtime.none": never
   readonly "runtime.summary": never
   readonly "runtime.section": never
   readonly "runtime.setting": never
   readonly "runtime.back": never
   readonly "runtime.networkMode": never
+  readonly "runtime.bypassRulesDescription": never
   readonly "runtime.more": never
+  readonly "runtime.manage": never
   readonly "runtime.manageThemes": never
   readonly "runtime.manageFonts": never
   readonly "runtime.taskCount": { readonly "count": number }
@@ -214,9 +299,70 @@ export interface MessageArguments {
   readonly "runtime.chooseFont": never
   readonly "runtime.reopen": never
   readonly "runtime.edit": never
+  readonly "runtime.duplicate": never
+  readonly "runtime.use": never
+  readonly "runtime.pageMoved": { readonly "name": string | number; readonly "position": number }
+  readonly "runtime.movePage": { readonly "name": string | number }
+  readonly "runtime.visiblePage": never
+  readonly "runtime.noPages": never
+  readonly "runtime.moveFirst": never
+  readonly "runtime.moveLast": never
   readonly "runtime.moveUp": never
   readonly "runtime.moveDown": never
   readonly "runtime.appName": never
+  readonly "runtime.deleteTheme": { readonly "name": string | number }
+  readonly "runtime.deleteThemeTitle": never
+  readonly "runtime.deleteFont": { readonly "name": string | number }
+  readonly "runtime.deleteFontTitle": never
+  readonly "runtime.themeGroups.surfaces": never
+  readonly "runtime.themeGroups.actions": never
+  readonly "runtime.themeGroups.feedback": never
+  readonly "runtime.themeGroups.charts": never
+  readonly "runtime.themeGroups.geometry": never
+  readonly "runtime.themeGroups.type": never
+  readonly "runtime.themeTokens.background": never
+  readonly "runtime.themeTokens.foreground": never
+  readonly "runtime.themeTokens.chrome": never
+  readonly "runtime.themeTokens.chrome-foreground": never
+  readonly "runtime.themeTokens.popover": never
+  readonly "runtime.themeTokens.popover-foreground": never
+  readonly "runtime.themeTokens.dialog": never
+  readonly "runtime.themeTokens.dialog-foreground": never
+  readonly "runtime.themeTokens.primary": never
+  readonly "runtime.themeTokens.primary-foreground": never
+  readonly "runtime.themeTokens.secondary": never
+  readonly "runtime.themeTokens.secondary-foreground": never
+  readonly "runtime.themeTokens.muted": never
+  readonly "runtime.themeTokens.muted-foreground": never
+  readonly "runtime.themeTokens.accent": never
+  readonly "runtime.themeTokens.accent-foreground": never
+  readonly "runtime.themeTokens.input": never
+  readonly "runtime.themeTokens.input-foreground": never
+  readonly "runtime.themeTokens.destructive": never
+  readonly "runtime.themeTokens.destructive-foreground": never
+  readonly "runtime.themeTokens.info": never
+  readonly "runtime.themeTokens.info-foreground": never
+  readonly "runtime.themeTokens.success": never
+  readonly "runtime.themeTokens.success-foreground": never
+  readonly "runtime.themeTokens.warning": never
+  readonly "runtime.themeTokens.warning-foreground": never
+  readonly "runtime.themeTokens.border": never
+  readonly "runtime.themeTokens.ring": never
+  readonly "runtime.themeTokens.chart-1": never
+  readonly "runtime.themeTokens.chart-2": never
+  readonly "runtime.themeTokens.chart-3": never
+  readonly "runtime.themeTokens.chart-4": never
+  readonly "runtime.themeTokens.chart-5": never
+  readonly "runtime.themeTokens.radius": never
+  readonly "runtime.themeTokens.shadow-raised": never
+  readonly "runtime.themeTokens.shadow-overlay": never
+  readonly "runtime.themeTokens.shadow-modal": never
+  readonly "runtime.themeTokens.font-sans": never
+  readonly "runtime.themeTokens.font-mono": never
+  readonly "runtime.themeTokens.text-base-size": never
+  readonly "runtime.themeTokens.text-base-weight": never
+  readonly "runtime.themeTokens.text-base-line-height": never
+  readonly "runtime.themeTokens.text-base-letter-spacing": never
   readonly "runtime.fields.general": never
   readonly "runtime.fields.appearance": never
   readonly "runtime.fields.navigation": never
@@ -273,8 +419,6 @@ export interface MessageArguments {
   readonly "runtime.fields.allowPrerelease": never
   readonly "runtime.fields.pages": never
   readonly "runtime.fields.text": never
-  readonly "runtime.fields.enabled": never
-  readonly "runtime.fields.accelerators": never
   readonly "runtime.fields.search": never
   readonly "runtime.fields.preferences": never
   readonly "runtime.fields.save": never
@@ -328,8 +472,11 @@ export interface MessageArguments {
 /** Key of one message in the English authoring baseline. */
 export type MessageKey = keyof MessageArguments
 
+/** Keys that need no argument object, including dynamically selected labels. */
+type PlainMessageKey = { [K in MessageKey]: MessageArguments[K] extends never ? K : never }[MessageKey]
+
 /** Correlated key and argument tuples for one complete translation call. */
-export type TranslationCall = { [K in MessageKey]: MessageArguments[K] extends never ? [key: K] : [key: K, values: MessageArguments[K]] }[MessageKey]
+export type TranslationCall = [key: PlainMessageKey] | { [K in Exclude<MessageKey, PlainMessageKey>]: [key: K, values: MessageArguments[K]] }[Exclude<MessageKey, PlainMessageKey>]
 
 /** Typed message formatter returning plain text with literal markup. */
 export type Translate = (...args: TranslationCall) => string

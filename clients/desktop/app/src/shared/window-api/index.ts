@@ -51,6 +51,16 @@ export interface FontChoice {
   metadata: FontFileMetadata
 }
 
+/** One native file choice with its per-file outcome. */
+export type FontFileChoice = { name: string; file: FontChoice } | { name: string; error: string }
+
+/** Saved font and the document-owned URLs for its attachment snapshot. */
+export interface OpenedFont {
+  hold: string
+  font: Font
+  urls: Readonly<Record<string, string>>
+}
+
 /** Document-owned image preparation and its transient preview URL. */
 export interface ImageChoice {
   id: string
@@ -68,7 +78,8 @@ export interface WindowState {
   kind: WindowKind
   platform: DesktopPlatform
   buildId: string
-  maximized: boolean
+  /** Requested height of the main window title bar in DIP, or null for other windows. */
+  titlebarHeight: number | null
   locale: string
   messages: MessageCatalog
 }
@@ -81,12 +92,6 @@ export interface WindowApi {
   'window.ready'(): void
   /** Reads the bound window identity, native state and effective language snapshot. */
   'window.state'(): WindowState
-  /** Minimizes only the native window bound to this connection. */
-  'window.minimize'(): void
-  /** Toggles the bound window between maximized and restored bounds. */
-  'window.maximize'(): void
-  /** Requests the configured close behavior for this native window. */
-  'window.close'(): void
   /** Resolves the effective branch and acquires font URLs for this document. */
   'appearance.get'(): { value: ViewAppearance; issues: readonly AppearanceIssue[]; hold: string }
   /** Releases the identified hold in this document without affecting other readers. */
@@ -95,10 +100,8 @@ export interface WindowApi {
 
 /** The main window's settings, task center and native management capabilities. */
 export interface MainWindowApi extends WindowApi {
-  /** Adopts the resolved Chromium colors and height of the Windows system caption. */
+  /** Applies the document's resolved colors to this window's controls overlay. */
   'window.caption'(background: string, foreground: string): void
-  /** Starts the shared normal exit workflow from the main window. */
-  'app.quit'(): void
   /** Restarts the application after the normal close workflow succeeds. */
   'app.restart'(): void
   /** Cancels a pending exit while preserving work already completed. */
@@ -135,6 +138,8 @@ export interface MainWindowApi extends WindowApi {
   'tasks.cancel'(ref: TaskRunRef): TaskState
   /** Clears matching finished history while protecting admitted runs. */
   'tasks.clear'(filter: TaskHistoryFilter): number
+  /** Removes the selected ended history record and reports the number removed. */
+  'tasks.delete'(ref: TaskRunRef): number
   /** Lists available theme identities with names resolved for this window. */
   'themes.list'(): readonly { ref: ThemeRef; name: string }[]
   /** Reads a complete theme definition without acquiring font files. */
@@ -158,10 +163,12 @@ export interface MainWindowApi extends WindowApi {
   ): ListResult<Pick<Font, 'id' | 'name' | 'createdAt' | 'updatedAt'>>
   /** Reads the font name and its complete verified file set. */
   'fonts.get'(id: string): Font | null
+  /** Binds the saved font's exact files as a document-owned preview. */
+  'fonts.open'(id: string): OpenedFont
   /** Lists distinct family names from the actual operating-system font catalog. */
   'fonts.system'(): readonly string[]
-  /** Prepares selected native files for this editor and returns null on cancellation. */
-  'fonts.choose'(): readonly FontChoice[] | null
+  /** Reports each selected file's preparation outcome or null on picker cancellation. */
+  'fonts.choose'(): readonly FontFileChoice[] | null
   /** Consumes a document-owned file stream and returns a verified font preview. */
   'fonts.prepareInput'(id: string): FontChoice
   /** Commits the chosen name and the verified files held by this document. */

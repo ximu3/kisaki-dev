@@ -18,9 +18,9 @@ export interface MessageCatalog {
 /** Canonical Intl-supported baseName; language availability and selection are separate concerns. */
 export type UiLocale = string
 
-/** The stable identity of built-in English or one extension's translation contribution. */
+/** The stable identity of a built-in or extension-provided UI translation. */
 export type UiTranslationRef =
-  | { readonly type: 'builtin'; readonly id: 'en' }
+  | { readonly type: 'builtin'; readonly id: 'en' | 'zh-Hans' }
   | { readonly type: 'extension'; readonly extensionId: string; readonly id: string }
 
 /**
@@ -136,7 +136,7 @@ export function parseUiLocale(input: unknown): UiLocale {
 export function parseUiTranslationRef(input: unknown): UiTranslationRef {
   return parseValue(
     v.variant('type', [
-      v.strictObject({ type: v.literal('builtin'), id: v.literal('en') }),
+      v.strictObject({ type: v.literal('builtin'), id: v.picklist(['en', 'zh-Hans']) }),
       v.strictObject({
         type: v.literal('extension'),
         extensionId: v.pipe(

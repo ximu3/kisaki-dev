@@ -147,9 +147,9 @@ export function taskHistory(storage: Storage) {
         return { items: items.map((row) => ({ ...row, error: unwrap(row.error) })), total }
       })
     },
-    /** Removes only terminated history within the requested type and time interval. */
-    clearTasks(filter: TaskHistoryFilter, active: readonly string[]) {
-      const conditions: SQL[] = []
+    /** Removes ended history matching a run identity or the requested type and time interval. */
+    clearTasks(filter: TaskHistoryFilter, active: readonly string[], id?: string) {
+      const conditions: SQL[] = id === undefined ? [] : [eq(taskRuns.id, id)]
       if (filter.types) {
         conditions.push(inArray(taskRuns.type, [...filter.types]))
       }

@@ -161,13 +161,14 @@ export async function startDevelopmentSession(
     const sessionDirectory = await mkdtemp(join(parent, 'session-'))
     directory = sessionDirectory
     const compilerDirectory = join(sessionDirectory, 'compiler')
+    const rendererCache = join(sessionDirectory, 'renderer-cache')
     await mkdir(profile, { recursive: true })
     electronExecutable()
     const resources = options.prepared?.resources ?? join(sessionDirectory, 'resources')
     const nativeDirectory = join(sessionDirectory, 'native')
     const nativeBinding =
       options.prepared?.nativeBinding ?? join(nativeDirectory, 'kisaki-native.node')
-    renderer = await startRenderer(options.sourceRoot, buildId)
+    renderer = await startRenderer(options.sourceRoot, buildId, rendererCache)
     let rendererAddress = renderer.resolvedUrls!.local[0]!
 
     let child: DevelopmentApplication | undefined
@@ -329,7 +330,7 @@ export async function startDevelopmentSession(
             compilers = undefined
             await renderer?.close()
             renderer = undefined
-            renderer = await startRenderer(options.sourceRoot, buildId)
+            renderer = await startRenderer(options.sourceRoot, buildId, rendererCache)
             rendererAddress = renderer.resolvedUrls!.local[0]!
             selected.delete('configuration')
           }

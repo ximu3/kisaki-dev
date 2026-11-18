@@ -2,7 +2,7 @@
 
 import { RpcConnection } from '@kisaki3/desktop-rpc'
 import type { RpcNotification } from '@kisaki3/desktop-rpc'
-import type { ViewAppearance } from '@kisaki3/desktop-contracts/appearance'
+import { createDocumentAppearance } from './appearance'
 import { createTranslator, type Translate } from '@kisaki3/desktop-localization'
 import { createSignal } from 'solid-js'
 import type { MainWindowApi, WindowApi } from '../../shared/window-api'
@@ -22,7 +22,6 @@ export async function connect<K extends WindowKind>(kind: K) {
     document.head.append(sheet)
   }
   const transport = await new Promise<MessagePort>((resolve) => {
-    /** Receives the port posted by this document's own verified preload. */
     const receive = (event: MessageEvent) => {
       if (
         event.source !== window ||
@@ -38,10 +37,9 @@ export async function connect<K extends WindowKind>(kind: K) {
     window.addEventListener('message', receive)
     window.postMessage('kisaki-connect', window.location.origin)
   })
+
   const topics = new EventTarget()
-  /** Stores the document owner's current close decision callback. */
   let confirmClose: () => boolean | Promise<boolean> = () => true
-  /** Stores this instance's native navigation receiver. */
   let navigate: (target: unknown) => void | Promise<void> = () => {}
   const notifications = Object.fromEntries(
     [
@@ -60,6 +58,7 @@ export async function connect<K extends WindowKind>(kind: K) {
       },
     ]),
   ) as Record<string, RpcNotification>
+
   const rpc = new RpcConnection(
     {
       /** Installs ordered frame and channel-loss listeners on the browser port. */
@@ -99,9 +98,9 @@ export async function connect<K extends WindowKind>(kind: K) {
     },
   )
   await rpc.ready
+
   /** Selects the method surface allowed by the document kind. */
   type Api = K extends 'main' ? MainWindowApi : WindowApi
-  /** Calls one declared operation using only its transferable arguments. */
   const call = async <M extends keyof Api & keyof MainWindowApi>(
     method: M,
     ...args: Parameters<MainWindowApi[M]>
@@ -109,94 +108,40 @@ export async function connect<K extends WindowKind>(kind: K) {
     const values = rpcData<Parameters<MainWindowApi[keyof MainWindowApi]>>(args)
     return (await rpc.request(method, values)) as ReturnType<MainWindowApi[M]>
   }
-  /** Built-in presentation methods common to every document kind. */
   const common = async <M extends keyof WindowApi>(method: M, ...args: Parameters<WindowApi[M]>) =>
     (await rpc.request(method, rpcData(args))) as ReturnType<WindowApi[M]>
-  /** Keeps formatting reactive without remounting editors on a language change. */
   const [translate, setTranslate] = createSignal<Translate>(createTranslator('en'))
-  let platform: Awaited<ReturnType<WindowApi['window.state']>>['platform']
-  let generation = 0
-  let held: string | undefined
-  let installed: FontFace[] = []
-  /** Applies the full visual branch and scale together in this document. */
-  async function applyPalette(value: ViewAppearance) {
-    const style = document.documentElement.style
-    for (const [key, css] of Object.entries(value.cssVariables)) {
-      style.setProperty(key, css)
-    }
-    style.setProperty('--interface-scale', String(value.interfaceScale))
-    style.colorScheme = value.colorScheme
-    document.documentElement.dataset.colorScheme = value.colorScheme
-    if (kind === 'main' && platform === 'win32') {
-      const sample = document.createElement('canvas')
-      sample.width = sample.height = 1
-      const context = sample.getContext('2d', { willReadFrequently: true })!
-      context.globalCompositeOperation = 'copy'
-      /** Resolves modern CSS colors to the sRGB bytes accepted by Electron's native overlay. */
-      const color = (token: '--chrome' | '--chrome-foreground') => {
-        context.fillStyle = value.cssVariables[token]
-        context.fillRect(0, 0, 1, 1)
-        // Electron's eight-digit hex format puts alpha before red, green and blue.
-        const bytes = context.getImageData(0, 0, 1, 1).data
-        return (
-          '#' +
-          [bytes[3]!, bytes[0]!, bytes[1]!, bytes[2]!]
-            .map((byte) => byte.toString(16).padStart(2, '0'))
-            .join('')
-        )
-      }
-      await rpc.request('window.caption', [color('--chrome'), color('--chrome-foreground')])
-    }
-  }
 
-  /** Replaces the complete document font set and releases superseded bindings, including late reads. */
-  async function refreshAppearance() {
-    const version = ++generation
-    const result = await common('appearance.get')
-    const value = result.value
-    const loaded = await Promise.allSettled(
-      value.fontFaces.map((face) =>
-        new FontFace(face.family, 'url(' + JSON.stringify(face.url) + ')', face.descriptors).load(),
-      ),
-    )
-    if (version !== generation) {
-      await common('resources.release', result.hold)
-      return
-    }
-    for (const face of installed) {
-      document.fonts.delete(face)
-    }
-    installed = loaded.flatMap((result) => (result.status === 'fulfilled' ? [result.value] : []))
-    for (const face of installed) {
-      document.fonts.add(face)
-    }
-    const applied = applyPalette(value)
-    const old = held
-    held = result.hold
-    if (old) {
-      await common('resources.release', old)
-    }
-    await applied
-  }
-  /** Updates the active translator without remounting draft-owning components. */
-  async function refreshLanguage() {
+  async function refreshWindowState() {
     const state = await common('window.state')
-    platform = state.platform
-    document.documentElement.lang = state.locale
+    const root = document.documentElement
+    root.lang = state.locale
+    if (state.titlebarHeight !== null) {
+      root.style.setProperty('--main-titlebar-height', `${state.titlebarHeight}px`)
+    }
+
     const translate = createTranslator(state.locale, state.messages)
     setTranslate(() => translate)
-    return state.startupDeadline
+    return state
   }
-  topics.addEventListener('window.changed', () => void refreshLanguage().catch(console.error))
-  topics.addEventListener('appearance.changed', () => void refreshAppearance().catch(console.error))
+
+  topics.addEventListener('window.changed', () => void refreshWindowState().catch(console.error))
   window.addEventListener('pagehide', () => rpc.close(), { once: true })
-  const deadline = await refreshLanguage()
-  const base = common('appearance.base').then((value) => {
-    if (!held && generation <= 1) {
-      return applyPalette(value)
-    }
-  })
-  const initial = Promise.all([base, refreshAppearance()])
+  const { platform, startupDeadline: deadline } = await refreshWindowState()
+  const appearance = createDocumentAppearance(
+    common,
+    kind === 'main' && platform !== 'darwin'
+      ? async (background, foreground) => {
+          await rpc.request('window.caption', [background, foreground])
+        }
+      : undefined,
+  )
+  topics.addEventListener(
+    'appearance.changed',
+    () => void appearance.refresh().catch(console.error),
+  )
+  const initial = appearance.initialize()
+
   let timer: ReturnType<typeof setTimeout> | undefined
   try {
     await Promise.race([
@@ -211,9 +156,7 @@ export async function connect<K extends WindowKind>(kind: K) {
   return {
     call,
     /** Reports the running application's platform for shortcut interpretation. */
-    get platform() {
-      return platform
-    },
+    platform,
     topics,
     t: ((...args) => translate()(...args)) as Translate,
     /** Registers this document's dirty-editor close workflow. */

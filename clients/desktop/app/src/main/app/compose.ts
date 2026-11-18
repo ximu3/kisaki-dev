@@ -22,6 +22,7 @@ import { createAppearance } from '../features/appearance'
 import type { ApplicationOperations } from './database-worker'
 import type { AppPaths } from './paths'
 import { bindSettings } from './bindings'
+import { developmentTranslation } from './development/translation'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type { DesktopPlatform } from '@kisaki3/desktop-contracts/preferences'
 
@@ -30,12 +31,14 @@ export async function compose(
   paths: AppPaths,
   native: NativeCapabilities,
   notifications: ReturnType<typeof createNotifications>,
+  developing: boolean,
 ) {
   const nativePath = join(paths.resources, 'native', 'kisaki-native.node')
   await assertLocalDataDirectory(paths.data, native.files)
   const log = await createRuntimeLog(paths.data)
   await log.record('opening')
-  const defaults = getPreferenceDefaults(process.platform as DesktopPlatform, [])
+  const translation = developing ? developmentTranslation : undefined
+  const defaults = getPreferenceDefaults(process.platform as DesktopPlatform, [], translation?.ref)
   const database = await openDatabaseExecutor<ApplicationOperations>(
     new URL('./database.js', import.meta.url),
     {
@@ -79,7 +82,7 @@ export async function compose(
         }),
     })
     teardown.push(notifications.close)
-    const i18n = createI18n()
+    const i18n = createI18n(translation)
     const preferences = createPreferences(database.call, defaults, () => i18n.t)
     const tasks = await createTasks(database.call, events.publisher('tasks.finished'))
     const network = createNetwork(

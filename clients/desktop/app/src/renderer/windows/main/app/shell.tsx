@@ -1,144 +1,181 @@
-/** @fileoverview Keeps native window chrome, page content and the fixed management tools at their independent positions. */
+/** @fileoverview Arranges the platform caption, navigation rail, fixed tools and mounted page. */
 
-import { For, Show, createResource, onCleanup, type ParentProps } from 'solid-js'
 import {
-  LogOut,
-  Info,
-  Settings,
-  Palette,
-  Type,
-  MonitorCog,
-  ListChecks,
-  Minus,
-  Square,
-  Copy,
-  X,
-} from 'lucide-solid'
-import { Menu, MenuTrigger, MenuContent, MenuItem, MenuSeparator } from '@kisaki3/desktop-ui/menu'
-import { Button } from '@kisaki3/desktop-ui/button'
+  createEffect,
+  createMemo,
+  createResource,
+  createSignal,
+  For,
+  onCleanup,
+  Show,
+  type ParentProps,
+} from 'solid-js'
+import { Ellipsis, ListChecks } from 'lucide-solid'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@kisaki3/desktop-ui/tooltip'
+import { Popover, PopoverContent, PopoverTrigger } from '@kisaki3/desktop-ui/popover'
+import type { PreferencesSnapshot, PreferencesUpdate } from '@kisaki3/desktop-contracts/preferences'
+import type { NativeViewTarget, PageRef } from '@kisaki3/desktop-contracts/ui'
+import { isTaskTerminal, taskRunStatuses } from '@kisaki3/desktop-contracts/tasks'
 import type { MainClient } from '../../../infrastructure/api'
+import { reportError } from '../../../infrastructure/notifications'
+import { arrangePages } from '../domain-ui/navigation/order'
+import { PageOrder } from '../domain-ui/navigation/list'
+import { ApplicationMenu } from './menu'
+import type { PageRoute } from './routes'
 
-/** Management surfaces opened above the current page without changing its navigation. */
-export type Management = 'preferences' | 'themes' | 'fonts' | 'system' | 'tasks' | 'about'
-
-/** Hosts business pages supplied by their owners and fixed tools that remain available above any page. */
+/** Keeps the current page mounted while native navigation or fixed tools open a dialog. */
 export function AppShell(
   props: ParentProps<{
     api: MainClient
-    open: (page: Management) => void
-    report: (error: unknown) => void
+    pages: readonly PageRoute[]
+    current: string | undefined
+    preferences: PreferencesSnapshot | undefined
+    updatePreferences: (input: PreferencesUpdate) => Promise<void>
+    reorder: (order: readonly PageRef[]) => Promise<void>
+    open: (target: NativeViewTarget) => Promise<boolean>
   }>,
 ) {
   const { api } = props
-  /** Reads the maximize state for the Linux caption buttons. */
-  const [windowState, { refetch: refreshWindow }] = createResource(
-    () => api.platform === 'linux',
-    () => api.call('window.state'),
-  )
-  /** Reads the active count for the fixed task-center trigger. */
-  const [active, { refetch: refreshCount }] = createResource(() =>
+  const [active, { refetch }] = createResource(() =>
     api.call(
       'tasks.list',
-      { statuses: ['queued', 'running', 'pausing', 'paused', 'cancelling'] },
+      { statuses: taskRunStatuses.filter((status) => !isTaskTerminal(status)) },
       { limit: 1, offset: 0 },
     ),
   )
-  /** Rereads the active count at history invalidation. */
-  const refresh = () => void refreshCount()
-  /** Rereads actual native state after a window resize. */
-  const resize = () => void refreshWindow()
+  const refresh = () => void refetch()
   api.topics.addEventListener('tasks.changed', refresh)
-  window.addEventListener('resize', resize)
-  onCleanup(() => {
-    api.topics.removeEventListener('tasks.changed', refresh)
-    window.removeEventListener('resize', resize)
+  onCleanup(() => api.topics.removeEventListener('tasks.changed', refresh))
+
+  createEffect(() => {
+    if (active.error) {
+      reportError(active.error)
+    }
   })
-  const menus = [
-    { key: 'preferences', icon: Settings },
-    { key: 'themes', icon: Palette },
-    { key: 'fonts', icon: Type },
-    { key: 'system', icon: MonitorCog },
-  ] as const
+
+  const order = () => {
+    const saved = props.preferences?.navigation.order
+    return saved?.status === 'ready' ? saved.value : []
+  }
+  const pages = createMemo(() => arrangePages(props.pages, order()).visible)
+  const limit = () => props.preferences?.navigation.visibleLimit ?? pages().length
+  const pinned = () => pages().slice(0, limit())
+  const [more, setMore] = createSignal(false)
+  let moreButton!: HTMLButtonElement
+  async function select(page: PageRoute) {
+    if (await props.open(page.target)) {
+      setMore(false)
+      moreButton.focus()
+    }
+  }
+
   return (
-    <div class="flex h-screen flex-col overflow-hidden">
-      <header data-platform={api.platform} class="titlebar flex shrink-0 items-center">
-        <img src="kisaki-app://window/brand/icon.png" alt="Kisaki" class="brand-icon" />
-        <div class="grow" />
-        <Show when={api.platform === 'linux'}>
-          <div class="window-buttons">
-            <Button
-              variant="ghost"
-              aria-label={api.t('runtime.minimize')}
-              onClick={() => void api.call('window.minimize').catch(props.report)}
-            >
-              <Minus />
-            </Button>
-            <Button
-              variant="ghost"
-              aria-label={api.t(
-                windowState()?.maximized ? 'runtime.restoreWindow' : 'runtime.maximize',
-              )}
-              onClick={() => void api.call('window.maximize').catch(props.report)}
-            >
-              {windowState()?.maximized ? <Copy /> : <Square />}
-            </Button>
-            <Button
-              variant="ghost"
-              class="window-close"
-              aria-label={api.t('actions.close')}
-              onClick={() => void api.call('window.close').catch(props.report)}
-            >
-              <X />
-            </Button>
-          </div>
-        </Show>
+    <div class="flex h-dvh flex-col overflow-hidden">
+      <header
+        data-platform={api.platform}
+        class="titlebar flex shrink-0 items-center bg-chrome text-chrome-foreground select-none"
+      >
+        <img
+          src="kisaki-app://window/brand/icon.png"
+          alt="Kisaki"
+          class="titlebar-brand pointer-events-none rounded-md border border-border"
+        />
       </header>
-      <div class="flex min-h-0 grow">
-        <aside class="rail flex shrink-0 flex-col items-center">
-          <div class="grow" />
-          <Button
-            variant="ghost"
-            class="tool-trigger"
-            aria-label={api.t('runtime.tasks')}
-            title={api.t('runtime.tasks')}
-            onClick={() => props.open('tasks')}
-          >
-            <ListChecks />
-            <Show when={active()?.total}>
-              {(n) => <span class="active-count">{n() > 9 ? '9+' : n()}</span>}
+
+      <div class="flex min-h-0 grow border-t border-border">
+        <aside class="app-rail flex w-13 shrink-0 flex-col items-center border-r border-border bg-chrome text-chrome-foreground">
+          <nav class="flex min-h-0 w-full grow flex-col items-center gap-1 overflow-y-auto py-2 [scrollbar-width:none]">
+            <For each={pinned()}>
+              {(route) => (
+                <Tooltip>
+                  <TooltipTrigger
+                    variant="ghost"
+                    size="icon-lg"
+                    aria-label={route.title(api)}
+                    aria-current={props.current === route.id ? 'page' : undefined}
+                    class="rail-action size-10"
+                    onClick={() => void props.open(route.target)}
+                  >
+                    <route.icon />
+                  </TooltipTrigger>
+                  <TooltipContent placement="right">{route.title(api)}</TooltipContent>
+                </Tooltip>
+              )}
+            </For>
+            <Show when={pages().length > pinned().length}>
+              <Popover open={more()} onOpenChange={setMore}>
+                <Tooltip>
+                  <TooltipTrigger
+                    as={PopoverTrigger}
+                    ref={(node) => {
+                      moreButton = node
+                    }}
+                    variant="ghost"
+                    size="icon-lg"
+                    aria-label={api.t('runtime.more')}
+                    class="rail-action size-10"
+                    data-current={
+                      pages()
+                        .slice(limit())
+                        .some((page) => page.id === props.current) || undefined
+                    }
+                  >
+                    <Ellipsis />
+                  </TooltipTrigger>
+                  <TooltipContent placement="right">{api.t('runtime.more')}</TooltipContent>
+                </Tooltip>
+                <PopoverContent
+                  placement="right-start"
+                  class="w-64"
+                  aria-label={api.t('runtime.more')}
+                >
+                  <PageOrder
+                    api={api}
+                    pages={props.pages}
+                    order={order()}
+                    visibleLimit={limit()}
+                    current={props.current}
+                    open={(page) => void select(page)}
+                    change={props.reorder}
+                  />
+                </PopoverContent>
+              </Popover>
             </Show>
-          </Button>
-          <Menu>
-            <MenuTrigger
-              variant="ghost"
-              class="tool-trigger"
-              aria-label={api.t('runtime.appMenu')}
-              title={api.t('runtime.appMenu')}
-            >
-              <Settings />
-            </MenuTrigger>
-            <MenuContent>
-              <For each={menus}>
-                {(item) => (
-                  <MenuItem onSelect={() => props.open(item.key)}>
-                    <item.icon />
-                    {api.t(`runtime.${item.key}`)}
-                  </MenuItem>
-                )}
-              </For>
-              <MenuSeparator />
-              <MenuItem onSelect={() => props.open('about')}>
-                <Info />
-                {api.t('runtime.about')}
-              </MenuItem>
-              <MenuItem onSelect={() => void api.call('app.quit').catch(props.report)}>
-                <LogOut />
-                {api.t('runtime.quit')}
-              </MenuItem>
-            </MenuContent>
-          </Menu>
+          </nav>
+
+          <div class="flex shrink-0 flex-col items-center gap-1 py-2">
+            <Tooltip>
+              <TooltipTrigger
+                variant="ghost"
+                size="icon-lg"
+                class="rail-action size-10"
+                aria-label={api.t('runtime.tasks')}
+                onClick={() => void props.open({ type: 'tasks' })}
+              >
+                <ListChecks />
+                <Show when={!active.error && active()?.total}>
+                  {(n) => (
+                    <span
+                      aria-hidden="true"
+                      class="absolute end-1 top-1 grid h-4 min-w-4 place-items-center rounded-full bg-primary px-1 text-xs leading-none text-primary-foreground"
+                    >
+                      {n() > 9 ? '9+' : n()}
+                    </span>
+                  )}
+                </Show>
+              </TooltipTrigger>
+              <TooltipContent placement="right">{api.t('runtime.tasks')}</TooltipContent>
+            </Tooltip>
+
+            <ApplicationMenu
+              api={api}
+              preferences={props.preferences}
+              updatePreferences={props.updatePreferences}
+              open={props.open}
+            />
+          </div>
         </aside>
-        <main class="min-w-0 grow">{props.children}</main>
+        <main class="min-w-0 grow overflow-hidden">{props.children}</main>
       </div>
     </div>
   )

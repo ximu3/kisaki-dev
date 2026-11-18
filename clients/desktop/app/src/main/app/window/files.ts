@@ -2,6 +2,7 @@
 
 import { dialog, type BrowserWindow } from 'electron'
 import { randomUUID } from 'node:crypto'
+import { basename } from 'node:path'
 import type { RpcMethod } from '@kisaki3/desktop-rpc'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { parseListOptions } from '@kisaki3/desktop-contracts/operations'
@@ -10,6 +11,7 @@ import { parseFontUpdate, type PreparedFontFile } from '@kisaki3/desktop-contrac
 import type { ViewResourcesApi, ViewResourceBinding } from '@kisaki3/desktop-contracts/resources'
 import { receiveFile } from '../../infrastructure/files/input'
 import type { Application } from '../compose'
+import type { FontFileChoice } from '../../../shared/window-api'
 import { rpcData } from '../../../shared/window-api/protocol'
 import { textArgument } from './values'
 
@@ -123,6 +125,21 @@ export function createFileMethods(
       ),
     /** Reads the font name and its complete verified file set. */
     'fonts.get': async ([id]) => rpcData(await fonts.get(textArgument(id))),
+    /** Attaches independent view URLs to one immutable saved-font read. */
+    'fonts.open': async ([id]) => {
+      const read = await fonts.open(textArgument(id))
+      const binding = await view.bind(read.resources).catch(async (cause: unknown) => {
+        await read.dispose()
+        throw cause
+      })
+      const hold = keep({
+        /** Ends both the preview binding and the retained font-file read. */
+        async dispose() {
+          await Promise.all([binding.dispose(), read.dispose()])
+        },
+      })
+      return rpcData({ font: read.font, hold, urls: binding.urls })
+    },
     /** Lists distinct family names from the actual operating-system font catalog. */
     'fonts.system': async (_args, signal) => rpcData(await fonts.listSystem({ signal })),
     /** Prepares selected native files for this editor and returns null on cancellation. */
@@ -136,13 +153,24 @@ export function createFileMethods(
       }
       const added: string[] = []
       try {
-        const result = []
+        const result: FontFileChoice[] = []
         for (const path of filePaths) {
-          const file = await fonts.prepare({ type: 'path', path }, { signal })
-          const prepared = await fontResult(file)
-          added.push(prepared.id)
-          result.push(prepared)
+          signal.throwIfAborted()
+          const name = basename(path)
+          try {
+            const file = await fonts.prepare({ type: 'path', path }, { signal })
+            const prepared = await fontResult(file)
+            added.push(prepared.id)
+            result.push({ name, file: prepared })
+          } catch (cause) {
+            signal.throwIfAborted()
+            if (!(cause instanceof DesktopError) || cause.code === 'ConnectionClosed') {
+              throw cause
+            }
+            result.push({ name, error: cause.message })
+          }
         }
+        signal.throwIfAborted()
         return rpcData(result)
       } catch (error) {
         await Promise.all(added.map(release))

@@ -1,0 +1,6 @@
+/* Styles and utility sources used by the player document. */
+
+@import '../../styles/tailwind.css';
+@import '../../styles/base.css';
+@source './';
+@source '../../infrastructure';

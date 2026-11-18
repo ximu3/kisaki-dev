@@ -11,7 +11,7 @@ export {
 export {
   parseAccelerator,
   acceleratorIdentity,
-  parseShortcutPreferences,
+  parseShortcutAccelerators,
   findShortcutConflicts,
   shortcutKeys,
 } from './shortcuts'
@@ -19,7 +19,6 @@ export {
 export type {
   DesktopPlatform,
   ShortcutKey,
-  ShortcutPreferences,
   ShortcutsPreferences,
   ShortcutConflict,
 } from './shortcuts'

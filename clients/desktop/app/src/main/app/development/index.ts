@@ -5,7 +5,7 @@ import {
   developmentProtocolId,
   developmentProtocolVersion,
 } from '@kisaki3/desktop-contracts/development'
-import manifest from '../../../package.json' with { type: 'json' }
+import manifest from '../../../../package.json' with { type: 'json' }
 
 /** Announces the current build and waits for the same quit decision as native app commands. */
 export function developmentControl(stop: () => Promise<boolean>) {

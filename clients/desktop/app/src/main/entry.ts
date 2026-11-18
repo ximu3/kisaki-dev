@@ -105,7 +105,7 @@ async function run(paths: AppPaths) {
   try {
     await app.whenReady()
     await notifications.ready(app.isPackaged)
-    application = await compose(paths, native, notifications)
+    application = await compose(paths, native, notifications, !!ready)
   } catch (cause) {
     await notifications.close()
     throw cause
