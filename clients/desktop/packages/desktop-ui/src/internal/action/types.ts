@@ -1,5 +1,7 @@
 /** @fileoverview Shared visual purposes and sizes for actions and navigation links. */
 
+import type { ControlSize } from '../control/size'
+
 /**
  * Shared visual emphasis for an action or link, independent of its native interaction semantics.
  */
@@ -15,4 +17,4 @@ export type ActionVariant =
 /**
  * Action geometry preset following interface scale, with square hit areas for icon-only variants.
  */
-export type ActionSize = 'default' | 'xs' | 'sm' | 'lg' | 'icon' | 'icon-xs' | 'icon-sm' | 'icon-lg'
+export type ActionSize = ControlSize | 'icon' | `icon-${Exclude<ControlSize, 'default'>}`

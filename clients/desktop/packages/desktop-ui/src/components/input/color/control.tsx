@@ -12,7 +12,7 @@ import {
   untrack,
 } from 'solid-js'
 import type { JSX } from 'solid-js'
-import { assignRef, classes } from '../../../internal/dom'
+import { assignRef, classes, createElementRef } from '../../../internal/dom'
 import { fieldAttributes, closeWhenUnavailable } from '../../../internal/field'
 import { createPopup } from '../../../internal/popup/controller'
 import { createValue, onFormReset } from '../../../internal/state'
@@ -58,6 +58,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
     'brightnessLabel',
     'alphaLabel',
     'invalidColorMessage',
+    'size',
     'ref',
     'class',
     'style',
@@ -75,9 +76,9 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
   const [color, setColor] = createSignal<Hsv>({ mode: 'hsv', h: 0, s: 1, v: 1, alpha: 1 })
   /** Locally owned visibility of the color-picker surface. */
   const [open, setOpen] = createSignal(false)
+  const [trigger, bindTrigger] = createElementRef<HTMLButtonElement>()
   const id = createUniqueId()
   let input!: HTMLInputElement
-  let trigger!: HTMLButtonElement
   let picker!: HTMLDivElement
   let hue!: HTMLInputElement
   /** Checks whether disabled or readonly state prevents picker interaction. */
@@ -114,8 +115,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
     /** Reads the currently mounted color-picker surface. */
     element: () => picker,
 
-    /** Reads the current color-picker trigger used for positioning. */
-    anchor: () => trigger,
+    anchor: trigger,
     open,
     change: setOpen,
 
@@ -146,7 +146,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
   })
 
   return (
-    <InputFrame class={local.class} style={local.style} open={open()}>
+    <InputFrame class={local.class} style={local.style} size={local.size} open={open()}>
       <NativeInput
         {...rest}
         class={frame.editor}
@@ -160,9 +160,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
         }}
       />
       <button
-        ref={(node) => {
-          trigger = node
-        }}
+        ref={bindTrigger}
         type="button"
         class={classes(frame.start, styles.swatch)}
         aria-label={local.pickerLabel}
@@ -190,7 +188,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
         onFocusOut={(event) => {
           if (
             !picker.contains(event.relatedTarget as Node | null) &&
-            event.relatedTarget !== trigger
+            event.relatedTarget !== trigger()
           ) {
             setOpen(false)
           }

@@ -2,10 +2,10 @@
 
 import { createMemo, mergeProps, splitProps } from 'solid-js'
 import type { Accessor, JSX } from 'solid-js'
-import type { ChipLabels } from '../../internal/selection/chips'
-import { SelectionField } from '../../internal/selection/field'
-import type { ChoiceFieldProps } from '../../internal/selection/field'
-import type { SelectionOption } from '../../internal/selection/types'
+import type { ChipLabels } from '../../internal/chips/control'
+import { SelectionField } from '../selection/field'
+import type { ChoiceFieldProps } from '../selection/field'
+import type { SelectionOption } from '../selection/types'
 import { createValue } from '../../internal/state'
 
 /**
@@ -13,11 +13,13 @@ import { createValue } from '../../internal/state'
  *
  * An empty string represents no choice, independently of which rows are mounted.
  */
-export interface SelectProps extends ChoiceFieldProps {
-  value?: string
-  defaultValue?: string
+export interface SelectProps<K extends string = string> extends ChoiceFieldProps<
+  SelectionOption<K>
+> {
+  value?: K | ''
+  defaultValue?: K | ''
   /** Reports the proposed selected option key. */
-  onValueChange?: (value: string) => void
+  onValueChange?: (value: K | '') => void
 }
 
 /**
@@ -25,18 +27,18 @@ export interface SelectProps extends ChoiceFieldProps {
  *
  * Activation toggles one value without requiring a platform modifier key.
  */
-export interface MultiSelectProps extends ChoiceFieldProps, ChipLabels {
-  value?: readonly string[]
-  defaultValue?: readonly string[]
+export interface MultiSelectProps<K extends string = string>
+  extends ChoiceFieldProps<SelectionOption<K>>, ChipLabels {
+  value?: readonly K[]
+  defaultValue?: readonly K[]
   /** Reports the proposed complete ordered list of selected keys. */
-  onValueChange?: (value: readonly string[]) => void
+  onValueChange?: (value: readonly K[]) => void
 }
 
 /** Creates a reactive option lookup that preserves missing keys as disabled display records. */
-function resolveKeys(options: Accessor<readonly SelectionOption[]>) {
-  /** Reactive option catalog used to resolve selected keys without losing their records. */
+function resolveKeys<K extends string>(options: Accessor<readonly SelectionOption<K>[]>) {
   const catalog = createMemo(() => new Map(options().map((option) => [option.value, option])))
-  return (key: string): SelectionOption =>
+  return (key: K): SelectionOption<K> =>
     catalog().get(key) ?? { value: key, label: key, disabled: true }
 }
 
@@ -46,21 +48,24 @@ function resolveKeys(options: Accessor<readonly SelectionOption[]>) {
  * The trigger retains keyboard focus and receives focus when native form validation requests
  * attention.
  */
-export function Select(props: SelectProps): JSX.Element {
+export function Select<K extends string = string>(props: SelectProps<K>): JSX.Element {
   const [local, rest] = splitProps(props, ['value', 'defaultValue', 'onValueChange'])
-  /** Current option-key resolver bound to the selection control's option source. */
   const resolve = resolveKeys(() => rest.options)
-  /** Live single-selection key and change requests delegated to its value owner. */
   const [value, change] = createValue(
     () => local.value,
     () => local.defaultValue ?? '',
     (next) => local.onValueChange?.(next),
   )
 
+  const selected = () => {
+    const key = value()
+    return key ? [resolve(key)] : []
+  }
+
   return (
     <SelectionField
       {...rest}
-      selected={value() ? [resolve(value())] : []}
+      selected={selected()}
       defaults={local.defaultValue ? [local.defaultValue] : []}
       onChoose={(option) => change(option.value)}
       onReset={() => change(local.defaultValue ?? '')}
@@ -72,19 +77,17 @@ export function Select(props: SelectProps): JSX.Element {
  * Renders toggled list choices and removable field chips while preserving selected submission
  * order.
  */
-export function MultiSelect(props: MultiSelectProps): JSX.Element {
+export function MultiSelect<K extends string = string>(props: MultiSelectProps<K>): JSX.Element {
   const [local, labels, rest] = splitProps(
     props,
     ['value', 'defaultValue', 'onValueChange'],
     ['removeLabel', 'scrollPreviousLabel', 'scrollNextLabel'],
   )
-  /** Live multiple-selection keys and change requests delegated to their value owner. */
   const [value, change] = createValue(
     () => local.value,
     () => local.defaultValue ?? [],
     (next) => local.onValueChange?.(next),
   )
-  /** Current option-key resolver bound to the selection control's option source. */
   const resolve = resolveKeys(() => rest.options)
 
   return (

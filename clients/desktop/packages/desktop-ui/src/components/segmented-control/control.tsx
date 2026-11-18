@@ -4,7 +4,7 @@ import { createUniqueId, For, splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { assignRef, classes } from '../../internal/dom'
 import { fieldAttributes } from '../../internal/field'
-import { createValue, onFormReset } from '../../internal/state'
+import { bindRadioSelection } from '../../internal/choice/radio'
 import styles from './styles.module.css'
 import segmented from '../../internal/segmented.module.css'
 
@@ -49,24 +49,18 @@ export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
 
   const field = fieldAttributes(props, () => local.label)
   const id = createUniqueId()
+  const name = () => props.name ?? id
+  let group!: HTMLFieldSetElement
   /** Returns the explicit default or first enabled option for initialization and form reset. */
   const baseline = () =>
     local.defaultValue ?? local.options.find((option) => !option.disabled)?.value ?? ''
   /** Live segment selection and change requests using the group's initial baseline. */
-  const [value, change] = createValue(
+  const [value, change] = bindRadioSelection(
+    () => group,
+    name,
     () => local.value,
     baseline,
     (next) => local.onValueChange?.(next),
-  )
-  let group!: HTMLFieldSetElement
-  const flushReset = onFormReset(
-    () => group,
-    () => {
-      change(baseline())
-      for (const input of group.querySelectorAll<HTMLInputElement>('input')) {
-        input.checked = input.value === value()
-      }
-    },
   )
 
   return (
@@ -85,7 +79,7 @@ export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
           <label class={styles.segment}>
             <input
               type="radio"
-              name={props.name ?? id}
+              name={name()}
               form={props.form}
               value={option.value}
               checked={value() === option.value}
@@ -93,7 +87,6 @@ export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
               required={local.required ?? field.required}
               onChange={(event) => {
                 if (event.currentTarget.checked) {
-                  flushReset()
                   change(option.value)
                 }
               }}

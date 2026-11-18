@@ -36,6 +36,10 @@ interface DialogState {
   description: Accessor<boolean>
   /** Updates description presence for the dialog's accessible association. */
   setDescription: (value: boolean) => void
+
+  /** Returns true when all first-paint dependencies inside this modal have settled. */
+  ready: Accessor<boolean>
+  addReadiness: (ready: Accessor<boolean>) => () => void
 }
 
 /** Dialog state shared by its compound parts within the owning Solid tree. */
@@ -55,22 +59,40 @@ export interface DialogProps extends ParentProps {
 
 /** Establishes local state and identity for one modal composition. */
 export function Dialog(props: DialogProps): JSX.Element {
-  /** Presence of the dialog description used to maintain its accessible relationship. */
   const [description, setDescription] = createSignal(false)
-  /** Live dialog visibility and change requests delegated to its value owner. */
+  const [readiness, setReadiness] = createSignal<readonly Accessor<boolean>[]>([])
   const [open, change] = createValue(
     () => props.open,
     () => props.defaultOpen ?? false,
     (next) => props.onOpenChange?.(next),
   )
 
+  function addReadiness(ready: Accessor<boolean>) {
+    setReadiness((checks) => [...checks, ready])
+    return () => setReadiness((checks) => checks.filter((check) => check !== ready))
+  }
+
   return (
     <DialogContext.Provider
-      value={{ id: createUniqueId(), open, change, node: undefined, description, setDescription }}
+      value={{
+        id: createUniqueId(),
+        open,
+        change,
+        node: undefined,
+        description,
+        setDescription,
+        ready: () => readiness().every((check) => check()),
+        addReadiness,
+      }}
     >
       {props.children}
     </DialogContext.Provider>
   )
+}
+
+/** Mounts a dialog's contents to prepare data, then admits its first frame when the check settles. */
+export function deferDialogUntil(ready: Accessor<boolean>): void {
+  onCleanup(useDialog().addReadiness(ready))
 }
 
 /** Renders an action button that requests opening the associated native dialog. */
@@ -106,6 +128,11 @@ export interface DialogContentProps extends Omit<
   /** Receives an unprevented native cancel event; preventDefault keeps the dialog open. */
   onCloseRequest?: (event: Event) => void
   closeOnOutside?: boolean
+
+  /** Content width step clamped to the owning document's available region. */
+  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+  /** Gives tool content a definite height within the dialog region. */
+  fill?: boolean
 }
 
 /**
@@ -123,15 +150,15 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
     'onClose',
     'onCloseRequest',
     'closeOnOutside',
+    'size',
+    'fill',
   ])
 
   let node!: HTMLDialogElement
-  /** Presence reader retaining the dialog surface through its exit transition. */
   const present = createPresentation(dialog.open, () => node)
-  /** Removes this dialog's current registration from shared modal tracking. */
   let releaseModal: (() => void) | undefined
+  let activated = false
 
-  /** Releases this dialog's modal registration and clears the owned handle. */
   const release = () => {
     releaseModal?.()
     releaseModal = undefined
@@ -140,20 +167,24 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
   onMount(() => {
     dialog.node = node
     createEffect(() => {
-      if (dialog.open() && !node.open) {
+      if (!dialog.open()) {
+        activated = false
+        if (node.open) {
+          node.close()
+          release()
+        }
+      } else if (!activated && dialog.ready()) {
         node.showModal()
+        activated = true
         releaseModal = registerModal(node)
-      } else if (!dialog.open() && node.open) {
-        release()
-        node.close()
       }
     })
     onCleanup(() => {
       dialog.node = undefined
-      release()
       if (node.open) {
         node.close()
       }
+      release()
     })
   })
 
@@ -172,17 +203,25 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
         props['aria-describedby'] ?? (dialog.description() ? `${dialog.id}-description` : undefined)
       }
       class={classes(surface.modal, styles.root, local.class)}
+      data-size={local.size ?? 'md'}
+      data-fill={local.fill || undefined}
       closedby={local.closeOnOutside ? 'any' : 'closerequest'}
       onCancel={(event) => {
         callHandler(local.onCancel, event)
         if (!event.defaultPrevented) {
           local.onCloseRequest?.(event)
         }
+        if (!event.defaultPrevented) {
+          event.preventDefault()
+          dialog.change(false)
+        }
       }}
       onClose={(event) => {
         if (!node.open) {
           release()
-          dialog.change(false)
+          if (dialog.open()) {
+            dialog.change(false)
+          }
         }
         callHandler(local.onClose, event)
       }}
@@ -284,7 +323,7 @@ export function DialogFooter(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Ele
  * Renders confirmation content with alertdialog semantics and the same native close coordination.
  */
 export function AlertDialogContent(props: DialogContentProps): JSX.Element {
-  return <DialogContent {...props} role="alertdialog" />
+  return <DialogContent size="sm" {...props} role="alertdialog" />
 }
 
 /** Returns the nearest dialog state and rejects parts rendered outside a Dialog owner. */

@@ -11,6 +11,7 @@ export {
   DialogBody,
   DialogFooter,
   AlertDialogContent,
+  deferDialogUntil,
   type DialogProps,
   type DialogContentProps,
   type DialogHeaderProps,

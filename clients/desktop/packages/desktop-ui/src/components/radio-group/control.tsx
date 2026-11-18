@@ -2,9 +2,10 @@
 
 import { createContext, createUniqueId, splitProps, useContext } from 'solid-js'
 import type { Accessor, JSX } from 'solid-js'
+import type { ControlSize } from '../../internal/control/size'
 import { assignRef, callHandler, classes } from '../../internal/dom'
 import { fieldAttributes } from '../../internal/field'
-import { createValue, onFormReset } from '../../internal/state'
+import { bindRadioSelection } from '../../internal/choice/radio'
 import { ChoiceRow } from '../../internal/choice/row'
 import styles from './styles.module.css'
 
@@ -20,6 +21,8 @@ const RadioContext = createContext<{
   required: Accessor<boolean>
   /** Reads the explicit form-owner ID propagated to each radio, when supplied. */
   form: Accessor<string | undefined>
+  /** Reads the common size used by this group's options. */
+  size: Accessor<ControlSize | undefined>
 }>()
 
 /** Named native fieldset with shared radio value, submission and reset ownership. */
@@ -36,6 +39,7 @@ export interface RadioGroupProps extends Omit<
   onValueChange?: (value: string) => void
 
   orientation?: 'horizontal' | 'vertical'
+  size?: ControlSize | undefined
 }
 
 /**
@@ -50,47 +54,37 @@ export function RadioGroup(props: RadioGroupProps): JSX.Element {
     'required',
     'onValueChange',
     'orientation',
+    'size',
     'class',
     'children',
     'ref',
   ])
 
   const field = fieldAttributes(props, () => local.label)
-  const name = createUniqueId()
-  /** Live radio selection and change requests shared by the group's native options. */
-  const [value, change] = createValue(
+  const id = createUniqueId()
+  const name = () => props.name ?? id
+  let group!: HTMLFieldSetElement
+  const [value, change] = bindRadioSelection(
+    () => group,
+    name,
     () => local.value,
     () => local.defaultValue ?? '',
     (next) => local.onValueChange?.(next),
-  )
-  let group!: HTMLFieldSetElement
-  const flushReset = onFormReset(
-    () => group,
-    () => {
-      change(local.defaultValue ?? '')
-      for (const input of group.querySelectorAll<HTMLInputElement>('input[type="radio"]')) {
-        input.checked = input.value === value()
-      }
-    },
   )
 
   return (
     <RadioContext.Provider
       value={{
-        /** Reads the caller-supplied or generated native form-group name. */
-        name: () => props.name ?? name,
+        name,
         value,
-        /** Applies an accepted reset before the new radio selection. */
-        change(next) {
-          flushReset()
-          change(next)
-        },
+        change,
 
         /** Reads required state from the control or inherited field owner. */
         required: () => local.required ?? field.required ?? false,
 
         /** Reads the native form identity explicitly associated with the radio group. */
         form: () => props.form,
+        size: () => local.size,
       }}
     >
       <fieldset
@@ -113,7 +107,7 @@ export function RadioGroup(props: RadioGroupProps): JSX.Element {
 /** Native radio attributes with a stable option value and optional inline label. */
 export interface RadioProps extends Omit<
   JSX.InputHTMLAttributes<HTMLInputElement>,
-  'type' | 'value' | 'checked' | 'name'
+  'type' | 'value' | 'checked' | 'name' | 'size'
 > {
   label?: JSX.Element
   value: string
@@ -133,10 +127,11 @@ export function Radio(props: RadioProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'onChange', 'value', 'label'])
 
   return (
-    <ChoiceRow label={local.label}>
+    <ChoiceRow label={local.label} size={group.size()}>
       <input
         {...rest}
         type="radio"
+        data-size={group.size() ?? 'default'}
         name={group.name()}
         form={group.form()}
         required={group.required()}

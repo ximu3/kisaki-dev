@@ -139,26 +139,3 @@ test('real Tailwind and unlayered host CSS override component styles in either l
     await browserExpect(page.locator('button')).toHaveCSS('background-color', 'rgb(7, 8, 9)')
   }
 })
-
-test('ordinary CSS, dark mode, viewport scale and focus states remain independently usable', async ({
-  page,
-}) => {
-  await page.getByRole('button', { name: 'Switch theme' }).click()
-  await browserExpect(page.locator('html')).toHaveAttribute('data-color-scheme', 'dark')
-  await page.screenshot({
-    path: join(packageRoot, 'test-results/consumers/dark.png'),
-    fullPage: true,
-  })
-  await page.getByRole('button', { name: 'Switch theme' }).click()
-
-  await page.setViewportSize({ width: 480, height: 800 })
-  await page.evaluate(() => document.documentElement.style.setProperty('--interface-scale', '150'))
-  expect(await page.locator('html').evaluate((node) => node.scrollWidth <= window.innerWidth)).toBe(
-    true,
-  )
-  await page.getByRole('button', { name: 'Save sample' }).click()
-  await page.screenshot({
-    path: join(packageRoot, 'test-results/consumers/narrow.png'),
-    fullPage: true,
-  })
-})

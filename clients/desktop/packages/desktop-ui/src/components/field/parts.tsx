@@ -1,9 +1,12 @@
 /** @fileoverview Local field associations and native fieldset grouping. */
 
-import { createSignal, createUniqueId, onCleanup, splitProps, useContext } from 'solid-js'
+import { createSignal, createUniqueId, onCleanup, Show, splitProps, useContext } from 'solid-js'
 import type { JSX } from 'solid-js'
+import { FormContext } from '../../internal/form'
 import { FieldContext } from '../../internal/field'
 import { classes } from '../../internal/dom'
+import { Button } from '../button/control'
+import type { ButtonProps } from '../button/control'
 import styles from './styles.module.css'
 
 /**
@@ -13,6 +16,10 @@ import styles from './styles.module.css'
  */
 export interface FieldProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, 'id'> {
   id?: string
+
+  /** Stable identity used by the form's business validation. */
+  name?: string
+  orientation?: 'vertical' | 'responsive'
 
   invalid?: boolean
   required?: boolean
@@ -27,6 +34,8 @@ export interface FieldProps extends Omit<JSX.HTMLAttributes<HTMLDivElement>, 'id
 export function Field(props: FieldProps): JSX.Element {
   const [local, rest] = splitProps(props, [
     'id',
+    'name',
+    'orientation',
     'invalid',
     'required',
     'disabled',
@@ -34,21 +43,24 @@ export function Field(props: FieldProps): JSX.Element {
     'children',
   ])
 
-  const id = local.id ?? createUniqueId()
-  /** Registration state for the field's accessible label. */
+  const fallbackId = createUniqueId()
+  const id = () => local.id ?? fallbackId
+  const form = useContext(FormContext)
+  const key = () => local.name ?? id()
+  const issue = () => form?.issues().find((item) => item.id === key())
   const [label, setLabel] = createSignal(false)
-  /** Registration state for the field's accessible description. */
   const [description, setDescription] = createSignal(false)
-  /** Registration state for the field's accessible error message. */
   const [error, setError] = createSignal(false)
 
   return (
     <FieldContext.Provider
       value={{
-        id,
+        get id() {
+          return id()
+        },
 
         /** Reads the field's current explicit invalid state. */
-        invalid: () => !!local.invalid,
+        invalid: () => !!(local.invalid || issue()),
 
         /** Reads the field's current required state for nested controls. */
         required: () => !!local.required,
@@ -58,7 +70,7 @@ export function Field(props: FieldProps): JSX.Element {
         label,
         setLabel,
         description,
-        error,
+        error: () => !!issue() || error(),
         setDescription,
         setError,
       }}
@@ -66,9 +78,18 @@ export function Field(props: FieldProps): JSX.Element {
       <div
         {...rest}
         class={classes(styles.root, local.class)}
-        data-invalid={local.invalid || undefined}
+        data-field-key={key()}
+        data-orientation={local.orientation ?? 'vertical'}
+        data-invalid={local.invalid || !!issue() || undefined}
       >
         {local.children}
+        <Show when={!error() && issue()}>
+          {(item) => (
+            <p id={id() + '-error'} class={styles.error}>
+              {item().summary}
+            </p>
+          )}
+        </Show>
       </div>
     </FieldContext.Provider>
   )
@@ -91,6 +112,17 @@ export function FieldLabel(props: JSX.HTMLAttributes<HTMLSpanElement>): JSX.Elem
       class={classes(styles.label, local.class)}
     />
   )
+}
+
+/** Aligns a static field label with a separately named action. */
+export function FieldHeader(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
+  const [local, rest] = splitProps(props, ['class'])
+  return <div {...rest} class={classes(styles.header, local.class)} />
+}
+
+/** Renders a field-adjacent icon button using the current control height and an outline. */
+export function FieldAction(props: ButtonProps): JSX.Element {
+  return <Button variant="outline" size="icon" {...props} />
 }
 
 /** Renders stable guidance and registers its accessible association while mounted. */
@@ -125,6 +157,12 @@ export function FieldError(props: JSX.HTMLAttributes<HTMLParagraphElement>): JSX
       class={classes(styles.error, local.class)}
     />
   )
+}
+
+/** Groups the control and adjacent actions in a responsive field's value column. */
+export function FieldContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
+  const [local, rest] = splitProps(props, ['class'])
+  return <div {...rest} class={classes(styles.content, local.class)} />
 }
 
 /** Renders a native fieldset with browser-owned grouping and disabled-control behavior. */

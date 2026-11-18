@@ -1,7 +1,7 @@
 /** @fileoverview Drag handles, insertion geometry and accessible host-authored feedback. */
 
 import { splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
+import type { Component, JSX } from 'solid-js'
 import { Button } from '../button/control'
 import type { ButtonProps } from '../button/control'
 import { callHandler, classes } from '../../internal/dom'
@@ -10,6 +10,8 @@ import styles from './styles.module.css'
 
 /** Action-button props with optional keyboard movement commands independent of pointer dragging. */
 export interface DragHandleProps extends ButtonProps {
+  /** Uses a compatible trigger, such as MenuTrigger, for the handle button. */
+  as?: Component<ButtonProps>
   /**
    * Requests previous or next movement through the host when its keyboard shortcut is activated.
    */
@@ -23,10 +25,11 @@ export interface DragHandleProps extends ButtonProps {
  * movement menu.
  */
 export function DragHandle(props: DragHandleProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['onMove', 'onKeyDown', 'class', 'children'])
+  const [local, rest] = splitProps(props, ['as', 'onMove', 'onKeyDown', 'class', 'children'])
+  const Trigger = local.as ?? Button
 
   return (
-    <Button
+    <Trigger
       variant="text"
       size="icon-sm"
       {...rest}
@@ -46,7 +49,7 @@ export function DragHandle(props: DragHandleProps): JSX.Element {
       }}
     >
       {local.children ?? <Icon icon={GripVertical} />}
-    </Button>
+    </Trigger>
   )
 }
 

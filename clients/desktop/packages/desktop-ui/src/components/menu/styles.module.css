@@ -24,7 +24,7 @@
   .item:focus-visible {
     outline: var(--kui-focus-width) solid var(--ring);
     animation: var(--kui-focus-enter);
-    outline-offset: -2px;
+    outline-offset: var(--kui-focus-inset);
   }
   .item:disabled {
     opacity: 0.5;
@@ -41,6 +41,20 @@
       /* Keep inline text backplates on the row's system selection surface. */
       forced-color-adjust: none;
     }
+  }
+
+  .icon {
+    display: grid;
+    place-items: center;
+    flex: none;
+    inline-size: var(--kui-icon-size);
+    block-size: var(--kui-icon-size);
+  }
+
+  .icon > svg {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
   }
 
   .label {

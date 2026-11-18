@@ -1,0 +1,30 @@
+/* Rows keep related controls aligned at narrow tool widths. */
+
+@layer components {
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    min-width: 0;
+  }
+
+  .bar[data-band] {
+    flex: none;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-block-end: 1px solid var(--border);
+    background: var(--kui-band-background);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+}

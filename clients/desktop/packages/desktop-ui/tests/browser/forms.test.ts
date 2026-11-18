@@ -8,7 +8,9 @@ import type {} from '../fixtures/workshop/api'
 test('native controls submit, reset, cancel reset, follow external values and honor disabled fieldsets', async ({
   page,
 }) => {
-  await page.locator('#query').fill('changed')
+  const query = page.locator('#query')
+  await browserExpect(query).toHaveAttribute('size', '18')
+  await query.fill('changed')
   await page.locator('#notes').fill('new note')
   await page.getByLabel('Include', { exact: true }).uncheck()
   await page.getByLabel('Enabled', { exact: true }).uncheck()
@@ -79,6 +81,17 @@ test('native controls submit, reset, cancel reset, follow external values and ho
   expect(await page.locator('body').getAttribute('data-submitted')).toBe(
     JSON.stringify([['external', 'original']]),
   )
+
+  await page.getByLabel('Second stored', { exact: true }).click()
+  await page.getByLabel('Second view', { exact: true }).click()
+  expect(
+    await page
+      .locator('#fixed-choices')
+      .evaluate((form: HTMLFormElement) => [...new FormData(form)]),
+  ).toEqual([
+    ['stored', 'a'],
+    ['view', 'first'],
+  ])
 })
 
 test('numeric stepping, calendar selection and alpha editing retain valid form values and reset', async ({
@@ -86,7 +99,9 @@ test('numeric stepping, calendar selection and alpha editing retain valid form v
 }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   await page.getByRole('button', { name: 'Increase', exact: true }).click()
-  await browserExpect(page.getByRole('spinbutton', { name: 'Quantity' })).toHaveValue('3')
+  const quantity = page.getByRole('spinbutton', { name: 'Quantity' })
+  await browserExpect(quantity).toHaveValue('3')
+  await browserExpect(quantity).toHaveAccessibleDescription('px')
 
   const date = page.getByLabel('Calendar date', { exact: true })
   const editor = await date.boundingBox()
@@ -234,4 +249,36 @@ test('form feedback retains geometry and per-field errors while revealing and lo
   await page.locator('#description').fill('A useful description')
   await browserExpect(page.locator('#feedback')).toHaveText('')
   expect((await page.locator('#feedback').boundingBox())?.height).toBe(before?.height)
+})
+
+test('native and imperative submissions share one write, its submitter and its rejection', async ({
+  page,
+}) => {
+  await page.locator('#title').fill('Saved title')
+  await page.getByRole('tab', { name: 'Detail', exact: true }).click()
+  await page.locator('#description').fill('Saved description')
+
+  const result = await page
+    .getByRole('button', { name: 'Save sample' })
+    .evaluate(async (node: HTMLButtonElement) => {
+      let fail!: (cause: Error) => void
+      const gate = new Promise<void>((_resolve, reject) => {
+        fail = reject
+      })
+      const actions: string[] = []
+      window.fixture.commitSample = (submitter) => {
+        actions.push(submitter?.textContent ?? 'shortcut')
+        return gate
+      }
+
+      node.form!.requestSubmit(node)
+      const pending = window.fixture.submitSample!()
+      const joined = pending === window.fixture.submitSample!()
+      fail(new Error('Write failed'))
+      const failure = await pending.catch((cause: Error) => cause.message)
+      return { actions, joined, failure }
+    })
+
+  expect(result).toEqual({ actions: ['Save sample'], joined: true, failure: 'Write failed' })
+  await browserExpect(page.locator('#feedback')).toHaveText('Write failed')
 })

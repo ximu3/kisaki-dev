@@ -1,19 +1,23 @@
 /* The control center follows the first line, including when its label wraps. */
 
+.row {
+  composes: control from '../control/styles.module.css';
+}
+
 @layer components {
   .row {
     display: inline-grid;
     box-sizing: border-box;
-    min-height: var(--kui-control-height);
+    min-height: var(--control-height);
     grid-template-columns: auto minmax(0, 1fr);
     align-items: start;
     align-content: center;
-    column-gap: var(--kui-inline-gap);
+    column-gap: 0.5rem;
     width: fit-content;
     max-width: 100%;
     padding-block: 0.125rem;
-    font-size: var(--kui-control-font);
-    line-height: var(--kui-control-line);
+    font-size: var(--control-font-size);
+    line-height: var(--text-base-line-height);
     cursor: pointer;
   }
   .control {

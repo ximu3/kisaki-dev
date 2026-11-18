@@ -4,19 +4,15 @@
 @import '@kisaki3/desktop-appearance/styles.css';
 
 @layer theme {
-  :root,
-  [data-color-scheme] {
-    --kui-control-font: var(--text-sm);
-    --kui-caption-font: var(--text-xs);
-    --kui-control-line: var(--text-base-line-height);
+  :root {
     --kui-control-height: 1.75rem;
     --kui-icon-size: 1rem;
-    --kui-icon-small: 0.75rem;
-    --kui-inline-gap: 0.5rem;
-    --kui-focus-width: 2px;
-  }
+    --kui-small-icon-size: 0.75rem;
+    --kui-badge-height: calc(1.25rem + 2px);
 
-  :root {
+    --kui-focus-width: 1px;
+    --kui-focus-inset: calc(-1 * var(--kui-focus-width));
+
     --kui-hint-enter: 60ms;
     --kui-hint-exit: 40ms;
     --kui-anchor-enter: 80ms;
@@ -31,6 +27,13 @@
     --kui-enter-ease: cubic-bezier(0.16, 0.72, 0.25, 1);
     --kui-exit-ease: cubic-bezier(0.4, 0, 1, 1);
   }
+
+  :root,
+  [data-color-scheme] {
+    --kui-band-background: color-mix(in oklch, var(--muted) 30%, transparent);
+    --kui-content-row-hover-background: color-mix(in oklch, var(--muted) 50%, transparent);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     :root {
       --kui-feedback-ms: 0;
@@ -49,34 +52,6 @@
   @keyframes kui-focus-in {
     from {
       outline-color: transparent;
-    }
-  }
-
-  :where(*) {
-    scrollbar-width: thin;
-    scrollbar-color: color-mix(in oklch, var(--muted-foreground) 42%, transparent) transparent;
-  }
-
-  :where(button, input, textarea, select, summary) {
-    transition:
-      background-color var(--kui-hover-duration) ease,
-      color var(--kui-hover-duration) ease,
-      opacity var(--kui-hover-duration) ease;
-  }
-
-  [data-ui-popup] {
-    position: fixed;
-    inset: auto;
-    margin: 0;
-    box-sizing: border-box;
-    max-width: var(--popup-available-width);
-    max-height: var(--popup-available-height);
-    overflow: auto;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    :where(button, input, textarea, select, summary) {
-      transition: none;
     }
   }
 }

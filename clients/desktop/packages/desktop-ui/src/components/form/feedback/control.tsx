@@ -10,20 +10,15 @@ import {
   onMount,
   Show,
   splitProps,
+  useContext,
 } from 'solid-js'
+import { Dynamic } from 'solid-js/web'
 import type { JSX } from 'solid-js'
-import { classes } from '../../../internal/dom'
+import { FormContext, type FieldIssue } from '../../../internal/form'
+import { classes, createElementRef } from '../../../internal/dom'
 import { TooltipSurface } from '../../../internal/tooltip/content'
 import { createTooltip } from '../../../internal/tooltip/controller'
 import styles from './styles.module.css'
-
-/** Field-specific correction with a standalone summary and optional detailed error message. */
-export interface FieldIssue {
-  readonly id: string
-
-  readonly summary: string
-  readonly message?: string
-}
 
 /**
  * Form feedback inputs, localized count formatting and caller-owned field navigation.
@@ -32,10 +27,10 @@ export interface FieldIssue {
  * current context while feedback is read.
  */
 export interface FormFeedbackProps extends JSX.HTMLAttributes<HTMLDivElement> {
-  issues: readonly FieldIssue[]
+  issues?: readonly FieldIssue[]
   activeFieldId?: string | null | undefined
   /** Requests that the caller reveal and focus the identified field. */
-  onLocate: (id: string) => void
+  onLocate?: (id: string) => void
 
   /** Formats a standalone error-count message when no erroneous field is active. */
   summary: (count: number) => string
@@ -49,6 +44,7 @@ export interface FormFeedbackProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * The caller owns validation and revealing the requested field.
  */
 export function FormFeedback(props: FormFeedbackProps): JSX.Element {
+  const form = useContext(FormContext)
   const [local, rest] = splitProps(props, [
     'issues',
     'activeFieldId',
@@ -58,32 +54,35 @@ export function FormFeedback(props: FormFeedbackProps): JSX.Element {
     'class',
   ])
 
-  /** Remembered issue identity used to retain relevant feedback across focus changes. */
+  const issues = () => local.issues ?? form?.issues() ?? []
+  const message = () => local.message ?? form?.message()
   const [remembered, setRemembered] = createSignal<string | null>(null)
   createEffect(() => {
-    if (local.activeFieldId !== undefined) {
-      setRemembered(local.activeFieldId)
+    const active = local.activeFieldId !== undefined ? local.activeFieldId : form?.activeFieldId()
+    if (active !== undefined) {
+      setRemembered(active)
     }
   })
 
-  /** Current issue matching the remembered feedback identity. */
-  const current = createMemo(() => local.issues.find((issue) => issue.id === remembered()))
+  const current = createMemo(() => issues().find((issue) => issue.id === remembered()))
   /**
    * Returns the explicit form message, active issue summary or formatted issue count in priority
    * order.
    */
   const text = () =>
-    local.message ??
-    current()?.summary ??
-    (local.issues.length ? local.summary(local.issues.length) : '')
+    message() ?? current()?.summary ?? (issues().length ? local.summary(issues().length) : '')
 
   return (
-    <div {...rest} class={classes(styles.root, local.class)}>
-      <Show when={local.issues.length} fallback={<span role="status">{text()}</span>}>
+    <div {...rest} class={classes(styles.root, local.class)} data-form-feedback>
+      <Show when={message() || issues().length} fallback={<span role="status" />}>
         <FeedbackPrompt
           text={text()}
-          detail={local.message === undefined ? current()?.message : undefined}
-          onLocate={() => local.onLocate(current()?.id ?? local.issues[0]!.id)}
+          detail={message() === undefined ? current()?.message : undefined}
+          onLocate={
+            message()
+              ? undefined
+              : () => (local.onLocate ?? form?.locate)?.(current()?.id ?? issues()[0]!.id)
+          }
         />
       </Show>
     </div>
@@ -95,19 +94,16 @@ function FeedbackPrompt(props: {
   text: string
   detail: string | undefined
   /** Reveals the selected field after tooltip dismissal. */
-  onLocate: () => void
+  onLocate: (() => void) | undefined
 }): JSX.Element {
   const tooltip = createTooltip()
   const id = createUniqueId()
-  let trigger!: HTMLButtonElement
+  const [trigger, bindTrigger] = createElementRef<HTMLElement>()
   let message!: HTMLSpanElement
-  /** Observed text-clipping state controlling whether the full feedback tooltip is needed. */
   const [clipped, setClipped] = createSignal(false)
-  /** Returns supplemental error detail only when it differs from the visible summary. */
   const detail = () => (props.detail === props.text ? undefined : props.detail)
 
   onMount(() => {
-    /** Updates whether the visible feedback text exceeds its available width. */
     const measure = () => setClipped(message.scrollWidth > message.clientWidth)
     const size = new ResizeObserver(measure)
     size.observe(message)
@@ -117,22 +113,22 @@ function FeedbackPrompt(props: {
 
   return (
     <>
-      <button
-        ref={(node) => {
-          trigger = node
-        }}
-        type="button"
+      <Dynamic
+        component={props.onLocate ? 'button' : 'span'}
+        ref={bindTrigger}
+        type={props.onLocate ? 'button' : undefined}
+        tabIndex={!props.onLocate && clipped() ? 0 : undefined}
         class={styles.prompt}
         aria-label={props.text}
         aria-describedby={detail() ? id : undefined}
         onClick={() => {
           tooltip.dismiss()
-          props.onLocate()
+          props.onLocate?.()
         }}
         onPointerEnter={() => tooltip.hover('trigger', true)}
         onPointerLeave={() => tooltip.hover('trigger', false)}
-        onFocus={() => tooltip.focus(true)}
-        onBlur={() => tooltip.focus(false)}
+        onFocus={tooltip.focus}
+        onBlur={tooltip.focus}
       >
         <span
           ref={(node) => {
@@ -143,12 +139,12 @@ function FeedbackPrompt(props: {
         >
           {props.text}
         </span>
-      </button>
+      </Dynamic>
       <Show when={detail() || clipped()}>
         <TooltipSurface
           id={id}
           reading={tooltip}
-          anchor={() => trigger}
+          anchor={trigger}
           placement="top-start"
           class={styles.details}
         >

@@ -12,29 +12,33 @@ import {
   untrack,
 } from 'solid-js'
 import type { JSX } from 'solid-js'
-import { assignRef, classes } from '../dom'
-import { fieldAttributes } from '../field'
-import { Icon, ChevronDown, ChevronsUpDown } from '../icon/glyph'
-import { createValue, onFormReset } from '../state'
-import { SelectedChips } from './chips'
-import type { ChipLabels } from './chips'
+import { assignRef, classes, createElementRef } from '../../internal/dom'
+import type { ControlSize } from '../../internal/control/size'
+import { useContext } from 'solid-js'
+import { FormContext } from '../../internal/form'
+import { fieldAttributes } from '../../internal/field'
+import { Icon, ChevronDown, ChevronsUpDown } from '../../internal/icon/glyph'
+import { createValue, onFormReset } from '../../internal/state'
+import { SelectedChips, type ChipLabels } from '../../internal/chips/control'
 import { createSelection } from './collection'
 import { SelectionList } from './list'
 import { SelectionTrigger } from './trigger'
 import { createSelectionPopup } from './popup'
 import type { SelectionListProps, SelectionOption } from './types'
-import input from '../input-surface.module.css'
+import input from '../../internal/input-surface.module.css'
 import styles from './field.module.css'
 
 /** Shared field-trigger, option-list and native form-validation props for choice controls. */
-export interface ChoiceFieldProps
+export interface ChoiceFieldProps<O extends SelectionOption = SelectionOption>
   extends
     Omit<
       JSX.ButtonHTMLAttributes<HTMLButtonElement>,
       'value' | 'children' | 'type' | 'onChange' | 'onInvalid'
     >,
-    SelectionListProps {
-  options: readonly SelectionOption[]
+    SelectionListProps<O> {
+  options: readonly O[]
+  /** Sizes the closed field and its affordances independently of the option list. */
+  size?: ControlSize | undefined
   placeholder?: string
   emptyMessage: JSX.Element
   invalidSelectionMessage: string
@@ -48,8 +52,9 @@ export interface ChoiceFieldProps
  *
  * The host may supply prefiltered or asynchronous options with filter=false.
  */
-export interface ChoiceSearchProps {
+export interface ChoiceSearchProps<O extends SelectionOption = SelectionOption> {
   searchLabel: string
+  clearSearchLabel: string
   searchPlaceholder?: string
   query?: string
   /** Reports query edits and requests an empty query after popup presentation ends. */
@@ -59,22 +64,22 @@ export interface ChoiceSearchProps {
    *
    * False delegates filtering to the host; omission uses case-folded substring matching.
    */
-  filter?: false | ((option: SelectionOption, query: string) => boolean)
+  filter?: false | ((option: O, query: string) => boolean)
   loading?: boolean
   loadingMessage: JSX.Element
 }
 
 /** Committed records and wrapper callbacks connected to the shared choice-field presentation. */
-interface SelectionFieldProps extends ChoiceFieldProps {
-  selected: readonly SelectionOption[]
+interface SelectionFieldProps<O extends SelectionOption> extends ChoiceFieldProps<O> {
+  selected: readonly O[]
   defaults: readonly string[]
   chips?: ChipLabels & {
     /** Requests removal of a committed chip by its stable key. */
     remove: (key: string) => void
   }
-  search?: ChoiceSearchProps
+  search?: ChoiceSearchProps<O>
   /** Reports the chosen record to the value-owning wrapper. */
-  onChoose: (option: SelectionOption) => void
+  onChoose: (option: O) => void
   /** Requests restoration of the wrapper's default selection after an accepted form reset. */
   onReset: () => void
 }
@@ -86,7 +91,9 @@ interface SelectionFieldProps extends ChoiceFieldProps {
  * Selected records survive query changes; unavailable committed choices remain visible and
  * invalidate submission.
  */
-export function SelectionField(props: SelectionFieldProps): JSX.Element {
+export function SelectionField<O extends SelectionOption>(
+  props: SelectionFieldProps<O>,
+): JSX.Element {
   const [local, rest] = splitProps(props, [
     'options',
     'selected',
@@ -100,31 +107,31 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
     'emptyMessage',
     'invalidSelectionMessage',
     'renderOptions',
+    'virtual',
     'scrollToValue',
     'listRef',
     'listClass',
+    'size',
     'ref',
     'class',
     'style',
     'name',
     'onInvalid',
   ])
+  const form = useContext(FormContext)
   const attributes = mergeProps(fieldAttributes(props), rest)
   const popup = createSelectionPopup()
-  /** Identity and visibility controls supplied by this selection field's popup owner. */
   const { id, open, setOpen, present } = popup
-  /** Live search text delegated to the caller or owned locally by the field. */
   const [query, setQuery] = createValue(
     () => local.search?.query,
     () => '',
     (next) => local.search?.onQueryChange?.(next),
   )
+  const [trigger, bindTrigger] = createElementRef<HTMLButtonElement>()
   let field!: HTMLDivElement
-  let trigger!: HTMLButtonElement
-  let editor!: HTMLInputElement
   let mirror!: HTMLSelectElement
 
-  const empty = { options: [] as readonly SelectionOption[], loading: false }
+  const empty = { options: [] as readonly O[], loading: false }
   /**
    * Visible candidate records retained through exit, with loading distinct from an empty result.
    */
@@ -140,7 +147,6 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
       return { options: empty.options, loading: true }
     }
     const options = local.options
-    /** Current caller filter or filtering policy captured for this candidate computation. */
     const filter = search?.filter
     const searchText = query()
     const text = searchText.trim()
@@ -166,13 +172,9 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
     ),
   )
 
-  /** Current selected option records indexed by stable value. */
   const selected = createMemo(() => new Map(local.selected.map((option) => [option.value, option])))
-  /** Ordered selected records derived from the current identity map. */
   const records = createMemo(() => Array.from(selected().values()))
-  /** Selected identities derived from the same record snapshot. */
   const keys = createMemo(() => Array.from(selected().keys()))
-  /** Builds the field summary from selected labels with a placeholder fallback. */
   const summary = () =>
     records()
       .map((option) => option.label)
@@ -196,7 +198,12 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
       records().some((option) => option.disabled) ? local.invalidSelectionMessage : '',
     )
   }
-  onMount(() => createEffect(sync))
+  onMount(() =>
+    createEffect(() => {
+      sync()
+      form?.refresh()
+    }),
+  )
   const flushReset = onFormReset(
     () => mirror,
     () => {
@@ -210,16 +217,14 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
    * Closes and refocuses a single-choice popup before forwarding its chosen record; multiple-choice
    * lists stay open.
    */
-  const choose = (option: SelectionOption) => {
+  const choose = (option: O) => {
     flushReset()
     if (!local.chips) {
       setOpen(false)
-      trigger.focus({ preventScroll: true })
+      trigger()?.focus({ preventScroll: true })
     }
     local.onChoose(option)
   }
-  /** Focuses the search editor without scrolling its surrounding page. */
-  const searchFocus = () => editor.focus({ preventScroll: true })
   return (
     <div
       ref={(node) => {
@@ -227,8 +232,8 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
       }}
       class={classes(input.surface, styles.container, local.class)}
       style={local.style}
+      data-size={local.size ?? 'default'}
       aria-invalid={attributes['aria-invalid']}
-      data-open={open() || undefined}
       onFocusOut={(event) => {
         const next = event.relatedTarget
         if (next instanceof Node && !field.contains(next)) {
@@ -238,19 +243,19 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
     >
       <SelectionTrigger
         {...attributes}
+        data-focus-anchor
         popup={popup}
         collection={collection}
         selected={keys()}
         onChoose={choose}
-        focusSearch={local.search ? searchFocus : undefined}
-        aria-required={local.search ? undefined : (local.required ?? attributes.required)}
+        aria-required={local.required ?? attributes.required}
         aria-describedby={
           [attributes['aria-describedby'], local.search ? id + '-value' : undefined]
             .filter(Boolean)
             .join(' ') || undefined
         }
         ref={(node) => {
-          trigger = node
+          bindTrigger(node)
           assignRef(local.ref, node)
         }}
         class={styles.trigger}
@@ -275,8 +280,7 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
             values={keys()}
             label={(key) => selected().get(key)?.label ?? key}
             disabled={attributes.disabled}
-            panelId={popup.panelId}
-            open={open()}
+            panelId={open() ? popup.panelId : undefined}
             field={() => field}
             removeLabel={chips().removeLabel}
             scrollPreviousLabel={chips().scrollPreviousLabel}
@@ -285,7 +289,7 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
               flushReset()
               chips().remove(key)
             }}
-            focusTrigger={() => (local.search && open() ? searchFocus() : trigger.focus())}
+            focusTrigger={() => trigger()?.focus({ preventScroll: true })}
           />
         )}
       </Show>
@@ -302,7 +306,7 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
         disabled={attributes.disabled}
         multiple={!!local.chips}
         onInvalid={local.onInvalid}
-        onFocus={() => trigger.focus()}
+        onFocus={() => trigger()?.focus()}
       >
         <Show when={!local.chips}>
           <option value="" />
@@ -317,7 +321,7 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
       </select>
       <SelectionList
         popup={popup}
-        anchor={() => trigger}
+        anchor={trigger}
         reference={() => field}
         collection={collection}
         selected={keys()}
@@ -329,19 +333,17 @@ export function SelectionField(props: SelectionFieldProps): JSX.Element {
           local.search
             ? {
                 label: local.search.searchLabel,
+                clearLabel: local.search.clearSearchLabel,
                 placeholder: local.search.searchPlaceholder,
                 query: query(),
                 change: setQuery,
-                /** Retains the search editor element for focus coordination. */
-                ref: (node) => {
-                  editor = node
-                },
               }
             : undefined
         }
         loading={candidates().loading}
         loadingMessage={local.search?.loadingMessage}
         emptyMessage={local.emptyMessage}
+        virtual={local.virtual}
         renderOptions={local.renderOptions}
         scrollToValue={local.scrollToValue}
         listRef={local.listRef}

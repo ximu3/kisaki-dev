@@ -2,7 +2,7 @@
 
 import { createMemo, createSignal } from 'solid-js'
 import type { Accessor } from 'solid-js'
-import { createTypeahead } from '../typeahead'
+import { createTypeahead } from '../../internal/typeahead'
 import type { SelectionOption } from './types'
 
 /**
@@ -10,33 +10,28 @@ import type { SelectionOption } from './types'
  *
  * Navigation uses enabled stable keys, and owner cleanup clears the typeahead timer.
  */
-export function createSelection(source: Accessor<readonly SelectionOption[]>) {
-  /** Reactive snapshot of the current option source. */
+export function createSelection<O extends SelectionOption>(source: Accessor<readonly O[]>) {
   const options = createMemo(source)
-  /** Option records indexed by stable value with their one-based collection positions. */
+
   const entries = createMemo(
     () =>
-      new Map(options().map((option, index) => [option.value, { option, position: index + 1 }])),
+      new Map<string, { option: O; position: number }>(
+        options().map((option, index) => [option.value, { option, position: index + 1 }]),
+      ),
   )
-  /** Looks up the current option record by its stable value key. */
   const get = (value: string) => entries().get(value)?.option
-  /** Reads an option's one-based position in the complete supplied collection. */
   const positionOf = (value: string) => entries().get(value)?.position
-  /** Current options available for keyboard selection. */
+
   const enabled = createMemo(() => options().filter((option) => !option.disabled))
 
-  /** Highlighted option identity maintained independently from the selected values. */
   const [highlighted, setHighlighted] = createSignal<string>()
-  /** Returns the highlighted key only while its current option exists and is enabled. */
   const active = () => {
     const option = get(highlighted() ?? '')
     return option && !option.disabled ? option.value : undefined
   }
 
-  /** Timed prefix search for this selection control. */
   const typeahead = createTypeahead()
 
-  /** Sets the logical highlighted key, or clears it when undefined is supplied. */
   const highlight = (value: string | undefined) => setHighlighted(value)
   /**
    * Moves highlight among enabled options with wrapping and explicit first or last destinations.
@@ -73,7 +68,7 @@ export function createSelection(source: Accessor<readonly SelectionOption[]>) {
 }
 
 /** Reactive option lookup, logical positions, highlight and navigation operations. */
-export type SelectionCollection = ReturnType<typeof createSelection>
+export type SelectionCollection<O extends SelectionOption> = ReturnType<typeof createSelection<O>>
 
 /**
  * Encodes a stable option key into the DOM identity shared by its row and active-descendant

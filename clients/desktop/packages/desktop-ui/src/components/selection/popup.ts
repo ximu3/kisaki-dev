@@ -1,7 +1,7 @@
 /** @fileoverview One disclosure and presentation lifetime serves the trigger, listbox and virtual rows. */
 
 import { createSignal, createUniqueId } from 'solid-js'
-import { createPresentation } from '../popup/presentation'
+import { createPresentation } from '../../internal/popup/presentation'
 
 /**
  * Creates shared disclosure identity, open state and exit-aware presence for one selection popup.

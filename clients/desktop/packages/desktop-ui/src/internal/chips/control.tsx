@@ -3,7 +3,7 @@
 import { createSignal, For, onCleanup, onMount } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { Icon, ChevronLeft, ChevronRight, X } from '../icon/glyph'
-import styles from './chips.module.css'
+import styles from './styles.module.css'
 
 /** Accessible labels for removing a selected value and scrolling the selected-value viewport. */
 export interface ChipLabels {
@@ -19,8 +19,8 @@ interface SelectedChipsProps extends ChipLabels {
   /** Resolves a selected key to its current display label. */
   label: (value: string) => string
   disabled: boolean | undefined
-  panelId: string
-  open: boolean
+  /** Associates actions with an open choice list so that they do not dismiss it. */
+  panelId?: string | undefined
   /** Returns the complete field element that receives wheel input over the chip area. */
   field: () => HTMLElement
   /** Requests removal of the identified selected value. */
@@ -152,7 +152,7 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
         }}
         hidden={!canPrevious()}
         disabled={props.disabled}
-        popovertarget={props.open ? props.panelId : undefined}
+        popovertarget={props.panelId}
         popovertargetaction="show"
         onClick={(event) => {
           event.preventDefault()
@@ -183,13 +183,13 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
                   type="button"
                   aria-label={props.removeLabel(props.label(value))}
                   disabled={props.disabled}
-                  popovertarget={props.open ? props.panelId : undefined}
+                  popovertarget={props.panelId}
                   popovertargetaction="show"
                   onClick={(event) => {
                     event.preventDefault()
                     const position = index()
                     props.onRemove(value)
-                    if (props.open) {
+                    if (props.panelId) {
                       props.focusTrigger()
                       return
                     }
@@ -218,7 +218,7 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
         }}
         hidden={!canNext()}
         disabled={props.disabled}
-        popovertarget={props.open ? props.panelId : undefined}
+        popovertarget={props.panelId}
         popovertargetaction="show"
         onClick={(event) => {
           event.preventDefault()

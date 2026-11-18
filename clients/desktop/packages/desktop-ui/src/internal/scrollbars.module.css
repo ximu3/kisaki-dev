@@ -1,0 +1,8 @@
+/* Use native scrollbar geometry and shared colors on the library's own viewports. */
+
+@layer components {
+  .native {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklch, var(--muted-foreground) 42%, transparent) transparent;
+  }
+}

@@ -1,9 +1,13 @@
-/* Multiline content adds its own inset and native resize handle. */
+/* Native rows set the editor height and the text scrolls inside it. */
+
+.root {
+  composes: native from '../../internal/scrollbars.module.css';
+}
 
 @layer components {
   .root {
-    min-height: 5rem;
     padding: 0.5rem;
-    resize: vertical;
+    resize: none;
+    overflow: auto;
   }
 }

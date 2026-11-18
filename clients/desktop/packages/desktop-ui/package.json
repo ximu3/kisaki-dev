@@ -73,6 +73,11 @@
       "types": "./dist/field.d.ts",
       "import": "./dist/field.js"
     },
+    "./form": {
+      "kisaki-source": "./src/components/form/index.ts",
+      "types": "./dist/form.d.ts",
+      "import": "./dist/form.js"
+    },
     "./image": {
       "kisaki-source": "./src/components/image/index.ts",
       "types": "./dist/image.d.ts",
@@ -87,6 +92,11 @@
       "kisaki-source": "./src/components/link/index.ts",
       "types": "./dist/link.d.ts",
       "import": "./dist/link.js"
+    },
+    "./list": {
+      "kisaki-source": "./src/components/list/index.ts",
+      "types": "./dist/list.d.ts",
+      "import": "./dist/list.js"
     },
     "./markdown": {
       "kisaki-source": "./src/components/markdown/index.ts",
@@ -167,6 +177,11 @@
       "kisaki-source": "./src/components/toast/index.ts",
       "types": "./dist/toast.d.ts",
       "import": "./dist/toast.js"
+    },
+    "./toolbar": {
+      "kisaki-source": "./src/components/toolbar/index.ts",
+      "types": "./dist/toolbar.d.ts",
+      "import": "./dist/toolbar.js"
     },
     "./tooltip": {
       "kisaki-source": "./src/components/tooltip/index.ts",
@@ -272,6 +287,10 @@
         "types": "./dist/field.d.ts",
         "import": "./dist/field.js"
       },
+      "./form": {
+        "types": "./dist/form.d.ts",
+        "import": "./dist/form.js"
+      },
       "./image": {
         "types": "./dist/image.d.ts",
         "import": "./dist/image.js"
@@ -283,6 +302,10 @@
       "./link": {
         "types": "./dist/link.d.ts",
         "import": "./dist/link.js"
+      },
+      "./list": {
+        "types": "./dist/list.d.ts",
+        "import": "./dist/list.js"
       },
       "./markdown": {
         "types": "./dist/markdown.d.ts",
@@ -347,6 +370,10 @@
       "./toast": {
         "types": "./dist/toast.d.ts",
         "import": "./dist/toast.js"
+      },
+      "./toolbar": {
+        "types": "./dist/toolbar.d.ts",
+        "import": "./dist/toolbar.js"
       },
       "./tooltip": {
         "types": "./dist/tooltip.d.ts",

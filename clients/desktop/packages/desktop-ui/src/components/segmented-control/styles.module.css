@@ -3,6 +3,7 @@
 @layer components {
   .segment {
     position: relative;
+    font-size: var(--text-sm);
     cursor: pointer;
   }
   .segment input {

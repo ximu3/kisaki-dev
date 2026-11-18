@@ -1,5 +1,9 @@
 /* Compact feedback stays within the actual document and modal ancestor. */
 
+.region {
+  composes: native from '../../internal/scrollbars.module.css';
+}
+
 @layer components {
   .region {
     position: fixed;
@@ -59,7 +63,7 @@
     gap: 0.375rem 0.625rem;
     padding: 0.75rem 0.875rem;
     font-size: var(--text-base);
-    line-height: var(--kui-control-line);
+    line-height: var(--text-base-line-height);
   }
 
   .text {

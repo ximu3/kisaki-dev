@@ -1,8 +1,12 @@
 /* Input and selection surfaces share text metrics, borders and focus geometry. */
 
+.surface {
+  composes: control from './control/styles.module.css';
+}
+
 @layer components {
   :where(.surface) {
-    --kui-field-affix-width: calc(var(--kui-control-height) - 2px);
+    --kui-field-affix-width: calc(var(--control-height) - 2px);
     box-sizing: border-box;
     width: 100%;
     min-width: 0;
@@ -11,20 +15,20 @@
     background: var(--input);
     color: var(--input-foreground);
     font: inherit;
-    font-size: var(--kui-control-font);
-    line-height: var(--kui-control-line);
+    font-size: var(--control-font-size);
+    line-height: var(--text-base-line-height);
   }
   :where(.singleLine) {
-    min-height: var(--kui-control-height);
-    padding: 0.125rem 0.5rem;
+    height: var(--control-height);
+    padding: 0 0.5rem;
   }
   .surface::placeholder {
     color: var(--muted-foreground);
   }
-  .surface:where([aria-invalid='true'], :has(> input[aria-invalid='true'])) {
+  .surface:where([aria-invalid='true'], :has(> :is(input, button)[aria-invalid='true'])) {
     border-color: var(--destructive);
   }
-  .surface:where(:focus-within, [data-open], [aria-expanded='true']) {
+  .surface:where(:focus, [data-open], :has(> :is(input, [data-focus-anchor]):focus)) {
     outline: none;
     border-color: var(--ring);
     transition:
@@ -39,8 +43,9 @@
   }
 
   @media (forced-colors: active) {
-    .surface:where(:focus-within, [data-open], [aria-expanded='true']) {
-      border-color: Highlight;
+    .surface:where(:focus, [data-open], :has(> :is(input, [data-focus-anchor]):focus)) {
+      outline: var(--kui-focus-width) solid Highlight;
+      outline-offset: var(--kui-focus-inset);
     }
   }
 }

@@ -1,5 +1,9 @@
 /* Native scrolling axes and inset keyboard focus for a constrained viewport. */
 
+.root {
+  composes: native from '../../internal/scrollbars.module.css';
+}
+
 @layer components {
   .root {
     min-width: 0;
@@ -17,6 +21,6 @@
   .root:focus-visible {
     outline: var(--kui-focus-width) solid var(--ring);
     animation: var(--kui-focus-enter);
-    outline-offset: -2px;
+    outline-offset: var(--kui-focus-inset);
   }
 }

@@ -107,9 +107,40 @@ test('surfaces fade in place and a chart follows its pointer without replaying e
   await browserExpect(page.locator('[data-kui-chart-tooltip]')).toBeHidden()
 })
 
-test('native dialogs and menus close one interaction at a time and return real focus', async ({
-  page,
-}) => {
+test('a menu follows a replaced trigger before and during disclosure', async ({ page }) => {
+  await page.getByRole('button', { name: 'Open dialog', exact: true }).click()
+  const trigger = page.getByRole('button', { name: 'Actions', exact: true })
+  const menu = page.getByRole('menu', { name: 'Actions', exact: true })
+  const action = menu.getByRole('menuitem', { name: 'First action' })
+  const anchorOffset = () =>
+    menu.evaluate((node) => {
+      const anchor = node.ownerDocument.querySelector('[data-menu-trigger]')!
+      return Math.abs(node.getBoundingClientRect().left - anchor.getBoundingClientRect().left)
+    })
+
+  await page.evaluate(() => window.fixture.replaceMenuTrigger('far'))
+  await trigger.press('ArrowDown')
+  await browserExpect.poll(anchorOffset).toBeLessThan(1)
+  await browserExpect(action).toBeFocused()
+
+  await page.evaluate(() => window.fixture.replaceMenuTrigger('near'))
+  await browserExpect.poll(anchorOffset).toBeLessThan(1)
+  await browserExpect(action).toBeFocused()
+
+  // A synthetic Escape checks the trigger's listener independently of native light dismissal.
+  const handled = await trigger.evaluate(
+    (node) =>
+      !node.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true }),
+      ),
+  )
+  expect(handled).toBe(true)
+  await browserExpect(menu).toBeHidden()
+  await browserExpect(trigger).toBeFocused()
+  await browserExpect(page.getByRole('dialog', { name: 'Edit sample' })).toBeVisible()
+})
+
+test('dialogs, menus and popovers close the active scope and return focus', async ({ page }) => {
   await page.locator('html').evaluate((root) => {
     root.setAttribute('lang', 'tr')
   })
@@ -179,6 +210,18 @@ test('native dialogs and menus close one interaction at a time and return real f
   await browserExpect(page.getByRole('tooltip')).toBeVisible()
   await page.keyboard.press('Escape')
   await browserExpect(page.getByRole('tooltip')).toBeHidden()
+
+  const trigger = page.getByRole('button', { name: 'Help', exact: true })
+  const action = page.getByRole('button', { name: 'Help action', exact: true })
+  const outside = page.getByRole('button', { name: 'Allow help dismissal', exact: true })
+  await trigger.click()
+  await outside.click()
+  await browserExpect(action).toBeVisible()
+  await browserExpect(trigger).toHaveAttribute('aria-expanded', 'true')
+
+  await page.keyboard.press('Escape')
+  await browserExpect(action).toBeHidden()
+  await browserExpect(trigger).toBeFocused()
 })
 
 test('toast clocks pause, survive caller disposal and follow active modals until explicitly ended', async ({

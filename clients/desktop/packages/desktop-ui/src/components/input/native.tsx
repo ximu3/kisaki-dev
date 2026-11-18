@@ -11,8 +11,12 @@ import type { TextValueProps } from '../../internal/text-control'
  * Native single-line input attributes and shared text-value binding for dedicated input controls.
  */
 export interface NativeInputProps
-  extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'value' | 'type'>, TextValueProps {
+  extends
+    Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'value' | 'type' | 'size'>,
+    TextValueProps {
   type?: 'text' | 'password' | 'search' | 'email' | 'url' | 'tel' | 'number'
+  /** Native size attribute in characters for input types that support it. */
+  htmlSize?: JSX.InputHTMLAttributes<HTMLInputElement>['size']
 }
 
 /**
@@ -26,6 +30,7 @@ export function NativeInput(props: NativeInputProps): JSX.Element {
     'value',
     'defaultValue',
     'onValueChange',
+    'htmlSize',
     'ref',
     'onInput',
   ])
@@ -39,6 +44,7 @@ export function NativeInput(props: NativeInputProps): JSX.Element {
       type="text"
       {...fieldAttributes(props)}
       {...rest}
+      size={local.htmlSize}
       ref={(node) => {
         input = node
         assignRef(local.ref, node)

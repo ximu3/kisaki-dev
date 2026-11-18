@@ -8,6 +8,13 @@ export interface FixtureApi {
   setOptions: () => void
   /** Installs long multilingual feedback prefixed by the requested language label. */
   setLongMessage: (language: string) => void
+  /** Replaces the mounted menu trigger at a different position under the same menu owner. */
+  replaceMenuTrigger: (position: 'near' | 'far') => void
+
+  /** Submits the mounted feedback sample through its editor-held instance. */
+  submitSample?: () => Promise<boolean>
+  /** Lets a consumer test hold or reject the business write after native submission. */
+  commitSample?: (submitter: HTMLElement | null) => Promise<void>
 
   /** Mounts or disposes the component that publishes fixture notifications. */
   setOwner: (mounted: boolean) => void

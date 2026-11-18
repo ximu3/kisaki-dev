@@ -1,13 +1,13 @@
 /** @fileoverview Native numeric editing with themed step controls. */
 
-import { splitProps } from 'solid-js'
+import { createUniqueId, Show, splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { assignRef, classes } from '../../../internal/dom'
 import { fieldAttributes } from '../../../internal/field'
 import { Icon, ChevronDown, ChevronUp } from '../../../internal/icon/glyph'
 import { createValue } from '../../../internal/state'
 import { NativeInput } from '../native'
-import type { NativeInputProps } from '../native'
+import type { InputProps } from '../control'
 import { InputFrame } from '../frame'
 import frame from '../styles.module.css'
 import styles from './styles.module.css'
@@ -18,8 +18,12 @@ import styles from './styles.module.css'
  * Values retain the native string model, including empty state; min, max and step use browser
  * constraints.
  */
-export interface NumberInputProps extends Omit<NativeInputProps, 'type' | 'step'> {
-  step?: number
+export interface NumberInputProps extends Omit<InputProps, 'type' | 'step'> {
+  step?: number | 'any'
+  /** Number of native steps applied by a button. Typed values still use the input's step constraint. */
+  stepCount?: number
+  /** Displays a fixed unit beside the value while preserving native numeric submission. */
+  unit?: string | undefined
   increaseLabel: string
   decreaseLabel: string
 }
@@ -32,14 +36,18 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
     'value',
     'defaultValue',
     'onValueChange',
+    'stepCount',
+    'unit',
+    'aria-describedby',
     'increaseLabel',
     'decreaseLabel',
+    'size',
     'ref',
     'class',
     'style',
   ])
   const field = fieldAttributes(props)
-  /** Live number-input text and change requests that preserve the caller's editing value. */
+  const unitId = createUniqueId()
   const [value, change] = createValue(
     () => local.value,
     () => local.defaultValue ?? '',
@@ -47,24 +55,35 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
   )
   let input!: HTMLInputElement
 
-  /** Steps the native numeric value in the requested direction and dispatches its input event. */
-  const step = (direction: 1 | -1) => {
-    if (direction === 1) {
-      input.stepUp()
+  function step(direction: 1 | -1) {
+    if (input.step === 'any') {
+      const next =
+        (Number.isNaN(input.valueAsNumber) ? 0 : input.valueAsNumber) +
+        direction * (local.stepCount ?? 1)
+      input.valueAsNumber = Math.min(
+        input.max ? Number(input.max) : Infinity,
+        Math.max(input.min ? Number(input.min) : -Infinity, next),
+      )
+    } else if (direction === 1) {
+      input.stepUp(local.stepCount ?? 1)
     } else {
-      input.stepDown()
+      input.stepDown(local.stepCount ?? 1)
     }
     input.dispatchEvent(new Event('input', { bubbles: true }))
   }
-  /** Checks whether disabled or readonly state prevents numeric step actions. */
   const blocked = () => (props.disabled ?? field.disabled) || props.readOnly
 
   return (
-    <InputFrame class={local.class} style={local.style}>
+    <InputFrame class={local.class} style={local.style} size={local.size}>
       <NativeInput
         {...rest}
         class={classes(frame.editor, styles.editor)}
         type="number"
+        aria-describedby={
+          [local['aria-describedby'] ?? field['aria-describedby'], local.unit ? unitId : undefined]
+            .filter(Boolean)
+            .join(' ') || undefined
+        }
         value={value()}
         defaultValue={local.defaultValue}
         onValueChange={change}
@@ -73,6 +92,11 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
           assignRef(local.ref, node)
         }}
       />
+      <Show when={local.unit}>
+        <span id={unitId} class={styles.unit}>
+          {local.unit}
+        </span>
+      </Show>
       <span class={classes(frame.end, styles.steps)}>
         <button
           type="button"

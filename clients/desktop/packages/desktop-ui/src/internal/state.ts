@@ -1,6 +1,6 @@
 /** @fileoverview Local controlled values and native reset synchronization. */
 
-import { createSignal, onCleanup, onMount, untrack } from 'solid-js'
+import { createMemo, createSignal, onCleanup, onMount, untrack } from 'solid-js'
 import type { Accessor } from 'solid-js'
 
 /**
@@ -16,16 +16,17 @@ export function createValue<T>(
 ): readonly [Accessor<T>, (value: T) => void] {
   /** Locally owned fallback value initialized once without capturing reactive dependencies. */
   const [local, setLocal] = createSignal<T>(untrack(initial))
+  const controlled = createMemo(value)
+  const current = () => {
+    const supplied = controlled()
+    return supplied === undefined ? local() : supplied
+  }
 
   return [
-    () => (value() === undefined ? local() : value()!),
+    current,
     (next) => {
-      if (
-        Object.is(
-          untrack(() => (value() === undefined ? local() : value())),
-          next,
-        )
-      ) {
+      // A native event may call this without a Solid owner. Read the already owned prop value.
+      if (Object.is(untrack(current), next)) {
         return
       }
 

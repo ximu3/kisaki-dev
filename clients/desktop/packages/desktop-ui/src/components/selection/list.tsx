@@ -1,34 +1,35 @@
 /** @fileoverview Shared popup rows, selected marks and virtual scrolling handoff. */
 
-import { createEffect, createSignal, For, onCleanup, onMount, Show } from 'solid-js'
+import { createEffect, createMemo, createSignal, For, onCleanup, onMount, Show } from 'solid-js'
 import type { Accessor, JSX } from 'solid-js'
-import { classes } from '../dom'
-import { Icon, Check } from '../icon/glyph'
-import { createPopup } from '../popup/controller'
-import { displayedWhileOpen } from '../popup/presentation'
+import { classes } from '../../internal/dom'
+import { Icon, Check } from '../../internal/icon/glyph'
+import { createPopup } from '../../internal/popup/controller'
+import { displayedWhileOpen } from '../../internal/popup/presentation'
 import type { SelectionPopup } from './popup'
 import { optionId } from './collection'
 import type { SelectionCollection } from './collection'
 import type { SelectionListProps, SelectionOption } from './types'
-import { SearchInput } from './search'
+import { ComboboxSearch } from './search'
 import type { SearchState } from './search'
-import frame from '../popup/surface.module.css'
-import row from '../list-row.module.css'
+import { createVirtualChoices, type OptionGroup } from './virtual'
+import frame from '../../internal/popup/surface.module.css'
+import row from '../../internal/list-row.module.css'
 import styles from './styles.module.css'
 
 /**
  * Logical option and selection state connected to a popup, optional search editor and row renderer.
  */
-interface ListProps extends SelectionListProps {
+interface ListProps<O extends SelectionOption> extends SelectionListProps<O> {
   popup: SelectionPopup
   /** Returns the interaction anchor used by native popup and focus handling. */
-  anchor: Accessor<HTMLElement>
+  anchor: Accessor<HTMLButtonElement | undefined>
   /** Returns an optional geometry reference distinct from the interaction anchor. */
   reference?: Accessor<HTMLElement> | undefined
-  collection: SelectionCollection
+  collection: SelectionCollection<O>
   selected: readonly string[]
   /** Reports an enabled chosen option to the value owner. */
-  onChoose: (option: SelectionOption) => void
+  onChoose: (option: O) => void
   multiple?: boolean | undefined
   loading?: boolean | undefined
   emptyMessage?: JSX.Element
@@ -45,11 +46,9 @@ interface ListProps extends SelectionListProps {
  * The trigger or search editor retains focus; the collection owns navigation across mounted and
  * offscreen rows.
  */
-export function SelectionList(props: ListProps): JSX.Element {
-  let list!: HTMLDivElement
-  /** Popup identity and presence readers used by the selection list. */
+export function SelectionList<O extends SelectionOption>(props: ListProps<O>): JSX.Element {
+  const [list, setList] = createSignal<HTMLDivElement>()
   const { id, open, present } = props.popup
-  /** Displayed selection retained while the popup completes its exit transition. */
   const selected = displayedWhileOpen(open, () => props.selected)
 
   createEffect(() => {
@@ -58,9 +57,8 @@ export function SelectionList(props: ListProps): JSX.Element {
     }
   })
 
-  /** Groups adjacent options sharing a label while preserving collection order. */
-  const groups = () => {
-    const result: { label: string | undefined; options: SelectionOption[] }[] = []
+  const groups = createMemo(() => {
+    const result: OptionGroup<O>[] = []
     for (const option of props.collection.options()) {
       const last = result.at(-1)
       if (last && last.label === option.group) {
@@ -70,7 +68,18 @@ export function SelectionList(props: ListProps): JSX.Element {
       }
     }
     return result
-  }
+  })
+  let rowHeight = 0
+  const virtual = createVirtualChoices(
+    groups,
+    list,
+    () => !!props.virtual && present(),
+    () => {
+      // Keep the last measured estimate if the trigger is released during exit.
+      rowHeight = props.anchor()?.getBoundingClientRect().height ?? rowHeight
+      return rowHeight
+    },
+  )
 
   createPopup({
     element: props.popup.panel,
@@ -83,11 +92,11 @@ export function SelectionList(props: ListProps): JSX.Element {
   })
 
   onMount(() => {
-    props.listRef?.(list)
-    /** Observed row height used by the list's virtual geometry. */
+    const viewport = list()!
+    props.listRef?.(viewport)
     const [height, setHeight] = createSignal(0)
-    const size = new ResizeObserver(() => setHeight(list.clientHeight))
-    size.observe(list)
+    const size = new ResizeObserver(() => setHeight(viewport.clientHeight))
+    size.observe(viewport)
     onCleanup(() => size.disconnect())
 
     createEffect(() => {
@@ -100,8 +109,10 @@ export function SelectionList(props: ListProps): JSX.Element {
       const frame = requestAnimationFrame(() => {
         if (props.scrollToValue) {
           props.scrollToValue(active)
+        } else if (props.virtual) {
+          virtual.scrollTo(active)
         } else {
-          list.ownerDocument
+          viewport.ownerDocument
             .getElementById(optionId(id, active))
             ?.scrollIntoView({ block: 'nearest' })
         }
@@ -114,7 +125,7 @@ export function SelectionList(props: ListProps): JSX.Element {
    * Renders a stable option identity with logical position, selection state and enabled pointer
    * actions.
    */
-  const renderOption = (option: SelectionOption) => (
+  const renderOption = (option: O) => (
     <div
       id={optionId(id, option.value)}
       role="option"
@@ -131,7 +142,7 @@ export function SelectionList(props: ListProps): JSX.Element {
         }
       }}
       onClick={() => {
-        if (!option.disabled && !props.anchor().matches(':disabled')) {
+        if (!option.disabled && props.anchor()?.matches(':enabled')) {
           props.onChoose(option)
         }
       }}
@@ -152,20 +163,39 @@ export function SelectionList(props: ListProps): JSX.Element {
     </div>
   )
 
+  function renderRows(): JSX.Element {
+    if (props.renderOptions) {
+      return props.renderOptions({ options: props.collection.options, open, present, renderOption })
+    }
+    if (props.virtual) {
+      return <virtual.Render option={renderOption} />
+    }
+
+    return (
+      <For each={groups()}>
+        {(group) => (
+          <div role={group.label ? 'group' : undefined} aria-label={group.label}>
+            <Show when={group.label}>
+              <div class={styles.groupTitle}>{group.label}</div>
+            </Show>
+            <For each={group.options}>{renderOption}</For>
+          </div>
+        )}
+      </For>
+    )
+  }
+
   return (
     <div
       popover="auto"
       ref={props.popup.attach}
       id={props.popup.panelId}
       class={classes(frame.anchor, styles.list, props.listClass)}
-      role={props.search ? 'dialog' : undefined}
-      aria-labelledby={props.search ? props.labelledBy : undefined}
-      aria-label={props.search ? (props.label ?? props.search.label) : undefined}
     >
       <div class={classes(frame.viewport, styles.content)}>
         <Show when={props.search}>
           {(search) => (
-            <SearchInput
+            <ComboboxSearch
               state={search()}
               listId={id}
               open={open()}
@@ -175,9 +205,7 @@ export function SelectionList(props: ListProps): JSX.Element {
           )}
         </Show>
         <div
-          ref={(node) => {
-            list = node
-          }}
+          ref={setList}
           class={styles.options}
           id={id}
           role="listbox"
@@ -203,25 +231,7 @@ export function SelectionList(props: ListProps): JSX.Element {
               when={props.collection.options().length}
               fallback={<div class={styles.message}>{props.emptyMessage}</div>}
             >
-              {props.renderOptions ? (
-                props.renderOptions({
-                  options: props.collection.options,
-                  open,
-                  present,
-                  renderOption,
-                })
-              ) : (
-                <For each={groups()}>
-                  {(group) => (
-                    <div role={group.label ? 'group' : undefined} aria-label={group.label}>
-                      <Show when={group.label}>
-                        <div class={styles.groupTitle}>{group.label}</div>
-                      </Show>
-                      <For each={group.options}>{renderOption}</For>
-                    </div>
-                  )}
-                </For>
-              )}
+              {renderRows()}
             </Show>
           </Show>
         </div>

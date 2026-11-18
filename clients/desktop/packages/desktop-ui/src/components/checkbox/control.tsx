@@ -2,6 +2,7 @@
 
 import { createEffect, onMount, splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
+import type { ControlSize } from '../../internal/control/size'
 import { assignRef, callHandler, classes } from '../../internal/dom'
 import { fieldAttributes } from '../../internal/field'
 import { bindCheckedControl } from '../../internal/checked-control'
@@ -16,8 +17,11 @@ import styles from './styles.module.css'
  * Checked controls form submission; indeterminate is a separate visual state.
  */
 export interface CheckboxProps
-  extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'type' | 'checked'>, CheckedValueProps {
+  extends
+    Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'type' | 'checked' | 'size'>,
+    CheckedValueProps {
   label?: JSX.Element
+  size?: ControlSize | undefined
   indeterminate?: boolean
 }
 
@@ -33,6 +37,7 @@ export function Checkbox(props: CheckboxProps): JSX.Element {
     'onCheckedChange',
     'indeterminate',
     'label',
+    'size',
     'class',
     'ref',
     'onChange',
@@ -49,8 +54,8 @@ export function Checkbox(props: CheckboxProps): JSX.Element {
   )
 
   return (
-    <ChoiceRow label={local.label}>
-      <span class={styles.container}>
+    <ChoiceRow label={local.label} size={local.size}>
+      <span class={styles.container} data-size={local.size ?? 'default'}>
         <input
           {...fieldAttributes(props, () => local.label)}
           {...rest}
