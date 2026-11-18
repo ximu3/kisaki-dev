@@ -24,7 +24,9 @@ A13、A27 和 A28 核对[原生 syncFile](../../design/engineering/native.md#fil
 
 A26、A31 和 A32 按[源码语言规则](../../design/engineering/conventions.md#source-language)检查应用、包、扩展、工具、配置、测试和模板。手写 JavaScript 源文件不能因位于产品 src 之外而漏检；编译产物、绑定生成结果和第三方发行内容分别按制品归属核对。
 
-按[声明覆盖](../../design/engineering/conventions.md#comment-coverage)逐项对应自维护具名函数、方法、类、组件、接口、类型和枚举的文档，包含内部声明、访问器、嵌套函数与独立函数绑定。纯重导出沿用定义处文档，内联回调和普通局部变量按所属流程核对。
+按[逻辑分段](../../design/engineering/conventions.md#logical-sections)顺读修改涉及的完整流程。例如，改动订阅时，从监听登记读到撤销，核对中途离开后资源由谁释放。涉及 Solid 界面时，按[TSX 组件分段](../../design/engineering/conventions.md#tsx-style)从可见操作追踪到事件、状态更新和结果呈现，公共部件与受影响的业务入口一起核对。
+
+按[声明覆盖](../../design/engineering/conventions.md#comment-coverage)核对自维护源码的文件概述、模块顶层具名声明及对调用者可见的合同。比较同类 TS、TSX、Rust、工具、配置和测试中的定义，区分公开成员合同与普通局部绑定的按需说明。重导出沿用原定义。
 
 按[可读性](../../design/engineering/conventions.md#readability)与[调用合同](../../design/engineering/conventions.md#comment-objects)审查完整操作的正常路径及相关失败、取消和清理路径，核对概述、输入、完成、失败、状态和资源说明。公开入口从构建后的声明取得相应文档。名称、类型与实现相符，说明由实际合同拥有者维护；实现改变后，旧注释和已失效的临时标记同步修正。覆盖检查与内容审查分别完成，格式检查或注释数量不代替内容判断。
 

@@ -2,9 +2,9 @@
 
 本目录规定 Kisaki 的产品范围、数据模型、接口、运行行为、界面和工程交付。设计正文说明系统应如何工作，[工作包](implementation/work-packages.md)安排实施依赖，[验收标准](verification/acceptance.md)规定完成条件，[实施状态](implementation/status.md)记录实际进度与证据。
 
-现代化、简洁、清晰、干净与克制是本目录同等首要的设计标准。技术选型与交互遵循[原生优先](design/engineering/conventions.md#native-first)。讨论、修改和验收时，按[全局设计与一致性](design/engineering/conventions.md#global-design)核对同类功能及所有受影响的入口。所有主题及其限制、验证要求遵守[共用工程规范](design/engineering/conventions.md#quality)，具体产品与技术语义由所属主题定义。
+现代化、简洁、清晰、干净与克制是本目录同等首要的设计标准。实现方式按[判断与取舍](design/engineering/conventions.md#judgment)由产品目标与实际效果决定。讨论、修改和验收时，按[全局设计与一致性](design/engineering/conventions.md#global-design)核对同类功能及所有受影响的入口。所有主题及其限制、验证要求遵守[共用工程规范](design/engineering/conventions.md#quality)，具体产品与技术语义由所属主题定义。
 
-界面与资源的对照工程位于 `F:/project/3/kisaki`。
+旧项目 `F:/project/3/kisaki` 及其常规 dev 运行界面可作为 [UI 设计参考](design/ui/components.md#existing-ui)。产品行为与资源要求由本仓库的领域、界面和工程规格定义。
 
 <a id="rewrite"></a>
 
@@ -16,7 +16,7 @@
 
 本轮交付范围包括 clients/desktop 下的桌面本体、八个公共包、33 项官方扩展及四个[独立技术项目](design/projects/README.md#delivery)。[顶层分组](design/engineering/layout.md#workspace)中的 Web 客户端、官网和候选服务端留待后续项目。
 
-现有界面与交互体验整体沿用，按规格作局部调整并补充新增能力；组件与内部结构按新架构独立设计，见[现有 UI 保留原则](design/ui/components.md#existing-ui)。
+桌面界面与公共部件参考旧项目的布局、密度、视觉风格和操作习惯。业务操作、状态归属和组件实现按本项目规格设计。[共同界面](design/ui/components.md#existing-ui)
 
 <a id="reading"></a>
 
@@ -25,6 +25,7 @@
 | 要做的事             | 阅读入口                                                                                                                                |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | 理解产品与整体设计   | [产品范围](design/product.md) → [运行架构](design/architecture.md) → [调用与事件](design/communication.md)                              |
+| 编写或审阅代码与示例 | [逻辑分段](design/engineering/conventions.md#logical-sections) → [源码验收](verification/scenarios/engineering.md#source-quality)       |
 | 实现一项本体能力     | [领域规则](design/domains/README.md)、[界面与交互](design/ui/README.md)，再查对应[工作包](implementation/work-packages.md)              |
 | 开发或接入扩展       | [扩展合同](design/extensions/README.md) → [33 项官方目录](design/extensions/catalog.md) → 对应来源或导入器                              |
 | 实现独立技术项目     | [Vantage、Kana、libmpv-node 与 oauth-relay](design/projects/README.md)，以及[Kisaki 接入](design/engineering/integrations.md)           |

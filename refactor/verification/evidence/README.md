@@ -29,6 +29,14 @@
 | 大集合与扫描报告         | [容量模型](capacity/README.md)                                                                          |
 | 原生工程与平台接口       | [Node-API／工程来源](native-projects/organization-sources.md) · [平台机制](platform-closure/closure.md) |
 
+<a id="test-retention-review"></a>
+
+## 自动用例保留复核
+
+2026-11-18 盘点当前工作区的 96 个 TypeScript 测试文件，覆盖根工程、工具包、六个公共包和桌面应用。依据[长期用例的取舍](../../design/engineering/conventions.md#test-retention)，按实际调用和宿主核对可观察行为。代理、存储、IPC 的状态和失败结果由所属层验证，独立消费保留最终声明、资源和真实宿主断言。
+
+取消应用流程中的控件像素检查、独立样板中的纯取像用例，以及主题词表在消费样板中重复的计数。将受控选择与受控浮层的必要断言并入已有浏览器流程，动态页签与首错定位的独立模拟夹具由本次复现取证。保留原生拖动、键盘重排、拒绝提交以及隐藏项顺序的用例，分别验证实际移动与业务采用。[公共控件验证](w05/README.md#choice-and-staged-fields) · [偏好在正式窗口的复核](w07/README.md#field-presentation-and-proxy)
+
 <a id="vantage"></a>
 
 ## Vantage

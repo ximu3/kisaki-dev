@@ -30,7 +30,7 @@
 
 桌面公共包通过构建后的公开入口交付 ESM、声明和各自资源。包内 `tests/consumers` 使用仓库外的独立工程核对同一 tarball，用例、样板、配置、依赖和报告分别由所属包维护。公开值和消费方式可从源码声明、消费者样板及 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md)、[W03](../verification/evidence/w03/README.md)、[W04](../verification/evidence/w04/README.md)、[W05](../verification/evidence/w05/README.md) 验证入口查阅。
 
-desktop-ui 从组件家族子路径消费，样式入口为 `/styles.css`，包含 appearance 的普通样式；图表、Markdown 和拖拽按完整能力独立导入。表单的验证与保存、图表统计、正文资源及业务拖拽由宿主拥有。接口和组合示例见包内源码与仓库外消费者样板。`pnpm exec vp run @kisaki3/desktop-ui#test:consumers` 验证真实 tarball、完整声明、浏览器、Tailwind 和 Electron，报告位于包内 `test-results/consumers`。
+desktop-ui 从组件家族子路径消费，样式入口为 `/styles.css`，包含 appearance 的普通样式；图表、Markdown 和拖拽按完整能力独立导入。`/form` 合并浏览器有效性与业务问题，统一提交、快捷键和关闭确认等待的操作。宿主拥有草稿、业务校验与写入，以及图表统计、正文资源和排序规则。接口和组合示例见包内源码与仓库外消费者样板。`pnpm exec vp run @kisaki3/desktop-ui#test:consumers` 验证真实 tarball、完整声明、浏览器、Tailwind 和 Electron，报告位于包内 `test-results/consumers`。
 
 desktop-rpc 从包根导出 `RpcConnection`、传输接口和帧合同。接入端绑定实际通道与身份，提供明确的方法表并解析业务值。等待 `ready` 后发起调用，按 `closed` 的结束原因释放所属资源。两个消费者分别通过 Node JSON IPC 和沙箱 Electron 窗口的 MessagePort 运行。Linux 执行消费者套件需要图形会话，CI 使用 Xvfb。
 
@@ -42,7 +42,7 @@ desktop-localization 的英语 ICU 源文位于 src/en，按领域维护并由 i
 
 桌面 `tools/build` 接收明确的程序输入，在干净的所属输出目录完成编译与完整性核对；`tools/resources`、`tools/native` 与 `tools/package` 分别拥有资源、原生编译和打包。目标、路径和散列算法归 `tools/lib`，运行清单归 `tools/build/manifest.ts`，跨工程机制归 `@kisaki3/tooling`。原生调用通过 `#native` 加载明确的绝对制品路径，失败保留原始原因。
 
-正式程序位于 `clients/desktop/app/src`。main 装配数据库 worker、任务、偏好、外观及资源；四类窗口各有独立文档和沙箱 preload，通过已绑定的 MessagePort 接入 desktop-rpc。主窗口拥有标题栏、侧栏固定工具和管理 Dialog，资料库页面由 W08 接入。
+正式程序位于 `clients/desktop/app/src`。main 装配数据库 worker、任务、偏好、外观及资源；四类窗口各有独立文档和沙箱 preload，通过已绑定的 MessagePort 接入 desktop-rpc。四个文档独立装配样式与 Toaster。主窗口 `app` 装配标题栏、侧栏、页面出口和两层管理 Dialog，`features` 维护各编辑器及任务查询。`domain-ui` 复用字体选择和页面排序。资料库、展示柜与统计由 W08 接入。
 
 应用通过数据库执行线程打开当前基线、读取偏好、采用生效语言并保持连接至退出。存储性能用例通过 Playwright 在 Electron 主进程中启动独立编译的测量 worker。worker 返回完整报告并正常退出后，用例将报告保存为附件。执行失败时，原始错误传回用例。
 
@@ -73,7 +73,9 @@ pnpm exec vp hooks enable
 
 ## 工程构建与资源
 
-从源码运行 `pnpm exec vp run @kisaki3/desktop#dev`。该任务先构建启动器消费的公共包并准备 Electron。开发资料默认保存在桌面工程的 `.local/development`，传入 `--profile <绝对路径>` 可选择隔离资料。有限构建与打包使用同一正式程序输入。
+从源码运行 `pnpm exec vp run @kisaki3/desktop#dev`。该任务先构建启动器消费的公共包并准备 Electron。开发资料默认保存在桌面工程的 `.local/development`，传入 `--profile <绝对路径>` 可选择隔离资料。新的开发资料默认选用临时简体中文译本，可以在偏好切换语言。已有资料沿用其保存的选择。有限构建与打包使用同一正式程序输入。
+
+源码窗口的样式入口从公共包的源码 exports 读取，Tailwind 跟踪实际源码文件的热更新。Vite 的依赖优化缓存归当前开发会话，随该会话清理。有限构建读取公共包的制品 exports。
 
 ```sh
 pnpm exec vp run @kisaki3/desktop#build --target windows-x64

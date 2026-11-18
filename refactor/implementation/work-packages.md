@@ -10,13 +10,15 @@
 
 一个工作包可以按依赖分步实现。全部交付项完成后，才能把该包登记为已完成。接口声明、代码注释、运行文案、发行说明和许可材料随实现维护；成篇项目文档由 W23 负责。后续修改属于缺陷修复、合同维护或新需求，已知的未实现操作和占位结果仍记为当前工作包未完成。
 
-有界面的工作包通过正式入口交付所属页面、Dialog 或控件。实施前按[界面保留原则](../design/ui/components.md#existing-ui)从旧项目代码推导可见效果与操作体验，按[既有界面对照](../verification/scenarios/ui.md#baseline)在本包验收布局、视觉层次、密度和交互。规格明确调整的行为按所属设计核对；新增能力以最接近的既有场景为参照。后续工作包接入已交付的界面，W22 核对跨功能衔接，W24 在整套候选上复核体验。
+**逻辑分段纳入每个工作包的完成判定。** 交付前按[分段规则](../design/engineering/conventions.md#logical-sections)人工顺读变更涉及的完整声明、流程和文档示例。发现独立职责混在一起或同一步骤被拆散时，在本包内修正。
+
+有界面的工作包通过正式入口交付所属页面、Dialog 或控件。实施前从旧项目的 UI 规范、组件与界面参考布局、层次、密度和操作路径。业务操作和预期结果取自当前规格，新增界面参照同类工作表面。各包以默认 100% 应用缩放完成[既有界面对照](../verification/scenarios/ui.md#baseline)，再按场景复验缩放边界。W22 核对跨功能衔接，W24 在整套候选上复核体验。
 
 本体业务先通过 desktop-contracts 定义的值、操作与参与接口实现，完成真实存储、资源和窗口路径。提供者、处理器及识别器通过本体登记接口验证完整调用、取消与释放；W18 消费这些已有操作，联合完成 SDK、宿主及全部跨进程业务接入。业务实现与扩展接入各有自己的完成边界。
 
 实现与适用验收、项目文档和对外发布分别记录。W24 汇总固定候选版本的发布前整体验收，W25 完成本轮首次公开发行与发布核验，整体完成条件见[最终交付](../verification/acceptance.md#completion)。签署与隔离部署随所属工程取得证据，正式仓库接续、公开发布和生产服务切换按[首发规则](../design/engineering/releases.md#first-release)及已有授权执行。
 
-所有交付遵守[共同原则、终态实现与可读性](../design/engineering/conventions.md#quality)、[编码风格与逻辑分段](../design/engineering/conventions.md#logical-sections)、[代码与资源规则](../design/engineering/conventions.md#coding-style)、[界面文案](../design/ui/components.md#copy)和[文档归属](../design/engineering/documentation.md#owners)。源码、测试、工具、配置和设计文档均须按职责顺读检查，格式工具通过后仍核对语义分段。
+所有交付遵守[共同原则、终态实现与可读性](../design/engineering/conventions.md#quality)、[代码与资源规则](../design/engineering/conventions.md#coding-style)、[界面文案](../design/ui/components.md#copy)和[文档归属](../design/engineering/documentation.md#owners)。
 
 验证按[实际影响](../verification/acceptance.md#verification-scope)选择，目标环境按[统一交付边界](../verification/acceptance.md#runtime-coverage)判定，证据按[实际用途](../design/engineering/documentation.md#evidence)保留。
 
@@ -156,7 +158,7 @@ W23 随各对象成熟度分批编写文档，最终采用已经验证的实现�
 
 依赖：W01 与 Solid 1.9 工程基线。
 
-交付：[公开 UI 能力](../design/ui/package.md#families)的完整组件、组合、原生表单与反馈、键盘与焦点、浮层、Toast、图表、Markdown、拖拽、样式及资源寿命。通用控件自行实现，专用能力按既定工具接入；按组件家族提供子路径和 CSS Modules 构建后的普通 CSS，默认样式组合视觉基础。
+交付[完整的公共 UI 家族](../design/ui/package.md#families)。Form、Field 和控件统一表单提交、关联与反馈，Dialog 统一区域、焦点和关闭，Toaster 统一文档队列。包维护控件密度、键盘交互、图表、Markdown、拖拽、样式与资源寿命，按家族子路径交付声明与 CSS Modules 构建后的普通 CSS。
 
 验收：浏览器行为、完整视觉状态、声明、无 Tailwind 与宿主工具类消费、独立资源清理分别成立，满足 A18–A20、A23、A29、A31 的[公共组件与反馈断言](../verification/scenarios/ui.md#ui-package)。支持范围和真实环境由[视觉交付](../design/ui/package.md#delivery)核对。
 
@@ -192,7 +194,7 @@ W23 随各对象成熟度分批编写文档，最终采用已经验证的实现�
 
 W07 交付系统通知的目标恢复。发送方把可序列化的原生导航目标交给操作系统，运行端从点击载荷恢复目标，窗口就绪后交付一次。W20 负责安装登记和实际安装身份下的冷启动验收。
 
-W07 建立主窗口的正式框架，包括标题栏、侧栏、固定工具、左下角应用菜单和 Dialog 宿主。任务中心从侧栏固定入口打开，进行中与已结束的任务分别浏览，详情关闭后回到原列表。偏好、主题、字体和系统集成从[应用菜单](../design/ui/navigation.md#menus)进入，各自按所属合同保存。核对入口、打开、编辑、关闭、焦点返回与窗口退出。主内容区承载已登记的业务页面；资料库、展示柜和统计由 W08 接入，后续页面随各自工作包接入。
+W07 建立正式桌面 UI 框架。各文档逐实例装配语言、外观、反馈和窗口就绪。主窗口拥有标题栏、侧栏、固定工具、应用菜单、已登记页面的内容出口和 Dialog 宿主。任务中心保留筛选、滚动和详情返回。偏好、主题、字体及系统集成从应用菜单进入，消费公共部件，按各自合同提交。在默认窗口及最小窗口以 100% 应用缩放核对[标题栏通栏分隔线与窗口操作](../design/ui/components.md#titlebar)、控件尺度、滚动视口和固定反馈，再复验缩放边界、键盘与嵌套焦点返回。W08 将资料库、展示柜和统计接入同一内容出口，并从有选择和位置的真实页面复走固定工具流程。[应用交互](../design/ui/components.md#layout) · [验收场景](../verification/scenarios/ui.md#baseline)
 
 验收：A14–A16、A20、A27、A29 的运行基础、状态、资源与管理界面成立。
 
