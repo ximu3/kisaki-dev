@@ -1,0 +1,3 @@
+- Open Task Center from the sidebar to observe running work, control supported tasks and inspect saved results.
+- Edit preferences from the application menu. Theme and font changes have independent save actions, and the selected interface scale follows the current window.
+- Change the application proxy for new connections. Established browser WebSockets keep their original route until they close.

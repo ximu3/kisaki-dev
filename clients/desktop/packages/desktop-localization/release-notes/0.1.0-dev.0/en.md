@@ -1,3 +1,4 @@
 - Publish English messages for each domain, generated types for message keys and arguments, and checks for translations.
+- Include task controls, preference fields, proxy status and appearance management in the English message catalog.
 - Format isolated catalog snapshots with English fallback and literal markup, without application language state.
 - Verify that NodeNext projects, browsers and iframes can use the packed library.

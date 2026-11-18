@@ -119,3 +119,31 @@ export async function closeNativeWindow(pid: number, signal?: AbortSignal): Prom
     await runWindowCommand('wmctrl', ['-ic', id], signal)
   }
 }
+
+/** Queries the Windows nonclient hit at a physical client point without moving the user's pointer. */
+export async function captionHit(handle: string, x: number, y: number): Promise<number> {
+  const command = `Add-Type -Namespace KisakiTest -Name Window -MemberDefinition @'
+[System.Runtime.InteropServices.DllImport("user32.dll")]
+public static extern System.IntPtr SetThreadDpiAwarenessContext(System.IntPtr context);
+public struct Point { public int X; public int Y; }
+[System.Runtime.InteropServices.DllImport("user32.dll")]
+public static extern bool ClientToScreen(System.IntPtr hwnd, ref Point point);
+[System.Runtime.InteropServices.DllImport("user32.dll")]
+public static extern System.IntPtr SendMessage(System.IntPtr hwnd, uint message, System.IntPtr wparam, System.IntPtr lparam);
+public static int Hit(System.IntPtr hwnd, int x, int y) {
+    SetThreadDpiAwarenessContext(new System.IntPtr(-4));
+    Point point = new Point { X = x, Y = y };
+    if (!ClientToScreen(hwnd, ref point)) throw new System.InvalidOperationException("No test window");
+    int position = (point.Y << 16) | (point.X & 0xffff);
+    return SendMessage(hwnd, 0x84, System.IntPtr.Zero, new System.IntPtr(position)).ToInt32();
+}
+'@
+[KisakiTest.Window]::Hit([IntPtr]${handle}, ${Math.round(x)}, ${Math.round(y)})`
+  const output = await runWindowCommand('powershell.exe', [
+    '-NoProfile',
+    '-NonInteractive',
+    '-Command',
+    command,
+  ])
+  return Number(output.trim())
+}

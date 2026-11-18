@@ -44,7 +44,9 @@ AppearanceTokens 使用固定、扁平的 CSS 属性键，共 43 项，覆盖配
 
 表中的分组用于编辑呈现，存储使用表列出的扁平 token 键。
 
-background 用于主内容底色；chrome 用于应用框架、导航与控制区域，包括标题栏、侧栏、页面控制带和阅读器工具栏；popover 与 dialog 分别用于浮层和模态对话框。各 foreground 用于对应背景上的文字和图标。
+background 用于主内容底色。chrome 用于应用框架、导航与控制区域，包括标题栏、侧栏、页面控制带和阅读器工具栏。popover 与 dialog 分别用于浮层和模态对话框。这些区域各自配有文字与图标色。
+
+`--secondary` 和 `--secondary-foreground` 为次要变体的按钮和徽标提供配套的底色、文字与图标色。`--muted` 是条带、轨道等低强调区域的底色。`--muted-foreground` 是次要文字色，用于说明、占位文字、元信息和相应图标。
 
 primary、accent 和 ring 分别表示主要操作、强调与焦点。三种阴影分别用于 raised、overlay 和 modal。
 
@@ -56,7 +58,7 @@ chart-1 至 chart-5 是五个可独立编辑的系列色，亮暗分支分别提
 
 圆角和基础字号使用非负字面长度；文字间距接受 normal 或字面长度，允许负值；行高接受 normal、非负数值、长度或百分比；字重接受 normal、bold 或 1–1000 的数值。长度单位采用 CSS 语义。阴影接受 none 或多层定义，每层显式提供颜色与两个偏移量，可提供非负模糊半径、扩展半径和 inset；省略颜色会依赖 currentColor，因而不接受。纯视觉字体槽接受 CSS 字体栈，字体资源选择仍由桌面合同组合。
 
-纯规则在 Node 与浏览器中使用同一实现，解析返回规范化的 CSS 值，完整分支要求固定键齐全且没有额外键。数值必须有限，非法输入报告失败，不补默认值。语法与值校验不承担字体是否存在、色彩设备表现或主题对比度的保证；实际样式和支持环境通过消费者验证。
+纯规则在 Node 与浏览器中使用同一实现，解析返回规范化的 CSS 值，完整分支要求固定键齐全且没有额外键。作为独立长度解析的无单位零统一输出 `0px`，行高等无单位数值保留其数值语义。直接用 CSS 覆盖时，参与派生计算的零长度采用 `0px`。数值必须有限，非法输入报告失败，不补默认值。语法与值校验不承担字体是否存在、色彩设备表现或主题对比度的保证；实际样式和支持环境通过消费者验证。[CSS 数学函数的类型规则](https://www.w3.org/TR/css-values-4/#calc-type-checking)
 
 纯视觉包拥有词表、默认视觉值和 CSS 对应关系，桌面合同在此基础上组合字体选择。默认主题、编辑器、本体页面和 Webview 使用同一套词表，不为扩展另设缩减版本。背景能力只包括配色，不提供用户背景图片或 motion 配置。
 
@@ -110,7 +112,7 @@ AppearanceTokens 表达共同的桌面外观分支。UserAppearanceTokens 使用
 
 ## 界面缩放与采用
 
-interfaceScale 由 AppearancePreferences 统一保存，单位为百分数，100 表示原比例。--interface-scale 只作为运行投影。最终 rem 基准等于当前 --text-base-size × interfaceScale / 100。基础字号属于主题，会影响所有 rem 尺寸；缩放属于用户共同偏好，所以切换主题不保证最终字号不变。
+interfaceScale 由 AppearancePreferences 统一保存，单位为百分数，默认 100，即以所选主题的原字号和尺寸呈现。--interface-scale 只作为运行投影。最终 rem 基准等于当前 --text-base-size × interfaceScale / 100。主题基础字号决定 rem 尺寸，主窗口标题栏根据界面缩放计算原生尺寸。[主窗口标题栏](../ui/components.md#titlebar)
 
 preferences 校验并保存缩放，appearance 结合实际明暗策略和预览状态形成有效外观，再由视图宿主交付，文档负责应用 CSS 和字体。系统不提供 appearance.setScale 等平行的持久写入入口。范围及步进见[偏好](preferences.md#fields)。
 
@@ -155,7 +157,7 @@ await appearance.themes.update(themeId, {
 type FontRef = { type: 'system'; family: string } | { type: 'user'; id: string }
 ```
 
-FontRef 只表示系统字体族或用户字体 id。主题另行提供默认字体和所属扩展文件选项，阅读另行提供 document 选项，不把消费者专属分支放入 FontRef。系统字体、书内字体和扩展私有字体不会自动导入用户库。fonts.list 只列用户字体，listSystem 只列系统字体，选择器分组搜索，再由用途加入默认或文档选项。字体管理界面只管理用户库。
+FontRef 只表示系统字体族或用户字体 id。主题另行提供默认字体和所属扩展文件选项，阅读另行提供 document 选项，不把消费者专属分支放入 FontRef。系统字体、书内字体和扩展私有字体不会自动导入用户库。fonts.list 只列用户字体，listSystem 只列系统字体，选择器分组搜索，再由用途加入默认或文档选项。字体管理界面在单列目录中搜索用户库。预览从对应条目打开，展示字体文件、实际样张和字面资料。只为正在查看或编辑的对象取得文档专属读句柄，换项和关闭时释放。未保存的文件草稿明确显示保留、新增、移除和准备失败，移除仍在草稿期间可以恢复。
 
 Font 包含 id、name、files、createdAt 和 updatedAt，files 的每项为 { attachmentId, metadata }。FontFileMetadata.faces 记录文件中从零开始的 index、family、subfamily、可空的 fullName 与 postScriptName、字重和宽度的 min/default/max、normal/italic/oblique 样式，以及 { tag, min, default, max }[] 形式的可变轴。静态属性的最小、默认和最大值相同，axis tag 使用实际四字节 OpenType 标识。技术资料必须由本体解析，不能接受调用方伪造；解析失败也不能编造字体族名或能力。
 
@@ -170,6 +172,8 @@ import({ name, files }) 接收非空的 FileInput 或 PreparedFontFile 集合，
 <a id="clone-and-delete"></a>
 
 ## 复制主题与删除资源
+
+主题目录用标准列表条目显示名称、来源和当前使用项。预览从对应条目展示实际亮暗色样。复制保存后在目录定位副本，编辑使用独立对话框。编辑器将名称、亮暗分支与全应用预览置于正文上方，背景与对应前景成对编辑，宽度足够时同行，空间不足时顺序堆叠。
 
 Clone 读取主题完整的亮暗定义。系统字体保留族名，用户 FontRef 保留共享身份；只有扩展私有字体需要实际读取并准备为新的用户字体，再重写主题中的引用。不能根据同名或相同字节复用已有的可变 FontId。源主题更新或停用不会改变副本，但副本保留的用户字体引用仍会共享字体更新，用户可以另选资源。复制不要求先读取全部用户字体文件，也不必执行完整 ThemeRead。
 

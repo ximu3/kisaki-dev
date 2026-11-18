@@ -29,10 +29,11 @@ test('repository docs skip targets and a package-owned change runs its entire ch
     'clients/desktop/packages/desktop-rpc/src/frames.test.ts',
   ])
   expect(rpc.code).toBe(true)
-  expect(rpc.matrix).toMatchObject([
+  expect(rpc.matrix.filter((row) => row.package === '@kisaki3/desktop-rpc')).toMatchObject([
     { label: '@kisaki3/desktop-rpc, linux-x64', task: '@kisaki3/desktop-rpc#verify', x11: true },
   ])
-  expect(rpc.matrix[0]!.chromium).toBeFalsy()
+  expect(rpc.matrix.find((row) => row.package === '@kisaki3/desktop-rpc')?.chromium).toBeFalsy()
+  expect(rpc.matrix.filter((row) => row.package === '@kisaki3/desktop')).toHaveLength(6)
 
   const releaseNotes = plan(['clients/desktop/app/release-notes/next/en.md'])
   expect(releaseNotes.matrix).toHaveLength(6)

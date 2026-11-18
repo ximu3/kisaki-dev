@@ -1,0 +1,27 @@
+/* Each control selects its own height, text and icon metrics. */
+
+@layer components {
+  .control {
+    --control-height: var(--kui-control-height);
+    --control-font-size: var(--text-sm);
+    --control-icon-size: var(--kui-icon-size);
+  }
+
+  .control:is([data-size='xs'], [data-size='icon-xs']) {
+    --control-height: 1.25rem;
+    --control-font-size: var(--text-xs);
+    --control-icon-size: var(--kui-small-icon-size);
+  }
+
+  .control:is([data-size='sm'], [data-size='icon-sm']) {
+    --control-height: 1.5rem;
+    --control-font-size: var(--text-xs);
+    --control-icon-size: 0.875rem;
+  }
+
+  .control:is([data-size='lg'], [data-size='icon-lg']) {
+    --control-height: 2rem;
+    --control-font-size: var(--text-base);
+    --control-icon-size: 1.25rem;
+  }
+}

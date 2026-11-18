@@ -11,7 +11,12 @@ export const editorTheme = EditorView.theme({
     color: 'var(--input-foreground)',
   },
   '&.cm-focused': { outline: 'none' },
-  '.cm-scroller': { fontFamily: 'var(--font-mono)', overflow: 'auto', minHeight: '0' },
+  '.cm-scroller': {
+    fontFamily: 'var(--font-mono)',
+    overflow: 'auto',
+    minHeight: '0',
+    scrollbarWidth: 'thin',
+  },
   '.cm-content': { caretColor: 'var(--foreground)', minHeight: '8rem' },
   '.cm-gutters': {
     backgroundColor: 'var(--muted)',

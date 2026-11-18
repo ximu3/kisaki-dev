@@ -13,6 +13,7 @@
 | W04 通信机制             | [有限帧、连接寿命和两种真实通道的制品消费](w04/README.md)                                               |
 | W05 公共 UI | [完整组件、样式与浏览器／Electron 制品消费](w05/README.md) |
 | W06 存储与原生基础 | [正式 schema、迁移、文件资源和完整负载查询](w06/README.md) |
+| W07 应用运行与设置 | [窗口操作、任务、网络、资源和打包候选](w07/README.md) |
 | 原生 UI 能力             | [固定 Electron 环境的表单与浮层行为](native-ui/README.md)                                               |
 | UI 包接入                | [CSS Modules、表单提交与模态提示范围](desktop-ui/README.md)                                             |
 | 构建与开发               | [编译、输出与开发编排](w00/README.md#engineering-workflows) · [开发会话的失败与关闭](w00/development.md#shutdown) |
@@ -27,6 +28,14 @@
 | 时钟、分部匹配与截图     | [规则及原生探针](contract-closure/2026-10-22/README.md)                                                 |
 | 大集合与扫描报告         | [容量模型](capacity/README.md)                                                                          |
 | 原生工程与平台接口       | [Node-API／工程来源](native-projects/organization-sources.md) · [平台机制](platform-closure/closure.md) |
+
+<a id="test-retention-review"></a>
+
+## 自动用例保留复核
+
+2026-11-18 盘点当前工作区的 96 个 TypeScript 测试文件，覆盖根工程、工具包、六个公共包和桌面应用。依据[长期用例的取舍](../../design/engineering/conventions.md#test-retention)，按实际调用和宿主核对可观察行为。代理、存储、IPC 的状态和失败结果由所属层验证，独立消费保留最终声明、资源和真实宿主断言。
+
+取消应用流程中的控件像素检查、独立样板中的纯取像用例，以及主题词表在消费样板中重复的计数。将受控选择与受控浮层的必要断言并入已有浏览器流程，动态页签与首错定位的独立模拟夹具由本次复现取证。保留原生拖动、键盘重排、拒绝提交以及隐藏项顺序的用例，分别验证实际移动与业务采用。[公共控件验证](w05/README.md#choice-and-staged-fields) · [偏好在正式窗口的复核](w07/README.md#field-presentation-and-proxy)
 
 <a id="vantage"></a>
 

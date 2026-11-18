@@ -2,7 +2,7 @@
 
 import { createContext, createUniqueId, splitProps, useContext } from 'solid-js'
 import type { Accessor, JSX, ParentProps } from 'solid-js'
-import { assignRef, callHandler, classes } from '../../internal/dom'
+import { assignRef, callHandler, classes, createElementRef } from '../../internal/dom'
 import { createValue } from '../../internal/state'
 import { createPopup } from '../../internal/popup/controller'
 import type { PopupPlacement } from '../../internal/popup/controller'
@@ -14,10 +14,14 @@ import styles from './styles.module.css'
 /** Local popup identity, anchor and shared open-state ownership. */
 interface PopoverState {
   id: string
-  anchor: HTMLElement | undefined
+  anchor: Accessor<HTMLElement | undefined>
+  /** Registers the trigger for its mounted lifetime. */
+  bindAnchor: (node: HTMLElement) => void
 
   /** Reads the popover's current controlled or local open state. */
   open: Accessor<boolean>
+  /** Reports whether the caller owns visibility and must adopt a dismissal request. */
+  controlled: Accessor<boolean>
   /** Requests a new open state through the popover's value owner. */
   change: (value: boolean) => void
 }
@@ -28,7 +32,7 @@ const PopoverContext = createContext<PopoverState>()
 /**
  * Popover composition with controlled or locally initialized open state.
  *
- * Controlled callers adopt open-change requests, including native light dismissal.
+ * A controlled popup changes visibility when its caller adopts the open-change request.
  */
 export interface PopoverProps extends ParentProps {
   open?: boolean
@@ -45,9 +49,13 @@ export function Popover(props: PopoverProps): JSX.Element {
     () => props.defaultOpen ?? false,
     (next) => props.onOpenChange?.(next),
   )
+  const [anchor, bindAnchor] = createElementRef<HTMLElement>()
+  const controlled = () => props.open !== undefined
 
   return (
-    <PopoverContext.Provider value={{ id: createUniqueId(), open, change, anchor: undefined }}>
+    <PopoverContext.Provider
+      value={{ id: createUniqueId(), open, controlled, change, anchor, bindAnchor }}
+    >
       {props.children}
     </PopoverContext.Provider>
   )
@@ -62,7 +70,7 @@ export function PopoverTrigger(props: ButtonProps): JSX.Element {
     <Button
       {...rest}
       ref={(node) => {
-        state.anchor = node
+        state.bindAnchor(node)
         assignRef(local.ref, node)
       }}
       aria-expanded={state.open()}
@@ -91,7 +99,7 @@ export interface PopoverContentProps extends JSX.HTMLAttributes<HTMLDivElement> 
 }
 
 /**
- * Positions interactive content in a native popover with browser dismissal behavior.
+ * Positions interactive content in the native top layer and routes dismissal to its owner.
  *
  * Children retain the lifetime of the caller's mounted content.
  */
@@ -110,10 +118,10 @@ export function PopoverContent(props: PopoverContentProps): JSX.Element {
     /** Reads the currently mounted popover surface. */
     element: () => node,
 
-    /** Reads the current popover anchor for positioning. */
-    anchor: () => state.anchor!,
+    anchor: state.anchor,
     open: state.open,
     change: state.change,
+    controlled: state.controlled,
 
     /** Reads the caller's preferred placement with the shared default. */
     placement: () => local.placement ?? 'bottom-start',
@@ -123,7 +131,7 @@ export function PopoverContent(props: PopoverContentProps): JSX.Element {
     <div
       {...rest}
       id={state.id}
-      popover="auto"
+      popover={state.controlled() ? 'manual' : 'auto'}
       ref={(element) => {
         node = element
         assignRef(local.ref, element)
@@ -149,7 +157,9 @@ export function PopoverClose(props: ButtonProps): JSX.Element {
         callHandler(local.onClick, event)
         if (!event.defaultPrevented) {
           state.change(false)
-          state.anchor?.focus()
+          if (!state.open()) {
+            state.anchor()?.focus()
+          }
         }
       }}
     />

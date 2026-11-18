@@ -1,11 +1,12 @@
 /** @fileoverview Independent component workshop covers native controls, feedback and nested interactions. */
 
-import { createMemo, createSignal, lazy, Show } from 'solid-js'
+import { createSignal, lazy, Show } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { Info } from 'lucide-solid'
 import { render } from 'solid-js/web'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { Link } from '@kisaki3/desktop-ui/link'
+import { List, ListItem } from '@kisaki3/desktop-ui/list'
 import { Badge } from '@kisaki3/desktop-ui/badge'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Separator } from '@kisaki3/desktop-ui/separator'
@@ -28,9 +29,8 @@ import {
   FieldError,
   FieldGroup,
   FieldLegend,
-  FormFeedback,
 } from '@kisaki3/desktop-ui/field'
-import type { FieldIssue } from '@kisaki3/desktop-ui/field'
+import { createForm, Form, FormFeedback, type FieldIssue } from '@kisaki3/desktop-ui/form'
 import { Tabs, TabList, Tab, TabPanel } from '@kisaki3/desktop-ui/tabs'
 import { Collapsible } from '@kisaki3/desktop-ui/collapsible'
 import { ScrollArea } from '@kisaki3/desktop-ui/scroll-area'
@@ -90,6 +90,7 @@ window.fixture = {
   dismissToast: noop,
   rootToast: noop,
   setLongMessage: noop,
+  replaceMenuTrigger: noop,
   dispose: noop,
 } satisfies FixtureApi
 
@@ -149,6 +150,7 @@ function Controls(): JSX.Element {
         <NumberInput
           aria-label="Quantity"
           name="quantity"
+          unit="px"
           defaultValue="2"
           min="0"
           max="5"
@@ -203,7 +205,7 @@ function Controls(): JSX.Element {
               <FieldLabel>Query</FieldLabel>
               <FieldDescription>Native text, selection and undo.</FieldDescription>
             </div>
-            <Input name="query" defaultValue="seed" />
+            <Input name="query" defaultValue="seed" size="sm" htmlSize={18} />
           </Field>
           <Field id="notes">
             <FieldLabel>Notes</FieldLabel>
@@ -272,6 +274,21 @@ function Controls(): JSX.Element {
           </Button>
         </div>
       </form>
+      <form id="fixed-choices">
+        <RadioGroup label="Stored choice" name="stored" value="a">
+          <Radio value="a" label="First stored" />
+          <Radio value="b" label="Second stored" />
+        </RadioGroup>
+        <SegmentedControl
+          label="Stored view"
+          name="view"
+          value="first"
+          options={[
+            { value: 'first', label: 'First view' },
+            { value: 'second', label: 'Second view' },
+          ]}
+        />
+      </form>
       <Field id="external">
         <FieldLabel>External controlled field</FieldLabel>
         <Input
@@ -306,15 +323,10 @@ function Validation(): JSX.Element {
   /** Draft description edited by the synthetic field-feedback form. */
   const [description, setDescription] = createSignal('')
 
-  /** Whether the feedback fixture has crossed its explicit validation boundary. */
-  const [submitted, setSubmitted] = createSignal(false)
-  /** Focused field identity supplied to the feedback fixture. */
-  const [active, setActive] = createSignal<string | null | undefined>(null)
   /** Editable error detail used to exercise clipping and complete tooltip feedback. */
   const [long, setLong] = createSignal('Enter a title.')
   /** Current fixture tab used to verify retained form drafts and focus transitions. */
   const [tab, setTab] = createSignal('basic')
-  let feedback!: HTMLDivElement
 
   /**
    * Replaces field detail with a long multilingual sample carrying the requested language prefix.
@@ -324,22 +336,12 @@ function Validation(): JSX.Element {
       `${language}: ${'请填写可辨认的名称。請填寫可辨認的名稱。判別できる名前を入力してください。 Provide a recognizable title. '.repeat(8)}`,
     )
 
-  /** Current validation issues derived from submitted state and the same draft fields. */
-  const issues = createMemo<FieldIssue[]>(() =>
-    submitted()
-      ? [
-          ...(!title() ? [{ id: 'title', summary: 'Enter a title.', message: long() }] : []),
-          ...(!description()
-            ? [
-                {
-                  id: 'description',
-                  summary: 'Enter a description.',
-                },
-              ]
-            : []),
-        ]
-      : [],
-  )
+  function validate(): FieldIssue[] {
+    return [
+      ...(!title() ? [{ id: 'title', summary: 'Enter a title.', message: long() }] : []),
+      ...(!description() ? [{ id: 'description', summary: 'Enter a description.' }] : []),
+    ]
+  }
 
   /** Reveals the requested field's tab and focuses the field after the view updates. */
   const locate = (id: string) => {
@@ -347,35 +349,24 @@ function Validation(): JSX.Element {
     queueMicrotask(() => document.getElementById(id)?.focus())
   }
 
+  const form = createForm({
+    validate,
+    locate,
+    onSubmit: (submitter) => window.fixture.commitSample?.(submitter),
+  })
+  window.fixture.submitSample = () => form.submit()
+
   return (
     <section>
       <h2>Form feedback</h2>
-      <form
-        novalidate
-        onFocusIn={(event) =>
-          setActive(feedback.contains(event.target) ? undefined : event.target.id || null)
-        }
-        onFocusOut={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-            setActive(null)
-          }
-        }}
-        onSubmit={(event) => {
-          event.preventDefault()
-          setSubmitted(true)
-          const first = issues()[0]
-          if (first) {
-            locate(first.id)
-          }
-        }}
-      >
+      <Form state={form}>
         <Tabs value={tab()} onValueChange={setTab}>
           <TabList aria-label="Fields">
             <Tab value="basic">Basic</Tab>
             <Tab value="detail">Detail</Tab>
           </TabList>
           <TabPanel value="basic">
-            <Field id="title" required invalid={issues().some((issue) => issue.id === 'title')}>
+            <Field id="title" required>
               <div class="field-heading">
                 <FieldLabel>Title</FieldLabel>
                 <FieldDescription>A stable name for this sample.</FieldDescription>
@@ -385,11 +376,7 @@ function Validation(): JSX.Element {
             </Field>
           </TabPanel>
           <TabPanel value="detail">
-            <Field
-              id="description"
-              required
-              invalid={issues().some((issue) => issue.id === 'description')}
-            >
+            <Field id="description" required>
               <FieldLabel>Description</FieldLabel>
               <Textarea value={description()} onValueChange={setDescription} />
               <FieldError>Enter a description.</FieldError>
@@ -398,18 +385,12 @@ function Validation(): JSX.Element {
         </Tabs>
         <FormFeedback
           id="feedback"
-          ref={(node) => {
-            feedback = node
-          }}
-          issues={issues()}
-          activeFieldId={active()}
           summary={(count) =>
             count === 1 ? '1 field needs attention' : `${count} fields need attention`
           }
-          onLocate={locate}
         />
         <Button type="submit">Save sample</Button>
-      </form>
+      </Form>
     </section>
   )
 }
@@ -440,6 +421,7 @@ function Candidate(): JSX.Element {
           <Combobox
             name="candidate"
             searchLabel="Search candidates"
+            clearSearchLabel="Clear search"
             options={options()}
             defaultValue={{ value: 'a', label: 'Alpha' }}
             emptyMessage="No choices"
@@ -453,6 +435,7 @@ function Candidate(): JSX.Element {
             multiple
             name="related"
             searchLabel="Search related choices"
+            clearSearchLabel="Clear search"
             options={options()}
             defaultValue={[{ value: 'a', label: 'Alpha' }]}
             emptyMessage="No choices"
@@ -476,20 +459,26 @@ function Interactions(): JSX.Element {
   const [radio, setRadio] = createSignal('one')
   /** Fixture switch controlling whether a requested interaction is prevented. */
   const [block, setBlock] = createSignal(false)
+  const [dialog, setDialog] = createSignal(false)
+  const [help, setHelp] = createSignal(false)
+  const [allowHelpClose, setAllowHelpClose] = createSignal(false)
+  const [triggerPosition, setTriggerPosition] = createSignal<'near' | 'far'>('near')
+  window.fixture.replaceMenuTrigger = setTriggerPosition
 
   return (
     <section>
       <h2>Interactions</h2>
       <div class="row">
-        <Dialog>
+        <Dialog
+          open={dialog()}
+          onOpenChange={(open) => {
+            if (open || !block()) {
+              setDialog(open)
+            }
+          }}
+        >
           <DialogTrigger>Open dialog</DialogTrigger>
-          <DialogContent
-            onCloseRequest={(event) => {
-              if (block()) {
-                event.preventDefault()
-              }
-            }}
-          >
+          <DialogContent>
             <DialogHeader closeLabel="Close editor">
               <DialogTitle>Edit sample</DialogTitle>
             </DialogHeader>
@@ -497,7 +486,17 @@ function Interactions(): JSX.Element {
               <Candidate />
               <Checkbox checked={block()} onCheckedChange={setBlock} label="Block close" />
               <Menu>
-                <MenuTrigger variant="outline">Actions</MenuTrigger>
+                <Show when={triggerPosition()} keyed>
+                  {(position) => (
+                    <MenuTrigger
+                      variant="outline"
+                      data-menu-trigger={position}
+                      style={{ 'margin-inline-start': position === 'far' ? '8rem' : undefined }}
+                    >
+                      Actions
+                    </MenuTrigger>
+                  )}
+                </Show>
                 <MenuContent aria-label="Actions">
                   <MenuItem
                     onSelect={() => {
@@ -548,13 +547,21 @@ function Interactions(): JSX.Element {
             </DialogBody>
           </DialogContent>
         </Dialog>
-        <Popover>
+        <Popover
+          open={help()}
+          onOpenChange={(open) => {
+            if (open || allowHelpClose()) {
+              setHelp(open)
+            }
+          }}
+        >
           <PopoverTrigger variant="outline">Help</PopoverTrigger>
           <PopoverContent>
             <p>Contextual help remains inside the current document.</p>
             <Button>Help action</Button>
           </PopoverContent>
         </Popover>
+        <Button onClick={() => setAllowHelpClose(true)}>Allow help dismissal</Button>
         <Tooltip>
           <TooltipTrigger variant="ghost" aria-label="Information">
             <Info />
@@ -658,6 +665,9 @@ function App(): JSX.Element {
               </TableBody>
             </Table>
           </ScrollArea>
+          <List>
+            <ListItem title="Sample item" description="Read-only entry" icon={<Info />} />
+          </List>
           <Image alt="Unavailable sample" src="/missing.png" />
           <EmptyState
             heading="No additional samples"

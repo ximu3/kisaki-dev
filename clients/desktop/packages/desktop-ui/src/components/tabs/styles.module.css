@@ -1,13 +1,47 @@
 /* Tabs retain panel ownership and focus independently of their shared segmented appearance. */
 
+.list {
+  composes: native from '../../internal/scrollbars.module.css';
+}
+
 @layer components {
+  .list {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .list[aria-orientation='horizontal'] {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .list[aria-orientation='vertical'] {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tab {
+    flex: none;
+    padding-inline: 0.5rem;
+    font-size: var(--text-xs);
+  }
+
+  .list[aria-orientation='vertical'] .tab {
+    justify-content: flex-start;
+    min-height: var(--kui-control-height);
+    height: auto;
+    padding-block: 0.375rem;
+    text-align: start;
+    line-height: 1.25;
+    white-space: normal;
+  }
+
   .panel {
     padding-block: 0.75rem;
   }
   .panel:focus-visible {
     outline: var(--kui-focus-width) solid var(--ring);
     animation: var(--kui-focus-enter);
-    outline-offset: -2px;
+    outline-offset: var(--kui-focus-inset);
   }
   .panel[hidden] {
     display: none;

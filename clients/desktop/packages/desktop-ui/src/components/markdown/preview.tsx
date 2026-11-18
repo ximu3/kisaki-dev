@@ -46,9 +46,13 @@ export function MarkdownPreview(props: MarkdownPreviewProps): JSX.Element {
   const markdown = new MarkdownIt({ html: false, linkify: true, breaks: true, typographer: true })
     .use(footnote)
     .use(tasklist, { disabled: true, label: true })
-  markdown.core.ruler.after('task_list', 'preview_ids', (state) => {
+  markdown.core.ruler.after('task_list', 'preview_attributes', (state) => {
     for (const token of state.tokens) {
       for (const child of token.children ?? []) {
+        const title = child.attrIndex('title')
+        if (title !== -1) {
+          child.attrs?.splice(title, 1)
+        }
         for (const attribute of ['id', 'for']) {
           const value = child.attrGet(attribute)
           if (value) {
@@ -69,8 +73,7 @@ export function MarkdownPreview(props: MarkdownPreviewProps): JSX.Element {
       return `<span>${alt}</span>`
     }
 
-    const title = String(token.attrGet('title') ?? '')
-    return `<img src="${markdown.utils.escapeHtml(resolved)}" alt="${alt}"${title ? ` title="${markdown.utils.escapeHtml(title)}"` : ''} loading="lazy">`
+    return `<img src="${markdown.utils.escapeHtml(resolved)}" alt="${alt}" loading="lazy">`
   }
 
   /** Rendered Markdown HTML derived from the current text and this preview's document identity. */

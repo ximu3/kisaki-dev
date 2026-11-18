@@ -70,13 +70,15 @@ export function bindTextControl(
     })
   })
 
-  onFormReset(element, () => {
+  const flushReset = onFormReset(element, () => {
     change(props.defaultValue ?? '')
     sync()
   })
 
   return () => {
-    change(element().value)
+    const next = element().value
+    flushReset()
+    change(next)
     untrack(sync)
   }
 }

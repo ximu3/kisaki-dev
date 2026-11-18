@@ -39,6 +39,11 @@ export function registerModal(node: HTMLDialogElement): () => void {
   }
 }
 
+/** True while native close restores focus to the invoker, before the closing host is released. */
+export function restoringModalFocus(document: Document): boolean {
+  return documents.get(document)?.stack.at(-1)?.open === false
+}
+
 /**
  * Subscribes to modal-host changes and immediately delivers the current host.
  *

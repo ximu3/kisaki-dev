@@ -37,13 +37,15 @@ export function bindCheckedControl(props: CheckedValueProps, element: Accessor<H
     })
     createEffect(sync)
   })
-  onFormReset(element, () => {
+  const flushReset = onFormReset(element, () => {
     change(props.defaultChecked ?? false)
     sync()
   })
 
   return () => {
-    change(element().checked)
+    const next = element().checked
+    flushReset()
+    change(next)
     untrack(sync)
   }
 }

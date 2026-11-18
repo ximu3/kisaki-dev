@@ -33,6 +33,7 @@ import {
 } from '@kisaki3/desktop-ui/drag'
 import type { Edge } from '@kisaki3/desktop-ui/drag'
 import type {} from './api.js'
+import { SourceOrder } from './source-order.js'
 
 /** Synthetic chart coordinate with two plotted series values. */
 type Datum = { x: number; y: number; z: number }
@@ -245,6 +246,7 @@ export default function Resources(): JSX.Element {
         Drop target{edge() && <DropIndicator edge={edge()!} gap={10} />}
       </div>
       <DragFeedback>{feedback()}</DragFeedback>
+      <SourceOrder />
     </div>
   )
 }

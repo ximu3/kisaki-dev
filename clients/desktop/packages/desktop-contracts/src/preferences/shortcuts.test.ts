@@ -2,7 +2,7 @@
 
 import { expect, test } from 'vite-plus/test'
 import { parseAccelerator, findShortcutConflicts, shortcutKeys } from './shortcuts'
-import type { ShortcutPreferences, ShortcutsPreferences } from './shortcuts'
+import type { ShortcutsPreferences } from './shortcuts'
 import { DesktopError } from '../errors'
 
 test('accelerators preserve supported aliases and reject invalid combinations', () => {
@@ -16,8 +16,8 @@ test('accelerators preserve supported aliases and reject invalid combinations', 
 })
 
 test('conflicts follow Electron modifier aliases and implicit shifted key codes', () => {
-  const preferences = Object.fromEntries<ShortcutPreferences>(
-    shortcutKeys.map((key) => [key, { enabled: false, accelerators: [] }]),
+  const preferences = Object.fromEntries<readonly string[]>(
+    shortcutKeys.map((key) => [key, []]),
   ) as ShortcutsPreferences
 
   for (const [first, second, conflicts] of [
@@ -29,8 +29,8 @@ test('conflicts follow Electron modifier aliases and implicit shifted key codes'
   ] as const) {
     const bindings = {
       ...preferences,
-      'main.search': { enabled: true, accelerators: [first] },
-      'main.preferences': { enabled: true, accelerators: [second] },
+      'main.search': [first],
+      'main.preferences': [second],
     }
     for (const platform of ['win32', 'linux', 'darwin'] as const) {
       expect(findShortcutConflicts(bindings, platform)).toHaveLength(conflicts)

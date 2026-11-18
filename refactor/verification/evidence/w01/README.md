@@ -10,6 +10,14 @@
 
 NodeNext 与 Bundler 消费者通过公开类型使用 chrome；浏览器验证 bg-chrome 与 text-chrome-foreground 随运行变量更新，既有亮暗、零圆角、缩放与资源清理检查通过。图表词表为 chart-1 至 chart-5，五项 Tailwind 工具类分别随对应主题值更新，UI 图表使用同一套系列色。消费者截图已人工核对。下方历史结果保留各自版本与运行范围。
 
+<a id="zero-lengths"></a>
+
+### 零长度解析与实际呈现
+
+2026-11-19 在 Windows x64 通过工作区检查和 4 项外观包独立制品测试。公开入口将圆角、基础字号和字距的无单位零解析为 0px。行高的无单位零仍为数字。Chromium 取得根字号 0px，四档派生圆角依次为 0、0、0、4 CSS px。
+
+Windows x64 桌面有限构建 `822e67cf-9587-448f-b59c-3d0cc220fd6c` 从隔离资料读取基础字号和圆角均保存为无单位零的主题。应用在 75% 界面缩放下正常启动并退出。文档取得 0px 的根字号和上述四档圆角，原生标题栏采用 24 DIP。[外观值合同](../../../design/domains/appearance.md#tokens) · [标题栏验证](../w07/README.md#titlebar-scale)
+
 ## 交付与本机结果
 
 | 范围         | 实际结果                                                                                                                                                                                                 |

@@ -4,7 +4,7 @@
 
 ## 交付与检查
 
-组件从 31 个家族子路径导出。家族拥有自己的部件、Props 与交互，`src/internal` 拥有共同度量的使用、输入与动作表面、选项行、选项集合、Tooltip、模态宿主及定位。所有 CSS Modules 的实际类名引用与家族样式归属已逐项核对。
+组件从 32 个家族子路径导出。家族拥有自己的部件、Props 与交互，`src/internal` 拥有共同度量的使用、输入与动作表面、选项行、选项集合、Tooltip、模态宿主及定位。所有 CSS Modules 的实际类名引用与家族样式归属已逐项核对。
 
 | 范围 | 已交付与实际验证 |
 | --- | --- |
@@ -60,3 +60,83 @@ UI 制品为包内 `out/package/package.tgz`。`test-results/consumers` 保存�
 | 合同类型 | 构建后声明的 NodeNext 与 Bundler 消费通过。已有消费夹具核对读取与写入保持对象种类、主题来源、资源归属和请求键；动态集合与可选输入的结果项保留可能缺席的类型。 |
 
 这些运行支持当前桌面 Chromium 能力基线。其他浏览器引擎、SSR、产品窗口与扩展 Webview 的完整业务接入分别按实际支持范围和所属工作包处理；该包尚未公开发布，成篇项目文档归 W23。
+
+表单重置另在 Electron 45.3.2 与原生输入框同窗核对。调用 `form.reset()` 后同一轮输入新值，公共 Input 和原生字段都保持新值，公共回调按重置、后续输入的顺序交付。持续复验见[浏览器表单用例](../../../../clients/desktop/packages/desktop-ui/tests/browser/forms.test.ts)。
+
+<a id="control-scale"></a>
+
+## 单行控件的实际外高
+
+2026-11-17 重写前，在 Windows x64、Chromium 156.0.8078.4、设备比例 1.25 下运行工作区公共包的独立 workshop，默认主题根字号 14px。在实际元素上读取 `getBoundingClientRect().height` 和计算字号，Select 取整框，Checkbox 与 Switch 取带文字的整行。常规 Input、Select、Button、Checkbox 和 Switch 均为 24.50px / 12.25px。
+
+同一消费者成对渲染文字与图标 Button。xs 的实际外高为 17.75 / 17.50px，sm 为 21.25 / 21px，默认档为 24.50 / 24.50px，lg 为 30.88 / 28px。文字按钮的行高、上下 padding 和边框之和可超过 min-height。旧工程 `e311fe7c` 的 Button 使用 `h-8` 和 `size-8` 定义同档两种按钮的外高，清理宿主覆盖之外，还需在公共动作样式修正该差异。[正式窗口对照](../w07/README.md#ui-review)
+
+### 表单与固定 Footer 的结构验证
+
+在 Chromium 156.0.8078.4 中用原生 dialog 和表单建立独立结构试件。视口 960 × 560 CSS px，设备比例 1.25。Header 下的 form 是可收缩纵列，内部有 40 行内容的 Body 和同级 Footer。在根字号 14px 与 28px 两种情况下，只有 Body 产生纵向滚动，将其滚到末尾时 Footer 顶边均保持原位。两个提交按钮的 form 均指向当前表单。标记 novalidate 后，对空必填输入按 Enter 收到普通保存的 submitter，且输入的 validity 仍无效。填入值、点击另一提交按钮后收到对应 submitter 和有效状态。该试件验证布局与浏览器提交语义。公共 Form 的异步提交与正式接入见[重写后的验证](#rewrite)。
+
+<a id="rewrite"></a>
+
+## 公共 Form 与控件尺度复验
+
+在 Windows x64 的 Chromium 中，通过构建后的 `/button` 和普通 CSS 并排渲染同档文字与图标按钮，设备像素比 1.25。下表为 `getBoundingClientRect().height` 的 CSS px 实测值，每对按钮外高相同。
+
+| 应用缩放 | 根字号 | xs | sm | default | lg |
+| --- | --- | --- | --- | --- | --- |
+| 75% | 10.5 | 13.125 | 15.75 | 18.375 | 21 |
+| 100% | 14 | 17.5 | 21 | 24.5 | 28 |
+| 200% | 28 | 35 | 42 | 49 | 56 |
+
+`/form` 的浏览器用例从原生按钮发起一次延迟写入，在途调用两次实例的 `submit()`。两个调用取得同一 Promise，写入只收到一次原按钮。写入拒绝时，调用方和表单反馈取得同一错误。字段定位、跨页签修正、长反馈、原生 reset 与选择器镜像由[表单与选择用例](../../../../clients/desktop/packages/desktop-ui/tests/browser)覆盖。本机公共包完整验证通过，包括 10 项浏览器用例和 5 项独立制品消费用例，覆盖 NodeNext 与 Bundler 声明、普通 CSS、Tailwind 及沙箱 Electron。正式窗口中保存期间继续输入、关闭确认和嵌套焦点返回见 [W07](../w07/README.md#rewrite)。
+
+<a id="management-controls"></a>
+
+## 管理界面使用的公共控件
+
+公共入口共 33 个家族。正式任务和字体目录使用 Toolbar 与 ToolbarRow。Windows x64 上公共包完整验证通过，包含 10 项浏览器用例和 5 项独立制品消费用例。搜索框、选择器和工具栏动作采用所在区域的尺度。Chromium 用例通过实际点击核对搜索清除后的焦点，以及数字单位的可访问描述和原生提交值。日期和字体名单接入同一虚拟视口，候选选择随实际滚动和键盘高亮运作。
+
+Windows Electron 的强制配色复验覆盖竖排、横排页签和日历选中日。应用窗口在 100% 下的任务工具栏和 200% 的页签、日期格见[实测记录](../w07/README.md#management-ui)。
+
+<a id="shared-dialogs"></a>
+
+## 统一对话框与管理条目
+
+公共包共 34 个家族。新增的 ListItem 从正式子路径消费，位于独立样板和桌面管理入口中。带底色的 Toolbar、Dialog 标题栏与底部操作带共用主题色。Alert 与 Badge 采用原有公共样式。Windows x64 的公共包完整验证通过，包括浏览器 10 项和独立制品消费 5 项。正式窗口的尺寸与交互见[旧版实机对照](../w07/README.md#shared-dialogs)。
+
+## 控件的尺寸变体
+
+在独立 Chromium 页面中从构建产物挂载四档文字按钮、图标按钮、输入和选择器，用普通 CSS 在 75%、100%、200% 下测量。100% 时四档外高依次为 17.5、21、24.5、28 CSS px，主图标为 10.5、12.25、14、17.5 CSS px。逐档核对了搜索与清除图标、选择器箭头、日期和快捷键图标。普通输入和搜索输入的 `htmlSize={17}` 在四档都读回原生 `input.size === 17`。
+
+Windows x64 公共包验证通过，含 12 项 Chromium 用例和 5 项独立制品消费用例。独立消费者覆盖普通 CSS、Tailwind、暗色、视口缩放及沙箱 Electron。正式任务查询和页签的尺寸见[窗口复验](../w07/README.md#single-control-scale)。
+
+## 更换浮层的触发节点
+
+Chromium 用例在同一个菜单实例中替换触发按钮，分别核对替换后打开和打开时替换。菜单对齐新按钮，菜单项焦点保留。向新按钮发出 Escape 后，菜单关闭，焦点回到新按钮，外层 Dialog 保持开启。
+
+独立 Vite 热更新试件连续两次只替换按钮组件，第二次在菜单打开时更新。按钮每次右移 40 CSS px，菜单位置从 79.2 移至 119.2 和 159.2 CSS px，保留右侧底对齐。原生 `beforetoggle` 依次记录三次打开的当前按钮，菜单 DOM 保持同一个实例。最后按 Escape 回到最新按钮。修正前，同一类替换会使菜单落在左上角的 4、8 CSS px。 [浮层合同](../../../design/ui/package.md#overlays)
+
+<a id="choice-and-staged-fields"></a>
+
+## 选项行、表单定位与录入控件
+
+2026-11-18 在 Windows x64 的 Chromium 样板中验证。小号复选、开关和单选的带文字选项行外高均为 21 CSS px，尺寸由公共档位控制。受控单选和分段选择拒绝修改时，可见选中值和原生 FormData 都保留调用方值。移除非受控页签的当前项时，相邻面板获得选中状态与键盘入口。带恢复动作的必填字段提交时，焦点落在真实输入框。受控 Dialog 拒绝关闭请求时仍保有模态和焦点。
+
+受控 Popover 拒绝外点时，仍停留在顶层，触发器保持展开状态。按下在面板内、释放在面板外的指针操作保留浮层。采纳外点请求时焦点停留在新目标，采纳 Escape 时回到触发按钮。修正时的 Chromium 实测覆盖这些路径。
+
+公共快捷键录入与多选共用单行可滚动标签。Windows 真实桌面窗口核对了录入期间的预览、重置、确认以及七组绑定的滚动和高度。公共包在本机通过 14 项 Chromium 用例和 5 项独立制品消费用例。[正式窗口验收](../w07/README.md#work-usage-and-shortcut-popovers)
+
+随后在独立 Chromium 样板中从构建产物挂载 MultiSelect 与 ShortcutInput，比较相同文字的已选标签。默认比例下，两者的文字均为 10.5 CSS px，标签高 15.75 CSS px、外框高 24.5 CSS px，底色和 2 CSS px 圆角一致。精简后的 12 项 Chromium 用例逐文件运行通过，4 项独立制品消费用例通过。[自动用例保留复核](../README.md#test-retention-review)
+
+调整标签高度后，从构建产物复测。默认档两种控件的标签高 17.5 CSS px，外框高 24.5 CSS px。四个尺寸档位中，标签均与外框垂直居中。
+
+## 次要文字与高亮配色
+
+在 Windows x64 的无头 Chromium 中挂载公共 UI 构建产物。默认明暗和自定义主题均逐项核对空状态、字段说明和占位文字的次要文字色，以及次要按钮和徽标的配套前景与底色。候选行、日期格和搜索清除按钮高亮时使用配套前景，强制配色下候选行说明跟随系统高亮文字色。
+
+按浏览器计算的前景和叠加后的底色估算对比度。默认暗色主题下，表格悬停行的次要文字从约 4.12∶1 提升至 5.45∶1。自定义暗色主题采用亮色实底高亮时，候选行的说明从约 1.81∶1 提升至 16.37∶1。 [配色合同](../../../design/ui/package.md#styles) · [对比度计算](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
+
+<a id="rewrite-consumers"></a>
+
+## 重写后的独立制品消费
+
+2026-11-19，Windows x64 通过公共 UI 的 12 项 Chromium 用例及 4 项独立制品消费用例。Linux x64 的公共包完整验证在提交 `95b0c86a` 通过。W07 使用同一修订验证了六个原生桌面目标。[公共包 CI](https://github.com/ximu3/kisaki-dev/actions/runs/44350446933/job/134964567956) · [六目标实际消费](../w07/README.md#ui-rewrite-six-targets)

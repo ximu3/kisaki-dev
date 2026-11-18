@@ -20,7 +20,9 @@ test('worker operation medians meet their budget and the window reaches main dur
   })
 
   const page = await desktop.firstWindow()
-  await page.locator('#root').waitFor({ state: 'attached' })
+  await page.getByRole('button', { name: 'Task center', exact: true }).click()
+  const refresh = page.getByRole('button', { name: 'Refresh', exact: true })
+  await refresh.waitFor()
 
   let measuringStorage = true
   const latencies: number[] = []
@@ -35,14 +37,41 @@ test('worker operation medians meet their budget and the window reaches main dur
     (async () => {
       while (measuringStorage) {
         const start = performance.now()
-        await page.evaluate(() => {
-          const carrier = window as typeof window & {
-            fixture: {
-              /** Resolves when main services this window's IPC probe. */
-              ping(): Promise<boolean>
+        await refresh.evaluate((button: HTMLButtonElement) => {
+          // The task center refresh reads available types through the real window endpoint on every OS.
+          return new Promise<void>((resolve, reject) => {
+            const send = (
+              Object.getOwnPropertyDescriptor(MessagePort.prototype, 'postMessage') as {
+                value: MessagePort['postMessage']
+              }
+            ).value
+            MessagePort.prototype.postMessage = function (this: MessagePort, frame: unknown) {
+              if (
+                frame &&
+                typeof frame === 'object' &&
+                'method' in frame &&
+                frame.method === 'tasks.types' &&
+                'id' in frame
+              ) {
+                MessagePort.prototype.postMessage = send
+                /** Completes the latency sample only for the matching task-type response. */
+                const reply = (event: MessageEvent<{ id?: number; type: string }>) => {
+                  if (event.data.id !== frame.id) {
+                    return
+                  }
+                  this.removeEventListener('message', reply)
+                  if (event.data.type === 'success') {
+                    resolve()
+                  } else {
+                    reject(new Error('Task type query failed'))
+                  }
+                }
+                this.addEventListener('message', reply)
+              }
+              send.call(this, frame)
             }
-          }
-          return carrier.fixture.ping()
+            button.click()
+          })
         })
         latencies.push(performance.now() - start)
         await setTimeout(100)

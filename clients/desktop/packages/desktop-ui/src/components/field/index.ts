@@ -2,6 +2,9 @@
 
 export {
   Field,
+  FieldContent,
+  FieldHeader,
+  FieldAction,
   FieldLabel,
   FieldDescription,
   FieldError,
@@ -9,4 +12,3 @@ export {
   FieldLegend,
   type FieldProps,
 } from './parts'
-export { FormFeedback, type FormFeedbackProps, type FieldIssue } from './feedback/control'

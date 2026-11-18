@@ -35,8 +35,11 @@ ${lines.join('\n')}
 /** Key of one message in the English authoring baseline. */
 export type MessageKey = keyof MessageArguments
 
+/** Keys that need no argument object, including dynamically selected labels. */
+type PlainMessageKey = { [K in MessageKey]: MessageArguments[K] extends never ? K : never }[MessageKey]
+
 /** Correlated key and argument tuples for one complete translation call. */
-export type TranslationCall = { [K in MessageKey]: MessageArguments[K] extends never ? [key: K] : [key: K, values: MessageArguments[K]] }[MessageKey]
+export type TranslationCall = [key: PlainMessageKey] | { [K in Exclude<MessageKey, PlainMessageKey>]: [key: K, values: MessageArguments[K]] }[Exclude<MessageKey, PlainMessageKey>]
 
 /** Typed message formatter returning plain text with literal markup. */
 export type Translate = (...args: TranslationCall) => string

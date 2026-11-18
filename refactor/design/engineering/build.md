@@ -41,7 +41,7 @@ clients/desktop/app/out/<target>/
 
 kana 按[发行资产清单](../projects/kana/distribution.md#integration-assets)保留版本身份及完整相对目录，复制真实包中的 worker、Wasm、样式、字体和数据，并核对摘要。app/paths 与窗口所属 session 的受控协议共同提供同源 assetsBaseUrl；JS／Wasm 的缺失请求不能回退成 HTML。正式包与应用使用同一份已验收资产，不从另一份全局缓存补齐文件。
 
-build 生成程序，package 生成交付制品，publish 才写入外部平台。正式产品打包使用明确的 allowlist，排除 fixture、工具源码、开发地址、.local 和秘密。工程载体由独立的 build:fixture 与 package:fixture 入口构建，并以 testOnly 标记测试制品。必需资源缺失时构建失败，不能补用旧输出。
+build 生成程序，package 生成交付制品，publish 才写入外部平台。正式产品打包使用明确的 allowlist，排除 fixture、工具源码、开发地址、.local 和秘密。源码与隔离测试候选都使用正式应用输入。Linux 打包按载体身份把 `desktopName` 加入应用清单，Electron 启动使用同一桌面项名。制品验收核对中性输入的摘要、该身份字段和最终清单的完整字节。package:candidate 以 testOnly 标记测试制品；开发工具用自己的可编辑样板验证热更新与编译恢复。必需资源缺失时构建失败，不能补用旧输出。
 
 clean 清理任务声明的输出；缓存清理、开发资料重置和发行制品留存各有独立入口。用户内容、全局 Git 配置和个人工具保持原样。发行文件另行保存稳定副本，签名与时间戳等处理按实际机制记录可复现范围。
 
@@ -119,6 +119,16 @@ macOS 的 DMG 用于首次取得 .app。更新 ZIP 包含同版本、同架构�
 AppImage 是可移动的单文件，支持应用内更新。交付必须验证系统库、FUSE、runtime、权限和沙箱条件，并按 [AppImage 系统要求](https://docs.appimage.org/introduction/concepts.html)、[FUSE 说明](https://docs.appimage.org/user-guide/troubleshooting/fuse.html)与[启动兼容政策](#appimage-compatibility)处理。
 
 官方 HTTPS 与摘要用于下载内容一致性检查，发布者身份另按对应签名机制判断。准备、校验和安装绑定同一版本、目标与摘要，底层工具原有校验保持。应用下载、macOS 代码身份及扩展 registry 签名各自承担明确职责，所用密钥独立。
+
+<a id="notification-activation"></a>
+
+### 通知激活身份
+
+W07 提供运行端接收器。W20 随载体完成安装登记、升级与卸载，并分别用运行中的应用和已退出的应用核对一次真实点击。两种身份分别使用 `me.kisaki` 与 `me.kisaki.dev`，验收载体使用独立资料目录。
+
+- Windows 快捷方式登记 AUMID 和通知 COM 类。正式 CLSID 为 `{FA2B87ED-E2BE-44D5-A0D4-845CE29A35FB}`，开发 CLSID 为 `{1982CC5E-9D53-4DDE-B53D-226C1B20E8A9}`。LocalServer32 的命令以带引号的实际可执行路径开头，开发载体另附所需启动参数。运行端核对登记指向本程序后连接类工厂，接收 toast 的 launch 参数。未登记的程序报告通知不可用。[Windows 通知激活回调](https://learn.microsoft.com/en-us/windows/win32/api/notificationactivationcallback/nn-notificationactivationcallback-inotificationactivationcallback)
+- macOS 使用已签名 .app 的 bundle 身份和系统通知许可。主进程在启动完成前连接 User Notifications 委托，默认点击从通知请求标识恢复目标。应用退出时释放委托，已投递的通知留在通知中心。[Apple 通知响应](https://developer.apple.com/documentation/usernotifications/unusernotificationcenterdelegate)
+- Linux 以应用 ID 命名可激活的 D-Bus 服务和 .desktop。服务命令向实际可执行程序传入 `--gapplication-service`，桌面入口声明 `DBusActivatable=true`。对象路径为 `/me/kisaki` 或 `/me/kisaki/dev`。通知 portal 把 `app.open-notification` 的字符串目标交给 `org.freedesktop.Application.ActivateAction`。同一对象的 Activate 和 Open 分别处理普通启动与已有公开链接。未登记的载体可在运行期间用 libnotify 接收点击，AppImage 的用户登记沿用系统集成的明确选择。[XDG 通知动作](https://flatpak.github.io/xdg-desktop-portal/docs/doc-org.freedesktop.portal.Notification.html) · [桌面应用激活接口](https://specifications.freedesktop.org/desktop-entry-spec/latest/dbus.html)
 
 <a id="appimage-compatibility"></a>
 

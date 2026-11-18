@@ -16,6 +16,7 @@ export {
   ChevronUp,
   X,
   GripVertical,
+  Keyboard,
   LoaderCircle,
   Search,
   Minus,

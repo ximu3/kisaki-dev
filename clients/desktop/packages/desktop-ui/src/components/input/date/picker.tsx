@@ -33,7 +33,7 @@ interface PickerProps extends CalendarProps {
   panelRef: (node: HTMLDivElement) => void
   id: string
   /** Returns the button used to position and return focus from the calendar. */
-  anchor: () => HTMLButtonElement
+  anchor: () => HTMLButtonElement | undefined
   value: string
   /** Checks whether a day satisfies the owning editor's native constraints. */
   allowed: (date: string) => boolean

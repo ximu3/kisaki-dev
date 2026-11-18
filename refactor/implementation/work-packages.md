@@ -10,11 +10,15 @@
 
 一个工作包可以按依赖分步实现。全部交付项完成后，才能把该包登记为已完成。接口声明、代码注释、运行文案、发行说明和许可材料随实现维护；成篇项目文档由 W23 负责。后续修改属于缺陷修复、合同维护或新需求，已知的未实现操作和占位结果仍记为当前工作包未完成。
 
+**逻辑分段纳入每个工作包的完成判定。** 交付前按[分段规则](../design/engineering/conventions.md#logical-sections)人工顺读变更涉及的完整声明、流程和文档示例。发现独立职责混在一起或同一步骤被拆散时，在本包内修正。
+
+有界面的工作包通过正式入口交付所属页面、Dialog 或控件。实施前从旧项目的 UI 规范、组件与界面参考布局、层次、密度和操作路径。业务操作和预期结果取自当前规格，新增界面参照同类工作表面。各包以默认 100% 应用缩放完成[既有界面对照](../verification/scenarios/ui.md#baseline)，再按场景复验缩放边界。W22 核对跨功能衔接，W24 在整套候选上复核体验。
+
 本体业务先通过 desktop-contracts 定义的值、操作与参与接口实现，完成真实存储、资源和窗口路径。提供者、处理器及识别器通过本体登记接口验证完整调用、取消与释放；W18 消费这些已有操作，联合完成 SDK、宿主及全部跨进程业务接入。业务实现与扩展接入各有自己的完成边界。
 
 实现与适用验收、项目文档和对外发布分别记录。W24 汇总固定候选版本的发布前整体验收，W25 完成本轮首次公开发行与发布核验，整体完成条件见[最终交付](../verification/acceptance.md#completion)。签署与隔离部署随所属工程取得证据，正式仓库接续、公开发布和生产服务切换按[首发规则](../design/engineering/releases.md#first-release)及已有授权执行。
 
-所有交付遵守[共同原则、终态实现与可读性](../design/engineering/conventions.md#quality)、[编码风格与逻辑分段](../design/engineering/conventions.md#logical-sections)、[代码与资源规则](../design/engineering/conventions.md#coding-style)、[界面文案](../design/ui/components.md#copy)和[文档归属](../design/engineering/documentation.md#owners)。源码、测试、工具、配置和设计文档均须按职责顺读检查，格式工具通过后仍核对语义分段。
+所有交付遵守[共同原则、终态实现与可读性](../design/engineering/conventions.md#quality)、[代码与资源规则](../design/engineering/conventions.md#coding-style)、[界面文案](../design/ui/components.md#copy)和[文档归属](../design/engineering/documentation.md#owners)。
 
 验证按[实际影响](../verification/acceptance.md#verification-scope)选择，目标环境按[统一交付边界](../verification/acceptance.md#runtime-coverage)判定，证据按[实际用途](../design/engineering/documentation.md#evidence)保留。
 
@@ -154,7 +158,7 @@ W23 随各对象成熟度分批编写文档，最终采用已经验证的实现�
 
 依赖：W01 与 Solid 1.9 工程基线。
 
-交付：[公开 UI 能力](../design/ui/package.md#families)的完整组件、组合、原生表单与反馈、键盘与焦点、浮层、Toast、图表、Markdown、拖拽、样式及资源寿命。通用控件自行实现，专用能力按既定工具接入；按组件家族提供子路径和 CSS Modules 构建后的普通 CSS，默认样式组合视觉基础。
+交付[完整的公共 UI 家族](../design/ui/package.md#families)。Form、Field 和控件统一表单提交、关联与反馈，Dialog 统一区域、焦点和关闭，Toaster 统一文档队列。包维护控件密度、键盘交互、图表、Markdown、拖拽、样式与资源寿命，按家族子路径交付声明与 CSS Modules 构建后的普通 CSS。
 
 验收：浏览器行为、完整视觉状态、声明、无 Tailwind 与宿主工具类消费、独立资源清理分别成立，满足 A18–A20、A23、A29、A31 的[公共组件与反馈断言](../verification/scenarios/ui.md#ui-package)。支持范围和真实环境由[视觉交付](../design/ui/package.md#delivery)核对。
 
@@ -188,6 +192,10 @@ W23 随各对象成熟度分批编写文档，最终采用已经验证的实现�
 
 窗口控制通过 desktop-rpc 接入，main、preload 与 renderer 按公开合同和最小能力边界协作；启动、资料路径和窗口寿命随本包完成。
 
+W07 交付系统通知的目标恢复。发送方把可序列化的原生导航目标交给操作系统，运行端从点击载荷恢复目标，窗口就绪后交付一次。W20 负责安装登记和实际安装身份下的冷启动验收。
+
+W07 建立正式桌面 UI 框架。各文档逐实例装配语言、外观、反馈和窗口就绪。主窗口拥有标题栏、侧栏、固定工具、应用菜单、已登记页面的内容出口和 Dialog 宿主。任务中心保留筛选、滚动和详情返回。偏好、主题、字体及系统集成从应用菜单进入，消费公共部件，按各自合同提交。在默认窗口及最小窗口以 100% 应用缩放核对[标题栏通栏分隔线与窗口操作](../design/ui/components.md#titlebar)、控件尺度、滚动视口和固定反馈，再复验缩放边界、键盘与嵌套焦点返回。W08 将资料库、展示柜和统计接入同一内容出口，并从有选择和位置的真实页面复走固定工具流程。[应用交互](../design/ui/components.md#layout) · [验收场景](../verification/scenarios/ui.md#baseline)
+
 验收：A14–A16、A20、A27、A29 的运行基础、状态、资源与管理界面成立。
 
 依据：[任务](../design/domains/tasks.md) · [偏好](../design/domains/preferences.md) · [外观](../design/domains/appearance.md) · [网络](../design/engineering/network.md) · [附件与图片](../design/domains/attachments.md) · [受控资源](../design/domains/resources.md) · [应用生命周期](../design/architecture.md#lifecycle)。
@@ -201,6 +209,8 @@ W23 随各对象成熟度分批编写文档，最终采用已经验证的实现�
 交付：七类 Entry、五类 Part、四类关系、资料查询与整理、状态、完成记录、活动、附加时长、Note 和 Annotation，以及列表、详情、编辑、合集、展示柜和统计界面。
 
 核对完整写入、合并删除、动画种类更正、顺序、统计口径、并发基线与使用占用。页面与 Dialog 复用同一 domain-ui，按[编辑对象与保存边界](../design/ui/state.md#editing-units)完成单项保存、列表管理与明确的批量操作，通过实际界面操作验证选择、定位、虚拟化及重排。正式业务函数与窗口入口使用同一事实；W18 通过这些完整操作实现扩展服务端接入。
+
+资料库、展示柜、统计及所属编辑界面在 W07 的主窗口框架中交付。通过正常启动与导航核对页面呈现、选择与滚动，打开固定工具或管理 Dialog 后返回原页面和当前位置。
 
 验收：A01–A05、A14、A17–A20、A27、A29、A30 的资料与界面断言成立；代表链路先验证再扩大实现。
 
@@ -375,6 +385,8 @@ Kana 负责格式与内核，本体负责文件身份、资料、偏好、持久
 交付：六目标桌面制品、完整资源装配、安装升级、便携模式、签署与许可材料，以及本仓库的发行工作流和输入校验；同时完成应用更新的检查、说明、下载准备、退出协调、安装交接、状态与界面。
 
 本包完整实现并验证构建、安装与更新能力，使用实际应用候选和隔离发行源核对系统下限、目标载体、更新失败、恢复及资源寿命。源码与打包候选的基础运行入口由 W07 接续，后续功能与文档使用同一套已完成的构建流程。
+
+按[通知激活身份](../design/engineering/build.md#notification-activation)交付各载体的登记与清理。用安装后的应用发出通知，分别在运行中和完全退出后从系统通知中心点击，核对程序身份、原目标和单次导航。
 
 独立项目提供已经完成的目标输入，本包核对锁定版本在桌面中的装配与消费。官方扩展通过分发仓库安装，桌面不内置其安装包。W24 再以全部功能和文档就绪的候选版本核对最终待发布文件。
 

@@ -3,6 +3,7 @@
 import {
   createContext,
   createEffect,
+  createMemo,
   createUniqueId,
   onCleanup,
   splitProps,
@@ -27,6 +28,8 @@ const TabsContext = createContext<{
 
   /** Reads the enabled registered tab that serves as the list's keyboard entry. */
   focusValue: Accessor<string>
+  /** Tracks the tab with actual focus while navigating the list. */
+  setFocus: (value: string | undefined) => void
   /** Registers an enabled tab for focus fallback and returns its removal callback. */
   register: (value: string) => () => void
 
@@ -74,20 +77,44 @@ export function Tabs(props: TabsProps): JSX.Element {
   )
   /** Current tab identities in registration order for selection and keyboard entry. */
   const [registered, setRegistered] = createSignal<string[]>([])
-  /** Returns the first registered enabled-tab value, or an empty value while none exist. */
+  const [focused, setFocus] = createSignal<string>()
   const first = () => registered()[0] ?? ''
+  const selection = createMemo<{ requested: string; selected: string; index: number }>(
+    (previous) => {
+      const items = registered()
+      const requested = value()
+      const requestedIndex = items.indexOf(requested)
+      if (requestedIndex >= 0 || local.value !== undefined) {
+        return { requested, selected: requested || first(), index: Math.max(0, requestedIndex) }
+      }
+
+      const last = previous?.requested === requested ? previous : undefined
+      const retained = last ? items.indexOf(last.selected) : -1
+      const index = retained >= 0 ? retained : Math.min(last?.index ?? 0, items.length - 1)
+      return { requested, selected: items[index] ?? '', index: Math.max(0, index) }
+    },
+  )
 
   return (
     <TabsContext.Provider
       value={{
         id: createUniqueId(),
 
-        /** Reads the selected tab, using the first registered tab when no value is selected. */
-        value: () => value() || first(),
+        /** Reads the owned selection, following the nearest enabled tab after local removal. */
+        value: () => selection().selected,
         change,
 
         /** Reads the registered tab that should receive keyboard entry. */
-        focusValue: () => (registered().includes(value()) ? value() : first()),
+        focusValue: () => {
+          const tabs = registered()
+          const entry = focused()
+          if (entry && tabs.includes(entry)) {
+            return entry
+          }
+          const selected = selection().selected
+          return tabs.includes(selected) ? selected : first()
+        },
+        setFocus,
 
         /** Registers a tab identity and returns its matching registration cleanup. */
         register: (item) => {
@@ -112,12 +139,14 @@ export function Tabs(props: TabsProps): JSX.Element {
 /**
  * Renders a tab list with orientation-aware roving navigation and the configured activation policy.
  *
+ * A horizontal list scrolls on wheel input when its tabs overflow. A vertical list grows
+ * with its tabs so the surrounding rail can own scrolling.
  * Callers name the list when multiple tab sets need distinction.
  */
 export function TabList(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
   const tabs = useTabs()
   let list!: HTMLDivElement
-  const [local, rest] = splitProps(props, ['class', 'onKeyDown', 'ref'])
+  const [local, rest] = splitProps(props, ['class', 'onKeyDown', 'onFocusOut', 'onWheel', 'ref'])
 
   /** Orientation-aware tab navigation that applies automatic activation when selected. */
   const navigate = createFocusNavigation(
@@ -131,6 +160,34 @@ export function TabList(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element 
     },
   )
 
+  function scroll(event: WheelEvent & { currentTarget: HTMLDivElement; target: Element }) {
+    callHandler(local.onWheel, event)
+    if (
+      event.defaultPrevented ||
+      tabs.orientation() !== 'horizontal' ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.deltaX ||
+      !event.deltaY ||
+      list.scrollWidth <= list.clientWidth
+    ) {
+      return
+    }
+
+    const style = getComputedStyle(list)
+    let distance = event.deltaY
+    if (event.deltaMode === WheelEvent.DOM_DELTA_LINE) {
+      distance *= Number.parseFloat(style.fontSize)
+    } else if (event.deltaMode === WheelEvent.DOM_DELTA_PAGE) {
+      distance *= list.clientWidth
+    }
+    const previous = list.scrollLeft
+    list.scrollLeft += style.direction === 'rtl' ? -distance : distance
+    if (list.scrollLeft !== previous) {
+      event.preventDefault()
+    }
+  }
+
   return (
     <div
       {...rest}
@@ -140,7 +197,14 @@ export function TabList(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element 
       }}
       role="tablist"
       aria-orientation={tabs.orientation()}
-      class={classes(segmented.group, local.class)}
+      class={classes(segmented.group, styles.list, local.class)}
+      on:wheel={scroll}
+      onFocusOut={(event) => {
+        if (!list.contains(event.relatedTarget as Node | null)) {
+          tabs.setFocus(undefined)
+        }
+        callHandler(local.onFocusOut, event)
+      }}
       onKeyDown={(event) => {
         callHandler(local.onKeyDown, event)
         if (!event.defaultPrevented) {
@@ -159,7 +223,7 @@ export interface TabProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
 /** Renders a native tab button and registers enabled choices for roving keyboard entry. */
 export function Tab(props: TabProps): JSX.Element {
   const tabs = useTabs()
-  const [local, rest] = splitProps(props, ['value', 'class', 'onClick'])
+  const [local, rest] = splitProps(props, ['value', 'class', 'onClick', 'onFocus'])
 
   createEffect(() => {
     if (!props.disabled) {
@@ -177,7 +241,11 @@ export function Tab(props: TabProps): JSX.Element {
       aria-controls={`${tabs.id}-panel-${local.value}`}
       aria-selected={tabs.value() === local.value}
       tabIndex={tabs.focusValue() === local.value ? 0 : -1}
-      class={classes(segmented.item, local.class)}
+      class={classes(segmented.item, styles.tab, local.class)}
+      onFocus={(event) => {
+        tabs.setFocus(local.value)
+        callHandler(local.onFocus, event)
+      }}
       onClick={(event) => {
         callHandler(local.onClick, event)
         if (!event.defaultPrevented) {

@@ -7,13 +7,13 @@
     display: flex;
     box-sizing: border-box;
     align-items: center;
-    gap: var(--kui-inline-gap);
+    gap: 0.5rem;
     min-height: var(--kui-control-height);
     padding: 0.125rem 0.5rem;
     border-radius: var(--radius-sm);
     font: inherit;
-    font-size: var(--kui-control-font);
-    line-height: var(--kui-control-line);
+    font-size: var(--text-sm);
+    line-height: var(--text-base-line-height);
     text-align: start;
     cursor: pointer;
   }

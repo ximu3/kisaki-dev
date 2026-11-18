@@ -25,9 +25,13 @@ export const tokens = Object.freeze({
 
   '--primary': 'color',
   '--primary-foreground': 'color',
+  /** Fill for secondary buttons and badges. */
   '--secondary': 'color',
+  /** Text and icons paired with the secondary fill. */
   '--secondary-foreground': 'color',
+  /** Subtle fill for bands, tracks and other low-emphasis areas. */
   '--muted': 'color',
+  /** Text and icons for supporting information such as descriptions and placeholders. */
   '--muted-foreground': 'color',
   '--accent': 'color',
   '--accent-foreground': 'color',

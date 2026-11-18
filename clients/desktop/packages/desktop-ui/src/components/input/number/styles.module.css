@@ -10,6 +10,14 @@
     margin: 0;
   }
 
+  .unit {
+    align-self: center;
+    padding-inline-end: 0.5rem;
+    white-space: nowrap;
+    color: var(--muted-foreground);
+    font-size: var(--text-xs);
+  }
+
   .steps {
     grid-template-rows: repeat(2, minmax(0, 1fr));
   }
@@ -20,7 +28,7 @@
     border: 0;
     background: transparent;
     color: var(--muted-foreground);
-    --kui-glyph-size: var(--kui-icon-small);
+    --kui-glyph-size: calc(var(--control-icon-size) * 0.75);
     cursor: pointer;
   }
   .steps button:hover:not(:disabled) {

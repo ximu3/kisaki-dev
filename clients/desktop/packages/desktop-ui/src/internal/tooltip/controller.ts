@@ -1,6 +1,7 @@
 /** @fileoverview Hints share an initial hover wait within their document. Each owns its reading targets. */
 
 import { createSignal } from 'solid-js'
+import { restoringModalFocus } from '../modal-host'
 import type { Accessor } from 'solid-js'
 
 /** Document-wide hint owner and the shared interval for immediate handoff. */
@@ -125,10 +126,16 @@ export function createTooltip(delay?: Accessor<number | undefined>) {
       hovered[part] = inside
       update(inside)
     },
-    /** Updates keyboard-focus presence and reconciles the reading lifetime. */
-    focus: (inside: boolean) => {
-      focused = inside
-      update(inside)
+    /** Native focus return restores the action without starting another hint above its dialog. */
+    focus: (event: FocusEvent & { currentTarget: HTMLElement }) => {
+      const target = event.currentTarget
+      const previous = event.relatedTarget
+      const popup = previous instanceof Element ? previous.closest('[popover]') : null
+      focused =
+        (event.type === 'focus' || event.type === 'focusin') &&
+        !restoringModalFocus(target.ownerDocument) &&
+        !(popup && !popup.contains(target))
+      update(focused)
     },
     /** Hides the hint and suppresses reopening until the current reading interaction fully ends. */
     dismiss: () => {

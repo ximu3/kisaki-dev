@@ -1,12 +1,36 @@
 /* Native modal geometry keeps headings and actions around a scrollable content area. */
 
+.body {
+  composes: native from '../../internal/scrollbars.module.css';
+}
+
 @layer components {
   .root {
     box-sizing: border-box;
-    width: min(36rem, calc(100vw - 2rem));
-    max-height: calc(100dvh - 2rem);
+    --dialog-width: 32rem;
+    --kui-dialog-padding: 1rem;
+    --dialog-height: min(48rem, calc(100dvh - var(--dialog-region-top, 0px) - 2rem));
+    inset: var(--dialog-region-top, 0px) 0 0;
+    width: min(var(--dialog-width), calc(100% - 2rem));
+    max-height: var(--dialog-height);
     margin: auto;
   }
+  .root[data-size='sm'] {
+    --dialog-width: 24rem;
+  }
+  .root[data-size='lg'] {
+    --dialog-width: 42rem;
+  }
+  .root[data-size='xl'] {
+    --dialog-width: 56rem;
+  }
+  .root[data-size='2xl'] {
+    --dialog-width: 72rem;
+  }
+  .root[data-fill] {
+    height: var(--dialog-height);
+  }
+
   .content {
     display: flex;
     flex-direction: column;
@@ -17,30 +41,32 @@
   }
 
   .header {
+    --kui-panel-close-inset: 0.5rem;
     flex: none;
     overflow-wrap: anywhere;
-    padding: 0.625rem 1rem;
+    padding: 0.75rem 1rem;
     border-bottom: 1px solid var(--border);
+    background: var(--kui-band-background);
   }
 
   .title {
     margin: 0;
-    font-size: var(--kui-control-font);
-    font-weight: 600;
-    line-height: var(--kui-control-line);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    line-height: var(--text-base-line-height);
   }
 
   .description {
     margin: 0.25rem 0 0;
     color: var(--muted-foreground);
-    font-size: var(--kui-control-font);
+    font-size: var(--text-sm);
   }
 
   .body {
     flex: 1 1 auto;
     min-height: 0;
     overflow: auto;
-    padding: 1.25rem;
+    padding: var(--kui-dialog-padding, 1rem);
   }
 
   .footer {
@@ -51,20 +77,22 @@
     gap: 0.5rem;
     padding: 0.625rem 1rem;
     border-top: 1px solid var(--border);
+    background: var(--kui-band-background);
   }
   .footer > button {
     flex-shrink: 0;
   }
 
-  .root[role='alertdialog'] .header,
+  .root[role='alertdialog'] .body {
+    padding-block: 0.75rem;
+  }
+  .root[role='alertdialog'] .description {
+    margin: 0;
+  }
   .root[role='alertdialog'] .footer {
+    padding-block: 0.5rem 1rem;
     border: 0;
-  }
-  .root[role='alertdialog'] .header {
-    padding-bottom: 0;
-  }
-  .root[role='alertdialog'] .footer {
-    padding-top: 0;
-    padding-bottom: 0.75rem;
+    background: transparent;
+    flex-wrap: wrap;
   }
 }

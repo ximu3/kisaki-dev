@@ -4,17 +4,12 @@ import type { UiTranslationRef } from '../i18n'
 import type { PageRef } from '../ui/pages'
 import type { AppearancePreferences } from '../appearance'
 import type { UsagePreferences, UsagePreferencesChanges, ReadingPreferences } from './usage'
-import type {
-  ShortcutsPreferences,
-  ShortcutKey,
-  ShortcutPreferences,
-  DesktopPlatform,
-} from './shortcuts'
+import type { ShortcutsPreferences, ShortcutKey, DesktopPlatform } from './shortcuts'
 import type { NetworkPreferences, ProxyCredentials } from '../network'
 import type { StoredDefinition, CallOptions, Disposable } from '../operations'
 import * as v from 'valibot'
 import { parseUiTranslationRef } from '../i18n'
-import { parseThemeRef } from '../appearance'
+import { appearanceModes, interfaceScaleRange, parseThemeRef } from '../appearance'
 import { parsePageRef } from '../ui/pages'
 import {
   unique,
@@ -32,7 +27,7 @@ import {
   parseProxyCredentialState,
   parseNetworkPreferences,
 } from '../network'
-import { parseShortcutPreferences, shortcutKeys, findShortcutConflicts } from './shortcuts'
+import { parseShortcutAccelerators, shortcutKeys, findShortcutConflicts } from './shortcuts'
 import {
   gamePreferenceEntries,
   playbackPreferenceEntries,
@@ -108,7 +103,7 @@ export interface PreferencesChanges {
   readonly library?: Partial<LibraryPreferences>
   readonly usage?: UsagePreferencesChanges
   readonly playback?: Partial<PlaybackPreferences>
-  readonly shortcuts?: Partial<Record<ShortcutKey, Partial<ShortcutPreferences>>>
+  readonly shortcuts?: Partial<ShortcutsPreferences>
   readonly network?: Partial<Omit<NetworkPreferences, 'credentials'>> & {
     readonly credentials?: ProxyCredentials | null
   }
@@ -166,12 +161,7 @@ export type PreferencesSnapshot = Omit<
     readonly novel: ReadingPreferencesSnapshot
   }
 
-  readonly shortcuts: Readonly<
-    Record<
-      ShortcutKey,
-      { readonly enabled: boolean; readonly accelerators: StoredDefinition<readonly string[]> }
-    >
-  >
+  readonly shortcuts: Readonly<Record<ShortcutKey, StoredDefinition<readonly string[]>>>
 
   readonly network: StoredDefinition<NetworkPreferences>
 }
@@ -263,8 +253,12 @@ export const generalEntries = {
 /** Saved theme, mode and interface-scale fields owned by application appearance. */
 export const appearanceEntries = {
   theme,
-  mode: v.picklist(['system', 'light', 'dark']),
-  interfaceScale: v.pipe(integer, v.minValue(75), v.maxValue(200)),
+  mode: v.picklist(appearanceModes),
+  interfaceScale: v.pipe(
+    integer,
+    v.minValue(interfaceScaleRange.min),
+    v.maxValue(interfaceScaleRange.max),
+  ),
 }
 
 /** Saved page order and nonnegative visible-navigation limit. */
@@ -289,29 +283,13 @@ const networkEntries = {
   bypassRules: text,
 }
 
-/** Enabled intent and canonical accelerator list for one native shortcut action. */
-export const shortcutFields = {
-  enabled: v.boolean(),
-  accelerators: v.pipe(
-    v.unknown(),
-    v.transform(
-      (value) => parseShortcutPreferences({ enabled: true, accelerators: value }).accelerators,
-    ),
-  ),
-}
+/** Validates the canonical accelerator list for a native action. */
+const shortcutAccelerators = v.pipe(v.unknown(), v.transform(parseShortcutAccelerators))
 
 /** Complete shortcut settings keyed by the fixed native action catalog. */
 const shortcuts = Object.fromEntries(
-  shortcutKeys.map((key): [ShortcutKey, v.GenericSchema<unknown, ShortcutPreferences>] => [
-    key,
-    v.pipe(v.unknown(), v.transform(parseShortcutPreferences)),
-  ]),
-) as Record<ShortcutKey, v.GenericSchema<unknown, ShortcutPreferences>>
-
-/** Field-local shortcut updates for the same fixed action catalog. */
-const shortcutChanges = Object.fromEntries(
-  shortcutKeys.map((key) => [key, v.exactOptional(v.strictObject(optionalFields(shortcutFields)))]),
-)
+  shortcutKeys.map((key) => [key, shortcutAccelerators]),
+) as Record<ShortcutKey, typeof shortcutAccelerators>
 
 /** Complete application timing and independent per-medium usage preferences. */
 const usageEntries = {
@@ -330,7 +308,7 @@ const changes = {
   library: v.strictObject(optionalFields(libraryEntries)),
   usage: v.strictObject(optionalFields(usageChangeEntries)),
   playback: v.strictObject(optionalFields(playbackEntries)),
-  shortcuts: v.strictObject(shortcutChanges),
+  shortcuts: v.strictObject(optionalFields(shortcuts)),
   updates: v.strictObject(optionalFields(updateEntries)),
   network: v.strictObject(
     optionalFields({
@@ -413,6 +391,19 @@ export function parsePreferences(input: unknown, platform?: DesktopPlatform): Pr
   return value
 }
 
+/** Resolves each action's edited or usable saved list. Invalid saved lists have no active binding. */
+export function effectiveShortcutBindings(
+  saved: PreferencesSnapshot['shortcuts'],
+  edits?: PreferencesChanges['shortcuts'],
+): ShortcutsPreferences {
+  return Object.fromEntries(
+    shortcutKeys.map((key) => {
+      const original = saved[key]
+      return [key, edits?.[key] ?? (original.status === 'ready' ? original.value : [])]
+    }),
+  ) as ShortcutsPreferences
+}
+
 /**
  * Parses partial edits at declared native field boundaries and checks their baselines.
  *
@@ -448,9 +439,6 @@ export function parsePreferencesUpdate(input: unknown): PreferencesUpdate {
   validateReadingExpected(value.changes.usage?.comic ?? {}, value.expected?.usage?.comic)
   validateReadingExpected(value.changes.usage?.novel ?? {}, value.expected?.usage?.novel)
 
-  for (const key of shortcutKeys) {
-    validateExpectedKeys(value.changes.shortcuts?.[key] ?? {}, value.expected?.shortcuts?.[key])
-  }
   if (
     Object.hasOwn(value.changes.network ?? {}, 'credentials') &&
     !Object.hasOwn(value.expected?.network ?? {}, 'credentials')

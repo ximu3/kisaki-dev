@@ -19,10 +19,7 @@ await runCli(async (signal) => {
       program: { type: 'string' },
     },
   })
-  if (!values.source) {
-    throw new Error('Build source directory is required')
-  }
-  const sourceRoot = resolve(appRoot, values.source)
+  const sourceRoot = resolve(appRoot, values.source ?? '.')
   const target = values.target ? parseTarget(values.target) : hostTarget()
 
   if (values.program) {

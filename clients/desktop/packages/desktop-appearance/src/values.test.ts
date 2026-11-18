@@ -35,6 +35,10 @@ test('parses literal colors, text metrics, font stacks and complete shadow layer
   }
 
   expect(parseTokenValue('--radius', '  6px /* base */ ')).toBe('6px')
+  expect(parseTokenValue('--radius', '  +0.0 /* base */ ')).toBe('0px')
+  expect(parseTokenValue('--text-base-size', '0e0')).toBe('0px')
+  expect(parseTokenValue('--text-base-letter-spacing', '-0')).toBe('0px')
+  expect(parseTokenValue('--text-base-line-height', '0')).toBe('0')
 })
 
 test('rejects formulas, context references, invalid kinds and malformed CSS', () => {

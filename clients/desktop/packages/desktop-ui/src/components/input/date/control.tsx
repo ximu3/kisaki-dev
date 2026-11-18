@@ -11,7 +11,7 @@ import {
   untrack,
 } from 'solid-js'
 import type { JSX } from 'solid-js'
-import { assignRef, callHandler, classes } from '../../../internal/dom'
+import { assignRef, callHandler, classes, createElementRef } from '../../../internal/dom'
 import { closeWhenUnavailable, fieldAttributes } from '../../../internal/field'
 import { Icon, Calendar } from '../../../internal/icon/glyph'
 import { createPresentation } from '../../../internal/popup/presentation'
@@ -51,6 +51,8 @@ export function DateInput(props: DateInputProps): JSX.Element {
       'onValueChange',
       'invalidDateMessage',
       'step',
+      'size',
+      'htmlSize',
       'ref',
       'class',
       'style',
@@ -79,9 +81,9 @@ export function DateInput(props: DateInputProps): JSX.Element {
   )
   /** Locally owned visibility of the calendar picker. */
   const [open, setOpen] = createSignal(false)
+  const [trigger, bindTrigger] = createElementRef<HTMLButtonElement>()
   const id = createUniqueId()
   let input!: HTMLInputElement
-  let trigger!: HTMLButtonElement
   let picker: HTMLDivElement | undefined
   /** Presence reader retaining the calendar during its exit transition. */
   const present = createPresentation(open, () => picker)
@@ -142,7 +144,7 @@ export function DateInput(props: DateInputProps): JSX.Element {
     () => input,
     () => setOpen(false),
   )
-  onFormReset(
+  const flushReset = onFormReset(
     () => input,
     () => {
       change(local.defaultValue ?? '')
@@ -159,11 +161,12 @@ export function DateInput(props: DateInputProps): JSX.Element {
   })
 
   return (
-    <InputFrame class={local.class} style={local.style} open={open()}>
+    <InputFrame class={local.class} style={local.style} size={local.size} open={open()}>
       <input
         {...field}
         {...rest}
         type="date"
+        size={local.htmlSize}
         lang={calendar.locale ?? props.lang}
         min={min()}
         max={max()}
@@ -175,7 +178,9 @@ export function DateInput(props: DateInputProps): JSX.Element {
         class={classes(frame.editor, styles.editor)}
         onInput={(event) => {
           if (!input.validity.badInput && (!input.value || parseDate(input.value))) {
-            change(input.value)
+            const next = input.value
+            flushReset()
+            change(next)
             sync()
           } else {
             validate()
@@ -208,9 +213,7 @@ export function DateInput(props: DateInputProps): JSX.Element {
       <button
         type="button"
         class={classes(frame.end, styles.trigger)}
-        ref={(node) => {
-          trigger = node
-        }}
+        ref={bindTrigger}
         aria-label={calendar.calendarLabel}
         popovertarget={id}
         aria-haspopup="dialog"
@@ -234,7 +237,7 @@ export function DateInput(props: DateInputProps): JSX.Element {
           min={min()}
           max={max()}
           id={id}
-          anchor={() => trigger}
+          anchor={trigger}
           value={value()}
           allowed={allowed}
           close={() => setOpen(false)}

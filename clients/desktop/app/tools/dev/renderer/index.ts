@@ -56,9 +56,14 @@ function recoverFailedEntries(): Plugin {
 }
 
 /** Starts Vite with workspace source exports and releases the server if listening fails. */
-export async function startRenderer(sourceRoot: string, buildId: string): Promise<ViteDevServer> {
+export async function startRenderer(
+  sourceRoot: string,
+  buildId: string,
+  cacheDirectory: string,
+): Promise<ViteDevServer> {
   const server = await createServer({
     configFile: join(sourceRoot, 'config', 'vite', 'vite.config.renderer.ts'),
+    cacheDir: cacheDirectory,
     mode: 'development',
     plugins: [recoverFailedEntries()],
     define: { __KISAKI_BUILD_ID__: JSON.stringify(buildId) },

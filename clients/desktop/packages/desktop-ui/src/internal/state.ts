@@ -1,6 +1,6 @@
 /** @fileoverview Local controlled values and native reset synchronization. */
 
-import { createSignal, onCleanup, onMount, untrack } from 'solid-js'
+import { createMemo, createSignal, onCleanup, onMount, untrack } from 'solid-js'
 import type { Accessor } from 'solid-js'
 
 /**
@@ -16,16 +16,17 @@ export function createValue<T>(
 ): readonly [Accessor<T>, (value: T) => void] {
   /** Locally owned fallback value initialized once without capturing reactive dependencies. */
   const [local, setLocal] = createSignal<T>(untrack(initial))
+  const controlled = createMemo(value)
+  const current = () => {
+    const supplied = controlled()
+    return supplied === undefined ? local() : supplied
+  }
 
   return [
-    () => (value() === undefined ? local() : value()!),
+    current,
     (next) => {
-      if (
-        Object.is(
-          untrack(() => (value() === undefined ? local() : value())),
-          next,
-        )
-      ) {
+      // A native event may call this without a Solid owner. Read the already owned prop value.
+      if (Object.is(untrack(current), next)) {
         return
       }
 
@@ -39,39 +40,45 @@ export function createValue<T>(
  * Observes accepted resets for the element's current native form owner, including external form
  * associations.
  *
- * Callbacks run after event dispatch; cancelled resets do nothing. Owner cleanup cancels pending
- * callbacks and removes the listener.
+ * Runs an accepted reset after dispatch. Editors can flush it before processing a later change
+ * in the same turn. A reset currently being dispatched can still be cancelled.
  */
 export function onFormReset(
   element: Accessor<{ form: HTMLFormElement | null; ownerDocument: Document }>,
   reset: () => void,
-): void {
+): () => void {
+  const pending = new Map<Event, ReturnType<typeof setTimeout>>()
+
+  /** Delivers completed resets in event order, before a later edit can be overwritten. */
+  function flush() {
+    for (const [event, timer] of pending) {
+      if (event.eventPhase !== Event.NONE) {
+        continue
+      }
+      clearTimeout(timer)
+      pending.delete(event)
+      if (!event.defaultPrevented) {
+        reset()
+      }
+    }
+  }
+
   onMount(() => {
     const document = element().ownerDocument
-    const pending = new Set<ReturnType<typeof setTimeout>>()
-
-    /** Defers a matching form reset until dispatch completes so later listeners can cancel it. */
+    /** Waits for the native default action and for listeners that can cancel it. */
     const listener = (event: Event) => {
-      if (event.target !== element().form) {
-        return
+      if (event.target === element().form) {
+        pending.set(event, setTimeout(flush, 0))
       }
-
-      // Native dispatch can checkpoint microtasks between listeners; wait for the completed event.
-      const timer = setTimeout(() => {
-        pending.delete(timer)
-        if (!event.defaultPrevented) {
-          reset()
-        }
-      }, 0)
-      pending.add(timer)
     }
-
     document.addEventListener('reset', listener, true)
     onCleanup(() => {
-      for (const timer of pending) {
+      for (const timer of pending.values()) {
         clearTimeout(timer)
       }
+      pending.clear()
       document.removeEventListener('reset', listener, true)
     })
   })
+  return flush
 }

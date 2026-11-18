@@ -15,10 +15,6 @@ export function Badge(props: BadgeProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'tone'])
 
   return (
-    <span
-      {...rest}
-      class={classes(styles.root, local.class)}
-      data-tone={local.tone ?? 'secondary'}
-    />
+    <span {...rest} class={classes(styles.root, local.class)} data-tone={local.tone ?? 'default'} />
   )
 }

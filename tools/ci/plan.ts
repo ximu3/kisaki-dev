@@ -59,6 +59,7 @@ export function planChecks(
         x11,
         systemPackages: [
           ...(x11 ? ['xvfb', 'openbox'] : []),
+          ...(linux ? (project.linuxPackages ?? []) : []),
           ...(linux ? (environment.linuxPackages ?? []) : []),
         ],
         macosDeploymentTarget: target.startsWith('macos-')

@@ -1,7 +1,7 @@
 /** @fileoverview Prepares bounded byte streams and publishes immutable app-owned files using native durability primitives. */
 
 import { createHash } from 'node:crypto'
-import { mkdir, mkdtemp, open, rm } from 'node:fs/promises'
+import { lstat, mkdir, mkdtemp, open, rm } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { Transform } from 'node:stream'
 import type { Readable } from 'node:stream'
@@ -98,6 +98,9 @@ export async function stageFile(
     }
     signal?.throwIfAborted()
     await mkdir(temporaryRoot, { recursive: true })
+    if (!(await lstat(temporaryRoot)).isDirectory()) {
+      throw new DesktopError('PathConflict', 'The staging directory has been replaced')
+    }
     directory = await mkdtemp(join(temporaryRoot, 'file-'))
     const path = join(directory, 'content')
     const output = await open(path, 'wx')

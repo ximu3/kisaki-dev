@@ -1,4 +1,4 @@
-/* Tabs and value segments share the same compact geometry while retaining distinct semantics. */
+/* Tabs and value segments share geometry and selection styles. */
 
 @layer components {
   .group {
@@ -11,10 +11,6 @@
     border: 0;
     border-radius: var(--radius-lg);
     background: var(--muted);
-  }
-  .group[aria-orientation='vertical'] {
-    flex-direction: column;
-    align-items: stretch;
   }
 
   .item {
@@ -29,8 +25,9 @@
     border-radius: var(--radius-md);
     background: transparent;
     color: var(--muted-foreground);
-    font: inherit;
-    font-size: var(--kui-control-font);
+    font-family: inherit;
+    font-style: inherit;
+    font-weight: inherit;
     line-height: 1;
     cursor: pointer;
     white-space: nowrap;
@@ -53,7 +50,7 @@
   input:focus-visible + .item {
     outline: var(--kui-focus-width) solid var(--ring);
     animation: var(--kui-focus-enter);
-    outline-offset: -2px;
+    outline-offset: var(--kui-focus-inset);
   }
   .item:disabled,
   input:disabled + .item {
@@ -64,6 +61,7 @@
   @media (forced-colors: active) {
     .item[aria-selected='true'],
     input:checked + .item {
+      forced-color-adjust: none;
       background: Highlight;
       color: HighlightText;
       outline-color: HighlightText;

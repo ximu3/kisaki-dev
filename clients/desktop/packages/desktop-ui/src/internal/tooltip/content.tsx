@@ -14,7 +14,7 @@ import styles from './styles.module.css'
  */
 interface TooltipSurfaceProps extends JSX.HTMLAttributes<HTMLDivElement> {
   /** Returns the element whose supplemental explanation is positioned by this surface. */
-  anchor: Accessor<HTMLElement>
+  anchor: Accessor<HTMLElement | undefined>
   reading: ReturnType<typeof createTooltip>
   placement?: PopupPlacement
 }

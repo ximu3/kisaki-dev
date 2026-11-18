@@ -1,0 +1,34 @@
+/* The search and clear icons share the size and end columns of the query field. */
+
+@layer components {
+  .icon,
+  .clear {
+    --kui-glyph-size: var(--control-icon-size);
+    display: grid;
+    place-items: center;
+    flex: 0 0 var(--kui-field-affix-width);
+    color: var(--muted-foreground);
+  }
+
+  .editor {
+    padding-inline-start: 0;
+  }
+  .editor::-webkit-search-cancel-button {
+    appearance: none;
+  }
+
+  .clear {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+  .clear:hover:not(:disabled) {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+  .clear:focus-visible {
+    outline: var(--kui-focus-width) solid var(--ring);
+    outline-offset: var(--kui-focus-inset);
+  }
+}

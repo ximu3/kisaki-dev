@@ -47,19 +47,8 @@ export const shortcutKeys = Object.freeze([
 /** Stable native action identity within a desktop shortcut scope. */
 export type ShortcutKey = (typeof shortcutKeys)[number]
 
-/**
- * Saved enabled intent and accelerator bindings for one action.
- *
- * An empty accelerator list means unbound. Operating-system registration failure leaves enabled
- * intent intact.
- */
-export interface ShortcutPreferences {
-  readonly enabled: boolean
-  readonly accelerators: readonly string[]
-}
-
-/** Complete saved bindings for the native shortcut action catalog. */
-export type ShortcutsPreferences = Readonly<Record<ShortcutKey, ShortcutPreferences>>
+/** Complete saved accelerator lists for the native action catalog. An empty list leaves the action unbound. */
+export type ShortcutsPreferences = Readonly<Record<ShortcutKey, readonly string[]>>
 
 /** Desktop operating-system identity used to interpret effective shortcut modifiers. */
 export type DesktopPlatform = 'win32' | 'darwin' | 'linux'
@@ -177,22 +166,15 @@ export function parseAccelerator(input: unknown): string {
   return [...modifierOrder.filter((part) => parsed.includes(part)), key].join('+')
 }
 
-/**
- * Parses one action's preferences and deduplicates canonical accelerator strings.
- *
- * Invalid bindings reject the input.
- */
-export function parseShortcutPreferences(input: unknown): ShortcutPreferences {
+/** Parses one action's accelerator list and deduplicates canonical combinations. */
+export function parseShortcutAccelerators(input: unknown): readonly string[] {
   return parseValue(
-    v.strictObject({
-      enabled: v.boolean(),
-      accelerators: v.pipe(
-        v.array(v.pipe(v.unknown(), v.transform(parseAccelerator))),
-        v.transform((values) => [...new Set(values)]),
-      ),
-    }),
+    v.pipe(
+      v.array(v.pipe(v.unknown(), v.transform(parseAccelerator))),
+      v.transform((values) => [...new Set(values)]),
+    ),
     input,
-    'Invalid shortcut preferences',
+    'Invalid shortcut accelerators',
   )
 }
 
@@ -230,8 +212,34 @@ const shiftedKeyCodes = new Map(
   }),
 )
 
+/** Resolves a saved spelling to Electron's effective modifier and key identity on this platform. */
+export function acceleratorIdentity(accelerator: string, platform: DesktopPlatform): string {
+  const parts = parseAccelerator(accelerator).split('+')
+  const keyCode = parts.pop()!
+  const effective = new Set(
+    parts.map((part) => {
+      if (part === 'CommandOrControl') {
+        return platform === 'darwin' ? 'Super' : 'Control'
+      }
+      if (part === 'Command') {
+        return 'Super'
+      }
+      if (part === 'Option') {
+        return 'Alt'
+      }
+
+      return part
+    }),
+  )
+  const shiftedCode = shiftedKeyCodes.get(keyCode)
+  if (shiftedCode !== undefined) {
+    effective.add('Shift')
+  }
+  return [...effective].sort().join('+') + ':' + (shiftedCode ?? keyCode)
+}
+
 /**
- * Finds enabled bindings with the same effective combination in potentially overlapping scopes.
+ * Finds identical effective combinations in potentially overlapping scopes.
  *
  * Checks include game actions even when no game is active. Actual operating-system and
  * keyboard-layout registration remains a runtime result.
@@ -242,37 +250,12 @@ export function findShortcutConflicts(
 ): readonly ShortcutConflict[] {
   const active: { key: ShortcutKey; scope: string; accelerator: string; identity: string }[] = []
   for (const key of shortcutKeys) {
-    if (!preferences[key].enabled) {
-      continue
-    }
-
-    for (const accelerator of preferences[key].accelerators) {
-      const parts = parseAccelerator(accelerator).split('+')
-      const keyCode = parts.pop()!
-      const effective = new Set(
-        parts.map((part) => {
-          if (part === 'CommandOrControl') {
-            return platform === 'darwin' ? 'Super' : 'Control'
-          }
-          if (part === 'Command') {
-            return 'Super'
-          }
-          if (part === 'Option') {
-            return 'Alt'
-          }
-
-          return part
-        }),
-      )
-      const shiftedCode = shiftedKeyCodes.get(keyCode)
-      if (shiftedCode !== undefined) {
-        effective.add('Shift')
-      }
+    for (const accelerator of preferences[key]) {
       active.push({
         key,
         scope: key.split('.')[0]!,
         accelerator,
-        identity: [...effective].sort().join('+') + ':' + (shiftedCode ?? keyCode),
+        identity: acceleratorIdentity(accelerator, platform),
       })
     }
   }

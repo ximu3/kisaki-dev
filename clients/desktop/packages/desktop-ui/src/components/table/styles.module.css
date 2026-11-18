@@ -1,38 +1,67 @@
-/* Native table cell spacing, row feedback, summary emphasis and captions. */
+/* Native table spacing, sticky headers and logical column alignment. */
 
 @layer components {
   .table {
     width: 100%;
-    border-collapse: collapse;
-    font-size: var(--kui-control-font);
+    border-spacing: 0;
+    font-size: var(--text-sm);
+    line-height: var(--text-base-line-height);
     text-align: start;
+  }
+
+  .th,
+  .td {
+    padding: 0.25rem 0.625rem;
+    border-block-end: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  :is(.th, .td):first-child {
+    padding-inline-start: 1rem;
+  }
+  :is(.th, .td):last-child {
+    padding-inline-end: 1rem;
   }
 
   .th {
+    height: var(--kui-control-height);
+    text-align: start;
+    font-size: var(--text-xs);
     font-weight: 500;
     color: var(--muted-foreground);
-    text-align: start;
+    background: var(--background);
   }
-  .th,
-  .td {
-    padding: 0.5rem 0.75rem;
-    vertical-align: middle;
+  .thead[data-sticky] {
+    position: sticky;
+    z-index: 1;
+    inset-block-start: 0;
+  }
+  .thead[data-sticky] > tr:last-child > .th {
+    border-block-end-color: transparent;
+  }
+  .thead[data-sticky]::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    border-block-end: 1px solid var(--border);
+    pointer-events: none;
   }
 
-  .tr {
-    border-bottom: 1px solid var(--border);
+  :is(.th, .td)[data-align='end'] {
+    text-align: end;
   }
-  .tbody .tr:hover {
-    background: var(--accent);
+  :is(.th, .td)[data-align='center'] {
+    text-align: center;
+  }
+  .tbody .tr:is(:hover, :focus-within) {
+    background: var(--kui-content-row-hover-background);
   }
 
   .caption {
+    padding: 0.75rem;
     text-align: start;
     caption-side: bottom;
-    padding: 0.75rem;
     color: var(--muted-foreground);
   }
-
   .tfoot {
     font-weight: 500;
     background: var(--muted);

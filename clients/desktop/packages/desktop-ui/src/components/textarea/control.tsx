@@ -30,11 +30,11 @@ export function Textarea(props: TextareaProps): JSX.Element {
   ])
 
   let input!: HTMLTextAreaElement
-  /** Text-value dispatcher shared by the textarea owner and native form integration. */
   const update = bindTextControl(local, () => input)
 
   return (
     <textarea
+      rows={4}
       {...fieldAttributes(props)}
       {...rest}
       ref={(node) => {

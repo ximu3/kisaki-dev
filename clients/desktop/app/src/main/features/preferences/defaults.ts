@@ -9,6 +9,7 @@ import type {
   ShortcutsPreferences,
 } from '@kisaki3/desktop-contracts/preferences'
 import type { PageRef } from '@kisaki3/desktop-contracts/ui'
+import type { UiTranslationRef } from '@kisaki3/desktop-contracts/i18n'
 
 /** Creates independent complete reading defaults without consulting the reading engine. */
 function readingDefaults(): ReadingPreferences {
@@ -69,28 +70,24 @@ function shortcutDefaults(platform: DesktopPlatform): ShortcutsPreferences {
     'game.togglePanel': ['Shift+F8'],
   }
   return Object.fromEntries(
-    shortcutKeys.map((key) => [
-      key,
-      {
-        enabled: true,
-        accelerators: bindings[key] ?? [],
-      },
-    ]),
+    shortcutKeys.map((key) => [key, bindings[key] ?? []]),
   ) as ShortcutsPreferences
 }
 
 /**
  * Returns a fresh complete preference value for initialization or a reset draft.
  *
- * The application supplies the actual native page-catalog order; no pages or resources are created.
+ * The application supplies the actual native page-catalog order and its launch environment's
+ * initial translation.
  */
 export function getPreferenceDefaults(
   platform: DesktopPlatform,
   navigationOrder: readonly PageRef[],
+  uiTranslation: UiTranslationRef = { type: 'builtin', id: 'en' },
 ): Preferences {
   return parsePreferences(
     {
-      general: { uiTranslation: { type: 'builtin', id: 'en' }, closeMainWindow: 'background' },
+      general: { uiTranslation, closeMainWindow: 'background' },
       appearance: {
         theme: { type: 'builtin', id: 'default' },
         mode: 'system',

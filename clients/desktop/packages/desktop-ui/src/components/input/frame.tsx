@@ -1,6 +1,7 @@
 /** @fileoverview The shared field border contains the native editor and its independent action column. */
 
 import type { JSX } from 'solid-js'
+import type { ControlSize } from '../../internal/control/size'
 import { classes } from '../../internal/dom'
 import surface from '../../internal/input-surface.module.css'
 import styles from './styles.module.css'
@@ -10,6 +11,7 @@ interface InputFrameProps {
   children: JSX.Element
   class?: string | undefined
   style?: JSX.HTMLAttributes<HTMLDivElement>['style']
+  size?: ControlSize | undefined
   open?: boolean
 }
 
@@ -21,6 +23,7 @@ export function InputFrame(props: InputFrameProps): JSX.Element {
     <div
       class={classes(surface.surface, styles.frame, props.class)}
       style={props.style}
+      data-size={props.size ?? 'default'}
       data-open={props.open || undefined}
     >
       {props.children}

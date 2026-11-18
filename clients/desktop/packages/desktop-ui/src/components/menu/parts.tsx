@@ -13,10 +13,11 @@ import {
   useContext,
 } from 'solid-js'
 import type { Accessor, JSX, ParentProps } from 'solid-js'
-import { assignRef, callHandler, classes } from '../../internal/dom'
+import { assignRef, callHandler, classes, createElementRef } from '../../internal/dom'
 import { createValue } from '../../internal/state'
 import { createFocusNavigation, focusableItems } from '../../internal/focus'
 import { createPopup } from '../../internal/popup/controller'
+import type { PopupPlacement } from '../../internal/popup/controller'
 import { displayedWhileOpen } from '../../internal/popup/presentation'
 import { Icon, Check, ChevronRight } from '../../internal/icon/glyph'
 import { createSubmenuHover } from './hover'
@@ -37,7 +38,9 @@ interface MenuState {
   /** Requests an open-state change while coordinating sibling and descendant menus. */
   change: (open: boolean) => void
 
-  anchor: HTMLElement | undefined
+  anchor: Accessor<HTMLElement | undefined>
+  /** Registers the trigger for its mounted lifetime. */
+  bindAnchor: (node: HTMLElement) => void
   content: HTMLElement | undefined
   children: Set<MenuState>
   focusOnOpen: boolean
@@ -76,9 +79,9 @@ export function Menu(props: MenuProps): JSX.Element {
   )
   /** Optional pointer anchor used when the menu opens at a context position. */
   const [point, setPoint] = createSignal<{ x: number; y: number }>()
+  const [anchor, bindAnchor] = createElementRef<HTMLElement>()
   const hover = createSubmenuHover({
-    /** Reads the current submenu anchor for pointer handoff. */
-    anchor: () => state.anchor,
+    anchor,
 
     /** Reads the current submenu surface for pointer handoff. */
     content: () => state.content,
@@ -110,7 +113,8 @@ export function Menu(props: MenuProps): JSX.Element {
       }
       change(next)
     },
-    anchor: undefined,
+    anchor,
+    bindAnchor,
     content: undefined,
     children: new Set(),
     focusOnOpen: true,
@@ -143,7 +147,7 @@ export function MenuTrigger(props: ButtonProps): JSX.Element {
     <Button
       {...rest}
       ref={(node) => {
-        state.anchor = node
+        state.bindAnchor(node)
         assignRef(local.ref, node)
       }}
       popovertarget={state.id}
@@ -183,7 +187,7 @@ export function ContextMenuTrigger(props: JSX.HTMLAttributes<HTMLDivElement>): J
       tabIndex={0}
       {...rest}
       ref={(node) => {
-        state.anchor = node
+        state.bindAnchor(node)
         assignRef(local.ref, node)
       }}
       aria-haspopup="menu"
@@ -219,12 +223,15 @@ export function ContextMenuTrigger(props: JSX.HTMLAttributes<HTMLDivElement>): J
  *
  * Submenu content stays inside the parent content so native popover ancestry retains its parent.
  */
-export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
+export function MenuContent(
+  props: JSX.HTMLAttributes<HTMLDivElement> & { placement?: PopupPlacement },
+): JSX.Element {
   const state = useMenu()
   const [local, rest] = splitProps(props, [
     'class',
     'children',
     'ref',
+    'placement',
     'onKeyDown',
     'onPointerEnter',
     'onPointerLeave',
@@ -241,18 +248,17 @@ export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Elem
     /** Reads the currently mounted menu surface. */
     element: () => content,
 
-    /** Reads the current menu anchor for surface positioning. */
-    anchor: () => state.anchor!,
+    anchor: state.anchor,
     open: state.open,
     change: state.change,
     point: state.point,
 
     /** Chooses a direction-aware submenu side or the root menu's preferred placement. */
-    placement: () => {
+    placement: (anchor) => {
       if (state.parent) {
-        return getComputedStyle(state.anchor!).direction === 'rtl' ? 'left-start' : 'right-start'
+        return getComputedStyle(anchor).direction === 'rtl' ? 'left-start' : 'right-start'
       }
-      return 'bottom-start'
+      return local.placement ?? 'bottom-start'
     },
   })
 
@@ -314,7 +320,7 @@ export function MenuContent(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Elem
           event.preventDefault()
           event.stopPropagation()
           state.change(false)
-          state.anchor?.focus()
+          state.anchor()?.focus()
           return
         }
 
@@ -346,6 +352,8 @@ export interface MenuItemProps extends JSX.ButtonHTMLAttributes<HTMLButtonElemen
    */
   onSelect?: () => void
   closeOnSelect?: boolean
+  /** Supplies a decorative leading glyph in the menu's shared icon slot. */
+  icon?: JSX.Element
   destructive?: boolean
 }
 
@@ -362,6 +370,7 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
     'onSelect',
     'closeOnSelect',
     'destructive',
+    'icon',
     'class',
     'onClick',
     'children',
@@ -401,7 +410,7 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
             let current: MenuState | undefined = state
             while (current) {
               current.change(false)
-              trigger = current.anchor
+              trigger = current.anchor()
               current = current.parent
             }
           }
@@ -409,7 +418,7 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
         trigger?.focus()
       }}
     >
-      <span class={styles.label}>{local.children}</span>
+      <MenuItemLabel icon={local.icon}>{local.children}</MenuItemLabel>
       <Show when={checked() !== undefined}>
         <span aria-hidden="true" class={row.mark}>
           <Show when={checked() === true}>
@@ -482,7 +491,7 @@ export function MenuRadioItem(props: MenuRadioItemProps): JSX.Element {
  *
  * Entry and return arrows follow the document's writing direction.
  */
-export function MenuSubTrigger(props: ButtonProps): JSX.Element {
+export function MenuSubTrigger(props: ButtonProps & Pick<MenuItemProps, 'icon'>): JSX.Element {
   const state = useMenu()
   const [local, rest] = splitProps(props, [
     'class',
@@ -490,6 +499,7 @@ export function MenuSubTrigger(props: ButtonProps): JSX.Element {
     'onClick',
     'onKeyDown',
     'children',
+    'icon',
     'onPointerEnter',
     'onPointerLeave',
   ])
@@ -502,7 +512,7 @@ export function MenuSubTrigger(props: ButtonProps): JSX.Element {
       data-option-highlight="hover focus"
       tabIndex={-1}
       ref={(node) => {
-        state.anchor = node
+        state.bindAnchor(node)
         assignRef(local.ref, node)
       }}
       class={classes(row.row, styles.item, local.class)}
@@ -547,11 +557,25 @@ export function MenuSubTrigger(props: ButtonProps): JSX.Element {
         }
       }}
     >
-      {local.children}
+      <MenuItemLabel icon={local.icon}>{local.children}</MenuItemLabel>
       <span aria-hidden="true" class={styles.arrow}>
         <Icon icon={ChevronRight} />
       </span>
     </button>
+  )
+}
+
+/** Keeps the decorative glyph, accessible caption and trailing marker in distinct slots. */
+function MenuItemLabel(props: ParentProps<Pick<MenuItemProps, 'icon'>>): JSX.Element {
+  return (
+    <>
+      <Show when={props.icon}>
+        <span aria-hidden="true" class={styles.icon}>
+          {props.icon}
+        </span>
+      </Show>
+      <span class={styles.label}>{props.children}</span>
+    </>
   )
 }
 

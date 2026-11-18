@@ -1,37 +1,56 @@
-/* Compact label surfaces, spacing and semantic tones. */
+/* Compact badges pair semantic ink with a translucent fill and a quiet border. */
 
 @layer components {
   .root {
+    --badge-tone: var(--primary);
     display: inline-flex;
     align-items: center;
-    padding: 0.125rem 0.375rem;
-    border: 1px solid transparent;
+    justify-content: center;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    inline-size: fit-content;
+    min-block-size: var(--kui-badge-height);
+    gap: 0.25rem;
+    padding-inline: 0.375rem;
+    vertical-align: var(--kui-badge-vertical-align, baseline);
+    border: 1px solid color-mix(in oklab, var(--badge-tone) 20%, transparent);
     border-radius: var(--radius-md);
-    font-size: var(--kui-caption-font);
-    line-height: 1.25;
-    color: var(--secondary-foreground);
-    background: var(--secondary);
+    background: color-mix(in oklab, var(--badge-tone) 10%, transparent);
+    color: color-mix(in oklab, var(--badge-tone) 68%, var(--foreground));
+    font-size: var(--text-xs);
+    font-weight: 500;
+    line-height: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    transition:
+      color var(--kui-hover-duration) ease,
+      background-color var(--kui-hover-duration) ease,
+      border-color var(--kui-hover-duration) ease;
   }
 
-  .root[data-tone='default'] {
-    background: var(--primary);
-    color: var(--primary-foreground);
+  .root > svg {
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    pointer-events: none;
+  }
+
+  .root[data-tone='secondary'] {
+    border-color: var(--border);
+    background: var(--secondary);
+    color: var(--secondary-foreground);
   }
   .root[data-tone='success'] {
-    background: var(--success);
-    color: var(--success-foreground);
+    --badge-tone: var(--success);
   }
   .root[data-tone='warning'] {
-    background: var(--warning);
-    color: var(--warning-foreground);
+    --badge-tone: var(--warning);
   }
   .root[data-tone='destructive'] {
-    background: var(--destructive);
-    color: var(--destructive-foreground);
+    --badge-tone: var(--destructive);
   }
   .root[data-tone='outline'] {
+    border-color: var(--border);
     background: transparent;
     color: var(--foreground);
-    border-color: var(--border);
   }
 }

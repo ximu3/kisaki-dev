@@ -2,11 +2,13 @@
 
 @layer components {
   .range {
+    --range-thumb-size: 0.75rem;
     --range-stop: calc(
-      var(--kui-icon-small) / 2 + (100% - var(--kui-icon-small)) * var(--range-fraction)
+      var(--range-thumb-size) / 2 + (100% - var(--range-thumb-size)) * var(--range-fraction)
     );
     --range-fill: var(--primary);
     --range-direction: to right;
+
     appearance: none;
     box-sizing: border-box;
     width: 100%;
@@ -31,9 +33,9 @@
   }
   .range::-webkit-slider-thumb {
     appearance: none;
-    width: var(--kui-icon-small);
-    height: var(--kui-icon-small);
-    margin-top: calc((0.25rem - var(--kui-icon-small)) / 2);
+    width: var(--range-thumb-size);
+    height: var(--range-thumb-size);
+    margin-top: calc((0.25rem - var(--range-thumb-size)) / 2);
     border: 0;
     border-radius: 50%;
     background: var(--range-fill);
@@ -41,7 +43,7 @@
   .range:focus-visible {
     outline: var(--kui-focus-width) solid var(--ring);
     animation: var(--kui-focus-enter);
-    outline-offset: 2px;
+    outline-offset: 0;
   }
   .range[aria-invalid='true'] {
     --range-fill: var(--destructive);

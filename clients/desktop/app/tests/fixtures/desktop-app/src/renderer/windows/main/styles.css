@@ -1,4 +1,6 @@
-/* Fixture-only typography and spacing for this renderer. */
+/* Fixture-only typography with the same CSS compiler exercised by the desktop source session. */
+
+@import 'tailwindcss' source(none);
 
 body {
   font-family: sans-serif;

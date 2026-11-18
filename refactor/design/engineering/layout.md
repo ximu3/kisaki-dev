@@ -214,7 +214,7 @@ clients/desktop/app/tools/
 | package/packager.ts              | 在所需构建就绪后调用 electron-builder 生成目标安装或归档文件，消费应用的 electron-builder.yml 与实际存在的打包专用输入；签名按已有环境与策略执行，不隐含公开发布。                                                                                                           |
 | lib | 提供跨工作流的工程路径、目标解析和 SHA-256 计算。 |
 
-桌面的开发接入、build:fixture 和 package:fixture 分别由所属工作流执行，类型与测试任务直接调用所属运行器与配置；从根用 `vp run @kisaki3/desktop#<任务>` 选择桌面操作。resources 与 native 的显式入口和内部调用复用同一工作流。不同目标、开发、构建与测试环境按[输出与清理规则](build.md#outputs)分离。
+桌面的开发接入、build 和 package:candidate 分别由所属工作流执行，类型与测试任务直接调用所属运行器与配置；从根用 `vp run @kisaki3/desktop#<任务>` 选择桌面操作。resources 与 native 的显式入口和内部调用复用同一工作流。不同目标、开发、构建与测试环境按[输出与清理规则](build.md#outputs)分离。
 
 `DesktopTarget`、目标解析与 Rust triple 映射共同归 `lib/targets.ts`。构建清单归 `build/manifest.ts`，安装载体的分发元数据归 `package/distribution.ts`。部署后的运行资源路径由 main/app/paths 负责。
 
@@ -470,13 +470,14 @@ clients/desktop/app/src/renderer/
 │   │   │   ├── statistics/
 │   │   │   ├── tasks/
 │   │   │   ├── extensions/
-│   │   │   ├── appearance/
+│   │   │   ├── themes/
 │   │   │   ├── fonts/
 │   │   │   ├── preferences/
 │   │   │   ├── onboarding/
 │   │   │   ├── search/
 │   │   │   └── updates/
 │   │   ├── domain-ui/
+│   │   │   ├── fonts/
 │   │   │   ├── library/
 │   │   │   │   ├── entry-summary/
 │   │   │   │   ├── entry-picker/
@@ -527,7 +528,7 @@ clients/desktop/app/src/renderer/
 
 ## 窗口样式
 
-renderer/styles/base.css 保存根容器、通用文字表现、窗口拖拽区域等桌面界面的共同基础规则；styles/tailwind.css 接入应用自己的 Tailwind 4 构建配置与 desktop-appearance 映射。四个窗口分别由 entry.tsx 导入自己的 styles.css，组合共同基础、UI 包的成品 CSS 和窗口专属样式。每个窗口只编译本窗口与实际使用的共享组件，不扫描公共 UI 包源码，也不通过导入主窗口 CSS 获得共同样式。公共包的依赖与交付方式见[视觉基础与桌面资源](workspace.md#visual-packages)。
+renderer/styles/base.css 保存根容器、通用文字表现、窗口拖拽区域等桌面界面的共同基础规则；styles/tailwind.css 接入应用自己的 Tailwind 4 构建配置与 desktop-appearance 映射。四个窗口从各自 HTML 的头部直接链接 styles.css，组合共同基础、UI 包样式和窗口专属样式。入口样式先声明共同的 CSS 层顺序，组件模块在其后加载，源码 dev 与正式构建均采用这一入口。每个窗口只编译本窗口与实际使用的共享组件，不扫描公共 UI 包源码，也不通过导入主窗口 CSS 获得共同样式。公共包的依赖与交付方式见[视觉基础与桌面资源](workspace.md#visual-packages)。
 
 应用页面与业务组件的常规布局和状态样式使用 Tailwind，必要的专属 CSS 就近放在所属 feature、domain-ui 或呈现模块；公共 UI 包内部采用 [CSS Modules](../ui/package.md#styles)。阅读窗口的外壳与内容容器归 reader/app；reader/infrastructure/kana 按[阅读接入](integrations.md#reading)管理 Reader、转换技术设置并接续宿主资源。正文的固定页面、重排、书内样式和源映射由 Kana 拥有，共同界面样式只作用于窗口外壳。
 

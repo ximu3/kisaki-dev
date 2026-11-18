@@ -2,6 +2,7 @@
 
 import { splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
+import type { ControlSize } from '../../internal/control/size'
 import { assignRef, callHandler, classes } from '../../internal/dom'
 import { fieldAttributes } from '../../internal/field'
 import { bindCheckedControl } from '../../internal/checked-control'
@@ -16,9 +17,10 @@ import styles from './styles.module.css'
  */
 export interface SwitchProps
   extends
-    Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'type' | 'checked' | 'role'>,
+    Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'type' | 'checked' | 'role' | 'size'>,
     CheckedValueProps {
   label?: JSX.Element
+  size?: ControlSize | undefined
 }
 
 /**
@@ -30,6 +32,7 @@ export function Switch(props: SwitchProps): JSX.Element {
     'checked',
     'defaultChecked',
     'label',
+    'size',
     'onCheckedChange',
     'class',
     'ref',
@@ -41,12 +44,13 @@ export function Switch(props: SwitchProps): JSX.Element {
   const update = bindCheckedControl(local, () => input)
 
   return (
-    <ChoiceRow label={local.label}>
+    <ChoiceRow label={local.label} size={local.size}>
       <input
         {...fieldAttributes(props, () => local.label)}
         {...rest}
         type="checkbox"
         role="switch"
+        data-size={local.size ?? 'default'}
         ref={(node) => {
           input = node
           assignRef(local.ref, node)

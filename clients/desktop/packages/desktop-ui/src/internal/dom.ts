@@ -1,5 +1,19 @@
 /** @fileoverview Shared DOM class, event and reference composition for native controls. */
 
+import { createSignal, onCleanup } from 'solid-js'
+
+/** Tracks the current mounted element and releases its ref with the element's owner. */
+export function createElementRef<T extends HTMLElement>() {
+  const [element, setElement] = createSignal<T>()
+
+  function register(node: T): void {
+    onCleanup(() => setElement((current) => (current === node ? undefined : current)))
+    setElement(() => node)
+  }
+
+  return [element, register] as const
+}
+
 /** Combines nonempty local and caller class strings in their supplied order. */
 export function classes(...values: (string | undefined)[]): string {
   return values.filter(Boolean).join(' ')

@@ -1,4 +1,4 @@
-/** @fileoverview Test-only Electron carrier for compiler, resource, process and packaging checks. */
+/** @fileoverview Editable Electron program for source rebuild, HMR and cancellable-stop checks. */
 
 import { app, BrowserWindow, ipcMain, protocol, utilityProcess } from 'electron'
 import { mkdirSync, writeFileSync } from 'node:fs'
@@ -6,9 +6,7 @@ import { readFile } from 'node:fs/promises'
 import { dirname, extname, isAbsolute, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { debuglog } from 'node:util'
-import { loadNative } from '#native'
 import { isAbsoluteHostPath } from '#host-path'
-import { verifyStorage } from './storage'
 
 /** Opt-in diagnostics for the fixture window and utility-process lifetime. */
 const debug = debuglog('kisaki:fixture')
@@ -34,11 +32,6 @@ const runtime = app.isPackaged
   ? app.getAppPath()
   : resolve(dirname(fileURLToPath(import.meta.url)), '..')
 
-/** External runtime resources selected from the actual deployment layout. */
-const resources = app.isPackaged
-  ? join(process.resourcesPath, 'resources')
-  : join(runtime, 'resources')
-
 /** Browser state kept below the test-owned profile and separate from library data. */
 const browser = join(profile, 'browser')
 mkdirSync(browser, { recursive: true })
@@ -58,8 +51,6 @@ protocol.registerSchemesAsPrivileged([
  */
 async function runFixture(): Promise<void> {
   await app.whenReady()
-  const native = loadNative(join(resources, 'native/kisaki-native.node'))
-  await verifyStorage(profile!, resources, native.files)
   ipcMain.handle('fixture:ping', () => true)
   protocol.handle('fixture', async (request) => {
     const path = resolve(

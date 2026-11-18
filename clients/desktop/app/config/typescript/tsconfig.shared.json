@@ -2,8 +2,9 @@
   "extends": "@kisaki3/config/typescript/base.json",
   "compilerOptions": {
     "skipLibCheck": false,
+    "lib": ["ES2023", "DOM"],
     "incremental": true,
     "tsBuildInfoFile": "../../.cache/typescript/shared.tsbuildinfo"
   },
-  "include": ["../../tests/fixtures/desktop-app/src/shared/**/*.ts"]
+  "include": ["../../src/shared/**/*.ts"]
 }

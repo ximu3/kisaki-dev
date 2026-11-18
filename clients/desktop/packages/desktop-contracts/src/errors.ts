@@ -80,7 +80,7 @@ export interface ExecutionFailure<Result> extends ErrorSummary {
  */
 export class DesktopError<Result = never> extends Error implements ExecutionFailure<Result> {
   readonly code: string
-  readonly partialResult?: Result
+  declare readonly partialResult?: Result
 
   /** Records the supplied failure code, message, local cause and optional business result. */
   constructor(

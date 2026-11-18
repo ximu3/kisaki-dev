@@ -62,9 +62,12 @@ export type UserAppearanceTokens = Readonly<
   Record<VisualTokenName, string> & Record<FontTokenName, UserThemeFont>
 >
 
+/** Saved mode choices shared by appearance validation and controls. */
+export const appearanceModes = ['system', 'light', 'dark'] as const
+
 /** The saved theme identity, color-mode choice and interface scale. */
 export interface AppearancePreferences {
-  readonly mode: 'system' | ColorScheme
+  readonly mode: (typeof appearanceModes)[number]
   /** Integer UI scale in percent, from 75 through 200; text and content zoom remain separate. */
   readonly interfaceScale: number
   readonly theme: ThemeRef
@@ -363,8 +366,15 @@ const themeRef = v.variant('type', [
 /** Resolved light or dark appearance used after evaluating the saved mode. */
 const colorScheme = v.picklist(['light', 'dark'])
 
-/** Allowed integer interface scaling percentages from 75 through 200. */
-const scale = v.pipe(integer, v.minValue(75), v.maxValue(200))
+/** Inclusive percent range shared by the appearance contract and its native editor. */
+export const interfaceScaleRange = { min: 75, max: 200 } as const
+
+/** Allowed integer interface scale, independently of text and content zoom. */
+const scale = v.pipe(
+  integer,
+  v.minValue(interfaceScaleRange.min),
+  v.maxValue(interfaceScaleRange.max),
+)
 
 /** Package- or data-scoped extension resource path used by appearance definitions. */
 const extensionFile = v.strictObject({
@@ -459,7 +469,7 @@ export function parseAppearanceTokens(input: unknown): AppearanceTokens {
 export function parseAppearancePreferences(input: unknown): AppearancePreferences {
   return parseValue(
     v.strictObject({
-      mode: v.picklist(['system', 'light', 'dark']),
+      mode: v.picklist(appearanceModes),
       interfaceScale: scale,
       theme: themeRef,
     }),

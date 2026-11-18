@@ -1,0 +1,92 @@
+/* Shared selector surface, virtual viewport and trailing selection-mark slot. */
+
+.options {
+  composes: native from '../../internal/scrollbars.module.css';
+}
+
+@layer components {
+  :where(.list) {
+    width: max-content;
+    max-height: min(20rem, var(--popup-available-height, calc(100dvh - 1rem)));
+    font-size: var(--text-sm);
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .options {
+    min-block-size: 0;
+    min-inline-size: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+
+  .search {
+    flex: none;
+    padding: 0.375rem;
+  }
+
+  .virtualTrack {
+    position: relative;
+  }
+
+  .virtualRow {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 0;
+  }
+
+  .groupTitle {
+    padding: 0.5rem 0.75rem 0.25rem;
+    color: var(--muted-foreground);
+    font-size: var(--text-xs);
+  }
+  .option {
+    box-sizing: border-box;
+    min-inline-size: min-content;
+    padding-inline: 0.25rem;
+  }
+  /* The virtualizer measures the first and last insets as part of their rows. */
+  .option[aria-posinset='1'] {
+    padding-block-start: 0.25rem;
+  }
+  .groupTitle + .option {
+    padding-block-start: 0;
+  }
+  .option[data-last] {
+    padding-block-end: 0.25rem;
+  }
+  .option[data-active] > div {
+    background: var(--kui-row-active-background);
+    color: var(--kui-row-active-foreground);
+  }
+  .option[aria-disabled='true'] > div {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .optionText {
+    flex: 1;
+    min-width: 0;
+  }
+  .optionText small {
+    display: block;
+    margin-top: 0.125rem;
+  }
+  .option:not([data-active]) .optionText small {
+    color: var(--muted-foreground);
+  }
+
+  @media (forced-colors: active) {
+    .option[data-active] > div {
+      /* The row already supplies the paired system colors for all of its text. */
+      forced-color-adjust: none;
+    }
+  }
+
+  .message {
+    padding: 0.75rem;
+    color: var(--muted-foreground);
+  }
+}

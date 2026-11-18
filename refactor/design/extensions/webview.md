@@ -12,7 +12,7 @@ document.root 指定扩展包内资源根，entry 指定该根中的 HTML。宿�
 
 Webview 使用隔离 iframe、受控来源、sandbox 和会话桥接，不使用 Electron webview 标签，也不向 SDK 公开容器类，见 [Electron Web Embeds](https://www.electronjs.org/docs/latest/tutorial/web-embeds)。主应用、官方扩展和模板共用 Solid 与基础 UI；第三方可以使用 Vue、React 或原生前端。SDK 和 appearance 不依赖 Solid。
 
-官方代码表单共用字段组、说明、间距、[固定反馈区与字段定位](../ui/components.md#validation)，内容层次按实际业务组织。前端可以复用纯校验，Node 在保存时仍需验证。业务结果只由发起界面反馈一次，扩展不能自行推断全局任务或数据库结论。隔离、布局、键盘、浮层、外观和释放都需要在真实环境中验收。
+官方 Solid 扩展与模板使用公共 Form、Field 和对应控件，按业务提供校验、保存与定位，遵守[固定反馈](../ui/components.md#validation)。主应用与扩展通过公开 UI 包消费同一交互。第三方文档沿自身框架接入浏览器提交语义，宿主按同一来源、权限与释放边界验收。Node 保存时验证输入，结果由发起者反馈一次。
 
 <a id="isolation"></a>
 
@@ -26,7 +26,7 @@ Webview 使用隔离 iframe、受控来源、sandbox 和会话桥接，不使用
 
 iframe 的 sandbox 仅包含 allow-scripts、allow-same-origin 与 allow-forms，保留弹窗、下载、顶层导航和浏览器模态权限的限制。保留同源能力的前提是视图来源与宿主真正不同，不能用原生页面同源路径伪装隔离。iframe 不会形成独立 Electron Session；Cookie、代理及浏览器联网见[网络边界](../engineering/network.md#webview)。
 
-allow-forms 使原生提交事件与适用的 Enter 提交可用，页面在 submit 中取消默认导航，再按自身业务校验与保存。宿主响应头继续施加 form-action 'none'，阻止表单向 URL 发起默认提交；浏览器数据请求仍遵守 connect-src 与[网络合同](../engineering/network.md#webview)。
+allow-forms 使原生提交事件与适用的 Enter 提交可用。官方 Form 在 submit 中取消默认导航，业务通过私有通道提交。宿主响应头施加 `form-action 'none'`，阻止向 URL 默认提交。浏览器数据请求仍遵守 connect-src 与[网络合同](../engineering/network.md#webview)。
 
 两者分别控制原生表单机制和导航目标：sandbox 缺少 allow-forms 时，浏览器在触发 submit 前就会停止处理，不能由事件处理器补救。依据：[HTML 提交算法](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#form-submission-algorithm)、[CSP form-action](https://www.w3.org/TR/CSP3/#directive-form-action)与[浏览器对照](../../verification/evidence/desktop-ui/README.md#forms)。
 

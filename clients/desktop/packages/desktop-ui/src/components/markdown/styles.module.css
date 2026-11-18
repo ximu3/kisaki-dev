@@ -1,5 +1,12 @@
 /* Editor chrome and preview typography share the host's visual variables. */
 
+.source {
+  composes: native from '../../internal/scrollbars.module.css';
+}
+.preview {
+  composes: native from '../../internal/scrollbars.module.css';
+}
+
 @layer components {
   .editor {
     display: flex;
@@ -9,7 +16,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     overflow: hidden;
-    font-size: var(--kui-control-font);
+    font-size: var(--text-sm);
   }
   .editor:focus-within {
     border-color: var(--ring);
@@ -36,7 +43,7 @@
     color: var(--foreground);
   }
   .toolbar .command:focus-visible {
-    outline-offset: -2px;
+    outline-offset: var(--kui-focus-inset);
   }
 
   .source {
@@ -84,6 +91,7 @@
   .preview pre {
     padding: 0.75rem;
     overflow: auto;
+    scrollbar-width: thin;
     background: var(--muted);
     border-radius: var(--radius-md);
   }
@@ -112,6 +120,7 @@
   .preview table {
     display: block;
     overflow: auto;
+    scrollbar-width: thin;
     border-collapse: collapse;
   }
   .preview th,

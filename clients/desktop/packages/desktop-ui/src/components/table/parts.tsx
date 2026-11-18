@@ -17,8 +17,17 @@ export function Table(props: JSX.HTMLAttributes<HTMLTableElement>): JSX.Element 
 }
 
 /** Groups column-header rows in a native table head. */
-export function TableHeader(props: JSX.HTMLAttributes<HTMLTableSectionElement>): JSX.Element {
-  return <thead {...props} />
+export function TableHeader(
+  props: JSX.HTMLAttributes<HTMLTableSectionElement> & { sticky?: boolean },
+): JSX.Element {
+  const [local, rest] = splitProps(props, ['sticky', 'class'])
+  return (
+    <thead
+      {...rest}
+      class={classes(styles.thead, local.class)}
+      data-sticky={local.sticky || undefined}
+    />
+  )
 }
 
 /** Groups primary data rows in a styled native table body. */
@@ -42,18 +51,25 @@ export function TableRow(props: JSX.HTMLAttributes<HTMLTableRowElement>): JSX.El
   return <tr {...rest} class={classes(styles.tr, local.class)} />
 }
 
-/** Renders a header cell whose supplied scope or identity relates it to data cells. */
-export function TableHead(props: JSX.ThHTMLAttributes<HTMLTableCellElement>): JSX.Element {
-  const [local, rest] = splitProps(props, ['class'])
+/** Header and data share alignment so numeric columns and row actions have a common edge. */
+interface CellAlignment {
+  align?: 'start' | 'center' | 'end'
+}
 
-  return <th {...rest} class={classes(styles.th, local.class)} />
+/** Renders a header cell whose supplied scope or identity relates it to data cells. */
+export function TableHead(
+  props: Omit<JSX.ThHTMLAttributes<HTMLTableCellElement>, 'align'> & CellAlignment,
+): JSX.Element {
+  const [local, rest] = splitProps(props, ['class', 'align'])
+  return <th {...rest} class={classes(styles.th, local.class)} data-align={local.align} />
 }
 
 /** Renders a data cell with native header-association support. */
-export function TableCell(props: JSX.TdHTMLAttributes<HTMLTableCellElement>): JSX.Element {
-  const [local, rest] = splitProps(props, ['class'])
-
-  return <td {...rest} class={classes(styles.td, local.class)} />
+export function TableCell(
+  props: Omit<JSX.TdHTMLAttributes<HTMLTableCellElement>, 'align'> & CellAlignment,
+): JSX.Element {
+  const [local, rest] = splitProps(props, ['class', 'align'])
+  return <td {...rest} class={classes(styles.td, local.class)} data-align={local.align} />
 }
 
 /** Names a table through its native caption. */

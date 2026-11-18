@@ -41,6 +41,9 @@ export declare const enum FilesystemQueryReason {
  */
 export declare function getFilesystemLocation(path: string): Promise<'local' | 'network' | 'unknown' | FilesystemQueryFailure>
 
+/** Queues a cancellable read of installed font family names. */
+export declare function listFontFamilies(signal?: AbortSignal | undefined | null): Promise<string[]>
+
 /**
  * Queues an atomic, non-replacing move within one filesystem.
  *
@@ -52,6 +55,9 @@ export declare function getFilesystemLocation(path: string): Promise<'local' | '
  */
 export declare function moveNoReplace(source: string, target: string): Promise<FileOperationResult>
 
+/** Submits a system-owned notification whose identifier survives the lifetime of this Node process. */
+export declare function postSystemNotification(appId: string, identifier: string, title: string, body: string, complete: (error: Error | null, accepted?: boolean) => void): void
+
 /**
  * Compares entries in an established common directory, or two Windows volume roots.
  *
@@ -59,6 +65,9 @@ export declare function moveNoReplace(source: string, target: string): Promise<F
  * Returns InvalidArg for invalid paths. Lookup failures retain their OS code.
  */
 export declare function sameDirectoryEntry(first: string, second: string): Promise<boolean | FilesystemQueryFailure>
+
+/** Connects the macOS delegate or registered Windows COM identity, or detaches the receiver at exit. */
+export declare function setNotificationReceiver(appId: string, receive: ((identifier: string) => void) | null): boolean
 
 /**
  * Queues platform synchronization for an existing regular file.

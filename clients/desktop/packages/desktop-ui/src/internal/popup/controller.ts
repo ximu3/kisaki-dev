@@ -1,31 +1,26 @@
 /** @fileoverview Native top-layer presentation with collision-aware Floating UI positioning. */
 
 import { autoUpdate, computePosition, flip, offset, shift, size } from '@floating-ui/dom'
-import type { VirtualElement } from '@floating-ui/dom'
-import { createEffect, onCleanup, onMount } from 'solid-js'
+import type { Placement, VirtualElement } from '@floating-ui/dom'
+import { createEffect, createSignal, onCleanup, onMount } from 'solid-js'
 import type { Accessor } from 'solid-js'
+import { watchPopupDismissal } from './dismissal'
 
-/** Preferred physical popup side with start or end alignment interpreted by Floating UI. */
-export type PopupPlacement =
-  | 'bottom-start'
-  | 'bottom-end'
-  | 'top-start'
-  | 'top-end'
-  | 'right-start'
-  | 'left-start'
+/** Preferred popup side and optional alignment, with centered sides as the default alignment. */
+export type PopupPlacement = Placement
 
 /**
  * Connects native popup visibility, dismissal and collision-aware placement within the current
  * Solid owner.
  *
- * Refs are available at mount. Position observers run only while open, and owner cleanup releases
- * listeners and hides the popup.
+ * The surface is owned by this mount. Anchor bindings follow the current mounted trigger while
+ * the popup is open.
  */
 export function createPopup(options: {
   /** Returns the mounted native popover element. */
   element: Accessor<HTMLElement>
   /** Returns the interaction anchor used for native popover ancestry and focus restoration. */
-  anchor: Accessor<HTMLElement>
+  anchor: Accessor<HTMLElement | undefined>
   /**
    * Returns a geometry reference when positioning should use a different element from the
    * interaction anchor.
@@ -34,11 +29,13 @@ export function createPopup(options: {
 
   /** Reads the requested open state from the popup owner. */
   open: Accessor<boolean>
-  /** Reports a requested state change after native dismissal or Escape. */
+  /** Reports a dismissal request to the popup owner. */
   change: (open: boolean) => void
+  /** Requests dismissal before hiding a popup rendered in manual top-layer mode. */
+  controlled?: Accessor<boolean>
 
   /** Reads the preferred placement before collision adjustment. */
-  placement?: Accessor<PopupPlacement>
+  placement?: (anchor: HTMLElement) => PopupPlacement
   /** Reads an optional pointer anchor in viewport CSS pixels. */
   point?: Accessor<{ x: number; y: number } | undefined>
   matchWidth?: boolean
@@ -47,11 +44,13 @@ export function createPopup(options: {
   onMount(() => {
     const node = options.element()
     node.dataset.uiPopup = ''
-    const anchor = options.anchor()
 
+    const [revision, refresh] = createSignal(0)
+    let source: HTMLElement | undefined
     let lastHighlight: HTMLElement | null = null
-    /** Retains the last item highlight for exit presentation and reports native closure. */
-    const toggle = (event: ToggleEvent) => {
+
+    // Capture the hovered row while the closing popup is still laid out.
+    const beforeToggle = (event: ToggleEvent) => {
       lastHighlight?.removeAttribute('data-exit-highlight')
       lastHighlight = null
       if (event.newState !== 'closed') {
@@ -65,10 +64,31 @@ export function createPopup(options: {
         row.setAttribute('data-exit-highlight', '')
         lastHighlight = row
       }
-      if (options.open()) {
+    }
+
+    // Adopt native dismissal after the browser finishes hiding its top-layer surface.
+    const toggle = (event: ToggleEvent) => {
+      if (event.newState === 'closed' && options.open() && !node.matches(':popover-open')) {
         options.change(false)
+        if (options.controlled?.() && options.open()) {
+          refresh((value) => value + 1)
+        }
       }
     }
+
+    function requestClose(restoreFocus: boolean) {
+      options.change(false)
+      const anchor = options.anchor()
+      if (
+        restoreFocus &&
+        !options.open() &&
+        options.restoreFocus !== false &&
+        anchor?.isConnected
+      ) {
+        anchor.focus()
+      }
+    }
+
     /**
      * Requests closing this open popup and returns focus to its connected anchor when restoration
      * is enabled.
@@ -82,29 +102,29 @@ export function createPopup(options: {
       ) {
         return
       }
-
       event.preventDefault()
       event.stopPropagation()
-      options.change(false)
-      if (options.restoreFocus !== false && anchor.isConnected) {
-        anchor.focus()
-      }
+      requestClose(true)
     }
 
-    node.addEventListener('beforetoggle', toggle)
+    node.addEventListener('beforetoggle', beforeToggle)
+    node.addEventListener('toggle', toggle)
     node.addEventListener('keydown', escape)
-    anchor.addEventListener('keydown', escape)
 
     createEffect(() => {
-      if (!options.open()) {
-        if (node.matches(':popover-open')) {
+      revision()
+      const anchor = options.anchor()
+      const shown = node.matches(':popover-open')
+      if (!options.open() || !anchor) {
+        if (shown) {
           node.hidePopover()
         }
+        source = undefined
         return
       }
 
       const point = options.point?.()
-      const placement = options.placement?.() ?? 'bottom-start'
+      const placement = options.placement?.(anchor) ?? 'bottom-start'
       const reference: HTMLElement | VirtualElement = point
         ? {
             contextElement: anchor,
@@ -112,12 +132,29 @@ export function createPopup(options: {
             getBoundingClientRect: () => new DOMRect(point.x, point.y, 0, 0),
           }
         : (options.reference?.() ?? anchor)
-      let active = true
-      if (getComputedStyle(node).display === 'none') {
-        node.setAttribute('data-measuring', '')
-      }
-      node.showPopover({ source: anchor })
+      if (!shown || source !== anchor) {
+        let focused: HTMLElement | undefined
+        if (shown) {
+          // The browser associates a popover with its source when it enters the top layer.
+          const current = node.ownerDocument.activeElement
+          if (current instanceof HTMLElement && node.contains(current)) {
+            focused = current
+          }
+          node.hidePopover()
+        }
 
+        if (getComputedStyle(node).display === 'none') {
+          node.setAttribute('data-measuring', '')
+        }
+        node.showPopover({ source: anchor })
+        if (!node.matches(':popover-open')) {
+          return
+        }
+        source = anchor
+        focused?.focus({ preventScroll: true })
+      }
+
+      let active = true
       /**
        * Computes collision-adjusted geometry and applies it while the current positioning lifetime
        * remains active.
@@ -163,18 +200,23 @@ export function createPopup(options: {
           }
         })
       }
-      /** Disposer for live position tracking of the active reference and popup pair. */
+      anchor.addEventListener('keydown', escape)
       const stop = autoUpdate(reference, node, update)
+      const stopDismissal = options.controlled?.()
+        ? watchPopupDismissal(node, anchor, requestClose)
+        : undefined
       onCleanup(() => {
         active = false
         stop()
+        anchor.removeEventListener('keydown', escape)
+        stopDismissal?.()
       })
     })
 
     onCleanup(() => {
-      node.removeEventListener('beforetoggle', toggle)
+      node.removeEventListener('beforetoggle', beforeToggle)
+      node.removeEventListener('toggle', toggle)
       node.removeEventListener('keydown', escape)
-      anchor.removeEventListener('keydown', escape)
       if (node.matches(':popover-open')) {
         node.hidePopover()
       }

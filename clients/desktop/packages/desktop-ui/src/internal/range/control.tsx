@@ -71,7 +71,7 @@ export function RangeInput(props: RangeInputProps): JSX.Element {
       ),
     )
   })
-  onFormReset(
+  const flushReset = onFormReset(
     () => input,
     () => {
       local.resetValue?.()
@@ -89,7 +89,9 @@ export function RangeInput(props: RangeInputProps): JSX.Element {
         assignRef(local.ref, node)
       }}
       onInput={(event) => {
-        local.onValueChange(event.currentTarget.valueAsNumber)
+        const next = event.currentTarget.valueAsNumber
+        flushReset()
+        local.onValueChange(next)
         sync()
         callHandler(local.onInput, event)
       }}

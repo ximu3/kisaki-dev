@@ -1,5 +1,12 @@
 /* Text-bearing surfaces fade at their final reading position. */
 
+.anchor {
+  composes: native from '../scrollbars.module.css';
+}
+.viewport {
+  composes: native from '../scrollbars.module.css';
+}
+
 @layer components {
   :where(.anchor, .chart) {
     --kui-frame-enter: var(--kui-anchor-enter);
@@ -55,6 +62,15 @@
     transition-duration: var(--kui-frame-time);
     transition-timing-function: var(--kui-frame-ease);
     transition-behavior: allow-discrete;
+  }
+
+  :where(.anchor[data-ui-popup]) {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    max-width: var(--popup-available-width);
+    max-height: var(--popup-available-height);
+    overflow: auto;
   }
 
   :where(.viewport) {
@@ -118,8 +134,8 @@
   }
   .withClose > .close {
     position: absolute;
-    inset-block-start: 0.25rem;
-    inset-inline-end: 0.25rem;
+    inset-block-start: var(--kui-panel-close-inset, 0.25rem);
+    inset-inline-end: var(--kui-panel-close-inset, 0.25rem);
     color: var(--muted-foreground);
   }
   .withClose > .close:not(:disabled):hover {
@@ -127,6 +143,6 @@
     color: var(--foreground);
   }
   .withClose > .close:focus-visible {
-    outline-offset: -2px;
+    outline-offset: var(--kui-focus-inset);
   }
 }

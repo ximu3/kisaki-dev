@@ -1,0 +1,38 @@
+/* The main navigation rail shares one visual action across pages and fixed tools. */
+
+@layer components {
+  .app-rail .rail-action {
+    position: relative;
+    color: var(--chrome-foreground);
+  }
+
+  .app-rail .rail-action:is(:hover, [aria-expanded='true'], [aria-current='page'], [data-current]) {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  .rail-action[aria-current='page'] {
+    box-shadow: var(--shadow-raised);
+  }
+
+  .rail-action[aria-current='page']::before {
+    content: '';
+    position: absolute;
+    inline-size: 0.125rem;
+    block-size: 1.25rem;
+    inset-inline-start: 0;
+    border-radius: 999px;
+    background: var(--primary);
+  }
+
+  .app-rail .rail-action:focus-visible {
+    outline-offset: var(--kui-focus-inset);
+  }
+
+  @media (forced-colors: active) {
+    .rail-action[aria-current='page']::before {
+      background: Highlight;
+      forced-color-adjust: none;
+    }
+  }
+}

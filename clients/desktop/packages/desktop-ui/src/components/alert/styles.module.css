@@ -10,8 +10,8 @@
     border-radius: var(--radius-lg);
     background: var(--muted);
     color: var(--foreground);
-    font-size: var(--kui-control-font);
-    line-height: var(--kui-control-line);
+    font-size: var(--text-sm);
+    line-height: var(--text-base-line-height);
   }
 
   .icon {

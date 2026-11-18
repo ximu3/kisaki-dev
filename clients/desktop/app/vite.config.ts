@@ -3,7 +3,7 @@
 import { configDefaults, defineConfig } from 'vite-plus'
 
 /** Development tests that require a live renderer and an Electron process. */
-const developmentTests = ['tests/tools/dev/session.test.ts']
+const developmentTests = ['tests/tools/dev/session.test.ts', 'tests/integration/source.test.ts']
 
 /** Public workspace dependencies are consumed through their built entry points. */
 const dependencyBuilds = { task: 'build', from: 'dependencies' } as const
@@ -44,14 +44,19 @@ export default defineConfig({
   },
   run: {
     tasks: {
-      'build:fixture': {
-        command: 'vpx tools/build/cli.ts --source tests/fixtures/desktop-app',
+      dev: {
+        command: 'vpx tools/dev/cli.ts',
+        dependsOn: [dependencyBuilds, 'prepare:electron'],
+        cache: false,
+      },
+      build: {
+        command: 'vpx tools/build/cli.ts',
         dependsOn: [dependencyBuilds, 'build:native', 'prepare:resources'],
         cache: false,
       },
-      'package:fixture': {
+      'package:candidate': {
         command: 'vpx tools/package/cli.ts --test-only',
-        dependsOn: ['build:fixture'],
+        dependsOn: ['build'],
         cache: false,
       },
       typecheck: { command: 'tsc -b', dependsOn: [dependencyBuilds], cache: false },
@@ -64,13 +69,13 @@ export default defineConfig({
       },
       'test:window-startup': {
         command: 'playwright test',
-        dependsOn: ['build:fixture', 'prepare:electron'],
+        dependsOn: ['build', 'prepare:electron'],
         cache: false,
       },
       'test:dev-session': {
         command:
           'vp test run --project dev-session --no-file-parallelism --reporter=default --reporter=json --outputFile.json=test-results/dev-session/results.json',
-        dependsOn: ['prepare:electron', 'build:native', 'prepare:resources'],
+        dependsOn: [dependencyBuilds, 'prepare:electron', 'build:native', 'prepare:resources'],
         cache: false,
       },
       'test:artifacts': {
@@ -78,9 +83,9 @@ export default defineConfig({
         dependsOn: ['prepare:electron'],
         cache: false,
       },
-      'test:fixture-artifacts': {
+      'test:candidate-artifacts': {
         command: 'KISAKI_ARTIFACT_RECEIPT= ' + verifyArtifacts,
-        dependsOn: ['package:fixture', 'prepare:electron'],
+        dependsOn: ['package:candidate', 'prepare:electron'],
         cache: false,
       },
       'test:performance': {
@@ -88,7 +93,7 @@ export default defineConfig({
           'vp build --config config/vite/vite.config.performance.ts',
           'playwright test --config config/playwright/playwright.config.performance.ts',
         ],
-        dependsOn: ['build:fixture', 'prepare:electron'],
+        dependsOn: ['build', 'prepare:electron'],
         cache: false,
       },
       'verify:native': {
@@ -102,7 +107,7 @@ export default defineConfig({
           'verify:native',
           'test:window-startup',
           'test:dev-session',
-          'test:fixture-artifacts',
+          'test:candidate-artifacts',
           'test:performance',
         ],
         cache: false,
