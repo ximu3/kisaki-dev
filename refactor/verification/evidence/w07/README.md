@@ -69,6 +69,23 @@ Windows 与 Linux 双架构在一次性账号中从系统集成界面登记并�
 
 Windows 双架构在一次性账号中使用开发身份，由独立 COM 客户端递交保存的载荷，实际主窗口打开其中指定的主题 Dialog。Linux 双架构的 portal 试件取得正式发送入口的动作参数，发送端释放总线名称后，私有 D-Bus 启动了另一个 Electron 进程。该进程从参数恢复原任务目标，导航就绪后交付一次。macOS 双架构完成原生委托的构建与候选 .app 启停，签名身份下的通知点击留待安装验收。
 
+<a id="ui-rewrite-six-targets"></a>
+
+### UI 重写后的六目标复验
+
+2026-11-19，包含公共 UI 重写、标题栏尺寸与零长度修正的提交 `95b0c86a` 通过 20 项 CI 检查。六个目标分别执行桌面完整验证，覆盖原生与数据库、源码会话、真实 Electron 窗口、性能和候选制品启停。外观包和公共 UI 的独立制品检查也通过。[本轮 CI](https://github.com/ximu3/kisaki-dev/actions/runs/44350446933) · [零长度复验](../w01/README.md#zero-lengths)
+
+| 原生目标 | 实际运行制品 | 窗口到主进程 IPC P95（ms） | 实际运行制品的 SHA-256 |
+| --- | --- | ---: | --- |
+| [Windows x64](https://github.com/ximu3/kisaki-dev/actions/runs/44350446933/job/134964567734) | ZIP 中的程序 | 13.81 | `508a0987479449580bbcefc311a6f80d12e5c0c4e19e7fbc9fd7306e48a1e87e` |
+| [Windows arm64](https://github.com/ximu3/kisaki-dev/actions/runs/44350446933/job/134964567816) | ZIP 中的程序 | 14.02 | `597fc81997801cf2e49e0ef08c503d406727d1bd41223bac79b8dc8b26022d9d` |
+| [macOS x64](https://github.com/ximu3/kisaki-dev/actions/runs/44350446933/job/134964567881) | ZIP 中的 .app | 42.75 | `65ef8e66bb458a676c844044f5d41cfe85f6b55052159abafbacb0b74a680287` |
+| [macOS arm64](https://github.com/ximu3/kisaki-dev/actions/runs/44350446933/job/134964567953) | ZIP 中的 .app | 26.98 | `d1526098ce603ce75116d6a245024f4c8afb95f6a9a92d3b32d081243aefcc69` |
+| [Linux x64](https://github.com/ximu3/kisaki-dev/actions/runs/44350446933/job/134964567871) | AppImage | 13.44 | `1c252895505e31196f29bdda036414e8cb75e9a833f4fc007fb50bf6cc2f9bed` |
+| [Linux arm64](https://github.com/ximu3/kisaki-dev/actions/runs/44350446933/job/134964567828) | AppImage | 16.84 | `7761522fa10375cf3a615ffefb939abdac8ef86b2bd6590f9d7208baceccfa7c` |
+
+Windows 11 悬停贴靠、系统登录许可变化与实际登录后的后台自启继续按对应系统场景验收。
+
 ## 附件回收与编辑器核验
 
 2026-11-17 在 Windows 10 x64、Electron 45.3.2 上，以同一隔离资料依次建立空库、3,000 条笔记、同一批笔记各引用一个有效附件的三个样本。各组先运行一次准备，随后测量三个新进程从启动到任务中心入口可操作的时间，磁盘缓存保持暖态。实际资料规模的影响在同轮样本之间比较。

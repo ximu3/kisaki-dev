@@ -134,3 +134,9 @@ Chromium 用例在同一个菜单实例中替换触发按钮，分别核对替�
 在 Windows x64 的无头 Chromium 中挂载公共 UI 构建产物。默认明暗和自定义主题均逐项核对空状态、字段说明和占位文字的次要文字色，以及次要按钮和徽标的配套前景与底色。候选行、日期格和搜索清除按钮高亮时使用配套前景，强制配色下候选行说明跟随系统高亮文字色。
 
 按浏览器计算的前景和叠加后的底色估算对比度。默认暗色主题下，表格悬停行的次要文字从约 4.12∶1 提升至 5.45∶1。自定义暗色主题采用亮色实底高亮时，候选行的说明从约 1.81∶1 提升至 16.37∶1。 [配色合同](../../../design/ui/package.md#styles) · [对比度计算](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
+
+<a id="rewrite-consumers"></a>
+
+## 重写后的独立制品消费
+
+2026-11-19，Windows x64 通过公共 UI 的 12 项 Chromium 用例及 4 项独立制品消费用例。Linux x64 的公共包完整验证在提交 `95b0c86a` 通过。W07 使用同一修订验证了六个原生桌面目标。[公共包 CI](https://github.com/ximu3/kisaki-dev/actions/runs/44350446933/job/134964567956) · [六目标实际消费](../w07/README.md#ui-rewrite-six-targets)
