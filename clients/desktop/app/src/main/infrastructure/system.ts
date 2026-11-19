@@ -27,7 +27,7 @@ interface SystemPaths {
   /** Reads the fixed root and next-start marker from their actual owner. */
   status(): DataLocationState
   /** Prepares the requested next-start storage location. */
-  setDataMode(input: DataModeChange): Promise<DataLocationState>
+  setDataMode(input: DataModeChange, signal?: AbortSignal): Promise<DataLocationState>
 }
 
 /** Runs a fixed OS registration command with argument boundaries preserved. */
@@ -226,13 +226,15 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
   }
 
   /** Publishes the explicit Linux registration while preserving entries owned by other programs. */
-  async function writeEntry(path: string, contents: string) {
+  async function writeEntry(path: string, contents: string, signal?: AbortSignal) {
     const old = await readRegistration(path)
+    signal?.throwIfAborted()
     if (old === contents) {
       return
     }
     if (old === null) {
       await mkdir(dirname(path), { recursive: true })
+      signal?.throwIfAborted()
       await writeFile(path, contents, { flag: 'wx' })
       return
     }
@@ -243,6 +245,7 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
     const replacement = path + '.' + randomUUID()
     try {
       await writeFile(replacement, contents, { flag: 'wx' })
+      signal?.throwIfAborted()
       await rename(replacement, path)
     } finally {
       await rm(replacement, { force: true })
@@ -251,7 +254,8 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
 
   return {
     /** Reads the actual OS registrations and data-root selection together. */
-    async getState() {
+    async getState(options) {
+      options?.signal?.throwIfAborted()
       const [login, handler, desktop] = await Promise.all([loginItem(), protocol(), desktopEntry()])
       return {
         loginItem: login,
@@ -261,11 +265,13 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
       }
     },
     /** Applies the selected login registration then rereads it. */
-    async setLoginItem(enabled) {
+    async setLoginItem(enabled, options) {
+      options?.signal?.throwIfAborted()
       if (process.platform === 'linux') {
         if (enabled) {
-          await writeEntry(autostart, loginFile)
+          await writeEntry(autostart, loginFile, options?.signal)
         } else if (ownsEntry(await readRegistration(autostart))) {
+          options?.signal?.throwIfAborted()
           await rm(autostart)
         }
       } else {
@@ -274,17 +280,19 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
       return loginItem()
     },
     /** Creates the user desktop entry for a supported movable carrier. */
-    async registerDesktopEntry() {
+    async registerDesktopEntry(options) {
+      options?.signal?.throwIfAborted()
       if (process.platform === 'linux' && paths.carrier === 'appimage') {
-        await writeEntry(desktopFile, entryFile)
+        await writeEntry(desktopFile, entryFile, options?.signal)
       }
       return desktopEntry()
     },
     /** Registers this carrier's scheme and returns the resulting association. */
-    async registerProtocol() {
+    async registerProtocol(options) {
+      options?.signal?.throwIfAborted()
       if (process.platform === 'linux') {
         if (paths.carrier === 'appimage' || !app.isPackaged) {
-          await writeEntry(desktopFile, entryFile)
+          await writeEntry(desktopFile, entryFile, options?.signal)
         }
         await execute('xdg-mime', ['default', desktopName, 'x-scheme-handler/' + scheme])
       } else if (!app.setAsDefaultProtocolClient(scheme, executable, args)) {
@@ -293,7 +301,8 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
       return protocol()
     },
     /** Opens the OS settings appropriate to the chosen integration. */
-    async openSettings(target) {
+    async openSettings(target, options) {
+      options?.signal?.throwIfAborted()
       if (process.platform === 'win32') {
         await shell.openExternal(
           target === 'loginItem' ? 'ms-settings:startupapps' : 'ms-settings:defaultapps',
@@ -310,8 +319,9 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
       }
     },
     /** Delegates the explicit existing-or-empty choice to the data-path owner. */
-    async setDataMode(input) {
-      return paths.setDataMode(input)
+    async setDataMode(input, options) {
+      options?.signal?.throwIfAborted()
+      return paths.setDataMode(input, options?.signal)
     },
   }
 }

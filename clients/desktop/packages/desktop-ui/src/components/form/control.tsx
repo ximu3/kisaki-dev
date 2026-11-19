@@ -1,9 +1,9 @@
 /** @fileoverview Binds the native form and its submitter to an editor's asynchronous operation. */
 
-import { onCleanup, onMount, splitProps } from 'solid-js'
+import { createEffect, createMemo, onCleanup, onMount, splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { assignRef, classes } from '../../internal/dom'
-import { FormContext } from '../../internal/form'
+import { FormContext, nativeValidityChanged, observeValidity } from '../../internal/form'
 import { createForm, formBinding } from './state'
 import type { FormOptions, FormState } from './state'
 import styles from './styles.module.css'
@@ -27,58 +27,80 @@ export function Form(props: FormProps): JSX.Element {
     'class',
     'children',
   ])
-  const form = props.state ?? createForm(props)
-  const binding = form[formBinding]
+  const form = createMemo(() => props.state ?? createForm(props))
   let element!: HTMLFormElement
 
   onMount(() => {
+    createEffect(() => {
+      const binding = form()[formBinding]
+      onCleanup(binding.bind(element))
+    })
+    createEffect(() => {
+      const owner = form()
+      const binding = owner[formBinding]
+      if (binding.validating()) {
+        onCleanup(observeValidity(element, owner, binding.refresh))
+      }
+    })
+
     const doc = element.ownerDocument
     function belongs(target: EventTarget | null) {
       return (
         target instanceof HTMLElement &&
-        (element.contains(target) || ('form' in target && target.form === element))
+        ('form' in target ? target.form === element : target.closest('form') === element)
       )
     }
     function changed(event: Event) {
       if (belongs(event.target)) {
-        queueMicrotask(binding.refresh)
+        nativeValidityChanged(element)
       }
     }
     function focused(event: FocusEvent) {
-      if (belongs(event.target)) {
-        binding.focus(event.target)
+      form()[formBinding].focus(belongs(event.target) ? event.target : null)
+    }
+    function blurred(event: FocusEvent) {
+      if (!event.relatedTarget && belongs(event.target)) {
+        form()[formBinding].focus(null)
       }
     }
     function reset(event: Event) {
       if (event.target === element) {
+        const owner = form()
         queueMicrotask(() => {
           if (!event.defaultPrevented) {
-            form.clear()
+            owner.clear()
           }
         })
       }
     }
 
     doc.addEventListener('focusin', focused)
+    doc.addEventListener('focusout', blurred)
     doc.addEventListener('input', changed)
     doc.addEventListener('change', changed)
     doc.addEventListener('reset', reset)
     onCleanup(() => {
       doc.removeEventListener('focusin', focused)
+      doc.removeEventListener('focusout', blurred)
       doc.removeEventListener('input', changed)
       doc.removeEventListener('change', changed)
       doc.removeEventListener('reset', reset)
-      binding.bind(undefined)
     })
   })
 
   return (
-    <FormContext.Provider value={{ ...form, refresh: binding.refresh }}>
+    <FormContext.Provider
+      value={{
+        issues: () => form().issues(),
+        activeFieldId: () => form().activeFieldId(),
+        message: () => form().message(),
+        locate: (id) => form().locate(id),
+      }}
+    >
       <form
         {...rest}
         ref={(value) => {
           element = value
-          binding.bind(value)
           assignRef(local.ref, value)
         }}
         class={classes(styles.root, local.class)}
@@ -86,7 +108,9 @@ export function Form(props: FormProps): JSX.Element {
         onSubmit={(event) => {
           event.preventDefault()
           // The instance retains the failure for FormFeedback. Imperative callers receive the rejection.
-          void form.submit(event.submitter).catch(() => {})
+          void form()
+            .submit(event.submitter)
+            .catch(() => {})
         }}
       >
         {local.children}

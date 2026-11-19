@@ -24,14 +24,25 @@ async function listFontOptions(
 
 /** Keeps library and system choices independent when one font source fails to load. */
 export function createFontOptions(api: MainClient) {
-  const [users, userActions] = createResource(() =>
-    listFontOptions((options) => api.call('fonts.list', '', options)),
-  )
-  const [system, systemActions] = createResource(() => api.call('fonts.system'))
+  const lifetime = new AbortController()
+  let catalog: AbortController | undefined
+  const [users, userActions] = createResource(() => {
+    catalog?.abort()
+    catalog = new AbortController()
+    const signal = AbortSignal.any([lifetime.signal, catalog.signal])
+    return listFontOptions((options) => {
+      signal.throwIfAborted()
+      return api.request(signal, 'fonts.list', '', options)
+    })
+  })
+  const [system, systemActions] = createResource(() => api.request(lifetime.signal, 'fonts.system'))
 
   const refresh = () => void userActions.refetch()
   api.topics.addEventListener('fonts.changed', refresh)
-  onCleanup(() => api.topics.removeEventListener('fonts.changed', refresh))
+  onCleanup(() => {
+    lifetime.abort()
+    api.topics.removeEventListener('fonts.changed', refresh)
+  })
 
   function retry() {
     if (users.error) {

@@ -91,14 +91,14 @@ export function AppShell(
                   <TooltipTrigger
                     variant="ghost"
                     size="icon-lg"
-                    aria-label={route.title(api)}
+                    aria-label={route.title(api.t)}
                     aria-current={props.current === route.id ? 'page' : undefined}
                     class="rail-action size-10"
                     onClick={() => void props.open(route.target)}
                   >
                     <route.icon />
                   </TooltipTrigger>
-                  <TooltipContent placement="right">{route.title(api)}</TooltipContent>
+                  <TooltipContent placement="right">{route.title(api.t)}</TooltipContent>
                 </Tooltip>
               )}
             </For>
@@ -130,7 +130,7 @@ export function AppShell(
                   aria-label={api.t('runtime.more')}
                 >
                   <PageOrder
-                    api={api}
+                    t={api.t}
                     pages={props.pages}
                     order={order()}
                     visibleLimit={limit()}

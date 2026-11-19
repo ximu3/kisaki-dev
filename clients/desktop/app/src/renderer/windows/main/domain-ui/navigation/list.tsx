@@ -1,28 +1,34 @@
 /** @fileoverview Presents available pages and adopts reorder requests within their saved slots. */
 
-import { createMemo, For, Show } from 'solid-js'
+import { createMemo, For, Show, type Component } from 'solid-js'
 import { Dynamic } from 'solid-js/web'
 import { PanelsTopLeft, Pin } from 'lucide-solid'
 import type { PageRef } from '@kisaki3/desktop-contracts/ui'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { EmptyState } from '@kisaki3/desktop-ui/empty-state'
 import { ReorderableList, ReorderableListItem, type ListMove } from '@kisaki3/desktop-ui/list'
-import type { MainClient } from '../../../../infrastructure/api'
+import type { Translate } from '@kisaki3/desktop-localization'
 import { reportError } from '../../../../infrastructure/notifications'
-import type { PageRoute } from '../../app/routes'
 import { arrangePages, movePages } from './order'
 
+/** Stable identity and presentation shared by the navigation rail and its preference field. */
+export interface NavigationPage {
+  id: string
+  title: (t: Translate) => string
+  icon: Component
+}
+
 /** Shares one controlled ordered list between the rail's saved order and the preference draft. */
-export function PageOrder(props: {
-  api: MainClient
-  pages: readonly PageRoute[]
+export function PageOrder<T extends NavigationPage>(props: {
+  t: Translate
+  pages: readonly T[]
   order: readonly PageRef[]
   visibleLimit: number
   current?: string | undefined
-  open?: (route: PageRoute) => void
+  open?: (page: T) => void
   change: (order: readonly PageRef[]) => void | Promise<void>
 }) {
-  const { api } = props
+  const { t } = props
   const arranged = createMemo(() => arrangePages(props.pages, props.order))
   const byId = createMemo(() => new Map(arranged().visible.map((page) => [page.id, page])))
   const ids = () => [...byId().keys()]
@@ -40,7 +46,7 @@ export function PageOrder(props: {
       fallback={
         <EmptyState
           class="w-full rounded-md border border-dashed border-border"
-          heading={api.t('runtime.noPages')}
+          heading={t('runtime.noPages')}
           icon={<PanelsTopLeft class="size-5" />}
         />
       }
@@ -48,15 +54,15 @@ export function PageOrder(props: {
       <ReorderableList
         variant="plain"
         class="max-h-[min(28rem,65dvh)] w-full overflow-auto"
-        aria-label={api.t('runtime.fields.order')}
+        aria-label={t('runtime.fields.order')}
         order={ids()}
         labels={{
-          first: api.t('runtime.moveFirst'),
-          previous: api.t('runtime.moveUp'),
-          next: api.t('runtime.moveDown'),
-          last: api.t('runtime.moveLast'),
+          first: t('runtime.moveFirst'),
+          previous: t('runtime.moveUp'),
+          next: t('runtime.moveDown'),
+          last: t('runtime.moveLast'),
           moved: (id, position) =>
-            api.t('runtime.pageMoved', { name: byId().get(id)!.title(api), position }),
+            t('runtime.pageMoved', { name: byId().get(id)!.title(t), position }),
         }}
         onMove={adopt}
         onMoveError={reportError}
@@ -64,11 +70,11 @@ export function PageOrder(props: {
         <For each={ids()}>
           {(id, index) => {
             const page = () => byId().get(id)!
-            const title = () => page().title(api)
+            const title = () => page().title(t)
             return (
               <ReorderableListItem
                 value={id}
-                moveLabel={api.t('runtime.movePage', { name: title() })}
+                moveLabel={t('runtime.movePage', { name: title() })}
                 previewLabel={title()}
                 icon={!props.open && <Dynamic component={page().icon} />}
                 title={
@@ -91,7 +97,7 @@ export function PageOrder(props: {
                     <Pin
                       class="size-3 text-muted-foreground"
                       role="img"
-                      aria-label={api.t('runtime.visiblePage')}
+                      aria-label={t('runtime.visiblePage')}
                     />
                   </Show>
                 }

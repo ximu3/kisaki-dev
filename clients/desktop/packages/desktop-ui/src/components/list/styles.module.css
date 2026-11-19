@@ -22,6 +22,12 @@
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
   }
+  .item:has(> [data-ui-dragging]) {
+    opacity: 0.4;
+  }
+  .item > [data-ui-dragging] {
+    opacity: 1;
+  }
   .item:is(:hover, :focus-within) {
     background: var(--kui-content-row-hover-background);
   }

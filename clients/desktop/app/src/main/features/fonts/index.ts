@@ -1,5 +1,6 @@
 /** @fileoverview Prepares real font metadata, commits user font edits and hands out independent fixed file reads. */
 
+import { releaseAll } from '../../infrastructure/release'
 import { readFile } from 'node:fs/promises'
 import type { Readable } from 'node:stream'
 import { createRequire } from 'node:module'
@@ -106,10 +107,17 @@ export function createFonts(
   ): Promise<PreparedFontFile> {
     const stage = await attachments.stage(input, maxFontBytes, options?.signal)
     try {
-      const { metadata, mediaType } = inspectFont(
-        await readFile(stage.path),
-        (decoder('fontkit') as typeof Fontkit).create,
-      )
+      const bytes = await readFile(stage.path)
+      let inspection: ReturnType<typeof inspectFont>
+      try {
+        inspection = inspectFont(bytes, (decoder('fontkit') as typeof Fontkit).create)
+      } catch (cause) {
+        if (cause instanceof DesktopError) {
+          throw cause
+        }
+        throw new DesktopError('InvalidInput', 'The font file could not be decoded', { cause })
+      }
+      const { metadata, mediaType } = inspection
       options?.signal?.throwIfAborted()
       const content = await attachments.prepare(stage, mediaType)
       const file = { attachmentId: content.metadata.id, metadata }
@@ -136,6 +144,7 @@ export function createFonts(
     expected: FontUpdate['expected'],
     options?: CallOptions,
   ) {
+    options?.signal?.throwIfAborted()
     const cleanups: Array<() => Promise<void>> = []
     const files: FontFile[] = []
     const additions: PreparedContent[] = []
@@ -202,7 +211,7 @@ export function createFonts(
       invalidated.emit()
       return result.font
     } finally {
-      await Promise.all(cleanups.map((dispose) => dispose()))
+      await releaseAll(cleanups)
     }
   }
 
@@ -213,7 +222,7 @@ export function createFonts(
       const holds: PreparedFontFile[] = []
       /** Releases every held file in an uncommitted font copy. */
       const dispose = async () => {
-        await Promise.all(holds.map((file) => file.dispose()))
+        await releaseAll(holds.map((file) => () => file.dispose()))
       }
       try {
         for (const input of inputs) {
@@ -243,10 +252,15 @@ export function createFonts(
       return [...new Set(installed)].sort((a, b) => a.localeCompare(b))
     },
     /** Reads one bounded interval of user font summaries. */
-    list: (query: { search: string }, options: ListOptions) =>
-      call('listFonts', query.search, parseListOptions(options)),
+    async list(query: { search: string }, options: ListOptions, context?: CallOptions) {
+      context?.signal?.throwIfAborted()
+      return call('listFonts', query.search, parseListOptions(options))
+    },
     /** Reads a complete saved font without acquiring its bytes. */
-    get: (id: string) => call('getFont', id),
+    async get(id: string, options?: CallOptions) {
+      options?.signal?.throwIfAborted()
+      return call('getFont', id)
+    },
     /** Parses and commits all files as one new font. */
     import(input: FontImportInput, options?: CallOptions) {
       const value = parseFontImport(input)
@@ -258,12 +272,14 @@ export function createFonts(
       return save(id, changes.name, changes.files, expected, options)
     },
     /** Removes the user font and invalidates the library. */
-    async delete(id: string) {
+    async delete(id: string, options?: CallOptions) {
+      options?.signal?.throwIfAborted()
       attachments.retire(await call('deleteFont', id))
       invalidated.emit()
     },
     /** Acquires a fixed definition and independent holds on all its files. */
-    async open(id: string): Promise<FontRead> {
+    async open(id: string, options?: CallOptions): Promise<FontRead> {
+      options?.signal?.throwIfAborted()
       const font = await call('getFont', id)
       if (!font) {
         throw new DesktopError('NotFound', 'The font does not exist')
@@ -271,12 +287,14 @@ export function createFonts(
       const reads: Record<string, ReadResource> = {}
       /** Releases every file acquired for the font read. */
       const dispose = async () => {
-        await Promise.all(Object.values(reads).map((read) => read.dispose()))
+        await releaseAll(Object.values(reads).map((read) => () => read.dispose()))
       }
       try {
         for (const file of font.files) {
-          reads[file.attachmentId] = await attachments.read(file.attachmentId)
+          options?.signal?.throwIfAborted()
+          reads[file.attachmentId] = await attachments.read(file.attachmentId, options)
         }
+        options?.signal?.throwIfAborted()
         return {
           font,
           resources: Object.fromEntries(

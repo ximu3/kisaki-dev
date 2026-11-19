@@ -383,7 +383,6 @@ export function createPreferenceDraft(api: MainClient) {
     save,
     stage,
     dirty: () => edits().length > 0,
-    discard: () => setEdits([]),
   }
 }
 

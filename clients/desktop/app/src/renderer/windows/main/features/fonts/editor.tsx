@@ -21,8 +21,8 @@ import { Toolbar, ToolbarRow } from '@kisaki3/desktop-ui/toolbar'
 import type { MainClient } from '../../../../infrastructure/api'
 import type { EditorGuard } from '../../../../infrastructure/dialogs/closing'
 import { errorMessage, reportError } from '../../../../infrastructure/notifications'
-import { createFontRead } from '../../domain-ui/fonts/read'
-import { fontFaceName, FontSpecimen } from '../../domain-ui/fonts/specimen'
+import { createFontRead } from './read'
+import { fontFaceName, FontSpecimen } from './specimen'
 import { createFontDraft } from './draft'
 
 /** Previews existing and proposed files, with reversible removal until the draft is saved. */
@@ -76,7 +76,7 @@ export function FontEditor(props: {
 
   return (
     <>
-      <DialogHeader>
+      <DialogHeader closeLabel={api.t('actions.close')}>
         <DialogTitle>{api.t(props.initial ? 'runtime.editFont' : 'runtime.newFont')}</DialogTitle>
       </DialogHeader>
       <Form
@@ -103,7 +103,7 @@ export function FontEditor(props: {
           <FieldGroup>
             <Field name="name" id="font-field-name" required>
               <FieldLabel>{api.t('runtime.name')}</FieldLabel>
-              <Input value={draft.name()} onValueChange={draft.rename} />
+              <Input autofocus value={draft.name()} onValueChange={draft.rename} />
             </Field>
             <Field name="files" id="font-field-files">
               <FieldLabel>{api.t('runtime.files')}</FieldLabel>

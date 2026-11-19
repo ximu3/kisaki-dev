@@ -122,6 +122,18 @@ export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
     const configuration = new Compartment()
     let synchronizing = false
     let alive = true
+    let scheduled = false
+    function scheduleSync() {
+      if (scheduled) {
+        return
+      }
+      scheduled = true
+      queueMicrotask(() => {
+        scheduled = false
+        sync()
+      })
+    }
+
     /** Builds reactive readonly, accessibility, placeholder and host-extension configuration. */
     const extension = () => [
       EditorState.readOnly.of(!!local.readOnly),
@@ -148,6 +160,8 @@ export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
             setState(update.state)
             if (update.docChanged && !synchronizing) {
               local.onValueChange?.(update.state.doc.toString())
+              // Reconcile after CodeMirror finishes the current transaction.
+              scheduleSync()
             }
           }),
         ],
@@ -160,19 +174,15 @@ export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
      * change or adding history.
      */
     const sync = () => {
-      if (
-        !alive ||
-        view.composing ||
-        local.value === undefined ||
-        local.value === view.state.doc.toString()
-      ) {
+      const next = local.value
+      if (!alive || view.composing || next === undefined || next === view.state.doc.toString()) {
         return
       }
 
       synchronizing = true
       try {
         view.dispatch({
-          changes: { from: 0, to: view.state.doc.length, insert: local.value },
+          changes: { from: 0, to: view.state.doc.length, insert: next },
           annotations: Transaction.addToHistory.of(false),
         })
       } finally {
@@ -181,9 +191,12 @@ export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
     }
 
     /** Schedules controlled-value synchronization after native composition settles. */
-    const compositionEnd = () => queueMicrotask(sync)
+    const compositionEnd = scheduleSync
     view.contentDOM.addEventListener('compositionend', compositionEnd)
-    createEffect(sync)
+    createEffect(() => {
+      void local.value
+      scheduleSync()
+    })
     createEffect(() => view.dispatch({ effects: configuration.reconfigure(extension()) }))
     local.onViewChange?.(view)
 

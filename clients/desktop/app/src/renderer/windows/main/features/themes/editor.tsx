@@ -186,7 +186,7 @@ export function ThemeEditor(props: {
 
   return (
     <>
-      <DialogHeader>
+      <DialogHeader closeLabel={api.t('actions.close')}>
         <DialogTitle>
           {api.t(props.initial.id ? 'runtime.editTheme' : 'runtime.newTheme')}
         </DialogTitle>
@@ -197,6 +197,7 @@ export function ThemeEditor(props: {
             <Field name="name" id="theme-field-name" required class="min-w-40 flex-1">
               <FieldLabel>{api.t('runtime.name')}</FieldLabel>
               <Input
+                autofocus
                 value={draft().name}
                 onValueChange={(name) => setDraft((value) => ({ ...value, name }))}
               />

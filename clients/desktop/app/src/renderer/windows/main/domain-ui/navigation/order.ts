@@ -2,13 +2,15 @@
 
 import type { PageRef } from '@kisaki3/desktop-contracts/ui'
 import { moveListItems, type ListMove } from '@kisaki3/desktop-ui/list'
-import type { PageRoute } from '../../app/routes'
 
 /** Uses saved positions first and appends newly available pages in catalog order. */
-export function arrangePages(pages: readonly PageRoute[], order: readonly PageRef[]) {
+export function arrangePages<T extends { id: string }>(
+  pages: readonly T[],
+  order: readonly PageRef[],
+) {
   const remaining = new Map(pages.map((page) => [page.id, page]))
   const slots = [...order]
-  const visible: PageRoute[] = []
+  const visible: T[] = []
   for (const ref of order) {
     if (ref.type === 'native') {
       const page = remaining.get(ref.id)

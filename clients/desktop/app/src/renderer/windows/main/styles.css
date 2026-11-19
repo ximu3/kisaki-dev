@@ -5,4 +5,4 @@
 @import './app/titlebar.css';
 @import './app/rail.css';
 @source './';
-@source '../../infrastructure';
+@source '../../infrastructure/dialogs';

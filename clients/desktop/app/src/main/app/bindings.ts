@@ -1,6 +1,7 @@
 /** @fileoverview Binds durable preference choices, translation registration, name collation and live window invalidation. */
 
 import { isDeepStrictEqual } from 'node:util'
+import { releaseAll } from '../infrastructure/release'
 import { createSignal } from '../infrastructure/events'
 import type { createPreferences } from '../features/preferences'
 import type { createI18n } from '../infrastructure/i18n'
@@ -57,9 +58,7 @@ export async function bindSettings(
   })
   /** Unsubscribes after admission has stopped and waits for the final adoption work. */
   async function dispose() {
-    await settings.dispose()
-    await locale.dispose()
-    await applying
+    await releaseAll([() => settings.dispose(), () => locale.dispose(), () => applying])
   }
   const presentationDeadline = Date.now() + 5_000
   try {

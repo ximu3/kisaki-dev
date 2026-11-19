@@ -57,7 +57,7 @@ test.use({
   },
 })
 
-test('reopens recorded task results and returns to the same filtered history', async ({
+test('opens and removes individual task records and clears history across filters', async ({
   desktop,
 }) => {
   const page = await desktop.firstWindow()
@@ -95,19 +95,6 @@ test('reopens recorded task results and returns to the same filtered history', a
   await expect(search).toHaveValue('Interrupted')
   await expect(details).toBeFocused()
 
-  await page.getByRole('button', { name: 'Clear history', exact: true }).click()
-  const clear = page.getByRole('dialog', { name: 'Clear history', exact: true })
-  await clear.getByRole('combobox', { name: 'History' }).click()
-  await clear.getByRole('option', { name: 'Finished tasks created before a date' }).click()
-  await clear.getByLabel('Created before', { exact: true }).fill('1990-01-01')
-  await clear.getByRole('button', { name: 'Clear history', exact: true }).click()
-  await expect(clear).toBeHidden()
-  await expect(details).toBeVisible()
-
-  await page.getByRole('button', { name: 'Clear search', exact: true }).click()
-  await expect(search).toHaveValue('')
-  await expect(failed).toHaveCount(0)
-
   const remove = row.getByRole('button', { name: 'Delete task record' })
   await remove.click()
   const confirmation = page.getByRole('alertdialog')
@@ -116,6 +103,15 @@ test('reopens recorded task results and returns to the same filtered history', a
   await expect(remove).toBeFocused()
   await remove.click()
   await confirmation.getByRole('button', { name: 'Delete', exact: true }).click()
-  await expect(page.getByText('No finished tasks', { exact: true })).toBeVisible()
   await expect(row).toHaveCount(0)
+
+  // The remaining record is hidden by the search, but clearing applies to the entire history.
+  const clear = page.getByRole('button', { name: 'Clear history', exact: true })
+  await clear.click()
+  await confirmation.getByRole('button', { name: 'Clear', exact: true }).click()
+  await expect(confirmation).toBeHidden()
+  await expect(clear).toBeDisabled()
+  await expect(page.getByRole('button', { name: 'Refresh', exact: true })).toBeFocused()
+  await page.getByRole('button', { name: 'Clear search', exact: true }).click()
+  await expect(page.getByText('No finished tasks', { exact: true })).toBeVisible()
 })

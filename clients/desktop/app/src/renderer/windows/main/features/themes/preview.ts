@@ -7,6 +7,8 @@ import { reportError } from '../../../../infrastructure/notifications'
 
 /** One uninterrupted preview request, from acquisition through its last delivered revision. */
 interface PreviewSession {
+  request: string
+  lifetime: AbortController
   next: AppearancePreviewInput | undefined
   id?: string
   updating: boolean
@@ -20,6 +22,7 @@ export function createThemePreview(api: MainClient, input: Accessor<AppearancePr
   function release() {
     const previous = session
     session = undefined
+    previous?.lifetime.abort()
     setEnabled(false)
     if (previous?.id) {
       void api.call('resources.release', previous.id).catch(reportError)
@@ -35,7 +38,12 @@ export function createThemePreview(api: MainClient, input: Accessor<AppearancePr
         if (current.id) {
           await api.call('themes.updatePreview', current.id, value)
         } else {
-          const id = await api.call('themes.preview', value)
+          const id = await api.request(
+            current.lifetime.signal,
+            'themes.preview',
+            current.request,
+            value,
+          )
           if (session !== current) {
             await api.call('resources.release', id)
             return
@@ -60,7 +68,12 @@ export function createThemePreview(api: MainClient, input: Accessor<AppearancePr
 
   createEffect(() => {
     if (enabled()) {
-      const current = (session ??= { next: undefined, updating: false })
+      const current = (session ??= {
+        request: crypto.randomUUID(),
+        lifetime: new AbortController(),
+        next: undefined,
+        updating: false,
+      })
       current.next = input()
       if (!current.updating) {
         void deliver(current)
@@ -69,7 +82,7 @@ export function createThemePreview(api: MainClient, input: Accessor<AppearancePr
   })
 
   function ended(event: Event) {
-    if ((event as CustomEvent<string>).detail === session?.id) {
+    if ((event as CustomEvent<string>).detail === session?.request) {
       session = undefined
       setEnabled(false)
     }

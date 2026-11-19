@@ -2,6 +2,8 @@
 
 /** Browser-test hooks controlling the isolated consumer and observing its resource lifetimes. */
 export interface FixtureApi {
+  /** Adopts or declines the controlled disclosure's next requested state. */
+  requestDisclosure?: (open: boolean) => void
   /** Replaces the controlled text value from outside its native input. */
   setExternal: (value: string) => void
   /** Replaces search candidates to exercise retention of committed choices. */
@@ -13,8 +15,10 @@ export interface FixtureApi {
 
   /** Submits the mounted feedback sample through its editor-held instance. */
   submitSample?: () => Promise<boolean>
-  /** Lets a consumer test hold or reject the business write after native submission. */
-  commitSample?: (submitter: HTMLElement | null) => Promise<void>
+  /** Switches the editor to another record under the same native form. */
+  selectSample?: (id: string) => void
+  /** Holds or rejects a write to the selected record. */
+  commitSample?: (submitter: HTMLElement | null, id: string) => Promise<void>
 
   /** Mounts or disposes the component that publishes fixture notifications. */
   setOwner: (mounted: boolean) => void

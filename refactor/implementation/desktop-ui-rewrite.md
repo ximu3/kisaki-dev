@@ -107,9 +107,9 @@ DialogContent 接受内容宽度 `size` 与工具窗的 `fill`。sm、md、lg、
 
 | 表面 | 内容与滚动 | 动作和关闭 |
 | --- | --- | --- |
-| 任务中心 | xl、fill。工具带使用短页签文字和独立的小号查询行。固定表头与正文滚动分工。已结束记录显示任务、耗时、状态和操作。详情纵排结果、任务信息与输入 | Header 关闭。Footer 固定清理和刷新。单条已结束记录可从操作列删除，详情关闭返回同一筛选、位置与发起按钮 |
-| 偏好 | xl、fill。八个横排页签在标题下的公共工具带内，溢出时支持滚轮。正文共用一个纵向视口，草稿偏离默认时在字段标题旁恢复。作品使用保留共用计时，四个入口分别打开单列子表单 | Footer 左边稳定反馈，右侧为放弃修改和最右的保存。子表单用确定回填父草稿，用取消放弃本次编辑。关闭窗口或离开对象复用同一份草稿的决定 |
-| 主题、字体 | 单列管理条目显示身份、来源及单项动作，新增与导入固定在底部。预览和编辑分别打开，目录保留滚动和焦点 | 主题编辑器从左到右依次提供幽灵「取消」、描边「保存」和主操作「保存并选用」。选用冲突时反馈已保存的主题和选用结果。字体编辑器的保存位于取消右侧 |
+| 任务中心 | xl、fill。工具带使用短页签文字和独立的小号查询行。固定表头与正文滚动分工。已结束记录显示任务、耗时、状态和操作。详情纵排结果、任务信息与输入 | Header 关闭。Footer 固定清理和刷新。清理入口使用 Alert Dialog 确认永久删除全部已结束任务记录，首焦点在取消。单条已结束记录可从操作列删除，详情关闭返回同一筛选、位置与发起按钮 |
+| 偏好 | xl、fill。八个横排页签在标题下的公共工具带内，溢出时支持滚轮。正文共用一个纵向视口，草稿偏离默认时在字段标题旁恢复。作品使用保留共用计时，四个入口分别打开单列子表单 | Footer 左侧保留固定反馈，右侧为保存。Header 关闭时处理未保存的更改。子表单用确定回填父草稿，用取消放弃本次编辑。关闭窗口或离开对象复用同一份草稿的决定 |
+| 主题、字体 | 单列管理条目显示身份、来源及单项动作，新增与导入固定在底部。预览和编辑分别打开，Header 均有关闭按钮，目录保留滚动和焦点 | 主题编辑器从左到右依次提供幽灵「取消」、描边「保存」和主操作「保存并选用」。选用冲突时反馈已保存的主题和选用结果。字体编辑器的保存位于取消右侧 |
 | 系统集成、关于、确认 | 系统集成用一组普通字段排列启动、链接和数据目录，需要系统操作时在对应项提供入口。关于按间距区分项目标识和环境信息。确认采用带分隔线的标题带和随内容收高的 sm 宽度 | 普通工具在 Header 关闭。确认的动作区提供退出本次决定的入口和明确的提交动作 |
 
 重写前的最小窗口中，任务 Dialog 顶部越过标题栏下沿，Tabs 分到 414px 而空态仅得 84px。偏好在 200% 下，Body 和字段区同时纵向滚动。重写采用上表的区域归属，删除 `62vh`、窗口级控件重绘及穿透 Tabs 私有 DOM 的选择器。表格保留一字段一列，窄宽横滚。虚拟选择列表绑定真实选项视口；有明确页数的任务列表按区间读取。输入的短暂加载、实际空集、查询无匹配和失败分别呈现。[任务基线](../verification/evidence/w07/ui/tasks.png) · [偏好基线](../verification/evidence/w07/ui/preferences.png)
@@ -173,14 +173,14 @@ windows/main/
     navigation.ts
     titlebar.css
   domain-ui/
-    fonts/         selector.tsx、options.ts、read.ts、specimen.tsx
+    fonts/         selector.tsx、options.ts
     themes/        selector.tsx
     navigation/    list.tsx、order.ts
   features/
     tasks/         center.tsx、query.ts、filters.tsx、history-list.tsx、rows.tsx、details.tsx 与清理
     preferences/   editor.tsx、draft.ts、usage/、shortcuts.tsx 及其他字段组
     themes/        manager.tsx、inspection.tsx、samples.tsx、editor.tsx、fields.tsx、preview.ts
-    fonts/         manager.tsx、details.tsx、editor.tsx、draft.ts
+    fonts/         manager.tsx、details.tsx、editor.tsx、draft.ts、read.ts、specimen.tsx
     system/        settings.tsx、section.tsx、data-location.tsx
     about.tsx
 ```

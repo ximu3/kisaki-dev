@@ -4,6 +4,7 @@ import { createEffect, on, onMount, splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { assignRef, callHandler, classes } from '../dom'
 import { onFormReset } from '../state'
+import { nativeValidityChanged } from '../form'
 import styles from './styles.module.css'
 
 /** Native numeric bounds, step and DOM attributes for a horizontal range control. */
@@ -54,6 +55,7 @@ export function RangeInput(props: RangeInputProps): JSX.Element {
     const max = props.max ?? 100
     const fraction = max > min ? (input.valueAsNumber - min) / (max - min) : 0
     input.style.setProperty('--range-fraction', String(fraction))
+    nativeValidityChanged(input.form)
   }
 
   onMount(() => {

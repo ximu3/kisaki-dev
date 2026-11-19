@@ -16,8 +16,8 @@ import { List, ListItem } from '@kisaki3/desktop-ui/list'
 import { Spinner } from '@kisaki3/desktop-ui/spinner'
 import type { MainClient } from '../../../../infrastructure/api'
 import { errorMessage } from '../../../../infrastructure/notifications'
-import { createFontRead } from '../../domain-ui/fonts/read'
-import { FontSpecimen, fontFaceName } from '../../domain-ui/fonts/specimen'
+import { createFontRead } from './read'
+import { FontSpecimen, fontFaceName } from './specimen'
 
 /** The saved font addressed by a row or native navigation target. */
 export interface FontSelection {

@@ -15,7 +15,6 @@ import type {
   TaskRun,
   TaskRunRef,
   TaskRunSummary,
-  TaskHistoryFilter,
   TaskTerminalRun,
 } from '@kisaki3/desktop-contracts/tasks'
 import type {
@@ -100,6 +99,8 @@ export interface WindowApi {
 
 /** The main window's settings, task center and native management capabilities. */
 export interface MainWindowApi extends WindowApi {
+  /** Restores and focuses the window when a pending decision requires user input. */
+  'window.reveal'(): void
   /** Applies the document's resolved colors to this window's controls overlay. */
   'window.caption'(background: string, foreground: string): void
   /** Restarts the application after the normal close workflow succeeds. */
@@ -136,8 +137,8 @@ export interface MainWindowApi extends WindowApi {
   'tasks.resume'(ref: TaskRunRef): TaskState
   /** Requests cancellation and returns the acknowledged control state. */
   'tasks.cancel'(ref: TaskRunRef): TaskState
-  /** Clears matching finished history while protecting admitted runs. */
-  'tasks.clear'(filter: TaskHistoryFilter): number
+  /** Clears all finished history while protecting admitted runs. */
+  'tasks.clear'(): number
   /** Removes the selected ended history record and reports the number removed. */
   'tasks.delete'(ref: TaskRunRef): number
   /** Lists available theme identities with names resolved for this window. */
@@ -153,7 +154,7 @@ export interface MainWindowApi extends WindowApi {
   /** Removes a user theme while retaining its fonts and saved selection references. */
   'themes.delete'(id: string): void
   /** Acquires the application preview for this document after validating its branch. */
-  'themes.preview'(input: AppearancePreviewInput): string
+  'themes.preview'(request: string, input: AppearancePreviewInput): string
   /** Updates the identified preview while its owning editor still holds it. */
   'themes.updatePreview'(id: string, input: AppearancePreviewInput): void
   /** Searches the user font collection one bounded interval at a time. */

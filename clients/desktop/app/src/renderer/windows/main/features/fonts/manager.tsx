@@ -44,14 +44,17 @@ export function Fonts(props: {
 }) {
   const { api } = props
   const [offset, setOffset] = createSignal(0)
-  const [list, { refetch }] = createResource(offset, (from) =>
-    api.call('fonts.list', '', { offset: from, limit: pageSize }),
-  )
-  deferDialogUntil(() => !!list.error || !!list())
-  const entries = createMemo(
-    () => new Map((list.error ? [] : (list()?.items ?? [])).map((item) => [item.id, item])),
-  )
-  const count = () => (list.error ? 0 : (list()?.total ?? 0))
+  const [list, { refetch }] = createResource(offset, async (from) => {
+    const result = await api.call('fonts.list', '', { offset: from, limit: pageSize })
+    return { from, result }
+  })
+  const page = () => {
+    const response = list.error ? undefined : list.latest
+    return response?.from === offset() ? response.result : undefined
+  }
+  deferDialogUntil(() => !!list.error || !!page())
+  const entries = createMemo(() => new Map(page()?.items.map((item) => [item.id, item])))
+  const count = () => page()?.total ?? 0
   let viewport!: HTMLElement
 
   const [preview, setPreview] = createSignal<FontSelection | undefined>(
@@ -72,9 +75,11 @@ export function Fonts(props: {
     setOffset(next)
     viewport.scrollTop = 0
   }
+
   createEffect(() => {
-    if (!list.loading && !list.error && list() && offset() > 0 && offset() >= count()) {
-      changePage(Math.max(0, Math.floor((count() - 1) / pageSize) * pageSize))
+    const result = page()
+    if (result && offset() > 0 && offset() >= result.total) {
+      changePage(Math.max(0, Math.floor((result.total - 1) / pageSize) * pageSize))
     }
   })
 
@@ -108,8 +113,13 @@ export function Fonts(props: {
 
   async function saved(font: Font) {
     setEdit(undefined)
+    const previous = document.activeElement
     await refetch()
-    requestAnimationFrame(() => document.getElementById('font-preview-' + font.id)?.focus())
+    requestAnimationFrame(() => {
+      if (document.activeElement === previous || document.activeElement === document.body) {
+        document.getElementById('font-preview-' + font.id)?.focus()
+      }
+    })
   }
 
   return (
@@ -150,7 +160,7 @@ export function Fonts(props: {
           )}
         </Show>
         <Show
-          when={!list.error && list()}
+          when={page()}
           fallback={!list.error && <Spinner label={api.t('runtime.loadingFonts')} />}
         >
           <Show

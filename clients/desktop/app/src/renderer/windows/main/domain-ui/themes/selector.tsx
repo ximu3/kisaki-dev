@@ -1,5 +1,6 @@
 /** @fileoverview Selects themes by stable ownership and preserves unavailable recorded identities. */
 
+import { catalogKey } from '../../../../../shared/catalog-ref'
 import { Select } from '@kisaki3/desktop-ui/select'
 import type { ThemeRef } from '@kisaki3/desktop-contracts/appearance'
 import type { Translate } from '@kisaki3/desktop-localization'
@@ -17,13 +18,6 @@ export interface ThemeChoice {
   name: string
 }
 
-/** Encodes the full identity, including the extension that owns a contributed theme. */
-export function themeKey(ref: ThemeRef): string {
-  return JSON.stringify(
-    ref.type === 'extension' ? [ref.type, ref.extensionId, ref.id] : [ref.type, ref.id],
-  )
-}
-
 /** Renders a theme reference as its listed name or its original identity when unavailable. */
 export function ThemeSelector(props: {
   value: ThemeRef | undefined
@@ -32,11 +26,11 @@ export function ThemeSelector(props: {
   t: Translate
   onValueChange: (ref: ThemeRef) => void
 }) {
-  const selected = () => (props.value ? themeKey(props.value) : 'unavailable')
+  const selected = () => (props.value ? catalogKey(props.value) : 'unavailable')
 
   function options() {
     const list = props.themes.map(({ ref, name }) => ({
-      value: themeKey(ref),
+      value: catalogKey(ref),
       label: name,
       description: props.t(themeSource[ref.type]),
     }))
@@ -66,7 +60,7 @@ export function ThemeSelector(props: {
       emptyMessage={props.t('runtime.noOptions')}
       invalidSelectionMessage={props.t('runtime.unavailable')}
       onValueChange={(key) => {
-        const theme = props.themes.find(({ ref }) => themeKey(ref) === key)
+        const theme = props.themes.find(({ ref }) => catalogKey(ref) === key)
         if (theme) {
           props.onValueChange(theme.ref)
         }

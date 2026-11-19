@@ -1,6 +1,6 @@
 /** @fileoverview Native numeric editing with themed step controls. */
 
-import { createUniqueId, Show, splitProps } from 'solid-js'
+import { createMemo, createUniqueId, Show, splitProps } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { assignRef, classes } from '../../../internal/dom'
 import { fieldAttributes } from '../../../internal/field'
@@ -28,6 +28,18 @@ export interface NumberInputProps extends Omit<InputProps, 'type' | 'step'> {
   decreaseLabel: string
 }
 
+/** Reads an HTML number boundary with the same numeric syntax as the native editor. */
+function numberBound(value: string | number | undefined, unbounded: number): number {
+  if (value === undefined || value === '') {
+    return unbounded
+  }
+
+  const parser = document.createElement('input')
+  parser.type = 'number'
+  parser.value = String(value)
+  return Number.isNaN(parser.valueAsNumber) ? unbounded : parser.valueAsNumber
+}
+
 /**
  * Renders a numeric editor with themed step buttons following native range and availability state.
  */
@@ -53,6 +65,8 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
     () => local.defaultValue ?? '',
     (next) => local.onValueChange?.(next),
   )
+  const min = createMemo(() => numberBound(props.min, -Infinity))
+  const max = createMemo(() => numberBound(props.max, Infinity))
   let input!: HTMLInputElement
 
   function step(direction: 1 | -1) {
@@ -60,10 +74,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
       const next =
         (Number.isNaN(input.valueAsNumber) ? 0 : input.valueAsNumber) +
         direction * (local.stepCount ?? 1)
-      input.valueAsNumber = Math.min(
-        input.max ? Number(input.max) : Infinity,
-        Math.max(input.min ? Number(input.min) : -Infinity, next),
-      )
+      input.valueAsNumber = Math.min(max(), Math.max(min(), next))
     } else if (direction === 1) {
       input.stepUp(local.stepCount ?? 1)
     } else {
@@ -71,7 +82,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
     }
     input.dispatchEvent(new Event('input', { bubbles: true }))
   }
-  const blocked = () => (props.disabled ?? field.disabled) || props.readOnly
+  const blocked = () => (props.disabled ?? field.disabled) || (props.readOnly ?? props.readonly)
 
   return (
     <InputFrame class={local.class} style={local.style} size={local.size}>
@@ -102,7 +113,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
           type="button"
           tabIndex={-1}
           aria-label={local.increaseLabel}
-          disabled={blocked() || (value() !== '' && Number(value()) >= Number(props.max))}
+          disabled={blocked() || (value() !== '' && Number(value()) >= max())}
           onPointerDown={(event) => event.preventDefault()}
           onClick={() => step(1)}
         >
@@ -112,7 +123,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
           type="button"
           tabIndex={-1}
           aria-label={local.decreaseLabel}
-          disabled={blocked() || (value() !== '' && Number(value()) <= Number(props.min))}
+          disabled={blocked() || (value() !== '' && Number(value()) <= min())}
           onPointerDown={(event) => event.preventDefault()}
           onClick={() => step(-1)}
         >

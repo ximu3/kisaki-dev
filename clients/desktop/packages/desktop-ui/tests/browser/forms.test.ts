@@ -186,6 +186,8 @@ test('IME defers controlled writes and native editing retains undo', async ({ pa
   await browserExpect(input).toHaveValue('original')
   await input.dispatchEvent('compositionend')
   await browserExpect(input).toHaveValue('during composition')
+  await page.evaluate(() => window.fixture.setExternal('after composition'))
+  await browserExpect(input).toHaveValue('after composition')
 
   await page.locator('#query').focus()
   await page.keyboard.press('ControlOrMeta+A')
@@ -266,8 +268,9 @@ test('native and imperative submissions share one write, its submitter and its r
         fail = reject
       })
       const actions: string[] = []
-      window.fixture.commitSample = (submitter) => {
-        actions.push(submitter?.textContent ?? 'shortcut')
+      window.fixture.selectSample!('second')
+      window.fixture.commitSample = (submitter, id) => {
+        actions.push(id + '/' + (submitter?.textContent ?? 'shortcut'))
         return gate
       }
 
@@ -279,6 +282,6 @@ test('native and imperative submissions share one write, its submitter and its r
       return { actions, joined, failure }
     })
 
-  expect(result).toEqual({ actions: ['Save sample'], joined: true, failure: 'Write failed' })
+  expect(result).toEqual({ actions: ['second/Save sample'], joined: true, failure: 'Write failed' })
   await browserExpect(page.locator('#feedback')).toHaveText('Write failed')
 })

@@ -58,9 +58,9 @@ desktop-ui 通过 props、事件与回调接入行为。异步选项、加载结
 
 ### Form、Field 与提交
 
-`@kisaki3/desktop-ui/form` 提供 `Form`、`FormFeedback`、`FieldIssue` 和按实例使用的 `createForm`。普通表单直接写 `<Form onSubmit={save}>`，有业务约束时传入 `validate` 与 `locate`。需由表单外的快捷键或关闭确认等待保存时，编辑器用同一组回调创建一个 `createForm` 实例，并通过 `<Form state={form}>` 接入。两种入口共享一套提交实现，回调只在实例拥有者处定义一次。Form 渲染真正的 `<form>`，保留元素 ref、表单归属、submitter、Enter 与可取消的 reset。
+`@kisaki3/desktop-ui/form` 提供 `Form`、`FormFeedback`、`FieldIssue` 和按实例使用的 `createForm`。普通表单直接写 `<Form onSubmit={save}>`，有业务约束时传入 `validate` 与 `locate`。需由表单外的快捷键或关闭确认等待保存时，编辑器用同一组回调创建一个 `createForm` 实例，并通过 `<Form state={form}>` 接入。替换 `state` 时，原生表单、字段反馈和提交一起切换到新实例。两种入口共享一套提交实现，回调只在实例拥有者处定义一次。Form 渲染真正的 `<form>`，保留元素 ref、表单归属、submitter、Enter 与可取消的 reset。
 
-`Form` 设置 `novalidate`，在原生 submit 中取消默认导航。提交先读取适用控件的 `validity`，按稳定字段身份与业务校验合并，按照表单阅读顺序交付问题。未挂载分组的约束由拥有完整草稿的业务校验提供。同一字段同时违反原生与业务约束时，采用业务给出的具体纠错说明，该字段只计一次。第一次提交前保持安静。提交失败后，后续输入更新相应反馈。只有提交或用户点击定位才移动焦点。定位回调先展开所属分组，再聚焦真实控件。Field 将每项错误与该控件单独关联，FormFeedback 呈现整表反馈。被取消的原生 reset 保持当前状态。草稿拥有者用保存值执行放弃，用产品默认值恢复选定字段。
+`Form` 设置 `novalidate`，在原生 submit 中取消默认导航。提交先读取适用控件的 `validity`，按稳定字段身份与业务校验合并，按照表单阅读顺序交付问题。未挂载分组的约束由拥有完整草稿的业务校验提供。同一字段同时违反原生与业务约束时，采用业务给出的具体纠错说明，该字段只计一次。第一次提交前保持安静。提交失败后，用户输入、宿主回写、原生约束以及表单成员或归属变化都会更新相应反馈。只有提交或用户点击定位才移动焦点。定位回调先展开所属分组，再聚焦真实控件。Field 按控件的原生表单归属关联字段错误；通过 HTML 的 `form` 属性从外部接入或更换归属时，控件与错误说明一起更新。FormFeedback 呈现整表反馈。被取消的原生 reset 保持当前状态。草稿拥有者用保存值执行放弃，用产品默认值恢复选定字段。
 
 实例的 `submit()` 返回本次操作的 Promise。按钮、快捷键与关闭前保存进入同一个提交流程，校验未通过时返回 `false`，业务提交成功返回 `true`，业务失败按原错误拒绝。在途请求固定首次接纳的动作，重复请求等待同一结果。多动作表单通过原生 submitter 区分提交按钮，快捷键与关闭前保存使用常规保存。`busy` 表示正在提交，编辑器仍可接收新输入。FormFeedback 在 Form 内从本实例取得结果与当前字段，汇总文案和操作错误由发起者提供。独立消费反馈区时仍可显式传入 issues、activeFieldId、summary 和 onLocate。草稿、脏状态、提交快照、并发基线、资源与部分成功结果归业务拥有者。独立消费者的原生 HTML 表单也能直接使用各公共控件。
 
@@ -103,6 +103,8 @@ Toolbar 和 ToolbarRow 排列查询条件与动作，提供对齐和换行。带
 `/list` 提供原生有序或无序 List。ListItem 统一对象图标、标题、补充内容、持续可见的附属信息与同行动作。行内动作在指针进入或键盘聚焦时显示，触屏可直接看到。ListItemAction 提供具名图标按钮与 Tooltip。ReorderableList 和 ReorderableListItem 沿用同一行结构，加入手柄、插入线、自动滚动、菜单与键盘操作。列表以当前稳定身份为准，受控地提交一批 ID 相对同范围目标的前后移动意图。宿主采纳后提供新的顺序，失败时在所属视图反馈。显示范围、不可用项槽位和保存时机遵循[共同重排规则](virtualization.md#reorder)。
 
 ListItem 的标题行容纳标准 Badge。显示或撤下同一行的徽标时，标题与说明的垂直位置保持一致。窄宽下标题与徽标沿自然内容换行。
+
+Collapsible 以原生 details 和 summary 呈现。defaultOpen 设置初始状态；传入 open 时，点击标题或用键盘激活标题会通过 onOpenChange 请求切换，宿主采纳后才改变展开状态。同名分组至多展开一项；宿主保留原值时，该组保持原来的展开项。标题内的链接和按钮保留自身操作。[HTML 折叠与分组](https://html.spec.whatwg.org/multipage/interactive-elements.html#the-details-element)
 
 依据：[HTML 表单控件](https://html.spec.whatwg.org/multipage/form-elements.html)、[表单处理](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html)、[WAI 表单分组](https://www.w3.org/WAI/tutorials/forms/grouping/)与[错误反馈](https://www.w3.org/WAI/tutorials/forms/notifications/)。
 
@@ -187,7 +189,7 @@ MarkdownEditor 使用 CodeMirror 6 编辑源码，默认在编辑区顶部显示
 
 呈现支持 Markdown、表格、任务列表、脚注、自动链接、软换行及标点转换。原始 HTML 按文本显示；任务列表只读，勾选在源码中修改。任务与脚注标识按预览实例隔离，不发生跨实例标签关联。来自内容的图片源必须由宿主映射到已经取得的 URL，未解析时显示替代文本；普通链接可以交给宿主导航，页内脚注保持原生锚点。资源身份、取得、授权和撤销由宿主维护。
 
-编辑器随组件卸载销毁，向调用方交付的实例引用同时失效。受控文本同步避开尚未完成的输入法组合；组件自建的 DOM、监听和编辑资源随自身寿命释放，宿主传入的资源不转移所有权。
+编辑器随组件卸载销毁，向调用方交付的实例引用同时失效。编辑事务以宿主最后采纳的文本为准，受控文本同步避开尚未完成的输入法组合；组件自建的 DOM、监听和编辑资源随自身寿命释放，宿主传入的资源不转移所有权。
 
 依据：[CodeMirror 模块与生命周期](https://codemirror.net/docs/guide/)、[Markdown 安全策略](https://github.com/markdown-it/markdown-it/blob/master/docs/safety.md)、[任务列表选项](https://mdit-plugins.github.io/tasklist.html)及[脚注](https://mdit-plugins.github.io/footnote.html)。
 
@@ -272,7 +274,7 @@ desktop-appearance 拥有正式视觉变量与[根字号计算](../domains/appea
 
 带文案的 Checkbox、Switch 与 Radio 共用选项行。同一 `size` 的单行最小高度和字号与 Input 一致，方框、轨道和圆点随图标度量变化，图形与文字相距 0.5rem。文案换行时整行自然增高，图形对准首行。Spinner 在固定槽位内旋转 Lucide LoaderCircle，减少动效时静止。单值 Slider 从最小值到滑块中心按当前值绘制主色填充，剩余轨道使用中性色。输入、键盘步进和重置同步更新，悬停时颜色稳定。
 
-Dialog 使用原生模态约束和透明背景层。Header 与 Footer 使用紧凑留白和分隔线，标题沿用常规控件字号，以字重表达层级。Body 独立滚动。可见弹层共用一层 1px 常规边框。默认主题的输入框、菜单、选择列表、日历、拾色器和 Tooltip 使用 4px 圆角，Dialog 与 Toast 使用 6px 圆角。各自采用所属表面与阴影。普通工具窗、详情窗在 Header 提供具名关闭按钮，已有底部取消的表单和明确选择的确认框使用底部操作。标题栏关闭和 Escape 提交同一可阻止的关闭请求。Collapsible 的触发区保留可操作高度，与内容之间只留一处间距。
+Dialog 使用原生模态约束和透明背景层。Header 与 Footer 使用紧凑留白和分隔线，标题沿用常规控件字号，以字重表达层级。Body 独立滚动。可见弹层共用一层 1px 常规边框。默认主题的输入框、菜单、选择列表、日历、拾色器和 Tooltip 使用 4px 圆角，Dialog 与 Toast 使用 6px 圆角。各自采用所属表面与阴影。普通 Dialog 的 Header 右上角提供具名关闭按钮，带底部取消的编辑器同样提供。Alert Dialog 通过底部文字按钮交付决定，Escape 返回安全选项。标题栏关闭和 Escape 提交同一可阻止的关闭请求。Collapsible 的触发区保留可操作高度，与内容之间只留一处间距。
 
 Tabs 与 SegmentedControl 共用紧凑分段外观和尺寸，分别保留面板导航与单值选择语义。Alert 是常驻提示，使用图标、正文与必要动作表达信息，不承担字段错误的集中反馈。Badge 沿用桌面参考的半透明色底、细边和小号标签。着色变体从主题取得语义色，文字向主题前景色调节以维持小字对比度。
 

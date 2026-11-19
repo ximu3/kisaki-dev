@@ -79,6 +79,9 @@ export async function stageFile(
   byteLimit: number,
   signal?: AbortSignal,
 ): Promise<StagedFile> {
+  const completion = finished(source, { cleanup: true })
+  // The input can fail while the destination directory is being prepared.
+  void completion.catch(() => {})
   const hash = createHash('sha256')
   let byteSize = 0
   let directory: string | undefined
@@ -105,6 +108,9 @@ export async function stageFile(
     const path = join(directory, 'content')
     const output = await open(path, 'wx')
     try {
+      if (source.errored) {
+        throw source.errored
+      }
       await pipeline(
         source,
         new Transform({
@@ -135,7 +141,7 @@ export async function stageFile(
     return { path, byteSize, sha256: hash.digest('hex'), dispose }
   } catch (error) {
     source.destroy()
-    await finished(source, { cleanup: true }).catch(() => {})
+    await completion.catch(() => {})
     try {
       await dispose()
     } catch (cleanupError) {

@@ -20,7 +20,8 @@ import type { EditorGuard } from '../../../../infrastructure/dialogs/closing'
 import { EditorDialog } from '../../../../infrastructure/dialogs/editor'
 import { createConfirmation } from '../../../../infrastructure/dialogs/confirmation'
 import { errorMessage, reportError } from '../../../../infrastructure/notifications'
-import { themeKey, themeSource } from '../../domain-ui/themes/selector'
+import { catalogKey } from '../../../../../shared/catalog-ref'
+import { themeSource } from '../../domain-ui/themes/selector'
 import { ThemeEditor, type ThemeEdit } from './editor'
 import { ThemeInspection } from './inspection'
 
@@ -42,7 +43,7 @@ export function Themes(props: {
   )
   const entries = createMemo(
     () =>
-      new Map((catalog.error ? [] : (catalog() ?? [])).map((item) => [themeKey(item.ref), item])),
+      new Map((catalog.error ? [] : (catalog() ?? [])).map((item) => [catalogKey(item.ref), item])),
   )
   const current = () => {
     const value = preferences.error ? undefined : preferences()?.appearance.theme
@@ -50,13 +51,13 @@ export function Themes(props: {
   }
   const activeKey = () => {
     const ref = current()
-    return ref ? themeKey(ref) : undefined
+    return ref ? catalogKey(ref) : undefined
   }
 
   const [preview, setPreview] = createSignal(props.target)
   const previewName = () => {
     const ref = preview()
-    return ref ? entries().get(themeKey(ref))?.name : undefined
+    return ref ? entries().get(catalogKey(ref))?.name : undefined
   }
   const [edit, setEdit] = createSignal<ThemeEdit>()
   const [busy, setBusy] = createSignal(false)
@@ -96,7 +97,9 @@ export function Themes(props: {
 
   async function reveal(ref: ThemeRef) {
     await refetch()
-    requestAnimationFrame(() => document.getElementById('theme-preview-' + themeKey(ref))?.focus())
+    requestAnimationFrame(() =>
+      document.getElementById('theme-preview-' + catalogKey(ref))?.focus(),
+    )
   }
   async function duplicate(ref: ThemeRef, name: string) {
     const copy = await api.call('themes.clone', ref, api.t('runtime.copySuffix', { name }))

@@ -91,8 +91,8 @@ test('saves the accepted preference draft and restores it after a document reloa
     )
     .toBe('120')
   await expect(scale).toHaveValue('130')
-  await preferences.getByRole('button', { name: 'Discard changes' }).click()
-  await expect(scale).toHaveValue('120')
+  await scale.fill('120')
+  await expect(save).toBeDisabled()
 
   await preferences.getByRole('tab', { name: 'Using works', exact: true }).click()
   const comics = preferences.getByRole('button', { name: 'Comics', exact: true })
@@ -165,7 +165,8 @@ test('saves the accepted preference draft and restores it after a document reloa
   await expect(record).toBeFocused()
   await expect(original).toBeVisible()
   await expect(number).toBeHidden()
-  await preferences.getByRole('button', { name: 'Discard changes', exact: true }).click()
+  await save.click()
+  await expect(save).toBeDisabled()
 })
 
 test('the application menu saves theme mode and sensitive-content visibility', async ({
@@ -245,6 +246,8 @@ test('a dropped font previews before save and can be selected after reopening th
   await dialog.getByLabel('Name', { exact: true }).fill('Isolated sample')
   await dialog.getByRole('button', { name: 'Save', exact: true }).click()
   const preview = library.getByRole('button', { name: 'Preview Isolated sample', exact: true })
+  await expect(preview).toBeFocused()
+
   await page.evaluate(() => {
     const observer = new MutationObserver((records) => {
       for (const { target } of records) {
@@ -339,6 +342,7 @@ test('saving and selecting a theme preserves the independent preference draft an
     .getByRole('alertdialog')
     .getByRole('button', { name: 'Discard changes', exact: true })
     .click()
+  await expect(themeEditor).toBeHidden()
   await themes.getByRole('button', { name: 'Close', exact: true }).click()
   await expect(themes).toBeHidden()
   await expect(scale).toHaveValue('115')
@@ -355,7 +359,13 @@ test('saving and selecting a theme preserves the independent preference draft an
   await expect(confirmSave).toBeFocused()
   await page.keyboard.press('Escape')
   await expect(scale).toHaveValue('115')
-  await editor.getByRole('button', { name: 'Discard changes' }).click()
+  await editor.getByRole('button', { name: 'Close', exact: true }).click()
+  await confirmation.getByRole('button', { name: 'Discard changes', exact: true }).click()
+  await expect(editor).toBeHidden()
+
+  await page.getByRole('button', { name: 'Application menu' }).click()
+  await page.getByRole('menuitem', { name: 'Preferences', exact: true }).click()
+  await editor.getByRole('tab', { name: 'Appearance', exact: true }).click()
   await expect(scale).toHaveValue('100')
   await expect(editor.getByRole('combobox', { name: 'Theme', exact: true })).toHaveText(
     'Sample theme',

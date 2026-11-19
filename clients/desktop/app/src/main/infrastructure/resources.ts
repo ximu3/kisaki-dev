@@ -1,6 +1,7 @@
 /** @fileoverview Holds immutable files for independent readers and binds them to the actual Electron document session. */
 
 import { randomUUID } from 'node:crypto'
+import { releaseAll } from './release'
 import { open, type FileHandle } from 'node:fs/promises'
 import { Readable } from 'node:stream'
 import type { Session } from 'electron'
@@ -13,6 +14,7 @@ import type {
 
 /** File metadata fixed for the entire lifetime of an acquired resource. */
 export interface ResourceFile {
+  readonly sha256: string
   readonly path: string
   readonly size: number
   readonly mediaType: string
@@ -111,8 +113,7 @@ export function createResources() {
       })
       return new Response(Readable.toWeb(stream) as ReadableStream<Uint8Array<ArrayBuffer>>, init)
     } catch (error) {
-      await handle?.close()
-      await hold.dispose()
+      await releaseAll([() => handle?.close(), () => hold.dispose()])
       throw error
     }
   }
@@ -169,11 +170,15 @@ export function createResources() {
             ) as Record<K, string>,
             /** Revokes this binding's URLs and returns its independent holds. */
             async dispose() {
-              await Promise.all(
-                holds.map(([, read]) => {
-                  bound.delete(read.resource.id)
-                  return read.dispose()
-                }),
+              for (const [, read] of holds) {
+                bound.delete(read.resource.id)
+              }
+              await releaseAll(
+                holds.map(
+                  ([, read]) =>
+                    () =>
+                      read.dispose(),
+                ),
               )
             },
           }
@@ -185,13 +190,17 @@ export function createResources() {
           }
           disposed = true
           scopes.delete(scope)
-          if (!scopes.size) {
-            session.protocol.unhandle('kisaki-resource')
-            sessions.delete(session)
-          }
           const held = [...bound.values()]
           bound.clear()
-          await Promise.all(held.map((read) => read.dispose()))
+          await releaseAll([
+            () => {
+              if (!scopes.size) {
+                sessions.delete(session)
+                session.protocol.unhandle('kisaki-resource')
+              }
+            },
+            ...held.map((read) => () => read.dispose()),
+          ])
         },
       }
     },

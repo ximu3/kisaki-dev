@@ -142,3 +142,13 @@ Chromium 用例在同一个菜单实例中替换触发按钮，分别核对替�
 ## 重写后的独立制品消费
 
 2026-11-19，Windows x64 通过公共 UI 的 12 项 Chromium 用例及 4 项独立制品消费用例。Linux x64 的公共包完整验证在提交 `95b0c86a` 通过。W07 使用同一修订验证了六个原生桌面目标。[公共包 CI](https://github.com/ximu3/kisaki-dev/actions/runs/44350446933/job/134964567956) · [六目标实际消费](../w07/README.md#ui-rewrite-six-targets)
+
+<a id="composition-updates"></a>
+
+## 输入法组合后的连续更新
+
+Windows x64 的 Chromium 中，受控 Input 在组合期间收到外部值 A，组合结束后显示 A；宿主随后写入 B，输入框同步显示 B。MarkdownEditor 通过 Chromium 输入法接口输入「中」，在组合期间和提交后分别更新受控正文，CodeMirror 同样依次读到 A 和 B。[文本绑定](../../../../clients/desktop/packages/desktop-ui/src/internal/text-control.ts) · [Markdown 编辑器](../../../../clients/desktop/packages/desktop-ui/src/components/markdown/editor.tsx)
+
+## 受控折叠与同名分组
+
+Windows x64 的 Chromium 中，点击受控的关闭项，宿主收到展开请求并保留原值，同名分组仍显示原先展开的成员。宿主随后采纳展开值，新成员展开，原成员关闭。Space 请求收起时可以保留展开；Enter 再次请求并获采纳后收起。标题内的链接正常导航，调用方取消的点击保持原状。[公开组件](../../../../clients/desktop/packages/desktop-ui/src/components/collapsible/control.tsx) · [独立制品用例](../../../../clients/desktop/packages/desktop-ui/tests/consumers/browser.test.ts)

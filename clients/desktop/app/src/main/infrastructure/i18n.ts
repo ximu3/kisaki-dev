@@ -1,5 +1,7 @@
 /** @fileoverview Resolves the selected translation against live instance registrations and the built-in English catalog. */
 
+import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
+import { catalogKey } from '../../shared/catalog-ref'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type {
   UiTranslationRef,
@@ -24,9 +26,9 @@ export function createI18n(builtin?: TranslationEntry) {
     locale: 'en',
     messages: {},
   }
-  const translations = new Map([[JSON.stringify(english.ref), english]])
+  const translations = new Map([[catalogKey(english.ref), english]])
   if (builtin) {
-    translations.set(JSON.stringify(builtin.ref), builtin)
+    translations.set(catalogKey(builtin.ref), builtin)
   }
   /** Signals a change of effective messages, including same-locale replacements. */
   const changed = createSignal<void>()
@@ -38,7 +40,7 @@ export function createI18n(builtin?: TranslationEntry) {
 
   /** Resolves the stable reference after selection, registration or instance release. */
   function adopt() {
-    const next = translations.get(JSON.stringify(selection)) ?? english
+    const next = translations.get(catalogKey(selection)) ?? english
     if (effective === next) {
       return
     }
@@ -57,7 +59,8 @@ export function createI18n(builtin?: TranslationEntry) {
       return translator
     },
     /** Returns translation names and identities without transferring every catalog. */
-    list() {
+    list(options?: CallOptions) {
+      options?.signal?.throwIfAborted()
       return [...translations.values()].map(({ ref, name, locale }) => ({
         ref,
         name,
@@ -70,10 +73,15 @@ export function createI18n(builtin?: TranslationEntry) {
       adopt()
     },
     /** Registers a validated catalog under a trusted extension's actual identity. */
-    register(extensionId: string, definition: ExtensionUiTranslationDefinition) {
+    register(
+      extensionId: string,
+      definition: ExtensionUiTranslationDefinition,
+      options?: CallOptions,
+    ) {
+      options?.signal?.throwIfAborted()
       const value = validateExtensionUiTranslationDefinition(definition)
       const ref = { type: 'extension', extensionId, id: value.id } as const
-      const key = JSON.stringify(ref)
+      const key = catalogKey(ref)
       if (translations.has(key)) {
         throw new DesktopError('Conflict', 'This translation is already registered')
       }

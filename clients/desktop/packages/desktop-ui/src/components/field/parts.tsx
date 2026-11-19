@@ -1,10 +1,19 @@
 /** @fileoverview Local field associations and native fieldset grouping. */
 
-import { createSignal, createUniqueId, onCleanup, Show, splitProps, useContext } from 'solid-js'
+import {
+  createMemo,
+  createSignal,
+  createUniqueId,
+  onCleanup,
+  onMount,
+  Show,
+  splitProps,
+  useContext,
+} from 'solid-js'
 import type { JSX } from 'solid-js'
-import { FormContext } from '../../internal/form'
+import { fieldForm, FormContext } from '../../internal/form'
 import { FieldContext } from '../../internal/field'
-import { classes } from '../../internal/dom'
+import { assignRef, classes } from '../../internal/dom'
 import { Button } from '../button/control'
 import type { ButtonProps } from '../button/control'
 import styles from './styles.module.css'
@@ -40,14 +49,23 @@ export function Field(props: FieldProps): JSX.Element {
     'required',
     'disabled',
     'class',
+    'ref',
     'children',
   ])
 
   const fallbackId = createUniqueId()
   const id = () => local.id ?? fallbackId
-  const form = useContext(FormContext)
+  const inherited = useContext(FormContext)
+  const [field, setField] = createSignal<HTMLDivElement>()
+  const form = createMemo(() => {
+    const element = field()
+    return element && fieldForm(element, id(), inherited)
+  })
   const key = () => local.name ?? id()
-  const issue = () => form?.issues().find((item) => item.id === key())
+  const issue = () =>
+    form()
+      ?.issues()
+      .find((item) => item.id === key())
   const [label, setLabel] = createSignal(false)
   const [description, setDescription] = createSignal(false)
   const [error, setError] = createSignal(false)
@@ -77,6 +95,11 @@ export function Field(props: FieldProps): JSX.Element {
     >
       <div
         {...rest}
+        ref={(node) => {
+          // Native form ownership is established when the template joins its document.
+          onMount(() => setField(node))
+          assignRef(local.ref, node)
+        }}
         class={classes(styles.root, local.class)}
         data-field-key={key()}
         data-orientation={local.orientation ?? 'vertical'}

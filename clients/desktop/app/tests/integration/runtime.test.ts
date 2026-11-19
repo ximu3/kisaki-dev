@@ -123,6 +123,11 @@ test('a checkpoint honors pause and cancellation while ending observation or wai
   )
   const ref = { taskRunId: await entered.promise }
   const paused = Promise.withResolvers<void>()
+  const readPaused = () => tasks.list({ statuses: ['paused'] }, { offset: 0, limit: 1 })
+  let pausedPage = readPaused()
+  const query = tasks.onInvalidated(() => {
+    pausedPage = readPaused()
+  })
   const observed = await tasks.observe(ref, (value) => {
     if (value.status === 'paused') {
       paused.resolve()
@@ -137,6 +142,8 @@ test('a checkpoint honors pause and cancellation while ending observation or wai
   await tasks.pause(ref)
   proceed.resolve()
   await paused.promise
+  expect((await pausedPage).items.map((item) => item.id)).toEqual([ref.taskRunId])
+  await query.dispose()
   await observed.dispose()
   const terminal = tasks.wait(ref)
   const failure = expect(run).rejects.toMatchObject({ code: 'Cancelled' })
@@ -267,6 +274,8 @@ test('prepared images and fonts survive independent holds and only adopted font 
     '--font-mono': { type: 'default' },
   }
   const original = await previews.open({ colorScheme: 'dark', tokens })
+  await expect(fonts.delete(user.id, { signal: AbortSignal.abort() })).rejects.toThrow()
+  expect(await fonts.get(user.id)).toMatchObject({ id: user.id })
   await fonts.delete(user.id)
   await attachments.cleanup()
   expect(await attachments.get(user.files[0].attachmentId)).not.toBeNull()

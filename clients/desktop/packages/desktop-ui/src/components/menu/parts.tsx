@@ -7,6 +7,7 @@ import {
   createSignal,
   createUniqueId,
   Show,
+  on,
   onCleanup,
   onMount,
   splitProps,
@@ -35,6 +36,7 @@ interface MenuState {
 
   /** Reads the menu's current controlled or local open state. */
   open: Accessor<boolean>
+  controlled: Accessor<boolean>
   /** Requests an open-state change while coordinating sibling and descendant menus. */
   change: (open: boolean) => void
 
@@ -99,20 +101,8 @@ export function Menu(props: MenuProps): JSX.Element {
   const state: MenuState = {
     id: createUniqueId(),
     open,
-    /** Closes sibling or descendant menus as needed before forwarding the requested open state. */
-    change: (next) => {
-      if (next) {
-        parent?.children.forEach((sibling) => {
-          if (sibling !== state) {
-            sibling.change(false)
-          }
-        })
-      } else {
-        hover.stop()
-        state.children.forEach((child) => child.change(false))
-      }
-      change(next)
-    },
+    controlled: () => props.open !== undefined,
+    change,
     anchor,
     bindAnchor,
     content: undefined,
@@ -126,11 +116,20 @@ export function Menu(props: MenuProps): JSX.Element {
   }
   parent?.children.add(state)
   onCleanup(() => parent?.children.delete(state))
-  createEffect(() => {
-    if (!open()) {
-      state.children.forEach((child) => child.change(false))
-    }
-  })
+  createEffect(
+    on(open, (shown) => {
+      if (shown) {
+        parent?.children.forEach((sibling) => {
+          if (sibling !== state) {
+            sibling.change(false)
+          }
+        })
+      } else {
+        hover.stop()
+        state.children.forEach((child) => child.change(false))
+      }
+    }),
+  )
 
   return <MenuContext.Provider value={state}>{props.children}</MenuContext.Provider>
 }
@@ -250,6 +249,7 @@ export function MenuContent(
 
     anchor: state.anchor,
     open: state.open,
+    controlled: state.controlled,
     change: state.change,
     point: state.point,
 
@@ -290,7 +290,7 @@ export function MenuContent(
         assignRef(local.ref, node)
       }}
       id={state.id}
-      popover="auto"
+      popover={state.controlled() ? 'manual' : 'auto'}
       role="menu"
       tabIndex={-1}
       class={classes(frame.anchor, styles.root, local.class)}
@@ -320,7 +320,9 @@ export function MenuContent(
           event.preventDefault()
           event.stopPropagation()
           state.change(false)
-          state.anchor()?.focus()
+          if (!state.open()) {
+            state.anchor()?.focus()
+          }
           return
         }
 
@@ -415,7 +417,9 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
             }
           }
         })
-        trigger?.focus()
+        if (!state.open()) {
+          trigger?.focus()
+        }
       }}
     >
       <MenuItemLabel icon={local.icon}>{local.children}</MenuItemLabel>

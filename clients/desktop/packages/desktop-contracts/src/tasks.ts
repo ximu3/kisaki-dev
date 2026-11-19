@@ -230,7 +230,7 @@ export interface TasksApi {
   clearHistory(filter?: TaskHistoryFilter, call?: CallOptions): Promise<number>
 
   /**
-   * Subscribes to task-history invalidation and returns the subscription lifetime.
+   * Subscribes to changes in stored history and membership of status-filtered task queries.
    *
    * Callers subscribe before reading; runtime progress uses separate observation.
    */

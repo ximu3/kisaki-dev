@@ -25,17 +25,23 @@ export function createPreferences(
   const invalidated = createSignal<void>()
   return {
     /** Describes the field catalog in the effective software language. */
-    async listFields() {
+    async listFields(options?: CallOptions) {
+      options?.signal?.throwIfAborted()
       return preferenceFields(translator())
     },
     /** Reads a fresh public snapshot, including only the opaque credential revision. */
-    get: () => call('getPreferences'),
+    async get(options?: CallOptions) {
+      options?.signal?.throwIfAborted()
+      return call('getPreferences')
+    },
     /** Supplies a fresh reset draft without modifying storage. */
-    async getDefaults() {
+    async getDefaults(options?: CallOptions) {
+      options?.signal?.throwIfAborted()
       return structuredClone(defaults)
     },
     /** Commits an edit, then notifies consumers so each can adopt the relevant saved values. */
     async update(input: PreferencesUpdate, options?: CallOptions) {
+      options?.signal?.throwIfAborted()
       const { changes, expected } = parsePreferencesUpdate(input)
       const { network, ...ordinary } = changes
       const { credentials, ...route } = network ?? {}

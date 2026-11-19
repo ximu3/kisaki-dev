@@ -117,7 +117,7 @@ export async function receivePortalAction() {
     await received.promise
     let deliveries = 0
     await activation.ready(async (request) => {
-      assert.equal(request.type, 'notification')
+      assert.equal(request.type, 'native')
       deliveries++
       await bus.invoke({
         ...portal,

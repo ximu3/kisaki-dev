@@ -1,6 +1,14 @@
 /** @fileoverview Mounts native pages and independent, document-owned management dialogs. */
 
-import { ErrorBoundary, Match, Show, Switch } from 'solid-js'
+import {
+  createComponent,
+  createResource,
+  ErrorBoundary,
+  Match,
+  Show,
+  Switch,
+  type Component,
+} from 'solid-js'
 import { Dynamic } from 'solid-js/web'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
@@ -11,19 +19,45 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  deferDialogUntil,
 } from '@kisaki3/desktop-ui/dialog'
 import type { MainClient } from '../../../infrastructure/api'
 import type { EditorGuard } from '../../../infrastructure/dialogs/closing'
 import { Notifications, reportError } from '../../../infrastructure/notifications'
 import { About } from '../features/about'
-import { SystemSettings } from '../features/system/settings'
-import { TaskCenter } from '../features/tasks/center'
-import { PreferenceEditor } from '../features/preferences/editor'
-import { Themes } from '../features/themes/manager'
-import { Fonts } from '../features/fonts/manager'
 import { AppShell } from './shell'
 import { createNavigation, type DialogLayer } from './navigation'
 import type { ManagementTarget, PageRoute } from './routes'
+
+/** Loads a management scene on entry, sharing the dialog's first frame and error boundary. */
+function managementView<P extends object>(load: () => Promise<Component<P>>): Component<P> {
+  return (props) => {
+    const [view] = createResource(load)
+    deferDialogUntil(() => !view.loading)
+    return <Show when={view()}>{(component) => createComponent(component(), props)}</Show>
+  }
+}
+
+/** Preference editing and its staged forms. */
+const PreferenceEditor = managementView(() =>
+  import('../features/preferences/editor').then((m) => m.PreferenceEditor),
+)
+
+/** Task queries, details and history maintenance. */
+const TaskCenter = managementView(() =>
+  import('../features/tasks/center').then((m) => m.TaskCenter),
+)
+
+/** Theme library and editing. */
+const Themes = managementView(() => import('../features/themes/manager').then((m) => m.Themes))
+
+/** Font library and editing. */
+const Fonts = managementView(() => import('../features/fonts/manager').then((m) => m.Fonts))
+
+/** Native system registrations and data location settings. */
+const SystemSettings = managementView(() =>
+  import('../features/system/settings').then((m) => m.SystemSettings),
+)
 
 /** Hosts one overlay while its editor independently owns the content and footer. */
 function ManagementDialog(props: {
@@ -57,24 +91,29 @@ function ManagementDialog(props: {
   }
 
   return (
-    <Dialog
-      open={layer.open()}
-      onOpenChange={(open) => {
-        if (!open && layer.open()) {
-          void props.close().catch(reportError)
-        }
-      }}
-    >
-      <DialogContent
-        size={size()}
-        fill={type() === 'tasks' || type() === 'preferences'}
-        onCloseRequest={(event) => {
-          event.preventDefault()
-          void props.close().catch(reportError)
-        }}
-      >
-        <Show when={layer.instance()} keyed>
-          {(_instance) => (
+    <Show when={layer.instance()} keyed>
+      {(instance) => (
+        <Dialog
+          open={layer.open()}
+          onOpenChange={(open) => {
+            if (!open && layer.open()) {
+              void props.close().catch(reportError)
+            }
+          }}
+        >
+          <DialogContent
+            size={size()}
+            fill={type() === 'tasks' || type() === 'preferences'}
+            onToggle={(event) => {
+              if (event.currentTarget.open) {
+                instance.resolve(true)
+              }
+            }}
+            onCloseRequest={(event) => {
+              event.preventDefault()
+              void props.close().catch(reportError)
+            }}
+          >
             <ErrorBoundary
               fallback={(error, reset) => (
                 <>
@@ -135,10 +174,10 @@ function ManagementDialog(props: {
                 </Match>
               </Switch>
             </ErrorBoundary>
-          )}
-        </Show>
-      </DialogContent>
-    </Dialog>
+          </DialogContent>
+        </Dialog>
+      )}
+    </Show>
   )
 }
 

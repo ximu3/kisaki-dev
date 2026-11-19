@@ -18,6 +18,7 @@ export const developmentTranslation = {
       close: '关闭',
       create: '创建',
       delete: '删除',
+      clear: '清理',
       retry: '重试',
       edit: '编辑',
       configure: '配置',
