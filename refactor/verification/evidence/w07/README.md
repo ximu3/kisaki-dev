@@ -395,3 +395,23 @@ Windows 正式窗口用例以键盘打开主菜单与主题模式子菜单，验
 在 Windows x64 正式构建的独立资料中核对亮暗模式。应用缩放 100% 时，任务查询的三个控件均高 21 CSS px，文字为 10.5 CSS px。工具带总高 67.3 CSS px，页签组高 24.5 CSS px。筛选列表的选项正文高 24.5 CSS px、字号 12.25 CSS px；普通偏好选择框也高 24.5 CSS px。简体中文源码 dev 实窗中，放大镜、清除图标和两个筛选箭头均为 12.25 CSS px。 [任务工具带](ui/task-query-controls.png)
 
 应用缩放 75% 时查询控件高 15.75 CSS px。在 960 CSS px 视口放大到 200% 后，查询控件高 42 CSS px，工具带高 133.8 CSS px。三个控件都在工具带内，展开状态筛选后可以按 Escape 返回，清除搜索后焦点回到输入框。正式窗口用例同时检查页签、查询文字和放大镜的实际尺寸。 [公共控件尺度](../../../design/ui/package.md#styles)
+
+<a id="document-navigation"></a>
+
+## 文档就绪、草稿确认与管理查询
+
+2026-11-19 在 Windows x64 的隔离资料和正式 Electron 窗口中复验。通过偏好深链冷启动，从 BrowserWindow 首次 show 事件读取文档，偏好 Dialog 已在原生模态层。修改缩放并关闭到托盘，由第二个进程打开任务中心，主窗口恢复并显示草稿确认。选择「继续编辑」保留缩放输入；再次打开并选择「放弃更改」，任务中心接替偏好。
+
+重载时将新文档的首次 window.state 请求暂缓，在接收器安装前连续从两个进程打开同一任务深链。恢复读取后，文档收到一次 window.navigate，任务中心正常呈现。旧 Dialog 卸载后的原生 close 事件也随旧实例结束。[导航合同](../../../design/ui/navigation.md) · [窗口接入](../../../../clients/desktop/app/src/main/app/window/index.ts)
+
+在字体目录导入字体后，从新条目打开实际文件样张，关闭后回焦该条目的预览按钮。任务运行器在真实存储中从运行进入暂停，已订阅失效通知的「已暂停」查询取得该项。[字体与窗口用例](../../../../clients/desktop/app/tests/integration/electron/window-startup.test.ts) · [任务与存储用例](../../../../clients/desktop/app/tests/integration/runtime.test.ts)
+
+通过 Chromium 调试协议暂时阻止字体管理模块加载，正式窗口呈现失败及重试操作；恢复模块读取并点击重试后，同一层 Dialog 显示字体目录。
+
+Windows x64 的桌面完整验证通过。实际窗口用例 12 项通过，3 项按宿主或专用账号跳过。已启停的 ZIP 候选 buildId 为 `58132b4c-1dd9-4d1e-9fb7-604b24e114c9`，SHA-256 为 `d15514ee2b210790f88fae9db31c6a453a249d1da0b9df1f7f64c66a438ab42b`。
+
+## 退出确认期间文档断连
+
+Windows x64 的隔离 Electron 窗口中，修改偏好后连续请求两次退出，在未保存确认显示时重载文档。本次操作只报告一次连接关闭。重载后从偏好保存缩放 115，窗口立即采用；再次正常退出，进程退出码为 0。
+
+协调器用例在重启确认阶段注入同类断连，并让退出调用加入已经开始的重启。两个调用都收到 failed 和 ConnectionClosed，观察状态按 idle、closing、failed 交付。新的退出请求可以完成资源释放。[协调器用例](../../../../clients/desktop/app/src/main/app/lifecycle.test.ts)
