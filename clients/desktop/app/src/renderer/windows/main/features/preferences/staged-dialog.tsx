@@ -118,7 +118,7 @@ function StagedPreferenceForm<Edit extends StagedPreferenceEdit>(
 
         <DialogFooter>
           <FormFeedback summary={(count) => t('runtime.fieldErrors', { count })} />
-          <Button variant="outline" onClick={props.close}>
+          <Button variant="ghost" onClick={props.close}>
             {t('actions.cancel')}
           </Button>
           <Button type="submit">{t('actions.confirm')}</Button>

@@ -27,8 +27,8 @@ export function NetworkFields(props: {
   const { api, draft } = props
   const [state, { refetch }] = createResource(() => api.call('network.state'))
   const refresh = () => void refetch()
-  api.topics.addEventListener('window.changed', refresh)
-  onCleanup(() => api.topics.removeEventListener('window.changed', refresh))
+  api.topics.addEventListener('network.changed', refresh)
+  onCleanup(() => api.topics.removeEventListener('network.changed', refresh))
 
   const adoption = () => (state.error ? undefined : state())
   const failure = () => {

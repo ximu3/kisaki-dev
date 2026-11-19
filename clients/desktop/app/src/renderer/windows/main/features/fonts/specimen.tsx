@@ -1,4 +1,4 @@
-/** @fileoverview Renders verified font samples and file metadata in the owning document. */
+/** @fileoverview Renders a verified file's sample and metadata in the font library. */
 
 import { createEffect, createSignal, createUniqueId, For, onCleanup, Show } from 'solid-js'
 import type { FontFileMetadata, FontMetricRange } from '@kisaki3/desktop-contracts/fonts'

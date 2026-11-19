@@ -2,7 +2,7 @@
 
 import { createResource, onCleanup, Show } from 'solid-js'
 import { Settings2 } from 'lucide-solid'
-import type { UiTranslationRef } from '@kisaki3/desktop-contracts/i18n'
+import { catalogKey } from '../../../../../shared/catalog-ref'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@kisaki3/desktop-ui/tooltip'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
@@ -70,13 +70,6 @@ export function ThemeField(props: { api: MainClient; draft: PreferenceDraft; man
   )
 }
 
-/** Names an interface translation independently of its displayed language name. */
-function translationKey(ref: UiTranslationRef | undefined) {
-  return ref?.type === 'extension'
-    ? JSON.stringify([ref.extensionId, ref.id])
-    : (ref?.id ?? 'unavailable')
-}
-
 /** Displays the saved translation, including an unavailable resource identity. */
 export function TranslationField(props: { api: MainClient; draft: PreferenceDraft }) {
   const { api, draft } = props
@@ -84,11 +77,14 @@ export function TranslationField(props: { api: MainClient; draft: PreferenceDraf
     api.call('translations.list'),
   )
   const value = () => draft.read('general.uiTranslation')
-  const key = () => translationKey(value())
+  const key = () => {
+    const ref = value()
+    return ref ? catalogKey(ref) : 'unavailable'
+  }
 
   function options() {
     const rows = (items.error ? [] : (items() ?? [])).map((item) => ({
-      value: translationKey(item.ref),
+      value: catalogKey(item.ref),
       label: item.name,
     }))
     if (rows.some((item) => item.value === key())) {
@@ -115,7 +111,7 @@ export function TranslationField(props: { api: MainClient; draft: PreferenceDraf
           emptyMessage={api.t('runtime.noOptions')}
           invalidSelectionMessage={api.t('runtime.unavailable')}
           onValueChange={(key) => {
-            const item = items()?.find((entry) => translationKey(entry.ref) === key)
+            const item = items()?.find((entry) => catalogKey(entry.ref) === key)
             if (item) {
               draft.write('general.uiTranslation', item.ref)
             }

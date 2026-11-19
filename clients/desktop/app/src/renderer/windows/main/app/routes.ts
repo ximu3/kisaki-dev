@@ -3,6 +3,7 @@
 import type { Component } from 'solid-js'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 import type { MainClient } from '../../../infrastructure/api'
+import type { NavigationPage } from '../domain-ui/navigation/list'
 
 /** Management destinations displayed above the currently mounted page. */
 export type ManagementTarget =
@@ -10,10 +11,7 @@ export type ManagementTarget =
   | { type: 'systemIntegration' | 'about' }
 
 /** A native business page and the navigation targets it can present. */
-export interface PageRoute {
-  id: string
-  title: (api: MainClient) => string
-  icon: Component
+export interface PageRoute extends NavigationPage {
   target: NativeViewTarget
   accepts: (target: NativeViewTarget) => boolean
   view: Component<{ api: MainClient; target: NativeViewTarget }>

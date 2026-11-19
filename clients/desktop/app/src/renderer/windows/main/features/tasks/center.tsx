@@ -14,11 +14,11 @@ import {
 } from '@kisaki3/desktop-ui/dialog'
 import { Tabs, TabList, Tab, TabPanel } from '@kisaki3/desktop-ui/tabs'
 import { Toolbar, ToolbarRow } from '@kisaki3/desktop-ui/toolbar'
+import { createConfirmation } from '../../../../infrastructure/dialogs/confirmation'
 import { errorMessage } from '../../../../infrastructure/notifications'
 import type { MainClient } from '../../../../infrastructure/api'
 import { HistoryList } from './history-list'
 import { TaskDetails } from './details'
-import { ClearHistory } from './clear-history'
 import { TaskFilters } from './filters'
 import { createTaskQuery } from './query'
 
@@ -61,8 +61,31 @@ export function TaskCenter(props: {
   const activeQuery = () => panels.find((scope) => scope.id === section())!.query
   deferDialogUntil(() => !!activeQuery().error() || !!activeQuery().page())
   const [selected, select] = createSignal<string | null>(null)
-  const [clearing, setClearing] = createSignal(false)
   createEffect(() => select(props.target))
+
+  const confirm = createConfirmation(api.t)
+  const [clearing, setClearing] = createSignal(false)
+  let refreshButton!: HTMLButtonElement
+
+  async function clearHistory() {
+    const accepted = await confirm.ask(
+      api.t('runtime.clear'),
+      api.t('actions.clear'),
+      api.t('runtime.clearHistoryDescription'),
+    )
+    if (!accepted) {
+      return
+    }
+
+    // The clear action becomes unavailable when the last history record is removed.
+    refreshButton.focus({ preventScroll: true })
+    setClearing(true)
+    try {
+      await api.call('tasks.clear')
+    } finally {
+      setClearing(false)
+    }
+  }
 
   return (
     <>
@@ -104,6 +127,7 @@ export function TaskCenter(props: {
                   active={scope.id === 'active'}
                   query={scope.query}
                   open={select}
+                  confirm={confirm.ask}
                   report={props.report}
                 />
               </TabPanel>
@@ -112,17 +136,22 @@ export function TaskCenter(props: {
         </Tabs>
       </DialogBody>
       <DialogFooter>
-        <Button variant="outline" disabled={!hasFinished()} onClick={() => setClearing(true)}>
+        <Button
+          variant="outline"
+          busy={clearing()}
+          disabled={!hasFinished()}
+          onClick={() => void clearHistory().catch(props.report)}
+        >
           <Trash2 />
           {api.t('runtime.clear')}
         </Button>
-        <Button variant="outline" onClick={refresh}>
+        <Button ref={refreshButton} variant="outline" onClick={refresh}>
           <RefreshCw />
           {api.t('runtime.refresh')}
         </Button>
       </DialogFooter>
 
-      <ClearHistory api={api} open={clearing()} onClose={() => setClearing(false)} />
+      <confirm.Content />
       <TaskDetails api={api} id={selected()} revision={revision()} onClose={() => select(null)} />
     </>
   )

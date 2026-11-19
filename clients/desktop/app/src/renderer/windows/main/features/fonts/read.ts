@@ -1,4 +1,4 @@
-/** @fileoverview Acquires a document-scoped preview for only the currently inspected user font. */
+/** @fileoverview Holds a scoped file preview for the font being viewed or edited in the library. */
 
 import { batch, createEffect, createSignal, onCleanup, type Accessor } from 'solid-js'
 import type { OpenedFont } from '../../../../../shared/window-api'

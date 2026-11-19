@@ -19,7 +19,7 @@ import { Spinner } from '@kisaki3/desktop-ui/spinner'
 import { errorMessage } from '../../../../infrastructure/notifications'
 import type { MainClient } from '../../../../infrastructure/api'
 import type { EditorGuard } from '../../../../infrastructure/dialogs/closing'
-import type { PageRoute } from '../../app/routes'
+import type { NavigationPage } from '../../domain-ui/navigation/list'
 import { createPreferenceDraft } from './draft'
 import { focusPreferenceField, PreferenceFieldsContext } from './field'
 import { NetworkFields, ProxyCredentialFields, proxyCredentialsKey } from './network'
@@ -54,12 +54,17 @@ type Group = (typeof groups)[number]
 type ChildEdit = StagedPreferenceEdit &
   ({ kind: 'usage'; medium: UsageMedium } | { kind: 'proxy-credentials' })
 
+/** Extends the leave decision with the navigation and save scope of a staged preference form. */
+export interface PreferenceEditorGuard extends EditorGuard {
+  stagedForm: () => FormState | undefined
+}
+
 /** Owns one preference draft and reveals fields before native navigation or validation focuses them. */
 export function PreferenceEditor(props: {
   api: MainClient
-  pages: readonly PageRoute[]
+  pages: readonly NavigationPage[]
   field?: PreferenceKey | undefined
-  bind: (guard: EditorGuard) => void
+  bind: (guard: PreferenceEditorGuard) => void
   manage: (page: 'themes' | 'fonts') => void
 }) {
   const { api } = props
@@ -134,9 +139,7 @@ export function PreferenceEditor(props: {
     busy: form.busy,
     dirty: () => draft.dirty() || !!childEdit()?.draft.dirty(),
     save,
-    saveShortcut: () =>
-      childEdit() ? (childForm?.submit() ?? Promise.resolve(false)) : form.submit(),
-    hasStagedFields: () => !!childEdit(),
+    stagedForm: () => (childEdit() ? childForm : undefined),
   })
 
   let focused: PreferenceKey | undefined
@@ -259,16 +262,6 @@ export function PreferenceEditor(props: {
 
         <DialogFooter>
           <FormFeedback summary={(count) => api.t('runtime.fieldErrors', { count })} />
-          <Button
-            variant="outline"
-            disabled={!draft.dirty() || form.busy()}
-            onClick={() => {
-              draft.discard()
-              form.clear()
-            }}
-          >
-            {api.t('runtime.discard')}
-          </Button>
           <Button type="submit" disabled={!draft.dirty() || form.busy()}>
             {api.t('actions.save')}
           </Button>

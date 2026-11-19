@@ -7,8 +7,7 @@ import { NumberInput } from '@kisaki3/desktop-ui/input'
 import { Select } from '@kisaki3/desktop-ui/select'
 import { Switch as Toggle } from '@kisaki3/desktop-ui/switch'
 import type { MainClient } from '../../../../infrastructure/api'
-import type { PageRoute } from '../../app/routes'
-import { PageOrder } from '../../domain-ui/navigation/list'
+import { PageOrder, type NavigationPage } from '../../domain-ui/navigation/list'
 import type { PreferenceDraft } from './draft'
 import { PreferenceField } from './field'
 import { ThemeField, TranslationField } from './resources'
@@ -95,14 +94,14 @@ export function AppearanceFields(props: GroupProps & { manage: () => void }) {
 }
 
 /** Edits the navigation group's fields against the surrounding draft. */
-export function NavigationFields(props: GroupProps & { pages: readonly PageRoute[] }) {
+export function NavigationFields(props: GroupProps & { pages: readonly NavigationPage[] }) {
   const { api, draft } = props
 
   return (
     <FieldGroup>
       <PreferenceField field="navigation.order" wide label={api.t('runtime.fields.order')}>
         <PageOrder
-          api={api}
+          t={api.t}
           pages={props.pages}
           order={draft.read('navigation.order') ?? []}
           visibleLimit={Number(draft.read('navigation.visibleLimit'))}

@@ -1,6 +1,7 @@
 /** @fileoverview Connects a native Solid document to the actual window endpoint and maintains its live presentation. */
 
 import { RpcConnection } from '@kisaki3/desktop-rpc'
+import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type { RpcNotification } from '@kisaki3/desktop-rpc'
 import { createDocumentAppearance } from './appearance'
 import { createTranslator, type Translate } from '@kisaki3/desktop-localization'
@@ -39,11 +40,12 @@ export async function connect<K extends WindowKind>(kind: K) {
   })
 
   const topics = new EventTarget()
-  let confirmClose: () => boolean | Promise<boolean> = () => true
-  let navigate: (target: unknown) => void | Promise<void> = () => {}
+  let confirmClose: (signal: AbortSignal) => boolean | Promise<boolean> = () => true
+  let navigate: ((target: unknown) => void | Promise<void>) | undefined
   const notifications = Object.fromEntries(
     [
       'window.changed',
+      'network.changed',
       'appearance.changed',
       'tasks.changed',
       'tasks.state',
@@ -90,9 +92,14 @@ export async function connect<K extends WindowKind>(kind: K) {
       },
       methods: {
         /** Obtains an actual close decision from the active editors. */
-        'window.confirmClose': () => confirmClose(),
+        'window.confirmClose': (_, signal) => confirmClose(signal),
         /** Delivers a main-owned native destination to this document. */
-        'window.navigate': ([target]) => navigate(target),
+        'window.navigate': ([target]) => {
+          if (!navigate) {
+            throw new DesktopError('NotFound', 'This document has no navigation receiver')
+          }
+          return navigate(target)
+        },
       },
       notifications: { topics: notifications, onError: console.error },
     },
@@ -101,13 +108,20 @@ export async function connect<K extends WindowKind>(kind: K) {
 
   /** Selects the method surface allowed by the document kind. */
   type Api = K extends 'main' ? MainWindowApi : WindowApi
-  const call = async <M extends keyof Api & keyof MainWindowApi>(
+  const request = async <M extends keyof Api & keyof MainWindowApi>(
+    signal: AbortSignal | undefined,
     method: M,
     ...args: Parameters<MainWindowApi[M]>
   ): Promise<ReturnType<MainWindowApi[M]>> => {
     const values = rpcData<Parameters<MainWindowApi[keyof MainWindowApi]>>(args)
-    return (await rpc.request(method, values)) as ReturnType<MainWindowApi[M]>
+    return (await rpc.request(method, values, signal ? { signal } : undefined)) as ReturnType<
+      MainWindowApi[M]
+    >
   }
+  const call = <M extends keyof Api & keyof MainWindowApi>(
+    method: M,
+    ...args: Parameters<MainWindowApi[M]>
+  ) => request(undefined, method, ...args)
   const common = async <M extends keyof WindowApi>(method: M, ...args: Parameters<WindowApi[M]>) =>
     (await rpc.request(method, rpcData(args))) as ReturnType<WindowApi[M]>
   const [translate, setTranslate] = createSignal<Translate>(createTranslator('en'))
@@ -155,6 +169,7 @@ export async function connect<K extends WindowKind>(kind: K) {
   }
   return {
     call,
+    request,
     /** Reports the running application's platform for shortcut interpretation. */
     platform,
     topics,
@@ -164,7 +179,7 @@ export async function connect<K extends WindowKind>(kind: K) {
       confirmClose = handler
     },
     /** Registers the navigation receiver belonging to this document. */
-    onNavigate(handler: typeof navigate) {
+    onNavigate(handler: NonNullable<typeof navigate>) {
       navigate = handler
     },
     /** Acknowledges that this document is ready to receive native actions. */

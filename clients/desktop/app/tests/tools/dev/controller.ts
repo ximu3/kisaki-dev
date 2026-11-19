@@ -43,7 +43,9 @@ export async function startDevelopmentController(
   const startedAt = new Date().toISOString()
   const start = performance.now()
   const profile = await mkdtemp(join(tmpdir(), 'kisaki-dev-profile-'))
-  onTestFinished(() => rm(profile, { recursive: true, force: true }))
+  onTestFinished(() =>
+    rm(profile, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }),
+  )
   const child = spawn(
     process.execPath,
     [

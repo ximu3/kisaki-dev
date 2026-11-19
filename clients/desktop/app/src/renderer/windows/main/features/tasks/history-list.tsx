@@ -9,7 +9,7 @@ import { Spinner } from '@kisaki3/desktop-ui/spinner'
 import { Table, TableHeader, TableHead, TableBody, TableRow } from '@kisaki3/desktop-ui/table'
 import { Toolbar } from '@kisaki3/desktop-ui/toolbar'
 import type { MainClient } from '../../../../infrastructure/api'
-import { createConfirmation } from '../../../../infrastructure/dialogs/confirmation'
+import type { createConfirmation } from '../../../../infrastructure/dialogs/confirmation'
 import { errorMessage } from '../../../../infrastructure/notifications'
 import { ActiveRow, FinishedRow } from './rows'
 import { taskPageSize, type TaskQueryState } from './query'
@@ -20,6 +20,7 @@ export function HistoryList(props: {
   active: boolean
   query: TaskQueryState
   open: (id: string) => void
+  confirm: ReturnType<typeof createConfirmation>['ask']
   report: (error: unknown) => void
 }) {
   const { api } = props
@@ -27,7 +28,6 @@ export function HistoryList(props: {
   const result = query.page
   const rows = createMemo(() => new Map(result()?.items.map((row) => [row.id, row])))
   const ids = () => [...rows().keys()]
-  const confirm = createConfirmation(api.t)
   let viewport!: HTMLDivElement
 
   createEffect(
@@ -56,7 +56,7 @@ export function HistoryList(props: {
   async function remove(id: string) {
     const row = rows().get(id)!
     if (
-      await confirm.ask(
+      await props.confirm(
         api.t('runtime.deleteTaskAction'),
         api.t('actions.delete'),
         api.t('runtime.deleteTask', { name: row.title }),
@@ -170,7 +170,6 @@ export function HistoryList(props: {
           </Button>
         </Toolbar>
       </Show>
-      <confirm.Content />
     </>
   )
 }

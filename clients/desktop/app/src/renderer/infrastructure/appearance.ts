@@ -16,7 +16,8 @@ export function createDocumentAppearance(
 ) {
   let generation = 0
   let held: string | undefined
-  let installed: FontFace[] = []
+  let installed = new Set<FontFace>()
+  const fonts = new Map<string, Promise<FontFace>>()
 
   /** Applies the full visual branch and scale together in this document. */
   async function apply(value: ViewAppearance) {
@@ -48,30 +49,60 @@ export function createDocumentAppearance(
   async function refreshAppearance() {
     const version = ++generation
     const result = await call('appearance.get')
-    const value = result.value
-    const loaded = await Promise.allSettled(
-      value.fontFaces.map((face) =>
-        new FontFace(face.family, 'url(' + JSON.stringify(face.url) + ')', face.descriptors).load(),
-      ),
-    )
     if (version !== generation) {
       await call('resources.release', result.hold)
       return
     }
-    for (const face of installed) {
-      document.fonts.delete(face)
+
+    const value = result.value
+    const requested = new Map<string, Promise<FontFace>>()
+    for (const face of value.fontFaces) {
+      const key = JSON.stringify([face.family, face.url, face.descriptors])
+      let load = fonts.get(key)
+      if (!load) {
+        load = new FontFace(
+          face.family,
+          'url(' + JSON.stringify(face.url) + ')',
+          face.descriptors,
+        ).load()
+        fonts.set(key, load)
+      }
+      requested.set(key, load)
     }
-    installed = loaded.flatMap((result) => (result.status === 'fulfilled' ? [result.value] : []))
-    for (const face of installed) {
-      document.fonts.add(face)
+    const loaded = await Promise.allSettled(requested.values())
+    if (version !== generation) {
+      await call('resources.release', result.hold)
+      return
     }
-    const applied = apply(value)
+    const next = new Set<FontFace>()
+    const keys = [...requested.keys()]
+    for (const [i, result] of loaded.entries()) {
+      if (result.status === 'fulfilled') {
+        next.add(result.value)
+      } else {
+        fonts.delete(keys[i]!)
+      }
+    }
+    for (const key of fonts.keys()) {
+      if (!requested.has(key)) {
+        fonts.delete(key)
+      }
+    }
+    for (const face of installed) {
+      if (!next.has(face)) {
+        document.fonts.delete(face)
+      }
+    }
+    for (const face of next) {
+      if (!installed.has(face)) {
+        document.fonts.add(face)
+      }
+    }
+    installed = next
+
     const old = held
     held = result.hold
-    if (old) {
-      await call('resources.release', old)
-    }
-    await applied
+    await Promise.all([apply(value), old && call('resources.release', old)])
   }
 
   async function initialize() {

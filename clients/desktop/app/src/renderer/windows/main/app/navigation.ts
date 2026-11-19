@@ -12,16 +12,18 @@ import type { MainClient } from '../../../infrastructure/api'
 import { createCloseConfirmation, type EditorGuard } from '../../../infrastructure/dialogs/closing'
 import { reportError } from '../../../infrastructure/notifications'
 import { matchesShortcut } from '../../../infrastructure/shortcuts'
+import type { PreferenceEditorGuard } from '../features/preferences/editor'
 import { managementTarget, type ManagementTarget, type PageRoute } from './routes'
 
 /** One dialog instance retains its destination through the native exit transition. */
 function dialogLayer() {
   const [open, setOpen] = createSignal(false)
-  const [instance, setInstance] = createSignal(0)
+  const [instance, setInstance] = createSignal<PromiseWithResolvers<boolean>>()
   const [target, setTarget] = createSignal<ManagementTarget>({ type: 'about' })
-  let draft: EditorGuard | undefined
+  let draft: EditorGuard | PreferenceEditorGuard | undefined
+  onCleanup(() => instance()?.resolve(false))
 
-  function bind(editor: EditorGuard) {
+  function bind(editor: EditorGuard | PreferenceEditorGuard) {
     draft = editor
     onCleanup(() => {
       if (draft === editor) {
@@ -31,8 +33,9 @@ function dialogLayer() {
   }
 
   function show(next: ManagementTarget) {
+    instance()?.resolve(false)
     batch(() => {
-      setInstance((value) => value + 1)
+      setInstance(Promise.withResolvers<boolean>())
       setTarget(next)
       setOpen(true)
     })
@@ -44,9 +47,15 @@ function dialogLayer() {
     show,
     bind,
     instance,
+    /** Settles when this instance enters the native modal layer or is withdrawn. */
+    whenPresented: () => instance()?.promise ?? false,
     retarget: setTarget,
     draft: () => draft,
-    close: () => setOpen(false),
+    stagedForm: () => (draft && 'stagedForm' in draft ? draft.stagedForm() : undefined),
+    close() {
+      instance()?.resolve(false)
+      setOpen(false)
+    },
   }
 }
 
@@ -61,7 +70,8 @@ export function createNavigation(api: MainClient, pages: readonly PageRoute[]) {
   )
   const manager = dialogLayer()
   const resource = dialogLayer()
-  const confirmation = createCloseConfirmation(api.t)
+  const confirmation = createCloseConfirmation(api.t, () => api.call('window.reveal'))
+  let navigationRequest = 0
 
   async function close(layer: DialogLayer) {
     if (await confirmation.ask(layer.draft())) {
@@ -69,9 +79,9 @@ export function createNavigation(api: MainClient, pages: readonly PageRoute[]) {
     }
   }
 
-  async function canLeave() {
+  async function canLeave(signal?: AbortSignal) {
     for (const layer of [resource, manager]) {
-      if (layer.open() && !(await confirmation.ask(layer.draft()))) {
+      if (layer.open() && !(await confirmation.ask(layer.draft(), signal))) {
         return false
       }
     }
@@ -85,19 +95,19 @@ export function createNavigation(api: MainClient, pages: readonly PageRoute[]) {
       throw new DesktopError('NotFound', api.t('runtime.unavailable'))
     }
 
+    const request = ++navigationRequest
     if (
       surface &&
       manager.open() &&
       !resource.open() &&
       surface.type === manager.target().type &&
-      (surface.type === 'tasks' ||
-        (surface.type === 'preferences' && !manager.draft()?.hasStagedFields?.()))
+      (surface.type === 'tasks' || (surface.type === 'preferences' && !manager.stagedForm()))
     ) {
       manager.retarget(surface)
-      return true
+      return manager.whenPresented()
     }
 
-    if (!(await canLeave())) {
+    if (!(await canLeave()) || request !== navigationRequest) {
       return false
     }
     batch(() => {
@@ -110,7 +120,7 @@ export function createNavigation(api: MainClient, pages: readonly PageRoute[]) {
         setPage(destination)
       }
     })
-    return true
+    return surface ? manager.whenPresented() : true
   }
 
   const [preferences, { refetch, mutate }] = createResource(() => api.call('preferences.get'))
@@ -147,7 +157,7 @@ export function createNavigation(api: MainClient, pages: readonly PageRoute[]) {
     ) {
       event.preventDefault()
       // The active form displays its rejection in its fixed feedback slot.
-      void (editor.saveShortcut ?? editor.save)().catch(() => {})
+      void (layer.stagedForm()?.submit ?? editor.save)().catch(() => {})
     } else if (
       !manager.open() &&
       matchesShortcut(event, savedPreferences()?.shortcuts['main.preferences'], api.platform)

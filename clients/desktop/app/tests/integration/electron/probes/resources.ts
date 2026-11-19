@@ -2,7 +2,7 @@
 
 import assert from 'node:assert/strict'
 import { session } from 'electron'
-import { randomUUID } from 'node:crypto'
+import { createHash, randomUUID } from 'node:crypto'
 import { writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { createResources } from '../../../../src/main/infrastructure/resources'
@@ -18,9 +18,17 @@ export async function verifyResourceBindings(profile: string) {
   const path = join(profile, 'held-resource')
   await writeFile(path, 'abcdef')
   let released = 0
-  const read = registry.acquire({ path, size: 6, mediaType: 'text/plain' }, async () => {
-    released++
-  })
+  const read = registry.acquire(
+    {
+      path,
+      size: 6,
+      mediaType: 'text/plain',
+      sha256: createHash('sha256').update('abcdef').digest('hex'),
+    },
+    async () => {
+      released++
+    },
+  )
   try {
     const left = await first.bind({ sample: read.resource })
     const right = await sibling.bind({ sample: read.resource })
