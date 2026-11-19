@@ -122,7 +122,7 @@ Win32 直接对试件窗口取像。默认亮色底应发送 `#e6eaefff`，实�
 | 偏好，同一视口，200% | 标题栏高 72px，Dialog 从 y=28 开始。Body 可视高 330px、内容高 711px，内层字段区又是可视 349px、内容 484px。一次阅读遇到两层纵向滚动。[偏好](ui/preferences.png) |
 | 字段与嵌套返回 | 使用偏好只有窗口与当前组两个标题，漫画、小说下有重名的 “Reading flow”等控件。主题编辑分支将 43 行按 token 键展开。主题取消会触发浏览器 confirm，字体明确取消返回列表。从主题 Dialog 返回后焦点恢复到“Manage themes”。[主题编辑器](ui/theme-editor.png) |
 
-按受版本控制的 TSX 语法节点复核 17 个正式 renderer 文件、53 个公共 UI 源文件、7 个测试及样板文件，并核对 HTML 入口、动态创建的 DOM、相关 CSS 和宿主系统调用。renderer 有 4 处 `<form>`、17 处 `<input>`、3 处 `<button>`、1 处 `<progress>`，另有 4 处浏览器 confirm 和 2 处控件 title。四处表单分属偏好、主题、字体和任务清理。公共 UI 内的日期输入、选择器提交镜像、按钮与原生 Dialog 有明确行为责任。测试样板中的原生表单和按钮提供独立消费及平台对照。适用判断见[系统交互](../../../design/ui/components.md#native-interaction)和[整体重写方案](../../../implementation/desktop-ui-rewrite.md)。
+按受版本控制的 TSX 语法节点复核 17 个正式 renderer 文件、53 个公共 UI 源文件、7 个测试及样板文件，并核对 HTML 入口、动态创建的 DOM、相关 CSS 和宿主系统调用。renderer 有 4 处 `<form>`、17 处 `<input>`、3 处 `<button>`、1 处 `<progress>`，另有 4 处浏览器 confirm 和 2 处控件 title。四处表单分属偏好、主题、字体和任务清理。公共 UI 内的日期输入、选择器提交镜像、按钮与原生 Dialog 有明确行为责任。测试样板中的原生表单和按钮提供独立消费及平台对照。适用判断见[系统交互](../../../design/ui/components.md#native-interaction)。
 
 <a id="titlebar-comparison"></a>
 
