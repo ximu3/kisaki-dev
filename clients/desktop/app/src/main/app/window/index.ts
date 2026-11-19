@@ -1,5 +1,7 @@
 /** @fileoverview Binds native windows to verified documents, scoped resource URLs and explicitly selected RPC methods. */
 
+import { releaseAll } from '../../infrastructure/release'
+import type { MainWindowApi } from '../../../shared/window-api'
 import { BrowserWindow, MessageChannelMain, session } from 'electron'
 import { windowGeometry } from '../../infrastructure/windows/geometry'
 import { randomUUID } from 'node:crypto'
@@ -34,13 +36,25 @@ import type { Application } from '../compose'
 /** Height of the main window's chrome in DIP at 100% interface scale. */
 const baseTitlebarHeight = 31.5
 
+/** Window actions owned by the application across document replacements. */
+interface WindowHost {
+  /** Applies the current close preference to the native window. */
+  close(): void
+  /** Requests a normal application restart and presents its outcome to the user. */
+  restart(this: void): void
+  /** Binds navigation to the receiver installed by this document. */
+  ready(navigate: (target: NativeViewTarget) => Promise<void>): Promise<void>
+  /** Withdraws the receiver when its document leaves. */
+  disconnected(): void
+}
+
 /** Creates one native window with its document session and closes every old endpoint on navigation. */
 export async function createWindow(
   application: Application,
   kind: WindowKind,
   devUrl: string | undefined,
   lifecycle: ApplicationExitApi,
-  onClose: () => void,
+  host: WindowHost,
 ) {
   const { paths, tasks, preferences, appearance, fonts, resources } = application
   const ses = session.fromPartition('kisaki-window-' + randomUUID())
@@ -106,8 +120,8 @@ export async function createWindow(
     })
   }
   geometry.restore(window)
-  const ready = Promise.withResolvers<void>()
-  void ready.promise.catch(() => {})
+  const firstReady = Promise.withResolvers<void>()
+  void firstReady.promise.catch(() => {})
   let connection: RpcConnection | undefined
   /** Releases the current document's subscriptions and held resources on replacement. */
   let closeDocument: () => Promise<void> = async () => {}
@@ -117,6 +131,14 @@ export async function createWindow(
   let accepting = true
   const pending = new Set<Promise<unknown>>()
   const { system } = application
+
+  function show() {
+    if (window.isMinimized()) {
+      window.restore()
+    }
+    window.show()
+    window.focus()
+  }
 
   ses.setPermissionRequestHandler((_contents, _permission, callback) => callback(false))
   ses.setPermissionCheckHandler(() => false)
@@ -128,11 +150,15 @@ export async function createWindow(
   })
   /** Releases the replaced document's RPC, subscriptions, preparations and independent bindings. */
   function reset() {
+    host.disconnected()
     connection?.close()
     connection = undefined
     const dispose = closeDocument
     closeDocument = async () => {}
-    cleanup = Promise.all([cleanup, dispose()]).then(() => {})
+    const previous = cleanup
+    const releasing = dispose()
+    void releasing.catch(() => {})
+    cleanup = releaseAll([() => previous, () => releasing])
     void cleanup.catch(console.error)
   }
   contents.on('did-start-navigation', (_event, _url, inPlace, mainFrame) => {
@@ -142,17 +168,17 @@ export async function createWindow(
   })
   contents.on('render-process-gone', () => {
     reset()
-    ready.reject(new Error('The window document exited'))
+    firstReady.reject(new Error('The window document exited'))
   })
   window.on('close', (event) => {
     if (!destroying) {
       event.preventDefault()
-      onClose()
+      host.close()
     }
   })
   window.once('closed', () => {
     reset()
-    ready.reject(new Error('The window was closed during startup'))
+    firstReady.reject(new Error('The window was closed during startup'))
   })
 
   contents.ipc.on('kisaki-connect', (event, requestedKind: unknown) => {
@@ -175,12 +201,16 @@ export async function createWindow(
     const previews = new Map<string, AppearancePreview>()
     let revoked = false
     /** Retains only resources owned by this document and releases late acquisitions after reload. */
-    function keep(hold: {
-      /** Ends this individual document hold. */
-      dispose(): void | Promise<void>
-    }) {
-      if (revoked) {
-        void Promise.resolve(hold.dispose()).catch(console.error)
+    async function keep(
+      hold: {
+        /** Ends this individual document hold. */
+        dispose(): void | Promise<void>
+      },
+      signal: AbortSignal,
+    ) {
+      if (revoked || signal.aborted) {
+        await hold.dispose()
+        signal.throwIfAborted()
         throw new DesktopError('ConnectionClosed', 'The window document ended')
       }
       const id = randomUUID()
@@ -201,9 +231,15 @@ export async function createWindow(
         : undefined
     const methods: Record<string, RpcMethod> = {
       /** Acknowledges that this document can receive navigation and close requests. */
-      'window.ready': () => {
+      'window.ready': async () => {
         void application.log.record('window-ready')
-        ready.resolve()
+        await host.ready(async (target) => {
+          await rpc.request('window.navigate', [rpcData(target)])
+          show()
+        })
+        if (!revoked) {
+          firstReady.resolve()
+        }
       },
       /** Reads the bound window identity, native state and effective language snapshot. */
       'window.state': () =>
@@ -217,9 +253,13 @@ export async function createWindow(
           messages: application.i18n.current.messages,
         }),
       /** Resolves the effective branch and acquires font URLs for this document. */
-      'appearance.get': async () => {
-        const read = await appearance.forView(view)
-        return rpcData({ value: read.appearance, issues: read.issues, hold: keep(read) })
+      'appearance.get': async (_, signal) => {
+        const read = await appearance.forView(view, { signal })
+        return rpcData({
+          value: read.appearance,
+          issues: read.issues,
+          hold: await keep(read, signal),
+        })
       },
       /** Reads the palette and scale available before document font loading finishes. */
       'appearance.base': async () => rpcData(await appearance.base()),
@@ -228,6 +268,8 @@ export async function createWindow(
     }
     if (kind === 'main') {
       Object.assign(methods, {
+        /** Makes a pending editor decision reachable even when the window was in the tray. */
+        'window.reveal': show,
         /** Applies the document's resolved colors to the native overlay. */
         'window.caption': ([color, symbolColor]) => {
           if (
@@ -246,66 +288,74 @@ export async function createWindow(
         },
         /** Restarts the application after the normal close workflow succeeds. */
         'app.restart': () => {
-          setImmediate(() => {
-            void lifecycle.restart().catch(console.error)
-          })
+          setImmediate(host.restart)
         },
         /** Cancels a pending exit while preserving work already completed. */
-        'app.cancelExit': () => lifecycle.cancel(),
+        'app.cancelExit': (_, signal) => lifecycle.cancel({ signal }),
         /** Reads the current close attempt and its progress. */
-        'app.exitState': async () => rpcData(await lifecycle.getState()),
+        'app.exitState': async (_, signal) => rpcData(await lifecycle.getState({ signal })),
         /** Reads saved preference fields and the opaque proxy credential revision. */
-        'preferences.get': async () => rpcData(await preferences.get()),
+        'preferences.get': async (_, signal) => rpcData(await preferences.get({ signal })),
         /** Reads the complete default values for a reset draft. */
-        'preferences.defaults': async () => rpcData(await preferences.getDefaults()),
+        'preferences.defaults': async (_, signal) =>
+          rpcData(await preferences.getDefaults({ signal })),
         /** Reads labels and search destinations from the preference owner. */
-        'preferences.fields': async () => rpcData(await preferences.listFields()),
+        'preferences.fields': async (_, signal) =>
+          rpcData(await preferences.listFields({ signal })),
         /** Validates the submitted fields and commits them against their baselines. */
         'preferences.update': async ([value], signal) =>
           rpcData(await preferences.update(parsePreferencesUpdate(value), { signal })),
         /** Lists built-in and registered translations by stable identity. */
-        'translations.list': () => rpcData(application.i18n.list()),
+        'translations.list': (_, signal) => rpcData(application.i18n.list({ signal })),
         /** Reads whether new requests can use the selected network route. */
-        'network.state': async () => rpcData(await application.network.getState()),
+        'network.state': async (_, signal) =>
+          rpcData(await application.network.getState({ signal })),
         /** Reads one filtered interval of summaries and its total. */
-        'tasks.list': async ([query, options]) =>
-          rpcData(await tasks.list(parseTaskQuery(query), parseListOptions(options))),
+        'tasks.list': async ([query, options], signal) =>
+          rpcData(await tasks.list(parseTaskQuery(query), parseListOptions(options), { signal })),
         /** Reads a full task record, returning null when history is absent. */
-        'tasks.get': async ([ref]) => rpcData(await tasks.get(parseTaskRunRef(ref))),
+        'tasks.get': async ([ref], signal) =>
+          rpcData(await tasks.get(parseTaskRunRef(ref), { signal })),
         /** Reads only the distinct type values for the task filter. */
         'tasks.types': async () => rpcData(await tasks.types()),
         /** Waits for a terminal record independently of the underlying execution. */
         'tasks.wait': async ([ref], signal) =>
           rpcData(await tasks.wait(parseTaskRunRef(ref), { signal })),
         /** Acquires an ordered, lightweight task observation for this document. */
-        'tasks.observe': async ([ref]) =>
+        'tasks.observe': async ([ref], signal) =>
           keep(
-            await tasks.observe(parseTaskRunRef(ref), (state) =>
-              rpc.notify('tasks.state', rpcData(state)),
+            await tasks.observe(
+              parseTaskRunRef(ref),
+              (state) => rpc.notify('tasks.state', rpcData(state)),
+              { signal },
             ),
+            signal,
           ),
         /** Requests a pause at the next business checkpoint. */
-        'tasks.pause': async ([ref]) => rpcData(await tasks.pause(parseTaskRunRef(ref))),
+        'tasks.pause': async ([ref], signal) =>
+          rpcData(await tasks.pause(parseTaskRunRef(ref), { signal })),
         /** Releases a reached pause or withdraws a pending one. */
-        'tasks.resume': async ([ref]) => rpcData(await tasks.resume(parseTaskRunRef(ref))),
+        'tasks.resume': async ([ref], signal) =>
+          rpcData(await tasks.resume(parseTaskRunRef(ref), { signal })),
         /** Requests cancellation and returns the acknowledged control state. */
-        'tasks.cancel': async ([ref]) => rpcData(await tasks.cancel(parseTaskRunRef(ref))),
-        /** Clears matching finished history while protecting admitted runs. */
-        'tasks.clear': async ([filter]) => {
-          return tasks.clearHistory(parseTaskQuery(filter ?? {}))
-        },
+        'tasks.cancel': async ([ref], signal) =>
+          rpcData(await tasks.cancel(parseTaskRunRef(ref), { signal })),
+        /** Clears all finished history independently of the task center's visible filters. */
+        'tasks.clear': async (_, signal) => tasks.clearHistory({}, { signal }),
         /** Removes one ended record by run identity. */
-        'tasks.delete': async ([ref]) => tasks.deleteHistory(parseTaskRunRef(ref)),
+        'tasks.delete': async ([ref], signal) =>
+          tasks.deleteHistory(parseTaskRunRef(ref), { signal }),
         /** Lists available theme identities with names resolved for this window. */
-        'themes.list': async () =>
+        'themes.list': async (_, signal) =>
           rpcData(
-            (await appearance.themes.list()).map((theme) => ({
+            (await appearance.themes.list({ signal })).map((theme) => ({
               ref: theme.ref,
               name: appearance.themes.displayName(theme, application.i18n.current.locale),
             })),
           ),
         /** Reads a complete theme definition without acquiring font files. */
-        'themes.get': async ([ref]) => rpcData(await appearance.themes.get(parseThemeRef(ref))),
+        'themes.get': async ([ref], signal) =>
+          rpcData(await appearance.themes.get(parseThemeRef(ref), { signal })),
         /** Creates a user theme and adopts any required private font copies atomically. */
         'themes.clone': async ([ref, name], signal) =>
           rpcData(
@@ -316,23 +366,25 @@ export async function createWindow(
             ),
           ),
         /** Creates an independent user theme with both color branches. */
-        'themes.create': async ([input]) =>
-          rpcData(await appearance.themes.create(parseUserThemeCreate(input))),
+        'themes.create': async ([input], signal) =>
+          rpcData(await appearance.themes.create(parseUserThemeCreate(input), { signal })),
         /** Compares the edited name and individual tokens before committing the theme. */
-        'themes.update': async ([id, input]) =>
-          appearance.themes.update(textArgument(id), parseUserThemeUpdate(input)),
+        'themes.update': async ([id, input], signal) =>
+          appearance.themes.update(textArgument(id), parseUserThemeUpdate(input), { signal }),
         /** Removes a user theme while retaining its fonts and saved selection references. */
-        'themes.delete': async ([id]) => appearance.themes.delete(textArgument(id)),
+        'themes.delete': async ([id], signal) =>
+          appearance.themes.delete(textArgument(id), { signal }),
         /** Acquires the application preview for this document after validating its branch. */
-        'themes.preview': async ([input]) => {
-          const preview = await appearance.preview(parseAppearancePreviewInput(input))
-          const id = keep(preview)
+        'themes.preview': async ([request, input], signal) => {
+          const owner = textArgument(request)
+          const preview = await appearance.preview(parseAppearancePreviewInput(input), { signal })
+          const id = await keep(preview, signal)
           previews.set(id, preview)
           preview.onDispose(() => {
             holds.delete(id)
             previews.delete(id)
             if (!revoked) {
-              rpc.notify('preview.ended', id)
+              rpc.notify('preview.ended', owner)
             }
           })
           return id
@@ -347,27 +399,29 @@ export async function createWindow(
         },
         ...files!.methods,
         /** Reads system registration and the actual current and next data locations. */
-        'system.get': async () => rpcData(await system.getState()),
+        'system.get': async (_, signal) => rpcData(await system.getState({ signal })),
         /** Applies a login-item choice and rereads the operating-system state. */
-        'system.login': async ([enable]) => rpcData(await system.setLoginItem(toggle(enable))),
+        'system.login': async ([enable], signal) =>
+          rpcData(await system.setLoginItem(toggle(enable), { signal })),
         /** Requests protocol registration and reads the resulting handler association. */
-        'system.protocol': async () => rpcData(await system.registerProtocol()),
+        'system.protocol': async (_, signal) => rpcData(await system.registerProtocol({ signal })),
         /** Registers the movable Linux desktop entry when supported. */
-        'system.desktopEntry': async () => rpcData(await system.registerDesktopEntry()),
+        'system.desktopEntry': async (_, signal) =>
+          rpcData(await system.registerDesktopEntry({ signal })),
         /** Opens the operating-system settings for the selected integration. */
-        'system.settings': async ([target]) => {
+        'system.settings': async ([target], signal) => {
           if (target !== 'loginItem' && target !== 'protocol') {
             throw new DesktopError('InvalidInput', 'Unknown registration')
           }
-          await system.openSettings(target)
+          await system.openSettings(target, { signal })
         },
         /** Prepares the explicitly selected data location for the next launch. */
-        'system.portable': async ([change]) =>
-          rpcData(await system.setDataMode(parseDataModeChange(change))),
+        'system.portable': async ([change], signal) =>
+          rpcData(await system.setDataMode(parseDataModeChange(change), { signal })),
         /** Reads the shareable version, operating system and process architecture. */
-        'app.environment': () => rpcData(environment()),
+        'app.environment': (_, signal) => rpcData(environment({ signal })),
         /** Copies the shareable environment fields to the system clipboard. */
-        'app.copyEnvironment': () => copyEnvironment(),
+        'app.copyEnvironment': (_, signal) => copyEnvironment({ signal }),
       } satisfies Record<string, RpcMethod>)
     }
 
@@ -410,7 +464,7 @@ export async function createWindow(
           Object.entries(methods).map(([name, method]) => [
             name,
             (...args: Parameters<RpcMethod>) => {
-              const result = runWindowCall(name, method, args, accepting)
+              const result = runWindowCall(name as keyof MainWindowApi, method, args, accepting)
               pending.add(result)
               void result.then(
                 () => pending.delete(result),
@@ -429,17 +483,15 @@ export async function createWindow(
     }> = []
     closeDocument = async () => {
       revoked = true
-      files?.close()
       const clean = [...holds.values(), ...subscriptions]
       holds.clear()
-      await Promise.all(
-        clean.map(async (hold) => {
-          await hold.dispose()
-        }),
-      )
+      await releaseAll([() => files?.close(), ...clean.map((hold) => () => hold.dispose())])
     }
     void rpc.ready
       .then(() => {
+        if (revoked) {
+          return
+        }
         void application.log.record('window-connected')
         subscriptions.push(
           application.onUpdated(() => rpc.notify('window.changed', null)),
@@ -447,6 +499,7 @@ export async function createWindow(
         )
         if (kind === 'main') {
           subscriptions.push(
+            application.network.observe(() => rpc.notify('network.changed', null)),
             tasks.onInvalidated(() => rpc.notify('tasks.changed', null)),
             application.i18n.onInvalidated(() => rpc.notify('translations.changed', null)),
             fonts.onInvalidated(() => rpc.notify('fonts.changed', null)),
@@ -454,7 +507,11 @@ export async function createWindow(
           )
         }
       })
-      .catch((cause) => ready.reject(cause))
+      .catch((cause) => {
+        if (!revoked) {
+          firstReady.reject(cause)
+        }
+      })
     void rpc.closed.then(() => {
       if (connection === rpc) {
         reset()
@@ -466,25 +523,32 @@ export async function createWindow(
   /** Ends the native window after its document's accepted writes and resources finish. */
   async function destroy() {
     destroying = true
-    await overlaySettings?.dispose()
-
-    if (!window.isDestroyed()) {
-      await geometry.save(window).catch(console.error)
-    }
-    reset()
-    if (!window.isDestroyed()) {
-      window.destroy()
-    }
-    await Promise.allSettled([...pending])
-    await cleanup
-    await view.dispose()
-    ses.protocol.unhandle('kisaki-app')
-    if (devUrl) {
-      ses.webRequest.onHeadersReceived(null)
-    }
-    ses.setPermissionRequestHandler(null)
-    ses.setPermissionCheckHandler(null)
-    await detach()
+    await releaseAll([
+      () => overlaySettings?.dispose(),
+      async () => {
+        if (!window.isDestroyed()) {
+          await geometry.save(window).catch(console.error)
+        }
+      },
+      reset,
+      () => {
+        if (!window.isDestroyed()) {
+          window.destroy()
+        }
+      },
+      () => Promise.allSettled([...pending]),
+      () => cleanup,
+      () => view.dispose(),
+      () => ses.protocol.unhandle('kisaki-app'),
+      () => {
+        if (devUrl) {
+          ses.webRequest.onHeadersReceived(null)
+        }
+      },
+      () => ses.setPermissionRequestHandler(null),
+      () => ses.setPermissionCheckHandler(null),
+      detach,
+    ])
   }
   /** Coalesces close, renderer loss and startup cleanup into the same release. */
   function dispose() {
@@ -512,7 +576,8 @@ export async function createWindow(
   return {
     window,
     dispose,
-    ready: ready.promise,
+    show,
+    firstReady: firstReady.promise,
     /** Closes or reopens admission of document mutations during exit. */
     setAccepting(enabled: boolean) {
       accepting = enabled
@@ -522,18 +587,11 @@ export async function createWindow(
       await Promise.allSettled([...pending])
     },
     /** Requests the current editor's close decision. */
-    async canClose() {
+    async canClose(signal: AbortSignal) {
       if (!connection) {
         return true
       }
-      return (await connection.request('window.confirmClose')) === true
-    },
-    /** Delivers a navigation target to the actual ready window. */
-    async navigate(target: NativeViewTarget) {
-      if (!connection) {
-        throw new DesktopError('ConnectionClosed', 'The window is not ready for navigation')
-      }
-      await connection.request('window.navigate', [rpcData(target)])
+      return (await connection.request('window.confirmClose', [], { signal })) === true
     },
   }
 }

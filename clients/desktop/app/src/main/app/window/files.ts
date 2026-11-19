@@ -8,7 +8,8 @@ import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { parseListOptions } from '@kisaki3/desktop-contracts/operations'
 import { parseImageTransform, type PreparedImage } from '@kisaki3/desktop-contracts/images'
 import { parseFontUpdate, type PreparedFontFile } from '@kisaki3/desktop-contracts/fonts'
-import type { ViewResourcesApi, ViewResourceBinding } from '@kisaki3/desktop-contracts/resources'
+import type { ViewResourcesApi, ReadResourceRef } from '@kisaki3/desktop-contracts/resources'
+import { releaseAll } from '../../infrastructure/release'
 import { receiveFile } from '../../infrastructure/files/input'
 import type { Application } from '../compose'
 import type { FontFileChoice } from '../../../shared/window-api'
@@ -20,41 +21,46 @@ export function createFileMethods(
   application: Application,
   window: BrowserWindow,
   view: ViewResourcesApi,
-  keep: (hold: {
-    /** Releases the resource represented by this document-owned handle. */
-    dispose(): void | Promise<void>
-  }) => string,
+  keep: (
+    hold: {
+      /** Releases the resource represented by this document-owned handle. */
+      dispose(): void | Promise<void>
+    },
+    signal: AbortSignal,
+  ) => Promise<string>,
   release: (id: string) => Promise<void>,
   canReceive: () => boolean,
 ) {
   const { fonts, images } = application
   const contents = window.webContents
-  const preparedFonts = new Map<string, PreparedFontFile>()
-  /** Hands the editor both the verified font and a preview bound to its own document. */
-  async function fontResult(file: PreparedFontFile) {
-    let binding: ViewResourceBinding<'font'> | undefined
-    try {
-      binding = await view.bind({ font: file.resource })
-      const id = keep({
-        /** Releases the temporary font file and its bound preview. */
-        async dispose() {
-          await binding!.dispose()
-          await file.dispose()
-        },
-      })
-      preparedFonts.set(id, file)
-      return {
-        id,
-        attachmentId: file.attachmentId,
-        url: binding.urls.font,
-        metadata: file.metadata,
-      }
-    } catch (error) {
-      await binding?.dispose()
-      await file.dispose()
-      throw error
-    }
+  /** Transfers a file read and its document URLs to the same cancellable window acquisition. */
+  async function bind<K extends string>(
+    read: { dispose(): void | Promise<void> },
+    inputs: Readonly<Record<K, ReadResourceRef>>,
+    signal: AbortSignal,
+  ) {
+    const binding = await view.bind(inputs).catch(async (cause: unknown) => {
+      await read.dispose()
+      throw cause
+    })
+    const hold = await keep(
+      {
+        dispose: () => releaseAll([() => binding.dispose(), () => read.dispose()]),
+      },
+      signal,
+    )
+    return { hold, urls: binding.urls }
   }
+
+  const preparedFonts = new Map<string, PreparedFontFile>()
+
+  /** Hands the editor both the verified font and a preview bound to its own document. */
+  async function fontResult(file: PreparedFontFile, signal: AbortSignal) {
+    const { hold, urls } = await bind(file, { font: file.resource }, signal)
+    preparedFonts.set(hold, file)
+    return { id: hold, attachmentId: file.attachmentId, url: urls.font, metadata: file.metadata }
+  }
+
   const fileInputs = new Map<string, ReturnType<typeof receiveFile>>()
   /** Acquires the incoming binary port only from this bound top-level document. */
   const receiveInput = (event: Electron.IpcMainEvent) => {
@@ -86,59 +92,37 @@ export function createFileMethods(
   const preparedImages = new Map<string, PreparedImage>()
 
   /** Binds a verified image for preview, pairing the binding and preparation in one editing lifetime. */
-  async function imageResult(image: PreparedImage) {
-    let binding: ViewResourceBinding<'image'> | undefined
-    try {
-      binding = await view.bind({ image: image.resource })
-      const id = keep({
-        /** Releases the prepared image and its document-specific preview binding. */
-        async dispose() {
-          await binding!.dispose()
-          await image.dispose()
-        },
-      })
-      preparedImages.set(id, image)
-      return rpcData({
-        id,
-        attachmentId: image.attachmentId,
-        width: image.width,
-        height: image.height,
-        frameCount: image.frameCount,
-        format: image.format,
-        url: binding.urls.image,
-      })
-    } catch (error) {
-      await binding?.dispose()
-      await image.dispose()
-      throw error
-    }
+  async function imageResult(image: PreparedImage, signal: AbortSignal) {
+    const { hold, urls } = await bind(image, { image: image.resource }, signal)
+    preparedImages.set(hold, image)
+    return rpcData({
+      id: hold,
+      attachmentId: image.attachmentId,
+      width: image.width,
+      height: image.height,
+      frameCount: image.frameCount,
+      format: image.format,
+      url: urls.image,
+    })
   }
 
   const methods = {
     /** Searches the user font collection one bounded interval at a time. */
-    'fonts.list': async ([search, options]) =>
+    'fonts.list': async ([search, options], signal) =>
       rpcData(
         await fonts.list(
           { search: typeof search === 'string' ? search : '' },
           parseListOptions(options),
+          { signal },
         ),
       ),
     /** Reads the font name and its complete verified file set. */
-    'fonts.get': async ([id]) => rpcData(await fonts.get(textArgument(id))),
+    'fonts.get': async ([id], signal) => rpcData(await fonts.get(textArgument(id), { signal })),
     /** Attaches independent view URLs to one immutable saved-font read. */
-    'fonts.open': async ([id]) => {
-      const read = await fonts.open(textArgument(id))
-      const binding = await view.bind(read.resources).catch(async (cause: unknown) => {
-        await read.dispose()
-        throw cause
-      })
-      const hold = keep({
-        /** Ends both the preview binding and the retained font-file read. */
-        async dispose() {
-          await Promise.all([binding.dispose(), read.dispose()])
-        },
-      })
-      return rpcData({ font: read.font, hold, urls: binding.urls })
+    'fonts.open': async ([id], signal) => {
+      const read = await fonts.open(textArgument(id), { signal })
+      const { hold, urls } = await bind(read, read.resources, signal)
+      return rpcData({ font: read.font, hold, urls })
     },
     /** Lists distinct family names from the actual operating-system font catalog. */
     'fonts.system': async (_args, signal) => rpcData(await fonts.listSystem({ signal })),
@@ -159,15 +143,21 @@ export function createFileMethods(
           const name = basename(path)
           try {
             const file = await fonts.prepare({ type: 'path', path }, { signal })
-            const prepared = await fontResult(file)
+            const prepared = await fontResult(file, signal)
             added.push(prepared.id)
             result.push({ name, file: prepared })
           } catch (cause) {
             signal.throwIfAborted()
-            if (!(cause instanceof DesktopError) || cause.code === 'ConnectionClosed') {
+            if (cause instanceof DesktopError && cause.code === 'ConnectionClosed') {
               throw cause
             }
-            result.push({ name, error: cause.message })
+            result.push({
+              name,
+              error:
+                cause instanceof DesktopError
+                  ? cause.message
+                  : 'The font file could not be prepared',
+            })
           }
         }
         signal.throwIfAborted()
@@ -182,7 +172,7 @@ export function createFileMethods(
       const input = takeInput(token)
       try {
         const file = await fonts.prepare(input, { signal })
-        return rpcData(await fontResult(file))
+        return rpcData(await fontResult(file, signal))
       } finally {
         input.destroy()
       }
@@ -215,7 +205,7 @@ export function createFileMethods(
       return rpcData(await fonts.update(textArgument(id), value, { signal }))
     },
     /** Deletes the font record and removes its references to attachment bytes. */
-    'fonts.delete': async ([id]) => fonts.delete(textArgument(id)),
+    'fonts.delete': async ([id], signal) => fonts.delete(textArgument(id), { signal }),
     /** Resolves retained and newly prepared files before committing the edited font. */
     'fonts.editFiles': async ([id, name, retained, added, baseline], signal) => {
       if (
@@ -269,15 +259,16 @@ export function createFileMethods(
       if (canceled) {
         return null
       }
-      return await imageResult(
+      return imageResult(
         await images.prepare({ type: 'path', path: filePaths[0]! }, { signal }),
+        signal,
       )
     },
     /** Consumes selected browser bytes into a verified and scoped image preview. */
     'images.prepareInput': async ([token], signal) => {
       const input = takeInput(token)
       try {
-        return await imageResult(await images.prepare(input, { signal }))
+        return await imageResult(await images.prepare(input, { signal }), signal)
       } finally {
         input.destroy()
       }
@@ -290,6 +281,7 @@ export function createFileMethods(
       }
       return imageResult(
         await images.transform(source.resource, parseImageTransform(input), { signal }),
+        signal,
       )
     },
   } satisfies Record<string, RpcMethod>

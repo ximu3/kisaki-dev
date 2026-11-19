@@ -24,6 +24,7 @@ import {
 } from '@kisaki3/desktop-contracts/tasks'
 import type { TaskFinished, NativeEventPublisher } from '@kisaki3/desktop-contracts/events'
 import type { DatabaseCall } from '../../infrastructure/database/executor'
+import { waitFor } from '../../infrastructure/wait'
 import { createSignal } from '../../infrastructure/events'
 import type { taskHistory } from './history'
 
@@ -44,25 +45,8 @@ function state(
   }
 }
 
-/** Waits only for this caller, releasing the abort listener when the wait ends. */
-async function waitFor<T>(result: Promise<T>, signal?: AbortSignal): Promise<T> {
-  if (!signal) {
-    return result
-  }
-  signal.throwIfAborted()
-  const cancelled = Promise.withResolvers<never>()
-  const listener = addAbortListener(signal, () =>
-    cancelled.reject(new DesktopError('Cancelled', 'The wait was cancelled')),
-  )
-  try {
-    return await Promise.race([result, cancelled.promise])
-  } finally {
-    listener[Symbol.dispose]()
-  }
-}
-
 /** Running control state survives release of every observing window. */
-function execution(id: string, supportsPause: boolean) {
+function execution(id: string, supportsPause: boolean, invalidate: () => void) {
   /** Publishes lightweight changes for this specific live execution. */
   const changed = createSignal<TaskState>()
   const controller = new AbortController()
@@ -80,6 +64,14 @@ function execution(id: string, supportsPause: boolean) {
     return current
   }
 
+  /** A control transition changes membership in status-filtered queries. */
+  function transition(status: TaskRunStatus) {
+    if (status !== current.status) {
+      set(status)
+      invalidate()
+    }
+  }
+
   return {
     ended,
     controller,
@@ -90,20 +82,13 @@ function execution(id: string, supportsPause: boolean) {
     },
     /** Attaches before handing off the current snapshot so the caller can dispose independently. */
     observe(listener: Listener<TaskState>) {
-      const subscription = changed.on(listener)
-      try {
-        listener(current)
-        return subscription
-      } catch (error) {
-        void subscription.dispose()
-        throw error
-      }
+      return changed.observe(listener, current)
     },
     /** Records a pause request until the next actual business checkpoint. */
     pause() {
       if (current.canPause) {
         gate = Promise.withResolvers()
-        set('pausing')
+        transition('pausing')
       }
       return current
     },
@@ -112,14 +97,14 @@ function execution(id: string, supportsPause: boolean) {
       if (gate) {
         gate.resolve()
         gate = undefined
-        set('running')
+        transition('running')
       }
       return current
     },
     /** Signals the business operation and wakes a pending pause for cleanup. */
     cancel() {
       if (current.canCancel) {
-        set('cancelling')
+        transition('cancelling')
         controller.abort(new DesktopError('Cancelled', 'The task was cancelled'))
         gate?.resolve()
         gate = undefined
@@ -130,7 +115,7 @@ function execution(id: string, supportsPause: boolean) {
     async checkpoint(this: void) {
       controller.signal.throwIfAborted()
       while (gate) {
-        set('paused')
+        transition('paused')
         await gate.promise
         controller.signal.throwIfAborted()
       }
@@ -144,7 +129,7 @@ export async function createTasks(
   finished: NativeEventPublisher<'tasks.finished'>,
 ) {
   const active = new Map<string, ReturnType<typeof execution>>()
-  /** Notifies history readers at creation, durable checkpoints, completion and cleanup. */
+  /** Notifies readers when a query's membership or persisted results change. */
   const invalidated = createSignal<void>()
   let accepting = true
   await call('interruptTasks')
@@ -183,7 +168,7 @@ export async function createTasks(
       }
       const input = parseTaskDefinition(definition)
       const id = randomUUID()
-      const live = execution(id, input.supportsPause ?? false)
+      const live = execution(id, input.supportsPause ?? false, () => invalidated.emit())
       const now = Date.now()
       const record: TaskRun = {
         id,
@@ -200,7 +185,7 @@ export async function createTasks(
       }
       const cancel = options?.signal && addAbortListener(options.signal, () => live.cancel())
       active.set(id, live)
-      let result: JsonValue = null
+      let result: JsonValue | undefined
       let status: TaskTerminalRun['status'] = 'completed'
       let error: ErrorSummary | null = null
       let started = false
@@ -268,7 +253,13 @@ export async function createTasks(
           }
         }
       }
-      const terminal: TaskTerminalRun = { ...record, status, result, error, finishedAt: Date.now() }
+      const terminal: TaskTerminalRun = {
+        ...record,
+        status,
+        result: result ?? null,
+        error,
+        finishedAt: Date.now(),
+      }
       try {
         if (started && !checkpointFailure) {
           await call('finishTask', terminal)
@@ -289,7 +280,7 @@ export async function createTasks(
           taskRunId: id,
           type: input.type,
           status,
-          result,
+          result: terminal.result,
           error,
           finishedAt: terminal.finishedAt!,
         }
@@ -299,7 +290,7 @@ export async function createTasks(
         throw new DesktopError(
           error.code,
           error.message,
-          result === null ? {} : { partialResult: result },
+          result === undefined ? {} : { partialResult: result },
         )
       }
       return returned!
@@ -372,7 +363,10 @@ export async function createTasks(
     /** Supplies the native task center with the actual choices for its type filter. */
     types: () => call('taskTypes'),
     /** Removes the selected ended record without changing execution or business data. */
-    deleteHistory: (ref: TaskRunRef) => clearHistory({}, ref.taskRunId),
+    async deleteHistory(ref: TaskRunRef, options?: CallOptions) {
+      options?.signal?.throwIfAborted()
+      return clearHistory({}, ref.taskRunId)
+    },
     /** Closes or reopens task admission during a cancellable application exit. */
     setAccepting(value: boolean) {
       accepting = value

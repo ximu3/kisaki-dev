@@ -9,6 +9,7 @@ import {
   type AuthInfo,
 } from 'electron'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
 import type { StoredDefinition } from '@kisaki3/desktop-contracts/operations'
 import type {
   NetworkPreferences,
@@ -16,6 +17,8 @@ import type {
   NetworkState,
   ProxyCredentials,
 } from '@kisaki3/desktop-contracts/network'
+import { releaseAll } from '../release'
+import { waitFor } from '../wait'
 import { createSignal } from '../events'
 import { request } from './request'
 
@@ -201,13 +204,16 @@ export function createNetwork(
         sessions.delete(session)
         routed.delete(session)
         localSources.delete(session)
-        session.webRequest.onBeforeRequest(null)
-        await session.closeAllConnections()
+        await releaseAll([
+          () => session.webRequest.onBeforeRequest(null),
+          () => session.closeAllConnections(),
+        ])
       }
     },
     /** Opens one request against the current route and keeps its signal bound through body consumption. */
     async fetch(url: string | URL, options: NetworkFetchOptions = {}) {
-      await applying
+      options.signal?.throwIfAborted()
+      await waitFor(applying, options.signal)
       options.signal?.throwIfAborted()
       if (state.status !== 'ready') {
         throw new DesktopError('OperationFailed', 'The selected network route is unavailable')
@@ -221,14 +227,13 @@ export function createNetwork(
       )
     },
     /** Reads route readiness for new traffic. */
-    async getState() {
+    async getState(options?: CallOptions) {
+      options?.signal?.throwIfAborted()
       return state
     },
     /** Delivers current and subsequent route adoption states. */
     observe(listener: (state: NetworkState) => void) {
-      const hold = changed.on(listener)
-      listener(state)
-      return hold
+      return changed.observe(listener, state)
     },
     /** Closes host requests and removes browser proxy-authentication handling. */
     async close(this: void) {
@@ -236,8 +241,14 @@ export function createNetwork(
       generation++
       requests.abort(new DesktopError('ConnectionClosed', 'The application is closing'))
       await applying
-      await Promise.all([...sessions].map((session) => session.closeAllConnections()))
+      const attached = [...sessions]
       sessions.clear()
+      await releaseAll(
+        attached.flatMap((session) => [
+          () => session.webRequest.onBeforeRequest(null),
+          () => session.closeAllConnections(),
+        ]),
+      )
     },
   }
 }

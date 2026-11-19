@@ -2,6 +2,7 @@
 
 import { app, dialog, Menu, protocol, Tray } from 'electron'
 import { join } from 'node:path'
+import { releaseAll } from './infrastructure/release'
 import { createLifecycle } from './app/lifecycle'
 import { createActivation } from './app/activation'
 import { compose } from './app/compose'
@@ -10,6 +11,7 @@ import { createWindow } from './app/window'
 import { developmentControl } from './app/development'
 import { windowKinds, type WindowKind } from '../shared/window-api/protocol'
 import { applicationIdentities } from '@kisaki3/desktop-contracts/app'
+import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { loadNative } from '#native'
 import { createNotifications } from './infrastructure/notifications'
 
@@ -36,9 +38,11 @@ app.setName('Kisaki')
 let released = false
 
 /** Holds external requests only until the actual window navigation receiver is ready. */
-const activation = createActivation((error) =>
-  dialog.showErrorBox('Kisaki', error instanceof Error ? error.message : String(error)),
-)
+const activation = createActivation((error) => {
+  if (!(error instanceof DesktopError && error.code === 'Cancelled')) {
+    dialog.showErrorBox('Kisaki', error instanceof Error ? error.message : String(error))
+  }
+})
 
 /** Receives a plain second launch even while the first process is still starting in the background. */
 let focusRequested = false
@@ -111,20 +115,10 @@ async function run(paths: AppPaths) {
     throw cause
   }
   let tray: Tray | undefined
-  /** Restores and focuses the active native window. */
-  const show = () => {
-    if (view) {
-      if (view.window.isMinimized()) {
-        view.window.restore()
-      }
-      view.window.show()
-      view.window.focus()
-    }
-  }
   const lifecycle = createLifecycle({
     /** Obtains the current document's close decision. */
-    async confirm() {
-      return view ? await view.canClose() : true
+    async confirm(signal) {
+      return view ? await view.canClose(signal) : true
     },
     /** Updates task and window admission together for this exit attempt. */
     accept(enabled) {
@@ -153,10 +147,21 @@ async function run(paths: AppPaths) {
     },
     /** Releases the window, tray and application owners before SQLite closes. */
     async release() {
-      await application.log.record('closing')
-      await view?.dispose()
-      tray?.destroy()
-      await application.release()
+      await releaseAll([
+        () => application.log.record('closing'),
+        () => view?.dispose(),
+        () => tray?.destroy(),
+        application.release,
+      ])
+    },
+    /** Reports a failed committed teardown after cleanup, then exits under the failed disposition. */
+    fail(message) {
+      released = true
+      try {
+        dialog.showErrorBox('Kisaki', message)
+      } finally {
+        setImmediate(() => app.exit(1))
+      }
     },
     /** Schedules normal quit or relaunch after the exit decision is committed. */
     finish(restart) {
@@ -168,21 +173,34 @@ async function run(paths: AppPaths) {
     },
   })
 
-  /** Shares a normal exit with development callers that need its actual disposition. */
-  async function exit() {
+  stop.resolve(async () => {
     const result = await lifecycle.quit()
     if (result.outcome === 'failed') {
-      throw new Error(result.error.message)
+      throw new DesktopError(result.error.code, result.error.message)
     }
     return result.outcome === 'exiting'
+  })
+
+  /** Native quit and restart entries share one result presentation per exit attempt. */
+  let nativeExit: Promise<void> | undefined
+  function requestExit(intent: 'quit' | 'restart') {
+    nativeExit ??= lifecycle[intent]()
+      .then((result) => {
+        if (result.outcome === 'failed' && !released) {
+          dialog.showErrorBox('Kisaki', result.error.message)
+        }
+      })
+      .finally(() => {
+        nativeExit = undefined
+      })
   }
-  stop.resolve(exit)
+
   app.on('before-quit', (event) => {
     if (released) {
       return
     }
     event.preventDefault()
-    void exit().catch((error) => dialog.showErrorBox('Kisaki', String(error)))
+    requestExit('quit')
   })
   try {
     const expected = paths.isolated ? (launchArgument('window') ?? 'main') : 'main'
@@ -193,16 +211,39 @@ async function run(paths: AppPaths) {
     if (rendererUrl && !/^http:\/\/127\.0\.0\.1:\d+\/$/.test(rendererUrl)) {
       throw new Error('Invalid development server')
     }
-    view = await createWindow(application, expected as WindowKind, rendererUrl, lifecycle, () => {
-      if (application.saved.general.closeMainWindow === 'background') {
-        view?.window.hide()
-      } else {
-        void exit().catch((error) => dialog.showErrorBox('Kisaki', String(error)))
-      }
+    const initial = process.argv.find((arg) => /^kisaki(?:-dev)?:\/\//.test(arg))
+    if (initial) {
+      activation.receive(initial)
+    }
+
+    view = await createWindow(application, expected as WindowKind, rendererUrl, lifecycle, {
+      close() {
+        if (application.saved.general.closeMainWindow === 'background') {
+          view?.window.hide()
+        } else {
+          requestExit('quit')
+        }
+      },
+      restart: () => requestExit('restart'),
+      ready: (navigate) =>
+        activation.ready(async (request) => {
+          if (
+            request.type !== 'native' &&
+            (request.scheme !== (paths.isolated ? 'kisaki-dev' : 'kisaki') ||
+              request.type !== 'view' ||
+              !['preferences', 'tasks'].includes(request.target.type))
+          ) {
+            throw new Error('This destination is unavailable')
+          }
+          await navigate(request.target)
+        }),
+      disconnected: activation.disconnected,
     })
-    await view.ready
+    await view.firstReady
+
     tray = new Tray(join(paths.resources, 'icons', 'icon.png'))
     tray.setToolTip('Kisaki')
+    const { show } = view
     tray.on('click', show)
     /** Builds the current-language tray and system menus for this process. */
     const menus = () => {
@@ -225,10 +266,7 @@ async function run(paths: AppPaths) {
               {
                 label: application.i18n.t('runtime.preferences'),
                 /** Restores the main window and opens native preferences. */
-                click: () => {
-                  show()
-                  void view!.navigate({ type: 'preferences' })
-                },
+                click: () => activation.open({ type: 'preferences' }),
               },
               { type: 'separator' },
               {
@@ -247,22 +285,6 @@ async function run(paths: AppPaths) {
     menus()
     application.i18n.onChanged(menus)
     restore = show
-    const initial = process.argv.find((arg) => /^kisaki(?:-dev)?:\/\//.test(arg))
-    if (initial) {
-      activation.receive(initial)
-    }
-    await activation.ready(async (request) => {
-      if (
-        request.type !== 'notification' &&
-        (request.scheme !== (paths.isolated ? 'kisaki-dev' : 'kisaki') ||
-          request.type !== 'view' ||
-          !['preferences', 'tasks'].includes(request.target.type))
-      ) {
-        throw new Error('This destination is unavailable')
-      }
-      await view!.navigate(request.target)
-      show()
-    })
     if (
       focusRequested ||
       (!process.argv.includes('--login') &&

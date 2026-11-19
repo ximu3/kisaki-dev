@@ -1,12 +1,12 @@
-/** @fileoverview Queues only undelivered native entry requests while the main document is starting. */
+/** @fileoverview Holds undelivered native entry requests until the current main document can receive them. */
 
 import { format, parse, type DeeplinkRequest } from '@kisaki3/desktop-contracts/deeplink'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 import { readNotificationTarget } from '../infrastructure/notifications/target'
 
-/** External links and OS notification clicks share the window's readiness and exit boundaries. */
-export type ActivationRequest = DeeplinkRequest | { type: 'notification'; target: NativeViewTarget }
+/** External links and native destinations share the current window's readiness and exit boundaries. */
+export type ActivationRequest = DeeplinkRequest | { type: 'native'; target: NativeViewTarget }
 
 /** Limits pending entry delivery without imposing a time limit on accepted business operations. */
 export function createActivation(report: (cause: unknown) => void) {
@@ -22,7 +22,7 @@ export function createActivation(report: (cause: unknown) => void) {
     queued.clear()
   }
 
-  /** Admits one request, coalescing only equivalent activations that are still waiting for startup. */
+  /** Admits one request, coalescing equivalent activations until the document is ready. */
   function receive(read: () => ActivationRequest | null) {
     try {
       if (!accepting) {
@@ -37,8 +37,8 @@ export function createActivation(report: (cause: unknown) => void) {
         return
       }
       let key: string
-      if (request.type === 'notification') {
-        key = 'notification:' + JSON.stringify(request.target)
+      if (request.type === 'native') {
+        key = 'native:' + JSON.stringify(request.target)
       } else {
         key = request.type === 'extension' ? crypto.randomUUID() : format(request)
       }
@@ -69,25 +69,27 @@ export function createActivation(report: (cause: unknown) => void) {
     receive(this: void, url: string) {
       receive(() => parse(url))
     },
-    /** Delivers the restored target immediately or with the initial document navigation. */
+    /** Admits a native menu destination through the same receiver as an external activation. */
+    open(target: NativeViewTarget) {
+      receive(() => ({ type: 'native', target }))
+    },
+    /** Restores the target carried by the operating system. */
     notification(appId: string, input: unknown) {
       receive(() => {
         const target = readNotificationTarget(appId, input)
-        return target ? { type: 'notification', target } : null
+        return target ? { type: 'native', target } : null
       })
     },
-    /** Delivers startup navigation before revealing the main window's initial destination. */
+    /** Hands off all waiting requests to the newly bound receiver in their arrival order. */
     async ready(handler: (request: ActivationRequest) => Promise<void>) {
       deliver = handler
       const pending = [...queued.values()]
       clear()
-      for (const { request } of pending) {
-        try {
-          await handler(request)
-        } catch (error) {
-          report(error)
-        }
-      }
+      await Promise.all(pending.map(({ request }) => handler(request).catch(report)))
+    },
+    /** Keeps new requests queued while a replacement document establishes its receiver. */
+    disconnected(this: void) {
+      deliver = undefined
     },
     /** Stops admission at confirmed exit and restores only future requests after cancellation. */
     setAccepting(value: boolean) {

@@ -205,20 +205,20 @@ export interface ApplicationExitApi {
   /**
    * Waits for content, recording and resource cleanup before exit.
    *
-   * Ordinary closure does not escalate to forced termination.
+   * Final teardown attempts all remaining cleanup. A cleanup failure is reported before the process exits with an error.
    */
   quit(call?: CallOptions): Promise<ApplicationExitResult>
 
   /**
    * Runs the same close, recording and release sequence as quit before restarting.
    *
-   * Cancellation preserves completed work.
+   * Relaunch requires successful final cleanup. Cancellation preserves completed work.
    */
   restart(call?: CallOptions): Promise<ApplicationExitResult>
 
   /**
-   * Cancels the exit and accepts new work again. Ended sessions stay closed and saved changes
-   * are kept.
+   * Withdraws a pending confirmation or wait before final teardown. Admission resumes with
+   * completed changes and ended sessions preserved.
    */
   cancel(call?: CallOptions): Promise<void>
 

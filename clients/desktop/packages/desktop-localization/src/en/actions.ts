@@ -9,6 +9,7 @@ export const actionMessages = {
   close: 'Close',
   create: 'Create',
   delete: 'Delete',
+  clear: 'Clear',
   retry: 'Retry',
   edit: 'Edit',
   configure: 'Configure…',

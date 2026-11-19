@@ -1,12 +1,14 @@
 /** @fileoverview Reads and copies the safe environment summary used by the About dialog. */
 
+import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
 import { clipboard } from 'electron'
 import manifest from '../../../package.json' with { type: 'json' }
 import { parseApplicationEnvironment } from '@kisaki3/desktop-contracts/app'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 
 /** Reports the running process architecture, application version and actual operating system. */
-export function environment() {
+export function environment(options?: CallOptions) {
+  options?.signal?.throwIfAborted()
   const systems: Partial<Record<NodeJS.Platform, string>> = {
     win32: 'Windows',
     darwin: 'macOS',
@@ -20,8 +22,8 @@ export function environment() {
 }
 
 /** Copies only the requested public environment summary and confirms the clipboard accepted it. */
-export async function copyEnvironment() {
-  const info = environment()
+export async function copyEnvironment(options?: CallOptions) {
+  const info = environment(options)
   const text =
     'Kisaki ' +
     info.version +

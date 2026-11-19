@@ -1,7 +1,7 @@
 /** @fileoverview Stages file inputs and coordinates attachment publication, reader protection and garbage collection. */
 
+import { releaseAll } from '../release'
 import { randomUUID } from 'node:crypto'
-import { createReadStream } from 'node:fs'
 import { mkdir, readdir, rm, rename, rmdir, open } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { Readable } from 'node:stream'
@@ -13,7 +13,11 @@ import {
   type ReadResourceRef,
   type ReadResource,
 } from '@kisaki3/desktop-contracts/resources'
-import { parseListOptions, type ListOptions } from '@kisaki3/desktop-contracts/operations'
+import {
+  parseListOptions,
+  type ListOptions,
+  type CallOptions,
+} from '@kisaki3/desktop-contracts/operations'
 import type { NativeFiles } from '#native'
 import {
   normalizeAbsolutePath,
@@ -64,9 +68,20 @@ export function createAttachments(
     return path
   }
 
+  /** Opens a local input or registered file with a stable public availability error. */
+  async function openFile(path: string) {
+    try {
+      return await open(path, 'r')
+    } catch (cause) {
+      throw new DesktopError('FileUnavailable', 'The file could not be opened for reading', {
+        cause,
+      })
+    }
+  }
+
   /** Checks actual readability and size without relinquishing the saved identity. */
   async function checkBytes(metadata: Attachment) {
-    const handle = await open(await managedPath(metadata.id), 'r')
+    const handle = await openFile(await managedPath(metadata.id))
     try {
       const info = await handle.stat()
       if (!info.isFile() || info.size !== metadata.sizeBytes) {
@@ -94,7 +109,7 @@ export function createAttachments(
     held.set(metadata.id, (held.get(metadata.id) ?? 0) + 1)
     const path = storedFilePath(root, metadata.id)
     return resources.acquire(
-      { path, size: metadata.sizeBytes, mediaType: metadata.mediaType },
+      { path, size: metadata.sizeBytes, mediaType: metadata.mediaType, sha256: metadata.sha256 },
       () =>
         owned(async () => {
           const remaining = held.get(metadata.id)! - 1
@@ -114,6 +129,7 @@ export function createAttachments(
 
   /** Acquires the actual source using the authority established by its caller. */
   async function stage(input: FileInput | Readable, limit: number, signal?: AbortSignal) {
+    signal?.throwIfAborted()
     if (input instanceof Readable) {
       return stageFile(temporary, input, native, limit, signal)
     }
@@ -124,7 +140,7 @@ export function createAttachments(
     if (value.type === 'path') {
       return stageFile(
         temporary,
-        createReadStream(normalizeAbsolutePath(value.path)),
+        (await openFile(normalizeAbsolutePath(value.path))).createReadStream(),
         native,
         limit,
         signal,
@@ -135,7 +151,7 @@ export function createAttachments(
       try {
         return await stageFile(
           temporary,
-          createReadStream(resources.file(lease.resource).path),
+          (await openFile(resources.file(lease.resource).path)).createReadStream(),
           native,
           limit,
           signal,
@@ -195,7 +211,7 @@ export function createAttachments(
       const existing: string[] = []
       /** Releases all prepared and registered attachments pinned by the save. */
       const dispose = async () => {
-        await Promise.all(reads.map((read) => read.dispose()))
+        await releaseAll(reads.map((read) => () => read.dispose()))
       }
       try {
         for (const id of new Set(ids)) {
@@ -250,20 +266,26 @@ export function createAttachments(
       })
     },
     /** Reads metadata without claiming that the underlying file is available. */
-    get: (id: string) => call('getAttachment', id),
+    async get(id: string, options?: CallOptions) {
+      options?.signal?.throwIfAborted()
+      return call('getAttachment', id)
+    },
     /** Acquires only registered content and retains its identity if the file is missing. */
-    read(id: string) {
+    read(id: string, options?: CallOptions) {
       return owned(async () => {
+        options?.signal?.throwIfAborted()
         const metadata = await call('getAttachment', id)
         if (!metadata) {
           throw new DesktopError('NotFound', 'The attachment does not exist')
         }
         await checkBytes(metadata)
+        options?.signal?.throwIfAborted()
         return hold(metadata, false)
       })
     },
     /** Checks byte availability for one page of registered attachments. */
-    async inspect(options: ListOptions) {
+    async inspect(options: ListOptions, context?: CallOptions) {
+      context?.signal?.throwIfAborted()
       const { items, total } = await call('listAttachments', parseListOptions(options))
       return {
         total,
@@ -279,7 +301,9 @@ export function createAttachments(
       }
     },
     /** Replaces unavailable bytes only after checking the digest against the registered identity. */
-    async repair(id: string, input: FileInput, signal?: AbortSignal) {
+    async repair(id: string, input: FileInput, options?: CallOptions) {
+      const signal = options?.signal
+      signal?.throwIfAborted()
       const metadata = await call('getAttachment', id)
       if (!metadata) {
         throw new DesktopError('NotFound', 'The attachment does not exist')
@@ -293,9 +317,9 @@ export function createAttachments(
           if (!(await call('getAttachment', id))) {
             throw new DesktopError('NotFound', 'The attachment was removed')
           }
-          signal?.throwIfAborted()
           const path = await managedPath(id)
           await mkdir(dirname(path), { recursive: true })
+          signal?.throwIfAborted()
           await rename(file.path, path)
           await syncDirectory(dirname(path))
           if (process.platform === 'darwin') {
@@ -307,7 +331,7 @@ export function createAttachments(
       }
     },
     retire: collection.retire,
-    cleanup: collection.cleanup,
+    cleanup: (options?: CallOptions) => collection.cleanup(options?.signal),
     /** Waits for admitted reclamation and acquisitions before closing the database. */
     async drain() {
       await queue

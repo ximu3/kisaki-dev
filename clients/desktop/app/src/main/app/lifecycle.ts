@@ -1,18 +1,22 @@
 /** @fileoverview Coordinates cancellable exit attempts with actual editing, accepted work and final resource release. */
 
+import { addAbortListener } from 'node:events'
+import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
 import { setTimeout as delay } from 'node:timers/promises'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import { RpcError } from '@kisaki3/desktop-rpc'
 import type {
   ApplicationExitApi,
   ApplicationExitResult,
   ApplicationExitState,
 } from '@kisaki3/desktop-contracts/app'
 import { createSignal } from '../infrastructure/events'
+import { waitFor } from '../infrastructure/wait'
 
 /** Admission and teardown callbacks supplied by the owners of the running application. */
 interface ExitDependencies {
   /** Asks the open editors whether the attempt may proceed. */
-  confirm(): Promise<boolean>
+  confirm(signal: AbortSignal): Promise<boolean>
   /** Closes or restores admission for this exit attempt. */
   accept(enabled: boolean): void
   /** Waits for work accepted by the participating owners. */
@@ -23,6 +27,16 @@ interface ExitDependencies {
   release(): Promise<void>
   /** Requests the chosen process disposition after cleanup succeeds. */
   finish(restart: boolean): void
+  /** Delivers an irreversible cleanup failure and terminates the process without relaunching. */
+  fail(message: string): void
+}
+
+/** Preserves the individual reasons from teardown of independently owned resources. */
+function exitErrorMessage(cause: unknown): string {
+  if (cause instanceof AggregateError && cause.errors.length) {
+    return cause.errors.map(exitErrorMessage).join('\n')
+  }
+  return cause instanceof Error ? cause.message : String(cause)
 }
 
 /** Creates one coordinator shared by the tray, windows, development control and restart. */
@@ -40,109 +54,141 @@ export function createLifecycle(deps: ExitDependencies): ApplicationExitApi {
   }
 
   /** Starts one attempt and returns the same result to concurrent callers and continued waits. */
-  function start(intent: 'quit' | 'restart') {
+  async function start(
+    intent: 'quit' | 'restart',
+    call?: CallOptions,
+  ): Promise<ApplicationExitResult> {
+    call?.signal?.throwIfAborted()
     if (current) {
-      return current
+      return waitFor(current, call?.signal)
     }
     const abort = new AbortController()
     controller = abort
+    const cancel = call?.signal && addAbortListener(call.signal, () => abort.abort())
+    const cancelled = Promise.withResolvers<'cancel'>()
+    abort.signal.addEventListener('abort', () => cancelled.resolve('cancel'), { once: true })
+    let committed = false
+
     const stopping = { intent, sessions: [], pendingRecordings: 0, error: null } as const
-    set({ ...stopping, status: 'closing' })
+
+    /** Waits for accepted work and offers one prompt if draining exceeds the wait budget. */
+    async function drain() {
+      const settled = Promise.race([
+        deps.drain().then(() => 'finished' as const),
+        cancelled.promise,
+      ])
+      const timer = new AbortController()
+      try {
+        const first = await Promise.race([
+          settled,
+          delay(5000, 'timeout' as const, { signal: timer.signal }),
+        ])
+        if (first !== 'timeout') {
+          return first
+        }
+      } finally {
+        timer.abort()
+      }
+
+      set({ ...stopping, status: 'waiting' })
+      const prompt = new AbortController()
+      try {
+        const next = await Promise.race([deps.waiting(prompt.signal), settled])
+        if (next !== 'wait') {
+          return next
+        }
+      } finally {
+        prompt.abort()
+      }
+      return settled
+    }
+
     /** Checks editors, drains accepted work and commits only an approved exit. */
     const attempt = async (): Promise<ApplicationExitResult> => {
-      if (!(await deps.confirm()) || abort.signal.aborted) {
-        set({ status: 'idle' })
-        return { outcome: 'cancelled' }
-      }
-      deps.accept(false)
       try {
-        const drained = deps.drain()
-        const cancelled = new Promise<'cancel'>((resolve) =>
-          abort.signal.addEventListener('abort', () => resolve('cancel'), { once: true }),
-        )
-        const timer = new AbortController()
-        let result: 'finished' | 'cancel' | 'timeout'
-        try {
-          result = await Promise.race([
-            drained.then(() => 'finished' as const),
-            cancelled,
-            delay(5000, 'timeout' as const, { signal: timer.signal }),
-          ])
-        } finally {
-          timer.abort()
-        }
-        if (result === 'timeout') {
-          set({ ...stopping, status: 'waiting' })
-          const prompt = new AbortController()
-          try {
-            // A disappearing wait must dismiss its prompt even if no one presses a button.
-            const next = await Promise.race([
-              deps.waiting(prompt.signal),
-              cancelled,
-              drained.then(() => 'finished' as const),
-            ])
-            result =
-              next === 'wait'
-                ? await Promise.race([cancelled, drained.then(() => 'finished' as const)])
-                : next
-          } finally {
-            prompt.abort()
-          }
-        }
-        if (result === 'cancel' || abort.signal.aborted) {
+        const confirmed =
+          !abort.signal.aborted &&
+          (await Promise.race([deps.confirm(abort.signal), cancelled.promise.then(() => false)]))
+        if (!confirmed || abort.signal.aborted) {
           set({ status: 'idle' })
-          deps.accept(true)
           return { outcome: 'cancelled' }
         }
+
+        deps.accept(false)
+        if ((await drain()) === 'cancel' || abort.signal.aborted) {
+          deps.accept(true)
+          set({ status: 'idle' })
+          return { outcome: 'cancelled' }
+        }
+
+        committed = true
         set({ ...stopping, status: 'exiting' })
         await deps.release()
         deps.finish(intent === 'restart')
         return { outcome: 'exiting' }
       } catch (cause) {
-        deps.accept(true)
+        if (!committed) {
+          deps.accept(true)
+        }
         const error =
-          cause instanceof DesktopError
+          cause instanceof DesktopError || cause instanceof RpcError
             ? { code: cause.code, message: cause.message }
-            : { code: 'OperationFailed', message: 'The application could not finish closing' }
+            : {
+                code: 'OperationFailed',
+                message: exitErrorMessage(cause),
+              }
         set({ ...stopping, status: 'failed', error })
         console.error('Application exit failed', cause)
+        if (committed) {
+          deps.fail(error.message)
+        }
         return { outcome: 'failed', error }
       }
     }
-    current = attempt().finally(() => {
-      current = undefined
-      controller = undefined
-    })
+
+    // A closing observer may immediately join or cancel this same attempt.
+    current = Promise.resolve()
+      .then(attempt)
+      .finally(() => {
+        cancel?.[Symbol.dispose]()
+        if (!committed) {
+          current = undefined
+        }
+        controller = undefined
+      })
+    set({ ...stopping, status: 'closing' })
     return current
   }
 
   return {
     /** Reads the current attempt state. */
-    async getState() {
+    async getState(call) {
+      call?.signal?.throwIfAborted()
       return state
     },
     /** Delivers the current phase and subsequent progress until disposal. */
     observe(listener) {
-      const hold = changed.on(listener)
-      listener(state)
-      return hold
+      return changed.observe(listener, state)
     },
     /** Requests a normal application quit. */
-    quit: () => start('quit'),
+    quit: (call) => start('quit', call),
     /** Requests the normal close sequence followed by relaunch. */
-    restart: () => start('restart'),
+    restart: (call) => start('restart', call),
     /** Reopens admission when cancellation is still possible. */
-    async cancel() {
+    async cancel(call) {
+      call?.signal?.throwIfAborted()
       if (state.status === 'closing' || state.status === 'waiting') {
         controller?.abort()
+        await current
       }
     },
     /** Joins the existing attempt without issuing another quit. */
-    continueWaiting() {
+    async continueWaiting(call) {
+      call?.signal?.throwIfAborted()
       if (!current) {
         throw new DesktopError('InvalidInput', 'There is no exit in progress')
       }
-      return current
+      return waitFor(current, call?.signal)
     },
   }
 }

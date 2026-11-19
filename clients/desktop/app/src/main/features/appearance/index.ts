@@ -1,6 +1,7 @@
 /** @fileoverview Resolves theme selection, one application-wide preview and per-document font resources. */
 
-import { randomUUID } from 'node:crypto'
+import { catalogKey } from '../../../shared/catalog-ref'
+import { createDocumentFonts } from './document-fonts'
 import { nativeTheme } from 'electron'
 import { createPreviews, type PrivateFontRead } from './preview'
 import { defaults } from '@kisaki3/desktop-appearance/defaults'
@@ -23,11 +24,12 @@ import {
   parseUserThemeCreate,
   type ExtensionThemeDefinition,
 } from '@kisaki3/desktop-contracts/appearance'
-import type { ViewResourcesApi, ViewResourceBinding } from '@kisaki3/desktop-contracts/resources'
+import type { ViewResourcesApi, ReadResourceRef } from '@kisaki3/desktop-contracts/resources'
 import type { createFonts } from '../fonts'
 import type { themeStorage } from './storage'
 import type { DatabaseCall } from '../../infrastructure/database/executor'
 import { createSignal } from '../../infrastructure/events'
+import { releaseAll } from '../../infrastructure/release'
 import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
 
 /** Built-in theme uses stable default font selections in both complete visual branches. */
@@ -53,6 +55,7 @@ const slots = ['--font-sans', '--font-mono'] as const
 export function createAppearance(
   fonts: ReturnType<typeof createFonts>,
   call: DatabaseCall<ReturnType<typeof themeStorage>>,
+  digest: (ref: ReadResourceRef) => string,
 ) {
   /** Publishes changes that require a new effective appearance. */
   const changed = createSignal<void>()
@@ -68,17 +71,19 @@ export function createAppearance(
     interfaceScale: 100,
   }
   /** Fetches a definition without opening either branch's resources. */
-  async function get(ref: ThemeRef): Promise<Theme | null> {
+  async function get(ref: ThemeRef, options?: CallOptions): Promise<Theme | null> {
+    options?.signal?.throwIfAborted()
     if (ref.type === 'builtin') {
       return builtin
     }
     if (ref.type === 'user') {
       return call('getTheme', ref.id)
     }
-    return extensions.get(JSON.stringify(ref))?.theme ?? null
+    return extensions.get(catalogKey(ref))?.theme ?? null
   }
   /** Resolves one stable file selection into a fixed read, including its verified metadata. */
-  async function acquire(font: ThemeFont, read?: PrivateFontRead) {
+  async function acquire(font: ThemeFont, read?: PrivateFontRead, options?: CallOptions) {
+    options?.signal?.throwIfAborted()
     if (font.type === 'extension') {
       if (!read) {
         throw new DesktopError('InvalidReference', 'The extension font is unavailable')
@@ -88,7 +93,7 @@ export function createAppearance(
     if (font.type !== 'user') {
       return null
     }
-    const opened = await fonts.open(font.id)
+    const opened = await fonts.open(font.id, options)
     return {
       files: opened.font.files.map((file) => ({
         metadata: file.metadata,
@@ -100,8 +105,11 @@ export function createAppearance(
   }
   const previews = createPreviews(slots, acquire, () => changed.emit())
 
+  const documents = new WeakMap<ViewResourcesApi, ReturnType<typeof createDocumentFonts>>()
+
   /** Resolves the selected theme independently from the system's current light or dark branch. */
-  async function getState(): Promise<AppearanceState> {
+  async function getState(options?: CallOptions): Promise<AppearanceState> {
+    options?.signal?.throwIfAborted()
     const prefs = preferences
     const preview = previews.current
     if (preview) {
@@ -160,19 +168,23 @@ export function createAppearance(
       return resolveLocalizedText(
         theme.name,
         locale,
-        extensions.get(JSON.stringify(theme.ref))?.locale ?? 'en',
+        extensions.get(catalogKey(theme.ref))?.locale ?? 'en',
       )
     },
 
     /** Lists the complete catalog without acquiring its font files. */
-    list: async () => [
-      { ref: builtin.ref, name: builtin.name },
-      ...(await call('listThemes')),
-      ...[...extensions.values()].map(({ theme }) => ({ ref: theme.ref, name: theme.name })),
-    ],
+    async list(options?: CallOptions) {
+      options?.signal?.throwIfAborted()
+      return [
+        { ref: builtin.ref, name: builtin.name },
+        ...(await call('listThemes')),
+        ...[...extensions.values()].map(({ theme }) => ({ ref: theme.ref, name: theme.name })),
+      ]
+    },
 
     /** Creates a complete user theme and invalidates its directory. */
-    async create(input: UserThemeCreate) {
+    async create(input: UserThemeCreate, options?: CallOptions) {
+      options?.signal?.throwIfAborted()
       const ref = await call('createTheme', input)
       invalidate()
       return ref
@@ -180,11 +192,11 @@ export function createAppearance(
 
     /** Copies private font sets once per source selection and commits them with the new theme. */
     async clone(ref: ThemeRef, input: { name: string }, options?: CallOptions) {
-      const theme = await get(ref)
+      const theme = await get(ref, options)
       if (!theme) {
         throw new DesktopError('NotFound', 'The selected theme is unavailable')
       }
-      const source = extensions.get(JSON.stringify(ref))
+      const source = extensions.get(catalogKey(ref))
       const copies = new Map<string, Awaited<ReturnType<typeof fonts.prepareCopy>>>()
       const branches = { light: { ...theme.light }, dark: { ...theme.dark } }
       try {
@@ -206,10 +218,10 @@ export function createAppearance(
                   read.files.map((file) => ({ type: 'resource', resource: file.resource })),
                   options,
                 )
+                copies.set(key, copy)
               } finally {
                 await read.dispose()
               }
-              copies.set(key, copy)
             }
             branches[branch][slot] = { type: 'user', id: copy.value.id }
           }
@@ -226,18 +238,20 @@ export function createAppearance(
         invalidate()
         return copied
       } finally {
-        await Promise.all([...copies.values()].map((copy) => copy.dispose()))
+        await releaseAll([...copies.values()].map((copy) => () => copy.dispose()))
       }
     },
 
     /** Commits the edited user theme and refreshes current consumers. */
-    async update(id: string, input: UserThemeUpdate) {
+    async update(id: string, input: UserThemeUpdate, options?: CallOptions) {
+      options?.signal?.throwIfAborted()
       await call('updateTheme', id, input)
       invalidate()
     },
 
     /** Removes the definition while preserving references and independently held reads. */
-    async delete(id: string) {
+    async delete(id: string, options?: CallOptions) {
+      options?.signal?.throwIfAborted()
       await call('deleteTheme', id)
       invalidate()
     },
@@ -249,9 +263,11 @@ export function createAppearance(
       definition: ExtensionThemeDefinition,
       locale: string,
       read: PrivateFontRead,
+      options?: CallOptions,
     ) {
+      options?.signal?.throwIfAborted()
       const ref = { type: 'extension' as const, extensionId, id }
-      const key = JSON.stringify(ref)
+      const key = catalogKey(ref)
       if (extensions.has(key)) {
         throw new DesktopError('Conflict', 'This theme is already registered')
       }
@@ -265,7 +281,8 @@ export function createAppearance(
       return {
         ref,
         /** Replaces this live registration's validated two-branch definition. */
-        update(input: ExtensionThemeDefinition) {
+        update(input: ExtensionThemeDefinition, options?: CallOptions) {
+          options?.signal?.throwIfAborted()
           if (extensions.get(key) !== registration) {
             throw new DesktopError('InstanceExpired', 'The theme registration has ended')
           }
@@ -283,8 +300,8 @@ export function createAppearance(
     },
 
     /** Opens both complete branches as a fixed snapshot and releases all partial reads on failure. */
-    async open(ref: ThemeRef): Promise<ThemeRead> {
-      const theme = await get(ref)
+    async open(ref: ThemeRef, options?: CallOptions): Promise<ThemeRead> {
+      const theme = await get(ref, options)
       if (!theme) {
         throw new DesktopError('NotFound', 'The theme is unavailable')
       }
@@ -295,19 +312,16 @@ export function createAppearance(
       > = { light: {}, dark: {} }
       /** Releases all unique font sets acquired for this theme read. */
       const dispose = async () => {
-        await Promise.all(
-          [...reads.values()].map(async (read) => {
-            await read?.dispose()
-          }),
-        )
+        await releaseAll([...reads.values()].map((read) => () => read?.dispose()))
       }
       try {
         for (const scheme of ['light', 'dark'] as const) {
           for (const slot of slots) {
+            options?.signal?.throwIfAborted()
             const font = theme[scheme][slot]
             const key = JSON.stringify(font)
             if (!reads.has(key)) {
-              reads.set(key, await acquire(font, extensions.get(JSON.stringify(ref))?.read))
+              reads.set(key, await acquire(font, extensions.get(catalogKey(ref))?.read, options))
             }
             const read = reads.get(key)
             if (read) {
@@ -315,6 +329,7 @@ export function createAppearance(
             }
           }
         }
+        options?.signal?.throwIfAborted()
         return { theme, fontResources, dispose }
       } catch (error) {
         await dispose()
@@ -330,23 +345,28 @@ export function createAppearance(
     getState,
 
     /** Delivers a first effective snapshot and rereads after changes for the lifetime of this observer. */
-    async observe(listener: (state: AppearanceState) => void) {
+    async observe(listener: (state: AppearanceState) => void, options?: CallOptions) {
+      options?.signal?.throwIfAborted()
       let active = true
       let queued = Promise.resolve()
       /** Queues an effective snapshot for this observer. */
       const deliver = () => {
         const snapshot = getState()
-        queued = queued.then(async () => {
+        // Later reads can settle before an earlier notification has been delivered.
+        void snapshot.catch(() => {})
+        const delivery = queued.then(async () => {
           const state = await snapshot
           if (active) {
-            listener(state)
+            return listener(state)
           }
         })
-        return queued
+        queued = delivery.catch(() => {})
+        return delivery
       }
       const change = changed.on(() => deliver().catch(console.error))
       try {
         await deliver()
+        options?.signal?.throwIfAborted()
       } catch (error) {
         await change.dispose()
         throw error
@@ -388,10 +408,20 @@ export function createAppearance(
       changed.emit()
     },
 
-    preview: previews.open,
+    preview: (
+      input: Parameters<typeof previews.open>[0],
+      options?: CallOptions,
+      read?: PrivateFontRead,
+    ) => previews.open(input, read, options),
 
     /** Resolves the current branch into CSS and independent resource URLs for one actual document. */
-    async forView(view: ViewResourcesApi) {
+    async forView(view: ViewResourcesApi, options?: CallOptions) {
+      options?.signal?.throwIfAborted()
+      let bind = documents.get(view)
+      if (!bind) {
+        bind = createDocumentFonts(view, digest)
+        documents.set(view, bind)
+      }
       const preview = previews.current
       const state = await getState()
       const css = {
@@ -401,11 +431,11 @@ export function createAppearance(
         '--font-mono': defaults[state.colorScheme]['--font-mono'],
       }
       const faces: ViewFontFace[] = []
-      const holds: ViewResourceBinding[] = []
+      const holds: Array<{ dispose(): Promise<void> }> = []
       const issues = [...state.issues]
       /** Releases each document binding after replacement or failed acquisition. */
       const dispose = async () => {
-        await Promise.all(holds.map((hold) => hold.dispose()))
+        await releaseAll(holds.map((hold) => () => hold.dispose()))
       }
       try {
         for (const slot of slots) {
@@ -415,35 +445,17 @@ export function createAppearance(
           } else if (font.type !== 'default') {
             try {
               const read = state.theme
-                ? await acquire(font, extensions.get(JSON.stringify(state.theme))?.read)
+                ? await acquire(font, extensions.get(catalogKey(state.theme))?.read, options)
                 : null
               const files = read?.files ?? preview?.resources[slot]
               if (!files) {
                 continue
               }
               try {
-                const binding = await view.bind(
-                  Object.fromEntries(files.map((file, i) => [String(i), file.resource])),
-                )
-                holds.push(binding)
-                const family = 'Kisaki-' + randomUUID()
-                css[slot] = family + ', ' + css[slot]
-                files.forEach((file, i) =>
-                  file.metadata.faces.forEach((face) => {
-                    /** Formats a verified static or variable CSS font metric. */
-                    const range = (value: typeof face.weight, suffix = '') =>
-                      value.min + suffix + (value.min === value.max ? '' : ' ' + value.max + suffix)
-                    faces.push({
-                      family,
-                      url: binding.urls[String(i)]!,
-                      descriptors: {
-                        weight: range(face.weight),
-                        stretch: range(face.width, '%'),
-                        style: face.style,
-                      },
-                    })
-                  }),
-                )
+                const bound = await bind(files)
+                holds.push(bound)
+                css[slot] = bound.family + ', ' + css[slot]
+                faces.push(...bound.faces)
               } finally {
                 await read?.dispose()
               }
@@ -457,6 +469,7 @@ export function createAppearance(
             }
           }
         }
+        options?.signal?.throwIfAborted()
         const appearance: ViewAppearance = {
           colorScheme: state.colorScheme,
           interfaceScale: state.interfaceScale,
@@ -474,9 +487,11 @@ export function createAppearance(
 
     /** Releases system observation, the active preview and the font-library subscription. */
     async close(this: void) {
-      nativeTheme.off('updated', systemChanged)
-      await previews.close()
-      await fontChanges.dispose()
+      await releaseAll([
+        () => nativeTheme.off('updated', systemChanged),
+        () => previews.close(),
+        () => fontChanges.dispose(),
+      ])
     },
   }
 }

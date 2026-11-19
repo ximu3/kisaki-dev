@@ -1,5 +1,6 @@
 /** @fileoverview Creates the runtime owners in dependency order and retains them through accepted work and final release. */
 
+import { releaseAll } from '../infrastructure/release'
 import { session } from 'electron'
 import { join } from 'node:path'
 import type { NativeCapabilities } from '#native'
@@ -56,30 +57,24 @@ export async function compose(
   const teardown: Array<() => void | Promise<void>> = [() => log.record('closed'), database.close]
   /** Releases all acquired resources even when an individual cleanup fails. */
   async function release() {
-    const failures: unknown[] = []
-    for (const dispose of teardown.splice(0).reverse()) {
-      try {
-        await dispose()
-      } catch (error) {
-        failures.push(error)
-      }
-    }
-    if (failures.length) {
-      throw new AggregateError(failures, 'Application cleanup failed')
-    }
+    await releaseAll(teardown.splice(0).reverse())
   }
   try {
     const events = createEvents()
     const system = systemIntegration({
       ...paths,
       /** Verifies the target volume and existing migration ledger before committing a new mode. */
-      setDataMode: (input) =>
-        paths.setDataMode(input, async (root, existing) => {
-          await assertLocalDataDirectory(root, native.files)
-          if (existing) {
-            await database.call('inspectLibrary', join(root, 'library.sqlite'))
-          }
-        }),
+      setDataMode: (input, signal) =>
+        paths.setDataMode(
+          input,
+          async (root, existing) => {
+            await assertLocalDataDirectory(root, native.files)
+            if (existing) {
+              await database.call('inspectLibrary', join(root, 'library.sqlite'))
+            }
+          },
+          signal,
+        ),
     })
     teardown.push(notifications.close)
     const i18n = createI18n(translation)
@@ -107,7 +102,7 @@ export async function compose(
       database.call,
       native.listFontFamilies,
     )
-    const appearance = createAppearance(fonts, database.call)
+    const appearance = createAppearance(fonts, database.call, (ref) => resources.file(ref).sha256)
     teardown.push(appearance.close)
     const bindings = await bindSettings(
       preferences,
@@ -128,7 +123,7 @@ export async function compose(
     function recoverAttachments() {
       recovery = (async () => {
         await attachments.cleanInterruptedStages(interrupted, maintenance.signal)
-        const result = await attachments.cleanup(maintenance.signal)
+        const result = await attachments.cleanup({ signal: maintenance.signal })
         for (const issue of result.issues) {
           await log.record('attachment-cleanup-failed', issue.error)
         }
@@ -144,8 +139,7 @@ export async function compose(
     }
     teardown.push(async () => {
       maintenance.abort()
-      await recovery
-      await attachments.drain()
+      await releaseAll([() => recovery, () => attachments.drain()])
     })
 
     return {

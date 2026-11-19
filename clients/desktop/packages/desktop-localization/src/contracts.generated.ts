@@ -9,6 +9,7 @@ export interface MessageArguments {
   readonly "actions.close": never
   readonly "actions.create": never
   readonly "actions.delete": never
+  readonly "actions.clear": never
   readonly "actions.retry": never
   readonly "actions.edit": never
   readonly "actions.configure": never
@@ -225,9 +226,7 @@ export interface MessageArguments {
   readonly "runtime.emptyTasks": never
   readonly "runtime.searchTasks": never
   readonly "runtime.clear": never
-  readonly "runtime.clearAll": never
-  readonly "runtime.clearBefore": never
-  readonly "runtime.beforeDate": never
+  readonly "runtime.clearHistoryDescription": never
   readonly "runtime.noOptions": never
   readonly "runtime.scaleRange": { readonly "max": number; readonly "min": number }
   readonly "runtime.enterName": never

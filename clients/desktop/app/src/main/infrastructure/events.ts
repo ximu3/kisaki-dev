@@ -15,17 +15,27 @@ import type { Disposable } from '@kisaki3/desktop-contracts/operations'
 /** Hands each snapshot to the current subscribers before returning to its publisher. */
 export function createSignal<T>() {
   const listeners = new Set<EventListener<T>>()
+  function on(listener: EventListener<T>): Disposable {
+    const deliver = (value: T) => listener(value)
+    listeners.add(deliver)
+    return {
+      dispose() {
+        listeners.delete(deliver)
+      },
+    }
+  }
+
   return {
-    /** Registers one independent subscription to future values. */
-    on(this: void, listener: EventListener<T>): Disposable {
-      /** Keeps this delivery independent of a second subscription to the same callback. */
-      const deliver = (value: T) => listener(value)
-      listeners.add(deliver)
-      return {
-        /** Withdraws just this listener from future handoffs. */
-        dispose() {
-          listeners.delete(deliver)
-        },
+    on,
+    /** Installs a subscription and rolls it back if initial delivery fails. */
+    observe(listener: (value: T) => void, initial: T): Disposable {
+      const hold = on(listener)
+      try {
+        listener(initial)
+        return hold
+      } catch (cause) {
+        void hold.dispose()
+        throw cause
       }
     },
     /** Isolates a listener's synchronous failure and its independently accepted asynchronous work. */
@@ -76,7 +86,9 @@ export function createEvents() {
     listener: EventListener<T>,
   ): Disposable {
     if (typeof event === 'string') {
-      return topic(event).on(listener as EventListener<unknown>)
+      return topic(event).on((value) =>
+        (listener as EventListener<unknown>)(structuredClone(value)),
+      )
     }
     return topic(event.ref).on((value) => listener(parseExtensionEventPayload(event, value)))
   }

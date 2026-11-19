@@ -1,5 +1,7 @@
 /** @fileoverview Retains the validated font files of the active preview until its replacement or release. */
 
+import { releaseAll } from '../../infrastructure/release'
+import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
   parseAppearancePreviewInput,
@@ -26,36 +28,42 @@ export type PrivateFontRead = (
 /** Owns exactly one preview; requests prepare a complete replacement before transferring ownership. */
 export function createPreviews(
   slots: readonly FontTokenName[],
-  acquire: (font: ThemeFont, read?: PrivateFontRead) => Promise<ThemeFontRead | null>,
+  acquire: (
+    font: ThemeFont,
+    read?: PrivateFontRead,
+    options?: CallOptions,
+  ) => Promise<ThemeFontRead | null>,
   changed: () => void,
 ) {
   let generation = 0
 
   /** Acquires each distinct selection once and releases partial reads on any failure. */
-  async function prepare(input: AppearancePreviewInput, read?: PrivateFontRead) {
+  async function prepare(
+    input: AppearancePreviewInput,
+    read?: PrivateFontRead,
+    options?: CallOptions,
+  ) {
     const value = parseAppearancePreviewInput(input)
     const unique = new Map<string, ThemeFontRead | null>()
     const resources: Partial<Record<FontTokenName, readonly ThemeFontResourceFile[]>> = {}
     /** Releases the group of read handles owned by this prepared branch. */
     const dispose = async () => {
-      await Promise.all(
-        [...unique.values()].map(async (item) => {
-          await item?.dispose()
-        }),
-      )
+      await releaseAll([...unique.values()].map((item) => () => item?.dispose()))
     }
     try {
       for (const slot of slots) {
+        options?.signal?.throwIfAborted()
         const font = value.tokens[slot]
         const key = JSON.stringify(font)
         if (!unique.has(key)) {
-          unique.set(key, await acquire(font, read))
+          unique.set(key, await acquire(font, read, options))
         }
         const file = unique.get(key)
         if (file) {
           resources[slot] = file.files
         }
       }
+      options?.signal?.throwIfAborted()
       return { input: value, resources, dispose }
     } catch (error) {
       await dispose()
@@ -76,9 +84,11 @@ export function createPreviews(
       this: void,
       input: AppearancePreviewInput,
       read?: PrivateFontRead,
+      options?: CallOptions,
     ): Promise<AppearancePreview> {
+      options?.signal?.throwIfAborted()
       const number = ++generation
-      const first = await prepare(input, read)
+      const first = await prepare(input, read, options)
       if (number !== generation) {
         await first.dispose()
         throw new DesktopError('Cancelled', 'A newer preview was requested')

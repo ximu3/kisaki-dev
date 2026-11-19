@@ -145,6 +145,7 @@ export function selectPaths() {
     async setDataMode(
       input: DataModeChange,
       verify: (directory: string, existing: boolean) => Promise<void>,
+      signal?: AbortSignal,
     ) {
       const { mode, target } = parseDataModeChange(input)
       if (!marker || !portable) {
@@ -164,6 +165,7 @@ export function selectPaths() {
         throw new DesktopError('NotFound', 'The selected location has no existing library')
       }
       await verify(destination, target === 'existing')
+      signal?.throwIfAborted()
       if (mode === 'portable') {
         if (!portableMarker(marker)) {
           writeFileSync(marker, '', { flag: 'wx' })
