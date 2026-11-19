@@ -14,6 +14,8 @@
 
 代码、组织与说明遵守[共用工程规范](refactor/design/engineering/conventions.md)，环境准备、可运行命令和当前源码职责见[当前工程与开发](refactor/implementation/development.md)。
 
+根工程和工作区成员的命名工程任务统一写在所属 `vite.config.ts` 的 `run.tasks` 中，用 `pnpm exec vp run <任务>` 调用。包管理器生命周期、任务调用与直接运行工具的分工见[工作区任务入口](refactor/design/engineering/workspace.md#tasks)。
+
 ## 工作原则
 
 **从全局出发思考、讨论、设计、改动和审阅。** 从完整的使用流程找出谁维护数据、谁定义规则。比较所有同类对象和入口，让同类对象按相同层次建模，并采用一致的命名、交互、风格和验收标准。遇到共有问题，在定义规则的模块修正，并更新所有受影响的调用方。差异须能由对象语义、资源归属或运行环境解释。具体判断与审查方法见[全局设计与一致性](refactor/design/engineering/conventions.md#global-design)。

@@ -12,9 +12,6 @@
     "./typescript/solid.json": "./typescript/solid.json",
     "./vite/library": "./vite/library.ts"
   },
-  "scripts": {
-    "typecheck": "tsc -b"
-  },
   "dependencies": {
     "typescript": "catalog:",
     "vite-plus": "catalog:"

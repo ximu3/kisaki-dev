@@ -133,7 +133,7 @@ jobs:
       - if: needs.plan.outputs.code == 'true'
         run: pnpm install --frozen-lockfile
       - if: needs.plan.outputs.code == 'true'
-        run: pnpm run check
+        run: pnpm exec vp run check
 
   target:
     name: Target checks

@@ -1,4 +1,4 @@
-/** @fileoverview Configures desktop test projects and the build inputs required by each workflow. */
+/** @fileoverview Defines desktop test projects and tasks for development, builds, verification and cleanup. */
 
 import { configDefaults, defineConfig } from 'vite-plus'
 
@@ -42,13 +42,18 @@ export default defineConfig({
       },
     ],
   },
+
   run: {
     tasks: {
+      'prepare:electron': { command: 'install-electron', cache: false },
       dev: {
         command: 'vpx tools/dev/cli.ts',
         dependsOn: [dependencyBuilds, 'prepare:electron'],
         cache: false,
       },
+
+      'prepare:resources': { command: 'vpx tools/resources/cli.ts', cache: false },
+      'build:native': { command: 'vpx tools/native/cli.ts', cache: false },
       build: {
         command: 'vpx tools/build/cli.ts',
         dependsOn: [dependencyBuilds, 'build:native', 'prepare:resources'],
@@ -59,14 +64,23 @@ export default defineConfig({
         dependsOn: ['build'],
         cache: false,
       },
+
       typecheck: { command: 'tsc -b', dependsOn: [dependencyBuilds], cache: false },
       test: { command: 'vp test run --project unit', dependsOn: [dependencyBuilds], cache: false },
+
+      'check:native': { command: 'vpx tools/native/cli.ts --check', cache: false },
       'test:native': {
         command:
           'ELECTRON_RUN_AS_NODE=1 electron ./node_modules/vitest/vitest.mjs run --config config/vitest/native.ts',
         dependsOn: [dependencyBuilds, 'prepare:electron', 'build:native', 'prepare:resources'],
         cache: false,
       },
+      'verify:native': {
+        command: [],
+        dependsOn: ['check:native', 'test:native'],
+        cache: false,
+      },
+
       'test:window-startup': {
         command: 'playwright test',
         dependsOn: ['build', 'prepare:electron'],
@@ -96,11 +110,7 @@ export default defineConfig({
         dependsOn: ['build', 'prepare:electron'],
         cache: false,
       },
-      'verify:native': {
-        command: [],
-        dependsOn: ['check:native', 'test:native'],
-        cache: false,
-      },
+
       verify: {
         command: [],
         dependsOn: [
@@ -112,6 +122,9 @@ export default defineConfig({
         ],
         cache: false,
       },
+
+      'generate:migrations': { command: 'drizzle-kit generate', cache: false },
+      clean: { command: 'kisaki-clean', cache: false },
     },
   },
 })

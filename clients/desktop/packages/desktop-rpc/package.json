@@ -34,9 +34,6 @@
       "import": "./dist/index.js"
     }
   },
-  "scripts": {
-    "clean": "kisaki-clean"
-  },
   "devDependencies": {
     "@arethetypeswrong/cli": "catalog:",
     "@kisaki3/config": "workspace:*",

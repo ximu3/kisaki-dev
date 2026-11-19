@@ -304,9 +304,6 @@
       "import": "./dist/app.js"
     }
   },
-  "scripts": {
-    "clean": "kisaki-clean"
-  },
   "dependencies": {
     "@eslint-community/regexpp": "4.12.2",
     "@kisaki3/desktop-appearance": "workspace:^",

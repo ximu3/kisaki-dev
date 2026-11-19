@@ -79,9 +79,6 @@
       "import": "./dist/node/signing.js"
     }
   },
-  "scripts": {
-    "clean": "kisaki-clean"
-  },
   "dependencies": {
     "@formatjs/intl-localematcher": "0.10.1",
     "canonicalize": "5.1.0",

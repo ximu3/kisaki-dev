@@ -14,14 +14,6 @@
     "name": "ximu3",
     "email": "152481053+ximu3@users.noreply.github.com"
   },
-  "scripts": {
-    "generate:migrations": "drizzle-kit generate",
-    "prepare:electron": "install-electron",
-    "prepare:resources": "vpx tools/resources/cli.ts",
-    "build:native": "vpx tools/native/cli.ts",
-    "check:native": "vpx tools/native/cli.ts --check",
-    "clean": "kisaki-clean"
-  },
   "dependencies": {
     "@kisaki3/desktop-appearance": "workspace:*",
     "@kisaki3/desktop-contracts": "workspace:*",

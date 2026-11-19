@@ -1,4 +1,4 @@
-/** @fileoverview Configures repository checks, formatting and staged files. */
+/** @fileoverview Defines workspace tasks and configures repository checks, formatting and staged files. */
 
 import { globSync } from 'node:fs'
 import { dirname } from 'node:path'
@@ -14,6 +14,35 @@ const installedConsumerInputs = globSync('**/tests/consumers/fixtures/*/package.
 }).map((manifest) => `${normalizePath(dirname(manifest))}/**`)
 
 export default defineConfig({
+  run: {
+    tasks: {
+      build: { command: 'vp run --filter "!@kisaki3/workspace" build', cache: false },
+
+      typecheck: {
+        command: ['vp run --filter "!@kisaki3/workspace" typecheck', 'tsc -b'],
+        cache: false,
+      },
+      lint: {
+        command: [
+          'vp run --filter "./clients/desktop/packages/*" build',
+          'vp lint',
+          'node tools/boundaries.ts',
+        ],
+        cache: false,
+      },
+      test: {
+        command: ['vp run --filter "!@kisaki3/workspace" test', 'vp test run'],
+        cache: false,
+      },
+      check: {
+        command: ['vp run typecheck', 'vp run lint', 'vp fmt --check', 'vp run test'],
+        cache: false,
+      },
+
+      clean: { command: 'vp run --filter "!@kisaki3/workspace" clean', cache: false },
+    },
+  },
+
   fmt: {
     singleQuote: true,
     semi: false,

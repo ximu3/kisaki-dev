@@ -23,6 +23,8 @@ Unovis 使用的声明汇总进入图表子路径，仍被引用的类型依赖�
 
 ## 复现与材料
 
+以下命令对应 2026-11-11 的验收版本。现行复验入口见[当前工程与开发](../../../implementation/development.md#verification)。
+
 `pnpm check` 执行工作区类型、lint、边界、格式和常规测试。UI 的真实浏览器与 Electron 检查属于独立消费者任务，普通 check 不启动桌面。
 
 `pnpm exec turbo run test:consumers --filter=@kisaki3/desktop-ui --filter=@kisaki3/desktop-appearance` 构建并打包真实制品，经 publint 和 ATTW 的 ESM 检查，再安装到仓库外临时工程。appearance 和 desktop-ui 分别通过 4 与 14 项消费检查。安装、服务器、页面、浏览器和 Electron profile 由测试拥有并释放。
