@@ -1,6 +1,6 @@
 # 桌面 UI 的视觉基准与整体重写方案
 
-W05 交付可独立消费的公共 UI，W07 用这些部件建立四类桌面文档的宿主和主窗口的正式管理界面。重写沿一条用户路径贯通外观、组件、业务状态、窗口和验证。公共库定义控件尺度与行为，场景拥有自己的草稿和滚动区域。W08 的业务页面接入这个框架。主窗口使用稳定的主题工作面。
+W05 交付可独立消费的公共 UI，W07 用这些部件建立四类桌面文档的宿主和主窗口的正式管理界面。重写沿一条用户路径贯通外观、组件、业务状态、窗口和验证。公共库定义控件尺度与行为，场景拥有自己的草稿和滚动区域。W09 的业务页面接入这个框架。主窗口使用稳定的主题工作面。
 
 查阅入口按职责排列。[UI 设计参考与职责](#implementation-owners) · [Form 与 Select](#forms) · [控件尺度](#control-scale) · [Dialog、Field 与滚动](#surface-layout) · [窗口控制](#window-controls) · [文件组织](#ownership) · [样式](#styles) · [编码风格与分段](#source-style) · [实施与验收](#delivery)
 
@@ -135,7 +135,7 @@ DialogContent 接受内容宽度 `size` 与工具窗的 `fill`。sm、md、lg、
 | 对照项 | 使用 WCO | 不用 WCO，由 Kisaki 自绘 |
 | --- | --- | --- |
 | 外观与缩放 | 应用提供背景与栏高，Windows 另支持图形色。图形、悬停和按钮宽度由 Electron 与平台确定，试件控制区约 138 CSS px | 应用决定图形、悬停、热区和尺寸。三个 3rem 按钮在默认主题下共 126 CSS px，随根字号一起变化 |
-| 最大化与系统贴靠 | 最大化中心返回 `HTMAXBUTTON`，系统能识别窗口动作。Windows 11 悬停贴靠在相应系统实际核对 | 普通 DOM 按钮中心返回 `HTCLIENT`。点击可以调用 Electron 最大化与还原。提供相同的悬停贴靠还需 Windows 非客户区命中接入 |
+| 最大化按钮的命中 | 按钮中心返回 `HTMAXBUTTON`，由系统处理窗口动作 | 普通 DOM 按钮中心返回 `HTCLIENT`，点击时由应用调用 Electron 最大化或还原窗口 |
 | 打开设置 Dialog | 系统按钮处在页面外，`showModal()` 打开后仍返回相同的窗口命中 | 同一文档的 `showModal()` 会使自绘按钮 inert。限定业务模态区域的试件保住了按钮操作，也需要维护区域状态、可访问性与焦点返回 |
 | 标题栏底边 | Header 内的边线被系统按钮区覆盖。在控制区下方的整行工作区绘线后，两端贯通 | 页面绘制整个宽度，底边可以连续经过自绘按钮下方 |
 
@@ -145,7 +145,7 @@ DialogContent 接受内容宽度 `size` 与工具窗的 `fill`。sm、md、lg、
 
 **标题栏与工作区只共享一条分隔线。** 窗口外壳将 Header 和下面承载侧栏、主内容的工作区作为兄弟区域。工作区整行绘制 `border-block-start: 1px solid var(--border)`，Header 移除原来的底边。修正前，右侧裁图的末尾 171 个物理像素是标题栏底色。隔离试件默认比例下完整客户区 1201/1201 个物理像素为边线色，最大化时为 2560/2560，最大化按钮仍返回系统命中。再在正式候选窗口临时套用同一修正，连续边线从 1580/1751 变为 1751/1751 像素。RGBA 编码解决配色，工作区边界解决断线，这两项分别验收。[完整取像与缩放边界复核](../verification/evidence/w07/README.md#titlebar-comparison)
 
-主进程从已保存的界面缩放计算标题栏尺寸，创建窗口及缩放变化时采用同一规则。文档用该尺寸安排品牌，并按平台覆盖区域的实际下沿安排工作区。主题的字号用于内容排版，标题栏颜色经现有窗口连接交付。主进程执行窗口操作和关闭保护。[主窗口标题栏合同](../design/ui/components.md#titlebar) · [Electron 45.3.2 标题栏](https://github.com/electron/electron/blob/v45.3.2/docs/tutorial/custom-title-bar.md#custom-window-controls) · [Windows 贴靠要求](https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/ui/apply-snap-layout-menu)
+主进程从已保存的界面缩放计算标题栏尺寸，创建窗口及缩放变化时采用同一规则。文档用该尺寸安排品牌，并按平台覆盖区域的实际下沿安排工作区。主题的字号用于内容排版，标题栏颜色经现有窗口连接交付。主进程执行窗口操作和关闭保护。[主窗口标题栏合同](../design/ui/components.md#titlebar) · [Electron 45.3.2 标题栏](https://github.com/electron/electron/blob/v45.3.2/docs/tutorial/custom-title-bar.md#custom-window-controls)
 
 <a id="ownership"></a>
 
@@ -157,7 +157,7 @@ DialogContent 接受内容宽度 `size` 与工具窗的 `fill`。sm、md、lg、
 | `renderer/infrastructure` | 接入窗口 RPC、译本、文档外观、字体绑定、文件传输与文档清理。共享弹窗宿主处理挂载、嵌套、关闭与焦点。它消费 Form 的结果，业务含义由编辑器提供 |
 | `windows/main/app` | root 装配窗口，shell 安排标题栏、侧栏、固定工具、内容出口与 Toaster。routes 与 navigation 使用已登记的稳定目标。应用菜单提供即时偏好，管理入口与原生导航和快捷键复用同一调度，打开管理 Dialog 保持底层页面挂载 |
 | `windows/main/features` | tasks 拥有两类查询、详情与清理。preferences 拥有共同草稿、按任务组织的字段和快捷键录入。themes、fonts 各拥有目录与单项编辑，system、about 交付本场景。处理指向同一对象的入口都调用所属场景 |
-| `domain-ui` | 仅放理解产品对象且跨场景复用的私有 UI，例如主窗口的字体选择、W08 的资料选择与编辑。确实跨窗口共用的标注界面放 `renderer/domain-ui/annotations`，采集动作与当前资源仍归各自窗口 |
+| `domain-ui` | 仅放理解产品对象且跨场景复用的私有 UI，例如主窗口的字体选择、W09 的资料选择与编辑。确实跨窗口共用的标注界面放 `renderer/domain-ui/annotations`，采集动作与当前资源仍归各自窗口 |
 | 扩展文档 | 官方扩展通过 SDK 使用获准的业务能力，通过公开 UI 子路径取得部件。独立队列、资源与焦点留在所属文档。应用与 UI 包均不向第三方暴露应用私有设施 |
 
 下列是主窗口重写涉及的主要源码路径，多文件主题内直接导入定义。扩展、资料、阅读、播放与游戏的业务模块随原工作包交付。
@@ -271,7 +271,7 @@ export function FontPreview(props: { file: FontChoice; onError: (cause: unknown)
 
 1. **W01 与 W05。** W01 维持视觉词表和根字号。W05 参考旧 UI 库的外观与组合，在当前公共包落实密度、Form、Field、类型化选择、Dialog 几何与反馈合同。同步所有家族入口、声明、普通 CSS、无 Tailwind 与 Tailwind 消费者、独立样板和相应宿主验证。图表、Markdown、拖拽和虚拟列表保留专用库与自身清理，在同一套工具带、焦点和密度下组合。
 2. **W07 窗口与全部管理场景。** 一并迁移四个文档的呈现接入、主窗口框架、任务、偏好、主题、字体、系统集成及关于。删除 WindowSelect、应用内通用提交与验证辅助、EditorBody/Footer 挂载槽、浏览器业务确认和失去用途的窗口样式。同步正式入口、快捷键、原生导航、构建扫描和测试定位。
-3. **W08 与后续消费。** W07 以现有业务验收共用框架，W08 以有选中条目和滚动位置的资料库、展示柜与统计页验证接续。阅读、播放、游戏、扩展 Webview 和官方译本随所属工作包验证业务差异。W23 维护实际项目说明，W24 在固定候选上复核跨功能体验。
+3. **W09 与后续消费。** W07 以现有业务验收共用框架，W09 以有选中条目和滚动位置的资料库、展示柜与统计页验证接续。阅读、播放、游戏、扩展 Webview 和官方译本随所属工作包验证业务差异。W23 维护实际项目说明，W24 在固定候选上复核跨功能体验。
 
 | 正式验收路径 | 必须能观察的结果 |
 | --- | --- |

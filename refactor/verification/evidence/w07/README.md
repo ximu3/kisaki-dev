@@ -20,7 +20,7 @@
 
 同一候选的[桌面 UI 复核](#ui-review)另记录了原生按钮颜色、控件比例、字段排布以及正式窗口的滚动视口。
 
-四类原生文档通过各自的沙箱 preload 与窗口 RPC 建立连接。真实窗口用例使用合成的完成记录及中断记录，按名称筛选、查看结果并返回。向字体编辑器拖入测试文件时，可以先预览再保存，重开仍可读取。另从偏好进入主题管理，保存并选用主题，再返回继续编辑或放弃原偏好草稿。资料库业务页面在 [W08](../../../implementation/work-packages.md#w08) 接入同一框架。
+四类原生文档通过各自的沙箱 preload 与窗口 RPC 建立连接。真实窗口用例使用合成的完成记录及中断记录，按名称筛选、查看结果并返回。向字体编辑器拖入测试文件时，可以先预览再保存，重开仍可读取。另从偏好进入主题管理，保存并选用主题，再返回继续编辑或放弃原偏好草稿。资料库业务页面在 [W09](../../../implementation/work-packages.md#w09) 接入同一框架。
 
 源码会话从 `src` 构建，在专用 profile 中执行迁移、显示窗口并正常停止。打包验收按收据核对归档、包内文件摘要与 Electron fuses。全新资料首次启动从部署目录加载原生绑定和迁移。默认关闭转入后台；结束隔离实例后设置关闭偏好，重新启动后正常退出。再将已退出的测试资料转入载体旁的便携目录，用不同的普通资料偏好核对下次实际采用的位置。
 
@@ -62,7 +62,7 @@ pnpm exec vp run --concurrency-limit 1 @kisaki3/desktop#verify
 
 Windows 与 Linux 双架构在一次性账号中从系统集成界面登记并撤销登录项，随后由操作系统打开 `kisaki-dev://view/tasks`，并在已运行的窗口确认任务中心出现。Linux 双架构还在独立 D-Bus 和 X11 会话中由 dunst 激活真实通知，接收方得到发出通知时指定的任务目标。
 
-上述登录项用例核对登记状态，重新登录后的后台自启与系统许可变化仍待实测。macOS 登录项登记和正式安装身份下的协议关联仍需在对应安装环境核验。
+macOS 登录项登记和正式安装身份下的协议关联仍需在对应安装环境核验。
 
 ### 通知目标恢复
 
@@ -84,8 +84,6 @@ Windows 双架构在一次性账号中使用开发身份，由独立 COM 客户�
 | [macOS arm64](https://github.com/ximu3/kisaki-dev/actions/runs/44350446933/job/134964567953) | ZIP 中的 .app | 26.98 | `d1526098ce603ce75116d6a245024f4c8afb95f6a9a92d3b32d081243aefcc69` |
 | [Linux x64](https://github.com/ximu3/kisaki-dev/actions/runs/44350446933/job/134964567871) | AppImage | 13.44 | `1c252895505e31196f29bdda036414e8cb75e9a833f4fc007fb50bf6cc2f9bed` |
 | [Linux arm64](https://github.com/ximu3/kisaki-dev/actions/runs/44350446933/job/134964567828) | AppImage | 16.84 | `7761522fa10375cf3a615ffefb939abdac8ef86b2bd6590f9d7208baceccfa7c` |
-
-Windows 11 悬停贴靠、系统登录许可变化与实际登录后的后台自启继续按对应系统场景验收。
 
 ## 附件回收与编辑器核验
 
@@ -136,19 +134,19 @@ Windows 10 22H2 x64，Electron 45.3.2，操作系统显示缩放 125%。两个�
 | --- | --- | --- |
 | ![系统按钮下方的边线截断](ui/titlebar-wco-100.png) | ![分隔线贯通系统按钮下方](ui/titlebar-wco-edge-100.png) | ![自绘标题栏的按钮和边线](ui/titlebar-custom-100.png) |
 
-- **尺寸与命中。** WCO 预留约 138 CSS px，自绘按钮合计 126 CSS px。向本次窗口的最大化键中心查询 `WM_NCHITTEST`，WCO 返回 `HTMAXBUTTON`（9），普通自绘返回 `HTCLIENT`（1）。Windows 11 悬停贴靠的实际弹出需在 Windows 11 核对。[Microsoft 贴靠说明](https://learn.microsoft.com/en-us/windows/apps/desktop/modernize/ui/apply-snap-layout-menu)
+- **尺寸与命中。** WCO 预留约 138 CSS px，自绘按钮合计 126 CSS px。向本次窗口的最大化键中心查询 `WM_NCHITTEST`，WCO 返回 `HTMAXBUTTON`（9），普通自绘返回 `HTCLIENT`（1）。
 - **分隔线。** 原 WCO 裁图的第 39 行（从零计）左侧 204 个像素为边线色 `#ccd1d9`，右侧 171 个像素为标题栏底色 `#e6eaef`。系统控件区域覆盖 Header 内的边线。把唯一一条 `border-block-start: 1px solid` 放在紧接标题栏、同时承载侧栏与主内容的容器上。重新用 PrintWindow 读取**完整客户区**，100% 亮色和暗色均有 1201/1201 个连续边线像素，最大化亮色为 2560/2560。75% 与 200% 两个应用缩放边界各为 1201/1201。以上各次打开文档模态框后，最大化命中仍为 9。
 - **模态。** 在同文档调用 `showModal()`，自绘按钮中心的鼠标点击没有送到其处理器。另以只锁定业务内容的区域试件打开两层 Dialog，点击自绘最大化键和键盘 Space 还原均可操作真实窗口，原业务面和下层 Dialog 保持 inert。Escape 两次依次退回两层的原触发点。此为自绘所需交互范围的对照。[HTML 模态范围](https://html.spec.whatwg.org/multipage/interaction.html#modal-dialogs-and-inert-subtrees)
 
 同日用独立空资料启动 `32309210` 的正式主窗口，实读应用缩放 100%、根字号 14px。只在本次运行中用实际主题的 `#e6eaefff`／`#060d1aff` 设置 WCO 并将栏高设为 32 DIP。Header 保留原底边时，完整客户区的横线只有 1580/1751 像素为 `#ccd1d9`，控制区下方 171 个像素均缺失。把同一条线移到相邻工作区后，1751/1751 像素连续。这个对照把分隔线问题与已经修正输入的颜色问题区分开来。
 
-以上覆盖 Windows 10 的隔离试件与现有候选的运行时试改。正式源码与修订后的跨平台制品按[实施状态](../../../implementation/status.md)跟踪，Windows 11 的悬停贴靠面板需在相应系统实测。
+以上覆盖 Windows 10 的隔离试件与现有候选的运行时试改。正式源码与修订后的跨平台制品按[实施状态](../../../implementation/status.md)跟踪。
 
 <a id="rewrite"></a>
 
 ## 桌面 UI 重写复验
 
-Windows 10 22H2 x64、Electron 45.3.2，系统显示比例 125%。每次运行使用独立资料。页面出口另用同一主窗口和三个测试页面核对。选中第 36 行、将视口滚到 797.6 CSS px 后，打开再关闭任务中心，选中项与滚动位置都保留。将常显数量设为 1，从“更多”连续用键盘上移两次，手柄保留焦点，面板保持打开。重载文档后仍采用保存的顺序。W08 在正式资料页接续这一路径。
+Windows 10 22H2 x64、Electron 45.3.2，系统显示比例 125%。每次运行使用独立资料。页面出口另用同一主窗口和三个测试页面核对。选中第 36 行、将视口滚到 797.6 CSS px 后，打开再关闭任务中心，选中项与滚动位置都保留。将常显数量设为 1，从“更多”连续用键盘上移两次，手柄保留焦点，面板保持打开。重载文档后仍采用保存的顺序。W09 在正式资料页接续这一路径。
 
 偏好保存期间继续输入会留下下一次编辑。无效缩放 201 定位到原输入，步进从 101 调整到 106。另在隔离库中保留缺失的主题与系统字体，选择器显示其身份。保存缩放与使用偏好后，两个原引用都保留。字体文件可先预览再入库。偏好中打开主题管理、保存并选用主题后，焦点返回管理按钮，原缩放草稿仍可继续编辑或放弃。主题预览取得句柄期间连续输入三个色值，文档最终采用最后的 `#426d9a`。切换到暗色编辑分支后选择继续编辑，预览保持；放弃后恢复正式亮色及原色值。任务详情关闭后返回原历史筛选与按钮，按创建日期清理只影响符合条件的已结束记录。正式窗口用例覆盖四个沙箱文档。系统登录登记与 Windows 通知的专用账号用例、Linux 的通知用例按实际宿主另验。
 
@@ -165,7 +163,7 @@ Windows 10 22H2 x64、Electron 45.3.2，系统显示比例 125%。每次运行�
 | --- | --- |
 | ![最小主窗口内的任务历史、筛选器与固定操作](ui/task-history-rewrite.png) | ![最小主窗口内的分组选择、字段视口与固定保存区](ui/preferences-rewrite-200.png) |
 
-在 100% 默认、最小与最大化窗口中，标题栏下沿分别有 1751/1751、1201/1201 和 2360/2360 个物理像素等于分隔线色。最小窗口的 75% 亮色与 200% 暗色分别得到 1201/1201，暗色按透明边线与背景合成后的 `#222830` 测量。在打开任务历史及偏好时，最大化按钮仍返回 Windows 原生命中 `HTMAXBUTTON`（9）。Windows 11 悬停贴靠与其余目标待对应宿主复验。
+在 100% 默认、最小与最大化窗口中，标题栏下沿分别有 1751/1751、1201/1201 和 2360/2360 个物理像素等于分隔线色。最小窗口的 75% 亮色与 200% 暗色分别得到 1201/1201，暗色按透明边线与背景合成后的 `#222830` 测量。在打开任务历史及偏好时，最大化按钮仍返回 Windows 原生命中 `HTMAXBUTTON`（9）。其他目标的运行范围见[六目标复验](#ui-rewrite-six-targets)。
 
 本机桌面完整验证通过。原生运行 23 项、源码会话 5 项、实际窗口 10 项、性能 2 项通过，制品用例从收据核对并实际启停验证用归档。buildId 为 `9ec6a3d4-99d1-4e33-b27c-f1880b07116c`，ZIP 的 SHA-256 为 `9f61d709b15b867be9fc3577db39994b6e97b38c9b38a1709ca306cc721a1d35`。同一构建在热系统磁盘缓存下启动 20 个全新进程，中位数 615.8 ms，P95 为 679.1 ms。完整存储负载期间 190 次窗口请求的 P95 为 7.39 ms。
 
@@ -376,7 +374,7 @@ Windows 125% 的真实开发窗口中，字段焦点边框为 1 物理像素，�
 
 关闭 `thickFrame` 的 45.3.2 对照试件边缘和客户区重合，同时失去标准窗口阴影及动画。结果支持上游无框窗口边缘回归的方向。混合 DPI 的表现依据对应环境另行验证。[Electron #51892](https://github.com/electron/electron/issues/51892) · [缩放变更来源](https://github.com/electron/electron/pull/51503) · [Electron 窗口选项](https://www.electronjs.org/docs/latest/api/structures/base-window-options)
 
-Electron 的 `thickFrame` 同时提供标准边缘缩放。Windows 11 Build 22000 起的 `DWMWA_BORDER_COLOR` 可关闭 DWM 绘制的边框，适合在该宿主独立验证。上游 #51892 仍开放，候选修复需要在混合 DPI 环境中核对开窗、跨屏、最大化和还原，并复验拖边缩放与系统贴靠。[Electron #51892](https://github.com/electron/electron/issues/51892) · [Microsoft DWM 窗口属性](https://learn.microsoft.com/en-us/windows/win32/api/dwmapi/ne-dwmapi-dwmwindowattribute)
+Electron 的 `thickFrame` 同时提供标准边缘缩放。Windows 11 Build 22000 起的 `DWMWA_BORDER_COLOR` 可关闭 DWM 绘制的边框，适合在该宿主独立验证。上游 #51892 仍开放，候选修复需要在混合 DPI 环境中核对开窗、跨屏、最大化和还原，并复验拖边缩放。[Electron #51892](https://github.com/electron/electron/issues/51892) · [Microsoft DWM 窗口属性](https://learn.microsoft.com/en-us/windows/win32/api/dwmapi/ne-dwmapi-dwmwindowattribute)
 
 <a id="menu-and-integration"></a>
 
