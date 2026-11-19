@@ -12,6 +12,8 @@
 
 ## 结果与复现
 
+以下命令对应 2026-11-05 的验收版本。现行复验入口见[当前工程与开发](../../../implementation/development.md#verification)。
+
 本机 `pnpm check` 通过，153 项常规测试中有 12 项直接验证 RPC 机制。五个公共包的 15 项仓库外消费检查全部通过，其中两项运行上述真实通道。另以构建后的入口核对安全整数耗尽时先完成在途调用再关闭，以及原生发送失败时等待与监听的释放。
 
 `pnpm check` 检查工作区类型、lint、导入边界、格式和常规测试。`pnpm exec turbo run test:consumers --filter=@kisaki3/desktop-rpc` 构建 ESM 与声明，生成一份 tarball，通过 publint 和 ATTW 的 ESM 检查，再安装到两个临时工程。NodeNext 与浏览器 Bundler 消费分别启用完整声明检查和类型感知 lint。

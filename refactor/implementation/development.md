@@ -36,6 +36,8 @@ desktop-rpc 从包根导出 `RpcConnection`、传输接口和帧合同。接入�
 
 desktop-contracts 按业务子路径导出显式接口、值校验与规范编码。类型、校验和操作按主题就近维护，多文件公开入口位于主题目录内。纯单测随源码放置，真实消费者与其样板保留在所属包的 tests 中。本体业务实现按所属工作包建立。
 
+修改 desktop-appearance 的亮暗默认值后，用 `pnpm exec vp run @kisaki3/desktop-appearance#generate:styles` 更新 `src/defaults.generated.css`。打包时核对这份样式与默认值是否一致。
+
 Lucide 名称目录由 desktop-contracts 的 `tools/generate-icon-names.ts` 从固定依赖生成，`pnpm exec vp run @kisaki3/desktop-contracts#generate:icon-names` 更新 `src/ui/icons/names.generated.ts`。普通 build 核对生成一致性；公开纯合同只携带名称和校验，不加载图形目录。desktop-ui 以 lucide-solid 组件呈现本地图标。
 
 desktop-localization 的英语 ICU 源文位于 src/en，按领域维护并由 index.ts 静态汇总；`pnpm exec vp run @kisaki3/desktop-localization#generate:messages` 更新 src/contracts.generated.ts。普通 build 校验消息声明与英语源文一致，再交接完整构建结果。`createTranslator(locale, catalog)` 创建独立格式化快照；main 的 i18n 管理生效语言与登记寿命，窗口以响应式格式化快照更新文案。生成源由生成器负责排版。
@@ -100,7 +102,7 @@ pnpm exec vp run @kisaki3/desktop#package:candidate --target windows-x64
 
 连接使用 WAL、FULL，以及 macOS 的 fullfsync；页缓存目标为 32 MiB。表、外键、CHECK 和索引由 schema 定义；保存的执行配置、身份与定位值通过 `StoredDefinition` 表达读取问题，普通偏好按独立字段采用默认值。读取投影不会自动写回；后续业务更新须保留未修改的原始字段。
 
-`pnpm --filter @kisaki3/desktop generate:migrations --name <主题>` 使用正式 Drizzle Kit 入口。审阅生成的 SQL、snapshot 及必要的数据变换后提交整个迁移目录。构建按实际目录结构复制迁移，开发监听将迁移变化交给资源准备。迁移的格式识别、不可修改规则与失败处理见[数据库合同](../design/engineering/database.md)。
+`pnpm exec vp run @kisaki3/desktop#generate:migrations --name <主题>` 使用正式 Drizzle Kit 入口。审阅生成的 SQL、snapshot 及必要的数据变换后提交整个迁移目录。构建按实际目录结构复制迁移，开发监听将迁移变化交给资源准备。迁移的格式识别、不可修改规则与失败处理见[数据库合同](../design/engineering/database.md)。
 
 名称排序由同一私有绑定的 SQLite 扩展入口与 ICU4X 2.4.0 提供。数据库先按索引记录的语言重开，新库采用英语。main 读取已选译本，待 i18n 确认生效语言或回退后调用 `storage.adoptLocale`，再开放资料库查询。后续语言切换沿用同一入口。仅在生效语言或引擎修订变化时重建 `kisaki_name` 索引；比较规则见[资料库名称排序](../design/domains/library/query/README.md#name-order)。
 
@@ -110,11 +112,13 @@ ZIP 读取按需访问中央目录，写入逐成员消费流。拥有者提供�
 
 开发测试仅在需要改写文件时复制载体和目标包的源码，只读依赖复用本机安装。窗口拒绝退出及停止失败的场景直接使用固定载体，按次分配 profile、编译目录及运行目录。
 
-同一工作副本中，共享输出的构建、运行与打包顺序执行。任务内依赖和合法并行由 Vite Task 管理。有限输出位于 `out/<target>`，开发会话位于 `out/development/<target>/session-*`，候选制品位于 `dist/<target>`。停止相关任务后，运行 `pnpm run clean` 清理桌面和六个公共包各自的 `dist` 和 `out`。单独清理其中一个工程用 `pnpm exec vp run <包名>#clean`。
+同一工作副本中，共享输出的构建、运行与打包顺序执行。任务内依赖和合法并行由 Vite Task 管理。有限输出位于 `out/<target>`，开发会话位于 `out/development/<target>/session-*`，候选制品位于 `dist/<target>`。停止相关任务后，运行 `pnpm exec vp run clean` 清理桌面和六个公共包各自的 `dist` 和 `out`。单独清理其中一个工程用 `pnpm exec vp run <包名>#clean`。
 
 <a id="verification"></a>
 
 ## 检查与运行环境
+
+从仓库根目录执行 `pnpm exec vp run test`，会先运行各成员已定义的 `test` 任务，再运行根工程用例。只运行根工程在 `tools/` 和 `tests/` 下配置的 Vitest 用例时，用 `pnpm exec vp test run`。单独验证桌面常规测试用 `pnpm exec vp run @kisaki3/desktop#test`，它先构建公共依赖，再运行 `unit` 测试项目。
 
 六个公共包共用 `@kisaki3/config/vite/library`。从根运行 `pnpm exec vp run --filter "./clients/desktop/packages/*" pack` 生成各包的 `out/package/package.tgz`。同一选择器配合 `check:package` 检查归档，配合 `test:consumers` 安装并运行仓库外的消费者。RPC 和 UI 的 Electron 样板分别从自己的临时工程启动锁定的 Electron，结束后随工程清理。UI 的浏览器和 Electron 样板复用同一份展示代码。
 
@@ -126,7 +130,7 @@ ZIP 读取按需访问中央目录，写入逐成员消费流。拥有者提供�
 
 | 命令                            | 输入与运行环境                                                               |
 | ------------------------------- | ---------------------------------------------------------------------------- |
-| `pnpm check`                    | 全仓类型、lint、格式及常规 Node 测试                                         |
+| `pnpm exec vp run check`        | 全仓类型、lint、格式及常规 Node 测试                                         |
 | `pnpm exec vp run @kisaki3/desktop#verify:native` | 核对 Rust 与绑定声明，并执行桌面原生运行测试。 |
 | `pnpm exec vp run @kisaki3/desktop#test:native`      | 先准备公共依赖、原生与资源输出，由 Electron Node 模式执行 schema、codec、迁移、WAL 中断恢复、文件和归档验证 |
 | `pnpm exec vp run @kisaki3/desktop-ui#test:browser` | 真实 Chromium 验证源码控件、表单、虚拟列表和浮层。 |
@@ -151,7 +155,7 @@ Linux CI 准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 AppIm
 
 根 TypeScript 项目检查工具、配置和测试。桌面项目按 main、preload、renderer、utility process、shared、native、tools 和 tests 分环境检查。native 项目拥有 Node 绑定源码及生成声明，main 消费其实际入口。正式程序与开发工具样板分别归各自运行环境，Vite 构建配置归 tools 项目。每份自有声明至少由一个 `skipLibCheck: false` 的实际项目完整检查，规则见[类型分工](../design/engineering/workspace.md#declaration-checks)。
 
-`pnpm lint` 运行类型感知 Oxlint 和全仓依赖边界检查。`tools/boundaries.ts` 选择工作区成员及根工程输入，`.dependency-cruiser.ts` 定义[包与运行端的导入规则](../design/engineering/workspace.md#tooling)。dependency-cruiser 18 的解析器通过 packageExtensions 使用 TypeScript 6，项目检查和公开声明使用锁定的 TypeScript 7.1。
+`pnpm exec vp run lint` 运行类型感知 Oxlint 和全仓依赖边界检查。`tools/boundaries.ts` 选择工作区成员及根工程输入，`.dependency-cruiser.ts` 定义[包与运行端的导入规则](../design/engineering/workspace.md#tooling)。dependency-cruiser 18 的解析器通过 packageExtensions 使用 TypeScript 6，项目检查和公开声明使用锁定的 TypeScript 7.1。
 
 `pnpm exec vp run --dry-run --json <包名>#<任务名>` 显示任务与依赖。增量类型信息归各包 `.cache/typescript`。
 
@@ -165,7 +169,7 @@ Linux CI 准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 AppIm
 
 `@kisaki3/tooling` 的 `/cli`、`/errors`、`/output` 与 `/process` 分别处理 CLI 信号与退出状态、错误交付、所属输出清理和命令执行。调用方传入取消信号并等待所属资源结束。Windows 用 Node 启动器和 `@seydx/win-job` 持有本次命令的 Job Object，Unix 使用独立进程组。取消不吞掉独立错误。原始操作与清理同时失败时按此顺序保留两项错误。
 
-`runPnpm` 使用 `npm_execpath` 指向的当前 pnpm，因此相关工具和测试通过 pnpm 项目脚本运行。普通外部命令由调用方明确提供可执行文件与参数。同时供导入和直接运行的工程脚本使用固定 Node 宿主的 [import.meta.main](https://nodejs.org/api/esm.html#importmetamain) 判断入口，经目录联接启动时同样有效。
+`pnpm exec vp run` 启动工作区锁定的 Vite Task。任务内的 `runPnpm` 通过 `npm_execpath` 取得当前 pnpm，普通外部命令由调用方明确提供可执行文件与参数。同时供导入和直接运行的工程脚本使用固定 Node 宿主的 [import.meta.main](https://nodejs.org/api/esm.html#importmetamain) 判断入口，经目录联接启动时同样有效。
 
 库的 `build` 先校验自身生成源，再用 `vp pack` 生成 JavaScript、声明与所需样式。`pack` 调用 `pnpm pack --out out/package/package.tgz`，`check:package` 用 publint 和 ATTW 检查这份文件。`@kisaki3/tooling/testing/consumer` 在用例作用域内安装和清理独立工程。
 
@@ -175,7 +179,7 @@ Linux CI 准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 AppIm
 
 在候选检出运行 `pnpm --config.verify-deps-before-run=false exec node tools/ci/plan.ts <base> <head>`，可在安装依赖前查看变更文件、受影响的包和各宿主任务。按[自动验证规则](../design/engineering/workspace.md#ci-selection)，单改 desktop-rpc 会选中该包的 Linux x64 专项和消费它的桌面应用六个目标。单改 desktop-appearance 的 CSS 会选中外观、合同、本地化、UI 和桌面应用。
 
-`Select checks` 生成包与宿主矩阵。Linux x64 上的 `Workspace checks` 核对文档链接，代码与手动验证还执行冻结安装和 `pnpm check`。每个 `Target checks` 作业直接调用一个包任务，例如 `Target checks (@kisaki3/desktop-rpc, linux-x64)`。矩阵跳过时显示 `Target checks`。性能报告按包和宿主命名，包名使用百分号编码，例如 `performance-%40kisaki3%2Fdesktop-macos-x64`，保留 7 天。
+`Select checks` 生成包与宿主矩阵。Linux x64 上的 `Workspace checks` 核对文档链接，代码与手动验证还执行冻结安装和 `pnpm exec vp run check`。每个 `Target checks` 作业直接调用一个包任务，例如 `Target checks (@kisaki3/desktop-rpc, linux-x64)`。矩阵跳过时显示 `Target checks`。性能报告按包和宿主命名，包名使用百分号编码，例如 `performance-%40kisaki3%2Fdesktop-macos-x64`，保留 7 天。
 
 手动运行的默认值执行全部自动检查。填写 `package` 选择一个包，`task` 留空执行该包的完整验证，也可填写登记的本地任务名。`target` 可指定单个宿主，选择包后保留 `all` 会在该包支持的所有宿主上复现。例如 `package=@kisaki3/desktop`、`task=test:performance`、`target=macos-x64` 只在该宿主运行桌面性能专项。只指定宿主时，运行所有支持该宿主的包任务。
 

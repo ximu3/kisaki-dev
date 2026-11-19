@@ -5,5 +5,5 @@
     "incremental": true,
     "tsBuildInfoFile": ".cache/typescript/config.tsbuildinfo"
   },
-  "include": ["vite/**/*.ts"]
+  "include": ["vite.config.ts", "vite/**/*.ts"]
 }

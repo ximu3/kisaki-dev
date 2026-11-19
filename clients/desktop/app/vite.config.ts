@@ -123,6 +123,7 @@ export default defineConfig({
         cache: false,
       },
 
+      'generate:migrations': { command: 'drizzle-kit generate', cache: false },
       clean: { command: 'kisaki-clean', cache: false },
     },
   },

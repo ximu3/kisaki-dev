@@ -15,10 +15,6 @@
     "./process": "./src/process/index.ts",
     "./testing/consumer": "./src/testing/consumer.ts"
   },
-  "scripts": {
-    "typecheck": "tsc -b",
-    "test": "vp test run"
-  },
   "dependencies": {
     "@seydx/win-job": "0.1.0",
     "yaml": "2.9.1"

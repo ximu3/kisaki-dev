@@ -105,7 +105,7 @@ app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm wo
 
 八个公共包各自在 config/typescript 保存库源码、工具及适用的构建配置类型项目，由各包根目录的 tsconfig.json 组织；同包 vite.config.ts 保留为实际构建入口。官方扩展的 kisx.config.ts 与 vite.config.ts 使用扩展工程自身 tsconfig.json 的 Node 环境，运行源码按实际宿主划分，具体见[工作区类型配置](workspace.md#workspace)。作者模板和合成消费者采用相同归属规则；消费者样板的 Node、Webview 与 Solid 各自保留默认类型入口，工程工具类型配置归其 config/typescript。
 
-根 package.json 为私有，只声明根工具和任务；运行包直接声明实际依赖。各工程保留自己的 UI 框架、运行环境和发行节奏。分类目录、工具 fixture 和普通配置文件不自动成为工作区包，成员布局遵守 [pnpm 工作区](https://pnpm.io/workspaces)。
+根 `package.json` 为私有，声明包管理器版本和仓库工具。运行包直接声明实际依赖。各工程保留自己的 UI 框架、运行环境和发行节奏。分类目录、工具 fixture 和普通配置文件不自动成为工作区包，成员布局遵守 [pnpm 工作区](https://pnpm.io/workspaces)。
 
 八个公共包均位于 clients/desktop/packages，desktop-appearance、desktop-ui 和 desktop-rpc 由实际桌面与扩展需求推动演进，同时保留纯视觉、组件与环境无关机制的边界。FontRef 仍由 desktop-contracts/fonts 拥有，桌面主题与资源选择仍由 desktop-contracts/appearance 组合。Web 与官网按自身目标设计界面，不因同仓而共用桌面样式或组件。
 
@@ -117,7 +117,7 @@ app/native 是应用内部的私有 Rust 与 Node-API 工程，不增加 pnpm wo
 
 ## 工具目录与工作流
 
-工程能力归维护它的项目。项目脚本和 Vite 任务按[任务入口](workspace.md#tasks)组织。有需要编程维护的工作流才建立 `tools/`，例如消息生成、组装桌面资源或协调应用退出。面向用户或扩展作者交付的命令归对应产品的 `src/`。CI 调用项目入口，负责运行环境和交付。
+工程能力归维护它的项目。工作区命名任务按[任务入口](workspace.md#tasks)组织。有需要编程维护的工作流才建立 `tools/`，例如消息生成、组装桌面资源或协调应用退出。面向用户或扩展作者交付的命令归对应产品的 `src/`。CI 调用项目入口，负责运行环境和交付。
 
 | 位置                      | 负责的工作                                                                                          |
 | ------------------------- | --------------------------------------------------------------------------------------------------- |
@@ -155,7 +155,7 @@ cli.ts 处理参数、建立运行上下文、调用工作流并呈现结果与�
 
 输出范围与清理的验证归 packages/tooling/tests/output.test.ts，真实命令树的取消验证归同包 tests/process.test.ts，均使用隔离目录和子进程。桌面开发会话的交接与关闭验证归本体 tests/tools/dev。
 
-工具源码与配置遵守[源码语言](conventions.md#source-language)、[可读性](conventions.md#readability)和[注释覆盖](conventions.md#comments)。本地与 CI 通过相同项目脚本调用工程工作流、现成检查工具或测试运行器；脚本转交参数与退出状态，工程实现不另写在 YAML 或 shell 字符串中。工具测试遵守[测试结构](#tests)，不因工具是单文件或目录而改变测试的工程归属。
+工具源码与配置遵守[源码语言](conventions.md#source-language)、[可读性](conventions.md#readability)和[注释覆盖](conventions.md#comments)。本地与 CI 通过同一工程任务调用工作流、检查工具或测试运行器，传递参数与退出状态。工程实现不另写在 YAML 或 shell 字符串中。工具测试遵守[测试结构](#tests)，不因工具是单文件或目录而改变测试的工程归属。
 
 每项工具声明实际输入、输出、工作目录和清理范围。构建、验证和发布使用不同的明确操作，输出与缓存按工作区任务规则登记；分类目录不增加总 index.ts，工作流不为形式一致而建立空的 planner、manager 或 adapter。
 
@@ -268,11 +268,11 @@ clients/desktop/app/tools/
 
 ### 测试任务与执行
 
-测试命令由所属工程的 package scripts 或 Vite Task 定义，直接启动现成运行器和选定配置。普通 test 的默认范围明确记录；test:consumers、test:e2e、test:artifacts 等任务按不同输入、环境和执行阶段分别配置，具体仓库命令见[任务入口](../../verification/acceptance.md#commands)。命令可以是薄脚本，不因此新增同名工具或跨运行器的统一调度程序。
+所属工程的 Vite 任务直接启动测试运行器并选择配置。`test` 执行常规测试，`test:consumers`、`test:e2e`、`test:artifacts` 等任务按各自的输入、环境和执行阶段分别配置。具体仓库命令见[验收入口](../../verification/acceptance.md#commands)。
 
 消费者测试接收已经打包的公共包，最终制品测试接收已经完成打包与适用签名的目标文件。任务系统声明相应构建依赖、制品输入、运行环境、缓存条件与 CI 门槛；测试核对本次输入的路径、版本、构建身份及适用目标，缺失或不匹配时失败，不在用例中重建或替换待验证的产品制品。消费者自身的临时工程仍可按用例需要构建。
 
-包结构、类型制品和平台文件检查直接采用已有检查工具，其结果与实际消费、运行用例分别记录并纳入对应任务的通过条件。项目脚本与任务配置负责组合调用，不重新实现这些检查，也不为命名统一把所有检查工具包装成测试用例。普通 check 汇总类型、lint、格式和常规测试，制品及其他需要特定环境的任务按阶段显式执行。
+包结构、类型制品和平台文件检查直接采用已有检查工具，其结果与实际消费、运行用例分别记录并纳入对应任务的通过条件。任务配置负责组合调用，不重新实现这些检查，也不为命名统一把所有检查工具包装成测试用例。普通 `check` 汇总类型、lint、格式和常规测试，制品及其他需要特定环境的任务按阶段显式执行。
 
 原生业务与数据库套件在运行器启动前选定开发 Electron 的 Node 宿主及匹配 ABI；环境变量和启动参数由该任务的脚本与配置提供。测试中的环境变量配置、fixture 或 setup 不能把已经启动的普通 Node 进程变为另一 ABI。构建和原生依赖准备复用已有工程任务；应用实例、临时资料和订阅的创建与释放由运行器 fixture 管理，测试启动模块按[就近归属规则](#test-placement)放置。
 

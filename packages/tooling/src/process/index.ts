@@ -1,5 +1,5 @@
 /**
- * @fileoverview Runs finite commands and pnpm tasks with inherited diagnostics and cancellation.
+ * @fileoverview Runs external commands and pnpm with inherited diagnostics and cancellation.
  */
 
 import { spawn } from 'node:child_process'
@@ -104,16 +104,16 @@ export async function run(
   }
 }
 
-/** Resolves the pnpm executable that launched the current project task. */
+/** Resolves the pnpm executable provided to the current workspace command. */
 function pnpmExecutable(): string {
   const executable = process.env.npm_execpath
   if (!executable) {
-    throw new Error('Run this workflow through its pnpm project task')
+    throw new Error('Run this workflow with pnpm exec vp run')
   }
   return executable
 }
 
-/** Runs a pnpm task with inherited diagnostics and waits for child closure. */
+/** Runs a pnpm command with inherited diagnostics and waits for child closure. */
 export async function runPnpm(args: string[], options: ProcessOptions = {}): Promise<void> {
   await run(pnpmExecutable(), args, options)
 }

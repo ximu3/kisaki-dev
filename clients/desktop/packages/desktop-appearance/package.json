@@ -42,9 +42,6 @@
       "default": "./dist/tailwind.css"
     }
   },
-  "scripts": {
-    "generate:styles": "vpx tools/styles.ts --generate"
-  },
   "devDependencies": {
     "@arethetypeswrong/cli": "catalog:",
     "@kisaki3/config": "workspace:*",

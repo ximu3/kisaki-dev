@@ -205,16 +205,16 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | `pnpm exec vp run @kisaki3/desktop#package --target windows-x64`            | 为明确目标准备完整资源并打包，CI 另提供适用的签名环境                       |
 | `pnpm exec vp run @kisaki3/desktop#test:artifacts`                          | 对明确提供的最终桌面制品执行结构与实际运行测试                              |
 | `pnpm exec vp run @kisaki3/desktop#test:e2e`                                | 在真实开发应用中运行桌面完整工作流测试                                      |
-| pnpm typecheck / pnpm lint / pnpm test               | 调度根工程及实际 workspace 的对应检查；test 为明确配置的常规测试            |
+| `pnpm exec vp run typecheck` / `pnpm exec vp run lint` / `pnpm exec vp run test` | 调度根工程及实际 workspace 的对应检查，`test` 执行常规测试 |
 | `pnpm exec vp fmt --check`                                    | 全仓格式检查，不先构建依赖                                                  |
 | `pnpm exec vp fmt --write` / `pnpm exec vp lint --fix`                          | 显式修改，开发者审阅后自行暂存                                              |
-| pnpm check                                           | 类型、lint、格式及常规测试的统一入口                                        |
-| pnpm build                                           | 通过 Vite Task 按实际依赖编译工作区，不隐含正式发行                             |
+| `pnpm exec vp run check`                             | 类型、lint、格式及常规测试的统一入口                                        |
+| `pnpm exec vp run build`                             | 通过 Vite Task 按实际依赖编译工作区，不隐含正式发行                         |
 | `pnpm exec vp run --filter "./clients/desktop/packages/*" test:consumers`                          | 调度各包消费者任务及前置准备，核对实际 tarball 的结构、声明、样式与作者接入 |
-| `pnpm release:check --base <commit> --head <commit>` | 只读检查本次明确版本变化、依赖、所属说明语言要求并输出发行矩阵              |
-| pnpm release:notes:build                             | 从源说明生成可检查的发布正文和静态元数据，不上传                            |
+| `pnpm exec vp run release:check --base <commit> --head <commit>` | 只读检查本次明确版本变化、依赖、所属说明语言要求并输出发行矩阵 |
+| `pnpm exec vp run release:notes:build`               | 从源说明生成可检查的发布正文和静态元数据，不上传                            |
 | `pnpm exec vp hooks enable` / `pnpm exec vp hooks disable`            | 当前仓库 hooks 的明确生命周期                                               |
-| pnpm run clean                                       | 仅清理项目声明的构建输出                                                    |
+| `pnpm exec vp run clean`                             | 仅清理项目声明的构建输出                                                    |
 
 根命令调度全仓操作，桌面开发、编译与打包由所属包的任务负责。根 tools 处理仓库级交付，clients/desktop/app/tools 处理桌面会话与制品。扩展作者通过 kisx 操作自己的工程。
 

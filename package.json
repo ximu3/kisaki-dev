@@ -7,14 +7,6 @@
   "engines": {
     "node": "26.13.1"
   },
-  "scripts": {
-    "build": "vp run --filter \"!@kisaki3/workspace\" build",
-    "typecheck": "vp run --filter \"!@kisaki3/workspace\" typecheck && tsc -b",
-    "lint": "vp run --filter \"./clients/desktop/packages/*\" build && vp lint && node tools/boundaries.ts",
-    "test": "vp run --filter \"!@kisaki3/workspace\" test && vp test run",
-    "check": "vp run typecheck && vp run lint && vp fmt --check && vp run test",
-    "clean": "vp run --filter \"!@kisaki3/workspace\" clean"
-  },
   "devDependencies": {
     "@kisaki3/config": "workspace:*",
     "@kisaki3/tooling": "workspace:*",

@@ -1,9 +1,11 @@
 /** @fileoverview Builds appearance tokens, bundled CSS values and the published stylesheets. */
 
 import { defineLibrary } from '@kisaki3/config/vite/library'
+import { defineConfig, mergeConfig } from 'vite-plus'
 import { assembleStyles } from './tools/styles'
 
-export default defineLibrary({
+/** Builds the published JavaScript and stylesheets with the shared library tasks. */
+const library = defineLibrary({
   entries: {
     './tokens': './src/tokens.ts',
     './values': './src/values.ts',
@@ -23,3 +25,14 @@ export default defineLibrary({
     },
   },
 })
+
+export default mergeConfig(
+  library,
+  defineConfig({
+    run: {
+      tasks: {
+        'generate:styles': { command: 'vpx tools/styles.ts --generate', cache: false },
+      },
+    },
+  }),
+)

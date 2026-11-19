@@ -26,9 +26,10 @@
 
 ## 复验入口
 
-`pnpm check` 运行工作区基础检查。以下命令从仓库根目录执行：
+从仓库根目录运行基础检查、公共包及桌面验证。
 
 ```sh
+pnpm exec vp run check
 pnpm exec vp run @kisaki3/desktop-contracts#verify
 pnpm exec vp run @kisaki3/desktop-localization#verify
 pnpm exec vp run --concurrency-limit 1 @kisaki3/desktop#verify
