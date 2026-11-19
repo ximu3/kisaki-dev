@@ -290,7 +290,7 @@ desktop-contracts/deeplink 的 parse(url) 与 format(request) 是纯函数，按
 
 extension-sdk 的纯合同选取所需定义并声明 Node 的 context.deeplink.register，运行实现绑定真实实例、回调与取消，完整规则见[扩展 deeplink 入口](ui/navigation.md#extension-deeplinks)。内部 NativeViewTarget 不会自动获得公开链接。格式化不查询数据库或来源，格式错误使用安全错误表达；实际接收端还须核对归属和当前事实。
 
-notifications.show 接收 { title, body, open?: NativeViewTarget }，返回 accepted 或 unavailable；投递失败时拒绝调用。accepted 只表示操作系统已经接纳。Node SDK 使用这项能力，Webview 使用所属视图的 Toast。通知点击由 app 协调，只有已经定义的公开入口可以通过协议激活。内部目标不会因此获得应用退出后的恢复保证。接口不公开 Electron Notification、点击脚本或完整业务结果，不保存通知历史，也不在不可用时自动改投 Toast。
+notifications.show 接收 { title, body, open?: NativeViewTarget }，返回 accepted 或 unavailable；投递失败时拒绝调用。accepted 只表示操作系统已经接纳。Node SDK 使用这项能力，Webview 使用所属视图的 Toast。通知点击由 app 从操作系统载荷还原原生目标，按[通知激活身份](engineering/build.md#notification-activation)区分载体支持的运行中或冷启动交付。接收端按当前资料与运行状态核对目标；只有在原进程中存在的会话或待保存快照随其寿命结束。接口不公开 Electron Notification、点击脚本或完整业务结果，不保存通知历史，也不在不可用时自动改投 Toast。
 
 files 的枚举、观察、规范路径和字节读取属于主进程内部协作能力。Node 扩展在可信 Node 环境中读取自己的文件，再向本体传递 FileInput。renderer 与 Webview 使用真实选择或拖入所建立的来源，以及 view.resources.bind 限定的范围。取消原生选择返回 null；仅完成选择不会创建附件或持有。
 

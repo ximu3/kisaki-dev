@@ -173,7 +173,7 @@ list/get/create/restore、lock/unlock、备注修改与明确删除；recoveries
 
 ### 展示区块：library.showcase
 
-list/listPresets/applyChanges；输入为明确创建/修改/删除及最终排列，按 [展示柜](../../../ui/showcase.md) 完整合同交付当前正式区块。
+list、get、listPresets、create、createMany、update、delete 和 reorder。单项编辑独立保存，明确的批量创建在同一事务按输入顺序追加，重排核对包含隐藏项的完整原顺序。输入与结果见[展示柜操作](../../../ui/showcase.md#api)。
 
 查询内容复用 entries / collections / tags；SDK Node 开放。
 

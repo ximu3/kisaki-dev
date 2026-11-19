@@ -98,6 +98,18 @@ start 编码为 JSON 字符串，不增加 fromStart、page、time、cfi 或短�
 
 作品层的使用链接不固定当前首选，只有从具体配置、分部或文件入口复制时，才保留对应选择。复制外部身份链接需要明确选择该方式和一份身份，不设置主外部 ID，也不按 Profile 顺序选取。根使用 external 不会使本地子对象 ID 跨库有效。需要新增时明确使用 add，复制的 add 默认不绑定接收端 profileId。
 
+<a id="work-shortcuts"></a>
+
+## 作品桌面快捷方式
+
+游戏、动画、漫画和小说的详情操作菜单提供「创建桌面快捷方式」。用户点击后，在当前系统用户的桌面生成以作品名命名的快捷方式。创建时只写文件，以后双击才启动游戏、播放动画或打开读物。
+
+快捷方式保存作品级 `open/<workType>/local/<id>` 请求，使用当前应用的正式或开发协议。双击时由接收实例在当前资料库中核对作品，按原生使用入口处理已有会话、首选、最近目标和必要选择。首选改变后，同一个快捷方式按新选择执行。作品改名后仍可寻址，已删除或并入其他条目的旧身份按现有链接规则失效。
+
+主窗口向 main 提交当前 WorkRef。main 读取可见作品的名称，生成规范链接。系统集成在系统提供的桌面目录创建文件，按平台规则处理文件名，同名时另取可区分的名称。界面在写入成功后反馈实际文件名，失败时保留原有文件并说明原因。快捷方式归用户管理，移动或删除文件只影响这个入口。对于由系统分派 URL 的载体，协议未关联到当前应用时，在创建前说明原因并提供系统集成入口，由用户完成登记后重试。
+
+Windows 生成 Internet Shortcut（`.url`），macOS 生成 Finder 的 Internet Location 文件（`.inetloc`）。Linux 生成 `Type=Application` 的 `.desktop` 启动项，`Exec` 使用该载体的启动程序，规范链接作为独立参数。AppImage 指向实际外层文件，移动载体后可从详情重新创建。按桌面条目格式编码参数，保留桌面环境的启动许可流程。三端都由 Kisaki 接收同一作品打开请求。[Windows Internet Shortcut](https://learn.microsoft.com/en-us/windows/win32/lwef/internet-shortcuts) · [Apple Internet Location](https://developer.apple.com/documentation/uniformtypeidentifiers/uttype-swift.struct/internetlocation) · [Desktop Entry 的 Exec 规则](https://specifications.freedesktop.org/desktop-entry/latest/exec-variables.html) · [Electron 系统桌面目录](https://www.electronjs.org/docs/latest/api/app/#appgetpathname)
+
 <a id="delivery"></a>
 
 ## 启动等待与一次交付
@@ -279,9 +291,9 @@ Mod 在 Windows 和 Linux 中表示 Ctrl，在 macOS 中表示 Command。
 
 关于界面呈现项目、版本与许可。项目标识与环境信息用间距区分，复制动作放在页脚。复制环境信息只包含 Kisaki 版本、实际操作系统名称与版本，以及应用进程的 x64 或 arm64 架构，不拿物理设备架构代替。内容不包含路径、资料、日志、账号或完整扩展列表。只有用户点击并通过现有剪贴板实际复制成功后才提示，不自动上传，也不建立诊断流程。
 
-系统集成 Dialog 用一组普通字段依次呈现启动、链接和数据目录。登录时启动使用开关，登记被系统停用或仍待批准时才显示启动项设置。链接显示当前协议关联，首次登记直接在应用内发起。登记后默认应用仍待处理或核实时，提供该平台可用的默认应用设置或设置默认操作。操作完成及从系统设置返回时重新读取状态。登录项的登记与系统许可分别读取，见 [Electron 登录项](https://www.electronjs.org/docs/latest/api/app#appgetloginitemsettingsoptions-macos-windows)。
+系统集成 Dialog 用一组普通字段呈现启动、链接、数据目录及本平台适用的集成。登录时启动使用开关，登记被系统停用或仍待批准时才显示启动项设置。链接显示当前协议关联，首次登记直接在应用内发起。登记后默认应用仍待处理或核实时，提供该平台可用的默认应用设置或设置默认操作。操作完成及从系统设置返回时重新读取状态。登录项的登记与系统许可分别读取，见 [Electron 登录项](https://www.electronjs.org/docs/latest/api/app#appgetloginitemsettingsoptions-macos-windows)。
 
-便携选择由 app/paths 管理，载体旁标记决定下次启动模式，在打开数据库前解析；本次数据根始终固定。界面显示当前模式、路径及待重启状态。主进程核对载体与路径能力，变更在重启后生效，原资料保持原位，见[构建与载体](../engineering/build.md)。Linux 免安装形态的 .desktop 登记由用户明确发起。
+便携选择由 app/paths 管理，载体旁标记决定下次启动模式，在打开数据库前解析；本次数据根始终固定。界面显示当前模式、路径及待重启状态。主进程核对载体与路径能力，变更在重启后生效，原资料保持原位，见[构建与载体](../engineering/build.md)。Linux 免安装形态的 .desktop 登记由用户明确发起。游戏桌面组件按实际 GNOME 或 KWin 环境在此提供启用、移除与状态反馈，组件兼容、限定用途的登记和清理遵守[Vantage 宿主接入](../projects/vantage/linux.md)。
 
 协议关联只在安装或用户主动登记、修复时建立，便携需要显式操作，开发与正式身份分开。普通启动不能抢占关联，卸载只删除仍属于自己的登记。各平台使用真实制品验证注册、接收和通知，调用成功不能代替系统真实状态。
 
