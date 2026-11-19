@@ -82,7 +82,7 @@ pnpm exec vp run @kisaki3/desktop#build --target windows-x64
 pnpm exec vp run @kisaki3/desktop#package:candidate --target windows-x64
 ```
 
-目标必须匹配实际 runner。构建先准备资源和原生绑定，再通过 Vite 编译各程序；全部编译与装配成功后写入完成清单；失败结果不供下游采用。资源准备可独立执行 `pnpm --filter @kisaki3/desktop prepare:resources --target windows-x64`。
+目标必须匹配实际 runner。构建先准备资源和原生绑定，再通过 Vite 编译各程序。全部编译与装配成功后写入完成清单，失败结果不供下游采用。资源准备可独立执行 `pnpm exec vp run @kisaki3/desktop#prepare:resources --target windows-x64`。
 
 资源工作流从锁定依赖准备字体与 SQLite 绑定，从唯一图标源稿生成 PNG／ICO，最终运行清单统一记录资源摘要。`assets/fonts/inputs.json` 选择字体文件和许可，包版本与来源完整性由 pnpm 锁文件约束。
 
@@ -92,7 +92,7 @@ pnpm exec vp run @kisaki3/desktop#package:candidate --target windows-x64
 
 隔离候选固定标记 `testOnly`，默认生成目标平台的全部格式。局部复现可用 `pnpm exec vp run @kisaki3/desktop#package:candidate --smoke-only` 只生成实际启停所用的 ZIP 或 AppImage。构建和打包均不发布。正式签署、安装升级及发行接入由 W20 验收。
 
-`pnpm exec vp run @kisaki3/desktop#build --program preload` 单独验证 preload 编译。`build:native` 编译私有绑定；需要更新生成声明时显式添加 `--update-declarations` 并审阅变化。`check:native` 执行固定 Rust 工具链的格式与 Clippy 检查。
+`pnpm exec vp run @kisaki3/desktop#build --program preload` 单独验证 preload 编译。`pnpm exec vp run @kisaki3/desktop#build:native` 编译私有绑定，需要更新生成声明时显式添加 `--update-declarations` 并审阅变化。`pnpm exec vp run @kisaki3/desktop#check:native` 执行固定 Rust 工具链的格式与 Clippy 检查。
 
 ### 存储与生成资源
 
@@ -110,7 +110,7 @@ ZIP 读取按需访问中央目录，写入逐成员消费流。拥有者提供�
 
 开发测试仅在需要改写文件时复制载体和目标包的源码，只读依赖复用本机安装。窗口拒绝退出及停止失败的场景直接使用固定载体，按次分配 profile、编译目录及运行目录。
 
-同一工作副本中，共享输出的构建、运行与打包顺序执行。任务内依赖和合法并行由 Vite Task 管理。有限输出位于 `out/<target>`，开发会话位于 `out/development/<target>/session-*`，候选制品位于 `dist/<target>`。停止相关任务后运行 `pnpm run clean`。桌面和六个公共包各自在项目目录调用 `kisaki-clean`，清理 dist 和 out。
+同一工作副本中，共享输出的构建、运行与打包顺序执行。任务内依赖和合法并行由 Vite Task 管理。有限输出位于 `out/<target>`，开发会话位于 `out/development/<target>/session-*`，候选制品位于 `dist/<target>`。停止相关任务后，运行 `pnpm run clean` 清理桌面和六个公共包各自的 `dist` 和 `out`。单独清理其中一个工程用 `pnpm exec vp run <包名>#clean`。
 
 <a id="verification"></a>
 

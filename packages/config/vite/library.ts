@@ -1,4 +1,4 @@
-/** @fileoverview Builds public ESM libraries and runs their checks against the published tarball. */
+/** @fileoverview Configures public ESM library builds, tarball verification and output cleanup. */
 
 import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
@@ -82,6 +82,7 @@ export function defineLibrary({
       },
       ...pack,
     },
+
     test: {
       fsModuleCachePath: 'node_modules/.vitest-cache',
       projects: [
@@ -105,6 +106,7 @@ export function defineLibrary({
         },
       ],
     },
+
     run: {
       tasks: {
         ...(generated && {
@@ -127,6 +129,7 @@ export function defineLibrary({
             output: ['dist/**'],
           },
         },
+
         pack: {
           command: 'pnpm pack --out out/package/package.tgz',
           dependsOn: ['build', { task: 'pack', from: 'dependencies' }],
@@ -140,6 +143,7 @@ export function defineLibrary({
           dependsOn: ['pack'],
           cache: false,
         },
+
         typecheck: { command: 'tsc -b', dependsOn: [dependencyBuilds], cache: false },
         [browserTests ? 'test:browser' : 'test']: {
           command:
@@ -157,6 +161,8 @@ export function defineLibrary({
           dependsOn: browserTests ? ['test:consumers', 'test:browser'] : ['test:consumers'],
           cache: false,
         },
+
+        clean: { command: 'kisaki-clean', cache: false },
       },
     },
   })

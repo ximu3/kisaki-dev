@@ -34,9 +34,6 @@
       "import": "./dist/index.js"
     }
   },
-  "scripts": {
-    "clean": "kisaki-clean"
-  },
   "dependencies": {
     "@formatjs/icu-messageformat-parser": "3.5.22",
     "@kisaki3/desktop-contracts": "workspace:^",
