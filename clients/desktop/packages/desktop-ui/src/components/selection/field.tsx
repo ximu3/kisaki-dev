@@ -14,8 +14,7 @@ import {
 import type { JSX } from 'solid-js'
 import { assignRef, classes, createElementRef } from '../../internal/dom'
 import type { ControlSize } from '../../internal/control/size'
-import { useContext } from 'solid-js'
-import { FormContext } from '../../internal/form'
+import { nativeValidityChanged } from '../../internal/form'
 import { fieldAttributes } from '../../internal/field'
 import { Icon, ChevronDown, ChevronsUpDown } from '../../internal/icon/glyph'
 import { createValue, onFormReset } from '../../internal/state'
@@ -118,7 +117,7 @@ export function SelectionField<O extends SelectionOption>(
     'name',
     'onInvalid',
   ])
-  const form = useContext(FormContext)
+
   const attributes = mergeProps(fieldAttributes(props), rest)
   const popup = createSelectionPopup()
   const { id, open, setOpen, present } = popup
@@ -201,7 +200,7 @@ export function SelectionField<O extends SelectionOption>(
   onMount(() =>
     createEffect(() => {
       sync()
-      form?.refresh()
+      nativeValidityChanged(mirror.form)
     }),
   )
   const flushReset = onFormReset(
@@ -231,6 +230,7 @@ export function SelectionField<O extends SelectionOption>(
         field = node
       }}
       class={classes(input.surface, styles.container, local.class)}
+      data-control-key={local.name || attributes.id || id}
       style={local.style}
       data-size={local.size ?? 'default'}
       aria-invalid={attributes['aria-invalid']}

@@ -1,6 +1,7 @@
 /** @fileoverview Keeps native radio selection aligned with its value owner after edits and resets. */
 
-import type { Accessor } from 'solid-js'
+import { createEffect, type Accessor } from 'solid-js'
+import { nativeValidityChanged } from '../form'
 import { createValue, onFormReset } from '../state'
 
 /** Connects a named radio fieldset to one controlled or locally owned selection. */
@@ -33,5 +34,9 @@ export function bindRadioSelection(
     sync()
   }
 
+  createEffect(() => {
+    value()
+    nativeValidityChanged(group().form)
+  })
   return [value, change] as const
 }

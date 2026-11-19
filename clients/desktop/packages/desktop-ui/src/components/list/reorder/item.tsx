@@ -36,8 +36,7 @@ export function ReorderableListItem(props: ReorderableListItemProps) {
     onCleanup(() => list.handleById.delete(id))
   })
   createDraggable(() => ({
-    element: row,
-    dragHandle: handle,
+    element: handle,
     canDrag: () => !list.busy(),
     getInitialData: () => ({ list: list.scope, id: local.value, ids: list.subjects(local.value) }),
     onGenerateDragPreview: ({ nativeSetDragImage }) =>

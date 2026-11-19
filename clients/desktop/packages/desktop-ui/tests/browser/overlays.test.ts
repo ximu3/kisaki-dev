@@ -140,6 +140,23 @@ test('a menu follows a replaced trigger before and during disclosure', async ({ 
   await browserExpect(page.getByRole('dialog', { name: 'Edit sample' })).toBeVisible()
 })
 
+test('the disclosure follows its owner when a summary activation is declined', async ({ page }) => {
+  const summary = page.locator('summary').filter({ hasText: 'More information' })
+  const content = page.getByText('Native disclosure content.', { exact: true })
+  await summary.focus()
+  await page.keyboard.press('Enter')
+  await browserExpect(content).toBeVisible()
+
+  await page.evaluate(() => {
+    window.fixture.requestDisclosure = (open) => {
+      document.body.dataset.requestedOpen = String(open)
+    }
+  })
+  await summary.click()
+  await browserExpect(page.locator('body')).toHaveAttribute('data-requested-open', 'false')
+  await browserExpect(content).toBeVisible()
+})
+
 test('dialogs, menus and popovers close the active scope and return focus', async ({ page }) => {
   await page.locator('html').evaluate((root) => {
     root.setAttribute('lang', 'tr')

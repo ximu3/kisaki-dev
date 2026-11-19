@@ -1,6 +1,6 @@
 /** @fileoverview Independent component workshop covers native controls, feedback and nested interactions. */
 
-import { createSignal, lazy, Show } from 'solid-js'
+import { createMemo, createSignal, lazy, Show } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { Info } from 'lucide-solid'
 import { render } from 'solid-js/web'
@@ -349,17 +349,22 @@ function Validation(): JSX.Element {
     queueMicrotask(() => document.getElementById(id)?.focus())
   }
 
-  const form = createForm({
-    validate,
-    locate,
-    onSubmit: (submitter) => window.fixture.commitSample?.(submitter),
+  const [sample, selectSample] = createSignal('original')
+  const form = createMemo(() => {
+    const id = sample()
+    return createForm({
+      validate,
+      locate,
+      onSubmit: (submitter) => window.fixture.commitSample?.(submitter, id),
+    })
   })
-  window.fixture.submitSample = () => form.submit()
+  window.fixture.selectSample = selectSample
+  window.fixture.submitSample = () => form().submit()
 
   return (
     <section>
       <h2>Form feedback</h2>
-      <Form state={form}>
+      <Form state={form()}>
         <Tabs value={tab()} onValueChange={setTab}>
           <TabList aria-label="Fields">
             <Tab value="basic">Basic</Tab>
@@ -588,6 +593,9 @@ function Interactions(): JSX.Element {
  * lifetimes.
  */
 function App(): JSX.Element {
+  const [expanded, setExpanded] = createSignal(false)
+  window.fixture.requestDisclosure = setExpanded
+
   /** Whether the synthetic feedback-owning component remains mounted. */
   const [owner, setOwner] = createSignal(true)
   /** Whether the independently loaded rich-resource showcase is displayed. */
@@ -645,7 +653,11 @@ function App(): JSX.Element {
           <Progress value={0.65} aria-label="Progress" />
           <Alert tone="info">The sample preserves ordinary document behavior.</Alert>
           <Separator />
-          <Collapsible summary="More information">
+          <Collapsible
+            summary="More information"
+            open={expanded()}
+            onOpenChange={(open) => window.fixture.requestDisclosure?.(open)}
+          >
             <p>Native disclosure content.</p>
           </Collapsible>
           <ScrollArea aria-label="Sample table">

@@ -17,6 +17,7 @@ import { Icon, Calendar } from '../../../internal/icon/glyph'
 import { createPresentation } from '../../../internal/popup/presentation'
 import { createValue, onFormReset } from '../../../internal/state'
 import { InputFrame } from '../frame'
+import { nativeValidityChanged } from '../../../internal/form'
 import frame from '../styles.module.css'
 import type { InputProps } from '../control'
 import { parseDate } from './calendar'
@@ -89,7 +90,7 @@ export function DateInput(props: DateInputProps): JSX.Element {
   const present = createPresentation(open, () => picker)
 
   /** Checks whether disabled or readonly state prevents calendar interaction. */
-  const blocked = () => (props.disabled ?? field.disabled) || props.readOnly
+  const blocked = () => (props.disabled ?? field.disabled) || (props.readOnly ?? props.readonly)
   /** Valid current minimum date text, absent when the supplied bound cannot be parsed. */
   const min = createMemo(() => (parseDate(calendar.min ?? '') ? calendar.min : undefined))
   /** Valid current maximum date text with the native calendar's supported upper fallback. */
@@ -130,6 +131,7 @@ export function DateInput(props: DateInputProps): JSX.Element {
       input.value = value()
     }
     validate()
+    nativeValidityChanged(input.form)
   }
   /**
    * Writes a chosen date through the editor and dispatches its ordinary input and change events.

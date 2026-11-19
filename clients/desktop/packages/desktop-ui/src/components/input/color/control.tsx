@@ -17,6 +17,7 @@ import { fieldAttributes, closeWhenUnavailable } from '../../../internal/field'
 import { createPopup } from '../../../internal/popup/controller'
 import { createValue, onFormReset } from '../../../internal/state'
 import { NativeInput } from '../native'
+import { nativeValidityChanged } from '../../../internal/form'
 import { InputFrame } from '../frame'
 import frame from '../styles.module.css'
 import type { InputProps } from '../control'
@@ -82,7 +83,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
   let picker!: HTMLDivElement
   let hue!: HTMLInputElement
   /** Checks whether disabled or readonly state prevents picker interaction. */
-  const blocked = () => (props.disabled ?? field.disabled) || props.readOnly
+  const blocked = () => (props.disabled ?? field.disabled) || (props.readOnly ?? props.readonly)
   /** Formats the parsed color for the swatch or returns transparency for an unparseable value. */
   const swatch = () => (parsed() ? formatHex8(parsed()) : 'transparent')
 
@@ -98,9 +99,12 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
    */
   const commit = (next: Partial<Hsv>) => {
     const updated = { ...color(), ...next }
-    setColor(updated)
-    input.value = (updated.alpha ?? 1) < 1 ? formatHex8(updated) : formatHex(updated)
+    const requested = (updated.alpha ?? 1) < 1 ? formatHex8(updated) : formatHex(updated)
+    input.value = requested
     input.dispatchEvent(new Event('input', { bubbles: true }))
+    if (value() === requested) {
+      setColor(updated)
+    }
   }
   /** Maps pointer coordinates on the color plane to bounded saturation and brightness values. */
   const paint = (event: PointerEvent & { currentTarget: HTMLDivElement }) => {
@@ -131,9 +135,10 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
     () => setOpen(false),
   )
   onMount(() => {
-    createEffect(() =>
-      input.setCustomValidity(value() && !parsed() ? local.invalidColorMessage : ''),
-    )
+    createEffect(() => {
+      input.setCustomValidity(value() && !parsed() ? local.invalidColorMessage : '')
+      nativeValidityChanged(input.form)
+    })
     createEffect(() => {
       if (open()) {
         queueMicrotask(() => {

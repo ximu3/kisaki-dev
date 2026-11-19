@@ -60,7 +60,7 @@ export function SearchInput(props: SearchInputProps): JSX.Element {
         onValueChange={change}
         class={classes(frame.editor, styles.editor)}
       />
-      <Show when={value() && !props.readOnly}>
+      <Show when={value() && !(props.readOnly ?? props.readonly)}>
         <button
           class={styles.clear}
           type="button"

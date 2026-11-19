@@ -25,6 +25,7 @@ type ValidatedControl =
 function fieldKey(control: HTMLElement): string | undefined {
   return (
     control.closest<HTMLElement>('[data-field-key]')?.dataset.fieldKey ||
+    control.closest<HTMLElement>('[data-control-key]')?.dataset.controlKey ||
     control.id ||
     control.getAttribute('name') ||
     undefined
@@ -50,21 +51,31 @@ export interface FormState {
   locate: (id: string) => void
 
   readonly [formBinding]: {
-    bind: (element: HTMLFormElement | undefined) => void
+    bind: (element: HTMLFormElement) => () => void
     focus: (target: EventTarget | null) => void
     refresh: () => void
+    validating: Accessor<boolean>
   }
 }
 
 /** Creates the instance shared by a form, its shortcuts and a close decision. */
 export function createForm(options: FormOptions): FormState {
-  const [node, bind] = createSignal<HTMLFormElement>()
+  const [node, setNode] = createSignal<HTMLFormElement>()
   const [attempted, setAttempted] = createSignal(false)
   const [revision, setRevision] = createSignal(0)
   const [activeFieldId, setActive] = createSignal<string | null>(null)
   const [message, setMessage] = createSignal<string>()
   const [busy, setBusy] = createSignal(false)
   let pending: Promise<boolean> | undefined
+
+  function bind(element: HTMLFormElement) {
+    setNode(element)
+    return () => {
+      if (node() === element) {
+        setNode(undefined)
+      }
+    }
+  }
 
   function refresh() {
     setRevision((value) => value + 1)
@@ -136,8 +147,8 @@ export function createForm(options: FormOptions): FormState {
   }
 
   function focus(target: EventTarget | null) {
-    if (target instanceof HTMLElement && !target.closest('[data-form-feedback]')) {
-      setActive(fieldKey(target) ?? null)
+    if (!(target instanceof HTMLElement && target.closest('[data-form-feedback]'))) {
+      setActive(target instanceof HTMLElement ? (fieldKey(target) ?? null) : null)
     }
   }
 
@@ -191,6 +202,6 @@ export function createForm(options: FormOptions): FormState {
     submit,
     locate,
     clear,
-    [formBinding]: { bind, focus, refresh },
+    [formBinding]: { bind, focus, refresh, validating: attempted },
   }
 }

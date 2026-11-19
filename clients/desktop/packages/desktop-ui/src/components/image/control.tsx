@@ -18,21 +18,35 @@ export interface ImageProps extends Omit<JSX.ImgHTMLAttributes<HTMLImageElement>
 /**
  * Renders an image or accessible fallback for a missing or failed source.
  *
- * Changing src clears the failure state; URL ownership remains with the host.
+ * Changing the source candidates clears the failure state; URL ownership remains with the host.
  */
 export function Image(props: ImageProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['class', 'fallback', 'src', 'alt', 'onLoad', 'onError'])
+  const [local, rest] = splitProps(props, [
+    'class',
+    'fallback',
+    'src',
+    'srcset',
+    'srcSet',
+    'sizes',
+    'alt',
+    'onLoad',
+    'onError',
+  ])
+
+  const candidates = () => local.srcset ?? local.srcSet
 
   /** Image-load failure state used to select the current fallback presentation. */
   const [failed, setFailed] = createSignal(false)
   createEffect(() => {
     void local.src
+    void candidates()
+    void local.sizes
     setFailed(false)
   })
 
   return (
     <Show
-      when={!failed() && local.src}
+      when={!failed() && (local.src || candidates())}
       fallback={
         <span
           class={classes(styles.fallback, local.class)}
@@ -46,6 +60,8 @@ export function Image(props: ImageProps): JSX.Element {
     >
       <img
         {...rest}
+        sizes={local.sizes}
+        srcset={candidates()}
         src={local.src}
         alt={local.alt}
         class={classes(styles.root, local.class)}

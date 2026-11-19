@@ -1,6 +1,7 @@
 /** @fileoverview Hoverable, keyboard-readable tooltips with a shared reading lifetime. */
 
 import { createContext, createUniqueId, splitProps, useContext } from 'solid-js'
+import { Dynamic } from 'solid-js/web'
 import type { Accessor, JSX, ParentProps } from 'solid-js'
 import { assignRef, callHandler, createElementRef } from '../../internal/dom'
 import type { PopupPlacement } from '../../internal/popup/controller'
@@ -65,10 +66,9 @@ export function TooltipTrigger(
     'aria-describedby',
   ])
 
-  const Trigger = local.as ?? Button
-
   return (
-    <Trigger
+    <Dynamic
+      component={local.as ?? Button}
       {...rest}
       ref={(node) => {
         state.bindAnchor(node)

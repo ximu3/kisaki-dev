@@ -164,6 +164,12 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
     releaseModal = undefined
   }
 
+  function show() {
+    node.showModal()
+    activated = true
+    releaseModal = registerModal(node)
+  }
+
   onMount(() => {
     dialog.node = node
     createEffect(() => {
@@ -174,9 +180,7 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
           release()
         }
       } else if (!activated && dialog.ready()) {
-        node.showModal()
-        activated = true
-        releaseModal = registerModal(node)
+        show()
       }
     })
     onCleanup(() => {
@@ -217,10 +221,17 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
         }
       }}
       onClose={(event) => {
+        // Closing during disposal can deliver a native event after the next editor has opened.
+        if (dialog.node !== node) {
+          return
+        }
         if (!node.open) {
           release()
           if (dialog.open()) {
             dialog.change(false)
+            if (dialog.node === node && dialog.open() && !node.open) {
+              show()
+            }
           }
         }
         callHandler(local.onClose, event)

@@ -3,6 +3,7 @@
 import { createEffect, onCleanup, onMount, untrack } from 'solid-js'
 import type { Accessor } from 'solid-js'
 import { createValue, onFormReset } from './state'
+import { nativeValidityChanged } from './form'
 
 /** Controlled text or a local default baseline with native-edit and reset notification. */
 export interface TextValueProps {
@@ -32,9 +33,11 @@ export function bindTextControl(
   let composing = false
   /** Writes changed owned text to the native element only outside active composition. */
   const sync = () => {
+    const next = value()
     const node = element()
-    if (!composing && node.value !== value()) {
-      node.value = value()
+    if (!composing && node.value !== next) {
+      node.value = next
+      nativeValidityChanged(node.form)
     }
   }
 

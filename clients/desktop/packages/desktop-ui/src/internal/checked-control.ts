@@ -3,6 +3,7 @@
 import { createEffect, onMount, untrack } from 'solid-js'
 import type { Accessor } from 'solid-js'
 import { createValue, onFormReset } from './state'
+import { nativeValidityChanged } from './form'
 
 /** Controlled checked state or local reset baseline with change notification. */
 export interface CheckedValueProps {
@@ -27,7 +28,9 @@ export function bindCheckedControl(props: CheckedValueProps, element: Accessor<H
   )
   /** Copies the owned checked state to the native checkbox. */
   const sync = () => {
-    element().checked = checked()
+    const node = element()
+    node.checked = checked()
+    nativeValidityChanged(node.form)
   }
 
   onMount(() => {

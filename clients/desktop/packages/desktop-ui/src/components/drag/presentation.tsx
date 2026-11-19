@@ -1,6 +1,7 @@
 /** @fileoverview Drag handles, insertion geometry and accessible host-authored feedback. */
 
 import { splitProps } from 'solid-js'
+import { Dynamic } from 'solid-js/web'
 import type { Component, JSX } from 'solid-js'
 import { Button } from '../button/control'
 import type { ButtonProps } from '../button/control'
@@ -26,10 +27,10 @@ export interface DragHandleProps extends ButtonProps {
  */
 export function DragHandle(props: DragHandleProps): JSX.Element {
   const [local, rest] = splitProps(props, ['as', 'onMove', 'onKeyDown', 'class', 'children'])
-  const Trigger = local.as ?? Button
 
   return (
-    <Trigger
+    <Dynamic
+      component={local.as ?? Button}
       variant="text"
       size="icon-sm"
       {...rest}
@@ -49,7 +50,7 @@ export function DragHandle(props: DragHandleProps): JSX.Element {
       }}
     >
       {local.children ?? <Icon icon={GripVertical} />}
-    </Trigger>
+    </Dynamic>
   )
 }
 
