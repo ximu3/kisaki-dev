@@ -25,7 +25,9 @@
 
 <a id="virtualization"></a>
 
-## 虚拟化：采用现有几何实现
+## 虚拟化的历史选型
+
+本节记录 Solid 1 与 TanStack Virtual 的试验及当时的选择。当前 Solid 2 工程通过 desktop-ui 的 `/virtualization` 使用自身行几何，见[现行合同](../../../../design/ui/virtualization.md)。下列数据只对应原试件。
 
 [TanStack Solid 适配](https://tanstack.com/virtual/latest/docs/framework/solid/solid-virtual)提供框架接入，[Virtualizer 公共 API](https://tanstack.com/virtual/latest/docs/api/virtualizer)提供数量、尺寸测量、稳定 key、范围提取和滚动能力。使用 @tanstack/solid-virtual 3.13.48、@tanstack/virtual-core 3.19.6、Solid 1.9.16、Vite 8.3.3 和 vite-plugin-solid 2.11.14，实际构建后在 Electron 41.2.0／Chromium 146 中运行。
 

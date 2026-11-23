@@ -26,6 +26,8 @@ window.fixture = {
   rootToast: noop,
   setLongMessage: noop,
   replaceMenuTrigger: noop,
+  setSampleTableDirection: noop,
+  scrollSampleToEnd: noop,
   dispose: noop,
 } satisfies FixtureApi
 

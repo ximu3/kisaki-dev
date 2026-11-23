@@ -32,7 +32,9 @@ media 完整操作与命令、脚本交错时，状态始终取自实际引擎�
 
 截图来源标记分别覆盖正常 VO、显式软件与 screenshot-sw=no 下的 VO 取图失败回退。实际 source 与同次字节路径一致，VO 回退为 software 时本体在图片准备前返回 CaptureUnavailable；不因命令成功或 no 选项而接纳。来源字段缺失或未知同样拒绝。普通与 native 结果都保留该字段，原图尺寸、字幕与独立字节仍按原合同验证；测试注入不进入正式构建。
 
-按[当前 SDR 范围](../../design/projects/libmpv-node/video.md#targets)验证 Kisaki 的 sRGB 和库的 Display P3 SDR。覆盖普通 SDR、十位 SDR、HDR 片源到 SDR 的色调与色域映射、复杂动态字幕、抖动和最终显示。HDR 显示、PQ／扩展线性受管帧、显示亮度查询和可变 nit 单位仍在交付范围之外。
+按[GPU SDR 合同](../../design/projects/libmpv-node/video.md#targets)验证 Kisaki 的 sRGB 和库的 Display P3 SDR。覆盖普通 SDR、十位 SDR、HDR 片源到 SDR 的色调与色域映射、复杂动态字幕、抖动和最终显示。请求 PQ／扩展线性输出或显示亮度参数时核对明确拒绝，HDR 片源仍走受管 SDR。
+
+通过正式软件输出的创建、configure 和帧消费，核对五种原生像素格式与默认 bgr0、有效行、未用通道、padding 和独立字节。拒绝 GPU target、device 和容量参数。用原生颜色选项和 HDR 样本对照，确认按软件后端交付、不附加 sRGB／HDR 目标标签且不创建 GPU 资源。GPU 和软件各自报告所选路线的冲突，GPU 设备失败不切换到软件。[原生探针的实际覆盖](../evidence/libmpv-output/verification.md#software)
 
 截图核对原生布局、有效行、独立字节、颜色及后续编码。以实际颜色描述和像素结果区分 sRGB 与 Display P3。Kisaki 正常 GPU 路径采用 `screenshot-sw=no`，核对 HDR 到 SDR 的映射和字幕，并用软件输出对照。分别记录实际采集来源，覆盖持续播放、设备失败和实际产品采集。[采集条件与路径差异](../../design/engineering/integrations.md#screenshot)
 

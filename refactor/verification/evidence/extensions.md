@@ -46,6 +46,8 @@
 
 合成输入与真实导出分别标明。正式本体采用、目标环境和发行消费按[迁移导入验收场景](../scenarios/importers.md)核对。
 
+[calibre 与 Playnite 图片对照](importer-images/README.md)核对可读取资源与可解码图片的差别，原合成输入作为反例保留。[Mihon 字段投影](mihon-importer/source-and-fixtures.md)记录修订的字段断言和原始结果的适用范围。
+
 <a id="vndb"></a>
 
 ## VNDB

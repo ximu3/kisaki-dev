@@ -102,7 +102,6 @@ export function getPreferenceDefaults(
           playbackSpeed: 1,
           subtitleScale: 1,
           autoAdvance: false,
-          autoMarkWatched: true,
         },
         comic: readingDefaults(),
         novel: readingDefaults(),

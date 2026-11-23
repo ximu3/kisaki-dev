@@ -58,7 +58,7 @@ export async function startInputWatcher(
   const native = join(appRoot, 'native')
   const resources = [join(appRoot, 'assets'), join(appRoot, 'drizzle')]
   const configuration = [
-    ...programNames.map((name) => join(sourceRoot, 'config', 'vite', `vite.config.${name}.ts`)),
+    ...programNames.map((name) => join(sourceRoot, 'config', 'vite', `${name}.ts`)),
     join(appRoot, 'config', 'typescript'),
     join(appRoot, 'tsconfig.json'),
     join(appRoot, 'package.json'),

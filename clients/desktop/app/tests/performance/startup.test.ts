@@ -8,6 +8,7 @@ import { electronExecutable } from '../../tools/dev/electron-executable'
 import { buildDirectory } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
+import type { Rectangle } from 'electron'
 
 const sampleCount = 20
 
@@ -16,6 +17,7 @@ test('measures twenty fresh processes and confirms all observed child processes 
 }, info) => {
   const runtime = buildDirectory(hostTarget())
   const samples: { milliseconds: number; workingSetKiB: number }[] = []
+  let initialBounds: Rectangle | undefined
   for (let index = 0; index < sampleCount; index++) {
     const env: Record<string, string> = Object.fromEntries(
       Object.entries(process.env).filter(
@@ -52,6 +54,14 @@ test('measures twenty fresh processes and confirms all observed child processes 
 
         return performance.now() - start
       })
+
+      if (process.platform === 'win32') {
+        const bounds = await application.evaluate(({ BrowserWindow }) =>
+          BrowserWindow.getAllWindows()[0]!.getNormalBounds(),
+        )
+        initialBounds ??= bounds
+        expect(bounds).toEqual(initialBounds)
+      }
 
       const metrics = await test.step(`${sample}: process metrics`, () =>
         application.evaluate(({ app }) =>

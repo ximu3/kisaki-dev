@@ -9,13 +9,13 @@ import {
   type UserThemeCreate,
   type UserThemeUpdate,
 } from '@kisaki3/desktop-contracts/appearance'
-import type { Storage, StorageTransaction } from '../../infrastructure/database'
+import type { Storage } from '../../infrastructure/database'
 import { themes } from '../../infrastructure/database/schema/application'
 import { ready } from '../../infrastructure/database/codecs/json'
 import { adoptNewFont, type NewFont } from '../fonts/storage'
 
 /** Decodes the stored user theme without treating a damaged branch as a new default. */
-function readTheme(db: Storage['db'] | StorageTransaction, id: string): Theme<'user'> | null {
+function readTheme(db: Storage['db'], id: string): Theme<'user'> | null {
   const row = db.select().from(themes).where(eq(themes.id, id)).get()
   if (!row) {
     return null
@@ -30,7 +30,7 @@ function readTheme(db: Storage['db'] | StorageTransaction, id: string): Theme<'u
 }
 
 /** Worker operations for independently stored user theme definitions. */
-export function themeStorage({ db }: Storage) {
+export function themeStorage({ db, transaction }: Storage) {
   return {
     getTheme: (id: string) => readTheme(db, id),
     /** Queries user theme names without decoding full branches. */
@@ -46,7 +46,7 @@ export function themeStorage({ db }: Storage) {
       const { name, light, dark } = parseUserThemeCreate(input)
       const id = randomUUID()
       const now = Date.now()
-      db.transaction((tx) => {
+      transaction((tx) => {
         for (const font of copiedFonts) {
           adoptNewFont(tx, font)
         }
@@ -65,7 +65,7 @@ export function themeStorage({ db }: Storage) {
     },
     updateTheme(id: string, input: UserThemeUpdate) {
       const { changes, expected } = parseUserThemeUpdate(input)
-      db.transaction((tx) => {
+      transaction((tx) => {
         const old = readTheme(tx, id)
         if (!old) {
           throw new DesktopError('NotFound', 'The theme does not exist')
@@ -90,7 +90,7 @@ export function themeStorage({ db }: Storage) {
           })
           .where(eq(themes.id, id))
           .run()
-      })
+      }, 'immediate')
     },
     deleteTheme(id: string) {
       if (!db.delete(themes).where(eq(themes.id, id)).run().changes) {

@@ -14,7 +14,15 @@ import { entryTypes, type EntryType } from '@kisaki3/desktop-contracts/library'
 import { aliases, externalLinks, languages, partialDate, characterMeasure } from '../codecs/catalog'
 import { attachments } from './attachments/metadata'
 import { orderedText, orderedName } from '../name-order'
-import { booleanValue, enumValue, nonempty, idColumn, safeInteger, timestamps } from './constraints'
+import {
+  booleanValue,
+  enumValue,
+  nonempty,
+  idColumn,
+  safeInteger,
+  timestamps,
+  workForeignKey,
+} from './constraints'
 
 /** Stores shared catalog identity and descriptive facts with language-ordered name indexes. */
 export const entries = sqliteTable(
@@ -291,6 +299,7 @@ function partConstraints(
 ) {
   return [
     nonempty(`${name}_id`, table.id),
+    unique(`${name}_id_work`).on(table.id, owner),
     safeInteger(`${name}_order`, table.sortOrder),
     safeInteger(`${name}_created`, table.createdAt, Number.MIN_SAFE_INTEGER),
     safeInteger(`${name}_updated`, table.updatedAt, Number.MIN_SAFE_INTEGER),
@@ -410,17 +419,23 @@ export const novelVolumes = sqliteTable(
 export const comicVolumeChapters = sqliteTable(
   'comic_volume_chapters',
   {
-    volumeId: text('volume_id')
-      .notNull()
-      .references(() => comicVolumes.id, { onDelete: 'cascade' }),
-    chapterId: text('chapter_id')
-      .notNull()
-      .references(() => comicChapters.id, { onDelete: 'cascade' }),
+    comicId: idColumn('comic_id'),
+    volumeId: idColumn('volume_id'),
+    chapterId: idColumn('chapter_id'),
     numberLabel: text('number_label'),
     sortOrder: integer('sort_order').notNull().default(0),
   },
   (table) => [
     primaryKey({ columns: [table.volumeId, table.chapterId] }),
+    workForeignKey(table.volumeId, table.comicId, comicVolumes.id, comicVolumes.comicId).onDelete(
+      'cascade',
+    ),
+    workForeignKey(
+      table.chapterId,
+      table.comicId,
+      comicChapters.id,
+      comicChapters.comicId,
+    ).onDelete('cascade'),
     safeInteger('comic_volume_chapters_order', table.sortOrder),
     index('comic_volume_chapters_ordered').on(table.volumeId, table.sortOrder, table.chapterId),
     index('comic_volume_chapters_reverse').on(table.chapterId, table.volumeId),

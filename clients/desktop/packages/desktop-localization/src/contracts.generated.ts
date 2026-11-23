@@ -302,7 +302,6 @@ export interface MessageArguments {
   readonly "runtime.fields.playbackSpeed": never
   readonly "runtime.fields.subtitleScale": never
   readonly "runtime.fields.autoAdvance": never
-  readonly "runtime.fields.autoMarkWatched": never
   readonly "runtime.fields.flow": never
   readonly "runtime.fields.arrangement": never
   readonly "runtime.fields.progression": never
@@ -409,6 +408,8 @@ export interface MessageArguments {
   readonly "runtime.input": never
   readonly "runtime.result": never
   readonly "runtime.noResult": never
+  readonly "runtime.taskRecordedResult": never
+  readonly "runtime.taskPartialResult": never
   readonly "runtime.pause": never
   readonly "runtime.resume": never
   readonly "runtime.all": never
@@ -427,6 +428,11 @@ export interface MessageArguments {
   readonly "runtime.unsavedDescription": never
   readonly "runtime.keepEditing": never
   readonly "runtime.exitPending": never
+  readonly "runtime.windowStartupTimeout": never
+  readonly "runtime.windowEntryFailed": never
+  readonly "runtime.windowDocumentFailed": { readonly "reason": string | number }
+  readonly "runtime.windowClosedUnexpectedly": never
+  readonly "runtime.windowExited": { readonly "reason": string | number }
   readonly "runtime.cancelExit": never
   readonly "runtime.continueWaiting": never
   readonly "runtime.mainWindow": never
@@ -454,6 +460,10 @@ export interface MessageArguments {
   readonly "runtime.appMenu": never
   readonly "runtime.preferences": never
   readonly "runtime.themes": never
+  readonly "runtime.restoreDefaultTheme": never
+  readonly "runtime.restoreThemeFailed": never
+  readonly "runtime.themeUnavailable": never
+  readonly "runtime.fontUnavailable": { readonly "slot": string | number }
   readonly "runtime.fonts": never
   readonly "runtime.system": never
   readonly "runtime.reader": never

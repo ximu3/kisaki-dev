@@ -24,7 +24,7 @@ test('preload entry changes take effect in a later build within the same process
   }
   await writeFile(join(paths.appRoot, 'src/preload/changed.ts'), "export const value = 'changed'\n")
 
-  const configuration = join(paths.appRoot, 'config/vite/vite.config.preload.ts')
+  const configuration = join(paths.appRoot, 'config/vite/preload.ts')
   const config = {
     build: {
       minify: false,

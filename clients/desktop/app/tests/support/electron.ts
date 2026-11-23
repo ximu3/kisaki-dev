@@ -16,6 +16,39 @@ interface DesktopFixtures {
   kind: WindowKind
 }
 
+/** Launches the selected host build with its private profile. The caller owns process teardown. */
+export async function launchBuiltDesktop(
+  runtime: string,
+  profile: string,
+  kind: WindowKind = 'main',
+) {
+  const build = JSON.parse(await readFile(join(runtime, 'build.json'), 'utf8')) as {
+    target: string
+    electronVersion: string
+  }
+  if (build.target !== hostTarget() || build.electronVersion !== electronManifest.version) {
+    throw new Error('The test input does not match the selected Electron target')
+  }
+
+  const env: Record<string, string> = Object.fromEntries(
+    Object.entries(process.env).filter(
+      (entry): entry is [string, string] => entry[1] !== undefined,
+    ),
+  )
+  delete env.ELECTRON_RUN_AS_NODE
+  if (process.platform === 'linux') {
+    env.XDG_CONFIG_HOME = join(profile, 'xdg/config')
+    env.XDG_DATA_HOME = join(profile, 'xdg/data')
+  }
+
+  return _electron.launch({
+    chromiumSandbox: true,
+    executablePath: electronExecutable(),
+    args: [join(runtime, 'main/entry.js'), `--profile=${profile}`, `--window=${kind}`],
+    env,
+  })
+}
+
 export const test = base.extend<DesktopFixtures>({
   kind: ['main', { option: true }],
 
@@ -30,32 +63,7 @@ export const test = base.extend<DesktopFixtures>({
 
   /** Launches the verified host build and closes its actual Electron process after the test. */
   desktop: async ({ profile, kind }, use, info) => {
-    const runtime = buildDirectory(hostTarget())
-    const build = JSON.parse(await readFile(join(runtime, 'build.json'), 'utf8')) as {
-      target: string
-      electronVersion: string
-    }
-    if (build.target !== hostTarget() || build.electronVersion !== electronManifest.version) {
-      throw new Error('The test input does not match the selected Electron target')
-    }
-
-    const env: Record<string, string> = Object.fromEntries(
-      Object.entries(process.env).filter(
-        (entry): entry is [string, string] => entry[1] !== undefined,
-      ),
-    )
-    delete env.ELECTRON_RUN_AS_NODE
-    if (process.platform === 'linux') {
-      env.XDG_CONFIG_HOME = join(profile, 'xdg/config')
-      env.XDG_DATA_HOME = join(profile, 'xdg/data')
-    }
-
-    const application = await _electron.launch({
-      chromiumSandbox: true,
-      executablePath: electronExecutable(),
-      args: [join(runtime, 'main/entry.js'), `--profile=${profile}`, `--window=${kind}`],
-      env,
-    })
+    const application = await launchBuiltDesktop(buildDirectory(hostTarget()), profile, kind)
     const child = application.process()
     const stopped = once(child, 'close')
     void stopped.catch(() => {})

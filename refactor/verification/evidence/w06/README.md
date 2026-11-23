@@ -2,6 +2,16 @@
 
 2026-11-14，Windows x64 本机验证使用 Node 24.11.1、pnpm 11.11.0、Drizzle ORM／Kit 1.0.0-rc.5、better-sqlite3 13.0.3 和 Electron 45.0.0。实际 Electron 的 Node 为 24.22.0，SQLite 为 3.53.4。范围对应 [W06](../../../implementation/work-packages.md#w06)：正式存储、原生文件设施和查询基础；业务操作与产品窗口由后续工作包接入。
 
+<a id="ownership"></a>
+
+## 同步事务与资料归属
+
+2026-11-23，Windows x64、Electron 45.3.2、better-sqlite3 13.0.3。在同一连接上运行 Drizzle 查询和原生同步事务，验证回调返回 Promise 时回滚、嵌套写入、失败后的下一次请求、空库初始化与重开。基线通过组合外键约束分部、收录与文件的同作品归属。恢复索引允许准备时暂缺清单摘要；记录恢复或撤回完成时要求有效摘要。
+
+删除 13 个辅助列并重新生成基线后，重跑根 check 与 Electron Node 的原生集成，6 个文件、27 个用例通过。另外在普通 Node 进程使用 better-sqlite3 和项目原生排序扩展，在启用外键的内存库执行实际迁移 SQL，逐一核对 13 处引用。跨作品插入、更新和改变被引用目标的作品受到拒绝；删除作品按预期级联，删除可空关联对象时只清空对应引用 ID，所属作品和整行历史快照保留。`foreign_key_check` 未报告问题。[持久回归场景](../../../../clients/desktop/app/tests/integration/database/storage.test.ts)
+
+同日较早的桌面综合验证使用调整辅助列前的 Windows x64 构建 `60c86048-45b1-480a-af84-f838de5fe3ac`。17 项操作均达成工作线程 100 ms 中位数预算。测试从真实任务中心触发 `tasks.types`，197 次窗口请求至 main 回应的端到端取样中 P95 为 9.25 ms。移除辅助列并修正窗口后，Windows x64 构建 `6d0a02e1-a3f1-4c85-a927-0c5062480c49` 复验同一负载。16 条查询和 1 项持久短事务的中位数均在预算内，239 次窗口请求的 P95 为 11.37 ms。其他目标的历史记录对应各自修订。[负载与窗口联合验证](../../../../clients/desktop/app/tests/performance/storage/workload.test.ts)
+
 ## 存储与资源
 
 正式基线由 Drizzle Kit generate 生成，含 99 张表、152 个显式索引和实际 snapshot。七类 Entry、五类 Part、四类资料关系、组织、个人记录、持有、Note、附件引用、备份、配置、历史及扩展私有数据分别落在所属表。偏好采用固定 JSON 组和同一行上的受保护代理凭据列。

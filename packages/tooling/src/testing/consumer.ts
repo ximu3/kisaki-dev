@@ -75,6 +75,7 @@ export function createConsumerTest(
   prepare?: (directory: string) => Promise<void>,
 ) {
   const fixture = join(project, 'tests/consumers/fixtures', host)
+  // oxlint-disable-next-line eslint/no-empty-pattern -- Vitest requires destructuring even when this fixture has no dependencies.
   return test.extend('consumerDirectory', { scope: 'file' }, async ({}, { onCleanup }) => {
     const directory = await installConsumer(fixture, project, onCleanup)
     await prepare?.(directory)

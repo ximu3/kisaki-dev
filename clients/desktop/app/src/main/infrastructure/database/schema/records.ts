@@ -2,13 +2,14 @@ import { desc, sql } from 'drizzle-orm'
 import {
   primaryKey,
   check,
+  foreignKey,
   index,
   integer,
   sqliteTable,
   text,
   type AnySQLiteColumn,
 } from 'drizzle-orm/sqlite-core'
-import { parseActivityContextNames } from '@kisaki3/desktop-contracts/library'
+import { parseActivityContextNames, workTypes } from '@kisaki3/desktop-contracts/library'
 import { calendarDate } from '../codecs/catalog'
 import { storedJsonColumn } from '../codecs/json'
 import {
@@ -24,7 +25,14 @@ import {
   novelVolumes,
 } from './catalog'
 import { animeFiles, comicFiles, novelFiles, gameLaunchConfigs } from './holdings'
-import { booleanValue, enumValue, idColumn, safeInteger, timestamps } from './constraints'
+import {
+  booleanValue,
+  enumValue,
+  idColumn,
+  retainedWorkReference,
+  safeInteger,
+  timestamps,
+} from './constraints'
 
 /** Stores nullable personal ratings and explicit favorite state for all seven entry types. */
 export const entryEvaluations = sqliteTable(
@@ -113,17 +121,13 @@ export const comicChapterRecords = partRecord(
 /** Stores an optional completion mark for one actual novel volume. */
 export const novelVolumeRecords = partRecord('novel_volume_records', 'volume_id', novelVolumes.id)
 
-/**
- * Stores individual completion facts; the writing operation verifies the referenced entry's
- * concrete work type.
- */
+/** Stores individual completion facts for entries of the four work types. */
 export const workCompletionRecords = sqliteTable(
   'work_completion_records',
   {
     id: idColumn(),
-    workId: text('work_id')
-      .notNull()
-      .references(() => entries.id, { onDelete: 'cascade' }),
+    workId: idColumn('work_id'),
+    workType: text('work_type', { enum: workTypes }).notNull(),
     completedDate: calendarDate('completed_date'),
     note: text('note'),
     ...timestamps(),
@@ -131,6 +135,11 @@ export const workCompletionRecords = sqliteTable(
   (table) => [
     primaryKey({ columns: [table.id] }),
     index('work_completion_records_work_created').on(table.workId, table.createdAt, table.id),
+    foreignKey({
+      columns: [table.workId, table.workType],
+      foreignColumns: [entries.id, entries.type],
+    }).onDelete('cascade'),
+    enumValue('work_completion_records_work_type', table.workType, workTypes),
     index('work_completion_records_date').on(
       sql`json_extract(${table.completedDate}, '$.year')`,
       sql`json_extract(${table.completedDate}, '$.month')`,
@@ -199,13 +208,17 @@ export const gamePlayActivity = sqliteTable(
     gameId: text('game_id')
       .notNull()
       .references(() => games.entryId, { onDelete: 'cascade' }),
-    launchConfigId: text('launch_config_id').references(() => gameLaunchConfigs.id, {
-      onDelete: 'set null',
-    }),
+    launchConfigId: text('launch_config_id'),
   },
   (table) => [
     primaryKey({ columns: [table.id] }),
     ...activityConstraints('game_play_activity', table.gameId, table),
+    ...retainedWorkReference(
+      table.launchConfigId,
+      table.gameId,
+      gameLaunchConfigs.id,
+      gameLaunchConfigs.gameId,
+    ),
     index('game_play_activity_config').on(table.launchConfigId),
   ],
 )
@@ -221,16 +234,24 @@ export const animeWatchActivity = sqliteTable(
     animeId: text('anime_id')
       .notNull()
       .references(() => animes.entryId, { onDelete: 'cascade' }),
-    fileId: text('file_id').references(() => animeFiles.id, { onDelete: 'set null' }),
-    episodeId: text('episode_id').references(() => animeEpisodes.id, { onDelete: 'set null' }),
-    extraId: text('extra_id').references(() => animeExtras.id, { onDelete: 'set null' }),
+    fileId: text('file_id'),
+    episodeId: text('episode_id'),
+    extraId: text('extra_id'),
   },
   (table) => [
     primaryKey({ columns: [table.id] }),
     ...activityConstraints('anime_watch_activity', table.animeId, table),
     check('anime_watch_activity_part', sql`${table.episodeId} is null or ${table.extraId} is null`),
+    ...retainedWorkReference(table.fileId, table.animeId, animeFiles.id, animeFiles.animeId),
     index('anime_watch_activity_file').on(table.fileId),
+    ...retainedWorkReference(
+      table.episodeId,
+      table.animeId,
+      animeEpisodes.id,
+      animeEpisodes.animeId,
+    ),
     index('anime_watch_activity_episode').on(table.episodeId),
+    ...retainedWorkReference(table.extraId, table.animeId, animeExtras.id, animeExtras.animeId),
     index('anime_watch_activity_extra').on(table.extraId),
   ],
 )
@@ -246,9 +267,9 @@ export const comicReadingActivity = sqliteTable(
     comicId: text('comic_id')
       .notNull()
       .references(() => comics.entryId, { onDelete: 'cascade' }),
-    fileId: text('file_id').references(() => comicFiles.id, { onDelete: 'set null' }),
-    volumeId: text('volume_id').references(() => comicVolumes.id, { onDelete: 'set null' }),
-    chapterId: text('chapter_id').references(() => comicChapters.id, { onDelete: 'set null' }),
+    fileId: text('file_id'),
+    volumeId: text('volume_id'),
+    chapterId: text('chapter_id'),
   },
   (table) => [
     primaryKey({ columns: [table.id] }),
@@ -257,8 +278,16 @@ export const comicReadingActivity = sqliteTable(
       'comic_reading_activity_part',
       sql`${table.volumeId} is null or ${table.chapterId} is null`,
     ),
+    ...retainedWorkReference(table.fileId, table.comicId, comicFiles.id, comicFiles.comicId),
     index('comic_reading_activity_file').on(table.fileId),
+    ...retainedWorkReference(table.volumeId, table.comicId, comicVolumes.id, comicVolumes.comicId),
     index('comic_reading_activity_volume').on(table.volumeId),
+    ...retainedWorkReference(
+      table.chapterId,
+      table.comicId,
+      comicChapters.id,
+      comicChapters.comicId,
+    ),
     index('comic_reading_activity_chapter').on(table.chapterId),
   ],
 )
@@ -271,13 +300,15 @@ export const novelReadingActivity = sqliteTable(
     novelId: text('novel_id')
       .notNull()
       .references(() => novels.entryId, { onDelete: 'cascade' }),
-    fileId: text('file_id').references(() => novelFiles.id, { onDelete: 'set null' }),
-    volumeId: text('volume_id').references(() => novelVolumes.id, { onDelete: 'set null' }),
+    fileId: text('file_id'),
+    volumeId: text('volume_id'),
   },
   (table) => [
     primaryKey({ columns: [table.id] }),
     ...activityConstraints('novel_reading_activity', table.novelId, table),
+    ...retainedWorkReference(table.fileId, table.novelId, novelFiles.id, novelFiles.novelId),
     index('novel_reading_activity_file').on(table.fileId),
+    ...retainedWorkReference(table.volumeId, table.novelId, novelVolumes.id, novelVolumes.novelId),
     index('novel_reading_activity_volume').on(table.volumeId),
   ],
 )

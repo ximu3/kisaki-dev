@@ -5,6 +5,8 @@ export interface FixtureApi {
   setOptions: () => void
   setLongMessage: (language: string) => void
   replaceMenuTrigger: (position: 'near' | 'far') => void
+  setSampleTableDirection: (direction: 'ltr' | 'rtl') => void
+  scrollSampleToEnd: (index: number) => void
 
   submitSample?: () => Promise<boolean>
   /** Switches the editor to another record under the same native form. */

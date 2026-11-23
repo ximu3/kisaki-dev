@@ -31,12 +31,12 @@ test('host matching uses process architecture and reports all actual runtime fai
     'electronVersion',
   ])
 
-  expect(
-    getCompatibilityIssues(artifact({ nodeVersionRange: '*' }), {
-      target: 'windows-x64',
-      apiVersion: '1.0.0',
-    }),
-  ).toEqual([{ condition: 'nodeVersion', required: '*', actual: undefined }])
+  const missing = getCompatibilityIssues(artifact({ nodeVersionRange: '*' }), {
+    target: 'windows-x64',
+    apiVersion: '1.0.0',
+  })
+  expect(missing).toStrictEqual([{ condition: 'nodeVersion', required: '*' }])
+  expect(JSON.parse(JSON.stringify(missing))).toStrictEqual(missing)
 
   expect(getCompatibilityIssues(artifact(), { ...host, apiVersion: '1.2.0-beta.1' })).toHaveLength(
     1,

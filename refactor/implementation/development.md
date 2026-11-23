@@ -52,7 +52,7 @@ desktop-localization 的英语 ICU 源文位于 src/en，按领域维护并由 i
 
 应用通过数据库执行线程打开当前基线、读取偏好、采用生效语言并保持连接至退出。存储性能用例通过 Playwright 在 Electron 主进程中启动独立编译的测量 worker。worker 返回完整报告并正常退出后，用例将报告保存为附件。执行失败时，原始错误传回用例。
 
-`tools/dev/session` 拥有编译器、服务器、运行目录与进程。Vite 按公开子路径的 `kisaki-source` 条件直接编译工作区源码，renderer 使用 Solid HMR。非程序资源和原生绑定由各自的准备工具处理。程序编译成功后安排受控重启，拒绝退出时原进程及其运行目录继续使用。
+`tools/dev/session` 拥有编译器、服务器、运行目录与进程。Vite 按公开子路径的 `kisaki-source` 条件直接编译工作区源码，renderer 使用 Solid HMR。非程序资源和原生绑定由各自的准备工具处理。程序编译成功后安排受控重启，配置更新的候选编译和新服务监听成功后才请求旧进程退出。拒绝退出时原进程继续使用原运行目录和 renderer 地址，停止时由会话收回各代服务。
 
 `tools/dev/renderer` 在开发文档的应用入口前加载错误监听。模块入口加载失败的窗口通过 Vite 连接报告文档的源码修订号。如果源码已经变化，该窗口立即重载；否则在下次编辑时重载。正常工作的窗口继续处理常规热更新。
 
@@ -102,9 +102,11 @@ pnpm exec vp run @kisaki3/desktop#package:candidate --target windows-x64
 
 ### 存储与生成资源
 
-数据库固定使用 Drizzle ORM／Kit 1.0.0-rc.5、better-sqlite3 13.0.3 和 Electron 45.3.2。`database/initialize` 接收数据库、原生驱动、迁移目录的明确路径及当前完整偏好默认值；路径拥有者先以 `files.assertLocalDataDirectory` 核对实际卷或挂载。初始化完成格式与迁移链检查、原生 migrate、缺失偏好首行插入和名称索引采用后才返回连接。业务使用 Drizzle 的同步查询与事务，并在关闭前结束自己的消费者。
+数据库固定使用 Drizzle ORM／Kit 1.0.0-rc.5、better-sqlite3 13.0.3 和 Electron 45.3.2。`database/initialize` 接收数据库、原生驱动、迁移目录的明确路径及当前完整偏好默认值；路径拥有者先以 `files.assertLocalDataDirectory` 核对实际卷或挂载。初始化核对格式与迁移链，执行迁移、建立或恢复名称排序器，并在缺失时插入偏好首行。返回连接后，应用在开放资料库查询前采用实际生效的语言。业务事务由 worker 的 better-sqlite3 连接同步执行，查询与值映射可以使用同连接的 Drizzle。关闭前先结束数据库消费者。
 
 连接使用 WAL、FULL，以及 macOS 的 fullfsync；页缓存目标为 32 MiB。表、外键、CHECK 和索引由 schema 定义；保存的执行配置、身份与定位值通过 `StoredDefinition` 表达读取问题，普通偏好按独立字段采用默认值。读取投影不会自动写回；后续业务更新须保留未修改的原始字段。
+
+首次发行前，已迁移的开发库按本体标识、迁移名称与摘要识别。基线变更后，用新建的隔离资料目录验证，保留原开发库文件。历史摘要不符时报告格式错误。空库认领与首次迁移中断后的重试见[初始化与版本迁移](../design/engineering/database.md#initialization)。
 
 `pnpm exec vp run @kisaki3/desktop#generate:migrations --name <主题>` 使用正式 Drizzle Kit 入口。审阅生成的 SQL、snapshot 及必要的数据变换后提交整个迁移目录。构建按实际目录结构复制迁移，开发监听将迁移变化交给资源准备。迁移的格式识别、不可修改规则与失败处理见[数据库合同](../design/engineering/database.md)。
 
@@ -128,7 +130,7 @@ ZIP 读取按需访问中央目录，写入逐成员消费流。拥有者提供�
 
 用例、固定样例和报告分别归各包的 `tests/consumers`、`tests/consumers/fixtures` 和 `test-results/consumers`。从根运行 `pnpm exec vp run @kisaki3/desktop-rpc#verify` 可验证 RPC 的 Node 与 Electron 消费，其他公共包用自己的包名。`pnpm exec vp run --concurrency-limit 1 @kisaki3/desktop#verify` 在当前宿主顺序执行完整桌面验证，让性能采样独占测试时段。
 
-每个库用自己的 `vite.config.ts` 声明公开子路径与源文件，共享配置据此选择编译入口并生成开发与发布 exports。pnpm 打包时采用 `publishConfig.exports`。运行依赖按 workspace 清单准备传递依赖的 tarball，安装使用这些归档的绝对路径。
+每个库在自己的 package.json 的 exports 中声明公开子路径与 kisaki-source 源文件。共享 Vite 配置从该声明选择编译入口并生成发布 exports。pnpm 打包时采用 `publishConfig.exports`。运行依赖按 workspace 清单准备传递依赖的 tarball，安装使用这些归档的绝对路径。
 
 按[共同原则](../design/engineering/conventions.md#quality)、[可读性](../design/engineering/conventions.md#readability-principle)和[实际影响](../verification/acceptance.md#verification-scope)选择验证。普通检查不包含真实桌面、制品或性能采样。
 
@@ -147,7 +149,7 @@ ZIP 读取按需访问中央目录，写入逐成员消费流。拥有者提供�
 
 任务中心可单独运行 `pnpm exec vp run @kisaki3/desktop#test:window-startup history.test.ts`。真实窗口在临时资料根验证固定表头、连续滚动、筛选以及历史详情和清理。
 
-存储测量可单独运行 `pnpm exec vp run @kisaki3/desktop#test:performance storage.test.ts`。固定样本按表在持久事务中建立，日志单列准备耗时和输入摘要。套件的 180 秒单项超时覆盖造数、测量和结果交付。每条查询核对首读结果，预热 3 次后采样 31 次。短事务另采样 31 次。按操作分别计算中位数，上限为 100 ms。
+存储测量可单独运行 `pnpm exec vp run @kisaki3/desktop#test:performance storage/workload.test.ts`。固定样本按表在持久事务中建立，日志单列准备耗时和输入摘要。套件的 180 秒单项超时覆盖造数、测量和结果交付。每条查询核对首读结果，预热 3 次后采样 31 次。短事务另采样 31 次。按操作分别计算中位数，上限为 100 ms。
 
 已知命中条目的零基位置以 `.position` 报告。动画排行按观看时长降序、同分按 ID 排列，分部数合计剧集和附加内容，缺少活动、分部或文件的动画保留零值。作业日志列出查询首读及各项中位数、P95 和最大值，`test-results/performance` 保存全部样本、输入与迁移摘要、SQLite 配置和执行计划。
 

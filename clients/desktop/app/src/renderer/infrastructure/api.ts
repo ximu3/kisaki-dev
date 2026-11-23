@@ -164,6 +164,7 @@ export async function connect<K extends WindowKind>(kind: K) {
     request,
     platform,
     topics,
+    appearanceIssues: appearance.issues,
     t: ((...args) => translate()(...args)) as Translate,
     /** Registers this document's dirty-editor close workflow. */
     onClose(handler: typeof confirmClose) {

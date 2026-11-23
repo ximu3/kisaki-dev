@@ -2,7 +2,9 @@
 
 本目录保存现行设计与验收所用的来源、技术比较、试件和实测结果，说明结论依赖的输入与适用范围。材料按[实际用途](../../design/engineering/documentation.md#evidence)维护，产品规则由[设计](../../design/README.md)定义，正式实现与验收进度见[实施状态](../../implementation/status.md)。
 
-复现历史试验时，按该次记录准备对应版本和输入，在独立副本运行随附脚本。有些脚本会在自身目录写入报告。新结果留在副本或试件的输出目录，并注明实际运行环境。
+正式验收结果记录候选版本、宿主、入口及已验证行为。独立项目和扩展正式交付后，运行用例与可再生成输入由其维护工程保管，这里保留本体接入证据与必要链接。
+
+研究记录用来回答选型、来源语义和故障条件。复现历史试验时，按当次记录准备版本和输入，在独立副本运行随附脚本。脚本可能向自身目录写入结果，另一次运行须注明实际环境与适用范围。
 
 ## 本体与公共边界
 
@@ -23,6 +25,7 @@
 | AppImage 启动            | [采用配置与实际进程隔离](appimage-policy/2026-10-26/README.md)                                          |
 | 开发连接                 | [Node 传输与实际退出](development-ipc/2026-10-26/README.md)                                             |
 | 官方来源、迁移格式与译本 | [逐项证据](extensions.md)                                                                               |
+| 导入图片                 | [calibre 与 Playnite 的解码正负对照](importer-images/README.md)                                          |
 | 媒体信息                 | [读取范围与实测](media-information/2026-10-24/README.md)                                                |
 | 存档格式与内容树摘要       | [ZIP 成员、清单与确定编码](contract-closure/2026-10-24/README.md)                                            |
 | 存档恢复、查询与事务     | [文件中断和 Electron／SQLite 试件](storage-contracts/2026-10-22/README.md)                              |
@@ -31,6 +34,16 @@
 | 时钟、分部匹配与截图     | [规则及原生探针](contract-closure/2026-10-22/README.md)                                                 |
 | 大集合与扫描报告         | [容量模型](capacity/README.md)                                                                          |
 | 原生工程与平台接口       | [Node-API／工程来源](native-projects/organization-sources.md) · [平台机制](platform-closure/closure.md) |
+
+## 已接续的历史试件
+
+| 历史记录 | 当前查阅与验证入口 |
+| --- | --- |
+| [TMDB 早期个人记录](tmdb/2026-10-16-personal-records.json) | 保留逐请求结果及旧的 `confirmedRules`；评分与待看按[后续本人核验](tmdb/account-api.md)及对应现行合同。 |
+| [Mihon 初次合成检查](mihon-importer/synthetic-results.json) | 保留 97 项结果；更新的[字段投影检查](mihon-importer/projection-results.json)补上切实检出漏字段的断言。 |
+| [Kana 视图读取原型](kana-content/content-and-view.md) | 保留几何、Electron 取像与布局冻结依据。[正式场景](../scenarios/reading.md#navigation)另要求验证视图冲突、取消和关闭。 |
+| [Windows／NTFS 恢复探针](storage-contracts/2026-10-22/README.md) | 保留 ready 后的中断结果。准备登记到清单发布之间的中断仍待按[正式场景](../scenarios/sessions.md#recovery)验证。 |
+| [媒体信息快照清单](media-information/2026-10-24/files.json) | 按[原运行](media-information/2026-10-24/README.md)的版本和摘要理解；部分输入依赖候选或独立归档。 |
 
 <a id="test-retention-review"></a>
 

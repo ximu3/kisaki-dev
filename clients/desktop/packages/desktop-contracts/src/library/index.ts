@@ -471,6 +471,7 @@ export type {
   GameBackupRecoveryManifest,
   GameBackupRecoveryProgress,
   GameBackupRecovery,
+  GameBackupRecoveryDetail,
   RecoveryLocationObservation,
   GameBackupRecoveryInspection,
   GameBackupRecoveriesApi,

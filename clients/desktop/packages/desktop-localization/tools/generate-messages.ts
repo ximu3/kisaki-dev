@@ -2,8 +2,15 @@ import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { runCli } from '@kisaki3/tooling/cli'
 import { englishMessages } from '../src/en/index'
-import { getMessageContracts } from '../src/messages'
+import { getMessageContracts, type MessageArgumentKind } from '../src/messages'
 import type { MessageCatalog } from '@kisaki3/desktop-contracts/i18n'
+
+const argumentTypes: Record<MessageArgumentKind, string> = {
+  string: 'string',
+  number: 'number',
+  timestamp: 'number',
+  date: 'Date',
+}
 
 /**
  * Renders deterministic declarations from source ICU argument contracts.
@@ -16,7 +23,7 @@ export function renderMessageTypes(source: MessageCatalog): string {
     const fields = Object.entries(parameters)
       .map(
         ([name, kinds]) =>
-          `readonly ${JSON.stringify(name)}: ${kinds.map((kind) => (kind === 'date' ? 'Date' : kind)).join(' | ')}`,
+          `readonly ${JSON.stringify(name)}: ${kinds.map((kind) => argumentTypes[kind]).join(' | ')}`,
       )
       .join('; ')
 

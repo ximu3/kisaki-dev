@@ -37,7 +37,7 @@ export function UsageFields(props: UsageFieldsProps & { open: (medium: UsageMedi
             value={draft.read('usage.foregroundGracePeriodMs') ?? ''}
             increaseLabel={t('runtime.increase')}
             decreaseLabel={t('runtime.decrease')}
-            onValueChange={(value) => draft.write('usage.foregroundGracePeriodMs', value)}
+            onValueChange={(value) => draft.writeNumber('usage.foregroundGracePeriodMs', value)}
           />
         </PreferenceField>
       </FieldGroup>
@@ -50,7 +50,6 @@ export function UsageFields(props: UsageFieldsProps & { open: (medium: UsageMedi
                 class="w-full justify-between"
                 variant="outline"
                 data-usage-medium={medium}
-                aria-haspopup="dialog"
                 onClick={() => props.open(medium)}
               >
                 {t(`runtime.fields.${medium}`)}
@@ -102,12 +101,12 @@ export function AnimeUsageFields(props: UsageFieldsProps) {
           value={draft.read(key) ?? ''}
           increaseLabel={t('runtime.increase')}
           decreaseLabel={t('runtime.decrease')}
-          onValueChange={(value) => draft.write(key, value)}
+          onValueChange={(value) => draft.writeNumber(key, value)}
         />
       </PreferenceField>
     )
   }
-  function toggle(name: 'subtitlesEnabled' | 'autoAdvance' | 'autoMarkWatched') {
+  function toggle(name: 'subtitlesEnabled' | 'autoAdvance') {
     const key = `usage.anime.${name}` as const
     return (
       <PreferenceField field={key} label={t(`runtime.fields.${name}`)} valueClass="w-fit">
@@ -130,7 +129,6 @@ export function AnimeUsageFields(props: UsageFieldsProps) {
         <FieldLegend>{t('runtime.usageGroups.playback')}</FieldLegend>
         {multiplier('playbackSpeed')}
         {toggle('autoAdvance')}
-        {toggle('autoMarkWatched')}
       </FieldGroup>
       <FieldGroup>
         <FieldLegend>{t('runtime.usageGroups.tracks')}</FieldLegend>

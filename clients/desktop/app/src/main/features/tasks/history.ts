@@ -134,7 +134,7 @@ export function taskHistory(storage: Storage) {
         )
       }
       const filter = and(...conditions)
-      return db.transaction((tx) => {
+      return storage.transaction((tx) => {
         const items = tx
           .select({
             id: taskRuns.id,

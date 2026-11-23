@@ -1,10 +1,15 @@
 import type { ViewAppearance } from '@kisaki3/desktop-contracts/appearance'
+import { defaults } from '@kisaki3/desktop-appearance/defaults'
+import type { FontTokenName } from '@kisaki3/desktop-appearance/tokens'
+import { createSignal } from 'solid-js'
 import type { WindowApi } from '../../shared/window-api'
 
 type PresentationCall = <M extends keyof WindowApi>(
   method: M,
   ...args: Parameters<WindowApi[M]>
 ) => Promise<ReturnType<WindowApi[M]>>
+
+export type PresentationIssue = 'theme' | FontTokenName
 
 export function createDocumentAppearance(
   call: PresentationCall,
@@ -14,6 +19,7 @@ export function createDocumentAppearance(
   let activeBinding: string | undefined
   let installedFonts = new Set<FontFace>()
   const fontLoads = new Map<string, Promise<FontFace>>()
+  const [issues, setIssues] = createSignal<readonly PresentationIssue[]>([])
 
   async function applyAppearance(value: ViewAppearance) {
     const style = document.documentElement.style
@@ -50,32 +56,34 @@ export function createDocumentAppearance(
     }
 
     const value = result.value
-    const requested = new Map<string, Promise<FontFace>>()
+    const requested = new Map<string, { family: string; load: Promise<FontFace> }>()
     for (const face of value.fontFaces) {
       const key = JSON.stringify([face.family, face.url, face.descriptors])
       let load = fontLoads.get(key)
       if (!load) {
-        load = new FontFace(
-          face.family,
-          'url(' + JSON.stringify(face.url) + ')',
-          face.descriptors,
-        ).load()
+        load = Promise.resolve().then(() =>
+          new FontFace(
+            face.family,
+            'url(' + JSON.stringify(face.url) + ')',
+            face.descriptors,
+          ).load(),
+        )
         fontLoads.set(key, load)
       }
-      requested.set(key, load)
+      requested.set(key, { family: face.family, load })
     }
-    const loaded = await Promise.allSettled(requested.values())
+    const entries = [...requested.entries()]
+    const loaded = await Promise.allSettled(entries.map(([, entry]) => entry.load))
     if (version !== generation) {
       await call('resources.release', result.hold)
       return
     }
-    const nextFonts = new Set<FontFace>()
-    const keys = [...requested.keys()]
+    const failed = new Set<string>()
     for (const [i, load] of loaded.entries()) {
-      if (load.status === 'fulfilled') {
-        nextFonts.add(load.value)
-      } else {
-        fontLoads.delete(keys[i]!)
+      if (load.status === 'rejected') {
+        const [key, { family }] = entries[i]!
+        fontLoads.delete(key)
+        failed.add(family)
       }
     }
     for (const key of fontLoads.keys()) {
@@ -84,6 +92,12 @@ export function createDocumentAppearance(
       }
     }
 
+    const nextFonts = new Set<FontFace>()
+    for (const load of loaded) {
+      if (load.status === 'fulfilled' && !failed.has(load.value.family)) {
+        nextFonts.add(load.value)
+      }
+    }
     for (const face of installedFonts) {
       if (!nextFonts.has(face)) {
         document.fonts.delete(face)
@@ -96,10 +110,23 @@ export function createDocumentAppearance(
     }
     installedFonts = nextFonts
 
+    const cssVariables = { ...value.cssVariables }
+    const unavailable = new Set<PresentationIssue>(
+      result.issues.map((issue) => (issue.code === 'themeUnavailable' ? 'theme' : issue.slot)),
+    )
+    for (const slot of ['--font-sans', '--font-mono'] as const) {
+      const family = result.fontFamilies[slot]
+      if (family && failed.has(family)) {
+        cssVariables[slot] = defaults[value.colorScheme][slot]
+        unavailable.add(slot)
+      }
+    }
+
     const previousBinding = activeBinding
     activeBinding = result.hold
+    setIssues([...unavailable])
     await Promise.all([
-      applyAppearance(value),
+      applyAppearance({ ...value, cssVariables }),
       previousBinding && call('resources.release', previousBinding),
     ])
   }
@@ -113,5 +140,5 @@ export function createDocumentAppearance(
     await Promise.all([base, refreshAppearance()])
   }
 
-  return { initialize, refresh: refreshAppearance }
+  return { initialize, refresh: refreshAppearance, issues }
 }

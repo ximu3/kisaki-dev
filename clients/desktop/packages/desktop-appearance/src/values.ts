@@ -1,4 +1,15 @@
-import { generate, ident, lexer, parse, walk } from 'css-tree/dist/csstree.esm'
+// oxlint-disable-next-line typescript/triple-slash-reference -- CSS Tree's browser entry shares the root declarations.
+/// <reference path="./css-tree.d.ts" />
+
+import {
+  generate,
+  ident,
+  lexer,
+  parse,
+  tokenize,
+  tokenTypes,
+  walk,
+} from 'css-tree/dist/csstree.esm'
 import type { CssNode, Value } from 'css-tree'
 import { tokens } from './tokens'
 import type { TokenKind, TokenName, TokenValues } from './tokens'
@@ -30,6 +41,33 @@ const colorFunctions = new Set([
   'oklch',
   'color',
 ])
+
+function decodeColorTokens(source: string): string | undefined {
+  let normalized = ''
+  let copied = 0
+  let valid = true
+  // Decode CSS identifiers before matching, so legacy suffixes such as red\9 cannot match red.
+  tokenize(source, (type, start, end) => {
+    if (type !== tokenTypes.Ident && type !== tokenTypes.Function && type !== tokenTypes.Hash) {
+      return
+    }
+    const prefix = type === tokenTypes.Hash ? '#' : ''
+    const suffix = type === tokenTypes.Function ? '(' : ''
+    const raw = source.slice(start + prefix.length, end - suffix.length)
+    if (!raw.includes('\\')) {
+      return
+    }
+    const decoded = ident.decode(raw)
+    const invalid = prefix ? /[^0-9a-f]/i : /[^a-z0-9-]/i
+    if (!decoded || invalid.test(decoded) || (!prefix && !/^(?:[a-z]|-[a-z-])/i.test(decoded))) {
+      valid = false
+      return
+    }
+    normalized += source.slice(copied, start) + prefix + decoded + suffix
+    copied = end
+  })
+  return valid ? normalized + source.slice(copied) : undefined
+}
 
 function hasLiteralComponents(value: Value): boolean {
   let valid = true
@@ -92,14 +130,18 @@ export function parseTokenValue(name: TokenName, input: unknown): string {
 
   const kind = tokens[name]
   const syntax = syntaxes[kind]
-  // Match the original text first: parsing alone can repair incomplete CSS functions.
-  if (lexer.match(syntax, input).error) {
+  const source =
+    (kind === 'color' || kind === 'shadow') && input.includes('\\')
+      ? decodeColorTokens(input)
+      : input
+  // Match the tokens first: parsing alone can repair incomplete CSS functions.
+  if (source === undefined || lexer.match(syntax, source).error) {
     throw new TypeError(`Invalid value for appearance token ${name}`)
   }
 
   let ast: CssNode
   try {
-    ast = parse(input, { context: 'value' })
+    ast = parse(source, { context: 'value' })
   } catch (cause) {
     if (!(cause instanceof SyntaxError)) {
       throw cause

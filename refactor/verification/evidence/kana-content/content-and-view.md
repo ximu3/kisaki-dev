@@ -53,6 +53,6 @@ python refactor/verification/evidence/kana-content/run-probe.py
 
 ## 公开形状与限制
 
-ViewportRect、ViewRead 和 readView 的声明及消费由 [kana-api](../kana-api/public-contracts.md)统一验证，覆盖视口、源页面区域、CSS 矩形和回调结果的关联。
+原 [kana-api 声明试件](../kana-api/public-contracts.md)检查了 ViewportRect、ViewRead 和 readView 的消费形状，覆盖视口、源页面区域、CSS 矩形和回调结果的关联。上表的导航和关闭描述实验控制协议。现行 readView 的 viewBusy、独立取消和关闭前等待仍待按[正式场景](../../scenarios/reading.md#navigation)验证。
 
 没有证明完整字体／图片加载期间的读取稳定性、所有滚动输入和动画暂停、复杂宿主 CSS 变换、跨显示器移动、任意 PDF／EPUB／KF8 页面、像素边界最终裁切，以及 macOS／Linux。PNG 尺寸核对允许外扩取像素的舍入，不等于已经完成最终分数像素裁切。控制协议中的关闭失效也不能代替真实 IPC 取消与资源释放链路。

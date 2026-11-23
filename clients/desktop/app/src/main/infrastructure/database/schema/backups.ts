@@ -1,9 +1,24 @@
 import { desc, sql } from 'drizzle-orm'
-import { primaryKey, check, index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import {
+  primaryKey,
+  check,
+  index,
+  integer,
+  sqliteTable,
+  text,
+  unique,
+} from 'drizzle-orm/sqlite-core'
 import { attachments } from './attachments/metadata'
 import { games } from './catalog'
 import { gameLaunchConfigs } from './holdings'
-import { booleanValue, enumValue, idColumn, safeInteger } from './constraints'
+import {
+  booleanValue,
+  enumValue,
+  idColumn,
+  retainedWorkReference,
+  safeInteger,
+  workForeignKey,
+} from './constraints'
 
 const sourceKinds = ['file', 'directory'] as const
 const backupReasons = ['manual', 'automatic', 'beforeRestore'] as const
@@ -17,9 +32,7 @@ export const gameSaveBackups = sqliteTable(
     gameId: text('game_id')
       .notNull()
       .references(() => games.entryId, { onDelete: 'cascade' }),
-    sourceConfigId: text('source_config_id').references(() => gameLaunchConfigs.id, {
-      onDelete: 'set null',
-    }),
+    sourceConfigId: text('source_config_id'),
     sourceConfigName: text('source_config_name').notNull(),
     sourcePath: text('source_path').notNull(),
     sourceKind: text('source_kind', { enum: sourceKinds }).notNull(),
@@ -35,6 +48,13 @@ export const gameSaveBackups = sqliteTable(
   },
   (table) => [
     primaryKey({ columns: [table.id] }),
+    unique('game_save_backups_id_work').on(table.id, table.gameId),
+    ...retainedWorkReference(
+      table.sourceConfigId,
+      table.gameId,
+      gameLaunchConfigs.id,
+      gameLaunchConfigs.gameId,
+    ),
     enumValue('game_save_backups_kind', table.sourceKind, sourceKinds),
     enumValue('game_save_backups_reason', table.reason, backupReasons),
     booleanValue('game_save_backups_locked', table.isLocked),
@@ -64,22 +84,30 @@ export const gameBackupRecoveries = sqliteTable(
     gameId: text('game_id')
       .notNull()
       .references(() => games.entryId, { onDelete: 'restrict' }),
-    backupId: text('backup_id')
-      .notNull()
-      .references(() => gameSaveBackups.id, { onDelete: 'restrict' }),
-    protectionBackupId: text('protection_backup_id').references(() => gameSaveBackups.id, {
-      onDelete: 'restrict',
-    }),
+    backupId: idColumn('backup_id'),
+    protectionBackupId: text('protection_backup_id'),
     targetPath: text('target_path').notNull(),
     targetKind: text('target_kind', { enum: sourceKinds }).notNull(),
     workspacePath: text('workspace_path').notNull().unique(),
-    manifestSha256: text('manifest_sha256').notNull(),
+    manifestSha256: text('manifest_sha256'),
     createdAt: integer('created_at').notNull(),
     resolution: text('resolution', { enum: recoveryResolutions }),
     resolvedAt: integer('resolved_at'),
   },
   (table) => [
     primaryKey({ columns: [table.id] }),
+    workForeignKey(
+      table.backupId,
+      table.gameId,
+      gameSaveBackups.id,
+      gameSaveBackups.gameId,
+    ).onDelete('restrict'),
+    workForeignKey(
+      table.protectionBackupId,
+      table.gameId,
+      gameSaveBackups.id,
+      gameSaveBackups.gameId,
+    ).onDelete('restrict'),
     enumValue('game_backup_recoveries_kind', table.targetKind, sourceKinds),
     enumValue('game_backup_recoveries_resolution', table.resolution, recoveryResolutions),
     check(
@@ -88,7 +116,11 @@ export const gameBackupRecoveries = sqliteTable(
     ),
     check(
       'game_backup_recoveries_digest',
-      sql`length(${table.manifestSha256}) = 64 and ${table.manifestSha256} not glob '*[^0-9a-f]*'`,
+      sql`${table.manifestSha256} is null or (length(${table.manifestSha256}) = 64 and ${table.manifestSha256} not glob '*[^0-9a-f]*')`,
+    ),
+    check(
+      'game_backup_recoveries_published',
+      sql`${table.resolution} not in ('restored', 'rolledBack') or ${table.manifestSha256} is not null`,
     ),
     index('game_backup_recoveries_game').on(
       table.gameId,

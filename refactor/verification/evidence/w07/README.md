@@ -2,6 +2,16 @@
 
 验证范围见 [W07](../../../implementation/work-packages.md#w07)。源码会话、真实窗口和打包制品分别使用用例拥有的资料目录，运行版本为 Node 26.13.1、pnpm 12.18.0 和 Electron 45.3.2。
 
+<a id="window-lifetime"></a>
+
+## 窗口恢复、启动与设置
+
+2026-11-23，Windows x64 的几何探针记录显示缩放为 125%。同机使用 Electron 45.3.2、正式入口和专用资料目录，默认外框的两次读取均为 1400×850 DIP，调整后的三次读取均为 1094×683 DIP，并逐次与已保存值核对。另一隔离副本将主文档入口指向缺失资源，记录传给 Electron `dialog.showErrorBox` 的错误说明，并观察到进程以 1 退出。对已经就绪的窗口，以及正在等待未保存更改决定的窗口，分别触发 renderer 崩溃，均记录 `failed → closing → closed` 和退出码 1。错误提示调用在探针内被截获，未目视检查系统弹窗。
+
+四种窗口、偏好子草稿、字体缺失回退、原生菜单恢复默认主题、任务详情及虚拟表均从真实入口查验。菜单恢复结束活动预览，保留编辑器未保存的内容与现有界面缩放。窗口测试在该宿主通过 13 项；涉及其他平台通知或专用系统账号的 3 项跳过。开发会话的 6 项测试通过，旧进程在候选准备失败时继续使用原 renderer 地址。[窗口用例](../../../../clients/desktop/app/tests/integration/electron) · [重复启动](../../../../clients/desktop/app/tests/performance/startup.test.ts) · [开发交接](../../../../clients/desktop/app/tests/tools/dev/session.test.ts)
+
+同日修正后的 Windows x64 综合验证有 15 项窗口用例通过，3 项按宿主条件跳过。先正常重载主窗口，通过原生菜单在新文档打开偏好，再令下一次重载缺失模块，观察到错误提示调用、资源收尾和退出码 1。恢复几何时，原先只露出 1 DIP 的窗口回到工作区，可操作的部分跨屏窗口保留。任务详情按原字段名显示零耗时和零计数，混合报告中的零值也可直接读取。[窗口故障与几何用例](../../../../clients/desktop/app/tests/integration/electron) · [任务历史](../../../../clients/desktop/app/tests/integration/electron/history.test.ts)
+
 ## 运行与资源
 
 | 场景 | 核对结果 |

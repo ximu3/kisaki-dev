@@ -9,3 +9,5 @@
 同时保留了失败对照：禁用全部音视频轨道后直接等待 file-loaded 会以无可播放内容结束，不能作为这一读取流程。无视频输出的暂停加载可以取得解码后参数，但本次基础信息读取使用上述预加载节点。
 
 样本摘要、断言、事件和测量见[原始结果](results.json)。`fixtures.py` 中的 FFmpeg 命令仅用于生成合成测试材料，没有进入本体依赖或运行流程。复现入口为 `python refactor/verification/evidence/media-information/2026-10-24/run.py`，需要记录中的已核验运行库。
+
+[文件清单](files.json)属于当次原型快照。现存的三个脚本和 results.json 与登记摘要一致，README 已修订，run.log 未保存在当前仓库。复现仍需配齐当次运行库和生成输入，按原摘要核对。

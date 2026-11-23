@@ -7,6 +7,13 @@ export function connectWindow(kind: WindowKind) {
     return
   }
 
+  function entryFailed(event: Event) {
+    if (event.target instanceof HTMLScriptElement && event.target.type === 'module') {
+      ipcRenderer.send('kisaki-entry-failed')
+    }
+  }
+  window.addEventListener('error', entryFailed, true)
+
   function requestPort(event: MessageEvent) {
     // Dev tooling also posts window messages, independent of the port request.
     if (
@@ -35,6 +42,7 @@ export function connectWindow(kind: WindowKind) {
   }
 
   ipcRenderer.once('kisaki-port', (event) => {
+    window.removeEventListener('error', entryFailed, true)
     window.postMessage('kisaki-port', window.location.origin, event.ports)
   })
 }

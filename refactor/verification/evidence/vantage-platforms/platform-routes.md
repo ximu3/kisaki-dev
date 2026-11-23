@@ -4,7 +4,7 @@
 
 ## 平台来源
 
-[source-probe.py](source-probe.py) 读取二十项官方规范、文档或项目源码，记录 URL、HTTP 状态、时间、字节数和 SHA-256，见 [source-contract.json](source-contract.json)。可取得的 Apple 文档使用官方 Markdown 正文，Mutter 42.0 与 KWin 5.24.7 用明确 tag；当前分支只作比较，不代表全部目标版本。
+[source-probe.py](source-probe.py) 的[收据](source-contract.json)保存十九项官方规范、文档或项目源码的 URL、HTTP 状态、时间、字节数和 SHA-256。可取得的 Apple 文档使用官方 Markdown 正文，Mutter 42.0 与 KWin 5.24.7 用明确 tag。当前分支只作比较，具体版本仍以各自的接口及实现为准。
 
 Accessibility 提示语义另参考官方页面的索引说明；该页面提供的 Markdown 地址返回 404，没有计入上述下载回执，也不将 JavaScript 占位页当作已读取正文。
 

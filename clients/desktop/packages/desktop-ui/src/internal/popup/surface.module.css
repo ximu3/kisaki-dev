@@ -70,6 +70,29 @@
     max-height: var(--popup-available-height);
     overflow: auto;
   }
+  :where(.anchor[data-native-placement]) {
+    margin: 4px 0;
+    position-try-fallbacks:
+      flip-y,
+      flip-x,
+      flip-x flip-y,
+      --kui-fit-viewport;
+    max-width: calc(100dvw - 16px);
+    max-height: calc(100dvh - 16px);
+  }
+  :where(.anchor[data-native-placement^='left'], .anchor[data-native-placement^='right']) {
+    margin: 0 4px;
+    position-try-fallbacks:
+      flip-x,
+      flip-y,
+      flip-x flip-y,
+      --kui-fit-viewport;
+  }
+  @position-try --kui-fit-viewport {
+    position-area: span-all;
+    align-self: center;
+    justify-self: center;
+  }
 
   :where(.viewport) {
     flex: 1 1 auto;

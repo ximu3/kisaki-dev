@@ -15,7 +15,7 @@ import { storedJsonColumn } from '../codecs/json'
 import { attachments } from './attachments/metadata'
 import { entries, games, animes, comics, novels } from './catalog'
 import { animeFiles, comicFiles, novelFiles } from './holdings'
-import { idColumn, safeInteger, timestamps } from './constraints'
+import { idColumn, retainedWorkReference, safeInteger, timestamps } from './constraints'
 
 /** Stores independently identified Markdown notes whose lifetime is separate from entry links. */
 export const notes = sqliteTable(
@@ -110,13 +110,14 @@ export const animeAnnotations = sqliteTable(
     animeId: text('anime_id')
       .notNull()
       .references(() => animes.entryId, { onDelete: 'cascade' }),
-    fileId: text('file_id').references(() => animeFiles.id, { onDelete: 'set null' }),
+    fileId: text('file_id'),
     imageId: text('image_id').references(() => attachments.id, { onDelete: 'restrict' }),
     location: storedJsonColumn(parsePlaybackAnnotationLocation)('location').notNull(),
   },
   (table) => [
     primaryKey({ columns: [table.id] }),
     ...annotationIndexes('anime_annotations', table.animeId, table),
+    ...retainedWorkReference(table.fileId, table.animeId, animeFiles.id, animeFiles.animeId),
     index('anime_annotations_file').on(table.fileId, table.createdAt, table.id),
   ],
 )
@@ -129,7 +130,7 @@ export const comicAnnotations = sqliteTable(
     comicId: text('comic_id')
       .notNull()
       .references(() => comics.entryId, { onDelete: 'cascade' }),
-    fileId: text('file_id').references(() => comicFiles.id, { onDelete: 'set null' }),
+    fileId: text('file_id'),
     imageId: text('image_id').references(() => attachments.id, { onDelete: 'restrict' }),
     location: storedJsonColumn(parseReadingAnnotationLocation)('location').notNull(),
     quote: text('quote'),
@@ -137,6 +138,7 @@ export const comicAnnotations = sqliteTable(
   (table) => [
     primaryKey({ columns: [table.id] }),
     ...annotationIndexes('comic_annotations', table.comicId, table),
+    ...retainedWorkReference(table.fileId, table.comicId, comicFiles.id, comicFiles.comicId),
     index('comic_annotations_file').on(table.fileId, table.createdAt, table.id),
   ],
 )
@@ -149,7 +151,7 @@ export const novelAnnotations = sqliteTable(
     novelId: text('novel_id')
       .notNull()
       .references(() => novels.entryId, { onDelete: 'cascade' }),
-    fileId: text('file_id').references(() => novelFiles.id, { onDelete: 'set null' }),
+    fileId: text('file_id'),
     imageId: text('image_id').references(() => attachments.id, { onDelete: 'restrict' }),
     location: storedJsonColumn(parseReadingAnnotationLocation)('location').notNull(),
     quote: text('quote'),
@@ -157,6 +159,7 @@ export const novelAnnotations = sqliteTable(
   (table) => [
     primaryKey({ columns: [table.id] }),
     ...annotationIndexes('novel_annotations', table.novelId, table),
+    ...retainedWorkReference(table.fileId, table.novelId, novelFiles.id, novelFiles.novelId),
     index('novel_annotations_file').on(table.fileId, table.createdAt, table.id),
   ],
 )

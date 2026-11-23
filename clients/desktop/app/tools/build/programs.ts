@@ -20,7 +20,7 @@ export function programConfig(
   mode: 'development' | 'production',
 ): InlineConfig & { configFile: string } {
   return {
-    configFile: join(sourceRoot, 'config', 'vite', `vite.config.${program}.ts`),
+    configFile: join(sourceRoot, 'config', 'vite', `${program}.ts`),
     root: program === 'renderer' ? join(sourceRoot, 'src', 'renderer', 'windows') : sourceRoot,
     mode,
     define: { __KISAKI_BUILD_ID__: JSON.stringify(buildId) },

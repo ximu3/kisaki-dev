@@ -14,7 +14,7 @@ Validation feedback updates immediately. Unfocused error borders appear and clea
 
 Install one Toaster per document and call `toast.show` from UI code. Messages survive their caller and follow the active modal. Cards enter and leave from the bottom and reposition in 100ms. Once a toast ends, calls on its handle have no effect. DialogHeader, DialogBody and DialogFooter keep headings and actions around independently scrolling content. Pass a localized `closeLabel` to DialogHeader for a title-bar exit.
 
-ScrollableTable keeps column headings above the body’s native scrollbars and aligns them during horizontal scrolling. For large tables, TableSpacer reserves the full track and createVirtualRow positions each mounted data row.
+ScrollableTable keeps its sticky column headings and data rows in one native scroll viewport. Use `viewportRef` to connect scrolling code and pass the element from `headerRef` as the virtualizer's `stickyHeader` when virtualizing rows. TableSpacer reserves the full track and createVirtualRow positions each mounted data row.
 
 Dedicated subpaths provide CodeMirror Markdown editing, safe previews, Unovis charts and Pragmatic Drag and Drop integration with automatic scrolling and compact drag previews. Markdown formatting actions use shared 1rem icons and adjoining buttons in a tinted toolbar with zero vertical padding. Toolbar actions and default drag handles use foreground-only hover feedback. Chart tooltips fade on visibility changes and follow the pointer directly. String templates render as text, and structured tooltips can return an HTMLElement.
 

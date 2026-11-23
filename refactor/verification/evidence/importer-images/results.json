@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-11-23T12:26:09.787Z",
+  "runtime": {
+    "platform": "win32",
+    "arch": "x64",
+    "node": "v24.11.1",
+    "sharp": "0.35.5",
+    "vips": "8.18.7",
+    "fflateModuleSha256": "8d75534a30a0580608e1271c13d70943ed4cd3589fddff7b1197748036a5116e",
+    "playniteReaderSha256": "23424c87eae80d40e1d5149c63e65ff63ed724f9258e1b8173d91689f395e95f"
+  },
+  "passed": true,
+  "calibre": {
+    "positive": "c9fdf6fed7d7081dc126f84d62eef62262c03ef6cb5bdd68fe63b07357daa3ac",
+    "negative": "2fc77dcd566a264e290982c4a6571697ebade9d5655c24ed369f523cf2490603"
+  },
+  "playnite": {
+    "positive": "c9fdf6fed7d7081dc126f84d62eef62262c03ef6cb5bdd68fe63b07357daa3ac",
+    "negative": "605782cc103b69f7fca76f2b4fa2239c6b29f61514d7502c2930fcdc9f3bcb49"
+  },
+  "expected": {
+    "decoded": {
+      "dimensions": [
+        2,
+        1
+      ],
+      "rgba": [
+        255,
+        0,
+        0,
+        255,
+        0,
+        0,
+        255,
+        128
+      ]
+    },
+    "rejected": "invalid IDAT CRC"
+  }
+}

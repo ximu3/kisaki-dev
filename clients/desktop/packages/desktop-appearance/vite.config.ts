@@ -1,15 +1,10 @@
 import { defineLibrary } from '@kisaki3/config/vite/library'
+import manifest from './package.json' with { type: 'json' }
 import { defineConfig, mergeConfig } from 'vite-plus'
 import { assembleStyles } from './tools/styles'
 
 const library = defineLibrary({
-  entries: {
-    './tokens': './src/tokens.ts',
-    './values': './src/values.ts',
-    './defaults': './src/defaults.ts',
-    './styles.css': './src/styles.css',
-    './tailwind.css': './src/tailwind.css',
-  },
+  manifest,
   pack: {
     platform: 'browser',
     hooks: {

@@ -62,7 +62,7 @@ test('resource and configuration changes select their actual preparation owner',
   expect(changes).toEqual([])
 
   for (const [file, kind] of [
-    ['app/config/vite/vite.config.main.ts', 'configuration'],
+    ['app/config/vite/main.ts', 'configuration'],
     ['app/config/typescript/tsconfig.main.json', 'configuration'],
     ['app/native/src.rs', 'native'],
     ['app/assets/font.json', 'resources'],

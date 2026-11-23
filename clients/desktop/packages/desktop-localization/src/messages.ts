@@ -5,8 +5,11 @@ import { parse, TYPE } from '@formatjs/icu-messageformat-parser'
 import { IntlMessageFormat } from 'intl-messageformat'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 
-/** Runtime ICU argument category: string, finite number, or valid Date object. */
-export type MessageArgumentKind = 'string' | 'number' | 'date'
+/**
+ * ICU arguments accept strings, finite numbers and valid Date objects.
+ * A timestamp is a number in the ECMAScript Date range.
+ */
+export type MessageArgumentKind = 'string' | 'number' | 'timestamp' | 'date'
 
 /**
  * Allowed runtime kinds for every parameter used by one message.
@@ -16,6 +19,10 @@ export type MessageArgumentKind = 'string' | 'number' | 'date'
 export type MessageParameterContract = Readonly<Record<string, readonly MessageArgumentKind[]>>
 
 export type MessageContracts = Readonly<Record<string, MessageParameterContract>>
+
+function admits(kinds: readonly MessageArgumentKind[], kind: MessageArgumentKind): boolean {
+  return kinds.includes(kind) || (kind === 'timestamp' && kinds.includes('number'))
+}
 
 export function flattenParsedCatalog(catalog: MessageCatalog): Readonly<Record<string, string>> {
   const result = new Map<string, string>()
@@ -90,7 +97,7 @@ export function getMessageParameterContract(message: string): MessageParameterCo
           break
         case TYPE.date:
         case TYPE.time:
-          kinds = ['number', 'date']
+          kinds = ['timestamp', 'date']
           break
         case TYPE.number:
         case TYPE.plural:
@@ -99,7 +106,12 @@ export function getMessageParameterContract(message: string): MessageParameterCo
       }
 
       const previous = parameters.get(element.value)
-      const intersection = previous ? previous.filter((kind) => kinds.includes(kind)) : kinds
+      const intersection = previous
+        ? [
+            ...previous.filter((kind) => admits(kinds, kind)),
+            ...kinds.filter((kind) => !previous.includes(kind) && admits(previous, kind)),
+          ]
+        : kinds
       if (intersection.length === 0) {
         throw new DesktopError('InvalidInput', 'ICU parameter formats are incompatible')
       }
@@ -161,7 +173,7 @@ export function checkMessageCompatibility(
     for (const [parameter, kinds] of Object.entries(translatedContract)) {
       if (
         !Object.hasOwn(contract, parameter) ||
-        contract[parameter]!.some((kind) => !kinds.includes(kind))
+        contract[parameter]!.some((kind) => !admits(kinds, kind))
       ) {
         throw new DesktopError('InvalidInput', 'Translated message narrows or adds a parameter')
       }
@@ -219,11 +231,11 @@ export function validateMessageArguments(
     if (typeof value === 'string') {
       kind = 'string'
     } else if (typeof value === 'number' && Number.isFinite(value)) {
-      kind = 'number'
+      kind = Math.abs(value) <= 8.64e15 ? 'timestamp' : 'number'
     } else if (value instanceof Date && Number.isFinite(value.getTime())) {
       kind = 'date'
     }
-    if (!Object.hasOwn(values, key) || kind === null || !kinds.includes(kind)) {
+    if (!Object.hasOwn(values, key) || kind === null || !admits(kinds, kind)) {
       throw new DesktopError('InvalidInput', 'Missing or invalid message parameter')
     }
   }

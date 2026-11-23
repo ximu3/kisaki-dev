@@ -1,6 +1,11 @@
-import { createServer, defaultClientConditions, type Plugin, type ViteDevServer } from 'vite-plus'
+import {
+  createServer,
+  defaultClientConditions,
+  normalizePath,
+  type Plugin,
+  type ViteDevServer,
+} from 'vite-plus'
 import { join } from 'node:path'
-import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 import { entryRecoveryEvent } from './protocol'
 
 function recoverFailedEntries(): Plugin {
@@ -50,27 +55,20 @@ function recoverFailedEntries(): Plugin {
   }
 }
 
-export async function startRenderer(
+export function createRenderer(
   sourceRoot: string,
   buildId: string,
   cacheDirectory: string,
 ): Promise<ViteDevServer> {
-  const server = await createServer({
-    configFile: join(sourceRoot, 'config', 'vite', 'vite.config.renderer.ts'),
+  const configFile = join(sourceRoot, 'config', 'vite', 'renderer.ts')
+  return createServer({
+    configFile,
+    // The session keeps this listening server until the old application accepts replacement.
+    server: { watch: { ignored: [normalizePath(configFile)] } },
     cacheDir: cacheDirectory,
     mode: 'development',
     plugins: [recoverFailedEntries()],
     define: { __KISAKI_BUILD_ID__: JSON.stringify(buildId) },
     resolve: { conditions: ['kisaki-source', ...defaultClientConditions], dedupe: ['solid-js'] },
   })
-
-  try {
-    await server.listen()
-    if (!server.resolvedUrls?.local[0]) {
-      throw new Error('Renderer server did not publish a listening address')
-    }
-    return server
-  } catch (cause) {
-    return rethrowAfterCleanup(cause, () => server.close(), 'Renderer startup and cleanup failed')
-  }
 }

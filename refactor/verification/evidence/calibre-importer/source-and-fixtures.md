@@ -28,7 +28,7 @@
 
 [user_categories 编辑器](https://github.com/kovidgoyal/calibre/blob/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/gui2/dialogs/tag_categories.py)保存值、所属字段及一个工作槽位，并非 book ID 列表。方案按实际字段关联取得静态成员，不恢复虚拟书库的查询行为。
 
-[笔记连接实现](https://github.com/kovidgoyal/calibre/blob/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/db/notes/connect.py)将资源 hash 拆成算法和摘要，存为 resources／摘要前两位／算法-摘要。[笔记导出](https://github.com/kovidgoyal/calibre/blob/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/db/notes/exim.py)识别 calres://算法/摘要，并能把资源展开为 data URL。合成 notes.db 包含作者和标签两种笔记及一个 PNG 资源；只验证归属、引用与字节，不声称已通过本体图片准备或完整 HTML 转换。
+[笔记连接实现](https://github.com/kovidgoyal/calibre/blob/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/db/notes/connect.py)将资源 hash 拆成算法和摘要，存为 resources／摘要前两位／算法-摘要。[笔记导出](https://github.com/kovidgoyal/calibre/blob/61c4027d2bfe737e0177e09952ee4942042a5892/src/calibre/db/notes/exim.py)识别 calres://算法/摘要，并能把资源展开为 data URL。合成 notes.db 包含作者和标签两种笔记及一个 PNG 资源。原检查确认归属、引用与字节，实际 IDAT CRC 错误。[解码对照](../importer-images/README.md)保留此反例，并通过同一 calres 取字节步骤核对正例像素。本体资源准备与完整 HTML 转换仍待正式验收。
 
 ## 批注与位置
 

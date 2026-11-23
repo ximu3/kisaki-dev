@@ -52,6 +52,7 @@ export function planChecks(
         runner: runners[target],
         arch: target.split('-')[1]!,
         chromium: environment.chromium,
+        consumerNode: environment.consumerNode,
         x11,
         systemPackages: [
           ...(x11 ? ['xvfb', 'openbox'] : []),

@@ -14,6 +14,7 @@ import {
 import { parseId } from '@kisaki3/extension-distribution/metadata'
 import {
   parseVersion,
+  parseTarget,
   normalizeTargets,
   type ExtensionTarget,
   type CompatibilityIssue,
@@ -410,19 +411,25 @@ const packageState = v.variant('status', [
   v.strictObject({ status: v.literal('invalid'), error }),
 ])
 
-const compatibilityIssue = v.pipe(
+const compatibilityIssue = v.variant('condition', [
   v.strictObject({
-    condition: v.picklist(['target', 'apiVersion', 'nodeVersion', 'electronVersion']),
-    required: v.union([
-      text,
-      fromParser((value) =>
-        parseExternalValue(normalizeTargets, value, 'Invalid required targets'),
-      ),
-    ]),
+    condition: v.literal('target'),
+    required: fromParser((value) =>
+      parseExternalValue(normalizeTargets, value, 'Invalid required targets'),
+    ),
+    actual: fromParser((value) => parseExternalValue(parseTarget, value, 'Invalid actual target')),
+  }),
+  v.strictObject({
+    condition: v.literal('apiVersion'),
+    required: text,
+    actual: text,
+  }),
+  v.strictObject({
+    condition: v.picklist(['nodeVersion', 'electronVersion']),
+    required: text,
     actual: v.exactOptional(text),
   }),
-  v.transform((value): CompatibilityIssue => ({ ...value, actual: value.actual })),
-)
+])
 
 const compatibility = v.variant('status', [
   v.strictObject({ status: v.picklist(['compatible', 'unavailable']) }),

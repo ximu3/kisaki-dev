@@ -56,7 +56,7 @@ Windows 的 NT 句柄不能用旧式 GetSharedHandle 返回值替代。RGB 输�
 
 ## SDR 颜色与正常播放
 
-libmpv 负责把源视频转换为请求的 SDR 表示，包括 HDR 片源的色调与色域映射。绑定负责准确设置目标、准备纹理并交付颜色描述，宿主系统负责最终显示器颜色管理。当前受管输出是 sRGB 与 Display P3 SDR，不提供 PQ、扩展线性 HDR、显示峰值或可变 nit 单位。
+GPU 路线中，libmpv 负责把源视频转换为请求的 SDR 表示，包括 HDR 片源的色调与色域映射。绑定负责准确设置目标、准备纹理并交付颜色描述，宿主系统负责最终显示器颜色管理。GPU 目标为 sRGB 与 Display P3 SDR，软件输出按[像素合同](video.md#renderers)交付。
 
 Kisaki 使用 sRGB，不根据片源或系统 HDR 开关改变输出模式。高位深解码、原生画质选项和必要的八位输出抖动仍需验证；不能把“不输出 HDR”实现成拒绝 HDR 文件或降低十位 SDR 处理精度。[完整颜色合同](video.md#targets)
 

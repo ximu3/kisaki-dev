@@ -59,7 +59,7 @@ HTML 只读取项目介绍与平台生成的信息区域，安全转为共同 Ma
 
 ## 账号与权限
 
-采用官方推荐的授权码流程、S256 PKCE、随机 state 和系统浏览器。Kisaki 公开应用已登记，Client ID 为 d2130481662895284e997a0662dfd21e，无 Client Secret；登记回调为 http://127.0.0.1:49152/itch/callback，实际使用已成功绑定的环回空闲端口，主机与路径保持一致。回调先核对 state，授权码只换取一次，参数不得进入日志或结果页。
+采用官方推荐的授权码流程、S256 PKCE、随机 state 和系统浏览器。Kisaki 公开应用已登记，Client ID 为 d2130481662895284e997a0662dfd21e，无 Client Secret。登记回调为 `http://127.0.0.1:49152/itch/callback`。环回端口可与登记值不同，协议、主机与路径须完全相同。授权和换码使用本次监听成功的同一回调地址。回调先核对 state，授权码只换取一次，参数不得进入日志或结果页。[平台回调规则](https://itch.io/docs/api/oauth#the-authorization-step/redirect-uris/loopback-address-local-http-server)
 
 连接请求 profile:me、profile:owned、profile:games、profile:collections 四项只读权限。通过 /credentials/info 验证实际权限，再以 /profile 的稳定 user.id 确认本人。密码仅在官网输入；不读取浏览器 Cookie，不接入账号密码登录、个人无限权限 API key、隐式流程或受特批限制的设备授权。
 

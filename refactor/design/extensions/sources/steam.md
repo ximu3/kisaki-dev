@@ -47,13 +47,15 @@ GetItems 的 StoreItem.item_type 区分 App 等商品种类，type 则区分 App
 | full_description_bbcode、basic_info.short_description | 完整介绍与短简介分别处理，将 BBCode 安全转换为共同 Markdown，不重复拼接同一内容 |
 | GetItems.release.original_release_date                | 仅在合法且与当前作品范围相符时提供 releaseDate；保留原作与独立版本的范围区别    |
 | release.steam_release_date                            | 商店发行信息，不回填原作首次发行日期                                            |
-| tagids／tags、categories 与对应名称接口               | 采用来源公开展示的实际应用标签与功能分类，不混用标签、分类和 genreids 字典      |
+| tagids／tags、categories 与对应名称接口               | 采用来源公开展示的应用标签与功能分类，按各自 ID 和对应字典解析，不混用 genreids。 |
 | 商店、官网等实际地址                                  | externalLinks；只按已核实的对象范围提取其他来源身份                             |
 | 开发／发行文字与 creator_clan_account_id              | 保留为商店署名说明，不虚构 person／organization 身份或工作关系                  |
 | supported_languages、平台支持、系统要求               | 不写 originalLanguages；真实支持语言与原始创作语言不同                          |
 | 评分统计、推荐数、价格、购买状态                      | 不写用户总评分、收藏、当前状态或完成历史                                        |
 
 GetItems 实测为 CLANNAD 同时返回 2004-04-28 的 original_release_date 与 2015-11-23 的 Steam 发行信息；两者不能混用。独立移植、重制与其他版本的资料仍须符合当前 Game 范围，不利用原始日期将不同来源身份自动合并。
+
+功能分类按来源给出的分类 ID 关联。名称接口返回 `#category_…` 占位值时，采用该分类可读的 `internalName`。仍无可读名称时省略该项分类。同名分类仍按各自 ID 解析，再交给本体按统一标签规则采用。英文与简体接口样本的分类 80–82 都返回占位值，同时提供英文 `internalName`。[接口收据](../../../verification/evidence/game-sources/2026-10-16-steam-storebrowse.json)
 
 不推断 originalName、原作语言、原始作者身份、作品敏感性或来源未回答的字段。分级或内容描述缺席不代表非敏感；不声明普通 isNsfw 读取，也不制作没有真实接口依据的成人筛选开关。
 

@@ -121,6 +121,7 @@ export function openWindowDocument({
       const read = await appearance.forView(view, { signal })
       return rpcData({
         value: read.appearance,
+        fontFamilies: read.fontFamilies,
         issues: read.issues,
         hold: await keep(read, signal),
       })

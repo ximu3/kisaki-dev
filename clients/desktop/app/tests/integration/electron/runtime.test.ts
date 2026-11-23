@@ -63,7 +63,7 @@ test('the Linux notification service activates the destination submitted by the 
   profile,
 }) => {
   test.skip(process.platform !== 'linux', 'Exercises the Freedesktop notification service')
-  const entry = await buildProbe(profile, 'notification-app.ts')
+  const entry = await buildProbe(profile, 'notifications/app.ts')
   const data = join(profile, 'data')
   const services = join(data, 'dbus-1', 'services')
   await mkdir(services, { recursive: true })

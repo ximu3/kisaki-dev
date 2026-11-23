@@ -61,6 +61,8 @@
 
 [验证脚本](verify.mjs)对原生程序执行 22 项检查，覆盖零分／满分、null／省略字段、普通备注、布尔值、部分日期、UTC 时间、超出 JavaScript 安全整数的 Int64、Decimal／Binary 类型、四种动作、ROM 与模拟器引用、非游玩动作、类型标记、删除记录、标签与分类、图片解析和输入字节未改变。脚本只读取合成输入，未执行其中的动作或脚本。
 
+原合成 ZIP 的封面可由游戏引用找到并读全，实际 IDAT CRC 错误。[解码对照](../importer-images/README.md)保留旧 ZIP，并仅在临时正例中替换这一引用的图片。同一路线核对两张图片可从归档读取、坏图拒绝及好图的实际像素。此结果不扩大真实备份汇总的 248 项图片检查范围。
+
 可在独立临时目录复制 reader、fixture 与 verify.mjs，使用 .NET 10 SDK 及 NativeAOT 对应平台工具链复现：先以 nuget.org 恢复两个项目，运行 Fixture.csproj 生成到选定目录，再以 Release 和 win-x64 发布 PlayniteReader.csproj，最后将原生程序路径及夹具目录传给 node verify.mjs。其他目标采用对应 runtime identifier。生成目录不要指向真实 Playnite 库。
 
 来源格式、关键字段与受限原生读取已经验证。资料方案获取、本体正式写入、图片解码、启动命令转换、状态配置页面、取消和六个平台的完整扩展运行仍待实现验收。本次没有改写 Kisaki 正式数据库，也没有留下用户数据库解压副本。

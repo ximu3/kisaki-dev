@@ -35,8 +35,9 @@ CREATE TABLE `anime_annotations` (
 	`image_id` text,
 	`location` text NOT NULL,
 	CONSTRAINT `fk_anime_annotations_anime_id_animes_entry_id_fk` FOREIGN KEY (`anime_id`) REFERENCES `animes`(`entry_id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_anime_annotations_image_id_attachments_id_fk` FOREIGN KEY (`image_id`) REFERENCES `attachments`(`id`) ON DELETE RESTRICT,
 	CONSTRAINT `fk_anime_annotations_file_id_anime_files_id_fk` FOREIGN KEY (`file_id`) REFERENCES `anime_files`(`id`) ON DELETE SET NULL,
-	CONSTRAINT `fk_anime_annotations_image_id_attachments_id_fk` FOREIGN KEY (`image_id`) REFERENCES `attachments`(`id`) ON DELETE RESTRICT
+	CONSTRAINT `fk_anime_annotations_file_id_anime_id_anime_files_id_anime_id_fk` FOREIGN KEY (`file_id`,`anime_id`) REFERENCES `anime_files`(`id`,`anime_id`)
 );
 --> statement-breakpoint
 CREATE TABLE `anime_directories` (
@@ -95,6 +96,7 @@ CREATE TABLE `anime_episodes` (
 	`declared_duration_ms` integer,
 	CONSTRAINT `fk_anime_episodes_primary_image_id_attachments_id_fk` FOREIGN KEY (`primary_image_id`) REFERENCES `attachments`(`id`) ON DELETE RESTRICT,
 	CONSTRAINT `fk_anime_episodes_anime_id_animes_entry_id_fk` FOREIGN KEY (`anime_id`) REFERENCES `animes`(`entry_id`) ON DELETE CASCADE,
+	CONSTRAINT `anime_episodes_id_work` UNIQUE(`id`,`anime_id`),
 	CONSTRAINT "anime_episodes_id" CHECK(length("id") > 0),
 	CONSTRAINT "anime_episodes_order" CHECK("sort_order" is null or (typeof("sort_order") = 'integer' and "sort_order" between 0 and 9007199254740991)),
 	CONSTRAINT "anime_episodes_created" CHECK("created_at" is null or (typeof("created_at") = 'integer' and "created_at" between -9007199254740991 and 9007199254740991)),
@@ -145,6 +147,7 @@ CREATE TABLE `anime_extras` (
 	`declared_duration_ms` integer,
 	CONSTRAINT `fk_anime_extras_primary_image_id_attachments_id_fk` FOREIGN KEY (`primary_image_id`) REFERENCES `attachments`(`id`) ON DELETE RESTRICT,
 	CONSTRAINT `fk_anime_extras_anime_id_animes_entry_id_fk` FOREIGN KEY (`anime_id`) REFERENCES `animes`(`entry_id`) ON DELETE CASCADE,
+	CONSTRAINT `anime_extras_id_work` UNIQUE(`id`,`anime_id`),
 	CONSTRAINT "anime_extras_id" CHECK(length("id") > 0),
 	CONSTRAINT "anime_extras_order" CHECK("sort_order" is null or (typeof("sort_order") = 'integer' and "sort_order" between 0 and 9007199254740991)),
 	CONSTRAINT "anime_extras_created" CHECK("created_at" is null or (typeof("created_at") = 'integer' and "created_at" between -9007199254740991 and 9007199254740991)),
@@ -154,22 +157,24 @@ CREATE TABLE `anime_extras` (
 );
 --> statement-breakpoint
 CREATE TABLE `anime_file_episodes` (
+	`anime_id` text NOT NULL,
 	`file_id` text NOT NULL,
 	`episode_id` text NOT NULL,
 	`is_preferred` integer DEFAULT false NOT NULL,
 	CONSTRAINT `anime_file_episodes_pk` PRIMARY KEY(`file_id`, `episode_id`),
-	CONSTRAINT `fk_anime_file_episodes_file_id_anime_files_id_fk` FOREIGN KEY (`file_id`) REFERENCES `anime_files`(`id`) ON DELETE CASCADE,
-	CONSTRAINT `fk_anime_file_episodes_episode_id_anime_episodes_id_fk` FOREIGN KEY (`episode_id`) REFERENCES `anime_episodes`(`id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_anime_file_episodes_file_id_anime_id_anime_files_id_anime_id_fk` FOREIGN KEY (`file_id`,`anime_id`) REFERENCES `anime_files`(`id`,`anime_id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_anime_file_episodes_episode_id_anime_id_anime_episodes_id_anime_id_fk` FOREIGN KEY (`episode_id`,`anime_id`) REFERENCES `anime_episodes`(`id`,`anime_id`) ON DELETE CASCADE,
 	CONSTRAINT "anime_file_episodes_preferred_value" CHECK("is_preferred" in (0, 1))
 );
 --> statement-breakpoint
 CREATE TABLE `anime_file_extras` (
+	`anime_id` text NOT NULL,
 	`file_id` text NOT NULL,
 	`extra_id` text NOT NULL,
 	`is_preferred` integer DEFAULT false NOT NULL,
 	CONSTRAINT `anime_file_extras_pk` PRIMARY KEY(`file_id`, `extra_id`),
-	CONSTRAINT `fk_anime_file_extras_file_id_anime_files_id_fk` FOREIGN KEY (`file_id`) REFERENCES `anime_files`(`id`) ON DELETE CASCADE,
-	CONSTRAINT `fk_anime_file_extras_extra_id_anime_extras_id_fk` FOREIGN KEY (`extra_id`) REFERENCES `anime_extras`(`id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_anime_file_extras_file_id_anime_id_anime_files_id_anime_id_fk` FOREIGN KEY (`file_id`,`anime_id`) REFERENCES `anime_files`(`id`,`anime_id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_anime_file_extras_extra_id_anime_id_anime_extras_id_anime_id_fk` FOREIGN KEY (`extra_id`,`anime_id`) REFERENCES `anime_extras`(`id`,`anime_id`) ON DELETE CASCADE,
 	CONSTRAINT "anime_file_extras_preferred_value" CHECK("is_preferred" in (0, 1))
 );
 --> statement-breakpoint
@@ -199,6 +204,7 @@ CREATE TABLE `anime_files` (
 	`preferences` text,
 	`playback_choices` text DEFAULT '{"audioTrack":null,"subtitleTrack":null,"audioDelaySeconds":0,"subtitleDelaySeconds":0}' NOT NULL,
 	CONSTRAINT `fk_anime_files_anime_id_animes_entry_id_fk` FOREIGN KEY (`anime_id`) REFERENCES `animes`(`entry_id`) ON DELETE CASCADE,
+	CONSTRAINT `anime_files_id_work` UNIQUE(`id`,`anime_id`),
 	CONSTRAINT `anime_files_path` UNIQUE(`anime_id`,`path`),
 	CONSTRAINT "anime_files_preferred_value" CHECK("is_preferred" in (0, 1)),
 	CONSTRAINT "anime_files_association_mode" CHECK("association_mode" in ('automatic', 'manual'))
@@ -231,8 +237,11 @@ CREATE TABLE `anime_watch_activity` (
 	`extra_id` text,
 	CONSTRAINT `fk_anime_watch_activity_anime_id_animes_entry_id_fk` FOREIGN KEY (`anime_id`) REFERENCES `animes`(`entry_id`) ON DELETE CASCADE,
 	CONSTRAINT `fk_anime_watch_activity_file_id_anime_files_id_fk` FOREIGN KEY (`file_id`) REFERENCES `anime_files`(`id`) ON DELETE SET NULL,
+	CONSTRAINT `fk_anime_watch_activity_file_id_anime_id_anime_files_id_anime_id_fk` FOREIGN KEY (`file_id`,`anime_id`) REFERENCES `anime_files`(`id`,`anime_id`),
 	CONSTRAINT `fk_anime_watch_activity_episode_id_anime_episodes_id_fk` FOREIGN KEY (`episode_id`) REFERENCES `anime_episodes`(`id`) ON DELETE SET NULL,
+	CONSTRAINT `fk_anime_watch_activity_episode_id_anime_id_anime_episodes_id_anime_id_fk` FOREIGN KEY (`episode_id`,`anime_id`) REFERENCES `anime_episodes`(`id`,`anime_id`),
 	CONSTRAINT `fk_anime_watch_activity_extra_id_anime_extras_id_fk` FOREIGN KEY (`extra_id`) REFERENCES `anime_extras`(`id`) ON DELETE SET NULL,
+	CONSTRAINT `fk_anime_watch_activity_extra_id_anime_id_anime_extras_id_anime_id_fk` FOREIGN KEY (`extra_id`,`anime_id`) REFERENCES `anime_extras`(`id`,`anime_id`),
 	CONSTRAINT "anime_watch_activity_start" CHECK("started_at" is null or (typeof("started_at") = 'integer' and "started_at" between -9007199254740991 and 9007199254740991)),
 	CONSTRAINT "anime_watch_activity_end" CHECK("ended_at" is null or (typeof("ended_at") = 'integer' and "ended_at" between -9007199254740991 and 9007199254740991)),
 	CONSTRAINT "anime_watch_activity_duration" CHECK("duration_ms" is null or (typeof("duration_ms") = 'integer' and "duration_ms" between 0 and 9007199254740991)),
@@ -355,8 +364,9 @@ CREATE TABLE `comic_annotations` (
 	`location` text NOT NULL,
 	`quote` text,
 	CONSTRAINT `fk_comic_annotations_comic_id_comics_entry_id_fk` FOREIGN KEY (`comic_id`) REFERENCES `comics`(`entry_id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_comic_annotations_image_id_attachments_id_fk` FOREIGN KEY (`image_id`) REFERENCES `attachments`(`id`) ON DELETE RESTRICT,
 	CONSTRAINT `fk_comic_annotations_file_id_comic_files_id_fk` FOREIGN KEY (`file_id`) REFERENCES `comic_files`(`id`) ON DELETE SET NULL,
-	CONSTRAINT `fk_comic_annotations_image_id_attachments_id_fk` FOREIGN KEY (`image_id`) REFERENCES `attachments`(`id`) ON DELETE RESTRICT
+	CONSTRAINT `fk_comic_annotations_file_id_comic_id_comic_files_id_comic_id_fk` FOREIGN KEY (`file_id`,`comic_id`) REFERENCES `comic_files`(`id`,`comic_id`)
 );
 --> statement-breakpoint
 CREATE TABLE `comic_chapter_description_attachments` (
@@ -401,6 +411,7 @@ CREATE TABLE `comic_chapters` (
 	`declared_page_count` integer,
 	CONSTRAINT `fk_comic_chapters_primary_image_id_attachments_id_fk` FOREIGN KEY (`primary_image_id`) REFERENCES `attachments`(`id`) ON DELETE RESTRICT,
 	CONSTRAINT `fk_comic_chapters_comic_id_comics_entry_id_fk` FOREIGN KEY (`comic_id`) REFERENCES `comics`(`entry_id`) ON DELETE CASCADE,
+	CONSTRAINT `comic_chapters_id_work` UNIQUE(`id`,`comic_id`),
 	CONSTRAINT "comic_chapters_id" CHECK(length("id") > 0),
 	CONSTRAINT "comic_chapters_order" CHECK("sort_order" is null or (typeof("sort_order") = 'integer' and "sort_order" between 0 and 9007199254740991)),
 	CONSTRAINT "comic_chapters_created" CHECK("created_at" is null or (typeof("created_at") = 'integer' and "created_at" between -9007199254740991 and 9007199254740991)),
@@ -422,12 +433,13 @@ CREATE TABLE `comic_directories` (
 );
 --> statement-breakpoint
 CREATE TABLE `comic_file_chapters` (
+	`comic_id` text NOT NULL,
 	`file_id` text NOT NULL,
 	`chapter_id` text NOT NULL,
 	`is_preferred` integer DEFAULT false NOT NULL,
 	CONSTRAINT `comic_file_chapters_pk` PRIMARY KEY(`file_id`, `chapter_id`),
-	CONSTRAINT `fk_comic_file_chapters_file_id_comic_files_id_fk` FOREIGN KEY (`file_id`) REFERENCES `comic_files`(`id`) ON DELETE CASCADE,
-	CONSTRAINT `fk_comic_file_chapters_chapter_id_comic_chapters_id_fk` FOREIGN KEY (`chapter_id`) REFERENCES `comic_chapters`(`id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_comic_file_chapters_file_id_comic_id_comic_files_id_comic_id_fk` FOREIGN KEY (`file_id`,`comic_id`) REFERENCES `comic_files`(`id`,`comic_id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_comic_file_chapters_chapter_id_comic_id_comic_chapters_id_comic_id_fk` FOREIGN KEY (`chapter_id`,`comic_id`) REFERENCES `comic_chapters`(`id`,`comic_id`) ON DELETE CASCADE,
 	CONSTRAINT "comic_file_chapters_preferred_value" CHECK("is_preferred" in (0, 1))
 );
 --> statement-breakpoint
@@ -443,12 +455,13 @@ CREATE TABLE `comic_file_recognition_profiles` (
 );
 --> statement-breakpoint
 CREATE TABLE `comic_file_volumes` (
+	`comic_id` text NOT NULL,
 	`file_id` text NOT NULL,
 	`volume_id` text NOT NULL,
 	`is_preferred` integer DEFAULT false NOT NULL,
 	CONSTRAINT `comic_file_volumes_pk` PRIMARY KEY(`file_id`, `volume_id`),
-	CONSTRAINT `fk_comic_file_volumes_file_id_comic_files_id_fk` FOREIGN KEY (`file_id`) REFERENCES `comic_files`(`id`) ON DELETE CASCADE,
-	CONSTRAINT `fk_comic_file_volumes_volume_id_comic_volumes_id_fk` FOREIGN KEY (`volume_id`) REFERENCES `comic_volumes`(`id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_comic_file_volumes_file_id_comic_id_comic_files_id_comic_id_fk` FOREIGN KEY (`file_id`,`comic_id`) REFERENCES `comic_files`(`id`,`comic_id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_comic_file_volumes_volume_id_comic_id_comic_volumes_id_comic_id_fk` FOREIGN KEY (`volume_id`,`comic_id`) REFERENCES `comic_volumes`(`id`,`comic_id`) ON DELETE CASCADE,
 	CONSTRAINT "comic_file_volumes_preferred_value" CHECK("is_preferred" in (0, 1))
 );
 --> statement-breakpoint
@@ -469,6 +482,7 @@ CREATE TABLE `comic_files` (
 	`text_encoding` text,
 	`preferences` text,
 	CONSTRAINT `fk_comic_files_comic_id_comics_entry_id_fk` FOREIGN KEY (`comic_id`) REFERENCES `comics`(`entry_id`) ON DELETE CASCADE,
+	CONSTRAINT `comic_files_id_work` UNIQUE(`id`,`comic_id`),
 	CONSTRAINT `comic_files_path` UNIQUE(`comic_id`,`path`),
 	CONSTRAINT "comic_files_preferred_value" CHECK("is_preferred" in (0, 1)),
 	CONSTRAINT "comic_files_association_mode" CHECK("association_mode" in ('automatic', 'manual')),
@@ -488,8 +502,11 @@ CREATE TABLE `comic_reading_activity` (
 	`chapter_id` text,
 	CONSTRAINT `fk_comic_reading_activity_comic_id_comics_entry_id_fk` FOREIGN KEY (`comic_id`) REFERENCES `comics`(`entry_id`) ON DELETE CASCADE,
 	CONSTRAINT `fk_comic_reading_activity_file_id_comic_files_id_fk` FOREIGN KEY (`file_id`) REFERENCES `comic_files`(`id`) ON DELETE SET NULL,
+	CONSTRAINT `fk_comic_reading_activity_file_id_comic_id_comic_files_id_comic_id_fk` FOREIGN KEY (`file_id`,`comic_id`) REFERENCES `comic_files`(`id`,`comic_id`),
 	CONSTRAINT `fk_comic_reading_activity_volume_id_comic_volumes_id_fk` FOREIGN KEY (`volume_id`) REFERENCES `comic_volumes`(`id`) ON DELETE SET NULL,
+	CONSTRAINT `fk_comic_reading_activity_volume_id_comic_id_comic_volumes_id_comic_id_fk` FOREIGN KEY (`volume_id`,`comic_id`) REFERENCES `comic_volumes`(`id`,`comic_id`),
 	CONSTRAINT `fk_comic_reading_activity_chapter_id_comic_chapters_id_fk` FOREIGN KEY (`chapter_id`) REFERENCES `comic_chapters`(`id`) ON DELETE SET NULL,
+	CONSTRAINT `fk_comic_reading_activity_chapter_id_comic_id_comic_chapters_id_comic_id_fk` FOREIGN KEY (`chapter_id`,`comic_id`) REFERENCES `comic_chapters`(`id`,`comic_id`),
 	CONSTRAINT "comic_reading_activity_start" CHECK("started_at" is null or (typeof("started_at") = 'integer' and "started_at" between -9007199254740991 and 9007199254740991)),
 	CONSTRAINT "comic_reading_activity_end" CHECK("ended_at" is null or (typeof("ended_at") = 'integer' and "ended_at" between -9007199254740991 and 9007199254740991)),
 	CONSTRAINT "comic_reading_activity_duration" CHECK("duration_ms" is null or (typeof("duration_ms") = 'integer' and "duration_ms" between 0 and 9007199254740991)),
@@ -513,13 +530,14 @@ CREATE TABLE `comic_records` (
 );
 --> statement-breakpoint
 CREATE TABLE `comic_volume_chapters` (
+	`comic_id` text NOT NULL,
 	`volume_id` text NOT NULL,
 	`chapter_id` text NOT NULL,
 	`number_label` text,
 	`sort_order` integer DEFAULT 0 NOT NULL,
 	CONSTRAINT `comic_volume_chapters_pk` PRIMARY KEY(`volume_id`, `chapter_id`),
-	CONSTRAINT `fk_comic_volume_chapters_volume_id_comic_volumes_id_fk` FOREIGN KEY (`volume_id`) REFERENCES `comic_volumes`(`id`) ON DELETE CASCADE,
-	CONSTRAINT `fk_comic_volume_chapters_chapter_id_comic_chapters_id_fk` FOREIGN KEY (`chapter_id`) REFERENCES `comic_chapters`(`id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_comic_volume_chapters_volume_id_comic_id_comic_volumes_id_comic_id_fk` FOREIGN KEY (`volume_id`,`comic_id`) REFERENCES `comic_volumes`(`id`,`comic_id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_comic_volume_chapters_chapter_id_comic_id_comic_chapters_id_comic_id_fk` FOREIGN KEY (`chapter_id`,`comic_id`) REFERENCES `comic_chapters`(`id`,`comic_id`) ON DELETE CASCADE,
 	CONSTRAINT "comic_volume_chapters_order" CHECK("sort_order" is null or (typeof("sort_order") = 'integer' and "sort_order" between 0 and 9007199254740991))
 );
 --> statement-breakpoint
@@ -566,6 +584,7 @@ CREATE TABLE `comic_volumes` (
 	`declared_chapter_count` integer,
 	CONSTRAINT `fk_comic_volumes_primary_image_id_attachments_id_fk` FOREIGN KEY (`primary_image_id`) REFERENCES `attachments`(`id`) ON DELETE RESTRICT,
 	CONSTRAINT `fk_comic_volumes_comic_id_comics_entry_id_fk` FOREIGN KEY (`comic_id`) REFERENCES `comics`(`entry_id`) ON DELETE CASCADE,
+	CONSTRAINT `comic_volumes_id_work` UNIQUE(`id`,`comic_id`),
 	CONSTRAINT "comic_volumes_id" CHECK(length("id") > 0),
 	CONSTRAINT "comic_volumes_order" CHECK("sort_order" is null or (typeof("sort_order") = 'integer' and "sort_order" between 0 and 9007199254740991)),
 	CONSTRAINT "comic_volumes_created" CHECK("created_at" is null or (typeof("created_at") = 'integer' and "created_at" between -9007199254740991 and 9007199254740991)),
@@ -731,17 +750,18 @@ CREATE TABLE `game_backup_recoveries` (
 	`target_path` text NOT NULL,
 	`target_kind` text NOT NULL,
 	`workspace_path` text NOT NULL UNIQUE,
-	`manifest_sha256` text NOT NULL,
+	`manifest_sha256` text,
 	`created_at` integer NOT NULL,
 	`resolution` text,
 	`resolved_at` integer,
 	CONSTRAINT `fk_game_backup_recoveries_game_id_games_entry_id_fk` FOREIGN KEY (`game_id`) REFERENCES `games`(`entry_id`) ON DELETE RESTRICT,
-	CONSTRAINT `fk_game_backup_recoveries_backup_id_game_save_backups_id_fk` FOREIGN KEY (`backup_id`) REFERENCES `game_save_backups`(`id`) ON DELETE RESTRICT,
-	CONSTRAINT `fk_game_backup_recoveries_protection_backup_id_game_save_backups_id_fk` FOREIGN KEY (`protection_backup_id`) REFERENCES `game_save_backups`(`id`) ON DELETE RESTRICT,
+	CONSTRAINT `fk_game_backup_recoveries_backup_id_game_id_game_save_backups_id_game_id_fk` FOREIGN KEY (`backup_id`,`game_id`) REFERENCES `game_save_backups`(`id`,`game_id`) ON DELETE RESTRICT,
+	CONSTRAINT `fk_game_backup_recoveries_protection_backup_id_game_id_game_save_backups_id_game_id_fk` FOREIGN KEY (`protection_backup_id`,`game_id`) REFERENCES `game_save_backups`(`id`,`game_id`) ON DELETE RESTRICT,
 	CONSTRAINT "game_backup_recoveries_kind" CHECK("target_kind" in ('file', 'directory')),
 	CONSTRAINT "game_backup_recoveries_resolution" CHECK("resolution" in ('restored', 'rolledBack', 'keptCurrent')),
 	CONSTRAINT "game_backup_recoveries_resolution_time" CHECK(("resolution" is null) = ("resolved_at" is null)),
-	CONSTRAINT "game_backup_recoveries_digest" CHECK(length("manifest_sha256") = 64 and "manifest_sha256" not glob '*[^0-9a-f]*')
+	CONSTRAINT "game_backup_recoveries_digest" CHECK("manifest_sha256" is null or (length("manifest_sha256") = 64 and "manifest_sha256" not glob '*[^0-9a-f]*')),
+	CONSTRAINT "game_backup_recoveries_published" CHECK("resolution" not in ('restored', 'rolledBack') or "manifest_sha256" is not null)
 );
 --> statement-breakpoint
 CREATE TABLE `game_directories` (
@@ -765,6 +785,7 @@ CREATE TABLE `game_launch_configs` (
 	`created_at` integer NOT NULL,
 	`updated_at` integer NOT NULL,
 	CONSTRAINT `fk_game_launch_configs_game_id_games_entry_id_fk` FOREIGN KEY (`game_id`) REFERENCES `games`(`entry_id`) ON DELETE CASCADE,
+	CONSTRAINT `game_launch_configs_id_work` UNIQUE(`id`,`game_id`),
 	CONSTRAINT "game_launch_configs_preferred_value" CHECK("is_preferred" in (0, 1)),
 	CONSTRAINT "game_launch_configs_order" CHECK("sort_order" is null or (typeof("sort_order") = 'integer' and "sort_order" between 0 and 9007199254740991))
 );
@@ -779,6 +800,7 @@ CREATE TABLE `game_play_activity` (
 	`launch_config_id` text,
 	CONSTRAINT `fk_game_play_activity_game_id_games_entry_id_fk` FOREIGN KEY (`game_id`) REFERENCES `games`(`entry_id`) ON DELETE CASCADE,
 	CONSTRAINT `fk_game_play_activity_launch_config_id_game_launch_configs_id_fk` FOREIGN KEY (`launch_config_id`) REFERENCES `game_launch_configs`(`id`) ON DELETE SET NULL,
+	CONSTRAINT `fk_game_play_activity_launch_config_id_game_id_game_launch_configs_id_game_id_fk` FOREIGN KEY (`launch_config_id`,`game_id`) REFERENCES `game_launch_configs`(`id`,`game_id`),
 	CONSTRAINT "game_play_activity_start" CHECK("started_at" is null or (typeof("started_at") = 'integer' and "started_at" between -9007199254740991 and 9007199254740991)),
 	CONSTRAINT "game_play_activity_end" CHECK("ended_at" is null or (typeof("ended_at") = 'integer' and "ended_at" between -9007199254740991 and 9007199254740991)),
 	CONSTRAINT "game_play_activity_duration" CHECK("duration_ms" is null or (typeof("duration_ms") = 'integer' and "duration_ms" between 0 and 9007199254740991)),
@@ -809,8 +831,10 @@ CREATE TABLE `game_save_backups` (
 	`is_locked` integer DEFAULT false NOT NULL,
 	`created_at` integer NOT NULL,
 	CONSTRAINT `fk_game_save_backups_game_id_games_entry_id_fk` FOREIGN KEY (`game_id`) REFERENCES `games`(`entry_id`) ON DELETE CASCADE,
-	CONSTRAINT `fk_game_save_backups_source_config_id_game_launch_configs_id_fk` FOREIGN KEY (`source_config_id`) REFERENCES `game_launch_configs`(`id`) ON DELETE SET NULL,
 	CONSTRAINT `fk_game_save_backups_archive_attachment_id_attachments_id_fk` FOREIGN KEY (`archive_attachment_id`) REFERENCES `attachments`(`id`) ON DELETE RESTRICT,
+	CONSTRAINT `fk_game_save_backups_source_config_id_game_launch_configs_id_fk` FOREIGN KEY (`source_config_id`) REFERENCES `game_launch_configs`(`id`) ON DELETE SET NULL,
+	CONSTRAINT `fk_game_save_backups_source_config_id_game_id_game_launch_configs_id_game_id_fk` FOREIGN KEY (`source_config_id`,`game_id`) REFERENCES `game_launch_configs`(`id`,`game_id`),
+	CONSTRAINT `game_save_backups_id_work` UNIQUE(`id`,`game_id`),
 	CONSTRAINT "game_save_backups_kind" CHECK("source_kind" in ('file', 'directory')),
 	CONSTRAINT "game_save_backups_reason" CHECK("reason" in ('manual', 'automatic', 'beforeRestore')),
 	CONSTRAINT "game_save_backups_locked" CHECK("is_locked" in (0, 1)),
@@ -922,8 +946,9 @@ CREATE TABLE `novel_annotations` (
 	`location` text NOT NULL,
 	`quote` text,
 	CONSTRAINT `fk_novel_annotations_novel_id_novels_entry_id_fk` FOREIGN KEY (`novel_id`) REFERENCES `novels`(`entry_id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_novel_annotations_image_id_attachments_id_fk` FOREIGN KEY (`image_id`) REFERENCES `attachments`(`id`) ON DELETE RESTRICT,
 	CONSTRAINT `fk_novel_annotations_file_id_novel_files_id_fk` FOREIGN KEY (`file_id`) REFERENCES `novel_files`(`id`) ON DELETE SET NULL,
-	CONSTRAINT `fk_novel_annotations_image_id_attachments_id_fk` FOREIGN KEY (`image_id`) REFERENCES `attachments`(`id`) ON DELETE RESTRICT
+	CONSTRAINT `fk_novel_annotations_file_id_novel_id_novel_files_id_novel_id_fk` FOREIGN KEY (`file_id`,`novel_id`) REFERENCES `novel_files`(`id`,`novel_id`)
 );
 --> statement-breakpoint
 CREATE TABLE `novel_directories` (
@@ -951,12 +976,13 @@ CREATE TABLE `novel_file_recognition_profiles` (
 );
 --> statement-breakpoint
 CREATE TABLE `novel_file_volumes` (
+	`novel_id` text NOT NULL,
 	`file_id` text NOT NULL,
 	`volume_id` text NOT NULL,
 	`is_preferred` integer DEFAULT false NOT NULL,
 	CONSTRAINT `novel_file_volumes_pk` PRIMARY KEY(`file_id`, `volume_id`),
-	CONSTRAINT `fk_novel_file_volumes_file_id_novel_files_id_fk` FOREIGN KEY (`file_id`) REFERENCES `novel_files`(`id`) ON DELETE CASCADE,
-	CONSTRAINT `fk_novel_file_volumes_volume_id_novel_volumes_id_fk` FOREIGN KEY (`volume_id`) REFERENCES `novel_volumes`(`id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_novel_file_volumes_file_id_novel_id_novel_files_id_novel_id_fk` FOREIGN KEY (`file_id`,`novel_id`) REFERENCES `novel_files`(`id`,`novel_id`) ON DELETE CASCADE,
+	CONSTRAINT `fk_novel_file_volumes_volume_id_novel_id_novel_volumes_id_novel_id_fk` FOREIGN KEY (`volume_id`,`novel_id`) REFERENCES `novel_volumes`(`id`,`novel_id`) ON DELETE CASCADE,
 	CONSTRAINT "novel_file_volumes_preferred_value" CHECK("is_preferred" in (0, 1))
 );
 --> statement-breakpoint
@@ -977,6 +1003,7 @@ CREATE TABLE `novel_files` (
 	`text_encoding` text,
 	`preferences` text,
 	CONSTRAINT `fk_novel_files_novel_id_novels_entry_id_fk` FOREIGN KEY (`novel_id`) REFERENCES `novels`(`entry_id`) ON DELETE CASCADE,
+	CONSTRAINT `novel_files_id_work` UNIQUE(`id`,`novel_id`),
 	CONSTRAINT `novel_files_path` UNIQUE(`novel_id`,`path`),
 	CONSTRAINT "novel_files_preferred_value" CHECK("is_preferred" in (0, 1)),
 	CONSTRAINT "novel_files_association_mode" CHECK("association_mode" in ('automatic', 'manual')),
@@ -995,7 +1022,9 @@ CREATE TABLE `novel_reading_activity` (
 	`volume_id` text,
 	CONSTRAINT `fk_novel_reading_activity_novel_id_novels_entry_id_fk` FOREIGN KEY (`novel_id`) REFERENCES `novels`(`entry_id`) ON DELETE CASCADE,
 	CONSTRAINT `fk_novel_reading_activity_file_id_novel_files_id_fk` FOREIGN KEY (`file_id`) REFERENCES `novel_files`(`id`) ON DELETE SET NULL,
+	CONSTRAINT `fk_novel_reading_activity_file_id_novel_id_novel_files_id_novel_id_fk` FOREIGN KEY (`file_id`,`novel_id`) REFERENCES `novel_files`(`id`,`novel_id`),
 	CONSTRAINT `fk_novel_reading_activity_volume_id_novel_volumes_id_fk` FOREIGN KEY (`volume_id`) REFERENCES `novel_volumes`(`id`) ON DELETE SET NULL,
+	CONSTRAINT `fk_novel_reading_activity_volume_id_novel_id_novel_volumes_id_novel_id_fk` FOREIGN KEY (`volume_id`,`novel_id`) REFERENCES `novel_volumes`(`id`,`novel_id`),
 	CONSTRAINT "novel_reading_activity_start" CHECK("started_at" is null or (typeof("started_at") = 'integer' and "started_at" between -9007199254740991 and 9007199254740991)),
 	CONSTRAINT "novel_reading_activity_end" CHECK("ended_at" is null or (typeof("ended_at") = 'integer' and "ended_at" between -9007199254740991 and 9007199254740991)),
 	CONSTRAINT "novel_reading_activity_duration" CHECK("duration_ms" is null or (typeof("duration_ms") = 'integer' and "duration_ms" between 0 and 9007199254740991)),
@@ -1059,6 +1088,7 @@ CREATE TABLE `novel_volumes` (
 	`declared_page_count` integer,
 	CONSTRAINT `fk_novel_volumes_primary_image_id_attachments_id_fk` FOREIGN KEY (`primary_image_id`) REFERENCES `attachments`(`id`) ON DELETE RESTRICT,
 	CONSTRAINT `fk_novel_volumes_novel_id_novels_entry_id_fk` FOREIGN KEY (`novel_id`) REFERENCES `novels`(`entry_id`) ON DELETE CASCADE,
+	CONSTRAINT `novel_volumes_id_work` UNIQUE(`id`,`novel_id`),
 	CONSTRAINT "novel_volumes_id" CHECK(length("id") > 0),
 	CONSTRAINT "novel_volumes_order" CHECK("sort_order" is null or (typeof("sort_order") = 'integer' and "sort_order" between 0 and 9007199254740991)),
 	CONSTRAINT "novel_volumes_created" CHECK("created_at" is null or (typeof("created_at") = 'integer' and "created_at" between -9007199254740991 and 9007199254740991)),
@@ -1231,11 +1261,13 @@ CREATE TABLE `work_character_links` (
 CREATE TABLE `work_completion_records` (
 	`id` text PRIMARY KEY NOT NULL,
 	`work_id` text NOT NULL,
+	`work_type` text NOT NULL,
 	`completed_date` text,
 	`note` text,
 	`created_at` integer NOT NULL,
 	`updated_at` integer NOT NULL,
-	CONSTRAINT `fk_work_completion_records_work_id_entries_id_fk` FOREIGN KEY (`work_id`) REFERENCES `entries`(`id`) ON DELETE CASCADE
+	CONSTRAINT `fk_work_completion_records_work_id_work_type_entries_id_type_fk` FOREIGN KEY (`work_id`,`work_type`) REFERENCES `entries`(`id`,`type`) ON DELETE CASCADE,
+	CONSTRAINT "work_completion_records_work_type" CHECK("work_type" in ('game', 'anime', 'comic', 'novel'))
 );
 --> statement-breakpoint
 CREATE TABLE `work_organization_links` (

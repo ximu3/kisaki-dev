@@ -51,7 +51,7 @@ export function TaskTable(props: TaskTableProps) {
     return api.t(props.active ? 'runtime.noActive' : 'runtime.noFinished')
   }
 
-  async function remove(row: TaskRunSummary) {
+  async function remove(row: TaskRunSummary, viewport: HTMLDivElement | undefined) {
     if (
       await props.confirm(
         api.t('runtime.deleteTaskAction'),
@@ -61,7 +61,7 @@ export function TaskTable(props: TaskTableProps) {
     ) {
       const last = query.total() === 1
       await api.call('tasks.delete', { taskRunId: row.id })
-      const target = last ? region : (region.querySelector('tbody') ?? region)
+      const target = !last && viewport?.isConnected ? viewport : region
       target.focus({ preventScroll: true })
     }
   }
@@ -101,7 +101,10 @@ export function TaskTable(props: TaskTableProps) {
           />
         </Match>
         <Match when={query.total()}>
-          <RunTable {...props} remove={(row) => void remove(row).catch(props.report)} />
+          <RunTable
+            {...props}
+            remove={(row, viewport) => void remove(row, viewport).catch(props.report)}
+          />
         </Match>
       </Switch>
     </div>
@@ -109,16 +112,20 @@ export function TaskTable(props: TaskTableProps) {
 }
 
 /** Connects the table body's geometry to bounded reads and the mounted rows to real task IDs. */
-function RunTable(props: TaskTableProps & { remove: (record: TaskRunSummary) => void }) {
+function RunTable(
+  props: TaskTableProps & {
+    remove: (record: TaskRunSummary, viewport: HTMLDivElement | undefined) => void
+  },
+) {
   const { api, query } = props
-  const [viewport, setViewport] = createSignal<HTMLTableSectionElement>()
-  let header!: HTMLTableRowElement
+  const [viewport, setViewport] = createSignal<HTMLDivElement>()
+  const [header, setHeader] = createSignal<HTMLTableSectionElement>()
   const estimate = () =>
     2.5 * Number.parseFloat(getComputedStyle(document.documentElement).fontSize)
   const [rowHeight, setRowHeight] = createSignal(estimate())
   onSettled(() => {
     const resize = new ResizeObserver(() => setRowHeight(estimate()))
-    resize.observe(header)
+    resize.observe(header()!)
     return () => resize.disconnect()
   })
 
@@ -152,6 +159,9 @@ function RunTable(props: TaskTableProps & { remove: (record: TaskRunSummary) => 
     },
     get viewport() {
       return viewport()
+    },
+    get stickyHeader() {
+      return header()
     },
     get enabled() {
       return props.visible
@@ -187,7 +197,8 @@ function RunTable(props: TaskTableProps & { remove: (record: TaskRunSummary) => 
         props.active ? 'minmax(0, 1fr) 10rem 10rem 7rem 9.5rem' : 'minmax(0, 1fr) 6rem 7rem 7rem'
       }
       minWidth={props.active ? '47rem' : '34rem'}
-      bodyRef={setViewport}
+      headerRef={setHeader}
+      viewportRef={setViewport}
       aria-label={api.t('runtime.history')}
       aria-rowcount={(query.total() ?? 0) + 1}
       onFocusIn={focusRow}
@@ -197,13 +208,7 @@ function RunTable(props: TaskTableProps & { remove: (record: TaskRunSummary) => 
         }
       }}
       header={
-        <TableRow
-          ref={(element) => {
-            header = element
-          }}
-          class="h-8"
-          aria-rowindex={1}
-        >
+        <TableRow class="h-8" aria-rowindex={1}>
           <TableHead scope="col">{api.t('runtime.task')}</TableHead>
           <Show when={props.active}>
             <TableHead scope="col">{api.t('runtime.phase')}</TableHead>
@@ -228,7 +233,7 @@ function RunTable(props: TaskTableProps & { remove: (record: TaskRunSummary) => 
             item={item()}
             row={recordAt(item().index)}
             open={props.open}
-            remove={props.remove}
+            remove={(record) => props.remove(record, viewport())}
             report={props.report}
           />
         )}

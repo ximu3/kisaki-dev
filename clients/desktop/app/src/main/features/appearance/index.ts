@@ -394,6 +394,8 @@ export function createAppearance(
       appearanceChanged.emit()
     },
 
+    endPreview: () => previews.close(),
+
     preview: (
       input: Parameters<typeof previews.open>[0],
       options?: CallOptions,
@@ -417,41 +419,58 @@ export function createAppearance(
         '--font-mono': defaults[state.colorScheme]['--font-mono'],
       }
       const faces: ViewFontFace[] = []
+      const fontFamilies: Partial<Record<FontTokenName, string>> = {}
       const holds: Array<{ dispose(): Promise<void> }> = []
       const issues = [...state.issues]
+      let systemFonts: ReturnType<typeof fonts.listSystem> | undefined
       const dispose = async () => {
         await releaseAll(holds.map((hold) => () => hold.dispose()))
       }
       try {
         for (const slot of slots) {
           const font = state.tokens[slot]
-          if (font.type === 'system') {
-            css[slot] = JSON.stringify(font.family) + ', ' + css[slot]
-          } else if (font.type !== 'default') {
-            try {
+          if (font.type === 'default') {
+            continue
+          }
+          try {
+            if (font.type === 'system') {
+              const installed = await (systemFonts ??= fonts.listSystem(options))
+              if (!installed.some((family) => family.toLowerCase() === font.family.toLowerCase())) {
+                throw new DesktopError('NotFound', 'The selected system font is unavailable')
+              }
+              css[slot] = JSON.stringify(font.family) + ', ' + css[slot]
+            } else {
               const read = state.theme
                 ? await acquire(font, extensions.get(catalogKey(state.theme))?.read, options)
                 : null
               const files = read?.files ?? preview?.resources[slot]
-              if (!files) {
-                continue
-              }
               try {
+                if (!files?.length) {
+                  throw new DesktopError(
+                    'FileUnavailable',
+                    'The selected font has no available files',
+                  )
+                }
                 const bound = await bind(files)
                 holds.push(bound)
+                fontFamilies[slot] = bound.family
                 css[slot] = bound.family + ', ' + css[slot]
                 faces.push(...bound.faces)
               } finally {
                 await read?.dispose()
               }
-            } catch {
-              issues.push({
-                code: 'fontUnavailable',
-                slot,
-                font,
-                error: { code: 'FileUnavailable', message: 'The selected font is unavailable' },
-              })
             }
+          } catch (cause) {
+            options?.signal?.throwIfAborted()
+            issues.push({
+              code: 'fontUnavailable',
+              slot,
+              font,
+              error:
+                cause instanceof DesktopError
+                  ? { code: cause.code, message: cause.message }
+                  : { code: 'FileUnavailable', message: 'The selected font is unavailable' },
+            })
           }
         }
         options?.signal?.throwIfAborted()
@@ -461,7 +480,7 @@ export function createAppearance(
           cssVariables: css,
           fontFaces: faces,
         }
-        return { appearance, issues, dispose }
+        return { appearance, fontFamilies, issues, dispose }
       } catch (error) {
         await dispose()
         throw error

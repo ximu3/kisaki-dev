@@ -26,6 +26,7 @@ export function Controls(): JSX.Element {
   const [external, setExternal] = createSignal('original')
   const [disabled, setDisabled] = createSignal(false)
   const [cancelReset, setCancelReset] = createSignal(false)
+  const [controlStoredChoice, setControlStoredChoice] = createSignal(true)
   window.fixture.setExternal = setExternal
 
   return (
@@ -161,7 +162,12 @@ export function Controls(): JSX.Element {
         </div>
       </form>
       <form id="fixed-choices">
-        <RadioGroup label="Stored choice" name="stored" value="a">
+        <RadioGroup
+          label="Stored choice"
+          name="stored"
+          {...(controlStoredChoice() && { value: 'a' })}
+          defaultValue="a"
+        >
           <Radio value="a" label="First stored" />
           <Radio value="b" label="Second stored" />
         </RadioGroup>
@@ -175,6 +181,9 @@ export function Controls(): JSX.Element {
           ]}
         />
       </form>
+      <Button variant="text" onClick={() => setControlStoredChoice(false)}>
+        Release stored choice
+      </Button>
       <Field id="external">
         <FieldLabel>External controlled field</FieldLabel>
         <Input
@@ -223,7 +232,7 @@ export function Validation(): JSX.Element {
 
   // The selected field only exists after its tab renders.
   const locate = (id: string) => {
-    setTab(id === 'title' ? 'basic' : 'detail')
+    setTab(id === 'title' ? 'basic' : 'long detail')
     queueMicrotask(() => document.getElementById(id)?.focus())
   }
 
@@ -246,7 +255,7 @@ export function Validation(): JSX.Element {
         <Tabs value={tab()} onValueChange={setTab}>
           <TabList aria-label="Fields">
             <Tab value="basic">Basic</Tab>
-            <Tab value="detail">Detail</Tab>
+            <Tab value="long detail">Detail</Tab>
           </TabList>
           <TabPanel value="basic">
             <Field id="title" required>
@@ -258,7 +267,7 @@ export function Validation(): JSX.Element {
               <FieldError>{titleError()}</FieldError>
             </Field>
           </TabPanel>
-          <TabPanel value="detail">
+          <TabPanel value="long detail">
             <Field id="description" required>
               <FieldLabel>Description</FieldLabel>
               <Textarea value={description()} onValueChange={setDescription} />

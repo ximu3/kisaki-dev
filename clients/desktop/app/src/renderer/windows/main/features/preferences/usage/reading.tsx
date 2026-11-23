@@ -171,7 +171,7 @@ export function ReadingFields(props: {
                   max={2}
                   unit="×"
                   step="any"
-                  onValueChange={(v) => draft.write(key, v)}
+                  onValueChange={(v) => draft.writeNumber(key, v)}
                   increaseLabel={t('runtime.increase')}
                   decreaseLabel={t('runtime.decrease')}
                 />
@@ -234,7 +234,7 @@ export function ReadingFields(props: {
                   unit={unit}
                   max={name === 'pagesPerView' ? 2 : undefined}
                   step={name === 'pagesPerView' ? 1 : 'any'}
-                  onValueChange={(v) => draft.write(key, v)}
+                  onValueChange={(v) => draft.writeNumber(key, v)}
                   increaseLabel={t('runtime.increase')}
                   decreaseLabel={t('runtime.decrease')}
                 />

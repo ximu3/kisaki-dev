@@ -33,7 +33,6 @@ export interface AnimePlaybackPreferences {
   readonly subtitleScale: number
 
   readonly autoAdvance: boolean
-  readonly autoMarkWatched: boolean
 }
 
 /** Original-page grouping and display transforms independent of source page identity and pixels. */
@@ -174,7 +173,6 @@ export const playbackPreferenceEntries = {
   subtitleScale: v.pipe(positive, v.maxValue(100)),
 
   autoAdvance: v.boolean(),
-  autoMarkWatched: v.boolean(),
 }
 
 export const readingPageEntries = {

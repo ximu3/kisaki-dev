@@ -23,6 +23,7 @@ interface WindowHost {
   ready(navigate: (target: NativeViewTarget) => Promise<void>): Promise<void>
   /** Withdraws the receiver when its document leaves. */
   disconnected(): void
+  unavailable(error: Error): void
 }
 
 /** Creates one native window with its document session and closes every old endpoint on navigation. */
@@ -98,8 +99,10 @@ export async function createWindow(
   }
   geometry.restore(window)
 
-  const firstReady = Promise.withResolvers<void>()
-  void firstReady.promise.catch(() => {})
+  const firstReady = Promise.withResolvers<'ready' | 'closed'>()
+  let started = false
+  let failed = false
+  let startupTimer: NodeJS.Timeout | undefined
   let document: ReturnType<typeof openWindowDocument> | undefined
   let documentCleanup = Promise.resolve()
 
@@ -148,14 +151,62 @@ export async function createWindow(
     documentCleanup = releaseAll([() => previous, () => releasing])
     void documentCleanup.catch(console.error)
   }
-  contents.on('did-start-navigation', (_event, _url, inPlace, mainFrame) => {
-    if (mainFrame && !inPlace) {
+
+  function failWindow(cause: unknown) {
+    if (destroying || failed) {
+      return
+    }
+    failed = true
+    clearTimeout(startupTimer)
+    disconnectDocument()
+    if (started) {
+      host.unavailable(cause instanceof Error ? cause : new Error(String(cause)))
+    } else {
+      firstReady.reject(cause)
+    }
+  }
+
+  function waitForDocument() {
+    clearTimeout(startupTimer)
+    startupTimer = setTimeout(
+      () => failWindow(new Error(application.i18n.t('runtime.windowStartupTimeout'))),
+      devUrl ? 90_000 : 30_000,
+    )
+  }
+
+  // A development document can recover through HMR after the app has started.
+  const failLoading = (cause: unknown) => {
+    if (!devUrl || !started) {
+      failWindow(cause)
+    }
+  }
+  contents.on('did-start-navigation', ({ isMainFrame, isSameDocument }) => {
+    if (isMainFrame && !isSameDocument) {
       disconnectDocument()
+      if (started && !devUrl && !failed && !destroying) {
+        waitForDocument()
+      }
     }
   })
-  contents.on('render-process-gone', () => {
-    disconnectDocument()
-    firstReady.reject(new Error('The window document exited'))
+  contents.on('did-finish-load', () => void application.log.record('document-loaded'))
+  contents.on('did-fail-load', (_event, code, reason, url, mainFrame) => {
+    // A navigation withdrawn in favor of another document reports ERR_ABORTED.
+    if (mainFrame && url === documentUrl && code !== -3) {
+      failLoading(new Error(application.i18n.t('runtime.windowDocumentFailed', { reason })))
+    }
+  })
+  contents.on('preload-error', (_event, _path, error) => failLoading(error))
+  contents.ipc.on('kisaki-entry-failed', (event) => {
+    if (
+      !devUrl &&
+      event.senderFrame === contents.mainFrame &&
+      event.senderFrame.url === documentUrl
+    ) {
+      failWindow(new Error(application.i18n.t('runtime.windowEntryFailed')))
+    }
+  })
+  contents.on('render-process-gone', (_event, details) => {
+    failWindow(new Error(application.i18n.t('runtime.windowExited', { reason: details.reason })))
   })
   window.on('close', (event) => {
     if (!destroying) {
@@ -164,12 +215,13 @@ export async function createWindow(
     }
   })
   window.once('closed', () => {
-    disconnectDocument()
-    firstReady.reject(new Error('The window was closed during startup'))
+    failWindow(new Error(application.i18n.t('runtime.windowClosedUnexpectedly')))
   })
 
   contents.ipc.on('kisaki-connect', (event, requestedKind: unknown) => {
     if (
+      failed ||
+      destroying ||
       event.senderFrame !== contents.mainFrame ||
       event.senderFrame.url !== documentUrl ||
       requestedKind !== kind ||
@@ -190,8 +242,18 @@ export async function createWindow(
       isAccepting: () => accepting,
       trackCall,
       onNavigationReady: (navigate) => host.ready(navigate),
-      onReady: () => firstReady.resolve(),
-      onStartupError: (cause) => firstReady.reject(cause),
+      onReady: () => {
+        if (document === endpoint) {
+          clearTimeout(startupTimer)
+          started = true
+          firstReady.resolve('ready')
+        }
+      },
+      onStartupError: (cause) => {
+        if (document === endpoint) {
+          failLoading(cause)
+        }
+      },
     })
     document = endpoint
     void endpoint.rpc.closed.then(() => {
@@ -205,6 +267,8 @@ export async function createWindow(
   /** Ends the native window after its document's accepted writes and resources finish. */
   async function destroy() {
     destroying = true
+    clearTimeout(startupTimer)
+    firstReady.resolve('closed')
     await releaseAll([
       () => overlaySettings?.dispose(),
       async () => {
@@ -246,14 +310,9 @@ export async function createWindow(
       })
     : undefined
 
-  try {
-    void application.log.record('document-loading')
-    await window.loadURL(documentUrl)
-    void application.log.record('document-loaded')
-  } catch (error) {
-    await dispose()
-    throw error
-  }
+  void application.log.record('document-loading')
+  waitForDocument()
+  void window.loadURL(documentUrl)
   return {
     window,
     dispose,

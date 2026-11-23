@@ -2,6 +2,10 @@
 
 2026-11-11，在 Windows x64、Node 24.11.1、pnpm 11.11.0、Solid 1.9.16 和 TypeScript 6.0.3 下验证 `@kisaki3/desktop-ui@0.1.0-dev.0`。浏览器为 Playwright 1.64.1 的 Chromium 156.0.8078.4；实际 Electron 45.0.0 使用 Chromium 156.0.8078.48、Node 24.22.0。范围为 [W05](../../../implementation/work-packages.md#w05) 的公共组件、独立制品及浏览器交互。
 
+## 颜色输入、浮层和粘性表头
+
+2026-11-23，Windows x64、Chromium 156.0.8078.4。颜色输入拒绝无法绘制的转义值 `red\0`，合法的转义颜色、宽色域和透明色仍可编辑。Popover 打开期间将宿主从横排切为竖排，浮层仍在触发按钮的首选物理侧。在 CSS `zoom: 1.5` 的 200 px 视口内，40 px 的粘性表头占据 40 个布局像素，中间行对齐实测滚动 60 px。完整公共 UI 浏览器用例 16 项通过。[表单](../../../../clients/desktop/packages/desktop-ui/tests/browser/forms.test.ts) · [浮层](../../../../clients/desktop/packages/desktop-ui/tests/browser/overlays.test.ts) · [表格](../../../../clients/desktop/packages/desktop-ui/tests/browser/table.test.ts)
+
 ## 交付与检查
 
 组件从 32 个家族子路径导出。家族拥有自己的部件、Props 与交互，`src/internal` 拥有共同度量的使用、输入与动作表面、选项行、选项集合、Tooltip、模态宿主及定位。所有 CSS Modules 的实际类名引用与家族样式归属已逐项核对。

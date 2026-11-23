@@ -23,11 +23,28 @@ import {
   TableRow,
   TableSpacer,
 } from '@kisaki3/desktop-ui/table'
+import { createVirtualizer } from '@kisaki3/desktop-ui/virtualization'
 import type {} from './api.js'
 
 export function Gallery(): JSX.Element {
   const [expanded, setExpanded] = createSignal(false)
+  const [direction, setDirection] = createSignal<'ltr' | 'rtl'>('ltr')
+  const [viewport, setViewport] = createSignal<HTMLDivElement>()
+  const [header, setHeader] = createSignal<HTMLTableSectionElement>()
+  const rowHeights = [100, 800, 100]
+  const virtualizer = createVirtualizer({
+    count: rowHeights.length,
+    get viewport() {
+      return viewport()
+    },
+    get stickyHeader() {
+      return header()
+    },
+    estimateSize: (index) => rowHeights[index]!,
+  })
   window.fixture.requestDisclosure = setExpanded
+  window.fixture.setSampleTableDirection = setDirection
+  window.fixture.scrollSampleToEnd = (index) => virtualizer.scrollToIndex(index, 'end')
 
   return (
     <section id="gallery">
@@ -78,6 +95,9 @@ export function Gallery(): JSX.Element {
       <ScrollableTable
         aria-label="Scrollable sample table"
         aria-rowcount={28}
+        dir={direction()}
+        headerRef={setHeader}
+        viewportRef={setViewport}
         columns="minmax(0, 1fr) 8rem"
         minWidth="42rem"
         style={{ height: '9rem' }}
@@ -90,12 +110,12 @@ export function Gallery(): JSX.Element {
           </TableRow>
         }
       >
-        <TableRow aria-rowindex={2}>
+        <TableRow aria-rowindex={2} style={{ height: rowHeights[0] + 'px' }}>
           <TableHead scope="row">First sample</TableHead>
           <TableCell>Ready</TableCell>
         </TableRow>
-        <TableSpacer height={800} />
-        <TableRow aria-rowindex={28}>
+        <TableSpacer height={rowHeights[1]!} />
+        <TableRow aria-rowindex={28} style={{ height: rowHeights[2] + 'px' }}>
           <TableHead scope="row">Last sample</TableHead>
           <TableCell>Ready</TableCell>
         </TableRow>
