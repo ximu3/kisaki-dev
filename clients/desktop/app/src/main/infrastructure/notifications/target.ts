@@ -1,5 +1,3 @@
-/** @fileoverview Carries one validated navigation target in the notification owned by the OS. */
-
 import { randomUUID } from 'node:crypto'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { parseNativeViewTarget, type NativeViewTarget } from '@kisaki3/desktop-contracts/ui'

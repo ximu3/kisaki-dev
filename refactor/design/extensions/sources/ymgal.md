@@ -1,14 +1,12 @@
 # YMGal 接入设计
 
-YMGal 通过在线 API 提供游戏、角色、人物与组织资料。本文定义对象、字段、关系、读取上下文及源码组织。
+YMGal 通过官方开放 API 提供游戏、角色、人物与组织资料。
 
 <a id="ymgal-scope"></a>
 
 ## 在线接入范围
 
-扩展提供四类对象的在线资料与应用访问配置。
-
-资料通过官方开放 API 读取，应用令牌使用 public scope，不代表用户登录。公开默认配置和自定义应用凭据分别管理；只提供“资料采集”一个 Webview 页面，包含配置保存、连接测试及连接结果。配置保存与联网测试分别执行，失败不丢弃格式合法的设置。
+应用令牌使用 public scope，用于公开资料读取。“资料采集”页面可采用公开默认配置或保存自定义应用凭据。保存设置与连接测试分别执行，测试失败保留格式合法的设置。
 
 <a id="identities"></a>
 
@@ -128,8 +126,6 @@ Node 客户端持有应用令牌、请求队列与短期缓存；自定义凭据
 
 ## 源码组织
 
-使用 Node + Webview 模板，各模块直接承担实际职责：
-
 ```text
 src/
 ├── node/
@@ -152,7 +148,7 @@ src/
 ├── webview/
 │   ├── index.html
 │   ├── entry.tsx
-│   ├── pages/metadata/
+│   ├── metadata.tsx
 │   └── styles.css
 └── shared/
     ├── contracts.ts
@@ -165,6 +161,6 @@ client 负责来源 HTTP、应用令牌、串行请求和响应解析；metadata
 
 ## 证据与验收
 
-来源依据见[公开接口核验](../../../verification/evidence/ymgal/public-contracts.md)及[字段与读取路径核验](../../../verification/evidence/ymgal/metadata-mapping.md)。完整实现按下列场景验收。
+来源依据见[公开接口核验](../../../verification/evidence/ymgal/public-contracts.md)及[字段与读取路径核验](../../../verification/evidence/ymgal/metadata-mapping.md)。
 
 实现须覆盖四类身份和类型冲突、oa666、无年份生日、主名与署名、仅游戏名称搜索及完整续页、机构反查后的开发方核对、缺少人物与角色反查时的能力拒绝、按 refs 读取、无图、HTTP 200 失败、令牌失效与限流。预设按已声明能力安排人物和角色读取，人物与角色根上下文的反向关系请求明确报告不可用。

@@ -1,16 +1,9 @@
-/**
- * @fileoverview Verifies a prepared desktop runtime, packages its target carriers and
- * records the resulting artifact identities.
- */
-
 import { copyFile, cp, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { parseDocument } from 'yaml'
 import { appRoot, buildDirectory, repositoryRoot } from '../lib/paths'
-import { hostTarget } from '../lib/targets'
-import { runtimeFiles } from '../build/manifest'
-import type { DesktopBuild } from '../build/manifest'
-import type { DesktopTarget } from '../lib/targets'
+import { hostTarget, type DesktopTarget } from '../lib/targets'
+import { runtimeFiles, type DesktopBuild } from '../build/manifest'
 import type { DistributionKind, DistributionManifest } from './distribution'
 import { applicationIdentities } from '@kisaki3/desktop-contracts/app'
 import { sha256 } from '../lib/sha256'
@@ -18,7 +11,6 @@ import { removeOutputs } from '@kisaki3/tooling/output'
 import { runPnpm } from '@kisaki3/tooling/process'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
-/** Target and build identity with digests of completed desktop packaging outputs. */
 export interface ArtifactReceipt {
   target: DesktopTarget
   version: string
@@ -28,12 +20,9 @@ export interface ArtifactReceipt {
   files: { path: string; sha256: string }[]
 }
 
-/** Verified runtime and owned working directories for one packaging operation. */
 interface PackagingContext {
   build: DesktopBuild
-  /** Temporary runtime copy consumed by electron-builder. */
   staging: string
-  /** Disposable directory receiving installers, archives and their completion receipt. */
   output: string
   testOnly: boolean
 }
@@ -55,32 +44,23 @@ export async function packageDesktop(
   }
 
   const runtime = buildDirectory(target)
-  const desktop = JSON.parse(await readFile(join(runtime, 'build.json'), 'utf8')) as DesktopBuild
+  const manifest = await readFile(join(runtime, 'build.json'), 'utf8')
+  const desktop = JSON.parse(manifest) as DesktopBuild
   if (desktop.schemaVersion !== 1 || desktop.target !== target) {
     throw new Error('Desktop packaging requires a build matching the selected target')
   }
 
-  const actual = await runtimeFiles(runtime)
-  if (Object.keys(actual).length !== Object.keys(desktop.files).length) {
-    throw new Error('Desktop runtime file set changed before packaging')
-  }
-  for (const [file, digest] of Object.entries(desktop.files)) {
-    if (actual[file] !== digest) {
-      throw new Error(`Desktop build changed before packaging: ${file}`)
-    }
-  }
-
   const output = join(appRoot, 'dist', target)
-  await removeOutputs(appRoot, [output], signal)
-  await mkdir(output, { recursive: true })
   const staging = await mkdtemp(join(appRoot, 'out', 'package-'))
-  /** Removes the temporary runtime copy used by the packager. */
   const cleanup = () => rm(staging, { recursive: true, force: true })
 
   try {
-    await cp(runtime, staging, { recursive: true })
+    await cp(runtime, staging, { recursive: true, dereference: true })
+    await verifyStagedRuntime(staging, manifest, desktop.files)
     await copyFile(join(repositoryRoot, 'LICENSE'), join(staging, 'LICENSE'))
 
+    await removeOutputs(appRoot, [output], signal)
+    await mkdir(output, { recursive: true })
     const context = { build: desktop, staging, output, testOnly }
     const configPath = await writeBuilderConfig(context)
 
@@ -114,6 +94,26 @@ export async function packageDesktop(
   await cleanup()
 
   return join(output, 'artifacts.json')
+}
+
+async function verifyStagedRuntime(
+  staging: string,
+  manifest: string,
+  expected: DesktopBuild['files'],
+) {
+  if ((await readFile(join(staging, 'build.json'), 'utf8')) !== manifest) {
+    throw new Error('Desktop build manifest changed before packaging')
+  }
+
+  const actual = await runtimeFiles(staging)
+  if (Object.keys(actual).length !== Object.keys(expected).length) {
+    throw new Error('Desktop runtime file set changed before packaging')
+  }
+  for (const [file, digest] of Object.entries(expected)) {
+    if (actual[file] !== digest) {
+      throw new Error(`Desktop build changed before packaging: ${file}`)
+    }
+  }
 }
 
 /**
@@ -163,12 +163,6 @@ async function writeBuilderConfig(context: PackagingContext): Promise<string> {
   return configPath
 }
 
-/**
- * Writes carrier identity and builds the requested installer or archive formats.
- *
- * Uses explicit project signing policy, disables publication and waits for electron-builder to
- * exit.
- */
 async function packageCarrier(
   context: PackagingContext,
   configPath: string,
@@ -205,11 +199,6 @@ async function packageCarrier(
   )
 }
 
-/**
- * Hashes completed carrier and update files and writes the completion receipt.
- *
- * Rejects output with no recognized final files.
- */
 async function writeArtifactReceipt(context: PackagingContext): Promise<void> {
   const names = (await readdir(context.output)).filter(
     (name) =>

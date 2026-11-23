@@ -1,5 +1,3 @@
-/** @fileoverview Declares the fixed preference singleton using defaults supplied by the product owner. */
-
 import { sql } from 'drizzle-orm'
 import { blob, check, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import type { Preferences } from '@kisaki3/desktop-contracts/preferences'

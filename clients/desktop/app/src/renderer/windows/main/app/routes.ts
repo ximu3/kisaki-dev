@@ -1,5 +1,3 @@
-/** @fileoverview Describes registered native pages and their entry destinations. */
-
 import type { Component } from 'solid-js'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 import type { MainClient } from '../../../infrastructure/api'

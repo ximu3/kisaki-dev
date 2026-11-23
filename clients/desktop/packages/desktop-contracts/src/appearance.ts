@@ -1,19 +1,8 @@
-/** @fileoverview Combines the shared visual vocabulary with desktop theme identity, font resources and preview lifetimes. */
-
-import type { FontRef, FontFileMetadata } from './fonts'
 import type { NonEmptyArray, CallOptions, Disposable, Listener } from './operations'
-import type {
-  VisualTokenName,
-  FontTokenName,
-  ColorScheme,
-  TokenValues,
-  TokenName,
-} from '@kisaki3/desktop-appearance/tokens'
-import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
 import type { ReadResourceRef } from './resources'
-import type { ErrorSummary } from './errors'
 import * as v from 'valibot'
 import {
+  fromParser,
   id,
   parseExternalValue,
   integer,
@@ -24,11 +13,22 @@ import {
   validateExpectedKeys,
   text,
 } from './validation'
-import { parseId, normalizeLocalizedText } from '@kisaki3/extension-distribution/metadata'
+import {
+  parseId,
+  normalizeLocalizedText,
+  type LocalizedText,
+} from '@kisaki3/extension-distribution/metadata'
 import { parsePackagePath } from '@kisaki3/extension-distribution/manifest'
-import { parseFontRef } from './fonts'
-import { tokens } from '@kisaki3/desktop-appearance/tokens'
-import { DesktopError } from './errors'
+import { parseFontRef, type FontRef, type FontFileMetadata } from './fonts'
+import {
+  tokens,
+  type VisualTokenName,
+  type FontTokenName,
+  type ColorScheme,
+  type TokenValues,
+  type TokenName,
+} from '@kisaki3/desktop-appearance/tokens'
+import { DesktopError, type ErrorSummary } from './errors'
 import { parseTokenValue, parseTokenValues } from '@kisaki3/desktop-appearance/values'
 
 /** A theme's stable identity and origin, retained even while its definition is unavailable. */
@@ -43,13 +43,11 @@ export interface ExtensionFontFile {
   readonly path: string
 }
 
-/** A theme slot's default, shared font or extension-private file selection. */
 export type ThemeFont =
   | { readonly type: 'default' }
   | FontRef
   | { readonly type: 'extension'; readonly files: NonEmptyArray<ExtensionFontFile> }
 
-/** A user theme's font selection, independent of extension-private resource lifetimes. */
 export type UserThemeFont = Exclude<ThemeFont, { readonly type: 'extension' }>
 
 /** A complete visual branch with stable desktop font selections in the shared font slots. */
@@ -62,10 +60,8 @@ export type UserAppearanceTokens = Readonly<
   Record<VisualTokenName, string> & Record<FontTokenName, UserThemeFont>
 >
 
-/** Saved mode choices shared by appearance validation and controls. */
 export const appearanceModes = ['system', 'light', 'dark'] as const
 
-/** The saved theme identity, color-mode choice and interface scale. */
 export interface AppearancePreferences {
   readonly mode: (typeof appearanceModes)[number]
   /** Integer UI scale in percent, from 75 through 200; text and content zoom remain separate. */
@@ -83,7 +79,6 @@ export type Theme<T extends ThemeRef['type'] = ThemeRef['type']> = {
   }
 }[T]
 
-/** A directory entry retaining the origin-specific name contract. */
 export type ThemeSummary<T extends ThemeRef['type'] = ThemeRef['type']> = {
   [K in T]: Pick<Theme<K>, 'ref' | 'name'>
 }[T]
@@ -95,18 +90,13 @@ export interface ExtensionThemeDefinition {
   readonly dark: AppearanceTokens
 }
 
-/** A new user theme's name and complete light and dark branches. */
 export interface UserThemeCreate {
   readonly name: string
   readonly light: UserAppearanceTokens
   readonly dark: UserAppearanceTokens
 }
 
-/**
- * Changes to a user theme with optional expected values for the changed fields.
- *
- * Branch tokens compare individually. A font slot replaces and compares its complete selection.
- */
+/** Branch tokens compare individually. A font slot replaces and compares its complete selection. */
 export interface UserThemeUpdate {
   readonly changes: {
     readonly name?: string
@@ -120,11 +110,7 @@ export interface UserThemeUpdate {
   }
 }
 
-/**
- * An acquired font's fixed bytes and parsed metadata.
- *
- * System font families do not have file mappings in their slots.
- */
+/** System font families do not have file mappings in their slots. */
 export interface ThemeFontResourceFile {
   readonly resource: ReadResourceRef
   readonly metadata: FontFileMetadata
@@ -141,25 +127,19 @@ export interface ThemeRead<T extends ThemeRef['type'] = ThemeRef['type']> {
   readonly fontResources: ThemeFontResources
 
   /**
-   * Releases this read's font-resource holds idempotently.
-   *
-   * The plain snapshot remains readable and other reads stay valid.
+   * Repeated disposal is safe. The snapshot and other reads stay valid after its font resources are
+   * released.
    */
   dispose(): Promise<void>
 }
 
-/**
- * An extension theme registration that owns atomic replacement and removal.
- *
- * Removing the registration preserves already acquired reads.
- */
+/** Removing the registration preserves already acquired reads. */
 export interface ExtensionThemeRegistration {
   readonly ref: Extract<ThemeRef, { readonly type: 'extension' }>
 
   /**
-   * Validates and replaces the complete registered definition atomically.
-   *
-   * The registration keeps its identity; failure preserves the old value.
+   * Replaces the complete definition atomically. Failure preserves the previous definition and
+   * registration.
    */
   update(input: ExtensionThemeDefinition, call?: CallOptions): Promise<void>
 
@@ -167,41 +147,27 @@ export interface ExtensionThemeRegistration {
   dispose(): Promise<void>
 }
 
-/** A complete token branch and color scheme to preview. */
 export interface AppearancePreviewInput {
   readonly colorScheme: ColorScheme
   readonly tokens: AppearanceTokens
 }
 
-/**
- * The application preview handle owned by one actual view.
- *
- * Takeover ends the previous handle. Late updates from that handle cannot affect the new owner.
- */
+/** Takeover ends the previous handle. Late updates from that handle cannot affect the new owner. */
 export interface AppearancePreview {
   /**
-   * Validates, prepares and publishes a new preview branch.
-   *
-   * Failure preserves the current preview; ended handles reject updates.
+   * Publishes a preview only after validation and preparation. A failed update leaves the current
+   * preview in place.
    */
   update(input: AppearancePreviewInput): Promise<void>
 
   /** Ends the preview idempotently and resolves the latest saved appearance. */
   dispose(): Promise<void>
 
-  /**
-   * Notifies once when the handle ends, including subscriptions made after it has ended.
-   *
-   * Disposal removes only the listener.
-   */
+  /** Delivers the end of this preview once, including to late subscribers. */
   onDispose(listener: () => void): Disposable
 }
 
-/**
- * Loadable font resources bound to one document.
- *
- * The document owns native FontFace instances and their release.
- */
+/** The document owns native FontFace instances and their release. */
 export interface ViewFontFace {
   readonly family: string
   readonly url: string
@@ -215,7 +181,6 @@ export interface ViewFontFace {
   }
 }
 
-/** Resolved color, scale, CSS variables and font resources for one document. */
 export interface ViewAppearance {
   readonly colorScheme: ColorScheme
   /** UI scale in percent. */
@@ -224,7 +189,6 @@ export interface ViewAppearance {
   readonly fontFaces: readonly ViewFontFace[]
 }
 
-/** An unavailable theme or font selection reported while resolving appearance. */
 export type AppearanceIssue =
   | { readonly code: 'themeUnavailable'; readonly ref: ThemeRef; readonly error: ErrorSummary }
   | {
@@ -234,11 +198,7 @@ export type AppearanceIssue =
       readonly error: ErrorSummary
     }
 
-/**
- * Effective application appearance and availability issues, without document resource URLs.
- *
- * A null theme identifies a live unsaved preview.
- */
+/** A null theme identifies a live unsaved preview. */
 export interface AppearanceState {
   readonly theme: ThemeRef | null
   readonly colorScheme: ColorScheme
@@ -248,20 +208,12 @@ export interface AppearanceState {
   readonly issues: readonly AppearanceIssue[]
 }
 
-/**
- * Theme discovery, user-theme editing and extension-theme registration.
- *
- * The SDK binds registration identities to the actual extension before forwarding calls.
- */
+/** The SDK binds registration identities to the actual extension before forwarding calls. */
 export interface ThemesApi {
   /** Lists available theme identities and names without acquiring font resources. */
   list(call?: CallOptions): Promise<readonly ThemeSummary[]>
 
-  /**
-   * Reads a theme definition for browsing or editing without acquiring resource holds.
-   *
-   * Returns null when the definition is absent.
-   */
+  /** Returns null for an absent theme. Reading a definition acquires no font resources. */
   get<R extends ThemeRef>(ref: R, call?: CallOptions): Promise<Theme<R['type']> | null>
 
   /**
@@ -303,41 +255,25 @@ export interface ThemesApi {
    */
   open<R extends ThemeRef>(ref: R, call?: CallOptions): Promise<ThemeRead<R['type']>>
 
-  /**
-   * Registers a complete theme for the actual extension owner.
-   *
-   * Duplicate local identities fail. The returned handle owns removal.
-   */
+  /** Duplicate local identities fail. The returned handle owns removal. */
   register(
     ref: Extract<ThemeRef, { readonly type: 'extension' }>,
     input: ExtensionThemeDefinition,
     call?: CallOptions,
   ): Promise<ExtensionThemeRegistration>
 
-  /**
-   * Subscribes to notifications that the theme directory should be read again.
-   *
-   * Callers subscribe before reading; invalidation leaves editing drafts under their owners.
-   */
+  /** Callers subscribe before reading; invalidation leaves editing drafts under their owners. */
   onInvalidated(listener: () => void): Disposable
 }
 
-/**
- * Effective appearance, theme management and application-wide preview.
- *
- * Preferences owns the saved theme, mode and scale; preview leaves those values unchanged.
- */
+/** Preferences owns the saved theme, mode and scale; preview leaves those values unchanged. */
 export interface AppearanceApi {
   readonly themes: ThemesApi
 
   /** Reads effective appearance and availability issues without changing the saved selection. */
   getState(call?: CallOptions): Promise<AppearanceState>
 
-  /**
-   * Delivers current effective appearance and subsequent changes.
-   *
-   * Disposal releases observation while appearance state remains unchanged.
-   */
+  /** Delivers the effective appearance immediately and on subsequent changes. */
   observe(listener: Listener<AppearanceState>, call?: CallOptions): Promise<Disposable>
 
   /**
@@ -349,41 +285,33 @@ export interface AppearanceApi {
   preview(input: AppearancePreviewInput, call?: CallOptions): Promise<AppearancePreview>
 }
 
-/** Stable selection of a built-in, user-owned or extension-provided theme. */
 const themeRef = v.variant('type', [
   v.strictObject({ type: v.literal('builtin'), id: v.literal('default') }),
   v.strictObject({ type: v.literal('user'), id }),
   v.strictObject({
     type: v.literal('extension'),
-    extensionId: v.pipe(
-      v.unknown(),
-      v.transform((value) => parseExternalValue(parseId, value, 'Invalid extension identity')),
+    extensionId: fromParser((value) =>
+      parseExternalValue(parseId, value, 'Invalid extension identity'),
     ),
     id,
   }),
 ])
 
-/** Resolved light or dark appearance used after evaluating the saved mode. */
 const colorScheme = v.picklist(['light', 'dark'])
 
 /** Inclusive percent range shared by the appearance contract and its native editor. */
 export const interfaceScaleRange = { min: 75, max: 200 } as const
 
-/** Allowed integer interface scale, independently of text and content zoom. */
 const scale = v.pipe(
   integer,
   v.minValue(interfaceScaleRange.min),
   v.maxValue(interfaceScaleRange.max),
 )
 
-/** Package- or data-scoped extension resource path used by appearance definitions. */
 const extensionFile = v.strictObject({
   scope: v.picklist(['package', 'data']),
-  path: v.pipe(
-    v.unknown(),
-    v.transform((value) =>
-      parseExternalValue(parsePackagePath, value, 'Invalid extension resource path'),
-    ),
+  path: fromParser((value) =>
+    parseExternalValue(parsePackagePath, value, 'Invalid extension resource path'),
   ),
 })
 
@@ -392,11 +320,7 @@ export function parseThemeRef(input: unknown): ThemeRef {
   return parseValue(themeRef, input, 'Invalid theme reference')
 }
 
-/**
- * Parses a default, shared-font or extension-private font selection.
- *
- * The adopting boundary enforces ownership of extension-private resources.
- */
+/** The adopting boundary enforces ownership of extension-private resources. */
 export function parseThemeFont(input: unknown): ThemeFont {
   const { type } = parseValue(
     v.looseObject({ type: v.picklist(['default', 'system', 'user', 'extension']) }),
@@ -419,7 +343,6 @@ export function parseThemeFont(input: unknown): ThemeFont {
   )
 }
 
-/** Parses complete or partial token values and enforces the requested user-font restrictions. */
 function parseTokens(
   input: unknown,
   partial: boolean,
@@ -480,10 +403,7 @@ export function parseAppearancePreferences(input: unknown): AppearancePreference
 
 /** Parses a new user theme with two complete branches and rejects extension-private font paths. */
 export function parseUserThemeCreate(input: unknown): UserThemeCreate {
-  const branch = v.pipe(
-    v.unknown(),
-    v.transform((value) => parseTokens(value, false, true) as UserAppearanceTokens),
-  )
+  const branch = fromParser((value) => parseTokens(value, false, true) as UserAppearanceTokens)
   return parseValue(
     v.strictObject({ name: nonemptyText, light: branch, dark: branch }),
     input,
@@ -493,9 +413,8 @@ export function parseUserThemeCreate(input: unknown): UserThemeCreate {
 
 /** Parses changed user-theme fields and restricts expected values to the same comparison units. */
 export function parseUserThemeUpdate(input: unknown): UserThemeUpdate {
-  const branch = v.pipe(
-    v.unknown(),
-    v.transform((value) => parseTokens(value, true, true) as Partial<UserAppearanceTokens>),
+  const branch = fromParser(
+    (value) => parseTokens(value, true, true) as Partial<UserAppearanceTokens>,
   )
   const fields = v.strictObject(optionalFields({ name: nonemptyText, light: branch, dark: branch }))
   const value = parseValue(
@@ -517,18 +436,15 @@ export function parseExtensionThemeDefinition(
 ): ExtensionThemeDefinition {
   return parseValue(
     v.strictObject({
-      name: v.pipe(
-        v.unknown(),
-        v.transform((value) =>
-          parseExternalValue(
-            (input) => normalizeLocalizedText(input, defaultLocale),
-            value,
-            'Invalid theme name',
-          ),
+      name: fromParser((value) =>
+        parseExternalValue(
+          (input) => normalizeLocalizedText(input, defaultLocale),
+          value,
+          'Invalid theme name',
         ),
       ),
-      light: v.pipe(v.unknown(), v.transform(parseAppearanceTokens)),
-      dark: v.pipe(v.unknown(), v.transform(parseAppearanceTokens)),
+      light: fromParser(parseAppearanceTokens),
+      dark: fromParser(parseAppearanceTokens),
     }),
     input,
     'Invalid theme definition',
@@ -540,28 +456,21 @@ export function parseAppearancePreviewInput(input: unknown): AppearancePreviewIn
   return parseValue(
     v.strictObject({
       colorScheme,
-      tokens: v.pipe(v.unknown(), v.transform(parseAppearanceTokens)),
+      tokens: fromParser(parseAppearanceTokens),
     }),
     input,
     'Invalid appearance preview',
   )
 }
 
-/**
- * Parses a document's resolved appearance projection.
- *
- * Resource binding and actual font loading remain host duties.
- */
+/** Resource binding and actual font loading remain host duties. */
 export function parseViewAppearance(input: unknown): ViewAppearance {
   return parseValue(
     v.strictObject({
       colorScheme,
       interfaceScale: scale,
-      cssVariables: v.pipe(
-        v.unknown(),
-        v.transform((value) =>
-          parseExternalValue(parseTokenValues, value, 'Invalid view appearance tokens'),
-        ),
+      cssVariables: fromParser((value) =>
+        parseExternalValue(parseTokenValues, value, 'Invalid view appearance tokens'),
       ),
       fontFaces: v.array(
         v.strictObject({

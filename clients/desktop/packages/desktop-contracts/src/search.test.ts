@@ -1,5 +1,3 @@
-/** @fileoverview Checks result targets remain inside the requested search category. */
-
 import { expect, test } from 'vite-plus/test'
 import { parseSearchResult } from './search'
 import { DesktopError } from './errors'

@@ -1,5 +1,3 @@
-/** @fileoverview Calendar month and year choices navigate the view independently of its selected day. */
-
 import { createMemo, createSignal } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { createSelectionPopup } from '../../selection/popup'
@@ -17,20 +15,16 @@ interface PeriodProps {
   value: number
   first: number
   last: number
-  /** Formats a month or year value for its option label. */
   format: (value: number) => string
-  /** Requests navigation to the selected month or year. */
   choose: (value: number) => void
 }
 
 /** Renders a virtualized period selector, including ranges spanning all 9,999 supported years. */
 export function PeriodSelect(props: PeriodProps): JSX.Element {
   const popup = createSelectionPopup()
-  /** Presence and visibility controls inherited from this period selector's popup owner. */
   const { present, setOpen } = popup
   const [trigger, bindTrigger] = createSignal<HTMLButtonElement>()
 
-  /** Visible formatted period choices derived from the current bounds. */
   const options = createMemo(() =>
     present()
       ? Array.from({ length: props.last - props.first + 1 }, (_, index) => {
@@ -41,7 +35,6 @@ export function PeriodSelect(props: PeriodProps): JSX.Element {
   )
   const collection = createSelection(options)
 
-  /** Closes the period popup and forwards the selected numeric month or year. */
   const choose = (option: SelectionOption) => {
     setOpen(false)
     props.choose(Number(option.value))

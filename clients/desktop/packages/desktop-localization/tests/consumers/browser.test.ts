@@ -1,15 +1,11 @@
-/** @fileoverview Verifies packed declarations and ICU formatting in browser and iframe consumers. */
-
-import { lintConsumer } from '@kisaki3/tooling/testing/consumer'
-import { expect } from 'vite-plus/test'
+import { createConsumerTest, lintConsumer } from '@kisaki3/tooling/testing/consumer'
+import { expect, test as base } from 'vite-plus/test'
 import { join } from 'node:path'
 import { build, preview } from 'vite-plus'
 import { chromium } from '@playwright/test'
 import { runPnpm } from '@kisaki3/tooling/process'
-import { consumerTest } from './installation'
 
-/** Packed localization consumer fixtures owning the browser and its built test site. */
-const test = consumerTest('browser')
+const test = createConsumerTest(base, join(import.meta.dirname, '../..'), 'browser')
   .extend('browser', { scope: 'file' }, async ({}, { onCleanup }) => {
     const browser = await chromium.launch()
     onCleanup(() => browser.close())

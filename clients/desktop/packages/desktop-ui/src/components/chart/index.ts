@@ -1,5 +1,3 @@
-/** @fileoverview Complete chart composition using the Unovis TypeScript engine. */
-
 export {
   Chart,
   ChartLegend,
@@ -24,6 +22,7 @@ export {
   StackedBar,
   Scatter,
   Donut,
+  donutSelectors,
   Axis,
   type LineProps,
   type AreaProps,
@@ -36,4 +35,3 @@ export {
 
 export { Crosshair, type CrosshairProps } from './crosshair'
 export { ChartTooltip, type ChartTooltipProps } from './tooltip'
-export { donutSelectors } from './selectors'

@@ -1,5 +1,3 @@
-/** @fileoverview Owns native Vite program watchers and their completed output inventories. */
-
 import { build, defaultClientConditions, defaultServerConditions } from 'vite-plus'
 import { join } from 'node:path'
 import { removeOutputs } from '@kisaki3/tooling/output'
@@ -8,7 +6,6 @@ import { appRoot } from '../lib/paths'
 import { programConfigurations, sourcePrograms } from '../build/programs'
 import { sha256 } from '../lib/sha256'
 
-/** One compiler batch whose output files are ready to copy into a runtime directory. */
 export interface ProgramOutput {
   /** Compilation generation used to reject output copied across a concurrent rebuild. */
   revision: number
@@ -17,7 +14,6 @@ export interface ProgramOutput {
   digest: string
 }
 
-/** Compiler owner exposing completed output and deterministic shutdown. */
 export interface ProgramWatch {
   /** Absent while any compiler is running or has failed. */
   readonly current: ProgramOutput | undefined
@@ -25,11 +21,9 @@ export interface ProgramWatch {
   close(): Promise<void>
 }
 
-/** Native persistent build handle returned by Vite. */
 type ViteWatcher = Extract<
   Awaited<ReturnType<typeof build>>,
   {
-    /** Releases the native compiler watch handle. */
     close(): Promise<void>
   }
 >
@@ -65,7 +59,6 @@ export async function watchPrograms(
   let revision = 0
   let closed = false
 
-  /** Returns the exact last-written files only after every compiler has completed successfully. */
   function current(): ProgramOutput | undefined {
     if (unsettled.size) {
       return undefined
@@ -149,7 +142,6 @@ export async function watchPrograms(
   }
 
   return {
-    /** Reads the latest completed compiler batch. */
     get current() {
       return current()
     },

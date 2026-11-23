@@ -93,7 +93,7 @@ R 编号标识完整交付要求，W 编号标识实施工作包，A 编号标�
 
 来源操作的具体场景见[来源与平台验收](scenarios/sources.md)。十三个导入器按[逐项场景](scenarios/importers.md)和[输入合同](../design/extensions/importers/README.md#catalog)验收；三个译本见[本地化场景](scenarios/ui.md#languages)。
 
-源码职责按[官方扩展组织](../design/extensions/catalog.md#organization)核对：多能力来源共享自己的客户端与账号，页面消费私有合同；导入器保留各自输入语义，译本只承担消息登记。每项项目的样本、说明、版本和安装包完整。既有核对过程与计数见[证据记录](evidence/extensions.md)，当前进度见[实施状态](../implementation/status.md#design)。
+按[官方扩展组织](../design/extensions/catalog.md#organization)核对源码职责。提供多项能力的来源共用客户端与账号，页面通过私有合同调用。导入器按各自格式解释输入，译本负责登记消息。每项扩展都须有相应样本、说明、版本和安装包。已完成的核对见[证据记录](evidence/extensions.md)，当前进度见[实施状态](../implementation/status.md#design)。
 
 <a id="language-and-templates"></a>
 

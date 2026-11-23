@@ -77,7 +77,7 @@ POST 统一使用 application/x-www-form-urlencoded、UTF-8。撤销与令牌状
 
 协议参数按单值解释，重复的已定义参数明确失败，不能一边采用第一个、一边向上游发送最后一个。未知参数不转发；provider 专属参数必须在其明确的输入清单中。提交上游端点、client_secret、秘密引用或上游回调覆盖值时返回 invalid_request；调用方请求头也不复制到上游。POST 不接收查询字符串里的令牌或同名参数，避免正文与 URL 竞争。
 
-令牌与错误结果带 Cache-Control:no-store 和 Pragma:no-cache。浏览器跳转及回调另带 Referrer-Policy:no-referrer；需要停留在 relay 的错误页采用静态内容，不嵌入远端说明、查询串或外部资源。响应大小限制按解压后的实际读取字节执行，不只相信 Content-Length。
+令牌与错误响应包含 `Cache-Control: no-store` 和 `Pragma: no-cache`。浏览器跳转及回调另带 `Referrer-Policy: no-referrer`。由 relay 直接显示的错误页使用本地静态内容，排除远端说明、查询串和外部资源。响应大小按解码后的实际读取字节计量。[上游传输](providers.md#transport)
 
 <a id="parameters"></a>
 
@@ -187,4 +187,4 @@ corsOrigins 默认空数组；确有浏览器消费者时登记完整 HTTPS orig
 
 运行预算的默认值为 authorizationSeconds=600、exchangeSeconds=60、upstreamTimeoutSeconds=20、shutdownSeconds=25、maxSessions=1024、maxUpstreamRequests=64、maxRequestBytes=16384、maxResponseBytes=1048576。部署者可在启动配置中调整，容量按实际负载验证。无法接纳新请求时返回容量错误，已经接纳的授权会话继续处理。
 
-Compose 的普通插值参数只负责镜像、主机端口及配置文件路径；私有 env_file 或明确 environment 承担容器秘密注入。真实 JSON 只读挂载，环境秘密不进入 config.example.json、镜像层或镜像构建参数。Compose .env 的存在不等于环境变量已进入容器。
+Compose 只读挂载真实 JSON，并通过运行环境注入秘密。插值参数、秘密文件和挂载要求由[部署输入](deployment.md#compose)定义。

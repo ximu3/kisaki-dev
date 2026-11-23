@@ -1,5 +1,3 @@
-/** @fileoverview Publishes native row lists and their optional controlled reordering. */
-
 export {
   List,
   ListItem,

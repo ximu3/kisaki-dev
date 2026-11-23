@@ -1,5 +1,3 @@
-/** @fileoverview Presents one management scene in the main document's native modal layer. */
-
 import { createMemo, Errored, Show, type Accessor } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { Alert } from '@kisaki3/desktop-ui/alert'
@@ -17,7 +15,6 @@ import type { Translate } from '@kisaki3/desktop-localization'
 import { errorMessage, reportError } from '../../../../infrastructure/notifications'
 import type { ManagementPresentation, ManagementTarget } from './layer'
 
-/** Defines the shell layout and content to mount for one management destination. */
 export interface ManagementScene<T extends ManagementTarget> {
   size: NonNullable<DialogContentProps['size']>
   fill?: boolean

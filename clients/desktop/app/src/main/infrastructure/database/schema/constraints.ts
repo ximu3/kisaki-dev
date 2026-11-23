@@ -1,8 +1,5 @@
-/** @fileoverview Defines SQLite constraints shared by the application's tables. */
-
 import { sql } from 'drizzle-orm'
-import type { AnySQLiteColumn } from 'drizzle-orm/sqlite-core'
-import { check, integer, text } from 'drizzle-orm/sqlite-core'
+import { check, integer, text, type AnySQLiteColumn } from 'drizzle-orm/sqlite-core'
 
 /** Creates the required UTC millisecond fields supplied by the record's owning operation. */
 export function timestamps() {

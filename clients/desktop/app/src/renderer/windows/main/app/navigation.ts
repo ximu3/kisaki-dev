@@ -1,5 +1,3 @@
-/** @fileoverview Coordinates the page outlet, management destinations and document shortcuts. */
-
 import { createSignal, onCleanup } from 'solid-js'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type { PreferencesSnapshot } from '@kisaki3/desktop-contracts/preferences'

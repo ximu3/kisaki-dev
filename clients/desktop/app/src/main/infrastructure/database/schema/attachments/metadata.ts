@@ -1,5 +1,3 @@
-/** @fileoverview Declares the immutable metadata and identity of each registered attachment. */
-
 import { sql } from 'drizzle-orm'
 import { primaryKey, check, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { idColumn, safeInteger, nonempty } from '../constraints'

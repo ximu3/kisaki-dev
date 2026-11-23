@@ -1,5 +1,3 @@
-/** @fileoverview Presents saved quick preferences and native management entries in the application menu. */
-
 import { createSignal, For } from 'solid-js'
 import {
   Eye,
@@ -31,7 +29,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@kisaki3/desktop-ui/too
 import type { MainClient } from '../../../infrastructure/api'
 import { reportError } from '../../../infrastructure/notifications'
 
-/** Resource and settings entries available from the permanent application menu. */
 const managementEntries = [
   { type: 'preferences', label: 'preferences', icon: Settings },
   { type: 'themes', label: 'themes', icon: Palette },
@@ -39,7 +36,6 @@ const managementEntries = [
   { type: 'systemIntegration', label: 'system', icon: MonitorCog },
 ] as const
 
-/** Gives each saved appearance choice a recognizable menu symbol. */
 const modeIcons = { system: Monitor, light: Sun, dark: Moon }
 
 /** Applies quick choices immediately through the same field baselines as the preference editor. */

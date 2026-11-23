@@ -1,5 +1,3 @@
-/** @fileoverview Exposes formal storage tables and the separately configured preference singleton. */
-
 export { attachments } from './attachments/metadata'
 export {
   entries,

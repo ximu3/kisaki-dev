@@ -1,5 +1,3 @@
-/** @fileoverview Verifies entry creation, field-local baselines, exact identities and membership intent. */
-
 import { test, expect } from 'vite-plus/test'
 
 import {

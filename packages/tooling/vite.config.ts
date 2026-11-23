@@ -1,5 +1,3 @@
-/** @fileoverview Defines the engineering tools' tasks and configures their process and filesystem tests. */
-
 import { defineConfig } from 'vite-plus'
 
 export default defineConfig({

@@ -1,6 +1,3 @@
-/** @fileoverview Defines backup and recovery operations together with their input and result value validation. */
-
-import type { ErrorSummary } from '../../../errors'
 import type {
   ListOptions,
   CallOptions,
@@ -11,19 +8,22 @@ import type {
 
 import * as v from 'valibot'
 import { parseAbsolutePath } from '../../../paths'
-import { id, text, parseValue, timestamp, nonnegativeInteger } from '../../../validation'
+import {
+  fromParser,
+  id,
+  text,
+  parseValue,
+  timestamp,
+  nonnegativeInteger,
+} from '../../../validation'
 
 import { digest } from './archive'
 
 import { bytesToHex } from '@noble/hashes/utils.js'
 import { sha256 } from '@noble/hashes/sha2.js'
-import { parseErrorSummary, DesktopError } from '../../../errors'
+import { parseErrorSummary, DesktopError, type ErrorSummary } from '../../../errors'
 
-/**
- * A current configuration or fixed launch-time source snapshot for backup creation.
- *
- * Snapshots retain the session's path and name after configuration changes.
- */
+/** A launch snapshot retains the session's path and source name after configuration changes. */
 export type GameBackupSource =
   | { readonly type: 'config'; readonly launchConfigId: string }
   | {
@@ -33,10 +33,8 @@ export type GameBackupSource =
       readonly path: string
     }
 
-/** The cause of this archived snapshot; protection backups created before replacement use beforeRestore. */
 export type GameBackupReason = 'manual' | 'automatic' | 'beforeRestore'
 
-/** A saved game archive's source facts, content identity and retention settings. */
 export interface GameBackup {
   readonly id: string
   readonly gameId: string
@@ -58,10 +56,8 @@ export interface GameBackup {
 }
 
 /**
- * A retention, cleanup or recovery-evidence failure accompanying a backup operation.
- *
- * Ancillary failures can accompany committed success; they cannot establish an archive that was
- * never created.
+ * Ancillary failures can accompany a committed backup. Use the main outcome to determine whether an
+ * archive exists.
  */
 export type GameBackupIssue =
   | { readonly code: 'retentionFailed'; readonly backupId: string; readonly error: ErrorSummary }
@@ -72,25 +68,19 @@ export type GameBackupIssue =
       readonly error: ErrorSummary
     }
 
-/** A newly created backup or an unchanged result referencing the actual prior backup. */
 export interface GameBackupCreateResult {
   readonly outcome: 'created' | 'unchanged'
   readonly backupId: string
   readonly issues: readonly GameBackupIssue[]
 }
 
-/** An explicit backup source, unchanged-content policy and optional note. */
 export interface GameBackupCreateInput {
   readonly source: GameBackupSource
   readonly skipIfUnchanged: boolean
   readonly note?: string | null
 }
 
-/**
- * A backup and explicitly selected current restore target.
- *
- * Restoration fixes the target and performs native confirmation before replacement.
- */
+/** Restoration fixes the selected target and requires native confirmation before replacement. */
 export interface GameBackupRestoreInput {
   readonly gameId: string
   readonly backupId: string
@@ -99,21 +89,15 @@ export interface GameBackupRestoreInput {
     | { readonly type: 'path'; readonly path: string }
 }
 
-/** A target or retained-material location examined by the recovery workflow. */
 export type RecoveryLocation = 'target' | 'original' | 'prepared' | 'displaced'
 
-/**
- * An explicit choice to continue replacement, restore the original or keep current target content.
- */
 export type RecoveryAction = 'continue' | 'rollback' | 'keepCurrent'
 
-/** The durably recorded outcome of an explicitly resolved recovery. */
 export type RecoveryResolution = 'restored' | 'rolledBack' | 'keptCurrent'
 
 /**
- * The target's known state on disk, the protection backup and any recovery outcome.
- *
- * Target state is independent of task success and committed recovery resolution.
+ * The target's actual state on disk can differ from task status and the recorded recovery
+ * resolution.
  */
 export interface GameBackupRestoreResult {
   readonly backupId: string
@@ -127,7 +111,6 @@ export interface GameBackupRestoreResult {
   readonly issues: readonly GameBackupIssue[]
 }
 
-/** An immutable recovery receipt published and durably indexed before target modification. */
 export interface GameBackupRecoveryManifest {
   readonly formatVersion: 1
   readonly recoveryId: string
@@ -144,22 +127,14 @@ export interface GameBackupRecoveryManifest {
   readonly createdAt: number
 }
 
-/**
- * A monotonic progress hint for one recovery.
- *
- * After interruption, the hint alone cannot authorize repeating a filesystem mutation.
- */
+/** After interruption, check the actual disk state before repeating a filesystem mutation. */
 export interface GameBackupRecoveryProgress {
   readonly recoveryId: string
   readonly sequence: number
   readonly phase: 'ready' | 'originalPreserved' | 'replacementPlaced' | 'rollbackStarted'
 }
 
-/**
- * The durable index record identifying recovery-owned materials and resolution.
- *
- * Pending records block conflicting work. Resolved records permit explicit cleanup.
- */
+/** Pending records block conflicting work. Resolved records permit explicit cleanup. */
 export type GameBackupRecovery = {
   readonly id: string
   readonly gameId: string
@@ -183,7 +158,6 @@ export type GameBackupRecovery = {
     }
 )
 
-/** Observed absence, readable content identity or read failure at one recovery location. */
 export type RecoveryLocationObservation =
   | { readonly status: 'absent' }
   | {
@@ -194,9 +168,8 @@ export type RecoveryLocationObservation =
   | { readonly status: 'unavailable'; readonly error: ErrorSummary }
 
 /**
- * Current recovery evidence, available actions and a comparison basis.
- *
- * The basis detects evidence changes; resolve reinspects actual state before authorizing an action.
+ * Use the basis to compare the displayed evidence at resolve time. Resolve reinspects the actual
+ * locations before executing an action.
  */
 export interface GameBackupRecoveryInspection {
   readonly recoveryId: string
@@ -213,23 +186,14 @@ export interface GameBackupRecoveryInspection {
   readonly basis: string
 }
 
-/**
- * Persistent recovery inspection, explicit resolution and post-resolution cleanup.
- *
- * Records survive task-history cleanup, and application startup does not automatically resume them.
- */
+/** Records survive clearing task history. Recovery resumes only through explicit operations. */
 export interface GameBackupRecoveriesApi {
-  /** Lists durable recovery records under the requested game and resolution filters. */
   list(
     query: ListOptions & { readonly gameId?: string; readonly state?: 'pending' | 'resolved' },
     call?: CallOptions,
   ): Promise<ListResult<GameBackupRecovery>>
 
-  /**
-   * Reads a recovery record and stored manifest state, or null when the record is absent.
-   *
-   * The read does not resume or modify recovery.
-   */
+  /** Returns null for an absent record. A read leaves recovery progress unchanged. */
   get(
     id: string,
     call?: CallOptions,
@@ -239,16 +203,14 @@ export interface GameBackupRecoveriesApi {
   >
 
   /**
-   * Inspects actual target and retained materials without changing files.
-   *
-   * Returns currently available actions and their evidence-comparison basis.
+   * Returns the actions available for the observed locations and a basis to compare before
+   * executing any of them.
    */
   inspect(id: string, call?: CallOptions): Promise<GameBackupRecoveryInspection>
 
   /**
-   * Reinspects and compares the supplied basis before executing the explicit recovery action.
-   *
-   * Stale evidence cannot authorize replacement.
+   * Reinspects actual state and rejects a stale evidence basis before executing the requested
+   * action.
    */
   resolve(
     input: {
@@ -260,17 +222,14 @@ export interface GameBackupRecoveriesApi {
   ): Promise<GameBackupRestoreResult>
 
   /**
-   * Removes recovery-owned materials explicitly after resolution.
-   *
-   * A missing index is an idempotent success. Protection backups remain.
+   * Cleanup requires a resolved recovery. A missing record is idempotent success. Protection
+   * backups remain.
    */
   remove(id: string, call?: CallOptions): Promise<void>
 }
 
 /**
- * Game save archives, protected restoration and independent recovery management.
- *
- * Operations check actual paths and occupancy; task history does not establish filesystem
+ * Operations check actual paths and occupancy. Use their results to determine filesystem
  * completion.
  */
 export interface GameBackupsApi {
@@ -284,16 +243,14 @@ export interface GameBackupsApi {
   ): Promise<ListResult<GameBackup>>
 
   /**
-   * Reads a saved backup record, or null when it is absent.
-   *
-   * The read does not open the archive or establish that the original source remains available.
+   * Returns null for an absent record. The record remains readable independently of archive and
+   * source availability.
    */
   get(gameId: string, backupId: string, call?: CallOptions): Promise<GameBackup | null>
 
   /**
-   * Prepares and verifies a complete archive before committing its backup record.
-   *
-   * When requested, an unchanged result reuses the actual prior backup.
+   * Verifies the complete archive before committing. The reuse policy can return the actual
+   * previous backup when content is unchanged.
    */
   create(
     gameId: string,
@@ -302,9 +259,8 @@ export interface GameBackupsApi {
   ): Promise<GameBackupCreateResult>
 
   /**
-   * Confirms the fixed target, protects existing content and restores verified bytes.
-   *
-   * On failure or cancellation, any partial result includes the known target state and recovery details.
+   * Includes known target state and recovery details in any partial result after failure or
+   * cancellation. The fixed target is confirmed and existing content protected before replacement.
    */
   restore(input: GameBackupRestoreInput, call?: CallOptions): Promise<GameBackupRestoreResult>
 
@@ -319,9 +275,7 @@ export interface GameBackupsApi {
   unlock(gameId: string, backupId: string, call?: CallOptions): Promise<void>
 
   /**
-   * Compares and updates the backup's note.
-   *
-   * Archive bytes, creation facts and source identity remain immutable.
+   * Only the note can change. Archive bytes, creation facts and source identity remain immutable.
    */
   update(
     gameId: string,
@@ -334,25 +288,20 @@ export interface GameBackupsApi {
   ): Promise<void>
 
   /**
-   * Deletes selected archives and records explicitly after occupancy checks.
-   *
-   * Manual deletion may include locked backups and leaves the current save target unchanged.
+   * Manual deletion may include locked backups. It checks occupancy and preserves the current save
+   * target.
    */
   delete(gameId: string, backupIds: NonEmptyArray<string>, call?: CallOptions): Promise<void>
 
   readonly recoveries: GameBackupRecoveriesApi
 }
 
-/** Validated absolute source or recovery destination path. */
-const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
+const path = fromParser(parseAbsolutePath)
 
-/** Content-tree root kind retained by backup and recovery values. */
 const kind = v.picklist(['file', 'directory'])
 
-/** Explicit terminal decisions that resolve a pending backup recovery. */
 const resolution = v.picklist(['restored', 'rolledBack', 'keptCurrent'])
 
-/** Current launch configuration or saved occurrence snapshot chosen as the backup source. */
 const backupSource = v.variant('type', [
   v.strictObject({ type: v.literal('config'), launchConfigId: id }),
   v.strictObject({ type: v.literal('snapshot'), launchConfigId: id, launchConfigName: text, path }),
@@ -363,7 +312,6 @@ export function parseGameBackupSource(input: unknown): GameBackupSource {
   return parseValue(backupSource, input, 'Invalid game backup source')
 }
 
-/** Parses backup creation intent with an explicitly supplied unchanged-content policy. */
 export function parseGameBackupCreateInput(input: unknown): GameBackupCreateInput {
   return parseValue(
     v.strictObject({
@@ -376,7 +324,6 @@ export function parseGameBackupCreateInput(input: unknown): GameBackupCreateInpu
   )
 }
 
-/** Parses an explicit current configuration or path as the restore target. */
 export function parseGameBackupRestoreInput(input: unknown): GameBackupRestoreInput {
   return parseValue(
     v.strictObject({
@@ -392,11 +339,7 @@ export function parseGameBackupRestoreInput(input: unknown): GameBackupRestoreIn
   )
 }
 
-/**
- * Parses immutable recovery-receipt values.
- *
- * The recovery owner verifies the index, actual bytes and target relationship.
- */
+/** The recovery owner verifies the index, actual bytes and target relationship. */
 export function parseGameBackupRecoveryManifest(input: unknown): GameBackupRecoveryManifest {
   return parseValue(
     v.strictObject({
@@ -418,11 +361,7 @@ export function parseGameBackupRecoveryManifest(input: unknown): GameBackupRecov
   )
 }
 
-/**
- * Parses a recovery progress hint.
- *
- * The host checks sequence monotonicity and actual disk state separately.
- */
+/** The recovery owner checks progress sequence and actual disk state. */
 export function parseGameBackupRecoveryProgress(input: unknown): GameBackupRecoveryProgress {
   return parseValue(
     v.strictObject({
@@ -436,9 +375,8 @@ export function parseGameBackupRecoveryProgress(input: unknown): GameBackupRecov
 }
 
 /**
- * Hashes indexed identity, the actual manifest digest and location observations.
- *
- * Error wording and observation timestamps are excluded from the comparison basis.
+ * The comparison basis hashes indexed identity, manifest digest and location observations.
+ * Diagnostic wording and observation timestamps are excluded.
  */
 export function gameBackupRecoveryBasis(
   index: GameBackupRecovery,
@@ -479,12 +417,11 @@ export function gameBackupRecoveryBasis(
 }
 
 /**
- * Parses a full or partial restore result and checks recovery-reference consistency.
- *
- * Target facts remain independent of the committed recovery state.
+ * Checks recovery-reference consistency. The target's actual state remains independent of the
+ * committed recovery state.
  */
 export function parseGameBackupRestoreResult(input: unknown): GameBackupRestoreResult {
-  const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
+  const error = fromParser(parseErrorSummary)
   const issue = v.variant('code', [
     v.strictObject({ code: v.literal('retentionFailed'), backupId: id, error }),
     v.strictObject({ code: v.literal('cleanupFailed'), path, error }),

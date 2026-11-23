@@ -1,14 +1,8 @@
-/** @fileoverview Describes immutable saved attachments and explicit acquisition of their readable content. */
-
 import type { ErrorSummary } from './errors'
 import type { CallOptions, ListOptions, ListResult } from './operations'
 import type { ReadResource, FileInput } from './resources'
 
-/**
- * Registered metadata for immutable attachment bytes.
- *
- * The digest checks integrity; the attachment ID owns identity.
- */
+/** The digest checks integrity; the attachment ID owns identity. */
 export interface Attachment {
   readonly id: string
   readonly mediaType: string
@@ -24,11 +18,7 @@ export interface Attachment {
   readonly createdAt: number
 }
 
-/**
- * Reclaimed application-owned content and per-attachment cleanup failures.
- *
- * Only unreferenced, unheld content is eligible for removal.
- */
+/** Only unreferenced, unheld content is eligible for removal. */
 export interface AttachmentCleanupResult {
   readonly removedCount: number
   readonly reclaimedBytes: number
@@ -36,23 +26,16 @@ export interface AttachmentCleanupResult {
 }
 
 /**
- * Saved attachment metadata, byte acquisition, repair and orphan cleanup.
- *
  * A metadata read does not establish byte availability. Cleanup leaves business references
  * unchanged.
  */
 export interface AttachmentsApi {
-  /**
-   * Reads registered attachment metadata, returning null when the identity is absent.
-   *
-   * The read does not acquire bytes or establish their current availability.
-   */
+  /** The read does not acquire bytes or establish their current availability. */
   get(id: string, call?: CallOptions): Promise<Attachment | null>
 
   /**
-   * Acquires fixed attachment content for the caller to release.
-   *
-   * Failure retains the saved attachment and all references.
+   * The caller releases the acquired bytes. Failed reads preserve the attachment and its
+   * references.
    */
   read(id: string, call?: CallOptions): Promise<ReadResource>
 
@@ -67,8 +50,6 @@ export interface AttachmentsApi {
   cleanup(call?: CallOptions): Promise<AttachmentCleanupResult>
 
   /**
-   * Lists saved attachments with their current byte availability.
-   *
    * Inspection retains references and reports missing or unreadable content without substituting
    * previews.
    */

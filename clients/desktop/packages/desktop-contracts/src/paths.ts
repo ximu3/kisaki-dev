@@ -1,14 +1,8 @@
-/** @fileoverview Defines relative path filters while leaving filesystem equivalence and resolution to the host. */
-
-import { parseValue, nonemptyText } from './validation'
+import { fromParser, parseValue, nonemptyText } from './validation'
 import { DesktopError } from './errors'
 import * as v from 'valibot'
 
-/**
- * Root-relative literal path or glob with an explicit case-matching policy.
- *
- * Literal paths preserve wildcard-looking characters. Globs support *, ? and whole ** segments.
- */
+/** Literal paths preserve wildcard-looking characters. Globs support *, ? and whole ** segments. */
 export type PathFilter =
   | { readonly kind: 'path'; readonly path: string }
   | { readonly kind: 'glob'; readonly pattern: string; readonly ignoreCase: boolean }
@@ -46,8 +40,6 @@ export function parseAbsolutePath(input: unknown): string {
 }
 
 /**
- * Parses a root-relative slash-separated path.
- *
  * The root is represented by a dot. Other paths require nonempty segments and reject dot segments,
  * parent traversal and drive prefixes.
  */
@@ -78,11 +70,11 @@ export function parsePathFilter(input: unknown): PathFilter {
     v.variant('kind', [
       v.strictObject({
         kind: v.literal('path'),
-        path: v.pipe(v.unknown(), v.transform(parseRelativePath)),
+        path: fromParser(parseRelativePath),
       }),
       v.strictObject({
         kind: v.literal('glob'),
-        pattern: v.pipe(v.unknown(), v.transform(parseRelativePath)),
+        pattern: fromParser(parseRelativePath),
         ignoreCase: v.boolean(),
       }),
     ]),

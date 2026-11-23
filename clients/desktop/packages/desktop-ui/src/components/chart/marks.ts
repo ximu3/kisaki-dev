@@ -1,5 +1,3 @@
-/** @fileoverview Typed chart marks and axes composed through the Unovis TypeScript engine. */
-
 import { omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import {
@@ -111,4 +109,9 @@ export function Donut<Datum>(props: DonutProps<Datum>): JSX.Element {
     () => omit(props, 'data'),
     () => props.data,
   )
+}
+
+/** Public donut segment selector for ChartTooltip triggers. */
+export const donutSelectors: Readonly<{ segment: string }> = {
+  segment: DonutEngine.selectors.segment,
 }

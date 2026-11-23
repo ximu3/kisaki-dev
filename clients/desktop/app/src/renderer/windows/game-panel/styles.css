@@ -1,5 +1,3 @@
-/* Styles and utility sources used by the game-panel document. */
-
 @import '../../styles/tailwind.css';
 @import '../../styles/base.css';
 @source './';

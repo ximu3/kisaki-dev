@@ -1,8 +1,6 @@
-/** @fileoverview Starts the desktop application, delivers native entry requests and coordinates normal shutdown. */
-
 import { app, dialog, Menu, protocol, Tray } from 'electron'
 import { join } from 'node:path'
-import { releaseAll } from './infrastructure/release'
+import { releaseAll, rethrowAfterRelease } from './infrastructure/release'
 import { createLifecycle } from './app/lifecycle'
 import { createActivation } from './app/activation'
 import { compose } from './app/compose'
@@ -12,6 +10,7 @@ import { developmentControl } from './app/development'
 import { windowKinds, type WindowKind } from '../shared/window-api/protocol'
 import { applicationIdentities } from '@kisaki3/desktop-contracts/app'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import type { Disposable } from '@kisaki3/desktop-contracts/operations'
 import { loadNative } from '#native'
 import { createNotifications } from './infrastructure/notifications'
 
@@ -110,11 +109,22 @@ async function run(paths: AppPaths) {
     await app.whenReady()
     await notifications.ready(app.isPackaged)
     application = await compose(paths, native, notifications, !!ready)
-  } catch (cause) {
-    await notifications.close()
-    throw cause
+  } catch (error) {
+    return rethrowAfterRelease(error, notifications.close)
   }
+
   let tray: Tray | undefined
+  let menuUpdates: Disposable | undefined
+
+  function releaseApplication() {
+    return releaseAll([
+      () => menuUpdates?.dispose(),
+      () => view?.dispose(),
+      () => tray?.destroy(),
+      application.release,
+    ])
+  }
+
   const lifecycle = createLifecycle({
     /** Obtains the current document's close decision. */
     async confirm(signal) {
@@ -130,7 +140,6 @@ async function run(paths: AppPaths) {
     async drain() {
       await Promise.all([application.tasks.drain(), view?.drain()])
     },
-    /** Offers the actual waiting user a continuation or return to the app. */
     async waiting(signal) {
       const choice = await dialog.showMessageBox({
         type: 'question',
@@ -145,14 +154,8 @@ async function run(paths: AppPaths) {
       })
       return choice.response === 0 ? 'wait' : 'cancel'
     },
-    /** Releases the window, tray and application owners before SQLite closes. */
     async release() {
-      await releaseAll([
-        () => application.log.record('closing'),
-        () => view?.dispose(),
-        () => tray?.destroy(),
-        application.release,
-      ])
+      await releaseAll([() => application.log.record('closing'), releaseApplication])
     },
     /** Reports a failed committed teardown after cleanup, then exits under the failed disposition. */
     fail(message) {
@@ -283,7 +286,7 @@ async function run(paths: AppPaths) {
       )
     }
     menus()
-    application.i18n.onChanged(menus)
+    menuUpdates = application.i18n.onChanged(menus)
     restore = show
     if (
       focusRequested ||
@@ -301,12 +304,7 @@ async function run(paths: AppPaths) {
     if (released) {
       return
     }
-    if (view) {
-      await view.dispose()
-    }
-    tray?.destroy()
-    await application.release()
-    throw error
+    return rethrowAfterRelease(error, releaseApplication)
   }
 }
 

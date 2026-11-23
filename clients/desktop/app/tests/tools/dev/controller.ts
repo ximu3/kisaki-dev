@@ -1,8 +1,3 @@
-/**
- * @fileoverview Controls a development-test worker, records bounded observations and
- * exposes its lifecycle to tests.
- */
-
 import { spawn } from 'node:child_process'
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
@@ -13,7 +8,6 @@ import type { DevelopmentBuild } from '../../../tools/dev/session'
 /** Three minutes cover cold package/native preparation and readiness; the application handshake has its own deadline. */
 const developmentStartupTimeoutMs = 180_000
 
-/** Observations from the isolated development worker, separate from the application protocol. */
 export interface DevelopmentObservation {
   state: 'building' | 'failed' | 'ready' | 'stopped' | 'cancelled'
   current?: DevelopmentBuild
@@ -21,11 +15,8 @@ export interface DevelopmentObservation {
   error?: string
 }
 
-/** Scenario and expected child exit status for one development-test worker. */
 interface DevelopmentControllerOptions {
-  /** Defaults to the normal application lifecycle. */
   scenario?: 'normal' | 'stop-failure' | 'cancel-first-close'
-  /** Expected worker exit status after cleanup; defaults to zero. */
   expectedExitCode?: number
 }
 
@@ -165,7 +156,6 @@ export async function startDevelopmentController(
     states,
     ready: readiness.promise,
     closed,
-    /** Returns the retained tail of combined worker stdout and stderr. */
     get output() {
       return output
     },

@@ -13,7 +13,7 @@
 
 ## 输入与持有关系
 
-openReader 打开一份文档或一个图片目录，返回本次内容的 Reader。调用者提供容器、资源、完整技术设置和发行资产位置：
+`openReader` 打开一份文档或一个图片目录，返回本次内容的 `Reader`。调用者提供容器、资源、完整技术设置和发行资产位置；初始位置和取消信号为可选输入。
 
 ```ts
 const reader = await openReader({
@@ -22,7 +22,7 @@ const reader = await openReader({
   settings,
   assetsBaseUrl,
   position,
-  signal
+  signal,
 })
 ```
 
@@ -35,8 +35,8 @@ interface ByteSource {
 }
 
 type ReadingSource =
-  | { type: 'document'; data: ByteSource; name?: string }
-  | { type: 'directory'; members: MemberSource }
+  | { readonly type: 'document'; readonly data: ByteSource; readonly name?: string }
+  | { readonly type: 'directory'; readonly members: MemberSource }
 ```
 
 size、offset、length 使用字节和非负安全整数；请求必须落在 0 到 size 之间，返回长度与请求一致。长度为 0 的合法读取返回空数组。短读、读取失败和来源变化明确失败，不用补零或另一个文件的字节凑够。数组交付后保持内容有效；库需要转交 worker 时取得独立的缓冲所有权，不擅自分离提供方仍持有的其他数据。
@@ -53,7 +53,7 @@ size、offset、length 使用字节和非负安全整数；请求必须落在 0 
 | openUrlSource 返回的 UrlSource                                 | 创建者拥有，向 Reader 借出 source；在 Reader.close 后调用 dispose                            |
 | TemporaryStorage.create 返回的 TemporaryFile                   | Kana 拥有本次创建的临时对象，使用完或关闭时 dispose；只删除自己创建的内容                    |
 
-MemberSource.list 异步列出已授权成员的规范相对路径，open 按路径返回 OpenedMember 或 null。路径保留大小写和 Unicode，使用 / 分隔；只打开授权范围内唯一匹配的成员，绝对路径、越界或重名歧义都不能改选其他成员。目录成员集合的身份与排序由此次打开确定，图片识别、页序和格式内部访问由 Kana 处理。
+`MemberSource.list(signal)` 逐步交付已授权成员的规范相对路径。`open(path, signal)` 返回 `OpenedMember` 或 `null`。路径以 `/` 分隔，保留大小写和 Unicode；只打开授权范围内唯一匹配的成员，绝对路径、越界或重名歧义都不能改选其他成员。图片识别、页序和格式内部访问由 Kana 处理，页面身份与排序在此次打开时确定。[图片成员与页序](formats.md#images)
 
 ZIP 内部成员由 Kana 自己解包，不要求宿主先解析归档再传成员列表。书内关联引用只在本次授权内容范围内解释，不授予任意路径或网络访问。
 
@@ -133,10 +133,11 @@ getSelection 异步取得本次调用时固定的逻辑选择及匹配原文；�
 | closeReference          | Promise<void>；关闭调用时的临时查看及其待完成加载，无取消选项；不改变主阅读位置                           |
 | getNavigation           | 按需取得目录标签与结构；没有目标的分组 getLocation 为 null，有目标的条目按需解析为 ReadingLocation        |
 | setSettings             | Promise<void>；本次必要的字体、布局与位置恢复完成后成功                                                   |
-| setZoom／setRotation    | 固定页面的临时显示操作；倍率必须为正有限数，旋转使用 0／90／180／270；重排视图不接受这些操作              |
+| setZoom／setRotation    | 固定页视图采用适配方式或正有限倍率，旋转采用 0／90／180／270；重排视图不接受这些操作                        |
 | search                  | AsyncIterableIterator<SearchHit>，按源顺序逐步取得 range 和有界 excerpt；支持取消，退出迭代会收尾本次搜索 |
 | getTextContext          | Promise<string \| null>；读取指定位置的有界邻近原文，不改变视图或选区                                     |
 | setMarks                | Promise<MarkOrder>；采用完整只读投影，返回源顺序的并列分组，以及无法恢复项的 id 和原因                    |
+| readView                | 持有稳定的主视图或已呈现的原始页面区域，等待读取回调并交付其结果。[视图读取](content.md#view-read)         |
 | close                   | Promise<void>；幂等关闭，不接受取消选项，调用持续到关闭完成                                               |
 
 目录条目随本 Reader 存活，在实际使用时通过 getLocation 解析稳定源位置。显示目录只取得所需目录信息，目标章节按定位需要读取。Reader 关闭后条目失效；内部链接也由内核解释并转换为对应源位置。

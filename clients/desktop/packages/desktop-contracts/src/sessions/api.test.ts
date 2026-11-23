@@ -1,16 +1,10 @@
-/** @fileoverview Verifies session target constraints, lifecycle facts and partial recording or playback outcomes. */
-
 import { test, expect, describe, it } from 'vite-plus/test'
 
 import { parseNativeEventPayload } from '../events'
-import {
-  parseSessionEnded,
-  parseWorkSession,
-  parseSessionInteraction,
-  parseFileSwitchResult,
-  parsePlaybackSettingResult,
-  parseRecordingRetryResult,
-} from './api'
+import { parseSessionEnded, parseWorkSession, parseFileSwitchResult } from './state'
+import { parseSessionInteraction } from './api'
+import { parsePlaybackSettingResult } from './playback'
+import { parseRecordingRetryResult } from './recordings'
 import { parseAnimeOpenInput, parseComicOpenInput } from './targets'
 import { DesktopError } from '../errors'
 

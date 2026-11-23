@@ -1,29 +1,23 @@
-/**
- * @fileoverview Owns command-line cancellation handlers and maps completed engineering
- * operations to process exit status.
- */
-
 import { CommandFailed } from './process/index.ts'
 import { isCancellation } from './errors.ts'
 
 /**
- * Waits for a CLI action and maps its outcome to process.exitCode.
- *
- * Installs cancellation handlers before starting the action and removes them after it settles.
- * Child failures preserve their exit status. Cancellation uses the corresponding shell exit status.
+ * Sets the exit status after the action settles. Cancellation uses the first signal's shell status.
+ * An independent failure during cancellation reports its own error or child status.
  */
 export async function runCli(action: (signal: AbortSignal) => Promise<void>): Promise<void> {
   const controller = new AbortController()
   let cancelledCode = 130
 
-  /** Requests cancellation when the CLI receives SIGINT. */
-  const interrupt = () => controller.abort(new Error('Operation interrupted'))
-  /** Records the SIGTERM exit status and requests cancellation. */
-  const terminate = () => {
-    cancelledCode = 143
-    controller.abort(new Error('Operation terminated'))
+  function cancel(exitCode: 130 | 143, message: string) {
+    if (!controller.signal.aborted) {
+      cancelledCode = exitCode
+      controller.abort(new Error(message))
+    }
   }
 
+  const interrupt = () => cancel(130, 'Operation interrupted')
+  const terminate = () => cancel(143, 'Operation terminated')
   process.once('SIGINT', interrupt)
   process.once('SIGTERM', terminate)
 

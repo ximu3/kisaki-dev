@@ -1,5 +1,3 @@
-/** @fileoverview Exercises the real window shell, scoped native documents and durable preference edits. */
-
 import { test, expect } from '../../support/electron'
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
@@ -33,7 +31,6 @@ for (const kind of ['main', 'reader', 'player', 'game-panel'] as const) {
             navigator as Navigator & {
               windowControlsOverlay: {
                 visible: boolean
-                /** Returns the space reserved for application content between native caption controls. */
                 getTitlebarAreaRect(): DOMRect
               }
             }

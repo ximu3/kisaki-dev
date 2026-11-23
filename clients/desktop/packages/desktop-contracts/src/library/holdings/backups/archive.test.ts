@@ -1,19 +1,16 @@
-/** @fileoverview Verifies backup manifest integrity and canonical tree bytes against an independent hash calculation. */
-
 import { test, expect } from 'vite-plus/test'
 import { createHash } from 'node:crypto'
-import type { GameBackupArchiveEntry } from './archive'
 
 import {
   encodeGameBackupTree,
   gameBackupTreeDigest,
   parseGameBackupArchiveManifest,
   parseGameBackupArchiveJson,
+  type GameBackupArchiveEntry,
 } from './archive'
 
 import { DesktopError } from '../../../errors'
 
-/** Returns an expected DesktopError category while rethrowing unexpected failures. */
 function failureCode(operation: () => unknown): string {
   try {
     operation()

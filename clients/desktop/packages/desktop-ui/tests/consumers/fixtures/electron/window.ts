@@ -1,5 +1,3 @@
-/** @fileoverview Opens the installed UI consumer's workshop in a sandboxed Electron window. */
-
 import { app, BrowserWindow } from 'electron'
 
 /** Loads the built consumer in a hidden sandboxed Electron window after application readiness. */

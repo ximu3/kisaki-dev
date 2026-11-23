@@ -1,15 +1,18 @@
-/** @fileoverview Defines explicit work completion facts, creation baselines and current-completion batch semantics. */
-
-import type { CompletionFields, WorkRef, WorkType } from './catalog'
 import type { CalendarDate } from '../date'
 import type { ListOptions, CallOptions, ListResult, NonEmptyArray } from '../operations'
 import type { DateTest } from './query/conditions'
-import { completionFieldsSchema, workRefSchema } from './catalog'
+import {
+  completionFieldsSchema,
+  workRefSchema,
+  type CompletionFields,
+  type WorkRef,
+  type WorkType,
+} from './catalog'
 import * as v from 'valibot'
 import { nonnegativeInteger, parseValue, optionalFields, validateExpectedKeys } from '../validation'
 import { DesktopError } from '../errors'
 
-/** A stable one-time fact. Null date still contributes to count but not to calendar-period statistics. */
+/** An unknown date contributes to the total but has no calendar-period allocation. */
 export interface WorkCompletion<T extends WorkType = WorkType> extends CompletionFields {
   readonly id: string
   readonly work: WorkRef<T>
@@ -19,40 +22,26 @@ export interface WorkCompletion<T extends WorkType = WorkType> extends Completio
   readonly updatedAt: number
 }
 
-/**
- * One completion fact with an optional pre-insertion count comparison.
- *
- * Batch baselines use the work's count before any item in that batch is inserted.
- */
+/** A batch compares each work's count before inserting any of its new records. */
 export interface CompletionCreate extends CompletionFields {
   readonly expected?: { readonly completionCount: number }
 }
 
-/** A completion-creation input paired with its actual owning work for a batch. */
 export interface CompletionCreateItem<T extends WorkType = WorkType> extends CompletionCreate {
   readonly work: WorkRef<T>
 }
 
-/** Changes to a saved completion's date or note with independent expected values. */
 export interface CompletionUpdate {
   readonly changes: Partial<CompletionFields>
   readonly expected?: Partial<CompletionFields>
 }
 
-/**
- * Actual work identities or the visible library filtered by work kind.
- *
- * Explicit empty kind or reference arrays select no works.
- */
+/** An explicit empty kind or reference list selects no works. */
 export type WorkStatisticsScope =
   | { readonly type: 'library'; readonly workTypes?: readonly WorkType[] }
   | { readonly type: 'works'; readonly refs: readonly WorkRef[] }
 
-/**
- * Matching completion counts, distinct work counts and calendar groups.
- *
- * Unknown dates are reported independently within the same work scope.
- */
+/** Unknown dates are counted separately within the same work scope. */
 export interface CompletionStatistics {
   readonly completionCount: number
   readonly workCount: number
@@ -71,8 +60,6 @@ export interface CompletionStatistics {
 }
 
 /**
- * Saved completion history and explicit recording of current completion.
- *
  * History operations preserve activities, positions and part marks. Only recordCurrent operations
  * also clear current work status.
  */
@@ -105,17 +92,12 @@ export interface CompletionsApi {
     call?: CallOptions,
   ): Promise<CompletionStatistics>
 
-  /**
-   * Commits one historical completion after the optional count comparison.
-   *
-   * The work's current status remains unchanged.
-   */
+  /** The count baseline is checked before insertion. The current work status stays unchanged. */
   create(work: WorkRef, input: CompletionCreate, call?: CallOptions): Promise<string>
 
   /**
-   * Creates a separate completion fact for every input and returns corresponding IDs.
-   *
-   * Identical facts for the same work remain separate records.
+   * Returns IDs corresponding to each input. Identical facts for the same work remain separate
+   * records.
    */
   createMany(
     items: NonEmptyArray<CompletionCreateItem>,
@@ -126,9 +108,8 @@ export interface CompletionsApi {
   recordCurrent(work: WorkRef, input: CompletionCreate, call?: CallOptions): Promise<string>
 
   /**
-   * Records current completion and clears status for the selected works atomically.
-   *
-   * Equivalent duplicate work intents coalesce; contradictory duplicates reject the batch.
+   * The batch clears current status atomically. Equivalent intents for the same work coalesce.
+   * Contradictory intents reject the batch.
    */
   recordCurrentMany<T extends WorkType>(
     items: NonEmptyArray<CompletionCreateItem<T>>,
@@ -150,20 +131,14 @@ export interface CompletionsApi {
   delete(work: WorkRef, completionId: string, call?: CallOptions): Promise<void>
 }
 
-/** Completion input fields with an optional pre-write completion-count baseline. */
 const createEntries = {
   ...completionFieldsSchema.entries,
   expected: v.exactOptional(v.strictObject({ completionCount: nonnegativeInteger })),
 }
 
-/** One explicitly targeted work completion item in an atomic batch. */
 const itemSchema = v.strictObject({ work: workRefSchema, ...createEntries })
 
-/**
- * Parses a completion fact and optional count baseline.
- *
- * Blank notes normalize to null; other note text and unknown dates remain unchanged.
- */
+/** Normalizes blank notes to null while preserving other note text and unknown dates. */
 export function parseCompletionCreate(input: unknown): CompletionCreate {
   return parseValue(v.strictObject(createEntries), input, 'Invalid completion creation')
 }
@@ -180,11 +155,7 @@ export function parseCompletionUpdate(input: unknown): CompletionUpdate {
   return value
 }
 
-/**
- * Parses separate history facts and requires consistent pre-batch counts for repeated works.
- *
- * Identical facts are retained.
- */
+/** Repeated works must use consistent pre-batch counts. Identical facts remain separate. */
 export function parseCompletionCreateMany(input: unknown): NonEmptyArray<CompletionCreateItem> {
   const items = parseValue(
     v.tupleWithRest([itemSchema], itemSchema),

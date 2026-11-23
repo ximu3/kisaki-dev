@@ -1,11 +1,7 @@
-/** @fileoverview Verifies complete query validation across scopes, disabled groups and applicable sort fields. */
-
 import { test, expect } from 'vite-plus/test'
 
-import { parseEntryQuery } from './definition'
-import type { EntryQuery } from './definition'
+import { parseEntryQuery, type EntryQuery } from './definition'
 
-/** Mixed game/person query reused by the complete-query validation cases. */
 const query: EntryQuery = {
   scope: { type: 'library' },
   search: '',

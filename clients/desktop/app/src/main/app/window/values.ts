@@ -1,5 +1,3 @@
-/** @fileoverview Validates scalar arguments received by native window management methods. */
-
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 
 /** Reads one nonempty string passed across the native document boundary. */

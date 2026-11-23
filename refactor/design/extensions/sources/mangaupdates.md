@@ -25,9 +25,9 @@ source 使用 mangaupdates，sourceId 采用资源类别与网站当前规范的
 
 | 来源资源  | sourceId               | 本体对象                            |
 | --------- | ---------------------- | ----------------------------------- |
-| Series    | series/&lt;code&gt;    | 范围一致的 Comic 或 Novel           |
-| Author    | author/&lt;code&gt;    | 已明确类别的 Person 或 Organization |
-| Publisher | publisher/&lt;code&gt; | 真实出版方 Organization             |
+| Series    | `series/<code>`        | 范围一致的 Comic 或 Novel           |
+| Author    | `author/<code>`        | 已明确类别的 Person 或 Organization |
+| Publisher | `publisher/<code>`     | 真实出版方 Organization             |
 
 API 的十进制整数 ID 与当前页面代码在边界处准确转换；《四叶妹妹》的 23606352927 与 auem2hr 已核对。序列化为规范字符串，不通过浮点舍入接受超出安全整数范围的值。名称 slug 不参与身份，author 与 publisher 不能仅因数字相同就合并。旧 series.html?id= 使用独立的编号体系。只有查到明确对应才能采用当前 ID，否则只保留外链。
 
@@ -129,7 +129,7 @@ GET /lists/series/{series_id} 取得已对应记录，实际不一定返回 list
 | read／wish／hold                      | active／planned／onHold；保留已有完成历史                                          |
 | complete                              | 本次选择采用完成事实时按共同初始化规则处理，并清除当前状态；没有完成日期时保留未知 |
 | unfinished                            | 本体没有同义的放弃状态，说明未采用，不改为 onHold 或删除                           |
-| 有效本人评分                          | 按来源实际 1–10 值换算为 0–100 整数；缺席与请求失败分开                            |
+| 有效本人评分                          | 将来源实际 1–10 分乘以 10，按共同舍入规则采用为 10–100 的整数；缺席与请求失败分开 |
 | volume／chapter／priority／time_added | 不采用为 Part 完成、阅读位置、评价权重或完成日期                                   |
 
 数字卷话是平台当前记录，实测愿望单默认便是 1／1，不能解释为累计已读数。没有真实 Part 身份与范围，不做分部进度导入或回写。关注、愿望与自定义名单不变成 isFavorite；来源没有原生同义喜爱字段。私人评论、自由标签、短评、站内优先级、累计时长和笔记不加入持续同步。
@@ -186,17 +186,14 @@ src/
 │   ├── client/
 │   │   ├── gateway.ts
 │   │   └── types.ts
-│   ├── account/
-│   │   └── manager.ts
+│   ├── account.ts
 │   ├── metadata/
 │   │   ├── provider.ts
 │   │   ├── identity.ts
 │   │   ├── fields.ts
 │   │   └── relations.ts
-│   ├── import/
-│   │   └── coordinator.ts
-│   ├── sync/
-│   │   └── coordinator.ts
+│   ├── import.ts
+│   ├── sync.ts
 │   ├── records.ts
 │   ├── settings.ts
 │   └── ipc.ts

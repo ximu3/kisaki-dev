@@ -62,7 +62,10 @@ binding 在同一 Node 环境内维护原生实例与 JavaScript 引用的对应
 
 ```ts
 type InformationUnavailableReason =
-  'permissionDenied' | 'notSupported' | 'backendUnavailable' | 'temporarilyUnavailable'
+  | 'permissionDenied'
+  | 'notSupported'
+  | 'backendUnavailable'
+  | 'temporarilyUnavailable'
 
 type Field<T> =
   | { readonly status: 'available'; readonly value: T }
@@ -176,11 +179,9 @@ processes.requestExit 请求指定 ProcessRef 对应的进程通过可用的协�
 
 同一次退出请求只处理本次确定的请求目标，不追着随后弹出的保存或确认窗口继续关闭，不代替用户保存或放弃内容。没有可用协作退出方式时报告明确原因，不把普通终止信号直接当作应用正常退出协议，也不因拒绝、失败或超时升级为强制终止。请求已发出与实际结束分别表达，实际进程退出通过观察确认；窗口关闭、进程退出和游戏监测集合结束是不同事实，最后一层由 Kisaki 判断。取消等待不撤回已经发出的请求。观察与采集等技术资源使用 dispose 或明确的停止操作，资源释放不改变目标程序的寿命。
 
-processes.requestExit、processes.forceTerminate、windows.requestClose，以及窗口恢复和聚焦操作，始终针对实际引用。每次只处理明确目标。
+控制方法的正常返回表示该原生请求已提交或处理。系统明确拒绝时报告错误。退出、关闭和前台变化由查询与观察确认，Kisaki 据此判断其实际游戏会话。
 
-控制方法的正常返回表示原生请求已经按该方法完成提交或处理，不额外承诺目标仍保持某种状态；已知被系统拒绝时必须返回错误。退出、关闭和前台变化通过对应查询与观察取得。特别是强制终止也不能仅凭原生调用返回，就把整个进程集合或 Kisaki 游戏会话标为结束。
-
-同一请求不会自行重试、升级为强制终止、继续处理后来出现的确认窗口，或改用其他目标。恢复与聚焦各自显式执行，读取和采集不代为执行。来源已经结束时，控制请求报告 targetEnded；尚未确认结束而无法验证旧引用时，报告 referenceInvalidated。
+恢复与聚焦各自是针对明确窗口引用的操作，读取和采集不代为执行。目标确认结束时返回 `targetEnded`，引用已失效而目标是否结束仍未知时返回 `referenceInvalidated`。
 
 取消在尚未执行时停止排队工作；原生请求已经发出后，只能取消后续等待，不能撤销系统已经接收的动作。aborted 或 timeout 不证明目标从未受到影响，也不触发自动补偿或重放。调用方按需要重新观察当前事实。
 
@@ -304,15 +305,23 @@ ObservationListener 是普通通知回调，库不等待返回值或返回的 Pr
 ## macOS 授权
 
 ```ts
-type Permission = 'accessibility' | 'screenCapture'
+import type { CallOptions } from '@ximu3/vantage'
 
-type PermissionStatus = 'granted' | 'notGranted'
+export type Permission = 'accessibility' | 'screenCapture'
+export type PermissionStatus = 'granted' | 'notGranted'
 
-queryPermission(permission, options?)
-requestPermission(permission, options?)
+export declare function queryPermission(
+  permission: Permission,
+  options?: CallOptions,
+): Promise<PermissionStatus>
+
+export declare function requestPermission(
+  permission: Permission,
+  options?: CallOptions,
+): Promise<PermissionStatus>
 ```
 
-这两种值只在 @ximu3/vantage/macos 中定义，分别对应该后端的 Accessibility 信任与屏幕采集授权。它们没有被定义为所有系统同名能力的通用开关；调用方在 macOS 接入中使用这组辅助函数，不把它当作跨平台功能就绪检查。
+`@ximu3/vantage/macos` 提供这组授权函数。`accessibility` 对应 macOS Accessibility 信任，`screenCapture` 对应 macOS 屏幕采集授权。
 
 子入口可以被跨平台工具解析和导入，导入不启动图形环境或显示授权界面。在非 macOS 上实际调用其中的方法时，以 notSupported 拒绝，不返回假的 granted 或增加 notApplicable 状态。纯类型导入不加载原生模块。主入口与子入口在同一 Node 环境中复用同一 native binding，不能形成两份生命周期和授权缓存。
 

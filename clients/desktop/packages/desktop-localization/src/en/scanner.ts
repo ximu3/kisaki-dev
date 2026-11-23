@@ -1,6 +1,3 @@
-/** @fileoverview Defines English names and explanations for built-in clue-extraction presets. */
-
-/** Canonical English names and explanations for scanner clue-extraction presets. */
 export const scannerMessages = {
   presets: {
     bracketBoth: {

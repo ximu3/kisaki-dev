@@ -1,5 +1,3 @@
-/** @fileoverview Safe Markdown presentation with instance-local labels and host-resolved images. */
-
 import { createMemo, createUniqueId, omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import MarkdownIt from 'markdown-it'
@@ -57,7 +55,6 @@ export function MarkdownPreview(props: MarkdownPreviewProps): JSX.Element {
     }
   })
 
-  /** Renders an escaped image from a host-resolved URL, or alternative text when unresolved. */
   markdown.renderer.rules.image = (tokens, index) => {
     const token = tokens[index]!
     const alt = markdown.utils.escapeHtml(token.content)
@@ -70,7 +67,6 @@ export function MarkdownPreview(props: MarkdownPreviewProps): JSX.Element {
     return `<img src="${markdown.utils.escapeHtml(resolved)}" alt="${alt}" loading="lazy">`
   }
 
-  /** Rendered Markdown HTML derived from the current text and this preview's document identity. */
   const html = createMemo(() => markdown.render(props.value, { docId: id }))
 
   return (

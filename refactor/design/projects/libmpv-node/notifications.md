@@ -41,7 +41,7 @@ const subscription = await mpv.observeProperty('time-pos', {
   },
   error(error) {
     reportObservationFailure(error)
-  }
+  },
 })
 
 await subscription.dispose()
@@ -223,12 +223,12 @@ const subscription = await mpv.observeEvents(
         handleEnd(event.playlistEntryId, event.reason, event.errorCode)
       }
     },
-    error: handleObservationFailure
+    error: handleObservationFailure,
   },
   {
     events: ['start-file', 'end-file', 'file-loaded'],
-    signal
-  }
+    signal,
+  },
 )
 ```
 
@@ -254,12 +254,12 @@ const logs = await mpv.observeLogs(
         consumeDiagnostic(record.prefix, record.level, record.text)
       }
     },
-    error: handleObservationFailure
+    error: handleObservationFailure,
   },
   {
     level: 'warn',
-    signal
-  }
+    signal,
+  },
 )
 ```
 
@@ -278,11 +278,17 @@ level 选项缺省 info，表示接收该详细程度及更严重的消息：fat
 日志流为消息与缺口的联合：
 
 ```ts
-type MpvLogGap = {
-  readonly type: 'gap'
-  readonly sources: readonly ('mpv' | 'binding')[]
-  readonly droppedCount: bigint | null
-}
+type MpvLogGap =
+  | {
+      readonly type: 'gap'
+      readonly sources: readonly ['binding']
+      readonly droppedCount: bigint
+    }
+  | {
+      readonly type: 'gap'
+      readonly sources: readonly ['mpv'] | readonly ['mpv', 'binding']
+      readonly droppedCount: null
+    }
 ```
 
 sources 是非空、去重的来源集合；同时包含两者时按 mpv、binding 排序。仅绑定自身丢弃时，droppedCount 是确切的未交付消息条数；涉及上游缓冲丢失时，整体数量为 null。不能把 null 当成 0，也不能从上游说明文字解析计数。

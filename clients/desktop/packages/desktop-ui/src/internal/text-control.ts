@@ -1,5 +1,3 @@
-/** @fileoverview Text value synchronization preserves native editing and IME composition. */
-
 import { createEffect, flush, onSettled } from 'solid-js'
 import type { Accessor } from 'solid-js'
 import { createValue, onFormReset } from './state'
@@ -24,14 +22,12 @@ export function bindTextControl(
   props: TextValueProps,
   element: Accessor<HTMLInputElement | HTMLTextAreaElement>,
 ) {
-  /** Live text value and owner-directed updates shared by native text controls. */
   const [value, change] = createValue(
     () => props.value,
     () => props.defaultValue ?? '',
     (next) => props.onValueChange?.(next),
   )
   let composing = false
-  /** Writes changed owned text to the native element only outside active composition. */
   const sync = (next = value()) => {
     const node = element()
     if (!composing && node.value !== next) {
@@ -43,11 +39,9 @@ export function bindTextControl(
   onSettled(() => {
     const node = element()
     let active = true
-    /** Marks composition active so external text synchronization waits. */
     const start = () => {
       composing = true
     }
-    /** Ends composition and queues synchronization guarded by the binding's remaining lifetime. */
     const end = () => {
       composing = false
       queueMicrotask(() => {
@@ -73,7 +67,7 @@ export function bindTextControl(
     },
   )
 
-  /** Settles the value owner before a native callback reads or submits the control. */
+  // A native input callback can synchronously read or submit the reconciled value.
   function commit(next: string) {
     change(next)
     flush()

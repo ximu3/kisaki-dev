@@ -1,5 +1,3 @@
-/** @fileoverview Owns the Unovis plots, ordered child composition, data updates and render geometry. */
-
 import { createEffect, omit, onCleanup } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { XYContainer as XY, SingleContainer as Single } from '@unovis/ts'
@@ -77,7 +75,6 @@ export function XYContainer<Datum>(props: XYContainerProps<Datum>): JSX.Element 
   const options = omit(props, 'children', 'data', 'class', 'style', 'duration', 'onRenderComplete')
   const duration = createChartDuration(() => props.duration)
   const children = chartParts<Datum>(() => props.children)
-  /** Publishes current geometry without exposing or sharing engine state. */
   const onRenderComplete: NonNullable<XYContainerConfigInterface<Datum>['onRenderComplete']> = (
     _svg,
     margin,
@@ -124,7 +121,6 @@ export function XYContainer<Datum>(props: XYContainerProps<Datum>): JSX.Element 
       let samplesChanged = releaseRemoved(active, next.active)
       active = next.active
 
-      /** Resolves data at the child so one series can vary independently of the container. */
       function mount<Engine extends ComponentCore<Datum[]>>(
         part: ChartPart<Engine, Datum[]>,
       ): Engine {
@@ -197,14 +193,13 @@ export function SingleContainer<Data>(props: SingleContainerProps<Data>): JSX.El
   const options = omit(props, 'children', 'data', 'class', 'style', 'duration', 'onRenderComplete')
   const duration = createChartDuration(() => props.duration)
   const children = chartParts<never, Data>(() => props.children)
-  /** Releases the container and its scheduled renders after its children have been released. */
+  // Release child engines before destroying their shared container.
   function disposePlot(): void {
     plot?.updateContainer({}, true)
     plot?.destroy()
     plot = undefined
   }
 
-  /** Publishes current geometry in the same shape as the Cartesian callback. */
   const onRenderComplete: NonNullable<SingleContainerConfigInterface<Data>['onRenderComplete']> = (
     _svg,
     margin,

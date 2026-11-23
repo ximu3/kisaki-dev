@@ -1,5 +1,3 @@
-/** @fileoverview A large independently virtualized collection exercises stable selection identity. */
-
 import { createSignal, For, onCleanup } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { createVirtualizer, VirtualRow } from '@kisaki3/desktop-ui/virtualization'
@@ -11,11 +9,8 @@ const choices = Array.from({ length: 10_000 }, (_, index) => ({
   label: `Item ${index + 1}`,
 }))
 
-/** Exercises a large virtualized multi-selection through the packed public field API. */
 export function VirtualChoices(): JSX.Element {
-  /** Reactive scroll viewport used by the standalone virtual-selection consumer. */
   const [viewport, setViewport] = createSignal<HTMLDivElement>()
-  /** Reveals the fixture's numeric option key through its currently mounted virtual row index. */
   let scrollTo: ((value: string) => void) | undefined
 
   return (
@@ -36,20 +31,16 @@ export function VirtualChoices(): JSX.Element {
         renderOptions={(state) => {
           const [retained, setRetained] = createSignal<readonly number[]>([])
           const virtualizer = createVirtualizer({
-            /** Reads the live fixture option count for the real virtualizer. */
             get count() {
               return state.options().length
             },
 
-            /** Reads the mounted viewport used by the consumer's real virtualizer. */
             get viewport() {
               return viewport()
             },
 
-            /** Supplies the fixed synthetic row-height estimate before actual measurement. */
             estimateSize: () => 30,
             overscan: 4,
-            /** Runs fixture virtual measurements only while the selection surface is present. */
             get enabled() {
               return state.present()
             },

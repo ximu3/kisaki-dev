@@ -1,7 +1,4 @@
-/** @fileoverview Coordinates scroll geometry, row measurement and viewport lifetime. */
-
 import { createEffect, createMemo, createSignal, flush } from 'solid-js'
-
 import { RowGeometry } from './geometry'
 
 /** One visible or retained logical row, in CSS pixels from the top of the track. */

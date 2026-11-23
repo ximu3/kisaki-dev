@@ -1,5 +1,3 @@
-/** @fileoverview Verifies independent document bindings, exact ranges and revocation on real Electron session protocols. */
-
 import assert from 'node:assert/strict'
 import { session } from 'electron'
 import { createHash, randomUUID } from 'node:crypto'
@@ -7,7 +5,6 @@ import { writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { createResources } from '../../../../src/main/infrastructure/resources'
 
-/** Reads one held fixture across two scopes and confirms that closing one view preserves the other. */
 export async function verifyResourceBindings(profile: string) {
   const registry = createResources()
   const a = session.fromPartition('test-resources-' + randomUUID())

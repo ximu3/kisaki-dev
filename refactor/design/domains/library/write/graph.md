@@ -8,28 +8,31 @@ library.writeGraph 提交已经确定的本地创建、修改和关系意图。�
 
 ```ts
 interface LibraryWriteGraph {
-  entries?: {
-    create?: readonly GraphEntryCreate[]
-    update?: readonly EntryUpdate[]
+  readonly entries?: {
+    readonly create?: readonly GraphEntryCreate[]
+    readonly update?: readonly EntryUpdate[]
   }
-  parts?: {
-    create?: readonly GraphPartCreate[]
-    update?: readonly PartUpdate[]
+
+  readonly parts?: {
+    readonly create?: readonly GraphPartCreate[]
+    readonly update?: readonly PartUpdate[]
   }
-  tags?: {
-    create?: readonly GraphTagCreate[]
-    update?: readonly TagUpdate[]
+
+  readonly tags?: {
+    readonly create?: readonly GraphTagCreate[]
+    readonly update?: readonly GraphTagUpdate[]
   }
-  relations?: GraphRelations
-  localContent?: GraphLocalContent
-  prepared?: readonly PreparedAttachment[]
+
+  readonly relations?: GraphRelations
+  readonly localContent?: GraphLocalContent
+  readonly prepared?: readonly PreparedAttachment[]
 }
 
-type GraphEntryRef<T extends EntryType = EntryType> = EntryRef<T> | { key: string }
+type GraphEntryRef<T extends EntryType = EntryType> = EntryRef<T> | { readonly key: string }
 
-type GraphPartRef<T extends PartType = PartType> = PartRef<T> | { key: string }
+type GraphPartRef<T extends PartType = PartType> = PartRef<T> | { readonly key: string }
 
-type GraphTagRef = { id: string } | { key: string }
+type GraphTagRef = { readonly id: string } | { readonly key: string }
 ```
 
 省略区域或空数组表示没有该类意图，空图是 changed: false 与三份空映射。prepared 只提供资源占用，不构成独立写入；没有最终业务引用的准备结果不被采用。三个结果映射只包含本次 create 中确实建立的 key，不包含已有引用或隐式新建对象。
@@ -52,11 +55,11 @@ GraphPartCreate 区分对象种类与动画分部的业务分类：
 ```ts
 type GraphPartCreate = {
   [K in PartType]: {
-    key: string
-    type: K
-    work: GraphEntryRef<PartWorkType<K>>
-    data: PartCreateFields<K>
-    completed?: boolean
+    readonly key: string
+    readonly type: K
+    readonly work: GraphEntryRef<PartWorkType<K>>
+    readonly data: PartCreateFields<K>
+    readonly completed?: boolean
   }
 }[PartType]
 ```

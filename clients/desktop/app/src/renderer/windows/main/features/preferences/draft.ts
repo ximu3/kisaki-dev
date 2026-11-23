@@ -1,143 +1,47 @@
-/** @fileoverview Preserves local preference edits at the public field and baseline boundaries. */
-
+import { createMemo, createSignal, onCleanup, type Accessor } from 'solid-js'
+import { interfaceScaleRange } from '@kisaki3/desktop-contracts/appearance'
+import { manualProxyIssue, type ProxyCredentials } from '@kisaki3/desktop-contracts/network'
 import {
-  parsePreferencesUpdate,
-  type PreferenceKey,
-  type PreferencesSnapshot,
-  type Preferences,
-  type ShortcutKey,
   effectiveShortcutBindings,
   findShortcutConflicts,
+  parsePreferencesUpdate,
+  type PreferenceKey,
+  type Preferences,
+  type PreferencesSnapshot,
+  type ShortcutKey,
 } from '@kisaki3/desktop-contracts/preferences'
-import { createMemo, createSignal, onCleanup, type Accessor } from 'solid-js'
-import { createQuery } from '../../../../infrastructure/query'
 import type { FieldIssue } from '@kisaki3/desktop-ui/form'
-import { manualProxyIssue, type ProxyCredentials } from '@kisaki3/desktop-contracts/network'
-import { interfaceScaleRange } from '@kisaki3/desktop-contracts/appearance'
 import type { MainClient } from '../../../../infrastructure/api'
+import { createQuery } from '../../../../infrastructure/query'
 
-/** Paths for the editor preserve dotted shortcut identities as a single object key. */
-function fieldPath(key: PreferenceKey) {
-  return key.startsWith('shortcuts.') ? ['shortcuts', key.slice(10)] : key.split('.')
-}
-
-/** Reads through valid stored definitions while preserving unavailable choices as undefined. */
-function fieldValue(value: unknown, path: readonly string[]): unknown {
-  let current = value
-  for (const key of [...path, undefined]) {
-    if (current && typeof current === 'object' && 'status' in current) {
-      current = 'value' in current ? current.value : undefined
-    }
-    if (key !== undefined) {
-      current =
-        current && typeof current === 'object'
-          ? (current as Record<string, unknown>)[key]
-          : undefined
-    }
-  }
-  return current
-}
-
-/** One edited unit and the exact original value from the time editing began. */
 interface FieldEdit {
-  path: string[]
-  value: unknown
-  original: unknown
+  readonly input: unknown
+  readonly expected: unknown
 }
 
-/** Formats the stored value for fields that accept unfinished textual input. */
-function draftValue(path: readonly string[], stored: unknown): unknown {
-  const key = path.at(-1)
-  if ((key === 'audioLanguages' || key === 'subtitleLanguages') && Array.isArray(stored)) {
-    return stored.join(', ')
-  }
-  if (key === 'paragraphSpacing') {
-    return String(stored)
-  }
-  return typeof stored === 'number' ? String(stored) : stored
-}
+type FieldEdits = ReadonlyMap<PreferenceKey, FieldEdit>
 
-/** Converts text to the domain value only when validating or committing an edit. */
-function submittedValue(edit: FieldEdit) {
-  const key = edit.path.at(-1)
-  if (typeof edit.value === 'string') {
-    if (key === 'audioLanguages' || key === 'subtitleLanguages') {
-      return edit.value
-        .split(',')
-        .map((tag) => tag.trim())
-        .filter(Boolean)
-    }
-    if (numericFields.has(key!) || (key === 'paragraphSpacing' && edit.value !== 'document')) {
-      return edit.value.trim() ? Number(edit.value) : NaN
-    }
-  }
-  return edit.value
-}
+type AtPath<T, K extends string> = K extends `${infer Head}.${infer Rest}`
+  ? Head extends keyof T
+    ? AtPath<T[Head], Rest>
+    : never
+  : K extends keyof T
+    ? T[K]
+    : never
 
-/** Maps independent fields back to the typed changes and matching expected-value tree. */
-function updateInput(edits: readonly FieldEdit[]) {
-  const changes: Record<string, unknown> = {}
-  const expected: Record<string, unknown> = {}
-  for (const edit of edits) {
-    for (const [root, value] of [
-      [changes, submittedValue(edit)],
-      [expected, edit.original],
-    ] as const) {
-      if (value === undefined) {
-        continue
-      }
-      let parent = root
-      for (const key of edit.path.slice(0, -1)) {
-        parent = (parent[key] ??= {}) as Record<string, unknown>
-      }
-      parent[edit.path.at(-1)!] = value
-    }
-  }
-  return parsePreferencesUpdate({ changes, expected })
-}
+type DraftValue<K extends PreferenceKey> = K extends `shortcuts.${infer Key extends ShortcutKey}`
+  ? Preferences['shortcuts'][Key]
+  : K extends 'network.credentials'
+    ? Preferences['network']['credentials'] | ProxyCredentials
+    : K extends
+          | `${string}.paragraphSpacing`
+          | 'usage.anime.audioLanguages'
+          | 'usage.anime.subtitleLanguages'
+      ? string
+      : AtPath<Preferences, K> extends number
+        ? string
+        : AtPath<Preferences, K>
 
-/** Compares preference values in their stable schema representation. */
-function sameValue(first: unknown, second: unknown) {
-  return JSON.stringify(first) === JSON.stringify(second)
-}
-
-/** Finds the independently edited field at the supplied path. */
-function findEdit(edits: readonly FieldEdit[], path: readonly string[]) {
-  return edits.find((edit) => edit.path.join('.') === path.join('.'))
-}
-
-/** Keeps an existing dirty field's baseline across unrelated saved-state invalidations. */
-function editField(edits: readonly FieldEdit[], incoming: FieldEdit, retain = false): FieldEdit[] {
-  const { path, value } = incoming
-  const previous = findEdit(edits, path)
-  const original = previous ? previous.original : incoming.original
-  const remaining = edits.filter((edit) => edit !== previous)
-  return !retain && sameValue(draftValue(path, original), value)
-    ? remaining
-    : [...remaining, { path, value, original }]
-}
-
-/** Reports input errors before accepting staged fields or attempting persistence. */
-function validateFields(api: MainClient, edits: readonly FieldEdit[]): FieldIssue[] {
-  const issues: FieldIssue[] = []
-  for (const edit of edits) {
-    try {
-      updateInput([edit])
-    } catch {
-      const id = edit.path.join('.')
-      issues.push({
-        id,
-        summary:
-          id === 'appearance.interfaceScale'
-            ? api.t('runtime.scaleRange', interfaceScaleRange)
-            : api.t('runtime.invalidValue'),
-      })
-    }
-  }
-  return issues
-}
-
-/** Numeric preference fields retain raw text until the draft is validated and submitted. */
 const numericFields = new Set([
   'interfaceScale',
   'visibleLimit',
@@ -153,70 +57,167 @@ const numericFields = new Set([
   'maxLineLength',
 ])
 
-/** Resolves a dotted field path through the complete preference definition. */
-type AtPath<T, K extends string> = K extends `${infer H}.${infer R}`
-  ? H extends keyof T
-    ? AtPath<T[H], R>
-    : never
-  : K extends keyof T
-    ? T[K]
-    : never
+function fieldPath(key: PreferenceKey) {
+  const shortcutPrefix = 'shortcuts.'
+  return key.startsWith(shortcutPrefix)
+    ? ['shortcuts', key.slice(shortcutPrefix.length)]
+    : key.split('.')
+}
 
-/** Gives dotted shortcut identities their list type and editable text fields their draft type. */
-type DraftValue<K extends PreferenceKey> = K extends `shortcuts.${infer Key extends ShortcutKey}`
-  ? Preferences['shortcuts'][Key]
-  : K extends 'network.credentials'
-    ? Preferences['network']['credentials'] | ProxyCredentials
-    : K extends
-          | `${string}.paragraphSpacing`
-          | 'usage.anime.audioLanguages'
-          | 'usage.anime.subtitleLanguages'
-      ? string
-      : AtPath<Preferences, K> extends number
-        ? string
-        : AtPath<Preferences, K>
+function availableValue(value: unknown): unknown {
+  if (value && typeof value === 'object' && 'status' in value) {
+    return 'value' in value ? value.value : undefined
+  }
+  return value
+}
 
-/** Provides the same field editing and restore rules for a saved draft and a staged branch. */
+function readField(source: PreferencesSnapshot | Preferences | undefined, key: PreferenceKey) {
+  let current: unknown = source
+  for (const part of fieldPath(key)) {
+    current = availableValue(current)
+    current =
+      current && typeof current === 'object'
+        ? (current as Record<string, unknown>)[part]
+        : undefined
+  }
+  return availableValue(current)
+}
+
+function fieldName(key: PreferenceKey) {
+  return fieldPath(key).at(-1)!
+}
+
+function displayValue(key: PreferenceKey, value: unknown) {
+  if (
+    (key === 'usage.anime.audioLanguages' || key === 'usage.anime.subtitleLanguages') &&
+    Array.isArray(value)
+  ) {
+    return value.join(', ')
+  }
+  return typeof value === 'number' || fieldName(key) === 'paragraphSpacing' ? String(value) : value
+}
+
+function parseInput(key: PreferenceKey, input: unknown) {
+  if (typeof input !== 'string') {
+    return input
+  }
+  if (key === 'usage.anime.audioLanguages' || key === 'usage.anime.subtitleLanguages') {
+    return input
+      .split(',')
+      .map((tag) => tag.trim())
+      .filter(Boolean)
+  }
+
+  const name = fieldName(key)
+  if (numericFields.has(name) || (name === 'paragraphSpacing' && input !== 'document')) {
+    return input.trim() ? Number(input) : NaN
+  }
+  return input
+}
+
+function putField(tree: Record<string, unknown>, path: readonly string[], value: unknown) {
+  if (value === undefined) {
+    return
+  }
+  let group = tree
+  for (const part of path.slice(0, -1)) {
+    group = (group[part] ??= {}) as Record<string, unknown>
+  }
+  group[path.at(-1)!] = value
+}
+
+function updateInput(edits: Iterable<readonly [PreferenceKey, FieldEdit]>) {
+  const changes: Record<string, unknown> = {}
+  const expected: Record<string, unknown> = {}
+  for (const [key, edit] of edits) {
+    const path = fieldPath(key)
+    putField(changes, path, parseInput(key, edit.input))
+    putField(expected, path, edit.expected)
+  }
+  return parsePreferencesUpdate({ changes, expected })
+}
+
+function equalValue(first: unknown, second: unknown) {
+  return JSON.stringify(first) === JSON.stringify(second)
+}
+
+function isChanged(key: PreferenceKey, edit: FieldEdit) {
+  return !equalValue(displayValue(key, edit.expected), edit.input)
+}
+
+function recordEdit(
+  edits: Map<PreferenceKey, FieldEdit>,
+  key: PreferenceKey,
+  incoming: FieldEdit,
+  saving?: FieldEdits,
+) {
+  const previous = edits.get(key)
+  const edit = previous ? { ...incoming, expected: previous.expected } : incoming
+  if (saving?.has(key) || isChanged(key, edit)) {
+    edits.set(key, edit)
+  } else {
+    edits.delete(key)
+  }
+}
+
+function validateFields(api: MainClient, edits: FieldEdits): FieldIssue[] {
+  const issues: FieldIssue[] = []
+  for (const [key, edit] of edits) {
+    try {
+      updateInput([[key, edit]])
+    } catch {
+      issues.push({
+        id: key,
+        summary:
+          key === 'appearance.interfaceScale'
+            ? api.t('runtime.scaleRange', interfaceScaleRange)
+            : api.t('runtime.invalidValue'),
+      })
+    }
+  }
+  return issues
+}
+
 function createPreferenceFields(
-  value: (key: PreferenceKey) => unknown,
-  change: (key: PreferenceKey, next: unknown) => void,
+  readInput: (key: PreferenceKey) => unknown,
+  writeInput: (key: PreferenceKey, input: unknown) => void,
   defaults: Accessor<Preferences | undefined>,
 ) {
   function read<K extends PreferenceKey>(key: K) {
-    return value(key) as DraftValue<K> | undefined
+    return readInput(key) as DraftValue<K> | undefined
   }
-  function write<K extends PreferenceKey>(key: K, next: DraftValue<K>) {
-    change(key, next)
+
+  function write<K extends PreferenceKey>(key: K, input: DraftValue<K>) {
+    writeInput(key, input)
   }
 
   function canReset(key: PreferenceKey) {
-    const base = defaults()
-    const path = fieldPath(key)
-    return !!base && !sameValue(value(key), draftValue(path, fieldValue(base, path)))
+    const values = defaults()
+    return !!values && !equalValue(readInput(key), displayValue(key, readField(values, key)))
   }
+
   function reset(key: PreferenceKey) {
-    const path = fieldPath(key)
-    change(key, draftValue(path, fieldValue(defaults(), path)))
+    writeInput(key, displayValue(key, readField(defaults(), key)))
   }
 
   return { read, write, canReset, reset }
 }
 
-/** Typed editing operations shared by parent and child preference forms. */
 export type PreferenceFields = ReturnType<typeof createPreferenceFields>
 
-/** Owns this editor's captured field baselines, dirty values and persistence. */
 export function createPreferenceDraft(api: MainClient) {
   const snapshot = createQuery((signal) => api.request(signal, 'preferences.get'))
-  const defaults = createQuery((signal) => api.request(signal, 'preferences.defaults'))
+  const defaultsQuery = createQuery((signal) => api.request(signal, 'preferences.defaults'))
   const saved = createMemo<PreferencesSnapshot | undefined>((previous) =>
     snapshot.error ? previous : snapshot.value,
   )
+  const defaults = () => (defaultsQuery.error ? undefined : defaultsQuery.value)
 
-  const [edits, setEdits] = createSignal<FieldEdit[]>([])
-  const written = new Map<string, { value: unknown }>()
-  let submitted: readonly FieldEdit[] = []
+  const [edits, setEdits] = createSignal<FieldEdits>(new Map())
+  const lastCommits = new Map<PreferenceKey, { value: unknown }>()
+  let saving: FieldEdits | undefined
   let active = true
+
   const reload = () => void snapshot.reload()
   api.topics.addEventListener('window.changed', reload)
   onCleanup(() => {
@@ -224,45 +225,47 @@ export function createPreferenceDraft(api: MainClient) {
     api.topics.removeEventListener('window.changed', reload)
   })
 
-  const availableDefaults = () => (defaults.error ? undefined : defaults.value)
+  function readInput(key: PreferenceKey) {
+    const edit = edits().get(key)
+    return edit ? edit.input : displayValue(key, readField(saved(), key))
+  }
 
-  function value(key: PreferenceKey) {
-    const path = fieldPath(key)
-    const edit = findEdit(edits(), path)
-    return edit ? edit.value : draftValue(path, fieldValue(saved(), path))
+  function writeInput(key: PreferenceKey, input: unknown) {
+    const expected = readField(saved(), key)
+    setEdits((previous) => {
+      const next = new Map(previous)
+      recordEdit(next, key, { input, expected }, saving)
+      return next
+    })
   }
-  function change(key: PreferenceKey, next: unknown) {
-    const path = fieldPath(key)
-    const edit = { path, value: next, original: fieldValue(saved(), path) }
-    setEdits((items) => editField(items, edit, !!findEdit(submitted, path)))
-  }
-  const fields = createPreferenceFields(value, change, availableDefaults)
+  const fields = createPreferenceFields(readInput, writeInput, defaults)
 
   function validate(): FieldIssue[] {
-    const issues = validateFields(api, edits())
+    const pending = edits()
+    const issues = validateFields(api, pending)
     const base = saved()
-    if (issues.length || !base || !edits().length) {
+    if (issues.length || !base || !pending.size) {
       return issues
     }
 
-    const changes = updateInput(edits()).changes
+    const { changes } = updateInput(pending)
     if (changes.shortcuts) {
       const conflicts = findShortcutConflicts(
         effectiveShortcutBindings(base.shortcuts, changes.shortcuts),
         api.platform,
       )
       for (const key of new Set(conflicts.flatMap(({ first, second }) => [first, second]))) {
-        issues.push({ id: 'shortcuts.' + key, summary: api.t('runtime.shortcutOverlap') })
+        issues.push({ id: `shortcuts.${key}`, summary: api.t('runtime.shortcutOverlap') })
       }
     }
-    const fallback = defaults.error ? undefined : defaults.value?.network
-    const route = base.network.status === 'ready' ? base.network.value : fallback
+
+    const route = base.network.status === 'ready' ? base.network.value : defaults()?.network
     if (changes.network && route) {
       const next = { ...route, ...changes.network }
       const key = manualProxyIssue(next.mode, next.endpoint, next.credentials !== null)
       if (key) {
         issues.push({
-          id: 'network.' + key,
+          id: `network.${key}`,
           summary: api.t(
             key === 'endpoint' ? 'runtime.proxyAddressNeeded' : 'runtime.socksCredentials',
           ),
@@ -272,121 +275,119 @@ export function createPreferenceDraft(api: MainClient) {
     return issues
   }
 
+  function adoptSave(submitted: FieldEdits, result: PreferencesSnapshot) {
+    const remaining = new Map(edits())
+    for (const [key, committed] of submitted) {
+      const expected = readField(result, key)
+      lastCommits.set(key, { value: expected })
+
+      // A new input can arrive while this exact edit is being saved.
+      const current = remaining.get(key)
+      remaining.delete(key)
+      if (current && current !== committed) {
+        recordEdit(remaining, key, { input: current.input, expected })
+      }
+    }
+    snapshot.accept(result)
+    setEdits(remaining)
+  }
+
   async function save() {
-    if (!edits().length) {
+    const submitted = edits()
+    if (!submitted.size) {
       return
     }
-    submitted = edits()
+
+    saving = submitted
     try {
       const result = await api.call('preferences.update', updateInput(submitted))
-      if (!active) {
-        return
+      if (active) {
+        adoptSave(submitted, result)
       }
-
-      for (const edit of submitted) {
-        const value = fieldValue(result, edit.path)
-        written.set(edit.path.join('.'), { value })
-      }
-      const remaining = edits()
-        .filter((edit) => !submitted.includes(edit))
-        .flatMap((edit) =>
-          findEdit(submitted, edit.path)
-            ? editField([], { ...edit, original: fieldValue(result, edit.path) })
-            : [edit],
-        )
-      snapshot.accept(result)
-      setEdits(remaining)
     } catch (cause) {
       if (active) {
-        setEdits((items) =>
-          items.filter((edit) => !sameValue(draftValue(edit.path, edit.original), edit.value)),
-        )
+        setEdits((current) => new Map([...current].filter(([key, edit]) => isChanged(key, edit))))
       }
       throw cause
     } finally {
-      submitted = []
+      saving = undefined
     }
   }
 
   function stage(keys: readonly PreferenceKey[]) {
+    const base = saved()
     const opening = new Map(
-      keys.map((key) => {
-        const path = fieldPath(key)
-        return [
-          key,
-          {
-            path,
-            value: value(key),
-            original: fieldValue(saved(), path),
-            written: written.get(key),
-          },
-        ]
-      }),
+      keys.map((key) => [
+        key,
+        {
+          input: readInput(key),
+          expected: readField(base, key),
+          lastCommit: lastCommits.get(key),
+        },
+      ]),
     )
-    const [pending, setPending] = createSignal(new Map<PreferenceKey, FieldEdit>())
+    const [pending, setPending] = createSignal<FieldEdits>(new Map())
 
-    function readChild(key: PreferenceKey) {
-      const edit = pending().get(key)
-      return edit ? edit.value : opening.get(key)!.value
+    function readStagedInput(key: PreferenceKey) {
+      const edit = pending().get(key) ?? opening.get(key)!
+      return edit.input
     }
-    function writeChild(key: PreferenceKey, next: unknown) {
-      const { path, value, original } = opening.get(key)!
+
+    function writeStagedInput(key: PreferenceKey, input: unknown) {
+      const { input: initial, expected } = opening.get(key)!
       setPending((edits) => {
-        const updated = new Map(edits)
-        if (sameValue(value, next)) {
-          updated.delete(key)
+        const next = new Map(edits)
+        if (equalValue(initial, input)) {
+          next.delete(key)
         } else {
-          updated.set(key, { path, value: next, original })
+          next.set(key, { input, expected })
         }
-        return updated
+        return next
       })
     }
 
     function apply() {
       setEdits((edits) => {
-        let updated = edits
+        const next = new Map(edits)
         for (const [key, edit] of pending()) {
-          // A parent save already in progress when this child opened may have established a new baseline.
-          const committed = written.get(key)
-          const next =
-            committed && committed !== opening.get(key)!.written
-              ? { ...edit, original: committed.value }
-              : edit
-          updated = editField(updated, next, !!findEdit(submitted, edit.path))
+          // Only a save from this editor can replace the staged field's original baseline.
+          const commit = lastCommits.get(key)
+          const expected =
+            commit && commit !== opening.get(key)!.lastCommit ? commit.value : edit.expected
+          recordEdit(next, key, { input: edit.input, expected }, saving)
         }
-        return updated
+        return next
       })
     }
 
     return {
-      ...createPreferenceFields(readChild, writeChild, availableDefaults),
+      ...createPreferenceFields(readStagedInput, writeStagedInput, defaults),
       dirty: () => pending().size > 0,
-      validate: () => validateFields(api, Array.from(pending().values())),
+      validate: () => validateFields(api, pending()),
       apply,
+    }
+  }
+
+  function retry() {
+    if (snapshot.error) {
+      void snapshot.reload()
+    }
+    if (defaultsQuery.error) {
+      void defaultsQuery.reload()
     }
   }
 
   return {
     ...fields,
     ready: saved,
-    error: (): unknown => snapshot.error ?? defaults.error,
-    retry: () => {
-      if (snapshot.error) {
-        void snapshot.reload()
-      }
-      if (defaults.error) {
-        void defaults.reload()
-      }
-    },
+    error: (): unknown => snapshot.error ?? defaultsQuery.error,
+    retry,
     validate,
     save,
     stage,
-    dirty: () => edits().length > 0,
+    dirty: () => edits().size > 0,
   }
 }
 
-/** Draft API shared only by the field groups of one preference editor. */
 export type PreferenceDraft = ReturnType<typeof createPreferenceDraft>
-
-/** One temporary set of field edits that can be applied to the parent draft. */
 export type PreferenceStage = ReturnType<PreferenceDraft['stage']>

@@ -1,5 +1,3 @@
-/** @fileoverview Uses the packed formatter inside an independent browser document. */
-
 import { createTranslator } from '@kisaki3/desktop-localization'
 
 /** Synthetic catalog retaining literal markup-like message text for browser rendering checks. */

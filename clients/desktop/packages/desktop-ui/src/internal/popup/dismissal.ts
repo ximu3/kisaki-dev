@@ -1,5 +1,3 @@
-/** @fileoverview Requests dismissal of an owner-controlled top-layer popup. */
-
 /** Connects outside pointer and platform close requests to the currently presented popup. */
 export function watchPopupDismissal(
   panel: HTMLElement,

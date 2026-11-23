@@ -1,5 +1,3 @@
-/** @fileoverview Defines the seven entry tables, exact external identities and five real part tables. */
-
 import { desc, sql } from 'drizzle-orm'
 import {
   check,
@@ -10,10 +8,9 @@ import {
   sqliteTable,
   text,
   unique,
+  type AnySQLiteColumn,
 } from 'drizzle-orm/sqlite-core'
-import type { AnySQLiteColumn } from 'drizzle-orm/sqlite-core'
-import { entryTypes } from '@kisaki3/desktop-contracts/library'
-import type { EntryType } from '@kisaki3/desktop-contracts/library'
+import { entryTypes, type EntryType } from '@kisaki3/desktop-contracts/library'
 import { aliases, externalLinks, languages, partialDate, characterMeasure } from '../codecs/catalog'
 import { attachments } from './attachments/metadata'
 import { orderedText, orderedName } from '../name-order'
@@ -98,12 +95,12 @@ function workFields() {
   }
 }
 
+const releaseStatuses = ['planned', 'ongoing', 'finished', 'paused', 'cancelled'] as const
+
 /** Defines serial publication facts independently from personal completion. */
 function serialFields() {
   return {
-    releaseStatus: text('release_status', {
-      enum: ['planned', 'ongoing', 'finished', 'paused', 'cancelled'],
-    }),
+    releaseStatus: text('release_status', { enum: releaseStatuses }),
     releaseEndDate: partialDate('release_end_date'),
   }
 }
@@ -119,11 +116,8 @@ function workIndexes(
   ]
 }
 
-/** Publication-progress labels kept separate from personal status and completion history. */
-const releaseStatuses = ['planned', 'ongoing', 'finished', 'paused', 'cancelled']
-
-/** Finite storage labels shared by character and person gender fields. */
 const genders = ['male', 'female', 'nonBinary', 'genderless', 'other'] as const
+const bloodTypes = ['a', 'b', 'ab', 'o'] as const
 
 /** Stores game-specific catalog facts for an entry whose discriminator is game. */
 export const games = sqliteTable(
@@ -218,7 +212,7 @@ export const characters = sqliteTable(
     ...entryIdentity('character'),
     birthDate: partialDate('birth_date'),
     gender: text('gender', { enum: genders }),
-    bloodType: text('blood_type', { enum: ['a', 'b', 'ab', 'o'] }),
+    bloodType: text('blood_type', { enum: bloodTypes }),
     age: characterMeasure('age'),
     height: characterMeasure('height'),
     weight: characterMeasure('weight'),
@@ -231,7 +225,7 @@ export const characters = sqliteTable(
     primaryKey({ columns: [table.entryId] }),
     entryForeignKey(table.entryId, table.entryType),
     enumValue('characters_gender', table.gender, genders),
-    enumValue('characters_blood_type', table.bloodType, ['a', 'b', 'ab', 'o']),
+    enumValue('characters_blood_type', table.bloodType, bloodTypes),
   ],
 )
 
@@ -305,6 +299,9 @@ function partConstraints(
   ]
 }
 
+const episodeKinds = ['regular', 'special'] as const
+const extraKinds = ['opening', 'ending', 'promotion', 'interview', 'other'] as const
+
 /**
  * Stores actual episodes with separate ordering, display numbering and regular or special
  * classification.
@@ -317,13 +314,13 @@ export const animeEpisodes = sqliteTable(
       .notNull()
       .references(() => animes.entryId, { onDelete: 'cascade' }),
     numberLabel: text('number_label'),
-    type: text('type', { enum: ['regular', 'special'] }),
+    type: text('type', { enum: episodeKinds }),
     declaredDurationMs: integer('declared_duration_ms'),
   },
   (table) => [
     primaryKey({ columns: [table.id] }),
     ...partConstraints('anime_episodes', table, table.animeId),
-    enumValue('anime_episodes_type', table.type, ['regular', 'special']),
+    enumValue('anime_episodes_type', table.type, episodeKinds),
     safeInteger('anime_episodes_duration', table.declaredDurationMs),
   ],
 )
@@ -339,19 +336,13 @@ export const animeExtras = sqliteTable(
     animeId: text('anime_id')
       .notNull()
       .references(() => animes.entryId, { onDelete: 'cascade' }),
-    type: text('type', { enum: ['opening', 'ending', 'promotion', 'interview', 'other'] }),
+    type: text('type', { enum: extraKinds }),
     declaredDurationMs: integer('declared_duration_ms'),
   },
   (table) => [
     primaryKey({ columns: [table.id] }),
     ...partConstraints('anime_extras', table, table.animeId),
-    enumValue('anime_extras_type', table.type, [
-      'opening',
-      'ending',
-      'promotion',
-      'interview',
-      'other',
-    ]),
+    enumValue('anime_extras_type', table.type, extraKinds),
     safeInteger('anime_extras_duration', table.declaredDurationMs),
   ],
 )

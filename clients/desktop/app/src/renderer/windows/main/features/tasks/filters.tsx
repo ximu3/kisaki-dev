@@ -1,5 +1,3 @@
-/** @fileoverview Provides the active task scope's query row for the fixed toolbar. */
-
 import { Show } from 'solid-js'
 import type { TaskRunStatus } from '@kisaki3/desktop-contracts/tasks'
 import { SearchInput } from '@kisaki3/desktop-ui/input'
@@ -46,7 +44,6 @@ export function TaskFilters(props: {
           disabled={!props.types}
           aria-label={api.t('runtime.type')}
           value={query().type() ? 'type:' + query().type() : 'all'}
-          defaultValue="all"
           options={[
             { value: 'all', label: api.t('runtime.allTypes') },
             ...types().map((value) => ({
@@ -63,7 +60,6 @@ export function TaskFilters(props: {
           class="w-32 max-w-full"
           aria-label={api.t('runtime.filter')}
           value={query().status() || 'all'}
-          defaultValue="all"
           options={[
             { value: 'all', label: api.t('runtime.allStatuses') },
             ...query().statuses.map((value) => ({ value, label: api.t(`tasks.${value}`) })),

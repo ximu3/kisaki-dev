@@ -1,8 +1,5 @@
-/** @fileoverview Observes module entry failures independently of the application being loaded. */
-
 import { entryRecoveryEvent } from './protocol'
 
-/** Asks Vite to retry a failed entry after an edit, including an edit made while the page was loading. */
 function onEntryError(event: Event): void {
   if (!(event.target instanceof HTMLScriptElement) || event.target.type !== 'module') {
     return

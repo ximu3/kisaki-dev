@@ -1,5 +1,3 @@
-/* Unovis public theme variables keep charts aligned with the surrounding desktop palette. */
-
 @layer components {
   .root {
     margin: 0;

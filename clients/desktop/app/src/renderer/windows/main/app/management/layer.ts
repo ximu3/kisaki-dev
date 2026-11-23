@@ -1,5 +1,3 @@
-/** @fileoverview Owns each management dialog's target, presentation and active editor registration. */
-
 import { createSignal, onCleanup } from 'solid-js'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 import { waitForDecision, type EditorGuard } from '../../../../infrastructure/dialogs/closing'

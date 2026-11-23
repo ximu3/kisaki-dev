@@ -1,5 +1,3 @@
-/** @fileoverview Defines the temporary Simplified Chinese catalog offered by source sessions. */
-
 import type { MessageCatalog, UiTranslation } from '@kisaki3/desktop-contracts/i18n'
 import { runtimeMessages } from './zh-hans/runtime'
 

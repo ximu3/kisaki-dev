@@ -1,5 +1,3 @@
-/** @fileoverview Adapts Chromium requests to single-use Web bodies while retaining cancellation after headers. */
-
 import { net, type Session } from 'electron'
 import { Readable } from 'node:stream'
 import { addAbortListener } from 'node:events'
@@ -31,6 +29,7 @@ export async function request(
   if (contentType && !headers.has('content-type')) {
     headers.set('content-type', contentType)
   }
+
   const req = net.request({
     url,
     method,
@@ -45,7 +44,7 @@ export async function request(
   const received = Promise.withResolvers<NetworkResponse>()
   const reader = upload?.body?.getReader()
   let incoming: Readable | undefined
-  /** Aborts the Chromium request and any still-active response body. */
+
   const abort = () => {
     incoming?.destroy(
       signal.reason instanceof Error
@@ -65,6 +64,7 @@ export async function request(
   req.on('error', (cause) =>
     received.reject(new DesktopError('ReadFailed', 'The network request failed', { cause })),
   )
+
   req.on('login', (challenge, answer) => {
     if (
       proxy &&
@@ -89,6 +89,7 @@ export async function request(
       req.followRedirect()
     }
   })
+
   req.once('response', (message) => {
     const responseHeaders = new Headers()
     for (let i = 0; i < message.rawHeaders.length; i += 2) {
@@ -124,24 +125,19 @@ export async function request(
       ok: response.ok,
       headers: response.headers,
       body: response.body,
-      /** Reflects consumption of the underlying one-shot body. */
+
       get bodyUsed() {
         return response.bodyUsed
       },
-      /** Consumes the response as decoded text. */
       text: () => response.text(),
-      /** Consumes and parses the response as JSON. */
       json: () => response.json() as Promise<unknown>,
-      /** Consumes the response into a byte array. */
       bytes: () => response.bytes(),
-      /** Consumes the response into an owned buffer. */
       arrayBuffer: () => response.arrayBuffer(),
-      /** Consumes the response as a Blob with its content type. */
       blob: () => response.blob(),
-      /** Consumes the response using standard form-data decoding. */
       formData: () => response.formData(),
     })
   })
+
   try {
     headers.forEach((value, key) => req.setHeader(key, value))
     if (!reader) {
@@ -156,7 +152,6 @@ export async function request(
             break
           }
           await new Promise<void>((resolve, reject) => {
-            /** Rejects a blocked upload write when Chromium closes its request. */
             const closed = () =>
               reject(new DesktopError('ConnectionClosed', 'Upload connection closed'))
             req.once('close', closed)
@@ -221,7 +216,6 @@ function responseBody(stream: Readable, signal: AbortSignal, abort: () => void) 
           }
         }
       },
-      /** Aborts the underlying exchange and releases the reader. */
       async cancel() {
         ended = true
         listener[Symbol.dispose]()

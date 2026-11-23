@@ -1,5 +1,3 @@
-/** @fileoverview Native numeric editing with themed step controls. */
-
 import { createMemo, createUniqueId, Show, omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { fieldAttributes } from '../../../internal/field'
@@ -58,6 +56,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
     'class',
     'style',
   )
+
   const field = fieldAttributes(props)
   const unitId = createUniqueId()
   const [value, change] = createValue(

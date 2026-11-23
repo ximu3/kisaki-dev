@@ -1,5 +1,3 @@
-/* Determinate progress fill and motion-aware indeterminate tracks. */
-
 @layer components {
   .root {
     --kui-progress-track: var(--muted);

@@ -1,11 +1,5 @@
-/**
- * @fileoverview Exercises real development-session shutdown, failed-build recovery,
- * generation handoff and renderer updates.
- */
-
 import { expect, onTestFinished, test } from 'vite-plus/test'
-import { chromium } from '@playwright/test'
-import type { Page } from '@playwright/test'
+import { chromium, type Page } from '@playwright/test'
 import { readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { appRoot } from '../../../tools/lib/paths'
@@ -164,7 +158,6 @@ test('dependency recovery and renderer updates preserve a usable process', async
     .toBe('73px')
   expect(await page.getByRole('button', { name: 'Count: 1' }).count()).toBe(1)
 
-  /** Waits for a particular document to receive the compiler error for the editable dependency. */
   const waitForRejection = (document: Page) =>
     document.waitForResponse(
       (response) =>

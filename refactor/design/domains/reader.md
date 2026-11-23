@@ -14,7 +14,7 @@ Kana 负责文档读取、排版、内容交互和源位置恢复。Kisaki 负�
 | 文本重排 | 可重排 EPUB、MOBI、AZW3/AZW、FB2、TXT；目录、定位、字体、排版和重排后的进度                |
 | 共同交互 | 打开与失败状态、单元导航、键盘、全屏、退出、进度、位置恢复与标记                           |
 
-上表的能力同时适用于漫画和小说。内核根据实际文档结构确定版式，文件后缀和作品类别都不能代替内容解析。固定页面保留原有画面与空间关系，可重排内容按适用设置排版。固定页面中的可选择文字仍可检索、高亮和标注；同一文档包含两种版式时，按各部分实际结构完整呈现，不丢弃合法文字章节，也不强制转换版式。
+内核按文档结构确定版式。固定页面保留原有画面与空间关系，可重排内容按适用设置排版。固定页面中的可选择文字仍可检索、高亮和标注。同一文档包含两种版式时，按各部分的结构呈现。
 
 直接阅读范围不包含 RAR／CBR，具体边界见[支持格式范围](../projects/kana/formats.md#format-scope)。文件识别按实际容器内容判断；不支持的格式仍保留用户文件与正式记录。
 
@@ -58,7 +58,7 @@ Kana 与 UI 框架无关，可以使用 PDF.js、浏览器排版和适用解压�
 
 这些限制下，常规排版、文字选择和应用阅读交互仍须完整可用。依赖书内脚本或自动联网的互动电子书不在支持范围。内部链接由内核在文档内导航；外链必须由用户点击，再交给应用按目标和协议处理，不能触发任意命令、文件或窗口能力。PDF 可执行动作遵守同样限制。
 
-验收夹具同时覆盖脚本、事件属性、越界路径、外部资源、链接和 CSS，以及正常排版、选区、定位和标注，不能只验证隔离而忽略阅读能力。 具体机制按[内容文档职责](../projects/kana/layout.md#documents)分工，不把某个 sandbox 参数当作独立的产品要求，也不在主应用接入中重复内核已经负责的内容检查。
+验收样本同时覆盖受限的脚本、事件属性、越界路径、外部资源、链接和 CSS，以及正常排版、选区、定位和标注。具体机制见[内容文档职责](../projects/kana/layout.md#documents)。
 
 <a id="engine"></a>
 
@@ -161,60 +161,83 @@ TXT 解码、BOM 和换行规则，FB2 节点解释，MOBI/KF8 源内容重建�
 
 ```ts
 interface NormalizedPoint {
-  x: number
-  y: number
+  readonly x: number
+  readonly y: number
 }
 
-interface NormalizedRect {
-  x: number
-  y: number
-  width: number
-  height: number
+interface NormalizedRect extends NormalizedPoint {
+  readonly width: number
+  readonly height: number
 }
 
 type NormalizedQuad = readonly [NormalizedPoint, NormalizedPoint, NormalizedPoint, NormalizedPoint]
 
-type ReadingAnchor =
-  | { type: 'epubCfi'; value: string }
-  | { type: 'textOffset'; encoding: TextEncoding; offset: number }
-  | { type: 'xmlNode'; nodePath: readonly number[]; textOffset?: number }
-  | { type: 'mobi'; byteOffset: number; textOffset?: number }
-  | {
-      type: 'kf8'
-      documentIndex: number
-      byteOffset: number
-      textOffset?: number
-    }
+interface ReadingAnchorByType {
+  readonly epubCfi: { readonly type: 'epubCfi'; readonly value: string }
+
+  readonly textOffset: {
+    readonly type: 'textOffset'
+    readonly encoding: TextEncoding
+    readonly offset: number
+  }
+
+  readonly xmlNode: {
+    readonly type: 'xmlNode'
+    readonly nodePath: readonly number[]
+    readonly textOffset?: number
+  }
+
+  readonly mobi: {
+    readonly type: 'mobi'
+    readonly byteOffset: number
+    readonly textOffset?: number
+  }
+
+  readonly kf8: {
+    readonly type: 'kf8'
+    readonly documentIndex: number
+    readonly byteOffset: number
+    readonly textOffset?: number
+  }
+}
+
+type ReadingAnchor = ReadingAnchorByType[keyof ReadingAnchorByType]
 
 type ReadingPageRef =
-  | { type: 'pageIndex'; index: number }
-  | { type: 'memberPath'; path: string }
-  | { type: 'epubSpineItem'; index: number }
-  | { type: 'kf8Document'; index: number }
+  | { readonly type: 'pageIndex'; readonly index: number }
+  | { readonly type: 'memberPath'; readonly path: string }
+  | { readonly type: 'epubSpineItem'; readonly index: number }
+  | { readonly type: 'kf8Document'; readonly index: number }
 
 type ReadingPosition =
-  | { type: 'anchor'; anchor: ReadingAnchor }
-  | { type: 'page'; page: ReadingPageRef; point: NormalizedPoint }
+  | { readonly type: 'anchor'; readonly anchor: ReadingAnchor }
+  | { readonly type: 'page'; readonly page: ReadingPageRef; readonly point: NormalizedPoint }
 
 type ReadingTextSelection =
-  | { type: 'anchors'; start: ReadingAnchor; end: ReadingAnchor }
   | {
-      type: 'pages'
-      pages: readonly {
-        page: ReadingPageRef
-        quads: readonly NormalizedQuad[]
-      }[]
+      [K in keyof ReadingAnchorByType]: {
+        readonly type: 'anchors'
+        readonly start: ReadingAnchorByType[K]
+        readonly end: ReadingAnchorByType[K]
+      }
+    }[keyof ReadingAnchorByType]
+  | {
+      readonly type: 'pages'
+      readonly pages: NonEmptyArray<{
+        readonly page: ReadingPageRef
+        readonly quads: NonEmptyArray<NormalizedQuad>
+      }>
     }
 
 interface ReadingPageRegion {
-  page: ReadingPageRef
-  rect: NormalizedRect
+  readonly page: ReadingPageRef
+  readonly rect: NormalizedRect
 }
 
 type ReadingAnnotationLocation =
-  | { type: 'position'; position: ReadingPosition }
-  | { type: 'text'; selection: ReadingTextSelection }
-  | { type: 'region'; region: ReadingPageRegion }
+  | { readonly type: 'position'; readonly position: ReadingPosition }
+  | { readonly type: 'text'; readonly selection: ReadingTextSelection }
+  | { readonly type: 'region'; readonly region: ReadingPageRegion }
 ```
 
 整数坐标必须是非负安全整数，不接受 NaN、Infinity、负值或精度溢出。文本 offset 和 textOffset 以 UTF-16 单元计数，实际边界不能切开代理对。文字锚点范围必须非空，包含起点但不包含终点。两端采用相同寻址方式，TXT 的 encoding 也须一致。跨章节或格式内容文档时保留完整端点，并要求属于同一可读路径；正文与独立注释 body 不拼成一个连续范围。
@@ -243,7 +266,8 @@ PDF 文字提取项编号不作为长期身份。使用页面几何，也不额�
 
 源文件改写后，原坐标可能仍有效，也可能失效。坐标有效不保证仍指向历史原文或画面。格式无效、成员缺失或坐标越界时，应明确失败并保留记录，不能跳到首页、近似位置或其他文件。已保存的 quote、图片和批注都是历史事实，不随文件变化重写。
 
-已经打开的 Kana 在确认根输入变化后以 sourceChanged 结束本次实例，保留最后可信位置并完成资源收尾；接入不把自动关闭当成新位置，也不删除已有阅读记录或标注。之后明确重新打开时建立新实例。单次导航失败或单个标记无法恢复仍按自身范围处理，见[失败影响范围](../projects/kana/api.md#failures)。
+已打开的 Kana 在确认根输入变化后以 sourceChanged 结束本次实例，保留最后可信位置、阅读记录和标注，随后释放资源。明确重新打开时建立新实例。单次导航或单个标记的失败只影响其自身，见[失败影响范围](../projects/kana/api.md#failures)。
+
 用户明确重新选择或重新定位后，才通过 Annotation 完整更新采用新位置。旧摘录可以用于搜索对照，但不能自动改绑。定位值不统一追加 version: 1。只有确实发生不兼容编码演进时，才增加明确分支或版本；能够准确转换才迁移，否则保留原值并报告无法定位。技术库升级本身不改变存储格式。
 
 EPUB、TXT、PDF、图片目录与归档、MOBI/AZW 和 FB2 都须验证续读、适用的任意文字选区、关闭后重开恢复，以及页面区域映射。目录能用不能代替完整选区可逆性的验证。
@@ -265,9 +289,25 @@ start 是本次打开指定文件时从头执行的指令，持久记录仍保�
 标注跳转取得实际文件和起点后，复用 open 或 seek，不增加 seekRange、seekRegion。完整范围通过标记显示，长选区不要求同时全部可见。
 
 ```ts
-sessions.anime.seek(sessionId, position: PlaybackPositionInput): Promise<number>
-sessions.comic.seek(sessionId, position: ReadingPositionInput): Promise<ReadingPosition>
-sessions.novel.seek(sessionId, position: ReadingPositionInput): Promise<ReadingPosition>
+declare const sessions: {
+  readonly anime: {
+    seek(sessionId: string, position: PlaybackPositionInput, call?: CallOptions): Promise<number>
+  }
+  readonly comic: {
+    seek(
+      sessionId: string,
+      position: ReadingPositionInput,
+      call?: CallOptions,
+    ): Promise<ReadingPosition>
+  }
+  readonly novel: {
+    seek(
+      sessionId: string,
+      position: ReadingPositionInput,
+      call?: CallOptions,
+    ): Promise<ReadingPosition>
+  }
+}
 ```
 
 seek 等待实际定位完成，直接返回执行者确认的坐标，不能回显请求或包裹 SeekResult。start 只出现在输入中。实际恢复位置可能与原选区起点不同，不能用返回值反向覆盖标注。失败、取消和被后续请求替代，都按[会话完成规则](sessions.md)结束。

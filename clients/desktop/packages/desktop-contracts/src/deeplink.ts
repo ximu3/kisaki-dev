@@ -1,17 +1,7 @@
-/** @fileoverview Parses and formats the closed native links and lossless owner-scoped extension links using WHATWG URL semantics. */
-
-import type { NativeViewTarget, EntryIdentifier } from './ui/navigation'
-import type {
-  GameOpenInput,
-  AnimeOpenInput,
-  ComicOpenInput,
-  NovelOpenInput,
-} from './sessions/targets'
-import type { WorkType, EntryType, ExternalIdentity } from './library/catalog'
-import type { IdentificationClues } from './metadata/fields'
 import type { ExecutionContext, Registration } from './operations'
 import * as v from 'valibot'
 import {
+  fromParser,
   asciiControl,
   parseExternalValue,
   parseRecord,
@@ -22,13 +12,32 @@ import {
 } from './validation'
 import { parseId } from '@kisaki3/extension-distribution/metadata'
 import { DesktopError } from './errors'
-import { parseNativeViewTarget, parseEntryIdentifier, entrySelectionEntries } from './ui/navigation'
-import { workTypes, entryTypes, isWorkType } from './library/catalog'
-import { openSelectionEntries, openTargetSchema } from './sessions/targets'
-import { parseIdentificationClues } from './metadata/fields'
+import {
+  parseNativeViewTarget,
+  parseEntryIdentifier,
+  entrySelectionEntries,
+  type NativeViewTarget,
+  type EntryIdentifier,
+} from './ui/navigation'
+import {
+  workTypes,
+  entryTypes,
+  isWorkType,
+  type WorkType,
+  type EntryType,
+  type ExternalIdentity,
+} from './library/catalog'
+import {
+  openSelectionEntries,
+  openTargetSchema,
+  type GameOpenInput,
+  type AnimeOpenInput,
+  type ComicOpenInput,
+  type NovelOpenInput,
+} from './sessions/targets'
+import { parseIdentificationClues, type IdentificationClues } from './metadata/fields'
 import { parseStrictJson } from './json'
 
-/** The production or development application's public link scheme. */
 export type DeeplinkScheme = 'kisaki' | 'kisaki-dev'
 
 /** Native view destinations exposed through public links, with preferences addressed as a whole. */
@@ -51,10 +60,8 @@ export type PublicViewTarget =
     >
   | { readonly type: 'preferences' }
 
-/** Each opening-input variant with its local root key removed for link addressing. */
 type WithoutRoot<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never
 
-/** Type-specific opening selections whose root is supplied by a link identifier. */
 export interface DeeplinkOpenInputMap {
   readonly game: WithoutRoot<GameOpenInput, 'gameId'>
   readonly anime: WithoutRoot<AnimeOpenInput, 'animeId'>
@@ -62,11 +69,7 @@ export interface DeeplinkOpenInputMap {
   readonly novel: WithoutRoot<NovelOpenInput, 'novelId'>
 }
 
-/**
- * A work root and the selections applied together when opening it.
- *
- * An external identity resolves only the root; child and file identities remain local.
- */
+/** An external identity resolves only the root; child and file identities remain local. */
 export type DeeplinkOpenTarget = {
   [K in WorkType]: {
     readonly workType: K
@@ -75,8 +78,6 @@ export type DeeplinkOpenTarget = {
 }[WorkType]
 
 /**
- * Entry-identification clues and an optional profile supplied by an add link.
- *
  * Clues require a useful name or one complete external identity and can contain at most one
  * external identity.
  */
@@ -91,8 +92,6 @@ export type DeeplinkAddInput = {
 }[EntryType]
 
 /**
- * The decoded route payload delivered to the addressed extension.
- *
  * Path excludes the extension ID. Empty path components, ordered repeated query keys and an
  * explicitly empty fragment retain their meaning.
  */
@@ -102,9 +101,6 @@ export interface ExtensionDeeplinkRequest {
   readonly fragment?: string
 }
 
-/**
- * A validated application-scheme request for navigation, opening, addition or extension handling.
- */
 export type DeeplinkRequest = { readonly scheme: DeeplinkScheme } & (
   | { readonly type: 'view'; readonly target: PublicViewTarget }
   | { readonly type: 'open'; readonly target: DeeplinkOpenTarget }
@@ -112,7 +108,6 @@ export type DeeplinkRequest = { readonly scheme: DeeplinkScheme } & (
   | ({ readonly type: 'extension'; readonly extensionId: string } & ExtensionDeeplinkRequest)
 )
 
-/** Registers the current extension's public-link handler. */
 export interface DeeplinkApi {
   /**
    * Registers the instance's single live link handler and returns its removal handle.
@@ -124,7 +119,6 @@ export interface DeeplinkApi {
   ): Promise<Registration<{ readonly extensionId: string }>>
 }
 
-/** Native page families that may be addressed through public deeplinks. */
 const publicTypes = [
   'library',
   'entries',
@@ -139,25 +133,17 @@ const publicTypes = [
   'extensions',
 ]
 
-/** Application protocol schemes accepted by native link parsing. */
 const schemeSchema = v.picklist(['kisaki', 'kisaki-dev'])
 
-/** Validated distribution identity used by extension-targeted links. */
-const extensionIdentity = v.pipe(
-  v.unknown(),
-  v.transform((value) => parseExternalValue(parseId, value, 'Invalid extension identity')),
+const extensionIdentity = fromParser((value) =>
+  parseExternalValue(parseId, value, 'Invalid extension identity'),
 )
 
-/** Rejects invalid link data with the shared InvalidInput classification. */
 function invalid(message = 'Invalid application link'): never {
   throw new DesktopError('InvalidInput', message)
 }
 
-/**
- * Decodes a URI component and maps malformed encoding to InvalidInput.
- *
- * Query components first convert plus signs to spaces.
- */
+/** Query components first convert plus signs to spaces. */
 function decode(value: string, query = false): string {
   try {
     return decodeURIComponent(query ? value.replaceAll('+', ' ') : value)
@@ -166,7 +152,6 @@ function decode(value: string, query = false): string {
   }
 }
 
-/** Parses a native target restricted to the destinations and selections exposed by public links. */
 function parsePublicView(input: unknown): PublicViewTarget {
   const target = parseNativeViewTarget(input)
   if (
@@ -178,14 +163,13 @@ function parsePublicView(input: unknown): PublicViewTarget {
   return target as PublicViewTarget
 }
 
-/** Parses a link root identifier and the opening selections allowed for its work type. */
 function parseOpenTarget(input: unknown): DeeplinkOpenTarget {
   const record = parseRecord(input)
   const workType = parseValue(v.picklist(workTypes), record.workType)
   return parseValue(
     openTargetSchema(workType, {
       workType: v.literal(workType),
-      identifier: v.pipe(v.unknown(), v.transform(parseEntryIdentifier)),
+      identifier: fromParser(parseEntryIdentifier),
     }),
     input,
     'Invalid open link target',
@@ -199,10 +183,7 @@ function parseAddInput(input: unknown): DeeplinkAddInput {
   const result = parseValue(
     v.strictObject({
       entryType: v.literal(entryType),
-      clues: v.pipe(
-        v.unknown(),
-        v.transform((value) => parseIdentificationClues(entryType, value)),
-      ),
+      clues: fromParser((value) => parseIdentificationClues(entryType, value)),
       profileId: v.exactOptional(id),
     }),
     input,
@@ -217,28 +198,24 @@ function parseAddInput(input: unknown): DeeplinkAddInput {
   return result as DeeplinkAddInput
 }
 
-/**
- * Parses a structured link request and rejects fields outside its route contract.
- *
- * Interaction options are call context and cannot be carried as link data.
- */
+/** Interaction options are call context and cannot be carried as link data. */
 export function parseRequest(input: unknown): DeeplinkRequest {
   const value = parseValue(
     v.variant('type', [
       v.strictObject({
         scheme: schemeSchema,
         type: v.literal('view'),
-        target: v.pipe(v.unknown(), v.transform(parsePublicView)),
+        target: fromParser(parsePublicView),
       }),
       v.strictObject({
         scheme: schemeSchema,
         type: v.literal('open'),
-        target: v.pipe(v.unknown(), v.transform(parseOpenTarget)),
+        target: fromParser(parseOpenTarget),
       }),
       v.strictObject({
         scheme: schemeSchema,
         type: v.literal('add'),
-        input: v.pipe(v.unknown(), v.transform(parseAddInput)),
+        input: fromParser(parseAddInput),
       }),
       v.strictObject({
         scheme: schemeSchema,
@@ -258,7 +235,6 @@ export function parseRequest(input: unknown): DeeplinkRequest {
   return value
 }
 
-/** Reads a local or external root address from its exact path-component shape. */
 function readIdentifier(parts: readonly string[]): EntryIdentifier {
   if (parts[0] === 'local' && parts.length === 2) {
     return { type: 'local', id: parts[1]! }
@@ -270,7 +246,6 @@ function readIdentifier(parts: readonly string[]): EntryIdentifier {
   return invalid('Invalid entry link address')
 }
 
-/** Builds native route parameters, rejecting repeated keys and empty values. */
 function singleQuery(query: readonly (readonly [string, string])[]): Record<string, string> {
   const entries = new Map<string, string>()
   for (const [key, value] of query) {
@@ -283,20 +258,13 @@ function singleQuery(query: readonly (readonly [string, string])[]): Record<stri
   return Object.fromEntries(entries)
 }
 
-/** Rejects native query parameters outside the current route's allowed set. */
 function requireKeys(values: object, allowed: readonly string[]): void {
   if (Object.keys(values).some((key) => !allowed.includes(key))) {
     invalid('Unknown native link parameter')
   }
 }
 
-/**
- * Parses an application URL into its decoded route request.
- *
- * Checks raw dot segments before URL normalization and rejects malformed component encoding.
- * Extension routes preserve ordered query entries, empty path components and explicit fragments.
- */
-export function parse(input: string): DeeplinkRequest {
+function decodeUrl(input: string) {
   const source = parseValue(text, input, 'Invalid application link')
   if (source.trim() !== source || source.includes('\\') || asciiControl.test(source)) {
     invalid()
@@ -346,91 +314,98 @@ export function parse(input: string): DeeplinkRequest {
     }
   }
 
-  const query = [...url.searchParams] as [string, string][]
+  const query = [...url.searchParams]
   const fragment = raw[5] === undefined ? undefined : decode(raw[5])
 
-  if (url.hostname === 'extension') {
-    return parseRequest({
-      scheme,
-      type: 'extension',
-      extensionId: path[0],
-      path: path.slice(1),
-      query,
-      ...(fragment === undefined ? {} : { fragment }),
-    })
+  return { scheme, authority: url.hostname, path, query, fragment }
+}
+
+function parseAddLink(
+  scheme: DeeplinkScheme,
+  path: readonly string[],
+  parameters: Record<string, string>,
+): DeeplinkRequest {
+  if (path.length > 0) {
+    invalid('Add links do not have a path')
   }
 
-  if (fragment !== undefined) {
-    invalid('Native links do not accept a fragment')
+  const entryType = parseValue(v.picklist(entryTypes), parameters.entryType)
+  let dateField: 'birthDate' | 'releaseDate' | 'foundedDate' = 'birthDate'
+  if (isWorkType(entryType)) {
+    dateField = 'releaseDate'
+  } else if (entryType === 'organization') {
+    dateField = 'foundedDate'
   }
 
-  const parameters = singleQuery(query)
-  if (url.hostname === 'add') {
-    if (path.length > 0) {
-      invalid('Add links do not have a path')
-    }
+  requireKeys(parameters, [
+    'entryType',
+    'source',
+    'sourceId',
+    'name',
+    'originalName',
+    dateField,
+    'profileId',
+  ])
+  if (Object.hasOwn(parameters, 'source') !== Object.hasOwn(parameters, 'sourceId')) {
+    invalid('External identity parameters must occur together')
+  }
 
-    const entryType = parseValue(v.picklist(entryTypes), parameters.entryType)
-    let dateField: 'birthDate' | 'releaseDate' | 'foundedDate' = 'birthDate'
-    if (isWorkType(entryType)) {
-      dateField = 'releaseDate'
-    } else if (entryType === 'organization') {
-      dateField = 'foundedDate'
-    }
+  const date = parameters[dateField]
+  const clues = {
+    ...(parameters.name === undefined ? {} : { name: parameters.name }),
+    ...(parameters.originalName === undefined ? {} : { originalName: parameters.originalName }),
+    ...(date === undefined ? {} : { [dateField]: parseStrictJson(date) }),
+    ...(parameters.source === undefined
+      ? {}
+      : {
+          externalIdentities: [{ source: parameters.source, sourceId: parameters.sourceId }],
+        }),
+  }
 
-    requireKeys(parameters, [
-      'entryType',
-      'source',
-      'sourceId',
-      'name',
-      'originalName',
-      dateField,
-      'profileId',
-    ])
-    if (Object.hasOwn(parameters, 'source') !== Object.hasOwn(parameters, 'sourceId')) {
-      invalid('External identity parameters must occur together')
-    }
+  return parseRequest({
+    scheme,
+    type: 'add',
+    input: {
+      entryType,
+      clues,
+      ...(parameters.profileId === undefined ? {} : { profileId: parameters.profileId }),
+    },
+  })
+}
 
-    const date = parameters[dateField]
-    const clues = {
-      ...(parameters.name === undefined ? {} : { name: parameters.name }),
-      ...(parameters.originalName === undefined ? {} : { originalName: parameters.originalName }),
-      ...(date === undefined ? {} : { [dateField]: parseStrictJson(date) }),
-      ...(parameters.source === undefined
+function parseOpenLink(
+  scheme: DeeplinkScheme,
+  path: readonly string[],
+  parameters: Record<string, string>,
+): DeeplinkRequest {
+  const workType = parseValue(v.picklist(workTypes), path[0])
+  requireKeys(parameters, Object.keys(openSelectionEntries[workType]))
+  return parseRequest({
+    scheme,
+    type: 'open',
+    target: {
+      workType,
+      identifier: readIdentifier(path.slice(1)),
+      ...parameters,
+      ...(parameters.position === undefined
         ? {}
-        : {
-            externalIdentities: [{ source: parameters.source, sourceId: parameters.sourceId }],
-          }),
-    }
+        : { position: parseStrictJson(parameters.position) }),
+    },
+  })
+}
 
-    return parseRequest({
-      scheme,
-      type: 'add',
-      input: {
-        entryType,
-        clues,
-        ...(parameters.profileId === undefined ? {} : { profileId: parameters.profileId }),
-      },
-    })
-  }
+const managementRoutes = {
+  tasks: { type: 'tasks', parameters: ['runId'] },
+  scanner: { type: 'scanner', parameters: ['configId', 'runId'] },
+  'metadata-profiles': { type: 'metadataProfiles', parameters: ['profileId'] },
+  extensions: { type: 'extensions', parameters: ['extensionId', 'pageId'] },
+} as const
 
-  if (url.hostname === 'open') {
-    const workType = parseValue(v.picklist(workTypes), path[0])
-    requireKeys(parameters, Object.keys(openSelectionEntries[workType]))
-    return parseRequest({
-      scheme,
-      type: 'open',
-      target: {
-        workType,
-        identifier: readIdentifier(path.slice(1)),
-        ...parameters,
-        ...(parameters.position === undefined
-          ? {}
-          : { position: parseStrictJson(parameters.position) }),
-      },
-    })
-  }
-
+function parseViewLink(
+  scheme: DeeplinkScheme,
+  path: readonly string[],
+  parameters: Record<string, string>,
+): DeeplinkRequest {
   const kind = path[0]
   if (entryTypes.some((type) => type === kind)) {
     const entryType = kind as EntryType
@@ -472,31 +447,47 @@ export function parse(input: string): DeeplinkRequest {
     return { scheme, type: 'view', target: { type: kind } }
   }
 
-  const aliases = {
-    tasks: 'tasks',
-    scanner: 'scanner',
-    'metadata-profiles': 'metadataProfiles',
-    extensions: 'extensions',
-  } as const
-  if (kind && Object.hasOwn(aliases, kind)) {
-    const allowed = {
-      tasks: ['runId'],
-      scanner: ['configId', 'runId'],
-      'metadata-profiles': ['profileId'],
-      extensions: ['extensionId', 'pageId'],
-    }
-    requireKeys(parameters, allowed[kind as keyof typeof allowed])
-    return parseRequest({
-      scheme,
-      type: 'view',
-      target: { type: aliases[kind as keyof typeof aliases], ...parameters },
-    })
+  if (kind && Object.hasOwn(managementRoutes, kind)) {
+    const route = managementRoutes[kind as keyof typeof managementRoutes]
+    requireKeys(parameters, route.parameters)
+    return parseRequest({ scheme, type: 'view', target: { type: route.type, ...parameters } })
   }
 
   return invalid('Unknown native view link')
 }
 
-/** Converts a root identifier into the path components used by native links. */
+/**
+ * Checks raw dot segments before URL normalization and rejects malformed component encoding.
+ * Extension routes preserve ordered query entries, empty path components and explicit fragments.
+ */
+export function parse(input: string): DeeplinkRequest {
+  const { scheme, authority, path, query, fragment } = decodeUrl(input)
+  if (authority === 'extension') {
+    return parseRequest({
+      scheme,
+      type: 'extension',
+      extensionId: path[0],
+      path: path.slice(1),
+      query,
+      ...(fragment === undefined ? {} : { fragment }),
+    })
+  }
+
+  if (fragment !== undefined) {
+    invalid('Native links do not accept a fragment')
+  }
+
+  const parameters = singleQuery(query)
+  switch (authority) {
+    case 'add':
+      return parseAddLink(scheme, path, parameters)
+    case 'open':
+      return parseOpenLink(scheme, path, parameters)
+    default:
+      return parseViewLink(scheme, path, parameters)
+  }
+}
+
 function address(identifier: EntryIdentifier): string[] {
   return identifier.type === 'local'
     ? ['local', identifier.id]
@@ -564,5 +555,8 @@ export function format(input: DeeplinkRequest): string {
   }
 
   const parameters = new URLSearchParams(query.map(([key, value]) => [key, value])).toString()
-  return `${request.scheme}://${request.type}${path.length ? `/${path.map(encodeURIComponent).join('/')}` : ''}${parameters ? `?${parameters}` : ''}${fragment === undefined ? '' : `#${encodeURIComponent(fragment)}`}`
+  const pathname = path.length ? '/' + path.map(encodeURIComponent).join('/') : ''
+  const search = parameters ? '?' + parameters : ''
+  const hash = fragment === undefined ? '' : '#' + encodeURIComponent(fragment)
+  return `${request.scheme}://${request.type}${pathname}${search}${hash}`
 }

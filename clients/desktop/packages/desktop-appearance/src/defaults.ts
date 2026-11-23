@@ -1,8 +1,5 @@
-/** @fileoverview Owns the default light and dark values used by JavaScript and generated CSS. */
-
 import type { ColorScheme, TokenValues } from './tokens'
 
-/** Default light appearance branch with CSS font-family stacks. */
 export const light: TokenValues = Object.freeze({
   '--background': 'oklch(0.965 0.005 256)',
   '--foreground': 'oklch(0.21 0.03 260)',
@@ -58,7 +55,6 @@ export const light: TokenValues = Object.freeze({
   '--text-base-letter-spacing': 'normal',
 })
 
-/** Default dark appearance branch with CSS font-family stacks. */
 export const dark: TokenValues = Object.freeze({
   '--background': 'oklch(0.17 0.015 258)',
   '--foreground': 'oklch(0.9 0.012 256)',

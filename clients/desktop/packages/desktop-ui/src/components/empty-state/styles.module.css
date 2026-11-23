@@ -1,5 +1,3 @@
-/* Centered empty-content text, decorative imagery and next-action spacing. */
-
 @layer components {
   .root {
     display: flex;

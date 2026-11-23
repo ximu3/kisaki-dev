@@ -1,11 +1,8 @@
-/** @fileoverview Plain single-line editing with native text semantics. */
-
 import { omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import type { ControlSize } from '../../internal/control/size'
 import surface from '../../internal/input-surface.module.css'
-import { NativeInput } from './native'
-import type { NativeInputProps } from './native'
+import { NativeInput, type NativeInputProps } from './native'
 
 /**
  * Single-line native text-input attributes.

@@ -1,5 +1,3 @@
-/** @fileoverview Runs one finite command inside a dedicated Windows kernel job. */
-
 import { spawn } from 'node:child_process'
 import { Job } from '@seydx/win-job'
 

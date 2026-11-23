@@ -1,5 +1,3 @@
-/** @fileoverview Exercises the deployed host HTTP implementation against an isolated origin and its authenticating proxy. */
-
 import { session } from 'electron'
 import { createServer, type Server } from 'node:http'
 import { once } from 'node:events'
@@ -8,14 +6,12 @@ import assert from 'node:assert/strict'
 import type { AddressInfo } from 'node:net'
 import { createNetwork } from '../../../../src/main/infrastructure/network'
 
-/** Listens only on a loopback port allocated to this test process. */
 async function listen(server: Server) {
   server.listen(0, '127.0.0.1')
   await once(server, 'listening')
   return 'http://127.0.0.1:' + (server.address() as AddressInfo).port
 }
 
-/** Verifies body consumption, explicit account headers, proxy challenges and blocking on a failed apply. */
 export async function verifyNetwork() {
   const host = session.fromPartition('test-network-' + randomUUID())
   const browser = session.fromPartition('test-browser-' + randomUUID())
@@ -72,7 +68,6 @@ export async function verifyNetwork() {
     })
     assert.equal(await authenticated.text(), 'explicit=1')
     const body = new ReadableStream<Uint8Array>({
-      /** Provides one finite streamed upload to the loopback endpoint. */
       start(controller) {
         controller.enqueue(new TextEncoder().encode('chunked'))
         controller.close()
@@ -105,6 +100,39 @@ export async function verifyNetwork() {
     })
     await assert.rejects(network.fetch(url + '/echo'))
     await assert.rejects(browser.fetch(url + '/echo'))
+
+    const started = Promise.withResolvers<void>()
+    const release = Promise.withResolvers<void>()
+    const setBrowserProxy = browser.setProxy.bind(browser)
+    const setHostProxy = host.setProxy.bind(host)
+    browser.setProxy = async (config) => {
+      started.resolve()
+      await release.promise
+      await setBrowserProxy(config)
+    }
+    host.setProxy = async () => {
+      throw new Error('Isolated session failed to adopt the route')
+    }
+
+    const attempt = network.apply({
+      status: 'ready',
+      value: { mode: 'direct', endpoint: null, bypassRules: '', credentials: null },
+    })
+    let settled = false
+    void attempt.then(() => {
+      settled = true
+    })
+    try {
+      await started.promise
+      await new Promise<void>((resolve) => setImmediate(resolve))
+      assert.equal(settled, false, 'Route adoption must wait for every session after a failure')
+    } finally {
+      release.resolve()
+      await attempt
+      browser.setProxy = setBrowserProxy
+      host.setProxy = setHostProxy
+    }
+    assert.equal((await network.getState()).status, 'failed')
   } finally {
     await network.close()
     for (const server of [origin, proxy]) {

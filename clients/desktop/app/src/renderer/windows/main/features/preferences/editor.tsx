@@ -1,6 +1,5 @@
-/** @fileoverview Hosts the complete preference draft and its responsive, independently scrollable sections. */
-
 import { createEffect, createSignal, For, onCleanup, Show } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { preferenceKeys, type PreferenceKey } from '@kisaki3/desktop-contracts/preferences'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
@@ -35,8 +34,7 @@ import { StagedPreferenceDialog, type StagedPreferenceEdit } from './staged-dial
 import { UsageEditorFields } from './usage/editor'
 import { UsageFields, usageMedia, type UsageMedium } from './usage/fields'
 
-/** Display order for the preference draft's independently navigable sections. */
-const groups = [
+const sections = [
   'general',
   'appearance',
   'navigation',
@@ -47,14 +45,8 @@ const groups = [
   'updates',
 ] as const
 
-/** Accessible group identity used by the top tab list. */
-type Group = (typeof groups)[number]
+type Section = (typeof sections)[number]
 
-/** Identifies the preference branch whose staged form currently owns editing. */
-type ChildEdit = StagedPreferenceEdit &
-  ({ kind: 'usage'; medium: UsageMedium } | { kind: 'proxy-credentials' })
-
-/** Receives the window's page catalog, editor scope and independent resource management action. */
 interface PreferenceEditorProps {
   api: MainClient
   pages: readonly NavigationPage[]
@@ -63,102 +55,153 @@ interface PreferenceEditorProps {
   openResource: (type: 'themes' | 'fonts') => void
 }
 
-/** Owns one preference draft and reveals fields before native navigation or validation focuses them. */
 export function PreferenceEditor(props: PreferenceEditorProps) {
   const { api } = props
   const draft = createPreferenceDraft(api)
   deferDialogUntil(() => !!draft.ready() || !!draft.error())
-  const [group, setGroup] = createSignal<Group>('general')
-  const [revealingProxy, setRevealProxy] = createSignal(false)
-  let panel!: HTMLDivElement
+
+  const [section, setSection] = createSignal<Section>('general')
+  const [showProxyDetails, setShowProxyDetails] = createSignal(false)
   let tabList!: HTMLDivElement
+  let fieldsViewport!: HTMLDivElement
+  let fieldToReveal: string | undefined
 
-  const [childEdit, setChildEdit] = createSignal<ChildEdit>()
-  let childForm: FormState | undefined
+  const [stagedEdit, setStagedEdit] = createSignal<StagedPreferenceEdit>()
+  let stagedForm: FormState | undefined
 
-  function openUsage(medium: UsageMedium, field?: string) {
-    panel.querySelector<HTMLElement>(`[data-usage-medium="${medium}"]`)?.focus()
+  function editUsage(medium: UsageMedium, field?: string) {
+    fieldsViewport.querySelector<HTMLElement>(`[data-usage-medium="${medium}"]`)?.focus()
     const keys = preferenceKeys.filter((key) => key.startsWith(`usage.${medium}.`))
-    setChildEdit({ kind: 'usage', medium, draft: draft.stage(keys), field })
+    const stage = draft.stage(keys)
+    setStagedEdit({
+      draft: stage,
+      field,
+      size: medium === 'game' ? 'md' : 'lg',
+      title: () => api.t(`runtime.usageTitles.${medium}`),
+      fields: () => (
+        <UsageEditorFields
+          api={api}
+          medium={medium}
+          draft={stage}
+          manageFonts={() => props.openResource('fonts')}
+        />
+      ),
+    })
   }
 
-  function openCredentials() {
-    focusPreferenceField(panel, proxyCredentialsKey)
-    setChildEdit({ kind: 'proxy-credentials', draft: draft.stage([proxyCredentialsKey]) })
+  function editProxyCredentials() {
+    focusPreferenceField(fieldsViewport, proxyCredentialsKey)
+    const stage = draft.stage([proxyCredentialsKey])
+    setStagedEdit({
+      draft: stage,
+      size: 'sm',
+      title: () => api.t('runtime.fields.credentials'),
+      fields: () => <ProxyCredentialFields t={api.t} draft={stage} />,
+    })
   }
 
-  function registerChildForm(form: FormState) {
-    childForm = form
+  function bindStagedForm(form: FormState) {
+    stagedForm = form
     onCleanup(() => {
-      if (childForm === form) {
-        childForm = undefined
+      if (stagedForm === form) {
+        stagedForm = undefined
       }
     })
   }
 
-  function locate(key: string) {
-    const next = groups.find((section) => key.startsWith(section + '.'))
+  function selectSection(next: Section) {
+    fieldToReveal = undefined
+    setSection(next)
+    setShowProxyDetails(false)
+    fieldsViewport.scrollTop = 0
+  }
+
+  function revealField(key: string) {
+    const next = sections.find((candidate) => key.startsWith(`${candidate}.`))
     if (!next) {
       return
     }
-
-    const medium = usageMedia.find((value) => key.startsWith(`usage.${value}.`))
-    setGroup(next)
-    setRevealProxy(next === 'network' && key !== 'network.mode')
+    fieldToReveal = key
+    setSection(next)
+    setShowProxyDetails(next === 'network' && key !== 'network.mode')
 
     queueMicrotask(() => {
+      if (fieldToReveal !== key) {
+        return
+      }
+      fieldToReveal = undefined
       tabList
         .querySelector('[aria-selected="true"]')
         ?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+
+      const medium = usageMedia.find((value) => key.startsWith(`usage.${value}.`))
       if (medium) {
-        openUsage(medium, key)
+        editUsage(medium, key)
       } else {
-        focusPreferenceField(panel, key)
+        focusPreferenceField(fieldsViewport, key)
       }
     })
   }
 
+  let lastRequestedField: PreferenceKey | undefined
+  createEffect(
+    () => [props.field, draft.ready()],
+    ([key, ready]) => {
+      if (key && key !== lastRequestedField && ready) {
+        revealField(key)
+      }
+      lastRequestedField = ready ? key : undefined
+    },
+  )
+
   const form = createForm({
-    validate: draft.validate,
-    locate,
     order: () => preferenceKeys,
+    locate: revealField,
+    validate: draft.validate,
     onSubmit: draft.save,
   })
 
-  async function submitChildForm() {
-    return (await childForm?.submit()) ?? false
+  async function confirmStagedEdit() {
+    return (await stagedForm?.submit()) ?? false
   }
 
-  async function save() {
-    if (!form.busy() && childEdit() && !(await submitChildForm())) {
+  async function saveBeforeLeaving() {
+    if (!form.busy() && stagedEdit() && !(await confirmStagedEdit())) {
       return false
     }
     return form.submit()
   }
-  onCleanup(
-    props.registerEditor({
-      busy: form.busy,
-      dirty: () => draft.dirty() || !!childEdit()?.draft.dirty(),
-      save,
-      currentFormAction: () => (childEdit() ? submitChildForm : undefined),
-    }),
-  )
 
-  let focused: PreferenceKey | undefined
-  createEffect(
-    () => [props.field, draft.ready()],
-    ([key, ready]) => {
-      if (key && key !== focused && ready) {
-        locate(key)
-      }
-      focused = ready ? key : undefined
-    },
-  )
+  const unregisterEditor = props.registerEditor({
+    busy: form.busy,
+    dirty: () => draft.dirty() || !!stagedEdit()?.draft.dirty(),
+    save: saveBeforeLeaving,
+    currentFormAction: () => (stagedEdit() ? confirmStagedEdit : undefined),
+  })
+  onCleanup(() => {
+    fieldToReveal = undefined
+    unregisterEditor()
+  })
 
-  function selectGroup(next: Group) {
-    setGroup(next)
-    setRevealProxy(false)
-    panel.scrollTop = 0
+  const fields: Record<Section, () => JSX.Element> = {
+    general: () => <GeneralFields api={api} draft={draft} />,
+    appearance: () => (
+      <AppearanceFields api={api} draft={draft} manage={() => props.openResource('themes')} />
+    ),
+    navigation: () => <NavigationFields api={api} draft={draft} pages={props.pages} />,
+    library: () => <LibraryFields api={api} draft={draft} />,
+    usage: () => <UsageFields t={api.t} draft={draft} open={editUsage} />,
+    shortcuts: () => <ShortcutFields draft={draft} t={api.t} platform={api.platform} />,
+    network: () => (
+      <NetworkFields
+        api={api}
+        draft={draft}
+        forceDetails={showProxyDetails()}
+        clearDetails={() => setShowProxyDetails(false)}
+        configureCredentials={editProxyCredentials}
+      />
+    ),
+    updates: () => <UpdateFields api={api} draft={draft} />,
   }
 
   return (
@@ -169,8 +212,8 @@ export function PreferenceEditor(props: PreferenceEditorProps) {
       <Form state={form}>
         <DialogBody class="flex min-h-0 flex-col overflow-hidden p-0">
           <Tabs
-            value={group()}
-            onValueChange={(value) => selectGroup(value as Group)}
+            value={section()}
+            onValueChange={(value) => selectSection(value as Section)}
             class="flex min-h-0 grow flex-col"
           >
             <Toolbar band>
@@ -181,7 +224,7 @@ export function PreferenceEditor(props: PreferenceEditorProps) {
                   }}
                   aria-label={api.t('runtime.section')}
                 >
-                  <For each={groups}>
+                  <For each={sections}>
                     {(value) => <Tab value={value}>{api.t(`runtime.fields.${value}`)}</Tab>}
                   </For>
                 </TabList>
@@ -190,7 +233,7 @@ export function PreferenceEditor(props: PreferenceEditorProps) {
 
             <ScrollArea
               ref={(node) => {
-                panel = node
+                fieldsViewport = node
               }}
               orientation="vertical"
               class="min-w-0 grow"
@@ -210,54 +253,15 @@ export function PreferenceEditor(props: PreferenceEditorProps) {
                 fallback={!draft.error() && <Spinner label={api.t('runtime.loading')} />}
               >
                 <PreferenceFieldsContext value={{ draft, t: api.t }}>
-                  <TabPanel value="general" class="p-4">
-                    <Show when={group() === 'general'}>
-                      <GeneralFields api={api} draft={draft} />
-                    </Show>
-                  </TabPanel>
-                  <TabPanel value="appearance" class="p-4">
-                    <Show when={group() === 'appearance'}>
-                      <AppearanceFields
-                        api={api}
-                        draft={draft}
-                        manage={() => props.openResource('themes')}
-                      />
-                    </Show>
-                  </TabPanel>
-                  <TabPanel value="navigation" class="p-4">
-                    <Show when={group() === 'navigation'}>
-                      <NavigationFields api={api} draft={draft} pages={props.pages} />
-                    </Show>
-                  </TabPanel>
-                  <TabPanel value="library" class="p-4">
-                    <Show when={group() === 'library'}>
-                      <LibraryFields api={api} draft={draft} />
-                    </Show>
-                  </TabPanel>
-                  <TabPanel value="usage" class="p-4">
-                    <Show when={group() === 'usage'}>
-                      <UsageFields t={api.t} draft={draft} open={openUsage} />
-                    </Show>
-                  </TabPanel>
-                  <TabPanel value="shortcuts" class="p-4">
-                    <Show when={group() === 'shortcuts'}>
-                      <ShortcutFields draft={draft} t={api.t} platform={api.platform} />
-                    </Show>
-                  </TabPanel>
-                  <TabPanel value="network" class="p-4">
-                    <NetworkFields
-                      api={api}
-                      draft={draft}
-                      forceDetails={revealingProxy()}
-                      clearDetails={() => setRevealProxy(false)}
-                      configureCredentials={openCredentials}
-                    />
-                  </TabPanel>
-                  <TabPanel value="updates" class="p-4">
-                    <Show when={group() === 'updates'}>
-                      <UpdateFields api={api} draft={draft} />
-                    </Show>
-                  </TabPanel>
+                  <For each={sections}>
+                    {(name) => (
+                      <TabPanel value={name} class="p-4">
+                        <Show when={name === 'network' || section() === name}>
+                          {fields[name]()}
+                        </Show>
+                      </TabPanel>
+                    )}
+                  </For>
                 </PreferenceFieldsContext>
               </Show>
             </ScrollArea>
@@ -274,32 +278,9 @@ export function PreferenceEditor(props: PreferenceEditorProps) {
 
       <StagedPreferenceDialog
         t={api.t}
-        edit={childEdit()}
-        bind={registerChildForm}
-        close={() => setChildEdit(undefined)}
-        title={(edit) =>
-          edit.kind === 'usage'
-            ? api.t(`runtime.usageTitles.${edit.medium}`)
-            : api.t('runtime.fields.credentials')
-        }
-        size={(edit) => {
-          if (edit.kind === 'proxy-credentials') {
-            return 'sm'
-          }
-          return edit.medium === 'game' ? 'md' : 'lg'
-        }}
-        fields={(edit) =>
-          edit.kind === 'usage' ? (
-            <UsageEditorFields
-              api={api}
-              medium={edit.medium}
-              draft={edit.draft}
-              manageFonts={() => props.openResource('fonts')}
-            />
-          ) : (
-            <ProxyCredentialFields t={api.t} draft={edit.draft} />
-          )
-        }
+        edit={stagedEdit()}
+        bind={bindStagedForm}
+        close={() => setStagedEdit(undefined)}
       />
     </>
   )

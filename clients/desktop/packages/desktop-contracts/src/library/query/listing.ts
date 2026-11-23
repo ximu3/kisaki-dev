@@ -1,19 +1,26 @@
-/** @fileoverview Defines list intervals, grouping, locate inputs and internally consistent replies. */
-
 import type { EntryQuery } from './definition'
-import { parseValue, nonnegativeInteger, unique, id, intervalEntries } from '../../validation'
+import {
+  fromParser,
+  parseValue,
+  nonnegativeInteger,
+  unique,
+  id,
+  intervalEntries,
+} from '../../validation'
 import * as v from 'valibot'
-import { parseEntryListItem, projectionSchema, checkProjection } from './projections'
-import { DesktopError, parseErrorSummary } from '../../errors'
+import {
+  parseEntryListItem,
+  projectionSchema,
+  checkProjection,
+  type EntryProjectionField,
+  type EntryListItem,
+} from './projections'
+import { DesktopError, parseErrorSummary, type ErrorSummary } from '../../errors'
 import type { EntryRef } from '../catalog'
-import type { EntryProjectionField, EntryListItem } from './projections'
-import type { ErrorSummary } from '../../errors'
 
 /**
- * Parses a list reply against an already parsed query and interval.
- *
- * Checks entry types, unique identities and the exact item count implied by total, offset and
- * limit. An empty set of enabled types requires a zero total.
+ * Checks the reply against the parsed query and interval. It requires unique identities and the
+ * item count implied by total, offset and limit. A query with no enabled types has zero total.
  */
 export function parseEntryListResult(
   input: unknown,
@@ -23,12 +30,7 @@ export function parseEntryListResult(
   const value = parseValue(
     v.strictObject({
       total: nonnegativeInteger,
-      items: v.array(
-        v.pipe(
-          v.unknown(),
-          v.transform((item) => parseEntryListItem(item, options.fields)),
-        ),
-      ),
+      items: v.array(fromParser((item) => parseEntryListItem(item, options.fields))),
     }),
     input,
     'Invalid entry list result',
@@ -51,9 +53,8 @@ export function parseEntryListResult(
 }
 
 /**
- * Parses a locate reply and verifies its centered interval and target at the reported index.
- *
- * Null represents a target outside the query result.
+ * Verifies the centered interval and target at its reported index. Null means the target is outside
+ * the query result.
  */
 export function parseEntryLocateResult(
   input: unknown,
@@ -96,10 +97,8 @@ export function parseEntryLocateResult(
 }
 
 /**
- * Parses unique group results ending with the unclassified group.
- *
- * Preserves individual group failures and the independent deduplicated total; overlapping group
- * counts cannot be summed into that total.
+ * Requires the unclassified group last and each group once. Individual failures remain visible. The
+ * deduplicated total can differ from the sum of overlapping group counts.
  */
 export function parseEntryGroupsResult(input: unknown): EntryGroupsResult {
   const key = v.union([
@@ -111,7 +110,7 @@ export function parseEntryGroupsResult(input: unknown): EntryGroupsResult {
     v.strictObject({
       key,
       status: v.literal('failed'),
-      error: v.pipe(v.unknown(), v.transform(parseErrorSummary)),
+      error: fromParser(parseErrorSummary),
     }),
   ])
   const value = parseValue(
@@ -143,7 +142,6 @@ export type EntryGroupKey =
   | { readonly type: 'collection'; readonly id: string }
   | { readonly type: 'unclassified' }
 
-/** Requested entry interval, projected fields and optional group restriction. */
 export interface EntryListOptions {
   /** Zero-based start in the selected result set. */
   readonly offset: number
@@ -153,7 +151,6 @@ export interface EntryListOptions {
   readonly group?: EntryGroupKey
 }
 
-/** Requested interval size, projected fields and group restriction around a located entry. */
 export interface EntryLocateOptions {
   /** Maximum interval length, from 1 through 200. */
   readonly limit: number
@@ -161,13 +158,11 @@ export interface EntryLocateOptions {
   readonly group?: EntryGroupKey
 }
 
-/** Entry interval and complete result count read from one snapshot. */
 export interface EntryListResult {
   readonly items: readonly EntryListItem[]
   readonly total: number
 }
 
-/** Entry interval containing a target and its positions within the complete result set. */
 export interface EntryLocateResult extends EntryListResult {
   /** Zero-based target position in the complete result set. */
   readonly index: number
@@ -175,28 +170,21 @@ export interface EntryLocateResult extends EntryListResult {
   readonly offset: number
 }
 
-/** One group's matching count or the failure that prevented its evaluation. */
 export type EntryGroupResult =
   | { readonly key: EntryGroupKey; readonly status: 'ready'; readonly count: number }
   | { readonly key: EntryGroupKey; readonly status: 'failed'; readonly error: ErrorSummary }
 
-/** Ordered group results with an independent deduplicated entry total. */
 export interface EntryGroupsResult {
   readonly total: number
   readonly groups: readonly EntryGroupResult[]
 }
 
-/** Collection or unclassified group identity used by grouped library listings. */
 export const groupSchema = v.union([
   v.strictObject({ type: v.literal('collection'), id }),
   v.strictObject({ type: v.literal('unclassified') }),
 ])
 
-/**
- * Parses an interval and checks requested fields against a previously parsed query.
- *
- * A field unsupported by every enabled entry type is rejected.
- */
+/** Rejects fields unsupported by every enabled entry type in the parsed query. */
 export function parseEntryListOptions(input: unknown, query: EntryQuery): EntryListOptions {
   const value = parseValue(
     v.strictObject({
@@ -211,7 +199,6 @@ export function parseEntryListOptions(input: unknown, query: EntryQuery): EntryL
   return value
 }
 
-/** Parses locate options with the same projection and group rules as a list request. */
 export function parseEntryLocateOptions(input: unknown, query: EntryQuery): EntryLocateOptions {
   const value = parseValue(
     v.strictObject({
@@ -227,10 +214,8 @@ export function parseEntryLocateOptions(input: unknown, query: EntryQuery): Entr
 }
 
 /**
- * Computes an interval offset that centers an existing target when possible and fills the final
- * interval.
- *
- * Rejects an index outside the result set; callers represent an absent target with null.
+ * Centers an existing target when possible and fills the final interval. Use null at the call
+ * boundary for an absent target.
  */
 export function entryLocateOffset(index: number, total: number, limit: number): number {
   const value = parseValue(

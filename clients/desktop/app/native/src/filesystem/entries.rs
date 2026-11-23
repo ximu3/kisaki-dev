@@ -1,5 +1,3 @@
-//! Compares two names in one directory using the entries selected by the host filesystem.
-
 use super::FilesystemQueryFailure;
 use crate::files::valid_path;
 use napi::bindgen_prelude::{AsyncTask, Either};
@@ -46,7 +44,6 @@ fn entry_path(path: &Path) -> io::Result<Vec<u16>> {
     }
 }
 
-/// Compares Windows volume roots or entries in the caller's established common directory.
 #[cfg(windows)]
 fn same_entry(left: &Path, right: &Path) -> io::Result<bool> {
     Ok(entry_path(left)? == entry_path(right)?)
@@ -132,7 +129,6 @@ fn listed_links(left: &Path, right: &Path, inode: u64) -> io::Result<bool> {
     Err(io::Error::from(io::ErrorKind::Unsupported))
 }
 
-/// Compares Darwin entries on their backing devices, including separate names for hard links.
 #[cfg(target_os = "macos")]
 fn same_entry(left: &Path, right: &Path) -> io::Result<bool> {
     use std::ffi::CStr;
@@ -158,25 +154,20 @@ fn same_entry(left: &Path, right: &Path) -> io::Result<bool> {
     listed_links(left, right, first.ino())
 }
 
-/// Owns both sibling lookup paths until the host has compared the selected entries.
 pub struct EntryComparison {
     left: PathBuf,
     right: PathBuf,
 }
 
 impl Task for EntryComparison {
-    /// The observed equality or an I/O error from accessing the entries.
     type Output = io::Result<bool>;
 
-    /// A boolean observation or classified lookup failure for the Node consumer.
     type JsValue = Either<bool, FilesystemQueryFailure>;
 
-    /// Observes names on the worker without modifying the parent or either entry.
     fn compute(&mut self) -> Result<Self::Output> {
         Ok(same_entry(&self.left, &self.right))
     }
 
-    /// Preserves platform diagnostics when a lookup could not complete.
     fn resolve(&mut self, _env: Env, output: Self::Output) -> Result<Self::JsValue> {
         Ok(match output {
             Ok(same) => Either::A(same),

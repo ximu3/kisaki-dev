@@ -1,5 +1,3 @@
-/** @fileoverview Shared DOM class, event and reference composition for native controls. */
-
 import { createSignal, onCleanup } from 'solid-js'
 
 /**

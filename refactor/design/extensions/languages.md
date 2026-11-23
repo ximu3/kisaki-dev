@@ -138,8 +138,6 @@ manifest、registry 和发行说明使用 LocalizedText，自有 defaultLocale �
         ├── records.ts
         ├── reader.ts
         └── settings.ts
-    tests/
-    └── fixtures/
 
 entry 轻量登记稳定身份；messages/index.ts 汇总本项目的完整嵌套目录；领域文件只保存本语言文本。不为三项建立共享运行译文、简繁转换层、英语运行继承或互相导入的私有目录。共用纯校验与 ICU 工具由既有公共能力提供。
 

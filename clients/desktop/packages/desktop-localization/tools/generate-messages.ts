@@ -1,5 +1,3 @@
-/** @fileoverview Generates correlated desktop call types from the sole English ICU catalog. */
-
 import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { runCli } from '@kisaki3/tooling/cli'

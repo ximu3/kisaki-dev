@@ -1,5 +1,3 @@
-/** @fileoverview Describes a single ordered message channel bound to one peer by its host. */
-
 import type { RpcFrame } from './frames'
 
 /** One ordered channel bound to a single peer and owned by its RPC connection. */

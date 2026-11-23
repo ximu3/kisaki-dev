@@ -1,5 +1,3 @@
-/** @fileoverview Stores user appearance resources, onboarding progress and extension installation and private-data facts. */
-
 import { sql } from 'drizzle-orm'
 import { blob, check, index, integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { parseAppearanceTokens } from '@kisaki3/desktop-contracts/appearance'

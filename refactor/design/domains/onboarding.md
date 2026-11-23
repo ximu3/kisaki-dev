@@ -36,7 +36,7 @@ onboarding 在主窗口的分步 Dialog 中呈现推荐，组织用户编辑和�
 
 部分采用后再跳过，界面分别显示已完成与未采用项目。跳过会停止同一推荐的主动提醒，用户仍可手动采用；业务界面的缺依赖状态照常显示。
 
-处理记录已表达提醒选择，无需第二个同义开关。没有待采用内容时只显示“继续”。
+没有待采用内容时只显示“继续”。
 
 完成只结束引导，不会把尚未结束的业务操作标成成功。页面位置、当前输入和模板目录不持久保存，各分组也不成为独立业务实体。模板采用后形成普通用户配置，与模板不再持续绑定。用户以后修改或删除成果，不清除处理记录，也不会触发自动重建。
 
@@ -54,18 +54,18 @@ itemId 是本体推荐目录中的非空唯一身份。修改文案或顺序时�
 
 ```ts
 type OnboardingHandled =
-  | { outcome: 'skipped'; handledAt: number }
+  | { readonly outcome: 'skipped'; readonly handledAt: number }
   | {
-      outcome: 'applied'
-      handledAt: number
-      resources: readonly OnboardingResourceRef[]
+      readonly outcome: 'applied'
+      readonly handledAt: number
+      readonly resources: readonly OnboardingResourceRef[]
     }
 
 type OnboardingResourceRef =
-  | { type: 'extension'; extensionId: string }
-  | { type: 'metadataProfile'; profileId: string }
-  | { type: 'scanConfig'; configId: string }
-  | { type: 'showcaseSection'; sectionId: string }
+  | { readonly type: 'extension'; readonly extensionId: string }
+  | { readonly type: 'metadataProfile'; readonly profileId: string }
+  | { readonly type: 'scanConfig'; readonly configId: string }
+  | { readonly type: 'showcaseSection'; readonly sectionId: string }
 ```
 
 handled 中没有对应项目表示尚未处理。配置保存或扩展安装完成后才能记为 applied。配置生效或扩展激活时遇到的问题单独报告，保留已完成的处理记录。偏好采用的 resources 为空数组；其他成果引用描述已经采用的结果，即使资源后来被删除或不可用，记录仍然保留。展示时从实际拥有者读取当前情况，不抹去既有历史。扩展启用状态、激活状态、版本、准备状态和任务结果都不复制进引导记录。
@@ -85,7 +85,7 @@ handled 中没有对应项目表示尚未处理。配置保存或扩展安装完
 | markPresented({ mode, version }) | 返回更新后的正式状态                                                                     | 仅在引导实际展示后登记；关闭或未完成不意味着每次启动强制再弹                                                             |
 | apply(input)                     | 返回该次已实际采用项目的处理结果及成果引用                                               | 按本节五个闭合输入分支执行；长工作与错误使用完整业务结果                                                                 |
 | skip({ items })                  | 返回这些项目的实际处理结果                                                               | 对明确未采用项记 skipped，保持其他已采用事实；不取消在途工作                                                             |
-| complete({ mode })               | 返回正式状态                                                                             | 结束当前引导；首次完成时登记 firstCompletedAt，不替未结束业务制造成功                                                    |
+| complete({ mode })               | 返回正式状态                                                                             | 结束当前引导；首次完成时登记 firstCompletedAt，业务结果按各操作实际状态显示                                                 |
 | onInvalidated(listener)          | 返回 Disposable                                                                          | 正式处理状态变化后通知重读，不传未提交草稿                                                                               |
 
 apply 接收 `{ group, items }`，items 是有序、非空且 itemId 不重复的数组。每项包含 `{ itemId, expectedHandled, input }`；expectedHandled 必须为该项已读的完整 OnboardingHandled 或 null，null 表示尚未处理。group 与每个 itemId 的目录分组一致，input 的允许形状如下。
@@ -149,7 +149,7 @@ OnboardingApplyResult 按输入 group 保留成果引用类型：preferences 的
 
 Profile Select 缺少适用方案时，右侧继续提供快捷创建入口，调用正常创建能力。创建成功后，只有字段仍对应本次编辑意图，才可以选入新方案，不能覆盖用户后来作出的选择。默认方案始终由用户明确指定，不能因它是第一份、唯一一份或通过快捷入口创建而自动改变。
 
-常规预设选择沿用[共同预设界面](../ui/components.md#presets)。引导保留推荐文字说明，图形表达不改变 presets 与 templates 的目录命名，也不改变所属业务的草稿与采用规则。
+预设选择沿用[共同预设界面](../ui/components.md#presets)，并附推荐说明。
 
 仓库、扩展、主题、偏好、资料方案、扫描和导入各自拥有完整的操作与结果，引导通过这些操作采用选定内容。已经采用的用户配置不会随模板更新或界面语言变化重写。
 

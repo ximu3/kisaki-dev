@@ -1,5 +1,3 @@
-/** @fileoverview Coordinates one cancellable close confirmation with the draft owner's save operation. */
-
 import { createSignal, onCleanup, Show } from 'solid-js'
 import {
   Dialog,

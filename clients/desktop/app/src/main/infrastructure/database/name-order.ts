@@ -1,7 +1,4 @@
-/** @fileoverview Owns the SQL name comparison, its index provenance and atomic locale changes. */
-
-import { sql } from 'drizzle-orm'
-import type { SQL, SQLWrapper } from 'drizzle-orm'
+import { sql, type SQL, type SQLWrapper } from 'drizzle-orm'
 import { customType } from 'drizzle-orm/sqlite-core'
 import type Database from 'better-sqlite3'
 import type { UiLocale } from '@kisaki3/desktop-contracts/i18n'

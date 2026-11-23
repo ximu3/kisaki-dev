@@ -1,5 +1,3 @@
-/* Native rows set the editor height and the text scrolls inside it. */
-
 .root {
   composes: native from '../../internal/scrollbars.module.css';
 }

@@ -1,5 +1,3 @@
-/** @fileoverview Checks session shutdown outcomes at the command boundary without starting external tools. */
-
 import { expect, test, vi } from 'vite-plus/test'
 import { mkdtemp, readdir, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
@@ -8,7 +6,6 @@ import { prepareResources } from '../../../tools/resources/prepare'
 import { startDevelopmentSession } from '../../../tools/dev/session'
 import { hostTarget } from '../../../tools/lib/targets'
 
-/** Redirects the session's outputs to the test-owned root. */
 const paths = vi.hoisted(() => ({ appRoot: process.cwd(), repositoryRoot: process.cwd() }))
 vi.mock('../../../tools/lib/paths', () => paths)
 vi.mock('../../../tools/resources/prepare', () => ({ prepareResources: vi.fn() }))
@@ -42,7 +39,6 @@ test.each(['cancelled', 'failed'] as const)(
           started.resolve()
         }),
     )
-    /** Detects adoption of an application after its preparation has been cancelled. */
     const launch = vi.fn()
     try {
       const session = await startDevelopmentSession({ sourceRoot: root, launch })

@@ -1,5 +1,3 @@
-/** @fileoverview Builds the independent utility process used by the engineering fixture. */
-
 import { defineConfig } from 'vite'
 
 export default defineConfig({

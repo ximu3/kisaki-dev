@@ -48,8 +48,6 @@ MangaUpdates 的[来源合同](../../../extensions/sources/mangaupdates.md)区�
 
 ## 关系成员与属性
 
-关系成员及属性按[共同取值规则](README.md#selection)采用。
-
 | 关系项目          | 简体                                                                  | 繁体                                                                  | 英文                                                                  | 日文                                                                  |
 | ----------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------- |
 | workCharacters    | firstNonEmpty：Bangumi → AniList                                      | firstNonEmpty：Bangumi → AniList                                      | firstNonEmpty：Bangumi → AniList                                      | firstNonEmpty：Bangumi → AniList                                      |
@@ -62,8 +60,6 @@ MangaUpdates 的[来源合同](../../../extensions/sources/mangaupdates.md)区�
 | workVolumes       | firstNonEmpty：Bangumi → MangaDex                                     | firstNonEmpty：Bangumi → MangaDex                                     | firstNonEmpty：Bangumi → MangaDex                                     | firstNonEmpty：Bangumi → MangaDex                                     |
 | workChapters      | firstNonEmpty：MangaDex                                               | firstNonEmpty：MangaDex                                               | firstNonEmpty：MangaDex                                               | firstNonEmpty：MangaDex                                               |
 | volumeChapters    | firstNonEmpty：MangaDex                                               | firstNonEmpty：MangaDex                                               | firstNonEmpty：MangaDex                                               | firstNonEmpty：MangaDex                                               |
-
-以下规则定义关系属性的取值：
 
 | 关系属性                           | 版本     | 固定取值          |
 | ---------------------------------- | -------- | ----------------- |
@@ -82,8 +78,6 @@ MangaUpdates 的[来源合同](../../../extensions/sources/mangaupdates.md)区�
 <a id="tags"></a>
 
 ## 标签自身字段
-
-标签自身字段遵守[共同规则](README.md#selection)，本表列出适用来源。
 
 | 标签自身字段 | 版本     | 固定取值           |
 | ------------ | -------- | ------------------ |

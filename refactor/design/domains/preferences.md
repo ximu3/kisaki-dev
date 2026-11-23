@@ -30,11 +30,12 @@ usage 保留四类作品分支和共同的暂离宽限：
 
 ```ts
 interface UsagePreferences {
-  foregroundGracePeriodMs: number
-  game: GamePreferences
-  anime: AnimePlaybackPreferences
-  comic: ReadingPreferences
-  novel: ReadingPreferences
+  readonly foregroundGracePeriodMs: number
+
+  readonly game: GamePreferences
+  readonly anime: AnimePlaybackPreferences
+  readonly comic: ReadingPreferences
+  readonly novel: ReadingPreferences
 }
 ```
 
@@ -73,7 +74,7 @@ interface UsagePreferences {
 | network.credentials                            | 读取投影为 null 或 { revision }；实际不存入该 JSON，修改语义见[代理凭据](#network)                                                 |
 | updates.autoCheck / allowPrerelease            | boolean，默认分别 true / false；检查时机为就绪后一次及每 24 小时，不提供频率字段                                                   |
 
-interfaceScale 接受 75–200 的整数百分比。缩放按钮每次调整 5 个百分点，直接输入则不必是五的倍数。导航初始顺序来自本体目录，以后出现的新页面追加到末尾，visibleLimit 默认为 7。
+缩放按钮每次调整 5 个百分点。直接输入可使用范围内的任何整数百分比。
 
 playback 保存应用级播放控制记忆，与 usage.anime 的完整播放配置分开，不进入作品或文件自定义。播放器的音量与静音控件通过 sessions 的[保存并采用操作](sessions.md#playback-setting-result)即时修改相应字段，使用 preferences.update 的逐字段保存、并发与宽容读取规则。
 
@@ -144,31 +145,37 @@ ReadingPreferences 是 Kisaki 自己的产品与持久化合同，由本体维�
 
 ```ts
 interface ReadingPreferences {
-  flow: 'paginated' | 'continuous'
-  pages: {
-    arrangement: 'single' | 'spread'
-    progression: 'document' | 'ltr' | 'rtl'
-    firstPage: 'single' | 'paired'
-    fit: 'page' | 'width' | 'height'
-    autoCrop: boolean
-    brightness: number
-    contrast: number
+  readonly flow: 'paginated' | 'continuous'
+
+  readonly pages: {
+    readonly arrangement: 'single' | 'spread'
+    readonly progression: 'document' | 'ltr' | 'rtl'
+    readonly firstPage: 'single' | 'paired'
+
+    readonly fit: 'page' | 'width' | 'height'
+    readonly autoCrop: boolean
+    readonly brightness: number
+    readonly contrast: number
   }
-  text: {
-    pagesPerView: 1 | 2
-    writingMode: 'document' | 'horizontal-tb' | 'vertical-rl' | 'vertical-lr'
-    font: { type: 'document' } | FontRef
-    fontSize: number
-    lineHeight: number
-    paragraphSpacing: 'document' | number
-    alignment: 'document' | 'start' | 'justify'
-    padding: number
-    maxLineLength: number
+
+  readonly text: {
+    readonly pagesPerView: 1 | 2
+    readonly writingMode: 'document' | 'horizontal-tb' | 'vertical-rl' | 'vertical-lr'
+
+    readonly font: { readonly type: 'document' } | FontRef
+    readonly fontSize: number
+    readonly lineHeight: number
+    readonly paragraphSpacing: 'document' | number
+    readonly alignment: 'document' | 'start' | 'justify'
+
+    readonly padding: number
+    readonly maxLineLength: number
   }
-  colors:
-    | { type: 'document' }
-    | { type: 'theme' }
-    | { type: 'custom'; foreground: string; background: string }
+
+  readonly colors:
+    | { readonly type: 'document' }
+    | { readonly type: 'theme' }
+    | { readonly type: 'custom'; readonly foreground: string; readonly background: string }
 }
 ```
 
@@ -233,12 +240,14 @@ fonts 负责字体库及附件引用，同一字体族可以包含多个字重�
 
 ## 修改单位、并发规则与 API
 
-get 按读取规则返回当前选择及必要的不可用信息，保留其他可用字段，凭据只返回状态。getDefaults 返回当前完整默认值，不产生写入。schema 中声明的静态默认值与 getDefaults 引用同一份定义，SQL DEFAULT 通过迁移更新；依赖应用上下文的值按平台快捷键和初始语言建议的共同规则取得。update 接收 changes 与可选 expected，提交完成后返回保存值。onInvalidated 通知正式值变化。SDK 不另存一套默认值；首次插入与明确恢复默认共用这份默认配置。
+`get` 返回已保存的选择及必要的不可用信息，凭据只返回状态。`getDefaults` 读取完整的默认配置，快捷键按平台取得。首次插入、恢复默认、SDK 读取及普通字段的宽容读取共用这份定义。初始化显式插入完整的一行，数据库定义负责非空和单例等约束。
+
+`update` 接收 `changes` 与可选的 `expected`，持久化完成后返回保存值。`onInvalidated` 通知正式值变化。
 
 JSON 列负责持久化存储，表单按实际修改字段提交并核对相应基线。例如，只调整导航常显数量时：
 
 ```ts
-preferences.update({
+await preferences.update({
   changes: {
     navigation: { visibleLimit: 5 },
   },
@@ -248,13 +257,13 @@ preferences.update({
 })
 ```
 
-主进程在短事务中读取当前值，检查相关基线，合成实际修改，完整校验本次提交的业务值及相关跨字段约束后写回，同时保留未涉及的原值和无关并发修改。读取采用缺省不表示用户提交了该缺省，不能借修改一个字段覆盖其他异常字段。独立字段分别修改，数组整体替换；译本、主题、字体等身份选择按完整引用替换，代理凭据按本页的完整凭据合同处理。changes 和 expected 覆盖的范围必须对应。接口不开放 JSON 路径、递归合并补丁，也不通过整组 revision 阻挡无关修改。
+主进程在短事务中读取当前值，比较提交的基线并合成本次修改。校验业务值和相关跨字段约束后写回，保留未涉及的原值，包括已经并发修改或读取时用了缺省的字段。独立字段分别修改，译本、主题和字体按完整引用替换，代理凭据按[凭据合同](#network)处理。`expected` 中的字段必须同时出现在 `changes` 中。
 
 数组整体替换只针对本次修改的数组字段。例如保存导航排序草稿时，提交完整的 order 数组，并核对该数组的原值；visibleLimit 和其他偏好保持不变。接口不按数组下标局部修改，也不猜测追加、删除或合并的含义。
 
 跨组修改可以一次提交，只有全部条件通过才写入。冲突或校验失败不产生部分保存，编辑草稿继续保留。expected 的具体要求遵守[并发提交](library/write/README.md)；省略基线的直接操作不能被界面当作受保护的表单保存。
 
-get 表达保存的意图，实际外观、网络连接、播放控制或快捷键注册状态由对应能力报告。update 成功只表示持久化完成，运行采用失败要独立反馈，不能伪装成保存失败。播放器的即时保存由 sessions 组合本次持久写入与当前实例采用，不通过偏好失效通知联动其他播放器。系统不为偏好增加通用执行任务。
+实际外观、网络连接、播放控制及快捷键注册状态由所属能力报告，运行采用失败单独反馈。播放器的即时保存由 sessions 写入偏好并应用到当前实例，其他播放器保留各自的运行值。
 
 <a id="editor"></a>
 

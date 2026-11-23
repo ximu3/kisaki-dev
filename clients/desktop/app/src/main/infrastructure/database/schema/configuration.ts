@@ -1,5 +1,3 @@
-/** @fileoverview Stores source profiles, scanner configuration and independently saved showcase sections. */
-
 import { sql } from 'drizzle-orm'
 import {
   primaryKey,
@@ -12,8 +10,10 @@ import {
   uniqueIndex,
 } from 'drizzle-orm/sqlite-core'
 import { entryTypes, workTypes, parseShowcaseQuery } from '@kisaki3/desktop-contracts/library'
-import { parseMetadataProfileDefinition } from '@kisaki3/desktop-contracts/metadata'
-import type { MetadataProfileDefinition } from '@kisaki3/desktop-contracts/metadata'
+import {
+  parseMetadataProfileDefinition,
+  type MetadataProfileDefinition,
+} from '@kisaki3/desktop-contracts/metadata'
 import { parseScanDefinitionShape } from '@kisaki3/desktop-contracts/scanner'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { languages } from '../codecs/catalog'
@@ -97,6 +97,10 @@ export const scanConfigs = sqliteTable(
   ],
 )
 
+const showcaseLayouts = ['horizontal', 'grid'] as const
+const showcaseItemSizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const
+const showcaseOpenModes = ['page', 'dialog'] as const
+
 /**
  * Stores independently ordered showcase sections with complete queries and presentation choices.
  */
@@ -106,9 +110,9 @@ export const showcaseSections = sqliteTable(
     id: idColumn(),
     name: text('name').notNull(),
     query: storedJsonColumn(parseShowcaseQuery)('query').notNull(),
-    layout: text('layout', { enum: ['horizontal', 'grid'] }).notNull(),
-    itemSize: text('item_size', { enum: ['xs', 'sm', 'md', 'lg', 'xl'] }).notNull(),
-    openMode: text('open_mode', { enum: ['page', 'dialog'] }).notNull(),
+    layout: text('layout', { enum: showcaseLayouts }).notNull(),
+    itemSize: text('item_size', { enum: showcaseItemSizes }).notNull(),
+    openMode: text('open_mode', { enum: showcaseOpenModes }).notNull(),
     limit: integer('limit'),
     isVisible: integer('is_visible', { mode: 'boolean' }).notNull().default(true),
     sortOrder: integer('sort_order').notNull().default(0),
@@ -116,9 +120,9 @@ export const showcaseSections = sqliteTable(
   },
   (table) => [
     primaryKey({ columns: [table.id] }),
-    enumValue('showcase_sections_layout', table.layout, ['horizontal', 'grid']),
-    enumValue('showcase_sections_item_size', table.itemSize, ['xs', 'sm', 'md', 'lg', 'xl']),
-    enumValue('showcase_sections_open_mode', table.openMode, ['page', 'dialog']),
+    enumValue('showcase_sections_layout', table.layout, showcaseLayouts),
+    enumValue('showcase_sections_item_size', table.itemSize, showcaseItemSizes),
+    enumValue('showcase_sections_open_mode', table.openMode, showcaseOpenModes),
     booleanValue('showcase_sections_visible', table.isVisible),
     safeInteger('showcase_sections_limit', table.limit, 1),
     safeInteger('showcase_sections_order', table.sortOrder),

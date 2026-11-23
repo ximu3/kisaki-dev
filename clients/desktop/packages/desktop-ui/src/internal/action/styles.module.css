@@ -1,5 +1,3 @@
-/* Compact action geometry and semantic visual variants. */
-
 .root {
   composes: control from '../control/styles.module.css';
 }

@@ -1,5 +1,3 @@
-/** @fileoverview CodeMirror-owned theme rules resolve engine chrome through desktop variables. */
-
 import { EditorView } from '@codemirror/view'
 
 /** CodeMirror surface and interaction styling driven by the shared host tokens. */

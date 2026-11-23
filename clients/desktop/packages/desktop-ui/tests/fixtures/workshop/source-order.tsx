@@ -1,5 +1,3 @@
-/** @fileoverview Exercises shared reordering as a draft over a partially visible source order. */
-
 import { createSignal, For, Show } from 'solid-js'
 import {
   ReorderableList,
@@ -8,7 +6,6 @@ import {
   type ListMove,
 } from '@kisaki3/desktop-ui/list'
 
-/** Synthetic identities excluded by the current source configuration. */
 const unavailable = new Set(['B', 'D'])
 
 /** A permission range that can move as one ordered group. */

@@ -1,5 +1,3 @@
-/** @fileoverview Matches timed keyboard prefixes using the language of the focused control. */
-
 import { onCleanup } from 'solid-js'
 
 /** Recognizes one printable grapheme, including composed characters and supplementary code points. */
@@ -16,7 +14,6 @@ export function createTypeahead() {
   let timeout: ReturnType<typeof setTimeout> | undefined
   let scope: HTMLElement | undefined
 
-  /** Ends a prefix when its control loses focus, the search times out, or its owner disposes. */
   function reset(): void {
     clearTimeout(timeout)
     scope?.removeEventListener('focusout', leave)
@@ -24,7 +21,7 @@ export function createTypeahead() {
     letters = []
   }
 
-  /** Focus may move among items while a menu's prefix is still being composed. */
+  // Moving between items in this menu keeps the active prefix.
   function leave(event: FocusEvent): void {
     if (!(event.relatedTarget instanceof Node) || !scope?.contains(event.relatedTarget)) {
       reset()
@@ -48,7 +45,6 @@ export function createTypeahead() {
         resolved = undefined
       }
     }
-    /** Applies the document language's case mapping to normalized key and label text. */
     const fold = (value: string) => value.normalize('NFC').toLocaleLowerCase(resolved)
     const letter = fold(key)
     letters.push(letter)

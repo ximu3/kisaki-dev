@@ -1,5 +1,3 @@
-/** @fileoverview Reads and applies explicit operating-system registration choices for the actual desktop carrier. */
-
 import { app, shell } from 'electron'
 import { homedir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
@@ -253,7 +251,6 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
   }
 
   return {
-    /** Reads the actual OS registrations and data-root selection together. */
     async getState(options) {
       options?.signal?.throwIfAborted()
       const [login, handler, desktop] = await Promise.all([loginItem(), protocol(), desktopEntry()])
@@ -264,7 +261,6 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
         dataLocation: paths.status(),
       }
     },
-    /** Applies the selected login registration then rereads it. */
     async setLoginItem(enabled, options) {
       options?.signal?.throwIfAborted()
       if (process.platform === 'linux') {
@@ -279,7 +275,6 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
       }
       return loginItem()
     },
-    /** Creates the user desktop entry for a supported movable carrier. */
     async registerDesktopEntry(options) {
       options?.signal?.throwIfAborted()
       if (process.platform === 'linux' && paths.carrier === 'appimage') {
@@ -287,7 +282,6 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
       }
       return desktopEntry()
     },
-    /** Registers this carrier's scheme and returns the resulting association. */
     async registerProtocol(options) {
       options?.signal?.throwIfAborted()
       if (process.platform === 'linux') {
@@ -300,7 +294,6 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
       }
       return protocol()
     },
-    /** Opens the OS settings appropriate to the chosen integration. */
     async openSettings(target, options) {
       options?.signal?.throwIfAborted()
       if (process.platform === 'win32') {
@@ -318,7 +311,6 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
         )
       }
     },
-    /** Delegates the explicit existing-or-empty choice to the data-path owner. */
     async setDataMode(input, options) {
       options?.signal?.throwIfAborted()
       return paths.setDataMode(input, options?.signal)

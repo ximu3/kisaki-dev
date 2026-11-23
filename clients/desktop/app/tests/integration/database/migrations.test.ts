@@ -1,5 +1,3 @@
-/** @fileoverview Verifies native forward migrations, failed migration rollback and rejection of unrelated database formats. */
-
 import { expect, onTestFinished, test } from 'vite-plus/test'
 import { copyFile, cp, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
@@ -7,6 +5,7 @@ import { join } from 'node:path'
 import Database from 'better-sqlite3'
 import { eq, sql } from 'drizzle-orm'
 import { DatabaseFormatError, initializeDatabase } from '../../../src/main/infrastructure/database'
+import { verifyExistingLibrary } from '../../../src/main/infrastructure/database/initialize'
 import { entries } from '../../../src/main/infrastructure/database/schema'
 import { storageOptions } from './sample'
 
@@ -126,4 +125,17 @@ test('preserves foreign SQLite schemas and application metadata byte for byte', 
     expect(() => initializeDatabase({ ...options, path })).toThrow(DatabaseFormatError)
     expect(await readFile(path)).toEqual(before)
   }
+})
+
+test('inspecting a candidate does not claim an empty database as a library', async () => {
+  const options = storageOptions(await fixtureDirectory())
+  const empty = new Database(options.path, { nativeBinding: options.nativeBinding })
+  empty.close()
+  const before = await readFile(options.path)
+
+  expect(() => verifyExistingLibrary(options.path, options)).toThrow(DatabaseFormatError)
+  expect(await readFile(options.path)).toEqual(before)
+
+  initializeDatabase(options).close()
+  expect(() => verifyExistingLibrary(options.path, options)).not.toThrow()
 })

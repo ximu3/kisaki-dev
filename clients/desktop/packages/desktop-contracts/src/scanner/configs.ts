@@ -1,15 +1,15 @@
-/** @fileoverview Defines complete scan configuration values, changes and retained snapshots. */
-
 import * as v from 'valibot'
-import { parseAbsolutePath, parsePathFilter } from '../paths'
+import { parseAbsolutePath, parsePathFilter, type PathFilter } from '../paths'
 import type { NonEmptyArray, StoredDefinition, CallOptions, Disposable } from '../operations'
-import type { PathFilter } from '../paths'
-import type { ClueExtractionRule, ClueExtractionPreset } from './rules'
-import type { WorkType } from '../library/catalog'
-import type { MetadataProfileSnapshot } from '../metadata/profiles'
 import type { ReorderInput } from '../library/ordering'
-import { parseClueExtractionRuleShape, parseClueExtractionRule } from './rules'
 import {
+  parseClueExtractionRuleShape,
+  parseClueExtractionRule,
+  type ClueExtractionRule,
+  type ClueExtractionPreset,
+} from './rules'
+import {
+  fromParser,
   positiveInteger,
   unique,
   id,
@@ -18,17 +18,12 @@ import {
   optionalFields,
   validateExpectedKeys,
 } from '../validation'
-import { workTypes, languageSchema } from '../library/catalog'
-import { parseMetadataProfileDefinition } from '../metadata/profiles'
+import { workTypes, languageSchema, type WorkType } from '../library/catalog'
+import { parseMetadataProfileDefinition, type MetadataProfileSnapshot } from '../metadata/profiles'
 
-/** Validated absolute root location for a saved scan configuration. */
-const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
+const path = fromParser(parseAbsolutePath)
 
-/**
- * Candidate discovery and clue-extraction rules for one scan configuration.
- *
- * Matching files to an existing work's parts belongs to holdings.
- */
+/** Matching files to an existing work's parts belongs to holdings. */
 export interface ScanDefinition {
   /** Positive candidate depth from the discovery root; 1 selects direct children. */
   readonly entryDepth: number
@@ -47,10 +42,6 @@ export interface ScanDefinition {
   }
 }
 
-/**
- * Editable scan configuration fields, including the complete discovery and identification
- * definition.
- */
 export interface ScanConfigFields {
   readonly name: string
   readonly rootPath: string
@@ -79,11 +70,7 @@ export interface ScanConfig<T extends WorkType = WorkType> {
   readonly updatedAt: number
 }
 
-/**
- * Input for a new configuration with a fixed work medium.
- *
- * Existing-content registration defaults to false and watch activation defaults to true.
- */
+/** Existing-content registration defaults to false and watch activation defaults to true. */
 export interface ScanConfigCreate {
   readonly name: string
   readonly workType: WorkType
@@ -96,7 +83,6 @@ export interface ScanConfigCreate {
   readonly watchEnabled?: boolean
 }
 
-/** Scan configuration field edits with optional original values for comparison. */
 export interface ScanConfigUpdate {
   readonly changes: Partial<ScanConfigFields>
   readonly expected?: Partial<ScanConfigFields>
@@ -114,7 +100,6 @@ export type ScanConfigSnapshot<T extends WorkType = WorkType> = {
   }
 }[T]
 
-/** Saved scanner configuration management and native extraction preset discovery. */
 export interface ScanConfigsApi {
   /** Reads configuration summaries in formal order, optionally restricted to one work medium. */
   list<T extends WorkType>(
@@ -126,11 +111,7 @@ export interface ScanConfigsApi {
     call?: CallOptions,
   ): Promise<readonly Omit<ScanConfig, 'definition'>[]>
 
-  /**
-   * Reads a complete saved configuration, returning null when absent.
-   *
-   * Invalid definitions and unavailable references remain explicit.
-   */
+  /** Invalid definitions and unavailable references remain explicit. */
   get(id: string, call?: CallOptions): Promise<ScanConfig | null>
 
   /**
@@ -151,9 +132,8 @@ export interface ScanConfigsApi {
   update(id: string, input: ScanConfigUpdate, call?: CallOptions): Promise<ScanConfig>
 
   /**
-   * Removes the saved configuration and future watch input.
-   *
-   * Accepted scans continue under their captured configuration. Existing library records stay intact.
+   * Accepted scans continue under their captured configuration. Existing library records stay
+   * intact.
    */
   delete(id: string, call?: CallOptions): Promise<void>
 
@@ -163,15 +143,10 @@ export interface ScanConfigsApi {
   /** Reads fixed native clue-extraction presets for copying into a draft. */
   listRulePresets(call?: CallOptions): Promise<readonly ClueExtractionPreset[]>
 
-  /**
-   * Subscribes to configuration-directory invalidation and returns the subscription lifetime.
-   *
-   * Callers subscribe before reading; runtime state has its own observation API.
-   */
+  /** Callers subscribe before reading; runtime state has its own observation API. */
   onInvalidated(listener: () => void): Disposable
 }
 
-/** Builds the scan-definition schema using the supplied level of extraction-rule validation. */
 function definitionSchema(parseRule: typeof parseClueExtractionRuleShape) {
   const kind = v.picklist(['directory', 'file'])
   return v.strictObject({
@@ -180,12 +155,12 @@ function definitionSchema(parseRule: typeof parseClueExtractionRuleShape) {
       v.tupleWithRest([kind], kind),
       v.check((kinds) => unique(kinds, (kind) => kind)),
     ),
-    include: v.array(v.pipe(v.unknown(), v.transform(parsePathFilter))),
-    exclude: v.array(v.pipe(v.unknown(), v.transform(parsePathFilter))),
+    include: v.array(fromParser(parsePathFilter)),
+    exclude: v.array(fromParser(parsePathFilter)),
 
     identification: v.strictObject({
       rules: v.pipe(
-        v.array(v.pipe(v.unknown(), v.transform(parseRule))),
+        v.array(fromParser(parseRule)),
         v.check((rules) => unique(rules, (rule) => rule.id)),
       ),
       recognizerIds: v.pipe(
@@ -220,8 +195,6 @@ export function parseScanDefinition(input: unknown): ScanDefinition {
 }
 
 /**
- * Parses a new configuration with full definition validation.
- *
  * The caller supplies a bounded, terminable validation unit; the configuration owner checks profile
  * existence, matching work type and path accessibility.
  */
@@ -232,7 +205,7 @@ export function parseScanConfigCreate(input: unknown): ScanConfigCreate {
       workType: v.picklist(workTypes),
       rootPath: path,
       metadataProfileId: id,
-      definition: v.pipe(v.unknown(), v.transform(parseScanDefinition)),
+      definition: fromParser(parseScanDefinition),
       registerExistingContent: v.exactOptional(v.boolean()),
       watchEnabled: v.exactOptional(v.boolean()),
     }),
@@ -254,7 +227,7 @@ export function parseScanConfigUpdate(input: unknown): ScanConfigUpdate {
       name: nonemptyText,
       rootPath: path,
       metadataProfileId: id,
-      definition: v.pipe(v.unknown(), v.transform(parseScanDefinition)),
+      definition: fromParser(parseScanDefinition),
       registerExistingContent: v.boolean(),
       watchEnabled: v.boolean(),
     }),
@@ -279,17 +252,14 @@ export function parseScanConfigSnapshot(input: unknown): ScanConfigSnapshot {
       name: nonemptyText,
       workType: v.literal(workType),
       rootPath: path,
-      definition: v.pipe(v.unknown(), v.transform(parseScanDefinitionShape)),
+      definition: fromParser(parseScanDefinitionShape),
       registerExistingContent: v.boolean(),
       metadataProfile: v.strictObject({
         id,
         name: nonemptyText,
         entryType: v.literal(workType),
         preferredLanguages: v.array(languageSchema),
-        definition: v.pipe(
-          v.unknown(),
-          v.transform((value) => parseMetadataProfileDefinition(workType, value)),
-        ),
+        definition: fromParser((value) => parseMetadataProfileDefinition(workType, value)),
       }),
     }),
     input,

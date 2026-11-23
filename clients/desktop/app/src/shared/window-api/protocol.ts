@@ -1,5 +1,3 @@
-/** @fileoverview Defines the window endpoint identity and the build contract shared by all native documents. */
-
 import { DesktopError, parseExecutionFailure } from '@kisaki3/desktop-contracts/errors'
 import { parseJsonValue } from '@kisaki3/desktop-contracts/json'
 import { RpcError, type JsonValue, type RpcErrorCodec } from '@kisaki3/desktop-rpc'
@@ -32,7 +30,6 @@ export function rpcData<T>(value: T): RpcFields<T> {
 
 /** Only safe operation failures cross the document boundary. */
 export const windowErrors: RpcErrorCodec = {
-  /** Encodes only safe failure fields and a transferable partial result. */
   encode(error) {
     if (error instanceof RpcError) {
       return { code: error.code, message: error.message }
@@ -51,7 +48,6 @@ export const windowErrors: RpcErrorCodec = {
     }
     return { code: 'OperationFailed', message: 'The operation could not be completed' }
   },
-  /** Restores a recognizable local error from the validated wire failure. */
   decode(value) {
     const failure = parseExecutionFailure(value, parseJsonValue)
     return new DesktopError(failure.code, failure.message, failure)

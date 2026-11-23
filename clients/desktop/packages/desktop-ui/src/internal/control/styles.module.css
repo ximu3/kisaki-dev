@@ -1,5 +1,3 @@
-/* Each control selects its own height, text and icon metrics. */
-
 @layer components {
   .control {
     --control-height: var(--kui-control-height);

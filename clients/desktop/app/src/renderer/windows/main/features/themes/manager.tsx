@@ -1,5 +1,3 @@
-/** @fileoverview Lists installed themes and opens their independent preview and edit. */
-
 import { createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
 import { Check, Copy, Eye, Palette, Pencil, Plus, Trash2 } from '@lucide/solid'
@@ -26,10 +24,8 @@ import { themeSource } from '../../domain-ui/themes/selector'
 import { ThemeEditor, type ThemeEdit } from './editor'
 import { ThemeInspection } from './inspection'
 
-/** Begins new themes from both built-in visual branches. */
 const initialTheme = { type: 'builtin', id: 'default' } as const
 
-/** Receives an optional preview target and the window's editor scope. */
 interface ThemesProps {
   api: MainClient
   target?: ThemeRef | undefined
@@ -69,6 +65,8 @@ export function Themes(props: ThemesProps) {
   const [busy, setBusy] = createSignal(false)
   const confirm = createConfirmation(api.t)
   let alive = true
+  let viewport!: HTMLElement
+  let focusFrame: number | undefined
 
   const refresh = () => void catalog.reload()
   const reloadSelection = () => void preferences.reload()
@@ -76,6 +74,9 @@ export function Themes(props: ThemesProps) {
   api.topics.addEventListener('window.changed', reloadSelection)
   onCleanup(() => {
     alive = false
+    if (focusFrame !== undefined) {
+      cancelAnimationFrame(focusFrame)
+    }
     api.topics.removeEventListener('themes.changed', refresh)
     api.topics.removeEventListener('window.changed', reloadSelection)
   })
@@ -103,9 +104,19 @@ export function Themes(props: ThemesProps) {
 
   async function reveal(ref: ThemeRef) {
     await catalog.reload()
-    requestAnimationFrame(() =>
-      document.getElementById('theme-preview-' + catalogKey(ref))?.focus(),
-    )
+    if (!alive) {
+      return
+    }
+
+    if (focusFrame !== undefined) {
+      cancelAnimationFrame(focusFrame)
+    }
+    focusFrame = requestAnimationFrame(() => {
+      focusFrame = undefined
+      viewport
+        .querySelector<HTMLElement>(`#${CSS.escape('theme-preview-' + catalogKey(ref))}`)
+        ?.focus()
+    })
   }
   async function duplicate(ref: ThemeRef, name: string) {
     const copy = await api.call('themes.clone', ref, api.t('runtime.copySuffix', { name }))
@@ -153,7 +164,11 @@ export function Themes(props: ThemesProps) {
       <DialogHeader closeLabel={api.t('actions.close')}>
         <DialogTitle>{api.t('runtime.themes')}</DialogTitle>
       </DialogHeader>
-      <DialogBody>
+      <DialogBody
+        ref={(node) => {
+          viewport = node
+        }}
+      >
         <Show when={failure()}>
           {(cause) => (
             <Alert tone="destructive" role="alert" class="mb-3">

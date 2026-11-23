@@ -159,6 +159,7 @@ saves/{saveId}.zip 保留在原输入中，作为原有归档保存。Vnite 将�
     │   ├── import.ts
     │   └── ipc.ts
     ├── webview/
+    │   ├── index.html
     │   ├── entry.tsx
     │   ├── page.tsx
     │   ├── selection.tsx

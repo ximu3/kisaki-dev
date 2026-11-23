@@ -1,5 +1,3 @@
-//! Exposes filesystem metadata queries and classifies their I/O failures at the binding.
-
 mod entries;
 mod location;
 
@@ -34,7 +32,6 @@ pub struct FilesystemQueryFailure {
 }
 
 impl From<io::Error> for FilesystemQueryFailure {
-    /// Classifies an OS error while its kind and code are both available.
     fn from(error: io::Error) -> Self {
         let reason = match error.kind() {
             io::ErrorKind::NotFound => FilesystemQueryReason::PathMissing,

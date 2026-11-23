@@ -1,5 +1,3 @@
-/** @fileoverview Publishes desktop UI capabilities and their view, page, menu, feedback and navigation contracts. */
-
 export type { UiApi } from './api'
 
 export { parseExtensionViewDocument } from './views'

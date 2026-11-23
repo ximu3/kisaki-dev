@@ -1,14 +1,7 @@
-/** @fileoverview Defines native recommendation handling as explicit business inputs and durable per-item outcomes, never persistent drafts. */
-
-import type { ExtensionPackageSource, ExtensionRepositoryInput } from './extensions'
-import type { PreferencesChanges, PreferencesExpected } from './preferences/api'
-import type { MetadataProfileCreate } from './metadata/profiles'
-import type { ScanConfigCreate } from './scanner/configs'
-import type { ShowcaseFields } from './library/showcase'
 import type { NonEmptyArray, CallOptions, Disposable } from './operations'
-import type { ErrorSummary } from './errors'
 import * as v from 'valibot'
 import {
+  fromParser,
   parseExternalValue,
   id,
   unique,
@@ -20,12 +13,21 @@ import {
 } from './validation'
 import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
 import { parseId } from '@kisaki3/extension-distribution/metadata'
-import { parseErrorSummary, DesktopError } from './errors'
-import { parsePreferencesUpdate } from './preferences/api'
-import { parseExtensionPackageSource, parseExtensionRepositoryInput } from './extensions'
-import { parseMetadataProfileCreate } from './metadata/profiles'
-import { parseScanConfigCreate } from './scanner/configs'
-import { parseShowcaseFields } from './library/showcase'
+import { parseErrorSummary, DesktopError, type ErrorSummary } from './errors'
+import {
+  parsePreferencesUpdate,
+  type PreferencesChanges,
+  type PreferencesExpected,
+} from './preferences/api'
+import {
+  parseExtensionPackageSource,
+  parseExtensionRepositoryInput,
+  type ExtensionPackageSource,
+  type ExtensionRepositoryInput,
+} from './extensions'
+import { parseMetadataProfileCreate, type MetadataProfileCreate } from './metadata/profiles'
+import { parseScanConfigCreate, type ScanConfigCreate } from './scanner/configs'
+import { parseShowcaseFields, type ShowcaseFields } from './library/showcase'
 import { parseApplicationVersion } from './app'
 
 /** Native recommendation groups with independently owned preparation and commit behavior. */
@@ -37,10 +39,8 @@ export const onboardingGroups = Object.freeze([
   'showcase',
 ] as const)
 
-/** Business-operation group in the native recommendation catalog. */
 export type OnboardingGroup = (typeof onboardingGroups)[number]
 
-/** Reason for presenting guidance: first use, an application update or an explicit revisit. */
 export type OnboardingMode = 'firstUse' | 'update' | 'manual'
 
 /** Durable resource created or installed while applying a recommendation. */
@@ -67,8 +67,6 @@ export type OnboardingHandled =
     }
 
 /**
- * Saved guide-presentation history and per-item handling outcomes.
- *
  * Handled keys are stable native catalog identities. Deleted or unavailable resources leave
  * historical outcomes intact.
  */
@@ -96,11 +94,7 @@ export type OnboardingItem = {
   | { readonly group: 'metadataProfiles' | 'showcase'; readonly presetId: string }
 )
 
-/**
- * Fixed extension artifact source, optionally including a newly confirmed repository.
- *
- * Existing repositories are referenced by their actual local IDs.
- */
+/** Existing repositories are referenced by their actual local IDs. */
 export type OnboardingExtensionSource =
   | ExtensionPackageSource
   | {
@@ -111,7 +105,6 @@ export type OnboardingExtensionSource =
       readonly sha256: string
     }
 
-/** Concrete business input accepted for each recommendation group. */
 export interface OnboardingInputMap {
   readonly preferences: {
     readonly changes: Pick<PreferencesChanges, 'general' | 'appearance'>
@@ -123,18 +116,13 @@ export interface OnboardingInputMap {
   readonly showcase: ShowcaseFields
 }
 
-/** Recommendation input paired with its original handling state for conflict checks. */
 export interface OnboardingItemInput<G extends OnboardingGroup> {
   readonly itemId: string
   readonly expectedHandled: OnboardingHandled | null
   readonly input: OnboardingInputMap[G]
 }
 
-/**
- * Ordered recommendation batch submitted to one business group.
- *
- * Preferences accepts exactly one item; other groups accept a nonempty selection.
- */
+/** Preferences accepts exactly one item; other groups accept a nonempty selection. */
 export type OnboardingApplyInput = {
   [G in OnboardingGroup]: {
     readonly group: G
@@ -159,8 +147,6 @@ export interface OnboardingItemResult<G extends OnboardingGroup = OnboardingGrou
 }
 
 /**
- * Per-item outcomes for one recommendation batch.
- *
  * Same-database groups commit atomically. Extension installation can remain durable even when its
  * handling record was not committed.
  */
@@ -179,7 +165,6 @@ export interface OnboardingSkipInput {
   }>
 }
 
-/** Native recommendation discovery, presentation tracking and explicit business adoption. */
 export interface OnboardingApi {
   /** Reads saved presentation and handling state without changing it. */
   getState(call?: CallOptions): Promise<OnboardingState>
@@ -225,27 +210,18 @@ export interface OnboardingApi {
    */
   complete(input: { readonly mode: OnboardingMode }, call?: CallOptions): Promise<OnboardingState>
 
-  /**
-   * Subscribes to saved onboarding-state invalidation and returns the subscription lifetime.
-   *
-   * Draft inputs remain owned by their editor.
-   */
+  /** Draft inputs remain owned by their editor. */
   onInvalidated(listener: () => void): Disposable
 }
 
-/** Validated release version retained by onboarding presentation history. */
-const version = v.pipe(
-  v.unknown(),
-  v.transform((value) => parseExternalValue(parseVersion, value, 'Invalid onboarding version')),
+const version = fromParser((value) =>
+  parseExternalValue(parseVersion, value, 'Invalid onboarding version'),
 )
 
-/** Validated extension identity used by recommendations and created-resource receipts. */
-const extensionId = v.pipe(
-  v.unknown(),
-  v.transform((value) => parseExternalValue(parseId, value, 'Invalid extension identity')),
+const extensionId = fromParser((value) =>
+  parseExternalValue(parseId, value, 'Invalid extension identity'),
 )
 
-/** Stable identity of a resource actually created or adopted by an onboarding action. */
 const resource = v.variant('type', [
   v.strictObject({ type: v.literal('extension'), extensionId }),
   v.strictObject({ type: v.literal('metadataProfile'), profileId: id }),
@@ -253,25 +229,21 @@ const resource = v.variant('type', [
   v.strictObject({ type: v.literal('showcaseSection'), sectionId: id }),
 ])
 
-/** Distinct resource receipts retained with an applied recommendation. */
 const resources = v.pipe(
   v.array(resource),
   v.check((values) => unique(values, (value) => JSON.stringify(value))),
 )
 
-/** Explicit skipped or applied recommendation outcome with its handling time. */
 const handled = v.variant('outcome', [
   v.strictObject({ outcome: v.literal('skipped'), handledAt: timestamp }),
   v.strictObject({ outcome: v.literal('applied'), handledAt: timestamp, resources }),
 ])
 
-/** Nullable baseline for a recommendation's previously recorded handling state. */
 const expectedHandled = v.nullable(handled)
 
-/** Failure stage and safe error details from installation, commit or runtime adoption. */
 const issue = v.strictObject({
   stage: v.picklist(['installation', 'commit', 'runtime']),
-  error: v.pipe(v.unknown(), v.transform(parseErrorSummary)),
+  error: fromParser(parseErrorSummary),
 })
 
 /** Parses an established applied or skipped outcome with its timestamp and resource references. */
@@ -289,18 +261,14 @@ export function parseOnboardingState(input: unknown): OnboardingState {
     v.strictObject({
       firstPresentedAt: v.nullable(timestamp),
       firstCompletedAt: v.nullable(timestamp),
-      lastPresentedVersion: v.nullable(v.pipe(v.unknown(), v.transform(parseApplicationVersion))),
-      handled: v.pipe(
-        v.unknown(),
-        v.transform((value) => parseDictionary(id, handled, value)),
-      ),
+      lastPresentedVersion: v.nullable(fromParser(parseApplicationVersion)),
+      handled: fromParser((value) => parseDictionary(id, handled, value)),
     }),
     input,
     'Invalid onboarding state',
   )
 }
 
-/** Parses general and appearance edits and requires an original value for every submitted field. */
 function parsePreferenceInput(input: unknown): OnboardingInputMap['preferences'] {
   const groups = v.strictObject({
     general: v.exactOptional(v.unknown()),
@@ -326,29 +294,25 @@ function parsePreferenceInput(input: unknown): OnboardingInputMap['preferences']
   return { changes: value.changes, expected: baseline }
 }
 
-/** Parses a fixed extension source, including a newly confirmed repository when supplied. */
 function parseExtensionInput(input: unknown): OnboardingInputMap['extensions'] {
-  const prepared = v.pipe(
-    v.unknown(),
-    v.transform((raw): OnboardingExtensionSource => {
-      const value = parseRecord(raw)
-      if (value.type !== 'newRepository') {
-        return parseExtensionPackageSource(raw)
-      }
+  const prepared = fromParser((raw): OnboardingExtensionSource => {
+    const value = parseRecord(raw)
+    if (value.type !== 'newRepository') {
+      return parseExtensionPackageSource(raw)
+    }
 
-      return parseValue(
-        v.strictObject({
-          type: v.literal('newRepository'),
-          repository: v.pipe(v.unknown(), v.transform(parseExtensionRepositoryInput)),
-          extensionId,
-          version,
-          sha256: v.pipe(text, v.regex(/^[a-f0-9]{64}$/)),
-        }),
-        raw,
-        'Invalid confirmed onboarding repository source',
-      )
-    }),
-  )
+    return parseValue(
+      v.strictObject({
+        type: v.literal('newRepository'),
+        repository: v.pipe(v.unknown(), v.transform(parseExtensionRepositoryInput)),
+        extensionId,
+        version,
+        sha256: v.pipe(text, v.regex(/^[a-f0-9]{64}$/)),
+      }),
+      raw,
+      'Invalid confirmed onboarding repository source',
+    )
+  })
   return parseValue(
     v.strictObject({ source: prepared, enabled: v.exactOptional(v.boolean()) }),
     input,
@@ -356,10 +320,6 @@ function parseExtensionInput(input: unknown): OnboardingInputMap['extensions'] {
   )
 }
 
-/**
- * Parses a profile input with an explicit default choice and its required default-selection
- * baseline.
- */
 function parseProfileInput(input: unknown): OnboardingInputMap['metadataProfiles'] {
   const value = parseMetadataProfileCreate(input)
   if (value.isDefault === undefined || (value.isDefault && !value.expected)) {
@@ -372,7 +332,6 @@ function parseProfileInput(input: unknown): OnboardingInputMap['metadataProfiles
   return { ...value, isDefault: value.isDefault }
 }
 
-/** Recommendation-group input parsers delegated to their actual capability owners. */
 const inputParsers = {
   preferences: parsePreferenceInput,
   extensions: parseExtensionInput,
@@ -382,21 +341,18 @@ const inputParsers = {
 }
 
 /**
- * Parses a recommendation batch using each business owner's input contract.
- *
  * Enforces unique item IDs, one preferences item and at most one new default profile per entry
  * kind. Callers run scanner regex validation in its normal bounded, terminable validation unit.
  */
 export function parseOnboardingApplyInput(input: unknown): OnboardingApplyInput {
   const record = parseRecord(input)
   const group = parseValue(v.picklist(onboardingGroups), record.group)
-  /** Input parser owned by the explicitly selected onboarding recommendation group. */
   const parseInput: (input: unknown) => OnboardingInputMap[OnboardingGroup] = inputParsers[group]
 
   const item = v.strictObject({
     itemId: id,
     expectedHandled,
-    input: v.pipe(v.unknown(), v.transform(parseInput)),
+    input: fromParser(parseInput),
   })
   const value = parseValue(
     v.strictObject({
@@ -459,8 +415,6 @@ export function parseOnboardingSkipInput(input: unknown): OnboardingSkipInput {
 }
 
 /**
- * Parses group outcomes and checks resource-reference kinds, item states and atomicity constraints.
- *
  * Only extension reports may retain a durable resource for an item whose handling did not commit.
  */
 export function parseOnboardingApplyResult(input: unknown): OnboardingApplyResult {

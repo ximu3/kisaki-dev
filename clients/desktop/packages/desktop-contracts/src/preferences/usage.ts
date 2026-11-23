@@ -1,27 +1,22 @@
-/** @fileoverview Owns complete desktop reading/playback preferences independently of media engines and per-file runtime state. */
-
-import type { FontRef } from '../fonts'
 import * as v from 'valibot'
 import { parseLanguageTag } from '../library/catalog'
 import {
+  fromParser,
   nonnegativeNumber,
   parseValue,
   parseExternalValue,
   optionalFields,
   validateExpectedKeys,
 } from '../validation'
-import { parseFontRef } from '../fonts'
+import { parseFontRef, type FontRef } from '../fonts'
 import { parseTokenValue } from '@kisaki3/desktop-appearance/values'
 
-/** Global defaults for game-panel visibility and always-on-top behavior. */
 export interface GamePreferences {
   readonly showPanelOnStart: boolean
   readonly panelAlwaysOnTop: boolean
 }
 
 /**
- * Complete playback preferences selected as one configuration unit.
- *
  * Specific tracks, synchronization offsets, remembered volume and temporary speed have separate
  * owners.
  */
@@ -55,7 +50,6 @@ export interface ReadingPagePreferences {
   readonly contrast: number
 }
 
-/** Text layout, font and spacing preferences for reflowable content. */
 export interface ReadingTextPreferences {
   readonly pagesPerView: 1 | 2
   readonly writingMode: 'document' | 'horizontal-tb' | 'vertical-rl' | 'vertical-lr'
@@ -75,17 +69,12 @@ export interface ReadingTextPreferences {
   readonly maxLineLength: number
 }
 
-/**
- * Saved intent to use document, theme or explicit reading colors.
- *
- * Resolved display colors are not written back into a document or theme choice.
- */
+/** Resolved display colors are not written back into a document or theme choice. */
 export type ReadingColors =
   | { readonly type: 'document' }
   | { readonly type: 'theme' }
   | { readonly type: 'custom'; readonly foreground: string; readonly background: string }
 
-/** Complete reading configuration covering flow, original pages, reflowable text and colors. */
 export interface ReadingPreferences {
   readonly flow: 'paginated' | 'continuous'
   readonly pages: ReadingPagePreferences
@@ -93,7 +82,6 @@ export interface ReadingPreferences {
   readonly colors: ReadingColors
 }
 
-/** Global timing grace period and per-medium usage defaults. */
 export interface UsagePreferences {
   readonly foregroundGracePeriodMs: number
   readonly game: GamePreferences
@@ -102,11 +90,7 @@ export interface UsagePreferences {
   readonly novel: ReadingPreferences
 }
 
-/**
- * Reading edits grouped by native page and text settings.
- *
- * Font and color choices replace as complete values.
- */
+/** Font and color choices replace as complete values. */
 export interface ReadingPreferencesChanges {
   readonly flow?: ReadingPreferences['flow']
   readonly pages?: Partial<ReadingPagePreferences>
@@ -114,7 +98,6 @@ export interface ReadingPreferencesChanges {
   readonly colors?: ReadingColors
 }
 
-/** Partial timing and per-medium preference edits at their declared field boundaries. */
 export interface UsagePreferencesChanges {
   readonly foregroundGracePeriodMs?: number
   readonly game?: Partial<GamePreferences>
@@ -124,8 +107,6 @@ export interface UsagePreferencesChanges {
 }
 
 /**
- * Initialized independent usage configuration with explicit enabled state.
- *
  * Disabling retains complete settings. A null value in the owning field means the override has
  * never been initialized.
  */
@@ -134,11 +115,7 @@ export interface UsageOverride<T> {
   readonly settings: T
 }
 
-/**
- * Reading-override initialization or field-specific update with optional original values.
- *
- * Initialization supplies a complete independent unit; later edits preserve unrelated fields.
- */
+/** Initialization supplies a complete independent unit; later edits preserve unrelated fields. */
 export type ReadingOverrideChange =
   | {
       readonly type: 'initialize'
@@ -176,22 +153,18 @@ export type PlaybackOverrideChange =
       }
     }
 
-/** Finite positive values used by text metrics and display scale. */
 const positive = v.pipe(v.number(), v.finite(), v.gtValue(0))
 
-/** Canonical playback language preferences deduplicated in priority order. */
 const languageList = v.pipe(
-  v.array(v.pipe(v.unknown(), v.transform(parseLanguageTag))),
+  v.array(fromParser(parseLanguageTag)),
   v.transform((values) => [...new Set(values)]),
 )
 
-/** Application-level game-panel choices, separate from launch configuration. */
 export const gamePreferenceEntries = {
   showPanelOnStart: v.boolean(),
   panelAlwaysOnTop: v.boolean(),
 }
 
-/** Complete saved anime playback choices used by global settings and usage overrides. */
 export const playbackPreferenceEntries = {
   audioLanguages: languageList,
   subtitleLanguages: languageList,
@@ -204,7 +177,6 @@ export const playbackPreferenceEntries = {
   autoMarkWatched: v.boolean(),
 }
 
-/** Original-page arrangement, progression, fitting and image-adjustment preferences. */
 export const readingPageEntries = {
   arrangement: v.picklist(['single', 'spread']),
   progression: v.picklist(['document', 'ltr', 'rtl']),
@@ -216,24 +188,14 @@ export const readingPageEntries = {
   contrast: v.pipe(nonnegativeNumber, v.maxValue(2)),
 }
 
-/** Author-font choice or a complete validated application font reference. */
-const readingFont = v.pipe(
-  v.unknown(),
-  v.transform((value): ReadingTextPreferences['font'] => {
-    if (
-      typeof value === 'object' &&
-      value !== null &&
-      'type' in value &&
-      value.type === 'document'
-    ) {
-      return parseValue(v.strictObject({ type: v.literal('document') }), value)
-    }
+const readingFont = fromParser((value): ReadingTextPreferences['font'] => {
+  if (typeof value === 'object' && value !== null && 'type' in value && value.type === 'document') {
+    return parseValue(v.strictObject({ type: v.literal('document') }), value)
+  }
 
-    return parseFontRef(value)
-  }),
-)
+  return parseFontRef(value)
+})
 
-/** Reflowable-text typography and layout preferences with explicit document-following choices. */
 export const readingTextEntries = {
   pagesPerView: v.union([v.literal(1), v.literal(2)]),
   writingMode: v.picklist(['document', 'horizontal-tb', 'vertical-rl', 'vertical-lr']),
@@ -248,17 +210,12 @@ export const readingTextEntries = {
   maxLineLength: positive,
 }
 
-/** Creates a reading-color schema using the owning appearance token parser. */
 function color(token: '--foreground' | '--background') {
-  return v.pipe(
-    v.unknown(),
-    v.transform((value) =>
-      parseExternalValue((input) => parseTokenValue(token, input), value, 'Invalid reading color'),
-    ),
+  return fromParser((value) =>
+    parseExternalValue((input) => parseTokenValue(token, input), value, 'Invalid reading color'),
   )
 }
 
-/** Document, theme or complete custom foreground/background reading colors. */
 const colors = v.variant('type', [
   v.strictObject({ type: v.literal('document') }),
   v.strictObject({ type: v.literal('theme') }),
@@ -269,7 +226,6 @@ const colors = v.variant('type', [
   }),
 ])
 
-/** One complete reading configuration, keeping page, text and color settings together. */
 export const readingPreferenceEntries = {
   flow: v.picklist(['paginated', 'continuous']),
   pages: v.strictObject(readingPageEntries),
@@ -285,7 +241,6 @@ export const readingChangeEntries = {
   colors,
 }
 
-/** Independent per-medium usage edits and the application-wide foreground grace period. */
 export const usageChangeEntries = {
   foregroundGracePeriodMs: nonnegativeNumber,
   game: v.strictObject(optionalFields(gamePreferenceEntries)),
@@ -299,11 +254,7 @@ export function parseReadingPreferences(input: unknown): ReadingPreferences {
   return parseValue(v.strictObject(readingPreferenceEntries), input, 'Invalid reading preferences')
 }
 
-/**
- * Parses playback preferences using the shared speed, subtitle and language constraints.
- *
- * Values are validated rather than clamped.
- */
+/** Values are validated rather than clamped. */
 export function parseAnimePlaybackPreferences(input: unknown): AnimePlaybackPreferences {
   return parseValue(
     v.strictObject(playbackPreferenceEntries),
@@ -362,11 +313,7 @@ export function parseReadingOverrideChange(input: unknown): ReadingOverrideChang
   return value
 }
 
-/**
- * Parses complete initialization or partial playback-override edits and their field baselines.
- *
- * Ordered language lists replace as whole values.
- */
+/** Ordered language lists replace as whole values. */
 export function parsePlaybackOverrideChange(input: unknown): PlaybackOverrideChange {
   const update = v.strictObject(
     optionalFields({

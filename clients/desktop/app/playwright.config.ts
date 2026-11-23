@@ -1,5 +1,3 @@
-/** @fileoverview Verifies the prepared engineering fixture in real Electron windows. */
-
 import { defineConfig } from '@playwright/test'
 
 export default defineConfig({

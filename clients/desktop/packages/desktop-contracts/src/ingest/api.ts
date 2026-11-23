@@ -1,6 +1,3 @@
-/** @fileoverview Composes complete adoption operations and validates batch result accounting. */
-
-import type { ExecutionFailure } from '../errors'
 import type { EntryType } from '../library/catalog'
 import type { IngestAddInput, IngestAddResult } from './add'
 import type { CallOptions, ExecutionContext } from '../operations'
@@ -12,12 +9,10 @@ import type {
   IngestUpdateItem,
 } from './update'
 import * as v from 'valibot'
-import { parseExecutionFailure, DesktopError } from '../errors'
-import { parseValue, nonnegativeInteger, unique } from '../validation'
+import { parseExecutionFailure, DesktopError, type ExecutionFailure } from '../errors'
+import { fromParser, parseValue, nonnegativeInteger, unique } from '../validation'
 
 /**
- * Indexed outcomes for a fixed batch of adoption inputs.
- *
  * Total retains the original input count. Cancellation reports only completed items and their legal
  * partial results.
  */
@@ -29,16 +24,11 @@ export interface IngestBatchResult<Result> {
   )[]
 }
 
-/**
- * Complete metadata adoption operations for additions and fixed-target updates.
- *
- * Each call waits for graph commit and applicable initial local-content verification.
- */
+/** Each call waits for graph commit and applicable initial local-content verification. */
 export interface IngestApi {
   /**
-   * Completes identity resolution, source acquisition, preparation and creation for one input.
-   *
-   * An alreadyExists outcome leaves initial personal values unadopted.
+   * Prepares and commits a new entry. Matching an existing identity leaves initial personal values
+   * unadopted.
    */
   add<T extends EntryType>(
     input: IngestAddInput<T>,
@@ -46,20 +36,15 @@ export interface IngestApi {
   ): Promise<IngestAddResult<T>>
 
   /**
-   * Runs additions with per-item commits and indexed outcomes.
-   *
-   * Ordinary item failure permits later items. Cancellation retains completed facts.
+   * Commits each item separately. Item failure permits later items; cancellation retains completed
+   * outcomes.
    */
   addMany<T extends EntryType>(
     inputs: readonly IngestAddInput<T>[],
     call?: CallOptions,
   ): Promise<IngestBatchResult<IngestAddResult<T>>>
 
-  /**
-   * Fixes the existing target and authorized fields before acquisition and adoption.
-   *
-   * Source results cannot redirect the target or broaden the update.
-   */
+  /** Source results cannot redirect the target or broaden the update. */
   update<
     Args extends {
       [K in IngestUpdateType]: [
@@ -73,9 +58,7 @@ export interface IngestApi {
   ): Promise<IngestUpdateResult<Args[0]['type']>>
 
   /**
-   * Runs fixed-target updates with per-item commits and indexed outcomes.
-   *
-   * Completed items remain committed when later work fails or is cancelled.
+   * Commits fixed targets independently. Later failure or cancellation preserves earlier commits.
    */
   updateMany<I extends IngestUpdateItem>(
     inputs: readonly I[],
@@ -83,11 +66,7 @@ export interface IngestApi {
   ): Promise<IngestBatchResult<IngestUpdateResult<I['target']['type']>>>
 }
 
-/**
- * Complete adoption work inside an already accepted native execution context.
- *
- * Scanner and batch collaboration reuse this surface without creating nested tasks.
- */
+/** Scanner and batch collaboration reuse this surface without creating nested tasks. */
 export interface IngestExecutor {
   /** Executes the complete addition within the caller's accepted execution context. */
   add<T extends EntryType>(
@@ -113,11 +92,8 @@ export function parseIngestBatchResult<Result>(
   parseResult: (value: unknown) => Result,
   completeness: 'complete' | 'partial' = 'complete',
 ): IngestBatchResult<Result> {
-  const result = v.pipe(v.unknown(), v.transform(parseResult))
-  const failure = v.pipe(
-    v.unknown(),
-    v.transform((value) => parseExecutionFailure(value, parseResult)),
-  )
+  const result = fromParser(parseResult)
+  const failure = fromParser((value) => parseExecutionFailure(value, parseResult))
   const value = parseValue(
     v.strictObject({
       total: nonnegativeInteger,

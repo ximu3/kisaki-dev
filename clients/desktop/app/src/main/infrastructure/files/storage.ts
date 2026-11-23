@@ -1,10 +1,7 @@
-/** @fileoverview Prepares bounded byte streams and publishes immutable app-owned files using native durability primitives. */
-
 import { createHash } from 'node:crypto'
 import { lstat, mkdir, mkdtemp, open, rm } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
-import { Transform } from 'node:stream'
-import type { Readable } from 'node:stream'
+import { Transform, type Readable } from 'node:stream'
 import { finished, pipeline } from 'node:stream/promises'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { isAbsoluteHostPath } from '#host-path'
@@ -114,7 +111,6 @@ export async function stageFile(
       await pipeline(
         source,
         new Transform({
-          /** Counts and hashes each byte before forwarding it to the prepared file. */
           transform(chunk: Buffer, _encoding, callback) {
             byteSize += chunk.length
             if (!Number.isSafeInteger(byteSize) || byteSize > byteLimit) {

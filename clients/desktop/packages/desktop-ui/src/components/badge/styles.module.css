@@ -1,5 +1,3 @@
-/* Compact badges pair semantic ink with a translucent fill and a quiet border. */
-
 @layer components {
   .root {
     --badge-tone: var(--primary);

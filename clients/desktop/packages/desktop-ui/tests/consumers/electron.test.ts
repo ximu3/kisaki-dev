@@ -1,5 +1,3 @@
-/** @fileoverview Actual Electron verifies modal interaction and capability teardown in an isolated profile. */
-
 import { expect, _electron } from '@playwright/test'
 import { onTestFinished } from 'vite-plus/test'
 import { mkdir, writeFile } from 'node:fs/promises'

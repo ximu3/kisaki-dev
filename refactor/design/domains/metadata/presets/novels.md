@@ -47,8 +47,6 @@ RanobeDB 同样不从混合 Staff 名单发现人物工作；已明确 Person �
 
 ## 关系成员与属性
 
-关系成员及属性按[共同取值规则](README.md#selection)采用。
-
 | 关系项目          | 简体                                         | 繁体                                         | 英文                                                   | 日文                                                   |
 | ----------------- | -------------------------------------------- | -------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------ |
 | workCharacters    | firstNonEmpty：Bangumi                       | firstNonEmpty：Bangumi                       | firstNonEmpty：Bangumi → AniList                       | firstNonEmpty：Bangumi → AniList                       |
@@ -61,8 +59,6 @@ RanobeDB 同样不从混合 Staff 名单发现人物工作；已明确 Person �
 | workVolumes       | firstNonEmpty：RanobeDB → Bangumi            | firstNonEmpty：RanobeDB → Bangumi            | firstNonEmpty：RanobeDB → Bangumi                      | firstNonEmpty：RanobeDB → Bangumi                      |
 | workChapters      | 不配置                                       | 不配置                                       | 不配置                                                 | 不配置                                                 |
 | volumeChapters    | 不配置                                       | 不配置                                       | 不配置                                                 | 不配置                                                 |
-
-以下规则定义关系属性的取值：
 
 | 关系属性                           | 版本       | 固定取值          |
 | ---------------------------------- | ---------- | ----------------- |
@@ -82,8 +78,6 @@ RanobeDB 同样不从混合 Staff 名单发现人物工作；已明确 Person �
 <a id="tags"></a>
 
 ## 标签自身字段
-
-标签自身字段遵守[共同规则](README.md#selection)，本表列出适用来源。
 
 | 标签自身字段 | 版本       | 固定取值           |
 | ------------ | ---------- | ------------------ |

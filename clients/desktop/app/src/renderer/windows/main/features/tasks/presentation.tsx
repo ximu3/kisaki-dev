@@ -1,5 +1,3 @@
-/** @fileoverview Presents task type, status and duration consistently across the task center. */
-
 import { dynamic } from '@solidjs/web'
 import { ClipboardList, FolderSearch, RefreshCw, ScanLine } from '@lucide/solid'
 import type { TaskRunStatus, TaskRunSummary } from '@kisaki3/desktop-contracts/tasks'

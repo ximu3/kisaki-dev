@@ -1,26 +1,16 @@
-/**
- * @fileoverview Assembles a finite desktop runtime from complete program, resource and
- * native outputs and records the completed build manifest.
- */
-
 import { randomUUID } from 'node:crypto'
 import { copyFile, cp, mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import electronManifest from 'electron/package.json' with { type: 'json' }
-import { appRoot, buildDirectory } from '../lib/paths'
-import { hostTarget } from '../lib/targets'
-import type { DesktopBuild } from './manifest'
-import type { DesktopTarget } from '../lib/targets'
 import { removeOutputs } from '@kisaki3/tooling/output'
-import { runtimeFiles } from './manifest'
+import { appRoot, buildDirectory } from '../lib/paths'
+import { hostTarget, type DesktopTarget } from '../lib/targets'
+import { runtimeFiles, type DesktopBuild } from './manifest'
 import { buildProgram, sourcePrograms } from './programs'
 
 /**
- * Assembles a complete desktop runtime from prepared resources and native bindings.
- *
- * Requires the target's own runner. Waits for all program compilers, verifies required outputs and
- * the completed file set, then writes and returns the build manifest. Failed or cancelled
- * builds are not consumable.
+ * Requires a matching native runner and prepared resources. The build manifest is written only
+ * after all compilers finish and the complete runtime has been checked.
  */
 export async function buildDesktop(
   sourceRoot: string,
@@ -31,8 +21,8 @@ export async function buildDesktop(
     throw new Error('Desktop builds require the matching native target runner')
   }
 
+  const programs = sourcePrograms(sourceRoot)
   const output = buildDirectory(target)
-
   await removeOutputs(appRoot, [output], signal)
   await mkdir(output, { recursive: true })
 
@@ -49,7 +39,6 @@ export async function buildDesktop(
 
   const resources = join(appRoot, 'out', 'resources', target)
   const native = join(appRoot, 'out', 'native', target)
-
   await cp(resources, join(output, 'resources'), { recursive: true })
   await mkdir(join(output, 'resources', 'native'), { recursive: true })
   await copyFile(
@@ -57,11 +46,9 @@ export async function buildDesktop(
     join(output, 'resources', 'native', 'kisaki-native.node'),
   )
 
-  // Wait for every compiler before reporting completion or failure.
+  // On failure, the output stays owned until every compiler has finished writing.
   const results = await Promise.allSettled(
-    sourcePrograms(sourceRoot).map((program) =>
-      buildProgram(sourceRoot, program, join(output, program), buildId),
-    ),
+    programs.map((program) => buildProgram(sourceRoot, program, join(output, program), buildId)),
   )
   const failures = results.filter((result) => result.status === 'rejected')
   if (failures.length) {
@@ -93,7 +80,7 @@ export async function buildDesktop(
   for (const required of [
     'main/entry.js',
     'main/database.js',
-    ...(sourcePrograms(sourceRoot).includes('extension-host') ? ['extension-host/entry.js'] : []),
+    ...(programs.includes('extension-host') ? ['extension-host/entry.js'] : []),
     'preload/main.cjs',
     'preload/reader.cjs',
     'preload/player.cjs',

@@ -1,5 +1,3 @@
-/** @fileoverview Owns the editable carrier and its one mutable package for development tests. */
-
 import { cp, mkdir, mkdtemp, rm, symlink } from 'node:fs/promises'
 import { join } from 'node:path'
 import { appRoot } from '../../../tools/lib/paths'

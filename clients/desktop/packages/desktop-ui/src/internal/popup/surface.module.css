@@ -1,5 +1,3 @@
-/* Text-bearing surfaces fade at their final reading position. */
-
 .anchor {
   composes: native from '../scrollbars.module.css';
 }

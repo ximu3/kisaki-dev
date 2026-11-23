@@ -8,7 +8,7 @@
 
 ## 当前状态与完成记录
 
-摘要统一使用 completionCount、firstCompletedDate 和 lastCompletedDate。未知日期只影响两个日期投影，不减少次数；Part 查询只返回自身完成标记，不提供逐次完成历史。字段名在领域读取、列表投影、SDK 和生成声明中一致。
+领域读取、列表投影、SDK 和生成声明统一使用 `completionCount`、`firstCompletedDate` 和 `lastCompletedDate`。未知日期只影响日期投影，次数照常计入。Part 查询返回自身完成标记，逐次完成历史归所属作品。
 
 完成记录写入核对真实 Work 目标：以合法引用形状指向 Person 等非作品 ID 时，完整操作拒绝并保持数据库原样；普通 Entry 外键的存在性不代替目标类型校验。
 

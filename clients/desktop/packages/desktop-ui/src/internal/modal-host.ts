@@ -1,5 +1,3 @@
-/** @fileoverview Tracks library modal ancestry for document-level interactive presentation. */
-
 /** Active library modal stack and presentation listeners owned by one document. */
 interface ModalHosts {
   stack: HTMLDialogElement[]
@@ -28,7 +26,6 @@ function hosts(document: Document): ModalHosts {
  */
 export function registerModal(node: HTMLDialogElement): () => void {
   const state = hosts(node.ownerDocument)
-  /** Notifies listeners of the document's current top modal, if any. */
   const publish = () => state.listeners.forEach((listener) => listener(state.stack.at(-1)))
   state.stack.push(node)
   publish()

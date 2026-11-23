@@ -31,8 +31,8 @@ await context.i18n.translations.register({
 
 ```ts
 type UiTranslationRef =
-  | { type: 'builtin'; id: 'en' | 'zh-Hans' }
-  | { type: 'extension'; extensionId: string; id: string }
+  | { readonly type: 'builtin'; readonly id: 'en' | 'zh-Hans' }
+  | { readonly type: 'extension'; readonly extensionId: string; readonly id: string }
 ```
 
 preferences 保存具体 UiTranslationRef。i18n 根据这份引用及当前登记计算有效语言。两个译本即使 locale 相同，切换引用也会刷新使用中的消息。main 将实际生效的 locale 同步给[资料库名称排序](../domains/library/query/README.md#name-order)：生效语言变化时采用对应索引并使列表重新读取，同语言译本共享顺序。

@@ -1,15 +1,22 @@
-/** @fileoverview Encodes catalog dates, descriptive lists and measurements with their field-specific read policies. */
-
 import {
   parseAliases,
   parseExternalLinks,
   parseLanguages,
   parseCharacterMeasure,
 } from '@kisaki3/desktop-contracts/library'
-import { parsePartialDate, parseCalendarDate } from '@kisaki3/desktop-contracts/date'
-import type { PartialDate, CalendarDate } from '@kisaki3/desktop-contracts/date'
-import { jsonColumn, readWithFallback, readJsonText, isInvalidValue } from './json'
-import type { ValueParser } from './json'
+import {
+  parsePartialDate,
+  parseCalendarDate,
+  type PartialDate,
+  type CalendarDate,
+} from '@kisaki3/desktop-contracts/date'
+import {
+  jsonColumn,
+  readWithFallback,
+  readJsonText,
+  isInvalidValue,
+  type ValueParser,
+} from './json'
 
 /** Reads valid list members in their original order without writing the projection back. */
 function readList<T>(source: unknown, parse: ValueParser<readonly T[]>): readonly T[] {

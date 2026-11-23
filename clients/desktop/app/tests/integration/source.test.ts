@@ -1,5 +1,3 @@
-/** @fileoverview Verifies source readiness, real window styling, the data root and normal exit. */
-
 import { test, expect, onTestFinished } from 'vite-plus/test'
 import { chromium } from 'playwright'
 import { expect as browserExpect } from '@playwright/test'
@@ -14,6 +12,7 @@ import { startRenderer } from '../../tools/dev/renderer'
 import { startDevelopmentSession } from '../../tools/dev/session'
 import { appRoot } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
+import { windowKinds } from '../../src/shared/window-api/protocol'
 import { hasNativeWindow } from '../support/window-observation'
 
 /** Creates one disposable public CSS export with independently writable source and build files. */
@@ -44,12 +43,19 @@ test('source styles and live updates survive gaps in independent public package 
   const root = await mkdtemp(join(parent, 'renderer-styles-'))
   onTestFinished(() => rm(root, { recursive: true, force: true, maxRetries: 4 }))
   const config = 'config/vite/vite.config.renderer.ts'
-  const documents = join(root, 'src/renderer/windows/main')
-  await Promise.all([
-    mkdir(join(root, 'config/vite'), { recursive: true }),
-    mkdir(documents, { recursive: true }),
-  ])
+  await mkdir(join(root, 'config/vite'), { recursive: true })
   await copyFile(join(appRoot, config), join(root, config))
+
+  const windows = join(root, 'src/renderer/windows')
+  for (const kind of windowKinds) {
+    const directory = join(windows, kind)
+    await mkdir(directory, { recursive: true })
+    const html =
+      kind === 'main'
+        ? '<!doctype html><link rel="stylesheet" href="./styles.css"><main class="flex">Sample</main>'
+        : '<!doctype html><title>Window fixture</title>'
+    await writeFile(join(directory, 'index.html'), html)
+  }
 
   const ui = await stylePackage(root, 'desktop-ui', {
     'styles.css': '@import "@kisaki3/desktop-appearance/styles.css";\nmain { padding-left: 7px; }',
@@ -59,11 +65,7 @@ test('source styles and live updates survive gaps in independent public package 
     'tailwind.css': 'main { padding-bottom: 13px; }',
   })
   await writeFile(
-    join(documents, 'index.html'),
-    '<!doctype html><link rel="stylesheet" href="./styles.css"><main class="flex">Sample</main>',
-  )
-  await writeFile(
-    join(documents, 'styles.css'),
+    join(windows, 'main/styles.css'),
     [
       '@import "tailwindcss" source(none);',
       '@import "@kisaki3/desktop-appearance/tailwind.css";',
@@ -97,7 +99,6 @@ test('source styles and live updates survive gaps in independent public package 
   expect(await metrics()).toEqual(['flex', '7px', '23px', '13px'])
 })
 
-/** Asks the loopback interface for a free inspector port immediately before test launch. */
 async function inspectorPort(): Promise<number> {
   const socket = createServer().listen(0, '127.0.0.1')
   await once(socket, 'listening')
@@ -108,7 +109,6 @@ async function inspectorPort(): Promise<number> {
   return port
 }
 
-/** Checks the cascade in the actual Electron source document before asking it to stop. */
 async function verifyWindowStyles(port: number, rendererUrl: string): Promise<void> {
   const browser = await chromium.connectOverCDP('http://127.0.0.1:' + port)
   try {
@@ -167,7 +167,6 @@ test('the source session styles its native window, opens its migrated library an
         args: [...options.args, '--remote-debugging-port=' + port],
       })
     },
-    /** Reports a failed immutable source candidate directly to the waiting test. */
     onState(state, error) {
       if (state === 'failed') {
         failed.reject(error)

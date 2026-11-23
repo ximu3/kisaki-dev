@@ -1,5 +1,3 @@
-/** @fileoverview Holds a scoped file preview for the font being viewed or edited in the library. */
-
 import { createEffect, createSignal, type Accessor } from 'solid-js'
 import type { OpenedFont } from '../../../../../shared/window-api'
 import type { MainClient } from '../../../../infrastructure/api'

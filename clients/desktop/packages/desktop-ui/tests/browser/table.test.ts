@@ -1,5 +1,3 @@
-/** @fileoverview Checks the real body viewport and semantic column alignment of a scrollable table. */
-
 import { chromium, expect } from '@playwright/test'
 import { test as workshop } from './page'
 

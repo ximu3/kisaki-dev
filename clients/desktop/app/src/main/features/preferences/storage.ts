@@ -1,5 +1,3 @@
-/** @fileoverview Commits field-local preference edits against their original values on the SQLite worker. */
-
 import { randomUUID } from 'node:crypto'
 import { isDeepStrictEqual } from 'node:util'
 import { eq, sql, type SQL } from 'drizzle-orm'
@@ -15,6 +13,11 @@ import {
 } from '@kisaki3/desktop-contracts/preferences'
 import type { Storage } from '../../infrastructure/database'
 import type { PreferenceRow } from '../../infrastructure/database/executor'
+import {
+  hasStoredDefinition,
+  readPreferenceField,
+  storedPreferencePaths,
+} from '../../infrastructure/database/preference-fields'
 
 /** Nonsecret changes sent to the worker after credentials are encrypted in the main process. */
 export type SavedChanges = Omit<PreferencesChanges, 'network'> & {
@@ -57,45 +60,40 @@ export function snapshot(row: PreferenceRow): PreferencesSnapshot {
   }
 }
 
-/** Own records form edit groups; tagged choices, arrays and scalars replace one entire field. */
-function isGroup(value: unknown): value is Record<string, unknown> {
-  return !!value && typeof value === 'object' && !Array.isArray(value) && !('type' in value)
-}
-
-/** Lists canonical field replacements and checks only the baselines explicitly supplied by this edit. */
-function replacements(
-  changes: Record<string, unknown>,
-  current: Record<string, unknown>,
-  expected: Record<string, unknown>,
-  path: string[] = [],
-): Array<{ path: string[]; value: unknown }> {
-  return Object.entries(changes).flatMap(([key, value]) => {
-    const keys = [...path, key]
-    const saved = current[key]
-    if (isGroup(value)) {
-      return replacements(
-        value,
-        isGroup(saved) ? saved : {},
-        isGroup(expected[key]) ? expected[key] : {},
-        keys,
-      )
+function fieldReplacements(
+  group: keyof SavedChanges,
+  changes: unknown,
+  saved: unknown,
+  expected: unknown,
+) {
+  const fields = []
+  for (const path of storedPreferencePaths[group]) {
+    const value = readPreferenceField(changes, path)
+    if (value === undefined) {
+      continue
     }
-    const original = isGroup(saved) && 'status' in saved ? saved.value : saved
-    if (Object.hasOwn(expected, key) && !isDeepStrictEqual(original, expected[key])) {
+
+    const baseline = readPreferenceField(expected, path)
+    const current = hasStoredDefinition(group, path)
+      ? readPreferenceField(saved, [...path, 'value'])
+      : readPreferenceField(saved, path)
+    if (baseline !== undefined && !isDeepStrictEqual(current, baseline)) {
       throw new DesktopError('Conflict', 'A preference you edited has changed')
     }
-    return [{ path: keys, value }]
-  })
+    fields.push({ path, value })
+  }
+  return fields
 }
 
 /** Creates complete preference read/write operations for the application database. */
 export function preferenceStorage(storage: Storage) {
   const { db, preferences: table } = storage
+
   return {
-    /** Returns one saved singleton without disclosing credential bytes. */
     getPreferences() {
       return snapshot(db.select().from(table).get()!)
     },
+
     /** Reads the protected pair only for adoption by the host network. */
     getProxySecret() {
       return db
@@ -113,7 +111,7 @@ export function preferenceStorage(storage: Storage) {
         .where(eq(table.proxyCredentialsRevision, revision))
         .run()
     },
-    /** Checks baselines, validates affected cross-field constraints and commits the submitted fields atomically. */
+
     changePreferences(
       changes: SavedChanges,
       expected: PreferencesExpected,
@@ -125,6 +123,7 @@ export function preferenceStorage(storage: Storage) {
         const update: Partial<Record<keyof SavedChanges, SQL>> &
           Pick<Partial<PreferenceRow>, 'proxyCredentialsCiphertext' | 'proxyCredentialsRevision'> =
           {}
+
         let revision = row.proxyCredentialsRevision
         if (secret !== undefined) {
           if (!isDeepStrictEqual(expected.network?.credentials, revision ? { revision } : null)) {
@@ -135,14 +134,10 @@ export function preferenceStorage(storage: Storage) {
           update.proxyCredentialsRevision = revision
         }
 
+        const savedRoute = row.network.status === 'ready' ? row.network.value : undefined
         for (const group of Object.keys(changes) as (keyof SavedChanges)[]) {
-          const savedRoute = row.network.status === 'ready' ? row.network.value : {}
           const saved = group === 'network' ? savedRoute : current[group]
-          const fields = replacements(
-            changes[group] as Record<string, unknown>,
-            saved as Record<string, unknown>,
-            (expected[group] ?? {}) as Record<string, unknown>,
-          )
+          const fields = fieldReplacements(group, changes[group], saved, expected[group])
           if (!fields.length) {
             continue
           }
@@ -155,16 +150,19 @@ export function preferenceStorage(storage: Storage) {
           update[group] =
             sql`json_set(case when json_valid(${column}) then case when json_type(${column})='object' then ${column} else '{}' end else '{}' end, ${sql.join(args, sql`, `)})`
         }
+
         if (changes.network || secret !== undefined) {
           parseNetworkPreferences({
-            ...(row.network.status === 'ready' ? row.network.value : {}),
+            ...savedRoute,
             ...changes.network,
             credentials: revision ? { revision } : null,
           })
         }
+
         if (Object.keys(update).length) {
           tx.update(table).set(update).run()
         }
+
         const result = snapshot(tx.select().from(table).get()!)
         if (changes.shortcuts) {
           const bindings = effectiveShortcutBindings(result.shortcuts)

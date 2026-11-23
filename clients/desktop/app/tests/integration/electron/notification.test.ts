@@ -1,5 +1,3 @@
-/** @fileoverview Delivers a saved notification target through the Windows COM receiver into the actual window. */
-
 import { execFile } from 'node:child_process'
 import { join } from 'node:path'
 import { promisify } from 'node:util'

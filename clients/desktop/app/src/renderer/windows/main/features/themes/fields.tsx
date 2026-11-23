@@ -1,5 +1,3 @@
-/** @fileoverview Groups the editable branch by visual purpose and supplies a control appropriate for each token. */
-
 import { For } from 'solid-js'
 import type { Translate } from '@kisaki3/desktop-localization'
 import { Field, FieldContent, FieldGroup, FieldLabel, FieldLegend } from '@kisaki3/desktop-ui/field'

@@ -4,9 +4,9 @@
 
 [现代化、简洁、清晰、干净与克制](../design/engineering/conventions.md#quality)具有同等首要地位，并与[终态实现与整体一致性](../design/engineering/conventions.md#final-state)共同约束质量判断。先判断机制、限制和验证投入是否必要且相称，再按完整职责与相关场景核对模型、接口、实现、测试和说明；既有规范与检查方式同样接受复核。
 
-**可读性验收包括人工分段复核。** 先从目录、命名和模块入口定位职责拥有者，再顺读格式化后的完整声明和操作。段落应让读者看出数据在哪里准备、何时提交结果，以及失败或取消后由谁清理。源码、测试、工具、配置和设计示例均按其实际职责验收。[可读性](../design/engineering/conventions.md#readability-principle) · [编码风格与逻辑分段](../design/engineering/conventions.md#logical-sections)
+审查源码及对应的测试、配置和设计示例时，从调用入口核对实现。检查操作成功时的返回值、失败或取消时保留的数据，以及资源释放的位置。[可读性](../design/engineering/conventions.md#readability) · [逻辑分段](../design/engineering/conventions.md#logical-sections)
 
-审阅按[全局设计与一致性](../design/engineering/conventions.md#global-design)将规格、实现和消费者放在同一条使用路径上核对，比较同类入口的粒度、风格与实际结果。选型按[判断与取舍](../design/engineering/conventions.md#judgment)核对。交互以用户能完成的任务、实际结果和各层责任验收。源码审查核对文件归属、目录层次、拆分依据与跨文件协作，再逐段核对[编码风格](../design/engineering/conventions.md#coding-style)、控制流、状态与副作用。记录实际覆盖的范围、必要修正及仍待决定的问题。
+审阅按[全局设计与一致性](../design/engineering/conventions.md#global-design)核对规格、实现和调用方对同一操作的约定，比较同类入口的粒度、风格与实际结果。选型按[判断与取舍](../design/engineering/conventions.md#judgment)核对。交互以用户能完成的任务、实际结果和各层责任验收。源码审查核对文件归属、目录层次、拆分依据与跨文件协作，再逐段核对[编码风格](../design/engineering/conventions.md#coding-style)、控制流、状态与副作用。记录实际覆盖的范围、必要修正及仍待决定的问题。
 
 <a id="verification-scope"></a>
 
@@ -130,7 +130,7 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | [A03](scenarios/library.md#relations)              | 四类资料关系共用稳定身份和真实约束。配音保留作品、人物与角色事实，人物和组织可以独立存在。模型、API、查询、预设与 UI 只提供这四类关系，不保留机构背景关系或替代存储。                                                               |
 | [A04](scenarios/library.md#completion)             | 评分、日期、JSON 和 null 等值写入后能够等价读回，筛选与排序符合各自语义。                                                                                                                                                           |
 | [A05](scenarios/sources.md#records)                | UI、扩展和功能自身的后台调用使用相同业务操作，值规则和错误一致。                                                                                                                                                                    |
-| [A06](scenarios/metadata.md)                       | 来源搜索的多选结果贯通批量添加。部分完成后取消时，已提交项目保留，结果准确说明实际范围。                                                                                                                                            |
+| [A06](scenarios/metadata.md)                       | 用户可以在来源搜索结果中选择多项，一次添加。部分完成后取消时，已提交项目保留，结果准确说明实际范围。                                                                                                                                            |
 | [A07](scenarios/metadata.md#updates)               | 来源未知、明确完整的空集合和部分来源失败，分别产生合同规定的更新效果。                                                                                                                                                              |
 | [A08](scenarios/holdings.md#directories)           | 多目录和零散文件能够独立使用。移除目录或扫描配置，以及离线、部分枚举、探测失败和确认缺失，都不会误删文件、分部关联或历史。                                                                                                          |
 | [A09](scenarios/holdings.md#recognition)           | 目录重定位保留身份。扫描期间的手动重绑定或首选变化不会被旧观察覆盖，重复核对能够收敛。                                                                                                                                              |
@@ -262,13 +262,13 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 
 本节索引需要取得的结构证据。完整职责和禁止项只在链接的设计主题维护；通过条件按同一正式规则检查，不形成第二套架构定义。A01–A33 和对应 scenarios 负责行为验收，结构检查不代替运行结果。
 
-源码质量与工具组织同时取得[可读性、注释覆盖和 tools 结构](scenarios/engineering.md#source-quality)的审查与验证记录，范围包括运行实现、原生接入、工具、配置和测试。
+按[源码验收场景](scenarios/engineering.md#source-quality)审查应用代码、原生接入、工具、配置和测试，记录审查与验证结果。
 
 | 检查范围与规则来源                                                                                                                                                                                                       | 应取得的证据                                                                    | 通过条件                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | [重写目标](../README.md#rewrite)、[仓库分组](../design/engineering/layout.md#workspace)                                                                                                                                  | workspace 清单、项目 manifest、最终目录与包产物                                 | 实际交付单位与当前范围对应，分类目录、未来工程和 fixture 不被误当作当前产品包               |
-| [程序布局](../design/engineering/layout.md#program-layout)、[各项目内部组织](../design/engineering/conventions.md#source-layout)                                                                                         | 四个 preload、extension-host 和主进程的输出及导入图；33 项扩展逐项落点          | 各程序按规定的私有合同通信，从公开入口使用所需能力，源码布局与各自职责一致                  |
-| [公开能力拥有者](../design/domains/library/write/README.md#ownership)、[条目／分部／关系组织](../design/domains/library/write/README.md#catalog-regions)                                                                 | API 到实现、事务写入和正式数据的对应；动画种类更正、漫画卷话收录与关系依赖用例  | 每项能力只有一个实际拥有者，类型差异有落点，完整操作与事务没有被私有拆分割裂                |
+| [程序布局](../design/engineering/layout.md#program-layout)、[各项目内部组织](../design/engineering/conventions.md#source-layout)                                                                                         | 四个 preload、extension-host 和主进程的输出及导入图；33 项扩展各自的源码目录          | 各程序按规定的私有合同通信，从公开入口使用所需能力，源码布局与各自职责一致                  |
+| [公开能力拥有者](../design/domains/library/write/README.md#ownership)、[条目／分部／关系组织](../design/domains/library/write/README.md#catalog-regions)                                                                 | API 到实现、事务写入和正式数据的对应；动画种类更正、漫画卷话收录与关系依赖用例  | 每项能力由一个模块负责，各类型的特殊规则由相应模块实现，内部拆分保留操作及事务的完整性                |
 | [整理与个人记录](../design/domains/library/write/README.md#personal-regions)、[引导原子采用](../design/domains/onboarding.md#composition)                                                                                | 整理、完成记录、活动、Note、Annotation 与引导采用的提交证据                     | 当前值、历史事实和本体组合分别归其拥有者；跨能力的必要同库原子性由明确入口保证              |
 | [持有组织](../design/domains/holdings.md#organization)、[维护执行](../design/domains/file-maintenance.md#execution)                                                                                                      | 四种媒介的文件／配置／位置写入，以及 refresh、watch、重新识别、重定位的实际入口 | 共同机制与媒介语义分工成立，手动请求、追加变化和在途收尾满足所属合同                        |
 | [会话组织](../design/domains/sessions.md#organization)                                                                                                                                                                   | 并发打开、失败、旧身份控制、退出与占用释放的运行记录                            | 实例登记是运行事实的唯一来源，接纳、占用、记录与资源收尾保持同一真实寿命                    |

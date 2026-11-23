@@ -1,5 +1,3 @@
-/** @fileoverview Verifies field processor results retain key coverage and valid partial outcomes. */
-
 import { test, expect } from 'vite-plus/test'
 import { parseFieldProcessingInput, parseFieldProcessingResult } from './processors'
 

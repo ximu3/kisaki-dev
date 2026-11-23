@@ -1,5 +1,3 @@
-/** @fileoverview Shared visual purposes and sizes for actions and navigation links. */
-
 import type { ControlSize } from '../control/size'
 
 /**

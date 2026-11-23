@@ -1,5 +1,3 @@
-/** @fileoverview Browses a task scope by viewport, preserving row identities for focus and operations. */
-
 import {
   createEffect,
   createMemo,

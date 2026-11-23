@@ -1,5 +1,3 @@
-/** @fileoverview Markdown formatting commands edit the same CodeMirror transaction and undo history. */
-
 import { EditorSelection, Transaction } from '@codemirror/state'
 import type { EditorView } from '@codemirror/view'
 import { undo, redo } from '@codemirror/commands'

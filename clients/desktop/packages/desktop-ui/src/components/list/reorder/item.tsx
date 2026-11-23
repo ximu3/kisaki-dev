@@ -1,5 +1,3 @@
-/** @fileoverview Registers a row handle and the insertion target of its owning list. */
-
 import { createEffect, For, Show, omit } from 'solid-js'
 import {
   attachClosestEdge,
@@ -8,7 +6,7 @@ import {
 import { createDraggable, createDropTarget } from '../../drag/adapter'
 import { DragHandle, DropIndicator } from '../../drag/presentation'
 import { setDragPreview } from '../../drag/preview'
-import { Menu, MenuContent, MenuItem, MenuTrigger } from '../../menu/parts'
+import { Menu, MenuContent, MenuItem, MenuTrigger } from '../../menu'
 import { ListItem, type ListItemProps } from '../parts'
 import { useReorderableList, type MoveCommand } from './control'
 

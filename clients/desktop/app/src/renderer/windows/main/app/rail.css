@@ -1,5 +1,3 @@
-/* The navigation rail and its More panel share a current-page indicator. */
-
 @layer components {
   .app-rail .rail-action {
     position: relative;

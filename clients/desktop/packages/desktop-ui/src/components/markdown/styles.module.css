@@ -1,5 +1,3 @@
-/* Editor chrome and preview typography share the host's visual variables. */
-
 .source {
   composes: native from '../../internal/scrollbars.module.css';
 }

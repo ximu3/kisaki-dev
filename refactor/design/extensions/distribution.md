@@ -63,7 +63,7 @@ signature
 
 每个 release 保存 version、首次发布时的 UTC 毫秒 publishedAt、defaultLocale，以及可选 releaseNotes 和 readme。每个 artifact 保存 targets、API 范围、可选运行范围与 license，以及 URL、大小和哈希。兼容条件和许可证属于具体制品，不能拿当前值套用旧包。完整 manifest 仍保存在包内。
 
-安装先验证字节数和哈希，再核对包内 id、version、targets、兼容条件和入口是否与选定制品一致，不能只信任目录声明。图标和说明也按引用验证。浏览目录不需要逐包读取 manifest 或执行扩展代码。
+安装先验证字节数和哈希，再核对 manifest 的 id、version、targets、兼容条件和许可证与选定制品一致。入口按 manifest 检查其包内位置和实际内容。图标和说明按各自引用验证。目录可直接展示已经验证的索引资料。
 
 URL 支持绝对与相对地址，相对地址统一以索引最终响应 URL 为基准。接收方先验证原内容的签名，再解析引用；用户保存的入口仍保持原值。格式不另设 baseUrl、pathMode 或 signatureUrl。
 
@@ -76,7 +76,7 @@ URL 支持绝对与相对地址，相对地址统一以索引最终响应 URL �
 ## 版本说明与目录文案
 
 ```ts
-type LocalizedText = string | Record<string, string>
+type LocalizedText = string | Readonly<Record<string, string>>
 ```
 
 manifest 和 registry 的 name、description，以及运行时菜单标题共用 LocalizedText，静态值不需要执行扩展函数。字符串原样使用；多语对象必须有 defaultLocale 对应的值，并按 [i18n 规则](../ui/localization.md#localized-text)进行精确匹配和文字体系匹配，不能任取第一种语言或自动进行简繁转换。身份和字段标识不翻译。

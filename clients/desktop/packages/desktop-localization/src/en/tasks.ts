@@ -1,6 +1,3 @@
-/** @fileoverview Defines English lifecycle and type labels for managed tasks. */
-
-/** Canonical English labels for observable task phases and terminal outcomes. */
 export const taskMessages = {
   queued: 'Queued',
   running: 'Running',

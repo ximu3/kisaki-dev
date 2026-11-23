@@ -6,7 +6,7 @@
 
 ## 命名解释的职责
 
-自定义规则在“文件名或路径 → 分部匹配条件”这一层独立、完整地解释命中的输入。内置识别与自定义规则处于同一层，交付相同语义的分部匹配条件，供 holdings 使用同一套查找、校验和关联能力处理。
+内置识别和自定义规则都将文件名或路径解释为分部匹配条件。holdings 使用同一套查找、校验和关联操作处理这些条件。
 
 | 阶段                 | 责任                                                                                      |
 | -------------------- | ----------------------------------------------------------------------------------------- |
@@ -119,54 +119,68 @@ scanner 为发现新作品准备的[线索文本](../scanner.md#extraction)仍�
 
 ```ts
 interface FileRecognitionRule<TTarget> {
-  id: string
-  name: string
-  enabled: boolean
-  input: 'baseName' | 'path'
-  pattern: string
-  ignoreCase: boolean
-  output: { targets: readonly TTarget[] }
+  readonly id: string
+  readonly name: string
+  readonly enabled: boolean
+
+  readonly input: 'baseName' | 'path'
+  readonly pattern: string
+  readonly ignoreCase: boolean
+
+  readonly output: { readonly targets: NonEmptyArray<TTarget> }
 }
 
 interface FileNumberValue {
-  value: string
-  offset: number
+  readonly value: string
+  readonly offset: number
 }
 
 type FileNumberOutput =
-  | ({ kind: 'single' } & FileNumberValue)
-  | { kind: 'range'; start: string; end: string; offset: number }
+  | ({ readonly kind: 'single' } & FileNumberValue)
+  | {
+      readonly kind: 'range'
+      readonly start: string
+      readonly end: string
+      readonly offset: number
+    }
 
-interface NumberedPartOutput {
-  number?: FileNumberOutput
-  name?: string
-}
+type NumberedPartOutput =
+  | { readonly number: FileNumberOutput; readonly name?: string }
+  | { readonly number?: FileNumberOutput; readonly name: string }
 
-interface ComicVolumeScopeOutput {
-  number?: FileNumberValue
-  name?: string
-}
+type ComicVolumeScopeOutput =
+  | { readonly number: FileNumberValue; readonly name?: string }
+  | { readonly number?: FileNumberValue; readonly name: string }
 
 type AnimeFileTarget =
   | (NumberedPartOutput & {
-      kind: 'episode'
-      episodeType?: 'regular' | 'special' | null
+      readonly kind: 'episode'
+      readonly episodeType?: AnimeEpisodeType | null
     })
-  | {
-      kind: 'extra'
-      name: string
-      extraType?: 'opening' | 'ending' | 'promotion' | 'interview' | 'other' | null
-    }
+  | { readonly kind: 'extra'; readonly name: string; readonly extraType?: AnimeExtraType | null }
 
 type ComicFileTarget =
-  | (NumberedPartOutput & { kind: 'volume' })
-  | (NumberedPartOutput & {
-      kind: 'chapter'
-      numberBasis?: 'work' | 'volume'
-      volume?: ComicVolumeScopeOutput
-    })
+  | (NumberedPartOutput & { readonly kind: 'volume' })
+  | ({ readonly kind: 'chapter'; readonly name?: string } & (
+      | {
+          readonly number: FileNumberOutput
+          readonly numberBasis: 'work'
+          readonly volume?: ComicVolumeScopeOutput
+        }
+      | {
+          readonly number: FileNumberOutput
+          readonly numberBasis: 'volume'
+          readonly volume: ComicVolumeScopeOutput
+        }
+      | {
+          readonly number?: never
+          readonly numberBasis?: never
+          readonly name: string
+          readonly volume?: ComicVolumeScopeOutput
+        }
+    ))
 
-type NovelFileTarget = NumberedPartOutput & { kind: 'volume' }
+type NovelFileTarget = NumberedPartOutput & { readonly kind: 'volume' }
 ```
 
 结构校验同时执行前述最低条件：NumberedPartOutput 和 ComicVolumeScopeOutput 至少配置 number 或 name，Extra 必须配置 name。目标只允许该媒介和所选 kind 声明的字段；例如，Extra 不接受 number，卷目标不接受 numberBasis、volume 或动画类型条件。同一列表可以明确包含该媒介允许的不同分部种类，全部目标仍受同一作品范围约束。
@@ -285,7 +299,7 @@ episodeType 和 extraType 使用[动画分部](../anime.md)既有类型值。字
 
 明确的特别分集结构也可以使用既定编号范围与清单表达，每个目标均采用 special 条件。宽泛说明不能覆盖更具体且兼容的内容标记；两个具体标记给出互不兼容的目标种类或类型时，报告解释冲突，不能按出现顺序取首项。
 
-完整内容名称指分部的内容名称，不包含已识别的作品标题、发布组、来源、技术附注和发布修订。内容标记自身、名称内的序号和后续标题均保留。只能按已识别的命名结构分离这些部分，不能删除所有括号块，也不能丢弃无法解释的文字来凑出已有名称。
+从已经识别的命名结构中提取内容名称，排除作品标题、发布组、来源、技术附注和发布修订。保留内容标记、名称内的序号、后续标题和含义未确定的文字。
 
 | 文件名中的内容部分           | 目标及说明                                           |
 | ---------------------------- | ---------------------------------------------------- |
@@ -378,7 +392,7 @@ episodeType 和 extraType 使用[动画分部](../anime.md)既有类型值。字
 
 数值范围只表示明确的非负整数闭区间，端点使用前述纯整数文本并要求起点不大于终点。1–3 表示编号 1、2、3，不表示当前列表前三项，也不自动包含 2.5 等其他编号。小数或文字编号的组合通过明确列举目标表达，不按数值大小或人工排列推导区间。
 
-范围求值先以准确整数运算计算所需成员数，再与当前作品及明确范围内的实际候选核对。明显缺项直接报告；成员枚举和问题明细均限制在可处理范围内。计算须避免浮点截断或溢出，合法编号的值域仍遵守字段合同。
+先用精确整数运算计算所需成员数，再与当前作品和明确范围内的候选核对。明显缺项时直接报告，成员枚举和问题明细遵守执行预算。
 
 自动匹配一份文件时，只有范围内每个编号或清单中的每个目标都能唯一匹配，并满足所有已提供的约束，才一次提交完整关联。目标缺失、歧义或约束冲突时保持未关联，并报告原因；不只关联已经找到的部分。关联按真实分部身份去重，不制造重复关系。
 

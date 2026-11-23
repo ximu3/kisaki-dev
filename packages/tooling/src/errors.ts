@@ -1,5 +1,3 @@
-/** @fileoverview Preserves operation failures across cancellation and resource cleanup. */
-
 /**
  * Recognizes cancellation from the supplied aborted signal, including Node's AbortError wrapper.
  */

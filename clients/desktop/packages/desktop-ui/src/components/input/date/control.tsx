@@ -1,5 +1,3 @@
-/** @fileoverview Native date segments and a themed calendar share one form control and ISO value. */
-
 import { createEffect, createMemo, createSignal, createUniqueId, flush, Show, omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { callHandler } from '../../../internal/dom'
@@ -11,9 +9,8 @@ import { InputFrame } from '../frame'
 import { nativeValidityChanged } from '../../../internal/form'
 import frame from '../styles.module.css'
 import type { InputProps } from '../control'
-import { parseDate } from './calendar'
-import { DatePicker } from './picker'
-import type { CalendarProps } from './picker'
+import { latestDate, parseDate } from './calendar'
+import { DatePicker, type CalendarProps } from './picker'
 import styles from './styles.module.css'
 
 /**
@@ -61,30 +58,23 @@ export function DateInput(props: DateInputProps): JSX.Element {
     'nextMonthLabel',
   )
   const field = fieldAttributes(props)
-  /** Live native date text and change requests delegated to its value owner. */
   const [value, change] = createValue(
     () => props.value,
     () => props.defaultValue ?? '',
     (next) => props.onValueChange?.(next),
   )
-  /** Locally owned visibility of the calendar picker. */
   const [open, setOpen] = createSignal(false)
   const [trigger, bindTrigger] = createSignal<HTMLButtonElement>()
   const id = createUniqueId()
   let input!: HTMLInputElement
   let picker: HTMLDivElement | undefined
-  /** Presence reader retaining the calendar during its exit transition. */
   const present = createPresentation(open, () => picker)
 
-  /** Checks whether disabled or readonly state prevents calendar interaction. */
   const blocked = () => (props.disabled ?? field.disabled) || props.readonly
-  /** Valid current minimum date text, absent when the supplied bound cannot be parsed. */
   const min = createMemo(() => (parseDate(props.min ?? '') ? props.min : undefined))
-  /** Valid current maximum date text with the native calendar's supported upper fallback. */
-  const max = createMemo(() => (parseDate(props.max ?? '') ? props.max! : '9999-12-31'))
+  const max = createMemo(() => (parseDate(props.max ?? '') ? props.max! : latestDate))
 
   // Ask the same native date constraint implementation about a day without disturbing the edited segments.
-  /** Detached native date input reflecting the current bounds and step for validity checks. */
   const constraints = createMemo(() => {
     const candidate = document.createElement('input')
     candidate.type = 'date'
@@ -96,23 +86,17 @@ export function DateInput(props: DateInputProps): JSX.Element {
     }
     return candidate
   })
-  /** Checks a candidate day with the same native bounds and step constraints as the editor. */
   const allowed = (date: string) => {
     const candidate = constraints()
     candidate.value = date
     return candidate.value !== '' && candidate.validity.valid
   }
-  /**
-   * Updates localized custom validity for incomplete segments or a constraint-violating complete
-   * date.
-   */
   const validate = (candidate = constraints(), message = props.invalidDateMessage) => {
     candidate.value = input.value
     input.setCustomValidity(
       input.validity.badInput || (input.value && !candidate.validity.valid) ? message : '',
     )
   }
-  /** Restores the owned value after editing and updates native form validity. */
   const sync = (next = value(), candidate = constraints(), message = props.invalidDateMessage) => {
     if (input.value !== next) {
       input.value = next
@@ -121,16 +105,14 @@ export function DateInput(props: DateInputProps): JSX.Element {
     nativeValidityChanged(input.form)
   }
 
-  /** Settles the value owner before a native callback reads or submits the date. */
+  // Native callbacks can inspect the accepted value before Solid would otherwise flush.
   function commit(next: string) {
     change(next)
     flush()
     sync()
   }
 
-  /**
-   * Writes a chosen date through the editor and dispatches its ordinary input and change events.
-   */
+  // Picker edits travel through the same native events as typed edits.
   const enter = (date: string) => {
     input.value = date
     input.dispatchEvent(new Event('input', { bubbles: true }))

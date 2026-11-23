@@ -1,5 +1,3 @@
-/* Native ranges keep a stable track and thumb across pointer states. */
-
 @layer components {
   .range {
     --range-thumb-size: 0.75rem;

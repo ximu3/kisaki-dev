@@ -1,5 +1,3 @@
-/** @fileoverview Defines English names and feedback for library entries and personal records. */
-
 /**
  * Canonical English catalog, relation, record and query messages with their parameter
  * placeholders.

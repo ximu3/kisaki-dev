@@ -1,5 +1,3 @@
-/** @fileoverview A native range paints its normalized value up to the center of its thumb. */
-
 import { createMemo, createEffect, flush, omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { callHandler } from '../dom'
@@ -43,17 +41,16 @@ export function RangeInput(props: RangeInputProps): JSX.Element {
     'ref',
     'onInput',
   )
+
   let input!: HTMLInputElement
 
-  /**
-   * Applies the owned value and reset baseline, then paints fill from the native normalized value.
-   */
   const state = createMemo(() => ({
     value: props.value,
     initial: props.defaultValue ?? props.value,
     min: props.min ?? 0,
     max: props.max ?? 100,
     step: props.step,
+    // Reapply the fill after a supplied style replaces the input's inline properties.
     style: props.style,
   }))
   const sync = ({ value, initial, min, max }: ReturnType<typeof state>) => {
@@ -65,7 +62,7 @@ export function RangeInput(props: RangeInputProps): JSX.Element {
   }
   createEffect(state, sync)
 
-  /** Applies the settled owner state before a native callback reads or submits the range. */
+  // A native callback can read or submit a range before Solid processes its pending update.
   function syncOwner() {
     flush()
     sync(state())

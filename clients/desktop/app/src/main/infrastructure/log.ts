@@ -1,5 +1,3 @@
-/** @fileoverview Records bounded local startup and shutdown diagnostics without retaining business input or credentials. */
-
 import { appendFile, mkdir, rename, stat } from 'node:fs/promises'
 import { join } from 'node:path'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'

@@ -1,8 +1,3 @@
-/**
- * @fileoverview Verifies the supplied desktop carrier, production fuses and external
- * startup and shutdown behavior.
- */
-
 import { expect, onTestFailed, onTestFinished, test } from 'vite-plus/test'
 import { spawn } from 'node:child_process'
 import { getCurrentFuseWire, FuseState, FuseV1Options } from '@electron/fuses'
@@ -67,7 +62,6 @@ test('the exact packaged carrier retains production fuses and starts and closes 
 
   const workspace = await prepareArtifactWorkspace(join(dirname(receiptPath), file.path))
   const { directory, executablePath, resourceDirectory, fusePath } = workspace
-  /** Cleanup handle assigned when this test owns a started packaged process. */
   let closeApplication: (() => Promise<void>) | undefined = undefined
   onTestFinished(async () => {
     // Retain the extraction when process closure cannot be confirmed.
@@ -151,14 +145,12 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     FuseState.ENABLE,
   )
 
-  // Movable production carriers adopt the test-owned portable directory by their normal marker.
   const portableDirectory = process.platform === 'win32' ? 'data' : 'kisaki-portable-data'
   const profile = join(directory, receipt.testOnly ? 'profile' : portableDirectory)
   if (!receipt.testOnly) {
     await mkdir(profile)
     await writeFile(join(directory, 'kisaki-portable.txt'), '')
   }
-  /** Launches the selected artifact and records only its own process and bounded diagnostics. */
   async function launch() {
     const child = spawn(executablePath, receipt.testOnly ? [`--profile=${profile}`] : [], {
       cwd: directory,
@@ -185,7 +177,6 @@ test('the exact packaged carrier retains production fuses and starts and closes 
       child.once('error', reject)
       child.once('close', (code) => resolveClose(code))
     })
-    /** Requests termination of a running fixture and waits for closure before extraction cleanup. */
     closeApplication = async () => {
       if (child.exitCode === null && child.signalCode === null) {
         child.kill('SIGKILL')
@@ -233,7 +224,6 @@ test('the exact packaged carrier retains production fuses and starts and closes 
   await closeNativeWindow(second.pid)
   expect(await waitForExit(second.closed, 15_000)).toBe(0)
   if (receipt.testOnly) {
-    // After complete exit the fixture can transfer its entire library to the movable carrier.
     const portable = join(directory, portableDirectory)
     await cp(profile, portable, { recursive: true })
     const normal = new Database(join(profile, 'library.sqlite'), { fileMustExist: true })

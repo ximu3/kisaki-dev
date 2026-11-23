@@ -1,5 +1,3 @@
-/* Custom outline states retain the real checkbox's focus, validity and form behavior. */
-
 .container {
   composes: control from '../../internal/control/styles.module.css';
 }

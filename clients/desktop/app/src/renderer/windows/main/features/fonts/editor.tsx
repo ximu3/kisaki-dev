@@ -1,5 +1,3 @@
-/** @fileoverview Edits a font as one name and verified file-set draft. */
-
 import { For, onCleanup, onSettled, Show } from 'solid-js'
 import { FileType, Plus, Trash2, RotateCcw } from '@lucide/solid'
 import type { Font } from '@kisaki3/desktop-contracts/fonts'

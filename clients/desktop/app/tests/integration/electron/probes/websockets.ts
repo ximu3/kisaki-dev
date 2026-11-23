@@ -1,5 +1,3 @@
-/** @fileoverview Verifies the native lifetime of established browser WebSockets independently of new handshakes. */
-
 import { BrowserWindow, session } from 'electron'
 import { createServer as createHttpsServer } from 'node:https'
 import { createServer } from 'node:http'

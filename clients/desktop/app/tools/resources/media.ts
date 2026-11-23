@@ -1,5 +1,3 @@
-/** @fileoverview Deploys the image and font decoders with their native libraries, data tables and notices. */
-
 import { createRequire } from 'node:module'
 import { cp, mkdir, readFile, realpath } from 'node:fs/promises'
 import { dirname, join, basename } from 'node:path'
@@ -32,7 +30,6 @@ export async function copyMediaRuntime(destination: string) {
     await mkdir(dirname(output), { recursive: true })
     await cp(source, output, {
       recursive: true,
-      /** Copies package-owned bytes and excludes the package manager's dependency directory. */
       filter: (path) => basename(path) !== 'node_modules',
     })
     const manifest = JSON.parse(await readFile(join(source, 'package.json'), 'utf8')) as {

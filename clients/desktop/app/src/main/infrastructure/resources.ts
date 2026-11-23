@@ -1,7 +1,5 @@
-/** @fileoverview Holds immutable files for independent readers and binds them to the actual Electron document session. */
-
 import { randomUUID } from 'node:crypto'
-import { releaseAll } from './release'
+import { releaseAll, rethrowAfterRelease } from './release'
 import { open, type FileHandle } from 'node:fs/promises'
 import { Readable } from 'node:stream'
 import type { Session } from 'electron'
@@ -27,7 +25,6 @@ export function createResources() {
     { file: ResourceFile; count: number; release: () => Promise<void> }
   >()
 
-  /** Adds an independent capability for the same immutable content. */
   function retain(content: {
     file: ResourceFile
     count: number
@@ -113,8 +110,9 @@ export function createResources() {
       })
       return new Response(Readable.toWeb(stream) as ReadableStream<Uint8Array<ArrayBuffer>>, init)
     } catch (error) {
-      await releaseAll([() => handle?.close(), () => hold.dispose()])
-      throw error
+      return rethrowAfterRelease(error, () =>
+        releaseAll([() => handle?.close(), () => hold.dispose()]),
+      )
     }
   }
 
@@ -127,7 +125,6 @@ export function createResources() {
     hold(ref: ReadResourceRef) {
       return retain(resolve(ref))
     },
-    /** Resolves the held file for trusted local consumers. */
     file(ref: ReadResourceRef) {
       return resolve(ref).file
     },

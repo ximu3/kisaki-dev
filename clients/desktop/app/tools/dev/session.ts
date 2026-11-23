@@ -1,5 +1,3 @@
-/** @fileoverview Coordinates native compilers, preparation workflows and one development application. */
-
 import { randomUUID } from 'node:crypto'
 import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import { join } from 'node:path'
@@ -11,17 +9,13 @@ import { hostTarget } from '../lib/targets'
 import { prepareResources } from '../resources/prepare'
 import { buildNative } from '../native/build'
 import { startRenderer } from './renderer'
-import { startInputWatcher } from './inputs'
-import type { PreparationChange } from './inputs'
+import { startInputWatcher, type PreparationChange } from './inputs'
 import { electronExecutable } from './electron-executable'
 import { prepareRuntime } from './prepare-runtime'
-import { watchPrograms } from './programs'
-import type { ProgramWatch } from './programs'
+import { watchPrograms, type ProgramWatch } from './programs'
 
-/** Opt-in diagnostics for development generation adoption and resource shutdown. */
 const debug = debuglog('kisaki:development')
 
-/** Ready application process whose lifetime is supplied by the launch owner. */
 export interface DevelopmentApplication {
   pid: number
   /** Completes after the launched process and its output streams close. */
@@ -34,10 +28,6 @@ export interface DevelopmentApplication {
   terminate(): Promise<void>
 }
 
-/**
- * Launch inputs for one owned Electron process, including its profile, build identity and readiness
- * budget.
- */
 export interface DevelopmentLaunchOptions {
   executable: string
   args: string[]
@@ -52,7 +42,6 @@ export interface DevelopmentLaunchOptions {
   startupTimeoutMs: number
 }
 
-/** Identity, output directory and process ID of the session's adopted application generation. */
 export interface DevelopmentBuild {
   buildId: string
   directory: string
@@ -62,40 +51,26 @@ export interface DevelopmentBuild {
 /** Startup failed and its process owner could not confirm closure of the runtime's readers. */
 export class UnconfirmedApplicationExit extends AggregateError {}
 
-/**
- * Watching session owning a renderer, input watchers and the application processes started from completed compiler output.
- *
- * The caller closes this handle even if readiness fails. Persistent profiles remain caller-owned.
- */
+/** Call stop or terminate even if readiness rejects. The persistent profile belongs to the caller. */
 export interface DevelopmentSession {
   /** Resolves on the first ready application; recoverable build failures leave it pending. */
   readonly ready: Promise<void>
   /** Settles after tool teardown; failures reject and unconfirmed-reader outputs remain on disk. */
   readonly closed: Promise<void>
-  /** Current renderer address, read from the live server handle. */
   readonly rendererUrl: string
   /** Adopted application generation; absent while the session owns no completed launch. */
   readonly current: DevelopmentBuild | undefined
 
   /**
-   * Requests normal application exit, then tears down session tools and outputs.
-   *
-   * Concurrent requests share one operation. Cancellation keeps the session usable; confirmed
-   * shutdown resolves as stopped. Teardown failures reject, and outputs with unconfirmed readers
-   * are retained.
+   * Concurrent requests share one shutdown. A refused quit keeps the session usable. Teardown
+   * failures reject and preserve directories whose readers may still be live.
    */
   stop(): Promise<'cancelled' | 'stopped'>
 
-  /**
-   * Forces application exit before performing session cleanup.
-   *
-   * Cleanup starts after termination is confirmed; a termination failure leaves the session's
-   * resources owned.
-   */
+  /** Tears down the session after confirming the application's forced exit. */
   terminate(): Promise<void>
 }
 
-/** Source, profile, launch capability and state reporting for a development session. */
 export interface DevelopmentOptions {
   /** Absolute root containing the program source and Vite configurations. */
   sourceRoot: string
@@ -119,12 +94,7 @@ export interface DevelopmentOptions {
   onState?: (state: 'building' | 'failed' | 'ready' | 'stopped', error?: unknown) => void
 }
 
-/**
- * Starts a source development session with Vite-owned program compilation and renderer HMR.
- *
- * Preparation errors remain observable and can recover after another input change. The returned
- * session owns every compiler, server and process until stop or terminate finishes.
- */
+/** Resolves once input observation is installed. Build failures stay recoverable while waiting for ready. */
 export async function startDevelopmentSession(
   options: DevelopmentOptions,
 ): Promise<DevelopmentSession> {
@@ -143,7 +113,6 @@ export async function startDevelopmentSession(
   const signal = controller.signal
   let session: DevelopmentSession | undefined
 
-  /** Forwards cancellation until the first application is ready. */
   const cancelPreparation = () => {
     controller.abort(options.signal?.reason)
     void session?.stop().catch((cause: unknown) => options.onState?.('failed', cause))
@@ -205,7 +174,6 @@ export async function startDevelopmentSession(
       options.onState?.('failed', cause)
     }
 
-    /** Rebuilds compiler watchers after the current configuration has been prepared. */
     async function startCompilers(): Promise<void> {
       compilers = await watchPrograms(
         options.sourceRoot,
@@ -239,10 +207,8 @@ export async function startDevelopmentSession(
 
       const candidate = join(sessionDirectory, `runtime-${++generation}`)
 
-      /** Releases an unused runtime before any process takes ownership. */
       const discard = () => rm(candidate, { recursive: true, force: true })
 
-      /** Checks the compiler completion token before handing its copied output to a process. */
       const isCurrent = () =>
         phase === 'open' && owner === compilers && owner.current?.revision === batch.revision
 
@@ -492,19 +458,15 @@ export async function startDevelopmentSession(
     session = {
       ready: ready.promise,
       closed: closed.promise,
-      /** Reads the address of the live renderer server. */
       get rendererUrl() {
         return renderer?.resolvedUrls?.local[0] ?? rendererAddress
       },
-      /** Reads the adopted process and its runtime directory. */
       get current() {
         return current
       },
-      /** Requests normal, cancellable application exit. */
       stop() {
         return stop(false)
       },
-      /** Forces the owned application to exit before teardown. */
       async terminate() {
         await stop(true)
       },

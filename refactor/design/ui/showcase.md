@@ -49,15 +49,15 @@ active 和 planned 对应当前状态，与是否持有文件、过去是否完�
 
 <a id="storage"></a>
 
-## 十一列存储合同
+## 区块字段与约束
 
-showcase_sections 通过以下十一列保存区块查询、显示和排列。
+showcase_sections 保存区块查询、显示和排列。
 
 | 字段       | 含义                                                                   |
 | ---------- | ---------------------------------------------------------------------- |
 | id         | 稳定区块身份，主键                                                     |
 | name       | 用户区块标题，去除首尾空白后非空，允许重名                             |
-| query      | 非空 JSON 查询配置；Entry 分支采用共同规则查询，另有合集、标签查询分支 |
+| query      | 非空、经类型校验的 JSON 查询配置；支持 Entry 共同规则、合集和标签查询   |
 | layout     | horizontal 或 grid                                                     |
 | item_size  | 既有 xs、sm、md、lg、xl 卡片尺寸之一                                   |
 | open_mode  | page 或 dialog                                                         |
@@ -67,9 +67,9 @@ showcase_sections 通过以下十一列保存区块查询、显示和排列。
 | created_at | 首次实际保存的 UTC 毫秒时间                                            |
 | updated_at | 标题、查询、显示配置或可见性实际改变的时间；纯列表重排不刷新           |
 
-索引使用 sort_order 和 id。排序值非负，limit 为正整数或 NULL，layout、item_size 和 open_mode 只接受各自封闭合法值。name 去除首尾空白后必须非空，允许重名。query 必须是合法的类型化 JSON，缺失时不能隐含采用无条件查询。区块 limit 只属于显示配置，实际读取另外使用 offset 和 limit。
+索引使用 sort_order 和 id。query 缺失时拒绝保存，不能隐含采用无条件查询。区块的 limit 控制可展示的总数，每次读取另设 offset 和 limit。
 
-系统不保存成员镜像、查询 token、预设绑定、类型标识开关或区块子项表。纯列表重排不更新 updated_at，内容资料变化也不改写区块配置。
+区块按定义查询，内容资料变化不改写区块配置。
 
 <a id="api"></a>
 

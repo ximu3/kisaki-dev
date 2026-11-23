@@ -1,5 +1,3 @@
-/** @fileoverview Edits complete visual branches and coordinates explicit preview, save and selection. */
-
 import { createSignal, onCleanup, Show } from 'solid-js'
 import type { TokenName } from '@kisaki3/desktop-appearance/tokens'
 import {

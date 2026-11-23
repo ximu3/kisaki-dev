@@ -1,5 +1,3 @@
-/** @fileoverview Runs one isolated desktop measurement at a time and records its results. */
-
 import { defineConfig } from '@playwright/test'
 
 export default defineConfig({

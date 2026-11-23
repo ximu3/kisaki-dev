@@ -1,5 +1,3 @@
-/** @fileoverview Solid lifetimes for Pragmatic Drag and Drop registrations. */
-
 import { createSignal, createEffect, onSettled } from 'solid-js'
 import type { Accessor } from 'solid-js'
 import {
@@ -37,17 +35,16 @@ export function createDraggable(
   options: Accessor<Parameters<typeof draggable>[0] | undefined>,
 ): void {
   registerAfterMount(options, (current) => {
-    /** Library disposer for the active drag-source registration. */
     const stop = draggable({
       ...current,
 
-      /** Marks the source as dragging before forwarding the native start notification. */
+      // Put start callbacks inside the dragging state.
       onDragStart: (event) => {
         current.element.dataset.uiDragging = ''
         current.onDragStart?.(event)
       },
 
-      /** Clears source drag presentation before forwarding the native drop notification. */
+      // Clear drag presentation before the caller handles the drop.
       onDrop: (event) => {
         delete current.element.dataset.uiDragging
         current.onDrop?.(event)

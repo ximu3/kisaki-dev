@@ -89,12 +89,12 @@ await context.ui.pages.register({
   icon: { type: 'lucide', name: 'circle-user-round' },
   document: {
     root: 'ui',
-    entry: 'account.html'
+    entry: 'account.html',
   },
   setup(view) {
     view.ipc.handle('getSettings', () => settings.get())
     view.ipc.handle('saveSettings', (input, context) => settings.save(input, context))
-  }
+  },
 })
 
 const view = await context.ui.pages.open({ pageId: 'account' })
@@ -111,20 +111,20 @@ const view = await context.ui.dialogs.open({
   title: 'Import entries',
   document: {
     root: 'ui',
-    entry: 'import.html'
+    entry: 'import.html',
   },
   setup(view) {
     view.ipc.handle('getImportContext', () => importContext)
     view.ipc.handle('importSelected', (selection, execution) =>
-      importer.importSelected(importContext, selection, execution)
+      importer.importSelected(importContext, selection, execution),
     )
-  }
+  },
 })
 ```
 
 两类 open 都在视图可交互后返回 Node 句柄，不等待全部业务数据、用户关闭或选择完成。dialog 每次独立创建，尺寸与样式使用共同 Dialog 规则。初始数据与后续业务都走私有 IPC。setup 的闭包可以绑定本次 input，不增加容器 input、initialInput 或 view.input。
 
-保存或选择通过 invoke/handle 返回业务结果。成功后需要关闭时，前端等待操作完成，再请求 view.close。open 的结果只表示视图已打开；需要等待用户选择的完整业务，通过私有方法及释放处理管理自己的等待。容器关闭与业务取消分别由各自合同确定，已提交结果继续保留。
+保存或选择通过 invoke/handle 返回业务结果。成功后需要关闭时，前端等待操作完成，再请求 view.close。需要等待用户选择的业务通过私有方法接收输入，并在释放视图时结束等待。容器关闭与业务取消分别由各自合同确定，已提交结果继续保留。
 
 <a id="icons"></a>
 
@@ -156,13 +156,17 @@ file 使用所属扩展包内的 SVG、PNG 等受控资源。宿主统一图标�
 | Webview | ipc.on(name, listener)             | 订阅私有通知，返回可释放的订阅                                        |
 | Node    | view.onDispose(cleanup)            | 在视图释放时清理扩展为该视图建立的业务监听等资源                      |
 
+Node 为当前视图登记方法并交付通知。
+
 ```ts
-// Node: handlers are attached to this view instance.
 view.ipc.handle('getSettings', () => settings.get())
 view.ipc.handle('saveSettings', (input, context) => settings.save(input, context))
 view.ipc.send('accountChanged', accountSummary)
+```
 
-// Webview: requests await the declared method result.
+Webview 通过自己的私有端口调用方法和订阅通知。
+
+```ts
 const current = await ipc.invoke('getSettings')
 const saved = await ipc.invoke('saveSettings', draft)
 const subscription = ipc.on('accountChanged', updateAccountSummary)
@@ -204,8 +208,8 @@ context.ui.menus.add('entry', ({ entries }) => {
       onSelect: async (execution) => {
         const result = await syncEntries(entries, execution)
         return toToastMessage(result)
-      }
-    }
+      },
+    },
   ]
 })
 ```

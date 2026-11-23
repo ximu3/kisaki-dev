@@ -1,24 +1,28 @@
-/** @fileoverview Defines complete-operation library facts and independently coalescible read invalidation areas. */
-
-import type {
-  EntryRef,
-  ExternalIdentity,
-  PartRef,
-  PartType,
-  WorkRef,
-  PartWorkType,
-  WorkType,
-} from './catalog'
-import type {
-  WorkCharacterBinding,
-  PersonWorkBinding,
-  OrganizationWorkBinding,
-  StoredWorkRelationBinding,
-} from './relations'
 import type { NonEmptyArray } from '../operations'
 import * as v from 'valibot'
-import { entryRefSchema, identitiesSchema, partRefSchema, workRefSchema } from './catalog'
-import { nonemptyText, text, id, unique, parseRecord, parseValue, timestamp } from '../validation'
+import {
+  entryRefSchema,
+  identitiesSchema,
+  partRefSchema,
+  workRefSchema,
+  type EntryRef,
+  type ExternalIdentity,
+  type PartRef,
+  type PartType,
+  type WorkRef,
+  type PartWorkType,
+  type WorkType,
+} from './catalog'
+import {
+  fromParser,
+  nonemptyText,
+  text,
+  id,
+  unique,
+  parseRecord,
+  parseValue,
+  timestamp,
+} from '../validation'
 import { partWorkType } from './parts'
 import { DesktopError } from '../errors'
 import {
@@ -26,12 +30,15 @@ import {
   parsePersonWorkBinding,
   parseOrganizationWorkBinding,
   parseStoredWorkRelationBinding,
+  type WorkCharacterBinding,
+  type PersonWorkBinding,
+  type OrganizationWorkBinding,
+  type StoredWorkRelationBinding,
 } from './relations'
 
 /**
- * Minimal identity and naming context retained for a deleted or merged entry.
- *
- * The snapshot excludes body content, image bytes, personal records and relationship graphs.
+ * Retains identity and naming context for a deleted or merged entry. Bodies, images, personal
+ * records and relation graphs remain outside the snapshot.
  */
 export interface EntryIdentitySnapshot {
   readonly ref: EntryRef
@@ -39,14 +46,12 @@ export interface EntryIdentitySnapshot {
   readonly externalIdentities: readonly ExternalIdentity[]
 }
 
-/** Minimal identity, name and external identities retained for a merged part. */
 export interface PartIdentitySnapshot {
   readonly ref: PartRef
   readonly name: string | null
   readonly externalIdentities: readonly ExternalIdentity[]
 }
 
-/** A saved relation identity with its exact typed endpoints and binding. */
 export type RelationIdentitySnapshot =
   | ({ readonly type: 'workCharacter'; readonly id: string } & WorkCharacterBinding)
   | ({ readonly type: 'personWork'; readonly id: string } & PersonWorkBinding)
@@ -57,23 +62,17 @@ export type RelationIdentitySnapshot =
       readonly binding: StoredWorkRelationBinding
     }
 
-/** A changed part paired with the owning work kind allowed for that part. */
 type PartChangeContext = {
   [K in PartType]: { readonly part: PartRef<K>; readonly work: WorkRef<PartWorkType<K>> }
 }[PartType]
 
-/** A changed annotation and its work, with file context for file-based media. */
 type AnnotationChangeContext = {
   [K in WorkType]: { readonly annotationId: string; readonly work: WorkRef<K> } & (K extends 'game'
     ? object
     : { readonly fileId: string | null })
 }[WorkType]
 
-/**
- * Actual changed holdings identities within one work.
- *
- * File merges retain both the removed and surviving identities.
- */
+/** File merges retain both the removed and surviving identities. */
 export type HoldingsChangeContext = {
   [K in WorkType]: {
     readonly work: WorkRef<K>
@@ -86,7 +85,6 @@ export type HoldingsChangeContext = {
       })
 }[WorkType]
 
-/** One typed saved-fact change within a completed library operation. */
 export type LibraryChange =
   | {
       readonly type: 'entryCreated' | 'entryUpdated' | 'evaluationChanged'
@@ -164,18 +162,13 @@ export type LibraryChange =
   | ({ readonly type: 'holdingsChanged' } & HoldingsChangeContext)
   | { readonly type: 'showcaseChanged'; readonly sectionIds: readonly string[] }
 
-/**
- * The nonempty facts committed by one successful complete library operation.
- *
- * Success without changes emits no event. Delivery failure cannot alter committed data.
- */
+/** Successful no-op writes emit no event. Delivery failure leaves committed data intact. */
 export interface LibraryChanged {
   /** UTC milliseconds since the Unix epoch. */
   readonly committedAt: number
   readonly changes: NonEmptyArray<LibraryChange>
 }
 
-/** Library capability areas whose saved projections can be invalidated by committed changes. */
 export const libraryInvalidationAreas = Object.freeze([
   'entries',
   'parts',
@@ -189,52 +182,40 @@ export const libraryInvalidationAreas = Object.freeze([
   'showcase',
 ] as const)
 
-/** A library read area whose snapshot may need refreshing. */
 export type LibraryInvalidationArea = (typeof libraryInvalidationAreas)[number]
 
-/**
- * Read areas invalidated by library changes.
- *
- * Areas may coalesce across operations; this value carries no write command, query snapshot or
- * editing draft.
- */
+/** Invalidation areas can coalesce across operations. Use them to refresh an existing read. */
 export interface LibraryInvalidation {
   readonly areas: NonEmptyArray<LibraryInvalidationArea>
 }
 
-/** Entry identity, saved name and external coordinates retained with a change fact. */
 const entrySnapshot = v.strictObject({
   ref: entryRefSchema,
   name: nonemptyText,
   externalIdentities: identitiesSchema,
 })
 
-/** Part identity, optional saved name and external coordinates retained with a change fact. */
 const partSnapshot = v.strictObject({
   ref: partRefSchema,
   name: v.nullable(text),
   externalIdentities: identitiesSchema,
 })
 
-/** Distinct local identities in a committed change payload, allowing an empty set. */
 const ids = v.pipe(
   v.array(id),
   v.check((values) => unique(values, (value) => value)),
 )
 
-/** Nonempty distinct local identities for change facts that require affected objects. */
 const nonemptyIds = v.pipe(
   v.tupleWithRest([id], id),
   v.check((values) => unique(values, (value) => value)),
 )
 
-/** Distinct typed entry references retained in library change notifications. */
 const entries = v.pipe(
   v.array(entryRefSchema),
   v.check((values) => unique(values, (value) => value.id)),
 )
 
-/** Checks that a part fact uses the work kind allowed by its part type. */
 function assertPartWork(part: PartRef, work: WorkRef): void {
   const type = partWorkType(part.type)
   if (work.type !== type) {
@@ -242,7 +223,6 @@ function assertPartWork(part: PartRef, work: WorkRef): void {
   }
 }
 
-/** Parses a relation's identity and exact typed endpoints or stored binding. */
 export function parseRelationIdentitySnapshot(input: unknown): RelationIdentitySnapshot {
   const { type: typeInput, id: identityInput, ...originalBody } = parseRecord(input)
   const type = parseValue(
@@ -264,7 +244,7 @@ export function parseRelationIdentitySnapshot(input: unknown): RelationIdentityS
     type,
     id: identity,
     ...parseValue(
-      v.strictObject({ binding: v.pipe(v.unknown(), v.transform(parseStoredWorkRelationBinding)) }),
+      v.strictObject({ binding: fromParser(parseStoredWorkRelationBinding) }),
       originalBody,
     ),
   }
@@ -315,7 +295,7 @@ export function parseLibraryChange(input: unknown): LibraryChange {
       }),
       v.strictObject({
         type: v.picklist(['relationCreated', 'relationUpdated', 'relationDeleted']),
-        relation: v.pipe(v.unknown(), v.transform(parseRelationIdentitySnapshot)),
+        relation: fromParser(parseRelationIdentitySnapshot),
       }),
       v.strictObject({
         type: v.picklist(['collectionCreated', 'collectionUpdated']),
@@ -437,7 +417,7 @@ export function parseLibraryChange(input: unknown): LibraryChange {
 
 /** Parses a commit timestamp and nonempty set of complete-operation library facts. */
 export function parseLibraryChanged(input: unknown): LibraryChanged {
-  const change = v.pipe(v.unknown(), v.transform(parseLibraryChange))
+  const change = fromParser(parseLibraryChange)
   return parseValue(
     v.strictObject({ committedAt: timestamp, changes: v.tupleWithRest([change], change) }),
     input,

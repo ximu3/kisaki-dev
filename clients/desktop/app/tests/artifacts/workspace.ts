@@ -1,8 +1,3 @@
-/**
- * @fileoverview Prepares isolated extraction locations for tests of
- * existing packaged applications.
- */
-
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { copyFile, mkdtemp, rm } from 'node:fs/promises'
@@ -10,12 +5,10 @@ import { tmpdir } from 'node:os'
 import { basename, join } from 'node:path'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
-/** Extracted build artifact and inspection paths owned by one artifact test. */
 export interface ArtifactWorkspace {
   directory: string
   executablePath: string
   resourceDirectory: string
-  /** Binary or macOS application bundle accepted by Electron fuse inspection. */
   fusePath: string
 
   /** Removes the extraction after the caller has confirmed application exit. */
@@ -70,7 +63,6 @@ export async function prepareArtifactWorkspace(archivePath: string): Promise<Art
       executablePath,
       resourceDirectory,
       fusePath,
-      /** Removes this test's extraction and profile tree after application shutdown. */
       close: () => rm(directory, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 }),
     }
   } catch (cause) {

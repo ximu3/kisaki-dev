@@ -1,5 +1,3 @@
-/** @fileoverview Parses complete package manifests and validates package-relative file references. */
-
 import type { CompatibilityDeclaration } from './compatibility'
 import { parseCompatibility, parseVersion } from './compatibility'
 import type { FieldPath } from './errors'

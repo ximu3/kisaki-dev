@@ -7,39 +7,41 @@
 ## 候选图与对象
 
 ```ts
-interface MetadataCandidate<T extends EntryType = EntryType> {
-  entryType: T
-  objects: {
-    entry: CandidateEntry<T>
-    relatedEntries?: CandidateRelatedEntries
-    parts?: CandidateParts<T>
-    tags?: readonly CandidateTag[]
-  }
-  relations?: CandidateRelations<T>
-  partMatching?: PartMatchingRules<T>
+type MetadataCandidate<T extends EntryType = EntryType> = {
+  [K in T]: {
+    readonly entryType: K
+    readonly objects: {
+      readonly entry: CandidateEntry<K>
+      readonly relatedEntries?: CandidateRelatedEntries
+      readonly tags?: readonly CandidateTag[]
+    } & (K extends 'anime' | 'comic' | 'novel' ? { readonly parts?: CandidateParts<K> } : object)
+    readonly relations?: MetadataRelations<K>
+  } & (K extends 'anime' | 'comic' | 'novel'
+    ? { readonly partMatching?: PartMatchingRules<K> }
+    : object)
+}[T]
+
+interface MetadataObjectIdentity {
+  readonly key: string
+  readonly identity?: ExternalIdentity
+  readonly externalIdentities?: readonly ExternalIdentity[]
 }
 
-interface CandidateEntry<T extends EntryType> {
-  key: string
-  identity?: ExternalIdentity
-  externalIdentities?: readonly ExternalIdentity[]
-  identification: IdentificationFields<T>
-  fields: MetadataEntryFields<T>
+interface CandidateEntry<T extends EntryType> extends MetadataObjectIdentity {
+  readonly identification: IdentificationFields<T>
+  readonly fields: MetadataEntryFields<T>
 }
 
-interface CandidatePart<K extends PartType> {
-  key: string
-  identity?: ExternalIdentity
-  externalIdentities?: readonly ExternalIdentity[]
-  identification: PartIdentificationFields<K>
-  fields: MetadataPartFields<K>
+interface CandidatePart<T extends PartType> extends MetadataObjectIdentity {
+  readonly identification: PartIdentificationFields<T>
+  readonly fields: MetadataPartFields<T>
 }
 
 interface CandidateTag {
-  key: string
-  name: string
-  description?: string | null
-  isNsfw?: boolean
+  readonly key: string
+  readonly name: string
+  readonly description?: string | null
+  readonly isNsfw?: boolean
 }
 ```
 
@@ -65,7 +67,7 @@ profile 获取将本次方案的 Part 规则复制到候选，prepared 直接提
 
 ## 关系成员与读取范围
 
-Provider 的单来源回答与 CandidateRelations 都以普通数组交付关系成员。Provider 使用本次回答的对象 key，候选使用合成后的 key；对象对应时一并转换关系端点。关系键及成员如下：
+Provider 的单来源回答和合成候选都用 MetadataRelations 表示关系成员。Provider 使用本次回答的对象 key，候选使用合成后的 key。合成时随对象对应转换关系端点。
 
 | 键                | 每项成员                                               | 适用范围                            |
 | ----------------- | ------------------------------------------------------ | ----------------------------------- |
@@ -141,18 +143,26 @@ metadata 先固定本次参与提供者、各会话范围和成员选择方式�
 
 ```ts
 type MetadataInput<T extends EntryType> =
-  | { type: 'profile'; profileId: string; clues: IdentificationClues<T> }
-  | { type: 'prepared'; data: MetadataCandidate<T>; relationScopes?: MetadataRelationScopes<T> }
+  | { readonly type: 'profile'; readonly profileId: string; readonly clues: IdentificationClues<T> }
+  | {
+      readonly type: 'prepared'
+      readonly data: MetadataCandidate<T>
+      readonly relationScopes?: MetadataRelationScopes<T>
+    }
 
 type MetadataUpdateInput<T extends EntryType> =
-  | { type: 'profile'; profileId: string; clues?: IdentificationClues<T> }
-  | { type: 'prepared'; data: MetadataCandidate<T>; relationScopes?: MetadataRelationScopes<T> }
+  | { readonly type: 'profile'; readonly profileId: string; readonly clues?: IdentificationClues<T> }
+  | {
+      readonly type: 'prepared'
+      readonly data: MetadataCandidate<T>
+      readonly relationScopes?: MetadataRelationScopes<T>
+    }
 
 type MetadataFetchResult<T extends EntryType = EntryType> = {
   [K in T]: {
-    data: MetadataCandidate<K>
-    relationScopes: MetadataRelationScopes<K>
-    issues: readonly IngestIssue[]
+    readonly data: MetadataCandidate<K>
+    readonly relationScopes: MetadataRelationScopes<K>
+    readonly issues: readonly IngestIssue[]
   }
 }[T]
 ```

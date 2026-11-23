@@ -1,5 +1,3 @@
-/** @fileoverview Owns a font edit's file set, inspected preparations and persistence baseline. */
-
 import { createMemo, createSignal, onCleanup } from 'solid-js'
 import type { Font } from '@kisaki3/desktop-contracts/fonts'
 import type { FontChoice, FontFileChoice } from '../../../../../shared/window-api'

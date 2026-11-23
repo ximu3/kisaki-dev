@@ -1,12 +1,8 @@
-/** @fileoverview Starts the renderer's native Vite server against workspace package exports. */
-
-import { createServer, defaultClientConditions } from 'vite-plus'
-import type { Plugin, ViteDevServer } from 'vite-plus'
+import { createServer, defaultClientConditions, type Plugin, type ViteDevServer } from 'vite-plus'
 import { join } from 'node:path'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 import { entryRecoveryEvent } from './protocol'
 
-/** Lets a document whose module entry failed retry after a renderer source edit. */
 function recoverFailedEntries(): Plugin {
   let revision = 0
   let waitingForEdit = false
@@ -41,7 +37,6 @@ function recoverFailedEntries(): Plugin {
       ]
     },
 
-    /** Wakes failed entries on the next client edit while Vite handles ordinary updates. */
     hotUpdate({ timestamp }) {
       if (this.environment.name !== 'client') {
         return
@@ -55,7 +50,6 @@ function recoverFailedEntries(): Plugin {
   }
 }
 
-/** Starts Vite with workspace source exports and releases the server if listening fails. */
 export async function startRenderer(
   sourceRoot: string,
   buildId: string,

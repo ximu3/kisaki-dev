@@ -1,15 +1,4 @@
-/** @fileoverview Defines real part catalog operations, anime kind corrections and comic volume membership. */
-
-import type {
-  ExternalLink,
-  ExternalIdentity,
-  AnimeEpisodeType,
-  AnimeExtraType,
-  PartType,
-  EntryRef,
-  PartWorkType,
-  PartRef,
-} from './catalog'
+import { membershipChangeSchema } from './membership'
 import type { PartialDate } from '../date'
 import type { PreparedAttachment } from '../resources'
 import type { ListOptions, CallOptions, ListResult, NonEmptyArray } from '../operations'
@@ -22,7 +11,6 @@ import {
   parseValue,
   optionalFields,
   validateExpectedKeys,
-  unique,
 } from '../validation'
 import {
   aliasesSchema,
@@ -34,6 +22,14 @@ import {
   partRefSchema,
   parsePartRef,
   entryRefSchema,
+  type ExternalLink,
+  type ExternalIdentity,
+  type AnimeEpisodeType,
+  type AnimeExtraType,
+  type PartType,
+  type EntryRef,
+  type PartWorkType,
+  type PartRef,
 } from './catalog'
 import { DesktopError } from '../errors'
 
@@ -51,11 +47,7 @@ export interface PartCommonFields {
   readonly releaseDate: PartialDate | null
 }
 
-/**
- * Source facts specific to each real part kind.
- *
- * Classification and displayed numbering do not determine identity or formal order.
- */
+/** Classification and displayed numbers are independent of identity and formal order. */
 export interface PartSpecificFields {
   readonly novelVolume: {
     readonly numberLabel: string | null
@@ -85,17 +77,11 @@ export interface PartSpecificFields {
   }
 }
 
-/** The complete editable catalog facts for one part kind. */
 export type PartFields<T extends PartType> = PartCommonFields & PartSpecificFields[T]
 
-/** Optional initial catalog values; omitted fields use the part kind's domain defaults. */
 export type PartCreateFields<T extends PartType> = Partial<PartFields<T>>
 
-/**
- * A new typed part with an explicit work owner and optional initial completion mark.
- *
- * Omitted catalog values use domain defaults, and completed defaults to false.
- */
+/** Omitted catalog values use their domain defaults. completed defaults to false. */
 export type PartCreate<T extends PartType = PartType> = {
   [K in T]: {
     readonly type: K
@@ -106,11 +92,7 @@ export type PartCreate<T extends PartType = PartType> = {
   }
 }[T]
 
-/**
- * An ordinary part-field edit with optional expected values and prepared resources.
- *
- * Kind, owner, completion mark, order and technical times remain unchanged.
- */
+/** An edit preserves kind, owner, completion mark, order and technical times. */
 export type PartUpdate<T extends PartType = PartType> = {
   [K in T]: {
     readonly ref: PartRef<K>
@@ -120,7 +102,6 @@ export type PartUpdate<T extends PartType = PartType> = {
   }
 }[T]
 
-/** Complete real part details, separating kind identity from the anime classification in data.type. */
 export type PartDetails<T extends PartType = PartType> = {
   [K in T]: {
     readonly ref: PartRef<K>
@@ -138,9 +119,8 @@ export type PartDetails<T extends PartType = PartType> = {
 }[T]
 
 /**
- * A filtered listing within one real work and part kind, using its saved order.
- *
- * Null classification explicitly selects unknown classifications.
+ * Uses the saved work-and-kind order. Null classification selects parts with unknown
+ * classification.
  */
 export type PartQuery<T extends PartType = PartType> = {
   [K in T]: {
@@ -155,11 +135,7 @@ export type PartQuery<T extends PartType = PartType> = {
       : object)
 }[T]
 
-/**
- * The target anime part kind and its applicable classification and number fields.
- *
- * Kind correction preserves the part's ID and common content.
- */
+/** A kind correction preserves the part's ID and common content. */
 export type PartKindTarget =
   | {
       readonly kind: 'animeEpisode'
@@ -168,7 +144,6 @@ export type PartKindTarget =
     }
   | { readonly kind: 'animeExtra'; readonly type: AnimeExtraType | null }
 
-/** An opposite-kind anime correction with common-field edits and source-kind comparison values. */
 export type PartKindChange<
   T extends 'animeEpisode' | 'animeExtra' = 'animeEpisode' | 'animeExtra',
 > = {
@@ -184,9 +159,7 @@ export type PartKindChange<
 }[T]
 
 /**
- * A volume's chapter membership with volume-specific numbering.
- *
- * Membership order and numbering preserve the chapter's work-level values.
+ * Association order and numbering belong to the volume. The chapter retains its work-level values.
  */
 export interface VolumeChapter {
   readonly chapter: PartRef<'comicChapter'>
@@ -202,13 +175,7 @@ export type VolumeChapterChange =
       readonly remove?: readonly PartRef<'comicChapter'>[]
     }
 
-/**
- * Saved part facts, completion marks, formal order and explicit identity-preserving corrections.
- *
- * Related references commit together; failures do not return partial identity migrations.
- */
 export interface PartsApi {
-  /** Lists parts within one work and kind in saved order under the requested filters. */
   list<Q extends PartQuery>(
     query: Q,
     options: ListOptions,
@@ -240,9 +207,8 @@ export interface PartsApi {
   delete(refs: PartRef | NonEmptyArray<PartRef>, call?: CallOptions): Promise<void>
 
   /**
-   * Merges same-kind parts within one work into the explicit survivor.
-   *
-   * Completion marks combine; the target's preference and populated facts take precedence.
+   * Merges within one work and part kind. Completion marks combine. The survivor's preference and
+   * populated facts take precedence.
    */
   merge<
     I extends {
@@ -269,17 +235,9 @@ export interface PartsApi {
     ...args: Args
   ): Promise<PartRef<Args[1]['target']['kind']>>
 
-  /**
-   * Reorders selected slots against the complete work-and-kind baseline.
-   *
-   * Read filters do not narrow that baseline.
-   */
+  /** The baseline covers the complete work-and-kind side regardless of read filters. */
   reorder(scope: PartOrderScope, input: ReorderInput, call?: CallOptions): Promise<void>
 
-  /**
-   * Moves supplied parts in input order within their current work-and-kind side, before an anchor
-   * or at the end.
-   */
   move(scope: PartOrderScope, input: MoveInput, call?: CallOptions): Promise<void>
 
   /** Sets one part's completion mark while preserving work completion history. */
@@ -300,24 +258,14 @@ export type PartOrderScope = {
   [K in PartType]: { readonly work: EntryRef<PartWorkType<K>>; readonly partType: K }
 }[PartType]
 
-/**
- * Comic-volume chapter membership, numbering and volume-side order.
- *
- * Both endpoints must belong to the same comic at commit.
- */
 export interface VolumeChaptersApi {
-  /** Lists a volume's chapter associations in saved volume-specific order. */
   list(
     volumeId: string,
     options: ListOptions,
     call?: CallOptions,
   ): Promise<ListResult<VolumeChapter>>
 
-  /**
-   * Compares and changes the volume's ordered chapter side atomically.
-   *
-   * Both endpoints must remain in the same comic.
-   */
+  /** Both endpoints must belong to the same comic at commit. */
   applyChanges(
     volumeId: string,
     input: { readonly change: VolumeChapterChange; readonly expected?: readonly VolumeChapter[] },
@@ -344,7 +292,6 @@ export interface VolumeChaptersApi {
   move(volumeId: string, input: MoveInput, call?: CallOptions): Promise<void>
 }
 
-/** Descriptive part facts and exact source identities shared by all five real part kinds. */
 export const partCommonEntries = {
   name: v.nullable(text),
   originalName: v.nullable(text),
@@ -361,13 +308,10 @@ export const partCommonEntries = {
 /** Regular or special episode classification, independent of display numbering. */
 export const episodeTypeSchema = v.picklist(['regular', 'special'])
 
-/** Content-role vocabulary for anime extras outside the episode catalog. */
 export const extraTypeSchema = v.picklist(['opening', 'ending', 'promotion', 'interview', 'other'])
 
-/** Optional declared part count whose known value is a nonnegative safe integer. */
 const nullableCount = v.nullable(nonnegativeInteger)
 
-/** Per-kind numbering, classification and declared-count fields used by part creation and edits. */
 export const partSpecificEntries = {
   novelVolume: { numberLabel: v.nullable(text), declaredPageCount: nullableCount },
 
@@ -388,7 +332,6 @@ export const partSpecificEntries = {
   animeExtra: { type: v.nullable(extraTypeSchema), declaredDurationMs: nullableCount },
 } as const
 
-/** Returns the sole owning work kind for a real part kind. */
 export function partWorkType<T extends PartType>(type: T): PartWorkType<T> {
   const mapping: { [K in PartType]: PartWorkType<K> } = {
     novelVolume: 'novel',
@@ -420,7 +363,6 @@ export function parsePartCreate(input: unknown): PartCreate {
   ) as PartCreate
 }
 
-/** Parses editable part facts and expected values for the submitted fields. */
 export function parsePartUpdate(input: unknown): PartUpdate {
   const { ref } = parseValue(v.looseObject({ ref: partRefSchema }), input, 'Invalid part edit')
   const fields = v.strictObject(
@@ -441,9 +383,8 @@ export function parsePartUpdate(input: unknown): PartUpdate {
 }
 
 /**
- * Parses an opposite-kind anime correction and applicable comparison context.
- *
- * Removed source classification or numbering may be compared alongside changed common facts.
+ * A comparison may include removed source classification or numbering alongside changed common
+ * fields.
  */
 export function parsePartKindChange<T extends 'animeEpisode' | 'animeExtra'>(
   ref: PartRef<T>,
@@ -531,33 +472,13 @@ export function parsePartQuery(input: unknown): PartQuery {
 export function parseVolumeChapterChange(input: unknown): VolumeChapterChange {
   const ref = v.strictObject({ type: v.literal('comicChapter'), id })
   const member = v.strictObject({ chapter: ref, numberLabel: v.nullable(text) })
-  const members = v.pipe(
-    v.array(member),
-    v.check((items) => unique(items, (item) => item.chapter.id)),
-  )
   return parseValue(
-    v.variant('type', [
-      v.strictObject({ type: v.literal('replace'), items: members }),
-      v.pipe(
-        v.strictObject({
-          type: v.literal('modify'),
-          add: v.exactOptional(members),
-          remove: v.exactOptional(
-            v.pipe(
-              v.array(ref),
-              v.check((items) => unique(items, (item) => item.id)),
-            ),
-          ),
-        }),
-        v.check(
-          (value) =>
-            (value.add?.length ?? 0) + (value.remove?.length ?? 0) > 0 &&
-            !(value.add ?? []).some((item) =>
-              value.remove?.some((removed) => removed.id === item.chapter.id),
-            ),
-        ),
-      ),
-    ]),
+    membershipChangeSchema(
+      member,
+      ref,
+      (item) => item.chapter,
+      (chapter) => chapter.id,
+    ),
     input,
     'Invalid volume chapter membership',
   )

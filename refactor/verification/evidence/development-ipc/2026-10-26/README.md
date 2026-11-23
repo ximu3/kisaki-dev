@@ -16,10 +16,10 @@
 | 正常退出   | 父进程观察到实际 exit，退出码为 0                                                                                                   |
 | 通道断开   | 应用收到 disconnect 后执行正常退出，父进程取得 exit，退出码为 0                                                                     |
 
-制品未签名，数据位于试件自己的隔离目录。源码为[主模块](main.ts)与[运行器](run.ts)，可在仓库根通过以下命令建立新的试件：
+历史制品未签名，数据位于试件自己的隔离目录。使用当前工作区的锁定 Node 和 Electron，可以在仓库根重新运行[主模块](main.ts)与[运行器](run.ts)。新报告记录本次版本，写入本次 `.cache/development-ipc/packaged-*` 目录中的 `result.json`。上表仍对应 2026-10-26 的原始环境与结果。
 
 ```sh
-pnpm exec tsx refactor/verification/evidence/development-ipc/2026-10-26/run.ts
+pnpm exec node refactor/verification/evidence/development-ipc/2026-10-26/run.ts
 ```
 
 该试件验证原生通道与进程行为。完整工程的六目标、开发会话与候选制品结果见[W00 验收](../../w00/README.md)，SDK、构建采用与作者工作流按各自工作包验收。

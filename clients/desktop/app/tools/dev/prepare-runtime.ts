@@ -1,5 +1,3 @@
-/** @fileoverview Copies completed compiler output and prepared resources into one owned runtime. */
-
 import { copyFile, cp, mkdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 

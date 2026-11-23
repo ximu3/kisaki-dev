@@ -1,10 +1,4 @@
-/**
- * @fileoverview Provides Playwright fixtures that own a prepared desktop launch and its
- * isolated profile.
- */
-
-import { _electron, test as base } from '@playwright/test'
-import type { ElectronApplication } from '@playwright/test'
+import { _electron, test as base, type ElectronApplication } from '@playwright/test'
 import { mkdtemp, readFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -14,21 +8,17 @@ import { buildDirectory } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
 import { electronExecutable } from '../../tools/dev/electron-executable'
 
-/** Engineering fixture renderer and preload entry selected for a desktop test. */
 type WindowKind = 'main' | 'reader' | 'player' | 'game-panel'
 
-/** A completed desktop build launched with a profile owned by this test. */
 interface DesktopFixtures {
   desktop: ElectronApplication
   profile: string
   kind: WindowKind
 }
 
-/** Playwright fixtures that own the prepared Electron process and its isolated profile. */
 export const test = base.extend<DesktopFixtures>({
   kind: ['main', { option: true }],
 
-  /** Owns an isolated profile for the consuming test and removes it after teardown. */
   profile: async ({}, use) => {
     const directory = await mkdtemp(join(tmpdir(), 'kisaki-desktop-test-'))
     try {

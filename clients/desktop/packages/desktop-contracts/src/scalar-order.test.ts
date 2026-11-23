@@ -1,5 +1,3 @@
-/** @fileoverview Checks the scalar order used by canonical identity encodings. */
-
 import { expect, test } from 'vite-plus/test'
 import { compareIdentityText } from './scalar-order'
 

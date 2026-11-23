@@ -1,5 +1,3 @@
-/** @fileoverview Loads the packed styles and pure values in a framework-free document. */
-
 import '@kisaki3/desktop-appearance/styles.css'
 import './utilities.css'
 import './page.css'
@@ -7,10 +5,8 @@ import { defaults } from '@kisaki3/desktop-appearance/defaults'
 import { tokens } from '@kisaki3/desktop-appearance/tokens'
 import { parseTokenValue, parseTokenValues } from '@kisaki3/desktop-appearance/values'
 
-/** Parsed light-theme token values applied to the real browser validation page. */
 const values = parseTokenValues(defaults.light)
 
-/** Native CSS property used to verify each token kind in the browser. */
 const properties = {
   color: 'color',
   radius: 'border-radius',

@@ -1,19 +1,14 @@
-/** @fileoverview Exercises packed declarations, values and styles in an independent browser project. */
-
-import { lintConsumer } from '@kisaki3/tooling/testing/consumer'
-import { expect } from 'vite-plus/test'
+import { createConsumerTest, lintConsumer } from '@kisaki3/tooling/testing/consumer'
+import { expect, test as base } from 'vite-plus/test'
 import { readFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { build, preview } from 'vite-plus'
 import { chromium } from '@playwright/test'
 import { runPnpm } from '@kisaki3/tooling/process'
-import { consumerTest } from './installation'
 
-/** Appearance package root whose packed CSS and token exports are consumed by this suite. */
 const packageRoot = resolve(import.meta.dirname, '../..')
 
-/** Packed appearance consumer fixtures owning the browser, page and preview server. */
-const test = consumerTest('browser')
+const test = createConsumerTest(base, packageRoot, 'browser')
   .extend('browser', { scope: 'file' }, async ({}, { onCleanup }) => {
     const browser = await chromium.launch()
     onCleanup(() => browser.close())

@@ -1,5 +1,3 @@
-/** @fileoverview Composes the synchronous operations executed by the desktop application's single SQLite writer. */
-
 import { serveDatabase } from '../infrastructure/database/executor/serve'
 import type { Storage } from '../infrastructure/database'
 import { verifyExistingLibrary, type DatabaseOptions } from '../infrastructure/database/initialize'

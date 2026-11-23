@@ -1,9 +1,6 @@
-/** @fileoverview CodeMirror source editing with reactive configuration and explicit view lifetime. */
-
 import { createEffect, createSignal, onSettled, Show, omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
-import { Compartment, EditorState, Transaction } from '@codemirror/state'
-import type { Extension } from '@codemirror/state'
+import { Compartment, EditorState, Transaction, type Extension } from '@codemirror/state'
 import { EditorView, keymap, placeholder } from '@codemirror/view'
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands'
 import { markdown } from '@codemirror/lang-markdown'
@@ -12,8 +9,7 @@ import { tags } from '@lezer/highlight'
 import type { MarkdownCommand } from './commands'
 import styles from './styles.module.css'
 import { editorTheme } from './theme'
-import { MarkdownToolbar } from './toolbar'
-import type { MarkdownToolbarConfig } from './toolbar'
+import { MarkdownToolbar, type MarkdownToolbarConfig } from './toolbar'
 
 /** CodeMirror syntax color and emphasis rules resolved through host appearance tokens. */
 const highlighting = HighlightStyle.define([
@@ -115,15 +111,11 @@ export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
 
   let parent!: HTMLDivElement
   let view!: EditorView
-  /** Reactive editor-state snapshot used by toolbar and command availability. */
   const [state, setState] = createSignal<EditorState>()
 
   const configuration = new Compartment()
-
   let synchronizing = false
-
   let alive = true
-
   let scheduled = false
 
   function scheduleSync() {
@@ -137,7 +129,6 @@ export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
     })
   }
 
-  /** Builds reactive readonly, accessibility, placeholder and host-extension configuration. */
   const extension = () => [
     EditorState.readOnly.of(!!props.readOnly),
     EditorView.editable.of(!props.readOnly),
@@ -146,10 +137,6 @@ export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
     props.extensions ?? [],
   ]
 
-  /**
-   * Adopts changed external text after composition without reporting it as an editor-originated
-   * change or adding history.
-   */
   const sync = () => {
     const next = props.value
     if (!alive || view.composing || next === undefined || next === view.state.doc.toString()) {
@@ -193,13 +180,11 @@ export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
       }),
     })
     setState(view.state)
-    /** Schedules controlled-value synchronization after native composition settles. */
-    const compositionEnd = scheduleSync
-    view.contentDOM.addEventListener('compositionend', compositionEnd)
+    view.contentDOM.addEventListener('compositionend', scheduleSync)
     props.onViewChange?.(view)
     return () => {
       alive = false
-      view.contentDOM.removeEventListener('compositionend', compositionEnd)
+      view.contentDOM.removeEventListener('compositionend', scheduleSync)
       view.destroy()
       props.onViewChange?.(undefined)
     }

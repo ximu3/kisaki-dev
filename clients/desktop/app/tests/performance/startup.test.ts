@@ -1,8 +1,3 @@
-/**
- * @fileoverview Measures fresh desktop launches and working sets, and confirms observed
- * processes exit after each sample.
- */
-
 import { _electron, expect } from '@playwright/test'
 import { test } from '../support/electron'
 import { cpus, release, totalmem } from 'node:os'
@@ -14,7 +9,6 @@ import { buildDirectory } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
-/** Fixed twenty-process sampling count for the native application and its retained test profile. */
 const sampleCount = 20
 
 test('measures twenty fresh processes and confirms all observed child processes exit', async ({

@@ -1,5 +1,3 @@
-/** @fileoverview Completes ordered teardown and reports failures after every owner has been released. */
-
 /** Runs each release step in dependency order, preserving independent cleanup errors. */
 export async function releaseAll(steps: readonly (() => unknown)[]): Promise<void> {
   const failures: unknown[] = []
@@ -16,4 +14,15 @@ export async function releaseAll(steps: readonly (() => unknown)[]): Promise<voi
   if (failures.length) {
     throw new AggregateError(failures, 'Application cleanup failed')
   }
+}
+
+export async function rethrowAfterRelease(cause: unknown, release: () => unknown): Promise<never> {
+  try {
+    await release()
+  } catch (cleanup) {
+    const message = cause instanceof Error ? cause.message : String(cause)
+    throw new AggregateError([cause, cleanup], message)
+  }
+
+  throw cause
 }

@@ -154,6 +154,7 @@ Node 负责 ZIP、目录范围、字节限制、任务取消及来源语义；�
     │   ├── import.ts
     │   └── ipc.ts
     ├── webview/
+    │   ├── index.html
     │   ├── entry.tsx
     │   ├── page.tsx
     │   ├── selection.tsx

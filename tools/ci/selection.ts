@@ -1,9 +1,5 @@
-/** @fileoverview Selects changed workspace packages and their dependents from the candidate tree. */
+import { listProjects, type Project } from '../workspace.ts'
 
-import { listProjects } from '../workspace.ts'
-import type { Project } from '../workspace.ts'
-
-/** Candidate packages included by the diff and the reason for their selection. */
 export interface PackageSelection {
   scope: 'docs' | 'affected' | 'full'
   projects: readonly Project[]
@@ -20,6 +16,7 @@ export function selectPackages(
   if (!paths) {
     return { scope: 'full', projects: workspace }
   }
+
   const owners = workspace
     .filter((project) => project.directory)
     .sort((left, right) => right.directory.length - left.directory.length)
@@ -28,6 +25,7 @@ export function selectPackages(
     if (/^(?:[^/]+|refactor\/.+)\.md$/.test(path)) {
       continue
     }
+
     const owner = owners.find((project) => path.startsWith(project.directory + '/'))
     if (!owner) {
       return { scope: 'full', projects: workspace }
@@ -38,6 +36,7 @@ export function selectPackages(
   if (!changed.size) {
     return { scope: 'docs', projects: [] }
   }
+
   const filters = [...changed].map((name) => '...' + name)
   return { scope: 'affected', projects: listProjects(...filters) }
 }

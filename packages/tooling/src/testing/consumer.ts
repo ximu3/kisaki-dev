@@ -1,10 +1,9 @@
-/** @fileoverview Installs packed workspace packages in an independent consumer and owns its temporary directory. */
-
 import { cp, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { searchForWorkspaceRoot } from 'vite-plus'
+import type { test as viteTest } from 'vite-plus/test'
 import { stringify } from 'yaml'
 import { run, runPnpm } from '../process/index.ts'
 
@@ -15,7 +14,6 @@ import { run, runPnpm } from '../process/index.ts'
 async function consumerArchives(project: string): Promise<Record<string, string>> {
   const archives: Record<string, string> = {}
 
-  /** Adds each reachable package once, including its transitive workspace dependencies. */
   async function visit(directory: string): Promise<void> {
     const manifest = JSON.parse(await readFile(join(directory, 'package.json'), 'utf8')) as {
       name: string
@@ -68,6 +66,20 @@ export async function installConsumer(
   )
   await runPnpm(['install', '--no-frozen-lockfile', '--ignore-scripts'], { cwd: directory, signal })
   return directory
+}
+
+export function createConsumerTest(
+  test: typeof viteTest,
+  project: string,
+  host: 'node' | 'browser',
+  prepare?: (directory: string) => Promise<void>,
+) {
+  const fixture = join(project, 'tests/consumers/fixtures', host)
+  return test.extend('consumerDirectory', { scope: 'file' }, async ({}, { onCleanup }) => {
+    const directory = await installConsumer(fixture, project, onCleanup)
+    await prepare?.(directory)
+    return directory
+  })
 }
 
 /** Applies the workspace's lint rules to consumer sources using their installed declarations and type projects. */

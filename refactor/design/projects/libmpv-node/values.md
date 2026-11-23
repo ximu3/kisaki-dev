@@ -1,7 +1,5 @@
 # libmpv-node 的值与转换
 
-本页定义输入、原生结果、公开值表示与转换失败。
-
 <a id="values"></a>
 
 ## 按原生类型转换值
@@ -18,7 +16,7 @@
 | NODE_ARRAY        | 值数组          | 递归采用相同的转换规则                                     |
 | 值中的 NONE       | null            | 与属性通知中的不可用状态分开                               |
 
-这意味着 playlist 的原生整数 ID 使用 bigint；screenshot-raw 返回的 w、h、stride 也不因为通常很小就另用 number。图像消费方在确有范围保证的接入处转换尺寸。保留这条统一规则的代价是调用者有时需要显式转换，收益是整数精度与返回类型不会随内容变化。
+playlist 的原生整数 ID 和 screenshot-raw 的 w、h、stride 都使用 bigint。需要 number 尺寸的消费方在已确认数值范围后转换。
 
 输入同样按类型转换：bigint 对应 INT64，number 对应 DOUBLE。绑定不把一个已经失去精度的 number 自动修复成整数，也不替调用方猜测其意图。原生属性或命令自身允许的类型转换仍由 mpv 执行。已知调用的类型提示说明应传的值。
 
@@ -95,7 +93,7 @@ MpvValue 专指普通 JavaScript 值：null、boolean、bigint、number、string
 | string    | Uint8Array，保存字符串字节       | MPV_FORMAT_STRING     |
 | byteArray | Uint8Array，保存二进制字节       | MPV_FORMAT_BYTE_ARRAY |
 | array     | readonly MpvNode[]               | MPV_FORMAT_NODE_ARRAY |
-| map       | readonly [Uint8Array, MpvNode][] | MPV_FORMAT_NODE_MAP   |
+| map       | `readonly (readonly [Uint8Array, MpvNode])[]` | MPV_FORMAT_NODE_MAP   |
 
 map 中的每一项都是只读二元组，键保存原生字符串字节，重复项完整保留。原生输出中的 string 始终保存字节，不因其中恰好是合法 UTF-8 就改变形状。一个普通字段名 format 仍只是 map 内的一项数据，与外层节点标记分开。
 

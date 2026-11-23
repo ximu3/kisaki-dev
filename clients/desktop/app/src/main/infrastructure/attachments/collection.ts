@@ -1,37 +1,16 @@
-/** @fileoverview Reclaims detached attachments and reconciles interrupted publication in bounded database batches. */
-
-import { lstat, readdir, unlink } from 'node:fs/promises'
+import { readdir, unlink } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
-import { DesktopError } from '@kisaki3/desktop-contracts/errors'
-import type { ErrorSummary } from '@kisaki3/desktop-contracts/errors'
+import { DesktopError, type ErrorSummary } from '@kisaki3/desktop-contracts/errors'
 import type { AttachmentCleanupResult } from '@kisaki3/desktop-contracts/attachments'
 import type { DatabaseCall } from '../database/executor'
 import { storedFilePath } from '../files'
+import { checkDirectory, entryInfo } from './paths'
 import type { attachmentStorage } from './storage'
-
-/** Checks the actual directory entry without following a replaced shard or file. */
-export async function entryInfo(path: string) {
-  return lstat(path).catch((cause: NodeJS.ErrnoException) => {
-    if (cause.code === 'ENOENT') {
-      return null
-    }
-    throw cause
-  })
-}
-
-/** Verifies an existing private directory before traversing it. */
-export async function directory(path: string) {
-  const info = await entryInfo(path)
-  if (info && !info.isDirectory()) {
-    throw new DesktopError('PathConflict', 'An attachment directory has been replaced')
-  }
-  return info !== null
-}
 
 /** Removes one proven regular file, reporting only bytes actually unlinked. */
 async function removeFile(root: string, path: string) {
-  await directory(root)
-  await directory(dirname(path))
+  await checkDirectory(root)
+  await checkDirectory(dirname(path))
   const info = await entryInfo(path)
   if (!info) {
     return null
@@ -141,14 +120,16 @@ export function createCollection(
       let reclaimedBytes = 0
 
       try {
-        const shards = (await directory(root)) ? await readdir(root, { withFileTypes: true }) : []
+        const shards = (await checkDirectory(root))
+          ? await readdir(root, { withFileTypes: true })
+          : []
         for (const shard of shards) {
           signal?.throwIfAborted()
           if (!shard.isDirectory() || !/^[0-9a-f]{2}$/.test(shard.name)) {
             continue
           }
           const folder = join(root, shard.name)
-          await directory(folder)
+          await checkDirectory(folder)
           for (const file of await readdir(folder, { withFileTypes: true })) {
             if (file.isFile() && /^[0-9a-f]{62}$/.test(file.name)) {
               files.add(join(folder, file.name))

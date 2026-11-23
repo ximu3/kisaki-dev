@@ -1,5 +1,3 @@
-/** @fileoverview Compact native drag images use the toolkit's capture and cleanup lifecycle. */
-
 import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/utils/set-custom-native-drag-preview'
 import { pointerOutsideOfPreview } from '@atlaskit/pragmatic-drag-and-drop/utils/pointer-outside-of-preview'
 import { classes } from '../../internal/dom'
@@ -12,16 +10,14 @@ import styles from './styles.module.css'
  * The host calls it from onGenerateDragPreview with a description of the moved selection.
  */
 export function setDragPreview(options: {
-  /** Sets the browser drag image for the current preview-generation event. */
   nativeSetDragImage: Parameters<typeof setCustomNativeDragPreview>[0]['nativeSetDragImage']
   label: string
 }): void {
   setCustomNativeDragPreview({
     nativeSetDragImage: options.nativeSetDragImage,
-    /** Keeps the drag image clear of the pointer during native preview capture. */
+    // Offset the drag image so native feedback leaves the pointer visible.
     getOffset: pointerOutsideOfPreview({ x: '12px', y: '8px' }),
 
-    /** Creates the labeled preview inside the library-owned native drag-image container. */
     render: ({ container }) => {
       const preview = container.ownerDocument.createElement('div')
       preview.className = classes(surface.staticSurface, styles.preview)

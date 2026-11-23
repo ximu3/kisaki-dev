@@ -1,5 +1,3 @@
-/** @fileoverview Connects an unpackaged app to its actual source launcher and handles a normal stop. */
-
 import { RpcConnection } from '@kisaki3/desktop-rpc'
 import {
   developmentProtocolId,
@@ -12,16 +10,13 @@ export function developmentControl(stop: () => Promise<boolean>) {
   const identity = { buildId: __KISAKI_BUILD_ID__, appVersion: manifest.version }
   const rpc = new RpcConnection(
     {
-      /** Attaches the transport to this launcher's process channel. */
       start(receive, closed) {
         process.on('message', receive)
         process.once('disconnect', closed)
       },
-      /** Hands one frame to the bound parent process. */
       send(frame) {
         process.send!(frame)
       },
-      /** Releases the source launcher's channel on disconnect. */
       close() {
         if (process.connected) {
           process.disconnect()
@@ -32,11 +27,9 @@ export function developmentControl(stop: () => Promise<boolean>) {
       protocol: { id: developmentProtocolId, version: developmentProtocolVersion },
       handshake: {
         role: 'acceptor',
-        /** Returns the application version and build identity for this launch. */
         accept: () => identity,
       },
       methods: {
-        /** Returns the actual disposition of the shared normal exit request. */
         async stop() {
           return { outcome: (await stop()) ? 'exiting' : 'cancelled' }
         },

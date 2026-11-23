@@ -1,5 +1,3 @@
-/** @fileoverview Coordinates validation and one in-flight submission for an individual edit. */
-
 import { createMemo, createSignal, flush, type Accessor } from 'solid-js'
 import type { FieldIssue } from '../../internal/form'
 

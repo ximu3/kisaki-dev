@@ -1,76 +1,40 @@
-/** @fileoverview Defines call context, bounded reads and the lifetimes shared by desktop capabilities. */
-
 import type { ErrorSummary } from './errors'
 import { parseValue, intervalEntries } from './validation'
 import * as v from 'valibot'
 
-/**
- * Readonly sequence containing at least one submitted value.
- *
- * The input boundary checks uniqueness and domain-specific constraints.
- */
 export type NonEmptyArray<T> = readonly [T, ...T[]]
 
-/**
- * Range with at least one inclusive bound.
- *
- * Each domain defines the units and comparison rules.
- */
+/** Both bounds are inclusive. */
 export type Bounds<T> =
   | { readonly min: T; readonly max?: T }
   | { readonly min?: T; readonly max: T }
 
 /**
- * Optional cancellation signal for one capability call.
- *
- * The receiving endpoint binds the actual caller instance. Operations finish the required commit or
- * cleanup before settling. Work already completed remains in effect. Cancelling an observation
- * or wait ends that call while the observed work continues.
+ * The endpoint binds the caller's actual instance. Operations finish their commit or cleanup before
+ * settling, and completed work stays in effect. Cancelling a wait or observation leaves the
+ * underlying work running.
  */
 export interface CallOptions {
   readonly signal?: AbortSignal
 }
 
-/**
- * Instance-owned registration reference and asynchronous removal handle.
- *
- * Already acquired work follows its own lifetime after removal.
- */
+/** Previously acquired work keeps its own lifetime after removal. */
 export interface Registration<Ref> {
   readonly ref: Ref
 
-  /**
-   * Removes this instance's registration and completes its cleanup.
-   *
-   * Repeated disposal has no further effect.
-   */
+  /** Idempotent. Resolves when removal and cleanup finish. */
   dispose(): Promise<void>
 }
 
-/**
- * Per-call cancellation context supplied to an implementation.
- *
- * Operation-specific choices are passed as explicit input options.
- */
 export interface ExecutionContext {
   readonly signal: AbortSignal
 }
 
-/** Idempotent release handle belonging to the instance that created it. */
 export interface Disposable {
-  /**
-   * Stops this instance's future delivery or use.
-   *
-   * A returned promise settles when release completes.
-   */
+  /** Idempotent. An asynchronous release settles after cleanup. */
   dispose(): void | Promise<void>
 }
 
-/**
- * Observer of readonly snapshots.
- *
- * Releasing the subscription stops future delivery while leaving accepted business work running.
- */
 export type Listener<T> = (value: T) => void
 
 /** Zero-based interval in a complete local list, with a limit from 1 through 200 items. */
@@ -80,21 +44,15 @@ export interface ListOptions {
 }
 
 /**
- * Requested items and deduplicated full count from one short read.
- *
- * Separate calls do not share a snapshot.
+ * The items cover the requested interval. The total counts distinct matches across the entire
+ * query in the same read. Separate calls can observe different snapshots.
  */
 export interface ListResult<T> {
   readonly items: readonly T[]
   readonly total: number
 }
 
-/**
- * Result values keyed by submitted items, retaining definite tuple keys and optional membership.
- *
- * Dynamic dictionaries use ordinary indexed access. Finite keys remain optional unless a fixed
- * input tuple contains an item with that exact key.
- */
+/** A fixed tuple guarantees its requested keys. A dynamic list can omit any finite key. */
 export type KeyedResult<
   Items extends readonly { readonly key: string }[] | undefined,
   Values extends object,
@@ -112,17 +70,11 @@ export type KeyedResult<
         }
     : Partial<Values>
 
-/**
- * Saved execution definition represented as a usable value or an explicit validation failure.
- *
- * Invalid definitions retain a safe explanation while the surrounding object stays usable. Raw
- * corrupt storage and repair baselines are not exposed.
- */
+/** An invalid field retains a safe explanation. The rest of the record stays usable. */
 export type StoredDefinition<T> =
   | { readonly status: 'ready'; readonly value: T }
   | { readonly status: 'invalid'; readonly error: ErrorSummary }
 
-/** Parses a bounded local interval, requiring an explicit valid offset and limit. */
 export function parseListOptions(input: unknown): ListOptions {
   return parseValue(v.strictObject(intervalEntries), input, 'Invalid list interval')
 }

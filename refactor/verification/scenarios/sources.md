@@ -48,7 +48,7 @@ TMDB 的[普通资料映射](../../design/extensions/sources/tmdb.md#fields)验�
 
 图片分别使用海报、背景、logo、剧照和主体图片；季不继承整剧图片。
 
-关系验证实际季署名、人物反查的明确季范围、公司仅有依据的影片参与和季自身播出机构；合集不推成前后作。零号季不混入其他季，episode_type 不当作本体分类。预设中移除 TMDB 的 workExtras 和 Part.type 来源，同时保留已知分部的公共字段读取。
+关系验证实际季署名、人物反查的明确季范围、公司仅有依据的影片参与和季自身播出机构。合集不推成前后作，零号季不混入其他季，`episode_type` 不作为本体分类。动画预设的 `workExtras` 与 `Part.type` 不选用 TMDB，已知分部的公共字段仍可按来源身份读取。[动画预设](../../design/domains/metadata/presets/anime.md)
 
 TMDB 的[影片导入与同步](../../design/extensions/sources/tmdb.md#import)覆盖四类本人清单的分页、动画过滤、重复身份复用、所选字段采用、明确未评分与缺席的区别，以及可选手动合集加入。入口范围保持为导入与个人字段同步。
 
@@ -80,7 +80,9 @@ A22 验证 Google Books 的本人书架：两个不同 Google sub 中相同 shel
 
 ## Steam
 
-[Steam 接入](../../design/extensions/sources/steam.md)验证 GetItems 逐项状态与 BBCode 正文、SearchSuggestions 的仅游戏过滤和真实总量、无伪造名称分页、无旧接口回退、地区与语言分离，以及三类图片。拥有库与愿望单分别导入，拥有不设置状态；累计时长通过独立的[总量核对](../../design/domains/games.md#duration)形成补记绝对值，不创建活动或后台覆盖。覆盖真空、不可访问、换账号、自动补齐缺项与无 Sync 页面，特殊权限样本不能由正常账号推定。
+核对 `GetItems` 的逐项状态与 BBCode 正文，以及 `SearchSuggestions` 的游戏过滤和真实总量。名称建议只提供该接口实际返回的候选，不伪造分页或回退到旧接口。另验地区与语言独立设置，以及三类图片。[Steam 接入](../../design/extensions/sources/steam.md)
+
+拥有库和愿望单分别导入，拥有不设置状态。累计时长通过独立的[总量核对](../../design/domains/games.md#duration)形成补记绝对值，不创建活动或后台覆盖。分别验证清单为空、清单不可访问、换账号和自动补齐缺项。核对实际页面中没有 `Sync`，特殊权限使用具备相应限制的账号样本。
 
 <a id="igdb"></a>
 

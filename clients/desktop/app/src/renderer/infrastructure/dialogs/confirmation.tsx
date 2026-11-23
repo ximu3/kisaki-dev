@@ -1,5 +1,3 @@
-/** @fileoverview Presents one explicit destructive decision in the initiating dialog's scope. */
-
 import { createSignal, onCleanup, Show } from 'solid-js'
 import {
   AlertDialogContent,

@@ -1,5 +1,3 @@
-/** @fileoverview Local controlled values and native reset synchronization. */
-
 import { createMemo, createSignal, onSettled, untrack } from 'solid-js'
 import type { Accessor } from 'solid-js'
 
@@ -14,7 +12,6 @@ export function createValue<T>(
   initial: Accessor<T>,
   changed: (value: T) => void,
 ): readonly [Accessor<T>, (value: T) => void] {
-  /** Locally owned fallback value initialized once without capturing reactive dependencies. */
   const [local, setLocal] = createSignal<T>(() => untrack(initial))
   const controlled = createMemo(value)
   const current = () => {
@@ -49,7 +46,6 @@ export function onFormReset(
 ): () => void {
   const pending = new Map<Event, ReturnType<typeof setTimeout>>()
 
-  /** Delivers completed resets in event order, before a later edit can be overwritten. */
   function flush() {
     for (const [event, timer] of pending) {
       if (event.eventPhase !== Event.NONE) {
@@ -65,7 +61,6 @@ export function onFormReset(
 
   onSettled(() => {
     const document = element().ownerDocument
-    /** Waits for the native default action and for listeners that can cancel it. */
     const listener = (event: Event) => {
       if (event.target === element().form) {
         pending.set(event, setTimeout(flush, 0))

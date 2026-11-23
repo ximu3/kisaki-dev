@@ -1,5 +1,3 @@
-/** @fileoverview Runs storage and filesystem integration checks under the matching Electron Node host. */
-
 import { defineConfig } from 'vite-plus/test/config'
 import electronManifest from 'electron/package.json' with { type: 'json' }
 

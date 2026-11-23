@@ -39,14 +39,12 @@ Add-Type -TypeDefinition @'
 using System;
 using System.Runtime.InteropServices;
 
-// The Windows SDK notification callback invoked by the system when the user clicks a toast.
 [ComImport, Guid("53E31837-6600-4A81-9395-75CFFE746F94"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 public interface INotificationActivationCallback {
     void Activate([MarshalAs(UnmanagedType.LPWStr)] string appId,
                   [MarshalAs(UnmanagedType.LPWStr)] string arguments, IntPtr inputs, uint count);
 }
 
-// Delivers one default click and releases the external COM client's reference.
 public static class KisakiTestNotification {
     public static void Click(Guid identity, string payload) {
         var instance = Activator.CreateInstance(Type.GetTypeFromCLSID(identity));

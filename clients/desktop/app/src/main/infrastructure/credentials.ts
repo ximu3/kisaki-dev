@@ -1,5 +1,3 @@
-/** @fileoverview Protects and opens application secrets with Electron's asynchronous operating-system storage. */
-
 import { safeStorage } from 'electron'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 

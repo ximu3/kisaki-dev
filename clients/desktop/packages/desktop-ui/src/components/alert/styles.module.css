@@ -1,5 +1,3 @@
-/* Quiet inline messages share a surface and distinguish their meaning through outline symbols. */
-
 @layer components {
   .root {
     display: flex;

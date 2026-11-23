@@ -1,5 +1,3 @@
-/** @fileoverview Removable selected values with a single horizontal scrolling viewport. */
-
 import { createSignal, For, onSettled } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { Icon, ChevronLeft, ChevronRight, X } from '../icon/glyph'
@@ -16,14 +14,12 @@ export interface ChipLabels {
 /** Ordered selected keys with display labels, availability and field-focus coordination. */
 interface SelectedChipsProps extends ChipLabels {
   values: readonly string[]
-  /** Resolves a selected key to its current display label. */
   label: (value: string) => string
   disabled: boolean | undefined
   /** Associates actions with an open choice list so that they do not dismiss it. */
   panelId?: string | undefined
   /** Returns the complete field element that receives wheel input over the chip area. */
   field: () => HTMLElement
-  /** Requests removal of the identified selected value. */
   onRemove: (value: string) => void
   /** Restores field focus after removal or when a scroll control becomes hidden. */
   focusTrigger: () => void
@@ -35,9 +31,7 @@ interface SelectedChipsProps extends ChipLabels {
  * Resize observation and wheel handling are released with the component owner.
  */
 export function SelectedChips(props: SelectedChipsProps): JSX.Element {
-  /** Observed availability of scrolling toward earlier selected chips. */
   const [canPrevious, setCanPrevious] = createSignal(false)
-  /** Observed availability of scrolling toward later selected chips. */
   const [canNext, setCanNext] = createSignal(false)
   let group!: HTMLDivElement
   let viewport!: HTMLDivElement
@@ -45,12 +39,9 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
   let previous!: HTMLButtonElement
   let next!: HTMLButtonElement
 
-  /** Returns the physical scroll sign for the viewport's current text direction. */
   const direction = () => (getComputedStyle(viewport).direction === 'rtl' ? -1 : 1)
-  /**
-   * Updates available scroll directions and restores field focus before hiding a focused edge
-   * control.
-   */
+
+  // Restore focus before hiding a focused scroll control.
   const update = () => {
     const max = viewport.scrollWidth - viewport.clientWidth
     const offset = direction() * viewport.scrollLeft
@@ -64,14 +55,14 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
     setCanPrevious(before)
     setCanNext(after)
   }
-  /** Moves by a visible page while accounting for both edge-button overlays. */
+
   const scroll = (step: 1 | -1, arrow: HTMLButtonElement) => {
     // Both edge buttons can be visible between pages. Keep the exposed intervals contiguous.
     const pageWidth =
       viewport.getBoundingClientRect().width - 2 * arrow.getBoundingClientRect().width
     viewport.scrollBy({ left: direction() * step * pageWidth })
   }
-  /** Scrolls a focused chip action into the unobscured portion of the viewport. */
+
   const reveal = (button: Element) => {
     const box = viewport.getBoundingClientRect()
     const target = button.getBoundingClientRect()
@@ -84,10 +75,8 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
       viewport.scrollLeft += target.right - right
     }
   }
-  /**
-   * Converts eligible wheel input over the chip area into horizontal scrolling while preserving
-   * zoom modifiers.
-   */
+
+  // Leave the platform zoom gesture to the browser.
   const wheel = (event: WheelEvent) => {
     if (
       event.ctrlKey ||

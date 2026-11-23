@@ -48,9 +48,9 @@ definition 的规则如下：
 | inputKinds     | 允许目录、文件或两者；文件同时须符合相应 WorkType 支持的本地输入类型                                                                                  |
 | include        | 相对路径条件列表，采用下方路径过滤合同；空列表表示不额外限制，多条取任一                                                                              |
 | exclude        | 相对路径条件列表，多条取任一，优先于 include；排除目录同时排除其子树                                                                                  |
-| identification | 默认使用目录名或去除扩展名的文件名；可通过正则捕获提取线索，并通过 recognizerId 明确选用多个 scanner.recognizers 实现；算法设置归扩展，不执行任意脚本 |
+| identification | 默认使用目录名或去除扩展名的文件名；可用正则提取线索，并在 recognizerIds 中选择 scanner.recognizers 的实现                                             |
 
-引用的资料方案必须存在且类型匹配。配置可以通过 recognizerId 明确选择多个识别器，算法设置由扩展管理。每个识别器取得内容相同的只读基础线索，其结果保留实现归属，不接力改写候选，也不调用所有已注册识别器。作品候选的基础名称提取是扫描配置自身的原生能力，不建立另一套扫描识别方案；已有作品内部的[文件识别方案](file-recognition/README.md#recognition-profiles)由 holdings 管理。
+引用的资料方案必须存在且类型匹配。各选中的识别器读取相同的基础线索，结果分别保存实现归属。算法设置由扩展管理。扫描器从作品候选中提取基础名称，已有作品内部的[文件识别方案](file-recognition/README.md#recognition-profiles)由 holdings 管理。
 
 scanner.configs 提供以下管理方法。metadata.profiles 和文件识别方案在自己的范围内使用相同的管理语义。管理列表展示正式配置，单项表单保存直接完成 create 或 update，列表提供的删除、启停和重排各自提交；关闭列表保留已完成结果。定义内部的规则、条件与有序列表属于该配置草稿，局部字段编辑确认后随配置一起保存，遵守[共同编辑边界](../ui/state.md#editing-units)。
 
@@ -61,7 +61,7 @@ scanner.configs 提供以下管理方法。metadata.profiles 和文件识别方�
 | create(input)     | 返回实际保存的新配置                                                  |
 | update(id, input) | input 包含 changes 与可选 expected；返回修改后的完整配置              |
 | delete(id)        | 完成符合所属业务引用规则的删除，返回 void                             |
-| reorder(input) | 按完整原顺序基线重排指定配置，返回 void |
+| reorder(input)   | 按完整原顺序基线重排指定配置，返回 void                                 |
 
 配置摘要按人工顺序返回，历史另行分页。身份和时间由本体生成。reorder 使用[完整顺序基线与子集槽位](library/write/contracts.md#membership)，不允许任意写 sortOrder，也不拿屏幕上的局部数组覆盖完整顺序。
 
@@ -77,7 +77,8 @@ scanner 的发现根和 holdings 的内容目录共用以下纯路径条件；�
 
 ```ts
 type PathFilter =
-  { kind: 'path'; path: string } | { kind: 'glob'; pattern: string; ignoreCase: boolean }
+  | { readonly kind: 'path'; readonly path: string }
+  | { readonly kind: 'glob'; readonly pattern: string; readonly ignoreCase: boolean }
 ```
 
 路径以当前明确根目录为基准，使用 `/` 分隔，不含绝对路径前缀或尾分隔符。根目录本身在过滤合同中使用 `.`；其他值不允许空片段、`.`、`..`、反斜线或盘符前缀。保存时拒绝非法输入，不通过删除片段修复后扩大范围。文件选择器负责将实际路径转换为合法相对值，不能把根外路径保存进过滤条件。
@@ -123,7 +124,7 @@ preview 使用规则草稿，展示路径、类型、候选边界、所选文本
 
 公开 scan 不接受所选项重扫、人工 clues 覆盖或通用 expected。重新扫描始终检查当前完整配置，不能称为“仅重试失败项”。
 
-“在此配置中排除此路径”修改该配置 definition.exclude 中的精确相对路径。目录排除覆盖整个子树，不按名称全局排除，也不影响其他配置。配置编辑界面先修改草稿，扫描报告中的独立动作则修改实际配置。普通取消勾选不能暗中变成长久排除。
+“在此配置中排除此路径”将精确相对路径加入该配置的 definition.exclude，排除目录也排除其子树。配置编辑界面先修改草稿，扫描报告中的独立动作直接保存。本操作只影响该配置的后续发现。
 
 根据旧报告执行排除前，必须核对配置和当前发现根。配置已删除或根路径已变更时，不能直接套用旧相对路径。排除只改变发现规则，不删除磁盘内容或正式资料。
 
@@ -241,25 +242,25 @@ input 选择当前规则的匹配文本，界面分别显示“名称”和“�
 
 ```ts
 interface ClueExtractionRule {
-  id: string
-  name: string
-  enabled: boolean
-  input: 'baseName' | 'relativePath'
-  pattern: string
-  ignoreCase: boolean
-  output: {
-    name?: string
-    originalName?: string
-    releaseDate?: {
-      year?: string
-      month?: string
-      day?: string
-    }
-    externalIdentities?: readonly {
-      source: string
-      sourceId: string
-    }[]
-  }
+  readonly id: string
+  readonly name: string
+  readonly enabled: boolean
+
+  readonly input: 'baseName' | 'relativePath'
+  readonly pattern: string
+  readonly ignoreCase: boolean
+
+  readonly output: ClueExtractionOutput
+}
+
+interface ClueExtractionOutput {
+  readonly name?: string
+  readonly originalName?: string
+  readonly releaseDate?: { readonly year?: string; readonly month?: string; readonly day?: string }
+  readonly externalIdentities?: NonEmptyArray<{
+    readonly source: string
+    readonly sourceId: string
+  }>
 }
 ```
 
@@ -289,9 +290,9 @@ ExternalIdentity 的两部分由明确模板生成。可以直接引用完整捕
 ```
 
 ```ts
-output: {
+const output = {
   name: '$<name>',
-  externalIdentities: [{ source: '$<source>', sourceId: '$<sourceId>' }]
+  externalIdentities: [{ source: '$<source>', sourceId: '$<sourceId>' }],
 }
 ```
 
@@ -302,9 +303,9 @@ output: {
 ```
 
 ```ts
-output: {
+const output = {
   name: '$<name>',
-  externalIdentities: [{ source: 'bangumi', sourceId: 'subject/$<id>' }]
+  externalIdentities: [{ source: 'bangumi', sourceId: 'subject/$<id>' }],
 }
 ```
 

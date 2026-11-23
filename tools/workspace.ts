@@ -1,13 +1,9 @@
-/** @fileoverview Reads workspace project identities and dependency selections from the locked pnpm. */
-
 import { execFileSync } from 'node:child_process'
 import { relative, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-/** Root checkout shared by repository tools that inspect workspace members. */
 export const repositoryRoot = fileURLToPath(new URL('..', import.meta.url))
 
-/** Project identity and its repository-relative source directory. */
 export interface Project {
   name: string
   directory: string

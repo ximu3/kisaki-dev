@@ -1,5 +1,3 @@
-/** @fileoverview Verifies continuous task history, details and history actions in a migrated profile. */
-
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'

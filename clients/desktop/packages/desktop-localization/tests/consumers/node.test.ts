@@ -1,14 +1,11 @@
-/** @fileoverview Verifies packed localization declarations and formatting in an independent Node consumer. */
-
-import { lintConsumer } from '@kisaki3/tooling/testing/consumer'
-import { expect } from 'vite-plus/test'
+import { join } from 'node:path'
+import { createConsumerTest, lintConsumer } from '@kisaki3/tooling/testing/consumer'
+import { expect, test as base } from 'vite-plus/test'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { runPnpm } from '@kisaki3/tooling/process'
-import { consumerTest } from './installation'
 
-/** Isolated Node fixtures for the actual localization tarball and its public dependencies. */
-const test = consumerTest('node')
+const test = createConsumerTest(base, join(import.meta.dirname, '../..'), 'node')
 
 test('Node globals alone support the complete public type graph and actual localization consumption', async ({
   consumerDirectory,

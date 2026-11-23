@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite'
 
-/** The sandbox preload entry belonging to each independently built fixture window. */
 const preloadEntries = {
   main: 'src/preload/main.ts',
   reader: 'src/preload/reader.ts',

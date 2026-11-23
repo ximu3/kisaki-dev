@@ -1,5 +1,3 @@
-/** @fileoverview Presents product identity, license and shareable diagnostics. */
-
 import { Show } from 'solid-js'
 import { createQuery } from '../../../infrastructure/query'
 import { Copy } from '@lucide/solid'

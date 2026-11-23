@@ -1,12 +1,8 @@
-/** @fileoverview Verifies query result intervals, counts and target location stay internally consistent. */
-
 import { test, expect } from 'vite-plus/test'
-import { parseEntryQuery } from './definition'
-import type { EntryQuery } from './definition'
+import { parseEntryQuery, type EntryQuery } from './definition'
 
 import { parseEntryListResult, entryLocateOffset, parseEntryLocateResult } from './listing'
 
-/** Mixed game/person query reused by the interval and group-listing validation cases. */
 const query: EntryQuery = {
   scope: { type: 'library' },
   search: '',

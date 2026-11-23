@@ -1,11 +1,7 @@
-/** @fileoverview Expands affected packages or a manual task request into native GitHub Actions jobs. */
-
 import { execFileSync } from 'node:child_process'
 import { appendFileSync } from 'node:fs'
-import { runners, verificationPackages } from './packages.ts'
-import type { VerificationPackage } from './packages.ts'
-import { selectPackages } from './selection.ts'
-import type { PackageSelection } from './selection.ts'
+import { runners, verificationPackages, type VerificationPackage } from './packages.ts'
+import { selectPackages, type PackageSelection } from './selection.ts'
 import { listProjects, repositoryRoot } from '../workspace.ts'
 
 /** Manual workflow inputs. An omitted task uses the package's complete check. */

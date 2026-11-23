@@ -1,5 +1,3 @@
-/** @fileoverview Measures grouped choice rows against their actual popup viewport. */
-
 import { createMemo, For, Show } from 'solid-js'
 import type { Accessor } from 'solid-js'
 import type { JSX } from '@solidjs/web'

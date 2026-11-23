@@ -1,5 +1,3 @@
-/** @fileoverview Constrains four relation families to their real endpoints, roles and independent ordering sides. */
-
 import { sql } from 'drizzle-orm'
 import {
   primaryKey,
@@ -19,8 +17,8 @@ import {
   organizationRoles,
   personRoles,
   workTypes,
+  type StoredWorkRelationType,
 } from '@kisaki3/desktop-contracts/library'
-import type { StoredWorkRelationType } from '@kisaki3/desktop-contracts/library'
 import { entries, characters, persons, organizations } from './catalog'
 import { booleanValue, enumValue, idColumn, safeInteger } from './constraints'
 

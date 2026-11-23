@@ -1,5 +1,3 @@
-/** @fileoverview Dispatches serial database work on the worker that owns the SQLite connection. */
-
 import { parentPort, workerData } from 'node:worker_threads'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { initializeDatabase, type DatabaseOptions, type Storage } from '../initialize'

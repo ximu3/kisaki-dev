@@ -1,5 +1,3 @@
-/** @fileoverview Checks cancellation, retry and terminal release failures across exit phases. */
-
 import { RpcError } from '@kisaki3/desktop-rpc'
 import { expect, test, vi } from 'vite-plus/test'
 import { releaseAll } from '../infrastructure/release'

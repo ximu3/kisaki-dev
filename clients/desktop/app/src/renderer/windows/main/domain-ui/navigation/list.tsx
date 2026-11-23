@@ -1,5 +1,3 @@
-/** @fileoverview Presents available pages and adopts reorder requests within their saved slots. */
-
 import { createMemo, For, Show, type Component } from 'solid-js'
 import { dynamic } from '@solidjs/web'
 import { PanelsTopLeft, Pin } from '@lucide/solid'

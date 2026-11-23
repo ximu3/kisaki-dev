@@ -6,7 +6,7 @@
 
 ## 受管输出职责
 
-libmpv-node 定位为 libmpv 的 Node 接入与渲染资源管理、交付层。原生控制接口继续保持上游含义；受管帧只承诺本页定义的 SDR 表示，能够提交某个原生选项不表示库保证任意输出组合。
+libmpv-node 管理渲染资源，按约定交付 SDR 帧。原生控制沿用 libmpv 语义，受管输出的选项范围见[使用约定](#constraints)。
 
 | 负责者               | 决定或承担的事情                                                    |
 | -------------------- | ------------------------------------------------------------------- |
@@ -34,15 +34,15 @@ const mpv = await createMpv({
     width: 1280,
     height: 720,
     target: { colorSpace: 'srgb' },
-    frameCapacity: 3
-  }
+    frameCapacity: 3,
+  },
 })
 
 const video = mpv.videoOutput
 await video.configure({
   ...video.configuration,
   width: 1920,
-  height: 1080
+  height: 1080,
 })
 ```
 
@@ -161,7 +161,7 @@ const subscription = await video.observeFrames({
   next(frame) {
     transferFrameToHost(frame)
   },
-  error: reportOutputFailure
+  error: reportOutputFailure,
 })
 ```
 
@@ -218,7 +218,7 @@ Mpv 的同核心流回调重入规则也覆盖 configure、reportSwap 等会进�
 
 输出本身失败后进入终态，closed 为 true，后续 configure、observeFrames 与 reportSwap 按 closed 拒绝；configuration 保留最后一次完成的快照，不发布中间配置。普通媒体结束、播放暂停或单个文件加载失败不据此关闭仍然有效的输出。
 
-资源方向决定清理责任：流提供器把源交给库，所以普通关闭等待源的工作与清理；帧交给调用方后，Mpv.close 与订阅 dispose 都不等待外部归还。两者使用同一个拥有权原则。
+帧交付后由持有者归还，Mpv.close 与订阅 dispose 不等待已经交付的帧。
 
 <a id="constraints"></a>
 

@@ -1,5 +1,3 @@
-/* Rows keep related controls aligned at narrow tool widths. */
-
 @layer components {
   .bar {
     display: flex;

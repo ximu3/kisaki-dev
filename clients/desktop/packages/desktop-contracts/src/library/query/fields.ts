@@ -1,18 +1,11 @@
-/** @fileoverview Owns the finite query field vocabulary and its applicable entry types. */
+import { entryTypes, workTypes, type EntryType } from '../catalog'
 
-import { entryTypes, workTypes } from '../catalog'
-import type { EntryType } from '../catalog'
-
-/** Work media with registered video or reading files. */
 const mediaTypes = ['anime', 'comic', 'novel'] as const
 
-/** Reading media sharing book-oriented catalog and layout facts. */
 const bookTypes = ['comic', 'novel'] as const
 
-/** Entry kinds sharing biographical and gender facts. */
 const peopleTypes = ['character', 'person'] as const
 
-/** Entry types that own each queryable, sortable or projectable fact. */
 const fieldTypes = {
   name: entryTypes,
   originalName: entryTypes,
@@ -98,6 +91,5 @@ const fieldTypes = {
   organizationWorks: ['organization'],
 } satisfies Record<string, readonly EntryType[]>
 
-/** Entry-kind applicability for every supported query field. */
 export const entryFieldTypes: { readonly [K in keyof typeof fieldTypes]: readonly EntryType[] } =
   fieldTypes

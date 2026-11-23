@@ -24,7 +24,7 @@ Google Books 定位为明确书目范围的资料与个人记录补充来源：�
 
 ## 出版书目与本地目标
 
-source 使用 googlebooks，Volume 身份为 volume/<id>，保留来源 ID 的大小写。已明确范围的 Series 独立使用 series/<id>，不与 Volume 共用裸编号。
+`source` 使用 `googlebooks`。Volume 身份为 `volume/<id>`，已明确范围的 Series 身份为 `series/<id>`。两者分别保留来源 ID 的大小写。
 
 同一卷的日文、繁体中文和英文出版记录可能各有不同 Volume ID 与 ISBN。它们是版本记录，不自动成为三部小说，也不因标题中都有“1”就宣布为同一卷。对已知本地目标补字段时，核对来源身份、内容范围和已采用版本；语言偏好不自行更换版本。
 
@@ -80,11 +80,11 @@ membership 使用实际 nextPageToken 完整读取；成员常是简略 Volume�
 
 按官方 OpenID 配置验证签名、issuer、audience、有效期及本次 nonce，并核对实际授予的 books、openid 与 email 范围；刷新时核对同一 sub。换账号、刷新、取消、断开与秘密提交沿[共同连接合同](../private-data.md#connection)，新授权成功前保留旧有效连接。
 
-Desktop 客户端的 token／refresh 请求附带其桌面 client_secret，并启用 S256；客户端配置依据见[授权核验](../../../verification/evidence/book-sources/live-api.md)。这类桌面配置随应用交付，不能宣称桌面程序能将其保密；它与 Web 客户端的保密 secret 不同。用户令牌与自定义凭据仍由 secrets 保护。
+Desktop 客户端的授权码流程使用 S256，兑换时附带本次 `code_verifier`。兑换和刷新均附带已登记的桌面 `client_secret`。桌面客户端配置随应用交付，Web 客户端的保密配置留在所属服务端。用户令牌与自定义凭据由 `secrets` 保护。[授权核验](../../../verification/evidence/book-sources/live-api.md)
 
 正式发行使用满足实际权限验证与公开分发条件的 Google OAuth 应用；API 调用成功与应用验证分别判定。
 
-单册资料使用仅允许 Books API 的专用 key。免登录 Volume 读取和名称查询可用，Series 与 membership 只有本人 OAuth 可用；凭据条件按操作分别处理，不因系列需要登录而关闭免登录单册读取。测试配置不写入仓库，发行默认配置与配额由项目维护。
+单册资料使用仅允许 Books API 的专用 key。上游的免登录 Volume 读取与名称查询均有实测，扩展只开放已确认对应的书目读取。Series 与 membership 使用本人 OAuth。发行默认配置与配额由项目维护，测试凭据由隔离环境持有。[书目查询范围](#identity) · [来源核验](../../../verification/evidence/book-sources/live-api.md)
 
 <a id="personal"></a>
 

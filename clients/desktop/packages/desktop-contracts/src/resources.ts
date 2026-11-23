@@ -1,7 +1,5 @@
-/** @fileoverview Separates transient file inputs, acquired content and view-bound resource addresses. */
-
 import * as v from 'valibot'
-import { id, text, nonemptyText, parseDictionary, parseValue } from './validation'
+import { fromParser, id, text, nonemptyText, parseDictionary, parseValue } from './validation'
 import { parseHttpUrl } from './network'
 import { DesktopError } from './errors'
 
@@ -27,11 +25,7 @@ export interface PreparedAttachment {
   readonly attachmentId: string
   readonly resource: ReadResourceRef
 
-  /**
-   * Releases this preparation hold idempotently.
-   *
-   * Adopted references and other holders remain valid.
-   */
+  /** Idempotent. Other holds and adopted references remain valid. */
   dispose(): Promise<void>
 }
 
@@ -40,9 +34,8 @@ export interface ReadResource {
   readonly resource: ReadResourceRef
 
   /**
-   * Stops new reads through this handle and waits for in-flight cleanup.
-   *
-   * Repeated disposal has no further effect, and other holders remain valid.
+   * Stops new reads and waits for in-flight cleanup. Other holders remain valid and repeated
+   * disposal is safe.
    */
   dispose(): Promise<void>
 }
@@ -55,7 +48,6 @@ export interface ViewResourceBinding<K extends string = string> {
   dispose(): Promise<void>
 }
 
-/** Binding of acquired content to transient addresses usable by the actual view. */
 export interface ViewResourcesApi {
   /**
    * Acquires independent view holds and returns resource URLs under the original input keys.
@@ -67,7 +59,6 @@ export interface ViewResourcesApi {
   ): Promise<ViewResourceBinding<K>>
 }
 
-/** Opaque resource identity whose access and lifetime are checked by the owning runtime. */
 const resourceSchema = v.strictObject({ id })
 
 /** HTTP token syntax accepted for an explicitly supplied request header name. */
@@ -79,17 +70,13 @@ const headerValue = v.pipe(
   v.check((value) => !/[\r\n\0]/.test(value)),
 )
 
-/** Local-path, HTTP-request or owned-resource input selected for file preparation. */
 const fileInputSchema = v.variant('type', [
   v.strictObject({ type: v.literal('path'), path: nonemptyText }),
   v.strictObject({
     type: v.literal('url'),
-    url: v.pipe(v.unknown(), v.transform(parseHttpUrl)),
+    url: fromParser(parseHttpUrl),
     headers: v.exactOptional(
-      v.pipe(
-        v.unknown(),
-        v.transform((value) => parseDictionary(headerName, headerValue, value)),
-      ),
+      fromParser((value) => parseDictionary(headerName, headerValue, value)),
     ),
     redirect: v.exactOptional(v.picklist(['follow', 'error'])),
   }),
@@ -97,11 +84,7 @@ const fileInputSchema = v.variant('type', [
   v.strictObject({ type: v.literal('resource'), resource: resourceSchema }),
 ])
 
-/**
- * Parses an opaque resource reference's shape.
- *
- * The host checks existence, ownership and expiry.
- */
+/** The host checks existence, ownership and expiry. */
 export function parseReadResourceRef(input: unknown): ReadResourceRef {
   return parseValue(resourceSchema, input, 'Invalid read resource reference')
 }

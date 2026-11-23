@@ -1,5 +1,3 @@
-/** @fileoverview Verifies build-bound development receipts and explicit outcomes for interrupted preparation. */
-
 import { test, expect } from 'vite-plus/test'
 
 import {

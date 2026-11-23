@@ -1,5 +1,3 @@
-/** @fileoverview Describes stable preference destinations for native navigation and application search. */
-
 import { preferenceKeys, type PreferenceField } from '@kisaki3/desktop-contracts/preferences'
 import type { englishMessages, Translate } from '@kisaki3/desktop-localization'
 

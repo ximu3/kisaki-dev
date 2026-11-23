@@ -1,26 +1,19 @@
-/** @fileoverview Defines independently saved notes and their explicit, separately ordered entry associations. */
-
-import type { EntryRef } from './catalog'
+import { membershipChangeSchema } from './membership'
 import type { PreparedAttachment } from '../resources'
 import type { ListOptions, CallOptions, ListResult, NonEmptyArray } from '../operations'
 import type { ReorderInput, MoveInput } from './ordering'
 import * as v from 'valibot'
 import { text, id, unique, parseValue, optionalFields, validateExpectedKeys } from '../validation'
-import { entryRefSchema, preparedSchema } from './catalog'
+import { entryRefSchema, preparedSchema, type EntryRef } from './catalog'
 import { DesktopError } from '../errors'
 
-/**
- * The independently saved article, title and cover of a note.
- *
- * Body whitespace and empty existing notes are preserved.
- */
+/** Body whitespace and empty saved notes are preserved. */
 export interface NoteFields {
   readonly title: string | null
   readonly content: string
   readonly primaryImageId: string | null
 }
 
-/** A saved note with stable identity and creation and update times. */
 export interface Note extends NoteFields {
   readonly id: string
   /** UTC milliseconds since the Unix epoch. */
@@ -29,7 +22,6 @@ export interface Note extends NoteFields {
   readonly updatedAt: number
 }
 
-/** Lightweight note display metadata and a body excerpt for listings. */
 export interface NoteSummary {
   readonly id: string
   readonly title: string | null
@@ -41,11 +33,7 @@ export interface NoteSummary {
   readonly updatedAt: number
 }
 
-/**
- * New note content, initial entry associations and prepared attachment holds.
- *
- * Creation requires a title, nonblank body or adopted cover.
- */
+/** Creation requires a title, nonblank body or adopted cover. */
 export interface NoteCreate {
   readonly title?: string | null
   readonly content?: string
@@ -55,9 +43,8 @@ export interface NoteCreate {
 }
 
 /**
- * Article-field changes and optional complete entry-association replacement.
- *
- * Expected entries compare this note's ordered side; unchanged associations are not compared.
+ * An entry baseline compares this note's whole ordered side for a replacement. Unchanged
+ * associations are outside the comparison.
  */
 export interface NoteUpdate {
   readonly changes: Partial<NoteFields> & { readonly entries?: readonly EntryRef[] }
@@ -65,7 +52,6 @@ export interface NoteUpdate {
   readonly prepared?: readonly PreparedAttachment[]
 }
 
-/** Search within the visible library, unassociated notes or one entry's associated notes. */
 export interface NoteQuery {
   readonly scope:
     | { readonly type: 'library' | 'unassociated' }
@@ -73,7 +59,6 @@ export interface NoteQuery {
   readonly search: string
 }
 
-/** Complete note-side entry replacement or disjoint incremental association changes. */
 export type NoteEntryChange =
   | { readonly type: 'replace'; readonly items: readonly EntryRef[] }
   | {
@@ -82,20 +67,17 @@ export type NoteEntryChange =
       readonly remove?: readonly EntryRef[]
     }
 
-/** A note side orders EntryRefs; an entry side orders note IDs. */
 export type NoteOrderScope =
   | { readonly type: 'note'; readonly noteId: string }
   | { readonly type: 'entry'; readonly entry: EntryRef }
 
-/** Note-entry membership and independently owned order on each association side. */
 export interface NoteEntriesApi {
   /** Lists associated entries in the note's saved order, independently of entry-side note order. */
   list(noteId: string, options: ListOptions, call?: CallOptions): Promise<ListResult<EntryRef>>
 
   /**
-   * Compares and changes the note's ordered association side atomically.
-   *
-   * Removing an association preserves its entry.
+   * Changes the note's ordered side in one transaction. Removed associations leave their entries
+   * intact.
    */
   applyChanges(
     noteId: string,
@@ -113,10 +95,8 @@ export interface NoteEntriesApi {
 }
 
 /**
- * Independent saved notes and their explicit entry associations.
- *
- * New notes require meaningful content; editor opening and association choices alone create no
- * record.
+ * Creation requires meaningful note content. Opening an editor and choosing associations alone
+ * create no record.
  */
 export interface NotesApi {
   /**
@@ -135,9 +115,8 @@ export interface NotesApi {
   create(input: NoteCreate, call?: CallOptions): Promise<string>
 
   /**
-   * Compares and commits article changes and any complete association replacement.
-   *
-   * An existing note may be cleared and remain valid.
+   * An existing note can be cleared and remain valid. Submitted article fields and association
+   * changes commit together.
    */
   update(id: string, input: NoteUpdate, call?: CallOptions): Promise<void>
 
@@ -150,7 +129,6 @@ export interface NotesApi {
   readonly entries: NoteEntriesApi
 }
 
-/** Editable independent note content, optional image and blank-normalized title. */
 const noteFields = {
   title: v.pipe(
     v.nullable(text),
@@ -160,19 +138,16 @@ const noteFields = {
   primaryImageId: v.nullable(id),
 }
 
-/** Encodes an entry's kind and identity for association comparison. */
 const entryKey = (ref: EntryRef): string => JSON.stringify([ref.type, ref.id])
 
-/** Distinct typed entry links supplied for one note. */
 const entries = v.pipe(
   v.array(entryRefSchema),
   v.check((refs) => unique(refs, entryKey)),
 )
 
 /**
- * Parses meaningful new-note input without trimming body content.
- *
- * Association choices alone do not satisfy the content requirement.
+ * Preserves body whitespace. An article needs meaningful content even when associations are
+ * supplied.
  */
 export function parseNoteCreate(input: unknown): NoteCreate {
   const value = parseValue(
@@ -191,9 +166,6 @@ export function parseNoteCreate(input: unknown): NoteCreate {
   return value
 }
 
-/**
- * Parses note changes and expected values for the submitted save units, allowing content clearing.
- */
 export function parseNoteUpdate(input: unknown): NoteUpdate {
   const fields = v.strictObject(optionalFields({ ...noteFields, entries }))
   const value = parseValue(
@@ -225,29 +197,11 @@ export function parseNoteQuery(input: unknown): NoteQuery {
 }
 
 /**
- * Parses complete or incremental note-side membership intent.
- *
  * Rejects empty incremental requests, duplicate identities and overlapping additions and removals.
  */
 export function parseNoteEntryChange(input: unknown): NoteEntryChange {
   return parseValue(
-    v.union([
-      v.strictObject({ type: v.literal('replace'), items: entries }),
-      v.pipe(
-        v.strictObject({
-          type: v.literal('modify'),
-          add: v.exactOptional(entries),
-          remove: v.exactOptional(entries),
-        }),
-        v.check(
-          (value) =>
-            (value.add?.length ?? 0) + (value.remove?.length ?? 0) > 0 &&
-            !(value.add ?? []).some((ref) =>
-              value.remove?.some((removed) => entryKey(ref) === entryKey(removed)),
-            ),
-        ),
-      ),
-    ]),
+    membershipChangeSchema(entryRefSchema, entryRefSchema, (entry) => entry, entryKey),
     input,
     'Invalid note entry associations',
   )

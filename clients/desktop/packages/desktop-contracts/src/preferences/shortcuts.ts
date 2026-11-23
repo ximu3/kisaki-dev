@@ -1,6 +1,4 @@
-/** @fileoverview Owns the fixed shortcut identities, Electron accelerator syntax and platform conflict checks. */
-
-import { parseValue, nonemptyText } from '../validation'
+import { fromParser, parseValue, nonemptyText } from '../validation'
 import { DesktopError } from '../errors'
 import * as v from 'valibot'
 
@@ -44,16 +42,12 @@ export const shortcutKeys = Object.freeze([
   'game.viewWork',
 ] as const)
 
-/** Stable native action identity within a desktop shortcut scope. */
 export type ShortcutKey = (typeof shortcutKeys)[number]
 
-/** Complete saved accelerator lists for the native action catalog. An empty list leaves the action unbound. */
 export type ShortcutsPreferences = Readonly<Record<ShortcutKey, readonly string[]>>
 
-/** Desktop operating-system identity used to interpret effective shortcut modifiers. */
 export type DesktopPlatform = 'win32' | 'darwin' | 'linux'
 
-/** Accepted modifier spellings mapped to their canonical Electron accelerator names. */
 const modifiers = new Map(
   Object.entries({
     cmd: 'Command',
@@ -71,7 +65,6 @@ const modifiers = new Map(
   }),
 )
 
-/** Stable modifier order used when encoding equivalent accelerator spellings. */
 const modifierOrder = [
   'CommandOrControl',
   'Command',
@@ -83,7 +76,6 @@ const modifierOrder = [
   'Super',
 ]
 
-/** Named non-modifier keys accepted by the Electron accelerator contract. */
 const keyNames = [
   'Plus',
   'Space',
@@ -124,7 +116,6 @@ const keyNames = [
   'numdiv',
 ]
 
-/** Case-insensitive lookup retaining each accepted named key's canonical spelling. */
 const keys = new Map(keyNames.map((key) => [key.toLowerCase(), key]))
 
 keys.set('enter', 'Return')
@@ -170,7 +161,7 @@ export function parseAccelerator(input: unknown): string {
 export function parseShortcutAccelerators(input: unknown): readonly string[] {
   return parseValue(
     v.pipe(
-      v.array(v.pipe(v.unknown(), v.transform(parseAccelerator))),
+      v.array(fromParser(parseAccelerator)),
       v.transform((values) => [...new Set(values)]),
     ),
     input,
@@ -239,10 +230,8 @@ export function acceleratorIdentity(accelerator: string, platform: DesktopPlatfo
 }
 
 /**
- * Finds identical effective combinations in potentially overlapping scopes.
- *
- * Checks include game actions even when no game is active. Actual operating-system and
- * keyboard-layout registration remains a runtime result.
+ * Checks effective accelerator collisions in overlapping scopes, including inactive game actions.
+ * OS registration is checked at runtime.
  */
 export function findShortcutConflicts(
   preferences: ShortcutsPreferences,

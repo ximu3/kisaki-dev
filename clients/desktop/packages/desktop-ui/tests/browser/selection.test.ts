@@ -1,5 +1,3 @@
-/** @fileoverview Exercises logical selection, editable queries and virtual navigation in Chromium. */
-
 import { expect } from 'vite-plus/test'
 import { expect as browserExpect } from '@playwright/test'
 import { test } from './page'

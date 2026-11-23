@@ -1,5 +1,3 @@
-/** @fileoverview Owns the task-center scopes, history invalidation and nested operations. */
-
 import { createSignal, For, onCleanup, Show } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
 import { RefreshCw, Trash2 } from '@lucide/solid'
@@ -23,7 +21,8 @@ import { TaskDetails } from './details'
 import { TaskFilters } from './filters'
 import { createTaskQuery } from './query'
 
-/** Active execution and durable terminal history use disjoint status sets. */
+const finishedStatuses = taskRunStatuses.filter(isTaskTerminal)
+
 const scopes = [
   {
     id: 'active',
@@ -33,7 +32,7 @@ const scopes = [
   {
     id: 'finished',
     label: 'runtime.finishedTasks',
-    statuses: taskRunStatuses.filter(isTaskTerminal),
+    statuses: finishedStatuses,
   },
 ] as const
 
@@ -46,7 +45,7 @@ export function TaskCenter(props: {
   const { api } = props
   const [revision, setRevision] = createSignal(0)
   const history = createQuery((signal) =>
-    api.request(signal, 'tasks.list', { statuses: scopes[1].statuses }, { offset: 0, limit: 1 }),
+    api.request(signal, 'tasks.list', { statuses: finishedStatuses }, { offset: 0, limit: 1 }),
   )
   const types = createQuery((signal) => api.request(signal, 'tasks.types'))
   const hasFinished = () => !history.error && !!history.value?.total

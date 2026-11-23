@@ -1,5 +1,3 @@
-/** @fileoverview Shared popup rows, selected marks and virtual scrolling handoff. */
-
 import { createEffect, createMemo, createSignal, For, onSettled, Show } from 'solid-js'
 import type { Accessor } from 'solid-js'
 import type { JSX } from '@solidjs/web'
@@ -7,11 +5,9 @@ import { Icon, Check } from '../../internal/icon/glyph'
 import { createPopup } from '../../internal/popup/controller'
 import { displayedWhileOpen } from '../../internal/popup/presentation'
 import type { SelectionPopup } from './popup'
-import { optionId } from './collection'
-import type { SelectionCollection } from './collection'
+import { optionId, type SelectionCollection } from './collection'
 import type { SelectionListProps, SelectionOption } from './types'
-import { ComboboxSearch } from './search'
-import type { SearchState } from './search'
+import { ComboboxSearch, type SearchState } from './search'
 import { createVirtualChoices, type OptionGroup } from './virtual'
 import frame from '../../internal/popup/surface.module.css'
 import row from '../../internal/list-row.module.css'
@@ -133,10 +129,6 @@ export function SelectionList<O extends SelectionOption>(props: ListProps<O>): J
     },
   )
 
-  /**
-   * Renders a stable option identity with logical position, selection state and enabled pointer
-   * actions.
-   */
   const renderOption = (option: O) => (
     <div
       id={optionId(id, option.value)}

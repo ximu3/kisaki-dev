@@ -1,14 +1,9 @@
-/** @fileoverview Defines desktop test projects and tasks for development, builds, verification and cleanup. */
-
 import { configDefaults, defineConfig } from 'vite-plus'
 
-/** Development tests that require a live renderer and an Electron process. */
 const developmentTests = ['tests/tools/dev/session.test.ts', 'tests/integration/source.test.ts']
 
-/** Public workspace dependencies are consumed through their built entry points. */
 const dependencyBuilds = { task: 'build', from: 'dependencies' } as const
 
-/** Checks the archive identified by the caller's receipt or the current target's default receipt. */
 const verifyArtifacts =
   'vp test run --project artifacts --no-file-parallelism --reporter=default --reporter=json --outputFile.json=test-results/artifacts/results.json'
 

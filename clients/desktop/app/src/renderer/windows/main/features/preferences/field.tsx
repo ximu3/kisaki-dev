@@ -1,5 +1,3 @@
-/** @fileoverview Names each preference and restores its own draft value to the product default. */
-
 import { createContext, Show, useContext, type ParentProps } from 'solid-js'
 import { RotateCcw } from '@lucide/solid'
 import type { PreferenceKey } from '@kisaki3/desktop-contracts/preferences'
@@ -15,10 +13,8 @@ import {
 import { Tooltip, TooltipTrigger, TooltipContent } from '@kisaki3/desktop-ui/tooltip'
 import type { PreferenceFields } from './draft'
 
-/** The surrounding preference editor owns the draft and translator for its fields. */
 export const PreferenceFieldsContext = createContext<{ draft: PreferenceFields; t: Translate }>()
 
-/** Finds the field's control, including compound fields that have several focusable parts. */
 export function focusPreferenceField(panel: HTMLElement, key: string) {
   const field = panel.querySelector<HTMLElement>('[data-field-key="' + CSS.escape(key) + '"]')
   if (field) {
@@ -42,7 +38,6 @@ export function focusPreferenceValue(field: HTMLElement) {
   target.scrollIntoView({ block: 'nearest' })
 }
 
-/** Places the reset action beside the field label and restores focus to the editable value. */
 export function PreferenceField(
   props: ParentProps<{
     field: PreferenceKey

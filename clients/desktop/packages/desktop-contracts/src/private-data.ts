@@ -1,25 +1,16 @@
-/** @fileoverview Defines extension-owned private JSON and protected secret storage with per-key atomic comparisons. */
-
-import type { JsonValue } from './json'
 import type { CallOptions, KeyedResult } from './operations'
 import * as v from 'valibot'
-import { nonemptyText, id, unique, text, parseValue } from './validation'
-import { parseJsonValue } from './json'
+import { fromParser, nonemptyText, id, unique, text, parseValue } from './validation'
+import { parseJsonValue, type JsonValue } from './json'
 import { DesktopError } from './errors'
 
-/**
- * Private value and revision obtained from one read.
- *
- * Null outside this snapshot means absence; a stored JSON null remains present.
- */
+/** Null outside this snapshot means absence; a stored JSON null remains present. */
 export interface PrivateValue<T> {
   readonly value: T
   readonly revision: string
 }
 
 /**
- * Optional per-key revision precondition.
- *
  * Omission permits an unconditional write, null requires absence, and a string requires that exact
  * revision.
  */
@@ -44,11 +35,7 @@ type SubmittedMutations<Items> = Items extends readonly (infer Mutation)[]
   ? Extract<Mutation, PrivateMutation<JsonValue>>
   : never
 
-/**
- * Post-commit revisions for the submitted keys in each store.
- *
- * Sets receive fresh revisions; deleted or absent keys return null. Unrelated keys are omitted.
- */
+/** Sets receive fresh revisions; deleted or absent keys return null. Unrelated keys are omitted. */
 export interface PrivateCommitResult<I extends PrivateCommit = PrivateCommit> {
   readonly values: KeyedResult<
     I['values'],
@@ -94,8 +81,6 @@ export interface PrivateValuesApi {
 }
 
 /**
- * Protected secret storage scoped to the actual extension owner.
- *
  * Only its owning Node instance can read plaintext. Presence and revision reads do not decrypt or
  * establish remote authentication validity.
  */
@@ -110,11 +95,7 @@ export interface PrivateSecretsApi {
   /** Reads secret presence and revision without decrypting its value. */
   getState(key: string, call?: CallOptions): Promise<{ readonly revision: string } | null>
 
-  /**
-   * Protects and durably commits a secret after its optional revision comparison.
-   *
-   * Protection failure preserves the old ciphertext.
-   */
+  /** Protection failure preserves the old ciphertext. */
   set(
     key: string,
     value: string,
@@ -122,11 +103,7 @@ export interface PrivateSecretsApi {
     call?: CallOptions,
   ): Promise<{ readonly revision: string }>
 
-  /**
-   * Deletes an owned secret after its optional revision comparison.
-   *
-   * Remote-provider credentials remain unaffected.
-   */
+  /** Remote-provider credentials remain unaffected. */
   delete(key: string, options?: PrivateWriteOptions, call?: CallOptions): Promise<void>
 }
 
@@ -153,7 +130,6 @@ export interface PrivateStorageApi {
  * caller.
  */
 export function parsePrivateCommit(input: unknown): PrivateCommit {
-  /** Creates set and delete schemas sharing a key and optional revision precondition. */
   const mutation = <T extends v.GenericSchema>(value: T) =>
     v.variant('type', [
       v.strictObject({
@@ -170,7 +146,7 @@ export function parsePrivateCommit(input: unknown): PrivateCommit {
     ])
 
   const values = v.pipe(
-    v.array(mutation(v.pipe(v.unknown(), v.transform(parseJsonValue)))),
+    v.array(mutation(fromParser(parseJsonValue))),
     v.check((items) => unique(items, (item) => item.key)),
   )
   const secrets = v.pipe(

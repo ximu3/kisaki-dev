@@ -1,5 +1,3 @@
-/** @fileoverview Owns user font records and atomically adopts their final immutable file sets. */
-
 import { count, eq, sql } from 'drizzle-orm'
 import { randomUUID } from 'node:crypto'
 import { isDeepStrictEqual } from 'node:util'
@@ -100,17 +98,19 @@ export function fontStorage({ db }: Storage) {
           adoptNewFont(tx, { id: created, name: name!, files: files!, attachments: prepared })
           return { font: readFont(tx, created)!, released: [] as string[] }
         }
-        const original = id ? readFont(tx, id) : null
-        if (id && !original) {
+
+        const original = readFont(tx, id)
+        if (!original) {
           throw new DesktopError('NotFound', 'The font does not exist')
         }
+
         if (
-          (expected?.name !== undefined && expected.name !== original?.name) ||
-          (expected?.files && !isDeepStrictEqual(expected.files, original?.files))
+          (expected?.name !== undefined && expected.name !== original.name) ||
+          (expected?.files && !isDeepStrictEqual(expected.files, original.files))
         ) {
           throw new DesktopError('Conflict', 'The font was changed')
         }
-        const fontId = id
+
         const now = Date.now()
         tx.update(fonts)
           .set({ ...(name !== undefined && { name }), updatedAt: now })
@@ -122,7 +122,7 @@ export function fontStorage({ db }: Storage) {
             files.some(
               (file) =>
                 !additions.has(file.attachmentId) &&
-                !original?.files.some((old) => old.attachmentId === file.attachmentId),
+                !original.files.some((old) => old.attachmentId === file.attachmentId),
             )
           ) {
             throw new DesktopError(
@@ -131,13 +131,14 @@ export function fontStorage({ db }: Storage) {
             )
           }
           adoptAttachments(tx, prepared)
-          replaceFiles(tx, fontId, files)
+          replaceFiles(tx, id, files)
         }
-        const font = readFont(tx, fontId)!
+
+        const font = readFont(tx, id)!
         const retained = new Set(font.files.map((file) => file.attachmentId))
         return {
           font,
-          released: original!.files
+          released: original.files
             .map((file) => file.attachmentId)
             .filter((key) => !retained.has(key)),
         }

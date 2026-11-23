@@ -1,5 +1,3 @@
-/** @fileoverview Declares the public desktop contract entries and verifies the generated icon names. */
-
 import { defineLibrary } from '@kisaki3/config/vite/library'
 
 export default defineLibrary({

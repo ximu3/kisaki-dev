@@ -1,16 +1,16 @@
-/** @fileoverview Defines permitted query ordering and validates sort applicability. */
-
-import type { PartCountScope, PartCountMeasure } from './conditions'
-import type { EntryType } from '../catalog'
 import { parseValue } from '../../validation'
 import * as v from 'valibot'
-import { partCountScopeSchema, partMeasure } from './conditions'
-import { entryTypes } from '../catalog'
+import {
+  partCountScopeSchema,
+  partMeasure,
+  type PartCountScope,
+  type PartCountMeasure,
+} from './conditions'
+import { entryTypes, type EntryType } from '../catalog'
 import { partWorkType } from '../parts'
 import { entryFieldTypes } from './fields'
 import { DesktopError } from '../../errors'
 
-/** Scalar fact supported as an entry sort key. */
 export type EntrySortField =
   | 'name'
   | 'originalName'
@@ -48,11 +48,7 @@ export type EntrySortField =
   | 'accessibleFileCount'
   | 'uncheckedFileCount'
 
-/**
- * Entry ordering inherited from the scope or specified by a scalar field or part count.
- *
- * Null values remain last in either direction, and identity tie-breaks remain ascending.
- */
+/** Null values sort last in either direction. Identity tie-breaks are always ascending. */
 export type EntrySort =
   | { readonly type: 'scope' }
   | { readonly type: 'field'; readonly field: EntrySortField; readonly direction: 'asc' | 'desc' }
@@ -63,7 +59,6 @@ export type EntrySort =
       readonly direction: 'asc' | 'desc'
     }
 
-/** The entire sortable scalar catalog; boolean, enum and arbitrary collection encodings have no sort meaning. */
 export const entrySortFields: readonly EntrySortField[] = Object.freeze([
   'name',
   'originalName',
@@ -103,9 +98,8 @@ export const entrySortFields: readonly EntrySortField[] = Object.freeze([
 ])
 
 /**
- * Parses an ordering and checks its applicability to every supplied entry type.
- *
- * An empty type list still requires a valid ordering shape.
+ * Ordering must apply to every supplied type. An empty type list still requires a valid ordering
+ * shape.
  */
 export function parseEntrySort(input: unknown, types: readonly EntryType[] = []): EntrySort {
   const sort = parseValue(

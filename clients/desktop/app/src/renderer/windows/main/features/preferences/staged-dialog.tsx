@@ -1,5 +1,3 @@
-/** @fileoverview Presents a draft branch in its own form and applies it to preferences on confirmation. */
-
 import { createMemo, onSettled, Show } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import type { Translate } from '@kisaki3/desktop-localization'
@@ -17,34 +15,27 @@ import { createForm, Form, FormFeedback, type FormState } from '@kisaki3/desktop
 import type { PreferenceStage } from './draft'
 import { focusPreferenceField, PreferenceFieldsContext } from './field'
 
-/** One opening of a draft branch and its optional field to reveal. */
 export interface StagedPreferenceEdit {
   draft: PreferenceStage
   field?: string | undefined
+  size: NonNullable<DialogContentProps['size']>
+  title: () => string
+  fields: () => JSX.Element
 }
 
-/** Supplies the content and lifecycle of the currently staged preference form. */
-interface StagedDialogProps<Edit extends StagedPreferenceEdit> {
+interface StagedDialogProps {
   t: Translate
-  edit: Edit | undefined
-  title: (edit: Edit) => string
-  size: (edit: Edit) => NonNullable<DialogContentProps['size']>
+  edit: StagedPreferenceEdit | undefined
   bind: (form: FormState) => void
   close: () => void
-  fields: (edit: Edit) => JSX.Element
 }
 
-/** Shows a staged form as a sibling of the parent form and retains its content through exit. */
-export function StagedPreferenceDialog<Edit extends StagedPreferenceEdit>(
-  props: StagedDialogProps<Edit>,
-) {
-  const size = createMemo<NonNullable<DialogContentProps['size']>>((last = 'md') =>
-    props.edit ? props.size(props.edit) : last,
-  )
+export function StagedPreferenceDialog(props: StagedDialogProps) {
+  const size = createMemo<StagedPreferenceEdit['size']>((last = 'md') => props.edit?.size ?? last)
 
   function Content() {
     // DialogContent owns this memo's lifetime, including the outgoing transition.
-    const displayed = createMemo<Edit | undefined>((last) => props.edit ?? last)
+    const displayed = createMemo<StagedPreferenceEdit | undefined>((last) => props.edit ?? last)
     return (
       <Show when={displayed()} keyed>
         {(edit) => <StagedPreferenceForm {...props} edit={edit} />}
@@ -74,10 +65,7 @@ export function StagedPreferenceDialog<Edit extends StagedPreferenceEdit>(
   )
 }
 
-/** Validates and applies one staged branch before returning to the parent form. */
-function StagedPreferenceForm<Edit extends StagedPreferenceEdit>(
-  props: StagedDialogProps<Edit> & { edit: Edit },
-) {
+function StagedPreferenceForm(props: StagedDialogProps & { edit: StagedPreferenceEdit }) {
   const { edit, t } = props
   const { draft } = edit
   let body!: HTMLDivElement
@@ -103,7 +91,7 @@ function StagedPreferenceForm<Edit extends StagedPreferenceEdit>(
   return (
     <>
       <DialogHeader closeLabel={t('actions.close')}>
-        <DialogTitle>{props.title(edit)}</DialogTitle>
+        <DialogTitle>{edit.title()}</DialogTitle>
       </DialogHeader>
       <Form state={form}>
         <DialogBody
@@ -111,9 +99,7 @@ function StagedPreferenceForm<Edit extends StagedPreferenceEdit>(
             body = element
           }}
         >
-          <PreferenceFieldsContext value={{ draft, t }}>
-            {props.fields(edit)}
-          </PreferenceFieldsContext>
+          <PreferenceFieldsContext value={{ draft, t }}>{edit.fields()}</PreferenceFieldsContext>
         </DialogBody>
 
         <DialogFooter>

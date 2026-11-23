@@ -1,5 +1,3 @@
-/** @fileoverview Presents the current data location and the portable start settings as fields. */
-
 import { createSignal, Show } from 'solid-js'
 import type { DataLocationState, DataModeChange } from '@kisaki3/desktop-contracts/app'
 import { Field, FieldContent, FieldDescription, FieldLabel } from '@kisaki3/desktop-ui/field'
@@ -60,7 +58,6 @@ export function DataLocation(props: {
                     class="w-48 max-w-full"
                     disabled={props.busy}
                     value={target()}
-                    defaultValue="existing"
                     options={[
                       { value: 'existing', label: api.t('runtime.existing') },
                       { value: 'empty', label: api.t('runtime.emptyDirectory') },

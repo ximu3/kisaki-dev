@@ -1,5 +1,3 @@
-/** @fileoverview Editable Electron program for source rebuild, HMR and cancellable-stop checks. */
-
 import { app, BrowserWindow, ipcMain, protocol, utilityProcess } from 'electron'
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
@@ -8,31 +6,25 @@ import { fileURLToPath } from 'node:url'
 import { debuglog } from 'node:util'
 import { isAbsoluteHostPath } from '#host-path'
 
-/** Opt-in diagnostics for the fixture window and utility-process lifetime. */
 const debug = debuglog('kisaki:fixture')
 
-/** Reads a named --key=value argument from the fixture command line. */
 const argument = (name: string) =>
   process.argv.find((value) => value.startsWith(`--${name}=`))?.slice(name.length + 3)
 
-/** Explicit isolated data directory supplied by the test or development-session owner. */
 const profile = argument('profile')
 if (!profile || !isAbsoluteHostPath(profile)) {
   throw new Error('The engineering fixture requires an explicit isolated profile')
 }
 
-/** The requested fixture window entry, defaulting to the main window. */
 const kind = argument('window') ?? 'main'
 if (!['main', 'reader', 'player', 'game-panel'].includes(kind)) {
   throw new Error('Unknown fixture entry')
 }
 
-/** The current compiled runtime root in development or inside the packaged application. */
 const runtime = app.isPackaged
   ? app.getAppPath()
   : resolve(dirname(fileURLToPath(import.meta.url)), '..')
 
-/** Browser state kept below the test-owned profile and separate from library data. */
 const browser = join(profile, 'browser')
 mkdirSync(browser, { recursive: true })
 app.setPath('userData', profile)
@@ -43,12 +35,6 @@ protocol.registerSchemesAsPrivileged([
   { scheme: 'fixture', privileges: { standard: true, secure: true, supportFetchAPI: true } },
 ])
 
-/**
- * Starts the fixture's utility process and selected sandboxed window.
- *
- * After loading the renderer, shows the window and notifies a connected parent of the build
- * identity.
- */
 async function runFixture(): Promise<void> {
   await app.whenReady()
   ipcMain.handle('fixture:ping', () => true)
@@ -135,7 +121,6 @@ async function runFixture(): Promise<void> {
 
   let canQuit = false
 
-  /** Requests a normal, cancellable close of the fixture window. */
   function closeWindow(): void {
     debug('Closing window: destroyed=%s', window.isDestroyed())
     if (!window.isDestroyed()) {

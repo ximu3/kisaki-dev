@@ -1,5 +1,3 @@
-/** @fileoverview Inspects an installed theme's actual light and dark palettes. */
-
 import { createMemo, Show } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
 import type { ThemeRef } from '@kisaki3/desktop-contracts/appearance'

@@ -1,5 +1,3 @@
-/** @fileoverview Publishes text, search, numeric, date, color and shortcut input controls. */
-
 export { Input, type InputProps } from './control'
 export { SearchInput, type SearchInputProps } from './search/control'
 export { NumberInput, type NumberInputProps } from './number/control'

@@ -1,16 +1,3 @@
-/** @fileoverview Declares complete entry reads and writes, independent personal edits and fixed identity operations. */
-
-import type {
-  Evaluation,
-  WorkStatus,
-  EntryType,
-  EntryRef,
-  EntryDetails,
-  ExternalIdentity,
-  EntryCreate,
-  EntryUpdate,
-  WorkRef,
-} from './catalog'
 import type { NonEmptyArray, CallOptions } from '../operations'
 import type { EntryQuery } from './query/definition'
 import type {
@@ -23,6 +10,7 @@ import type {
 import type { EntrySelection } from './query/selection'
 import * as v from 'valibot'
 import {
+  fromParser,
   optionalFields,
   parseValue,
   validateExpectedKeys,
@@ -42,56 +30,46 @@ import {
   isWorkType,
   recordEntries,
   calendarDateSchema,
+  type Evaluation,
+  type WorkStatus,
+  type EntryType,
+  type EntryRef,
+  type EntryDetails,
+  type ExternalIdentity,
+  type EntryCreate,
+  type EntryUpdate,
+  type WorkRef,
 } from './catalog'
 import { DesktopError } from '../errors'
 
-/** Independent personal rating or favorite changes with matching expected values. */
 export interface EvaluationUpdate {
   readonly changes: Partial<Evaluation>
   readonly expected?: Partial<Evaluation>
 }
 
-/**
- * An explicit current-status selection or clearing, with an optional original-status comparison.
- */
 export interface WorkStatusUpdate {
   readonly status: WorkStatus | null
   readonly expected?: { readonly status: WorkStatus | null }
 }
 
-/** Explicit same-kind source identities and the chosen merge survivor. */
 export type EntryMergeInput = {
   [K in EntryType]: { readonly sources: NonEmptyArray<EntryRef<K>>; readonly target: EntryRef<K> }
 }[EntryType]
 
-/** Visible entry queries, atomic catalog edits and explicit identity bindings. */
 export interface EntriesApi {
-  /**
-   * Reads an interval of the complete visible query with the requested projections.
-   *
-   * Count and rows share the same read.
-   */
+  /** The total and interval rows come from the same read. */
   list(query: EntryQuery, options: EntryListOptions, call?: CallOptions): Promise<EntryListResult>
 
   /**
-   * Reads a visible entry's saved details, or null when it is absent from the visible scope.
-   *
-   * The read neither opens content nor acquires attachments.
+   * Returns null outside the visible scope. A details read leaves content closed and acquires no
+   * attachment hold.
    */
   get<T extends EntryType>(ref: EntryRef<T>, call?: CallOptions): Promise<EntryDetails<T> | null>
 
-  /**
-   * Reads saved Markdown separately from ordinary entry details.
-   *
-   * No visible match or an empty body returns null.
-   */
+  /** Returns null when the entry is hidden, missing or has an empty Markdown body. */
   getDescription(ref: EntryRef, call?: CallOptions): Promise<string | null>
 
-  /**
-   * Locates a visible matching entry in the query's current order.
-   *
-   * An absent or nonmatching target returns null.
-   */
+  /** Returns null if the target is absent or falls outside the current query. */
   locate(
     query: EntryQuery,
     target: EntryRef,
@@ -107,9 +85,8 @@ export interface EntriesApi {
   ): Promise<EntryGroupsResult>
 
   /**
-   * Resolves a fixed, deduplicated selection in one read.
-   *
-   * Changed endpoints or crossed groups fail with SelectionChanged.
+   * Changed endpoints or crossed groups fail with SelectionChanged. The selection otherwise
+   * reflects one read and deduplicates identities.
    */
   selectRefs(
     query: EntryQuery,
@@ -118,23 +95,17 @@ export interface EntriesApi {
   ): Promise<readonly EntryRef[]>
 
   /**
-   * Finds a visible entry by exact external identity.
-   *
-   * A null result does not establish that the identity is available for binding.
+   * Looks up the exact identity in the visible scope. Hidden bindings can still prevent a new
+   * binding.
    */
   findByExternalIdentity(identity: ExternalIdentity, call?: CallOptions): Promise<EntryRef | null>
 
-  /**
-   * Commits the entry, initial personal values and adopted attachments together.
-   *
-   * Returns the entry's stable typed identity.
-   */
+  /** The entry, initial personal values and adopted attachments commit together. */
   create<I extends EntryCreate>(input: I, call?: CallOptions): Promise<EntryRef<I['type']>>
 
   /**
-   * Compares and commits submitted fields and their actual related references.
-   *
-   * Unrelated fields do not form a whole-row lock.
+   * The write compares submitted fields and their related references independently of unrelated
+   * fields.
    */
   update(
     ...args: {
@@ -142,11 +113,7 @@ export interface EntriesApi {
     }[EntryType]
   ): Promise<void>
 
-  /**
-   * Commits a fixed edit batch atomically.
-   *
-   * A missing target or failed baseline rejects the complete batch.
-   */
+  /** A missing target or failed baseline rejects the entire edit batch. */
   updateMany(input: NonEmptyArray<EntryUpdate>, call?: CallOptions): Promise<void>
 
   /** Compares and saves submitted rating or favorite fields independently of work status. */
@@ -158,9 +125,8 @@ export interface EntriesApi {
   setWorkStatus(work: WorkRef, input: WorkStatusUpdate, call?: CallOptions): Promise<void>
 
   /**
-   * Binds an exact external identity after a complete uniqueness check, including hidden records.
-   *
-   * Binding does not merge entries.
+   * Uniqueness checks include hidden records. Merging entries requires the explicit merge
+   * operation.
    */
   bindExternalIdentity(ref: EntryRef, identity: ExternalIdentity, call?: CallOptions): Promise<void>
 
@@ -172,7 +138,6 @@ export interface EntriesApi {
   ): Promise<void>
 }
 
-/** Parses independent evaluation changes and matching expected fields. */
 export function parseEvaluationUpdate(input: unknown): EvaluationUpdate {
   const fields = v.strictObject(optionalFields(evaluationEntries))
   const value = parseValue(
@@ -184,7 +149,6 @@ export function parseEvaluationUpdate(input: unknown): EvaluationUpdate {
   return value
 }
 
-/** Parses the requested current status and optional original-status comparison. */
 export function parseWorkStatusUpdate(input: unknown): WorkStatusUpdate {
   return parseValue(
     v.strictObject({
@@ -198,7 +162,7 @@ export function parseWorkStatusUpdate(input: unknown): WorkStatusUpdate {
 
 /** Parses a nonempty batch and rejects repeated edits of the same entry identity. */
 export function parseEntryUpdates(input: unknown): NonEmptyArray<EntryUpdate> {
-  const item = v.pipe(v.unknown(), v.transform(parseEntryUpdate))
+  const item = fromParser(parseEntryUpdate)
   return parseValue(
     v.pipe(
       v.tupleWithRest([item], item),
@@ -210,9 +174,8 @@ export function parseEntryUpdates(input: unknown): NonEmptyArray<EntryUpdate> {
 }
 
 /**
- * Parses distinct same-kind merge sources and a separate survivor.
- *
- * The write owner checks existence, occupancy, external-identity uniqueness and merge rules.
+ * Requires distinct same-kind sources and a separate survivor. The write owner checks existence,
+ * occupancy, external-identity uniqueness and merge rules.
  */
 export function parseEntryMergeInput(input: unknown): EntryMergeInput {
   const value = parseValue(
@@ -240,7 +203,6 @@ export function parseEntryMergeInput(input: unknown): EntryMergeInput {
   return value as EntryMergeInput
 }
 
-/** Parses complete detail fields and derived summaries for the selected entry kind. */
 export function parseEntryDetails(input: unknown): EntryDetails {
   const { type } = parseValue(
     v.looseObject({ type: v.picklist(entryTypes) }),

@@ -1,5 +1,3 @@
-/** @fileoverview Verifies target and runtime compatibility independently of registry release selection. */
-
 import { expect, test } from 'vite-plus/test'
 import { getCompatibilityIssues, targetForPlatform } from './compatibility'
 import type { CompatibilityEnvironment } from './compatibility'

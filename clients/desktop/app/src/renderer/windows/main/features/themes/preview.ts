@@ -1,5 +1,3 @@
-/** @fileoverview Keeps the application's preview in step with one editor and releases late acquisitions. */
-
 import { createEffect, createSignal, onCleanup, type Accessor } from 'solid-js'
 import type { AppearancePreviewInput } from '@kisaki3/desktop-contracts/appearance'
 import type { MainClient } from '../../../../infrastructure/api'

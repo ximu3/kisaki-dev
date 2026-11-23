@@ -1,5 +1,3 @@
-/** @fileoverview Defines and validates canonical game-save archive manifests and logical tree encoding. */
-
 import type { NonEmptyArray } from '../../../operations'
 import * as v from 'valibot'
 import { text, nonnegativeInteger, parseValue } from '../../../validation'
@@ -12,10 +10,8 @@ import { sha256 } from '@noble/hashes/sha2.js'
 import { parseStrictJson } from '../../../json'
 
 /**
- * A file or directory in the logical backup tree, with an empty path for the root.
- *
- * Relative paths preserve source names. Extraction separately checks target-platform
- * representability.
+ * An empty path denotes the root. Relative paths preserve source names. Extraction checks
+ * target-platform representability.
  */
 export type GameBackupArchiveEntry =
   | { readonly path: string; readonly type: 'directory' }
@@ -26,7 +22,6 @@ export type GameBackupArchiveEntry =
       readonly sha256: string
     }
 
-/** A versioned logical archive tree with its canonical content digest. */
 export interface GameBackupArchiveManifest {
   readonly format: 'kisaki-game-save'
   readonly formatVersion: 1
@@ -34,11 +29,7 @@ export interface GameBackupArchiveManifest {
   readonly treeDigest: string
 }
 
-/**
- * A compact logical-tree row used for deterministic JSON encoding.
- *
- * The encoding is independent of ZIP member order, compression and timestamps.
- */
+/** Canonical JSON rows are independent of ZIP member order, compression and timestamps. */
 export type GameBackupTreeRow =
   | readonly [path: string, type: 'directory']
   | readonly [path: string, type: 'file', sizeBytes: number, sha256: string]
@@ -46,10 +37,6 @@ export type GameBackupTreeRow =
 /** Lowercase SHA-256 value used by canonical backup content identities. */
 export const digest = v.pipe(text, v.regex(/^[0-9a-f]{64}$/))
 
-/**
- * Logical content-tree path, including the empty root, checked before destination-filesystem
- * interpretation.
- */
 const archivePath = v.pipe(
   text,
   v.check(
@@ -62,7 +49,6 @@ const archivePath = v.pipe(
   ),
 )
 
-/** Directory identity or file identity with complete byte length and content digest. */
 const archiveEntry = v.variant('type', [
   v.strictObject({ path: archivePath, type: v.literal('directory') }),
   v.strictObject({
@@ -73,7 +59,6 @@ const archiveEntry = v.variant('type', [
   }),
 ])
 
-/** Checks unique paths, a single valid root and real directory parents for every child. */
 function validateTree(entries: readonly GameBackupArchiveEntry[]): void {
   const byPath = new Map(entries.map((entry) => [entry.path, entry]))
   const root = byPath.get('')
@@ -97,7 +82,6 @@ function validateTree(entries: readonly GameBackupArchiveEntry[]): void {
   }
 }
 
-/** Encodes an already validated and ordered tree as compact UTF-8 JSON rows. */
 function encodeOrderedTree(entries: readonly GameBackupArchiveEntry[]): Uint8Array {
   const rows: GameBackupTreeRow[] = entries.map((entry) =>
     entry.type === 'directory'
@@ -108,9 +92,8 @@ function encodeOrderedTree(entries: readonly GameBackupArchiveEntry[]): Uint8Arr
 }
 
 /**
- * Validates and encodes the complete tree as compact UTF-8 JSON ordered by exact path bytes.
- *
- * The output has no byte-order mark or final newline.
+ * Validates the complete tree and encodes compact UTF-8 JSON in exact path-byte order, with no
+ * byte-order mark or final newline.
  */
 export function encodeGameBackupTree(input: readonly GameBackupArchiveEntry[]): Uint8Array {
   const entries = parseValue(
@@ -123,19 +106,16 @@ export function encodeGameBackupTree(input: readonly GameBackupArchiveEntry[]): 
 }
 
 /**
- * Computes lowercase SHA-256 of the canonical logical tree.
- *
- * ZIP compression, member order, permissions and timestamps do not affect the digest.
+ * Digests the canonical tree as lowercase SHA-256. ZIP compression, member order, permissions and
+ * timestamps leave the digest unchanged.
  */
 export function gameBackupTreeDigest(entries: readonly GameBackupArchiveEntry[]): string {
   return bytesToHex(sha256(encodeGameBackupTree(entries)))
 }
 
 /**
- * Parses a version 1 archive manifest and verifies tree structure, order and digest.
- *
- * Unsupported format identities or versions throw UnsupportedBackupFormat. Invalid version 1
- * content throws DataIntegrityError.
+ * Unsupported identities and versions throw UnsupportedBackupFormat. Invalid version 1 tree
+ * structure, order or digest throws DataIntegrityError.
  */
 export function parseGameBackupArchiveManifest(input: unknown): GameBackupArchiveManifest {
   if (
@@ -178,11 +158,7 @@ export function parseGameBackupArchiveManifest(input: unknown): GameBackupArchiv
   }
 }
 
-/**
- * Parses strict archive JSON and validates the logical manifest.
- *
- * Malformed JSON, including duplicate decoded keys, is reported as DataIntegrityError.
- */
+/** Malformed JSON, including duplicate decoded keys, is reported as DataIntegrityError. */
 export function parseGameBackupArchiveJson(source: string): GameBackupArchiveManifest {
   let value: unknown
 

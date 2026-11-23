@@ -1,5 +1,3 @@
-/** @fileoverview Owns a serial SQLite worker and its ordered handoff of preferences and locale changes. */
-
 import { Worker } from 'node:worker_threads'
 import type { DatabaseOptions, Storage } from '../initialize'
 import type { UiLocale } from '@kisaki3/desktop-contracts/i18n'
@@ -108,7 +106,6 @@ export async function openDatabaseExecutor<Operations = never>(
   }
 
   return {
-    /** Executes an operation from the table installed by the application's worker entry. */
     call: ((name: string, ...args: unknown[]) =>
       request({ type: 'operation', name, args })) as DatabaseCall<Operations>,
     /** Resolves after the comparator and all name indexes have committed the effective language. */

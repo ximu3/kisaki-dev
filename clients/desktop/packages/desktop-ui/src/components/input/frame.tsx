@@ -1,8 +1,5 @@
-/** @fileoverview The shared field border contains the native editor and its independent action column. */
-
 import type { JSX } from '@solidjs/web'
 import type { ControlSize } from '../../internal/control/size'
-
 import surface from '../../internal/input-surface.module.css'
 import styles from './styles.module.css'
 

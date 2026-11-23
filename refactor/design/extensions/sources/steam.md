@@ -1,6 +1,6 @@
 # Steam 接入设计
 
-Steam 提供结构化商店资料、本人拥有库与愿望单导入，以及累计时长的明确采用。本文规定 App 范围、字段、图片、本人配置和完整导入流程。
+Steam 提供商店资料、拥有库和愿望单导入。用户可以另行核对平台累计时长并采用。
 
 <a id="scope"></a>
 
@@ -84,7 +84,7 @@ GetItems.assets 给出的文件名与 asset_url_format 是实际素材依据；�
 
 拥有库和愿望单分别读取并核对可访问范围。GetOwnedGames 使用 include_appinfo、include_played_free_games，显式限定不把家庭共享许可当本人拥有；API 的其他范围开关按其实际意义固定。默认拥有范围不扩展为全部免费游戏、短期访问或所有 App 许可。
 
-game_count=0 与缺失 count 分开。game_count=0 且没有 games 字段表示明确空结果，来源依据见[账号读取核验](../../../verification/evidence/game-sources/live-api.md)；response={}、认证失败、不可访问或数量不符不能伪装为空库。愿望单读取 GetWishlist，并与 GetWishlistItemCount 核对当前范围；平台同时变化时有界重读，仍不完整则报告，不能提交半份清单。
+game_count=0 且没有 games 字段表示明确空库。response={}、认证失败、不可访问或数量不符按实际状况报告。愿望单读取 GetWishlist，并与 GetWishlistItemCount 核对范围。清单变化时有界重读，仍不完整则结束本次导入并报告。[账号读取核验](../../../verification/evidence/game-sources/live-api.md)
 
 凭据只发送到确需认证的本人读取端点，不按同属 api.steampowered.com 就附加到公开商店请求，也不发到图片 CDN。保存、读取验证、普通设置重置、移除凭据和断开各自明确；断开停止后续本人读取及自动触发，不能影响已有本地资料。换账号不沿用旧清单缓存或自动导入设置。
 
@@ -138,15 +138,15 @@ playtime_forever 是来源累计分钟数，按精度乘以 60,000 转为毫秒�
 src/
 ├── node/
 │   ├── entry.ts
-│   ├── client/        # Store and Web API requests, parsing, pacing
-│   ├── metadata/      # Identity, names, fields, images
-│   ├── account/       # Configured identity and credential lifecycle
-│   ├── import/        # Current lists and native ingest operations
-│   ├── playtime/      # Explicit total comparison and adoption
+│   ├── client/
+│   ├── metadata/
+│   ├── account/
+│   ├── import/
+│   ├── playtime/
 │   ├── settings.ts
 │   └── ipc.ts
-├── webview/           # Metadata, Account, Import
-└── shared/            # Pure private contracts and validation
+├── webview/
+└── shared/
 ```
 
 client 内以 gateway.ts、store.ts、player.ts、validation.ts、types.ts 分责，分别承担传输、公开商店、本人记录与边界解析。业务文件使用 provider、identity、manager、mappers 等实际职责名，导入与时长采用由各自业务模块组织，通过本体既定操作提交。

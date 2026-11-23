@@ -1,6 +1,4 @@
-/** @fileoverview Creates the runtime owners in dependency order and retains them through accepted work and final release. */
-
-import { releaseAll } from '../infrastructure/release'
+import { releaseAll, rethrowAfterRelease } from '../infrastructure/release'
 import { session } from 'electron'
 import { join } from 'node:path'
 import type { NativeCapabilities } from '#native'
@@ -55,7 +53,6 @@ export async function compose(
   })
   void log.record('storage-open')
   const teardown: Array<() => void | Promise<void>> = [() => log.record('closed'), database.close]
-  /** Releases all acquired resources even when an individual cleanup fails. */
   async function release() {
     await releaseAll(teardown.splice(0).reverse())
   }
@@ -159,23 +156,17 @@ export async function compose(
       fonts,
       appearance,
       presentationDeadline: bindings.presentationDeadline,
-      /** Reads the latest preference snapshot adopted in this process. */
       get saved() {
         return bindings.saved
       },
       onUpdated: bindings.onUpdated,
-      /** Waits for queued preference and collation adoption. */
       settled: bindings.settled,
       release,
     }
   } catch (error) {
-    await log.record('failed', error)
-    try {
-      await release()
-    } catch (cleanup) {
-      throw new AggregateError([error, cleanup], 'Application startup and cleanup failed')
-    }
-    throw error
+    return rethrowAfterRelease(error, () =>
+      releaseAll([() => log.record('failed', error), release]),
+    )
   }
 }
 

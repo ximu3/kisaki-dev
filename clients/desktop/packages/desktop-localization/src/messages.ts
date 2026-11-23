@@ -1,5 +1,3 @@
-/** @fileoverview Derives ICU argument contracts and validates translations against an explicit source catalog. */
-
 import type { MessageCatalog } from '@kisaki3/desktop-contracts/i18n'
 import { parseMessageCatalog } from '@kisaki3/desktop-contracts/i18n'
 import type { MessageFormatElement } from '@formatjs/icu-messageformat-parser'
@@ -17,14 +15,11 @@ export type MessageArgumentKind = 'string' | 'number' | 'date'
  */
 export type MessageParameterContract = Readonly<Record<string, readonly MessageArgumentKind[]>>
 
-/** Message-key index of parameter contracts derived from an explicit source catalog. */
 export type MessageContracts = Readonly<Record<string, MessageParameterContract>>
 
-/** Indexes a parsed catalog's leaf strings by dot-separated paths. */
 export function flattenParsedCatalog(catalog: MessageCatalog): Readonly<Record<string, string>> {
   const result = new Map<string, string>()
 
-  /** Traverses one message group and records each leaf under its full key path. */
   function visit(group: MessageCatalog, prefix: string): void {
     for (const [key, child] of Object.entries(group)) {
       const path = prefix ? `${prefix}.${key}` : key
@@ -66,7 +61,6 @@ export function getMessageParameterContract(message: string): MessageParameterCo
 
   const parameters = new Map<string, readonly MessageArgumentKind[]>()
 
-  /** Visits ICU elements, validates number options and intersects repeated parameter uses. */
   function visit(elements: readonly MessageFormatElement[]): void {
     for (const element of elements) {
       if (element.type === TYPE.number && element.style) {
@@ -131,7 +125,6 @@ export function getMessageParameterContract(message: string): MessageParameterCo
   )
 }
 
-/** Builds matching indexes of source text and ICU parameter contracts. */
 export function indexMessageSource(source: MessageCatalog) {
   const messages = flattenMessages(source)
   const contracts: MessageContracts = Object.fromEntries(

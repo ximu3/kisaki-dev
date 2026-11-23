@@ -10,7 +10,7 @@
 
 按[来源键清单](../../design/extensions/providers.md#source-keys)核对各接入、跨站映射、导入器和链接示例。品牌拼写 vndb、igdb、tmdb 保留，MyAnimeList 使用 myanimelist，Fanart.tv 使用 fanarttv；月幕和 ISBN 分别保留 ymgal、isbn。上游 links.mal、metadata.vndbId、NFO type=tmdb 和原生编号保持原语法，适配结果使用规范键。
 
-跨站身份使用目标来源定义的同一 source 与资源语法。MangaDex 的 mal 链接与 Wikidata 的 MAL 陈述均产生 myanimelist / manga/<id>，能够由 MAL 提供者读取并复用同一正式绑定；不登记 mal 等缩写别名，也不按显示名称临时改写身份。逐项对照已支持跨站映射，类型或范围不符时保留原有冲突处理。
+跨站身份遵循目标来源的 `source` 与资源语法。MangaDex 的 `mal` 链接与 Wikidata 的 MAL 陈述均产生 `myanimelist / manga/<id>`，可由 MAL 提供者读取并复用同一正式绑定。数据库保留规范键与资源身份。逐项对照已支持的跨站映射，类型或范围不符时按所属合同处理冲突。
 
 A06、A16 和 A29 验证同一目标的完整来源身份集合：同一话的多个明确等价发布 UUID 可以同属一个 source 并绑定同一个 Part，代表身份变化不新建话；身份组分别命中两个目标时整项报告冲突，不丢弃身份或自动合并。只读取和换图不保存绑定，卷号与封面 ID 不伪造卷身份。MangaDex 同时核对编号重置、未编号组、按已读等价组写入以及不增加实际阅读历史。
 

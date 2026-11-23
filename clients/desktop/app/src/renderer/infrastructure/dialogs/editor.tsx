@@ -1,5 +1,3 @@
-/** @fileoverview Gives a catalog's item editor an independent native dialog and leave decision. */
-
 import { createEffect, createMemo, onCleanup, Show } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { Dialog, DialogContent, type DialogContentProps } from '@kisaki3/desktop-ui/dialog'

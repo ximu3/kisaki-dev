@@ -63,8 +63,8 @@ Annotation 保存针对四类作品实际内容的书签、选区、高亮、画
 
 ```ts
 type PlaybackAnnotationLocation =
-  | { type: 'position'; positionSeconds: number }
-  | { type: 'range'; startSeconds: number; endSeconds: number }
+  | { readonly type: 'position'; readonly positionSeconds: number }
+  | { readonly type: 'range'; readonly startSeconds: number; readonly endSeconds: number }
 ```
 
 所有时间值必须是有限非负数，可以包含小数，0 是有效位置。范围满足 startSeconds < endSeconds，包含起点但不包含终点，并且只属于一个文件。空范围或反向范围写入失败，不自动改成时间点。start 是执行指令，不进入持久值。保存核对纯值约束和文件归属，不要求重新打开媒体核验时长；实际跳转由内容执行者核对请求起点是否仍可定位，不夹改已保存的历史范围。
@@ -89,7 +89,7 @@ type PlaybackAnnotationLocation =
 
 两类阅读作品都按实际内容采用上述规则。可重排内容的当前位置没有可用文字时，保存当前可见内容画面；文本读取失败与没有文字分别处理。原文提取由阅读内核完成，使用有界长度，不改写为生成式摘要，也不跨文件补取内容。
 
-页面书签保存的是当时可见的内容画面，可以包含实际的单页、双页或连续阅读呈现，排除应用控件和临时选框。位置仍来自阅读内核，不能由截图推导源坐标，也不将视口画面伪装成某一张原始页面的 ReadingPageRegion。画面或原文与本次位置一起固定，后续滚动或切换文件不改变归属。
+页面书签保存当时可见的内容画面，可以是单页、双页或连续阅读，排除应用控件和临时选框。定位取自阅读内核，ReadingPageRegion 只用于明确框选一张原始页。画面或原文与本次位置一起固定，后续滚动或切换文件不改变归属。
 
 这些原文和图像随书签正式保存。列表直接读取保存内容，图片缩略图从保存的 image_id 生成，不依赖原文件此刻可读。标题和批注仍可为空；编辑文字或重新打开列表不自动重取内容。采集使用[同一内容接入](../sessions.md#capture)，完整目标取得后才创建记录。
 
@@ -107,7 +107,7 @@ type PlaybackAnnotationLocation =
 
 ## 采集、编辑与返回内容
 
-标注使用以下 library API：
+列出、读取和修改标注使用 library API：
 
 ```ts
 library.annotations.list(query, options)

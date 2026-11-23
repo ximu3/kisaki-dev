@@ -1,5 +1,3 @@
-/** @fileoverview Resolves stable-list movement requests and recognizes unchanged positions. */
-
 /** Moves stable item identities together before or after an anchor in the same list. */
 export interface ListMove {
   readonly ids: readonly string[]

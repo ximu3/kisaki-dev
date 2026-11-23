@@ -1,8 +1,3 @@
-/**
- * @fileoverview Checks generated Node-API declarations against the reviewed binding
- * contract and supports explicit regeneration.
- */
-
 import { readFile, writeFile } from 'node:fs/promises'
 
 /**

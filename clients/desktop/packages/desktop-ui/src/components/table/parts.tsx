@@ -1,5 +1,3 @@
-/** @fileoverview Native table parts retain browser layout, headers and text selection. */
-
 import { omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import styles from './styles.module.css'

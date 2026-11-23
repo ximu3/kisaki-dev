@@ -1,5 +1,3 @@
-/** @fileoverview Defines native scanner clue rules and validates their pattern and template syntax. */
-
 import * as v from 'valibot'
 import { nonemptyText, parseValue, id, text } from '../validation'
 import { inspectTextPattern, parseTextTemplate } from '../text-rules'
@@ -7,7 +5,6 @@ import type { NonEmptyArray } from '../operations'
 import type { WorkClues } from '../metadata/fields'
 import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
 
-/** Nonempty date-component extraction expressions that preserve unknown components. */
 const dateOutput = v.pipe(
   v.strictObject({
     year: v.exactOptional(nonemptyText),
@@ -17,10 +14,8 @@ const dateOutput = v.pipe(
   v.check((value) => Object.keys(value).length > 0),
 )
 
-/** Source and source-item extraction expressions before their results are interpreted. */
 const identityOutput = v.strictObject({ source: nonemptyText, sourceId: nonemptyText })
 
-/** Nonempty clue-extraction outputs for names, dates and exact source identities. */
 const outputSchema = v.pipe(
   v.strictObject({
     name: v.exactOptional(nonemptyText),
@@ -79,7 +74,6 @@ export function parseClueExtractionRule(input: unknown): ClueExtractionRule {
   return rule
 }
 
-/** Output templates for native root-work names, release-date components and external identities. */
 export interface ClueExtractionOutput {
   readonly name?: string
   readonly originalName?: string
@@ -90,9 +84,6 @@ export interface ClueExtractionOutput {
   }>
 }
 
-/**
- * Named scanner rule selecting source text, matching a pattern and producing work-clue templates.
- */
 export interface ClueExtractionRule {
   readonly id: string
   readonly name: string
@@ -105,7 +96,6 @@ export interface ClueExtractionRule {
   readonly output: ClueExtractionOutput
 }
 
-/** Extracted work clues with the matched rule identity and original named captures. */
 export interface ClueExtractionResult {
   readonly clues: WorkClues
   readonly ruleId: string | null

@@ -110,7 +110,7 @@ PDF 的临时文字层可以参与匹配与选区，持久结果仍是原始页�
 
 selection 和 marks 共用正反变换。输入的明显越界、退化或自交几何仍须拒绝；库自己的浮点计算误差在形成公开值前收敛，不能把任意越界输入都夹回页面。几何判断采用适用精度，不要求浮点正反变换逐位相等。
 
-公开的视图矩形使用 ViewportRect：left、top、width、height，单位为 Reader 所在文档视口的 CSS 像素。它与 NormalizedRect 的 x、y、width、height 不同，不进入 ReadingPageRegion。位置或范围先在 Kana 内映射，宿主不遍历书内私有 DOM 来重建转换。
+`ViewportRect` 的 `left`、`top`、`width`、`height` 使用 Reader 所在文档视口的 CSS 像素。`PageRegion` 的矩形使用 `NormalizedRect`，以 `x`、`y`、`width`、`height` 表示原始页面上的归一化区域。Kana 在两个坐标系之间转换，宿主使用回调交付的显示矩形读取画面。
 
 <a id="view-read"></a>
 
@@ -119,9 +119,9 @@ selection 和 marks 共用正反变换。输入的明显越界、退化或自交
 Reader 提供 readView，让宿主在一个受管理的短读取范围中取得真实画面。Kana 提供目标、当前源位置和显示矩形，宿主提供实际像素读取；接口不依赖 Electron、NativeImage 或 PreparedImage。
 
 ```ts
-const raw = await reader.readView({ type: 'viewport' }, async (view, signal) => ({
+const capture = await reader.readView({ type: 'viewport' }, async (view, signal) => ({
   location: view.location,
-  image: await host.readPixels(view.rect, signal)
+  image: await host.readPixels(view.rect, signal),
 }))
 ```
 

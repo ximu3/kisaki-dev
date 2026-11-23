@@ -1,5 +1,3 @@
-/** @fileoverview Shares font bindings across overlapping appearance snapshots of one document. */
-
 import { createHash } from 'node:crypto'
 import type { ThemeFontResourceFile, ViewFontFace } from '@kisaki3/desktop-contracts/appearance'
 import type { FontMetricRange } from '@kisaki3/desktop-contracts/fonts'

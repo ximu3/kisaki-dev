@@ -1,11 +1,13 @@
-/** @fileoverview Stores immutable backup provenance and recovery indexes independently from task history. */
-
 import { desc, sql } from 'drizzle-orm'
 import { primaryKey, check, index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { attachments } from './attachments/metadata'
 import { games } from './catalog'
 import { gameLaunchConfigs } from './holdings'
 import { booleanValue, enumValue, idColumn, safeInteger } from './constraints'
+
+const sourceKinds = ['file', 'directory'] as const
+const backupReasons = ['manual', 'automatic', 'beforeRestore'] as const
+const recoveryResolutions = ['restored', 'rolledBack', 'keptCurrent'] as const
 
 /** Stores immutable archive provenance and saved retention choices for one game backup. */
 export const gameSaveBackups = sqliteTable(
@@ -20,8 +22,8 @@ export const gameSaveBackups = sqliteTable(
     }),
     sourceConfigName: text('source_config_name').notNull(),
     sourcePath: text('source_path').notNull(),
-    sourceKind: text('source_kind', { enum: ['file', 'directory'] }).notNull(),
-    reason: text('reason', { enum: ['manual', 'automatic', 'beforeRestore'] }).notNull(),
+    sourceKind: text('source_kind', { enum: sourceKinds }).notNull(),
+    reason: text('reason', { enum: backupReasons }).notNull(),
     archiveAttachmentId: text('archive_attachment_id')
       .notNull()
       .references(() => attachments.id, { onDelete: 'restrict' }),
@@ -33,8 +35,8 @@ export const gameSaveBackups = sqliteTable(
   },
   (table) => [
     primaryKey({ columns: [table.id] }),
-    enumValue('game_save_backups_kind', table.sourceKind, ['file', 'directory']),
-    enumValue('game_save_backups_reason', table.reason, ['manual', 'automatic', 'beforeRestore']),
+    enumValue('game_save_backups_kind', table.sourceKind, sourceKinds),
+    enumValue('game_save_backups_reason', table.reason, backupReasons),
     booleanValue('game_save_backups_locked', table.isLocked),
     safeInteger('game_save_backups_size', table.unpackedSizeBytes),
     check(
@@ -69,21 +71,17 @@ export const gameBackupRecoveries = sqliteTable(
       onDelete: 'restrict',
     }),
     targetPath: text('target_path').notNull(),
-    targetKind: text('target_kind', { enum: ['file', 'directory'] }).notNull(),
+    targetKind: text('target_kind', { enum: sourceKinds }).notNull(),
     workspacePath: text('workspace_path').notNull().unique(),
     manifestSha256: text('manifest_sha256').notNull(),
     createdAt: integer('created_at').notNull(),
-    resolution: text('resolution', { enum: ['restored', 'rolledBack', 'keptCurrent'] }),
+    resolution: text('resolution', { enum: recoveryResolutions }),
     resolvedAt: integer('resolved_at'),
   },
   (table) => [
     primaryKey({ columns: [table.id] }),
-    enumValue('game_backup_recoveries_kind', table.targetKind, ['file', 'directory']),
-    enumValue('game_backup_recoveries_resolution', table.resolution, [
-      'restored',
-      'rolledBack',
-      'keptCurrent',
-    ]),
+    enumValue('game_backup_recoveries_kind', table.targetKind, sourceKinds),
+    enumValue('game_backup_recoveries_resolution', table.resolution, recoveryResolutions),
     check(
       'game_backup_recoveries_resolution_time',
       sql`(${table.resolution} is null) = (${table.resolvedAt} is null)`,

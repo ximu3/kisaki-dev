@@ -1,5 +1,3 @@
-/** @fileoverview Supplies Simplified Chinese for the native surfaces exercised in source development. */
-
 /** Labels, feedback and field names for the desktop runtime. */
 export const runtimeMessages = {
   notifications: '通知',
@@ -58,7 +56,7 @@ export const runtimeMessages = {
   nextBindings: '查看后面的快捷键',
   bindingExists: '已绑定',
   foregroundGracePeriodDescription:
-    '在宽限内返回，暂离时间会计入本次使用时长。适用于阅读和按前台计时的游戏。',
+    '在宽限期内返回，暂离时间会计入本次使用时长。适用于阅读和按前台计时的游戏。',
   usageGroups: {
     playback: '播放与记录',
     tracks: '音轨与字幕',
@@ -233,7 +231,7 @@ export const runtimeMessages = {
   deleteFont: '删除字体「{name}」？',
   deleteFontTitle: '删除字体',
   themeGroups: {
-    surfaces: '界面表面',
+    surfaces: '背景与文字',
     actions: '操作与控件',
     feedback: '反馈与边框',
     charts: '图表颜色',

@@ -1,5 +1,3 @@
-/** @fileoverview Serves the editable component workshop and owns a fresh Chromium page for each case. */
-
 import { test as base, expect } from 'vite-plus/test'
 import { createServer, defaultClientConditions } from 'vite-plus'
 import { chromium } from '@playwright/test'

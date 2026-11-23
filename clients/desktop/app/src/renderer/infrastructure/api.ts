@@ -1,8 +1,5 @@
-/** @fileoverview Connects a native Solid document to the actual window endpoint and maintains its live presentation. */
-
-import { RpcConnection } from '@kisaki3/desktop-rpc'
+import { RpcConnection, type RpcNotification } from '@kisaki3/desktop-rpc'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
-import type { RpcNotification } from '@kisaki3/desktop-rpc'
 import { createDocumentAppearance } from './appearance'
 import { createTranslator, type Translate } from '@kisaki3/desktop-localization'
 import { createSignal } from 'solid-js'
@@ -14,7 +11,6 @@ import {
   type WindowKind,
 } from '../../shared/window-api/protocol'
 
-/** Obtains a fresh connection for this top-level document and its selected method scope. */
 export async function connect<K extends WindowKind>(kind: K) {
   for (const family of ['noto-sans-sc', 'noto-sans-mono']) {
     const sheet = document.createElement('link')
@@ -22,6 +18,7 @@ export async function connect<K extends WindowKind>(kind: K) {
     sheet.href = 'kisaki-app://window/fonts/' + family + '/wght.css'
     document.head.append(sheet)
   }
+
   const transport = await new Promise<MessagePort>((resolve) => {
     const receive = (event: MessageEvent) => {
       if (
@@ -63,16 +60,13 @@ export async function connect<K extends WindowKind>(kind: K) {
 
   const rpc = new RpcConnection(
     {
-      /** Installs ordered frame and channel-loss listeners on the browser port. */
       start(receive, closed) {
         transport.onmessage = (event) => receive(event.data)
         transport.onmessageerror = closed
         transport.addEventListener('close', closed)
         transport.start()
       },
-      /** Hands off an RPC frame through the actual native port. */
       send: (frame) => transport.postMessage(frame),
-      /** Closes this document's end of the channel. */
       close() {
         transport.close()
       },
@@ -83,7 +77,6 @@ export async function connect<K extends WindowKind>(kind: K) {
       handshake: {
         role: 'initiator',
         context: { buildId: __KISAKI_BUILD_ID__, windowKind: kind },
-        /** Verifies that the accepting endpoint belongs to the same program build. */
         accepts: (value) =>
           !!value &&
           typeof value === 'object' &&
@@ -91,9 +84,7 @@ export async function connect<K extends WindowKind>(kind: K) {
           value.buildId === __KISAKI_BUILD_ID__,
       },
       methods: {
-        /** Obtains an actual close decision from the active editors. */
         'window.confirmClose': (_, signal) => confirmClose(signal),
-        /** Delivers a main-owned native destination to this document. */
         'window.navigate': ([target]) => {
           if (!navigate) {
             throw new DesktopError('NotFound', 'This document has no navigation receiver')
@@ -106,7 +97,6 @@ export async function connect<K extends WindowKind>(kind: K) {
   )
   await rpc.ready
 
-  /** Selects the method surface allowed by the document kind. */
   type Api = K extends 'main' ? MainWindowApi : WindowApi
   const request = async <M extends keyof Api & keyof MainWindowApi>(
     signal: AbortSignal | undefined,
@@ -124,6 +114,7 @@ export async function connect<K extends WindowKind>(kind: K) {
   ) => request(undefined, method, ...args)
   const common = async <M extends keyof WindowApi>(method: M, ...args: Parameters<WindowApi[M]>) =>
     (await rpc.request(method, rpcData(args))) as ReturnType<WindowApi[M]>
+
   const [translate, setTranslate] = createSignal<Translate>(() => createTranslator('en'))
 
   async function refreshWindowState() {
@@ -167,10 +158,10 @@ export async function connect<K extends WindowKind>(kind: K) {
   } finally {
     clearTimeout(timer)
   }
+
   return {
     call,
     request,
-    /** Reports the running application's platform for shortcut interpretation. */
     platform,
     topics,
     t: ((...args) => translate()(...args)) as Translate,
@@ -187,5 +178,4 @@ export async function connect<K extends WindowKind>(kind: K) {
   }
 }
 
-/** Main-document client with the management surface selected by its actual kind. */
 export type MainClient = Awaited<ReturnType<typeof connect<'main'>>>

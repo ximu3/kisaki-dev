@@ -1,5 +1,3 @@
-/** @fileoverview Publishes the English author baseline, typed calls, validation and pure formatting. */
-
 export { englishMessages } from './en/index'
 export type {
   MessageArguments,

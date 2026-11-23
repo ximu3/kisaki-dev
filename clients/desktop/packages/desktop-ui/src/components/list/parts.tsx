@@ -1,10 +1,8 @@
-/** @fileoverview Arranges item identity, optional metadata and locally scoped actions. */
-
 import { Show, omit } from 'solid-js'
 import { dynamic } from '@solidjs/web'
 import type { JSX } from '@solidjs/web'
-import type { ButtonProps } from '../button/control'
-import { Tooltip, TooltipContent, TooltipTrigger } from '../tooltip/parts'
+import type { ButtonProps } from '../button'
+import { Tooltip, TooltipContent, TooltipTrigger } from '../tooltip'
 import styles from './styles.module.css'
 
 /** Native list attributes and the shared presentation for its rows. */

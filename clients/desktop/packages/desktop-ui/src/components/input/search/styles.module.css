@@ -1,5 +1,3 @@
-/* The search and clear icons share the size and end columns of the query field. */
-
 @layer components {
   .icon,
   .clear {

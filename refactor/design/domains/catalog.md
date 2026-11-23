@@ -7,18 +7,18 @@
 ## 本地身份与公共引用
 
 ```ts
-type EntryRef<T extends EntryType = EntryType> = {
-  type: T
-  id: string
+interface EntryRef<T extends EntryType = EntryType> {
+  readonly type: T
+  readonly id: string
 }
 
-type WorkRef = EntryRef<WorkType>
+type WorkRef<T extends WorkType = WorkType> = EntryRef<T>
 
 type PartType = 'novelVolume' | 'comicVolume' | 'comicChapter' | 'animeEpisode' | 'animeExtra'
 
-type PartRef<T extends PartType = PartType> = {
-  type: T
-  id: string
+interface PartRef<T extends PartType = PartType> {
+  readonly type: T
+  readonly id: string
 }
 ```
 

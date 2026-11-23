@@ -1,11 +1,8 @@
-/** @fileoverview A read-only tooltip surface shares native positioning and reading state. */
-
 import { onSettled, omit } from 'solid-js'
 import type { Accessor } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { callHandler } from '../dom'
-import { createPopup } from '../popup/controller'
-import type { PopupPlacement } from '../popup/controller'
+import { createPopup, type PopupPlacement } from '../popup/controller'
 import type { createTooltip } from './controller'
 import frame from '../popup/surface.module.css'
 import styles from './styles.module.css'
@@ -14,7 +11,6 @@ import styles from './styles.module.css'
  * Read-only explanation content with an anchor, shared reading controller and optional placement.
  */
 interface TooltipSurfaceProps extends JSX.HTMLAttributes<HTMLDivElement> {
-  /** Returns the element whose supplemental explanation is positioned by this surface. */
   anchor: Accessor<HTMLElement | undefined>
   reading: ReturnType<typeof createTooltip>
   placement?: PopupPlacement
@@ -41,19 +37,16 @@ export function TooltipSurface(props: TooltipSurfaceProps): JSX.Element {
   onSettled(() => props.reading.connect(content.ownerDocument))
 
   createPopup({
-    /** Reads the currently mounted tooltip surface. */
     element: () => content,
     anchor: props.anchor,
     open: props.reading.open,
 
-    /** Dismisses the tooltip through its reading-state owner when closure is requested. */
     change: (open) => {
       if (!open) {
         props.reading.dismiss()
       }
     },
 
-    /** Reads the tooltip's preferred placement with the shared default. */
     placement: () => props.placement ?? 'bottom-start',
     restoreFocus: false,
   })

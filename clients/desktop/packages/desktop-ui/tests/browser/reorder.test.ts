@@ -1,5 +1,3 @@
-/** @fileoverview Checks that ordered lists submit stable moves by keyboard and native drag. */
-
 import { expect } from '@playwright/test'
 import { test } from './page'
 

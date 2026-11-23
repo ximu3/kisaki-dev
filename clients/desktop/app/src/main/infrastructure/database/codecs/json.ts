@@ -1,5 +1,3 @@
-/** @fileoverview Maps validated JSON values to SQLite text and preserves unavailable stored definitions. */
-
 import { customType } from 'drizzle-orm/sqlite-core'
 import { sql } from 'drizzle-orm'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
@@ -37,9 +35,7 @@ export function jsonColumn<T>(
   read: ValueParser<T> = (source) => parse(readJsonText(source)),
 ) {
   return customType<{ data: T; driverData: string; jsonData: unknown }>({
-    /** Declares SQLite's durable JSON representation. */
     dataType: () => 'text',
-    /** Validates the complete submitted value before serializing it. */
     toDriver: (value) => JSON.stringify(parse(value)),
     fromDriver: read,
     fromJson: read,
@@ -88,7 +84,6 @@ export function ready<T>(value: T): StoredDefinition<T> {
 /** Creates a strict JSON column whose reads explicitly distinguish unusable stored definitions. */
 export function storedJsonColumn<T>(parse: ValueParser<T>) {
   return customType<{ data: StoredDefinition<T>; driverData: string; jsonData: unknown }>({
-    /** Stores the definition itself as JSON text. */
     dataType: () => 'text',
     /** Rejects invalid read projections and validates the explicit replacement. */
     toDriver(value) {

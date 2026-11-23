@@ -37,12 +37,12 @@ sessions 只采用实际观察到的事实。保存检查点更新对应活动�
 
 open 接收已经确定的本地作品 ID。来源身份解析和新增入库由相应入口及 ingest 完成。独立调用选项接受 signal 和 `interaction: 'fail' | 'prompt'`；interaction 默认 fail，具体规则见[调用交互约定](../communication.md#operations)。
 
-| 方法                | 必填    | 可选选择                               |
-| ------------------- | ------- | -------------------------------------- |
-| sessions.game.open  | gameId  | launchConfigId                         |
-| sessions.anime.open | animeId | episodeId 或 extraId、fileId、position |
-| sessions.comic.open | comicId | volumeId、chapterId、fileId、position  |
-| sessions.novel.open | novelId | volumeId、fileId、position             |
+| 方法                  | 必填      | 可选选择                                            | 正常返回                |
+| --------------------- | --------- | --------------------------------------------------- | ----------------------- |
+| `sessions.game.open`  | `gameId`  | `launchConfigId`                                    | `Promise<GameSession>`  |
+| `sessions.anime.open` | `animeId` | `episodeId` 或 `extraId`、`fileId`、`position`       | `Promise<AnimeSession>` |
+| `sessions.comic.open` | `comicId` | `volumeId`、`chapterId`、`fileId`、`position`        | `Promise<ComicSession>` |
+| `sessions.novel.open` | `novelId` | `volumeId`、`fileId`、`position`                     | `Promise<NovelSession>` |
 
 所有已提供参数同时约束目标。episodeId 与 extraId 互斥，文件必须属于指定作品，并满足指定分部关联。漫画同时指定卷和话时，核对两者的真实收录关系；只指定话时，不要求补充卷。任何约束无效都直接失败，不能丢弃参数后另选目标。
 
@@ -51,13 +51,6 @@ open 接收已经确定的本地作品 ID。来源身份解析和新增入库由
 省略选择时，依次考虑范围内有效会话、范围首选、归属明确的最近实际目标和唯一可用候选。仍需人工选择时，prompt 在本次调用内完成选择，fail 或省略策略则以 InteractionRequired 拒绝且不弹出选择。没有活动会话时，用户明确设置的首选优先于最近使用。选中的首选或最近目标失联时，应反馈问题并明确选择替代，不能静默换文件。显式目标始终按已提供的约束处理，不被首选或历史覆盖，也不自动修改首选。
 
 “继续”入口从真实使用记录确定具体目标，并向同一个 open 传入相应 ID，不能省略目标后再依赖默认选择。改变首选不会改写“继续”已经明确指向的目标。原生界面、SDK、deeplink 和后台共用这些规则，不增加 preferred/resume 模式或按入口来源判断的例外。
-
-| 公开方法            | 正常返回                |
-| ------------------- | ----------------------- |
-| sessions.game.open  | `Promise<GameSession>`  |
-| sessions.anime.open | `Promise<AnimeSession>` |
-| sessions.comic.open | `Promise<ComicSession>` |
-| sessions.novel.open | `Promise<NovelSession>` |
 
 open 成功表示实际内容可用，且必要的初始定位已经完成。游戏还须完成配置核对、真实启动、运行目标确认和观察建立，调用者无须另行启动监测。会话建立成功不代表立即开始计时。
 
@@ -92,21 +85,38 @@ open 成功表示实际内容可用，且必要的初始定位已经完成。游
 type FileSession = AnimeSession | ComicSession | NovelSession
 
 type FileSwitchResult<S extends FileSession = FileSession> =
+  | { readonly outcome: 'ready'; readonly session: S }
   | {
-      outcome: 'ready'
-      session: S
-    }
-  | {
-      outcome: 'previousEnded'
-      previousSessionId: string
-      targetFileId: string
+      readonly outcome: 'previousEnded'
+      readonly previousSessionId: string
+      readonly targetFileId: string
     }
 ```
 
 ```ts
-sessions.anime.switchFile(sessionId, input): Promise<FileSwitchResult<AnimeSession>>
-sessions.comic.switchFile(sessionId, input): Promise<FileSwitchResult<ComicSession>>
-sessions.novel.switchFile(sessionId, input): Promise<FileSwitchResult<NovelSession>>
+declare const sessions: {
+  readonly anime: {
+    switchFile(
+      sessionId: string,
+      input: FileSwitchInput<PlaybackPositionInput>,
+      call?: CallOptions,
+    ): Promise<FileSwitchResult<AnimeSession>>
+  }
+  readonly comic: {
+    switchFile(
+      sessionId: string,
+      input: FileSwitchInput<ReadingPositionInput>,
+      call?: CallOptions,
+    ): Promise<FileSwitchResult<ComicSession>>
+  }
+  readonly novel: {
+    switchFile(
+      sessionId: string,
+      input: FileSwitchInput<ReadingPositionInput>,
+      call?: CallOptions,
+    ): Promise<FileSwitchResult<NovelSession>>
+  }
+}
 ```
 
 FileSwitchResult 由 desktop-contracts/sessions 定义。正常返回只使用 ready，session 必须已就绪且与方法的媒介相符；previousEnded 只作为 ExecutionFailure<FileSwitchResult<S>> 的合法 partialResult，表示本次已离开旧文件、尚未交付新会话。它不是半成品 Session，也不表示记录保存或资源清理必然成功。原生、IPC 和 Node SDK 保留同一判别值与字段。
@@ -135,43 +145,47 @@ input 必须包含 fileId，可以包含 position。targetFileId 固定为本次
 
 ```ts
 interface SessionTiming {
-  paused: boolean
-  counting: boolean
-  elapsedMs: number
-  graceEndsAt: number | null
+  readonly paused: boolean
+  readonly counting: boolean
+  readonly elapsedMs: number
+  readonly graceEndsAt: number | null
 }
 
 interface GameMonitoringState {
-  available: boolean
-  foreground: boolean | null
+  readonly available: boolean
+  readonly foreground: boolean | null
 }
 
 interface PlaybackState {
-  positionSeconds: number
-  durationSeconds: number | null
-  paused: boolean
-  buffering: boolean
-  seeking: boolean
-  atEnd: boolean
-  speed: number
-  volumePercent: number
-  muted: boolean
-  subtitlesVisible: boolean
-  subtitleScale: number
-  audioDelaySeconds: number
-  subtitleDelaySeconds: number
+  readonly positionSeconds: number
+  readonly durationSeconds: number | null
+
+  readonly paused: boolean
+  readonly buffering: boolean
+  readonly seeking: boolean
+  readonly atEnd: boolean
+
+  readonly speed: number
+  readonly volumePercent: number
+  readonly muted: boolean
+
+  readonly subtitlesVisible: boolean
+  readonly subtitleScale: number
+  readonly audioDelaySeconds: number
+  readonly subtitleDelaySeconds: number
 }
 
 interface ReadingState {
-  position: ReadingPosition
-  progress: number | null
-  layout: 'reflowable' | 'fixedLayout'
-  reflowing: boolean
+  readonly position: ReadingPosition
+  readonly progress: number | null
+
+  readonly layout: 'reflowable' | 'fixedLayout'
+  readonly reflowing: boolean
 }
 
 interface PlaybackTrackRef {
-  type: 'video' | 'audio' | 'subtitle'
-  id: string
+  readonly type: 'video' | 'audio' | 'subtitle'
+  readonly id: string
 }
 ```
 
@@ -194,10 +208,12 @@ reading.progress 是当前文件正文阅读路径中的 0–1 显示进度，�
 ## 查询、观察与生命周期事实
 
 ```ts
-sessions.list(): Promise<WorkSession[]>
-sessions.get(sessionId): Promise<WorkSession | null>
-sessions.observeAll(listener): Disposable
-sessions.observe(sessionId, listener): Disposable
+declare const sessions: {
+  list(call?: CallOptions): Promise<readonly WorkSession[]>
+  get(sessionId: string, call?: CallOptions): Promise<WorkSession | null>
+  observeAll(listener: Listener<readonly WorkSession[]>): Disposable
+  observe(sessionId: string, listener: Listener<WorkSession | null>): Disposable
+}
 ```
 
 list 返回当前会话，get 返回指定会话或 null。observeAll 先交付完整当前列表，随后交付变化后的完整列表；空数组不会结束观察。observe 先交付当前会话或 null，再按顺序交付变化；目标不存在或结束时，交付 null 并结束观察。
@@ -324,27 +340,31 @@ setVolume 与 setMuted 固定当前会话，分别通过 preferences.update 只�
 
 ```ts
 type SavedPlaybackSetting =
-  | { field: 'volumePercent'; scope: 'application'; value: number }
-  | { field: 'muted'; scope: 'application'; value: boolean }
+  | { readonly field: 'volumePercent'; readonly scope: 'application'; readonly value: number }
+  | { readonly field: 'muted'; readonly scope: 'application'; readonly value: boolean }
   | {
-      field: 'audioDelaySeconds' | 'subtitleDelaySeconds'
-      scope: 'file'
-      value: number
+      readonly field: 'audioDelaySeconds' | 'subtitleDelaySeconds'
+      readonly scope: 'file'
+      readonly value: number
     }
-  | { field: 'subtitleScale'; scope: 'global' | 'work' | 'file'; value: number }
   | {
-      field: 'audioTrack' | 'subtitleTrack'
-      scope: 'file'
-      value: FileTrackSelection
+      readonly field: 'subtitleScale'
+      readonly scope: 'global' | 'work' | 'file'
+      readonly value: number
+    }
+  | {
+      readonly field: 'audioTrack' | 'subtitleTrack'
+      readonly scope: 'file'
+      readonly value: FileTrackSelection
     }
 
 type PlaybackSettingResult = {
-  sessionId: string
-  animeId: string
-  fileId: string
+  readonly sessionId: string
+  readonly animeId: string
+  readonly fileId: string
 } & (
-  | { outcome: 'applied'; saved: null }
-  | { outcome: 'applied' | 'saved'; saved: SavedPlaybackSetting }
+  | { readonly outcome: 'applied'; readonly saved: null }
+  | { readonly outcome: 'applied' | 'saved'; readonly saved: SavedPlaybackSetting }
 )
 ```
 
@@ -359,9 +379,7 @@ sessionId、animeId 和 fileId 固定本次实际目标；scope 使用这些 ID 
 | 已保存，后续取消或目标／实例失效 | 保留 Cancelled、TargetChanged 或 InstanceExpired 等实际分类，同时交付同一合法 saved 部分结果 |
 | 通信中断且提交结果无法确认       | 按 ConnectionClosed 处理；没有 partialResult 不证明未保存，不自动重发                        |
 
-正常返回不会使用 outcome: saved；它是共同 ExecutionFailure 所允许的合法部分结果。所有调用方直接读取 partialResult.outcome 与 saved，不解析错误文案，也不依靠另一条查询猜测本次保存是否发生。其他独立窗口仍按自己的运行状态呈现，已完成保存不因采用失败回滚。
-
-音量和静音通过 preferences 保存，文件同步偏移通过 library 保存，均由 sessions 固定目标并仅采用到当前执行者；观察与初始恢复不会调用这些保存入口。每次结果只描述这一次操作，后续明确修改不改写已交付结果。
+`outcome: 'saved'` 只通过 `ExecutionFailure.partialResult` 交付。调用方读取该次操作的 `outcome` 与 `saved`，据此报告保存结果。运行采用失败时，已经保存的值保持有效。后续修改不改写已交付结果。
 
 <a id="subtitle-scale"></a>
 
@@ -460,7 +478,7 @@ media 组织视频打开、切换、定位和采集的明确执行顺序。采�
 绑定当前文档的内部阅读接入组织位置书签的采集，将文件、源位置及相应原文或画面固定为同一次结果。原文由 Kana 解释，图像由实际内容视图取得；滚动、重排或换文件不能使位置和图像来自不同上下文。该接入另提供页面区域图像操作：
 
 ```ts
-captureRegionImage(region: ReadingPageRegion): Promise<PreparedImage>
+declare function captureRegionImage(region: ReadingPageRegion): Promise<PreparedImage>
 ```
 
 输入是已经选定的原始页面和区域，不接收窗口像素，也不唤起框选。操作只取得当前已经呈现的区域内容，排除选择框和控件，不扩展为任意未显示页面的导出。执行期间不能改读另一选区。用户要求保留图像而采集失败时，应明确失败，不能静默保存无图标注。
@@ -491,7 +509,9 @@ sessions.game.terminate(sessionId): `Promise<void>` 明确强制终止已经确�
 
 正常与强制路径必须使用真实不同的机制。Windows 正常关闭使用目标窗口 WM_CLOSE 等请求，游戏可以处理、确认或拒绝，因此不保证接受或保存。强制路径使用 TerminateProcess 等系统机制。参见[窗口关闭](https://learn.microsoft.com/en-us/windows/win32/learnwin32/closing-the-window)和 [TerminateProcess](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-terminateprocess)。Windows 上 Node 的 kill('SIGTERM') 与 kill('SIGKILL') 都会强制终止，不能分别包装为正常和强制路径，见 [Node 终止合同](https://nodejs.org/api/child_process.html#subprocesskillsignal)。其他平台使用各自真实机制。
 
-本次收尾形成成功或失败结果后，按[会话事件](../communication.md#session-events)发布一次真实结束事实。主进程内按[通知交接](../communication.md#event-delivery)完成同步交付；close 和 terminate 不等待订阅者的后续业务，也不等待独立备份完成。退出后的自动备份单独报告结果；应用退出协调器仍须等待相关备份和任务完成，再释放依赖。游戏面板随会话结束自动关闭，未保存编辑按[面板关闭规则](games.md#panel)处理；草稿处理不阻止真实会话结束，也不会使已结束会话继续活动。
+实际会话已经结束且本次收尾已形成结果时，发布一次 `sessionEnded`。关闭失败且会话仍有效时，保留原会话的观察和管理。主进程按[通知交接](../communication.md#event-delivery)完成同步交付，`close` 和 `terminate` 随本次会话收尾结束。订阅者管理后续任务，自动备份单独报告结果。应用退出协调器在释放依赖前等待相关备份和任务完成。[会话事件](../communication.md#session-events)
+
+游戏面板随会话结束关闭。存在未保存编辑时，按[面板关闭规则](games.md#panel)处理草稿，会话仍按真实结果结束。
 
 <a id="detach"></a>
 

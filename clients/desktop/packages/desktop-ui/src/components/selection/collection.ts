@@ -1,5 +1,3 @@
-/** @fileoverview Logical option navigation independent of mounted or virtualized rows. */
-
 import { createMemo, createSignal } from 'solid-js'
 import type { Accessor } from 'solid-js'
 import { createTypeahead } from '../../internal/typeahead'
@@ -26,16 +24,15 @@ export function createSelection<O extends SelectionOption>(source: Accessor<read
 
   const [highlighted, setHighlighted] = createSignal<string>()
   const active = () => {
-    const option = get(highlighted() ?? '')
+    const key = highlighted()
+    const option = key === undefined ? undefined : get(key)
     return option && !option.disabled ? option.value : undefined
   }
 
   const typeahead = createTypeahead()
 
   const highlight = (value: string | undefined) => setHighlighted(value)
-  /**
-   * Moves highlight among enabled options with wrapping and explicit first or last destinations.
-   */
+
   const move = (step: 1 | -1 | 'first' | 'last') => {
     const items = enabled()
     const current = items.findIndex((item) => item.value === active())
@@ -51,11 +48,7 @@ export function createSelection<O extends SelectionOption>(source: Accessor<read
     }
     highlight(items[index]?.value)
   }
-  /**
-   * Extends timed label-prefix search and cycles matching options after the current highlight.
-   *
-   * No match preserves the current active choice.
-   */
+
   const type = (character: string, control: HTMLElement) => {
     const matches = typeahead(character, control)
     const items = enabled()

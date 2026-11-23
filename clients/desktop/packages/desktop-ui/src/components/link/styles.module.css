@@ -1,5 +1,3 @@
-/* Native-link color, hover underline and visible keyboard focus. */
-
 @layer components {
   .root {
     color: var(--primary);

@@ -1,17 +1,30 @@
-/** @fileoverview Defines saved content annotations, bounded summaries and atomic edits of complete content targets. */
-
-import type { WorkType, WorkRef, EntryRef } from './catalog'
-import type {
-  PlaybackAnnotationLocation,
-  ReadingAnnotationLocation,
-  ReadingPageRef,
-} from './reading'
 import type { PreparedAttachment } from '../resources'
 import type { ListOptions, CallOptions, ListResult, NonEmptyArray } from '../operations'
 import * as v from 'valibot'
-import { workTypes, workRefSchema, preparedSchema } from './catalog'
-import { id, text, parseValue, unique, optionalFields, validateExpectedKeys } from '../validation'
-import { parseReadingAnnotationLocation, parsePlaybackAnnotationLocation } from './reading'
+import {
+  workTypes,
+  workRefSchema,
+  preparedSchema,
+  type WorkType,
+  type WorkRef,
+  type EntryRef,
+} from './catalog'
+import {
+  fromParser,
+  id,
+  text,
+  parseValue,
+  unique,
+  optionalFields,
+  validateExpectedKeys,
+} from '../validation'
+import {
+  parseReadingAnnotationLocation,
+  parsePlaybackAnnotationLocation,
+  type PlaybackAnnotationLocation,
+  type ReadingAnnotationLocation,
+  type ReadingPageRef,
+} from './reading'
 import { DesktopError } from '../errors'
 
 /** An annotation's table-qualified identity, independent of its file's continued existence. */
@@ -21,9 +34,8 @@ export interface AnnotationRef<T extends WorkType = WorkType> {
 }
 
 /**
- * Saved media-specific annotation targets and retained content.
- *
- * Explicit file-record deletion may clear the file reference while preserving historical content.
+ * Explicit file-record deletion may clear the file reference while preserving saved annotation
+ * content.
  */
 export interface AnnotationTargetByType {
   readonly game: { readonly imageId: string }
@@ -49,18 +61,14 @@ export interface AnnotationTargetByType {
   }
 }
 
-/** The owning work's type-specific identity field. */
 type WorkId<K extends WorkType> = { readonly [P in `${K}Id`]: string }
 
-/** A complete new annotation target with a live file identity for file-based media. */
 type NewTarget<K extends WorkType> = K extends 'game'
   ? AnnotationTargetByType[K]
   : Omit<AnnotationTargetByType[K], 'fileId'> & { readonly fileId: string }
 
 /**
- * A saved annotation with its work identity, content and media-specific target.
- *
- * Game annotations retain captured images; other media require their corresponding location form.
+ * Game annotations retain captured images. Other media require their corresponding location form.
  */
 export type Annotation<T extends WorkType = WorkType> = {
   [K in T]: {
@@ -77,9 +85,7 @@ export type Annotation<T extends WorkType = WorkType> = {
 }[T]
 
 /**
- * New annotation content and a complete actual target.
- *
- * Title and body may be empty; prepared attachments support content adoption in the same save.
+ * Title and body may be empty. Prepared attachments can be adopted in the same save.
  */
 export type AnnotationCreate = {
   [K in WorkType]: {
@@ -92,10 +98,8 @@ export type AnnotationCreate = {
 }[WorkType]
 
 /**
- * Annotation field changes with optional expected values and prepared content.
- *
- * The complete target is one save unit. Title and body edits do not reopen media or compare
- * unrelated target state.
+ * The complete target is one save unit. Editing title or body compares only submitted fields and
+ * leaves the media closed.
  */
 export interface AnnotationUpdate<K extends WorkType = WorkType> {
   readonly changes: {
@@ -111,7 +115,6 @@ export interface AnnotationUpdate<K extends WorkType = WorkType> {
   readonly prepared?: readonly PreparedAttachment[]
 }
 
-/** The library, work or file boundary for annotation queries. */
 export type AnnotationScope =
   | { readonly type: 'library' }
   | { readonly type: 'work'; readonly work: WorkRef }
@@ -122,10 +125,8 @@ export type AnnotationScope =
     }
 
 /**
- * Annotation scope, search and optional identity or work-type constraints.
- *
- * Constraints intersect ordinary visibility. Omitted arrays add no restriction; explicit empty
- * arrays produce no matches.
+ * Constraints intersect ordinary visibility. Omitted arrays add no restriction. Empty arrays
+ * produce no matches.
  */
 export interface AnnotationQuery {
   readonly scope: AnnotationScope
@@ -134,16 +135,13 @@ export interface AnnotationQuery {
   readonly refs?: readonly AnnotationRef[]
 }
 
-/** A lightweight video-time or reading-page hint for annotation summaries. */
 export type AnnotationPositionHint =
   | { readonly type: 'video'; readonly startSeconds: number; readonly endSeconds: number | null }
   | { readonly type: 'page'; readonly page: ReadingPageRef }
 
 /**
- * Lightweight annotation identity, display content and location hints.
- *
- * Excerpts contain at most 160 UTF-16 code units and end at complete extended grapheme boundaries.
- * Full bodies and geometry are read separately.
+ * Excerpts stop at a complete extended grapheme boundary within 160 UTF-16 code units. Full bodies
+ * and geometry have dedicated reads.
  */
 export interface AnnotationSummary {
   readonly ref: AnnotationRef
@@ -176,7 +174,6 @@ export type AnnotationLocationItem<
   }
 }[T]
 
-/** A page of original annotation locations and the total matching count. */
 export interface AnnotationLocationResult<
   T extends 'anime' | 'comic' | 'novel' = 'anime' | 'comic' | 'novel',
 > {
@@ -184,29 +181,20 @@ export interface AnnotationLocationResult<
   readonly total: number
 }
 
-/**
- * Saved annotation queries and atomic content edits.
- *
- * Returning to content belongs to sessions and is not a side effect of reading annotations.
- */
+/** A saved target can be opened through the session API. */
 export interface AnnotationsApi {
-  /** Lists lightweight annotation summaries within the requested saved-fact scope. */
   list(
     query: AnnotationQuery,
     options: ListOptions,
     call?: CallOptions,
   ): Promise<ListResult<AnnotationSummary>>
 
-  /**
-   * Reads a complete saved annotation, or null when it is absent, without changing a content
-   * session.
-   */
+  /** Returns null when the annotation is absent. Reading leaves the current session unchanged. */
   get<T extends WorkType>(ref: AnnotationRef<T>, call?: CallOptions): Promise<Annotation<T> | null>
 
   /**
-   * Lists original locations for one file's content-order index.
-   *
-   * Results exclude saved text, images and unrelated files.
+   * This index projects original locations from a single file. Read full annotations for saved text
+   * and images.
    */
   listLocations<T extends 'anime' | 'comic' | 'novel'>(
     scope: { readonly work: EntryRef<T>; readonly fileId: string },
@@ -215,16 +203,14 @@ export interface AnnotationsApi {
   ): Promise<AnnotationLocationResult<T>>
 
   /**
-   * Commits an annotation, its exact location and adopted content together.
-   *
-   * Optional evidence remains separate from source identity.
+   * The location and adopted content commit together. Optional evidence remains separate from
+   * source identity.
    */
   create(input: AnnotationCreate, call?: CallOptions): Promise<string>
 
   /**
-   * Compares and commits the submitted annotation fields and related content.
-   *
-   * Saved locations are not reinterpreted against different bytes.
+   * Compares submitted fields and preserves saved locations against the bytes they originally
+   * addressed.
    */
   update(
     ...args: {
@@ -238,7 +224,6 @@ export interface AnnotationsApi {
   delete(refs: AnnotationRef | NonEmptyArray<AnnotationRef>, call?: CallOptions): Promise<void>
 }
 
-/** Stable annotation identity qualified by its owning work medium. */
 export const annotationRefSchema = v.strictObject({ workType: v.picklist(workTypes), id })
 
 /** Optional annotation title with blank input normalized to an absent title. */
@@ -247,13 +232,10 @@ export const nullableTitleSchema = v.pipe(
   v.transform((value) => value?.trim() || null),
 )
 
-/** Validated source location used by comic and novel annotations. */
-const readingLocation = v.pipe(v.unknown(), v.transform(parseReadingAnnotationLocation))
+const readingLocation = fromParser(parseReadingAnnotationLocation)
 
-/** Validated file-local video position or range used by anime annotations. */
-const playbackLocation = v.pipe(v.unknown(), v.transform(parsePlaybackAnnotationLocation))
+const playbackLocation = fromParser(parsePlaybackAnnotationLocation)
 
-/** Annotation-target fields owned by each medium, including its image and location requirements. */
 const targetEntries = {
   game: { imageId: id },
   anime: { fileId: v.nullable(id), location: playbackLocation, imageId: v.nullable(id) },
@@ -273,7 +255,6 @@ const targetEntries = {
   },
 }
 
-/** Complete per-medium annotation target validators used by explicit target changes. */
 const targetSchemas = {
   game: v.strictObject(targetEntries.game),
   anime: v.strictObject(targetEntries.anime),
@@ -320,11 +301,7 @@ export function parseAnnotationQuery(input: unknown): AnnotationQuery {
   )
 }
 
-/**
- * Parses a complete new media-specific annotation target.
- *
- * The host separately checks ownership, prepared holds and attachment availability.
- */
+/** The host checks ownership, prepared holds and attachment availability. */
 export function parseAnnotationCreate(input: unknown): AnnotationCreate {
   const common = {
     title: v.exactOptional(nullableTitleSchema),
@@ -364,10 +341,7 @@ export function parseAnnotationCreate(input: unknown): AnnotationCreate {
 }
 
 /**
- * Parses annotation changes and expected values for the same save units.
- *
- * Rejects a known transition from a nonnull file reference to null; current-state checks remain
- * with the write owner.
+ * Rejects a supplied transition from a nonnull file to null. The write owner checks current state.
  */
 export function parseAnnotationUpdate<T extends WorkType>(
   ref: AnnotationRef<T>,

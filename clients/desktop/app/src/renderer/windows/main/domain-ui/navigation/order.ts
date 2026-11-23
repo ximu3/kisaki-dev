@@ -1,5 +1,3 @@
-/** @fileoverview Projects available native pages onto saved navigation slots and preserves absent identities. */
-
 import type { PageRef } from '@kisaki3/desktop-contracts/ui'
 import { moveListItems, type ListMove } from '@kisaki3/desktop-ui/list'
 

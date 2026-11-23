@@ -1,5 +1,3 @@
-/** @fileoverview Declares the independent, self-contained preloads compiled for each native document. */
-
 import { defineConfig } from 'vite'
 
 export default defineConfig({

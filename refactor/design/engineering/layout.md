@@ -151,11 +151,11 @@ cli.ts 处理参数、建立运行上下文、调用工作流并呈现结果与�
 
 不同工程按公开入口协作，不借用另一项目的工具私有实现；生产运行代码不反向依赖 tools。测试可以调用被测工具的工作流或消费其产物，工程实现不导入测试用例、fixture 或 tests/support。仅供测试使用的准备与清理归测试拥有者；工具与运行代码确有共同机制时，归入能同时服务二者的正式模块，由工具消费。
 
-`@kisaki3/tooling/output` 按项目归属清理可重建输出。桌面和公共包的 `clean` 任务调用该模块提供的 `kisaki-clean`，删除本工程的 `dist` 和 `out`。`@kisaki3/tooling/process` 执行命令并处理取消与收尾，`@kisaki3/tooling/cli` 在 CLI 调用期间安装信号处理并呈现退出状态。
+`@kisaki3/tooling/output` 按项目归属清理可重建输出。桌面和公共包的 `clean` 任务调用该模块提供的 `kisaki-clean`，删除本工程的 `dist` 和 `out`。`@kisaki3/tooling/process` 执行命令并负责取消后的收尾。`@kisaki3/tooling/cli` 以首次中断信号确定取消原因和退出码，在操作结束后报告结果。操作或清理另有失败时，报告实际失败。
 
 输出范围与清理的验证归 packages/tooling/tests/output.test.ts，真实命令树的取消验证归同包 tests/process.test.ts，均使用隔离目录和子进程。桌面开发会话的交接与关闭验证归本体 tests/tools/dev。
 
-工具源码与配置遵守[源码语言](conventions.md#source-language)、[可读性](conventions.md#readability)和[注释覆盖](conventions.md#comments)。本地与 CI 通过同一工程任务调用工作流、检查工具或测试运行器，传递参数与退出状态。工程实现不另写在 YAML 或 shell 字符串中。工具测试遵守[测试结构](#tests)，不因工具是单文件或目录而改变测试的工程归属。
+工具源码与配置遵守[源码语言](conventions.md#source-language)、[可读性](conventions.md#readability)和[就近说明](conventions.md#comments)。本地与 CI 通过同一工程任务调用工作流、检查工具或测试运行器，传递参数与退出状态。工程实现不另写在 YAML 或 shell 字符串中。工具测试遵守[测试结构](#tests)，不因工具是单文件或目录而改变测试的工程归属。
 
 每项工具声明实际输入、输出、工作目录和清理范围。构建、验证和发布使用不同的明确操作，输出与缓存按工作区任务规则登记；分类目录不增加总 index.ts，工作流不为形式一致而建立空的 planner、manager 或 adapter。
 
@@ -186,7 +186,8 @@ clients/desktop/app/tools/
 ├── resources/
 │   ├── cli.ts
 │   ├── prepare.ts
-│   └── fonts.ts
+│   ├── fonts.ts
+│   └── media.ts
 ├── native/
 │   ├── cli.ts
 │   ├── build.ts
@@ -230,7 +231,7 @@ clients/desktop/app/tools/
 
 ### 辅助代码、样本与运行时资源
 
-**默认就近，放在能够完整负责其行为和资源寿命的最小范围。** 一个用例的简短输入或辅助直接写在用例里。同一套件的准备、断言辅助或子进程入口随该套件放置，文件名说明操作或对象。同一套件可以包含多个文件，例如建库、迁移和崩溃恢复仍归同一数据库套件。
+只有一个用例使用的简短输入或辅助函数，直接写在该用例里。同一套件的准备、断言辅助或子进程入口随该套件放置，文件名说明操作或对象。同一套件可以包含多个文件，例如建库、迁移和崩溃恢复仍归同一数据库套件。
 
 工程统一管理的测试宿主、资源准备或观测代码归 `tests/support/`，文件按具体职责命名。独立的项目级资源寿命足以确定归属，例如 Electron 的启动、profile 隔离与清理，即使当前只有一个套件接入也成立。只随某个场景变化的辅助继续放在该套件旁。
 

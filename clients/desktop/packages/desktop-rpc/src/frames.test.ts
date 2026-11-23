@@ -1,5 +1,3 @@
-/** @fileoverview Exercises the shared JSON boundary and the exact shapes of wire-version-one messages. */
-
 import { expect, test } from 'vite-plus/test'
 import { parseRpcFrame, type RpcFrame } from './frames'
 import { parseJsonValue } from './json'
@@ -24,9 +22,8 @@ test('all frame kinds round-trip, including omitted success values and explicit 
 test('malformed envelopes and data that a native transport would coerce are rejected', () => {
   const cycle: unknown[] = []
   cycle.push(cycle)
-  const accessor = Object.defineProperty({}, 'secret', {
+  const inaccessibleProperty = Object.defineProperty({}, 'secret', {
     enumerable: true,
-    /** Throws if frame validation incorrectly evaluates the hostile property accessor. */
     get() {
       throw new Error('getter ran')
     },
@@ -45,7 +42,7 @@ test('malformed envelopes and data that a native transport would coerce are reje
     [undefined],
     { optional: undefined },
     { [Symbol()]: true },
-    accessor,
+    inaccessibleProperty,
     cycle,
   ]) {
     expect(() => parseJsonValue(value)).toThrow(expect.objectContaining({ code: 'InvalidInput' }))

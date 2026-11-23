@@ -23,7 +23,7 @@ AniList 通过 GraphQL 提供作品、角色和制作主体资料，以及本人
 
 ## 对象、粒度与来源身份
 
-source 使用 anilist；身份分别为 media/<id>、character/<id>、staff/<id>、studio/<id>。Media ID 与本人 MediaList.id、角色／人员关系 edge ID、排播 ID 不互换。
+`source` 使用 `anilist`，身份分别为 `media/<id>`、`character/<id>`、`staff/<id>`、`studio/<id>`。Media ID、本人 `MediaList.id`、角色及人员关系的 edge ID 和排播 ID 分别标识各自对象。
 
 | 来源范围                                   | 本体采用                                                                            |
 | ------------------------------------------ | ----------------------------------------------------------------------------------- |
@@ -123,7 +123,7 @@ Studio 关系按作品边界读取。isMain=true 明确表达本作主动画制�
 
 人物 personWorks 声明固定 scope：workTypes 为 anime、comic、novel，roles 使用上表职责，character 为 none。语种字段描述 Staff，缺少作品原配判定所需的对应依据，因此配音资料保留为来源内容，Provider 的成员范围限于制作履历。
 
-organizationWorks 在组织上下文声明 scope:session。openSession 按身份资源确定实际范围：studio/<id> 使用 studio、other；已明确团体的 staff/<id> 使用 creator、originalCreator、music、sound、producer、publisher、other。两者的 workTypes 均限定为本接入支持的 anime、comic、novel，并采用领域的职责相容规则。Studio 的媒体连接见[官方合同](https://docs.anilist.co/reference/object/studio)，根资源与成员类型按本页身份规则解释。
+组织上下文的 `organizationWorks` 声明 `scope: 'session'`。`openSession` 按实际身份确定范围。`studio/<id>` 使用 `studio`、`other`，已明确为团体的 `staff/<id>` 使用 `creator`、`originalCreator`、`music`、`sound`、`producer`、`publisher`、`other`。两者的 `workTypes` 均限定为 `anime`、`comic`、`novel`，并采用领域的职责相容规则。[Studio 媒体连接](https://docs.anilist.co/reference/object/studio)
 
 作品上下文中的 Studio 关系使用固定的 studio、other 范围。会话在开始读取前交付相应 relationScopes，后续结果返回普通数组。
 
@@ -210,7 +210,7 @@ customLists 默认是名称到布尔值的映射；只有实际为 true 的成�
 
 已存在的记录按真实 MediaList.id 更新，并核对它属于当前账号和对应 Media；不把 mediaId 当列表项 ID。写入只带所选且需要修改的字段，不重发整条记录，不附带原日期、进度或次数来压制平台联动。
 
-评分读取显式使用 POINT_100，写入使用 scoreRaw。实际 87 分分别显示为 POINT_10 的 8、POINT_10_DECIMAL 的 8.7、POINT_5 的 4、POINT_3 的 3，因此不能先读取用户显示分制再自行线性换算。scoreRaw 的正值 1–100 已有低值样本；0 表示清除。native 的有效 0 分不能写成未评分，null 才发送 0。
+评分读取显式使用 `POINT_100`，写入使用 `scoreRaw`。实际 87 分在 `POINT_10`、`POINT_10_DECIMAL`、`POINT_5` 和 `POINT_3` 中分别显示为 8、8.7、4 和 3，读回应以实际百分制值为准。`scoreRaw` 的有效评分为 1–100，0 表示清除。本体的 `null` 写为 0，本体的有效 0 分报告无法映射。
 
 高级多维评分模式通过正式总分字段与 scoreRaw 接入，账号评分格式和各维度保持原值。来源自己的重算按实际结果说明，不能将未保留的请求分数报告为成功，也不回写维度来凑出总分。[官方 mutation](https://docs.anilist.co/reference/mutation)分别提供 scoreRaw 与 advancedScores，本接入只写总分。高级模式的总分重算与回读属于[来源验收](#verification)范围。
 
@@ -301,6 +301,7 @@ src/
 │   ├── settings.ts
 │   └── ipc.ts
 ├── webview/
+│   ├── index.html
 │   ├── entry.tsx
 │   └── pages/
 │       ├── metadata/page.tsx
@@ -318,7 +319,7 @@ GraphQL 文档与响应由 client 管理，metadata 解释图谱范围，writes 
 
 ## 预设与验证
 
-来源事实见[接口报告](../../../verification/evidence/anime-platforms/live-api.md)与[结构化记录](../../../verification/evidence/anime-platforms/2026-10-16-api.json)。默认预设遵守本页的主体、原配、上下文与时长范围，用户保存的资料方案不自动重写。
+默认预设采用本页确定的主体、制作履历与普通字段范围。用户保存的资料方案保持原值。[接口报告](../../../verification/evidence/anime-platforms/live-api.md) · [结构化记录](../../../verification/evidence/anime-platforms/2026-10-16-api.json)
 
 发行准备须核对本项目对 [AniList 官方用途条款](https://docs.anilist.co/guide/terms-of-use)的适用性。官方字段、实际来源调用、用途条件和扩展运行分别取得对应证据。
 

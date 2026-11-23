@@ -1,5 +1,3 @@
-/** @fileoverview Native top-layer presentation with collision-aware Floating UI positioning. */
-
 import { autoUpdate, computePosition, flip, offset, shift, size } from '@floating-ui/dom'
 import type { Placement, VirtualElement } from '@floating-ui/dom'
 import { createEffect, createSignal, onSettled } from 'solid-js'
@@ -17,7 +15,6 @@ export type PopupPlacement = Placement
  * the popup is open.
  */
 export function createPopup(options: {
-  /** Returns the mounted native popover element. */
   element: Accessor<HTMLElement>
   /** Returns the interaction anchor used for native popover ancestry and focus restoration. */
   anchor: Accessor<HTMLElement | undefined>
@@ -27,14 +24,11 @@ export function createPopup(options: {
    */
   reference?: Accessor<HTMLElement> | undefined
 
-  /** Reads the requested open state from the popup owner. */
   open: Accessor<boolean>
-  /** Reports a dismissal request to the popup owner. */
   change: (open: boolean) => void
   /** Requests dismissal before hiding a popup rendered in manual top-layer mode. */
   controlled?: Accessor<boolean>
 
-  /** Reads the preferred placement before collision adjustment. */
   placement?: (anchor: HTMLElement) => PopupPlacement
   /** Reads an optional pointer anchor in viewport CSS pixels. */
   point?: Accessor<{ x: number; y: number } | undefined>
@@ -56,10 +50,6 @@ export function createPopup(options: {
     }
   }
 
-  /**
-   * Requests closing this open popup and returns focus to its connected anchor when restoration
-   * is enabled.
-   */
   const escape = (event: KeyboardEvent) => {
     if (
       event.defaultPrevented ||
@@ -179,10 +169,7 @@ export function createPopup(options: {
       }
 
       let active = true
-      /**
-       * Computes collision-adjusted geometry and applies it while the current positioning lifetime
-       * remains active.
-       */
+      // Floating UI can resolve after this positioning subscription has ended.
       const update = () => {
         void computePosition(reference, node, {
           strategy: 'fixed',
@@ -193,9 +180,6 @@ export function createPopup(options: {
             shift({ padding: 8 }),
             size({
               padding: 8,
-              /**
-               * Applies available positioning bounds only to the currently active popup element.
-               */
               apply({ availableWidth, availableHeight, rects }) {
                 if (active) {
                   node.style.setProperty('--popup-width', `${rects.reference.width}px`)

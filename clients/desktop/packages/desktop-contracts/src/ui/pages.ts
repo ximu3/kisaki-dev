@@ -1,5 +1,3 @@
-/** @fileoverview Defines stable page identities and owner-bound page registration and opening. */
-
 import type { CallOptions, Registration } from '../operations'
 import type { ExtensionUiIcon } from './icons'
 import type {
@@ -9,7 +7,7 @@ import type {
   ViewNotifications,
   ViewMethodsConstraint,
 } from './views'
-import { parseValue, id, parseExternalValue } from '../validation'
+import { fromParser, parseValue, id, parseExternalValue } from '../validation'
 import * as v from 'valibot'
 import { parseId } from '@kisaki3/extension-distribution/metadata'
 
@@ -27,13 +25,8 @@ export interface ExtensionPageDefinition<
   readonly icon: ExtensionUiIcon
 }
 
-/** Owner-bound page registration and opening. */
 export interface ExtensionPagesApi {
-  /**
-   * Registers a stable page identity for the actual owner and returns its availability handle.
-   *
-   * Registration leaves the page unopened.
-   */
+  /** Registration leaves the page unopened. */
   register<M extends ViewMethodsConstraint<M> = ViewMethods, N extends object = ViewNotifications>(
     input: ExtensionPageDefinition<M, N>,
     call?: CallOptions,
@@ -50,20 +43,15 @@ export interface ExtensionPagesApi {
   ): Promise<HostView<M, N>>
 }
 
-/**
- * Parses page identity syntax while preserving temporarily unavailable references.
- *
- * The host checks the current page directory.
- */
+/** The host checks the current page directory. */
 export function parsePageRef(input: unknown): PageRef {
   return parseValue(
     v.variant('type', [
       v.strictObject({ type: v.literal('native'), id }),
       v.strictObject({
         type: v.literal('extension'),
-        extensionId: v.pipe(
-          v.unknown(),
-          v.transform((value) => parseExternalValue(parseId, value, 'Invalid extension identity')),
+        extensionId: fromParser((value) =>
+          parseExternalValue(parseId, value, 'Invalid extension identity'),
         ),
         pageId: id,
       }),

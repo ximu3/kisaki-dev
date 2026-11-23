@@ -1,5 +1,3 @@
-/** @fileoverview Stable option identities and optional virtual list rendering. */
-
 import type { Accessor } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 

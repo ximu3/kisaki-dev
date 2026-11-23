@@ -106,7 +106,7 @@ applicableLanguages 表示整份固定预设面向哪种资料语言需求，与
 
 修改已有方案的 preferredLanguages，只影响后续传给来源的语言输入，不暗中重排来源。用户若要整体更换获取策略，可以在当前草稿载入另一份同类型模板，明确替换语言和资料规则，同时保留名称、默认资格及无关属性。保存前可以取消，但替换范围内的手动修改不会自动保留。
 
-游戏预设统一服务以日 Gal 为主的用途。[Steam](../../../extensions/sources/steam.md)与 [IGDB](../../../extensions/sources/igdb.md)按实际字段能力选用，各字段的来源组合由资料收益和依赖成本决定。来源扩展完整交付自身合同，用户可以在资料方案中选用默认预设之外的能力。
+[游戏预设](games.md)主要用于日 Gal，其中 [Steam](../../../extensions/sources/steam.md) 提供已匹配作品的商店名称、简介和外部链接。用户可以在自己的资料方案中加入 [IGDB](../../../extensions/sources/igdb.md) 等固定预设以外的来源。
 
 <a id="selection"></a>
 

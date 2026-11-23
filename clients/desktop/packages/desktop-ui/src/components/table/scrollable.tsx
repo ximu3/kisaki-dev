@@ -1,5 +1,3 @@
-/** @fileoverview Bounded table layout with a shared column grid and a native body viewport. */
-
 import { omit, onSettled } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { Table, TableBody, TableHeader } from './parts'

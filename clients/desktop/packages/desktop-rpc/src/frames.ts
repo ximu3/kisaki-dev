@@ -1,5 +1,3 @@
-/** @fileoverview Defines the closed wire vocabulary and validates each envelope at the receive boundary. */
-
 import { RpcError } from './errors'
 import { parseJsonValue, type JsonValue } from './json'
 

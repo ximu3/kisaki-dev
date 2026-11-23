@@ -19,17 +19,17 @@
   ],
   "exports": {
     "./alert": {
-      "kisaki-source": "./src/components/alert/index.ts",
+      "kisaki-source": "./src/components/alert/index.tsx",
       "types": "./dist/alert.d.ts",
       "import": "./dist/alert.js"
     },
     "./badge": {
-      "kisaki-source": "./src/components/badge/index.ts",
+      "kisaki-source": "./src/components/badge/index.tsx",
       "types": "./dist/badge.d.ts",
       "import": "./dist/badge.js"
     },
     "./button": {
-      "kisaki-source": "./src/components/button/index.ts",
+      "kisaki-source": "./src/components/button/index.tsx",
       "types": "./dist/button.d.ts",
       "import": "./dist/button.js"
     },
@@ -39,22 +39,22 @@
       "import": "./dist/chart.js"
     },
     "./checkbox": {
-      "kisaki-source": "./src/components/checkbox/index.ts",
+      "kisaki-source": "./src/components/checkbox/index.tsx",
       "types": "./dist/checkbox.d.ts",
       "import": "./dist/checkbox.js"
     },
     "./collapsible": {
-      "kisaki-source": "./src/components/collapsible/index.ts",
+      "kisaki-source": "./src/components/collapsible/index.tsx",
       "types": "./dist/collapsible.d.ts",
       "import": "./dist/collapsible.js"
     },
     "./combobox": {
-      "kisaki-source": "./src/components/combobox/index.ts",
+      "kisaki-source": "./src/components/combobox/index.tsx",
       "types": "./dist/combobox.d.ts",
       "import": "./dist/combobox.js"
     },
     "./dialog": {
-      "kisaki-source": "./src/components/dialog/index.ts",
+      "kisaki-source": "./src/components/dialog/index.tsx",
       "types": "./dist/dialog.d.ts",
       "import": "./dist/dialog.js"
     },
@@ -64,12 +64,12 @@
       "import": "./dist/drag.js"
     },
     "./empty-state": {
-      "kisaki-source": "./src/components/empty-state/index.ts",
+      "kisaki-source": "./src/components/empty-state/index.tsx",
       "types": "./dist/empty-state.d.ts",
       "import": "./dist/empty-state.js"
     },
     "./field": {
-      "kisaki-source": "./src/components/field/index.ts",
+      "kisaki-source": "./src/components/field/index.tsx",
       "types": "./dist/field.d.ts",
       "import": "./dist/field.js"
     },
@@ -79,7 +79,7 @@
       "import": "./dist/form.js"
     },
     "./image": {
-      "kisaki-source": "./src/components/image/index.ts",
+      "kisaki-source": "./src/components/image/index.tsx",
       "types": "./dist/image.d.ts",
       "import": "./dist/image.js"
     },
@@ -89,7 +89,7 @@
       "import": "./dist/input.js"
     },
     "./link": {
-      "kisaki-source": "./src/components/link/index.ts",
+      "kisaki-source": "./src/components/link/index.tsx",
       "types": "./dist/link.d.ts",
       "import": "./dist/link.js"
     },
@@ -104,57 +104,57 @@
       "import": "./dist/markdown.js"
     },
     "./menu": {
-      "kisaki-source": "./src/components/menu/index.ts",
+      "kisaki-source": "./src/components/menu/index.tsx",
       "types": "./dist/menu.d.ts",
       "import": "./dist/menu.js"
     },
     "./popover": {
-      "kisaki-source": "./src/components/popover/index.ts",
+      "kisaki-source": "./src/components/popover/index.tsx",
       "types": "./dist/popover.d.ts",
       "import": "./dist/popover.js"
     },
     "./progress": {
-      "kisaki-source": "./src/components/progress/index.ts",
+      "kisaki-source": "./src/components/progress/index.tsx",
       "types": "./dist/progress.d.ts",
       "import": "./dist/progress.js"
     },
     "./radio-group": {
-      "kisaki-source": "./src/components/radio-group/index.ts",
+      "kisaki-source": "./src/components/radio-group/index.tsx",
       "types": "./dist/radio-group.d.ts",
       "import": "./dist/radio-group.js"
     },
     "./scroll-area": {
-      "kisaki-source": "./src/components/scroll-area/index.ts",
+      "kisaki-source": "./src/components/scroll-area/index.tsx",
       "types": "./dist/scroll-area.d.ts",
       "import": "./dist/scroll-area.js"
     },
     "./segmented-control": {
-      "kisaki-source": "./src/components/segmented-control/index.ts",
+      "kisaki-source": "./src/components/segmented-control/index.tsx",
       "types": "./dist/segmented-control.d.ts",
       "import": "./dist/segmented-control.js"
     },
     "./select": {
-      "kisaki-source": "./src/components/select/index.ts",
+      "kisaki-source": "./src/components/select/index.tsx",
       "types": "./dist/select.d.ts",
       "import": "./dist/select.js"
     },
     "./separator": {
-      "kisaki-source": "./src/components/separator/index.ts",
+      "kisaki-source": "./src/components/separator/index.tsx",
       "types": "./dist/separator.d.ts",
       "import": "./dist/separator.js"
     },
     "./slider": {
-      "kisaki-source": "./src/components/slider/index.ts",
+      "kisaki-source": "./src/components/slider/index.tsx",
       "types": "./dist/slider.d.ts",
       "import": "./dist/slider.js"
     },
     "./spinner": {
-      "kisaki-source": "./src/components/spinner/index.ts",
+      "kisaki-source": "./src/components/spinner/index.tsx",
       "types": "./dist/spinner.d.ts",
       "import": "./dist/spinner.js"
     },
     "./switch": {
-      "kisaki-source": "./src/components/switch/index.ts",
+      "kisaki-source": "./src/components/switch/index.tsx",
       "types": "./dist/switch.d.ts",
       "import": "./dist/switch.js"
     },
@@ -164,12 +164,12 @@
       "import": "./dist/table.js"
     },
     "./tabs": {
-      "kisaki-source": "./src/components/tabs/index.ts",
+      "kisaki-source": "./src/components/tabs/index.tsx",
       "types": "./dist/tabs.d.ts",
       "import": "./dist/tabs.js"
     },
     "./textarea": {
-      "kisaki-source": "./src/components/textarea/index.ts",
+      "kisaki-source": "./src/components/textarea/index.tsx",
       "types": "./dist/textarea.d.ts",
       "import": "./dist/textarea.js"
     },
@@ -179,12 +179,12 @@
       "import": "./dist/toast.js"
     },
     "./toolbar": {
-      "kisaki-source": "./src/components/toolbar/index.ts",
+      "kisaki-source": "./src/components/toolbar/index.tsx",
       "types": "./dist/toolbar.d.ts",
       "import": "./dist/toolbar.js"
     },
     "./tooltip": {
-      "kisaki-source": "./src/components/tooltip/index.ts",
+      "kisaki-source": "./src/components/tooltip/index.tsx",
       "types": "./dist/tooltip.d.ts",
       "import": "./dist/tooltip.js"
     },

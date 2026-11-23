@@ -1,5 +1,3 @@
-/** @fileoverview Checks declared template captures without executing user patterns. */
-
 import { expect, test } from 'vite-plus/test'
 import { parseTextTemplate } from './text-rules'
 

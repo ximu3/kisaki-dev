@@ -1,21 +1,6 @@
-/** @fileoverview Owns metadata field values and original identification clues, separate from local write intent and personal data. */
-
-import type { FileInput } from '../resources'
-import type {
-  EntryType,
-  EntryFields,
-  WorkType,
-  PartType,
-  Gender,
-  AnimeExtraType,
-  AnimeEpisodeType,
-  ExternalIdentity,
-} from '../library/catalog'
-import type { PartFields } from '../library/parts'
-import type { MetadataRelationAttributeValues, MetadataRelationMembers } from './relations'
 import type { PartialDate } from '../date'
 import * as v from 'valibot'
-import { parseFileInput } from '../resources'
+import { parseFileInput, type FileInput } from '../resources'
 import {
   aliasesSchema,
   identitySchema,
@@ -27,8 +12,17 @@ import {
   identitiesSchema,
   entryTypes,
   identityKey,
+  type EntryType,
+  type EntryFields,
+  type WorkType,
+  type PartType,
+  type Gender,
+  type AnimeExtraType,
+  type AnimeEpisodeType,
+  type ExternalIdentity,
 } from '../library/catalog'
 import {
+  fromParser,
   id,
   positiveInteger,
   text,
@@ -39,9 +33,13 @@ import {
   unique,
 } from '../validation'
 import { characterRoles } from '../library/relations'
-import { partCommonEntries, partSpecificEntries } from '../library/parts'
+import { partCommonEntries, partSpecificEntries, type PartFields } from '../library/parts'
 import { DesktopError } from '../errors'
-import { metadataRelationFields } from './relations'
+import {
+  metadataRelationFields,
+  type MetadataRelationAttributeValues,
+  type MetadataRelationMembers,
+} from './relations'
 
 /** Source-scoped image identity independent of catalog entry and part identities. */
 export interface ImageIdentity {
@@ -50,10 +48,8 @@ export interface ImageIdentity {
 }
 
 /**
- * Unadopted image source with an optional preview, source identity and display metadata.
- *
- * Original and preview resources retain separate redirect policies. Claimed dimensions are hints
- * until the image is decoded.
+ * Original and preview images each retain their own redirect policy. Dimensions are hints until
+ * decode.
  */
 export interface ImageCandidate {
   readonly image: FileInput
@@ -73,14 +69,11 @@ export interface ImageCandidate {
   readonly credits?: readonly { readonly name: string; readonly url?: string }[]
 }
 
-/** Saved image-ID fields replaced by source candidates in metadata values. */
 type CatalogImageFields = 'primaryImageId' | 'backdropImageId' | 'titleLogoId' | 'iconImageId'
 
 /**
- * Metadata field value types for each entry kind, using source candidates for images.
- *
- * Other fields retain their catalog meanings; local sort, added-date and external-identity storage
- * fields are excluded.
+ * Image values are source candidates. Other fields keep their catalog meanings. Local sort, added
+ * date and persisted external identities remain outside metadata.
  */
 export type MetadataEntryFieldValues = {
   [K in EntryType]: Omit<
@@ -97,53 +90,39 @@ export type MetadataEntryFieldValues = {
     (K extends 'game' ? { readonly iconImage: readonly ImageCandidate[] } : object)
 }
 
-/**
- * Provided metadata fields for an entry kind, preserving omission separately from explicit empty
- * values.
- */
 export type MetadataEntryFields<T extends EntryType> = Partial<MetadataEntryFieldValues[T]>
 
-/** Metadata field name applicable to the selected entry kind. */
 export type MetadataEntryField<T extends EntryType> = Extract<
   keyof MetadataEntryFieldValues[T],
   string
 >
 
-/** Metadata field value types for each part kind, using source candidates for images. */
 export type MetadataPartFieldValues = {
   [K in PartType]: Omit<PartFields<K>, 'externalIdentities' | 'primaryImageId'> & {
     readonly primaryImage: readonly ImageCandidate[]
   }
 }
 
-/**
- * Provided metadata fields for a part kind, preserving omission separately from explicit empty
- * values.
- */
 export type MetadataPartFields<T extends PartType> = Partial<MetadataPartFieldValues[T]>
 
-/** Metadata field name applicable to the selected part kind. */
 export type MetadataPartField<T extends PartType> = Extract<
   keyof MetadataPartFieldValues[T],
   string
 >
 
-/** Optional description and sensitivity metadata for a tag candidate. */
 export interface MetadataTagFields {
   readonly description?: string | null
   readonly isNsfw?: boolean
 }
 
-/** Image uses supported as metadata fields by the selected entry kind. */
 export type MetadataImageField<T extends EntryType> = Extract<
   MetadataEntryField<T>,
   'primaryImage' | 'backdropImage' | 'titleLogo' | 'iconImage'
 >
 
 /**
- * Concrete processable field identity tied to its entry, part, tag or relation kind.
- *
- * Relation membership and binding dimensions are outside the processable field vocabulary.
+ * Processable fields cover values. Relation membership and binding dimensions have separate
+ * contracts.
  */
 export type MetadataFieldRef =
   | {
@@ -175,7 +154,6 @@ export type MetadataFieldRef =
       }[keyof MetadataRelationAttributeValues[R]]
     }[keyof MetadataRelationAttributeValues]
 
-/** Concrete entry or part field whose value is an image-candidate collection. */
 export type MetadataImageFieldRef = Extract<
   MetadataFieldRef,
   {
@@ -184,7 +162,6 @@ export type MetadataImageFieldRef = Extract<
   }
 >
 
-/** Value type selected by a concrete metadata field reference. */
 export type MetadataFieldValue<F extends MetadataFieldRef> = F extends {
   object: 'entry'
   entryType: infer T extends EntryType
@@ -211,18 +188,13 @@ export type MetadataFieldValue<F extends MetadataFieldRef> = F extends {
           : never
         : never
 
-/**
- * Original source names and aliases available as matching evidence.
- *
- * Evidence excludes processor output, null placeholders and invented defaults.
- */
+/** Matching evidence comes from original source facts, before processor output and defaults. */
 interface NameIdentification {
   readonly name?: string
   readonly originalName?: string
   readonly aliases?: readonly string[]
 }
 
-/** Original names, dates and other comparable source facts applicable to an entry kind. */
 export type IdentificationFields<T extends EntryType> = NameIdentification &
   (T extends WorkType
     ? {
@@ -246,7 +218,6 @@ export type IdentificationFields<T extends EntryType> = NameIdentification &
             readonly dissolvedDate?: PartialDate
           })
 
-/** Original names, release date and kind-specific labels or classifications for matching a part. */
 export type PartIdentificationFields<T extends PartType> = NameIdentification & {
   readonly releaseDate?: PartialDate
 } & (T extends 'animeExtra'
@@ -254,7 +225,6 @@ export type PartIdentificationFields<T extends PartType> = NameIdentification & 
     : { readonly numberLabel?: string }) &
   (T extends 'animeEpisode' ? { readonly type?: AnimeEpisodeType } : object)
 
-/** Public clues for locating one source work by names, release date or external identities. */
 export interface WorkClues {
   readonly name?: string
   readonly originalName?: string
@@ -262,7 +232,6 @@ export interface WorkClues {
   readonly externalIdentities?: readonly ExternalIdentity[]
 }
 
-/** Public root-location clues restricted to the selected entry kind. */
 export type IdentificationClues<T extends EntryType> = T extends WorkType
   ? WorkClues
   : {
@@ -273,7 +242,6 @@ export type IdentificationClues<T extends EntryType> = T extends WorkType
       ? { readonly birthDate?: PartialDate }
       : { readonly foundedDate?: PartialDate })
 
-/** Source root with its complete opaque identity and original identification evidence. */
 export type SourceEntry<T extends EntryType = EntryType> = {
   [K in EntryType]: {
     readonly type: K
@@ -283,10 +251,9 @@ export type SourceEntry<T extends EntryType = EntryType> = {
   }
 }[T]
 
-/** Source-provided image candidate with optional preview, dimensions and source-scoped identity. */
 const imageCandidateSchema = v.strictObject({
-  image: v.pipe(v.unknown(), v.transform(parseFileInput)),
-  thumbnail: v.exactOptional(v.pipe(v.unknown(), v.transform(parseFileInput))),
+  image: fromParser(parseFileInput),
+  thumbnail: v.exactOptional(fromParser(parseFileInput)),
   identity: v.exactOptional(v.strictObject({ source: identitySchema.entries.source, id })),
 
   width: v.exactOptional(positiveInteger),
@@ -305,10 +272,8 @@ const imageCandidateSchema = v.strictObject({
   ),
 })
 
-/** Ordered image candidates retained for later preparation and adoption. */
 const images = v.array(imageCandidateSchema)
 
-/** Editable source relation attributes separated from participant identity. */
 export const metadataRelationAttributeEntries = {
   workCharacters: {
     role: v.nullable(v.picklist(characterRoles)),
@@ -326,9 +291,6 @@ export const metadataRelationAttributeEntries = {
   workExtras: {},
 } satisfies Record<keyof MetadataRelationMembers, v.ObjectEntries>
 
-/**
- * Metadata facts shared by entry kinds, using image candidates in place of saved attachment IDs.
- */
 const commonFields = {
   name: entryCommonEntries.name,
   originalName: entryCommonEntries.originalName,
@@ -339,11 +301,7 @@ const commonFields = {
   isNsfw: entryCommonEntries.isNsfw,
 }
 
-/**
- * Returns the metadata value schemas applicable to an entry kind.
- *
- * These schemas also own the field vocabulary used by read requests and profile validation.
- */
+/** Read requests and profile validation share this entry-kind field vocabulary. */
 export function metadataEntryEntries(type: EntryType): v.ObjectEntries {
   const specific = Object.fromEntries(
     Object.entries(entrySpecificEntries[type]).filter(
@@ -366,7 +324,6 @@ export function metadataPartEntries(type: PartType): v.ObjectEntries {
   return { ...common, ...partSpecificEntries[type], primaryImage: images }
 }
 
-/** Returns schemas for original matching evidence applicable to an entry kind. */
 export function identificationEntries(type: EntryType): v.ObjectEntries {
   const common = { name: nonemptyText, originalName: nonemptyText, aliases: aliasesSchema }
   if (type === 'game') {
@@ -390,7 +347,6 @@ export function identificationEntries(type: EntryType): v.ObjectEntries {
   return { ...common, foundedDate: partialDateSchema, dissolvedDate: partialDateSchema }
 }
 
-/** Returns schemas for original matching evidence applicable to a part kind. */
 export function partIdentificationEntries(type: PartType): v.ObjectEntries {
   return {
     name: nonemptyText,
@@ -405,18 +361,16 @@ export function partIdentificationEntries(type: PartType): v.ObjectEntries {
 }
 
 /**
- * Parses original and preview image references with their independent resource policies.
- *
- * Validation does not prepare resources or establish ownership.
+ * Original and preview resources each carry their own resource policy. Preparation and ownership
+ * are checked by the resource owner.
  */
 export function parseImageCandidate(input: unknown): ImageCandidate {
   return parseValue(imageCandidateSchema, input, 'Invalid metadata image candidate')
 }
 
 /**
- * Parses applicable entry metadata, preserving omission and legal explicit empty values.
- *
- * Local, private and inapplicable fields are rejected.
+ * Preserves omission and legal explicit empty values. Local, private and inapplicable fields are
+ * invalid.
  */
 export function parseMetadataEntryFields<T extends EntryType>(
   type: T,
@@ -430,9 +384,8 @@ export function parseMetadataEntryFields<T extends EntryType>(
 }
 
 /**
- * Parses metadata fields for a part kind, including source classification where applicable.
- *
- * Part identity and ownership are outside these fields.
+ * Applicable source classification is a metadata value. Identity and ownership have separate
+ * fields.
  */
 export function parseMetadataPartFields<T extends PartType>(
   type: T,
@@ -445,7 +398,6 @@ export function parseMetadataPartFields<T extends PartType>(
   ) as MetadataPartFields<T>
 }
 
-/** Parses original entry evidence from the fields supported by matching rules. */
 export function parseIdentificationFields<T extends EntryType>(
   type: T,
   input: unknown,
@@ -457,7 +409,6 @@ export function parseIdentificationFields<T extends EntryType>(
   ) as IdentificationFields<T>
 }
 
-/** Parses original matching evidence for the selected part kind. */
 export function parsePartIdentificationFields<T extends PartType>(
   type: T,
   input: unknown,
@@ -470,9 +421,8 @@ export function parsePartIdentificationFields<T extends PartType>(
 }
 
 /**
- * Parses permitted clues for locating a single source root.
- *
- * Empty clues are representable; the resolver reports insufficientInput when it cannot proceed.
+ * Empty clues are legal input. When they cannot support resolution, the resolver reports
+ * insufficientInput.
  */
 export function parseIdentificationClues<T extends EntryType>(
   type: T,
@@ -512,10 +462,7 @@ export function parseSourceEntry(input: unknown): SourceEntry {
     v.strictObject({
       type: v.literal(type),
       identity: identitySchema,
-      identification: v.pipe(
-        v.unknown(),
-        v.transform((value) => parseIdentificationFields(type, value)),
-      ),
+      identification: fromParser((value) => parseIdentificationFields(type, value)),
       externalIdentities: v.exactOptional(identitiesSchema),
     }),
     input,
@@ -543,14 +490,12 @@ export function fieldNamesSchema(names: readonly string[]) {
   )
 }
 
-/** Returns an entry kind's metadata field names from their owning value schemas. */
 export function getMetadataEntryFields<T extends EntryType>(
   type: T,
 ): readonly MetadataEntryField<T>[] {
   return Object.keys(metadataEntryEntries(type)) as MetadataEntryField<T>[]
 }
 
-/** Returns a part kind's metadata field names from their owning value schemas. */
 export function getMetadataPartFields<T extends PartType>(
   type: T,
 ): readonly MetadataPartField<T>[] {
@@ -627,11 +572,7 @@ export function parseMetadataFieldRef(input: unknown): MetadataFieldRef {
   return value as MetadataFieldRef
 }
 
-/**
- * Parses a value using its concrete field's schema.
- *
- * Legal null, false, zero and complete empty collections retain their field-specific meanings.
- */
+/** Legal null, false, zero and empty collections retain their field-specific meanings. */
 export function parseMetadataFieldValue<F extends MetadataFieldRef>(
   field: F,
   input: unknown,
@@ -657,11 +598,7 @@ export function parseMetadataFieldValue<F extends MetadataFieldRef>(
   return parseValue(schema, input, 'Invalid metadata field value') as MetadataFieldValue<F>
 }
 
-/**
- * Parses an ordered selection of distinct provider or processor IDs.
- *
- * Live-reference availability is checked by the execution owner.
- */
+/** Preserves the order of distinct implementation IDs. The executor checks current availability. */
 export function parseMetadataImplementationIds(input: unknown): readonly string[] {
   return parseValue(
     v.pipe(

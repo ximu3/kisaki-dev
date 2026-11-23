@@ -1,5 +1,3 @@
-/** @fileoverview Associates controls with the nearest field's label, description and own error. */
-
 import { createContext, onSettled, useContext } from 'solid-js'
 import type { Accessor } from 'solid-js'
 import type { JSX } from '@solidjs/web'
@@ -8,24 +6,15 @@ import type { JSX } from '@solidjs/web'
 export interface FieldContextValue {
   id: string
 
-  /** Reads form-owned validation state for the field. */
   invalid: Accessor<boolean>
-  /** Reads the field's required-value intent. */
   required: Accessor<boolean>
-  /** Reads the field's disabled-control intent. */
   disabled: Accessor<boolean>
 
-  /** Reads whether the field label is mounted. */
   label: Accessor<boolean>
-  /** Reads whether persistent field guidance is mounted. */
   description: Accessor<boolean>
-  /** Reads whether the field's own error description is mounted. */
   error: Accessor<boolean>
-  /** Updates label presence for accessible naming. */
   setLabel: (value: boolean) => void
-  /** Updates guidance presence for accessible description. */
   setDescription: (value: boolean) => void
-  /** Updates error-description presence for invalid-field association. */
   setError: (value: boolean) => void
 }
 
@@ -41,33 +30,24 @@ export function fieldAttributes(props: JSX.AriaAttributes, ownLabel?: Accessor<J
   const field = useContext(FieldContext)
 
   return {
-    /** Reads the associated control identity from the nearest field. */
     get id() {
       return field?.id
     },
-    /** Reads the nearest field's required-state default. */
     get required() {
       return field?.required()
     },
-    /** Reads the nearest field's disabled-state default. */
     get disabled() {
       return field?.disabled()
     },
-    /**
-     * Supplies the mounted field label when no explicit accessible label or inline label takes
-     * precedence.
-     */
     get 'aria-labelledby'() {
       if (props['aria-label'] || ownLabel?.() != null || !field?.label()) {
         return undefined
       }
       return `${field.id}-label`
     },
-    /** Exposes the field's invalid state only when it is active. */
     get 'aria-invalid'() {
       return field?.invalid() ? ('true' as const) : undefined
     },
-    /** Combines mounted guidance with the field's own error when invalid. */
     get 'aria-describedby'() {
       const ids = []
       if (field?.description()) {
@@ -91,7 +71,6 @@ export function fieldAttributes(props: JSX.AriaAttributes, ownLabel?: Accessor<J
 export function closeWhenUnavailable(element: Accessor<HTMLElement>, close: () => void): void {
   onSettled(() => {
     const node = element()
-    /** Requests closing when native disabled or readonly state prevents editing. */
     const sync = () => {
       if (node.matches(':disabled') || node.hasAttribute('readonly')) {
         close()

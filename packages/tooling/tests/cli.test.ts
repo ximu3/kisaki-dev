@@ -1,11 +1,11 @@
-/** @fileoverview Ensures cancellation cannot conceal a real cleanup failure. */
-
 import { expect, test } from 'vite-plus/test'
 import { spawn } from 'node:child_process'
 import { resolve } from 'node:path'
 
 test.each([
   ['cancel', 130, ''],
+  ['interrupt-then-terminate', 130, ''],
+  ['terminate', 143, ''],
   ['cleanup', 1, 'Synthetic cleanup failure'],
 ] as const)('%s reports its actual outcome after CLI cleanup', async (mode, code, diagnostic) => {
   const child = spawn(process.execPath, [resolve('tests/support/cli-worker.ts'), mode], {

@@ -1,5 +1,3 @@
-/** @fileoverview Verifies accepted visual forms and failures at the public value boundary. */
-
 import { expect, test } from 'vite-plus/test'
 import { defaults } from './defaults'
 import { parseTokenValue, parseTokenValues } from './values'

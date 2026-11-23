@@ -1,5 +1,3 @@
-/** @fileoverview Publishes the preferences capability contract. */
-
 export {
   effectiveShortcutBindings,
   parsePreferenceKey,

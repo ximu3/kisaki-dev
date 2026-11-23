@@ -1,5 +1,3 @@
-/** @fileoverview Reads and copies the safe environment summary used by the About dialog. */
-
 import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
 import { clipboard } from 'electron'
 import manifest from '../../../package.json' with { type: 'json' }

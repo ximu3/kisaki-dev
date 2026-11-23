@@ -1,5 +1,3 @@
-//! Exposes desktop file operations and installed font families through Node-API, and language ordering through SQLite.
-
 mod collation;
 mod files;
 mod filesystem;

@@ -1,5 +1,3 @@
-/** @fileoverview Verifies source responses and composed candidates preserve their distinct graph contracts. */
-
 import { test, expect } from 'vite-plus/test'
 
 import { parseMetadataReadResult } from './responses'

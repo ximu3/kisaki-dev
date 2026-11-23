@@ -1,7 +1,4 @@
-/** @fileoverview CSS color text and an alpha-capable picker share one controlled value. */
-
-import { converter, formatHex, formatHex8, parse } from 'culori'
-import type { Hsv } from 'culori'
+import { converter, formatHex, formatHex8, parse, type Hsv } from 'culori'
 import { createEffect, createMemo, createSignal, createUniqueId, omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { fieldAttributes, closeWhenUnavailable } from '../../../internal/field'
@@ -15,6 +12,8 @@ import type { InputProps } from '../control'
 import { RangeInput } from '../../../internal/range/control'
 import popup from '../../../internal/popup/surface.module.css'
 import styles from './styles.module.css'
+
+const toHsv = converter('hsv')
 
 /**
  * Color-text input with an alpha-capable picker and localized channel and validation labels.
@@ -35,11 +34,6 @@ export interface ColorInputProps extends Omit<InputProps, 'type'> {
  * correction.
  */
 export function ColorInput(props: ColorInputProps): JSX.Element {
-  /**
-   * Color-space converter used to obtain picker coordinates without rewriting the submitted CSS
-   * value.
-   */
-  const toHsv = converter('hsv')
   const rest = omit(
     props,
     'value',
@@ -56,41 +50,35 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
     'class',
     'style',
   )
+
   const field = fieldAttributes(props)
-  /** Live CSS color value and change requests delegated to the controlled or local owner. */
   const [value, change] = createValue(
     () => props.value,
     () => props.defaultValue ?? '',
     (next) => props.onValueChange?.(next),
   )
-  /** Parsed current CSS color observed by the picker. */
   const parsed = createMemo(() => parse(value()))
-  /** Local HSV picker coordinates retained while the submitted color value changes. */
   const [color, setColor] = createSignal<Hsv>({ mode: 'hsv', h: 0, s: 1, v: 1, alpha: 1 })
-  /** Locally owned visibility of the color-picker surface. */
+
   const [open, setOpen] = createSignal(false)
   const [trigger, bindTrigger] = createSignal<HTMLButtonElement>()
   const id = createUniqueId()
   let input!: HTMLInputElement
   let picker!: HTMLDivElement
   let hue!: HTMLInputElement
-  /** Checks whether disabled or readonly state prevents picker interaction. */
   const blocked = () => (props.disabled ?? field.disabled) || props.readonly
-  /** Formats the parsed color for the swatch or returns transparency for an unparseable value. */
   const swatch = () => (parsed() ? formatHex8(parsed()) : 'transparent')
 
   createEffect(
     () => toHsv(parsed()),
     (next) => {
       if (next) {
+        // Achromatic values have no hue. Preserve the user's picker position.
         setColor((previous) => ({ ...next, h: next.h ?? previous.h ?? 0 }))
       }
     },
   )
-  /**
-   * Updates selected HSV channels and requests the corresponding hexadecimal form value, including
-   * alpha when needed.
-   */
+
   const commit = (next: Partial<Hsv>) => {
     const updated = { ...color(), ...next }
     const requested = (updated.alpha ?? 1) < 1 ? formatHex8(updated) : formatHex(updated)
@@ -102,7 +90,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
       }
     })
   }
-  /** Maps pointer coordinates on the color plane to bounded saturation and brightness values. */
+
   const paint = (event: PointerEvent & { currentTarget: HTMLDivElement }) => {
     const rect = event.currentTarget.getBoundingClientRect()
     commit({
@@ -112,14 +100,12 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
   }
 
   createPopup({
-    /** Reads the currently mounted color-picker surface. */
     element: () => picker,
 
     anchor: trigger,
     open,
     change: setOpen,
 
-    /** Selects the color picker's preferred logical starting placement. */
     placement: () => 'bottom-start',
   })
   closeWhenUnavailable(

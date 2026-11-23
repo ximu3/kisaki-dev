@@ -1,5 +1,3 @@
-/** @fileoverview Builds the editable main-process input for the development-session fixture. */
-
 import { defineConfig } from 'vite'
 
 export default defineConfig({

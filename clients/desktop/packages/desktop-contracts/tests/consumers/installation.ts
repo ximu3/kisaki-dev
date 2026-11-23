@@ -1,21 +1,12 @@
-/** @fileoverview Supplies the independent Node and browser installations of this public package. */
-
 import { readFile, writeFile } from 'node:fs/promises'
 import { test } from 'vite-plus/test'
 import { join, resolve } from 'node:path'
-import { installConsumer } from '@kisaki3/tooling/testing/consumer'
+import { createConsumerTest } from '@kisaki3/tooling/testing/consumer'
 
-/** This package's root for the independent tarball installation. */
 const packageRoot = resolve(import.meta.dirname, '../..')
 
-/** Creates a file-scoped installation of the selected consumer project. */
 export function consumerTest(host: 'node' | 'browser') {
-  return test.extend('consumerDirectory', { scope: 'file' }, async ({}, { onCleanup }) => {
-    const consumerDirectory = await installConsumer(
-      join(import.meta.dirname, 'fixtures', host),
-      packageRoot,
-      onCleanup,
-    )
+  return createConsumerTest(test, packageRoot, host, async (consumerDirectory) => {
     // Include every published declaration through the same package resolution used by the consumer.
     const installed = JSON.parse(
       await readFile(
@@ -27,7 +18,5 @@ export function consumerTest(host: 'node' | 'browser') {
       (subpath) => `import '${installed.name}${subpath.slice(1)}'`,
     )
     await writeFile(join(consumerDirectory, 'public-entries.d.ts'), imports.join('\n'))
-
-    return consumerDirectory
   })
 }

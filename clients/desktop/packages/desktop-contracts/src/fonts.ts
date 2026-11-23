@@ -1,9 +1,7 @@
-/** @fileoverview Defines user font identity, verified font metadata and independent font-resource holds. */
-
 import type { NonEmptyArray, ListOptions, CallOptions, ListResult, Disposable } from './operations'
-import type { PreparedAttachment, ReadResourceRef, FileInput } from './resources'
 import * as v from 'valibot'
 import {
+  fromParser,
   text,
   nonnegativeInteger,
   nonemptyText,
@@ -13,22 +11,20 @@ import {
   optionalFields,
   validateExpectedKeys,
 } from './validation'
-import { parsePreparedAttachment, parseFileInput } from './resources'
+import {
+  parsePreparedAttachment,
+  parseFileInput,
+  type PreparedAttachment,
+  type ReadResourceRef,
+  type FileInput,
+} from './resources'
 
-/**
- * A shared system-family or user-library font identity.
- *
- * Consumers define their own default or document-font selections.
- */
+/** Consumers define their own default or document-font selections. */
 export type FontRef =
   | { readonly type: 'system'; readonly family: string }
   | { readonly type: 'user'; readonly id: string }
 
-/**
- * A font metric's supported range and default.
- *
- * Static metrics have equal minimum, default and maximum values.
- */
+/** Static metrics have equal minimum, default and maximum values. */
 export interface FontMetricRange {
   readonly min: number
   readonly default: number
@@ -40,11 +36,7 @@ export interface FontVariationAxis extends FontMetricRange {
   readonly tag: string
 }
 
-/**
- * Face facts parsed from font bytes by the host.
- *
- * Weight and width use font/CSS metric units rather than interface pixels.
- */
+/** Weight and width use font/CSS metric units rather than interface pixels. */
 export interface FontFaceMetadata {
   /** Zero-based face index within the font file. */
   readonly index: number
@@ -64,11 +56,7 @@ export interface FontFileMetadata {
   readonly faces: NonEmptyArray<FontFaceMetadata>
 }
 
-/**
- * A temporary font-content hold with metadata parsed from actual TTF, OTF, WOFF or WOFF2 bytes.
- *
- * Preparation creates no user Font record. The caller owns release of the hold.
- */
+/** Preparation creates no user Font record. The caller owns release of the hold. */
 export interface PreparedFontFile extends PreparedAttachment {
   readonly metadata: FontFileMetadata
 }
@@ -90,11 +78,7 @@ export interface Font {
   readonly updatedAt: number
 }
 
-/**
- * A fixed font snapshot and independently owned file-resource holds.
- *
- * Disposal leaves the plain snapshot readable while ending access through its resources.
- */
+/** Disposal leaves the plain snapshot readable while ending access through its resources. */
 export interface FontRead {
   readonly font: Font
   /** Acquired file resources indexed by attachment ID. */
@@ -106,21 +90,16 @@ export interface FontRead {
   dispose(): Promise<void>
 }
 
-/** A new font-file source or an already prepared font-content hold. */
 export type FontFileInput = FileInput | PreparedFontFile
 
-/** A new font-file input or a retained attachment already owned by the font being edited. */
 export type FontFileUpdateInput = FontFileInput | { readonly attachmentId: string }
 
-/** A name and nonempty file set for creating one user-library font. */
 export interface FontImportInput {
   readonly name: string
   readonly files: NonEmptyArray<FontFileInput>
 }
 
 /**
- * Name and complete file-set changes with optional expected values.
- *
  * Omitted files remain unchanged. A supplied nonempty file set replaces the existing set as one
  * comparison unit.
  */
@@ -130,8 +109,6 @@ export interface FontUpdate {
 }
 
 /**
- * User-font records, system-family discovery and explicitly acquired font resources.
- *
  * Saved records and byte holds have separate lifetimes. User fonts remain until explicitly deleted.
  */
 export interface FontsApi {
@@ -148,18 +125,10 @@ export interface FontsApi {
   /** Lists distinct system family names without importing their files into the user library. */
   listSystem(call?: CallOptions): Promise<readonly string[]>
 
-  /**
-   * Verifies font bytes and returns a hold with parsed metadata for preview.
-   *
-   * The caller releases the hold; preparation creates no Font record.
-   */
+  /** The caller releases the hold; preparation creates no Font record. */
   prepare(input: FileInput, call?: CallOptions): Promise<PreparedFontFile>
 
-  /**
-   * Prepares submitted files and commits one complete user font.
-   *
-   * Failure leaves no partially created font.
-   */
+  /** Failure leaves no partially created font. */
   import(input: FontImportInput, call?: CallOptions): Promise<Font>
 
   /**
@@ -170,9 +139,7 @@ export interface FontsApi {
   update(id: string, input: FontUpdate, call?: CallOptions): Promise<Font>
 
   /**
-   * Removes the user-font record while preserving saved consumer selections.
-   *
-   * Acquired reads retain their bytes until release.
+   * Saved selections survive deletion. Previously acquired reads keep their bytes until release.
    */
   delete(id: string, call?: CallOptions): Promise<void>
 
@@ -183,15 +150,10 @@ export interface FontsApi {
    */
   open(id: string, call?: CallOptions): Promise<FontRead>
 
-  /**
-   * Subscribes to font-directory invalidation before the caller reads a snapshot.
-   *
-   * Notifications leave editing drafts under their owners.
-   */
+  /** Subscribe before reading the font directory. Refreshes preserve local edits. */
   onInvalidated(listener: () => void): Disposable
 }
 
-/** Finite font metric range whose default lies between its bounds. */
 const metric = v.pipe(
   v.strictObject({
     min: v.pipe(v.number(), v.finite()),
@@ -201,19 +163,16 @@ const metric = v.pipe(
   v.check((value) => value.min <= value.default && value.default <= value.max),
 )
 
-/** Font metric range restricted to positive values for weight and width. */
 const positiveMetric = v.pipe(
   metric,
   v.check((value) => value.min > 0),
 )
 
-/** Four-character OpenType axis tag and its validated default and bounds. */
 const axis = v.pipe(
   v.strictObject({ ...metric.entries, tag: v.pipe(text, v.regex(/^[\x20-\x7e]{4}$/)) }),
   v.check((value) => value.min <= value.default && value.default <= value.max),
 )
 
-/** Font-face identity, style, metric ranges and distinct variation axes. */
 const face = v.strictObject({
   index: nonnegativeInteger,
   family: nonemptyText,
@@ -230,7 +189,6 @@ const face = v.strictObject({
   ),
 })
 
-/** Nonempty font-face metadata with contiguous source face indexes. */
 const metadata = v.strictObject({
   faces: v.pipe(
     v.tupleWithRest([face], face),
@@ -238,7 +196,6 @@ const metadata = v.strictObject({
   ),
 })
 
-/** An immutable font attachment paired with its validated face metadata. */
 const file = v.strictObject({ attachmentId: id, metadata })
 
 /** Parses a stable font reference without checking current family or resource availability. */
@@ -253,11 +210,7 @@ export function parseFontRef(input: unknown): FontRef {
   )
 }
 
-/**
- * Parses face metadata, index order and metric ranges.
- *
- * Registration and adoption separately require provenance from the actual host decoder.
- */
+/** Registration and adoption separately require provenance from the actual host decoder. */
 export function parseFontFileMetadata(input: unknown): FontFileMetadata {
   return parseValue(metadata, input, 'Invalid font file metadata')
 }
@@ -270,18 +223,13 @@ export function parsePreparedFontFile(input: unknown): PreparedFontFile {
   return attachment as PreparedFontFile
 }
 
-/** Parses a prepared font hold or delegates a new source to the common file-input parser. */
 function parseFontFileInput(input: unknown): FontFileInput {
   return typeof input === 'object' && input !== null && 'attachmentId' in input
     ? parsePreparedFontFile(input)
     : parseFileInput(input)
 }
 
-/**
- * Parses a retained attachment identity or a new font-file input.
- *
- * The update operation separately verifies ownership of retained attachments.
- */
+/** The update operation separately verifies ownership of retained attachments. */
 function parseFontFileUpdateInput(input: unknown): FontFileUpdateInput {
   if (
     typeof input === 'object' &&
@@ -295,13 +243,9 @@ function parseFontFileUpdateInput(input: unknown): FontFileUpdateInput {
   return parseFontFileInput(input)
 }
 
-/**
- * Parses a font name and nonempty file-source set.
- *
- * The import operation owns source decoding and byte-level deduplication.
- */
+/** The import operation owns source decoding and byte-level deduplication. */
 export function parseFontImport(input: unknown): FontImportInput {
-  const source = v.pipe(v.unknown(), v.transform(parseFontFileInput))
+  const source = fromParser(parseFontFileInput)
   return parseValue(
     v.strictObject({ name: nonemptyText, files: v.tupleWithRest([source], source) }),
     input,
@@ -311,7 +255,7 @@ export function parseFontImport(input: unknown): FontImportInput {
 
 /** Parses font changes and expected values for the same name or complete file-set units. */
 export function parseFontUpdate(input: unknown): FontUpdate {
-  const source = v.pipe(v.unknown(), v.transform(parseFontFileUpdateInput))
+  const source = fromParser(parseFontFileUpdateInput)
   const value = parseValue(
     v.strictObject({
       changes: v.strictObject(

@@ -1,5 +1,3 @@
-//! Configures Node-API linking and identifies the ICU engine and data behind SQLite indexes.
-
 use std::fs;
 
 /// Embeds the locked ICU component versions so changing their ordering rebuilds derived indexes.

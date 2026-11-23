@@ -1,5 +1,3 @@
-/** @fileoverview Stores manual or dynamic collections, reusable tags and their actual membership sides. */
-
 import { sql } from 'drizzle-orm'
 import {
   check,

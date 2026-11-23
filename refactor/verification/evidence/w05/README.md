@@ -151,4 +151,4 @@ Windows x64 的 Chromium 中，受控 Input 在组合期间收到外部值 A，�
 
 ## 受控折叠与同名分组
 
-Windows x64 的 Chromium 中，点击受控的关闭项，宿主收到展开请求并保留原值，同名分组仍显示原先展开的成员。宿主随后采纳展开值，新成员展开，原成员关闭。Space 请求收起时可以保留展开；Enter 再次请求并获采纳后收起。标题内的链接正常导航，调用方取消的点击保持原状。[公开组件](../../../../clients/desktop/packages/desktop-ui/src/components/collapsible/control.tsx) · [独立制品用例](../../../../clients/desktop/packages/desktop-ui/tests/consumers/browser.test.ts)
+Windows x64 的 Chromium 中，点击受控的关闭项，宿主收到展开请求并保留原值，同名分组仍显示原先展开的成员。宿主随后采纳展开值，新成员展开，原成员关闭。Space 请求收起时可以保留展开；Enter 再次请求并获采纳后收起。标题内的链接正常导航，调用方取消的点击保持原状。[公开组件](../../../../clients/desktop/packages/desktop-ui/src/components/collapsible/index.tsx) · [独立制品用例](../../../../clients/desktop/packages/desktop-ui/tests/consumers/browser.test.ts)

@@ -1,5 +1,3 @@
-/** @fileoverview Encodes desktop catalog identities for theme and translation lookups and fields. */
-
 import type { ThemeRef } from '@kisaki3/desktop-contracts/appearance'
 import type { UiTranslationRef } from '@kisaki3/desktop-contracts/i18n'
 

@@ -6,7 +6,7 @@ A10、A23、A28 和 A33 验证普通 Node 消费、原生后端和 Kisaki 中的
 
 ## 实例身份与独立消费
 
-从正式包取得 processes、windows，以及库级 getForeground、observeForeground；窗口取帧通过 windows.capture(windowRef)。快照包含实际实例引用，重新查询产生新快照，保留的旧快照不被原地改写。
+从正式包导入 `processes`、`windows`、`getForeground` 和 `observeForeground`，调用 `windows.capture(windowRef)` 取得指定窗口的图像。快照包含实际实例引用。再次查询取得新快照，已有快照保持当时的值。
 
 实例发现、名称变化、编号复用和后端断连分别验证：有效实例可以复用引用，失效引用不能换绑到复用 PID 或窗口编号的新对象。局部不可读时保留可靠事实，监测中断不伪造退出；未知、对象缺失、权限不足和后端不可用分别表达。原生操作的目标对应与并发保证按[平台身份合同](../../design/projects/vantage/backends.md#identity)核验；一次编号检查或类型引用不足以证明原子操作成立。
 

@@ -1,5 +1,3 @@
-/** @fileoverview Mounts the main window's page outlet and management overlays. */
-
 import { Show } from 'solid-js'
 import { dynamic } from '@solidjs/web'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
@@ -15,11 +13,11 @@ import { AppShell } from './shell'
 export function MainWindow(props: { api: MainClient; pages: readonly PageRoute[] }) {
   const { api } = props
   const preferences = createShellPreferences(api)
-  const nav = createNavigation(api, props.pages, () => preferences.current()?.shortcuts)
+  const navigation = createNavigation(api, props.pages, () => preferences.current()?.shortcuts)
 
   async function open(target: NativeViewTarget) {
     try {
-      return await nav.navigate(target)
+      return await navigation.navigate(target)
     } catch (cause) {
       reportError(cause)
       return false
@@ -32,16 +30,16 @@ export function MainWindow(props: { api: MainClient; pages: readonly PageRoute[]
       <AppShell
         api={api}
         pages={props.pages}
-        current={nav.page()?.id}
+        current={navigation.page()?.id}
         preferences={preferences.current()}
         updatePreferences={preferences.update}
         reorder={preferences.reorder}
         open={open}
       >
-        <Show when={nav.page()}>
+        <Show when={navigation.page()}>
           {(page) => {
             const View = dynamic(() => page().view)
-            return <View api={api} target={nav.target()} />
+            return <View api={api} target={navigation.target()} />
           }}
         </Show>
       </AppShell>
@@ -49,12 +47,12 @@ export function MainWindow(props: { api: MainClient; pages: readonly PageRoute[]
       <ManagementDialogs
         api={api}
         pages={props.pages}
-        manager={nav.manager.current}
-        resource={nav.resource.current}
-        openResource={nav.openResource}
-        confirmLeave={nav.confirmation.ask}
+        manager={navigation.manager.current}
+        resource={navigation.resource.current}
+        openResource={navigation.openResource}
+        confirmLeave={navigation.confirmation.ask}
       />
-      <nav.confirmation.Content />
+      <navigation.confirmation.Content />
     </>
   )
 }
