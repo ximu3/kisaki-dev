@@ -9,17 +9,20 @@ autoInstallPeers: false
 
 catalog:
   '@arethetypeswrong/cli': 0.18.5
+  '@solidjs/compiler': 2.0.2
+  '@solidjs/vite-plugin': 3.0.1
+  '@solidjs/web': 2.0.3
   '@types/node': 24.19.2
   electron: 45.3.2
   publint: 0.3.25
-  solid-js: 1.9.19
+  solid-js: 2.0.3
   typescript: 7.1.0-beta
   vite: npm:@voidzero-dev/vite-plus-core@1.6.0
   vite-plus: 1.6.0
-  vite-plugin-solid: 2.11.16
   vitest: 5.1.0
 
 overrides:
+  '@solidjs/compiler': 'catalog:'
   vite: 'catalog:'
   vitest: 'catalog:'
 
@@ -45,3 +48,7 @@ allowBuilds:
 minimumReleaseAgeExclude:
   - '@zip.js/zip.js@2.25.0'
   - electron@45.3.2
+
+# Limit the SSR error overlay protection to server rendering so desktop HMR receives rapid repairs.
+patchedDependencies:
+  '@solidjs/vite-plugin@3.0.1': config/pnpm/@solidjs__vite-plugin@3.0.1.patch

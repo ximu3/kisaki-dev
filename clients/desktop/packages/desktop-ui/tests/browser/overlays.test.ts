@@ -206,10 +206,11 @@ test('dialogs, menus and popovers close the active scope and return focus', asyn
   await page.getByLabel('Block close').uncheck()
   const closing = await page
     .getByRole('button', { name: 'Close editor' })
-    .evaluate((button: HTMLButtonElement) => {
+    .evaluate(async (button: HTMLButtonElement) => {
       const panel = button.closest('dialog')!
       const height = panel.offsetHeight
       button.click()
+      await Promise.resolve()
       return { height, retained: panel.offsetHeight, modal: panel.matches(':modal') }
     })
   expect(closing.modal).toBe(false)
@@ -245,8 +246,9 @@ test('toast clocks pause, survive caller disposal and follow active modals until
   page,
 }) => {
   await page.clock.install()
-  const initialOverflow = await page.evaluate(() => {
+  const initialOverflow = await page.evaluate(async () => {
     window.fixture.showLoading(false)
+    await Promise.resolve()
     const region = document.querySelector<HTMLElement>('[role="region"][popover]:popover-open')!
     return {
       x: region.scrollWidth - region.clientWidth,

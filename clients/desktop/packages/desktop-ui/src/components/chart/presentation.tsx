@@ -1,8 +1,7 @@
 /** @fileoverview Chart theme, accessible text alternatives and caller-owned interactive legends. */
 
-import { For, splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { classes } from '../../internal/dom'
+import { For, omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import styles from './styles.module.css'
 
 /** Figure attributes with an accessible chart label and a visible text summary. */
@@ -13,12 +12,12 @@ export interface ChartProps extends JSX.HTMLAttributes<HTMLElement> {
 
 /** Wraps a Solid chart composition in the shared theme and its text alternative. */
 export function Chart(props: ChartProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['label', 'summary', 'children', 'class'])
+  const rest = omit(props, 'label', 'summary', 'children', 'class')
 
   return (
-    <figure {...rest} aria-label={local.label} class={classes(styles.root, local.class)}>
-      {local.children}
-      <figcaption class={styles.summary}>{local.summary}</figcaption>
+    <figure {...rest} aria-label={props.label} class={[styles.root, props.class]}>
+      {props.children}
+      <figcaption class={styles.summary}>{props.summary}</figcaption>
     </figure>
   )
 }
@@ -45,12 +44,12 @@ export interface ChartLegendProps {
 /** Renders keyboard-activatable legend buttons with their current pressed states. */
 export function ChartLegend(props: ChartLegendProps): JSX.Element {
   return (
-    <div role="group" aria-label={props.label} class={classes(styles.legend, props.class)}>
+    <div role="group" aria-label={props.label} class={[styles.legend, props.class]}>
       <For each={props.items}>
         {(item) => (
           <button
             type="button"
-            aria-pressed={item.selected}
+            aria-pressed={item.selected ? 'true' : 'false'}
             onClick={() => props.onToggle(item.id)}
           >
             <span aria-hidden="true" style={{ background: item.color }} />

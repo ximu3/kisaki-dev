@@ -1,6 +1,6 @@
 /** @fileoverview Native checked-state ownership shared by checkbox and switch. */
 
-import { createEffect, onMount, untrack } from 'solid-js'
+import { createEffect, flush } from 'solid-js'
 import type { Accessor } from 'solid-js'
 import { createValue, onFormReset } from './state'
 import { nativeValidityChanged } from './form'
@@ -27,28 +27,31 @@ export function bindCheckedControl(props: CheckedValueProps, element: Accessor<H
     (next) => props.onCheckedChange?.(next),
   )
   /** Copies the owned checked state to the native checkbox. */
-  const sync = () => {
+  const sync = (next = checked()) => {
     const node = element()
-    node.checked = checked()
+    node.checked = next
     nativeValidityChanged(node.form)
   }
 
-  onMount(() => {
-    createEffect(() => {
-      element().defaultChecked = props.defaultChecked ?? false
-      untrack(sync)
-    })
-    createEffect(sync)
-  })
-  const flushReset = onFormReset(element, () => {
-    change(props.defaultChecked ?? false)
-    sync()
-  })
+  createEffect(
+    () => [props.defaultChecked ?? false, checked()],
+    ([initial, next]) => {
+      element().defaultChecked = initial
+      sync(next)
+    },
+  )
 
+  /** Settles the value owner before a native callback reads or submits the control. */
+  function commit(next: boolean) {
+    change(next)
+    flush()
+    sync()
+  }
+
+  const flushReset = onFormReset(element, () => commit(props.defaultChecked ?? false))
   return () => {
     const next = element().checked
     flushReset()
-    change(next)
-    untrack(sync)
+    commit(next)
   }
 }

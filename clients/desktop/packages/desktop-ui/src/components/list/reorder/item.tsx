@@ -1,11 +1,10 @@
 /** @fileoverview Registers a row handle and the insertion target of its owning list. */
 
-import { createEffect, For, onCleanup, Show, splitProps } from 'solid-js'
+import { createEffect, For, Show, omit } from 'solid-js'
 import {
   attachClosestEdge,
   extractClosestEdge,
 } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge'
-import { assignRef } from '../../../internal/dom'
 import { createDraggable, createDropTarget } from '../../drag/adapter'
 import { DragHandle, DropIndicator } from '../../drag/presentation'
 import { setDragPreview } from '../../drag/preview'
@@ -26,21 +25,24 @@ export interface ReorderableListItemProps extends Omit<ListItemProps, 'handle'> 
 /** Composes one native ListItem with a move menu, keyboard shortcut and pointer target. */
 export function ReorderableListItem(props: ReorderableListItemProps) {
   const list = useReorderableList()
-  const [local, rest] = splitProps(props, ['value', 'moveLabel', 'previewLabel', 'ref', 'children'])
+  const rest = omit(props, 'value', 'moveLabel', 'previewLabel', 'ref', 'children')
   let row!: HTMLLIElement
   let handle!: HTMLButtonElement
 
-  createEffect(() => {
-    const id = local.value
-    list.handleById.set(id, handle)
-    onCleanup(() => list.handleById.delete(id))
-  })
+  createEffect(
+    () => props.value,
+    (id) => {
+      list.handleById.set(id, handle)
+
+      return () => list.handleById.delete(id)
+    },
+  )
   createDraggable(() => ({
     element: handle,
     canDrag: () => !list.busy(),
-    getInitialData: () => ({ list: list.scope, id: local.value, ids: list.subjects(local.value) }),
+    getInitialData: () => ({ list: list.scope, id: props.value, ids: list.subjects(props.value) }),
     onGenerateDragPreview: ({ nativeSetDragImage }) =>
-      setDragPreview({ nativeSetDragImage, label: local.previewLabel }),
+      setDragPreview({ nativeSetDragImage, label: props.previewLabel }),
   }))
   createDropTarget(() => ({
     element: row,
@@ -55,25 +57,25 @@ export function ReorderableListItem(props: ReorderableListItemProps) {
         !!edge &&
         list.canSubmit({
           ids: source.data.ids as readonly string[],
-          targetId: local.value,
+          targetId: props.value,
           edge: edge === 'top' ? 'before' : 'after',
         })
       )
     },
     getData: ({ element, input }) =>
       attachClosestEdge(
-        { list: list.scope, id: local.value },
+        { list: list.scope, id: props.value },
         { element, input, allowedEdges: ['top', 'bottom'] },
       ),
   }))
 
   function move(command: MoveCommand) {
-    list.submit(local.value, list.command(local.value, command))
+    list.submit(props.value, list.command(props.value, command))
   }
 
   const edge = (): 'top' | 'bottom' | undefined => {
     const drop = list.drop()
-    if (drop?.targetId === local.value) {
+    if (drop?.targetId === props.value) {
       return drop.edge === 'before' ? 'top' : 'bottom'
     }
   }
@@ -81,10 +83,12 @@ export function ReorderableListItem(props: ReorderableListItemProps) {
   return (
     <ListItem
       {...rest}
-      ref={(node) => {
-        row = node
-        assignRef(local.ref, node)
-      }}
+      ref={[
+        (node) => {
+          row = node
+        },
+        props.ref,
+      ]}
       handle={
         <Menu>
           <DragHandle
@@ -92,14 +96,14 @@ export function ReorderableListItem(props: ReorderableListItemProps) {
             ref={(node) => {
               handle = node
             }}
-            aria-label={local.moveLabel}
+            aria-label={props.moveLabel}
             onMove={move}
           />
           <MenuContent>
             <For each={commands}>
               {(command) => (
                 <MenuItem
-                  disabled={!list.command(local.value, command)}
+                  disabled={!list.command(props.value, command)}
                   onSelect={() => move(command)}
                 >
                   {list.labels()[command]}
@@ -110,7 +114,7 @@ export function ReorderableListItem(props: ReorderableListItemProps) {
         </Menu>
       }
     >
-      {local.children}
+      {props.children}
       <Show when={edge()}>
         {(side) => <DropIndicator edge={side()} gap="var(--kui-list-gap)" />}
       </Show>

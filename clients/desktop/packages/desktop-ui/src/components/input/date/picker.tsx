@@ -1,8 +1,7 @@
 /** @fileoverview Calendar navigation owns the viewed period and focus until the caller accepts a day. */
 
-import { createEffect, createMemo, createSignal, For, on, onMount, Show } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { classes } from '../../../internal/dom'
+import { createEffect, createMemo, createSignal, For, Show } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { Icon, ChevronLeft, ChevronRight } from '../../../internal/icon/glyph'
 import { createPopup } from '../../../internal/popup/controller'
 import { displayedWhileOpen } from '../../../internal/popup/presentation'
@@ -149,30 +148,29 @@ export function DatePicker(props: PickerProps): JSX.Element {
     /** Selects the calendar's preferred logical ending placement. */
     placement: () => 'bottom-end',
   })
-  onMount(() => {
-    createEffect(() => {
-      const next = clamp(active())
+  createEffect(
+    () => clamp(active()),
+    (next) => {
       if (next !== active()) {
         browse(next)
       }
-    })
-    createEffect(
-      on(
-        () => props.open,
-        (opening) => {
-          if (!opening) {
-            return
-          }
-          browse(parseDate(props.value) ? props.value : todayValue())
-          queueMicrotask(() => {
-            if (props.open) {
-              calendar.querySelector<HTMLButtonElement>(`[data-date="${active()}"]`)?.focus()
-            }
-          })
-        },
-      ),
-    )
-  })
+    },
+  )
+
+  createEffect(
+    () => props.open,
+    (opening) => {
+      if (!opening) {
+        return
+      }
+      browse(parseDate(props.value) ? props.value : todayValue())
+      queueMicrotask(() => {
+        if (props.open) {
+          calendar.querySelector<HTMLButtonElement>(`[data-date="${active()}"]`)?.focus()
+        }
+      })
+    },
+  )
 
   return (
     <div
@@ -184,7 +182,7 @@ export function DatePicker(props: PickerProps): JSX.Element {
       popover="auto"
       role="dialog"
       aria-label={props.calendarLabel}
-      class={classes(frame.anchor, styles.calendar)}
+      class={[frame.anchor, styles.calendar]}
       onFocusOut={(event) => {
         if (
           event.relatedTarget &&
@@ -195,7 +193,7 @@ export function DatePicker(props: PickerProps): JSX.Element {
         }
       }}
     >
-      <div class={classes(frame.viewport, styles.content)}>
+      <div class={[frame.viewport, styles.content]}>
         <div class={styles.heading}>
           <button
             type="button"
@@ -303,14 +301,14 @@ export function DatePicker(props: PickerProps): JSX.Element {
                           data-option-highlight="hover"
                           data-date={date}
                           aria-label={formats().day.format(parseDate(date))}
-                          aria-selected={selected() === date}
+                          aria-selected={selected() === date ? 'true' : 'false'}
                           aria-current={date === todayValue() ? 'date' : undefined}
-                          aria-disabled={!props.allowed(date)}
-                          tabIndex={active() === date ? 0 : -1}
-                          class={classes(
+                          aria-disabled={!props.allowed(date) ? 'true' : 'false'}
+                          tabindex={active() === date ? 0 : -1}
+                          class={[
                             styles.day,
                             date.slice(0, 7) !== month().slice(0, 7) ? styles.outside : undefined,
-                          )}
+                          ]}
                           onFocus={() => setActive(date)}
                           onClick={() => {
                             if (props.allowed(date)) {

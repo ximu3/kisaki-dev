@@ -1,8 +1,8 @@
 /** @fileoverview A large independently virtualized collection exercises stable selection identity. */
 
-import { createEffect, createSignal, For, onCleanup } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { createVirtualizer } from '@tanstack/solid-virtual'
+import { createSignal, For, onCleanup } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { createVirtualizer, VirtualRow } from '@kisaki3/desktop-ui/virtualization'
 import { MultiSelect } from '@kisaki3/desktop-ui/select'
 
 /** Ten-thousand-option synthetic input for virtualized selection and scrolling checks. */
@@ -34,6 +34,7 @@ export function VirtualChoices(): JSX.Element {
         listRef={setViewport}
         scrollToValue={(value) => scrollTo?.(value)}
         renderOptions={(state) => {
+          const [retained, setRetained] = createSignal<readonly number[]>([])
           const virtualizer = createVirtualizer({
             /** Reads the live fixture option count for the real virtualizer. */
             get count() {
@@ -41,43 +42,37 @@ export function VirtualChoices(): JSX.Element {
             },
 
             /** Reads the mounted viewport used by the consumer's real virtualizer. */
-            getScrollElement: () => viewport() ?? null,
+            get viewport() {
+              return viewport()
+            },
 
             /** Supplies the fixed synthetic row-height estimate before actual measurement. */
             estimateSize: () => 30,
             overscan: 4,
-            useAnimationFrameWithResizeObserver: true,
             /** Runs fixture virtual measurements only while the selection surface is present. */
             get enabled() {
               return state.present()
             },
+            get retained() {
+              return retained()
+            },
           })
-          createEffect(() => {
-            virtualizer.getVirtualItems()
-            virtualizer.measureElement(null)
-          })
-          scrollTo = (value) => virtualizer.scrollToIndex(Number(value), { align: 'auto' })
+          scrollTo = (value) => {
+            const index = Number(value)
+            setRetained([index])
+            virtualizer.scrollToIndex(index)
+          }
           onCleanup(() => {
             scrollTo = undefined
           })
 
           return (
-            <div style={{ height: `${virtualizer.getTotalSize()}px`, position: 'relative' }}>
-              <For each={virtualizer.getVirtualItems()}>
+            <div style={{ height: `${virtualizer.totalSize()}px`, position: 'relative' }}>
+              <For each={virtualizer.items()} keyed={(row) => row.key}>
                 {(row) => (
-                  <div
-                    ref={(node) => {
-                      node.dataset.index = String(row.index)
-                      virtualizer.measureElement(node)
-                    }}
-                    style={{
-                      position: 'absolute',
-                      width: '100%',
-                      transform: `translateY(${row.start}px)`,
-                    }}
-                  >
-                    {state.renderOption(state.options()[row.index]!)}
-                  </div>
+                  <VirtualRow virtualizer={virtualizer} item={row()}>
+                    {state.renderOption(state.options()[row().index]!)}
+                  </VirtualRow>
                 )}
               </For>
             </div>

@@ -1,6 +1,6 @@
 /** @fileoverview Solid lifetimes for Pragmatic Drag and Drop registrations. */
 
-import { createEffect, onCleanup } from 'solid-js'
+import { createSignal, createEffect, onSettled } from 'solid-js'
 import type { Accessor } from 'solid-js'
 import {
   draggable,
@@ -8,6 +8,24 @@ import {
   monitorForElements,
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter'
 import { autoScrollForElements } from '@atlaskit/pragmatic-drag-and-drop-auto-scroll/element'
+
+/**
+ * Reads DOM-dependent options once refs are assigned, then replaces each registration when its
+ * reactive inputs change.
+ */
+function registerAfterMount<T>(
+  options: Accessor<T | undefined>,
+  register: (current: T) => () => void,
+): void {
+  const [mounted, setMounted] = createSignal(false)
+  onSettled(() => {
+    setMounted(true)
+  })
+  createEffect(
+    () => (mounted() ? options() : undefined),
+    (current) => (current === undefined ? undefined : register(current)),
+  )
+}
 
 /**
  * Registers a draggable reactively under the current Solid owner.
@@ -18,29 +36,27 @@ import { autoScrollForElements } from '@atlaskit/pragmatic-drag-and-drop-auto-sc
 export function createDraggable(
   options: Accessor<Parameters<typeof draggable>[0] | undefined>,
 ): void {
-  createEffect(() => {
-    const current = options()
-    if (current) {
-      /** Library disposer for the active drag-source registration. */
-      const stop = draggable({
-        ...current,
+  registerAfterMount(options, (current) => {
+    /** Library disposer for the active drag-source registration. */
+    const stop = draggable({
+      ...current,
 
-        /** Marks the source as dragging before forwarding the native start notification. */
-        onDragStart: (event) => {
-          current.element.dataset.uiDragging = ''
-          current.onDragStart?.(event)
-        },
+      /** Marks the source as dragging before forwarding the native start notification. */
+      onDragStart: (event) => {
+        current.element.dataset.uiDragging = ''
+        current.onDragStart?.(event)
+      },
 
-        /** Clears source drag presentation before forwarding the native drop notification. */
-        onDrop: (event) => {
-          delete current.element.dataset.uiDragging
-          current.onDrop?.(event)
-        },
-      })
-      onCleanup(() => {
-        stop()
+      /** Clears source drag presentation before forwarding the native drop notification. */
+      onDrop: (event) => {
         delete current.element.dataset.uiDragging
-      })
+        current.onDrop?.(event)
+      },
+    })
+
+    return () => {
+      stop()
+      delete current.element.dataset.uiDragging
     }
   })
 }
@@ -53,12 +69,7 @@ export function createDraggable(
 export function createDropTarget(
   options: Accessor<Parameters<typeof dropTargetForElements>[0] | undefined>,
 ): void {
-  createEffect(() => {
-    const current = options()
-    if (current) {
-      onCleanup(dropTargetForElements(current))
-    }
-  })
+  registerAfterMount(options, dropTargetForElements)
 }
 
 /**
@@ -69,12 +80,7 @@ export function createDropTarget(
 export function createDragMonitor(
   options: Accessor<Parameters<typeof monitorForElements>[0] | undefined>,
 ): void {
-  createEffect(() => {
-    const current = options()
-    if (current) {
-      onCleanup(monitorForElements(current))
-    }
-  })
+  registerAfterMount(options, monitorForElements)
 }
 
 /**
@@ -85,10 +91,5 @@ export function createDragMonitor(
 export function createDragAutoScroll(
   options: Accessor<Parameters<typeof autoScrollForElements>[0] | undefined>,
 ): void {
-  createEffect(() => {
-    const current = options()
-    if (current) {
-      onCleanup(autoScrollForElements(current))
-    }
-  })
+  registerAfterMount(options, autoScrollForElements)
 }

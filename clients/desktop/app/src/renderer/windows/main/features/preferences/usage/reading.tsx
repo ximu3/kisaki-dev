@@ -1,7 +1,7 @@
 /** @fileoverview Edits one medium's reading defaults in their layout, page, text and color groups. */
 
 import { For, Show } from 'solid-js'
-import { Settings2 } from 'lucide-solid'
+import { Settings2 } from '@lucide/solid'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@kisaki3/desktop-ui/tooltip'
 import { FieldAction, FieldGroup, FieldLegend } from '@kisaki3/desktop-ui/field'
 import { ColorInput, NumberInput } from '@kisaki3/desktop-ui/input'

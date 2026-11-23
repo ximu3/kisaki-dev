@@ -1,8 +1,7 @@
 /** @fileoverview Binds the native form and its submitter to an editor's asynchronous operation. */
 
-import { createEffect, createMemo, onCleanup, onMount, splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { assignRef, classes } from '../../internal/dom'
+import { flush, createEffect, createMemo, onSettled, omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { FormContext, nativeValidityChanged, observeValidity } from '../../internal/form'
 import { createForm, formBinding } from './state'
 import type { FormOptions, FormState } from './state'
@@ -17,7 +16,8 @@ export type FormProps = Omit<JSX.FormHTMLAttributes<HTMLFormElement>, 'onSubmit'
 
 /** Keeps native form semantics and routes each submission through one validation and save path. */
 export function Form(props: FormProps): JSX.Element {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'state',
     'validate',
     'order',
@@ -26,23 +26,11 @@ export function Form(props: FormProps): JSX.Element {
     'ref',
     'class',
     'children',
-  ])
+  )
   const form = createMemo(() => props.state ?? createForm(props))
   let element!: HTMLFormElement
 
-  onMount(() => {
-    createEffect(() => {
-      const binding = form()[formBinding]
-      onCleanup(binding.bind(element))
-    })
-    createEffect(() => {
-      const owner = form()
-      const binding = owner[formBinding]
-      if (binding.validating()) {
-        onCleanup(observeValidity(element, owner, binding.refresh))
-      }
-    })
-
+  onSettled(() => {
     const doc = element.ownerDocument
     function belongs(target: EventTarget | null) {
       return (
@@ -73,23 +61,38 @@ export function Form(props: FormProps): JSX.Element {
         })
       }
     }
-
     doc.addEventListener('focusin', focused)
     doc.addEventListener('focusout', blurred)
     doc.addEventListener('input', changed)
     doc.addEventListener('change', changed)
     doc.addEventListener('reset', reset)
-    onCleanup(() => {
+    return () => {
       doc.removeEventListener('focusin', focused)
       doc.removeEventListener('focusout', blurred)
       doc.removeEventListener('input', changed)
       doc.removeEventListener('change', changed)
       doc.removeEventListener('reset', reset)
-    })
+    }
   })
 
+  createEffect(
+    () => form()[formBinding],
+    (binding) => {
+      return binding.bind(element)
+    },
+  )
+
+  createEffect(
+    () => (form()[formBinding].validating() ? form() : undefined),
+    (owner) => {
+      if (owner) {
+        return observeValidity(element, owner, owner[formBinding].refresh)
+      }
+    },
+  )
+
   return (
-    <FormContext.Provider
+    <FormContext
       value={{
         issues: () => form().issues(),
         activeFieldId: () => form().activeFieldId(),
@@ -99,22 +102,25 @@ export function Form(props: FormProps): JSX.Element {
     >
       <form
         {...rest}
-        ref={(value) => {
-          element = value
-          assignRef(local.ref, value)
-        }}
-        class={classes(styles.root, local.class)}
+        ref={[
+          (value) => {
+            element = value
+          },
+          props.ref,
+        ]}
+        class={[styles.root, props.class]}
         novalidate
         onSubmit={(event) => {
           event.preventDefault()
+          flush()
           // The instance retains the failure for FormFeedback. Imperative callers receive the rejection.
           void form()
             .submit(event.submitter)
             .catch(() => {})
         }}
       >
-        {local.children}
+        {props.children}
       </form>
-    </FormContext.Provider>
+    </FormContext>
   )
 }

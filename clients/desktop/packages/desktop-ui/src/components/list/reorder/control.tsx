@@ -1,9 +1,8 @@
 /** @fileoverview Coordinates one controlled ordered list and its input-independent move requests. */
 
-import { createContext, createSignal, onCleanup, splitProps, useContext } from 'solid-js'
+import { createContext, createSignal, onCleanup, omit, useContext } from 'solid-js'
 import type { ElementEventBasePayload } from '@atlaskit/pragmatic-drag-and-drop/element/adapter'
 import { extractClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge'
-import { assignRef } from '../../../internal/dom'
 import { createDragAutoScroll, createDragMonitor } from '../../drag/adapter'
 import { DragFeedback } from '../../drag/presentation'
 import { List, type ListProps } from '../parts'
@@ -53,7 +52,8 @@ const ReorderContext = createContext<{
 
 /** Installs one drag monitor, autoscroll owner and adoption gate for the ordered list. */
 export function ReorderableList(props: ReorderableListProps) {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'order',
     'selected',
     'labels',
@@ -62,7 +62,7 @@ export function ReorderableList(props: ReorderableListProps) {
     'onMove',
     'onMoveError',
     'ref',
-  ])
+  )
   const [busy, setBusy] = createSignal(false)
   const [drop, setDrop] = createSignal<ListMove>()
   const [feedback, setFeedback] = createSignal('')
@@ -72,17 +72,17 @@ export function ReorderableList(props: ReorderableListProps) {
   onCleanup(() => handleById.clear())
 
   function subjects(id: string) {
-    const selected = local.selected
-    return selected?.has(id) ? local.order.filter((item) => selected.has(item)) : [id]
+    const selected = props.selected
+    return selected?.has(id) ? props.order.filter((item) => selected.has(item)) : [id]
   }
 
   function canSubmit(move: ListMove) {
-    const order = local.order
-    return !busy() && moveListItems(order, move) !== order && (local.canMove?.(move) ?? true)
+    const order = props.order
+    return !busy() && moveListItems(order, move) !== order && (props.canMove?.(move) ?? true)
   }
 
   function command(id: string, direction: MoveCommand) {
-    const order = local.order
+    const order = props.order
     const ids = subjects(id)
     const selected = new Set(ids)
     const first = order.indexOf(ids[0]!)
@@ -130,13 +130,13 @@ export function ReorderableList(props: ReorderableListProps) {
     setBusy(true)
     setFeedback('')
     try {
-      await local.onMove(move)
-      const index = local.order.indexOf(sourceId)
+      await props.onMove(move)
+      const index = props.order.indexOf(sourceId)
       if (index !== -1 && list.isConnected) {
-        setFeedback(local.labels.moved(sourceId, index + 1, move))
+        setFeedback(props.labels.moved(sourceId, index + 1, move))
       }
     } catch (error) {
-      local.onMoveError(error)
+      props.onMoveError(error)
     } finally {
       setBusy(false)
       const handle = handleById.get(sourceId)
@@ -160,17 +160,17 @@ export function ReorderableList(props: ReorderableListProps) {
     },
   }))
   createDragAutoScroll(() => ({
-    element: local.viewport?.() ?? list,
+    element: props.viewport?.() ?? list,
     canScroll: ({ source }) => source.data.list === scope && !busy(),
   }))
 
   return (
-    <ReorderContext.Provider
+    <ReorderContext
       value={{
         scope,
         busy,
         drop,
-        labels: () => local.labels,
+        labels: () => props.labels,
         handleById,
         subjects,
         command,
@@ -182,22 +182,20 @@ export function ReorderableList(props: ReorderableListProps) {
         {...rest}
         ordered
         data-reorderable
-        aria-busy={busy() || undefined}
-        ref={(node) => {
-          list = node
-          assignRef(local.ref, node)
-        }}
+        aria-busy={busy() ? 'true' : undefined}
+        ref={[
+          (node) => {
+            list = node
+          },
+          props.ref,
+        ]}
       />
       <DragFeedback>{feedback()}</DragFeedback>
-    </ReorderContext.Provider>
+    </ReorderContext>
   )
 }
 
 /** Provides the owning list to its move-enabled item and rejects detached composition. */
 export function useReorderableList() {
-  const list = useContext(ReorderContext)
-  if (!list) {
-    throw new Error('ReorderableListItem requires a ReorderableList.')
-  }
-  return list
+  return useContext(ReorderContext)
 }

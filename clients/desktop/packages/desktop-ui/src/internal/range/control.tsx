@@ -1,8 +1,8 @@
 /** @fileoverview A native range paints its normalized value up to the center of its thumb. */
 
-import { createEffect, on, onMount, splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { assignRef, callHandler, classes } from '../dom'
+import { createMemo, createEffect, flush, omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { callHandler } from '../dom'
 import { onFormReset } from '../state'
 import { nativeValidityChanged } from '../form'
 import styles from './styles.module.css'
@@ -33,7 +33,8 @@ interface RangeInputProps extends RangeAttributes {
  * After editing it resynchronizes even when a controlled owner retains the previous value.
  */
 export function RangeInput(props: RangeInputProps): JSX.Element {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'value',
     'defaultValue',
     'resetValue',
@@ -41,43 +42,40 @@ export function RangeInput(props: RangeInputProps): JSX.Element {
     'class',
     'ref',
     'onInput',
-  ])
+  )
   let input!: HTMLInputElement
 
   /**
    * Applies the owned value and reset baseline, then paints fill from the native normalized value.
    */
-  const sync = () => {
-    input.defaultValue = String(local.defaultValue ?? local.value)
-    input.value = String(local.value)
-
-    const min = props.min ?? 0
-    const max = props.max ?? 100
+  const state = createMemo(() => ({
+    value: props.value,
+    initial: props.defaultValue ?? props.value,
+    min: props.min ?? 0,
+    max: props.max ?? 100,
+    step: props.step,
+    style: props.style,
+  }))
+  const sync = ({ value, initial, min, max }: ReturnType<typeof state>) => {
+    input.defaultValue = String(initial)
+    input.value = String(value)
     const fraction = max > min ? (input.valueAsNumber - min) / (max - min) : 0
     input.style.setProperty('--range-fraction', String(fraction))
     nativeValidityChanged(input.form)
   }
+  createEffect(state, sync)
 
-  onMount(() => {
-    createEffect(
-      on(
-        [
-          () => local.value,
-          () => local.defaultValue,
-          () => props.min,
-          () => props.max,
-          () => props.step,
-          () => props.style,
-        ],
-        sync,
-      ),
-    )
-  })
+  /** Applies the settled owner state before a native callback reads or submits the range. */
+  function syncOwner() {
+    flush()
+    sync(state())
+  }
+
   const flushReset = onFormReset(
     () => input,
     () => {
-      local.resetValue?.()
-      sync()
+      props.resetValue?.()
+      syncOwner()
     },
   )
 
@@ -85,17 +83,19 @@ export function RangeInput(props: RangeInputProps): JSX.Element {
     <input
       {...rest}
       type="range"
-      class={classes(styles.range, local.class)}
-      ref={(node) => {
-        input = node
-        assignRef(local.ref, node)
-      }}
+      class={[styles.range, props.class]}
+      ref={[
+        (node) => {
+          input = node
+        },
+        props.ref,
+      ]}
       onInput={(event) => {
         const next = event.currentTarget.valueAsNumber
         flushReset()
-        local.onValueChange(next)
-        sync()
-        callHandler(local.onInput, event)
+        props.onValueChange(next)
+        syncOwner()
+        callHandler(props.onInput, event)
       }}
     />
   )

@@ -76,9 +76,26 @@ test('Markdown, charts and drag load as complete capabilities and release their 
   await page.evaluate(() => window.fixture.editorSet?.('External replacement'))
   await browserExpect(first).toHaveText('External replacement')
 
-  await browserExpect(page.locator('[data-vis-xy-container] svg')).toHaveCount(1)
+  const plot = page.locator('[data-vis-xy-container]')
+  const distribution = page.getByRole('figure', { name: 'Distribution' })
+  const segmentClass = await distribution.getAttribute('data-segment-class')
+  const segments = distribution.locator('path.' + segmentClass)
+  await browserExpect(plot).toHaveClass('sample-plot')
+  await browserExpect(plot).toHaveCSS('position', 'relative')
+  await browserExpect(plot).toHaveCSS('max-width', '100%')
+  await browserExpect(plot.locator('svg')).toHaveCount(1)
+  await browserExpect(segments).toHaveCount(3)
   await page.getByRole('button', { name: 'Update chart' }).click()
+  await browserExpect(segments).toHaveCount(2)
   expect(Number(await page.locator('body').getAttribute('data-chart-width'))).toBeGreaterThan(0)
+  const layers = plot.locator('svg > g')
+  const layerCount = await layers.count()
+  const series = page.getByRole('button', { name: 'Sample series' })
+  await series.click()
+  await browserExpect(layers).toHaveCount(layerCount - 1)
+  await series.click()
+  await browserExpect(layers).toHaveCount(layerCount)
+
   await page
     .locator('.resource-grid')
     .screenshot({ path: join(packageRoot, 'test-results/consumers/capabilities.png') })
@@ -87,9 +104,9 @@ test('Markdown, charts and drag load as complete capabilities and release their 
     document.documentElement.style.setProperty('--chart-1', 'rgb(1 50 100)')
     document.documentElement.style.setProperty('--chart-2', 'rgb(2 60 110)')
   })
-  const fills = await page
-    .locator('[data-vis-single-container] svg path')
-    .evaluateAll((nodes) => nodes.map((node) => getComputedStyle(node).fill))
+  const fills = await segments.evaluateAll((nodes) =>
+    nodes.map((node) => getComputedStyle(node).fill),
+  )
   expect(fills).toContain('rgb(1, 50, 100)')
   expect(fills).toContain('rgb(2, 60, 110)')
 

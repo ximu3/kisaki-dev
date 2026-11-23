@@ -1,8 +1,9 @@
 /** @fileoverview Local popover composition on the browser top layer. */
 
-import { createContext, createUniqueId, splitProps, useContext } from 'solid-js'
-import type { Accessor, JSX, ParentProps } from 'solid-js'
-import { assignRef, callHandler, classes, createElementRef } from '../../internal/dom'
+import { createContext, createUniqueId, omit, useContext } from 'solid-js'
+import type { Accessor, ParentProps } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { callHandler, createAnchor } from '../../internal/dom'
 import { createValue } from '../../internal/state'
 import { createPopup } from '../../internal/popup/controller'
 import type { PopupPlacement } from '../../internal/popup/controller'
@@ -16,7 +17,7 @@ interface PopoverState {
   id: string
   anchor: Accessor<HTMLElement | undefined>
   /** Registers the trigger for its mounted lifetime. */
-  bindAnchor: (node: HTMLElement) => void
+  bindAnchor: () => (node: HTMLElement) => void
 
   /** Reads the popover's current controlled or local open state. */
   open: Accessor<boolean>
@@ -49,35 +50,31 @@ export function Popover(props: PopoverProps): JSX.Element {
     () => props.defaultOpen ?? false,
     (next) => props.onOpenChange?.(next),
   )
-  const [anchor, bindAnchor] = createElementRef<HTMLElement>()
+  const [anchor, bindAnchor] = createAnchor<HTMLElement>()
   const controlled = () => props.open !== undefined
 
   return (
-    <PopoverContext.Provider
-      value={{ id: createUniqueId(), open, controlled, change, anchor, bindAnchor }}
-    >
+    <PopoverContext value={{ id: createUniqueId(), open, controlled, change, anchor, bindAnchor }}>
       {props.children}
-    </PopoverContext.Provider>
+    </PopoverContext>
   )
 }
 
 /** Renders a button that toggles the associated popup and exposes its expanded state. */
 export function PopoverTrigger(props: ButtonProps): JSX.Element {
-  const state = usePopover()
-  const [local, rest] = splitProps(props, ['ref', 'onClick'])
+  const state = useContext(PopoverContext)
+  const rest = omit(props, 'ref', 'onClick')
 
+  const anchorRef = state.bindAnchor()
   return (
     <Button
       {...rest}
-      ref={(node) => {
-        state.bindAnchor(node)
-        assignRef(local.ref, node)
-      }}
-      aria-expanded={state.open()}
+      ref={[anchorRef, props.ref]}
+      aria-expanded={state.open() ? 'true' : 'false'}
       aria-controls={state.id}
       popovertarget={state.id}
       onClick={(event) => {
-        callHandler(local.onClick, event)
+        callHandler(props.onClick, event)
         if (!event.defaultPrevented) {
           event.preventDefault()
           state.change(!state.open())
@@ -104,14 +101,8 @@ export interface PopoverContentProps extends JSX.HTMLAttributes<HTMLDivElement> 
  * Children retain the lifetime of the caller's mounted content.
  */
 export function PopoverContent(props: PopoverContentProps): JSX.Element {
-  const state = usePopover()
-  const [local, rest] = splitProps(props, [
-    'placement',
-    'class',
-    'viewportClass',
-    'children',
-    'ref',
-  ])
+  const state = useContext(PopoverContext)
+  const rest = omit(props, 'placement', 'class', 'viewportClass', 'children', 'ref')
 
   let node!: HTMLDivElement
   createPopup({
@@ -124,7 +115,7 @@ export function PopoverContent(props: PopoverContentProps): JSX.Element {
     controlled: state.controlled,
 
     /** Reads the caller's preferred placement with the shared default. */
-    placement: () => local.placement ?? 'bottom-start',
+    placement: () => props.placement ?? 'bottom-start',
   })
 
   return (
@@ -132,46 +123,38 @@ export function PopoverContent(props: PopoverContentProps): JSX.Element {
       {...rest}
       id={state.id}
       popover={state.controlled() ? 'manual' : 'auto'}
-      ref={(element) => {
-        node = element
-        assignRef(local.ref, element)
-      }}
-      class={classes(frame.anchor, local.class)}
+      ref={[
+        (element) => {
+          node = element
+        },
+        props.ref,
+      ]}
+      class={[frame.anchor, props.class]}
     >
-      <div class={classes(frame.viewport, styles.content, local.viewportClass)}>
-        {local.children}
-      </div>
+      <div class={[frame.viewport, styles.content, props.viewportClass]}>{props.children}</div>
     </div>
   )
 }
 
 /** Requests closing the popover and returns focus to its anchor after accepted activation. */
 export function PopoverClose(props: ButtonProps): JSX.Element {
-  const state = usePopover()
-  const [local, rest] = splitProps(props, ['onClick'])
+  const state = useContext(PopoverContext)
+  const rest = omit(props, 'onClick')
 
   return (
     <Button
       {...rest}
       onClick={(event) => {
-        callHandler(local.onClick, event)
+        callHandler(props.onClick, event)
         if (!event.defaultPrevented) {
           state.change(false)
-          if (!state.open()) {
-            state.anchor()?.focus()
-          }
+          queueMicrotask(() => {
+            if (!state.open()) {
+              state.anchor()?.focus()
+            }
+          })
         }
       }}
     />
   )
-}
-
-/** Returns the nearest popover state and rejects parts rendered outside a Popover owner. */
-function usePopover(): PopoverState {
-  const state = useContext(PopoverContext)
-  if (!state) {
-    throw new Error('Popover parts require Popover.')
-  }
-
-  return state
 }

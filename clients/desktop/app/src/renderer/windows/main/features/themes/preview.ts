@@ -66,20 +66,23 @@ export function createThemePreview(api: MainClient, input: Accessor<AppearancePr
     }
   }
 
-  createEffect(() => {
-    if (enabled()) {
-      const current = (session ??= {
-        request: crypto.randomUUID(),
-        lifetime: new AbortController(),
-        next: undefined,
-        updating: false,
-      })
-      current.next = input()
-      if (!current.updating) {
-        void deliver(current)
+  createEffect(
+    () => (enabled() ? input() : undefined),
+    (next) => {
+      if (next !== undefined) {
+        const current = (session ??= {
+          request: crypto.randomUUID(),
+          lifetime: new AbortController(),
+          next: undefined,
+          updating: false,
+        })
+        current.next = next
+        if (!current.updating) {
+          void deliver(current)
+        }
       }
-    }
-  })
+    },
+  )
 
   function ended(event: Event) {
     if ((event as CustomEvent<string>).detail === session?.request) {

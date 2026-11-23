@@ -1,7 +1,7 @@
 /** @fileoverview Presents task type, status and duration consistently across the task center. */
 
-import { Dynamic } from 'solid-js/web'
-import { ClipboardList, FolderSearch, RefreshCw, ScanLine } from 'lucide-solid'
+import { dynamic } from '@solidjs/web'
+import { ClipboardList, FolderSearch, RefreshCw, ScanLine } from '@lucide/solid'
 import type { TaskRunStatus, TaskRunSummary } from '@kisaki3/desktop-contracts/tasks'
 import type { englishMessages, Translate } from '@kisaki3/desktop-localization'
 import { Badge } from '@kisaki3/desktop-ui/badge'
@@ -37,13 +37,8 @@ export function taskTypeLabel(t: Translate, type: string): string {
 
 /** Displays the type symbol alongside task text, using the generic task symbol for unknown types. */
 export function TaskTypeIcon(props: { type?: string | undefined }) {
-  return (
-    <Dynamic
-      component={taskTypes.get(props.type ?? '')?.icon ?? ClipboardList}
-      aria-hidden="true"
-      class="size-4 shrink-0 text-muted-foreground"
-    />
-  )
+  const Glyph = dynamic(() => taskTypes.get(props.type ?? '')?.icon ?? ClipboardList)
+  return <Glyph aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" />
 }
 
 /** Presents a text-labeled lifecycle state in the corresponding semantic tone. */

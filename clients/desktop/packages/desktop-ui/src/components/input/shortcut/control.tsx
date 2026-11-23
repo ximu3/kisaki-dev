@@ -1,9 +1,8 @@
 /** @fileoverview Presents removable shortcut bindings and stages new chords in an anchored recorder. */
 
-import { createEffect, createSignal, createUniqueId, For, onCleanup, Show } from 'solid-js'
+import { createEffect, createSignal, createUniqueId, For, Show } from 'solid-js'
 import { SelectedChips, type ChipLabels } from '../../../internal/chips/control'
 import type { ControlSize } from '../../../internal/control/size'
-import { classes, createElementRef } from '../../../internal/dom'
 import { closeWhenUnavailable, fieldAttributes } from '../../../internal/field'
 import { Icon, Keyboard } from '../../../internal/icon/glyph'
 import { createPopup } from '../../../internal/popup/controller'
@@ -43,7 +42,7 @@ export function ShortcutInput(props: ShortcutInputProps) {
   const attributes = fieldAttributes({})
   const disabled = () => props.disabled ?? attributes.disabled
   const [open, setOpen] = createSignal(false)
-  const [trigger, bindTrigger] = createElementRef<HTMLButtonElement>()
+  const [trigger, bindTrigger] = createSignal<HTMLButtonElement>()
   let panel!: HTMLDivElement
   let target!: HTMLDivElement
 
@@ -122,16 +121,20 @@ export function ShortcutInput(props: ShortcutInputProps) {
   closeWhenUnavailable(() => trigger()!, close)
   onFormReset(() => trigger()!, close)
 
-  createEffect(() => {
-    if (open()) {
-      const window = panel.ownerDocument.defaultView!
-      window.addEventListener('blur', close)
-      onCleanup(() => window.removeEventListener('blur', close))
-    }
-  })
+  createEffect(
+    () => open(),
+    (opened) => {
+      if (opened) {
+        const window = panel.ownerDocument.defaultView!
+        window.addEventListener('blur', close)
+
+        return () => window.removeEventListener('blur', close)
+      }
+    },
+  )
 
   return (
-    <InputFrame class={classes(styles.root, props.class)} size={props.size} open={open()}>
+    <InputFrame class={[styles.root, props.class]} size={props.size} open={open()}>
       <div class={styles.value}>
         <Show
           when={props.value.length}
@@ -164,13 +167,13 @@ export function ShortcutInput(props: ShortcutInputProps) {
         id={attributes.id}
         data-focus-anchor
         type="button"
-        class={classes(frame.end, styles.trigger)}
+        class={[frame.end, styles.trigger]}
         aria-label={props.label}
         aria-describedby={[attributes['aria-describedby'], valueId].filter(Boolean).join(' ')}
         aria-invalid={attributes['aria-invalid']}
         aria-haspopup="dialog"
         aria-controls={id}
-        aria-expanded={open()}
+        aria-expanded={open() ? 'true' : 'false'}
         popovertarget={id}
         disabled={disabled()}
         onClick={(event) => {
@@ -189,9 +192,9 @@ export function ShortcutInput(props: ShortcutInputProps) {
         popover="auto"
         role="dialog"
         aria-label={props.label}
-        class={classes(popup.anchor, styles.panel)}
-        on:keydown={keydown}
-        on:keyup={(event) => {
+        class={[popup.anchor, styles.panel]}
+        onKeyDown={keydown}
+        onKeyUp={(event) => {
           if (recording.held()) {
             event.preventDefault()
             event.stopPropagation()
@@ -207,13 +210,13 @@ export function ShortcutInput(props: ShortcutInputProps) {
           }
         }}
       >
-        <div class={classes(popup.viewport, styles.content)}>
+        <div class={[popup.viewport, styles.content]}>
           <div
             ref={(element) => {
               target = element
             }}
             class={styles.preview}
-            tabIndex={0}
+            tabindex={0}
             autofocus
             aria-label={props.recordingLabel}
           >

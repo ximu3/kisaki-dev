@@ -2,16 +2,23 @@
 
 import { createSignal, onCleanup } from 'solid-js'
 
-/** Tracks the current mounted element and releases its ref with the element's owner. */
-export function createElementRef<T extends HTMLElement>() {
-  const [element, setElement] = createSignal<T>()
+/**
+ * Shares a popup anchor across its triggers. Each trigger binds a ref in its own scope so its
+ * disposal releases only the element it registered.
+ */
+export function createAnchor<T extends HTMLElement>() {
+  const [anchor, setAnchor] = createSignal<T>()
 
-  function register(node: T): void {
-    onCleanup(() => setElement((current) => (current === node ? undefined : current)))
-    setElement(() => node)
+  function bindAnchor() {
+    let element: T
+    onCleanup(() => setAnchor((current) => (current === element ? undefined : current)))
+    return (node: T) => {
+      element = node
+      setAnchor(() => node)
+    }
   }
 
-  return [element, register] as const
+  return [anchor, bindAnchor] as const
 }
 
 /** Combines nonempty local and caller class strings in their supplied order. */
@@ -35,16 +42,5 @@ export function callHandler<E extends Event>(
     handler(event)
   } else if (handler) {
     handler[0](handler[1], event)
-  }
-}
-
-/**
- * Passes a mounted value to the caller's callback ref.
- *
- * Compiled JSX variable refs use this callback form.
- */
-export function assignRef<T>(ref: T | ((value: T) => void) | undefined, value: T): void {
-  if (typeof ref === 'function') {
-    ;(ref as (value: T) => void)(value)
   }
 }

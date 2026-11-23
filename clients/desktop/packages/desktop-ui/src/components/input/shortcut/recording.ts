@@ -1,6 +1,6 @@
 /** @fileoverview Holds one shortcut candidate until all of its keys have been released. */
 
-import { batch, createSignal } from 'solid-js'
+import { createSignal } from 'solid-js'
 
 /** A live key preview and its accepted host binding, if the press completes a chord. */
 export interface ShortcutKeypress {
@@ -19,10 +19,8 @@ export function createShortcutRecording(capture: (event: KeyboardEvent) => Short
 
   function reset() {
     pressed.clear()
-    batch(() => {
-      setKeypress(empty)
-      setHeld(false)
-    })
+    setKeypress(empty)
+    setHeld(false)
   }
 
   function press(event: KeyboardEvent) {
@@ -32,12 +30,10 @@ export function createShortcutRecording(capture: (event: KeyboardEvent) => Short
 
     const next = capture(event)
     pressed.add(event.code || event.key)
-    batch(() => {
-      if (!held() || next.binding !== null || keypress().binding === null) {
-        setKeypress(next)
-      }
-      setHeld(true)
-    })
+    if (!held() || next.binding !== null || keypress().binding === null) {
+      setKeypress(next)
+    }
+    setHeld(true)
   }
 
   function release(event: KeyboardEvent) {
@@ -46,12 +42,10 @@ export function createShortcutRecording(capture: (event: KeyboardEvent) => Short
       return
     }
 
-    batch(() => {
-      setHeld(false)
-      if (keypress().binding === null) {
-        setKeypress(empty)
-      }
-    })
+    setHeld(false)
+    if (keypress().binding === null) {
+      setKeypress(empty)
+    }
   }
 
   return { keypress, held, reset, press, release }

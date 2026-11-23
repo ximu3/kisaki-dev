@@ -23,17 +23,15 @@ export async function assembleStyles(signal?: AbortSignal): Promise<void> {
   await writeFile(join(outDir, 'styles.css'), styles + '\n' + components)
   await rm(join(outDir, 'components.css'))
 
-  const notices = []
-  for (const name of ['@unovis/solid', '@unovis/ts']) {
-    const directory = dirname(fileURLToPath(import.meta.resolve(name)))
-    const { version } = JSON.parse(await readFile(join(directory, 'package.json'), 'utf8')) as {
-      version: string
-    }
-    notices.push(
-      `${name} ${version} — bundled declarations\n\n${await readFile(join(directory, 'LICENSE'), 'utf8')}`,
-    )
+  const directory = dirname(fileURLToPath(import.meta.resolve('@unovis/ts')))
+  const { version } = JSON.parse(await readFile(join(directory, 'package.json'), 'utf8')) as {
+    version: string
   }
-  await writeFile(join(outDir, 'THIRD-PARTY-NOTICES.txt'), notices.join('\n\n'))
+  const license = await readFile(join(directory, 'LICENSE'), 'utf8')
+  await writeFile(
+    join(outDir, 'THIRD-PARTY-NOTICES.txt'),
+    `@unovis/ts ${version} — bundled declarations\n\n${license}`,
+  )
 
   signal?.throwIfAborted()
 }

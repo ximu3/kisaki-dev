@@ -12,7 +12,7 @@ import {
   Sun,
   SunMoon,
   Type,
-} from 'lucide-solid'
+} from '@lucide/solid'
 import { appearanceModes, type AppearancePreferences } from '@kisaki3/desktop-contracts/appearance'
 import type { PreferencesSnapshot, PreferencesUpdate } from '@kisaki3/desktop-contracts/preferences'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'

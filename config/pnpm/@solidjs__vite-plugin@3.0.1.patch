@@ -1,0 +1,13 @@
+diff --git a/dist/esm/index.mjs b/dist/esm/index.mjs
+index a99b132dcc91141b87fe0aa7045aae9b9683d8d0..2aace344f205e8a15425026049a00a599405cc38 100644
+--- a/dist/esm/index.mjs
++++ b/dist/esm/index.mjs
+@@ -4686,7 +4686,7 @@ function solidPlugin(options = {}) {
+ 				registerDevAssetResolver(server.config.root, devAssetResolver);
+ 				installDevManifestBridge(server);
+ 			}
+-			if (!needHmr) return;
++			if (!needHmr || !(options.ssr || options.start)) return;
+ 			const hot = server.hot ?? server.ws;
+ 			if (!hot) return;
+ 			let lastErrorTime = 0;

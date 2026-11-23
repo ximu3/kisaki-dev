@@ -1,6 +1,7 @@
 /** @fileoverview Inspects an installed theme's actual light and dark palettes. */
 
-import { createMemo, createResource, Show } from 'solid-js'
+import { createMemo, Show } from 'solid-js'
+import { createQuery } from '../../../../infrastructure/query'
 import type { ThemeRef } from '@kisaki3/desktop-contracts/appearance'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
@@ -24,11 +25,8 @@ export function ThemeInspection(props: {
   name: string | undefined
   close: () => void
 }) {
-  const displayed = createMemo<ThemeRef | undefined>((last) => props.target ?? last, undefined)
-  const name = createMemo<string | undefined>(
-    (last) => (props.target ? props.name : last),
-    undefined,
-  )
+  const displayed = createMemo<ThemeRef | undefined>((last) => props.target ?? last)
+  const name = createMemo<string | undefined>((last) => (props.target ? props.name : last))
 
   return (
     <Dialog
@@ -51,8 +49,13 @@ export function ThemeInspection(props: {
 /** Preserves the last displayed palette through the dialog's exit. */
 function ThemePreview(props: { api: MainClient; target: ThemeRef; name?: string | undefined }) {
   const { api } = props
-  const [theme, { refetch }] = createResource(() => api.call('themes.get', props.target))
-  deferDialogUntil(() => theme.state === 'ready' || theme.state === 'errored')
+  const theme = createQuery({
+    prepare() {
+      const target = props.target
+      return (signal) => api.request(signal, 'themes.get', target)
+    },
+  })
+  deferDialogUntil(() => !theme.pending)
 
   return (
     <>
@@ -64,16 +67,16 @@ function ThemePreview(props: { api: MainClient; target: ThemeRef; name?: string 
           {(cause) => (
             <Alert tone="destructive" role="alert">
               {errorMessage(cause())}{' '}
-              <Button variant="outline" onClick={() => void refetch()}>
+              <Button variant="outline" onClick={() => void theme.reload()}>
                 {api.t('runtime.retry')}
               </Button>
             </Alert>
           )}
         </Show>
         <Show when={!theme.error}>
-          <Show when={!theme.loading} fallback={<Spinner label={api.t('runtime.loading')} />}>
+          <Show when={!theme.pending} fallback={<Spinner label={api.t('runtime.loading')} />}>
             <Show
-              when={theme()}
+              when={theme.value}
               fallback={<p class="m-0 text-sm">{api.t('runtime.unavailable')}</p>}
             >
               {(value) => <ThemeSamples theme={value()} t={api.t} />}

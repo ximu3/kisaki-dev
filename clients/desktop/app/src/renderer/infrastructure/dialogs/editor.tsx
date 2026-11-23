@@ -1,7 +1,7 @@
 /** @fileoverview Gives a catalog's item editor an independent native dialog and leave decision. */
 
 import { createEffect, createMemo, onCleanup, Show } from 'solid-js'
-import type { JSX } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { Dialog, DialogContent, type DialogContentProps } from '@kisaki3/desktop-ui/dialog'
 import type { EditorGuard } from './closing'
 
@@ -9,7 +9,7 @@ import type { EditorGuard } from './closing'
 export function EditorDialog<T>(props: {
   value: T | undefined
   size: NonNullable<DialogContentProps['size']>
-  bind: (guard: EditorGuard) => void
+  bind: (guard: EditorGuard) => () => void
   confirm: (guard: EditorGuard) => Promise<boolean>
   close: () => void
   children: (
@@ -24,11 +24,14 @@ export function EditorDialog<T>(props: {
     guard = next
 
     // The draft can remain visible during exit after its close guard has been released.
-    createEffect(() => {
-      if (entry !== undefined && props.value === entry) {
-        props.bind(next)
-      }
-    })
+    createEffect(
+      () => props.value,
+      (value) => {
+        if (entry !== undefined && value === entry) {
+          return props.bind(next)
+        }
+      },
+    )
     onCleanup(() => {
       if (guard === next) {
         guard = undefined
@@ -43,7 +46,7 @@ export function EditorDialog<T>(props: {
   }
 
   function DraftContent() {
-    const displayed = createMemo<T | undefined>((last) => props.value ?? last, undefined)
+    const displayed = createMemo<T | undefined>((last) => props.value ?? last)
     return (
       <Show when={displayed()} keyed>
         {(value) => props.children({ bind, cancel: () => void cancel() }, value)}

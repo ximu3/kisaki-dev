@@ -1,9 +1,9 @@
 /** @fileoverview Selection buttons keep native focus while navigating a logical listbox. */
 
 import { printableKey } from '../../internal/typeahead'
-import { splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { assignRef, callHandler } from '../../internal/dom'
+import { omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { callHandler } from '../../internal/dom'
 import { closeWhenUnavailable } from '../../internal/field'
 import { optionId } from './collection'
 import type { SelectionCollection } from './collection'
@@ -29,7 +29,8 @@ interface SelectionTriggerProps<
 export function SelectionTrigger<O extends SelectionOption>(
   props: SelectionTriggerProps<O>,
 ): JSX.Element {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'popup',
     'collection',
     'selected',
@@ -37,19 +38,28 @@ export function SelectionTrigger<O extends SelectionOption>(
     'ref',
     'onClick',
     'onKeyDown',
-  ])
+  )
   let trigger!: HTMLButtonElement
-  const show = () => {
-    local.popup.setOpen(true)
-    const selected = local.selected.find((key) => {
-      const item = local.collection.get(key)
-      return item && !item.disabled
+  function show(character?: string) {
+    props.popup.setOpen(true)
+    queueMicrotask(() => {
+      if (!props.popup.open()) {
+        return
+      }
+      if (character) {
+        props.collection.type(character, trigger)
+      } else {
+        const selected = props.selected.find((key) => {
+          const option = props.collection.get(key)
+          return option && !option.disabled
+        })
+        props.collection.highlight(selected ?? props.collection.enabled()[0]?.value)
+      }
     })
-    local.collection.highlight(selected ?? local.collection.enabled()[0]?.value)
   }
   closeWhenUnavailable(
     () => trigger,
-    () => local.popup.setOpen(false),
+    () => props.popup.setOpen(false),
   )
 
   return (
@@ -57,51 +67,53 @@ export function SelectionTrigger<O extends SelectionOption>(
       {...rest}
       type="button"
       role="combobox"
-      popovertarget={local.popup.panelId}
+      popovertarget={props.popup.panelId}
       aria-haspopup="listbox"
-      aria-expanded={local.popup.open()}
-      aria-controls={local.popup.id}
+      aria-expanded={props.popup.open() ? 'true' : 'false'}
+      aria-controls={props.popup.id}
       aria-activedescendant={
-        local.popup.open() && local.collection.active() !== undefined
-          ? optionId(local.popup.id, local.collection.active()!)
+        props.popup.open() && props.collection.active() !== undefined
+          ? optionId(props.popup.id, props.collection.active()!)
           : undefined
       }
-      ref={(node) => {
-        trigger = node
-        assignRef(local.ref, node)
-      }}
+      ref={[
+        (node) => {
+          trigger = node
+        },
+        props.ref,
+      ]}
       onClick={(event) => {
-        callHandler(local.onClick, event)
+        callHandler(props.onClick, event)
         if (!event.defaultPrevented) {
           event.preventDefault()
-          if (local.popup.open()) {
-            local.popup.setOpen(false)
+          if (props.popup.open()) {
+            props.popup.setOpen(false)
           } else {
             show()
           }
         }
       }}
       onKeyDown={(event) => {
-        callHandler(local.onKeyDown, event)
+        callHandler(props.onKeyDown, event)
         if (event.defaultPrevented || event.isComposing) {
           return
         }
 
         if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
           event.preventDefault()
-          if (local.popup.open()) {
-            local.collection.move(event.key === 'ArrowDown' ? 1 : -1)
+          if (props.popup.open()) {
+            props.collection.move(event.key === 'ArrowDown' ? 1 : -1)
           } else {
             show()
           }
-        } else if (local.popup.open() && (event.key === 'Home' || event.key === 'End')) {
+        } else if (props.popup.open() && (event.key === 'Home' || event.key === 'End')) {
           event.preventDefault()
-          local.collection.move(event.key === 'Home' ? 'first' : 'last')
-        } else if (local.popup.open() && (event.key === 'Enter' || event.key === ' ')) {
+          props.collection.move(event.key === 'Home' ? 'first' : 'last')
+        } else if (props.popup.open() && (event.key === 'Enter' || event.key === ' ')) {
           event.preventDefault()
-          const key = local.collection.active()
+          const key = props.collection.active()
           if (key !== undefined) {
-            local.onChoose(local.collection.get(key)!)
+            props.onChoose(props.collection.get(key)!)
           }
         } else if (
           !event.isComposing &&
@@ -111,10 +123,11 @@ export function SelectionTrigger<O extends SelectionOption>(
           !event.metaKey
         ) {
           event.preventDefault()
-          if (!local.popup.open()) {
-            show()
+          if (props.popup.open()) {
+            props.collection.type(event.key, trigger)
+          } else {
+            show(event.key)
           }
-          local.collection.type(event.key, event.currentTarget)
         }
       }}
     />

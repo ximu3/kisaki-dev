@@ -1,17 +1,18 @@
 /** @fileoverview Unovis owns pointer placement and its public visibility state drives the shared surface. */
 
-import { createMemo, createUniqueId, onCleanup, onMount, splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { VisTooltip, VisTooltipSelectors } from '@unovis/solid'
-import type { VisTooltipProps } from '@unovis/solid'
+import { createMemo, createUniqueId, omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { Tooltip } from '@unovis/ts'
+import type { TooltipConfigInterface } from '@unovis/ts'
 import { classes } from '../../internal/dom'
 import surface from '../../internal/popup/surface.module.css'
+import { chartPart } from './parts'
 import styles from './styles.module.css'
 
 /**
  * Creates a renderer that reuses one tooltip viewport across samples.
  *
- * String content is inserted as text; an empty string remains the engine's empty-content signal.
+ * String content is inserted as text. An empty string remains the engine's empty-content signal.
  */
 export function createTooltipViewport() {
   let viewport: HTMLDivElement | undefined
@@ -34,23 +35,113 @@ export function createTooltipViewport() {
   }
 }
 
-/** Tooltip placement, attributes and sample triggers from the official Solid adapter. */
-export type ChartTooltipProps = VisTooltipProps
+/** Applies the shared surface and returns a release function for its visibility observer. */
+function observeTooltip(engine: Tooltip): () => void {
+  const element = engine.element
+  let pending = 0
 
-/**
- * Renders an engine-positioned tooltip with stable content and the shared popup surface.
- *
- * Visibility observation and pending frame work are released with the component owner.
- */
+  /** Mirrors Unovis visibility and settles exits when an opacity transition ends or is skipped. */
+  const sync = () => {
+    const visible = element.classList.contains(Tooltip.selectors.show)
+    if (visible === element.hasAttribute('data-kui-chart-open')) {
+      return
+    }
+    element.toggleAttribute('data-kui-chart-open', visible)
+    if (!visible) {
+      /** Finds the tooltip's current opacity transition, if any. */
+      const fade = () =>
+        element
+          .getAnimations()
+          .find(
+            (animation) =>
+              animation instanceof CSSTransition && animation.transitionProperty === 'opacity',
+          )
+      /** Marks the tooltip hidden if it is still closed when an exit is canceled. */
+      const finish = () => {
+        if (!element.classList.contains(Tooltip.selectors.show) && !fade()) {
+          element.classList.add(Tooltip.selectors.hidden)
+        }
+      }
+
+      const exit = fade()
+      if (exit) {
+        void exit.finished.catch(finish)
+      } else {
+        finish()
+      }
+    }
+  }
+
+  const visibility = new MutationObserver(() => {
+    // Let a crosshair take over the same sample before closing the shared surface.
+    if (
+      !element.classList.contains(Tooltip.selectors.show) &&
+      engine.getContainer()?.matches(':hover') &&
+      element.hasAttribute('data-kui-chart-open')
+    ) {
+      if (!pending) {
+        pending = requestAnimationFrame(() => {
+          pending = requestAnimationFrame(() => {
+            pending = 0
+            sync()
+          })
+        })
+      }
+    } else {
+      cancelAnimationFrame(pending)
+      pending = 0
+      sync()
+    }
+  })
+
+  element.classList.add(surface.chart!, styles.engineTooltip!)
+  element.style.opacity = 'var(--kui-chart-opacity)'
+  element.style.transitionProperty = 'opacity'
+  element.style.transitionTimingFunction = 'var(--kui-frame-ease)'
+  visibility.observe(element, { attributes: true, attributeFilter: ['class'] })
+
+  return () => {
+    visibility.disconnect()
+    cancelAnimationFrame(pending)
+  }
+}
+
+/** Tracks trigger listeners and surface observation for one active tooltip. */
+class ChartTooltipEngine extends Tooltip {
+  private readonly stopObserving = observeTooltip(this)
+
+  /** Unbinds trigger events from marks that are leaving this tooltip. */
+  override setComponents(components: Tooltip['components']): void {
+    const retained = new Set(components)
+    for (const component of this.components) {
+      if (!retained.has(component)) {
+        component.g.on('.tooltip', null)
+      }
+    }
+    super.setComponents(components)
+  }
+
+  /** Releases tooltip-owned listeners, timers and markup. */
+  override destroy(): void {
+    this.setComponents([])
+    this.stopObserving()
+    super.destroy()
+  }
+}
+
+/** Tooltip placement, attributes and sample triggers from the Unovis TypeScript engine. */
+export type ChartTooltipProps = TooltipConfigInterface
+
+/** Contributes an engine-positioned tooltip with stable content and the shared popup surface. */
 export function ChartTooltip(props: ChartTooltipProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['attributes', 'triggers'])
+  const rest = omit(props, 'attributes', 'triggers')
   const id = createUniqueId()
-  /** Stable tooltip viewport renderer shared by the active trigger templates. */
   const render = createTooltipViewport()
-  /** Reactive selector-to-template bindings that reuse the same tooltip viewport. */
+
+  /** Wraps each trigger's template using the tooltip's shared text viewport. */
   const triggers = createMemo(() => {
     const bound: NonNullable<ChartTooltipProps['triggers']> = {}
-    for (const [selector, template] of Object.entries(local.triggers ?? {})) {
+    for (const [selector, template] of Object.entries(props.triggers ?? {})) {
       if (template) {
         bound[selector] = (...args) => {
           const content = template(...args)
@@ -60,118 +151,14 @@ export function ChartTooltip(props: ChartTooltipProps): JSX.Element {
     }
     return bound
   })
-  let marker!: HTMLDivElement
 
-  onMount(() => {
-    const plot = marker.parentElement!
-    let element: HTMLElement | null = null
-    let pending = 0
-
-    /**
-     * Mirrors engine visibility onto the shared surface and settles a missing or cancelled exit
-     * transition.
-     */
-    const sync = () => {
-      if (!element) {
-        return
-      }
-      const visible = element.classList.contains(VisTooltipSelectors.show)
-      if (visible === element.hasAttribute('data-kui-chart-open')) {
-        return
-      }
-      element.toggleAttribute('data-kui-chart-open', visible)
-      if (!visible) {
-        // Unovis normally hides on transitionend. A zero-duration or canceled fade has no such event.
-        const tip = element
-        /** Finds the tooltip's current opacity transition, if any. */
-        const fade = () =>
-          tip
-            .getAnimations()
-            .find((a) => a instanceof CSSTransition && a.transitionProperty === 'opacity')
-        /** Marks the tooltip hidden once it remains closed with no opacity transition. */
-        const finish = () => {
-          if (!tip.classList.contains(VisTooltipSelectors.show) && !fade()) {
-            tip.classList.add(VisTooltipSelectors.hidden)
-          }
-        }
-        const exit = fade()
-        if (exit) {
-          void exit.finished.catch(finish)
-        } else {
-          finish()
-        }
-      }
-    }
-
-    const visibility = new MutationObserver(() => {
-      if (!element) {
-        return
-      }
-      // A mark may relinquish its tooltip during mousemove, before the crosshair renders the
-      // same sample in a frame callback. Only a missing result after that frame is a close.
-      if (
-        !element.classList.contains(VisTooltipSelectors.show) &&
-        plot.matches(':hover') &&
-        element.hasAttribute('data-kui-chart-open')
-      ) {
-        if (!pending) {
-          pending = requestAnimationFrame(() => {
-            pending = requestAnimationFrame(() => {
-              pending = 0
-              sync()
-            })
-          })
-        }
-      } else {
-        cancelAnimationFrame(pending)
-        pending = 0
-        sync()
-      }
-    })
-    /**
-     * Attaches the shared surface and visibility observer when the engine tooltip element becomes
-     * available.
-     */
-    const connect = () => {
-      if (element || !marker.isConnected) {
-        return
-      }
-      element = (props.container ?? plot).querySelector<HTMLElement>(
-        `[data-kui-chart-tooltip="${CSS.escape(id)}"]`,
-      )
-      if (element) {
-        plot.removeEventListener('mousemove', connect, true)
-        element.classList.add(surface.chart!, styles.engineTooltip!)
-        // Keep Unovis's display lifecycle and opacity transition, driven by the surface's visible state.
-        element.style.opacity = 'var(--kui-chart-opacity)'
-        element.style.transitionProperty = 'opacity'
-        element.style.transitionTimingFunction = 'var(--kui-frame-ease)'
-        visibility.observe(element, { attributes: true, attributeFilter: ['class'] })
-        sync()
-      }
-    }
-
-    plot.addEventListener('mousemove', connect, { capture: true, passive: true })
-    queueMicrotask(connect)
-    onCleanup(() => {
-      visibility.disconnect()
-      cancelAnimationFrame(pending)
-      plot.removeEventListener('mousemove', connect, true)
-    })
-  })
-
-  return (
-    <div
-      hidden
-      ref={(node) => {
-        marker = node
-      }}
-    >
-      <VisTooltip
-        {...rest}
-        triggers={triggers()}
-        attributes={{ ...local.attributes, 'data-kui-chart-tooltip': id }}
-      />
-    </div>
+  return chartPart(
+    'tooltip',
+    () => new ChartTooltipEngine(),
+    () => ({
+      ...rest,
+      triggers: triggers(),
+      attributes: { ...props.attributes, 'data-kui-chart-tooltip': id },
+    }),
   )
 }

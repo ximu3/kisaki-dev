@@ -1,4 +1,4 @@
-/** @fileoverview Complete chart composition using the official Unovis Solid lifecycle. */
+/** @fileoverview Complete chart composition using the Unovis TypeScript engine. */
 
 export {
   Chart,
@@ -18,23 +18,21 @@ export {
 } from './containers'
 
 export {
-  VisLine as Line,
-  VisArea as Area,
-  VisGroupedBar as GroupedBar,
-  VisStackedBar as StackedBar,
-  VisScatter as Scatter,
-  VisDonut as Donut,
-  VisAxis as Axis,
-} from '@unovis/solid'
-export type {
-  VisLineProps as LineProps,
-  VisAreaProps as AreaProps,
-  VisGroupedBarProps as GroupedBarProps,
-  VisStackedBarProps as StackedBarProps,
-  VisScatterProps as ScatterProps,
-  VisDonutProps as DonutProps,
-  VisAxisProps as AxisProps,
-} from '@unovis/solid'
+  Line,
+  Area,
+  GroupedBar,
+  StackedBar,
+  Scatter,
+  Donut,
+  Axis,
+  type LineProps,
+  type AreaProps,
+  type GroupedBarProps,
+  type StackedBarProps,
+  type ScatterProps,
+  type DonutProps,
+  type AxisProps,
+} from './marks'
 
 export { Crosshair, type CrosshairProps } from './crosshair'
 export { ChartTooltip, type ChartTooltipProps } from './tooltip'

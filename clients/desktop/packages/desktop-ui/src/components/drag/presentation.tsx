@@ -1,11 +1,12 @@
 /** @fileoverview Drag handles, insertion geometry and accessible host-authored feedback. */
 
-import { splitProps } from 'solid-js'
-import { Dynamic } from 'solid-js/web'
-import type { Component, JSX } from 'solid-js'
+import { omit } from 'solid-js'
+import { dynamic } from '@solidjs/web'
+import type { Component } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { Button } from '../button/control'
 import type { ButtonProps } from '../button/control'
-import { callHandler, classes } from '../../internal/dom'
+import { callHandler } from '../../internal/dom'
 import { Icon, GripVertical } from '../../internal/icon/glyph'
 import styles from './styles.module.css'
 
@@ -26,31 +27,31 @@ export interface DragHandleProps extends ButtonProps {
  * movement menu.
  */
 export function DragHandle(props: DragHandleProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['as', 'onMove', 'onKeyDown', 'class', 'children'])
+  const rest = omit(props, 'as', 'onMove', 'onKeyDown', 'class', 'children')
 
+  const Control = dynamic(() => props.as ?? Button)
   return (
-    <Dynamic
-      component={local.as ?? Button}
+    <Control
       variant="text"
       size="icon-sm"
       {...rest}
-      class={classes(styles.handle, local.class)}
-      aria-keyshortcuts={local.onMove ? 'Alt+ArrowUp Alt+ArrowDown' : undefined}
+      class={[styles.handle, props.class]}
+      aria-keyshortcuts={props.onMove ? 'Alt+ArrowUp Alt+ArrowDown' : undefined}
       onKeyDown={(event) => {
-        callHandler(local.onKeyDown, event)
+        callHandler(props.onKeyDown, event)
         if (
           !event.defaultPrevented &&
           event.altKey &&
-          local.onMove &&
+          props.onMove &&
           (event.key === 'ArrowUp' || event.key === 'ArrowDown')
         ) {
           event.preventDefault()
-          local.onMove(event.key === 'ArrowUp' ? 'previous' : 'next')
+          props.onMove(event.key === 'ArrowUp' ? 'previous' : 'next')
         }
       }}
     >
-      {local.children ?? <Icon icon={GripVertical} />}
-    </Dynamic>
+      {props.children ?? <Icon icon={GripVertical} />}
+    </Control>
   )
 }
 
@@ -66,20 +67,20 @@ export interface DropIndicatorProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * dropping.
  */
 export function DropIndicator(props: DropIndicatorProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['edge', 'gap', 'class', 'style'])
+  const rest = omit(props, 'edge', 'gap', 'class', 'style')
 
   return (
     <div
       {...rest}
       aria-hidden="true"
-      data-edge={local.edge}
-      class={classes(styles.indicator, local.class)}
+      data-edge={props.edge}
+      class={[styles.indicator, props.class]}
       style={
-        typeof local.style === 'string'
-          ? `--drop-gap: ${typeof local.gap === 'number' ? `${local.gap}px` : local.gap}; ${local.style}`
+        typeof props.style === 'string'
+          ? `--drop-gap: ${typeof props.gap === 'number' ? `${props.gap}px` : props.gap}; ${props.style}`
           : {
-              '--drop-gap': typeof local.gap === 'number' ? `${local.gap}px` : local.gap,
-              ...local.style,
+              '--drop-gap': typeof props.gap === 'number' ? `${props.gap}px` : props.gap,
+              ...props.style,
             }
       }
     />
@@ -91,7 +92,7 @@ export function DropIndicator(props: DropIndicatorProps): JSX.Element {
  * region.
  */
 export function DragFeedback(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
-  const [local, rest] = splitProps(props, ['class'])
+  const rest = omit(props, 'class')
 
   return (
     <div
@@ -99,7 +100,7 @@ export function DragFeedback(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Ele
       role="status"
       aria-live="polite"
       aria-atomic="true"
-      class={classes(styles.feedback, local.class)}
+      class={[styles.feedback, props.class]}
     />
   )
 }

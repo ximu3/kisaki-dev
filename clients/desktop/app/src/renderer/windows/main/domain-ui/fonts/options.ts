@@ -1,6 +1,7 @@
 /** @fileoverview Reads the full library of selectable user font identities in bounded intervals. */
 
-import { createResource, onCleanup } from 'solid-js'
+import { onCleanup } from 'solid-js'
+import { createQuery } from '../../../../infrastructure/query'
 import type { MainClient } from '../../../../infrastructure/api'
 import type { ListOptions, ListResult } from '@kisaki3/desktop-contracts/operations'
 import type { Font } from '@kisaki3/desktop-contracts/fonts'
@@ -24,39 +25,28 @@ async function listFontOptions(
 
 /** Keeps library and system choices independent when one font source fails to load. */
 export function createFontOptions(api: MainClient) {
-  const lifetime = new AbortController()
-  let catalog: AbortController | undefined
-  const [users, userActions] = createResource(() => {
-    catalog?.abort()
-    catalog = new AbortController()
-    const signal = AbortSignal.any([lifetime.signal, catalog.signal])
-    return listFontOptions((options) => {
-      signal.throwIfAborted()
-      return api.request(signal, 'fonts.list', '', options)
-    })
-  })
-  const [system, systemActions] = createResource(() => api.request(lifetime.signal, 'fonts.system'))
+  const users = createQuery((signal) =>
+    listFontOptions((options) => api.request(signal, 'fonts.list', '', options)),
+  )
+  const system = createQuery((signal) => api.request(signal, 'fonts.system'))
 
-  const refresh = () => void userActions.refetch()
+  const refresh = () => void users.reload()
   api.topics.addEventListener('fonts.changed', refresh)
-  onCleanup(() => {
-    lifetime.abort()
-    api.topics.removeEventListener('fonts.changed', refresh)
-  })
+  onCleanup(() => api.topics.removeEventListener('fonts.changed', refresh))
 
   function retry() {
     if (users.error) {
-      void userActions.refetch()
+      void users.reload()
     }
     if (system.error) {
-      void systemActions.refetch()
+      void system.reload()
     }
   }
 
   return {
-    users: () => (users.error ? [] : (users() ?? [])),
-    system: () => (system.error ? [] : (system() ?? [])),
-    loading: () => users.loading || system.loading,
+    users: () => (users.error ? [] : (users.value ?? [])),
+    system: () => (system.error ? [] : (system.value ?? [])),
+    loading: () => users.pending || system.pending,
     error: (): unknown => users.error ?? system.error,
     retry,
   }

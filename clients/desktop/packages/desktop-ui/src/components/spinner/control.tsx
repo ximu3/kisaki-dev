@@ -1,8 +1,7 @@
 /** @fileoverview A stationary status slot contains the animated Lucide loading glyph. */
 
-import { splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { classes } from '../../internal/dom'
+import { omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { Icon, LoaderCircle } from '../../internal/icon/glyph'
 import styles from './styles.module.css'
 
@@ -17,15 +16,15 @@ export interface SpinnerProps extends JSX.HTMLAttributes<HTMLSpanElement> {
 
 /** Renders an indeterminate busy indicator that remains static when reduced motion is requested. */
 export function Spinner(props: SpinnerProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['class', 'label'])
+  const rest = omit(props, 'class', 'label')
 
   return (
     <span
       {...rest}
-      class={classes(styles.root, local.class)}
-      role={local.label ? 'status' : undefined}
-      aria-label={local.label}
-      aria-hidden={local.label ? undefined : true}
+      class={[styles.root, props.class]}
+      role={props.label ? 'status' : undefined}
+      aria-label={props.label}
+      aria-hidden={props.label ? undefined : 'true'}
     >
       <Icon icon={LoaderCircle} class={styles.glyph} />
     </span>

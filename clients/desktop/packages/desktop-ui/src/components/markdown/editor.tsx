@@ -1,7 +1,7 @@
 /** @fileoverview CodeMirror source editing with reactive configuration and explicit view lifetime. */
 
-import { createEffect, createSignal, onCleanup, onMount, Show, splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
+import { createEffect, createSignal, onSettled, Show, omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { Compartment, EditorState, Transaction } from '@codemirror/state'
 import type { Extension } from '@codemirror/state'
 import { EditorView, keymap, placeholder } from '@codemirror/view'
@@ -9,7 +9,6 @@ import { defaultKeymap, history, historyKeymap } from '@codemirror/commands'
 import { markdown } from '@codemirror/lang-markdown'
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language'
 import { tags } from '@lezer/highlight'
-import { assignRef, classes } from '../../internal/dom'
 import type { MarkdownCommand } from './commands'
 import styles from './styles.module.css'
 import { editorTheme } from './theme'
@@ -96,7 +95,8 @@ export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
   input: MarkdownEditorProps<C>,
 ): JSX.Element {
   const props: EditorProps<C> = input
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'value',
     'defaultValue',
     'onValueChange',
@@ -111,42 +111,67 @@ export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
     'cspNonce',
     'class',
     'ref',
-  ])
+  )
 
   let parent!: HTMLDivElement
   let view!: EditorView
   /** Reactive editor-state snapshot used by toolbar and command availability. */
   const [state, setState] = createSignal<EditorState>()
 
-  onMount(() => {
-    const configuration = new Compartment()
-    let synchronizing = false
-    let alive = true
-    let scheduled = false
-    function scheduleSync() {
-      if (scheduled) {
-        return
-      }
-      scheduled = true
-      queueMicrotask(() => {
-        scheduled = false
-        sync()
-      })
+  const configuration = new Compartment()
+
+  let synchronizing = false
+
+  let alive = true
+
+  let scheduled = false
+
+  function scheduleSync() {
+    if (scheduled) {
+      return
+    }
+    scheduled = true
+    queueMicrotask(() => {
+      scheduled = false
+      sync()
+    })
+  }
+
+  /** Builds reactive readonly, accessibility, placeholder and host-extension configuration. */
+  const extension = () => [
+    EditorState.readOnly.of(!!props.readOnly),
+    EditorView.editable.of(!props.readOnly),
+    EditorView.contentAttributes.of({ 'aria-label': props.label }),
+    placeholder(props.placeholder ?? ''),
+    props.extensions ?? [],
+  ]
+
+  /**
+   * Adopts changed external text after composition without reporting it as an editor-originated
+   * change or adding history.
+   */
+  const sync = () => {
+    const next = props.value
+    if (!alive || view.composing || next === undefined || next === view.state.doc.toString()) {
+      return
     }
 
-    /** Builds reactive readonly, accessibility, placeholder and host-extension configuration. */
-    const extension = () => [
-      EditorState.readOnly.of(!!local.readOnly),
-      EditorView.editable.of(!local.readOnly),
-      EditorView.contentAttributes.of({ 'aria-label': local.label }),
-      placeholder(local.placeholder ?? ''),
-      local.extensions ?? [],
-    ]
+    synchronizing = true
+    try {
+      view.dispatch({
+        changes: { from: 0, to: view.state.doc.length, insert: next },
+        annotations: Transaction.addToHistory.of(false),
+      })
+    } finally {
+      synchronizing = false
+    }
+  }
 
+  onSettled(() => {
     view = new EditorView({
       parent,
       state: EditorState.create({
-        doc: local.value ?? local.defaultValue ?? '',
+        doc: props.value ?? props.defaultValue ?? '',
         extensions: [
           editorTheme,
           history(),
@@ -154,12 +179,12 @@ export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
           markdown(),
           syntaxHighlighting(highlighting),
           EditorView.lineWrapping,
-          EditorView.cspNonce.of(local.cspNonce ?? ''),
+          EditorView.cspNonce.of(props.cspNonce ?? ''),
           configuration.of(extension()),
           EditorView.updateListener.of((update) => {
             setState(update.state)
             if (update.docChanged && !synchronizing) {
-              local.onValueChange?.(update.state.doc.toString())
+              props.onValueChange?.(update.state.doc.toString())
               // Reconcile after CodeMirror finishes the current transaction.
               scheduleSync()
             }
@@ -168,60 +193,42 @@ export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
       }),
     })
     setState(view.state)
-
-    /**
-     * Adopts changed external text after composition without reporting it as an editor-originated
-     * change or adding history.
-     */
-    const sync = () => {
-      const next = local.value
-      if (!alive || view.composing || next === undefined || next === view.state.doc.toString()) {
-        return
-      }
-
-      synchronizing = true
-      try {
-        view.dispatch({
-          changes: { from: 0, to: view.state.doc.length, insert: next },
-          annotations: Transaction.addToHistory.of(false),
-        })
-      } finally {
-        synchronizing = false
-      }
-    }
-
     /** Schedules controlled-value synchronization after native composition settles. */
     const compositionEnd = scheduleSync
     view.contentDOM.addEventListener('compositionend', compositionEnd)
-    createEffect(() => {
-      void local.value
-      scheduleSync()
-    })
-    createEffect(() => view.dispatch({ effects: configuration.reconfigure(extension()) }))
-    local.onViewChange?.(view)
-
-    onCleanup(() => {
+    props.onViewChange?.(view)
+    return () => {
       alive = false
       view.contentDOM.removeEventListener('compositionend', compositionEnd)
       view.destroy()
-      local.onViewChange?.(undefined)
-    })
+      props.onViewChange?.(undefined)
+    }
   })
 
+  createEffect(
+    () => props.value,
+    () => {
+      scheduleSync()
+    },
+  )
+
+  createEffect(
+    () => extension(),
+    (extensions) => {
+      view?.dispatch({ effects: configuration.reconfigure(extensions) })
+    },
+  )
+
   return (
-    <div
-      {...rest}
-      ref={(node) => assignRef(local.ref, node)}
-      class={classes(styles.editor, local.class)}
-    >
+    <div {...rest} ref={props.ref} class={[styles.editor, props.class]}>
       <Show when={state()}>
         {(current) => (
           <MarkdownToolbar
             view={view}
             state={current()}
-            label={local.toolbarLabel ?? local.label}
-            commandLabel={local.commandLabel}
-            config={local.toolbar}
+            label={props.toolbarLabel ?? props.label}
+            commandLabel={props.commandLabel}
+            config={props.toolbar}
           />
         )}
       </Show>

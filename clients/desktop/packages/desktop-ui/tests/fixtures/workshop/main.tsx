@@ -1,9 +1,9 @@
 /** @fileoverview Independent component workshop covers native controls, feedback and nested interactions. */
 
-import { createMemo, createSignal, lazy, Show } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { Info } from 'lucide-solid'
-import { render } from 'solid-js/web'
+import { createMemo, createSignal, lazy, Loading, Show } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { Info } from '@lucide/solid'
+import { render } from '@solidjs/web'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { Link } from '@kisaki3/desktop-ui/link'
 import { List, ListItem } from '@kisaki3/desktop-ui/list'
@@ -35,6 +35,7 @@ import { Tabs, TabList, Tab, TabPanel } from '@kisaki3/desktop-ui/tabs'
 import { Collapsible } from '@kisaki3/desktop-ui/collapsible'
 import { ScrollArea } from '@kisaki3/desktop-ui/scroll-area'
 import {
+  ScrollableTable,
   Table,
   TableHeader,
   TableBody,
@@ -42,6 +43,7 @@ import {
   TableHead,
   TableCell,
   TableCaption,
+  TableSpacer,
 } from '@kisaki3/desktop-ui/table'
 import {
   Dialog,
@@ -611,7 +613,7 @@ function App(): JSX.Element {
   return (
     <main>
       <header>
-        <span class="eyebrow">KISAKI · SOLID 1.9</span>
+        <span class="eyebrow">KISAKI · SOLID 2</span>
         <h1>Component workshop</h1>
         <p>Independent controls, shared appearance, native interaction.</p>
         <div class="row">
@@ -677,6 +679,31 @@ function App(): JSX.Element {
               </TableBody>
             </Table>
           </ScrollArea>
+          <ScrollableTable
+            aria-label="Scrollable sample table"
+            aria-rowcount={28}
+            columns="minmax(0, 1fr) 8rem"
+            minWidth="42rem"
+            style={{ height: '9rem' }}
+            header={
+              <TableRow>
+                <TableHead scope="col">Name</TableHead>
+                <TableHead scope="col">
+                  <Button variant="text">Sort by status</Button>
+                </TableHead>
+              </TableRow>
+            }
+          >
+            <TableRow aria-rowindex={2}>
+              <TableHead scope="row">First sample</TableHead>
+              <TableCell>Ready</TableCell>
+            </TableRow>
+            <TableSpacer height={800} />
+            <TableRow aria-rowindex={28}>
+              <TableHead scope="row">Last sample</TableHead>
+              <TableCell>Ready</TableCell>
+            </TableRow>
+          </ScrollableTable>
           <List>
             <ListItem title="Sample item" description="Read-only entry" icon={<Info />} />
           </List>
@@ -701,7 +728,9 @@ function App(): JSX.Element {
             {resources() ? 'Release resources' : 'Load resources'}
           </Button>
           <Show when={resources()}>
-            <Resources />
+            <Loading>
+              <Resources />
+            </Loading>
           </Show>
         </section>
       </div>

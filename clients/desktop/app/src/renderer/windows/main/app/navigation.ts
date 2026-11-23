@@ -1,6 +1,7 @@
 /** @fileoverview Routes native page requests and management overlays through the active editors' leave decisions. */
 
-import { batch, createEffect, createResource, createSignal, onCleanup } from 'solid-js'
+import { createEffect, createSignal, onCleanup } from 'solid-js'
+import { createQuery } from '../../../infrastructure/query'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type { PreferencesUpdate } from '@kisaki3/desktop-contracts/preferences'
 import {
@@ -21,24 +22,25 @@ function dialogLayer() {
   const [instance, setInstance] = createSignal<PromiseWithResolvers<boolean>>()
   const [target, setTarget] = createSignal<ManagementTarget>({ type: 'about' })
   let draft: EditorGuard | PreferenceEditorGuard | undefined
-  onCleanup(() => instance()?.resolve(false))
+  let presentation: PromiseWithResolvers<boolean> | undefined
+  onCleanup(() => presentation?.resolve(false))
 
   function bind(editor: EditorGuard | PreferenceEditorGuard) {
     draft = editor
-    onCleanup(() => {
+    return () => {
       if (draft === editor) {
         draft = undefined
       }
-    })
+    }
   }
 
   function show(next: ManagementTarget) {
-    instance()?.resolve(false)
-    batch(() => {
-      setInstance(Promise.withResolvers<boolean>())
-      setTarget(next)
-      setOpen(true)
-    })
+    presentation?.resolve(false)
+    presentation = Promise.withResolvers<boolean>()
+    setInstance(presentation)
+    setTarget(next)
+    setOpen(true)
+    return presentation.promise
   }
 
   return {
@@ -48,12 +50,13 @@ function dialogLayer() {
     bind,
     instance,
     /** Settles when this instance enters the native modal layer or is withdrawn. */
-    whenPresented: () => instance()?.promise ?? false,
+    whenPresented: () => presentation?.promise ?? false,
     retarget: setTarget,
     draft: () => draft,
     stagedForm: () => (draft && 'stagedForm' in draft ? draft.stagedForm() : undefined),
     close() {
-      instance()?.resolve(false)
+      presentation?.resolve(false)
+      presentation = undefined
       setOpen(false)
     },
   }
@@ -110,29 +113,30 @@ export function createNavigation(api: MainClient, pages: readonly PageRoute[]) {
     if (!(await canLeave()) || request !== navigationRequest) {
       return false
     }
-    batch(() => {
-      resource.close()
-      if (surface) {
-        manager.show(surface)
-      } else {
-        manager.close()
-        setTarget(next)
-        setPage(destination)
-      }
-    })
-    return surface ? manager.whenPresented() : true
+    resource.close()
+    if (surface) {
+      return manager.show(surface)
+    }
+
+    manager.close()
+    setTarget(next)
+    setPage(destination)
+    return true
   }
 
-  const [preferences, { refetch, mutate }] = createResource(() => api.call('preferences.get'))
-  const savedPreferences = () => (preferences.error ? undefined : preferences())
-  createEffect(() => {
-    if (preferences.error) {
-      reportError(preferences.error)
-    }
-  })
+  const preferences = createQuery((signal) => api.request(signal, 'preferences.get'))
+  const savedPreferences = () => (preferences.error ? undefined : preferences.value)
+  createEffect(
+    () => preferences.error,
+    (error) => {
+      if (error) {
+        reportError(error)
+      }
+    },
+  )
 
   async function updatePreferences(input: PreferencesUpdate) {
-    mutate(await api.call('preferences.update', input))
+    preferences.accept(await api.call('preferences.update', input))
   }
 
   async function reorder(order: readonly PageRef[]) {
@@ -143,7 +147,7 @@ export function createNavigation(api: MainClient, pages: readonly PageRoute[]) {
     })
   }
 
-  const reload = () => void refetch()
+  const reload = () => void preferences.reload()
   function keydown(event: KeyboardEvent) {
     if (confirmation.active() || event.defaultPrevented || event.repeat || event.isComposing) {
       return

@@ -2,7 +2,7 @@
 
 import { autoUpdate, computePosition, flip, offset, shift, size } from '@floating-ui/dom'
 import type { Placement, VirtualElement } from '@floating-ui/dom'
-import { createEffect, createSignal, onCleanup, onMount } from 'solid-js'
+import { createEffect, createSignal, onSettled } from 'solid-js'
 import type { Accessor } from 'solid-js'
 import { watchPopupDismissal } from './dismissal'
 
@@ -41,12 +41,41 @@ export function createPopup(options: {
   matchWidth?: boolean
   restoreFocus?: boolean
 }): void {
-  onMount(() => {
-    const node = options.element()
-    node.dataset.uiPopup = ''
+  const [revision, refresh] = createSignal(0)
+  let source: HTMLElement | undefined
 
-    const [revision, refresh] = createSignal(0)
-    let source: HTMLElement | undefined
+  function requestClose(restoreFocus: boolean) {
+    options.change(false)
+    if (restoreFocus && options.restoreFocus !== false) {
+      queueMicrotask(() => {
+        const anchor = options.anchor()
+        if (!options.open() && anchor?.isConnected) {
+          anchor.focus()
+        }
+      })
+    }
+  }
+
+  /**
+   * Requests closing this open popup and returns focus to its connected anchor when restoration
+   * is enabled.
+   */
+  const escape = (event: KeyboardEvent) => {
+    if (
+      event.defaultPrevented ||
+      event.isComposing ||
+      event.key !== 'Escape' ||
+      !options.element().matches(':popover-open')
+    ) {
+      return
+    }
+    event.preventDefault()
+    event.stopPropagation()
+    requestClose(true)
+  }
+
+  onSettled(() => {
+    const node = options.element()
     let lastHighlight: HTMLElement | null = null
 
     // Capture the hovered row while the closing popup is still laid out.
@@ -70,52 +99,55 @@ export function createPopup(options: {
     const toggle = (event: ToggleEvent) => {
       if (event.newState === 'closed' && options.open() && !node.matches(':popover-open')) {
         options.change(false)
-        if (options.controlled?.() && options.open()) {
-          refresh((value) => value + 1)
-        }
+        queueMicrotask(() => {
+          if (options.controlled?.() && options.open()) {
+            refresh((value) => value + 1)
+          }
+        })
       }
     }
 
-    function requestClose(restoreFocus: boolean) {
-      options.change(false)
-      const anchor = options.anchor()
-      if (
-        restoreFocus &&
-        !options.open() &&
-        options.restoreFocus !== false &&
-        anchor?.isConnected
-      ) {
-        anchor.focus()
-      }
-    }
-
-    /**
-     * Requests closing this open popup and returns focus to its connected anchor when restoration
-     * is enabled.
-     */
-    const escape = (event: KeyboardEvent) => {
-      if (
-        event.defaultPrevented ||
-        event.isComposing ||
-        event.key !== 'Escape' ||
-        !node.matches(':popover-open')
-      ) {
-        return
-      }
-      event.preventDefault()
-      event.stopPropagation()
-      requestClose(true)
-    }
-
+    node.dataset.uiPopup = ''
     node.addEventListener('beforetoggle', beforeToggle)
     node.addEventListener('toggle', toggle)
     node.addEventListener('keydown', escape)
+    return () => {
+      node.removeEventListener('beforetoggle', beforeToggle)
+      node.removeEventListener('toggle', toggle)
+      node.removeEventListener('keydown', escape)
+      if (node.matches(':popover-open')) {
+        node.hidePopover()
+      }
+    }
+  })
 
-    createEffect(() => {
+  createEffect(
+    () => {
       revision()
       const anchor = options.anchor()
-      const shown = node.matches(':popover-open')
       if (!options.open() || !anchor) {
+        return undefined
+      }
+      const point = options.point?.()
+      const reference: HTMLElement | VirtualElement = point
+        ? {
+            contextElement: anchor,
+            getBoundingClientRect: () => new DOMRect(point.x, point.y, 0, 0),
+          }
+        : (options.reference?.() ?? anchor)
+      return {
+        anchor,
+        reference,
+        point,
+        placement: options.placement?.(anchor) ?? 'bottom-start',
+        controlled: options.controlled?.(),
+        matchWidth: options.matchWidth,
+      }
+    },
+    (position) => {
+      const node = options.element()
+      const shown = node.matches(':popover-open')
+      if (!position) {
         if (shown) {
           node.hidePopover()
         }
@@ -123,15 +155,7 @@ export function createPopup(options: {
         return
       }
 
-      const point = options.point?.()
-      const placement = options.placement?.(anchor) ?? 'bottom-start'
-      const reference: HTMLElement | VirtualElement = point
-        ? {
-            contextElement: anchor,
-            /** Returns a zero-size viewport rectangle at the supplied pointer position. */
-            getBoundingClientRect: () => new DOMRect(point.x, point.y, 0, 0),
-          }
-        : (options.reference?.() ?? anchor)
+      const { anchor, reference, point, placement, controlled, matchWidth } = position
       if (!shown || source !== anchor) {
         let focused: HTMLElement | undefined
         if (shown) {
@@ -183,7 +207,7 @@ export function createPopup(options: {
                     '--popup-available-height',
                     `${Math.max(0, availableHeight)}px`,
                   )
-                  if (options.matchWidth) {
+                  if (matchWidth) {
                     node.style.minWidth = `${Math.min(rects.reference.width, Math.max(0, availableWidth))}px`
                   }
                 }
@@ -202,24 +226,14 @@ export function createPopup(options: {
       }
       anchor.addEventListener('keydown', escape)
       const stop = autoUpdate(reference, node, update)
-      const stopDismissal = options.controlled?.()
-        ? watchPopupDismissal(node, anchor, requestClose)
-        : undefined
-      onCleanup(() => {
+      const stopDismissal = controlled ? watchPopupDismissal(node, anchor, requestClose) : undefined
+
+      return () => {
         active = false
         stop()
         anchor.removeEventListener('keydown', escape)
         stopDismissal?.()
-      })
-    })
-
-    onCleanup(() => {
-      node.removeEventListener('beforetoggle', beforeToggle)
-      node.removeEventListener('toggle', toggle)
-      node.removeEventListener('keydown', escape)
-      if (node.matches(':popover-open')) {
-        node.hidePopover()
       }
-    })
-  })
+    },
+  )
 }

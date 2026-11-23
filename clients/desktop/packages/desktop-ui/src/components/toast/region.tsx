@@ -1,7 +1,7 @@
 /** @fileoverview Window notification presentation, paused clocks and active-modal mounting. */
 
-import { createEffect, createSignal, For, onCleanup, onMount, Show, untrack } from 'solid-js'
-import type { JSX } from 'solid-js'
+import { createEffect, createSignal, For, onCleanup, onSettled, Show, untrack } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { createToastController } from './controller'
 import { createStackMotion } from './stack'
 import type { ToastEntry } from './controller'
@@ -9,7 +9,6 @@ import { Icon, X, StatusIcon } from '../../internal/icon/glyph'
 import { observeModalHost } from '../../internal/modal-host'
 import { Button } from '../button/control'
 import { Spinner } from '../spinner/control'
-import { classes } from '../../internal/dom'
 import surface from '../../internal/popup/surface.module.css'
 import styles from './styles.module.css'
 
@@ -34,21 +33,21 @@ export function Toaster(props: ToasterProps): JSX.Element {
     () => props.durationMs ?? 5000,
     createStackMotion(() => track),
   )
-  onMount(() => {
+  /** Shows the manual popover when its queue contains messages and the region is closed. */
+  const show = () => {
+    if (controller.entries().length && !region.matches(':popover-open')) {
+      region.showPopover()
+    }
+  }
+
+  onSettled(() => {
     const marker = region.ownerDocument.createComment('toast host')
     region.before(marker)
-    /** Shows the manual popover when its queue contains messages and the region is closed. */
-    const show = () => {
-      if (controller.entries().length && !region.matches(':popover-open')) {
-        region.showPopover()
-      }
-    }
     const resize = new ResizeObserver(() => {
       region.toggleAttribute('data-overflow', track.offsetHeight > region.clientHeight)
     })
     resize.observe(track)
     resize.observe(region)
-
     /** Disposer for modal-host observation while this toast region is mounted. */
     const stop = observeModalHost(region.ownerDocument, (host) => {
       untrack(() => {
@@ -63,15 +62,7 @@ export function Toaster(props: ToasterProps): JSX.Element {
         show()
       })
     })
-
-    createEffect(() => {
-      if (controller.entries().length) {
-        show()
-      } else if (region.matches(':popover-open')) {
-        region.hidePopover()
-      }
-    })
-    onCleanup(() => {
+    return () => {
       resize.disconnect()
       stop()
       if (region.matches(':popover-open')) {
@@ -79,8 +70,19 @@ export function Toaster(props: ToasterProps): JSX.Element {
       }
       marker.after(region)
       marker.remove()
-    })
+    }
   })
+
+  createEffect(
+    () => controller.entries().length,
+    (count) => {
+      if (count) {
+        show()
+      } else if (region.matches(':popover-open')) {
+        region.hidePopover()
+      }
+    },
+  )
 
   return (
     <div
@@ -90,7 +92,7 @@ export function Toaster(props: ToasterProps): JSX.Element {
       popover="manual"
       role="region"
       aria-label={props.regionLabel}
-      class={`${styles.region} ${props.class ?? ''}`}
+      class={[styles.region, props.class]}
     >
       <div
         ref={(node) => {
@@ -105,9 +107,7 @@ export function Toaster(props: ToasterProps): JSX.Element {
               entry={entry}
               closeLabel={props.closeLabel}
               release={() => controller.release(entry.id)}
-              dismiss={() => {
-                controller.dismiss(entry.id)
-              }}
+              dismiss={entry.end}
             />
           )}
         </For>
@@ -140,7 +140,7 @@ function ToastItem(props: {
   /** Local visual exit state for a toast whose reading time has elapsed. */
   const [expiring, setExpiring] = createSignal(false)
 
-  onMount(() => {
+  onSettled(() => {
     queueMicrotask(() => {
       // Resolve the initial transition once; moving the queue into a modal retains existing cards.
       card.getAnimations()
@@ -188,45 +188,52 @@ function ToastItem(props: {
     timer = setTimeout(props.dismiss, remaining)
   }
 
-  createEffect(() => {
-    void props.entry.message()
-    if (props.entry.ended()) {
-      return
-    }
-    stop()
-    remaining = props.entry.durationMs
-    resume()
-  })
-  createEffect(() => {
-    if (!props.entry.ended()) {
-      return
-    }
-    clearTimeout(timer)
-    clearTimeout(fadeTimer)
-    let current = true
-    onCleanup(() => {
-      current = false
-    })
-    queueMicrotask(() => {
-      if (!current) {
+  createEffect(
+    () => [props.entry.message(), props.entry.ended()],
+    ([, ended]) => {
+      if (ended) {
         return
       }
-      const exit = card
-        .getAnimations()
-        .find((a) => a instanceof CSSTransition && a.transitionProperty === 'opacity')
-      /** Releases the entry after exit settles if the rendering effect is still current. */
-      const finish = () => {
-        if (current) {
-          props.release()
+      stop()
+      remaining = props.entry.durationMs
+      resume()
+    },
+  )
+  createEffect(
+    () => props.entry.ended(),
+    (ended) => {
+      if (!ended) {
+        return
+      }
+      clearTimeout(timer)
+      clearTimeout(fadeTimer)
+      let current = true
+
+      queueMicrotask(() => {
+        if (!current) {
+          return
         }
+        const exit = card
+          .getAnimations()
+          .find((a) => a instanceof CSSTransition && a.transitionProperty === 'opacity')
+        /** Releases the entry after exit settles if the rendering effect is still current. */
+        const finish = () => {
+          if (current) {
+            props.release()
+          }
+        }
+        if (exit) {
+          void exit.finished.then(finish, finish)
+        } else {
+          finish()
+        }
+      })
+
+      return () => {
+        current = false
       }
-      if (exit) {
-        void exit.finished.then(finish, finish)
-      } else {
-        finish()
-      }
-    })
-  })
+    },
+  )
   onCleanup(stop)
 
   return (
@@ -237,7 +244,7 @@ function ToastItem(props: {
       data-arriving=""
       data-ended={props.entry.ended() || undefined}
       inert={props.entry.ended()}
-      class={classes(surface.staticSurface, surface.withClose, styles.item)}
+      class={[surface.staticSurface, surface.withClose, styles.item]}
       data-type={props.entry.message().type}
       data-expiring={expiring() || undefined}
       onPointerEnter={() => {

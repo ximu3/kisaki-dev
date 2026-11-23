@@ -1,9 +1,8 @@
 /** @fileoverview Arranges item identity, optional metadata and locally scoped actions. */
 
-import { Show, splitProps } from 'solid-js'
-import { Dynamic } from 'solid-js/web'
-import type { JSX } from 'solid-js'
-import { classes } from '../../internal/dom'
+import { Show, omit } from 'solid-js'
+import { dynamic } from '@solidjs/web'
+import type { JSX } from '@solidjs/web'
 import type { ButtonProps } from '../button/control'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../tooltip/parts'
 import styles from './styles.module.css'
@@ -16,14 +15,14 @@ export interface ListProps extends JSX.HTMLAttributes<HTMLUListElement | HTMLOLi
 
 /** Renders an unordered catalog or an ordered sequence of items. */
 export function List(props: ListProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['class', 'ordered', 'variant'])
+  const rest = omit(props, 'class', 'ordered', 'variant')
+  const Control = dynamic(() => (props.ordered ? 'ol' : 'ul'))
   return (
-    <Dynamic
-      component={local.ordered ? 'ol' : 'ul'}
+    <Control
       role="list"
       {...rest}
-      class={classes(styles.list, local.class)}
-      data-variant={local.variant ?? 'framed'}
+      class={[styles.list, props.class]}
+      data-variant={props.variant ?? 'framed'}
     />
   )
 }
@@ -42,7 +41,8 @@ export interface ListItemProps extends Omit<JSX.LiHTMLAttributes<HTMLLIElement>,
 
 /** Renders one item with a decorative glyph slot, readable title and actions at the trailing edge. */
 export function ListItem(props: ListItemProps): JSX.Element {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'class',
     'title',
     'description',
@@ -51,29 +51,29 @@ export function ListItem(props: ListItemProps): JSX.Element {
     'actions',
     'handle',
     'children',
-  ])
+  )
 
   return (
-    <li {...rest} class={classes(styles.item, local.class)}>
-      <Show when={local.icon}>
+    <li {...rest} class={[styles.item, props.class]}>
+      <Show when={props.icon}>
         <span class={styles.icon} aria-hidden="true">
-          {local.icon}
+          {props.icon}
         </span>
       </Show>
       <div class={styles.content}>
-        <div class={styles.title}>{local.title}</div>
-        <Show when={local.description}>
-          <div class={styles.description}>{local.description}</div>
+        <div class={styles.title}>{props.title}</div>
+        <Show when={props.description}>
+          <div class={styles.description}>{props.description}</div>
         </Show>
-        {local.children}
+        {props.children}
       </div>
-      <Show when={local.accessory}>
-        <div class={styles.accessory}>{local.accessory}</div>
+      <Show when={props.accessory}>
+        <div class={styles.accessory}>{props.accessory}</div>
       </Show>
-      <Show when={local.actions}>
-        <div class={styles.actions}>{local.actions}</div>
+      <Show when={props.actions}>
+        <div class={styles.actions}>{props.actions}</div>
       </Show>
-      {local.handle}
+      {props.handle}
     </li>
   )
 }
@@ -86,17 +86,17 @@ export interface ListItemActionProps extends Omit<ButtonProps, 'size' | 'variant
 
 /** Renders one compact row action with its original button semantics. */
 export function ListItemAction(props: ListItemActionProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['label', 'destructive', 'class', 'aria-label'])
+  const rest = omit(props, 'label', 'destructive', 'class', 'aria-label')
   return (
     <Tooltip>
       <TooltipTrigger
         {...rest}
-        class={classes(local.destructive ? styles.destructive : undefined, local.class)}
-        aria-label={local['aria-label'] ?? local.label}
+        class={[props.destructive ? styles.destructive : undefined, props.class]}
+        aria-label={props['aria-label'] ?? props.label}
         size="icon-sm"
         variant="ghost"
       />
-      <TooltipContent>{local.label}</TooltipContent>
+      <TooltipContent>{props.label}</TooltipContent>
     </Tooltip>
   )
 }

@@ -1,6 +1,7 @@
 /** @fileoverview Presents a draft branch in its own form and applies it to preferences on confirmation. */
 
-import { createMemo, onMount, Show, type JSX } from 'solid-js'
+import { createMemo, onSettled, Show } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import type { Translate } from '@kisaki3/desktop-localization'
 import { Button } from '@kisaki3/desktop-ui/button'
 import {
@@ -37,14 +38,13 @@ interface StagedDialogProps<Edit extends StagedPreferenceEdit> {
 export function StagedPreferenceDialog<Edit extends StagedPreferenceEdit>(
   props: StagedDialogProps<Edit>,
 ) {
-  const size = createMemo<NonNullable<DialogContentProps['size']>>(
-    (last) => (props.edit ? props.size(props.edit) : last),
-    'md',
+  const size = createMemo<NonNullable<DialogContentProps['size']>>((last = 'md') =>
+    props.edit ? props.size(props.edit) : last,
   )
 
   function Content() {
     // DialogContent owns this memo's lifetime, including the outgoing transition.
-    const displayed = createMemo<Edit | undefined>((last) => props.edit ?? last, undefined)
+    const displayed = createMemo<Edit | undefined>((last) => props.edit ?? last)
     return (
       <Show when={displayed()} keyed>
         {(edit) => <StagedPreferenceForm {...props} edit={edit} />}
@@ -92,7 +92,7 @@ function StagedPreferenceForm<Edit extends StagedPreferenceEdit>(
   })
   props.bind(form)
 
-  onMount(() => {
+  onSettled(() => {
     const field = edit.field
     if (field) {
       // Native showModal establishes the active scope before placing field focus.
@@ -111,9 +111,9 @@ function StagedPreferenceForm<Edit extends StagedPreferenceEdit>(
             body = element
           }}
         >
-          <PreferenceFieldsContext.Provider value={{ draft, t }}>
+          <PreferenceFieldsContext value={{ draft, t }}>
             {props.fields(edit)}
-          </PreferenceFieldsContext.Provider>
+          </PreferenceFieldsContext>
         </DialogBody>
 
         <DialogFooter>

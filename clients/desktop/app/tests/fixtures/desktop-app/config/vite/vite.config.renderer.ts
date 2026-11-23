@@ -1,7 +1,7 @@
 /** @fileoverview Builds and serves the four Solid fixture windows with their document policies. */
 
 import { defineConfig } from 'vite'
-import solid from 'vite-plugin-solid'
+import solid from '@solidjs/vite-plugin'
 import tailwind from '@tailwindcss/vite'
 import { fileURLToPath } from 'node:url'
 import { resolve } from 'node:path'

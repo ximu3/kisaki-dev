@@ -1,8 +1,9 @@
 /** @fileoverview A read-only tooltip surface shares native positioning and reading state. */
 
-import { onCleanup, onMount, splitProps } from 'solid-js'
-import type { Accessor, JSX } from 'solid-js'
-import { assignRef, callHandler, classes } from '../dom'
+import { onSettled, omit } from 'solid-js'
+import type { Accessor } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { callHandler } from '../dom'
 import { createPopup } from '../popup/controller'
 import type { PopupPlacement } from '../popup/controller'
 import type { createTooltip } from './controller'
@@ -25,7 +26,8 @@ interface TooltipSurfaceProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * Its document connection is released with the surface, and closing does not move keyboard focus.
  */
 export function TooltipSurface(props: TooltipSurfaceProps): JSX.Element {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'anchor',
     'reading',
     'placement',
@@ -34,25 +36,25 @@ export function TooltipSurface(props: TooltipSurfaceProps): JSX.Element {
     'ref',
     'onPointerEnter',
     'onPointerLeave',
-  ])
+  )
   let content!: HTMLDivElement
-  onMount(() => onCleanup(local.reading.connect(content.ownerDocument)))
+  onSettled(() => props.reading.connect(content.ownerDocument))
 
   createPopup({
     /** Reads the currently mounted tooltip surface. */
     element: () => content,
-    anchor: local.anchor,
-    open: local.reading.open,
+    anchor: props.anchor,
+    open: props.reading.open,
 
     /** Dismisses the tooltip through its reading-state owner when closure is requested. */
     change: (open) => {
       if (!open) {
-        local.reading.dismiss()
+        props.reading.dismiss()
       }
     },
 
     /** Reads the tooltip's preferred placement with the shared default. */
-    placement: () => local.placement ?? 'bottom-start',
+    placement: () => props.placement ?? 'bottom-start',
     restoreFocus: false,
   })
 
@@ -60,23 +62,25 @@ export function TooltipSurface(props: TooltipSurfaceProps): JSX.Element {
     <div
       {...rest}
       role="tooltip"
-      data-tooltip-handoff={local.reading.handoff() || undefined}
-      ref={(node) => {
-        node.popover = 'hint'
-        content = node
-        assignRef(local.ref, node)
-      }}
-      class={classes(frame.anchor, styles.content, local.class)}
+      data-tooltip-handoff={props.reading.handoff() || undefined}
+      ref={[
+        (node) => {
+          node.popover = 'hint'
+          content = node
+        },
+        props.ref,
+      ]}
+      class={[frame.anchor, styles.content, props.class]}
       onPointerEnter={(event) => {
-        local.reading.hover('content', true)
-        callHandler(local.onPointerEnter, event)
+        props.reading.hover('content', true)
+        callHandler(props.onPointerEnter, event)
       }}
       onPointerLeave={(event) => {
-        local.reading.hover('content', false)
-        callHandler(local.onPointerLeave, event)
+        props.reading.hover('content', false)
+        callHandler(props.onPointerLeave, event)
       }}
     >
-      <div class={classes(frame.viewport, styles.text)}>{local.children}</div>
+      <div class={[frame.viewport, styles.text]}>{props.children}</div>
     </div>
   )
 }

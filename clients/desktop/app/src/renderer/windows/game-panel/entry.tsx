@@ -1,6 +1,6 @@
 /** @fileoverview Adopts the real game-panel document's language, appearance and window lifecycle. */
 
-import { render } from 'solid-js/web'
+import { render } from '@solidjs/web'
 import { connect } from '../../infrastructure/api'
 import { Notifications } from '../../infrastructure/notifications'
 

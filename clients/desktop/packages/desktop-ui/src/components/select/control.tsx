@@ -1,7 +1,8 @@
 /** @fileoverview Single and multiple desktop selectors commit stable option keys. */
 
-import { createMemo, mergeProps, splitProps } from 'solid-js'
-import type { Accessor, JSX } from 'solid-js'
+import { createMemo, merge, omit } from 'solid-js'
+import type { Accessor } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import type { ChipLabels } from '../../internal/chips/control'
 import { SelectionField } from '../selection/field'
 import type { ChoiceFieldProps } from '../selection/field'
@@ -49,12 +50,12 @@ function resolveKeys<K extends string>(options: Accessor<readonly SelectionOptio
  * attention.
  */
 export function Select<K extends string = string>(props: SelectProps<K>): JSX.Element {
-  const [local, rest] = splitProps(props, ['value', 'defaultValue', 'onValueChange'])
+  const rest = omit(props, 'value', 'defaultValue', 'onValueChange')
   const resolve = resolveKeys(() => rest.options)
   const [value, change] = createValue(
-    () => local.value,
-    () => local.defaultValue ?? '',
-    (next) => local.onValueChange?.(next),
+    () => props.value,
+    () => props.defaultValue ?? '',
+    (next) => props.onValueChange?.(next),
   )
 
   const selected = () => {
@@ -66,9 +67,9 @@ export function Select<K extends string = string>(props: SelectProps<K>): JSX.El
     <SelectionField
       {...rest}
       selected={selected()}
-      defaults={local.defaultValue ? [local.defaultValue] : []}
+      defaults={props.defaultValue ? [props.defaultValue] : []}
       onChoose={(option) => change(option.value)}
-      onReset={() => change(local.defaultValue ?? '')}
+      onReset={() => change(props.defaultValue ?? '')}
     />
   )
 }
@@ -78,27 +79,31 @@ export function Select<K extends string = string>(props: SelectProps<K>): JSX.El
  * order.
  */
 export function MultiSelect<K extends string = string>(props: MultiSelectProps<K>): JSX.Element {
-  const [local, labels, rest] = splitProps(
+  const rest = omit(
     props,
-    ['value', 'defaultValue', 'onValueChange'],
-    ['removeLabel', 'scrollPreviousLabel', 'scrollNextLabel'],
+    'value',
+    'defaultValue',
+    'onValueChange',
+    'removeLabel',
+    'scrollPreviousLabel',
+    'scrollNextLabel',
   )
   const [value, change] = createValue(
-    () => local.value,
-    () => local.defaultValue ?? [],
-    (next) => local.onValueChange?.(next),
+    () => props.value,
+    () => props.defaultValue ?? [],
+    (next) => props.onValueChange?.(next),
   )
   const resolve = resolveKeys(() => rest.options)
 
   return (
     <SelectionField
       {...rest}
-      chips={mergeProps(labels, {
+      chips={merge(props, {
         /** Requests removal of one selected key while preserving the other selected values. */
         remove: (key: string) => change(value().filter((item) => item !== key)),
       })}
       selected={value().map(resolve)}
-      defaults={local.defaultValue ?? []}
+      defaults={props.defaultValue ?? []}
       onChoose={(option) =>
         change(
           value().includes(option.value)
@@ -106,7 +111,7 @@ export function MultiSelect<K extends string = string>(props: MultiSelectProps<K
             : [...value(), option.value],
         )
       }
-      onReset={() => change(local.defaultValue ?? [])}
+      onReset={() => change(props.defaultValue ?? [])}
     />
   )
 }

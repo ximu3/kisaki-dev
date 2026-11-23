@@ -1,15 +1,16 @@
 /** @fileoverview Mounts native pages and independent, document-owned management dialogs. */
 
 import {
-  createComponent,
-  createResource,
-  ErrorBoundary,
+  createMemo,
+  Errored,
+  Loading,
   Match,
+  refresh,
   Show,
   Switch,
   type Component,
 } from 'solid-js'
-import { Dynamic } from 'solid-js/web'
+import { dynamic } from '@solidjs/web'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
 import {
@@ -23,19 +24,64 @@ import {
 } from '@kisaki3/desktop-ui/dialog'
 import type { MainClient } from '../../../infrastructure/api'
 import type { EditorGuard } from '../../../infrastructure/dialogs/closing'
-import { Notifications, reportError } from '../../../infrastructure/notifications'
+import { Notifications, reportError, errorMessage } from '../../../infrastructure/notifications'
 import { About } from '../features/about'
 import { AppShell } from './shell'
 import { createNavigation, type DialogLayer } from './navigation'
 import type { ManagementTarget, PageRoute } from './routes'
 
-/** Loads a management scene on entry, sharing the dialog's first frame and error boundary. */
-function managementView<P extends object>(load: () => Promise<Component<P>>): Component<P> {
-  return (props) => {
-    const [view] = createResource(load)
-    deferDialogUntil(() => !view.loading)
-    return <Show when={view()}>{(component) => createComponent(component(), props)}</Show>
+/** Prepares the management scene before its first frame and can retry its module read. */
+function managementView<P extends { api: MainClient }>(
+  load: () => Promise<Component<P>>,
+): Component<P> {
+  function Pending() {
+    deferDialogUntil(() => false)
+    return null
   }
+
+  return (props) => {
+    const loaded = createMemo(async () => {
+      try {
+        return { scene: await load() }
+      } catch (error) {
+        return { error }
+      }
+    })
+    const Scene = dynamic(() => loaded().scene)
+
+    return (
+      <Loading fallback={<Pending />}>
+        <Show when={'error' in loaded()} fallback={<Scene {...props} />}>
+          <ManagementFailure
+            api={props.api}
+            error={loaded().error}
+            retry={() => void refresh(loaded)}
+          />
+        </Show>
+      </Loading>
+    )
+  }
+}
+
+/** Gives a failed management read or scene an accessible recovery action. */
+function ManagementFailure(props: { api: MainClient; error: unknown; retry: () => void }) {
+  return (
+    <>
+      <DialogHeader closeLabel={props.api.t('actions.close')}>
+        <DialogTitle>{props.api.t('runtime.unavailable')}</DialogTitle>
+      </DialogHeader>
+      <DialogBody>
+        <Alert tone="destructive" role="alert">
+          {errorMessage(props.error)}
+        </Alert>
+      </DialogBody>
+      <DialogFooter>
+        <Button variant="outline" onClick={props.retry}>
+          {props.api.t('runtime.retry')}
+        </Button>
+      </DialogFooter>
+    </>
+  )
 }
 
 /** Preference editing and its staged forms. */
@@ -114,23 +160,9 @@ function ManagementDialog(props: {
               void props.close().catch(reportError)
             }}
           >
-            <ErrorBoundary
+            <Errored
               fallback={(error, reset) => (
-                <>
-                  <DialogHeader closeLabel={api.t('actions.close')}>
-                    <DialogTitle>{api.t('runtime.unavailable')}</DialogTitle>
-                  </DialogHeader>
-                  <DialogBody>
-                    <Alert tone="destructive" role="alert">
-                      {error instanceof Error ? error.message : String(error)}
-                    </Alert>
-                  </DialogBody>
-                  <DialogFooter>
-                    <Button variant="outline" onClick={reset}>
-                      {api.t('runtime.retry')}
-                    </Button>
-                  </DialogFooter>
-                </>
+                <ManagementFailure api={api} error={error()} retry={reset} />
               )}
             >
               <Switch>
@@ -173,7 +205,7 @@ function ManagementDialog(props: {
                   <About api={api} report={reportError} />
                 </Match>
               </Switch>
-            </ErrorBoundary>
+            </Errored>
           </DialogContent>
         </Dialog>
       )}
@@ -190,7 +222,9 @@ export function MainWindow(props: { api: MainClient; pages: readonly PageRoute[]
       reportError(cause)
       return false
     })
-  const manage = (type: 'themes' | 'fonts') => nav.resource.show({ type })
+  const manage = (type: 'themes' | 'fonts') => {
+    void nav.resource.show({ type })
+  }
   return (
     <>
       <Notifications t={api.t} />
@@ -204,7 +238,10 @@ export function MainWindow(props: { api: MainClient; pages: readonly PageRoute[]
         open={open}
       >
         <Show when={nav.page()}>
-          {(page) => <Dynamic component={page().view} api={api} target={nav.target()} />}
+          {(page) => {
+            const View = dynamic(() => page().view)
+            return <View api={api} target={nav.target()} />
+          }}
         </Show>
       </AppShell>
 

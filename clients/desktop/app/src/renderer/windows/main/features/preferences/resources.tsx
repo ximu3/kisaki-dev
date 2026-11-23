@@ -1,7 +1,8 @@
 /** @fileoverview Connects appearance and language fields to their live native catalogs. */
 
-import { createResource, onCleanup, Show } from 'solid-js'
-import { Settings2 } from 'lucide-solid'
+import { onCleanup, Show } from 'solid-js'
+import { createQuery } from '../../../../infrastructure/query'
+import { Settings2 } from '@lucide/solid'
 import { catalogKey } from '../../../../../shared/catalog-ref'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@kisaki3/desktop-ui/tooltip'
 import { Alert } from '@kisaki3/desktop-ui/alert'
@@ -15,9 +16,13 @@ import type { PreferenceDraft } from './draft'
 import { PreferenceField } from './field'
 
 /** Reloads the selected catalog while the field is mounted. */
-function createCatalog<T>(api: MainClient, topic: string, load: () => Promise<T>) {
-  const [items, { refetch }] = createResource(load)
-  const refresh = () => void refetch()
+function createCatalog<T>(
+  api: MainClient,
+  topic: string,
+  load: (signal: AbortSignal) => Promise<T>,
+) {
+  const items = createQuery(load)
+  const refresh = () => void items.reload()
   api.topics.addEventListener(topic, refresh)
   onCleanup(() => api.topics.removeEventListener(topic, refresh))
   return { items, refresh }
@@ -42,7 +47,9 @@ function CatalogError(props: { api: MainClient; error: unknown; retry: () => voi
 /** Displays the theme choice beside the independent theme management action. */
 export function ThemeField(props: { api: MainClient; draft: PreferenceDraft; manage: () => void }) {
   const { api, draft } = props
-  const { items, refresh } = createCatalog(api, 'themes.changed', () => api.call('themes.list'))
+  const { items, refresh } = createCatalog(api, 'themes.changed', (signal) =>
+    api.request(signal, 'themes.list'),
+  )
 
   return (
     <>
@@ -50,8 +57,8 @@ export function ThemeField(props: { api: MainClient; draft: PreferenceDraft; man
         <ThemeSelector
           t={api.t}
           value={draft.read('appearance.theme')}
-          themes={items.error ? [] : (items() ?? [])}
-          disabled={!!items.error || items.loading}
+          themes={items.error ? [] : (items.value ?? [])}
+          disabled={!!items.error || items.pending}
           onValueChange={(ref) => draft.write('appearance.theme', ref)}
         />
         <Tooltip>
@@ -73,8 +80,8 @@ export function ThemeField(props: { api: MainClient; draft: PreferenceDraft; man
 /** Displays the saved translation, including an unavailable resource identity. */
 export function TranslationField(props: { api: MainClient; draft: PreferenceDraft }) {
   const { api, draft } = props
-  const { items, refresh } = createCatalog(api, 'translations.changed', () =>
-    api.call('translations.list'),
+  const { items, refresh } = createCatalog(api, 'translations.changed', (signal) =>
+    api.request(signal, 'translations.list'),
   )
   const value = () => draft.read('general.uiTranslation')
   const key = () => {
@@ -83,7 +90,7 @@ export function TranslationField(props: { api: MainClient; draft: PreferenceDraf
   }
 
   function options() {
-    const rows = (items.error ? [] : (items() ?? [])).map((item) => ({
+    const rows = (items.error ? [] : (items.value ?? [])).map((item) => ({
       value: catalogKey(item.ref),
       label: item.name,
     }))
@@ -106,12 +113,12 @@ export function TranslationField(props: { api: MainClient; draft: PreferenceDraf
       <PreferenceField field="general.uiTranslation" label={api.t('runtime.fields.uiTranslation')}>
         <Select
           value={key()}
-          disabled={!!items.error || items.loading}
+          disabled={!!items.error || items.pending}
           options={options()}
           emptyMessage={api.t('runtime.noOptions')}
           invalidSelectionMessage={api.t('runtime.unavailable')}
           onValueChange={(key) => {
-            const item = items()?.find((entry) => catalogKey(entry.ref) === key)
+            const item = items.value?.find((entry) => catalogKey(entry.ref) === key)
             if (item) {
               draft.write('general.uiTranslation', item.ref)
             }

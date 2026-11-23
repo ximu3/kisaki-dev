@@ -1,6 +1,7 @@
 /** @fileoverview Stable option identities and optional virtual list rendering. */
 
-import type { Accessor, JSX } from 'solid-js'
+import type { Accessor } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 
 /**
  * Stable choice record with a value unique in its collection.
@@ -45,7 +46,7 @@ export interface SelectionListProps<O extends SelectionOption = SelectionOption>
   virtual?: boolean | undefined
   /** Renders the supplied logical options using the shared row renderer and presentation state. */
   renderOptions?: ((props: SelectionListRenderProps<O>) => JSX.Element) | undefined
-  /** Reveals and mounts the identified active option through the host's virtual layout. */
+  /** Reveals the active option and retains its mounted row while it stays active. */
   scrollToValue?: ((value: O['value']) => void) | undefined
   /** Receives the mounted listbox viewport owning both scroll axes and the virtual-row origin. */
   listRef?: ((element: HTMLDivElement) => void) | undefined

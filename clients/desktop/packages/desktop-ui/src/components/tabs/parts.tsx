@@ -5,13 +5,13 @@ import {
   createEffect,
   createMemo,
   createUniqueId,
-  onCleanup,
-  splitProps,
+  omit,
   useContext,
   createSignal,
 } from 'solid-js'
-import type { Accessor, JSX } from 'solid-js'
-import { assignRef, callHandler, classes } from '../../internal/dom'
+import type { Accessor } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { callHandler } from '../../internal/dom'
 import { createValue } from '../../internal/state'
 import { createFocusNavigation } from '../../internal/focus'
 import styles from './styles.module.css'
@@ -59,7 +59,8 @@ export interface TabsProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * Owns tab identity, selection and enabled-tab registration while hidden panels retain local state.
  */
 export function Tabs(props: TabsProps): JSX.Element {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'value',
     'defaultValue',
     'onValueChange',
@@ -67,13 +68,13 @@ export function Tabs(props: TabsProps): JSX.Element {
     'activation',
     'children',
     'class',
-  ])
+  )
 
   /** Live selected-tab value and change requests delegated to its value owner. */
   const [value, change] = createValue(
-    () => local.value,
-    () => local.defaultValue ?? '',
-    (next) => local.onValueChange?.(next),
+    () => props.value,
+    () => props.defaultValue ?? '',
+    (next) => props.onValueChange?.(next),
   )
   /** Current tab identities in registration order for selection and keyboard entry. */
   const [registered, setRegistered] = createSignal<string[]>([])
@@ -84,7 +85,7 @@ export function Tabs(props: TabsProps): JSX.Element {
       const items = registered()
       const requested = value()
       const requestedIndex = items.indexOf(requested)
-      if (requestedIndex >= 0 || local.value !== undefined) {
+      if (requestedIndex >= 0 || props.value !== undefined) {
         return { requested, selected: requested || first(), index: Math.max(0, requestedIndex) }
       }
 
@@ -96,7 +97,7 @@ export function Tabs(props: TabsProps): JSX.Element {
   )
 
   return (
-    <TabsContext.Provider
+    <TabsContext
       value={{
         id: createUniqueId(),
 
@@ -123,16 +124,16 @@ export function Tabs(props: TabsProps): JSX.Element {
         },
 
         /** Reads the caller's tab-list orientation with its horizontal default. */
-        orientation: () => local.orientation ?? 'horizontal',
+        orientation: () => props.orientation ?? 'horizontal',
 
         /** Reads the caller's selection-activation mode with its automatic default. */
-        activation: () => local.activation ?? 'automatic',
+        activation: () => props.activation ?? 'automatic',
       }}
     >
-      <div {...rest} class={local.class}>
-        {local.children}
+      <div {...rest} class={props.class}>
+        {props.children}
       </div>
-    </TabsContext.Provider>
+    </TabsContext>
   )
 }
 
@@ -144,9 +145,9 @@ export function Tabs(props: TabsProps): JSX.Element {
  * Callers name the list when multiple tab sets need distinction.
  */
 export function TabList(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
-  const tabs = useTabs()
+  const tabs = useContext(TabsContext)
   let list!: HTMLDivElement
-  const [local, rest] = splitProps(props, ['class', 'onKeyDown', 'onFocusOut', 'onWheel', 'ref'])
+  const rest = omit(props, 'class', 'onKeyDown', 'onFocusOut', 'onWheel', 'ref')
 
   /** Orientation-aware tab navigation that applies automatic activation when selected. */
   const navigate = createFocusNavigation(
@@ -161,7 +162,7 @@ export function TabList(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element 
   )
 
   function scroll(event: WheelEvent & { currentTarget: HTMLDivElement; target: Element }) {
-    callHandler(local.onWheel, event)
+    callHandler(props.onWheel, event)
     if (
       event.defaultPrevented ||
       tabs.orientation() !== 'horizontal' ||
@@ -191,22 +192,24 @@ export function TabList(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element 
   return (
     <div
       {...rest}
-      ref={(node) => {
-        list = node
-        assignRef(local.ref, node)
-      }}
+      ref={[
+        (node) => {
+          list = node
+        },
+        props.ref,
+      ]}
       role="tablist"
       aria-orientation={tabs.orientation()}
-      class={classes(segmented.group, styles.list, local.class)}
-      on:wheel={scroll}
+      class={[segmented.group, styles.list, props.class]}
+      onWheel={scroll}
       onFocusOut={(event) => {
         if (!list.contains(event.relatedTarget as Node | null)) {
           tabs.setFocus(undefined)
         }
-        callHandler(local.onFocusOut, event)
+        callHandler(props.onFocusOut, event)
       }}
       onKeyDown={(event) => {
-        callHandler(local.onKeyDown, event)
+        callHandler(props.onKeyDown, event)
         if (!event.defaultPrevented) {
           navigate(event)
         }
@@ -222,34 +225,37 @@ export interface TabProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
 
 /** Renders a native tab button and registers enabled choices for roving keyboard entry. */
 export function Tab(props: TabProps): JSX.Element {
-  const tabs = useTabs()
-  const [local, rest] = splitProps(props, ['value', 'class', 'onClick', 'onFocus'])
+  const tabs = useContext(TabsContext)
+  const rest = omit(props, 'value', 'class', 'onClick', 'onFocus')
 
-  createEffect(() => {
-    if (!props.disabled) {
-      onCleanup(tabs.register(local.value))
-    }
-  })
+  createEffect(
+    () => (props.disabled ? undefined : props.value),
+    (value) => {
+      if (value !== undefined) {
+        return tabs.register(value)
+      }
+    },
+  )
 
   return (
     <button
       type="button"
       {...rest}
       role="tab"
-      id={`${tabs.id}-tab-${local.value}`}
-      data-value={local.value}
-      aria-controls={`${tabs.id}-panel-${local.value}`}
-      aria-selected={tabs.value() === local.value}
-      tabIndex={tabs.focusValue() === local.value ? 0 : -1}
-      class={classes(segmented.item, styles.tab, local.class)}
+      id={`${tabs.id}-tab-${props.value}`}
+      data-value={props.value}
+      aria-controls={`${tabs.id}-panel-${props.value}`}
+      aria-selected={tabs.value() === props.value ? 'true' : 'false'}
+      tabindex={tabs.focusValue() === props.value ? 0 : -1}
+      class={[segmented.item, styles.tab, props.class]}
       onFocus={(event) => {
-        tabs.setFocus(local.value)
-        callHandler(local.onFocus, event)
+        tabs.setFocus(props.value)
+        callHandler(props.onFocus, event)
       }}
       onClick={(event) => {
-        callHandler(local.onClick, event)
+        callHandler(props.onClick, event)
         if (!event.defaultPrevented) {
-          tabs.change(local.value)
+          tabs.change(props.value)
         }
       }}
     />
@@ -263,28 +269,18 @@ export interface TabPanelProps extends JSX.HTMLAttributes<HTMLDivElement> {
 
 /** Associates a panel with its tab and hides inactive content while keeping it mounted. */
 export function TabPanel(props: TabPanelProps): JSX.Element {
-  const tabs = useTabs()
-  const [local, rest] = splitProps(props, ['value', 'class'])
+  const tabs = useContext(TabsContext)
+  const rest = omit(props, 'value', 'class')
 
   return (
     <div
-      tabIndex={0}
+      tabindex={0}
       {...rest}
       role="tabpanel"
-      id={`${tabs.id}-panel-${local.value}`}
-      aria-labelledby={`${tabs.id}-tab-${local.value}`}
-      hidden={tabs.value() !== local.value}
-      class={classes(styles.panel, local.class)}
+      id={`${tabs.id}-panel-${props.value}`}
+      aria-labelledby={`${tabs.id}-tab-${props.value}`}
+      hidden={tabs.value() !== props.value}
+      class={[styles.panel, props.class]}
     />
   )
-}
-
-/** Returns the nearest tabs state and rejects parts rendered outside a Tabs owner. */
-function useTabs() {
-  const tabs = useContext(TabsContext)
-  if (!tabs) {
-    throw new Error('Tab parts require Tabs.')
-  }
-
-  return tabs
 }

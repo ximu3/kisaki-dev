@@ -1,7 +1,7 @@
 /** @fileoverview Names each preference and restores its own draft value to the product default. */
 
 import { createContext, Show, useContext, type ParentProps } from 'solid-js'
-import { RotateCcw } from 'lucide-solid'
+import { RotateCcw } from '@lucide/solid'
 import type { PreferenceKey } from '@kisaki3/desktop-contracts/preferences'
 import type { Translate } from '@kisaki3/desktop-localization'
 import {
@@ -69,7 +69,7 @@ export function PreferenceField(
       }}
       name={props.field}
       id={'preference-' + props.field}
-      tabIndex={-1}
+      tabindex={-1}
       orientation={props.wide ? 'vertical' : 'responsive'}
     >
       <FieldHeader>
@@ -95,8 +95,11 @@ export function PreferenceField(
       <FieldContent class={props.wide ? 'w-full' : 'max-w-full'}>
         <div
           data-preference-value
-          class={`flex min-w-0 max-w-full flex-wrap items-center gap-2 ${valueWidth()}`}
-          classList={{ '@min-[28rem]:justify-end': !props.wide }}
+          class={[
+            'flex min-w-0 max-w-full flex-wrap items-center gap-2',
+            valueWidth(),
+            { '@min-[28rem]:justify-end': !props.wide },
+          ]}
         >
           {props.children}
         </div>

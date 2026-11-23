@@ -30,7 +30,7 @@
 
 桌面公共包通过构建后的公开入口交付 ESM、声明和各自资源。包内 `tests/consumers` 使用仓库外的独立工程核对同一 tarball，用例、样板、配置、依赖和报告分别由所属包维护。公开值和消费方式可从源码声明、消费者样板及 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md)、[W03](../verification/evidence/w03/README.md)、[W04](../verification/evidence/w04/README.md)、[W05](../verification/evidence/w05/README.md) 验证入口查阅。
 
-desktop-ui 从组件家族子路径消费，样式入口为 `/styles.css`，包含 appearance 的普通样式；图表、Markdown 和拖拽按完整能力独立导入。`/form` 合并浏览器有效性与业务问题，统一提交、快捷键和关闭确认等待的操作。宿主拥有草稿、业务校验与写入，以及图表统计、正文资源和排序规则。接口和组合示例见包内源码与仓库外消费者样板。`pnpm exec vp run @kisaki3/desktop-ui#test:consumers` 验证真实 tarball、完整声明、浏览器、Tailwind 和 Electron，报告位于包内 `test-results/consumers`。
+desktop-ui 从组件家族子路径消费，样式入口为 `/styles.css`，包含 appearance 的普通样式；图表、Markdown 和拖拽按完整能力独立导入。长列表和规则网格通过 `/virtualization` 接入尺寸估计、按行测量和稳定键定位。`/form` 合并浏览器有效性与业务问题，统一提交、快捷键和关闭确认等待的操作。宿主拥有草稿、业务校验与写入，以及图表统计、正文资源和排序规则。接口和组合示例见包内源码与仓库外消费者样板。`pnpm exec vp run @kisaki3/desktop-ui#test:consumers` 验证真实 tarball、完整声明、浏览器、Tailwind 和 Electron，报告位于包内 `test-results/consumers`。
 
 desktop-rpc 从包根导出 `RpcConnection`、传输接口和帧合同。接入端绑定实际通道与身份，提供明确的方法表并解析业务值。等待 `ready` 后发起调用，按 `closed` 的结束原因释放所属资源。两个消费者分别通过 Node JSON IPC 和沙箱 Electron 窗口的 MessagePort 运行。Linux 执行消费者套件需要图形会话，CI 使用 Xvfb。
 
@@ -38,7 +38,7 @@ desktop-contracts 按业务子路径导出显式接口、值校验与规范编�
 
 修改 desktop-appearance 的亮暗默认值后，用 `pnpm exec vp run @kisaki3/desktop-appearance#generate:styles` 更新 `src/defaults.generated.css`。打包时核对这份样式与默认值是否一致。
 
-Lucide 名称目录由 desktop-contracts 的 `tools/generate-icon-names.ts` 从固定依赖生成，`pnpm exec vp run @kisaki3/desktop-contracts#generate:icon-names` 更新 `src/ui/icons/names.generated.ts`。普通 build 核对生成一致性；公开纯合同只携带名称和校验，不加载图形目录。desktop-ui 以 lucide-solid 组件呈现本地图标。
+Lucide 名称目录由 desktop-contracts 的 `tools/generate-icon-names.ts` 从固定依赖生成，`pnpm exec vp run @kisaki3/desktop-contracts#generate:icon-names` 更新 `src/ui/icons/names.generated.ts`。普通 build 核对生成一致性；公开纯合同只携带名称和校验，不加载图形目录。desktop-ui 以 @lucide/solid 组件呈现本地图标。
 
 desktop-localization 的英语 ICU 源文位于 src/en，按领域维护并由 index.ts 静态汇总；`pnpm exec vp run @kisaki3/desktop-localization#generate:messages` 更新 src/contracts.generated.ts。普通 build 校验消息声明与英语源文一致，再交接完整构建结果。`createTranslator(locale, catalog)` 创建独立格式化快照；main 的 i18n 管理生效语言与登记寿命，窗口以响应式格式化快照更新文案。生成源由生成器负责排版。
 
@@ -140,6 +140,8 @@ ZIP 读取按需访问中央目录，写入逐成员消费流。拥有者提供�
 | `pnpm exec vp run @kisaki3/desktop#test:performance` | 先构建，测量 20 次正式窗口启动及完整存储负载，核对查询结果、worker 操作中位数与窗口 IPC P95 |
 
 浏览器首次准备由所属工程执行：开发回归使用 `pnpm --filter @kisaki3/desktop exec playwright install chromium`，公共包消费者使用 `pnpm --filter <包名> exec playwright install chromium`。已建立的公共包使用同一锁定 Playwright 版本，可复用该版本的浏览器安装。
+
+任务中心可单独运行 `pnpm exec vp run @kisaki3/desktop#test:window-startup history.test.ts`。真实窗口在临时资料根验证固定表头、连续滚动、筛选以及历史详情和清理。
 
 存储测量可单独运行 `pnpm exec vp run @kisaki3/desktop#test:performance storage.test.ts`。固定样本按表在持久事务中建立，日志单列准备耗时和输入摘要。套件的 180 秒单项超时覆盖造数、测量和结果交付。每条查询核对首读结果，预热 3 次后采样 31 次。短事务另采样 31 次。按操作分别计算中位数，上限为 100 ms。
 

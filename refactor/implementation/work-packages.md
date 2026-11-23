@@ -156,7 +156,7 @@ W08 在独立仓库完成 libmpv-node 的公开操作、目标制品与独立消
 
 ## W05：desktop-ui
 
-依赖：W01 与 Solid 1.9 工程基线。
+依赖：W01 与 Solid 2 工程基线。
 
 交付[完整的公共 UI 家族](../design/ui/package.md#families)。Form、Field 和控件统一表单提交、关联与反馈，Dialog 统一区域、焦点和关闭，Toaster 统一文档队列。包维护控件密度、键盘交互、图表、Markdown、拖拽、样式与资源寿命，按家族子路径交付声明与 CSS Modules 构建后的普通 CSS。
 

@@ -1,7 +1,8 @@
 /** @fileoverview Presents product identity, license and shareable diagnostics. */
 
-import { createResource, Show } from 'solid-js'
-import { Copy } from 'lucide-solid'
+import { Show } from 'solid-js'
+import { createQuery } from '../../../infrastructure/query'
+import { Copy } from '@lucide/solid'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
 import {
@@ -19,8 +20,8 @@ import { errorMessage } from '../../../infrastructure/notifications'
 /** Reads the environment of this running application and copies the same facts on request. */
 export function About(props: { api: MainClient; report: (error: unknown) => void }) {
   const { api } = props
-  const [info, { refetch }] = createResource(() => api.call('app.environment'))
-  deferDialogUntil(() => !!info.error || !!info())
+  const info = createQuery((signal) => api.request(signal, 'app.environment'))
+  deferDialogUntil(() => !!info.error || !!info.value)
 
   async function copy() {
     await api.call('app.copyEnvironment')
@@ -45,14 +46,14 @@ export function About(props: { api: MainClient; report: (error: unknown) => void
           {(cause) => (
             <Alert tone="destructive" role="alert">
               {errorMessage(cause())}{' '}
-              <Button variant="outline" onClick={() => void refetch()}>
+              <Button variant="outline" onClick={() => void info.reload()}>
                 {api.t('runtime.retry')}
               </Button>
             </Alert>
           )}
         </Show>
         <Show
-          when={!info.error && info()}
+          when={!info.error && info.value}
           fallback={!info.error && <Spinner label={api.t('runtime.loading')} />}
         >
           {(value) => (
@@ -72,7 +73,7 @@ export function About(props: { api: MainClient; report: (error: unknown) => void
       <DialogFooter>
         <Button
           variant="outline"
-          disabled={!!info.error || info.loading}
+          disabled={!!info.error || info.pending}
           onClick={() => void copy().catch(props.report)}
         >
           <Copy />

@@ -5,14 +5,16 @@ import {
   createEffect,
   createSignal,
   createUniqueId,
+  flush,
   onCleanup,
-  onMount,
+  onSettled,
   Show,
-  splitProps,
+  omit,
   useContext,
 } from 'solid-js'
-import type { Accessor, JSX, ParentProps } from 'solid-js'
-import { assignRef, callHandler, classes } from '../../internal/dom'
+import type { Accessor, ParentProps } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { callHandler } from '../../internal/dom'
 import { Icon, X } from '../../internal/icon/glyph'
 import { createValue } from '../../internal/state'
 import { registerModal } from '../../internal/modal-host'
@@ -60,7 +62,9 @@ export interface DialogProps extends ParentProps {
 /** Establishes local state and identity for one modal composition. */
 export function Dialog(props: DialogProps): JSX.Element {
   const [description, setDescription] = createSignal(false)
-  const [readiness, setReadiness] = createSignal<readonly Accessor<boolean>[]>([])
+  const [readiness, setReadiness] = createSignal<readonly Accessor<boolean>[]>([], {
+    ownedWrite: true,
+  })
   const [open, change] = createValue(
     () => props.open,
     () => props.defaultOpen ?? false,
@@ -73,7 +77,7 @@ export function Dialog(props: DialogProps): JSX.Element {
   }
 
   return (
-    <DialogContext.Provider
+    <DialogContext
       value={{
         id: createUniqueId(),
         open,
@@ -86,28 +90,28 @@ export function Dialog(props: DialogProps): JSX.Element {
       }}
     >
       {props.children}
-    </DialogContext.Provider>
+    </DialogContext>
   )
 }
 
 /** Mounts a dialog's contents to prepare data, then admits its first frame when the check settles. */
 export function deferDialogUntil(ready: Accessor<boolean>): void {
-  onCleanup(useDialog().addReadiness(ready))
+  onCleanup(useContext(DialogContext).addReadiness(ready))
 }
 
 /** Renders an action button that requests opening the associated native dialog. */
 export function DialogTrigger(props: ButtonProps): JSX.Element {
-  const dialog = useDialog()
-  const [local, rest] = splitProps(props, ['onClick'])
+  const dialog = useContext(DialogContext)
+  const rest = omit(props, 'onClick')
 
   return (
     <Button
       {...rest}
       aria-haspopup="dialog"
-      aria-expanded={dialog.open()}
+      aria-expanded={dialog.open() ? 'true' : 'false'}
       aria-controls={dialog.id}
       onClick={(event) => {
-        callHandler(local.onClick, event)
+        callHandler(props.onClick, event)
         if (!event.defaultPrevented) {
           dialog.change(true)
         }
@@ -141,8 +145,9 @@ export interface DialogContentProps extends Omit<
  * Callers supply DialogTitle or an explicit accessible label.
  */
 export function DialogContent(props: DialogContentProps): JSX.Element {
-  const dialog = useDialog()
-  const [local, rest] = splitProps(props, [
+  const dialog = useContext(DialogContext)
+  const rest = omit(
+    props,
     'children',
     'class',
     'ref',
@@ -152,7 +157,7 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
     'closeOnOutside',
     'size',
     'fill',
-  ])
+  )
 
   let node!: HTMLDialogElement
   const present = createPresentation(dialog.open, () => node)
@@ -170,50 +175,56 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
     releaseModal = registerModal(node)
   }
 
-  onMount(() => {
+  onSettled(() => {
     dialog.node = node
-    createEffect(() => {
-      if (!dialog.open()) {
-        activated = false
-        if (node.open) {
-          node.close()
-          release()
-        }
-      } else if (!activated && dialog.ready()) {
-        show()
-      }
-    })
-    onCleanup(() => {
+    return () => {
       dialog.node = undefined
       if (node.open) {
         node.close()
       }
       release()
-    })
+    }
   })
+
+  createEffect(
+    () => [dialog.open(), dialog.ready()],
+    ([open, ready]) => {
+      if (!open) {
+        activated = false
+        if (node.open) {
+          node.close()
+          release()
+        }
+      } else if (!activated && ready) {
+        show()
+      }
+    },
+  )
 
   return (
     <dialog
       {...rest}
       id={dialog.id}
-      ref={(element) => {
-        node = element
-        assignRef(local.ref, element)
-      }}
+      ref={[
+        (element) => {
+          node = element
+        },
+        props.ref,
+      ]}
       aria-labelledby={
         props['aria-labelledby'] ?? (props['aria-label'] ? undefined : `${dialog.id}-title`)
       }
       aria-describedby={
         props['aria-describedby'] ?? (dialog.description() ? `${dialog.id}-description` : undefined)
       }
-      class={classes(surface.modal, styles.root, local.class)}
-      data-size={local.size ?? 'md'}
-      data-fill={local.fill || undefined}
-      closedby={local.closeOnOutside ? 'any' : 'closerequest'}
+      class={[surface.modal, styles.root, props.class]}
+      data-size={props.size ?? 'md'}
+      data-fill={props.fill || undefined}
+      closedby={props.closeOnOutside ? 'any' : 'closerequest'}
       onCancel={(event) => {
-        callHandler(local.onCancel, event)
+        callHandler(props.onCancel, event)
         if (!event.defaultPrevented) {
-          local.onCloseRequest?.(event)
+          props.onCloseRequest?.(event)
         }
         if (!event.defaultPrevented) {
           event.preventDefault()
@@ -229,16 +240,18 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
           release()
           if (dialog.open()) {
             dialog.change(false)
+            // The native close has already completed. Settle the owner before deciding to reopen.
+            flush()
             if (dialog.node === node && dialog.open() && !node.open) {
               show()
             }
           }
         }
-        callHandler(local.onClose, event)
+        callHandler(props.onClose, event)
       }}
     >
       <Show when={present()}>
-        <div class={classes(surface.viewport, styles.content)}>{local.children}</div>
+        <div class={[surface.viewport, styles.content]}>{props.children}</div>
       </Show>
     </dialog>
   )
@@ -250,15 +263,15 @@ export function DialogContent(props: DialogContentProps): JSX.Element {
  * Asynchronous saving belongs to the caller's close coordination.
  */
 export function DialogClose(props: ButtonProps): JSX.Element {
-  const dialog = useDialog()
-  const [local, rest] = splitProps(props, ['onClick'])
+  const dialog = useContext(DialogContext)
+  const rest = omit(props, 'onClick')
 
   return (
     <Button
       variant="secondary"
       {...rest}
       onClick={(event) => {
-        callHandler(local.onClick, event)
+        callHandler(props.onClick, event)
         if (!event.defaultPrevented) {
           dialog.node?.requestClose()
         }
@@ -274,12 +287,12 @@ export interface DialogHeaderProps extends JSX.HTMLAttributes<HTMLDivElement> {
 
 /** Renders the dialog heading area and an optional exit using the shared cancelable close path. */
 export function DialogHeader(props: DialogHeaderProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['class', 'children', 'closeLabel'])
+  const rest = omit(props, 'class', 'children', 'closeLabel')
 
   return (
-    <div {...rest} class={classes(styles.header, surface.withClose, local.class)}>
-      {local.children}
-      <Show when={local.closeLabel}>
+    <div {...rest} class={[styles.header, surface.withClose, props.class]}>
+      {props.children}
+      <Show when={props.closeLabel}>
         {(label) => (
           <DialogClose
             type="button"
@@ -298,36 +311,36 @@ export function DialogHeader(props: DialogHeaderProps): JSX.Element {
 
 /** Renders a modal heading linked to DialogContent through the local dialog identity. */
 export function DialogTitle(props: JSX.HTMLAttributes<HTMLHeadingElement>): JSX.Element {
-  const dialog = useDialog()
-  const [local, rest] = splitProps(props, ['class'])
+  const dialog = useContext(DialogContext)
+  const rest = omit(props, 'class')
 
-  return <h2 {...rest} id={`${dialog.id}-title`} class={classes(styles.title, local.class)} />
+  return <h2 {...rest} id={`${dialog.id}-title`} class={[styles.title, props.class]} />
 }
 
 /** Renders a whole-dialog description and maintains its accessible association while mounted. */
 export function DialogDescription(props: JSX.HTMLAttributes<HTMLParagraphElement>): JSX.Element {
-  const dialog = useDialog()
-  const [local, rest] = splitProps(props, ['class'])
-  dialog.setDescription(true)
-  onCleanup(() => dialog.setDescription(false))
+  const dialog = useContext(DialogContext)
+  const rest = omit(props, 'class')
+  onSettled(() => {
+    dialog.setDescription(true)
+    return () => dialog.setDescription(false)
+  })
 
-  return (
-    <p {...rest} id={`${dialog.id}-description`} class={classes(styles.description, local.class)} />
-  )
+  return <p {...rest} id={`${dialog.id}-description`} class={[styles.description, props.class]} />
 }
 
 /** Renders a scrollable content area that leaves dialog actions available at small window sizes. */
 export function DialogBody(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
-  const [local, rest] = splitProps(props, ['class'])
+  const rest = omit(props, 'class')
 
-  return <div {...rest} class={classes(styles.body, local.class)} />
+  return <div {...rest} class={[styles.body, props.class]} />
 }
 
 /** Lays out caller-owned dialog actions and their accessible labels. */
 export function DialogFooter(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
-  const [local, rest] = splitProps(props, ['class'])
+  const rest = omit(props, 'class')
 
-  return <div {...rest} class={classes(styles.footer, local.class)} />
+  return <div {...rest} class={[styles.footer, props.class]} />
 }
 
 /**
@@ -335,14 +348,4 @@ export function DialogFooter(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Ele
  */
 export function AlertDialogContent(props: DialogContentProps): JSX.Element {
   return <DialogContent size="sm" {...props} role="alertdialog" />
-}
-
-/** Returns the nearest dialog state and rejects parts rendered outside a Dialog owner. */
-function useDialog(): DialogState {
-  const dialog = useContext(DialogContext)
-  if (!dialog) {
-    throw new Error('Dialog parts require Dialog.')
-  }
-
-  return dialog
 }

@@ -1,9 +1,10 @@
 /** @fileoverview Native radio groups share one value and reset boundary. */
 
-import { createContext, createUniqueId, splitProps, useContext } from 'solid-js'
-import type { Accessor, JSX } from 'solid-js'
+import { createContext, createUniqueId, omit, useContext } from 'solid-js'
+import type { Accessor } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import type { ControlSize } from '../../internal/control/size'
-import { assignRef, callHandler, classes } from '../../internal/dom'
+import { callHandler } from '../../internal/dom'
 import { fieldAttributes } from '../../internal/field'
 import { bindRadioSelection } from '../../internal/choice/radio'
 import { ChoiceRow } from '../../internal/choice/row'
@@ -47,7 +48,8 @@ export interface RadioGroupProps extends Omit<
  * behavior.
  */
 export function RadioGroup(props: RadioGroupProps): JSX.Element {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'label',
     'value',
     'defaultValue',
@@ -58,49 +60,51 @@ export function RadioGroup(props: RadioGroupProps): JSX.Element {
     'class',
     'children',
     'ref',
-  ])
+  )
 
-  const field = fieldAttributes(props, () => local.label)
+  const field = fieldAttributes(props, () => props.label)
   const id = createUniqueId()
-  const name = () => props.name ?? id
+  const name = () => props.name || id
   let group!: HTMLFieldSetElement
   const [value, change] = bindRadioSelection(
     () => group,
     name,
-    () => local.value,
-    () => local.defaultValue ?? '',
-    (next) => local.onValueChange?.(next),
+    () => props.value,
+    () => props.defaultValue ?? '',
+    (next) => props.onValueChange?.(next),
   )
 
   return (
-    <RadioContext.Provider
+    <RadioContext
       value={{
         name,
         value,
         change,
 
         /** Reads required state from the control or inherited field owner. */
-        required: () => local.required ?? field.required ?? false,
+        required: () => props.required ?? field.required ?? false,
 
         /** Reads the native form identity explicitly associated with the radio group. */
-        form: () => props.form,
-        size: () => local.size,
+        form: () => props.form || undefined,
+        size: () => props.size,
       }}
     >
       <fieldset
         {...field}
         {...rest}
-        ref={(node) => {
-          group = node
-          assignRef(local.ref, node)
-        }}
-        class={classes(styles.root, local.class)}
-        data-orientation={local.orientation ?? 'vertical'}
+        ref={[
+          (node) => {
+            group = node
+          },
+          props.ref,
+        ]}
+        class={[styles.root, props.class]}
+        data-orientation={props.orientation ?? 'vertical'}
       >
-        <legend class={styles.legend}>{local.label}</legend>
-        {local.children}
+        <legend class={styles.legend}>{props.label}</legend>
+        {props.children}
       </fieldset>
-    </RadioContext.Provider>
+    </RadioContext>
   )
 }
 
@@ -120,14 +124,11 @@ export interface RadioProps extends Omit<
  */
 export function Radio(props: RadioProps): JSX.Element {
   const group = useContext(RadioContext)
-  if (!group) {
-    throw new Error('Radio requires RadioGroup.')
-  }
 
-  const [local, rest] = splitProps(props, ['class', 'onChange', 'value', 'label'])
+  const rest = omit(props, 'class', 'onChange', 'value', 'label')
 
   return (
-    <ChoiceRow label={local.label} size={group.size()}>
+    <ChoiceRow label={props.label} size={group.size()}>
       <input
         {...rest}
         type="radio"
@@ -135,14 +136,14 @@ export function Radio(props: RadioProps): JSX.Element {
         name={group.name()}
         form={group.form()}
         required={group.required()}
-        value={local.value}
-        checked={group.value() === local.value}
-        class={classes(styles.option, local.class)}
+        value={props.value}
+        checked={group.value() === props.value}
+        class={[styles.option, props.class]}
         onChange={(event) => {
           if (event.currentTarget.checked) {
-            group.change(local.value)
+            group.change(props.value)
           }
-          callHandler(local.onChange, event)
+          callHandler(props.onChange, event)
         }}
       />
     </ChoiceRow>
