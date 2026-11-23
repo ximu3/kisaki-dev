@@ -1,6 +1,6 @@
 /** @fileoverview Coordinates validation and one in-flight submission for an individual edit. */
 
-import { createMemo, createSignal, type Accessor } from 'solid-js'
+import { createMemo, createSignal, flush, type Accessor } from 'solid-js'
 import type { FieldIssue } from '../../internal/form'
 
 /** Business validation, field navigation and commitment supplied by the draft owner. */
@@ -164,6 +164,8 @@ export function createForm(options: FormOptions): FormState {
       setAttempted(true)
       refresh()
 
+      // Native requestSubmit can follow an input event in the same JavaScript turn.
+      flush()
       const first = issues()[0]
       if (first) {
         locate(first.id)

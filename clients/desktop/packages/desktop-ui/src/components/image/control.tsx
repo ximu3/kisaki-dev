@@ -1,8 +1,8 @@
 /** @fileoverview Displays host-owned image URLs with accessible fallback content. */
 
-import { createEffect, createSignal, Show, splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { callHandler, classes } from '../../internal/dom'
+import { createEffect, createSignal, Show, omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { callHandler } from '../../internal/dom'
 import styles from './styles.module.css'
 
 /**
@@ -21,54 +21,54 @@ export interface ImageProps extends Omit<JSX.ImgHTMLAttributes<HTMLImageElement>
  * Changing the source candidates clears the failure state; URL ownership remains with the host.
  */
 export function Image(props: ImageProps): JSX.Element {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'class',
     'fallback',
     'src',
     'srcset',
-    'srcSet',
     'sizes',
     'alt',
     'onLoad',
     'onError',
-  ])
+  )
 
-  const candidates = () => local.srcset ?? local.srcSet
+  const candidates = () => props.srcset
 
   /** Image-load failure state used to select the current fallback presentation. */
   const [failed, setFailed] = createSignal(false)
-  createEffect(() => {
-    void local.src
-    void candidates()
-    void local.sizes
-    setFailed(false)
-  })
+  createEffect(
+    () => [props.src, candidates(), props.sizes],
+    () => {
+      setFailed(false)
+    },
+  )
 
   return (
     <Show
-      when={!failed() && (local.src || candidates())}
+      when={!failed() && (props.src || candidates())}
       fallback={
         <span
-          class={classes(styles.fallback, local.class)}
-          role={local.alt ? 'img' : undefined}
-          aria-hidden={local.alt ? undefined : true}
-          aria-label={local.alt}
+          class={[styles.fallback, props.class]}
+          role={props.alt ? 'img' : undefined}
+          aria-hidden={props.alt ? undefined : 'true'}
+          aria-label={props.alt}
         >
-          {local.fallback ?? local.alt}
+          {props.fallback ?? props.alt}
         </span>
       }
     >
       <img
         {...rest}
-        sizes={local.sizes}
+        sizes={props.sizes}
         srcset={candidates()}
-        src={local.src}
-        alt={local.alt}
-        class={classes(styles.root, local.class)}
-        onLoad={(event) => callHandler(local.onLoad, event)}
+        src={props.src}
+        alt={props.alt}
+        class={[styles.root, props.class]}
+        onLoad={(event) => callHandler(props.onLoad, event)}
         onError={(event) => {
           setFailed(true)
-          callHandler(local.onError, event)
+          callHandler(props.onError, event)
         }}
       />
     </Show>

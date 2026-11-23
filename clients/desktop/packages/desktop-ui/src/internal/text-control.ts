@@ -1,6 +1,6 @@
 /** @fileoverview Text value synchronization preserves native editing and IME composition. */
 
-import { createEffect, onCleanup, onMount, untrack } from 'solid-js'
+import { createEffect, flush, onSettled } from 'solid-js'
 import type { Accessor } from 'solid-js'
 import { createValue, onFormReset } from './state'
 import { nativeValidityChanged } from './form'
@@ -32,8 +32,7 @@ export function bindTextControl(
   )
   let composing = false
   /** Writes changed owned text to the native element only outside active composition. */
-  const sync = () => {
-    const next = value()
+  const sync = (next = value()) => {
     const node = element()
     if (!composing && node.value !== next) {
       node.value = next
@@ -41,10 +40,9 @@ export function bindTextControl(
     }
   }
 
-  onMount(() => {
+  onSettled(() => {
     const node = element()
     let active = true
-
     /** Marks composition active so external text synchronization waits. */
     const start = () => {
       composing = true
@@ -58,30 +56,34 @@ export function bindTextControl(
         }
       })
     }
-
     node.addEventListener('compositionstart', start)
     node.addEventListener('compositionend', end)
-    createEffect(() => {
-      node.defaultValue = props.defaultValue ?? ''
-      untrack(sync)
-    })
-    createEffect(sync)
-    onCleanup(() => {
+    return () => {
       active = false
       node.removeEventListener('compositionstart', start)
       node.removeEventListener('compositionend', end)
-    })
+    }
   })
 
-  const flushReset = onFormReset(element, () => {
-    change(props.defaultValue ?? '')
+  createEffect(
+    () => [props.defaultValue ?? '', value()],
+    ([initial, next]) => {
+      element().defaultValue = initial
+      sync(next)
+    },
+  )
+
+  /** Settles the value owner before a native callback reads or submits the control. */
+  function commit(next: string) {
+    change(next)
+    flush()
     sync()
-  })
+  }
 
+  const flushReset = onFormReset(element, () => commit(props.defaultValue ?? ''))
   return () => {
     const next = element().value
     flushReset()
-    change(next)
-    untrack(sync)
+    commit(next)
   }
 }

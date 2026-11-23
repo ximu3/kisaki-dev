@@ -1,7 +1,7 @@
 /** @fileoverview Builds public Solid components, assembles their styles and selects real UI test hosts. */
 
 import { defineLibrary } from '@kisaki3/config/vite/library'
-import solid from 'unplugin-solid/rolldown'
+import { transform } from '@solidjs/compiler'
 import { assembleStyles } from './tools/styles'
 
 export default defineLibrary({
@@ -40,6 +40,7 @@ export default defineLibrary({
     './toast': './src/components/toast/index.ts',
     './toolbar': './src/components/toolbar/index.ts',
     './tooltip': './src/components/tooltip/index.ts',
+    './virtualization': './src/components/virtualization/index.ts',
     './styles.css': './src/styles.css',
   },
   pack: {
@@ -48,10 +49,21 @@ export default defineLibrary({
       /** Assembles the published stylesheet after the component build has emitted its CSS. */
       'build:done': () => assembleStyles(),
     },
-    plugins: [solid()],
+    plugins: [
+      {
+        name: 'solid',
+        transform: {
+          filter: { id: /\.tsx$/ },
+          handler(code, filename) {
+            const result = transform(code, { filename, sourceMap: true })
+            return { code: result.code, map: result.map ?? null }
+          },
+        },
+      },
+    ],
     deps: {
-      onlyBundle: ['@unovis/solid', '@unovis/ts'],
-      dts: { alwaysBundle: ['@unovis/solid', '@unovis/ts'] },
+      onlyBundle: ['@unovis/ts'],
+      dts: { alwaysBundle: ['@unovis/ts'] },
     },
     css: { fileName: 'components.css', modules: { generateScopedName: 'kui_[hash]_[local]' } },
   },

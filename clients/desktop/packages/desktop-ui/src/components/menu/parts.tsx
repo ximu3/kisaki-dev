@@ -1,20 +1,18 @@
 /** @fileoverview Dropdown and context menus share item navigation and nested native popovers. */
 
 import {
-  batch,
   createContext,
   createEffect,
   createSignal,
   createUniqueId,
   Show,
-  on,
   onCleanup,
-  onMount,
-  splitProps,
+  omit,
   useContext,
 } from 'solid-js'
-import type { Accessor, JSX, ParentProps } from 'solid-js'
-import { assignRef, callHandler, classes, createElementRef } from '../../internal/dom'
+import type { Accessor, ParentProps } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { callHandler, createAnchor } from '../../internal/dom'
 import { createValue } from '../../internal/state'
 import { createFocusNavigation, focusableItems } from '../../internal/focus'
 import { createPopup } from '../../internal/popup/controller'
@@ -42,7 +40,7 @@ interface MenuState {
 
   anchor: Accessor<HTMLElement | undefined>
   /** Registers the trigger for its mounted lifetime. */
-  bindAnchor: (node: HTMLElement) => void
+  bindAnchor: () => (node: HTMLElement) => void
   content: HTMLElement | undefined
   children: Set<MenuState>
   focusOnOpen: boolean
@@ -55,7 +53,7 @@ interface MenuState {
 }
 
 /** Menu state shared by triggers, items and nested compound parts. */
-const MenuContext = createContext<MenuState>()
+const MenuContext = createContext<MenuState | null>(null)
 
 /**
  * Controlled or locally initialized state for a menu composition.
@@ -81,7 +79,7 @@ export function Menu(props: MenuProps): JSX.Element {
   )
   /** Optional pointer anchor used when the menu opens at a context position. */
   const [point, setPoint] = createSignal<{ x: number; y: number }>()
-  const [anchor, bindAnchor] = createElementRef<HTMLElement>()
+  const [anchor, bindAnchor] = createAnchor<HTMLElement>()
   const hover = createSubmenuHover({
     anchor,
 
@@ -112,26 +110,24 @@ export function Menu(props: MenuProps): JSX.Element {
     point,
     setPoint,
     last: false,
-    parent,
+    parent: parent ?? undefined,
   }
   parent?.children.add(state)
   onCleanup(() => parent?.children.delete(state))
-  createEffect(
-    on(open, (shown) => {
-      if (shown) {
-        parent?.children.forEach((sibling) => {
-          if (sibling !== state) {
-            sibling.change(false)
-          }
-        })
-      } else {
-        hover.stop()
-        state.children.forEach((child) => child.change(false))
-      }
-    }),
-  )
+  createEffect(open, (shown) => {
+    if (shown) {
+      parent?.children.forEach((sibling) => {
+        if (sibling !== state) {
+          sibling.change(false)
+        }
+      })
+    } else {
+      hover.stop()
+      state.children.forEach((child) => child.change(false))
+    }
+  })
 
-  return <MenuContext.Provider value={state}>{props.children}</MenuContext.Provider>
+  return <MenuContext value={state}>{props.children}</MenuContext>
 }
 
 /**
@@ -140,21 +136,19 @@ export function Menu(props: MenuProps): JSX.Element {
  */
 export function MenuTrigger(props: ButtonProps): JSX.Element {
   const state = useMenu()
-  const [local, rest] = splitProps(props, ['ref', 'onClick', 'onKeyDown'])
+  const rest = omit(props, 'ref', 'onClick', 'onKeyDown')
 
+  const anchorRef = state.bindAnchor()
   return (
     <Button
       {...rest}
-      ref={(node) => {
-        state.bindAnchor(node)
-        assignRef(local.ref, node)
-      }}
+      ref={[anchorRef, props.ref]}
       popovertarget={state.id}
       aria-haspopup="menu"
-      aria-expanded={state.open()}
+      aria-expanded={state.open() ? 'true' : 'false'}
       aria-controls={state.id}
       onClick={(event) => {
-        callHandler(local.onClick, event)
+        callHandler(props.onClick, event)
         if (!event.defaultPrevented) {
           event.preventDefault()
           state.setPoint(undefined)
@@ -163,7 +157,7 @@ export function MenuTrigger(props: ButtonProps): JSX.Element {
         }
       }}
       onKeyDown={(event) => {
-        callHandler(local.onKeyDown, event)
+        callHandler(props.onKeyDown, event)
         if (!event.defaultPrevented && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
           event.preventDefault()
           state.last = event.key === 'ArrowUp'
@@ -179,21 +173,19 @@ export function MenuTrigger(props: ButtonProps): JSX.Element {
  */
 export function ContextMenuTrigger(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
   const state = useMenu()
-  const [local, rest] = splitProps(props, ['ref', 'onContextMenu', 'onKeyDown'])
+  const rest = omit(props, 'ref', 'onContextMenu', 'onKeyDown')
 
+  const anchorRef = state.bindAnchor()
   return (
     <div
-      tabIndex={0}
+      tabindex={0}
       {...rest}
-      ref={(node) => {
-        state.bindAnchor(node)
-        assignRef(local.ref, node)
-      }}
+      ref={[anchorRef, props.ref]}
       aria-haspopup="menu"
-      aria-expanded={state.open()}
+      aria-expanded={state.open() ? 'true' : 'false'}
       aria-controls={state.id}
       onContextMenu={(event) => {
-        callHandler(local.onContextMenu, event)
+        callHandler(props.onContextMenu, event)
         if (!event.defaultPrevented) {
           event.preventDefault()
           state.setPoint({ x: event.clientX, y: event.clientY })
@@ -202,7 +194,7 @@ export function ContextMenuTrigger(props: JSX.HTMLAttributes<HTMLDivElement>): J
         }
       }}
       onKeyDown={(event) => {
-        callHandler(local.onKeyDown, event)
+        callHandler(props.onKeyDown, event)
         if (
           !event.defaultPrevented &&
           (event.key === 'ContextMenu' || (event.shiftKey && event.key === 'F10'))
@@ -226,7 +218,8 @@ export function MenuContent(
   props: JSX.HTMLAttributes<HTMLDivElement> & { placement?: PopupPlacement },
 ): JSX.Element {
   const state = useMenu()
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'class',
     'children',
     'ref',
@@ -234,7 +227,7 @@ export function MenuContent(
     'onKeyDown',
     'onPointerEnter',
     'onPointerLeave',
-  ])
+  )
 
   let content!: HTMLDivElement
   let viewport!: HTMLDivElement
@@ -258,7 +251,7 @@ export function MenuContent(
       if (state.parent) {
         return getComputedStyle(anchor).direction === 'rtl' ? 'left-start' : 'right-start'
       }
-      return local.placement ?? 'bottom-start'
+      return props.placement ?? 'bottom-start'
     },
   })
 
@@ -268,9 +261,10 @@ export function MenuContent(
     ':scope > [role^="menuitem"], :scope > [role="group"] > [role^="menuitem"]',
     () => 'vertical',
   )
-  onMount(() =>
-    createEffect(() => {
-      if (state.open() && state.focusOnOpen) {
+  createEffect(
+    () => state.open(),
+    (opened) => {
+      if (opened && state.focusOnOpen) {
         queueMicrotask(() => {
           if (state.open()) {
             const options = items()
@@ -278,34 +272,36 @@ export function MenuContent(
           }
         })
       }
-    }),
+    },
   )
 
   return (
     <div
       {...rest}
-      ref={(node) => {
-        content = node
-        state.content = node
-        assignRef(local.ref, node)
-      }}
+      ref={[
+        (node) => {
+          content = node
+          state.content = node
+        },
+        props.ref,
+      ]}
       id={state.id}
       popover={state.controlled() ? 'manual' : 'auto'}
       role="menu"
-      tabIndex={-1}
-      class={classes(frame.anchor, styles.root, local.class)}
+      tabindex={-1}
+      class={[frame.anchor, styles.root, props.class]}
       onPointerEnter={(event) => {
         state.hover.stop()
-        callHandler(local.onPointerEnter, event)
+        callHandler(props.onPointerEnter, event)
       }}
       onPointerLeave={(event) => {
         if (state.parent && !content.contains(event.relatedTarget as Node | null)) {
           state.hover.leaveContent()
         }
-        callHandler(local.onPointerLeave, event)
+        callHandler(props.onPointerLeave, event)
       }}
       onKeyDown={(event) => {
-        callHandler(local.onKeyDown, event)
+        callHandler(props.onKeyDown, event)
         if (event.defaultPrevented) {
           return
         }
@@ -320,9 +316,11 @@ export function MenuContent(
           event.preventDefault()
           event.stopPropagation()
           state.change(false)
-          if (!state.open()) {
-            state.anchor()?.focus()
-          }
+          queueMicrotask(() => {
+            if (!state.open()) {
+              state.anchor()?.focus()
+            }
+          })
           return
         }
 
@@ -334,9 +332,9 @@ export function MenuContent(
         ref={(node) => {
           viewport = node
         }}
-        class={classes(frame.viewport, styles.items)}
+        class={[frame.viewport, styles.items]}
       >
-        {local.children}
+        {props.children}
       </div>
     </div>
   )
@@ -368,7 +366,8 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
   const state = useMenu()
   /** Displayed check state retained while the menu completes its exit transition. */
   const checked = displayedWhileOpen(state.open, () => props['aria-checked'])
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'onSelect',
     'closeOnSelect',
     'destructive',
@@ -377,7 +376,7 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
     'onClick',
     'children',
     'onPointerMove',
-  ])
+  )
 
   return (
     <button
@@ -385,11 +384,11 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
       {...rest}
       role={props.role ?? 'menuitem'}
       data-option-highlight="hover focus"
-      tabIndex={-1}
-      data-destructive={local.destructive || undefined}
-      class={classes(row.row, styles.item, local.class)}
+      tabindex={-1}
+      data-destructive={props.destructive || undefined}
+      class={[row.row, styles.item, props.class]}
       onPointerMove={(event) => {
-        callHandler(local.onPointerMove, event)
+        callHandler(props.onPointerMove, event)
         if (
           !event.defaultPrevented &&
           !event.currentTarget.disabled &&
@@ -400,32 +399,32 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
         }
       }}
       onClick={(event) => {
-        callHandler(local.onClick, event)
+        callHandler(props.onClick, event)
         if (event.defaultPrevented) {
           return
         }
 
         let trigger: HTMLElement | undefined
-        batch(() => {
-          local.onSelect?.()
-          if (local.closeOnSelect !== false) {
-            let current: MenuState | undefined = state
-            while (current) {
-              current.change(false)
-              trigger = current.anchor()
-              current = current.parent
-            }
+        props.onSelect?.()
+        if (props.closeOnSelect !== false) {
+          let current: MenuState | undefined = state
+          while (current) {
+            current.change(false)
+            trigger = current.anchor()
+            current = current.parent
+          }
+        }
+        queueMicrotask(() => {
+          if (!state.open()) {
+            trigger?.focus()
           }
         })
-        if (!state.open()) {
-          trigger?.focus()
-        }
       }}
     >
-      <MenuItemLabel icon={local.icon}>{local.children}</MenuItemLabel>
+      <MenuItemLabel icon={props.icon}>{props.children}</MenuItemLabel>
       <Show when={checked() !== undefined}>
         <span aria-hidden="true" class={row.mark}>
-          <Show when={checked() === true}>
+          <Show when={checked() === 'true'}>
             <Icon icon={Check} />
           </Show>
         </span>
@@ -446,16 +445,16 @@ export interface MenuCheckboxItemProps extends MenuItemProps {
  * behavior.
  */
 export function MenuCheckboxItem(props: MenuCheckboxItemProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['checked', 'onCheckedChange', 'onSelect'])
+  const rest = omit(props, 'checked', 'onCheckedChange', 'onSelect')
 
   return (
     <MenuItem
       {...rest}
       role="menuitemcheckbox"
-      aria-checked={local.checked}
+      aria-checked={props.checked ? 'true' : 'false'}
       onSelect={() => {
-        local.onCheckedChange(!local.checked)
-        local.onSelect?.()
+        props.onCheckedChange(!props.checked)
+        props.onSelect?.()
       }}
     />
   )
@@ -475,16 +474,16 @@ export interface MenuRadioItemProps extends MenuItemProps {
  * Related items belong in a named MenuGroup.
  */
 export function MenuRadioItem(props: MenuRadioItemProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['value', 'selectedValue', 'onValueChange', 'onSelect'])
+  const rest = omit(props, 'value', 'selectedValue', 'onValueChange', 'onSelect')
 
   return (
     <MenuItem
       {...rest}
       role="menuitemradio"
-      aria-checked={local.value === local.selectedValue}
+      aria-checked={props.value === props.selectedValue ? 'true' : 'false'}
       onSelect={() => {
-        local.onValueChange(local.value)
-        local.onSelect?.()
+        props.onValueChange(props.value)
+        props.onSelect?.()
       }}
     />
   )
@@ -497,7 +496,8 @@ export function MenuRadioItem(props: MenuRadioItemProps): JSX.Element {
  */
 export function MenuSubTrigger(props: ButtonProps & Pick<MenuItemProps, 'icon'>): JSX.Element {
   const state = useMenu()
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'class',
     'ref',
     'onClick',
@@ -506,26 +506,24 @@ export function MenuSubTrigger(props: ButtonProps & Pick<MenuItemProps, 'icon'>)
     'icon',
     'onPointerEnter',
     'onPointerLeave',
-  ])
+  )
 
+  const anchorRef = state.bindAnchor()
   return (
     <button
       type="button"
       {...rest}
       role="menuitem"
       data-option-highlight="hover focus"
-      tabIndex={-1}
-      ref={(node) => {
-        state.bindAnchor(node)
-        assignRef(local.ref, node)
-      }}
-      class={classes(row.row, styles.item, local.class)}
+      tabindex={-1}
+      ref={[anchorRef, props.ref]}
+      class={[row.row, styles.item, props.class]}
       popovertarget={state.id}
       aria-haspopup="menu"
-      aria-expanded={state.open()}
+      aria-expanded={state.open() ? 'true' : 'false'}
       aria-controls={state.id}
       onPointerEnter={(event) => {
-        callHandler(local.onPointerEnter, event)
+        callHandler(props.onPointerEnter, event)
         if (
           !event.defaultPrevented &&
           !event.currentTarget.disabled &&
@@ -539,10 +537,10 @@ export function MenuSubTrigger(props: ButtonProps & Pick<MenuItemProps, 'icon'>)
       }}
       onPointerLeave={(event) => {
         state.hover.leave(event)
-        callHandler(local.onPointerLeave, event)
+        callHandler(props.onPointerLeave, event)
       }}
       onClick={(event) => {
-        callHandler(local.onClick, event)
+        callHandler(props.onClick, event)
         if (!event.defaultPrevented) {
           event.preventDefault()
           state.focusOnOpen = true
@@ -550,7 +548,7 @@ export function MenuSubTrigger(props: ButtonProps & Pick<MenuItemProps, 'icon'>)
         }
       }}
       onKeyDown={(event) => {
-        callHandler(local.onKeyDown, event)
+        callHandler(props.onKeyDown, event)
         const forward =
           getComputedStyle(event.currentTarget).direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight'
         if (!event.defaultPrevented && event.key === forward) {
@@ -561,7 +559,7 @@ export function MenuSubTrigger(props: ButtonProps & Pick<MenuItemProps, 'icon'>)
         }
       }}
     >
-      <MenuItemLabel icon={local.icon}>{local.children}</MenuItemLabel>
+      <MenuItemLabel icon={props.icon}>{props.children}</MenuItemLabel>
       <span aria-hidden="true" class={styles.arrow}>
         <Icon icon={ChevronRight} />
       </span>
@@ -590,9 +588,9 @@ export function MenuGroup(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Elemen
 
 /** Separates action groups semantically without adding a focus stop. */
 export function MenuSeparator(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
-  const [local, rest] = splitProps(props, ['class'])
+  const rest = omit(props, 'class')
 
-  return <Separator {...rest} decorative={false} class={classes(styles.separator, local.class)} />
+  return <Separator {...rest} decorative={false} class={[styles.separator, props.class]} />
 }
 
 /** Returns the nearest menu state and rejects parts rendered outside a Menu owner. */

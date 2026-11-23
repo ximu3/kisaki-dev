@@ -1,8 +1,8 @@
 /** @fileoverview Native disclosure with controlled state and optional exclusive details grouping. */
 
-import { splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { callHandler, classes } from '../../internal/dom'
+import { omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { callHandler } from '../../internal/dom'
 import { createValue } from '../../internal/state'
 import { Icon, ChevronRight } from '../../internal/icon/glyph'
 import styles from './styles.module.css'
@@ -31,7 +31,8 @@ export interface CollapsibleProps extends Omit<
 
 /** Renders a native details disclosure whose content remains mounted while collapsed. */
 export function Collapsible(props: CollapsibleProps): JSX.Element {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'summary',
     'summaryClass',
     'open',
@@ -41,13 +42,13 @@ export function Collapsible(props: CollapsibleProps): JSX.Element {
     'class',
     'onClick',
     'onToggle',
-  ])
+  )
 
   /** Live disclosure state and change requests delegated to the controlled or local owner. */
   const [open, change] = createValue(
-    () => local.open,
-    () => local.defaultOpen ?? false,
-    (next) => local.onOpenChange?.(next),
+    () => props.open,
+    () => props.defaultOpen ?? false,
+    (next) => props.onOpenChange?.(next),
   )
   let summary!: HTMLElement
 
@@ -55,10 +56,10 @@ export function Collapsible(props: CollapsibleProps): JSX.Element {
     <details
       {...rest}
       open={open()}
-      class={classes(styles.root, local.class)}
+      class={[styles.root, props.class]}
       onClick={(event) => {
-        callHandler(local.onClick, event)
-        if (local.open === undefined || event.defaultPrevented) {
+        callHandler(props.onClick, event)
+        if (props.open === undefined || event.defaultPrevented) {
           return
         }
 
@@ -76,21 +77,23 @@ export function Collapsible(props: CollapsibleProps): JSX.Element {
         if (details.open !== open()) {
           // Native grouping can also close this member when another disclosure opens.
           change(details.open)
-          details.open = open()
+          queueMicrotask(() => {
+            details.open = open()
+          })
         }
-        callHandler(local.onToggle, event)
+        callHandler(props.onToggle, event)
       }}
     >
       <summary
         ref={(node) => {
           summary = node
         }}
-        class={classes(styles.summary, local.summaryClass)}
+        class={[styles.summary, props.summaryClass]}
       >
         <Icon icon={ChevronRight} class={styles.chevron} />
-        {local.summary}
+        {props.summary}
       </summary>
-      <div class={styles.content}>{local.children}</div>
+      <div class={styles.content}>{props.children}</div>
     </details>
   )
 }

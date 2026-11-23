@@ -3,7 +3,7 @@
 import { test as base, expect } from 'vite-plus/test'
 import { createServer, defaultClientConditions } from 'vite-plus'
 import { chromium } from '@playwright/test'
-import solid from 'vite-plugin-solid'
+import solid from '@solidjs/vite-plugin'
 import { resolve } from 'node:path'
 
 /** Launches the shared source workshop and browser, isolating each test's page state. */

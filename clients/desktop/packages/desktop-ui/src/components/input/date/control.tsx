@@ -1,17 +1,8 @@
 /** @fileoverview Native date segments and a themed calendar share one form control and ISO value. */
 
-import {
-  createEffect,
-  createMemo,
-  createSignal,
-  createUniqueId,
-  onMount,
-  Show,
-  splitProps,
-  untrack,
-} from 'solid-js'
-import type { JSX } from 'solid-js'
-import { assignRef, callHandler, classes, createElementRef } from '../../../internal/dom'
+import { createEffect, createMemo, createSignal, createUniqueId, flush, Show, omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { callHandler } from '../../../internal/dom'
 import { closeWhenUnavailable, fieldAttributes } from '../../../internal/field'
 import { Icon, Calendar } from '../../../internal/icon/glyph'
 import { createPresentation } from '../../../internal/popup/presentation'
@@ -44,45 +35,41 @@ export interface DateInputProps
  * chosen.
  */
 export function DateInput(props: DateInputProps): JSX.Element {
-  const [local, calendar, rest] = splitProps(
+  const rest = omit(
     props,
-    [
-      'value',
-      'defaultValue',
-      'onValueChange',
-      'invalidDateMessage',
-      'step',
-      'size',
-      'htmlSize',
-      'ref',
-      'class',
-      'style',
-      'onInput',
-      'onKeyDown',
-      'onPaste',
-    ],
-    [
-      'min',
-      'max',
-      'locale',
-      'weekStartsOn',
-      'calendarLabel',
-      'monthLabel',
-      'yearLabel',
-      'previousMonthLabel',
-      'nextMonthLabel',
-    ],
+    'value',
+    'defaultValue',
+    'onValueChange',
+    'invalidDateMessage',
+    'step',
+    'size',
+    'htmlSize',
+    'ref',
+    'class',
+    'style',
+    'onInput',
+    'onKeyDown',
+    'onPaste',
+    'min',
+    'max',
+    'locale',
+    'weekStartsOn',
+    'calendarLabel',
+    'monthLabel',
+    'yearLabel',
+    'previousMonthLabel',
+    'nextMonthLabel',
   )
   const field = fieldAttributes(props)
   /** Live native date text and change requests delegated to its value owner. */
   const [value, change] = createValue(
-    () => local.value,
-    () => local.defaultValue ?? '',
-    (next) => local.onValueChange?.(next),
+    () => props.value,
+    () => props.defaultValue ?? '',
+    (next) => props.onValueChange?.(next),
   )
   /** Locally owned visibility of the calendar picker. */
   const [open, setOpen] = createSignal(false)
-  const [trigger, bindTrigger] = createElementRef<HTMLButtonElement>()
+  const [trigger, bindTrigger] = createSignal<HTMLButtonElement>()
   const id = createUniqueId()
   let input!: HTMLInputElement
   let picker: HTMLDivElement | undefined
@@ -90,11 +77,11 @@ export function DateInput(props: DateInputProps): JSX.Element {
   const present = createPresentation(open, () => picker)
 
   /** Checks whether disabled or readonly state prevents calendar interaction. */
-  const blocked = () => (props.disabled ?? field.disabled) || (props.readOnly ?? props.readonly)
+  const blocked = () => (props.disabled ?? field.disabled) || props.readonly
   /** Valid current minimum date text, absent when the supplied bound cannot be parsed. */
-  const min = createMemo(() => (parseDate(calendar.min ?? '') ? calendar.min : undefined))
+  const min = createMemo(() => (parseDate(props.min ?? '') ? props.min : undefined))
   /** Valid current maximum date text with the native calendar's supported upper fallback. */
-  const max = createMemo(() => (parseDate(calendar.max ?? '') ? calendar.max! : '9999-12-31'))
+  const max = createMemo(() => (parseDate(props.max ?? '') ? props.max! : '9999-12-31'))
 
   // Ask the same native date constraint implementation about a day without disturbing the edited segments.
   /** Detached native date input reflecting the current bounds and step for validity checks. */
@@ -103,9 +90,9 @@ export function DateInput(props: DateInputProps): JSX.Element {
     candidate.type = 'date'
     candidate.min = min() ?? ''
     candidate.max = max()
-    candidate.defaultValue = local.defaultValue ?? ''
-    if (local.step !== undefined) {
-      candidate.step = String(local.step)
+    candidate.defaultValue = props.defaultValue ?? ''
+    if (props.step !== undefined) {
+      candidate.step = String(props.step)
     }
     return candidate
   })
@@ -119,20 +106,28 @@ export function DateInput(props: DateInputProps): JSX.Element {
    * Updates localized custom validity for incomplete segments or a constraint-violating complete
    * date.
    */
-  const validate = () =>
+  const validate = (candidate = constraints(), message = props.invalidDateMessage) => {
+    candidate.value = input.value
     input.setCustomValidity(
-      input.validity.badInput || (input.value && !allowed(input.value))
-        ? local.invalidDateMessage
-        : '',
+      input.validity.badInput || (input.value && !candidate.validity.valid) ? message : '',
     )
-  /** Synchronizes the editor to the owned value and refreshes custom validity. */
-  const sync = () => {
-    if (input.value !== value()) {
-      input.value = value()
+  }
+  /** Restores the owned value after editing and updates native form validity. */
+  const sync = (next = value(), candidate = constraints(), message = props.invalidDateMessage) => {
+    if (input.value !== next) {
+      input.value = next
     }
-    validate()
+    validate(candidate, message)
     nativeValidityChanged(input.form)
   }
+
+  /** Settles the value owner before a native callback reads or submits the date. */
+  function commit(next: string) {
+    change(next)
+    flush()
+    sync()
+  }
+
   /**
    * Writes a chosen date through the editor and dispatches its ordinary input and change events.
    */
@@ -149,48 +144,48 @@ export function DateInput(props: DateInputProps): JSX.Element {
   const flushReset = onFormReset(
     () => input,
     () => {
-      change(local.defaultValue ?? '')
-      sync()
+      commit(props.defaultValue ?? '')
       setOpen(false)
     },
   )
-  onMount(() => {
-    createEffect(() => {
-      input.defaultValue = local.defaultValue ?? ''
-      untrack(sync)
-    })
-    createEffect(sync)
-  })
+  createEffect(
+    () => [value(), props.defaultValue ?? '', constraints(), props.invalidDateMessage],
+    ([next, initial, candidate, message]) => {
+      input.defaultValue = initial
+      sync(next, candidate, message)
+    },
+  )
 
   return (
-    <InputFrame class={local.class} style={local.style} size={local.size} open={open()}>
+    <InputFrame class={props.class} style={props.style} size={props.size} open={open()}>
       <input
         {...field}
         {...rest}
         type="date"
-        size={local.htmlSize}
-        lang={calendar.locale ?? props.lang}
+        size={props.htmlSize}
+        lang={props.locale ?? props.lang}
         min={min()}
         max={max()}
-        step={local.step}
-        ref={(node) => {
-          input = node
-          assignRef(local.ref, node)
-        }}
-        class={classes(frame.editor, styles.editor)}
+        step={props.step}
+        ref={[
+          (node) => {
+            input = node
+          },
+          props.ref,
+        ]}
+        class={[frame.editor, styles.editor]}
         onInput={(event) => {
           if (!input.validity.badInput && (!input.value || parseDate(input.value))) {
             const next = input.value
             flushReset()
-            change(next)
-            sync()
+            commit(next)
           } else {
             validate()
           }
-          callHandler(local.onInput, event)
+          callHandler(props.onInput, event)
         }}
         onPaste={(event) => {
-          callHandler(local.onPaste, event)
+          callHandler(props.onPaste, event)
           if (event.defaultPrevented || blocked() || !event.clipboardData) {
             return
           }
@@ -201,7 +196,7 @@ export function DateInput(props: DateInputProps): JSX.Element {
           }
         }}
         onKeyDown={(event) => {
-          callHandler(local.onKeyDown, event)
+          callHandler(props.onKeyDown, event)
           if (
             !event.defaultPrevented &&
             !blocked() &&
@@ -214,12 +209,12 @@ export function DateInput(props: DateInputProps): JSX.Element {
       />
       <button
         type="button"
-        class={classes(frame.end, styles.trigger)}
+        class={[frame.end, styles.trigger]}
         ref={bindTrigger}
-        aria-label={calendar.calendarLabel}
+        aria-label={props.calendarLabel}
         popovertarget={id}
         aria-haspopup="dialog"
-        aria-expanded={open()}
+        aria-expanded={open() ? 'true' : 'false'}
         aria-controls={open() ? id : undefined}
         disabled={blocked()}
         onClick={(event) => {
@@ -231,7 +226,13 @@ export function DateInput(props: DateInputProps): JSX.Element {
       </button>
       <Show when={present()}>
         <DatePicker
-          {...calendar}
+          locale={props.locale}
+          weekStartsOn={props.weekStartsOn}
+          calendarLabel={props.calendarLabel}
+          monthLabel={props.monthLabel}
+          yearLabel={props.yearLabel}
+          previousMonthLabel={props.previousMonthLabel}
+          nextMonthLabel={props.nextMonthLabel}
           open={open()}
           panelRef={(node) => {
             picker = node

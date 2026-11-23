@@ -4,13 +4,15 @@
 
 ## 实施进展
 
-截至 2026-11-19，W09 负责本地资料、持有与记录，W13 负责来源获取与采用，W14 负责作品发现与扫描。W15–W17 分别负责启动、播放与阅读，包括从作品详情创建桌面快捷方式并双击使用。W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 1.9、原生能力上的自研通用 UI、组件子路径与 CSS Modules、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
+截至 2026-11-23，W09 负责本地资料、持有与记录，W13 负责来源获取与采用，W14 负责作品发现与扫描。W15–W17 分别负责启动、播放与阅读，包括从作品详情创建桌面快捷方式并双击使用。W18 联合完成 SDK、宿主与应用搜索；30 项功能扩展先于引导，三个官方译本与引导在 W22 共同完成。W23 负责项目文档，W24 负责发布前整体验收，W25 负责本轮首次公开发行与发布核验。公共包合同采用 Solid 2、原生能力上的自研通用 UI、组件子路径与 CSS Modules、SDK 内部纯合同边界及统一 desktop-rpc 接入。正式范围见[工作包](work-packages.md)。
 
 W00 工程实现与适用验收已完成并合入主线，当前职责见[工程能力](#w00)。仓库维护桌面工程工具、原生文件能力、资源、两个私有工程包，以及 desktop-appearance、extension-distribution、desktop-contracts、desktop-localization、desktop-rpc 和 desktop-ui，workspace 共 10 个项目（含根工程）。产品能力按下表工作包实施。
 
 当前任务入口为 AGENTS.md，设计、规范和实施资料集中于 refactor。[当前工程与开发](development.md)维护源码职责、环境准备与可运行命令。正式项目文档待 W23 交付；接口声明、代码注释、发行说明和许可材料随所属实现与版本维护。
 
 工作区采用 Vite+，主线编译器锁定为 `7.1.0-beta`。升级到 7.1.x 正式版时重跑全部项目引用，用仓库外消费者检查发布声明，同时确认检查失败会返回非零退出码、类型感知 lint 能检出未等待的 Promise。六个公共包共用 `@kisaki3/config`，CI 按[包和宿主](../design/engineering/workspace.md#ci-selection)独立运行本地任务，制品验收直接读取指定归档。[工具链迁移 PR #39](https://github.com/ximu3/kisaki-dev/pull/39)
+
+桌面四类窗口和 desktop-ui 已迁移到 Solid 2.0.3。公共 UI 通过 `/virtualization` 提供自研行几何，图表直接使用 `@unovis/ts`。本轮复验覆盖 Windows x64、Chromium、沙箱 Electron、开发热更新与仓外安装。[W05／W07 复验](../verification/evidence/w05-w07/README.md#solid-2)
 
 [W00 验收](../verification/evidence/w00/README.md)已取得本机 Windows x64 和 CI 六目标结果，覆盖工程载体的构建、原生与 Electron 运行、开发回归、打包及制品运行。
 

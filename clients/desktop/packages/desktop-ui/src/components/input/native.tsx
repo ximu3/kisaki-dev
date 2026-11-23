@@ -1,8 +1,8 @@
 /** @fileoverview Native single-line editing with field associations and reset synchronization. */
 
-import { splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { assignRef, callHandler } from '../../internal/dom'
+import { omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { callHandler } from '../../internal/dom'
 import { fieldAttributes } from '../../internal/field'
 import { bindTextControl } from '../../internal/text-control'
 import type { TextValueProps } from '../../internal/text-control'
@@ -12,7 +12,7 @@ import type { TextValueProps } from '../../internal/text-control'
  */
 export interface NativeInputProps
   extends
-    Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'value' | 'type' | 'size'>,
+    Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'defaultValue' | 'value' | 'type' | 'size'>,
     TextValueProps {
   type?: 'text' | 'password' | 'search' | 'email' | 'url' | 'tel' | 'number'
   /** Native size attribute in characters for input types that support it. */
@@ -26,32 +26,27 @@ export interface NativeInputProps
  * Native events, selection and undo remain available.
  */
 export function NativeInput(props: NativeInputProps): JSX.Element {
-  const [local, rest] = splitProps(props, [
-    'value',
-    'defaultValue',
-    'onValueChange',
-    'htmlSize',
-    'ref',
-    'onInput',
-  ])
+  const rest = omit(props, 'value', 'defaultValue', 'onValueChange', 'htmlSize', 'ref', 'onInput')
 
   let input!: HTMLInputElement
   /** Text-value dispatcher shared by the input owner and native form integration. */
-  const update = bindTextControl(local, () => input)
+  const update = bindTextControl(props, () => input)
 
   return (
     <input
       type="text"
       {...fieldAttributes(props)}
       {...rest}
-      size={local.htmlSize}
-      ref={(node) => {
-        input = node
-        assignRef(local.ref, node)
-      }}
+      size={props.htmlSize}
+      ref={[
+        (node) => {
+          input = node
+        },
+        props.ref,
+      ]}
       onInput={(event) => {
         update()
-        callHandler(local.onInput, event)
+        callHandler(props.onInput, event)
       }}
     />
   )

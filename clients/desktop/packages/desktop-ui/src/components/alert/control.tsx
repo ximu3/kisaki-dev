@@ -1,8 +1,7 @@
 /** @fileoverview Compact inline feedback with a distinct status icon and caller-owned actions. */
 
-import { splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { classes } from '../../internal/dom'
+import { omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { StatusIcon } from '../../internal/icon/glyph'
 import styles from './styles.module.css'
 
@@ -17,12 +16,12 @@ export interface AlertProps extends JSX.HTMLAttributes<HTMLDivElement> {
 
 /** Renders inline feedback on a neutral surface with status conveyed by its icon and content. */
 export function Alert(props: AlertProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['class', 'tone', 'children'])
+  const rest = omit(props, 'class', 'tone', 'children')
 
   return (
-    <div {...rest} class={classes(styles.root, local.class)} data-tone={local.tone ?? 'info'}>
-      <StatusIcon type={local.tone ?? 'info'} class={styles.icon} />
-      <div class={styles.content}>{local.children}</div>
+    <div {...rest} class={[styles.root, props.class]} data-tone={props.tone ?? 'info'}>
+      <StatusIcon type={props.tone ?? 'info'} class={styles.icon} />
+      <div class={styles.content}>{props.children}</div>
     </div>
   )
 }

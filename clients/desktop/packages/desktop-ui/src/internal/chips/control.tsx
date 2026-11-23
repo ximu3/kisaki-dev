@@ -1,7 +1,7 @@
 /** @fileoverview Removable selected values with a single horizontal scrolling viewport. */
 
-import { createSignal, For, onCleanup, onMount } from 'solid-js'
-import type { JSX } from 'solid-js'
+import { createSignal, For, onSettled } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { Icon, ChevronLeft, ChevronRight, X } from '../icon/glyph'
 import styles from './styles.module.css'
 
@@ -122,16 +122,16 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
     viewport.scrollLeft += delta * unit
   }
 
-  onMount(() => {
+  onSettled(() => {
     const observer = new ResizeObserver(update)
     observer.observe(viewport)
     observer.observe(track)
     const field = props.field()
     field.addEventListener('wheel', wheel, { passive: false })
-    onCleanup(() => {
+    return () => {
       observer.disconnect()
       field.removeEventListener('wheel', wheel)
-    })
+    }
   })
 
   return (
@@ -189,17 +189,19 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
                     event.preventDefault()
                     const position = index()
                     props.onRemove(value)
-                    if (props.panelId) {
-                      props.focusTrigger()
-                      return
-                    }
-                    const buttons = track.querySelectorAll('button')
-                    const next = buttons[Math.min(position, buttons.length - 1)]
-                    if (next) {
-                      next.focus()
-                    } else {
-                      props.focusTrigger()
-                    }
+                    queueMicrotask(() => {
+                      if (props.panelId) {
+                        props.focusTrigger()
+                        return
+                      }
+                      const buttons = track.querySelectorAll('button')
+                      const next = buttons[Math.min(position, buttons.length - 1)]
+                      if (next) {
+                        next.focus()
+                      } else {
+                        props.focusTrigger()
+                      }
+                    })
                   }}
                 >
                   <Icon icon={X} />

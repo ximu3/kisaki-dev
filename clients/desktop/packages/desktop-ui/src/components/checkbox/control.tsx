@@ -1,9 +1,9 @@
 /** @fileoverview Native checkbox submission with explicit indeterminate presentation. */
 
-import { createEffect, onMount, splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
+import { createEffect, omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import type { ControlSize } from '../../internal/control/size'
-import { assignRef, callHandler, classes } from '../../internal/dom'
+import { callHandler } from '../../internal/dom'
 import { fieldAttributes } from '../../internal/field'
 import { bindCheckedControl } from '../../internal/checked-control'
 import type { CheckedValueProps } from '../../internal/checked-control'
@@ -31,7 +31,8 @@ export interface CheckboxProps
  * Native required, fieldset and form-submission behavior remains available.
  */
 export function Checkbox(props: CheckboxProps): JSX.Element {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'checked',
     'defaultChecked',
     'onCheckedChange',
@@ -41,34 +42,37 @@ export function Checkbox(props: CheckboxProps): JSX.Element {
     'class',
     'ref',
     'onChange',
-  ])
+  )
 
   let input!: HTMLInputElement
   /** Checked-state dispatcher shared by the checkbox owner and native form integration. */
-  const update = bindCheckedControl(local, () => input)
+  const update = bindCheckedControl(props, () => input)
 
-  onMount(() =>
-    createEffect(() => {
-      input.indeterminate = !!local.indeterminate
-    }),
+  createEffect(
+    () => !!props.indeterminate,
+    (indeterminate) => {
+      input.indeterminate = indeterminate
+    },
   )
 
   return (
-    <ChoiceRow label={local.label} size={local.size}>
-      <span class={styles.container} data-size={local.size ?? 'default'}>
+    <ChoiceRow label={props.label} size={props.size}>
+      <span class={styles.container} data-size={props.size ?? 'default'}>
         <input
-          {...fieldAttributes(props, () => local.label)}
+          {...fieldAttributes(props, () => props.label)}
           {...rest}
           type="checkbox"
-          ref={(node) => {
-            input = node
-            assignRef(local.ref, node)
-          }}
-          class={classes(styles.root, local.class)}
+          ref={[
+            (node) => {
+              input = node
+            },
+            props.ref,
+          ]}
+          class={[styles.root, props.class]}
           onChange={(event) => {
             update()
-            input.indeterminate = !!local.indeterminate
-            callHandler(local.onChange, event)
+            input.indeterminate = !!props.indeterminate
+            callHandler(props.onChange, event)
           }}
         />
         <Icon icon={Check} class={styles.check} />

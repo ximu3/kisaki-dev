@@ -2,6 +2,18 @@
 
 2026-11-19 在 Windows x64 复验了两个工作包的实现。核查覆盖 34 个公共 UI 家族和 55 个窗口方法。最初的正常路径测试均通过，交叉操作仍暴露出四类问题：表单绑定到旧对象、操作在取消后进入提交、资源失效后仍被视图使用，以及最终清理失败后恢复了接纳。本页记录修正后的成功对照与实际故障结果。[W05](../../../implementation/work-packages.md#w05) · [W07](../../../implementation/work-packages.md#w07)
 
+<a id="solid-2"></a>
+
+## Solid 2 界面与宿主复验
+
+2026-11-23 在 Windows x64 使用 `solid-js`、`@solidjs/web` 2.0.3 和 `@solidjs/compiler` 2.0.2。源码工作坊覆盖浏览器原生表单、浮层、焦点与虚拟选择。仓外消费者安装实际 tarball，核对声明、样式、独立图层数据、动态组合与释放，并在 Chromium 和沙箱 Electron 中运行。[公共包入口](../../../design/ui/package.md)
+
+在 Chromium 156 的隔离样本中，50,000 行按 32 CSS px 估计得到 1,600,000 CSS px 的轨道。304 CSS px 高的视口最多挂载 20 行，上方行增高 68 CSS px 后末行仍贴底。隐藏恢复、布局换代和滚出视口的活动选项分别检查了滚动位置、定位与 ARIA 引用。Ryzen 9 7945HX 上各构建 13 次固定行高索引，50,000 行中位为 1.8 ms，500,000 行为 18.1 ms。该计时只覆盖几何索引构建。[虚拟化验收范围](../../scenarios/ui.md#virtualization-adapter)
+
+任务中心在隔离的 122 条历史记录上验证连续滚动。真实 Electron 窗口中，关闭详情后保持原按钮焦点，滚轮越过第 50 行、按 End 到达最后一条记录时表头保持原位。Chromium 分别核对经典与覆盖式滚动条，横滚到末列时表头与数据列仍对齐。[任务中心场景](../../scenarios/ui.md)
+
+桌面套件覆盖四类窗口启动、任务历史、偏好保存、字体预览和主题编辑。开发会话另验已打开的窗口与延迟连接的窗口在源码修正后恢复。复验入口为 `pnpm exec vp run @kisaki3/desktop-ui#verify`、`pnpm exec vp run @kisaki3/desktop#test:window-startup` 和 `pnpm exec vp run @kisaki3/desktop#test:dev-session`。Linux 通知服务与两项需要隔离系统身份的用例按各自宿主验收。
+
 <a id="completion"></a>
 
 ## 当前工作树的完成判定

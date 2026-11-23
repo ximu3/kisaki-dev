@@ -1,7 +1,8 @@
 /** @fileoverview Associates controls with the nearest field's label, description and own error. */
 
-import { createContext, onCleanup, onMount, useContext } from 'solid-js'
-import type { Accessor, JSX } from 'solid-js'
+import { createContext, onSettled, useContext } from 'solid-js'
+import type { Accessor } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 
 /** Local control or group identity, validation state and mounted accessible-text associations. */
 export interface FieldContextValue {
@@ -29,7 +30,7 @@ export interface FieldContextValue {
 }
 
 /** Form-field labels, descriptions and validation state inherited by nested controls. */
-export const FieldContext = createContext<FieldContextValue>()
+export const FieldContext = createContext<FieldContextValue | null>(null)
 
 /**
  * Creates reactive native attribute defaults from the nearest Field context.
@@ -64,7 +65,7 @@ export function fieldAttributes(props: JSX.AriaAttributes, ownLabel?: Accessor<J
     },
     /** Exposes the field's invalid state only when it is active. */
     get 'aria-invalid'() {
-      return field?.invalid() || undefined
+      return field?.invalid() ? ('true' as const) : undefined
     },
     /** Combines mounted guidance with the field's own error when invalid. */
     get 'aria-describedby'() {
@@ -88,7 +89,7 @@ export function fieldAttributes(props: JSX.AriaAttributes, ownLabel?: Accessor<J
  * Owner cleanup disconnects the observer.
  */
 export function closeWhenUnavailable(element: Accessor<HTMLElement>, close: () => void): void {
-  onMount(() => {
+  onSettled(() => {
     const node = element()
     /** Requests closing when native disabled or readonly state prevents editing. */
     const sync = () => {
@@ -103,6 +104,6 @@ export function closeWhenUnavailable(element: Accessor<HTMLElement>, close: () =
         observer.observe(parent, { attributes: true, attributeFilter: ['disabled'] })
       }
     }
-    onCleanup(() => observer.disconnect())
+    return () => observer.disconnect()
   })
 }

@@ -7,8 +7,11 @@
 @layer components {
   :where(.list) {
     width: max-content;
-    max-height: min(20rem, var(--popup-available-height, calc(100dvh - 1rem)));
     font-size: var(--text-sm);
+  }
+  /* Bounds the viewport before popup positioning supplies the available height. */
+  .list {
+    max-height: min(20rem, var(--popup-available-height, calc(100dvh - 1rem)));
   }
   .content {
     display: flex;
@@ -29,12 +32,6 @@
 
   .virtualTrack {
     position: relative;
-  }
-
-  .virtualRow {
-    position: absolute;
-    inset-inline: 0;
-    inset-block-start: 0;
   }
 
   .groupTitle {

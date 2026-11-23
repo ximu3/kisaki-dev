@@ -1,8 +1,7 @@
 /** @fileoverview Native action buttons with compact desktop variants and explicit busy state. */
 
-import { splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { classes } from '../../internal/dom'
+import { omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import type { ActionSize, ActionVariant } from '../../internal/action/types'
 import styles from '../../internal/action/styles.module.css'
 
@@ -22,26 +21,19 @@ export interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement>
  * Renders a native action button, defaulting to type=button and disabling activation while busy.
  */
 export function Button(props: ButtonProps): JSX.Element {
-  const [local, rest] = splitProps(props, [
-    'class',
-    'variant',
-    'size',
-    'busy',
-    'disabled',
-    'children',
-  ])
+  const rest = omit(props, 'class', 'variant', 'size', 'busy', 'disabled', 'children')
 
   return (
     <button
       type="button"
       {...rest}
-      class={classes(styles.root, local.class)}
-      data-variant={local.variant ?? 'default'}
-      data-size={local.size ?? 'default'}
-      disabled={local.disabled || local.busy}
-      aria-busy={local.busy || undefined}
+      class={[styles.root, props.class]}
+      data-variant={props.variant ?? 'default'}
+      data-size={props.size ?? 'default'}
+      disabled={props.disabled || props.busy}
+      aria-busy={props.busy ? 'true' : undefined}
     >
-      {local.children}
+      {props.children}
     </button>
   )
 }

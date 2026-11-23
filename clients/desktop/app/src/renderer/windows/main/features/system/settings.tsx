@@ -1,6 +1,7 @@
 /** @fileoverview Presents system registrations as fields with immediately adopted actions. */
 
-import { createMemo, createResource, createSignal, onCleanup, Show } from 'solid-js'
+import { createMemo, createSignal, onCleanup, Show } from 'solid-js'
+import { createQuery } from '../../../../infrastructure/query'
 import type { ProtocolIntegrationState } from '@kisaki3/desktop-contracts/app'
 import type { Translate } from '@kisaki3/desktop-localization'
 import { Switch } from '@kisaki3/desktop-ui/switch'
@@ -39,9 +40,9 @@ function describeLinks(
 /** Reads the real operating-system state before showing the settings and after every write. */
 export function SystemSettings(props: { api: MainClient; report: (error: unknown) => void }) {
   const { api } = props
-  const [state, { refetch }] = createResource(() => api.call('system.get'))
-  const current = createMemo((previous: ReturnType<typeof state>) =>
-    state.error ? previous : state(),
+  const state = createQuery((signal) => api.request(signal, 'system.get'))
+  const current = createMemo((previous: typeof state.value) =>
+    state.error ? previous : state.value,
   )
   deferDialogUntil(() => !!state.error || !!current())
   const [busy, setBusy] = createSignal(false)
@@ -56,14 +57,14 @@ export function SystemSettings(props: { api: MainClient; report: (error: unknown
       setFailure({ owner, text: errorMessage(cause) })
     } finally {
       try {
-        await refetch()
+        await state.reload()
       } finally {
         setBusy(false)
       }
     }
   }
 
-  const refresh = () => void refetch()
+  const refresh = () => void state.reload()
   window.addEventListener('focus', refresh)
   onCleanup(() => window.removeEventListener('focus', refresh))
 

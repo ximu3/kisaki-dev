@@ -1,6 +1,6 @@
 # 公共 UI 包
 
-`@kisaki3/desktop-ui` 为 Solid 1.9 提供可独立消费的完整控件、图表、Markdown、拖拽与样式。通用控件、浮层和 Toast 自行实现，采用浏览器原生能力；编辑、图表、拖拽和虚拟几何使用所属专用工具。视觉协议由 desktop-appearance 提供，业务数据与操作由宿主传入。
+`@kisaki3/desktop-ui` 为 Solid 2 提供可独立消费的完整控件、图表、Markdown、拖拽与样式。通用控件、浮层、Toast 和虚拟几何由本包基于浏览器原生能力实现。编辑、图表和拖拽使用所属专用工具。视觉协议由 desktop-appearance 提供，业务数据与操作由宿主传入。
 
 按任务阅读：[职责](#ownership) · [公开能力](#families) · [表单](#forms) · [浮层与焦点](#overlays) · [Toast](#toast) · [源码与入口](#organization) · [样式](#styles) · [图标](#icons) · [动效](#motion) · [交付](#delivery)。应用体验见[共同界面](components.md)，工程与制品规则见[公共包](../engineering/workspace.md#visual-packages)。
 
@@ -21,7 +21,7 @@
 
 每个状态有明确拥有者。控件维护临时交互，调用方维护业务值与草稿；受控值和非受控默认值分别遵守其合同。标签、说明、错误、禁用与表单状态在实际组合中保持一致。
 
-专用工具通过公开 API 接入。CodeMirror 与 markdown-it 提供 Markdown 编辑与呈现，Unovis 提供图表，Pragmatic Drag and Drop 与 TanStack Virtual 分别提供拖拽和虚拟几何；本包适配承担共同外观、Solid 生命周期和自身资源责任。
+专用工具通过公开 API 接入。CodeMirror 与 markdown-it 提供 Markdown 编辑与呈现，@unovis/ts 提供图表，Pragmatic Drag and Drop 提供拖拽；本包适配承担共同外观、Solid 生命周期和自身资源责任。
 
 desktop-ui 通过 props、事件与回调接入行为。异步选项、加载结果和业务动作由调用方提供，资料选择器、部分日期编辑器、媒体卡片、业务确认和设置页归 domain-ui 或具体扩展。
 
@@ -50,7 +50,7 @@ desktop-ui 通过 props、事件与回调接入行为。异步选项、加载结
 | 图表     | 查询、聚合、统计口径、单位和业务动作；组件接收数据与呈现配置                                                            |
 | Markdown | 正文身份、附件、资源取得、保存、并发与关闭策略；组件通过明确回调接入内容                                                |
 | 拖拽     | 对象身份、移动范围、许可、选择集合、数据就绪和持久顺序，见[人工重排](virtualization.md#reorder)                         |
-| 虚拟化   | 视图直接使用 TanStack Virtual，拥有真实数量、行映射、数据读取、选择和身份锚点，见[几何边界](virtualization.md#geometry) |
+| 虚拟化   | 本包提供 /virtualization，视图拥有真实数量、行映射、数据读取、选择和身份锚点，见[几何边界](virtualization.md#geometry) |
 
 所有组件家族统一使用子路径。基础控件的导入链保持轻量，编辑器与图表按完整能力独立消费，公开入口与内部文件按各自职责组织。
 
@@ -98,7 +98,7 @@ Combobox 打开后保留触发按钮的焦点。方向键移动候选高亮，En
 
 原生表单、受控更新和组合关系通过实际浏览器核对。特殊控件需要自维护交互时，公开合同明确其键盘、焦点、可访问名称与表单结果。
 
-Toolbar 和 ToolbarRow 排列查询条件与动作，提供对齐和换行。带 `band` 的 Toolbar 在正文前固定排列范围和查询行，并绘制共用底色和单一底边。横排、竖排 TabList 共用页签组底色和选中样式，页签文字使用 `--text-xs`。横排溢出时可横向滚动，并处理能继续移动的纵向滚轮输入。竖排沿起始边排列并随内容增高，受限高度由外层滚动容器负责。键盘焦点由 Tabs 管理，滚动容器让当前项完整进入视野。强制配色下，已选页签、分段和日历日期使用配对的系统选择色。TableHeader 可声明固定表头，TableHead 和 TableCell 使用同一列对齐规则。
+Toolbar 和 ToolbarRow 排列查询条件与动作，提供对齐和换行。带 `band` 的 Toolbar 在正文前固定排列范围和查询行，并绘制共用底色和单一底边。横排、竖排 TabList 共用页签组底色和选中样式，页签文字使用 `--text-xs`。横排溢出时可横向滚动，并处理能继续移动的纵向滚轮输入。竖排沿起始边排列并随内容增高，受限高度由外层滚动容器负责。键盘焦点由 Tabs 管理，滚动容器让当前项完整进入视野。强制配色下，已选页签、分段和日历日期使用配对的系统选择色。
 
 `/list` 提供原生有序或无序 List。ListItem 统一对象图标、标题、补充内容、持续可见的附属信息与同行动作。行内动作在指针进入或键盘聚焦时显示，触屏可直接看到。ListItemAction 提供具名图标按钮与 Tooltip。ReorderableList 和 ReorderableListItem 沿用同一行结构，加入手柄、插入线、自动滚动、菜单与键盘操作。列表以当前稳定身份为准，受控地提交一批 ID 相对同范围目标的前后移动意图。宿主采纳后提供新的顺序，失败时在所属视图反馈。显示范围、不可用项槽位和保存时机遵循[共同重排规则](virtualization.md#reorder)。
 
@@ -107,6 +107,12 @@ ListItem 的标题行容纳标准 Badge。显示或撤下同一行的徽标时�
 Collapsible 以原生 details 和 summary 呈现。defaultOpen 设置初始状态；传入 open 时，点击标题或用键盘激活标题会通过 onOpenChange 请求切换，宿主采纳后才改变展开状态。同名分组至多展开一项；宿主保留原值时，该组保持原来的展开项。标题内的链接和按钮保留自身操作。[HTML 折叠与分组](https://html.spec.whatwg.org/multipage/interactive-elements.html#the-details-element)
 
 依据：[HTML 表单控件](https://html.spec.whatwg.org/multipage/form-elements.html)、[表单处理](https://html.spec.whatwg.org/multipage/form-control-infrastructure.html)、[WAI 表单分组](https://www.w3.org/WAI/tutorials/forms/grouping/)与[错误反馈](https://www.w3.org/WAI/tutorials/forms/notifications/)。
+
+<a id="table"></a>
+
+### 表格与滚动
+
+普通 Table 保留文档的原生表格布局，TableHeader 可随文档滚动保持粘性。有独立滚动区域的表格使用 ScrollableTable，固定表头排在表体视口上方，纵向滚动条从表头下缘开始。表头与表体共用列宽，列随表体横向滚动保持对齐。表格的滚动视口支持键盘操作。连续浏览时，TableSpacer 保留完整轨道高度，实际的数据行用 createVirtualRow 定位。调用方管理区间数据和行身份。[虚拟化](virtualization.md#geometry)
 
 <a id="overlays"></a>
 
@@ -169,13 +175,15 @@ SDK 的 [ui.toast](../extensions/webview.md#toast) 由宿主适配到共同呈�
 
 ### 图表
 
-图表使用 Unovis 1.7.1 的官方 Solid 适配，以 SVG、CSS 变量和子组件组合接入共同外观。公共入口提供 XY 与单图容器、折线、面积、分组柱、堆叠柱、散点、环图、坐标轴、Tooltip 和 Crosshair。业务统计继续拥有查询、聚合、单位、数据选择和结果解释；图表及其相关实例由 Solid 适配统一创建、更新与销毁，不接收外部手工创建的引擎实例。布局回调需要的几何以只读值提供。
+图表使用 @unovis/ts 1.7.1，以 SVG、CSS 变量和子组件组合接入共同外观。公共入口提供 XY 与单图容器、折线、面积、分组柱、堆叠柱、散点、环图、坐标轴、Tooltip 和 Crosshair。业务统计负责查询、聚合、单位、数据选择和结果解释。
 
-主题容器将 desktop-appearance 的 chart-1 至 chart-5 接到图表系列色，并映射字体、边框与阴影；系列配置选择相应颜色。系统强制配色下，坐标与文字采用系统颜色，图例色样与 SVG 数据标记保持对应。交互图例使用语义按钮，选中状态由调用方提供；提示模板的字符串作为文本显示，自定义结构可返回 HTMLElement，chartTooltipContent 生成具名数据行。显隐使用 Unovis 公开状态，定位与实例寿命由官方 Solid 适配维护。调用方同时提供名称、数据摘要或适用的文本替代。严格 CSP 的宿主在导入图表前按工具公开方式设置 nonce，由宿主统一维护策略。
+容器按 Solid 子组件顺序组合图层，随配置和数据更新，移除子组件或卸载时释放相应的引擎资源。图层、坐标轴与 Crosshair 可以传入各自的 data，缺省时继承容器数据，空数组表示该部件无数据。容器的 class 和 style 应用于实际绘图区，默认相对定位并占满可用宽度。布局回调提供只读几何快照。
+
+主题容器将 desktop-appearance 的 chart-1 至 chart-5 接到图表系列色，并映射字体、边框与阴影；系列配置选择相应颜色。系统强制配色下，坐标与文字采用系统颜色，图例色样与 SVG 数据标记保持对应。交互图例使用语义按钮，选中状态由调用方提供；提示模板的字符串作为文本显示，自定义结构可返回 HTMLElement，chartTooltipContent 生成具名数据行。显隐使用 Unovis 公开状态，Unovis 负责定位，desktop-ui 管理实例寿命。调用方同时提供名称、数据摘要或适用的文本替代。严格 CSP 的宿主在导入图表前按工具公开方式设置 nonce，由宿主统一维护策略。
 
 配置继续消费工具的公开类型。Unovis 1.7.1 的声明路径面向 bundler；本包汇总实际使用的声明，并显式交付仍被引用的类型依赖，保持 NodeNext 的完整声明检查。实例寿命归 Solid 组合，公共类型不承诺与外部引擎实例互换。
 
-依据：[Unovis Solid 接入](https://unovis.dev/docs/intro/)、[主题变量](https://unovis.dev/docs/guides/theming/)、[CSP](https://unovis.dev/docs/guides/csp/)及[声明依赖处理](https://tsdown.dev/options/dependencies)。
+依据：[Unovis TypeScript 接入](https://unovis.dev/docs/quick-start/)、[主题变量](https://unovis.dev/docs/guides/theming/)、[CSP](https://unovis.dev/docs/guides/csp/)及[声明依赖处理](https://tsdown.dev/options/dependencies)。
 
 ### Markdown
 
@@ -243,9 +251,9 @@ desktop-ui/
 
 公开子路径定义消费边界，内部文件承载实现分工。正式构建入口遵守[主题目录与入口规则](../engineering/conventions.md#module-imports)，由家族内的 index.ts 选择公开接口，通过构建配置与 exports 映射到 /button 等子路径。components 与 internal 是源码组织目录，分类目录不增加汇总导出；包内协作直接引用实际模块。
 
-公开 Props 表达组件自身行为及适用原生元素能力。活跃 props 按 Solid 的响应式语义读取，使用 splitProps 和 mergeProps 保持更新；真实资源在明确的挂载、更新与清理边界接入。
+公开 Props 表达组件自身行为及适用原生元素能力。活跃 props 按 Solid 的响应式语义读取，使用 omit 和 merge 透传属性；真实资源在明确的挂载、更新与清理边界接入。
 
-依据：[Solid props](https://docs.solidjs.com/concepts/components/props)、[splitProps](https://docs.solidjs.com/reference/reactive-utilities/split-props)与[Node 子路径](https://nodejs.org/api/packages.html#subpath-exports)。
+依据：[Solid props](https://docs.solidjs.com/concepts/components/props)、[Solid 2 迁移说明](https://github.com/solidjs/solid/blob/main/documentation/solid-2.0/MIGRATION.md)与[Node 子路径](https://nodejs.org/api/packages.html#subpath-exports)。
 
 <a id="styles"></a>
 
@@ -268,7 +276,7 @@ desktop-appearance 拥有正式视觉变量与[根字号计算](../domains/appea
 
 <a id="icons"></a>
 
-系统与功能图标统一使用 Lucide，版本遵守[固定兼容基线](../engineering/workspace.md#solid)。本体、公共 UI 和官方扩展的本地界面通过 lucide-solid 具名组件导入，按实际使用裁剪。公共 UI 的内部适配统一装饰语义、槽位和描边，图形替换保持 Solid 响应性；本地内容和工具栏插槽继续采用正常组件组合。
+系统与功能图标统一使用 Lucide，版本遵守[固定兼容基线](../engineering/workspace.md#solid)。本体、公共 UI 和官方扩展的本地界面通过 @lucide/solid 具名组件导入，按实际使用裁剪。公共 UI 的内部适配统一装饰语义、槽位和描边，图形替换保持 Solid 响应性；本地内容和工具栏插槽继续采用正常组件组合。
 
 图形使用 currentColor、圆端点与圆连接，24 单位坐标中的默认线宽为 2，随图形和界面尺寸同比缩放。图标在独立槽位内按块绘制，单行内容居中，多行提示对齐首行。只有图标的操作由控件提供可访问名称，装饰图形不重复播报。跨运行端的贡献值遵守[名称与资源合同](../extensions/webview.md#icons)。依据：[Solid 组件接入](https://lucide.dev/guide/solid/getting-started)、[描边缩放](https://lucide.dev/guide/solid/basics/stroke-width)及[可访问性](https://lucide.dev/guide/solid/advanced/accessibility)。
 
@@ -338,7 +346,7 @@ Radio 的选中外圈和固定直径内点以 100ms 一起淡变，Switch 滑块
 
 [W05](../../implementation/work-packages.md#w05) 完成本页全部组件、交互、样式和独立消费。desktop-appearance 由 W01 完整交付；各本体能力使用这些成品装配自己的业务界面。当前实施结果见[状态页](../../implementation/status.md#progress)。
 
-默认样式组合 desktop-appearance 的基础视觉值和组件 CSS。普通 Solid 1.9 项目通过公开子路径与样式入口直接消费，宿主可以覆盖视觉变量。包支持满足当前桌面 Chromium 能力基线的浏览器环境；其他浏览器与 SSR 的支持按实际证据声明。
+默认样式组合 desktop-appearance 的基础视觉值和组件 CSS。普通 Solid 2 项目通过公开子路径与样式入口直接消费，宿主可以覆盖视觉变量。包支持满足当前桌面 Chromium 能力基线的浏览器环境；其他浏览器与 SSR 的支持按实际证据声明。
 
 仓库外验证使用构建后的 exports、完整声明和普通 CSS，覆盖无 Tailwind 消费与宿主工具类共同使用、主题变量和层叠覆盖。核对基础控件消费的依赖范围，以及按完整功能延迟加载编辑器和图表的行为。类型、样式、浏览器交互和实际视觉分别验收。
 

@@ -1,7 +1,7 @@
 /** @fileoverview Edits a font as one name and verified file-set draft. */
 
-import { For, onCleanup, onMount, Show } from 'solid-js'
-import { FileType, Plus, Trash2, RotateCcw } from 'lucide-solid'
+import { For, onCleanup, onSettled, Show } from 'solid-js'
+import { FileType, Plus, Trash2, RotateCcw } from '@lucide/solid'
 import type { Font } from '@kisaki3/desktop-contracts/fonts'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Badge } from '@kisaki3/desktop-ui/badge'
@@ -45,7 +45,7 @@ export function FontEditor(props: {
   onCleanup(() => {
     active = false
   })
-  onMount(() => {
+  onSettled(() => {
     if (props.files.length) {
       void draft.receive(props.files)
     }
@@ -113,7 +113,7 @@ export function FontEditor(props: {
                     <Button
                       id="font-field-files"
                       aria-invalid={
-                        form.issues().some((issue) => issue.id === 'files') || undefined
+                        form.issues().some((issue) => issue.id === 'files') ? 'true' : undefined
                       }
                       aria-describedby={
                         form.issues().some((issue) => issue.id === 'files')

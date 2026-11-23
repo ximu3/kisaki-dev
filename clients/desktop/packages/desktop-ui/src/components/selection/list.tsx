@@ -1,8 +1,8 @@
 /** @fileoverview Shared popup rows, selected marks and virtual scrolling handoff. */
 
-import { createEffect, createMemo, createSignal, For, onCleanup, onMount, Show } from 'solid-js'
-import type { Accessor, JSX } from 'solid-js'
-import { classes } from '../../internal/dom'
+import { createEffect, createMemo, createSignal, For, onSettled, Show } from 'solid-js'
+import type { Accessor } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { Icon, Check } from '../../internal/icon/glyph'
 import { createPopup } from '../../internal/popup/controller'
 import { displayedWhileOpen } from '../../internal/popup/presentation'
@@ -51,11 +51,17 @@ export function SelectionList<O extends SelectionOption>(props: ListProps<O>): J
   const { id, open, present } = props.popup
   const selected = displayedWhileOpen(open, () => props.selected)
 
-  createEffect(() => {
-    if (props.search && open() && props.collection.active() === undefined) {
-      props.collection.highlight(props.collection.enabled()[0]?.value)
-    }
-  })
+  createEffect(
+    () =>
+      props.search && open() && props.collection.active() === undefined
+        ? props.collection.enabled()[0]?.value
+        : undefined,
+    (first) => {
+      if (first !== undefined) {
+        props.collection.highlight(first)
+      }
+    },
+  )
 
   const groups = createMemo(() => {
     const result: OptionGroup<O>[] = []
@@ -69,16 +75,16 @@ export function SelectionList<O extends SelectionOption>(props: ListProps<O>): J
     }
     return result
   })
-  let rowHeight = 0
+  const rowHeight = createMemo<number>(
+    (previous = 32) => props.anchor()?.getBoundingClientRect().height || previous,
+  )
+  const usesVirtualChoices = () => !!props.virtual && !props.renderOptions
   const virtual = createVirtualChoices(
     groups,
     list,
-    () => !!props.virtual && present(),
-    () => {
-      // Keep the last measured estimate if the trigger is released during exit.
-      rowHeight = props.anchor()?.getBoundingClientRect().height ?? rowHeight
-      return rowHeight
-    },
+    () => usesVirtualChoices() && present(),
+    props.collection.active,
+    rowHeight,
   )
 
   createPopup({
@@ -88,20 +94,25 @@ export function SelectionList<O extends SelectionOption>(props: ListProps<O>): J
     open,
     change: props.popup.setOpen,
     matchWidth: true,
-    restoreFocus: props.search !== undefined,
+    get restoreFocus() {
+      return props.search !== undefined
+    },
   })
 
-  onMount(() => {
+  const [height, setHeight] = createSignal(0)
+
+  onSettled(() => {
     const viewport = list()!
     props.listRef?.(viewport)
-    const [height, setHeight] = createSignal(0)
     const size = new ResizeObserver(() => setHeight(viewport.clientHeight))
     size.observe(viewport)
-    onCleanup(() => size.disconnect())
+    return () => size.disconnect()
+  })
 
-    createEffect(() => {
-      const active = props.collection.active()
-      if (!open() || active === undefined || !height()) {
+  createEffect(
+    () => (open() && height() ? props.collection.active() : undefined),
+    (active) => {
+      if (active === undefined) {
         return
       }
 
@@ -109,17 +120,18 @@ export function SelectionList<O extends SelectionOption>(props: ListProps<O>): J
       const frame = requestAnimationFrame(() => {
         if (props.scrollToValue) {
           props.scrollToValue(active)
-        } else if (props.virtual) {
+        } else if (usesVirtualChoices()) {
           virtual.scrollTo(active)
         } else {
-          viewport.ownerDocument
-            .getElementById(optionId(id, active))
+          list()!
+            .ownerDocument.getElementById(optionId(id, active))
             ?.scrollIntoView({ block: 'nearest' })
         }
       })
-      onCleanup(() => cancelAnimationFrame(frame))
-    })
-  })
+
+      return () => cancelAnimationFrame(frame)
+    },
+  )
 
   /**
    * Renders a stable option identity with logical position, selection state and enabled pointer
@@ -129,8 +141,8 @@ export function SelectionList<O extends SelectionOption>(props: ListProps<O>): J
     <div
       id={optionId(id, option.value)}
       role="option"
-      aria-selected={selected().includes(option.value)}
-      aria-disabled={option.disabled || undefined}
+      aria-selected={selected().includes(option.value) ? 'true' : 'false'}
+      aria-disabled={option.disabled ? 'true' : undefined}
       aria-posinset={props.collection.positionOf(option.value)}
       aria-setsize={props.collection.options().length}
       data-last={option.value === props.collection.options().at(-1)?.value || undefined}
@@ -167,7 +179,7 @@ export function SelectionList<O extends SelectionOption>(props: ListProps<O>): J
     if (props.renderOptions) {
       return props.renderOptions({ options: props.collection.options, open, present, renderOption })
     }
-    if (props.virtual) {
+    if (usesVirtualChoices()) {
       return <virtual.Render option={renderOption} />
     }
 
@@ -190,9 +202,9 @@ export function SelectionList<O extends SelectionOption>(props: ListProps<O>): J
       popover="auto"
       ref={props.popup.attach}
       id={props.popup.panelId}
-      class={classes(frame.anchor, styles.list, props.listClass)}
+      class={[frame.anchor, styles.list, props.listClass]}
     >
-      <div class={classes(frame.viewport, styles.content)}>
+      <div class={[frame.viewport, styles.content]}>
         <Show when={props.search}>
           {(search) => (
             <ComboboxSearch
@@ -211,8 +223,8 @@ export function SelectionList<O extends SelectionOption>(props: ListProps<O>): J
           role="listbox"
           aria-label={props.label}
           aria-labelledby={props.labelledBy}
-          aria-multiselectable={props.multiple || undefined}
-          aria-busy={props.loading || undefined}
+          aria-multiselectable={props.multiple ? 'true' : undefined}
+          aria-busy={props.loading ? 'true' : undefined}
           onPointerDown={(event) => {
             if (event.target !== event.currentTarget) {
               event.preventDefault()

@@ -1,8 +1,7 @@
 /** @fileoverview Segmented selection with native radio group semantics. */
 
-import { createUniqueId, For, splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { assignRef, classes } from '../../internal/dom'
+import { createUniqueId, For, omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { fieldAttributes } from '../../internal/field'
 import { bindRadioSelection } from '../../internal/choice/radio'
 import styles from './styles.module.css'
@@ -36,7 +35,8 @@ export interface SegmentedControlProps extends Omit<
 
 /** Renders a single-value segmented choice using native radio keyboard and reset behavior. */
 export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'label',
     'options',
     'value',
@@ -45,36 +45,38 @@ export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
     'onValueChange',
     'class',
     'ref',
-  ])
+  )
 
-  const field = fieldAttributes(props, () => local.label)
+  const field = fieldAttributes(props, () => props.label)
   const id = createUniqueId()
-  const name = () => props.name ?? id
+  const name = () => props.name || id
   let group!: HTMLFieldSetElement
   /** Returns the explicit default or first enabled option for initialization and form reset. */
   const baseline = () =>
-    local.defaultValue ?? local.options.find((option) => !option.disabled)?.value ?? ''
+    props.defaultValue ?? props.options.find((option) => !option.disabled)?.value ?? ''
   /** Live segment selection and change requests using the group's initial baseline. */
   const [value, change] = bindRadioSelection(
     () => group,
     name,
-    () => local.value,
+    () => props.value,
     baseline,
-    (next) => local.onValueChange?.(next),
+    (next) => props.onValueChange?.(next),
   )
 
   return (
     <fieldset
       {...field}
       {...rest}
-      ref={(node) => {
-        group = node
-        assignRef(local.ref, node)
-      }}
-      aria-label={local.label}
-      class={classes(segmented.group, local.class)}
+      ref={[
+        (node) => {
+          group = node
+        },
+        props.ref,
+      ]}
+      aria-label={props.label}
+      class={[segmented.group, props.class]}
     >
-      <For each={local.options}>
+      <For each={props.options}>
         {(option) => (
           <label class={styles.segment}>
             <input
@@ -84,7 +86,7 @@ export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
               value={option.value}
               checked={value() === option.value}
               disabled={option.disabled}
-              required={local.required ?? field.required}
+              required={props.required ?? field.required}
               onChange={(event) => {
                 if (event.currentTarget.checked) {
                   change(option.value)

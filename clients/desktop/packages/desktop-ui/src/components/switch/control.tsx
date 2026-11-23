@@ -1,9 +1,9 @@
 /** @fileoverview A native checkbox with switch semantics and compact track presentation. */
 
-import { splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
+import { omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import type { ControlSize } from '../../internal/control/size'
-import { assignRef, callHandler, classes } from '../../internal/dom'
+import { callHandler } from '../../internal/dom'
 import { fieldAttributes } from '../../internal/field'
 import { bindCheckedControl } from '../../internal/checked-control'
 import type { CheckedValueProps } from '../../internal/checked-control'
@@ -28,7 +28,8 @@ export interface SwitchProps
  * reset.
  */
 export function Switch(props: SwitchProps): JSX.Element {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'checked',
     'defaultChecked',
     'label',
@@ -37,28 +38,30 @@ export function Switch(props: SwitchProps): JSX.Element {
     'class',
     'ref',
     'onChange',
-  ])
+  )
 
   let input!: HTMLInputElement
   /** Checked-state dispatcher shared by the switch owner and native form integration. */
-  const update = bindCheckedControl(local, () => input)
+  const update = bindCheckedControl(props, () => input)
 
   return (
-    <ChoiceRow label={local.label} size={local.size}>
+    <ChoiceRow label={props.label} size={props.size}>
       <input
-        {...fieldAttributes(props, () => local.label)}
+        {...fieldAttributes(props, () => props.label)}
         {...rest}
         type="checkbox"
         role="switch"
-        data-size={local.size ?? 'default'}
-        ref={(node) => {
-          input = node
-          assignRef(local.ref, node)
-        }}
-        class={classes(styles.root, local.class)}
+        data-size={props.size ?? 'default'}
+        ref={[
+          (node) => {
+            input = node
+          },
+          props.ref,
+        ]}
+        class={[styles.root, props.class]}
         onChange={(event) => {
           update()
-          callHandler(local.onChange, event)
+          callHandler(props.onChange, event)
         }}
       />
     </ChoiceRow>

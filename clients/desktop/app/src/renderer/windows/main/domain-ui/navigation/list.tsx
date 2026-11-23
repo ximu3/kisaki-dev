@@ -1,8 +1,8 @@
 /** @fileoverview Presents available pages and adopts reorder requests within their saved slots. */
 
 import { createMemo, For, Show, type Component } from 'solid-js'
-import { Dynamic } from 'solid-js/web'
-import { PanelsTopLeft, Pin } from 'lucide-solid'
+import { dynamic } from '@solidjs/web'
+import { PanelsTopLeft, Pin } from '@lucide/solid'
 import type { PageRef } from '@kisaki3/desktop-contracts/ui'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { EmptyState } from '@kisaki3/desktop-ui/empty-state'
@@ -71,12 +71,13 @@ export function PageOrder<T extends NavigationPage>(props: {
           {(id, index) => {
             const page = () => byId().get(id)!
             const title = () => page().title(t)
+            const PageIcon = dynamic(() => page().icon)
             return (
               <ReorderableListItem
                 value={id}
                 moveLabel={t('runtime.movePage', { name: title() })}
                 previewLabel={title()}
-                icon={!props.open && <Dynamic component={page().icon} />}
+                icon={!props.open && <PageIcon />}
                 title={
                   <Show when={props.open} fallback={title()}>
                     {(open) => (
@@ -86,7 +87,7 @@ export function PageOrder<T extends NavigationPage>(props: {
                         aria-current={props.current === id ? 'page' : undefined}
                         onClick={() => open()(page())}
                       >
-                        <Dynamic component={page().icon} />
+                        <PageIcon />
                         <span class="truncate">{title()}</span>
                       </Button>
                     )}

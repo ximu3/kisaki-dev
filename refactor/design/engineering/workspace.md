@@ -16,19 +16,18 @@
 
 | 能力           | 版本线                     | 固定兼容基线                                                                      |
 | -------------- | -------------------------- | --------------------------------------------------------------------------------- |
-| Solid          | 1.9.x                      | solid-js 1.9.16                                                                   |
-| 官方路由       | 与 Solid 1.9 相容的 1.x    | @solidjs/router 1.0.0                                                             |
-| 编译集成       | 支持 Solid 1 的插件 2.x    | vite-plugin-solid 2.11.14                                                         |
-| 基础控件       | Solid 1.9 与浏览器原生能力 | 按[UI 合同](../ui/package.md)实现并验证                                           |
-| 虚拟列表与网格 | TanStack Virtual 3.x       | Solid 适配 3.13.48 与 core 3.19.6，见[几何边界](../ui/virtualization.md#geometry) |
+| Solid          | 2.x | solid-js 与 @solidjs/web 2.0.3 |
+| 编译集成       | Solid 2 原生编译器 | @solidjs/vite-plugin 3.0.1、@solidjs/compiler 2.0.2 |
+| 基础控件       | Solid 2 与浏览器原生能力 | 按[UI 合同](../ui/package.md)实现并验证 |
+| 虚拟列表与网格 | desktop-ui | 自研纵向行几何，见[几何边界](../ui/virtualization.md#geometry) |
 | 拖拽排序       | Pragmatic Drag and Drop    | 核心与辅助包的固定版本见 [拖拽实现](../ui/virtualization.md#dependency)          |
-| 系统与功能图标 | Lucide 1.x | lucide-solid 与 @lucide/icons 均为 1.72.0；名称合同见 [UI 图标值](../extensions/webview.md#icons) |
+| 系统与功能图标 | Lucide 1.x | @lucide/solid 与 @lucide/icons 均为 1.72.0；名称合同见 [UI 图标值](../extensions/webview.md#icons) |
 
-原生窗口、公共 UI 和官方扩展采用 Solid 1.9。应用使用 Vite+ 提供的 Vite 和兼容的 vite-plugin-solid，公共 Solid 库由 vp pack 与 unplugin-solid 的 Rolldown 插件编译。具体版本以工作区 catalog 与锁文件为准。
+原生窗口、公共 UI 和官方扩展采用 Solid 2。应用的 Vite 构建使用 @solidjs/vite-plugin，公共 UI 的 vp pack 构建直接调用 @solidjs/compiler。具体版本以工作区 catalog 与锁文件为准。
 
 Solid 的活跃属性、快照、派生值和副作用保持区别，不能为统一外观采用会改变其响应性的解构或封装。
 
-运行时、JSX 和编译插件必须相容，并使用同一组锁定版本。2026-11-17 发布的 [Solid 2.0.0](https://github.com/solidjs/solid/commit/a8186e6738b3a6a3341c561f66e9325432d6759b) 改变了主版本。当前锁定的 Vite 编译插件、TanStack Virtual 和 Unovis 的 Solid 适配器均声明 1.x peer 范围，工作区继续采用已通过独立消费验证的 1.9 组合。路由负责导航，视图持有查询快照。公共 UI 的类型声明、CSS 和组件生命周期均由实际消费者验证。
+运行时、JSX 和编译插件必须相容，并使用同一组锁定版本。JSX 类型与 DOM 渲染来自 @solidjs/web，核心响应式能力来自 solid-js。当前桌面窗口按已校验的 NativeViewTarget 选择页面或管理面板，视图持有查询快照。公共 UI 的类型声明、CSS 和组件生命周期均由实际消费者验证。
 
 <a id="packages"></a>
 

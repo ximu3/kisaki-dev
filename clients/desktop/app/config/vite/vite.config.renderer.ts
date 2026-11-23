@@ -1,7 +1,7 @@
 /** @fileoverview Builds all native Solid documents and grants the local development server its HMR connection. */
 
 import { defineConfig, normalizePath } from 'vite'
-import solid from 'vite-plugin-solid'
+import solid from '@solidjs/vite-plugin'
 import tailwind from '@tailwindcss/vite'
 import { findPackageJSON } from 'node:module'
 import { readFileSync, realpathSync } from 'node:fs'

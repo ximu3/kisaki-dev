@@ -19,7 +19,7 @@ export interface FormFeedbackState {
 }
 
 /** Separates each form's validation and feedback from other mounted editors. */
-export const FormContext = createContext<FormFeedbackState>()
+export const FormContext = createContext<FormFeedbackState | null>(null)
 
 /** Native controls whose form owner supplies feedback to their enclosing Field. */
 const fieldControls = 'input,select,textarea,fieldset,button'

@@ -1,8 +1,7 @@
 /** @fileoverview Calendar month and year choices navigate the view independently of its selected day. */
 
-import { createMemo } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { createElementRef } from '../../../internal/dom'
+import { createMemo, createSignal } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { createSelectionPopup } from '../../selection/popup'
 import { createSelection } from '../../selection/collection'
 import { SelectionList } from '../../selection/list'
@@ -29,7 +28,7 @@ export function PeriodSelect(props: PeriodProps): JSX.Element {
   const popup = createSelectionPopup()
   /** Presence and visibility controls inherited from this period selector's popup owner. */
   const { present, setOpen } = popup
-  const [trigger, bindTrigger] = createElementRef<HTMLButtonElement>()
+  const [trigger, bindTrigger] = createSignal<HTMLButtonElement>()
 
   /** Visible formatted period choices derived from the current bounds. */
   const options = createMemo(() =>

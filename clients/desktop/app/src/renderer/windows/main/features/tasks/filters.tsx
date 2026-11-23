@@ -34,12 +34,10 @@ export function TaskFilters(props: {
         value={query().search()}
         onValueChange={(value) => query().changeSearch(value)}
       />
-      <Show when={query().filtered() && query().page()}>
-        {(page) => (
-          <span class="text-xs text-muted-foreground">
-            {api.t('runtime.taskCount', { count: page().total })}
-          </span>
-        )}
+      <Show when={query().filtered() && query().total() !== undefined}>
+        <span class="text-xs text-muted-foreground">
+          {api.t('runtime.taskCount', { count: query().total()! })}
+        </span>
       </Show>
       <div class="ms-auto flex max-w-full flex-wrap justify-end gap-1.5">
         <Select

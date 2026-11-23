@@ -1,9 +1,10 @@
 /** @fileoverview Shares Lucide component presentation and status symbols across desktop controls. */
 
-import { CircleExclamationPoint, TriangleExclamationPoint, CircleCheck, Info } from 'lucide-solid'
-import type { LucideIcon } from 'lucide-solid'
-import type { JSX } from 'solid-js'
-import { Dynamic } from 'solid-js/web'
+import { CircleExclamationPoint, TriangleExclamationPoint, CircleCheck, Info } from '@lucide/solid'
+import type { LucideIcon } from '@lucide/solid'
+import type { JSX } from '@solidjs/web'
+import { dynamic } from '@solidjs/web'
+
 import { classes } from '../dom'
 import styles from './styles.module.css'
 
@@ -21,7 +22,7 @@ export {
   Search,
   Minus,
   ChevronsUpDown,
-} from 'lucide-solid'
+} from '@lucide/solid'
 
 /**
  * Renders a decorative Lucide component in the shared glyph box and follows icon changes.
@@ -33,9 +34,9 @@ export function Icon(props: {
   icon: LucideIcon
   class?: string | undefined
 }): JSX.Element {
+  const Glyph = dynamic(() => props.icon)
   return (
-    <Dynamic
-      component={props.icon}
+    <Glyph
       size={24}
       strokeWidth={2}
       nonScalingStroke={false}

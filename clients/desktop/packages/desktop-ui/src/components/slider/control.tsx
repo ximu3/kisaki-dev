@@ -1,7 +1,7 @@
 /** @fileoverview Native range slider with numeric value and reset ownership. */
 
-import { splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
+import { omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { fieldAttributes } from '../../internal/field'
 import { RangeInput } from '../../internal/range/control'
 import type { RangeAttributes } from '../../internal/range/control'
@@ -25,17 +25,17 @@ export interface SliderProps extends RangeAttributes {
  * Keyboard behavior remains native; callers use aria-valuetext when units need explanation.
  */
 export function Slider(props: SliderProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['value', 'defaultValue', 'onValueChange'])
+  const rest = omit(props, 'value', 'defaultValue', 'onValueChange')
 
   /**
    * Returns the explicit default value or configured range midpoint for initialization and reset.
    */
-  const baseline = () => local.defaultValue ?? ((props.min ?? 0) + (props.max ?? 100)) / 2
+  const baseline = () => props.defaultValue ?? ((props.min ?? 0) + (props.max ?? 100)) / 2
   /** Live slider value and change requests using the native range baseline. */
   const [value, change] = createValue(
-    () => local.value,
+    () => props.value,
     baseline,
-    (next) => local.onValueChange?.(next),
+    (next) => props.onValueChange?.(next),
   )
 
   return (

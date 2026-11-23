@@ -52,8 +52,6 @@ export interface ToastEntry {
 
   /** Reads the current complete message content. */
   message: Accessor<ToastMessage>
-  /** Replaces the reactive message content as one value. */
-  replace: (message: ToastMessage) => void
   /** Reports whether dismissal has begun and the message's actions are inert. */
   ended: Accessor<boolean>
   /** Marks the message ended so its exit presentation can release it. */
@@ -95,11 +93,6 @@ export function createToastController(
   /** Reactive toast queue owned by this controller instance. */
   const [entries, setEntries] = createSignal<ToastEntry[]>([])
   let nextId = 0
-  /** Begins dismissal of an existing message identified by its queue ID. */
-  const dismiss = (id: number) =>
-    entries()
-      .find((item) => item.id === id)
-      ?.end()
   /** Removes a message from the rendered stack through the layout-motion coordinator. */
   const release = (id: number) =>
     arrange(() => setEntries((items) => items.filter((item) => item.id !== id)))
@@ -111,16 +104,20 @@ export function createToastController(
       const [value, replace] = createSignal(message, { equals: false })
       /** Terminal state preventing an ended toast handle from becoming active again. */
       const [ended, setEnded] = createSignal(false)
+      let live = true
+      const end = () => {
+        live = false
+        setEnded(true)
+      }
       arrange(() =>
         setEntries((items) => [
           ...items,
           {
             id,
             message: value,
-            replace,
             ended,
             /** Marks this queue entry ended. */
-            end: () => setEnded(true),
+            end,
             persistent: options.persistent ?? false,
             durationMs: options.durationMs ?? defaultDurationMs(),
           },
@@ -129,14 +126,13 @@ export function createToastController(
 
       return {
         /** Requests dismissal of this entry by its stable queue ID. */
-        dismiss: () => dismiss(id),
+        dismiss: end,
         /**
          * Replaces this entry's content through stack coordination while the entry remains live.
          */
         update: (next) => {
-          const entry = entries().find((item) => item.id === id && !item.ended())
-          if (entry) {
-            arrange(() => entry.replace(next))
+          if (live && current === api) {
+            arrange(() => replace(next))
           }
         },
       }
@@ -148,5 +144,5 @@ export function createToastController(
     setEntries([])
   })
 
-  return { entries, dismiss, release }
+  return { entries, release }
 }

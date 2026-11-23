@@ -1,7 +1,8 @@
 /** @fileoverview Opens a prepared task report with its result and execution information. */
 
-import { createMemo, createResource, For, Match, Show, Switch, type ParentProps } from 'solid-js'
-import { CircleAlert, CircleCheck, Info, XCircle } from 'lucide-solid'
+import { createEffect, createMemo, For, Match, Show, Switch, type ParentProps } from 'solid-js'
+import { createQuery } from '../../../../infrastructure/query'
+import { CircleAlert, CircleCheck, Info, XCircle } from '@lucide/solid'
 import type { JsonValue } from '@kisaki3/desktop-contracts/json'
 import { isTaskTerminal, type TaskRun } from '@kisaki3/desktop-contracts/tasks'
 import { Alert } from '@kisaki3/desktop-ui/alert'
@@ -33,7 +34,7 @@ export function TaskDetails(props: {
   revision: number
   onClose: () => void
 }) {
-  const displayed = createMemo<string | null>((last) => props.id ?? last, null)
+  const displayed = createMemo<string | null>((last = null) => props.id ?? last)
 
   return (
     <Dialog
@@ -56,12 +57,19 @@ export function TaskDetails(props: {
 /** Reads this report before showing the dialog and retains confirmed data during refresh. */
 function TaskDetailView(props: { api: MainClient; id: string; revision: number }) {
   const { api } = props
-  const [detail, { refetch }] = createResource(
+  const detail = createQuery({
+    prepare() {
+      const id = props.id
+      return (signal) => api.request(signal, 'tasks.get', { taskRunId: id })
+    },
+  })
+  createEffect(
     () => props.revision,
-    () => api.call('tasks.get', { taskRunId: props.id }),
+    () => void detail.reload(),
+    { defer: true },
   )
-  deferDialogUntil(() => detail.state === 'ready' || detail.state === 'errored')
-  const record = () => (detail.error ? undefined : detail.latest)
+  deferDialogUntil(() => !detail.pending)
+  const record = () => (detail.error ? undefined : detail.value)
 
   return (
     <>
@@ -75,13 +83,13 @@ function TaskDetailView(props: { api: MainClient; id: string; revision: number }
           <Match when={detail.error}>
             <Alert tone="destructive" role="alert">
               {errorMessage(detail.error)}{' '}
-              <Button variant="outline" onClick={() => void refetch()}>
+              <Button variant="outline" onClick={() => void detail.reload()}>
                 {api.t('runtime.retry')}
               </Button>
             </Alert>
           </Match>
           <Match when={record()}>{(item) => <TaskReport api={api} item={item()} />}</Match>
-          <Match when={detail.state === 'ready'}>
+          <Match when={!detail.pending && !detail.error}>
             <p class="m-0 text-sm text-muted-foreground">{api.t('runtime.unavailable')}</p>
           </Match>
         </Switch>

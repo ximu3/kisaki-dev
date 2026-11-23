@@ -1,4 +1,8 @@
-/* Native table spacing, sticky headers and logical column alignment. */
+/* Native table styling and shared column alignment in a bounded viewport. */
+
+.scrollBody {
+  composes: native from '../../internal/scrollbars.module.css';
+}
 
 @layer components {
   .table {
@@ -65,5 +69,50 @@
   .tfoot {
     font-weight: 500;
     background: var(--muted);
+  }
+
+  .scrollTable {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .scrollSection {
+    display: block;
+  }
+
+  .scrollHeader {
+    flex: none;
+    overflow: hidden;
+    border-inline-end: var(--kui-table-gutter, 0px) solid var(--background);
+    background: var(--background);
+  }
+  .scrollHeader > tr > .th {
+    border-block-end: 0;
+  }
+
+  .scrollBody {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    scrollbar-gutter: stable;
+    border-block-start: 1px solid var(--border);
+  }
+  .scrollBody:focus-visible {
+    outline: var(--kui-focus-width) solid var(--ring);
+    outline-offset: var(--kui-focus-inset);
+    animation: var(--kui-focus-enter);
+  }
+
+  .scrollSection > tr {
+    display: grid;
+    grid-template-columns: var(--kui-table-columns);
+    min-inline-size: var(--kui-table-min-width);
+  }
+  .scrollSection > tr > :is(.th, .td) {
+    min-width: 0;
+    align-content: center;
   }
 }

@@ -1,8 +1,7 @@
 /** @fileoverview A focusable viewport exposes the native scroll container. */
 
-import { splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { classes } from '../../internal/dom'
+import { omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import styles from './styles.module.css'
 
 /**
@@ -19,14 +18,14 @@ export interface ScrollAreaProps extends JSX.HTMLAttributes<HTMLDivElement> {
  * selection behavior.
  */
 export function ScrollArea(props: ScrollAreaProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['class', 'orientation'])
+  const rest = omit(props, 'class', 'orientation')
 
   return (
     <div
-      tabIndex={0}
+      tabindex={0}
       {...rest}
-      class={classes(styles.root, local.class)}
-      data-orientation={local.orientation ?? 'both'}
+      class={[styles.root, props.class]}
+      data-orientation={props.orientation ?? 'both'}
     />
   )
 }

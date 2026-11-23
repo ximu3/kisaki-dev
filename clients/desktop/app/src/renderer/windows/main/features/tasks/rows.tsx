@@ -1,11 +1,16 @@
 /** @fileoverview Renders active task controls and confirmed history rows. */
 
 import { createSignal, onCleanup, Show } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { FileText, Pause, Play, Trash2, X } from 'lucide-solid'
+import type { JSX } from '@solidjs/web'
+import { FileText, Pause, Play, Trash2, X } from '@lucide/solid'
 import type { TaskRunSummary, TaskState } from '@kisaki3/desktop-contracts/tasks'
 import { Progress } from '@kisaki3/desktop-ui/progress'
 import { TableCell, TableRow } from '@kisaki3/desktop-ui/table'
+import {
+  createVirtualRow,
+  type VirtualItem,
+  type Virtualizer,
+} from '@kisaki3/desktop-ui/virtualization'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@kisaki3/desktop-ui/tooltip'
 import type { MainClient } from '../../../../infrastructure/api'
 import { TaskStatus, TaskTypeIcon, taskDuration } from './presentation'
@@ -15,6 +20,59 @@ interface RowProps {
   api: MainClient
   row: TaskRunSummary
   open: () => void
+}
+
+/** Renders one measured logical row, enabling its actions after its real record arrives. */
+export function TaskRow(props: {
+  api: MainClient
+  active: boolean
+  virtualizer: Virtualizer
+  item: VirtualItem
+  row: TaskRunSummary | undefined
+  open: (id: string) => void
+  remove: (row: TaskRunSummary) => void
+  report: (error: unknown) => void
+}) {
+  const layout = createVirtualRow(
+    () => props.virtualizer,
+    () => props.item,
+  )
+
+  return (
+    <TableRow
+      {...layout}
+      class="h-10"
+      aria-rowindex={props.item.index + 2}
+      aria-busy={props.row ? undefined : 'true'}
+    >
+      <Show
+        when={props.row}
+        fallback={
+          <TableCell colspan={props.active ? 5 : 4} class="col-span-full">
+            <span aria-hidden="true" class="block h-2 w-1/3 rounded-sm bg-muted" />
+          </TableCell>
+        }
+      >
+        {(row) =>
+          props.active ? (
+            <ActiveCells
+              api={props.api}
+              row={row()}
+              open={() => props.open(row().id)}
+              report={props.report}
+            />
+          ) : (
+            <FinishedCells
+              api={props.api}
+              row={row()}
+              open={() => props.open(row().id)}
+              remove={() => props.remove(row())}
+            />
+          )
+        }
+      </Show>
+    </TableRow>
+  )
 }
 
 /** Pairs a compact tool action with its accessible name and visible hint. */
@@ -51,7 +109,7 @@ function TaskTitle(props: { title: string; type: string }) {
 }
 
 /** Owns the lightweight observation for one active row until that identity leaves the interval. */
-export function ActiveRow(props: RowProps & { report: (error: unknown) => void }) {
+function ActiveCells(props: RowProps & { report: (error: unknown) => void }) {
   const { api } = props
   const [state, setState] = createSignal<TaskState>()
   const ref = { taskRunId: props.row.id }
@@ -84,7 +142,7 @@ export function ActiveRow(props: RowProps & { report: (error: unknown) => void }
   }
 
   return (
-    <TableRow class="h-10">
+    <>
       <TableCell>
         <TaskTitle title={props.row.title} type={props.row.type} />
       </TableCell>
@@ -130,15 +188,15 @@ export function ActiveRow(props: RowProps & { report: (error: unknown) => void }
           <TaskAction label={api.t('runtime.detail')} icon={<FileText />} run={props.open} />
         </div>
       </TableCell>
-    </TableRow>
+    </>
   )
 }
 
 /** Presents the ended task with actions to read or remove its saved record. */
-export function FinishedRow(props: RowProps & { remove: () => void }) {
+function FinishedCells(props: RowProps & { remove: () => void }) {
   const locale = () => document.documentElement.lang
   return (
-    <TableRow class="h-10">
+    <>
       <TableCell>
         <TaskTitle title={props.row.title} type={props.row.type} />
       </TableCell>
@@ -159,6 +217,6 @@ export function FinishedRow(props: RowProps & { remove: () => void }) {
           />
         </div>
       </TableCell>
-    </TableRow>
+    </>
   )
 }

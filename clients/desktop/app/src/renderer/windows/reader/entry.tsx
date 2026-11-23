@@ -1,6 +1,6 @@
 /** @fileoverview Adopts the real reader document's language, appearance and window lifecycle. */
 
-import { render } from 'solid-js/web'
+import { render } from '@solidjs/web'
 import { connect } from '../../infrastructure/api'
 import { Notifications } from '../../infrastructure/notifications'
 

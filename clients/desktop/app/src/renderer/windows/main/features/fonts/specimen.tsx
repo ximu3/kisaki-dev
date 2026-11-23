@@ -1,6 +1,6 @@
 /** @fileoverview Renders a verified file's sample and metadata in the font library. */
 
-import { createEffect, createSignal, createUniqueId, For, onCleanup, Show } from 'solid-js'
+import { createEffect, createSignal, createUniqueId, For, Show } from 'solid-js'
 import type { FontFileMetadata, FontMetricRange } from '@kisaki3/desktop-contracts/fonts'
 import type { Translate } from '@kisaki3/desktop-localization'
 import { deferDialogUntil } from '@kisaki3/desktop-ui/dialog'
@@ -31,41 +31,43 @@ export function FontSpecimen(props: {
   const face = () => props.metadata.faces[0]
   deferDialogUntil(() => !props.url || loaded() || failure() !== undefined)
 
-  createEffect(() => {
-    const url = props.url
-    setLoaded(false)
-    setFailure(undefined)
-    if (!url) {
-      return
-    }
+  createEffect(
+    () => [props.url, face()],
+    ([url, current]) => {
+      setLoaded(false)
+      setFailure(undefined)
+      if (!url) {
+        return
+      }
 
-    const current = face()
-    const font = new FontFace(name, 'url(' + JSON.stringify(url) + ')', {
-      style: current.style,
-      weight: String(current.weight.default),
-      stretch: current.width.default + '%',
-    })
-    let active = true
+      const font = new FontFace(name, 'url(' + JSON.stringify(url) + ')', {
+        style: current.style,
+        weight: String(current.weight.default),
+        stretch: current.width.default + '%',
+      })
+      let active = true
 
-    // Loading can settle after the selected file's reader releases its URL.
-    onCleanup(() => {
-      active = false
-      document.fonts.delete(font)
-    })
-    void font
-      .load()
-      .then((ready) => {
-        if (active) {
-          document.fonts.add(ready)
-          setLoaded(true)
-        }
-      })
-      .catch((cause: unknown) => {
-        if (active) {
-          setFailure(errorMessage(cause))
-        }
-      })
-  })
+      void font
+        .load()
+        .then((ready) => {
+          if (active) {
+            document.fonts.add(ready)
+            setLoaded(true)
+          }
+        })
+        .catch((cause: unknown) => {
+          if (active) {
+            setFailure(errorMessage(cause))
+          }
+        })
+
+      // Loading can settle after the selected file's reader releases its URL.
+      return () => {
+        active = false
+        document.fonts.delete(font)
+      }
+    },
+  )
 
   return (
     <div class="min-w-0 space-y-2">

@@ -1,7 +1,8 @@
 /** @fileoverview Owns the task-center scopes, history invalidation and nested operations. */
 
-import { createEffect, createResource, createSignal, For, onCleanup, Show } from 'solid-js'
-import { RefreshCw, Trash2 } from 'lucide-solid'
+import { createSignal, For, onCleanup, Show } from 'solid-js'
+import { createQuery } from '../../../../infrastructure/query'
+import { RefreshCw, Trash2 } from '@lucide/solid'
 import { isTaskTerminal, taskRunStatuses } from '@kisaki3/desktop-contracts/tasks'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
@@ -17,7 +18,7 @@ import { Toolbar, ToolbarRow } from '@kisaki3/desktop-ui/toolbar'
 import { createConfirmation } from '../../../../infrastructure/dialogs/confirmation'
 import { errorMessage } from '../../../../infrastructure/notifications'
 import type { MainClient } from '../../../../infrastructure/api'
-import { HistoryList } from './history-list'
+import { TaskTable } from './table'
 import { TaskDetails } from './details'
 import { TaskFilters } from './filters'
 import { createTaskQuery } from './query'
@@ -44,24 +45,30 @@ export function TaskCenter(props: {
 }) {
   const { api } = props
   const [revision, setRevision] = createSignal(0)
-  const refresh = () => setRevision((value) => value + 1)
-  api.topics.addEventListener('tasks.changed', refresh)
-  onCleanup(() => api.topics.removeEventListener('tasks.changed', refresh))
-
-  const [history] = createResource(revision, () =>
-    api.call('tasks.list', { statuses: scopes[1].statuses }, { offset: 0, limit: 1 }),
+  const history = createQuery((signal) =>
+    api.request(signal, 'tasks.list', { statuses: scopes[1].statuses }, { offset: 0, limit: 1 }),
   )
-  const [types] = createResource(revision, () => api.call('tasks.types'))
-  const hasFinished = () => !history.error && !!history()?.total
+  const types = createQuery((signal) => api.request(signal, 'tasks.types'))
+  const hasFinished = () => !history.error && !!history.value?.total
   const [section, setSection] = createSignal('active')
   const panels = scopes.map((scope) => ({
     ...scope,
-    query: createTaskQuery(api, scope.statuses, revision),
+    query: createTaskQuery(api, scope.statuses, () => section() === scope.id),
   }))
   const activeQuery = () => panels.find((scope) => scope.id === section())!.query
-  deferDialogUntil(() => !!activeQuery().error() || !!activeQuery().page())
-  const [selected, select] = createSignal<string | null>(null)
-  createEffect(() => select(props.target))
+  deferDialogUntil(() => !!activeQuery().error() || activeQuery().total() !== undefined)
+  const [selected, select] = createSignal(() => props.target)
+
+  function refresh() {
+    for (const { query } of panels) {
+      query.refresh()
+    }
+    void history.reload()
+    void types.reload()
+    setRevision((value) => value + 1)
+  }
+  api.topics.addEventListener('tasks.changed', refresh)
+  onCleanup(() => api.topics.removeEventListener('tasks.changed', refresh))
 
   const confirm = createConfirmation(api.t)
   const [clearing, setClearing] = createSignal(false)
@@ -105,7 +112,7 @@ export function TaskCenter(props: {
             <TaskFilters
               api={api}
               query={activeQuery()}
-              types={types.error ? undefined : types()}
+              types={types.error ? undefined : types.value}
             />
           </Toolbar>
 
@@ -122,9 +129,10 @@ export function TaskCenter(props: {
                 value={scope.id}
                 class="min-h-0 grow p-0 not-[hidden]:flex not-[hidden]:flex-col"
               >
-                <HistoryList
+                <TaskTable
                   api={api}
                   active={scope.id === 'active'}
+                  visible={section() === scope.id}
                   query={scope.query}
                   open={select}
                   confirm={confirm.ask}
@@ -145,7 +153,13 @@ export function TaskCenter(props: {
           <Trash2 />
           {api.t('runtime.clear')}
         </Button>
-        <Button ref={refreshButton} variant="outline" onClick={refresh}>
+        <Button
+          ref={(element) => {
+            refreshButton = element
+          }}
+          variant="outline"
+          onClick={refresh}
+        >
           <RefreshCw />
           {api.t('runtime.refresh')}
         </Button>

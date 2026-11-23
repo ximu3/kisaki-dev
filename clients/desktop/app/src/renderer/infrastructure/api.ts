@@ -124,7 +124,7 @@ export async function connect<K extends WindowKind>(kind: K) {
   ) => request(undefined, method, ...args)
   const common = async <M extends keyof WindowApi>(method: M, ...args: Parameters<WindowApi[M]>) =>
     (await rpc.request(method, rpcData(args))) as ReturnType<WindowApi[M]>
-  const [translate, setTranslate] = createSignal<Translate>(createTranslator('en'))
+  const [translate, setTranslate] = createSignal<Translate>(() => createTranslator('en'))
 
   async function refreshWindowState() {
     const state = await common('window.state')

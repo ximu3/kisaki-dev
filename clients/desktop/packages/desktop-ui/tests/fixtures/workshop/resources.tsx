@@ -1,8 +1,8 @@
 /** @fileoverview Lazily loaded chart, Markdown and drag capabilities from the packed public subpaths. */
 
-import { createSignal, onCleanup } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { BookOpen } from 'lucide-solid'
+import { Show, createSignal, onCleanup } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { BookOpen } from '@lucide/solid'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { MarkdownEditor, MarkdownPreview } from '@kisaki3/desktop-ui/markdown'
 import type { MarkdownCommand, MarkdownToolbarAction } from '@kisaki3/desktop-ui/markdown'
@@ -21,6 +21,7 @@ import {
   Crosshair,
   ChartLegend,
   chartTooltipContent,
+  donutSelectors,
 } from '@kisaki3/desktop-ui/chart'
 import {
   createDraggable,
@@ -180,6 +181,8 @@ export default function Resources(): JSX.Element {
         >
           <XYContainer
             data={data()}
+            class="sample-plot"
+            style={{ 'max-width': '100%' }}
             height={220}
             duration={0}
             onRenderComplete={(geometry) => {
@@ -187,7 +190,9 @@ export default function Resources(): JSX.Element {
             }}
           >
             <Area<Datum> x={(item) => item.x} y={(item) => item.z} opacity={0.15} />
-            <Line<Datum> x={(item) => item.x} y={(item) => item.y} />
+            <Show when={selected()}>
+              <Line<Datum> x={(item) => item.x} y={(item) => item.y} />
+            </Show>
             <Scatter<Datum> x={(item) => item.x} y={(item) => item.y} />
             <GroupedBar<Datum> x={(item) => item.x} y={(item) => item.z} />
             <StackedBar<Datum>
@@ -215,9 +220,13 @@ export default function Resources(): JSX.Element {
           ]}
           onToggle={() => setSelected(!selected())}
         />
-        <Chart label="Distribution" summary={`Values are grouped into ${data().length} segments.`}>
-          <SingleContainer data={data()} height={160} duration={0}>
-            <Donut value={(item: { y: number }) => item.y} />
+        <Chart
+          data-segment-class={donutSelectors.segment}
+          label="Distribution"
+          summary={`Values are grouped into ${data().length} segments.`}
+        >
+          <SingleContainer height={160} duration={0}>
+            <Donut data={data()} value={(item) => item.y} />
           </SingleContainer>
         </Chart>
       </div>

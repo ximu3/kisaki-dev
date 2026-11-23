@@ -1,15 +1,8 @@
 /** @fileoverview Queries the user font library and opens item-local previews or edits. */
 
-import {
-  createEffect,
-  createMemo,
-  createResource,
-  createSignal,
-  For,
-  onCleanup,
-  Show,
-} from 'solid-js'
-import { CaseSensitive, Eye, Pencil, Plus, Trash2 } from 'lucide-solid'
+import { createEffect, createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
+import { createQuery } from '../../../../infrastructure/query'
+import { CaseSensitive, Eye, Pencil, Plus, Trash2 } from '@lucide/solid'
 import type { Font } from '@kisaki3/desktop-contracts/fonts'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
@@ -39,17 +32,26 @@ const pageSize = 50
 export function Fonts(props: {
   api: MainClient
   target?: string | undefined
-  bind: (guard: EditorGuard) => void
+  bind: (guard: EditorGuard) => () => void
   confirm: (guard: EditorGuard) => Promise<boolean>
 }) {
   const { api } = props
   const [offset, setOffset] = createSignal(0)
-  const [list, { refetch }] = createResource(offset, async (from) => {
-    const result = await api.call('fonts.list', '', { offset: from, limit: pageSize })
-    return { from, result }
+  const list = createQuery({
+    prepare() {
+      const from = offset()
+
+      return async (signal) => {
+        const result = await api.request(signal, 'fonts.list', '', {
+          offset: from,
+          limit: pageSize,
+        })
+        return { from, result }
+      }
+    },
   })
   const page = () => {
-    const response = list.error ? undefined : list.latest
+    const response = list.error ? undefined : list.value
     return response?.from === offset() ? response.result : undefined
   }
   deferDialogUntil(() => !!list.error || !!page())
@@ -64,7 +66,7 @@ export function Fonts(props: {
   const confirm = createConfirmation(api.t)
   let request = 0
 
-  const refresh = () => void refetch()
+  const refresh = () => void list.reload()
   api.topics.addEventListener('fonts.changed', refresh)
   onCleanup(() => {
     request++
@@ -76,12 +78,14 @@ export function Fonts(props: {
     viewport.scrollTop = 0
   }
 
-  createEffect(() => {
-    const result = page()
-    if (result && offset() > 0 && offset() >= result.total) {
-      changePage(Math.max(0, Math.floor((result.total - 1) / pageSize) * pageSize))
-    }
-  })
+  createEffect(
+    () => [page(), offset()],
+    ([result, start]) => {
+      if (result && start > 0 && start >= result.total) {
+        changePage(Math.max(0, Math.floor((result.total - 1) / pageSize) * pageSize))
+      }
+    },
+  )
 
   function start(files: readonly File[] = []) {
     request++
@@ -113,8 +117,9 @@ export function Fonts(props: {
 
   async function saved(font: Font) {
     setEdit(undefined)
+    await Promise.resolve()
     const previous = document.activeElement
-    await refetch()
+    await list.reload()
     requestAnimationFrame(() => {
       if (document.activeElement === previous || document.activeElement === document.body) {
         document.getElementById('font-preview-' + font.id)?.focus()

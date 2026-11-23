@@ -1,11 +1,11 @@
 /** @fileoverview Safe Markdown presentation with instance-local labels and host-resolved images. */
 
-import { createMemo, createUniqueId, splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
+import { createMemo, createUniqueId, omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import MarkdownIt from 'markdown-it'
 import { footnote } from '@mdit/plugin-footnote'
 import { tasklist } from '@mdit/plugin-tasklist'
-import { callHandler, classes } from '../../internal/dom'
+import { callHandler } from '../../internal/dom'
 import styles from './styles.module.css'
 
 /** Untrusted Markdown source with host-owned image resolution and optional link navigation. */
@@ -34,13 +34,7 @@ export interface MarkdownPreviewProps extends Omit<
  * Images enter through the host resolver, and footnotes use native in-page navigation.
  */
 export function MarkdownPreview(props: MarkdownPreviewProps): JSX.Element {
-  const [local, rest] = splitProps(props, [
-    'value',
-    'resolveImage',
-    'onNavigate',
-    'class',
-    'onClick',
-  ])
+  const rest = omit(props, 'value', 'resolveImage', 'onNavigate', 'class', 'onClick')
 
   const id = createUniqueId().replaceAll(':', '-')
   const markdown = new MarkdownIt({ html: false, linkify: true, breaks: true, typographer: true })
@@ -68,7 +62,7 @@ export function MarkdownPreview(props: MarkdownPreviewProps): JSX.Element {
     const token = tokens[index]!
     const alt = markdown.utils.escapeHtml(token.content)
     const source = String(token.attrGet('src') ?? '')
-    const resolved = local.resolveImage?.(source)
+    const resolved = props.resolveImage?.(source)
     if (!resolved) {
       return `<span>${alt}</span>`
     }
@@ -77,24 +71,24 @@ export function MarkdownPreview(props: MarkdownPreviewProps): JSX.Element {
   }
 
   /** Rendered Markdown HTML derived from the current text and this preview's document identity. */
-  const html = createMemo(() => markdown.render(local.value, { docId: id }))
+  const html = createMemo(() => markdown.render(props.value, { docId: id }))
 
   return (
     <div
       {...rest}
-      class={classes(styles.preview, local.class)}
+      class={[styles.preview, props.class]}
       innerHTML={html()}
       onClick={(event) => {
-        callHandler(local.onClick, event)
+        callHandler(props.onClick, event)
         const link = (event.target as Element).closest('a')
         if (event.defaultPrevented || !link || !event.currentTarget.contains(link)) {
           return
         }
 
         const href = link.getAttribute('href') ?? ''
-        if (!href.startsWith('#') && local.onNavigate) {
+        if (!href.startsWith('#') && props.onNavigate) {
           event.preventDefault()
-          local.onNavigate(href, event)
+          props.onNavigate(href, event)
         }
       }}
     />

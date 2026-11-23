@@ -1,7 +1,7 @@
 /** @fileoverview Labeled choices use the native control and one shared first-line alignment. */
 
 import { children, Show } from 'solid-js'
-import type { JSX } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import type { ControlSize } from '../control/size'
 import styles from './styles.module.css'
 

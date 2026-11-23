@@ -1,8 +1,7 @@
 /** @fileoverview Empty content combines a heading, description and optional action. */
 
-import { splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { classes } from '../../internal/dom'
+import { omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import styles from './styles.module.css'
 
 /**
@@ -17,16 +16,16 @@ export interface EmptyStateProps extends JSX.HTMLAttributes<HTMLDivElement> {
 
 /** Presents empty content with the caller's explanation and applicable next actions. */
 export function EmptyState(props: EmptyStateProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['class', 'heading', 'description', 'icon', 'children'])
+  const rest = omit(props, 'class', 'heading', 'description', 'icon', 'children')
 
   return (
-    <div {...rest} class={classes(styles.root, local.class)}>
+    <div {...rest} class={[styles.root, props.class]}>
       <div class={styles.icon} aria-hidden="true">
-        {local.icon}
+        {props.icon}
       </div>
-      <h3 class={styles.heading}>{local.heading}</h3>
-      <p class={styles.description}>{local.description}</p>
-      <div class={styles.actions}>{local.children}</div>
+      <h3 class={styles.heading}>{props.heading}</h3>
+      <p class={styles.description}>{props.description}</p>
+      <div class={styles.actions}>{props.children}</div>
     </div>
   )
 }

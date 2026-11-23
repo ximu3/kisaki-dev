@@ -1,6 +1,6 @@
 /** @fileoverview Connects the popup's query editor to its logical candidate list. */
 
-import type { JSX } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { SearchInput } from '../input/search/control'
 import { FieldContext } from '../../internal/field'
 import { optionId } from './collection'
@@ -36,7 +36,7 @@ export function ComboboxSearch<O extends SelectionOption>(
 
   function edit(query: string) {
     props.state.change(query)
-    props.collection.highlight(props.collection.enabled()[0]?.value)
+    queueMicrotask(() => props.collection.highlight(props.collection.enabled()[0]?.value))
   }
 
   function navigate(event: KeyboardEvent) {
@@ -61,7 +61,7 @@ export function ComboboxSearch<O extends SelectionOption>(
 
   return (
     <div class={styles.search}>
-      <FieldContext.Provider value={undefined}>
+      <FieldContext value={null}>
         <SearchInput
           role="combobox"
           autocomplete="off"
@@ -70,7 +70,7 @@ export function ComboboxSearch<O extends SelectionOption>(
           clearLabel={props.state.clearLabel}
           aria-autocomplete="list"
           aria-controls={props.listId}
-          aria-expanded={props.open}
+          aria-expanded={props.open ? 'true' : 'false'}
           aria-activedescendant={
             props.open && props.collection.active() !== undefined
               ? optionId(props.listId, props.collection.active()!)
@@ -89,9 +89,9 @@ export function ComboboxSearch<O extends SelectionOption>(
             composing = false
             edit(event.currentTarget.value)
           }}
-          on:keydown={navigate}
+          onKeyDown={navigate}
         />
-      </FieldContext.Provider>
+      </FieldContext>
     </div>
   )
 }

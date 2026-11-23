@@ -1,7 +1,7 @@
 /** @fileoverview Searchable single and multiple fields retain committed option records across queries. */
 
-import { mergeProps, splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
+import { merge, omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import type { ChipLabels } from '../../internal/chips/control'
 import { SelectionField } from '../selection/field'
 import type { ChoiceFieldProps, ChoiceSearchProps } from '../selection/field'
@@ -50,51 +50,52 @@ const searchProps = [
 
 /** Connects single-value ownership and form reset to the shared searchable selection field. */
 function SingleCombobox<O extends ComboboxOption>(props: SingleComboboxProps<O>): JSX.Element {
-  const [local, search, rest] = splitProps(
-    props,
-    ['multiple', 'value', 'defaultValue', 'onValueChange'],
-    searchProps,
-  )
+  const rest = omit(props, 'multiple', 'value', 'defaultValue', 'onValueChange', ...searchProps)
   const [value, change] = createValue(
-    () => local.value,
-    () => local.defaultValue ?? null,
-    (next) => local.onValueChange?.(next),
+    () => props.value,
+    () => props.defaultValue ?? null,
+    (next) => props.onValueChange?.(next),
   )
 
   return (
     <SelectionField
       {...rest}
-      search={search}
+      search={props}
       selected={value() ? [value()!] : []}
-      defaults={local.defaultValue ? [local.defaultValue.value] : []}
+      defaults={props.defaultValue ? [props.defaultValue.value] : []}
       onChoose={change}
-      onReset={() => change(local.defaultValue ?? null)}
+      onReset={() => change(props.defaultValue ?? null)}
     />
   )
 }
 
 /** Connects ordered selection, chip removal and form reset to the shared searchable field. */
 function MultipleCombobox<O extends ComboboxOption>(props: MultipleComboboxProps<O>): JSX.Element {
-  const [local, search, labels, rest] = splitProps(
+  const rest = omit(
     props,
-    ['multiple', 'value', 'defaultValue', 'onValueChange'],
-    searchProps,
-    ['removeLabel', 'scrollPreviousLabel', 'scrollNextLabel'],
+    'multiple',
+    'value',
+    'defaultValue',
+    'onValueChange',
+    ...searchProps,
+    'removeLabel',
+    'scrollPreviousLabel',
+    'scrollNextLabel',
   )
   const [values, change] = createValue(
-    () => local.value,
-    () => local.defaultValue ?? [],
-    (next) => local.onValueChange?.(next),
+    () => props.value,
+    () => props.defaultValue ?? [],
+    (next) => props.onValueChange?.(next),
   )
   const remove = (key: string) => change(values().filter((option) => option.value !== key))
 
   return (
     <SelectionField
       {...rest}
-      search={search}
+      search={props}
       selected={values()}
-      chips={mergeProps(labels, { remove })}
-      defaults={local.defaultValue?.map((option) => option.value) ?? []}
+      chips={merge(props, { remove })}
+      defaults={props.defaultValue?.map((option) => option.value) ?? []}
       onChoose={(option) => {
         if (values().some((item) => item.value === option.value)) {
           remove(option.value)
@@ -102,7 +103,7 @@ function MultipleCombobox<O extends ComboboxOption>(props: MultipleComboboxProps
           change([...values(), option])
         }
       }}
-      onReset={() => change(local.defaultValue ?? [])}
+      onReset={() => change(props.defaultValue ?? [])}
     />
   )
 }

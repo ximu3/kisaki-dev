@@ -1,8 +1,8 @@
 /** @fileoverview Plain single-line editing with native text semantics. */
 
-import { splitProps, type JSX } from 'solid-js'
+import { omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import type { ControlSize } from '../../internal/control/size'
-import { classes } from '../../internal/dom'
 import surface from '../../internal/input-surface.module.css'
 import { NativeInput } from './native'
 import type { NativeInputProps } from './native'
@@ -20,13 +20,13 @@ export interface InputProps extends Omit<NativeInputProps, 'type'> {
 
 /** Renders native text editing with the shared input surface and optional Field associations. */
 export function Input(props: InputProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['size', 'class'])
+  const rest = omit(props, 'size', 'class')
 
   return (
     <NativeInput
       {...rest}
-      class={classes(surface.surface, surface.singleLine, local.class)}
-      data-size={local.size ?? 'default'}
+      class={[surface.surface, surface.singleLine, props.class]}
+      data-size={props.size ?? 'default'}
     />
   )
 }

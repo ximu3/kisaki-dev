@@ -1,18 +1,8 @@
 /** @fileoverview A desktop choice field presents committed values, owns disclosure and participates in its form. */
 
-import {
-  createMemo,
-  For,
-  mergeProps,
-  on,
-  onMount,
-  createEffect,
-  Show,
-  splitProps,
-  untrack,
-} from 'solid-js'
-import type { JSX } from 'solid-js'
-import { assignRef, classes, createElementRef } from '../../internal/dom'
+import { createMemo, For, merge, createEffect, Show, omit, createSignal } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { classes } from '../../internal/dom'
 import type { ControlSize } from '../../internal/control/size'
 import { nativeValidityChanged } from '../../internal/form'
 import { fieldAttributes } from '../../internal/field'
@@ -93,7 +83,8 @@ interface SelectionFieldProps<O extends SelectionOption> extends ChoiceFieldProp
 export function SelectionField<O extends SelectionOption>(
   props: SelectionFieldProps<O>,
 ): JSX.Element {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'options',
     'selected',
     'defaults',
@@ -116,17 +107,17 @@ export function SelectionField<O extends SelectionOption>(
     'style',
     'name',
     'onInvalid',
-  ])
+  )
 
-  const attributes = mergeProps(fieldAttributes(props), rest)
+  const attributes = merge(fieldAttributes(props), rest)
   const popup = createSelectionPopup()
   const { id, open, setOpen, present } = popup
   const [query, setQuery] = createValue(
-    () => local.search?.query,
+    () => props.search?.query,
     () => '',
-    (next) => local.search?.onQueryChange?.(next),
+    (next) => props.search?.onQueryChange?.(next),
   )
-  const [trigger, bindTrigger] = createElementRef<HTMLButtonElement>()
+  const [trigger, bindTrigger] = createSignal<HTMLButtonElement>()
   let field!: HTMLDivElement
   let mirror!: HTMLSelectElement
 
@@ -134,18 +125,18 @@ export function SelectionField<O extends SelectionOption>(
   /**
    * Visible candidate records retained through exit, with loading distinct from an empty result.
    */
-  const candidates = createMemo<typeof empty>((last) => {
+  const candidates = createMemo<typeof empty>((last = empty) => {
     if (!present()) {
       return empty
     }
     if (!open()) {
       return last
     }
-    const search = local.search
+    const search = props.search
     if (search?.loading) {
       return { options: empty.options, loading: true }
     }
-    const options = local.options
+    const options = props.options
     const filter = search?.filter
     const searchText = query()
     const text = searchText.trim()
@@ -157,57 +148,53 @@ export function SelectionField<O extends SelectionOption>(
       ? options.filter((option) => filter(option, searchText))
       : options.filter((option) => option.label.toLocaleLowerCase().includes(needle))
     return { options: matches, loading: false }
-  }, empty)
+  })
   const collection = createSelection(() => candidates().options)
   createEffect(
-    on(
-      present,
-      (visible) => {
-        if (!visible && local.search) {
-          setQuery('')
-        }
-      },
-      { defer: true },
-    ),
+    present,
+    (visible) => {
+      if (!visible && props.search) {
+        setQuery('')
+      }
+    },
+    { defer: true },
   )
 
-  const selected = createMemo(() => new Map(local.selected.map((option) => [option.value, option])))
+  const selected = createMemo(() => new Map(props.selected.map((option) => [option.value, option])))
   const records = createMemo(() => Array.from(selected().values()))
   const keys = createMemo(() => Array.from(selected().keys()))
   const summary = () =>
     records()
       .map((option) => option.label)
-      .join(', ') || local.placeholder
+      .join(', ') || props.placeholder
 
   /**
    * Synchronizes selected and default options and marks disabled committed records invalid on the
    * native select.
    */
-  const sync = () => {
-    const values = new Set(keys())
-    const defaults = new Set(local.defaults)
+  const selection = createMemo(() => ({
+    values: new Set(keys()),
+    defaults: new Set(props.defaults),
+    multiple: !!props.chips,
+    message: records().some((option) => option.disabled) ? props.invalidSelectionMessage : '',
+  }))
+  const sync = (state: ReturnType<typeof selection>) => {
     for (const option of mirror.options) {
-      option.defaultSelected = defaults.has(option.value)
-      option.selected = values.has(option.value)
+      option.defaultSelected = state.defaults.has(option.value)
+      option.selected = state.values.has(option.value)
     }
-    if (!local.chips && !values.size) {
+    if (!state.multiple && !state.values.size) {
       mirror.value = ''
     }
-    mirror.setCustomValidity(
-      records().some((option) => option.disabled) ? local.invalidSelectionMessage : '',
-    )
+    mirror.setCustomValidity(state.message)
+    nativeValidityChanged(mirror.form)
   }
-  onMount(() =>
-    createEffect(() => {
-      sync()
-      nativeValidityChanged(mirror.form)
-    }),
-  )
+  createEffect(selection, sync)
   const flushReset = onFormReset(
     () => mirror,
     () => {
-      local.onReset()
-      untrack(sync)
+      props.onReset()
+      queueMicrotask(() => sync(selection()))
       setOpen(false)
     },
   )
@@ -218,21 +205,21 @@ export function SelectionField<O extends SelectionOption>(
    */
   const choose = (option: O) => {
     flushReset()
-    if (!local.chips) {
+    if (!props.chips) {
       setOpen(false)
       trigger()?.focus({ preventScroll: true })
     }
-    local.onChoose(option)
+    props.onChoose(option)
   }
   return (
     <div
       ref={(node) => {
         field = node
       }}
-      class={classes(input.surface, styles.container, local.class)}
-      data-control-key={local.name || attributes.id || id}
-      style={local.style}
-      data-size={local.size ?? 'default'}
+      class={[input.surface, styles.container, props.class]}
+      data-control-key={props.name || attributes.id || id}
+      style={props.style}
+      data-size={props.size ?? 'default'}
       aria-invalid={attributes['aria-invalid']}
       onFocusOut={(event) => {
         const next = event.relatedTarget
@@ -248,22 +235,19 @@ export function SelectionField<O extends SelectionOption>(
         collection={collection}
         selected={keys()}
         onChoose={choose}
-        aria-required={local.required ?? attributes.required}
+        aria-required={(props.required ?? attributes.required) ? 'true' : undefined}
         aria-describedby={
-          [attributes['aria-describedby'], local.search ? id + '-value' : undefined]
+          [attributes['aria-describedby'], props.search ? id + '-value' : undefined]
             .filter(Boolean)
             .join(' ') || undefined
         }
-        ref={(node) => {
-          bindTrigger(node)
-          assignRef(local.ref, node)
-        }}
+        ref={[bindTrigger, props.ref]}
         class={styles.trigger}
       >
         <span
           id={id + '-value'}
           class={
-            local.chips && keys().length
+            props.chips && keys().length
               ? styles.summary
               : classes(styles.value, !keys().length ? styles.placeholder : undefined)
           }
@@ -271,15 +255,15 @@ export function SelectionField<O extends SelectionOption>(
           {summary()}
         </span>
         <span class={styles.arrow} aria-hidden="true">
-          <Icon icon={local.search ? ChevronsUpDown : ChevronDown} />
+          <Icon icon={props.search ? ChevronsUpDown : ChevronDown} />
         </span>
       </SelectionTrigger>
-      <Show when={local.chips && keys().length ? local.chips : undefined}>
+      <Show when={props.chips && keys().length ? props.chips : undefined}>
         {(chips) => (
           <SelectedChips
             values={keys()}
             label={(key) => selected().get(key)?.label ?? key}
-            disabled={attributes.disabled}
+            disabled={!!attributes.disabled}
             panelId={open() ? popup.panelId : undefined}
             field={() => field}
             removeLabel={chips().removeLabel}
@@ -298,17 +282,17 @@ export function SelectionField<O extends SelectionOption>(
           mirror = node
         }}
         class={styles.submission}
-        tabIndex={-1}
+        tabindex={-1}
         aria-hidden="true"
-        name={local.name}
+        name={props.name}
         form={attributes.form}
-        required={local.required ?? attributes.required}
+        required={props.required ?? attributes.required}
         disabled={attributes.disabled}
-        multiple={!!local.chips}
-        onInvalid={local.onInvalid}
+        multiple={!!props.chips}
+        onInvalid={props.onInvalid}
         onFocus={() => trigger()?.focus()}
       >
-        <Show when={!local.chips}>
+        <Show when={!props.chips}>
           <option value="" />
         </Show>
         <For each={records()}>
@@ -325,29 +309,29 @@ export function SelectionField<O extends SelectionOption>(
         reference={() => field}
         collection={collection}
         selected={keys()}
-        multiple={!!local.chips}
+        multiple={!!props.chips}
         onChoose={choose}
-        label={attributes['aria-label']}
-        labelledBy={attributes['aria-labelledby']}
+        label={attributes['aria-label'] || undefined}
+        labelledBy={attributes['aria-labelledby'] || undefined}
         search={
-          local.search
+          props.search
             ? {
-                label: local.search.searchLabel,
-                clearLabel: local.search.clearSearchLabel,
-                placeholder: local.search.searchPlaceholder,
+                label: props.search.searchLabel,
+                clearLabel: props.search.clearSearchLabel,
+                placeholder: props.search.searchPlaceholder,
                 query: query(),
                 change: setQuery,
               }
             : undefined
         }
         loading={candidates().loading}
-        loadingMessage={local.search?.loadingMessage}
-        emptyMessage={local.emptyMessage}
-        virtual={local.virtual}
-        renderOptions={local.renderOptions}
-        scrollToValue={local.scrollToValue}
-        listRef={local.listRef}
-        listClass={local.listClass}
+        loadingMessage={props.search?.loadingMessage}
+        emptyMessage={props.emptyMessage}
+        virtual={props.virtual}
+        renderOptions={props.renderOptions}
+        scrollToValue={props.scrollToValue}
+        listRef={props.listRef}
+        listClass={props.listClass}
       />
     </div>
   )

@@ -2,17 +2,8 @@
 
 import { converter, formatHex, formatHex8, parse } from 'culori'
 import type { Hsv } from 'culori'
-import {
-  createEffect,
-  createMemo,
-  createSignal,
-  createUniqueId,
-  onMount,
-  splitProps,
-  untrack,
-} from 'solid-js'
-import type { JSX } from 'solid-js'
-import { assignRef, classes, createElementRef } from '../../../internal/dom'
+import { createEffect, createMemo, createSignal, createUniqueId, omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { fieldAttributes, closeWhenUnavailable } from '../../../internal/field'
 import { createPopup } from '../../../internal/popup/controller'
 import { createValue, onFormReset } from '../../../internal/state'
@@ -49,7 +40,8 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
    * value.
    */
   const toHsv = converter('hsv')
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'value',
     'defaultValue',
     'onValueChange',
@@ -63,13 +55,13 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
     'ref',
     'class',
     'style',
-  ])
+  )
   const field = fieldAttributes(props)
   /** Live CSS color value and change requests delegated to the controlled or local owner. */
   const [value, change] = createValue(
-    () => local.value,
-    () => local.defaultValue ?? '',
-    (next) => local.onValueChange?.(next),
+    () => props.value,
+    () => props.defaultValue ?? '',
+    (next) => props.onValueChange?.(next),
   )
   /** Parsed current CSS color observed by the picker. */
   const parsed = createMemo(() => parse(value()))
@@ -77,22 +69,24 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
   const [color, setColor] = createSignal<Hsv>({ mode: 'hsv', h: 0, s: 1, v: 1, alpha: 1 })
   /** Locally owned visibility of the color-picker surface. */
   const [open, setOpen] = createSignal(false)
-  const [trigger, bindTrigger] = createElementRef<HTMLButtonElement>()
+  const [trigger, bindTrigger] = createSignal<HTMLButtonElement>()
   const id = createUniqueId()
   let input!: HTMLInputElement
   let picker!: HTMLDivElement
   let hue!: HTMLInputElement
   /** Checks whether disabled or readonly state prevents picker interaction. */
-  const blocked = () => (props.disabled ?? field.disabled) || (props.readOnly ?? props.readonly)
+  const blocked = () => (props.disabled ?? field.disabled) || props.readonly
   /** Formats the parsed color for the swatch or returns transparency for an unparseable value. */
   const swatch = () => (parsed() ? formatHex8(parsed()) : 'transparent')
 
-  createEffect(() => {
-    const next = toHsv(parsed())
-    if (next) {
-      setColor({ ...next, h: next.h ?? untrack(color).h ?? 0 })
-    }
-  })
+  createEffect(
+    () => toHsv(parsed()),
+    (next) => {
+      if (next) {
+        setColor((previous) => ({ ...next, h: next.h ?? previous.h ?? 0 }))
+      }
+    },
+  )
   /**
    * Updates selected HSV channels and requests the corresponding hexadecimal form value, including
    * alpha when needed.
@@ -102,9 +96,11 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
     const requested = (updated.alpha ?? 1) < 1 ? formatHex8(updated) : formatHex(updated)
     input.value = requested
     input.dispatchEvent(new Event('input', { bubbles: true }))
-    if (value() === requested) {
-      setColor(updated)
-    }
+    queueMicrotask(() => {
+      if (value() === requested) {
+        setColor(updated)
+      }
+    })
   }
   /** Maps pointer coordinates on the color plane to bounded saturation and brightness values. */
   const paint = (event: PointerEvent & { currentTarget: HTMLDivElement }) => {
@@ -134,45 +130,52 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
     () => input,
     () => setOpen(false),
   )
-  onMount(() => {
-    createEffect(() => {
-      input.setCustomValidity(value() && !parsed() ? local.invalidColorMessage : '')
+  createEffect(
+    () => (value() && !parsed() ? props.invalidColorMessage : ''),
+    (message) => {
+      input.setCustomValidity(message)
       nativeValidityChanged(input.form)
-    })
-    createEffect(() => {
-      if (open()) {
+    },
+  )
+
+  createEffect(
+    () => open(),
+    (opened) => {
+      if (opened) {
         queueMicrotask(() => {
           if (open()) {
             hue.focus()
           }
         })
       }
-    })
-  })
+    },
+  )
 
   return (
-    <InputFrame class={local.class} style={local.style} size={local.size} open={open()}>
+    <InputFrame class={props.class} style={props.style} size={props.size} open={open()}>
       <NativeInput
         {...rest}
         class={frame.editor}
         type="text"
         value={value()}
-        defaultValue={local.defaultValue}
+        defaultValue={props.defaultValue}
         onValueChange={change}
-        ref={(node) => {
-          input = node
-          assignRef(local.ref, node)
-        }}
+        ref={[
+          (node) => {
+            input = node
+          },
+          props.ref,
+        ]}
       />
       <button
         ref={bindTrigger}
         type="button"
-        class={classes(frame.start, styles.swatch)}
-        aria-label={local.pickerLabel}
+        class={[frame.start, styles.swatch]}
+        aria-label={props.pickerLabel}
         popovertarget={id}
         aria-haspopup="dialog"
         aria-controls={id}
-        aria-expanded={open()}
+        aria-expanded={open() ? 'true' : 'false'}
         disabled={blocked()}
         onClick={(event) => {
           event.preventDefault()
@@ -188,8 +191,8 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
         id={id}
         popover="auto"
         role="dialog"
-        aria-label={local.pickerLabel}
-        class={classes(popup.anchor, styles.picker)}
+        aria-label={props.pickerLabel}
+        class={[popup.anchor, styles.picker]}
         onFocusOut={(event) => {
           if (
             !picker.contains(event.relatedTarget as Node | null) &&
@@ -199,7 +202,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
           }
         }}
       >
-        <div class={classes(popup.viewport, styles.content)}>
+        <div class={[popup.viewport, styles.content]}>
           <div
             aria-hidden="true"
             class={styles.plane}
@@ -221,7 +224,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
             />
           </div>
           <label class={styles.channel}>
-            <span>{local.hueLabel}</span>
+            <span>{props.hueLabel}</span>
             <RangeInput
               min={0}
               ref={(node) => {
@@ -234,7 +237,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
             <output>{Math.round(color().h ?? 0)}°</output>
           </label>
           <label class={styles.channel}>
-            <span>{local.saturationLabel}</span>
+            <span>{props.saturationLabel}</span>
             <RangeInput
               min={0}
               value={color().s * 100}
@@ -243,7 +246,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
             <output>{Math.round(color().s * 100)}%</output>
           </label>
           <label class={styles.channel}>
-            <span>{local.brightnessLabel}</span>
+            <span>{props.brightnessLabel}</span>
             <RangeInput
               min={0}
               value={color().v * 100}
@@ -252,7 +255,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
             <output>{Math.round(color().v * 100)}%</output>
           </label>
           <label class={styles.channel}>
-            <span>{local.alphaLabel}</span>
+            <span>{props.alphaLabel}</span>
             <RangeInput
               min={0}
               value={(color().alpha ?? 1) * 100}

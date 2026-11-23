@@ -1,8 +1,7 @@
 /** @fileoverview Decorative and semantic dividers share horizontal and vertical geometry. */
 
-import { splitProps } from 'solid-js'
-import type { JSX } from 'solid-js'
-import { classes } from '../../internal/dom'
+import { omit } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import styles from './styles.module.css'
 
 /**
@@ -17,16 +16,16 @@ export interface SeparatorProps extends JSX.HTMLAttributes<HTMLDivElement> {
 
 /** Separates adjacent content without adding a keyboard stop. */
 export function Separator(props: SeparatorProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['class', 'orientation', 'decorative'])
+  const rest = omit(props, 'class', 'orientation', 'decorative')
 
   return (
     <div
       {...rest}
-      class={classes(styles.root, local.class)}
-      data-orientation={local.orientation ?? 'horizontal'}
-      role={local.decorative === false ? 'separator' : 'none'}
+      class={[styles.root, props.class]}
+      data-orientation={props.orientation ?? 'horizontal'}
+      role={props.decorative === false ? 'separator' : 'none'}
       aria-orientation={
-        local.decorative === false ? (local.orientation ?? 'horizontal') : undefined
+        props.decorative === false ? (props.orientation ?? 'horizontal') : undefined
       }
     />
   )

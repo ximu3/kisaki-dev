@@ -1,8 +1,10 @@
 /** @fileoverview Measures grouped choice rows against their actual popup viewport. */
 
 import { createMemo, For, Show } from 'solid-js'
-import type { Accessor, JSX } from 'solid-js'
-import { createVirtualizer } from '@tanstack/solid-virtual'
+import type { Accessor } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { VirtualRow } from '../virtualization/row'
+import { createVirtualizer, type VirtualItem } from '../virtualization/viewport'
 import type { SelectionOption } from './types'
 import styles from './styles.module.css'
 
@@ -17,6 +19,7 @@ export function createVirtualChoices<O extends SelectionOption>(
   groups: Accessor<readonly OptionGroup<O>[]>,
   list: Accessor<HTMLDivElement | undefined>,
   enabled: Accessor<boolean>,
+  active: Accessor<string | undefined>,
   estimateSize: () => number,
 ) {
   const entries = createMemo(() =>
@@ -26,33 +29,43 @@ export function createVirtualChoices<O extends SelectionOption>(
     ]),
   )
   const positions = createMemo(() => new Map(entries().map(({ key }, i) => [key, i])))
+  const optionIndex = (key: string) => positions().get('option:' + key)
+  const retained = createMemo(() => {
+    const key = active()
+    const index = key === undefined ? undefined : optionIndex(key)
+    return index === undefined ? [] : [index]
+  })
+
   const rows = createVirtualizer({
-    /** Counts group headings and options in the same measured coordinate space. */
     get count() {
       return entries().length
     },
-    /** Pauses virtual measurements when the owner is no longer shown. */
     get enabled() {
       return enabled()
     },
-    getScrollElement: () => list() ?? null,
+    get viewport() {
+      return list()
+    },
+    get layout() {
+      return entries()
+    },
+    get retained() {
+      return retained()
+    },
     estimateSize,
-    // Apply row corrections outside the observer turn that positions the popup.
-    useAnimationFrameWithResizeObserver: true,
-    measureElement: (element, entry) =>
-      entry?.borderBoxSize[0]?.blockSize ?? parseFloat(getComputedStyle(element).height),
-    getItemKey: (index) => entries()[index]!.key,
+    key: (index) => entries()[index]!.key,
     overscan: 4,
   })
 
   function scrollTo(key: string) {
-    const index = positions().get('option:' + key)
+    const index = optionIndex(key)
     if (index !== undefined) {
-      rows.scrollToIndex(index, { align: 'auto' })
+      rows.scrollToIndex(index)
     }
   }
+
   const visible = createMemo(() =>
-    rows.getVirtualItems().reduce((byGroup, row) => {
+    rows.items().reduce((byGroup, row) => {
       const group = entries()[row.index]?.group
       if (group) {
         const current = byGroup.get(group) ?? []
@@ -60,42 +73,33 @@ export function createVirtualChoices<O extends SelectionOption>(
         byGroup.set(group, current)
       }
       return byGroup
-    }, new Map<OptionGroup<O>, ReturnType<typeof rows.getVirtualItems>>()),
+    }, new Map<OptionGroup<O>, VirtualItem[]>()),
   )
 
   function Render(props: { option: (option: O) => JSX.Element }): JSX.Element {
     return (
-      <div class={styles.virtualTrack} style={{ height: `${rows.getTotalSize()}px` }}>
-        <For each={groups()}>
+      <div class={styles.virtualTrack} style={{ height: `${rows.totalSize()}px` }}>
+        <For each={Array.from(visible().keys())}>
           {(group) => (
-            <Show when={visible().has(group)}>
-              <div role={group.label ? 'group' : undefined} aria-label={group.label}>
-                <For each={visible().get(group)}>
-                  {(row) => (
-                    <div
-                      class={styles.virtualRow}
-                      data-index={row.index}
-                      style={{ transform: `translateY(${row.start}px)` }}
-                      ref={(node) => {
-                        node.dataset.index = String(row.index)
-                        rows.measureElement(node)
-                      }}
+            <div role={group.label ? 'group' : undefined} aria-label={group.label}>
+              <For each={visible().get(group)} keyed={(row) => row.key}>
+                {(row) => (
+                  <VirtualRow virtualizer={rows} item={row()}>
+                    <Show
+                      keyed
+                      when={entries()[row().index]?.option}
+                      fallback={
+                        <div class={styles.groupTitle} aria-hidden="true">
+                          {group.label}
+                        </div>
+                      }
                     >
-                      <Show
-                        when={entries()[row.index]?.option}
-                        fallback={
-                          <div class={styles.groupTitle} aria-hidden="true">
-                            {group.label}
-                          </div>
-                        }
-                      >
-                        {(option) => props.option(option())}
-                      </Show>
-                    </div>
-                  )}
-                </For>
-              </div>
-            </Show>
+                      {(option) => props.option(option)}
+                    </Show>
+                  </VirtualRow>
+                )}
+              </For>
+            </div>
           )}
         </For>
       </div>

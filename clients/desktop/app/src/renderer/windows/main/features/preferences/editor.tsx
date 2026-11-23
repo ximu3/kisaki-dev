@@ -1,6 +1,6 @@
 /** @fileoverview Hosts the complete preference draft and its responsive, independently scrollable sections. */
 
-import { batch, createEffect, createSignal, For, onCleanup, Show } from 'solid-js'
+import { createEffect, createSignal, For, onCleanup, Show } from 'solid-js'
 import { preferenceKeys, type PreferenceKey } from '@kisaki3/desktop-contracts/preferences'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
@@ -64,7 +64,7 @@ export function PreferenceEditor(props: {
   api: MainClient
   pages: readonly NavigationPage[]
   field?: PreferenceKey | undefined
-  bind: (guard: PreferenceEditorGuard) => void
+  bind: (guard: PreferenceEditorGuard) => () => void
   manage: (page: 'themes' | 'fonts') => void
 }) {
   const { api } = props
@@ -105,10 +105,8 @@ export function PreferenceEditor(props: {
     }
 
     const medium = usageMedia.find((value) => key.startsWith(`usage.${value}.`))
-    batch(() => {
-      setGroup(next)
-      setRevealProxy(next === 'network' && key !== 'network.mode')
-    })
+    setGroup(next)
+    setRevealProxy(next === 'network' && key !== 'network.mode')
 
     queueMicrotask(() => {
       tabList
@@ -135,21 +133,25 @@ export function PreferenceEditor(props: {
     }
     return form.submit()
   }
-  props.bind({
-    busy: form.busy,
-    dirty: () => draft.dirty() || !!childEdit()?.draft.dirty(),
-    save,
-    stagedForm: () => (childEdit() ? childForm : undefined),
-  })
+  onCleanup(
+    props.bind({
+      busy: form.busy,
+      dirty: () => draft.dirty() || !!childEdit()?.draft.dirty(),
+      save,
+      stagedForm: () => (childEdit() ? childForm : undefined),
+    }),
+  )
 
   let focused: PreferenceKey | undefined
-  createEffect(() => {
-    const key = props.field
-    if (key && key !== focused && draft.ready()) {
-      locate(key)
-    }
-    focused = draft.ready() ? key : undefined
-  })
+  createEffect(
+    () => [props.field, draft.ready()],
+    ([key, ready]) => {
+      if (key && key !== focused && ready) {
+        locate(key)
+      }
+      focused = ready ? key : undefined
+    },
+  )
 
   function selectGroup(next: Group) {
     setGroup(next)
@@ -205,7 +207,7 @@ export function PreferenceEditor(props: {
                 when={draft.ready()}
                 fallback={!draft.error() && <Spinner label={api.t('runtime.loading')} />}
               >
-                <PreferenceFieldsContext.Provider value={{ draft, t: api.t }}>
+                <PreferenceFieldsContext value={{ draft, t: api.t }}>
                   <TabPanel value="general" class="p-4">
                     <Show when={group() === 'general'}>
                       <GeneralFields api={api} draft={draft} />
@@ -254,7 +256,7 @@ export function PreferenceEditor(props: {
                       <UpdateFields api={api} draft={draft} />
                     </Show>
                   </TabPanel>
-                </PreferenceFieldsContext.Provider>
+                </PreferenceFieldsContext>
               </Show>
             </ScrollArea>
           </Tabs>

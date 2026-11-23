@@ -40,17 +40,21 @@ async function waitForDecision(action: Promise<boolean>, signal?: AbortSignal) {
 
 /** Presents a single confirmation even when a window and its dialog request the same close. */
 export function createCloseConfirmation(t: Translate, reveal: () => Promise<void>) {
-  const [pending, setPending] = createSignal<{
-    guard: EditorGuard
-    waiters: number
-    decision: PromiseWithResolvers<boolean>
-  }>()
+  let pending:
+    | {
+        guard: EditorGuard
+        waiters: number
+        decision: PromiseWithResolvers<boolean>
+      }
+    | undefined
+  const [present, setPresent] = createSignal(false)
   const [busy, setBusy] = createSignal(false)
   const [error, setError] = createSignal('')
 
   function finish(close: boolean) {
-    const item = pending()
-    setPending(undefined)
+    const item = pending
+    pending = undefined
+    setPresent(false)
     setBusy(false)
     setError('')
     item?.decision.resolve(close)
@@ -58,7 +62,7 @@ export function createCloseConfirmation(t: Translate, reveal: () => Promise<void
   onCleanup(() => finish(false))
 
   async function save() {
-    const item = pending()
+    const item = pending
     if (!item) {
       return
     }
@@ -66,22 +70,22 @@ export function createCloseConfirmation(t: Translate, reveal: () => Promise<void
     setBusy(true)
     try {
       const accepted = await item.guard.save()
-      if (pending() === item) {
+      if (pending === item) {
         finish(accepted && !item.guard.dirty())
       }
     } catch (cause) {
-      if (pending() === item) {
+      if (pending === item) {
         setError(cause instanceof Error ? cause.message : String(cause))
       }
     } finally {
-      if (pending() === item) {
+      if (pending === item) {
         setBusy(false)
       }
     }
   }
   return {
     /** Reports whether the confirmation owns the active keyboard scope. */
-    active: () => !!pending(),
+    active: () => !!pending,
     /** Returns immediately for clean editors and coalesces a repeated request for the current draft. */
     async ask(this: void, guard?: EditorGuard, signal?: AbortSignal) {
       if (signal?.aborted) {
@@ -100,15 +104,16 @@ export function createCloseConfirmation(t: Translate, reveal: () => Promise<void
       if (!guard?.dirty()) {
         return true
       }
-      const item = pending() ?? { guard, decision: Promise.withResolvers<boolean>(), waiters: 0 }
+      const item = pending ?? { guard, decision: Promise.withResolvers<boolean>(), waiters: 0 }
       item.waiters++
-      setPending(item)
+      pending = item
+      setPresent(true)
       try {
         const response = reveal().then(() => item.decision.promise)
         return await waitForDecision(response, signal)
       } finally {
         item.waiters--
-        if (item.waiters === 0 && pending() === item) {
+        if (item.waiters === 0 && pending === item) {
           finish(false)
         }
       }
@@ -117,7 +122,7 @@ export function createCloseConfirmation(t: Translate, reveal: () => Promise<void
     Content(this: void) {
       return (
         <Dialog
-          open={!!pending() && !busy()}
+          open={present() && !busy()}
           onOpenChange={(value) => {
             if (!value && !busy()) {
               finish(false)

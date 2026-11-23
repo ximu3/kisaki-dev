@@ -1,9 +1,10 @@
 /** @fileoverview Hoverable, keyboard-readable tooltips with a shared reading lifetime. */
 
-import { createContext, createUniqueId, splitProps, useContext } from 'solid-js'
-import { Dynamic } from 'solid-js/web'
-import type { Accessor, JSX, ParentProps } from 'solid-js'
-import { assignRef, callHandler, createElementRef } from '../../internal/dom'
+import { createContext, createUniqueId, omit, useContext } from 'solid-js'
+import { dynamic } from '@solidjs/web'
+import type { Accessor, ParentProps } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { callHandler, createAnchor } from '../../internal/dom'
 import type { PopupPlacement } from '../../internal/popup/controller'
 import { TooltipSurface } from '../../internal/tooltip/content'
 import { createTooltip } from '../../internal/tooltip/controller'
@@ -17,7 +18,7 @@ interface TooltipState extends ReturnType<typeof createTooltip> {
   id: string
   anchor: Accessor<HTMLElement | undefined>
   /** Registers the trigger for its mounted lifetime. */
-  bindAnchor: (node: HTMLElement) => void
+  bindAnchor: () => (node: HTMLElement) => void
 }
 
 /** Tooltip state shared by its trigger and content within the owning Solid tree. */
@@ -39,12 +40,12 @@ export interface TooltipProps extends ParentProps {
  */
 export function Tooltip(props: TooltipProps): JSX.Element {
   const state = createTooltip(() => props.delayMs)
-  const [anchor, bindAnchor] = createElementRef<HTMLElement>()
+  const [anchor, bindAnchor] = createAnchor<HTMLElement>()
 
   return (
-    <TooltipContext.Provider value={{ ...state, id: createUniqueId(), anchor, bindAnchor }}>
+    <TooltipContext value={{ ...state, id: createUniqueId(), anchor, bindAnchor }}>
       {props.children}
-    </TooltipContext.Provider>
+    </TooltipContext>
   )
 }
 
@@ -54,8 +55,9 @@ export function Tooltip(props: TooltipProps): JSX.Element {
 export function TooltipTrigger(
   props: ButtonProps & { as?: (props: ButtonProps) => JSX.Element },
 ): JSX.Element {
-  const state = useTooltip()
-  const [local, rest] = splitProps(props, [
+  const state = useContext(TooltipContext)
+  const rest = omit(
+    props,
     'as',
     'ref',
     'onClick',
@@ -64,36 +66,34 @@ export function TooltipTrigger(
     'onFocus',
     'onBlur',
     'aria-describedby',
-  ])
+  )
 
+  const Control = dynamic(() => props.as ?? Button)
+  const anchorRef = state.bindAnchor()
   return (
-    <Dynamic
-      component={local.as ?? Button}
+    <Control
       {...rest}
-      ref={(node) => {
-        state.bindAnchor(node)
-        assignRef(local.ref, node)
-      }}
-      aria-describedby={[local['aria-describedby'], state.id].filter(Boolean).join(' ')}
+      ref={[anchorRef, props.ref]}
+      aria-describedby={[props['aria-describedby'], state.id].filter(Boolean).join(' ')}
       onClick={(event) => {
         state.dismiss()
-        callHandler(local.onClick, event)
+        callHandler(props.onClick, event)
       }}
       onPointerEnter={(event) => {
         state.hover('trigger', true)
-        callHandler(local.onPointerEnter, event)
+        callHandler(props.onPointerEnter, event)
       }}
       onPointerLeave={(event) => {
         state.hover('trigger', false)
-        callHandler(local.onPointerLeave, event)
+        callHandler(props.onPointerLeave, event)
       }}
       onFocus={(event) => {
         state.focus(event)
-        callHandler(local.onFocus, event)
+        callHandler(props.onFocus, event)
       }}
       onBlur={(event) => {
         state.focus(event)
-        callHandler(local.onBlur, event)
+        callHandler(props.onBlur, event)
       }}
     />
   )
@@ -108,16 +108,6 @@ export interface TooltipContentProps extends JSX.HTMLAttributes<HTMLDivElement> 
  * Renders hoverable explanation content constrained to the viewport without taking keyboard focus.
  */
 export function TooltipContent(props: TooltipContentProps): JSX.Element {
-  const state = useTooltip()
-  return <TooltipSurface {...props} id={state.id} anchor={state.anchor} reading={state} />
-}
-
-/** Returns the nearest tooltip state and rejects parts rendered outside a Tooltip owner. */
-function useTooltip(): TooltipState {
   const state = useContext(TooltipContext)
-  if (!state) {
-    throw new Error('Tooltip parts require Tooltip.')
-  }
-
-  return state
+  return <TooltipSurface {...props} id={state.id} anchor={state.anchor} reading={state} />
 }

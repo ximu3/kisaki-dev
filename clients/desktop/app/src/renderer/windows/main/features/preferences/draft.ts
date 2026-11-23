@@ -9,7 +9,8 @@ import {
   effectiveShortcutBindings,
   findShortcutConflicts,
 } from '@kisaki3/desktop-contracts/preferences'
-import { createMemo, createResource, createSignal, batch, onCleanup, type Accessor } from 'solid-js'
+import { createMemo, createSignal, onCleanup, type Accessor } from 'solid-js'
+import { createQuery } from '../../../../infrastructure/query'
 import type { FieldIssue } from '@kisaki3/desktop-ui/form'
 import { manualProxyIssue, type ProxyCredentials } from '@kisaki3/desktop-contracts/network'
 import { interfaceScaleRange } from '@kisaki3/desktop-contracts/appearance'
@@ -206,24 +207,24 @@ export type PreferenceFields = ReturnType<typeof createPreferenceFields>
 
 /** Owns this editor's captured field baselines, dirty values and persistence. */
 export function createPreferenceDraft(api: MainClient) {
-  const [snapshot, { refetch, mutate }] = createResource(() => api.call('preferences.get'))
-  const [defaults, defaultActions] = createResource(() => api.call('preferences.defaults'))
+  const snapshot = createQuery((signal) => api.request(signal, 'preferences.get'))
+  const defaults = createQuery((signal) => api.request(signal, 'preferences.defaults'))
   const saved = createMemo<PreferencesSnapshot | undefined>((previous) =>
-    snapshot.error ? previous : snapshot(),
+    snapshot.error ? previous : snapshot.value,
   )
 
   const [edits, setEdits] = createSignal<FieldEdit[]>([])
   const written = new Map<string, { value: unknown }>()
   let submitted: readonly FieldEdit[] = []
   let active = true
-  const reload = () => void refetch()
+  const reload = () => void snapshot.reload()
   api.topics.addEventListener('window.changed', reload)
   onCleanup(() => {
     active = false
     api.topics.removeEventListener('window.changed', reload)
   })
 
-  const availableDefaults = () => (defaults.error ? undefined : defaults())
+  const availableDefaults = () => (defaults.error ? undefined : defaults.value)
 
   function value(key: PreferenceKey) {
     const path = fieldPath(key)
@@ -254,7 +255,7 @@ export function createPreferenceDraft(api: MainClient) {
         issues.push({ id: 'shortcuts.' + key, summary: api.t('runtime.shortcutOverlap') })
       }
     }
-    const fallback = defaults.error ? undefined : defaults()?.network
+    const fallback = defaults.error ? undefined : defaults.value?.network
     const route = base.network.status === 'ready' ? base.network.value : fallback
     if (changes.network && route) {
       const next = { ...route, ...changes.network }
@@ -293,10 +294,8 @@ export function createPreferenceDraft(api: MainClient) {
             ? editField([], { ...edit, original: fieldValue(result, edit.path) })
             : [edit],
         )
-      batch(() => {
-        mutate(result)
-        setEdits(remaining)
-      })
+      snapshot.accept(result)
+      setEdits(remaining)
     } catch (cause) {
       if (active) {
         setEdits((items) =>
@@ -373,10 +372,10 @@ export function createPreferenceDraft(api: MainClient) {
     error: (): unknown => snapshot.error ?? defaults.error,
     retry: () => {
       if (snapshot.error) {
-        void refetch()
+        void snapshot.reload()
       }
       if (defaults.error) {
-        void defaultActions.refetch()
+        void defaults.reload()
       }
     },
     validate,

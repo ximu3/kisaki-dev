@@ -10,3 +10,4 @@ export {
   TableCell,
   TableCaption,
 } from './parts'
+export { ScrollableTable, TableSpacer, type ScrollableTableProps } from './scrollable'

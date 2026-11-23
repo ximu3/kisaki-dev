@@ -1,7 +1,7 @@
 /** @fileoverview The editor's format buttons share its live state, selection and keyboard tab stop. */
 
 import { createMemo, createSignal, For, Show } from 'solid-js'
-import type { JSX } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import type { EditorState } from '@codemirror/state'
 import type { EditorView } from '@codemirror/view'
 import { redoDepth, undoDepth } from '@codemirror/commands'
@@ -18,8 +18,8 @@ import {
   Link,
   Redo2,
   Undo2,
-} from 'lucide-solid'
-import type { LucideIcon } from 'lucide-solid'
+} from '@lucide/solid'
+import type { LucideIcon } from '@lucide/solid'
 import { createFocusNavigation } from '../../internal/focus'
 import { Icon } from '../../internal/icon/glyph'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../tooltip/parts'
@@ -189,7 +189,7 @@ export function MarkdownToolbar<C extends MarkdownCommand>(props: ToolbarProps<C
                   variant="ghost"
                   aria-label={action().label}
                   disabled={!enabled().includes(id)}
-                  tabIndex={tabStop() === id ? 0 : -1}
+                  tabindex={tabStop() === id ? 0 : -1}
                   onFocus={() => setFocusedId(id)}
                   onPointerDown={(event) => event.preventDefault()}
                   onClick={() => {

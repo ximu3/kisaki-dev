@@ -1,7 +1,7 @@
 /** @fileoverview Presents work timing, media editor entries and the short media forms. */
 
 import { For } from 'solid-js'
-import { ChevronRight } from 'lucide-solid'
+import { ChevronRight } from '@lucide/solid'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { FieldGroup, FieldLegend } from '@kisaki3/desktop-ui/field'
 import { Input, NumberInput } from '@kisaki3/desktop-ui/input'

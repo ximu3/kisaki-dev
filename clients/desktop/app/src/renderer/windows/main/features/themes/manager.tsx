@@ -1,7 +1,8 @@
 /** @fileoverview Lists installed themes and opens their independent preview and edit. */
 
-import { createMemo, createResource, createSignal, For, onCleanup, Show } from 'solid-js'
-import { Check, Copy, Eye, Palette, Pencil, Plus, Trash2 } from 'lucide-solid'
+import { createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
+import { createQuery } from '../../../../infrastructure/query'
+import { Check, Copy, Eye, Palette, Pencil, Plus, Trash2 } from '@lucide/solid'
 import type { Theme, ThemeRef } from '@kisaki3/desktop-contracts/appearance'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Badge } from '@kisaki3/desktop-ui/badge'
@@ -32,21 +33,23 @@ const initialTheme = { type: 'builtin', id: 'default' } as const
 export function Themes(props: {
   api: MainClient
   target?: ThemeRef | undefined
-  bind: (guard: EditorGuard) => void
+  bind: (guard: EditorGuard) => () => void
   confirm: (guard: EditorGuard) => Promise<boolean>
 }) {
   const { api } = props
-  const [catalog, { refetch }] = createResource(() => api.call('themes.list'))
-  const [preferences, savedActions] = createResource(() => api.call('preferences.get'))
+  const catalog = createQuery((signal) => api.request(signal, 'themes.list'))
+  const preferences = createQuery((signal) => api.request(signal, 'preferences.get'))
   deferDialogUntil(
-    () => (!!catalog.error || !!catalog()) && (!!preferences.error || !!preferences()),
+    () => (!!catalog.error || !!catalog.value) && (!!preferences.error || !!preferences.value),
   )
   const entries = createMemo(
     () =>
-      new Map((catalog.error ? [] : (catalog() ?? [])).map((item) => [catalogKey(item.ref), item])),
+      new Map(
+        (catalog.error ? [] : (catalog.value ?? [])).map((item) => [catalogKey(item.ref), item]),
+      ),
   )
   const current = () => {
-    const value = preferences.error ? undefined : preferences()?.appearance.theme
+    const value = preferences.error ? undefined : preferences.value?.appearance.theme
     return value?.status === 'ready' ? value.value : undefined
   }
   const activeKey = () => {
@@ -64,8 +67,8 @@ export function Themes(props: {
   const confirm = createConfirmation(api.t)
   let alive = true
 
-  const refresh = () => void refetch()
-  const reloadSelection = () => void savedActions.refetch()
+  const refresh = () => void catalog.reload()
+  const reloadSelection = () => void preferences.reload()
   api.topics.addEventListener('themes.changed', refresh)
   api.topics.addEventListener('window.changed', reloadSelection)
   onCleanup(() => {
@@ -96,7 +99,7 @@ export function Themes(props: {
   }
 
   async function reveal(ref: ThemeRef) {
-    await refetch()
+    await catalog.reload()
     requestAnimationFrame(() =>
       document.getElementById('theme-preview-' + catalogKey(ref))?.focus(),
     )
@@ -112,7 +115,7 @@ export function Themes(props: {
       changes: { appearance: { theme: ref } },
       ...(old && { expected: { appearance: { theme: old } } }),
     })
-    savedActions.mutate(next)
+    preferences.accept(next)
   }
 
   async function remove(id: string, name: string) {
@@ -158,7 +161,7 @@ export function Themes(props: {
             </Alert>
           )}
         </Show>
-        <Show when={catalog.loading && !entries().size}>
+        <Show when={catalog.pending && !entries().size}>
           <Spinner label={api.t('runtime.loading')} />
         </Show>
         <List>
@@ -189,7 +192,7 @@ export function Themes(props: {
                         <ListItemAction
                           label={api.t('runtime.use')}
                           aria-label={api.t('runtime.useThemeItem', { name: item().name })}
-                          disabled={busy() || preferences.loading || !!preferences.error}
+                          disabled={busy() || preferences.pending || !!preferences.error}
                           onClick={() => operate(() => useTheme(item().ref))}
                         >
                           <Check />

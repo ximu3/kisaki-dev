@@ -1,6 +1,6 @@
 /** @fileoverview Presents one explicit destructive decision in the initiating dialog's scope. */
 
-import { createMemo, createSignal, onCleanup, Show } from 'solid-js'
+import { createSignal, onCleanup, Show } from 'solid-js'
 import {
   AlertDialogContent,
   Dialog,
@@ -15,43 +15,31 @@ import type { Translate } from '@kisaki3/desktop-localization'
 
 /** Asks about a named action and resolves false when its owner or dialog closes. */
 export function createConfirmation(t: Translate) {
-  const [pending, setPending] = createSignal<{
-    title: string
-    action: string
-    description: string
-    decision: PromiseWithResolvers<boolean>
-  }>()
+  let decision: PromiseWithResolvers<boolean> | undefined
+  const [prompt, setPrompt] = createSignal<{ title: string; action: string; description: string }>()
+  const [open, setOpen] = createSignal(false)
 
   function finish(accepted: boolean) {
-    const current = pending()
-    setPending(undefined)
-    current?.decision.resolve(accepted)
+    const current = decision
+    decision = undefined
+    setOpen(false)
+    current?.resolve(accepted)
   }
   onCleanup(() => finish(false))
 
   function ask(title: string, action: string, description: string) {
-    const current = pending()
-    if (current) {
-      return current.decision.promise
+    if (!decision) {
+      decision = Promise.withResolvers<boolean>()
+      setPrompt({ title, action, description })
+      setOpen(true)
     }
-    const decision = Promise.withResolvers<boolean>()
-    setPending({ title, action, description, decision })
     return decision.promise
   }
 
   function Content() {
-    const displayed = createMemo<
-      { title: string; action: string; description: string } | undefined
-    >((last) => {
-      const value = pending()
-      return value
-        ? { title: value.title, action: value.action, description: value.description }
-        : last
-    }, undefined)
-
     return (
       <Dialog
-        open={!!pending()}
+        open={open()}
         onOpenChange={(open) => {
           if (!open) {
             finish(false)
@@ -60,9 +48,9 @@ export function createConfirmation(t: Translate) {
       >
         <AlertDialogContent>
           <DialogHeader>
-            <DialogTitle>{displayed()?.title}</DialogTitle>
+            <DialogTitle>{prompt()?.title}</DialogTitle>
           </DialogHeader>
-          <Show when={displayed()?.description}>
+          <Show when={prompt()?.description}>
             {(description) => (
               <DialogBody>
                 <DialogDescription>{description()}</DialogDescription>
@@ -74,7 +62,7 @@ export function createConfirmation(t: Translate) {
               {t('actions.cancel')}
             </Button>
             <Button variant="destructive" onClick={() => finish(true)}>
-              {displayed()?.action}
+              {prompt()?.action}
             </Button>
           </DialogFooter>
         </AlertDialogContent>

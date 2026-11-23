@@ -1,6 +1,7 @@
 /** @fileoverview Edits proxy settings and displays adoption state from the main process. */
 
-import { createResource, onCleanup, Show } from 'solid-js'
+import { onCleanup, Show } from 'solid-js'
+import { createQuery } from '../../../../infrastructure/query'
 import type { ProxyCredentials } from '@kisaki3/desktop-contracts/network'
 import type { Translate } from '@kisaki3/desktop-localization'
 import { Alert } from '@kisaki3/desktop-ui/alert'
@@ -25,12 +26,12 @@ export function NetworkFields(props: {
   configureCredentials: () => void
 }) {
   const { api, draft } = props
-  const [state, { refetch }] = createResource(() => api.call('network.state'))
-  const refresh = () => void refetch()
+  const state = createQuery((signal) => api.request(signal, 'network.state'))
+  const refresh = () => void state.reload()
   api.topics.addEventListener('network.changed', refresh)
   onCleanup(() => api.topics.removeEventListener('network.changed', refresh))
 
-  const adoption = () => (state.error ? undefined : state())
+  const adoption = () => (state.error ? undefined : state.value)
   const failure = () => {
     const current = adoption()
     return current?.status === 'failed' ? current.error : undefined
@@ -154,7 +155,7 @@ export function ProxyCredentialFields(props: { t: Translate; draft: PreferenceFi
   }
 
   return (
-    <FieldGroup data-field-key={proxyCredentialsKey} tabIndex={-1}>
+    <FieldGroup data-field-key={proxyCredentialsKey} tabindex={-1}>
       <div data-preference-value class="grid gap-3">
         <Field name={proxyCredentialsKey}>
           <FieldLabel>{t('runtime.username')}</FieldLabel>

@@ -1,6 +1,6 @@
 /** @fileoverview Owns a font edit's file set, inspected preparations and persistence baseline. */
 
-import { batch, createMemo, createSignal, onCleanup } from 'solid-js'
+import { createMemo, createSignal, onCleanup } from 'solid-js'
 import type { Font } from '@kisaki3/desktop-contracts/fonts'
 import type { FontChoice, FontFileChoice } from '../../../../../shared/window-api'
 import type { MainClient } from '../../../../infrastructure/api'
@@ -56,8 +56,8 @@ export function createFontDraft(api: MainClient, initial: Font | null) {
         void release(result.file).catch(reportError)
         return
       }
-      if (!nameEdited && !name()) {
-        setName(result.file.metadata.faces[0].family)
+      if (!nameEdited) {
+        setName((current) => current || result.file.metadata.faces[0].family)
       }
     }
     if (active) {
@@ -77,11 +77,9 @@ export function createFontDraft(api: MainClient, initial: Font | null) {
     setChoosing(true)
     try {
       const selected = await api.call('fonts.choose')
-      batch(() => {
-        for (const result of selected ?? []) {
-          adopt(nextKey++, result)
-        }
-      })
+      for (const result of selected ?? []) {
+        adopt(nextKey++, result)
+      }
     } finally {
       if (active) {
         setChoosing(false)
@@ -138,29 +136,31 @@ export function createFontDraft(api: MainClient, initial: Font | null) {
     const retained =
       old?.files.map((file) => file.attachmentId).filter((id) => kept().includes(id)) ?? []
     const addedFiles = added()
-    submitted = addedFiles.map((entry) => entry.file)
+    const sent = addedFiles.map((entry) => entry.file)
+    submitted = sent
+    let committed = false
+
     try {
-      const ids = submitted.map((file) => file.id)
+      const ids = sent.map((file) => file.id)
       const result = old
         ? await api.call('fonts.editFiles', old.id, sentName, retained, ids, old)
         : await api.call('fonts.import', sentName, ids)
+      committed = true
       if (active) {
-        batch(() => {
-          setOriginal(result)
-          setKept(result.files.map((file) => file.attachmentId))
-          setFiles((current) =>
-            current.filter((entry) => !addedFiles.some(({ key }) => key === entry.key)),
-          )
-        })
+        setOriginal(result)
+        setKept(result.files.map((file) => file.attachmentId))
+        setFiles((current) =>
+          current.filter((entry) => !addedFiles.some(({ key }) => key === entry.key)),
+        )
       }
       return result
     } finally {
-      const sent = submitted
       submitted = []
-      const retained = new Set(added().map((entry) => entry.file))
+      const retryable =
+        active && !committed ? new Set(added().map((entry) => entry.file)) : undefined
       await Promise.all(
         sent
-          .filter((file) => !active || !retained.has(file))
+          .filter((file) => !retryable?.has(file))
           .map((file) => release(file).catch(reportError)),
       )
     }

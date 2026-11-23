@@ -34,9 +34,11 @@ export function bindRadioSelection(
     sync()
   }
 
-  createEffect(() => {
-    value()
-    nativeValidityChanged(group().form)
-  })
+  createEffect(
+    () => value(),
+    () => {
+      nativeValidityChanged(group().form)
+    },
+  )
   return [value, change] as const
 }

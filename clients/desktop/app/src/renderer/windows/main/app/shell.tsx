@@ -3,14 +3,14 @@
 import {
   createEffect,
   createMemo,
-  createResource,
   createSignal,
   For,
   onCleanup,
   Show,
   type ParentProps,
 } from 'solid-js'
-import { Ellipsis, ListChecks } from 'lucide-solid'
+import { createQuery } from '../../../infrastructure/query'
+import { Ellipsis, ListChecks } from '@lucide/solid'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@kisaki3/desktop-ui/tooltip'
 import { Popover, PopoverContent, PopoverTrigger } from '@kisaki3/desktop-ui/popover'
 import type { PreferencesSnapshot, PreferencesUpdate } from '@kisaki3/desktop-contracts/preferences'
@@ -36,22 +36,26 @@ export function AppShell(
   }>,
 ) {
   const { api } = props
-  const [active, { refetch }] = createResource(() =>
-    api.call(
+  const active = createQuery((signal) =>
+    api.request(
+      signal,
       'tasks.list',
       { statuses: taskRunStatuses.filter((status) => !isTaskTerminal(status)) },
       { limit: 1, offset: 0 },
     ),
   )
-  const refresh = () => void refetch()
+  const refresh = () => void active.reload()
   api.topics.addEventListener('tasks.changed', refresh)
   onCleanup(() => api.topics.removeEventListener('tasks.changed', refresh))
 
-  createEffect(() => {
-    if (active.error) {
-      reportError(active.error)
-    }
-  })
+  createEffect(
+    () => active.error,
+    (error) => {
+      if (error) {
+        reportError(error)
+      }
+    },
+  )
 
   const order = () => {
     const saved = props.preferences?.navigation.order
@@ -153,7 +157,7 @@ export function AppShell(
                 onClick={() => void props.open({ type: 'tasks' })}
               >
                 <ListChecks />
-                <Show when={!active.error && active()?.total}>
+                <Show when={!active.error && active.value?.total}>
                   {(n) => (
                     <span
                       aria-hidden="true"

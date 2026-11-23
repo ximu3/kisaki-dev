@@ -25,6 +25,30 @@ test('virtual selection keeps offscreen values while keyboard navigation mounts 
     'aria-activedescendant',
     (await last.getAttribute('id'))!,
   )
+
+  const scrollBeforeGrowth = await list.evaluate((viewport) => {
+    const top = viewport.getBoundingClientRect().top
+    const previous = Array.from(viewport.querySelectorAll<HTMLElement>('[data-index]'))
+      .reverse()
+      .find((row) => row.getBoundingClientRect().bottom <= top)!
+    previous.style.height = `${previous.getBoundingClientRect().height + 68}px`
+    return viewport.scrollTop
+  })
+  await browserExpect
+    .poll(() => list.evaluate((viewport) => viewport.scrollTop))
+    .toBeGreaterThan(scrollBeforeGrowth)
+  await browserExpect(last.getByText('Item 10000', { exact: true })).toBeInViewport({ ratio: 1 })
+
+  await list.evaluate((node) => {
+    node.scrollTop = 0
+  })
+  await browserExpect(page.getByRole('option', { name: 'Item 1', exact: true })).toBeInViewport()
+  await browserExpect(last).not.toBeInViewport()
+  await browserExpect(last).toHaveAttribute(
+    'id',
+    (await trigger.getAttribute('aria-activedescendant'))!,
+  )
+
   await trigger.press('Space')
   const closing = await list.evaluate((viewport) => {
     const panel = viewport.closest<HTMLElement>('[popover]')!
