@@ -3,32 +3,38 @@
 import { createEffect, createMemo, onCleanup, Show } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { Dialog, DialogContent, type DialogContentProps } from '@kisaki3/desktop-ui/dialog'
+import { reportError } from '../notifications'
 import type { EditorGuard } from './closing'
 
-/** Mounts one guarded item editor while preserving the catalog below it. */
-export function EditorDialog<T>(props: {
-  value: T | undefined
+/** Gives the mounted editor its lifetime registration and cancel action. */
+interface EditorDialogControls {
+  registerEditor: (guard: EditorGuard) => void
+  requestClose: () => void
+}
+
+/** Receives one opening's initial values and the catalog's close coordination. */
+interface EditorDialogProps<T extends object> {
+  edit: T | undefined
   size: NonNullable<DialogContentProps['size']>
-  bind: (guard: EditorGuard) => () => void
-  confirm: (guard: EditorGuard) => Promise<boolean>
-  close: () => void
-  children: (
-    controls: { bind: (guard: EditorGuard) => void; cancel: () => void },
-    value: T,
-  ) => JSX.Element
-}) {
+  registerEditor: (guard: EditorGuard) => () => void
+  confirmLeave: (guard: EditorGuard) => Promise<boolean>
+  onClose: () => void
+  children: (edit: T, controls: EditorDialogControls) => JSX.Element
+}
+
+/** Mounts one guarded item editor while preserving the catalog below it. */
+export function EditorDialog<T extends object>(props: EditorDialogProps<T>) {
   let guard: EditorGuard | undefined
 
-  function bind(next: EditorGuard) {
-    const entry = props.value
+  function registerEditor(edit: T, next: EditorGuard) {
     guard = next
 
     // The draft can remain visible during exit after its close guard has been released.
     createEffect(
-      () => props.value,
+      () => props.edit,
       (value) => {
-        if (entry !== undefined && value === entry) {
-          return props.bind(next)
+        if (value === edit) {
+          return props.registerEditor(next)
         }
       },
     )
@@ -39,27 +45,43 @@ export function EditorDialog<T>(props: {
     })
   }
 
-  async function cancel() {
-    if (!guard || (await props.confirm(guard))) {
-      props.close()
+  async function close(edit: T) {
+    const current = guard
+    if (
+      (!current || (await props.confirmLeave(current))) &&
+      props.edit === edit &&
+      guard === current
+    ) {
+      props.onClose()
+    }
+  }
+
+  function requestClose(edit = props.edit) {
+    if (edit !== undefined && edit === props.edit) {
+      void close(edit).catch(reportError)
     }
   }
 
   function DraftContent() {
-    const displayed = createMemo<T | undefined>((last) => props.value ?? last)
+    const displayed = createMemo<T | undefined>((last) => props.edit ?? last)
     return (
       <Show when={displayed()} keyed>
-        {(value) => props.children({ bind, cancel: () => void cancel() }, value)}
+        {(edit) =>
+          props.children(edit, {
+            registerEditor: (guard) => registerEditor(edit, guard),
+            requestClose: () => requestClose(edit),
+          })
+        }
       </Show>
     )
   }
 
   return (
     <Dialog
-      open={props.value !== undefined}
+      open={props.edit !== undefined}
       onOpenChange={(open) => {
-        if (!open && props.value !== undefined) {
-          void cancel()
+        if (!open) {
+          requestClose()
         }
       }}
     >
@@ -67,7 +89,7 @@ export function EditorDialog<T>(props: {
         size={props.size}
         onCloseRequest={(event) => {
           event.preventDefault()
-          void cancel()
+          requestClose()
         }}
       >
         <DraftContent />

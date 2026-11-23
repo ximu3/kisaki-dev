@@ -17,11 +17,15 @@ import type { Translate } from '@kisaki3/desktop-localization'
 export interface EditorGuard {
   busy: () => boolean
   dirty: () => boolean
+  /** Joins an in-flight save. Validation resolves false and write failures reject. */
   save: () => Promise<boolean>
+
+  /** Returns the current child edit's confirm action while that form owns the save shortcut. */
+  currentFormAction?: () => (() => Promise<boolean>) | undefined
 }
 
-/** Cancels one request for a decision while allowing independent callers or a save to finish. */
-async function waitForDecision(action: Promise<boolean>, signal?: AbortSignal) {
+/** Cancels one wait without interrupting the operation or any other waiters. */
+export async function waitForDecision(action: Promise<boolean>, signal?: AbortSignal) {
   if (!signal) {
     return action
   }
@@ -38,13 +42,14 @@ async function waitForDecision(action: Promise<boolean>, signal?: AbortSignal) {
   }
 }
 
-/** Presents a single confirmation even when a window and its dialog request the same close. */
+/** Presents one draft's leave decision and shares it with repeat requests for that draft. */
 export function createCloseConfirmation(t: Translate, reveal: () => Promise<void>) {
   let pending:
     | {
         guard: EditorGuard
         waiters: number
         decision: PromiseWithResolvers<boolean>
+        reveal: Promise<void>
       }
     | undefined
   const [present, setPresent] = createSignal(false)
@@ -86,12 +91,16 @@ export function createCloseConfirmation(t: Translate, reveal: () => Promise<void
   return {
     /** Reports whether the confirmation owns the active keyboard scope. */
     active: () => !!pending,
-    /** Returns immediately for clean editors and coalesces a repeated request for the current draft. */
+    /** Allows a clean editor to leave, shares a matching decision and declines a competing draft. */
     async ask(this: void, guard?: EditorGuard, signal?: AbortSignal) {
       if (signal?.aborted) {
         return false
       }
-      if (guard?.busy()) {
+      if (!guard) {
+        return true
+      }
+
+      if (!pending && guard.busy()) {
         try {
           if (!(await waitForDecision(guard.save(), signal))) {
             return false
@@ -101,15 +110,29 @@ export function createCloseConfirmation(t: Translate, reveal: () => Promise<void
           return false
         }
       }
-      if (!guard?.dirty()) {
+
+      const current = pending
+      if (signal?.aborted || (current && current.guard !== guard)) {
+        return false
+      }
+      if (!current && !guard.dirty()) {
         return true
       }
-      const item = pending ?? { guard, decision: Promise.withResolvers<boolean>(), waiters: 0 }
+
+      const item = current ?? {
+        guard,
+        decision: Promise.withResolvers<boolean>(),
+        reveal: Promise.resolve().then(reveal),
+        waiters: 0,
+      }
       item.waiters++
-      pending = item
-      setPresent(true)
+      if (!current) {
+        pending = item
+        setPresent(true)
+      }
+
       try {
-        const response = reveal().then(() => item.decision.promise)
+        const response = item.reveal.then(() => item.decision.promise)
         return await waitForDecision(response, signal)
       } finally {
         item.waiters--

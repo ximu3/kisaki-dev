@@ -28,13 +28,16 @@ import { FontDetails, type FontSelection } from './details'
 /** Number of catalog entries read in one interval. */
 const pageSize = 50
 
-/** Keeps the catalog query and viewport mounted beneath item dialogs. */
-export function Fonts(props: {
+/** Receives an optional preview target and the window's editor scope. */
+interface FontsProps {
   api: MainClient
   target?: string | undefined
-  bind: (guard: EditorGuard) => () => void
-  confirm: (guard: EditorGuard) => Promise<boolean>
-}) {
+  registerEditor: (guard: EditorGuard) => () => void
+  confirmLeave: (guard: EditorGuard) => Promise<boolean>
+}
+
+/** Keeps the catalog query and viewport mounted beneath item dialogs. */
+export function Fonts(props: FontsProps) {
   const { api } = props
   const [offset, setOffset] = createSignal(0)
   const list = createQuery({
@@ -242,20 +245,20 @@ export function Fonts(props: {
 
       <FontDetails api={api} selected={preview()} close={() => setPreview(undefined)} />
       <EditorDialog
-        value={edit()}
+        edit={edit()}
         size="lg"
-        bind={props.bind}
-        confirm={props.confirm}
-        close={() => setEdit(undefined)}
+        registerEditor={props.registerEditor}
+        confirmLeave={props.confirmLeave}
+        onClose={() => setEdit(undefined)}
       >
-        {(controls, value) => (
+        {(value, controls) => (
           <FontEditor
             api={api}
             initial={value.font}
             files={value.files}
-            bind={controls.bind}
-            cancel={controls.cancel}
-            saved={(font) => void saved(font).catch(reportError)}
+            registerEditor={controls.registerEditor}
+            requestClose={controls.requestClose}
+            onSaved={(font) => void saved(font).catch(reportError)}
           />
         )}
       </EditorDialog>
