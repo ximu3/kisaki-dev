@@ -1,4 +1,4 @@
-/* The main navigation rail shares one visual action across pages and fixed tools. */
+/* The navigation rail and its More panel share a current-page indicator. */
 
 @layer components {
   .app-rail .rail-action {
@@ -6,16 +6,18 @@
     color: var(--chrome-foreground);
   }
 
-  .app-rail .rail-action:is(:hover, [aria-expanded='true'], [aria-current='page'], [data-current]) {
+  .app-rail .rail-action:is(:hover, [aria-expanded='true'], [data-current]),
+  .app-rail [aria-current='page'] {
     background: var(--accent);
     color: var(--accent-foreground);
   }
 
-  .rail-action[aria-current='page'] {
+  .app-rail [aria-current='page'] {
+    position: relative;
     box-shadow: var(--shadow-raised);
   }
 
-  .rail-action[aria-current='page']::before {
+  .app-rail [aria-current='page']::before {
     content: '';
     position: absolute;
     inline-size: 0.125rem;
@@ -30,7 +32,7 @@
   }
 
   @media (forced-colors: active) {
-    .rail-action[aria-current='page']::before {
+    .app-rail [aria-current='page']::before {
       background: Highlight;
       forced-color-adjust: none;
     }
