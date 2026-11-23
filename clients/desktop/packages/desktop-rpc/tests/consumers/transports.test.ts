@@ -22,10 +22,14 @@ test('parent and child exchange nested calls, cancellation, errors and release o
   signal,
 }) => {
   const directory = await prepareConsumer('node', signal)
-  await run(process.execPath, [join(directory, '.cache/node/parent.js')], {
-    cwd: directory,
-    signal,
-  })
+  await run(
+    process.env.KISAKI_CONSUMER_NODE ?? process.execPath,
+    [join(directory, '.cache/node/parent.js')],
+    {
+      cwd: directory,
+      signal,
+    },
+  )
 })
 
 test('sandboxed window and main exchange structured clones and release waits on window destruction', async ({

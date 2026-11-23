@@ -32,7 +32,7 @@
 | 本地 chapter.url 是作品目录与成员路径                           | 可在用户明确的持久根解析，不使用 Android content URI   | [LocalSource](https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/source-local/src/main/kotlin/tachiyomi/source/local/LocalSource.kt)                                                                                                                                                                                           |
 | 下载目录 sortedBy(name)，本地目录和归档使用自然比较             | 先恢复来源页序，再转 memberPath；不能统一套一个排序器  | [DownloadManager](https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/data/download/DownloadManager.kt)、[ArchivePageLoader](https://github.com/mihonapp/mihon/blob/9612d955db3165e1578fdf9ff19ca9b7762c4a46/app/src/main/java/eu/kanade/tachiyomi/ui/reader/loader/ArchivePageLoader.kt) |
 
-[选定字段声明](source-fields.json)从两代 14 个模型文件提取 123 处字段声明，排除同文件中另行定义的 BrokenBackupHistory／BrokenBackupSource。验证脚本逐模型核对所选 schema 字段的编号；没有声称为所有可选消息提供完整恢复。
+[固定字段声明](source-fields.json)从两代 14 个模型文件提取 123 处字段声明，排除同文件中另行定义的 BrokenBackupHistory／BrokenBackupSource。验证脚本按版本及模型列明不采用的字段，对其余字段逐个核对存在、编号、类型与重复性，再核对 schema 恰好是两代所选投影的并集。试件保留所选 wire 字段，字段是否采用为本体事实仍按[正式来源方案](../../../design/extensions/importers/mihon.md)判断。
 
 <a id="fixtures"></a>
 
@@ -44,11 +44,11 @@
 
 9 个输入夹具包括原始 protobuf、当前 gzip、旧版 gzip、坏 CRC gzip、拒绝用 legacy JSON、实际 CBZ 和三个下载目录 PNG。CBZ 与图片目录包含 1.png、2.png、10.png，可观察自然排序与文件名排序的页位差异。PNG 为生成的一像素 RGBA 图，脚本核对实际解压后的扫描行；它不是用户漫画。
 
-[verify.mjs](verify.mjs)已通过 **97 项检查**，详见 [synthetic-results.json](synthetic-results.json)。全部输入文件在读取前后与 [manifest](fixture-manifest.json) 的 SHA-256 一致，未写源文件。检查涵盖字段编号、gzip／raw 一致、必填字段、64 位精度、版本评分、状态零值、分类歧义、旧新追踪 ID 冲突、历史字段、实际归档页序、缺省零页、越界值和路径边界。
+[更新后的验证](verify.mjs)完成 [104 项检查](projection-results.json)。在独立副本删除已选的 BackupManga.thumbnailUrl 后，字段投影断言在读模型检查中报缺失。原[97 项检查收据](synthetic-results.json)保留，其中按已有 schema 字段核对编号的断言无法检出这种漏项。全部输入文件在读取前后与 [manifest](fixture-manifest.json) 的 SHA-256 一致。语义检查仍覆盖 gzip／raw 一致、必填字段、64 位精度、版本评分、状态零值、分类歧义、旧新追踪 ID 冲突、历史字段、实际归档页序、缺省零页、越界值和路径边界。
 
 脚本的 8 MiB 体积限制仅用于这组小夹具，不代替正式扩展对实际规模、层级、条目数和解压资源的完整预算。自然比较探针只覆盖简单 ASCII 数字文件名，不是来源比较器的完整替代品。设计中的整套文件命名变体、符号链接检查、真实图片探测、身份匹配和本体采用仍须实现。
 
-有效 readDuration 按选定来源范围归集到 Work，依据[附加时长合同](../../../design/domains/records.md#duration)采用绝对值。格式验证包含 97 项检查，累计采用另有[33 项模型检查](../koodo-importer/duration-results.json)；正式写入与统计由实际本体接入验收。
+有效 readDuration 按选定来源范围归集到 Work，依据[附加时长合同](../../../design/domains/records.md#duration)采用绝对值。累计采用另有[33 项模型检查](../koodo-importer/duration-results.json)，正式写入与统计由实际本体接入验收。
 
 <a id="reproduce"></a>
 

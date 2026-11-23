@@ -35,6 +35,6 @@
 
 复现时将 drizzle 复制到新的隔离目录，使用 `pnpm --dir <fixture> install --ignore-workspace --ignore-scripts --frozen-lockfile` 安装，再用仓库 tsc 按 fixture 的配置编译。通过 KISAKI_PROBE_APP_PACKAGE 提供隔离运行依赖项目的绝对 package.json 路径，由执行脚本加载对应的 better-sqlite3，并以匹配的 Electron 启动。
 
-从仓库根使用 child_process.spawn 或 spawnSync 启动该 Electron，以 fixture/run.cjs 为入口，设置 windowsHide: true。执行在 Node 模式中使用独立 runs、数据库和 profile，并写入 fixture/results.json。SQL 再生成使用另一份干净 fixture，依次以 baseline 和最终 schema 运行 Kit generate，比较生成语义。
+从仓库根使用 child_process.spawn 或 spawnSync 启动该 Electron，以 fixture/run.cjs 为入口，设置 windowsHide: true。run.cjs 在真实 Electron 主进程使用 app.whenReady()，启动时应清除 ELECTRON_RUN_AS_NODE。执行使用独立 runs、数据库和 profile，并写入 fixture/results.json。SQL 再生成使用另一份干净 fixture，依次以 baseline 和最终 schema 运行 Kit generate，比较生成语义。
 
 原始结果保持其固定版本与环境。后续重现记录自己的输入；正式验收覆盖完整 schema、codec、端点、全部目标与包内资源。

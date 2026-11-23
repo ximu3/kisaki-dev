@@ -4,8 +4,8 @@ import type { Accessor } from 'solid-js'
 /**
  * Creates a controlled-or-local value accessor and change requester from a captured initial value.
  *
- * A defined external value remains authoritative. Requests equal to the exposed value by Object.is
- * produce no notification.
+ * A defined external value remains authoritative. Removing it restores the previous local value.
+ * Requests equal to the exposed value by Object.is produce no notification.
  */
 export function createValue<T>(
   value: Accessor<T | undefined>,
@@ -27,7 +27,9 @@ export function createValue<T>(
         return
       }
 
-      setLocal(() => next)
+      if (untrack(controlled) === undefined) {
+        setLocal(() => next)
+      }
       changed(next)
     },
   ]

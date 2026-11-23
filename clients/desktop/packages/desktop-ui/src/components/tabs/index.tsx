@@ -33,6 +33,11 @@ const TabsContext = createContext<{
   activation: Accessor<'automatic' | 'manual'>
 }>()
 
+function tabIds(group: string, value: string) {
+  const suffix = Array.from(value, (character) => character.codePointAt(0)!.toString(16)).join('-')
+  return { tab: `${group}-tab-${suffix}`, panel: `${group}-panel-${suffix}` }
+}
+
 /**
  * Controlled or local tab selection with orientation and activation policy.
  *
@@ -77,7 +82,10 @@ export function Tabs(props: TabsProps): JSX.Element {
       const items = registered()
       const requested = value()
       const requestedIndex = items.indexOf(requested)
-      if (requestedIndex >= 0 || props.value !== undefined) {
+      if (requestedIndex >= 0) {
+        return { requested, selected: requested, index: requestedIndex }
+      }
+      if (props.value !== undefined) {
         return { requested, selected: requested || first(), index: Math.max(0, requestedIndex) }
       }
 
@@ -99,7 +107,7 @@ export function Tabs(props: TabsProps): JSX.Element {
         focusValue: () => {
           const tabs = registered()
           const entry = focused()
-          if (entry && tabs.includes(entry)) {
+          if (entry !== undefined && tabs.includes(entry)) {
             return entry
           }
           const selected = selection().selected
@@ -212,6 +220,7 @@ export interface TabProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
 export function Tab(props: TabProps): JSX.Element {
   const tabs = useContext(TabsContext)
   const rest = omit(props, 'value', 'class', 'onClick', 'onFocus')
+  const ids = createMemo(() => tabIds(tabs.id, props.value))
 
   createEffect(
     () => (props.disabled ? undefined : props.value),
@@ -227,9 +236,9 @@ export function Tab(props: TabProps): JSX.Element {
       type="button"
       {...rest}
       role="tab"
-      id={`${tabs.id}-tab-${props.value}`}
+      id={ids().tab}
       data-value={props.value}
-      aria-controls={`${tabs.id}-panel-${props.value}`}
+      aria-controls={ids().panel}
       aria-selected={tabs.value() === props.value ? 'true' : 'false'}
       tabindex={tabs.focusValue() === props.value ? 0 : -1}
       class={[segmented.item, styles.tab, props.class]}
@@ -256,14 +265,15 @@ export interface TabPanelProps extends JSX.HTMLAttributes<HTMLDivElement> {
 export function TabPanel(props: TabPanelProps): JSX.Element {
   const tabs = useContext(TabsContext)
   const rest = omit(props, 'value', 'class')
+  const ids = createMemo(() => tabIds(tabs.id, props.value))
 
   return (
     <div
       tabindex={0}
       {...rest}
       role="tabpanel"
-      id={`${tabs.id}-panel-${props.value}`}
-      aria-labelledby={`${tabs.id}-tab-${props.value}`}
+      id={ids().panel}
+      aria-labelledby={ids().tab}
       hidden={tabs.value() !== props.value}
       class={[styles.panel, props.class]}
     />

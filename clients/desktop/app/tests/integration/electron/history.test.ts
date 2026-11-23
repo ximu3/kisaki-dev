@@ -34,7 +34,7 @@ test.use({
         history.finishTask({
           ...base,
           status: 'failed',
-          result: { adopted: 2, skipped: 1 },
+          result: { adopted: 2, skipped: 1, retryCount: 0 },
           error: { code: 'OperationFailed', message: 'The provider was unavailable.' },
           finishedAt: recent + 1,
         })
@@ -61,6 +61,7 @@ test.use({
           history.finishTask({
             ...run,
             status: index === 115 ? 'cancelled' : 'completed',
+            result: index === 120 ? { elapsedMs: 0, updated: 0 } : null,
             finishedAt: createdAt + 500,
           })
         }
@@ -97,18 +98,33 @@ test('scrolls and filters complete task history, opens details and clears record
   await failedDetails.click()
   const failureDetails = page.getByRole('dialog', { name: 'Imported collection', exact: true })
   await expect(failureDetails.getByText('The provider was unavailable.')).toBeVisible()
+  await expect(failureDetails.getByText('Last recorded result', { exact: true })).toBeVisible()
+  await expect(
+    failureDetails
+      .locator('dt')
+      .filter({ hasText: /^retryCount$/ })
+      .locator('..')
+      .locator('dd'),
+  ).toHaveText('0')
   await expect(failureDetails.getByText('Directory scan', { exact: true })).toBeVisible()
+  await expect(failureDetails.locator('pre')).toHaveCount(0)
+  await failureDetails
+    .locator('summary')
+    .filter({ hasText: /^Input$/ })
+    .click()
+  await expect(failureDetails.locator('pre')).toContainText('"selected": 3')
   await failureDetails.getByRole('button', { name: 'Close', exact: true }).click()
 
   const table = page.getByRole('table', { name: 'History', exact: true })
   const header = table.locator('thead')
   const body = table.locator('tbody')
+  const viewport = table.locator('..')
   const taskDetails = table.getByRole('button', { name: 'Task details' })
   await expect(header).toBeInViewport()
   const headerStart = (await header.boundingBox())!
   expect((await body.boundingBox())!.y).toBeCloseTo(headerStart.y + headerStart.height, 0)
   expect(
-    await body.evaluate(
+    await viewport.evaluate(
       (body) =>
         ['auto', 'scroll'].includes(getComputedStyle(body).overflowY) &&
         body.scrollHeight > body.clientHeight,
@@ -120,7 +136,7 @@ test('scrolls and filters complete task history, opens details and clears record
   }
 
   const rowHeight = (await failed.boundingBox())!.height
-  await body.hover()
+  await viewport.hover()
   await page.mouse.wheel(0, rowHeight * 52)
   await expect(table.getByRole('cell', { name: 'Batch task 52', exact: true })).toBeInViewport()
   await expect(failedDetails).toBeFocused()
@@ -129,7 +145,7 @@ test('scrolls and filters complete task history, opens details and clears record
     has: page.getByRole('cell', { name: 'Batch task 120', exact: true }),
   })
   await expect(lastTask).toHaveCount(0)
-  await body.press('End')
+  await viewport.press('End')
   await expect(lastTask).toBeInViewport()
   await expect(failed).toHaveCount(0)
   expect(await taskDetails.count()).toBeLessThan(50)
@@ -137,7 +153,20 @@ test('scrolls and filters complete task history, opens details and clears record
 
   const lastDetails = lastTask.getByRole('button', { name: 'Task details' })
   await lastDetails.click()
-  await expect(page.getByRole('dialog', { name: 'Batch task 120' })).toBeVisible()
+  const zeroDetails = page.getByRole('dialog', { name: 'Batch task 120' })
+  await expect(
+    zeroDetails
+      .locator('dt')
+      .filter({ hasText: /^elapsedMs$/ })
+      .locator('..')
+      .locator('dd'),
+  ).toHaveText('0')
+  await expect(zeroDetails.locator('pre')).toHaveCount(0)
+  await zeroDetails
+    .locator('summary')
+    .filter({ hasText: /^Output$/ })
+    .press('Enter')
+  await expect(zeroDetails.locator('pre')).toContainText('"updated": 0')
   await page.keyboard.press('Escape')
   await expect(lastDetails).toBeFocused()
   await expect(lastTask).toBeInViewport()

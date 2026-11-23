@@ -44,14 +44,43 @@ function check(name, run) {
 const value = (name, actual, expected) => check(name, () => assert.deepEqual(actual, expected))
 const rejects = (name, run) => check(name, () => assert.throws(run))
 
+const ignoredFields = {
+  'v0.21.2/Backup': ['backupPreferences', 'backupSourcePreferences', 'backupExtensionStores'],
+  'v0.15.3/Backup': ['backupBrokenSources', 'backupPreferences', 'backupSourcePreferences'],
+  'v0.15.3/BackupManga': ['brokenHistory', 'lastModifiedAt'],
+  'v0.15.3/BackupChapter': ['lastModifiedAt']
+}
+const scalarTypes = {
+  Boolean: 'bool', ByteArray: 'bytes', Float: 'float', Int: 'int32', Long: 'int64',
+  String: 'string', UpdateStrategy: 'int32'
+}
+const projections = new Map()
 for (const model of sourceFields) {
-  check(model.tag + ' ' + model.model + ' selected field numbers match pinned Kotlin', () => {
+  check(model.tag + ' ' + model.model + ' selected projection matches pinned Kotlin', () => {
     const schema = root.lookupType('mihonproof.' + model.model)
-    const aliases = { viewer_flags: 'viewerFlags' }
+    const excluded = new Set(ignoredFields[model.tag + '/' + model.model] ?? [])
+    const projected = projections.get(model.model) ?? new Set()
+    projections.set(model.model, projected)
     for (const field of model.fields) {
-      const selected = schema.fields[aliases[field.name] ?? field.name]
-      if (selected) assert.equal(selected.id, field.number)
+      if (excluded.delete(field.name)) continue
+      const name = field.name === 'viewer_flags' ? 'viewerFlags' : field.name
+      const selected = schema.fields[name]
+      const type = field.kotlinType.replace(/\?$/, '')
+      const list = /^List<([^>]+)>$/.exec(type)
+      const valueType = list?.[1] ?? type
+      assert.ok(selected, `${model.tag}/${model.model}.${name} is missing from the projection`)
+      assert.equal(selected.id, field.number, name)
+      assert.equal(selected.type, scalarTypes[valueType] ?? valueType, name)
+      assert.equal(Boolean(selected.repeated), Boolean(list), name)
+      projected.add(name)
     }
+    assert.equal(excluded.size, 0, `Unknown excluded Kotlin field: ${[...excluded].join(', ')}`)
+  })
+}
+for (const [model, projected] of projections) {
+  check(model + ' contains exactly the selected fields from both source versions', () => {
+    const schema = root.lookupType('mihonproof.' + model)
+    assert.deepEqual(new Set(Object.keys(schema.fields)), projected)
   })
 }
 value(
@@ -302,7 +331,7 @@ const result = {
   tests
 }
 await fs.writeFile(
-  path.join(directory, 'synthetic-results.json'),
+  path.join(directory, 'projection-results.json'),
   JSON.stringify(result, null, 2) + '\n'
 )
 console.log(JSON.stringify({ status: result.status, passed: tests.length, syntheticOnly: true }))

@@ -1,5 +1,6 @@
 import { createMemo, onSettled, Show } from 'solid-js'
 import type { JSX } from '@solidjs/web'
+import { ArrowLeft } from '@lucide/solid'
 import type { Translate } from '@kisaki3/desktop-localization'
 import { Button } from '@kisaki3/desktop-ui/button'
 import {
@@ -9,7 +10,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  type DialogContentProps,
 } from '@kisaki3/desktop-ui/dialog'
 import { createForm, Form, FormFeedback, type FormState } from '@kisaki3/desktop-ui/form'
 import type { PreferenceStage } from './draft'
@@ -18,7 +18,6 @@ import { focusPreferenceField, PreferenceFieldsContext } from './field'
 export interface StagedPreferenceEdit {
   draft: PreferenceStage
   field?: string | undefined
-  size: NonNullable<DialogContentProps['size']>
   title: () => string
   fields: () => JSX.Element
 }
@@ -31,8 +30,6 @@ interface StagedDialogProps {
 }
 
 export function StagedPreferenceDialog(props: StagedDialogProps) {
-  const size = createMemo<StagedPreferenceEdit['size']>((last = 'md') => props.edit?.size ?? last)
-
   function Content() {
     // DialogContent owns this memo's lifetime, including the outgoing transition.
     const displayed = createMemo<StagedPreferenceEdit | undefined>((last) => props.edit ?? last)
@@ -53,7 +50,7 @@ export function StagedPreferenceDialog(props: StagedDialogProps) {
       }}
     >
       <DialogContent
-        size={size()}
+        size="sm"
         onCloseRequest={(event) => {
           event.preventDefault()
           props.close()
@@ -65,10 +62,13 @@ export function StagedPreferenceDialog(props: StagedDialogProps) {
   )
 }
 
-function StagedPreferenceForm(props: StagedDialogProps & { edit: StagedPreferenceEdit }) {
+export function StagedPreferenceForm(
+  props: Omit<StagedDialogProps, 'edit'> & { edit: StagedPreferenceEdit; inline?: boolean },
+) {
   const { edit, t } = props
   const { draft } = edit
   let body!: HTMLDivElement
+  let back: HTMLButtonElement | undefined
 
   const form = createForm({
     validate: draft.validate,
@@ -82,15 +82,44 @@ function StagedPreferenceForm(props: StagedDialogProps & { edit: StagedPreferenc
 
   onSettled(() => {
     const field = edit.field
-    if (field) {
-      // Native showModal establishes the active scope before placing field focus.
-      queueMicrotask(() => form.locate(field))
+    queueMicrotask(() => {
+      if (field && body.isConnected) {
+        form.locate(field)
+      } else {
+        back?.focus()
+      }
+    })
+
+    if (props.inline) {
+      const dialog = body.closest('dialog')
+      const cancel = (event: Event) => {
+        if (event.target === dialog) {
+          event.preventDefault()
+          props.close()
+        }
+      }
+      dialog?.addEventListener('cancel', cancel, true)
+      return () => dialog?.removeEventListener('cancel', cancel, true)
     }
   })
 
   return (
     <>
-      <DialogHeader closeLabel={t('actions.close')}>
+      <DialogHeader closeLabel={t('actions.close')} class="flex items-center gap-2">
+        <Show when={props.inline}>
+          <Button
+            ref={(node) => {
+              back = node
+            }}
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            aria-label={t('runtime.back')}
+            onClick={props.close}
+          >
+            <ArrowLeft aria-hidden="true" />
+          </Button>
+        </Show>
         <DialogTitle>{edit.title()}</DialogTitle>
       </DialogHeader>
       <Form state={form}>
@@ -99,7 +128,9 @@ function StagedPreferenceForm(props: StagedDialogProps & { edit: StagedPreferenc
             body = element
           }}
         >
-          <PreferenceFieldsContext value={{ draft, t }}>{edit.fields()}</PreferenceFieldsContext>
+          <div class={props.inline ? 'w-full max-w-[42rem]' : undefined}>
+            <PreferenceFieldsContext value={{ draft, t }}>{edit.fields()}</PreferenceFieldsContext>
+          </div>
         </DialogBody>
 
         <DialogFooter>

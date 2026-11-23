@@ -30,7 +30,11 @@ import {
   UpdateFields,
 } from './groups'
 import { ShortcutFields } from './shortcuts'
-import { StagedPreferenceDialog, type StagedPreferenceEdit } from './staged-dialog'
+import {
+  StagedPreferenceDialog,
+  StagedPreferenceForm,
+  type StagedPreferenceEdit,
+} from './staged-dialog'
 import { UsageEditorFields } from './usage/editor'
 import { UsageFields, usageMedia, type UsageMedium } from './usage/fields'
 
@@ -66,17 +70,24 @@ export function PreferenceEditor(props: PreferenceEditorProps) {
   let fieldsViewport!: HTMLDivElement
   let fieldToReveal: string | undefined
 
-  const [stagedEdit, setStagedEdit] = createSignal<StagedPreferenceEdit>()
+  const [stagedEdit, setStagedEdit] = createSignal<
+    StagedPreferenceEdit & { medium?: UsageMedium }
+  >()
+  const inlineEdit = () => {
+    const edit = stagedEdit()
+    return edit?.medium ? edit : undefined
+  }
   let stagedForm: FormState | undefined
+  let usageScrollTop = 0
 
   function editUsage(medium: UsageMedium, field?: string) {
-    fieldsViewport.querySelector<HTMLElement>(`[data-usage-medium="${medium}"]`)?.focus()
+    usageScrollTop = fieldsViewport.scrollTop
     const keys = preferenceKeys.filter((key) => key.startsWith(`usage.${medium}.`))
     const stage = draft.stage(keys)
     setStagedEdit({
       draft: stage,
       field,
-      size: medium === 'game' ? 'md' : 'lg',
+      medium,
       title: () => api.t(`runtime.usageTitles.${medium}`),
       fields: () => (
         <UsageEditorFields
@@ -94,10 +105,25 @@ export function PreferenceEditor(props: PreferenceEditorProps) {
     const stage = draft.stage([proxyCredentialsKey])
     setStagedEdit({
       draft: stage,
-      size: 'sm',
       title: () => api.t('runtime.fields.credentials'),
       fields: () => <ProxyCredentialFields t={api.t} draft={stage} />,
     })
+  }
+
+  function closeStagedEdit() {
+    const medium = inlineEdit()?.medium
+    setStagedEdit(undefined)
+    if (medium) {
+      queueMicrotask(() => {
+        if (section() !== 'usage' || stagedEdit() || !fieldsViewport.isConnected) {
+          return
+        }
+        fieldsViewport.scrollTop = usageScrollTop
+        fieldsViewport
+          .querySelector<HTMLElement>(`[data-usage-medium="${medium}"]`)
+          ?.focus({ preventScroll: true })
+      })
+    }
   }
 
   function bindStagedForm(form: FormState) {
@@ -206,10 +232,12 @@ export function PreferenceEditor(props: PreferenceEditorProps) {
 
   return (
     <>
-      <DialogHeader closeLabel={api.t('actions.close')}>
-        <DialogTitle>{api.t('runtime.preferences')}</DialogTitle>
-      </DialogHeader>
-      <Form state={form}>
+      <Show when={!inlineEdit()}>
+        <DialogHeader closeLabel={api.t('actions.close')}>
+          <DialogTitle>{api.t('runtime.preferences')}</DialogTitle>
+        </DialogHeader>
+      </Show>
+      <Form state={form} style={{ display: inlineEdit() ? 'none' : undefined }}>
         <DialogBody class="flex min-h-0 flex-col overflow-hidden p-0">
           <Tabs
             value={section()}
@@ -255,7 +283,13 @@ export function PreferenceEditor(props: PreferenceEditorProps) {
                 <PreferenceFieldsContext value={{ draft, t: api.t }}>
                   <For each={sections}>
                     {(name) => (
-                      <TabPanel value={name} class="p-4">
+                      <TabPanel
+                        value={name}
+                        class={[
+                          'p-4',
+                          { 'max-w-[34rem]': name !== 'shortcuts' && name !== 'navigation' },
+                        ]}
+                      >
                         <Show when={name === 'network' || section() === name}>
                           {fields[name]()}
                         </Show>
@@ -276,11 +310,23 @@ export function PreferenceEditor(props: PreferenceEditorProps) {
         </DialogFooter>
       </Form>
 
+      <Show when={inlineEdit()} keyed>
+        {(edit) => (
+          <StagedPreferenceForm
+            inline
+            t={api.t}
+            edit={edit}
+            bind={bindStagedForm}
+            close={closeStagedEdit}
+          />
+        )}
+      </Show>
+
       <StagedPreferenceDialog
         t={api.t}
-        edit={stagedEdit()}
+        edit={inlineEdit() ? undefined : stagedEdit()}
         bind={bindStagedForm}
-        close={() => setStagedEdit(undefined)}
+        close={closeStagedEdit}
       />
     </>
   )

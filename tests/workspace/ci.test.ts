@@ -23,7 +23,12 @@ test('repository docs skip targets and a package-owned change runs its entire ch
   ])
   expect(rpc.code).toBe(true)
   expect(rpc.matrix.filter((row) => row.package === '@kisaki3/desktop-rpc')).toMatchObject([
-    { label: '@kisaki3/desktop-rpc, linux-x64', task: '@kisaki3/desktop-rpc#verify', x11: true },
+    {
+      label: '@kisaki3/desktop-rpc, linux-x64',
+      task: '@kisaki3/desktop-rpc#verify',
+      consumerNode: '24.11.1',
+      x11: true,
+    },
   ])
   expect(rpc.matrix.find((row) => row.package === '@kisaki3/desktop-rpc')?.chromium).toBeFalsy()
   expect(rpc.matrix.filter((row) => row.package === '@kisaki3/desktop')).toHaveLength(6)

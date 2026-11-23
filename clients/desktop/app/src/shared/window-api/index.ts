@@ -1,4 +1,5 @@
 import type { WindowKind } from './protocol'
+import type { FontTokenName } from '@kisaki3/desktop-appearance/tokens'
 import type { MessageCatalog, UiTranslation } from '@kisaki3/desktop-contracts/i18n'
 import type {
   DesktopPlatform,
@@ -90,7 +91,12 @@ export interface WindowApi {
   'window.state'(): WindowState
 
   /** Resolves the effective branch and acquires font URLs for this document. */
-  'appearance.get'(): { value: ViewAppearance; issues: readonly AppearanceIssue[]; hold: string }
+  'appearance.get'(): {
+    value: ViewAppearance
+    fontFamilies: Partial<Record<FontTokenName, string>>
+    issues: readonly AppearanceIssue[]
+    hold: string
+  }
 
   /** Releases the identified hold in this document without affecting other readers. */
   'resources.release'(id: string): void

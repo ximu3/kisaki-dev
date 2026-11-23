@@ -8,7 +8,7 @@ import { appRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
 import { prepareResources } from '../resources/prepare'
 import { buildNative } from '../native/build'
-import { startRenderer } from './renderer'
+import { createRenderer } from './renderer'
 import { startInputWatcher, type PreparationChange } from './inputs'
 import { electronExecutable } from './electron-executable'
 import { prepareRuntime } from './prepare-runtime'
@@ -120,9 +120,17 @@ export async function startDevelopmentSession(
   options.signal?.addEventListener('abort', cancelPreparation, { once: true })
 
   let directory: string | undefined
-  let renderer: Awaited<ReturnType<typeof startRenderer>> | undefined
+  type Renderer = Awaited<ReturnType<typeof createRenderer>>
+  let renderer: Renderer | undefined
+  const renderers = new Map<Renderer, string>()
   let inputs: Awaited<ReturnType<typeof startInputWatcher>> | undefined
   let compilers: ProgramWatch | undefined
+
+  async function closeRenderer(server: Renderer, cache: string): Promise<void> {
+    await server.close()
+    renderers.delete(server)
+    await rm(cache, { recursive: true, force: true })
+  }
 
   try {
     const parent = join(appRoot, 'out/development', target)
@@ -137,7 +145,26 @@ export async function startDevelopmentSession(
     const nativeDirectory = join(sessionDirectory, 'native')
     const nativeBinding =
       options.prepared?.nativeBinding ?? join(nativeDirectory, 'kisaki-native.node')
-    renderer = await startRenderer(options.sourceRoot, buildId, rendererCache)
+    let rendererGeneration = 0
+    async function openRenderer(): Promise<Renderer> {
+      const cache = join(rendererCache, String(++rendererGeneration))
+      const server = await createRenderer(options.sourceRoot, buildId, cache)
+      renderers.set(server, cache)
+      try {
+        await server.listen()
+        if (!server.resolvedUrls?.local[0]) {
+          throw new Error('Renderer server did not publish a listening address')
+        }
+        return server
+      } catch (cause) {
+        return rethrowAfterCleanup(
+          cause,
+          () => closeRenderer(server, cache),
+          'Renderer startup and cleanup failed',
+        )
+      }
+    }
+    renderer = await openRenderer()
     let rendererAddress = renderer.resolvedUrls!.local[0]!
 
     let child: DevelopmentApplication | undefined
@@ -145,6 +172,7 @@ export async function startDevelopmentSession(
     let generation = 0
     let adoptedDigest: string | undefined
     let runtimeChanged = true
+    let rendererChanged = false
     let replacing = false
     let retainOutputs = false
 
@@ -213,9 +241,29 @@ export async function startDevelopmentSession(
         phase === 'open' && owner === compilers && owner.current?.revision === batch.revision
 
       let prepared = false
+      let replacement: Renderer | undefined
+
+      async function releaseUnlaunched() {
+        const server = replacement
+        if (server) {
+          try {
+            await closeRenderer(server, renderers.get(server)!)
+          } catch (cause) {
+            return rethrowAfterCleanup(
+              cause,
+              discard,
+              'Candidate renderer and runtime cleanup failed',
+            )
+          }
+        }
+        await discard()
+      }
 
       try {
         await prepareRuntime(compilerDirectory, batch.files, resources, nativeBinding, candidate)
+        if (rendererChanged && isCurrent()) {
+          replacement = await openRenderer()
+        }
         if (isCurrent()) {
           const previous = current?.directory
           if (child) {
@@ -233,14 +281,32 @@ export async function startDevelopmentSession(
           if (previous && !retainOutputs) {
             await rm(previous, { recursive: true, force: true })
           }
+          if (replacement && isCurrent()) {
+            const previousRenderer = renderer
+            renderer = replacement
+            replacement = undefined
+            rendererAddress = renderer.resolvedUrls!.local[0]!
+            rendererChanged = false
+            if (previousRenderer) {
+              try {
+                await closeRenderer(previousRenderer, renderers.get(previousRenderer)!)
+              } catch (cause) {
+                options.onState?.('failed', cause)
+              }
+            }
+          }
           signal.throwIfAborted()
           prepared = isCurrent()
         }
       } catch (cause) {
-        return rethrowAfterCleanup(cause, discard, 'Runtime preparation and cleanup failed')
+        return rethrowAfterCleanup(
+          cause,
+          releaseUnlaunched,
+          'Runtime preparation and cleanup failed',
+        )
       }
       if (!prepared) {
-        await discard()
+        await releaseUnlaunched()
         return
       }
 
@@ -294,10 +360,7 @@ export async function startDevelopmentSession(
           if (selected.has('configuration')) {
             await compilers?.close()
             compilers = undefined
-            await renderer?.close()
-            renderer = undefined
-            renderer = await startRenderer(options.sourceRoot, buildId, rendererCache)
-            rendererAddress = renderer.resolvedUrls!.local[0]!
+            rendererChanged = true
             selected.delete('configuration')
           }
           if (selected.has('resources')) {
@@ -419,7 +482,7 @@ export async function startDevelopmentSession(
       const results = await Promise.allSettled([
         inputs?.close(),
         compilers?.close(),
-        renderer?.close(),
+        ...Array.from(renderers, ([server, cache]) => closeRenderer(server, cache)),
       ])
       for (const result of results) {
         if (result.status === 'rejected') {
@@ -486,11 +549,14 @@ export async function startDevelopmentSession(
   } catch (cause) {
     options.signal?.removeEventListener('abort', cancelPreparation)
     const failures: unknown[] = [cause]
-    for (const resource of [inputs, compilers, renderer]) {
-      try {
-        await resource?.close()
-      } catch (failure) {
-        failures.push(failure)
+    const results = await Promise.allSettled([
+      inputs?.close(),
+      compilers?.close(),
+      ...Array.from(renderers, ([server, cache]) => closeRenderer(server, cache)),
+    ])
+    for (const result of results) {
+      if (result.status === 'rejected') {
+        failures.push(result.reason)
       }
     }
     if (failures.length === 1 && directory) {

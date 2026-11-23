@@ -1,11 +1,11 @@
-import { expect, test } from '../support/electron'
+import { expect, test } from '../../support/electron'
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { setTimeout } from 'node:timers/promises'
-import { buildDirectory } from '../../tools/lib/paths'
-import { hostTarget } from '../../tools/lib/targets'
-import { runStorageWorker } from './storage/host'
-import type { measureStorage } from './storage/measurement'
+import { buildDirectory } from '../../../tools/lib/paths'
+import { hostTarget } from '../../../tools/lib/targets'
+import { runStorageWorker } from './host'
+import type { measureStorage } from './measurement'
 
 test('worker operation medians meet their budget and the window reaches main during the complete workload', async ({
   desktop,
@@ -26,7 +26,7 @@ test('worker operation medians meet their budget and the window reaches main dur
   const latencies: number[] = []
   const [workerResult, windowResult] = await Promise.allSettled([
     runStorageWorker(desktop, {
-      entry: join(import.meta.dirname, '../../out/performance/worker.js'),
+      entry: join(import.meta.dirname, '../../../out/performance/worker.js'),
       profile,
       resources: join(runtime, 'resources'),
     }).finally(() => {

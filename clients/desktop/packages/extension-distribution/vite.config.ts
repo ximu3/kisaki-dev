@@ -1,12 +1,6 @@
 import { defineLibrary } from '@kisaki3/config/vite/library'
+import manifest from './package.json' with { type: 'json' }
 
 export default defineLibrary({
-  entries: {
-    './manifest': './src/manifest.ts',
-    './registry': './src/registry/index.ts',
-    './metadata': './src/metadata.ts',
-    './compatibility': './src/compatibility.ts',
-    './errors': './src/errors.ts',
-    './node/signing': './src/node/signing.ts',
-  },
+  manifest,
 })

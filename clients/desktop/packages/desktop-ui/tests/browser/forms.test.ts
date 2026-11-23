@@ -90,6 +90,8 @@ test('native controls submit, reset, cancel reset, follow external values and ho
     ['stored', 'a'],
     ['view', 'first'],
   ])
+  await page.getByRole('button', { name: 'Release stored choice' }).click()
+  await browserExpect(page.getByLabel('First stored', { exact: true })).toBeChecked()
 })
 
 test('numeric stepping, calendar selection and alpha editing retain valid form values and reset', async ({
@@ -152,8 +154,28 @@ test('numeric stepping, calendar selection and alpha editing retain valid form v
   const color = page.getByRole('textbox', { name: 'Color value' })
   await color.fill('invalid-color')
   expect(await color.evaluate((node: HTMLInputElement) => node.validity.valid)).toBe(false)
-  await color.fill('rgb(51 102 153)')
-  await page.getByRole('button', { name: 'Choose color', exact: true }).click()
+  const swatch = page.getByRole('button', { name: 'Choose color', exact: true })
+  await color.fill('color(display-p3 1 0 0)')
+  await browserExpect(swatch.locator('span')).toHaveCSS(
+    'background-color',
+    'color(display-p3 1 0 0)',
+  )
+  await color.fill('red\\0')
+  expect(await color.evaluate((node: HTMLInputElement) => node.validity.valid)).toBe(false)
+  await browserExpect(swatch.locator('span')).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
+  await color.fill('r\\65 d')
+  expect(await color.evaluate((node: HTMLInputElement) => node.validity.valid)).toBe(true)
+  await browserExpect(color).toHaveValue('r\\65 d')
+  await browserExpect(swatch.locator('span')).toHaveCSS('background-color', 'rgb(255, 0, 0)')
+  await color.fill('color(display-p3-linear 1 0 0 / 0)')
+  await swatch.click()
+  await page.getByRole('slider', { name: 'Alpha', exact: true }).fill('50')
+  await page.keyboard.press('Escape')
+  await browserExpect(color).toHaveValue('#ff000080')
+
+  await color.fill('rgb(51 /* color note */ 102 153)')
+  expect(await color.evaluate((node: HTMLInputElement) => node.validity.valid)).toBe(true)
+  await swatch.click()
   await page.getByRole('slider', { name: 'Alpha', exact: true }).fill('50')
   await page.keyboard.press('Escape')
   await browserExpect(color).toHaveValue('#33669980')
@@ -223,6 +245,7 @@ test('form feedback retains geometry and per-field errors while revealing and lo
   await browserExpect(detail).toBeHidden()
 
   await page.getByRole('tab', { name: 'Detail', exact: true }).click()
+  await browserExpect(page.getByRole('tabpanel', { name: 'Detail', exact: true })).toBeVisible()
   await page.locator('#description').focus()
   await browserExpect(prompt).toHaveText('Enter a description.')
   await browserExpect(detail).toHaveCount(0)

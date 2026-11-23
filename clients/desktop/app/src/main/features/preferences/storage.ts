@@ -117,7 +117,7 @@ export function preferenceStorage(storage: Storage) {
       expected: PreferencesExpected,
       secret: Uint8Array | null | undefined,
     ) {
-      return db.transaction((tx) => {
+      return storage.transaction((tx) => {
         const row = tx.select().from(table).get()!
         const current = snapshot(row)
         const update: Partial<Record<keyof SavedChanges, SQL>> &
@@ -171,7 +171,7 @@ export function preferenceStorage(storage: Storage) {
           }
         }
         return result
-      })
+      }, 'immediate')
     },
   }
 }

@@ -2,6 +2,8 @@
 
 2026-11-05，在 Windows 10 x64、Node 24.11.1、pnpm 11.11.0、TypeScript 6.0.3、tsdown 0.23.0、Vite 8.3.3 与 Playwright 1.64.1 下验证两个 0.1.0-dev.0 公共包。工作包进度见[实施状态](../../../implementation/status.md#progress)。
 
+2026-11-23，Windows x64 的仓外 Node 消费者使用已打包的声明验证未发布的恢复索引和详情。清单摘要可空，已登记未发布时 `get` 返回的详情带 `manifest: null`，已发布记录用清单读取状态表达损坏。此项验证公开类型，正式文件恢复归 W15。[消费者用例](../../../../clients/desktop/packages/desktop-contracts/tests/consumers/fixtures/node/type-tests.ts)
+
 ## 交付与验证范围
 
 | 对象                 | 验证内容                                                                                                                                                                                                                                                                                                     |

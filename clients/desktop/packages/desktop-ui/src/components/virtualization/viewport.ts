@@ -17,8 +17,10 @@ export interface VirtualRange {
 /** Reactive inputs for one logical layout. Estimates and keys are synchronous. */
 export interface VirtualizerOptions {
   count: number
-  /** The vertical scroll container, with the track at its scroll origin. */
+  /** The vertical scroll container. The track starts after any supplied sticky header. */
   viewport: HTMLElement | undefined
+  /** In-flow header pinned at the start of the viewport for the whole track. */
+  stickyHeader?: HTMLElement | undefined
   /** Pauses mounted rows and observers while preserving the geometry of this layout. */
   enabled?: boolean
   /** Number of extra rows on each side of the viewport, four by default. */
@@ -107,7 +109,7 @@ export function createVirtualizer(options: VirtualizerOptions): Virtualizer {
   createEffect(
     () => {
       const viewport = options.enabled !== false ? options.viewport : undefined
-      return viewport && { viewport, rows: geometry() }
+      return viewport && { viewport, stickyHeader: options.stickyHeader, rows: geometry() }
     },
     (target) => {
       if (!target) {
@@ -116,7 +118,9 @@ export function createVirtualizer(options: VirtualizerOptions): Virtualizer {
         return
       }
 
-      const { viewport, rows } = target
+      const { viewport, stickyHeader, rows } = target
+      const viewportHeight = () =>
+        Math.max(0, viewport.clientHeight - (stickyHeader?.offsetHeight ?? 0))
       const nativeAnchoring = viewport.style.getPropertyValue('overflow-anchor')
       const nativeAnchoringPriority = viewport.style.getPropertyPriority('overflow-anchor')
       viewport.style.setProperty('overflow-anchor', 'none')
@@ -127,7 +131,7 @@ export function createVirtualizer(options: VirtualizerOptions): Virtualizer {
         frame = 0
         const requested = request
         request = undefined
-        const height = viewport.clientHeight
+        const height = viewportHeight()
         const top = viewport.scrollTop
         if (!height) {
           measurements.clear()
@@ -211,12 +215,15 @@ export function createVirtualizer(options: VirtualizerOptions): Virtualizer {
       })
       observer = resizeObserver
       resizeObserver.observe(viewport)
+      if (stickyHeader) {
+        resizeObserver.observe(stickyHeader, { box: 'border-box' })
+      }
       for (const [element, row] of elements) {
         row.measured = false
         resizeObserver.observe(element, { box: 'border-box' })
       }
       viewport.addEventListener('scroll', schedule, { passive: true })
-      setView({ top: viewport.scrollTop, height: viewport.clientHeight })
+      setView({ top: viewport.scrollTop, height: viewportHeight() })
       if (request) {
         schedule()
       }

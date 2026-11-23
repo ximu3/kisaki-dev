@@ -2,15 +2,28 @@ import { count, eq, gt, inArray, and, sql } from 'drizzle-orm'
 import type { Attachment } from '@kisaki3/desktop-contracts/attachments'
 import type { ListOptions } from '@kisaki3/desktop-contracts/operations'
 import { attachments } from '../database/schema/attachments/metadata'
-import type { Storage, StorageTransaction } from '../database'
+import type { Storage } from '../database'
 
 /** Registers prepared bytes within the transaction committing the owner's actual references. */
-export function adoptAttachments(tx: StorageTransaction, values: readonly Attachment[]) {
-  for (const { sizeBytes, ...metadata } of values) {
-    tx.insert(attachments)
-      .values({ ...metadata, byteSize: sizeBytes })
-      .onConflictDoNothing()
-      .run()
+export function adoptAttachments(db: Storage['db'], values: readonly Attachment[]) {
+  if (!values.length) {
+    return
+  }
+  const insert = db
+    .insert(attachments)
+    .values({
+      id: sql.placeholder('id'),
+      mediaType: sql.placeholder('mediaType'),
+      byteSize: sql.placeholder('sizeBytes'),
+      sha256: sql.placeholder('sha256'),
+      width: sql.placeholder('width'),
+      height: sql.placeholder('height'),
+      createdAt: sql.placeholder('createdAt'),
+    })
+    .onConflictDoNothing()
+    .prepare()
+  for (const attachment of values) {
+    insert.run({ ...attachment })
   }
 }
 
@@ -39,7 +52,7 @@ export function attachmentStorage(storage: Storage) {
       return row ? attachment(row) : null
     },
     listAttachments(options: ListOptions) {
-      return db.transaction((tx) => ({
+      return storage.transaction((tx) => ({
         items: tx
           .select()
           .from(attachments)

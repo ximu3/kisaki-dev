@@ -4,7 +4,7 @@ import { defineConfig } from 'vite-plus'
 import type { PackUserConfig } from 'vite-plus/pack'
 
 interface LibraryOptions {
-  entries: Record<string, string>
+  manifest: { exports: Record<string, { 'kisaki-source': string }> }
   /** The generator accepts --check to verify its committed output. */
   generated?: { task: string; command: string }
   pack?: Pick<PackUserConfig, 'platform' | 'hooks' | 'plugins' | 'deps' | 'css'>
@@ -16,6 +16,7 @@ const dependencyBuilds = { task: 'build', from: 'dependencies' } as const
 
 const buildInputs = [
   { auto: true },
+  '!.cache/typescript/**',
   { pattern: 'pnpm-lock.yaml', base: 'workspace' as const },
   { pattern: 'packages/config/vite/**', base: 'workspace' as const },
 ]
@@ -33,15 +34,15 @@ const tscPath = join(
 )
 
 export function defineLibrary({
-  entries,
+  manifest,
   generated,
   pack,
   browserTests = false,
   consumerHookTimeout = 120_000,
 }: LibraryOptions) {
-  const sources = Object.entries(entries).map(([subpath, source]) => ({
+  const sources = Object.entries(manifest.exports).map(([subpath, entry]) => ({
     subpath,
-    source,
+    source: entry['kisaki-source'],
     outputName: subpath === '.' ? 'index' : subpath.slice(2),
   }))
   const programs = sources.filter(({ source }) => !source.endsWith('.css'))
@@ -150,7 +151,7 @@ export function defineLibrary({
         },
         verify: {
           command: [],
-          dependsOn: browserTests ? ['test:consumers', 'test:browser'] : ['test:consumers'],
+          dependsOn: ['typecheck', 'test:consumers', browserTests ? 'test:browser' : 'test'],
           cache: false,
         },
 

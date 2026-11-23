@@ -99,8 +99,8 @@ export default defineConfig({
       },
       'test:performance': {
         command: [
-          'vp build --config config/vite/vite.config.performance.ts',
-          'playwright test --config config/playwright/playwright.config.performance.ts',
+          'vp build --config config/vite/performance.ts',
+          'playwright test --config config/playwright/performance.ts',
         ],
         dependsOn: ['build', 'prepare:electron'],
         cache: false,

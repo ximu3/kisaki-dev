@@ -119,15 +119,20 @@ selection 和 marks 共用正反变换。输入的明显越界、退化或自交
 Reader 提供 readView，让宿主在一个受管理的短读取范围中取得真实画面。Kana 提供目标、当前源位置和显示矩形，宿主提供实际像素读取；接口不依赖 Electron、NativeImage 或 PreparedImage。
 
 ```ts
-const capture = await reader.readView({ type: 'viewport' }, async (view, signal) => ({
-  location: view.location,
-  image: await host.readPixels(view.rect, signal),
-}))
+const captureController = new AbortController()
+const capture = await reader.readView(
+  { type: 'viewport' },
+  async (view, signal) => ({
+    location: view.location,
+    image: await host.readPixels(view.rect, signal),
+  }),
+  { signal: captureController.signal },
+)
 ```
 
 目标为 `{ type: 'viewport' }` 时，回调取得当前实际位置、该位置的固定／重排版式和可见内容矩形。目标为 `{ type: 'region', region }` 时，回调取得已经验证的原始页面区域与对应矩形，不另造点位书签。两类结果在类型上关联；书签画面可以包含单页、双页或连续呈现，不能伪装成一张原始页面区域。
 
-readView 进入导航与布局的同一执行次序。先等待此前接纳的更新和当前可见内容就绪，从准备阶段起持有本次视图，再取得几何并调用宿主。期间新的导航、设置和显示变换在其后接续；内部交互不会把视图换到另一页。已经运行的平滑滚动、影响几何的动画和待交付布局都须在读取前形成明确的稳定状态。
+readView 进入导航与布局的同一执行次序。此前接纳的更新和当前可见内容就绪后，从本次视图准备开始持有视图。已经运行的平滑滚动、影响几何的动画和待交付布局稳定后，再读取几何并调用宿主。持有视图期间，Reader 暂缓内部交互与可延后的显示变换。
 
 读取时保留书本实际内容及当前阅读配色、缩放、旋转和裁边，暂时排除 Kana 绘制的选区、高亮、标记框、控件和临时参考查看。书本本身的样式、背景和 authored mark 内容继续保留。结束后恢复这些显示，原选区和正式标记不被删除。临时显示排除不改变内容的可读资格、活动选区或已经固定的原文读取范围。
 
@@ -135,12 +140,12 @@ viewport 目标始终读取主阅读画面，region 目标仍属于主视图已�
 
 区域必须属于本次文档、对应当前已呈现页面，而且请求的完整区域在当前可见范围内。缺失、未加载、被裁掉或部分位于视口外时明确失败，不截取交集代替完整区域，也不自动跳页或改变缩放。当前图片区域采集继续是 Kisaki 内部的 captureRegionImage(region)，不因此向 SDK 新增漫画／小说的 captureImage。
 
-宿主窗口尺寸、缩放、挂载位置或其他无法在库内延后的变化，使本次几何失效时，中止本次读取并拒绝迟到结果。关闭和取消也会传递给读取回调；在回调尚未结束时，不能报告 Reader 已经全部收尾，再让旧读取碰到复用后的新内容。回调结果只有在范围仍有效时才成功交付。
+宿主窗口尺寸、缩放、挂载位置或其他无法延后的变化使几何失效时，中止回调信号，等待读取收尾后返回 viewChanged。readView 的可选第三参数 `{ signal }` 只取消本次读取，取消传给回调，等待收尾后返回 cancelled。宿主停止未开始的取像，并按底层能力取消或等待读取结束。等待期间继续持有原视图，过期结果由宿主释放。只有在范围仍有效时才交付结果。
 
-readView 的回调只执行宿主读取，以及 getTextContext 这类不改变视图的有界内容读取，不调用或等待同一 Reader 的导航、设置、closeReference、再次 readView 或 close。这是保持视图期间的读取回调；后续编码、裁剪准备和记录保存在 readView 成功后继续。它与 observe 不同：此处 Promise 的结束明确决定读取范围何时释放，观察回调则仍是通知。
+从视图开始持有到回调及收尾完毕，可能等待同一布局次序的公开操作立即以 viewBusy 拒绝，包括导航、设置、closeReference、会等待布局的标记更新、再次 readView 和 close。回调只使用宿主读取及 getTextContext 等有界只读操作。同一规则适用于其他调用者，库无需识别谁发起嵌套调用。宿主关闭或替换文档时，先取消并等待自己的读取结束，再关闭 Reader 或复用窗口。读取回调的 Promise 结束后才能释放本次视图，observe 通知则依照[观察合同](api.md#state)同步交付。后续编码、裁剪与保存由宿主在成功取得独立内容后继续。
 
 阅读书签也在同一个范围内选择内容：固定页面取得画面；重排正文先对 view.location 调用 getTextContext，有文字则采用原文，没有文字才读取同一视图的画面。原文读取失败直接失败。不能先在范围外读位置和文字，得到 null 后再截取已经移动的当前页面并沿用旧位置。
 
 回调产生的资源归宿主，readView 不猜测任意 Result 应如何释放。若操作失效，宿主释放已取得但未采用的结果；取得独立原始内容后，后续处理可以在 Reader 关闭后继续。应用在开始操作时固定文件与 Reader 绑定，不在异步返回后读取“当前文件”来补归属。
 
-viewChanged、targetNotVisible 和 unsupportedTransform 分别描述本次读取失效、目标未完整可见和宿主显示变换无法正确映射。接口与分类共同属于 Reader 和纯值合同，运行实现按这些分支验证。
+viewBusy 表示同一 Reader 正持有读取视图；它不改变 Reader 的状态。viewChanged、targetNotVisible 和 unsupportedTransform 分别描述本次读取失效、目标未完整可见和宿主显示变换无法正确映射。

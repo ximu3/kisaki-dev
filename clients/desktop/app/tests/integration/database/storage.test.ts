@@ -3,14 +3,14 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { eq, sql } from 'drizzle-orm'
-import { initializeDatabase, type Storage } from '../../../src/main/infrastructure/database'
+import { initializeDatabase } from '../../../src/main/infrastructure/database'
 import * as tables from '../../../src/main/infrastructure/database/schema'
 import { seedStorage, storageOptions } from './sample'
 
 let directory: string
 
 /** Current real connection, replaced during reopen checks and closed before directory cleanup. */
-let storage: Storage
+let storage: ReturnType<typeof initializeDatabase>
 
 beforeEach(async () => {
   directory = await mkdtemp(join(tmpdir(), 'kisaki-storage-'))
@@ -38,6 +38,17 @@ test('persists nonempty catalog, resource, history and settings facts and enforc
   expect(db.select().from(storage.preferences).get()?.general.uiTranslation).toEqual({
     status: 'ready',
     value: { type: 'builtin', id: 'en' },
+  })
+  const animeDefaults = db.get<{ value: string }>(
+    sql`select json_extract(usage, '$.anime') as value from preferences`,
+  )!.value
+  expect(JSON.parse(animeDefaults)).toEqual({
+    audioLanguages: [],
+    subtitleLanguages: [],
+    subtitlesEnabled: true,
+    playbackSpeed: 1,
+    subtitleScale: 1,
+    autoAdvance: false,
   })
   expect(db.get<{ foreign_keys: number }>(sql`pragma foreign_keys`)?.foreign_keys).toBe(1)
   expect(db.get<{ synchronous: number }>(sql`pragma synchronous`)?.synchronous).toBe(2)
@@ -83,7 +94,7 @@ test('persists nonempty catalog, resource, history and settings facts and enforc
     db.delete(tables.attachments).where(eq(tables.attachments.id, 'attachment')).run(),
   ).toThrow()
   expect(() =>
-    db.transaction((transaction) => {
+    storage.transaction((transaction) => {
       transaction
         .update(tables.entries)
         .set({ name: 'not committed' })
@@ -126,14 +137,124 @@ test('persists nonempty catalog, resource, history and settings facts and enforc
 
   storage.db.delete(tables.animeFiles).where(eq(tables.animeFiles.id, 'video')).run()
   expect(storage.db.select().from(tables.animeWatchActivity).get()).toMatchObject({
+    animeId: 'anime',
     fileId: null,
+    episodeId: 'episode',
     durationMs: 500,
     contextNames: { status: 'ready', value: { fileName: '映像.mkv', partName: '12.5' } },
   })
   expect(storage.db.select().from(tables.animeAnnotations).get()).toMatchObject({
+    animeId: 'anime',
     fileId: null,
     content: '保存内容',
     location: { status: 'ready', value: { type: 'position', positionSeconds: 2.5 } },
+  })
+  storage.db.delete(tables.animeEpisodes).where(eq(tables.animeEpisodes.id, 'episode')).run()
+  expect(storage.db.select().from(tables.animeWatchActivity).get()).toMatchObject({
+    animeId: 'anime',
+    fileId: null,
+    episodeId: null,
+    durationMs: 500,
+    contextNames: { status: 'ready', value: { fileName: '映像.mkv', partName: '12.5' } },
+  })
+  storage.db.delete(tables.gameLaunchConfigs).where(eq(tables.gameLaunchConfigs.id, 'launch')).run()
+  expect(storage.db.select().from(tables.gameSaveBackups).get()).toMatchObject({
+    gameId: 'game',
+    sourceConfigId: null,
+    sourceConfigName: '設定',
+    archiveAttachmentId: 'attachment',
+  })
+})
+
+test('rejects relationships across valid but different works and rejects non-work completion subjects', () => {
+  const connection = storage.db.$client
+  connection.exec(`
+    insert into entries(id,type,name,created_at,updated_at) values
+      ('other-anime','anime','Other anime',1,1),
+      ('other-comic','comic','Other comic',1,1),
+      ('other-game','game','Other game',1,1);
+    insert into animes(entry_id) values ('other-anime');
+    insert into comics(entry_id) values ('other-comic');
+    insert into games(entry_id) values ('other-game');
+    insert into anime_episodes(id,anime_id,created_at,updated_at)
+      values ('other-episode','other-anime',1,1);
+    insert into anime_files(id,anime_id,path,created_at,updated_at)
+      values ('other-video','other-anime','other.mkv',1,1);
+    insert into comic_chapters(id,comic_id,created_at,updated_at)
+      values ('other-chapter','other-comic',1,1);
+  `)
+
+  for (const statement of [
+    "insert into anime_file_episodes(anime_id,file_id,episode_id) values ('anime','video','other-episode')",
+    "insert into anime_file_episodes(anime_id,file_id,episode_id) values ('other-anime','video','other-episode')",
+    "insert into comic_volume_chapters(comic_id,volume_id,chapter_id) values ('comic','volume','other-chapter')",
+    "update anime_watch_activity set episode_id = 'other-episode' where id = 'watched'",
+    "update anime_annotations set file_id = 'other-video' where id = 'annotation'",
+    "update game_save_backups set game_id = 'other-game' where id = 'backup'",
+    `insert into game_backup_recoveries (id,game_id,backup_id,target_path,target_kind,workspace_path,manifest_sha256,created_at)
+      values ('recovery','other-game','backup','saves','directory','recoveries',printf('%064d',0),1)`,
+    "insert into work_completion_records(id,work_id,work_type,created_at,updated_at) values ('wrong-subject','person','game',1,1)",
+    "insert into work_completion_records(id,work_id,work_type,created_at,updated_at) values ('wrong-type','anime','comic',1,1)",
+  ]) {
+    expect(() => connection.prepare(statement).run()).toThrow(
+      expect.objectContaining({ code: 'SQLITE_CONSTRAINT_FOREIGNKEY' }),
+    )
+  }
+  expect(() =>
+    connection.exec(
+      "insert into work_completion_records(id,work_id,work_type,created_at,updated_at) values ('person-completion','person','person',1,1)",
+    ),
+  ).toThrow(expect.objectContaining({ code: 'SQLITE_CONSTRAINT_CHECK' }))
+  expect(connection.pragma('foreign_key_check')).toEqual([])
+})
+
+test('the native transaction rolls back a thenable even when queries use the Drizzle mapping', () => {
+  expect(() =>
+    // @ts-expect-error A worker transaction operation must return synchronously.
+    storage.transaction((db) => {
+      db.update(tables.entries)
+        .set({ name: 'not committed' })
+        .where(eq(tables.entries.id, 'game'))
+        .run()
+      return Promise.resolve()
+    }, 'immediate'),
+  ).toThrow('Transaction function cannot return a promise')
+  expect(storage.db.$client.inTransaction).toBe(false)
+  expect(
+    storage.db.select().from(tables.entries).where(eq(tables.entries.id, 'game')).get()?.name,
+  ).toBe('資料 game')
+})
+
+test('reopens a recovery registered before manifest publication and checks the published digest', () => {
+  const recoveries = tables.gameBackupRecoveries
+  storage.db
+    .insert(recoveries)
+    .values({
+      id: 'recovery',
+      gameId: 'game',
+      backupId: 'backup',
+      targetPath: join(directory, 'save'),
+      targetKind: 'directory',
+      workspacePath: join(directory, 'recovery'),
+      createdAt: 1,
+    })
+    .run()
+  storage.close()
+  storage = initializeDatabase(storageOptions(directory))
+  const { db } = storage
+  expect(db.select().from(recoveries).get()).toMatchObject({
+    manifestSha256: null,
+    resolution: null,
+  })
+  expect(() => db.update(recoveries).set({ manifestSha256: 'invalid' }).run()).toThrow()
+  expect(() => db.update(recoveries).set({ resolution: 'restored', resolvedAt: 2 }).run()).toThrow()
+  const digest = 'a'.repeat(64)
+  db.update(recoveries).set({ manifestSha256: digest }).run()
+  db.update(recoveries).set({ resolution: 'restored', resolvedAt: 2 }).run()
+  expect(db.select().from(recoveries).get()).toMatchObject({
+    manifestSha256: digest,
+    resolution: 'restored',
+    resolvedAt: 2,
   })
 })
 
@@ -208,7 +329,7 @@ test('adopts the effective software locale with its indexes and rebuilds an obso
       .run(id, name)
   }
   /** Reads the controlled names through their actual SQLite index and stable identity tie-break. */
-  const order = (db: Storage, ids: string[]) =>
+  const order = (db: typeof storage, ids: string[]) =>
     db.db.$client
       .prepare(
         `select id from entries indexed by entries_name where id in (${ids.map(() => '?').join(',')}) order by name collate kisaki_name,id`,

@@ -1,10 +1,19 @@
-import { createEffect, createMemo, For, Match, Show, Switch, type ParentProps } from 'solid-js'
+import {
+  createEffect,
+  createMemo,
+  createSignal,
+  For,
+  Match,
+  Show,
+  Switch,
+  type ParentProps,
+} from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
-import { CircleAlert, CircleCheck, Info, XCircle } from '@lucide/solid'
 import type { JsonValue } from '@kisaki3/desktop-contracts/json'
 import { isTaskTerminal, type TaskRun } from '@kisaki3/desktop-contracts/tasks'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
+import { Collapsible } from '@kisaki3/desktop-ui/collapsible'
 import {
   Dialog,
   DialogBody,
@@ -16,13 +25,6 @@ import {
 import { errorMessage } from '../../../../infrastructure/notifications'
 import type { MainClient } from '../../../../infrastructure/api'
 import { TaskStatus, TaskTypeIcon, taskDuration, taskTypeLabel } from './presentation'
-
-const resultMarkers = {
-  completed: { icon: CircleCheck, tone: 'text-success' },
-  failed: { icon: CircleAlert, tone: 'text-destructive' },
-  cancelled: { icon: XCircle, tone: 'text-muted-foreground' },
-  interrupted: { icon: Info, tone: 'text-muted-foreground' },
-} as const
 
 /** Retains the report's identity through its exit and leaves the initiating row mounted. */
 export function TaskDetails(props: {
@@ -118,7 +120,7 @@ function TaskReport(props: { api: MainClient; item: TaskRun }) {
 
   return (
     <>
-      <Show when={isTaskTerminal(item().status) || item().result !== null}>
+      <Show when={isTaskTerminal(item().status) || item().result !== null || item().error}>
         <DetailSection heading={t('runtime.result')}>
           <TaskResult api={props.api} item={item()} />
         </DetailSection>
@@ -148,11 +150,7 @@ function TaskReport(props: { api: MainClient; item: TaskRun }) {
       </DetailSection>
 
       <Show when={item().input !== null}>
-        <DetailSection heading={t('runtime.input')}>
-          <div class="overflow-hidden rounded-md border border-border">
-            <TaskJson value={item().input} />
-          </div>
-        </DetailSection>
+        <TaskJson label={t('runtime.input')} value={item().input} />
       </Show>
     </>
   )
@@ -161,62 +159,60 @@ function TaskReport(props: { api: MainClient; item: TaskRun }) {
 function TaskResult(props: { api: MainClient; item: TaskRun }) {
   const { t } = props.api
   const result = () => props.item.result
-  const markers = () => {
-    const status = props.item.status
-    return isTaskTerminal(status) ? resultMarkers[status] : resultMarkers.interrupted
-  }
-  const values = () => {
+  const scalar = () => {
     const value = result()
-    return value && typeof value === 'object' && !Array.isArray(value)
-      ? Object.entries(value).filter(
-          (entry): entry is [string, number | boolean] =>
-            typeof entry[1] === 'number' || typeof entry[1] === 'boolean',
-        )
-      : []
+    return typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean'
+      ? String(value)
+      : undefined
   }
+  const entries = createMemo(() => {
+    const value = result()
+    return value && typeof value === 'object' && !Array.isArray(value) ? Object.entries(value) : []
+  })
+  const values = createMemo(() =>
+    entries().filter(
+      (entry): entry is [string, number | boolean] =>
+        typeof entry[1] === 'number' || typeof entry[1] === 'boolean',
+    ),
+  )
 
   return (
-    <div class="overflow-hidden rounded-md border border-border bg-muted/20">
-      <div class="flex items-start gap-2.5 px-3 py-2.5 text-sm">
-        <Show when={markers()} keyed>
-          {(marker) => (
-            <marker.icon aria-hidden="true" class={'mt-0.5 size-4 shrink-0 ' + marker.tone} />
-          )}
-        </Show>
-        <div class="min-w-0">
-          <div class="font-medium">{t(`tasks.${props.item.status}`)}</div>
-          <Show when={props.item.error}>
-            {(error) => (
-              <p class="mt-1 mb-0 text-xs leading-relaxed wrap-anywhere text-destructive">
-                {error().message}
-              </p>
-            )}
-          </Show>
-          <Show when={result() === null && !props.item.error}>
-            <p class="mt-1 mb-0 text-xs text-muted-foreground">{t('runtime.noResult')}</p>
-          </Show>
-        </div>
-      </div>
-
-      <Show when={values().length}>
-        <dl class="m-0 grid gap-x-8 gap-y-2 border-t border-border px-3 py-2 text-sm @min-[20rem]:grid-cols-2 @min-[32rem]:grid-cols-3">
-          <For each={values()}>
-            {([key, value]) => (
-              <div class="min-w-0">
-                <dt class="text-xs wrap-anywhere text-muted-foreground">{key}</dt>
-                <dd class="m-0 tabular-nums">{String(value)}</dd>
-              </div>
-            )}
-          </For>
-        </dl>
+    <div class="grid gap-2">
+      <Show when={props.item.error}>
+        {(error) => <Alert tone="destructive">{error().message}</Alert>}
       </Show>
+      <Switch>
+        <Match when={result() === null && !props.item.error}>
+          <p class="m-0 text-sm text-muted-foreground">{t('runtime.noResult')}</p>
+        </Match>
+        <Match when={result() !== null}>
+          <Show when={props.item.status !== 'completed'}>
+            <p class="m-0 text-sm font-medium">{t('runtime.taskPartialResult')}</p>
+          </Show>
+          <Switch>
+            <Match when={values().length}>
+              <dl class="m-0 grid gap-x-8 gap-y-2 py-1 text-sm @min-[20rem]:grid-cols-2 @min-[32rem]:grid-cols-3">
+                <For each={values()}>
+                  {([key, value]) => (
+                    <div class="min-w-0">
+                      <dt class="text-xs wrap-anywhere text-muted-foreground">{key}</dt>
+                      <dd class="m-0 tabular-nums">{String(value)}</dd>
+                    </div>
+                  )}
+                </For>
+              </dl>
+            </Match>
+            <Match when={scalar() !== undefined}>
+              <p class="m-0 wrap-anywhere text-sm">{scalar()}</p>
+            </Match>
+            <Match when={true}>
+              <p class="m-0 text-sm">{t('runtime.taskRecordedResult')}</p>
+            </Match>
+          </Switch>
+        </Match>
+      </Switch>
       <Show when={result() !== null}>
-        <div class="border-t border-border">
-          <div class="border-b border-border bg-muted/30 px-3 py-1.5 text-xs font-medium text-muted-foreground">
-            {t('runtime.taskOutput')}
-          </div>
-          <TaskJson value={result()} />
-        </div>
+        <TaskJson label={t('runtime.taskOutput')} value={result()} />
       </Show>
     </div>
   )
@@ -231,10 +227,21 @@ function DetailSection(props: ParentProps<{ heading: string }>) {
   )
 }
 
-function TaskJson(props: { value: JsonValue }) {
+function TaskJson(props: { label: string; value: JsonValue }) {
+  const [expanded, setExpanded] = createSignal(false)
   return (
-    <pre class="m-0 max-h-56 overflow-auto bg-muted/50 p-3 text-xs leading-relaxed whitespace-pre-wrap wrap-anywhere">
-      {JSON.stringify(props.value, null, 2)}
-    </pre>
+    <Collapsible
+      class="rounded-md border border-border"
+      summary={props.label}
+      summaryClass="px-3 py-2 text-sm"
+      open={expanded()}
+      onOpenChange={setExpanded}
+    >
+      <Show when={expanded()}>
+        <pre class="m-0 max-h-56 overflow-auto border-t border-border bg-muted/30 p-3 text-xs leading-relaxed whitespace-pre-wrap wrap-anywhere">
+          {JSON.stringify(props.value, null, 2)}
+        </pre>
+      </Show>
+    </Collapsible>
   )
 }

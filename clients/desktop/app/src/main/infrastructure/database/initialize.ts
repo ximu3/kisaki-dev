@@ -1,4 +1,4 @@
-import { drizzle } from 'drizzle-orm/better-sqlite3'
+import { drizzle, type BetterSQLite3Database } from 'drizzle-orm/better-sqlite3'
 import { migrate } from 'drizzle-orm/better-sqlite3/migrator'
 import { readMigrationFiles } from 'drizzle-orm/migrator'
 import Database from 'better-sqlite3'
@@ -12,6 +12,8 @@ import { openNameOrder } from './name-order'
 
 /** SQLite file identity used to claim an empty library and retained by its formal migration chain. */
 const applicationId = 0x4b534b33
+
+type Queries = Omit<BetterSQLite3Database<typeof relations>, 'transaction'>
 
 /** Explicit deployment paths and complete product defaults used by database initialization. */
 export interface DatabaseOptions {
@@ -100,8 +102,8 @@ function hasMigrationBaseline(
  * Opens the already selected local data path and completes initialization before returning.
  *
  * The path owner verifies local filesystem support before this synchronous call. The returned
- * Drizzle connection uses synchronous queries and transactions. Unsupported files retain their
- * contents. A failed first migration closes the connection and leaves the claimed library retryable.
+ * queries and native transactions share one connection. Unsupported files retain their contents.
+ * A failed first migration closes the connection and leaves the claimed library retryable.
  */
 export function initializeDatabase(options: DatabaseOptions) {
   const { path, nativeBinding, collationExtension, migrationsDirectory, defaults } = options
@@ -131,6 +133,15 @@ export function initializeDatabase(options: DatabaseOptions) {
       db,
       preferences,
       adoptLocale,
+      /** Runs synchronously on this connection. Nested writes commit with the outer transaction. */
+      transaction<Result>(
+        operation: (
+          queries: Queries,
+        ) => Result & (Extract<Result, PromiseLike<unknown>> extends never ? unknown : never),
+        mode: 'deferred' | 'immediate' = 'deferred',
+      ): Result {
+        return connection.transaction(() => operation(db))[mode]()
+      },
       /** Closes this connection after its consumers have finished; repeated close is harmless. */
       close() {
         if (connection.open) {
@@ -159,7 +170,6 @@ export function verifyExistingLibrary(
 ): void {
   const connection = new Database(path, {
     readonly: true,
-    fileMustExist: true,
     nativeBinding: options.nativeBinding,
   })
   try {
@@ -172,7 +182,4 @@ export function verifyExistingLibrary(
 }
 
 /** The initialized connection and singleton mappings owned by one application instance. */
-export type Storage = ReturnType<typeof initializeDatabase>
-
-/** The synchronous Drizzle transaction accepted by storage consumers. */
-export type StorageTransaction = Parameters<Parameters<Storage['db']['transaction']>[0]>[0]
+export type Storage = Omit<ReturnType<typeof initializeDatabase>, 'db'> & { db: Queries }

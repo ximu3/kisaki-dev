@@ -12,11 +12,11 @@ import {
   type EntryType,
   type WorkType,
 } from '@kisaki3/desktop-contracts/library'
-import type { Storage } from '../../../src/main/infrastructure/database'
+import type { initializeDatabase } from '../../../src/main/infrastructure/database'
 
 /** Fixed simultaneous object counts and sampling policy, selected before measurement. */
 export const workload = {
-  revision: 1,
+  revision: 2,
   entries: {
     game: 8000,
     anime: 10000,
@@ -76,7 +76,10 @@ export function isFixtureWork(
 }
 
 /** Builds the fixed tables before sampling, with foreign keys and FULL durability enabled. */
-export async function prepareWorkload(storage: Storage, directory: string) {
+export async function prepareWorkload(
+  storage: ReturnType<typeof initializeDatabase>,
+  directory: string,
+) {
   const start = performance.now()
   const connection = storage.db.$client
   const inputHash = createHash('sha256').update(JSON.stringify(workload))
@@ -169,11 +172,12 @@ export async function prepareWorkload(storage: Storage, directory: string) {
     (index) => ['fixture-source', `source-${index}`, entries[index]!.id],
   )
   await insert(
-    'insert into work_completion_records (id,work_id,completed_date,created_at,updated_at) values (?,?,?,?,?)',
+    'insert into work_completion_records (id,work_id,work_type,completed_date,created_at,updated_at) values (?,?,?,?,?,?)',
     works.length,
     (index) => [
       fixtureId('completion', index),
       works[index]!.id,
+      works[index]!.type,
       JSON.stringify({ year: 2000 + (index % 27), month: 1 + (index % 12), day: 1 + (index % 28) }),
       index,
       index,
@@ -304,19 +308,31 @@ export async function prepareWorkload(storage: Storage, directory: string) {
     )
   }
   await insert(
-    'insert into anime_file_episodes (file_id,episode_id) values (?,?)',
+    'insert into anime_file_episodes (anime_id,file_id,episode_id) values (?,?,?)',
     workload.files.anime_files,
-    (index) => [fixtureId('anime_files', index), fixtureId('anime_episodes', index)],
+    (index) => [
+      fixtureId('anime', index % workload.entries.anime),
+      fixtureId('anime_files', index),
+      fixtureId('anime_episodes', index),
+    ],
   )
   await insert(
-    'insert into comic_file_volumes (file_id,volume_id) values (?,?)',
+    'insert into comic_file_volumes (comic_id,file_id,volume_id) values (?,?,?)',
     workload.files.comic_files,
-    (index) => [fixtureId('comic_files', index), fixtureId('comic_volumes', index)],
+    (index) => [
+      fixtureId('comic', index % workload.entries.comic),
+      fixtureId('comic_files', index),
+      fixtureId('comic_volumes', index),
+    ],
   )
   await insert(
-    'insert into novel_file_volumes (file_id,volume_id) values (?,?)',
+    'insert into novel_file_volumes (novel_id,file_id,volume_id) values (?,?,?)',
     workload.files.novel_files,
-    (index) => [fixtureId('novel_files', index), fixtureId('novel_volumes', index)],
+    (index) => [
+      fixtureId('novel', index % workload.entries.novel),
+      fixtureId('novel_files', index),
+      fixtureId('novel_volumes', index),
+    ],
   )
 
   const activities = {

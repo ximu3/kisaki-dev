@@ -29,7 +29,7 @@ export function storageOptions(
 
 export function seedStorage(storage: Storage, directory: string): void {
   const times = { createdAt: 1, updatedAt: 1 }
-  storage.db.transaction((db) => {
+  storage.transaction((db) => {
     db.insert(tables.entries)
       .values(
         entryTypes.map((type) => ({
@@ -82,7 +82,9 @@ export function seedStorage(storage: Storage, directory: string): void {
     db.insert(tables.novelVolumes)
       .values({ id: 'novel-volume', novelId: 'novel', ...times })
       .run()
-    db.insert(tables.comicVolumeChapters).values({ volumeId: 'volume', chapterId: 'chapter' }).run()
+    db.insert(tables.comicVolumeChapters)
+      .values({ comicId: 'comic', volumeId: 'volume', chapterId: 'chapter' })
+      .run()
     db.insert(tables.entryExternalIdentities)
       .values({ source: 'fixture-source', sourceId: 'Exact/Ａ', ownerId: 'game' })
       .run()
@@ -145,6 +147,7 @@ export function seedStorage(storage: Storage, directory: string): void {
       .values({
         id: 'completed',
         workId: 'game',
+        workType: 'game',
         completedDate: { year: 0, month: 2, day: 29 },
         ...times,
       })
@@ -165,7 +168,7 @@ export function seedStorage(storage: Storage, directory: string): void {
       })
       .run()
     db.insert(tables.animeFileEpisodes)
-      .values({ fileId: 'video', partId: 'episode', isPreferred: true })
+      .values({ workId: 'anime', fileId: 'video', partId: 'episode', isPreferred: true })
       .run()
     db.insert(tables.animeWatchActivity)
       .values({

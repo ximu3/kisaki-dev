@@ -1,4 +1,5 @@
 - Define desktop library values, typed queries, editing baselines, atomic graph inputs, relationships, records and local-content contracts.
+- Expose pending game backup recoveries before manifest publication and distinguish an unpublished manifest from an invalid stored one.
 - Preserve known object kinds and resource ownership through reads and writes. Keyed results retain their value types and distinguish fixed inputs from optional or dynamic collections.
 - Edit showcase sections independently or create several in one atomic batch. Onboarding uses the same complete section values.
 - Define metadata participation and adoption, scanning, tasks, sessions, resources, views, preferences, application and extension management, and typed fact events.

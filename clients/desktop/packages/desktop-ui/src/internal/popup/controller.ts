@@ -7,6 +7,21 @@ import { watchPopupDismissal } from './dismissal'
 /** Preferred popup side and optional alignment, with centered sides as the default alignment. */
 export type PopupPlacement = Placement
 
+const anchorAreas: Record<PopupPlacement, string> = {
+  top: 'top span-all',
+  'top-start': 'top span-x-end',
+  'top-end': 'top span-x-start',
+  bottom: 'bottom span-all',
+  'bottom-start': 'bottom span-x-end',
+  'bottom-end': 'bottom span-x-start',
+  left: 'left span-all',
+  'left-start': 'left span-bottom',
+  'left-end': 'left span-top',
+  right: 'right span-all',
+  'right-start': 'right span-bottom',
+  'right-end': 'right span-top',
+}
+
 /**
  * Connects native popup visibility, dismissal and collision-aware placement within the current
  * Solid owner.
@@ -30,6 +45,8 @@ export function createPopup(options: {
   controlled?: Accessor<boolean>
 
   placement?: (anchor: HTMLElement) => PopupPlacement
+  /** Lets CSS place a surface that only needs an element anchor and viewport bounds. */
+  nativePlacement?: boolean
   /** Reads an optional pointer anchor in viewport CSS pixels. */
   point?: Accessor<{ x: number; y: number } | undefined>
   matchWidth?: boolean
@@ -146,6 +163,11 @@ export function createPopup(options: {
       }
 
       const { anchor, reference, point, placement, controlled, matchWidth } = position
+      const native = options.nativePlacement === true
+      if (native) {
+        node.dataset.nativePlacement = placement
+        node.style.setProperty('position-area', anchorAreas[placement])
+      }
       if (!shown || source !== anchor) {
         let focused: HTMLElement | undefined
         if (shown) {
@@ -157,7 +179,7 @@ export function createPopup(options: {
           node.hidePopover()
         }
 
-        if (getComputedStyle(node).display === 'none') {
+        if (!native && getComputedStyle(node).display === 'none') {
           node.setAttribute('data-measuring', '')
         }
         node.showPopover({ source: anchor })
@@ -166,6 +188,16 @@ export function createPopup(options: {
         }
         source = anchor
         focused?.focus({ preventScroll: true })
+      }
+
+      anchor.addEventListener('keydown', escape)
+      const stopDismissal = controlled ? watchPopupDismissal(node, anchor, requestClose) : undefined
+      const release = () => {
+        anchor.removeEventListener('keydown', escape)
+        stopDismissal?.()
+      }
+      if (native) {
+        return release
       }
 
       let active = true
@@ -208,15 +240,12 @@ export function createPopup(options: {
           }
         })
       }
-      anchor.addEventListener('keydown', escape)
       const stop = autoUpdate(reference, node, update)
-      const stopDismissal = controlled ? watchPopupDismissal(node, anchor, requestClose) : undefined
 
       return () => {
         active = false
         stop()
-        anchor.removeEventListener('keydown', escape)
-        stopDismissal?.()
+        release()
       }
     },
   )

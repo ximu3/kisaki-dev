@@ -4,7 +4,9 @@ import { FieldGroup } from '@kisaki3/desktop-ui/field'
 import { NumberInput } from '@kisaki3/desktop-ui/input'
 import { Select } from '@kisaki3/desktop-ui/select'
 import { Switch } from '@kisaki3/desktop-ui/switch'
+import { Alert } from '@kisaki3/desktop-ui/alert'
 import type { MainClient } from '../../../../infrastructure/api'
+import { appearanceIssueMessage } from '../../../../infrastructure/notifications'
 import { PageOrder, type NavigationPage } from '../../domain-ui/navigation/list'
 import type { PreferenceDraft } from './draft'
 import { PreferenceField } from './field'
@@ -49,6 +51,9 @@ export function AppearanceFields(props: GroupProps & { manage: () => void }) {
 
   return (
     <FieldGroup>
+      <For each={api.appearanceIssues()}>
+        {(issue) => <Alert tone="warning">{appearanceIssueMessage(api.t, issue)}</Alert>}
+      </For>
       <ThemeField api={api} draft={draft} manage={props.manage} />
       <PreferenceField field="appearance.mode" label={api.t('runtime.fields.mode')}>
         <Select
@@ -79,7 +84,7 @@ export function AppearanceFields(props: GroupProps & { manage: () => void }) {
           stepCount={5}
           step={1}
           value={draft.read('appearance.interfaceScale') ?? ''}
-          onValueChange={(v) => draft.write('appearance.interfaceScale', v)}
+          onValueChange={(v) => draft.writeNumber('appearance.interfaceScale', v)}
           increaseLabel={api.t('runtime.increase')}
           decreaseLabel={api.t('runtime.decrease')}
         />
@@ -112,7 +117,7 @@ export function NavigationFields(props: GroupProps & { pages: readonly Navigatio
           step={1}
           required
           value={draft.read('navigation.visibleLimit') ?? ''}
-          onValueChange={(v) => draft.write('navigation.visibleLimit', v)}
+          onValueChange={(v) => draft.writeNumber('navigation.visibleLimit', v)}
           increaseLabel={api.t('runtime.increase')}
           decreaseLabel={api.t('runtime.decrease')}
         />

@@ -53,10 +53,7 @@ test('runtime syntax, renamed imports and configuration errors recover through n
   const original = await readFile(entry, 'utf8')
   const helper = join(workspace.app, 'tests/fixtures/desktop-app/src/main/development-fixture.ts')
   const renamed = join(workspace.app, 'tests/fixtures/desktop-app/src/main/renamed-fixture.ts')
-  const configuration = join(
-    workspace.app,
-    'tests/fixtures/desktop-app/config/vite/vite.config.main.ts',
-  )
+  const configuration = join(workspace.app, 'tests/fixtures/desktop-app/config/vite/main.ts')
   const originalConfiguration = await readFile(configuration, 'utf8')
   onTestFinished(() => writeFile(entry, original))
   onTestFinished(() => writeFile(configuration, originalConfiguration))
@@ -104,6 +101,8 @@ test('runtime syntax, renamed imports and configuration errors recover through n
     })
     .toBeGreaterThan(failures)
   expect(() => process.kill(repaired.current!.processId, 0)).not.toThrow()
+  const oldDocument = new URL('main/index.html', repaired.rendererUrl!)
+  expect((await fetch(oldDocument)).status).toBe(200)
 
   await writeFile(configuration, originalConfiguration)
   await expect

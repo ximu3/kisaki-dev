@@ -218,7 +218,7 @@ test('prepared images and fonts survive independent holds and only adopted font 
   const adoption = await saving
   try {
     expect(await attachments.get(cropped.attachmentId)).toBeNull()
-    storage.db.transaction((tx) => {
+    storage.transaction((tx) => {
       adoptAttachments(tx, adoption.records)
       tx.insert(collections)
         .values({

@@ -109,7 +109,7 @@ openReader 在成功返回前没有可供调用的 Reader，打开中的 UI 由�
 
 observe 先同步交付当前快照，此后通知状态变化。返回的停止函数可以重复调用，停止订阅后文档仍然打开。Reader 同步调用回调并忽略返回值，不把回调返回的 Promise 追加到操作或关闭等待。调用方管理自己启动的异步工作及其失败；最终记录保存由 Kisaki 自己等待，不能以“通知已经调用”代替保存完成。
 
-回调中再次调用 Reader 的操作进入后续执行，不打断正在交付的同一快照。某个回调抛错时终止该订阅，并交给宿主未捕获错误机制报告；其他订阅和 Reader 自身继续按其真实状态工作。普通快照可以合并，确认的操作结果和最终关闭状态不能被合并丢失。
+回调中再次调用 Reader 时，接纳的操作进入后续执行，不打断正在交付的同一快照。视图持有期间的冲突按[视图读取](content.md#view-read)处理。某个回调抛错时终止该订阅，并交给宿主未捕获错误机制报告；其他订阅和 Reader 自身继续按其真实状态工作。普通快照可以合并，确认的操作结果和最终关闭状态不能被合并丢失。
 
 需要主动反馈的交互使用 on：selectionChange 通知选区变化；externalLink 交付用户发起的外部 URL；markActivate 只回传不透明标记 id；error 报告交互或后台任务中无法通过外部调用的 Promise 返回的错误。已经通过调用 Promise 交付的失败不再重复广播成同一错误。状态中的 notices 让首次订阅也能取得仍适用的说明，不另靠打开期间的一次性事件。
 
@@ -138,7 +138,7 @@ getSelection 异步取得本次调用时固定的逻辑选择及匹配原文；�
 | getTextContext          | Promise<string \| null>；读取指定位置的有界邻近原文，不改变视图或选区                                     |
 | setMarks                | Promise<MarkOrder>；采用完整只读投影，返回源顺序的并列分组，以及无法恢复项的 id 和原因                    |
 | readView                | 持有稳定的主视图或已呈现的原始页面区域，等待读取回调并交付其结果。[视图读取](content.md#view-read)         |
-| close                   | Promise<void>；幂等关闭，不接受取消选项，调用持续到关闭完成                                               |
+| close                   | Promise<void>。不接受取消选项。接纳后幂等关闭，等待实际释放。持有 readView 视图时返回 viewBusy。 |
 
 目录条目随本 Reader 存活，在实际使用时通过 getLocation 解析稳定源位置。显示目录只取得所需目录信息，目标章节按定位需要读取。Reader 关闭后条目失效；内部链接也由内核解释并转换为对应源位置。
 
@@ -202,7 +202,7 @@ setMarks 接收 marks、selectedId 和统一样式。重复 id、非法纯值及
 
 取消发生在操作提交前时，结束其未完成工作，并以 cancelled 返回；操作已经完成提交时不逆转结果。关闭导致的未完成操作以 closed 结束。返回位置或完成 Promise 前，先采用对应的实际状态；每次调用只交付自身请求的结果。信号只控制所属调用，openReader 的信号在成功交付后不变成永久关闭开关。
 
-close 先拒绝新操作，停止并收尾读取、搜索、导航和渲染，交付最后可信状态，再释放视图、格式、实例拥有的专用 worker、临时资源和订阅。静态内容转发登记遵守[部署寿命](distribution.md#assets)，不由单个 Reader 注销。重复调用复用同一次关闭结果。某一步释放失败时继续尝试其余释放，最终如实失败；closed 表示句柄已不可使用，不把关闭失败包装成资源全部成功回收。宿主在自己的 finally 中继续释放所拥有的授权范围。
+close 接纳后拒绝新操作，停止并收尾读取、搜索、导航和渲染，交付最后可信状态，再释放视图、格式、实例拥有的专用 worker、临时资源和订阅。宿主按[视图读取](content.md#view-read)先取消并收尾已持有视图的宿主读取。静态内容转发登记遵守[部署寿命](distribution.md#assets)，不由单个 Reader 注销。重复调用复用同一次已接纳关闭的结果。某一步释放失败时继续尝试其余释放，最终如实失败；closed 表示句柄已不可使用，不把关闭失败包装成资源全部成功回收。宿主在自己的 finally 中继续释放所拥有的授权范围。
 
 <a id="reading-operations"></a>
 
@@ -212,7 +212,7 @@ close 先拒绝新操作，停止并收尾读取、搜索、导航和渲染，�
 
 读取、解包、源树、文字索引、页面 canvas、字体及临时 URL 各有实际拥有者和有界缓存。只在所需内容附近保留昂贵显示资源，搜索不顺带渲染整本书。根源句柄由宿主持有，库释放自己取得的资源占用；关闭后的迟到回调不能重新挂载视图、建立 URL 或访问下一份文档。
 
-声明与独立消费的依据见[公开接口校核](../../../verification/evidence/kana-api/public-contracts.md)。实际接入、完整错误映射与发行资产按[阅读验收](../../../verification/scenarios/reading.md)分别验证。
+既有[公开接口校核](../../../verification/evidence/kana-api/public-contracts.md)覆盖两种读取目标与回调结果的静态关联。readView 新增的独立取消、viewBusy 与宿主收尾次序还需验证。实际接入、完整错误映射和发行资产分别按[阅读验收](../../../verification/scenarios/reading.md)核对。
 
 <a id="completion"></a>
 
@@ -244,6 +244,8 @@ document.fonts.load 可以拒绝，而 fonts.ready 正常完成；后续加载�
 失败通过 ReadingError 携带 ReadingFailure 分类，message 为安全英文诊断，cause 留给拥有失败的边界。分类包括非法输入、不支持的格式／能力、来源不可用或变化、读取失败、损坏文档、无法定位、布局不可用、密码、缺失资源、资源上限、资产加载，以及取消、替代和关闭。无法定位另给缺失目标、越界、歧义、不可呈现或编码冲突原因，不要求调用方解析消息文本。
 
 sourceChanged、局部操作失败及可省略资源失败的影响范围见[失败处理](#failures)。
+
+viewBusy、viewChanged、targetNotVisible 和 unsupportedTransform 见[视图读取](content.md#view-read)。它们只结束相应调用，不写入 ReadingState.failure。
 
 layoutUnavailable 携带 insufficientSpace 原因，表示当前视口与明确设置无法形成可读区域。打开、定位或设置采用以该原因失败，保留最后可信源位置，不自动减少面数或缩小字号。它属于单次操作失败，不写入 ReadingState.failure，也不因此结束已建立的 Reader。单纯隐藏或零尺寸期间暂停自动布局，重新可见时恢复源落点；readView 继续按其不可见规则处理。
 

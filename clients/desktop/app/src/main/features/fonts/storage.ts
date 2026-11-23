@@ -5,13 +5,13 @@ import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type { Font, FontFile, FontUpdate } from '@kisaki3/desktop-contracts/fonts'
 import type { Attachment } from '@kisaki3/desktop-contracts/attachments'
 import type { ListOptions } from '@kisaki3/desktop-contracts/operations'
-import type { Storage, StorageTransaction } from '../../infrastructure/database'
+import type { Storage } from '../../infrastructure/database'
 import { fonts, fontAttachments } from '../../infrastructure/database/schema/application'
 import { ready } from '../../infrastructure/database/codecs/json'
 import { adoptAttachments } from '../../infrastructure/attachments/storage'
 
 /** Reads the complete font definition from one database snapshot. */
-function readFont(db: Storage['db'] | StorageTransaction, id: string): Font | null {
+function readFont(db: Storage['db'], id: string): Font | null {
   const row = db.select().from(fonts).where(eq(fonts.id, id)).get()
   if (!row) {
     return null
@@ -35,7 +35,7 @@ function readFont(db: Storage['db'] | StorageTransaction, id: string): Font | nu
 }
 
 /** Installs a nonempty final file set, reusing only the records actually owned by this font. */
-function replaceFiles(tx: StorageTransaction, id: string, files: readonly FontFile[]) {
+function replaceFiles(tx: Storage['db'], id: string, files: readonly FontFile[]) {
   tx.delete(fontAttachments).where(eq(fontAttachments.fontId, id)).run()
   tx.insert(fontAttachments)
     .values(
@@ -57,7 +57,7 @@ export interface NewFont {
 }
 
 /** Commits a new font and its verified files inside the font or theme creator's transaction. */
-export function adoptNewFont(tx: StorageTransaction, input: NewFont) {
+export function adoptNewFont(tx: Storage['db'], input: NewFont) {
   const now = Date.now()
   tx.insert(fonts).values({ id: input.id, name: input.name, createdAt: now, updatedAt: now }).run()
   adoptAttachments(tx, input.attachments)
@@ -65,14 +65,14 @@ export function adoptNewFont(tx: StorageTransaction, input: NewFont) {
 }
 
 /** Provides serial worker operations for font metadata and its attachment references. */
-export function fontStorage({ db }: Storage) {
+export function fontStorage({ transaction }: Storage) {
   return {
     /** Reads a complete font and its files in one transaction. */
-    getFont: (id: string) => db.transaction((tx) => readFont(tx, id)),
+    getFont: (id: string) => transaction((tx) => readFont(tx, id)),
     /** Queries the font library with a count under the same filter. */
     listFonts(search: string, options: ListOptions) {
       const filter = search ? sql`instr(lower(${fonts.name}),lower(${search}))` : undefined
-      return db.transaction((tx) => ({
+      return transaction((tx) => ({
         items: tx
           .select()
           .from(fonts)
@@ -92,7 +92,7 @@ export function fontStorage({ db }: Storage) {
       prepared: readonly Attachment[],
       expected: FontUpdate['expected'],
     ) {
-      return db.transaction((tx) => {
+      return transaction((tx) => {
         if (id === null) {
           const created = randomUUID()
           adoptNewFont(tx, { id: created, name: name!, files: files!, attachments: prepared })
@@ -142,11 +142,11 @@ export function fontStorage({ db }: Storage) {
             .map((file) => file.attachmentId)
             .filter((key) => !retained.has(key)),
         }
-      })
+      }, 'immediate')
     },
     /** Deletes the user font while foreign keys release only its file links. */
     deleteFont(id: string) {
-      return db.transaction((tx) => {
+      return transaction((tx) => {
         const released = tx
           .select({ id: fontAttachments.attachmentId })
           .from(fontAttachments)
@@ -156,7 +156,7 @@ export function fontStorage({ db }: Storage) {
           throw new DesktopError('NotFound', 'The font does not exist')
         }
         return released.map((row) => row.id)
-      })
+      }, 'immediate')
     },
   }
 }

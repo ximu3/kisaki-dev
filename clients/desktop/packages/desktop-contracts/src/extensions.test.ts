@@ -5,6 +5,7 @@ import {
   parsePreparedExtensionUpdate,
   parseExtensionRepositoryUpdate,
   parseExtensionApplyUpdatesResult,
+  parseInstalledExtensionSummary,
 } from './extensions'
 import { DesktopError } from './errors'
 
@@ -57,4 +58,32 @@ test('prepared extension identities retain explicit trust and cannot substitute 
   }
 
   expect(parseExtensionApplyUpdatesResult(report)).toEqual(report)
+})
+
+test('missing runtimes round-trip as JSON and each compatibility condition keeps its own shape', () => {
+  const summary = {
+    id: 'example.ext',
+    version: '1.0.0',
+    enabled: true,
+    updateRepositoryId: null,
+    allowPrerelease: false,
+    preparedUpdate: null,
+    packageState: { status: 'available' },
+    compatibility: {
+      status: 'incompatible',
+      issues: [
+        { condition: 'target', required: ['linux-x64'], actual: 'windows-x64' },
+        { condition: 'nodeVersion', required: '*' },
+      ],
+    },
+  }
+  const parsed = parseInstalledExtensionSummary(summary)
+  expect(parsed).toStrictEqual(JSON.parse(JSON.stringify(parsed)))
+  expect(parsed).toStrictEqual(summary)
+  expect(() =>
+    parseInstalledExtensionSummary({
+      ...summary,
+      compatibility: { status: 'incompatible', issues: [{ condition: 'target', required: '*' }] },
+    }),
+  ).toThrow(DesktopError)
 })

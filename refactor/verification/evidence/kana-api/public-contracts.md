@@ -8,6 +8,8 @@
 
 [consumer-pure.ts](consumer-pure.ts) 只从 @ximu3/kana/contracts 消费值；[consumer-browser.ts](consumer-browser.ts) 从两个公开入口使用资源、观察、导航、搜索、标记、URL 输入和关闭。[consumer-view.ts](consumer-view.ts) 通过同一个 Reader 验证稳定视图读取及两种目标的结果关联。消费文件内的函数不执行。
 
+本次声明原件使用二参数 readView，错误联合不含 viewBusy。现行[视图读取](../../../design/projects/kana/content.md#view-read)增加可选取消信号和冲突分类，仍待正式声明及运行时验证。
+
 执行：
 
 ```powershell

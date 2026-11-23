@@ -5,9 +5,9 @@ import { join } from 'node:path'
 import { mkdirSync } from 'node:fs'
 import { app } from 'electron'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
-import { createNotifications } from '../../../../src/main/infrastructure/notifications'
-import { readNotificationTarget } from '../../../../src/main/infrastructure/notifications/target'
-import { receivePortalAction, verifyPortalHandoff } from './notification-portal'
+import { createNotifications } from '../../../../../src/main/infrastructure/notifications'
+import { readNotificationTarget } from '../../../../../src/main/infrastructure/notifications/target'
+import { receivePortalAction, verifyPortalHandoff } from './portal'
 
 const restoring = process.argv.includes('--restore-notification')
 

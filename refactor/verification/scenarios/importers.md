@@ -48,6 +48,7 @@ A22 和 A27 按[统一导入流程](../../design/extensions/importers/README.md#
 - 自定义状态名为 Completed 或设置为 PlayedStatus 时，只按用户指定的当前安排与完成事实两轴采用；PlayCount、LastActivity 保留原义。
 - 评分空值、累计时长、备注和分类按共同采用方式提交；未完成的启动配置可以迁入并供补全。
 - 参数、变量、多 ROM 和监测方式通过实际启动核对。LiteDB 对象映射与 AOT 的环境限制沿来源证据检查其实际影响。
+- 使用[同一引用路线的图片对照](../evidence/importer-images/README.md)。正例通过正式资源准备并随已授权字段采用；损坏的封面可完整从 ZIP 读出，但应报告未采用原因且不写附件，独立合法资料继续按共同导入合同处理。
 
 <a id="potatovn"></a>
 
@@ -65,11 +66,15 @@ A22 和 A27 按[统一导入流程](../../design/extensions/importers/README.md#
 
 资料笔记按所选范围创建，calres 图片和真实文件经正式资源准备后采用。多人、多设备位置与删除墓碑分别解释；阅读百分比不生成完成。真实书库覆盖 FTS／WAL，实际 EPUB 源映射和 Kana 跳转覆盖复杂内容，转换后的 CFI 只用于它实际对应的文档。
 
+用[calres 图片对照](../evidence/importer-images/README.md)核对引用与摘要合法时仍须等实际解码。可用像素按所选范围采用，CRC 损坏的图只报告对应未采用项，原资料笔记中的合法文字继续按共同合同处理。
+
 <a id="mihon"></a>
 
 ## Mihon / Tachiyomi
 
 按[接入方案](../../design/extensions/importers/mihon.md)验证两代标准 Backup、来源系列、64 位与缺省值、库内外范围、分类顺序、作品与分部粒度，以及版本评分、状态和空历史初始化。
+
+解码所属层使用[固定 Kotlin 字段声明及最小 wire 示例](../evidence/mihon-importer/source-and-fixtures.md)。核对选定字段完整、编号、类型与重复性；删去一个已选字段时应在投影检查中失败。上层验证实际导入，只对所选可采用事实产生结果。
 
 分部候选明确提供固定的编号匹配规则。卷内同号话只在已唯一对应的卷内匹配，作品话号不回退为卷内编号；同名章节与精度已丢失的 float 话号不触发匹配。未对应分部时，文件和文字仍可独立迁入，结果准确说明未采用的已读标记。
 

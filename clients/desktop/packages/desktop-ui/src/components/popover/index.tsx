@@ -109,6 +109,7 @@ export function PopoverContent(props: PopoverContentProps): JSX.Element {
     controlled: state.controlled,
 
     placement: () => props.placement ?? 'bottom-start',
+    nativePlacement: true,
   })
 
   return (

@@ -16,7 +16,7 @@ test('NodeNext declarations and signing execute from the installed tarball', asy
   await lintConsumer(consumerDirectory, signal)
 
   const { stdout } = await promisify(execFile)(
-    process.execPath,
+    process.env.KISAKI_CONSUMER_NODE ?? process.execPath,
     [
       '--input-type=module',
       '--eval',

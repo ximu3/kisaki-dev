@@ -1,6 +1,8 @@
 import type { PartialDate } from '@kisaki3/desktop-contracts/date'
 import type {
   LibraryApi,
+  GameBackupRecoveriesApi,
+  GameBackupRecovery,
   EntryCreate,
   ShowcaseApi,
   ShowcaseFields,
@@ -44,6 +46,19 @@ interface ExampleViewMethods {
 
 interface ExampleViewNotifications {
   readonly changed: { readonly value: string }
+}
+
+/** Both recovery reads expose an index before a manifest has been published. */
+export function unpublishedRecovery(index: GameBackupRecovery) {
+  const preparing = {
+    ...index,
+    resolution: null,
+    resolvedAt: null,
+    manifestSha256: null,
+  } satisfies Awaited<ReturnType<GameBackupRecoveriesApi['list']>>['items'][number]
+  return { ...preparing, manifest: null } satisfies Awaited<
+    ReturnType<GameBackupRecoveriesApi['get']>
+  >
 }
 
 /** Checks that typed reads provide the editable values required by their matching write APIs. */

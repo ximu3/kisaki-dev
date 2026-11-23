@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict'
 import { sessionBus, toPlain, Variant } from 'dbus-native'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
-import { createNotifications } from '../../../../src/main/infrastructure/notifications'
-import { createActivation } from '../../../../src/main/app/activation'
+import { createNotifications } from '../../../../../src/main/infrastructure/notifications'
+import { createActivation } from '../../../../../src/main/app/activation'
 
 const appId = 'me.kisaki.dev'
 

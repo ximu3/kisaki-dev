@@ -1,3 +1,3 @@
 declare module 'css-tree/dist/csstree.esm' {
-  export { generate, ident, lexer, parse, walk } from 'css-tree'
+  export { generate, ident, lexer, parse, tokenize, tokenTypes, walk } from 'css-tree'
 }

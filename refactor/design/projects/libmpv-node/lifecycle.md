@@ -62,7 +62,7 @@ createMpv() 本身有效，使用 libmpv 的嵌入默认配置。当前基线包
 
 未配置 VideoOutput 时，库省略自身受管图形输出，视频解码与 mpv 原生输出仍按原生选项执行。纯音频调用可以显式设置 vid=no，其他输出选择也由对应原生选项表达。
 
-受管模式在所选输出准备成功后交付 Mpv。`videoOutput.renderer` 选择 GPU 或软件输出，D3D11 和 OpenGL 的平台接入由库负责。配置、返回类型和帧结构见[视频输出](video.md#configuration)，六目标运行验收覆盖两种 SDR 目标、HDR 片源映射和完整资源交接。
+受管模式在所选输出准备成功后交付 Mpv。`videoOutput.renderer` 选择 GPU 或软件输出，D3D11 和 OpenGL 的平台接入由库负责。六目标运行验收分别覆盖 GPU 的两种 SDR 目标、HDR 片源映射及资源交接，以及软件的像素格式、独立字节和关闭。[配置与帧](video.md#configuration)
 
 <a id="options"></a>
 

@@ -115,6 +115,10 @@ async function run(paths: AppPaths) {
 
   let tray: Tray | undefined
   let menuUpdates: Disposable | undefined
+  let acceptingThemeRestore = true
+  let restoringTheme: Promise<void> | undefined
+  let windowFailed = false
+  const windowFailure = Promise.withResolvers<'wait'>()
 
   function releaseApplication() {
     return releaseAll([
@@ -128,31 +132,49 @@ async function run(paths: AppPaths) {
   const lifecycle = createLifecycle({
     /** Obtains the current document's close decision. */
     async confirm(signal) {
-      return view ? await view.canClose(signal) : true
+      if (!view || windowFailed) {
+        return true
+      }
+      try {
+        return await view.canClose(signal)
+      } catch (cause) {
+        if (windowFailed) {
+          return true
+        }
+        throw cause
+      }
     },
     /** Updates task and window admission together for this exit attempt. */
     accept(enabled) {
+      acceptingThemeRestore = enabled
       activation.setAccepting(enabled)
       application.tasks.setAccepting(enabled)
       view?.setAccepting(enabled)
     },
     /** Waits for accepted task execution and document operations. */
     async drain() {
-      await Promise.all([application.tasks.drain(), view?.drain()])
+      await Promise.all([application.tasks.drain(), view?.drain(), restoringTheme])
     },
     async waiting(signal) {
-      const choice = await dialog.showMessageBox({
-        type: 'question',
-        message: application.i18n.t('runtime.exitPending'),
-        buttons: [
-          application.i18n.t('runtime.continueWaiting'),
-          application.i18n.t('runtime.cancelExit'),
-        ],
-        defaultId: 0,
-        cancelId: 1,
-        signal,
-      })
-      return choice.response === 0 ? 'wait' : 'cancel'
+      if (windowFailed) {
+        return 'wait'
+      }
+      return Promise.race([
+        windowFailure.promise,
+        dialog
+          .showMessageBox({
+            type: 'question',
+            message: application.i18n.t('runtime.exitPending'),
+            buttons: [
+              application.i18n.t('runtime.continueWaiting'),
+              application.i18n.t('runtime.cancelExit'),
+            ],
+            defaultId: 0,
+            cancelId: 1,
+            signal,
+          })
+          .then(({ response }) => (response === 0 ? 'wait' : 'cancel')),
+      ])
     },
     async release() {
       await releaseAll([() => application.log.record('closing'), releaseApplication])
@@ -169,6 +191,10 @@ async function run(paths: AppPaths) {
     /** Schedules normal quit or relaunch after the exit decision is committed. */
     finish(restart) {
       released = true
+      if (windowFailed) {
+        setImmediate(() => app.exit(1))
+        return
+      }
       if (restart) {
         app.relaunch()
       }
@@ -188,9 +214,12 @@ async function run(paths: AppPaths) {
   let nativeExit: Promise<void> | undefined
   function requestExit(intent: 'quit' | 'restart') {
     nativeExit ??= lifecycle[intent]()
-      .then((result) => {
-        if (result.outcome === 'failed' && !released) {
-          dialog.showErrorBox('Kisaki', result.error.message)
+      .then(async (result) => {
+        // A close decision started before the crash can still decline the original attempt.
+        const outcome =
+          windowFailed && result.outcome === 'cancelled' ? await lifecycle.quit() : result
+        if (outcome.outcome === 'failed' && !released) {
+          dialog.showErrorBox('Kisaki', outcome.error.message)
         }
       })
       .finally(() => {
@@ -241,18 +270,59 @@ async function run(paths: AppPaths) {
           await navigate(request.target)
         }),
       disconnected: activation.disconnected,
+      unavailable(error) {
+        if (windowFailed || released) {
+          return
+        }
+        windowFailed = true
+        windowFailure.resolve('wait')
+        void application.log.record('failed', error)
+        dialog.showErrorBox('Kisaki', error.message)
+        requestExit('quit')
+      },
     })
-    await view.firstReady
+    if ((await view.firstReady) === 'closed') {
+      return
+    }
 
     tray = new Tray(join(paths.resources, 'icons', 'icon.png'))
     tray.setToolTip('Kisaki')
     const { show } = view
     tray.on('click', show)
+
+    function restoreDefaultTheme() {
+      if (!acceptingThemeRestore || restoringTheme) {
+        return
+      }
+      restoringTheme = (async () => {
+        const { appearance } = await application.preferences.getDefaults()
+        await application.preferences.update({
+          changes: { appearance: { theme: appearance.theme } },
+        })
+        await application.settled()
+        await application.appearance.endPreview()
+      })()
+        .catch((cause) => {
+          dialog.showErrorBox(
+            application.i18n.t('runtime.restoreThemeFailed'),
+            cause instanceof Error ? cause.message : String(cause),
+          )
+        })
+        .finally(() => {
+          restoringTheme = undefined
+        })
+    }
+
     /** Builds the current-language tray and system menus for this process. */
     const menus = () => {
+      const restoreTheme = {
+        label: application.i18n.t('runtime.restoreDefaultTheme'),
+        click: restoreDefaultTheme,
+      }
       tray!.setContextMenu(
         Menu.buildFromTemplate([
           { label: 'Kisaki', click: show },
+          restoreTheme,
           { type: 'separator' },
           {
             label: application.i18n.t('runtime.quit'),
@@ -271,6 +341,7 @@ async function run(paths: AppPaths) {
                 /** Restores the main window and opens native preferences. */
                 click: () => activation.open({ type: 'preferences' }),
               },
+              restoreTheme,
               { type: 'separator' },
               {
                 label: application.i18n.t('runtime.quit'),

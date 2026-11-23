@@ -38,7 +38,14 @@ import {
   comicChapters,
   novelVolumes,
 } from './catalog'
-import { booleanValue, enumValue, idColumn, safeInteger, timestamps } from './constraints'
+import {
+  booleanValue,
+  enumValue,
+  idColumn,
+  safeInteger,
+  timestamps,
+  workForeignKey,
+} from './constraints'
 
 /** Creates one medium's independent, strictly validated filename-recognition profiles. */
 function recognitionProfiles<TName extends string>(
@@ -189,6 +196,7 @@ export const gameLaunchConfigs = sqliteTable(
   },
   (table) => [
     primaryKey({ columns: [table.id] }),
+    unique('game_launch_configs_id_work').on(table.id, table.gameId),
     booleanValue('game_launch_configs_preferred_value', table.isPreferred),
     safeInteger('game_launch_configs_order', table.sortOrder),
     uniqueIndex('game_launch_configs_preferred')
@@ -234,9 +242,15 @@ function readingFileFields() {
 function fileConstraints(
   name: string,
   owner: AnySQLiteColumn,
-  table: { path: AnySQLiteColumn; isPreferred: AnySQLiteColumn; associationMode: AnySQLiteColumn },
+  table: {
+    id: AnySQLiteColumn
+    path: AnySQLiteColumn
+    isPreferred: AnySQLiteColumn
+    associationMode: AnySQLiteColumn
+  },
 ) {
   return [
+    unique(`${name}_id_work`).on(table.id, owner),
     unique(`${name}_path`).on(owner, table.path),
     booleanValue(`${name}_preferred_value`, table.isPreferred),
     enumValue(`${name}_association_mode`, table.associationMode, associationModes),
@@ -322,22 +336,21 @@ export const novelFiles = sqliteTable(
 function fileParts<TName extends string>(
   name: TName,
   partName: string,
-  file: AnySQLiteColumn,
-  part: AnySQLiteColumn,
+  file: { id: AnySQLiteColumn; work: AnySQLiteColumn },
+  part: { id: AnySQLiteColumn; work: AnySQLiteColumn },
 ) {
   return sqliteTable(
     name,
     {
-      fileId: text('file_id')
-        .notNull()
-        .references(() => file, { onDelete: 'cascade' }),
-      partId: text(partName)
-        .notNull()
-        .references(() => part, { onDelete: 'cascade' }),
+      workId: idColumn(file.work.name),
+      fileId: idColumn('file_id'),
+      partId: idColumn(partName),
       isPreferred: integer('is_preferred', { mode: 'boolean' }).notNull().default(false),
     },
     (table) => [
       primaryKey({ columns: [table.fileId, table.partId] }),
+      workForeignKey(table.fileId, table.workId, file.id, file.work).onDelete('cascade'),
+      workForeignKey(table.partId, table.workId, part.id, part.work).onDelete('cascade'),
       booleanValue(`${name}_preferred_value`, table.isPreferred),
       uniqueIndex(`${name}_preferred`)
         .on(table.partId)
@@ -351,40 +364,40 @@ function fileParts<TName extends string>(
 export const animeFileEpisodes = fileParts(
   'anime_file_episodes',
   'episode_id',
-  animeFiles.id,
-  animeEpisodes.id,
+  { id: animeFiles.id, work: animeFiles.animeId },
+  { id: animeEpisodes.id, work: animeEpisodes.animeId },
 )
 
 /** Binds video files directly to real extras and records each extra's preferred file. */
 export const animeFileExtras = fileParts(
   'anime_file_extras',
   'extra_id',
-  animeFiles.id,
-  animeExtras.id,
+  { id: animeFiles.id, work: animeFiles.animeId },
+  { id: animeExtras.id, work: animeExtras.animeId },
 )
 
 /** Binds comic files directly to real volumes and records each volume's preferred file. */
 export const comicFileVolumes = fileParts(
   'comic_file_volumes',
   'volume_id',
-  comicFiles.id,
-  comicVolumes.id,
+  { id: comicFiles.id, work: comicFiles.comicId },
+  { id: comicVolumes.id, work: comicVolumes.comicId },
 )
 
 /** Binds comic files directly to real chapters and records each chapter's preferred file. */
 export const comicFileChapters = fileParts(
   'comic_file_chapters',
   'chapter_id',
-  comicFiles.id,
-  comicChapters.id,
+  { id: comicFiles.id, work: comicFiles.comicId },
+  { id: comicChapters.id, work: comicChapters.comicId },
 )
 
 /** Binds novel files directly to real volumes and records each volume's preferred file. */
 export const novelFileVolumes = fileParts(
   'novel_file_volumes',
   'volume_id',
-  novelFiles.id,
-  novelVolumes.id,
+  { id: novelFiles.id, work: novelFiles.novelId },
+  { id: novelVolumes.id, work: novelVolumes.novelId },
 )
 
 /** Creates one explicit complete usage override for a concrete work or file. */

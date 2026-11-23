@@ -141,7 +141,7 @@ Kisaki 向内核提供只读标记投影，其中包含定位、不透明 id 和
 
 书签的可见内容画面和所选页面区域的图像由应用阅读接入取得，可以使用 Electron [capturePage](https://www.electronjs.org/docs/latest/api/web-contents#contentscapturepagerect-opts)。Kana 不因此依赖 Electron 或 PreparedImage。完整采集操作见[内容采集](sessions.md#capture)。
 
-close 释放文档视图、任务和临时资源，Kisaki 随后收尾授权读取和会话。旧文档回调不能更新新文档。打开、取消、定位及最终状态交付遵守[执行完成合同](sessions.md#engine-completion)。
+关闭或替换文档前，Kisaki 先取消本次书签画面或区域采集，并按[宿主读取合同](../engineering/integrations.md#host)等待读取真正结束，再调用 Kana close 释放文档视图、任务和临时资源，随后收尾授权读取和会话。旧文档回调不能更新新文档。打开、取消、定位及最终状态交付遵守[执行完成合同](sessions.md#engine-completion)。
 
 <a id="contract-ownership"></a>
 

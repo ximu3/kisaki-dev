@@ -145,18 +145,35 @@ export type GameBackupRecovery = {
   readonly targetKind: 'file' | 'directory'
 
   readonly workspacePath: string
-  readonly manifestSha256: string
+  /** Null until the durable manifest is registered. */
+  readonly manifestSha256: string | null
 
   /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
 } & (
   | { readonly resolution: null; readonly resolvedAt: null }
   | {
-      readonly resolution: RecoveryResolution
+      readonly resolution: 'keptCurrent'
+      /** UTC milliseconds since the Unix epoch. */
+      readonly resolvedAt: number
+    }
+  | {
+      readonly resolution: 'restored' | 'rolledBack'
+      readonly manifestSha256: string
       /** UTC milliseconds since the Unix epoch. */
       readonly resolvedAt: number
     }
 )
+
+/** A published manifest can be unreadable or invalid. An unpublished one has no stored value. */
+export type GameBackupRecoveryDetail = GameBackupRecovery &
+  (
+    | { readonly manifestSha256: null; readonly manifest: null }
+    | {
+        readonly manifestSha256: string
+        readonly manifest: StoredDefinition<GameBackupRecoveryManifest>
+      }
+  )
 
 export type RecoveryLocationObservation =
   | { readonly status: 'absent' }
@@ -194,13 +211,7 @@ export interface GameBackupRecoveriesApi {
   ): Promise<ListResult<GameBackupRecovery>>
 
   /** Returns null for an absent record. A read leaves recovery progress unchanged. */
-  get(
-    id: string,
-    call?: CallOptions,
-  ): Promise<
-    | (GameBackupRecovery & { readonly manifest: StoredDefinition<GameBackupRecoveryManifest> })
-    | null
-  >
+  get(id: string, call?: CallOptions): Promise<GameBackupRecoveryDetail | null>
 
   /**
    * Returns the actions available for the observed locations and a basis to compare before

@@ -1,5 +1,9 @@
 import { expect, test } from 'vite-plus/test'
-import { getMessageParameterContract, validateMessageCatalog } from './messages'
+import {
+  getMessageParameterContract,
+  validateMessageArguments,
+  validateMessageCatalog,
+} from './messages'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 
 test('intersects all source uses and allows omissions but never a narrowing translation', () => {
@@ -24,4 +28,18 @@ test('intersects all source uses and allows omissions but never a narrowing tran
   )
 
   expect(() => validateMessageCatalog({ 'bad.key': 'value' }, source)).toThrow(DesktopError)
+})
+
+test('date formats may use numeric timestamps only within the Date range', () => {
+  const source = { count: '{count, plural, other {#}}' }
+  const narrowed = { count: '{count, plural, other {{count, date, short}}}' }
+  expect(() => validateMessageCatalog(narrowed, source)).toThrow(DesktopError)
+
+  const contract = getMessageParameterContract('{value, date} {value, number}')
+  expect(contract).toEqual({ value: ['timestamp'] })
+  expect(validateMessageArguments(contract, { value: 8.64e15 })).toEqual({ value: 8.64e15 })
+  expect(() => validateMessageArguments(contract, { value: 8.64e15 + 1 })).toThrow(DesktopError)
+  expect(validateMessageCatalog({ time: '{value, time}' }, { time: '{value, date}' })).toEqual({
+    time: '{value, time}',
+  })
 })

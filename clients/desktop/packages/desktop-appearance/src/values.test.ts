@@ -33,6 +33,11 @@ test('parses literal colors, text metrics, font stacks and complete shadow layer
   }
 
   expect(parseTokenValue('--radius', '  6px /* base */ ')).toBe('6px')
+  expect(parseTokenValue('--primary', 'r\\65 d')).toBe('red')
+  expect(parseTokenValue('--primary', '#\\31 23')).toBe('#123')
+  expect(parseTokenValue('--primary', 'co\\6c or(display-p3 1 0 0)')).toBe(
+    'color(display-p3 1 0 0)',
+  )
   expect(parseTokenValue('--radius', '  +0.0 /* base */ ')).toBe('0px')
   expect(parseTokenValue('--text-base-size', '0e0')).toBe('0px')
   expect(parseTokenValue('--text-base-letter-spacing', '-0')).toBe('0px')
@@ -54,6 +59,10 @@ test('rejects formulas, context references, invalid kinds and malformed CSS', ()
     ['--primary', 'currentColor'],
     ['--primary', 'CanvasText'],
     ['--primary', 'inherit'],
+    ['--primary', 'red\\0'],
+    ['--primary', 'red\\9'],
+    ['--primary', 'red\\a'],
+    ['--primary', 'rgb(\\31 0 0 0)'],
     ['--primary', 'red; --background: blue'],
     ['--primary', 'oklch(0.6 0.2 256'],
     ['--primary', 'url(https://example.invalid/color)'],
@@ -67,6 +76,7 @@ test('rejects formulas, context references, invalid kinds and malformed CSS', ()
     ['--text-base-line-height', '-1'],
     ['--shadow-raised', '0 1px 2px'],
     ['--shadow-raised', '0 1px 2px currentColor'],
+    ['--shadow-raised', '0 1px 2px red\\0'],
     ['--shadow-raised', '0 1px 2px red, inset 0 0 -1px blue'],
     ['--radius', '1e999px'],
     ['--primary', 'rgb(1e999 0 0)'],

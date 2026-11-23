@@ -1,4 +1,5 @@
-import { converter, formatHex, formatHex8, parse, type Hsv } from 'culori'
+import { clampRgb, converter, formatHex, formatHex8, parse, type Hsv } from 'culori'
+import { parseTokenValue } from '@kisaki3/desktop-appearance/values'
 import { createEffect, createMemo, createSignal, createUniqueId, omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { fieldAttributes, closeWhenUnavailable } from '../../../internal/field'
@@ -15,10 +16,32 @@ import styles from './styles.module.css'
 
 const toHsv = converter('hsv')
 
+function pickerColor(css: string): Hsv {
+  const color = parse(css)
+  if (color) {
+    return toHsv(clampRgb(color))
+  }
+
+  const sample = document.createElement('canvas')
+  sample.width = sample.height = 1
+  const context = sample.getContext('2d', { willReadFrequently: true })!
+  context.globalCompositeOperation = 'copy'
+  context.fillStyle = css
+  context.fillRect(0, 0, 1, 1)
+  const alpha = context.getImageData(0, 0, 1, 1).data[3]! / 255
+
+  // Canvas stores premultiplied pixels. Sample opaque RGB so transparent colors retain their hue.
+  context.fillStyle = `color(from ${css} srgb r g b / 1)`
+  context.fillRect(0, 0, 1, 1)
+  const [r, g, b] = context.getImageData(0, 0, 1, 1).data
+  return toHsv({ mode: 'rgb', r: r! / 255, g: g! / 255, b: b! / 255, alpha })
+}
+
 /**
  * Color-text input with an alpha-capable picker and localized channel and validation labels.
  *
- * Typed color syntax is retained; picker gestures produce hexadecimal color values.
+ * Typed standalone appearance colors retain their CSS text and color space. Editing a picker
+ * channel produces sRGB hexadecimal.
  */
 export interface ColorInputProps extends Omit<InputProps, 'type'> {
   pickerLabel: string
@@ -57,7 +80,16 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
     () => props.defaultValue ?? '',
     (next) => props.onValueChange?.(next),
   )
-  const parsed = createMemo(() => parse(value()))
+  const css = createMemo(() => {
+    try {
+      return parseTokenValue('--background', value())
+    } catch (cause) {
+      if (!(cause instanceof TypeError)) {
+        throw cause
+      }
+      return undefined
+    }
+  })
   const [color, setColor] = createSignal<Hsv>({ mode: 'hsv', h: 0, s: 1, v: 1, alpha: 1 })
 
   const [open, setOpen] = createSignal(false)
@@ -67,17 +99,14 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
   let picker!: HTMLDivElement
   let hue!: HTMLInputElement
   const blocked = () => (props.disabled ?? field.disabled) || props.readonly
-  const swatch = () => (parsed() ? formatHex8(parsed()) : 'transparent')
 
-  createEffect(
-    () => toHsv(parsed()),
-    (next) => {
-      if (next) {
-        // Achromatic values have no hue. Preserve the user's picker position.
-        setColor((previous) => ({ ...next, h: next.h ?? previous.h ?? 0 }))
-      }
-    },
-  )
+  createEffect(css, (next) => {
+    if (next !== undefined) {
+      const color = pickerColor(next)
+      // Achromatic values have no hue. Preserve the user's picker position.
+      setColor((previous) => ({ ...color, h: color.h ?? previous.h ?? 0 }))
+    }
+  })
 
   const commit = (next: Partial<Hsv>) => {
     const updated = { ...color(), ...next }
@@ -117,7 +146,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
     () => setOpen(false),
   )
   createEffect(
-    () => (value() && !parsed() ? props.invalidColorMessage : ''),
+    () => (value() && css() === undefined ? props.invalidColorMessage : ''),
     (message) => {
       input.setCustomValidity(message)
       nativeValidityChanged(input.form)
@@ -168,7 +197,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
           setOpen(!open())
         }}
       >
-        <span style={{ background: swatch() }} />
+        <span style={{ 'background-color': css() }} />
       </button>
       <div
         ref={(node) => {

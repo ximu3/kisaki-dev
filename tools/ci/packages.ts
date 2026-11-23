@@ -1,4 +1,6 @@
-import type { Project } from '../workspace.ts'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { repositoryRoot, type Project } from '../workspace.ts'
 
 export const runners = {
   'linux-x64': 'ubuntu-22.04',
@@ -16,6 +18,7 @@ const nativeTargets = Object.keys(runners) as Target[]
 interface TaskEnvironment {
   chromium?: boolean
   window?: boolean
+  consumerNode?: string
   linuxPackages?: readonly string[]
   performanceReport?: string
 }
@@ -42,11 +45,22 @@ const consumerEnvironments: Readonly<Record<string, TaskEnvironment>> = {
   '@kisaki3/extension-distribution': chromium,
 }
 
-function libraryChecks(name: string): PackageChecks {
-  const consumers = consumerEnvironments[name] ?? {}
+function libraryChecks(project: Project): PackageChecks {
+  const { engines } = JSON.parse(
+    readFileSync(join(repositoryRoot, project.directory, 'package.json'), 'utf8'),
+  ) as {
+    engines?: { node?: string }
+  }
+  const consumerNode = engines?.node?.match(/^>=(\d+\.\d+\.\d+)$/)?.[1]
+  const consumers = {
+    ...consumerEnvironments[project.name],
+    ...(consumerNode && { consumerNode }),
+  }
   const tasks: Record<string, TaskEnvironment> = { verify: consumers, 'test:consumers': consumers }
-  if (name === '@kisaki3/desktop-ui') {
+  if (project.name === '@kisaki3/desktop-ui') {
     tasks['test:browser'] = chromium
+  } else {
+    tasks.test = {}
   }
   return {
     defaultTask: 'verify',
@@ -97,7 +111,7 @@ export function verificationPackages(workspace: readonly Project[]): Verificatio
       return []
     }
     const checks = project.directory.startsWith('clients/desktop/packages/')
-      ? libraryChecks(project.name)
+      ? libraryChecks(project)
       : packageChecks[project.name]
     if (!checks) {
       throw new Error('No CI verification registered for ' + project.name)

@@ -1,7 +1,7 @@
 {
   "version": "7",
   "dialect": "sqlite",
-  "id": "49b8eac8-0d37-4cc1-985d-dfc0dcc02f71",
+  "id": "15b07e43-8584-4aae-bba7-49c1ff0139fc",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -1134,6 +1134,16 @@
     },
     {
       "table": "anime_file_episodes",
+      "name": "anime_id",
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "anime_file_episodes",
       "name": "file_id",
       "type": "text",
       "notNull": true,
@@ -1159,6 +1169,16 @@
       "notNull": true,
       "autoincrement": false,
       "default": "false",
+      "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "anime_file_extras",
+      "name": "anime_id",
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
       "generated": null,
       "entityType": "columns"
     },
@@ -2413,6 +2433,16 @@
     },
     {
       "table": "comic_file_chapters",
+      "name": "comic_id",
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "comic_file_chapters",
       "name": "file_id",
       "type": "text",
       "notNull": true,
@@ -2505,6 +2535,16 @@
       "table": "comic_file_recognition_profiles",
       "name": "updated_at",
       "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "comic_file_volumes",
+      "name": "comic_id",
+      "type": "text",
       "notNull": true,
       "autoincrement": false,
       "default": null,
@@ -2828,6 +2868,16 @@
       "notNull": true,
       "autoincrement": false,
       "default": "0",
+      "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "comic_volume_chapters",
+      "name": "comic_id",
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
       "generated": null,
       "entityType": "columns"
     },
@@ -3841,7 +3891,7 @@
       "table": "game_backup_recoveries",
       "name": "manifest_sha256",
       "type": "text",
-      "notNull": true,
+      "notNull": false,
       "autoincrement": false,
       "default": null,
       "generated": null,
@@ -4914,6 +4964,16 @@
       "table": "novel_file_recognition_profiles",
       "name": "updated_at",
       "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "novel_file_volumes",
+      "name": "novel_id",
+      "type": "text",
       "notNull": true,
       "autoincrement": false,
       "default": null,
@@ -6352,6 +6412,16 @@
     {
       "table": "work_completion_records",
       "name": "work_id",
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "entityType": "columns"
+    },
+    {
+      "table": "work_completion_records",
+      "name": "work_type",
       "type": "text",
       "notNull": true,
       "autoincrement": false,
@@ -9524,6 +9594,21 @@
     },
     {
       "table": "anime_annotations",
+      "name": "fk_anime_annotations_image_id_attachments_id_fk",
+      "columns": [
+        "image_id"
+      ],
+      "tableTo": "attachments",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "nameExplicit": false,
+      "entityType": "fks"
+    },
+    {
+      "table": "anime_annotations",
       "name": "fk_anime_annotations_file_id_anime_files_id_fk",
       "columns": [
         "file_id"
@@ -9539,16 +9624,18 @@
     },
     {
       "table": "anime_annotations",
-      "name": "fk_anime_annotations_image_id_attachments_id_fk",
+      "name": "fk_anime_annotations_file_id_anime_id_anime_files_id_anime_id_fk",
       "columns": [
-        "image_id"
+        "file_id",
+        "anime_id"
       ],
-      "tableTo": "attachments",
+      "tableTo": "anime_files",
       "columnsTo": [
-        "id"
+        "id",
+        "anime_id"
       ],
       "onUpdate": "NO ACTION",
-      "onDelete": "RESTRICT",
+      "onDelete": "NO ACTION",
       "nameExplicit": false,
       "entityType": "fks"
     },
@@ -9764,13 +9851,15 @@
     },
     {
       "table": "anime_file_episodes",
-      "name": "fk_anime_file_episodes_file_id_anime_files_id_fk",
+      "name": "fk_anime_file_episodes_file_id_anime_id_anime_files_id_anime_id_fk",
       "columns": [
-        "file_id"
+        "file_id",
+        "anime_id"
       ],
       "tableTo": "anime_files",
       "columnsTo": [
-        "id"
+        "id",
+        "anime_id"
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "CASCADE",
@@ -9779,13 +9868,15 @@
     },
     {
       "table": "anime_file_episodes",
-      "name": "fk_anime_file_episodes_episode_id_anime_episodes_id_fk",
+      "name": "fk_anime_file_episodes_episode_id_anime_id_anime_episodes_id_anime_id_fk",
       "columns": [
-        "episode_id"
+        "episode_id",
+        "anime_id"
       ],
       "tableTo": "anime_episodes",
       "columnsTo": [
-        "id"
+        "id",
+        "anime_id"
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "CASCADE",
@@ -9794,13 +9885,15 @@
     },
     {
       "table": "anime_file_extras",
-      "name": "fk_anime_file_extras_file_id_anime_files_id_fk",
+      "name": "fk_anime_file_extras_file_id_anime_id_anime_files_id_anime_id_fk",
       "columns": [
-        "file_id"
+        "file_id",
+        "anime_id"
       ],
       "tableTo": "anime_files",
       "columnsTo": [
-        "id"
+        "id",
+        "anime_id"
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "CASCADE",
@@ -9809,13 +9902,15 @@
     },
     {
       "table": "anime_file_extras",
-      "name": "fk_anime_file_extras_extra_id_anime_extras_id_fk",
+      "name": "fk_anime_file_extras_extra_id_anime_id_anime_extras_id_anime_id_fk",
       "columns": [
-        "extra_id"
+        "extra_id",
+        "anime_id"
       ],
       "tableTo": "anime_extras",
       "columnsTo": [
-        "id"
+        "id",
+        "anime_id"
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "CASCADE",
@@ -9899,6 +9994,23 @@
     },
     {
       "table": "anime_watch_activity",
+      "name": "fk_anime_watch_activity_file_id_anime_id_anime_files_id_anime_id_fk",
+      "columns": [
+        "file_id",
+        "anime_id"
+      ],
+      "tableTo": "anime_files",
+      "columnsTo": [
+        "id",
+        "anime_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "entityType": "fks"
+    },
+    {
+      "table": "anime_watch_activity",
       "name": "fk_anime_watch_activity_episode_id_anime_episodes_id_fk",
       "columns": [
         "episode_id"
@@ -9914,6 +10026,23 @@
     },
     {
       "table": "anime_watch_activity",
+      "name": "fk_anime_watch_activity_episode_id_anime_id_anime_episodes_id_anime_id_fk",
+      "columns": [
+        "episode_id",
+        "anime_id"
+      ],
+      "tableTo": "anime_episodes",
+      "columnsTo": [
+        "id",
+        "anime_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "entityType": "fks"
+    },
+    {
+      "table": "anime_watch_activity",
       "name": "fk_anime_watch_activity_extra_id_anime_extras_id_fk",
       "columns": [
         "extra_id"
@@ -9924,6 +10053,23 @@
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "SET NULL",
+      "nameExplicit": false,
+      "entityType": "fks"
+    },
+    {
+      "table": "anime_watch_activity",
+      "name": "fk_anime_watch_activity_extra_id_anime_id_anime_extras_id_anime_id_fk",
+      "columns": [
+        "extra_id",
+        "anime_id"
+      ],
+      "tableTo": "anime_extras",
+      "columnsTo": [
+        "id",
+        "anime_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
       "nameExplicit": false,
       "entityType": "fks"
     },
@@ -10115,6 +10261,21 @@
     },
     {
       "table": "comic_annotations",
+      "name": "fk_comic_annotations_image_id_attachments_id_fk",
+      "columns": [
+        "image_id"
+      ],
+      "tableTo": "attachments",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "nameExplicit": false,
+      "entityType": "fks"
+    },
+    {
+      "table": "comic_annotations",
       "name": "fk_comic_annotations_file_id_comic_files_id_fk",
       "columns": [
         "file_id"
@@ -10130,16 +10291,18 @@
     },
     {
       "table": "comic_annotations",
-      "name": "fk_comic_annotations_image_id_attachments_id_fk",
+      "name": "fk_comic_annotations_file_id_comic_id_comic_files_id_comic_id_fk",
       "columns": [
-        "image_id"
+        "file_id",
+        "comic_id"
       ],
-      "tableTo": "attachments",
+      "tableTo": "comic_files",
       "columnsTo": [
-        "id"
+        "id",
+        "comic_id"
       ],
       "onUpdate": "NO ACTION",
-      "onDelete": "RESTRICT",
+      "onDelete": "NO ACTION",
       "nameExplicit": false,
       "entityType": "fks"
     },
@@ -10265,13 +10428,15 @@
     },
     {
       "table": "comic_file_chapters",
-      "name": "fk_comic_file_chapters_file_id_comic_files_id_fk",
+      "name": "fk_comic_file_chapters_file_id_comic_id_comic_files_id_comic_id_fk",
       "columns": [
-        "file_id"
+        "file_id",
+        "comic_id"
       ],
       "tableTo": "comic_files",
       "columnsTo": [
-        "id"
+        "id",
+        "comic_id"
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "CASCADE",
@@ -10280,13 +10445,15 @@
     },
     {
       "table": "comic_file_chapters",
-      "name": "fk_comic_file_chapters_chapter_id_comic_chapters_id_fk",
+      "name": "fk_comic_file_chapters_chapter_id_comic_id_comic_chapters_id_comic_id_fk",
       "columns": [
-        "chapter_id"
+        "chapter_id",
+        "comic_id"
       ],
       "tableTo": "comic_chapters",
       "columnsTo": [
-        "id"
+        "id",
+        "comic_id"
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "CASCADE",
@@ -10295,13 +10462,15 @@
     },
     {
       "table": "comic_file_volumes",
-      "name": "fk_comic_file_volumes_file_id_comic_files_id_fk",
+      "name": "fk_comic_file_volumes_file_id_comic_id_comic_files_id_comic_id_fk",
       "columns": [
-        "file_id"
+        "file_id",
+        "comic_id"
       ],
       "tableTo": "comic_files",
       "columnsTo": [
-        "id"
+        "id",
+        "comic_id"
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "CASCADE",
@@ -10310,13 +10479,15 @@
     },
     {
       "table": "comic_file_volumes",
-      "name": "fk_comic_file_volumes_volume_id_comic_volumes_id_fk",
+      "name": "fk_comic_file_volumes_volume_id_comic_id_comic_volumes_id_comic_id_fk",
       "columns": [
-        "volume_id"
+        "volume_id",
+        "comic_id"
       ],
       "tableTo": "comic_volumes",
       "columnsTo": [
-        "id"
+        "id",
+        "comic_id"
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "CASCADE",
@@ -10370,6 +10541,23 @@
     },
     {
       "table": "comic_reading_activity",
+      "name": "fk_comic_reading_activity_file_id_comic_id_comic_files_id_comic_id_fk",
+      "columns": [
+        "file_id",
+        "comic_id"
+      ],
+      "tableTo": "comic_files",
+      "columnsTo": [
+        "id",
+        "comic_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "entityType": "fks"
+    },
+    {
+      "table": "comic_reading_activity",
       "name": "fk_comic_reading_activity_volume_id_comic_volumes_id_fk",
       "columns": [
         "volume_id"
@@ -10385,6 +10573,23 @@
     },
     {
       "table": "comic_reading_activity",
+      "name": "fk_comic_reading_activity_volume_id_comic_id_comic_volumes_id_comic_id_fk",
+      "columns": [
+        "volume_id",
+        "comic_id"
+      ],
+      "tableTo": "comic_volumes",
+      "columnsTo": [
+        "id",
+        "comic_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "entityType": "fks"
+    },
+    {
+      "table": "comic_reading_activity",
       "name": "fk_comic_reading_activity_chapter_id_comic_chapters_id_fk",
       "columns": [
         "chapter_id"
@@ -10395,6 +10600,23 @@
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "SET NULL",
+      "nameExplicit": false,
+      "entityType": "fks"
+    },
+    {
+      "table": "comic_reading_activity",
+      "name": "fk_comic_reading_activity_chapter_id_comic_id_comic_chapters_id_comic_id_fk",
+      "columns": [
+        "chapter_id",
+        "comic_id"
+      ],
+      "tableTo": "comic_chapters",
+      "columnsTo": [
+        "id",
+        "comic_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
       "nameExplicit": false,
       "entityType": "fks"
     },
@@ -10430,13 +10652,15 @@
     },
     {
       "table": "comic_volume_chapters",
-      "name": "fk_comic_volume_chapters_volume_id_comic_volumes_id_fk",
+      "name": "fk_comic_volume_chapters_volume_id_comic_id_comic_volumes_id_comic_id_fk",
       "columns": [
-        "volume_id"
+        "volume_id",
+        "comic_id"
       ],
       "tableTo": "comic_volumes",
       "columnsTo": [
-        "id"
+        "id",
+        "comic_id"
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "CASCADE",
@@ -10445,13 +10669,15 @@
     },
     {
       "table": "comic_volume_chapters",
-      "name": "fk_comic_volume_chapters_chapter_id_comic_chapters_id_fk",
+      "name": "fk_comic_volume_chapters_chapter_id_comic_id_comic_chapters_id_comic_id_fk",
       "columns": [
-        "chapter_id"
+        "chapter_id",
+        "comic_id"
       ],
       "tableTo": "comic_chapters",
       "columnsTo": [
-        "id"
+        "id",
+        "comic_id"
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "CASCADE",
@@ -10807,13 +11033,15 @@
     },
     {
       "table": "game_backup_recoveries",
-      "name": "fk_game_backup_recoveries_backup_id_game_save_backups_id_fk",
+      "name": "fk_game_backup_recoveries_backup_id_game_id_game_save_backups_id_game_id_fk",
       "columns": [
-        "backup_id"
+        "backup_id",
+        "game_id"
       ],
       "tableTo": "game_save_backups",
       "columnsTo": [
-        "id"
+        "id",
+        "game_id"
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "RESTRICT",
@@ -10822,13 +11050,15 @@
     },
     {
       "table": "game_backup_recoveries",
-      "name": "fk_game_backup_recoveries_protection_backup_id_game_save_backups_id_fk",
+      "name": "fk_game_backup_recoveries_protection_backup_id_game_id_game_save_backups_id_game_id_fk",
       "columns": [
-        "protection_backup_id"
+        "protection_backup_id",
+        "game_id"
       ],
       "tableTo": "game_save_backups",
       "columnsTo": [
-        "id"
+        "id",
+        "game_id"
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "RESTRICT",
@@ -10896,6 +11126,23 @@
       "entityType": "fks"
     },
     {
+      "table": "game_play_activity",
+      "name": "fk_game_play_activity_launch_config_id_game_id_game_launch_configs_id_game_id_fk",
+      "columns": [
+        "launch_config_id",
+        "game_id"
+      ],
+      "tableTo": "game_launch_configs",
+      "columnsTo": [
+        "id",
+        "game_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "entityType": "fks"
+    },
+    {
       "table": "game_records",
       "name": "fk_game_records_game_id_games_entry_id_fk",
       "columns": [
@@ -10927,6 +11174,21 @@
     },
     {
       "table": "game_save_backups",
+      "name": "fk_game_save_backups_archive_attachment_id_attachments_id_fk",
+      "columns": [
+        "archive_attachment_id"
+      ],
+      "tableTo": "attachments",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "nameExplicit": false,
+      "entityType": "fks"
+    },
+    {
+      "table": "game_save_backups",
       "name": "fk_game_save_backups_source_config_id_game_launch_configs_id_fk",
       "columns": [
         "source_config_id"
@@ -10942,16 +11204,18 @@
     },
     {
       "table": "game_save_backups",
-      "name": "fk_game_save_backups_archive_attachment_id_attachments_id_fk",
+      "name": "fk_game_save_backups_source_config_id_game_id_game_launch_configs_id_game_id_fk",
       "columns": [
-        "archive_attachment_id"
+        "source_config_id",
+        "game_id"
       ],
-      "tableTo": "attachments",
+      "tableTo": "game_launch_configs",
       "columnsTo": [
-        "id"
+        "id",
+        "game_id"
       ],
       "onUpdate": "NO ACTION",
-      "onDelete": "RESTRICT",
+      "onDelete": "NO ACTION",
       "nameExplicit": false,
       "entityType": "fks"
     },
@@ -11154,6 +11418,21 @@
     },
     {
       "table": "novel_annotations",
+      "name": "fk_novel_annotations_image_id_attachments_id_fk",
+      "columns": [
+        "image_id"
+      ],
+      "tableTo": "attachments",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "nameExplicit": false,
+      "entityType": "fks"
+    },
+    {
+      "table": "novel_annotations",
       "name": "fk_novel_annotations_file_id_novel_files_id_fk",
       "columns": [
         "file_id"
@@ -11169,16 +11448,18 @@
     },
     {
       "table": "novel_annotations",
-      "name": "fk_novel_annotations_image_id_attachments_id_fk",
+      "name": "fk_novel_annotations_file_id_novel_id_novel_files_id_novel_id_fk",
       "columns": [
-        "image_id"
+        "file_id",
+        "novel_id"
       ],
-      "tableTo": "attachments",
+      "tableTo": "novel_files",
       "columnsTo": [
-        "id"
+        "id",
+        "novel_id"
       ],
       "onUpdate": "NO ACTION",
-      "onDelete": "RESTRICT",
+      "onDelete": "NO ACTION",
       "nameExplicit": false,
       "entityType": "fks"
     },
@@ -11214,13 +11495,15 @@
     },
     {
       "table": "novel_file_volumes",
-      "name": "fk_novel_file_volumes_file_id_novel_files_id_fk",
+      "name": "fk_novel_file_volumes_file_id_novel_id_novel_files_id_novel_id_fk",
       "columns": [
-        "file_id"
+        "file_id",
+        "novel_id"
       ],
       "tableTo": "novel_files",
       "columnsTo": [
-        "id"
+        "id",
+        "novel_id"
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "CASCADE",
@@ -11229,13 +11512,15 @@
     },
     {
       "table": "novel_file_volumes",
-      "name": "fk_novel_file_volumes_volume_id_novel_volumes_id_fk",
+      "name": "fk_novel_file_volumes_volume_id_novel_id_novel_volumes_id_novel_id_fk",
       "columns": [
-        "volume_id"
+        "volume_id",
+        "novel_id"
       ],
       "tableTo": "novel_volumes",
       "columnsTo": [
-        "id"
+        "id",
+        "novel_id"
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "CASCADE",
@@ -11289,6 +11574,23 @@
     },
     {
       "table": "novel_reading_activity",
+      "name": "fk_novel_reading_activity_file_id_novel_id_novel_files_id_novel_id_fk",
+      "columns": [
+        "file_id",
+        "novel_id"
+      ],
+      "tableTo": "novel_files",
+      "columnsTo": [
+        "id",
+        "novel_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "entityType": "fks"
+    },
+    {
+      "table": "novel_reading_activity",
       "name": "fk_novel_reading_activity_volume_id_novel_volumes_id_fk",
       "columns": [
         "volume_id"
@@ -11299,6 +11601,23 @@
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "SET NULL",
+      "nameExplicit": false,
+      "entityType": "fks"
+    },
+    {
+      "table": "novel_reading_activity",
+      "name": "fk_novel_reading_activity_volume_id_novel_id_novel_volumes_id_novel_id_fk",
+      "columns": [
+        "volume_id",
+        "novel_id"
+      ],
+      "tableTo": "novel_volumes",
+      "columnsTo": [
+        "id",
+        "novel_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
       "nameExplicit": false,
       "entityType": "fks"
     },
@@ -11584,13 +11903,15 @@
     },
     {
       "table": "work_completion_records",
-      "name": "fk_work_completion_records_work_id_entries_id_fk",
+      "name": "fk_work_completion_records_work_id_work_type_entries_id_type_fk",
       "columns": [
-        "work_id"
+        "work_id",
+        "work_type"
       ],
       "tableTo": "entries",
       "columnsTo": [
-        "id"
+        "id",
+        "type"
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "CASCADE",
@@ -12645,6 +12966,36 @@
       "entityType": "uniques"
     },
     {
+      "table": "anime_episodes",
+      "name": "anime_episodes_id_work",
+      "columns": [
+        "id",
+        "anime_id"
+      ],
+      "nameExplicit": true,
+      "entityType": "uniques"
+    },
+    {
+      "table": "anime_extras",
+      "name": "anime_extras_id_work",
+      "columns": [
+        "id",
+        "anime_id"
+      ],
+      "nameExplicit": true,
+      "entityType": "uniques"
+    },
+    {
+      "table": "anime_files",
+      "name": "anime_files_id_work",
+      "columns": [
+        "id",
+        "anime_id"
+      ],
+      "nameExplicit": true,
+      "entityType": "uniques"
+    },
+    {
       "table": "anime_files",
       "name": "anime_files_path",
       "columns": [
@@ -12665,6 +13016,16 @@
       "entityType": "uniques"
     },
     {
+      "table": "comic_chapters",
+      "name": "comic_chapters_id_work",
+      "columns": [
+        "id",
+        "comic_id"
+      ],
+      "nameExplicit": true,
+      "entityType": "uniques"
+    },
+    {
       "table": "comic_directories",
       "name": "comic_directories_path",
       "columns": [
@@ -12676,10 +13037,30 @@
     },
     {
       "table": "comic_files",
+      "name": "comic_files_id_work",
+      "columns": [
+        "id",
+        "comic_id"
+      ],
+      "nameExplicit": true,
+      "entityType": "uniques"
+    },
+    {
+      "table": "comic_files",
       "name": "comic_files_path",
       "columns": [
         "comic_id",
         "path"
+      ],
+      "nameExplicit": true,
+      "entityType": "uniques"
+    },
+    {
+      "table": "comic_volumes",
+      "name": "comic_volumes_id_work",
+      "columns": [
+        "id",
+        "comic_id"
       ],
       "nameExplicit": true,
       "entityType": "uniques"
@@ -12700,6 +13081,26 @@
       "columns": [
         "game_id",
         "path"
+      ],
+      "nameExplicit": true,
+      "entityType": "uniques"
+    },
+    {
+      "table": "game_launch_configs",
+      "name": "game_launch_configs_id_work",
+      "columns": [
+        "id",
+        "game_id"
+      ],
+      "nameExplicit": true,
+      "entityType": "uniques"
+    },
+    {
+      "table": "game_save_backups",
+      "name": "game_save_backups_id_work",
+      "columns": [
+        "id",
+        "game_id"
       ],
       "nameExplicit": true,
       "entityType": "uniques"
@@ -12726,10 +13127,30 @@
     },
     {
       "table": "novel_files",
+      "name": "novel_files_id_work",
+      "columns": [
+        "id",
+        "novel_id"
+      ],
+      "nameExplicit": true,
+      "entityType": "uniques"
+    },
+    {
+      "table": "novel_files",
       "name": "novel_files_path",
       "columns": [
         "novel_id",
         "path"
+      ],
+      "nameExplicit": true,
+      "entityType": "uniques"
+    },
+    {
+      "table": "novel_volumes",
+      "name": "novel_volumes_id_work",
+      "columns": [
+        "id",
+        "novel_id"
       ],
       "nameExplicit": true,
       "entityType": "uniques"
@@ -13417,7 +13838,13 @@
     {
       "table": "game_backup_recoveries",
       "name": "game_backup_recoveries_digest",
-      "value": "length(\"manifest_sha256\") = 64 and \"manifest_sha256\" not glob '*[^0-9a-f]*'",
+      "value": "\"manifest_sha256\" is null or (length(\"manifest_sha256\") = 64 and \"manifest_sha256\" not glob '*[^0-9a-f]*')",
+      "entityType": "checks"
+    },
+    {
+      "table": "game_backup_recoveries",
+      "name": "game_backup_recoveries_published",
+      "value": "\"resolution\" not in ('restored', 'rolledBack') or \"manifest_sha256\" is not null",
       "entityType": "checks"
     },
     {
@@ -13820,6 +14247,12 @@
       "table": "work_character_links",
       "name": "work_character_links_character_order",
       "value": "\"order_in_character\" is null or (typeof(\"order_in_character\") = 'integer' and \"order_in_character\" between 0 and 9007199254740991)",
+      "entityType": "checks"
+    },
+    {
+      "table": "work_completion_records",
+      "name": "work_completion_records_work_type",
+      "value": "\"work_type\" in ('game', 'anime', 'comic', 'novel')",
       "entityType": "checks"
     },
     {

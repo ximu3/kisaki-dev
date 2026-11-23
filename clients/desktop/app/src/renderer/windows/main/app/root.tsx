@@ -26,7 +26,7 @@ export function MainWindow(props: { api: MainClient; pages: readonly PageRoute[]
 
   return (
     <>
-      <Notifications t={api.t} />
+      <Notifications t={api.t} appearanceIssues={api.appearanceIssues} />
       <AppShell
         api={api}
         pages={props.pages}

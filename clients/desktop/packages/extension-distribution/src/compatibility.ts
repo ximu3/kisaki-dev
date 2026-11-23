@@ -38,13 +38,24 @@ export interface CompatibilityEnvironment {
 /**
  * One unmet artifact requirement and the host value used for comparison.
  *
- * An undefined actual value identifies a runtime absent from the host.
+ * An omitted actual value identifies a runtime absent from the host.
  */
-export interface CompatibilityIssue {
-  readonly condition: 'target' | 'apiVersion' | 'nodeVersion' | 'electronVersion'
-  readonly required: string | readonly ExtensionTarget[]
-  readonly actual: string | undefined
-}
+export type CompatibilityIssue =
+  | {
+      readonly condition: 'target'
+      readonly required: readonly ExtensionTarget[]
+      readonly actual: ExtensionTarget
+    }
+  | {
+      readonly condition: 'apiVersion'
+      readonly required: string
+      readonly actual: string
+    }
+  | {
+      readonly condition: 'nodeVersion' | 'electronVersion'
+      readonly required: string
+      readonly actual?: string
+    }
 
 /** Parses a canonical full SemVer version and preserves its spelling, including build metadata. */
 export function parseVersion(input: unknown, path: FieldPath = []): string {
@@ -138,15 +149,21 @@ export function getCompatibilityIssues(
   if (!declaration.targets.includes(environment.target)) {
     issues.push({ condition: 'target', required: declaration.targets, actual: environment.target })
   }
+  if (!satisfies(environment.apiVersion, declaration.apiVersionRange)) {
+    issues.push({
+      condition: 'apiVersion',
+      required: declaration.apiVersionRange,
+      actual: environment.apiVersion,
+    })
+  }
 
   const conditions = [
-    ['apiVersion', declaration.apiVersionRange, environment.apiVersion],
     ['nodeVersion', declaration.nodeVersionRange, environment.nodeVersion],
     ['electronVersion', declaration.electronVersionRange, environment.electronVersion],
   ] as const
   for (const [condition, required, actual] of conditions) {
     if (required !== undefined && (actual === undefined || !satisfies(actual, required))) {
-      issues.push({ condition, required, actual })
+      issues.push({ condition, required, ...(actual === undefined ? {} : { actual }) })
     }
   }
 

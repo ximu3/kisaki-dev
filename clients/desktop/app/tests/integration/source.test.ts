@@ -8,7 +8,7 @@ import { once } from 'node:events'
 import { createServer, type AddressInfo } from 'node:net'
 import Database from 'better-sqlite3'
 import { launchApplication } from '../../tools/dev/application'
-import { startRenderer } from '../../tools/dev/renderer'
+import { createRenderer } from '../../tools/dev/renderer'
 import { startDevelopmentSession } from '../../tools/dev/session'
 import { appRoot } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
@@ -42,7 +42,7 @@ test('source styles and live updates survive gaps in independent public package 
   await mkdir(parent, { recursive: true })
   const root = await mkdtemp(join(parent, 'renderer-styles-'))
   onTestFinished(() => rm(root, { recursive: true, force: true, maxRetries: 4 }))
-  const config = 'config/vite/vite.config.renderer.ts'
+  const config = 'config/vite/renderer.ts'
   await mkdir(join(root, 'config/vite'), { recursive: true })
   await copyFile(join(appRoot, config), join(root, config))
 
@@ -74,8 +74,9 @@ test('source styles and live updates survive gaps in independent public package 
     ].join('\n'),
   )
 
-  const server = await startRenderer(root, 'stylesheet-test', join(root, 'vite-cache'))
+  const server = await createRenderer(root, 'stylesheet-test', join(root, 'vite-cache'))
   onTestFinished(() => server.close())
+  await server.listen()
   const browser = await chromium.launch()
   onTestFinished(() => browser.close())
   const page = await browser.newPage()

@@ -2,7 +2,7 @@
 
 本组为[视频输出终态设计](../../../design/projects/libmpv-node/video.md)提供来源与原生正反例，分别检查软件渲染、线性目标表示、Alpha 与呈现反馈。它不按原型覆盖范围缩减终态功能，也没有实现完整公共输出包。
 
-受管输出采用[不透明 SDR 合同](../../../design/projects/libmpv-node/video.md#targets)。本页 Alpha 观察说明原生透明片源的处理，字幕、缩放和 HDR 片源到 SDR 分别按相应输入验证。
+受管 GPU 输出采用[不透明 SDR 合同](../../../design/projects/libmpv-node/video.md#targets)。本页 Alpha 观察说明原生透明片源的处理，缩放按各探针所列输入解释。软件输出观察用于[独立像素合同](../../../design/projects/libmpv-node/video.md#renderers)；HDR 片源映射及字幕另见[GPU SDR 对照](../libmpv-sdr-integration/sdr.md)。
 
 ## 输入与来源
 

@@ -1,4 +1,4 @@
-import { omit, onSettled } from 'solid-js'
+import { omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { Table, TableBody, TableHeader } from './parts'
 import styles from './styles.module.css'
@@ -12,77 +12,54 @@ export interface ScrollableTableProps extends JSX.HTMLAttributes<HTMLTableElemen
   /** Header rows and their column headings. */
   header: JSX.Element
 
-  /** Supplies the focusable body viewport at mount for scrolling or virtualization. */
-  bodyRef?: (element: HTMLTableSectionElement) => void
+  /** Supplies the sticky header section, including all header rows. */
+  headerRef?: (element: HTMLTableSectionElement) => void
+  /** Supplies the focusable scroll viewport at mount for scrolling or virtualization. */
+  viewportRef?: (element: HTMLDivElement) => void
 }
 
 /**
- * Renders one table with a fixed header and a body that owns both native scroll axes. Use one cell
- * per track in source order and `scope` on column and row headings. Positioned rows use the body
- * as their containing block.
+ * Renders one table in a native scroll viewport with a sticky header. The viewport receives
+ * class and style. Use one cell per track in source order and scope on column and row headings.
+ * Positioned rows use the body as their containing block.
  */
 export function ScrollableTable(props: ScrollableTableProps): JSX.Element {
-  const rest = omit(props, 'class', 'columns', 'minWidth', 'header', 'bodyRef', 'children')
-  const layout = () => ({
-    '--kui-table-columns': props.columns,
-    '--kui-table-min-width': props.minWidth ?? '0',
-  })
-
-  let header!: HTMLTableSectionElement
-  let body!: HTMLTableSectionElement
-  let headerOffset = 0
-
-  function followBody() {
-    if (body.scrollLeft !== headerOffset) {
-      header.scrollLeft = body.scrollLeft
-      headerOffset = header.scrollLeft
-    }
-  }
-
-  function followHeader() {
-    // Relay native focus scrolling and ignore the scroll notification from followBody.
-    if (header.scrollLeft !== headerOffset) {
-      headerOffset = header.scrollLeft
-      body.scrollLeft = headerOffset
-    }
-  }
-
-  onSettled(() => {
-    // Chromium counts the classic hidden gutter toward the header's horizontal scrollport.
-    // Reserve that space with a border to match the body's scroll range.
-    const resize = new ResizeObserver(([entry]) => {
-      const gutter = entry!.borderBoxSize[0]!.inlineSize - entry!.contentBoxSize[0]!.inlineSize
-      header.style.setProperty('--kui-table-gutter', `${gutter}px`)
-    })
-    resize.observe(body)
-    return () => resize.disconnect()
-  })
+  const rest = omit(
+    props,
+    'class',
+    'style',
+    'dir',
+    'columns',
+    'minWidth',
+    'header',
+    'headerRef',
+    'viewportRef',
+    'children',
+  )
 
   return (
-    <Table {...rest} class={[styles.scrollTable, props.class]} role="table">
-      <TableHeader
-        ref={(element) => {
-          header = element
+    <div
+      class={[styles.scrollViewport, props.class]}
+      style={props.style}
+      dir={props.dir}
+      tabindex={0}
+      ref={props.viewportRef}
+    >
+      <Table
+        {...rest}
+        class={styles.scrollTable}
+        role="table"
+        style={{
+          '--kui-table-columns': props.columns,
+          'min-inline-size': props.minWidth,
         }}
-        class={[styles.scrollSection, styles.scrollHeader]}
-        style={layout()}
-        onScroll={followHeader}
       >
-        {props.header}
-      </TableHeader>
-      <TableBody
-        ref={(element) => {
-          body = element
-          props.bodyRef?.(element)
-        }}
-        class={[styles.scrollSection, styles.scrollBody]}
-        style={layout()}
-        tabindex={0}
-        onScroll={followBody}
-      >
-        {props.children}
-      </TableBody>
-    </Table>
+        <TableHeader class={styles.scrollSection} sticky ref={props.headerRef}>
+          {props.header}
+        </TableHeader>
+        <TableBody class={[styles.scrollSection, styles.scrollBody]}>{props.children}</TableBody>
+      </Table>
+    </div>
   )
 }
 

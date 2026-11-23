@@ -22,12 +22,13 @@
 
 各媒介的当前记录仍分别保存在 game_records、anime_records、comic_records 和 novel_records，以所属作品为主键。四张表均保存 status 和 additional_duration_ms：前者使用三种当前状态或 null，后者为未包含在实际活动中的附加使用时长，使用非负安全整数毫秒，默认 0。缺少当前记录行时分别按 null 和 0 读取，不强制建立占位行。评分和收藏继续属于条目评价，不放进完成记录。
 
-四类作品共用 work_completion_records。work_id 的外键保证 Entry 存在；completions、条目创建和合并等受控写入在同一事务内核对目标属于四类 Work，并具有对应类型行。作品类型限制由这些完整操作承担，不依赖 TypeScript 联合类型或普通外键代为检查。
+四类作品共用 work_completion_records。数据库限定 work_type 为四类 Work，并用 (work_id, work_type) 外键核对实际条目身份。completions、条目创建和合并等受控写入在同一事务内核对目标具有对应类型行。
 
 | 字段           | 值与含义                                                      |
 | -------------- | ------------------------------------------------------------- |
 | id             | 创建后稳定的完成记录 ID                                       |
-| work_id        | 引用 entries.id，目标必须是四类 Work 之一；不重复保存作品类型 |
+| work_id        | 所属作品的条目 ID                                             |
+| work_type      | 所属作品的类型，与 work_id 共同引用 entries                  |
 | completed_date | 可空的完整 CalendarDate，表示本次完成的日历日期               |
 | note           | 可空纯文本备注；全为空白时保存 null，其余内容保留原文         |
 | created_at     | 本条记录实际建立的 UTC 毫秒时间                               |
@@ -143,7 +144,7 @@ AnimeEpisode、AnimeExtra、NovelVolume、ComicVolume 和 ComicChapter 的个人
 
 作品当前状态和完成历史变化不清除分部标记，分部标记变化也不修改文件位置或实际活动。新增第四卷可以使分部计数从三／三变为三／四，过去的作品完成记录仍然保留。分部数量、文件进度与作品完成次数分别显示，不能相加或互相推导。
 
-动画的[自动已看](anime.md#auto-completion)只设置分部布尔标记。漫画、小说和各层完成行为仍按对应媒介的明确操作处理，不从末页或合订文件位置推导整个作品完成。
+分部标记和作品完成由明确操作记录。播放或阅读位置、文件末尾和累计时长不生成完成事实。来源记录按各自导入和同步合同明确采用。
 
 <a id="imports"></a>
 

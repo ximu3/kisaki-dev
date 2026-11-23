@@ -214,9 +214,25 @@ test('dialogs, menus and popovers close the active scope and return focus', asyn
   expect(closing.retained).toBe(closing.height)
   await browserExpect(page.getByRole('button', { name: 'Open dialog', exact: true })).toBeFocused()
 
-  await page.locator('#context-target').focus()
+  const contextTarget = page.locator('#context-target')
+  await contextTarget.focus()
   await page.keyboard.press('Shift+F10')
   await browserExpect(page.getByRole('menuitem', { name: 'Context action' })).toBeFocused()
+  await page.keyboard.press('Escape')
+
+  await contextTarget.evaluate((target) => {
+    Object.assign(target.style, {
+      position: 'fixed',
+      inset: '120px auto auto 80px',
+      width: '240px',
+      height: '70px',
+      zIndex: '2',
+    })
+  })
+  await page.mouse.click(120, 150, { button: 'right' })
+  const contextMenu = page.getByRole('menu', { name: 'Context actions' })
+  await browserExpect.poll(async () => (await contextMenu.boundingBox())?.x).toBe(120)
+  await browserExpect.poll(async () => (await contextMenu.boundingBox())?.y).toBe(150)
   await page.keyboard.press('Escape')
 
   await page.getByRole('button', { name: 'Information', exact: true }).focus()
@@ -237,6 +253,51 @@ test('dialogs, menus and popovers close the active scope and return focus', asyn
   await page.keyboard.press('Escape')
   await browserExpect(action).toBeHidden()
   await browserExpect(trigger).toBeFocused()
+})
+
+test('a popover follows its native anchor and flips inside the viewport', async ({ page }) => {
+  const trigger = page.getByRole('button', { name: 'Help', exact: true })
+  await trigger.evaluate((button) => {
+    const root = button.ownerDocument.documentElement
+    root.dir = 'rtl'
+    Object.assign(button.style, { position: 'fixed', bottom: '8px', right: '8px' })
+  })
+  await trigger.click()
+
+  const panel = page
+    .getByRole('button', { name: 'Help action' })
+    .locator('xpath=ancestor::*[@popover][1]')
+  await browserExpect(panel).toBeVisible()
+  const anchor = (await trigger.boundingBox())!
+  const placed = (await panel.boundingBox())!
+  expect(placed.y + placed.height).toBeLessThanOrEqual(anchor.y)
+  expect(placed.x + placed.width).toBeCloseTo(anchor.x + anchor.width, 0)
+})
+
+test('an open popover keeps its physical preferred side when writing mode changes', async ({
+  page,
+}) => {
+  const trigger = page.getByRole('button', { name: 'Help', exact: true })
+  await trigger.evaluate((button) => {
+    Object.assign(button.style, { position: 'fixed', top: '80px', left: '500px' })
+  })
+  await trigger.click()
+
+  const panel = page
+    .getByRole('button', { name: 'Help action' })
+    .locator('xpath=ancestor::*[@popover][1]')
+  for (const mode of ['horizontal-tb', 'vertical-rl', 'vertical-lr']) {
+    await page.locator('html').evaluate((root, mode) => {
+      root.style.writingMode = mode
+    }, mode)
+    await browserExpect
+      .poll(async () => {
+        const anchor = (await trigger.boundingBox())!
+        return Math.abs(((await panel.boundingBox())?.y ?? -1) - anchor.y - anchor.height - 4)
+      })
+      .toBeLessThan(1)
+  }
+  await browserExpect(trigger).toHaveAttribute('aria-expanded', 'true')
 })
 
 test('toast clocks pause, survive caller disposal and follow active modals until explicitly ended', async ({

@@ -52,7 +52,7 @@ IStoreQueryService/Query 支持 start／count 和类型、标签、发行条件�
 
 IStoreService/GetLocalizedNameForTags 按实际 tagids 返回名称；本次英文、简体都完整返回所请求的 20 个标签，简体包含“视觉小说”“动漫”“剧情丰富”等实际翻译。
 
-IStoreBrowseService/GetStoreCategories 返回 72 条实际功能分类及名称，英文与简体均可读取。标签 ID、功能分类 ID 与 genreids 有各自含义，不混用字典，也不把数字直接当标签名称。
+IStoreBrowseService/GetStoreCategories 在英文和简体请求中各返回 72 条功能分类。两份响应的分类 80–82 均在 `name` 返回 `#category_…` 占位值，在 `internalName` 提供可读英文。不能把占位值当作本地化名称。标签 ID、功能分类 ID 与 genreids 各有含义，由对应字典解析。[结构化收据](2026-10-16-steam-storebrowse.json)
 
 样本请求 20 个和 100 个应用标签时均返回 20 项；这不能证明所有游戏或接口的全局上限。采用的是来源公开展示的标签范围，不宣称穷尽全部用户标签投票。
 

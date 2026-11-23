@@ -14,8 +14,12 @@ import type { FieldIssue } from '@kisaki3/desktop-ui/form'
 import type { MainClient } from '../../../../infrastructure/api'
 import { createQuery } from '../../../../infrastructure/query'
 
-interface FieldEdit {
+interface FieldInput {
   readonly input: unknown
+  readonly value: unknown
+}
+
+interface FieldEdit extends FieldInput {
   readonly expected: unknown
 }
 
@@ -29,33 +33,25 @@ type AtPath<T, K extends string> = K extends `${infer Head}.${infer Rest}`
     ? T[K]
     : never
 
-type DraftValue<K extends PreferenceKey> = K extends `shortcuts.${infer Key extends ShortcutKey}`
-  ? Preferences['shortcuts'][Key]
-  : K extends 'network.credentials'
-    ? Preferences['network']['credentials'] | ProxyCredentials
-    : K extends
-          | `${string}.paragraphSpacing`
-          | 'usage.anime.audioLanguages'
-          | 'usage.anime.subtitleLanguages'
-      ? string
-      : AtPath<Preferences, K> extends number
-        ? string
-        : AtPath<Preferences, K>
+type PreferenceValue<K extends PreferenceKey> =
+  K extends `shortcuts.${infer Key extends ShortcutKey}`
+    ? Preferences['shortcuts'][Key]
+    : K extends 'network.credentials'
+      ? Preferences['network']['credentials'] | ProxyCredentials
+      : AtPath<Preferences, K>
 
-const numericFields = new Set([
-  'interfaceScale',
-  'visibleLimit',
-  'foregroundGracePeriodMs',
-  'playbackSpeed',
-  'subtitleScale',
-  'brightness',
-  'contrast',
-  'pagesPerView',
-  'fontSize',
-  'lineHeight',
-  'padding',
-  'maxLineLength',
-])
+type NumericField = {
+  [K in PreferenceKey]: PreferenceValue<K> extends number ? K : never
+}[PreferenceKey]
+type LanguageField = `usage.anime.${'audioLanguages' | 'subtitleLanguages'}`
+type ParagraphSpacingField = `usage.${'comic' | 'novel'}.text.paragraphSpacing`
+
+type DraftValue<K extends PreferenceKey> = K extends
+  | NumericField
+  | LanguageField
+  | ParagraphSpacingField
+  ? string
+  : PreferenceValue<K>
 
 function fieldPath(key: PreferenceKey) {
   const shortcutPrefix = 'shortcuts.'
@@ -83,10 +79,6 @@ function readField(source: PreferencesSnapshot | Preferences | undefined, key: P
   return availableValue(current)
 }
 
-function fieldName(key: PreferenceKey) {
-  return fieldPath(key).at(-1)!
-}
-
 function displayValue(key: PreferenceKey, value: unknown) {
   if (
     (key === 'usage.anime.audioLanguages' || key === 'usage.anime.subtitleLanguages') &&
@@ -94,10 +86,14 @@ function displayValue(key: PreferenceKey, value: unknown) {
   ) {
     return value.join(', ')
   }
-  return typeof value === 'number' || fieldName(key) === 'paragraphSpacing' ? String(value) : value
+  return typeof value === 'number' ? String(value) : value
 }
 
-function parseInput(key: PreferenceKey, input: unknown) {
+function numberFromInput(input: string) {
+  return input.trim() ? Number(input) : NaN
+}
+
+function parseInput(key: Exclude<PreferenceKey, NumericField>, input: unknown) {
   if (typeof input !== 'string') {
     return input
   }
@@ -108,9 +104,11 @@ function parseInput(key: PreferenceKey, input: unknown) {
       .filter(Boolean)
   }
 
-  const name = fieldName(key)
-  if (numericFields.has(name) || (name === 'paragraphSpacing' && input !== 'document')) {
-    return input.trim() ? Number(input) : NaN
+  if (
+    (key === 'usage.comic.text.paragraphSpacing' || key === 'usage.novel.text.paragraphSpacing') &&
+    input !== 'document'
+  ) {
+    return numberFromInput(input)
   }
   return input
 }
@@ -131,7 +129,7 @@ function updateInput(edits: Iterable<readonly [PreferenceKey, FieldEdit]>) {
   const expected: Record<string, unknown> = {}
   for (const [key, edit] of edits) {
     const path = fieldPath(key)
-    putField(changes, path, parseInput(key, edit.input))
+    putField(changes, path, edit.value)
     putField(expected, path, edit.expected)
   }
   return parsePreferencesUpdate({ changes, expected })
@@ -180,15 +178,19 @@ function validateFields(api: MainClient, edits: FieldEdits): FieldIssue[] {
 
 function createPreferenceFields(
   readInput: (key: PreferenceKey) => unknown,
-  writeInput: (key: PreferenceKey, input: unknown) => void,
+  writeInput: (key: PreferenceKey, input: FieldInput) => void,
   defaults: Accessor<Preferences | undefined>,
 ) {
   function read<K extends PreferenceKey>(key: K) {
     return readInput(key) as DraftValue<K> | undefined
   }
 
-  function write<K extends PreferenceKey>(key: K, input: DraftValue<K>) {
-    writeInput(key, input)
+  function write<K extends Exclude<PreferenceKey, NumericField>>(key: K, input: DraftValue<K>) {
+    writeInput(key, { input, value: parseInput(key, input) })
+  }
+
+  function writeNumber(key: NumericField, input: string) {
+    writeInput(key, { input, value: numberFromInput(input) })
   }
 
   function canReset(key: PreferenceKey) {
@@ -197,10 +199,11 @@ function createPreferenceFields(
   }
 
   function reset(key: PreferenceKey) {
-    writeInput(key, displayValue(key, readField(defaults(), key)))
+    const value = readField(defaults(), key)
+    writeInput(key, { input: displayValue(key, value), value })
   }
 
-  return { read, write, canReset, reset }
+  return { read, write, writeNumber, canReset, reset }
 }
 
 export type PreferenceFields = ReturnType<typeof createPreferenceFields>
@@ -230,11 +233,11 @@ export function createPreferenceDraft(api: MainClient) {
     return edit ? edit.input : displayValue(key, readField(saved(), key))
   }
 
-  function writeInput(key: PreferenceKey, input: unknown) {
+  function writeInput(key: PreferenceKey, input: FieldInput) {
     const expected = readField(saved(), key)
     setEdits((previous) => {
       const next = new Map(previous)
-      recordEdit(next, key, { input, expected }, saving)
+      recordEdit(next, key, { ...input, expected }, saving)
       return next
     })
   }
@@ -285,7 +288,7 @@ export function createPreferenceDraft(api: MainClient) {
       const current = remaining.get(key)
       remaining.delete(key)
       if (current && current !== committed) {
-        recordEdit(remaining, key, { input: current.input, expected })
+        recordEdit(remaining, key, { ...current, expected })
       }
     }
     snapshot.accept(result)
@@ -333,14 +336,14 @@ export function createPreferenceDraft(api: MainClient) {
       return edit.input
     }
 
-    function writeStagedInput(key: PreferenceKey, input: unknown) {
-      const { input: initial, expected } = opening.get(key)!
+    function writeStagedInput(key: PreferenceKey, edit: FieldInput) {
+      const { input, expected } = opening.get(key)!
       setPending((edits) => {
         const next = new Map(edits)
-        if (equalValue(initial, input)) {
+        if (equalValue(input, edit.input)) {
           next.delete(key)
         } else {
-          next.set(key, { input, expected })
+          next.set(key, { ...edit, expected })
         }
         return next
       })
@@ -354,7 +357,7 @@ export function createPreferenceDraft(api: MainClient) {
           const commit = lastCommits.get(key)
           const expected =
             commit && commit !== opening.get(key)!.lastCommit ? commit.value : edit.expected
-          recordEdit(next, key, { input: edit.input, expected }, saving)
+          recordEdit(next, key, { ...edit, expected }, saving)
         }
         return next
       })

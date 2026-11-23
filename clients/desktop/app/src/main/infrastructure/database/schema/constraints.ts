@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm'
-import { check, integer, text, type AnySQLiteColumn } from 'drizzle-orm/sqlite-core'
+import { check, foreignKey, integer, text, type AnySQLiteColumn } from 'drizzle-orm/sqlite-core'
 
 /** Creates the required UTC millisecond fields supplied by the record's owning operation. */
 export function timestamps() {
@@ -41,4 +41,27 @@ export function enumValue(name: string, column: AnySQLiteColumn, values: readonl
 /** Requires a nonempty stored identifier without reinterpreting its spelling. */
 export function nonempty(name: string, column: AnySQLiteColumn) {
   return check(name, sql`length(${column}) > 0`)
+}
+
+/** Constrains a child reference to the parent's identity within the same work. */
+export function workForeignKey(
+  id: AnySQLiteColumn,
+  work: AnySQLiteColumn,
+  parentId: AnySQLiteColumn,
+  parentWork: AnySQLiteColumn,
+) {
+  return foreignKey({ columns: [id, work], foreignColumns: [parentId, parentWork] })
+}
+
+/** Deleting the target clears only its ID. SQLite checks the pair after that action. */
+export function retainedWorkReference(
+  id: AnySQLiteColumn,
+  work: AnySQLiteColumn,
+  parentId: AnySQLiteColumn,
+  parentWork: AnySQLiteColumn,
+) {
+  return [
+    foreignKey({ columns: [id], foreignColumns: [parentId] }).onDelete('set null'),
+    workForeignKey(id, work, parentId, parentWork),
+  ]
 }
