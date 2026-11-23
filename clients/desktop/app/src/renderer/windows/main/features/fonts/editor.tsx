@@ -25,15 +25,18 @@ import { createFontRead } from './read'
 import { fontFaceName, FontSpecimen } from './specimen'
 import { createFontDraft } from './draft'
 
-/** Previews existing and proposed files, with reversible removal until the draft is saved. */
-export function FontEditor(props: {
+/** Receives one opening's initial font and the catalog's editor callbacks. */
+interface FontEditorProps {
   api: MainClient
   initial: Font | null
   files: readonly File[]
-  bind: (guard: EditorGuard) => void
-  cancel: () => void
-  saved: (font: Font) => void
-}) {
+  registerEditor: (guard: EditorGuard) => void
+  requestClose: () => void
+  onSaved: (font: Font) => void
+}
+
+/** Previews existing and proposed files, with reversible removal until the draft is saved. */
+export function FontEditor(props: FontEditorProps) {
   const { api } = props
   const draft = createFontDraft(api, props.initial)
   const preview = createFontRead(api, () => draft.original() ?? undefined)
@@ -54,7 +57,7 @@ export function FontEditor(props: {
   async function save() {
     const font = await draft.save()
     if (active && !draft.dirty()) {
-      props.saved(font)
+      props.onSaved(font)
     }
   }
 
@@ -72,7 +75,7 @@ export function FontEditor(props: {
     onSubmit: save,
   })
   const guard = { busy: form.busy, dirty: draft.dirty, save: () => form.submit() }
-  props.bind(guard)
+  props.registerEditor(guard)
 
   return (
     <>
@@ -234,7 +237,7 @@ export function FontEditor(props: {
         </DialogBody>
         <DialogFooter>
           <FormFeedback summary={(count) => api.t('runtime.fieldErrors', { count })} />
-          <Button variant="ghost" onClick={props.cancel}>
+          <Button variant="ghost" onClick={props.requestClose}>
             {api.t('actions.cancel')}
           </Button>
           <Button type="submit" disabled={form.busy() || draft.preparing() || !draft.dirty()}>

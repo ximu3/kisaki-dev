@@ -44,7 +44,9 @@ desktop-localization 的英语 ICU 源文位于 src/en，按领域维护并由 i
 
 桌面 `tools/build` 接收明确的程序输入，在干净的所属输出目录完成编译与完整性核对；`tools/resources`、`tools/native` 与 `tools/package` 分别拥有资源、原生编译和打包。目标、路径和散列算法归 `tools/lib`，运行清单归 `tools/build/manifest.ts`，跨工程机制归 `@kisaki3/tooling`。原生调用通过 `#native` 加载明确的绝对制品路径，失败保留原始原因。
 
-正式程序位于 `clients/desktop/app/src`。main 装配数据库 worker、任务、偏好、外观及资源；四类窗口各有独立文档和沙箱 preload，通过已绑定的 MessagePort 接入 desktop-rpc。四个文档独立装配样式与 Toaster。主窗口 `app` 装配标题栏、侧栏、页面出口和两层管理 Dialog，`features` 维护各编辑器及任务查询。`domain-ui` 复用字体选择和页面排序。资料库、展示柜与统计由 W09 接入。
+正式程序位于 `clients/desktop/app/src`。main 装配数据库 worker、任务、偏好、外观及资源。四类窗口各有独立文档和沙箱 preload，通过已绑定的 MessagePort 接入 desktop-rpc，并分别装配样式与 Toaster。
+
+主窗口 `app` 装配标题栏、侧栏和页面出口。`app/management` 承载固定管理工具，以及从偏好独立打开的字体库和主题库。导航在切换目标前协调编辑器的离开决定，管理 Dialog 实际打开后向导航报告呈现就绪。`features` 维护各编辑器的草稿、当前表单提交和任务查询。`domain-ui` 提供共用的字体选择和页面排序。资料库、展示柜与统计由 W09 接入。
 
 应用通过数据库执行线程打开当前基线、读取偏好、采用生效语言并保持连接至退出。存储性能用例通过 Playwright 在 Electron 主进程中启动独立编译的测量 worker。worker 返回完整报告并正常退出后，用例将报告保存为附件。执行失败时，原始错误传回用例。
 

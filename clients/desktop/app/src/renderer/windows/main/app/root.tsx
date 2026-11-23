@@ -1,230 +1,31 @@
-/** @fileoverview Mounts native pages and independent, document-owned management dialogs. */
+/** @fileoverview Mounts the main window's page outlet and management overlays. */
 
-import {
-  createMemo,
-  Errored,
-  Loading,
-  Match,
-  refresh,
-  Show,
-  Switch,
-  type Component,
-} from 'solid-js'
+import { Show } from 'solid-js'
 import { dynamic } from '@solidjs/web'
-import { Alert } from '@kisaki3/desktop-ui/alert'
-import { Button } from '@kisaki3/desktop-ui/button'
-import {
-  Dialog,
-  DialogBody,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  deferDialogUntil,
-} from '@kisaki3/desktop-ui/dialog'
+import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 import type { MainClient } from '../../../infrastructure/api'
-import type { EditorGuard } from '../../../infrastructure/dialogs/closing'
-import { Notifications, reportError, errorMessage } from '../../../infrastructure/notifications'
-import { About } from '../features/about'
+import { Notifications, reportError } from '../../../infrastructure/notifications'
+import { ManagementDialogs } from './management/scenes'
+import { createNavigation } from './navigation'
+import { createShellPreferences } from './preferences'
+import type { PageRoute } from './routes'
 import { AppShell } from './shell'
-import { createNavigation, type DialogLayer } from './navigation'
-import type { ManagementTarget, PageRoute } from './routes'
 
-/** Prepares the management scene before its first frame and can retry its module read. */
-function managementView<P extends { api: MainClient }>(
-  load: () => Promise<Component<P>>,
-): Component<P> {
-  function Pending() {
-    deferDialogUntil(() => false)
-    return null
-  }
+/** Preserves the mounted page and its selection while management dialogs are open. */
+export function MainWindow(props: { api: MainClient; pages: readonly PageRoute[] }) {
+  const { api } = props
+  const preferences = createShellPreferences(api)
+  const nav = createNavigation(api, props.pages, () => preferences.current()?.shortcuts)
 
-  return (props) => {
-    const loaded = createMemo(async () => {
-      try {
-        return { scene: await load() }
-      } catch (error) {
-        return { error }
-      }
-    })
-    const Scene = dynamic(() => loaded().scene)
-
-    return (
-      <Loading fallback={<Pending />}>
-        <Show when={'error' in loaded()} fallback={<Scene {...props} />}>
-          <ManagementFailure
-            api={props.api}
-            error={loaded().error}
-            retry={() => void refresh(loaded)}
-          />
-        </Show>
-      </Loading>
-    )
-  }
-}
-
-/** Gives a failed management read or scene an accessible recovery action. */
-function ManagementFailure(props: { api: MainClient; error: unknown; retry: () => void }) {
-  return (
-    <>
-      <DialogHeader closeLabel={props.api.t('actions.close')}>
-        <DialogTitle>{props.api.t('runtime.unavailable')}</DialogTitle>
-      </DialogHeader>
-      <DialogBody>
-        <Alert tone="destructive" role="alert">
-          {errorMessage(props.error)}
-        </Alert>
-      </DialogBody>
-      <DialogFooter>
-        <Button variant="outline" onClick={props.retry}>
-          {props.api.t('runtime.retry')}
-        </Button>
-      </DialogFooter>
-    </>
-  )
-}
-
-/** Preference editing and its staged forms. */
-const PreferenceEditor = managementView(() =>
-  import('../features/preferences/editor').then((m) => m.PreferenceEditor),
-)
-
-/** Task queries, details and history maintenance. */
-const TaskCenter = managementView(() =>
-  import('../features/tasks/center').then((m) => m.TaskCenter),
-)
-
-/** Theme library and editing. */
-const Themes = managementView(() => import('../features/themes/manager').then((m) => m.Themes))
-
-/** Font library and editing. */
-const Fonts = managementView(() => import('../features/fonts/manager').then((m) => m.Fonts))
-
-/** Native system registrations and data location settings. */
-const SystemSettings = managementView(() =>
-  import('../features/system/settings').then((m) => m.SystemSettings),
-)
-
-/** Hosts one overlay while its editor independently owns the content and footer. */
-function ManagementDialog(props: {
-  api: MainClient
-  layer: DialogLayer
-  pages: readonly PageRoute[]
-  close: () => Promise<void>
-  manage: (target: 'themes' | 'fonts') => void
-  confirm: (guard: EditorGuard) => Promise<boolean>
-}) {
-  const { api, layer } = props
-  const target = layer.target
-  const type = () => target().type
-  function size() {
-    switch (type()) {
-      case 'preferences':
-      case 'tasks':
-        return 'xl'
-      case 'themes':
-      case 'fonts':
-        return 'lg'
-      case 'about':
-      case 'systemIntegration':
-        return 'md'
+  async function open(target: NativeViewTarget) {
+    try {
+      return await nav.navigate(target)
+    } catch (cause) {
+      reportError(cause)
+      return false
     }
   }
 
-  const selection = <K extends 'preferences' | 'themes' | 'fonts' | 'tasks'>(kind: K) => {
-    const value = target()
-    return value.type === kind ? (value as Extract<ManagementTarget, { type: K }>) : undefined
-  }
-
-  return (
-    <Show when={layer.instance()} keyed>
-      {(instance) => (
-        <Dialog
-          open={layer.open()}
-          onOpenChange={(open) => {
-            if (!open && layer.open()) {
-              void props.close().catch(reportError)
-            }
-          }}
-        >
-          <DialogContent
-            size={size()}
-            fill={type() === 'tasks' || type() === 'preferences'}
-            onToggle={(event) => {
-              if (event.currentTarget.open) {
-                instance.resolve(true)
-              }
-            }}
-            onCloseRequest={(event) => {
-              event.preventDefault()
-              void props.close().catch(reportError)
-            }}
-          >
-            <Errored
-              fallback={(error, reset) => (
-                <ManagementFailure api={api} error={error()} retry={reset} />
-              )}
-            >
-              <Switch>
-                <Match when={type() === 'preferences'}>
-                  <PreferenceEditor
-                    api={api}
-                    pages={props.pages}
-                    field={selection('preferences')?.key}
-                    bind={layer.bind}
-                    manage={props.manage}
-                  />
-                </Match>
-                <Match when={type() === 'tasks'}>
-                  <TaskCenter
-                    api={api}
-                    target={selection('tasks')?.runId ?? null}
-                    report={reportError}
-                  />
-                </Match>
-                <Match when={type() === 'themes'}>
-                  <Themes
-                    confirm={props.confirm}
-                    api={api}
-                    target={selection('themes')?.ref}
-                    bind={layer.bind}
-                  />
-                </Match>
-                <Match when={type() === 'fonts'}>
-                  <Fonts
-                    confirm={props.confirm}
-                    api={api}
-                    target={selection('fonts')?.fontId}
-                    bind={layer.bind}
-                  />
-                </Match>
-                <Match when={type() === 'systemIntegration'}>
-                  <SystemSettings api={api} report={reportError} />
-                </Match>
-                <Match when={type() === 'about'}>
-                  <About api={api} report={reportError} />
-                </Match>
-              </Switch>
-            </Errored>
-          </DialogContent>
-        </Dialog>
-      )}
-    </Show>
-  )
-}
-
-/** Preserves the registered business page and its selection while fixed tools are open. */
-export function MainWindow(props: { api: MainClient; pages: readonly PageRoute[] }) {
-  const { api } = props
-  const nav = createNavigation(api, props.pages)
-  const open = (target: ManagementTarget | PageRoute['target']) =>
-    nav.navigate(target).catch((cause: unknown) => {
-      reportError(cause)
-      return false
-    })
-  const manage = (type: 'themes' | 'fonts') => {
-    void nav.resource.show({ type })
-  }
   return (
     <>
       <Notifications t={api.t} />
@@ -232,9 +33,9 @@ export function MainWindow(props: { api: MainClient; pages: readonly PageRoute[]
         api={api}
         pages={props.pages}
         current={nav.page()?.id}
-        preferences={nav.preferences()}
-        updatePreferences={nav.updatePreferences}
-        reorder={nav.reorder}
+        preferences={preferences.current()}
+        updatePreferences={preferences.update}
+        reorder={preferences.reorder}
         open={open}
       >
         <Show when={nav.page()}>
@@ -245,21 +46,13 @@ export function MainWindow(props: { api: MainClient; pages: readonly PageRoute[]
         </Show>
       </AppShell>
 
-      <ManagementDialog
+      <ManagementDialogs
         api={api}
         pages={props.pages}
-        layer={nav.manager}
-        manage={manage}
-        confirm={nav.confirmation.ask}
-        close={() => nav.close(nav.manager)}
-      />
-      <ManagementDialog
-        api={api}
-        pages={props.pages}
-        layer={nav.resource}
-        manage={manage}
-        confirm={nav.confirmation.ask}
-        close={() => nav.close(nav.resource)}
+        manager={nav.manager.current}
+        resource={nav.resource.current}
+        openResource={nav.openResource}
+        confirmLeave={nav.confirmation.ask}
       />
       <nav.confirmation.Content />
     </>

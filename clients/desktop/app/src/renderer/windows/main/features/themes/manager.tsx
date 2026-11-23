@@ -29,13 +29,16 @@ import { ThemeInspection } from './inspection'
 /** Begins new themes from both built-in visual branches. */
 const initialTheme = { type: 'builtin', id: 'default' } as const
 
-/** Keeps one catalog viewport while the user previews or edits a theme. */
-export function Themes(props: {
+/** Receives an optional preview target and the window's editor scope. */
+interface ThemesProps {
   api: MainClient
   target?: ThemeRef | undefined
-  bind: (guard: EditorGuard) => () => void
-  confirm: (guard: EditorGuard) => Promise<boolean>
-}) {
+  registerEditor: (guard: EditorGuard) => () => void
+  confirmLeave: (guard: EditorGuard) => Promise<boolean>
+}
+
+/** Keeps one catalog viewport while the user previews or edits a theme. */
+export function Themes(props: ThemesProps) {
   const { api } = props
   const catalog = createQuery((signal) => api.request(signal, 'themes.list'))
   const preferences = createQuery((signal) => api.request(signal, 'preferences.get'))
@@ -263,19 +266,19 @@ export function Themes(props: {
         close={() => setPreview(undefined)}
       />
       <EditorDialog
-        value={edit()}
+        edit={edit()}
         size="xl"
-        bind={props.bind}
-        confirm={props.confirm}
-        close={() => setEdit(undefined)}
+        registerEditor={props.registerEditor}
+        confirmLeave={props.confirmLeave}
+        onClose={() => setEdit(undefined)}
       >
-        {(controls, value) => (
+        {(value, controls) => (
           <ThemeEditor
             api={api}
             initial={value}
-            bind={controls.bind}
-            cancel={controls.cancel}
-            saved={saved}
+            registerEditor={controls.registerEditor}
+            requestClose={controls.requestClose}
+            onSaved={saved}
           />
         )}
       </EditorDialog>

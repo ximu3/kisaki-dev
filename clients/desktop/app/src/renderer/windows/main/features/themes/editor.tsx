@@ -64,14 +64,17 @@ function themeUpdate(value: UserThemeCreate, original: UserThemeCreate): UserThe
   }
 }
 
-/** Holds one theme draft and releases only the application preview this instance acquired. */
-export function ThemeEditor(props: {
+/** Receives one opening's initial theme and the catalog's editor callbacks. */
+interface ThemeEditorProps {
   api: MainClient
   initial: ThemeEdit
-  bind: (guard: EditorGuard) => void
-  cancel: () => void
-  saved: (ref: ThemeRef) => void
-}) {
+  registerEditor: (guard: EditorGuard) => void
+  requestClose: () => void
+  onSaved: (ref: ThemeRef) => void
+}
+
+/** Holds one theme draft and releases only the application preview this instance acquired. */
+export function ThemeEditor(props: ThemeEditorProps) {
   const { api } = props
   const [draft, setDraft] = createSignal(props.initial.definition)
   const [original, setOriginal] = createSignal(props.initial)
@@ -176,13 +179,13 @@ export function ThemeEditor(props: {
     }
 
     if (active && draft() === value) {
-      props.saved({ type: 'user', id })
+      props.onSaved({ type: 'user', id })
     }
   }
 
   const form = createForm({ validate: inspect, locate, order: fieldOrder, onSubmit: save })
   const guard = { busy: form.busy, dirty, save: () => form.submit() }
-  props.bind(guard)
+  props.registerEditor(guard)
 
   return (
     <>
@@ -245,7 +248,7 @@ export function ThemeEditor(props: {
         </DialogBody>
         <DialogFooter>
           <FormFeedback summary={(count) => api.t('runtime.fieldErrors', { count })} />
-          <Button variant="ghost" onClick={props.cancel}>
+          <Button variant="ghost" onClick={props.requestClose}>
             {api.t('actions.cancel')}
           </Button>
           <Button type="submit" variant="outline" disabled={form.busy()}>

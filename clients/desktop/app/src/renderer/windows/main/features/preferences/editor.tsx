@@ -54,19 +54,17 @@ type Group = (typeof groups)[number]
 type ChildEdit = StagedPreferenceEdit &
   ({ kind: 'usage'; medium: UsageMedium } | { kind: 'proxy-credentials' })
 
-/** Extends the leave decision with the navigation and save scope of a staged preference form. */
-export interface PreferenceEditorGuard extends EditorGuard {
-  stagedForm: () => FormState | undefined
-}
-
-/** Owns one preference draft and reveals fields before native navigation or validation focuses them. */
-export function PreferenceEditor(props: {
+/** Receives the window's page catalog, editor scope and independent resource management action. */
+interface PreferenceEditorProps {
   api: MainClient
   pages: readonly NavigationPage[]
   field?: PreferenceKey | undefined
-  bind: (guard: PreferenceEditorGuard) => () => void
-  manage: (page: 'themes' | 'fonts') => void
-}) {
+  registerEditor: (guard: EditorGuard) => () => void
+  openResource: (type: 'themes' | 'fonts') => void
+}
+
+/** Owns one preference draft and reveals fields before native navigation or validation focuses them. */
+export function PreferenceEditor(props: PreferenceEditorProps) {
   const { api } = props
   const draft = createPreferenceDraft(api)
   deferDialogUntil(() => !!draft.ready() || !!draft.error())
@@ -89,7 +87,7 @@ export function PreferenceEditor(props: {
     setChildEdit({ kind: 'proxy-credentials', draft: draft.stage([proxyCredentialsKey]) })
   }
 
-  function bindChildForm(form: FormState) {
+  function registerChildForm(form: FormState) {
     childForm = form
     onCleanup(() => {
       if (childForm === form) {
@@ -127,18 +125,22 @@ export function PreferenceEditor(props: {
     onSubmit: draft.save,
   })
 
+  async function submitChildForm() {
+    return (await childForm?.submit()) ?? false
+  }
+
   async function save() {
-    if (!form.busy() && childEdit() && !(await childForm?.submit())) {
+    if (!form.busy() && childEdit() && !(await submitChildForm())) {
       return false
     }
     return form.submit()
   }
   onCleanup(
-    props.bind({
+    props.registerEditor({
       busy: form.busy,
       dirty: () => draft.dirty() || !!childEdit()?.draft.dirty(),
       save,
-      stagedForm: () => (childEdit() ? childForm : undefined),
+      currentFormAction: () => (childEdit() ? submitChildForm : undefined),
     }),
   )
 
@@ -218,7 +220,7 @@ export function PreferenceEditor(props: {
                       <AppearanceFields
                         api={api}
                         draft={draft}
-                        manage={() => props.manage('themes')}
+                        manage={() => props.openResource('themes')}
                       />
                     </Show>
                   </TabPanel>
@@ -273,7 +275,7 @@ export function PreferenceEditor(props: {
       <StagedPreferenceDialog
         t={api.t}
         edit={childEdit()}
-        bind={bindChildForm}
+        bind={registerChildForm}
         close={() => setChildEdit(undefined)}
         title={(edit) =>
           edit.kind === 'usage'
@@ -292,7 +294,7 @@ export function PreferenceEditor(props: {
               api={api}
               medium={edit.medium}
               draft={edit.draft}
-              manageFonts={() => props.manage('fonts')}
+              manageFonts={() => props.openResource('fonts')}
             />
           ) : (
             <ProxyCredentialFields t={api.t} draft={edit.draft} />
