@@ -1,14 +1,11 @@
-/** @fileoverview Verifies packed pure declarations and behavior in an independent browser project. */
-
-import { lintConsumer } from '@kisaki3/tooling/testing/consumer'
-import { expect } from 'vite-plus/test'
+import { join } from 'node:path'
+import { createConsumerTest, lintConsumer } from '@kisaki3/tooling/testing/consumer'
+import { expect, test as base } from 'vite-plus/test'
 import { build, preview } from 'vite-plus'
 import { chromium } from '@playwright/test'
 import { runPnpm } from '@kisaki3/tooling/process'
-import { consumerTest } from './installation'
 
-/** Packed distribution consumer fixtures owning the browser and its preview site. */
-const test = consumerTest('browser')
+const test = createConsumerTest(base, join(import.meta.dirname, '../..'), 'browser')
   .extend('browser', { scope: 'file' }, async ({}, { onCleanup }) => {
     const browser = await chromium.launch()
     onCleanup(() => browser.close())

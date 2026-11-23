@@ -1,5 +1,3 @@
-/* Native scrolling axes and inset keyboard focus for a constrained viewport. */
-
 .root {
   composes: native from '../../internal/scrollbars.module.css';
 }

@@ -1,5 +1,3 @@
-/** @fileoverview Exercises Chromium sessions and native notification delivery in isolated Electron processes. */
-
 import { build } from 'vite-plus'
 import { join } from 'node:path'
 import { execFile } from 'node:child_process'
@@ -8,7 +6,6 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { test } from '../../support/electron'
 import { electronExecutable } from '../../../tools/dev/electron-executable'
 
-/** Builds a main-process probe in its test's profile with the actual host APIs kept external. */
 async function buildProbe(profile: string, source: string) {
   const output = join(profile, 'probe')
   await build({
@@ -20,7 +17,6 @@ async function buildProbe(profile: string, source: string) {
       lib: {
         entry: join(import.meta.dirname, 'probes', source),
         formats: ['cjs'],
-        /** Gives the isolated fixture an explicit CommonJS entry filename. */
         fileName: () => 'runtime.cjs',
       },
       rolldownOptions: {
@@ -47,11 +43,8 @@ test('host requests, browser sockets and scoped byte reads follow their independ
     async (_, { entry, certificates, profile }) => {
       const { createRequire } = process.getBuiltinModule('node:module')
       const probe = createRequire(entry)(entry) as {
-        /** Exercises host HTTP and proxy adoption in the real Electron process. */
         verifyNetwork(): Promise<void>
-        /** Tests new and already-established encrypted browser connections separately. */
         verifyBrowserRoutes(directory: string): Promise<void>
-        /** Verifies reads, range responses and revocation in actual document sessions. */
         verifyResourceBindings(directory: string): Promise<void>
       }
       await probe.verifyNetwork()

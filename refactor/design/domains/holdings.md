@@ -39,9 +39,9 @@ AnimeDirectory、ComicDirectory 和 NovelDirectory 另有 definition，只保存
 
 ```ts
 interface DirectoryDiscoveryDefinition {
-  maxDepth: number | null
-  include: readonly PathFilter[]
-  exclude: readonly PathFilter[]
+  readonly maxDepth: number | null
+  readonly include: readonly PathFilter[]
+  readonly exclude: readonly PathFilter[]
 }
 ```
 
@@ -66,23 +66,34 @@ PathFilter 使用[相对路径过滤](scanner.md#path-filters)合同，不在 ho
 library.holdings.registerLocalContent 为指定作品登记一个目录或文件。登记前核对实际位置、所属作品和已有记录，复用各媒介的完整写入规则；不创建作品、不获取元数据，也不修改作品个人值。scanner 在 registerExistingContent 开启且取得准确身份对应后使用此入口，普通明确目标的调用使用同一规则。
 
 ```ts
-type LocalContentInput = { type: 'directory' | 'file'; path: string }
-
-interface LocalContentRegistrationResult {
-  work: WorkRef
-  registrations: readonly {
-    type: 'directory' | 'file' | 'launchConfig'
-    id: string
-    outcome: 'registered' | 'alreadyRegistered'
-  }[]
-  issues: readonly (
-    | { code: 'initialRefreshFailed'; error: ErrorSummary }
-    | { code: 'launchConfigIncomplete'; launchConfigId: string }
-  )[]
+interface LocalContentInput {
+  readonly type: 'directory' | 'file'
+  readonly path: string
 }
+
+interface LocalContentRegistrationOptions {
+  readonly expectedIdentities?: NonEmptyArray<ExternalIdentity>
+}
+
+type LocalContentRegistrationResult<T extends WorkType = WorkType> = {
+  [K in T]: {
+    readonly work: WorkRef<K>
+    readonly registrations: NonEmptyArray<{
+      readonly type: 'directory' | (K extends 'game' ? 'launchConfig' : 'file')
+      readonly id: string
+      readonly outcome: 'registered' | 'alreadyRegistered'
+    }>
+    readonly issues: readonly (
+      | { readonly code: 'initialRefreshFailed'; readonly error: ErrorSummary }
+      | (K extends 'game'
+          ? { readonly code: 'launchConfigIncomplete'; readonly launchConfigId: string }
+          : never)
+    )[]
+  }
+}[T]
 ```
 
-registerLocalContent(work, input, options?, execution?) 返回 Promise<LocalContentRegistrationResult>。work 为明确 WorkRef；input.path 是规范绝对路径；options 只含可选的 expectedIdentities: readonly ExternalIdentity[]，提供时必须非空。execution 使用共同的取消与调用归属合同。scanner 必须传入 IngestAddResult.matchedIdentities；在最终登记事务中核对它们仍全部绑定到同一 work，变化或冲突时失败，不转投另一作品。
+registerLocalContent(work, input, options?, call?) 返回 Promise<LocalContentRegistrationResult<T>>，其中 T 是该作品的类型。input.path 是规范绝对路径。expectedIdentities 给出时必须非空且不重复。scanner 将 IngestAddResult.matchedIdentities 传给该字段，最终登记在同一事务中核对这些外部身份仍绑定到指定作品。绑定变化或冲突时失败。call 使用共同的取消与调用归属合同。
 
 | 输入与作品              | 完整登记行为                                                                                                                                                                       |
 | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -108,7 +119,7 @@ registrations 非空，返回本次实际登记或复用的身份。游戏同目
 
 文件直接属于作品，可以没有直接分部关联，也可以关联多个分部。已经指定本地 Part 时先核对归属；具有规范 ExternalIdentity 时查询实际绑定；其他情况再按[有序规则](file-recognition/README.md#recognition-rules)、[编号比较](file-recognition/README.md#number-label-matching)和[完整关联](file-recognition/README.md#recognition-ranges)，使用目录明确引用的识别方案及内置依据。只有对应唯一且无冲突时才能自动关联。
 
-显式规则失效时保留问题，不能换另一种解释凑出结果。裸编号不能根据文件格式猜成卷或话，解释卷内话号前必须确定卷范围。
+显式规则失效时报告问题。裸编号的卷、话含义取决于命名依据，解释卷内话号前必须确定卷范围。
 
 没有分部资料也可以登记和使用文件。发现流程不补造占位分部，不调用 provider 解释不明编号，也不请求资料新增。具体文件关系见 [小说](novels.md)、[漫画](comics.md) 和 [动画](anime.md)。
 
@@ -147,12 +158,13 @@ library.holdings.files.setAssociationMode 的公开参数如下：
 type FileAssociationMode = 'automatic' | 'manual'
 
 declare function setAssociationMode(
-  work: EntryRef<'anime' | 'comic' | 'novel'>,
+  work: EntryRef<FileWorkType>,
   fileId: string,
   input: {
-    mode: FileAssociationMode
-    expected?: { associationMode: FileAssociationMode }
+    readonly mode: FileAssociationMode
+    readonly expected?: { readonly associationMode: FileAssociationMode }
   },
+  call?: CallOptions,
 ): Promise<void>
 ```
 
@@ -197,7 +209,7 @@ holdings 内部按 game、anime、comic 和 novel 划分四类作品的持有实
 | comic | 阅读文件、卷与话的直接关联、首选、续读位置、保存的阅读设置，以及识别和本地维护                   |
 | novel | 阅读文件、卷的直接关联、首选、续读位置、保存的阅读设置，以及识别和本地维护                       |
 
-动画、漫画和小说内部按目录与文件管理、关联与首选、位置与设置、识别方案，以及刷新、重新识别、重定位和监听生命周期组织实际职责。一个文件可以完整承担时保持单文件，需要多份逻辑协作时再拆为模块目录，各分支按实际需要安排文件。游戏持有管理启动配置与备份，启动配置由明确操作建立，普通目录发现不推断配置。
+动画、漫画和小说分别管理目录与文件、关联与首选、位置与设置、识别方案和[文件维护](file-maintenance.md#execution)。游戏持有管理启动配置与备份，启动配置通过明确的创建操作建立。
 
 各媒介的识别模块拥有自己的内置命名解释、自定义目标校验和实际分部查找；方案管理也留在相应媒介中。动画识别区分分集与无结构化编号的附加内容，漫画识别区分卷、作品话号与卷内话号，小说只匹配真实卷。识别方案按目录明确选用，同类目录可以共用，也可以采用独立副本；不强制每部作品独占方案，也不把不同媒介的目标语义压成一套共同流程。
 

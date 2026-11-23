@@ -1,6 +1,3 @@
-//! Implements platform file moves and synchronization on libuv workers, returning stable reasons
-//! and system codes.
-
 use napi::bindgen_prelude::AsyncTask;
 use napi::{Env, Error, Result, Status, Task};
 use napi_derive::napi;
@@ -16,7 +13,6 @@ pub struct FileOperationResult {
     pub system_code: Option<i32>,
 }
 
-/// Creates a successful completion with no failure classification or system code.
 fn success() -> FileOperationResult {
     FileOperationResult {
         reason: None,
@@ -24,7 +20,6 @@ fn success() -> FileOperationResult {
     }
 }
 
-/// Creates a classified failure and retains the OS code when one is available.
 fn failure(reason: &str, error: Option<io::Error>) -> FileOperationResult {
     FileOperationResult {
         reason: Some(reason.to_owned()),
@@ -32,7 +27,6 @@ fn failure(reason: &str, error: Option<io::Error>) -> FileOperationResult {
     }
 }
 
-/// Recognizes absolute platform paths that contain no NUL bytes.
 pub(crate) fn valid_path(path: &str) -> bool {
     Path::new(path).is_absolute() && !path.contains('\0')
 }
@@ -41,7 +35,6 @@ pub(crate) fn valid_path(path: &str) -> bool {
 ///
 /// Ambiguous missing-path errors are classified using the source's current existence.
 fn move_failure(error: io::Error, source: &str) -> FileOperationResult {
-    // Distinguishes a missing source from a missing target parent after an ambiguous OS error.
     let missing_reason = || {
         if std::fs::symlink_metadata(source)
             .is_err_and(|error| error.kind() == io::ErrorKind::NotFound)
@@ -140,20 +133,16 @@ fn move_no_replace_impl(source: &str, target: &str) -> io::Result<()> {
     }
 }
 
-/// Owned source and target paths for one queued native move.
 pub struct MoveTask {
     source: String,
     target: String,
 }
 
 impl Task for MoveTask {
-    /// Worker completion with a stable reason and optional platform error code.
     type Output = FileOperationResult;
 
-    /// Completion record transferred to the JavaScript promise.
     type JsValue = FileOperationResult;
 
-    /// Executes the move on the worker and classifies its platform result.
     fn compute(&mut self) -> Result<Self::Output> {
         Ok(match move_no_replace_impl(&self.source, &self.target) {
             Ok(()) => success(),
@@ -161,7 +150,6 @@ impl Task for MoveTask {
         })
     }
 
-    /// Delivers the completed worker result to JavaScript.
     fn resolve(&mut self, _env: Env, output: Self::Output) -> Result<Self::JsValue> {
         Ok(output)
     }
@@ -186,7 +174,6 @@ pub fn move_no_replace(source: String, target: String) -> Result<AsyncTask<MoveT
     Ok(AsyncTask::new(MoveTask { source, target }))
 }
 
-/// Classifies a synchronization failure and retains its platform error code.
 fn sync_failure(error: io::Error) -> FileOperationResult {
     let reason = match error.kind() {
         io::ErrorKind::NotFound => "pathMissing",
@@ -197,22 +184,15 @@ fn sync_failure(error: io::Error) -> FileOperationResult {
     failure(reason, Some(error))
 }
 
-/// Owned path for a worker that opens, synchronizes and closes one existing regular file.
 pub struct SyncTask {
     path: String,
 }
 
 impl Task for SyncTask {
-    /// Worker completion with a stable reason and optional platform error code.
     type Output = FileOperationResult;
 
-    /// Completion record transferred to the JavaScript promise.
     type JsValue = FileOperationResult;
 
-    /// Synchronizes the opened regular file and closes its handle before returning the result.
-    ///
-    /// Uses F_FULLFSYNC on macOS and sync_all elsewhere. File and platform failures are
-    /// represented by the completion record.
     fn compute(&mut self) -> Result<Self::Output> {
         let metadata = match std::fs::metadata(&self.path) {
             Ok(value) => value,
@@ -268,7 +248,6 @@ impl Task for SyncTask {
         })
     }
 
-    /// Delivers the completed worker result after its file handle has been released.
     fn resolve(&mut self, _env: Env, output: Self::Output) -> Result<Self::JsValue> {
         Ok(output)
     }

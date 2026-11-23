@@ -1,5 +1,3 @@
-/** @fileoverview Provides pure full-string regex and replacement-template rules for bounded isolated execution units. */
-
 import { RegExpParser, visitRegExpAST } from '@eslint-community/regexpp'
 import { DesktopError } from './errors'
 
@@ -28,7 +26,6 @@ export function inspectTextPattern(pattern: string, ignoreCase: boolean): TextPa
 
     const names = new Set<string>()
     visitRegExpAST(ast, {
-      /** Collects named capture identities from the parsed regular-expression syntax. */
       onCapturingGroupEnter(group) {
         if (group.name !== null) {
           names.add(group.name)
@@ -58,7 +55,6 @@ export function parseTextTemplate(
   const parts: TextTemplatePart[] = []
   let literal = ''
 
-  /** Appends accumulated literal text as one template part and clears the buffer. */
   function flush(): void {
     if (literal) {
       parts.push({ type: 'text', value: literal })

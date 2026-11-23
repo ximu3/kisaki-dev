@@ -1,5 +1,3 @@
-/** @fileoverview Exercises task, preference, image and font lifetimes with real storage and the deployed native runtime. */
-
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -30,7 +28,6 @@ import { appRoot } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
 import { loadNative } from '#native'
 
-/** Creates one isolated real library for a business-operation scenario. */
 async function library() {
   const root = await mkdtemp(join(tmpdir(), 'kisaki-runtime-'))
   const options = storageOptions(root)
@@ -189,7 +186,6 @@ test('prepared images and fonts survive independent holds and only adopted font 
     files,
     resources,
     {
-      /** Rejects unexpected network access in the local byte fixture. */
       async fetch() {
         throw new Error('Unexpected network read')
       },
@@ -262,7 +258,6 @@ test('prepared images and fonts survive independent holds and only adopted font 
           metadata: file.metadata,
           resource: snapshot.resources[file.attachmentId]!,
         })),
-        /** Releases the real file handles acquired for this preview. */
         dispose: () => snapshot.dispose(),
       }
     },

@@ -1,5 +1,3 @@
-/** @fileoverview Provides saved preferences to the main window's menu, page order and shortcuts. */
-
 import { createEffect, onCleanup } from 'solid-js'
 import type { PreferencesUpdate } from '@kisaki3/desktop-contracts/preferences'
 import type { PageRef } from '@kisaki3/desktop-contracts/ui'
@@ -24,12 +22,10 @@ export function createShellPreferences(api: MainClient) {
     },
   )
 
-  /** Adopts the main process's saved values before the caller resumes. */
   async function update(input: PreferencesUpdate) {
     preferences.accept(await api.call('preferences.update', input))
   }
 
-  /** Compares the previous saved order when the rail commits a move. */
   async function reorder(order: readonly PageRef[]) {
     const old = current()?.navigation.order
     await update({

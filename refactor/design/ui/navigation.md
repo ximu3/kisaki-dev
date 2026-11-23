@@ -9,7 +9,9 @@ app 接收外部激活并分派明确的业务意图，ui 协调页面和宿主�
 项目域名为 kisaki.me，通用授权中转为 oauth-relay.ximu.dev。独立服务不会因项目域名变化而迁移回调。正式应用使用 appId me.kisaki 和协议 kisaki://，开发应用使用 me.kisaki.dev 和 kisaki-dev://，安装身份见[工程配置](../engineering/repository.md)。原生业务入口提供 view、open 和 add，分别表示查看、实际使用作品和直接新增；extension 将请求交给明确扩展登记的处理器，见[扩展 deeplink 入口](#extension-deeplinks)。不提供 launch、play、read、manga 别名或通用命令 URL。
 
 ```ts
-type EntryIdentifier = { type: 'local'; id: string } | ({ type: 'external' } & ExternalIdentity)
+type EntryIdentifier =
+  | { readonly type: 'local'; readonly id: string }
+  | ({ readonly type: 'external' } & ExternalIdentity)
 ```
 
 路由确定 Entry 类型，EntryIdentifier 在接收实例的当前资料库内定位根条目：`local/<id>` 读取本地对象，`external/<source>/<sourceId>` 查询已保存的准确来源映射。查找只使用当前库的数据，可以离线执行。命中后核对类别、显式选择与可见范围；数据库身份和外键继续使用本体存储合同。
@@ -223,7 +225,8 @@ MAL 的固定直连 loopback 与 plain PKCE 是明确兼容例外，不先尝试
 
 ```ts
 type PageRef =
-  { type: 'native'; id: string } | { type: 'extension'; extensionId: string; pageId: string }
+  | { readonly type: 'native'; readonly id: string }
+  | { readonly type: 'extension'; readonly extensionId: string; readonly pageId: string }
 ```
 
 PageRef 属于 desktop-contracts/ui。native.id 来自本体页面目录的稳定登记键；extension 分支使用扩展与页面的准确登记身份。非空字符串在运行时核对目录，不能把标题、路由、组件路径或任意 URL 当作页面键。主窗口、侧栏和应用搜索引用同一目录，暂不可用页面沿下述保留规则处理。搜索的对象目标使用[SearchTarget](../domains/search.md#results)，其值定义由导航合同拥有，搜索合同直接引用。

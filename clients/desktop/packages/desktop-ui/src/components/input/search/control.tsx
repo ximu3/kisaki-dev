@@ -1,5 +1,3 @@
-/** @fileoverview Native query editing with an integrated search icon and clear action. */
-
 import { Show, omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { fieldAttributes } from '../../../internal/field'
@@ -29,6 +27,7 @@ export function SearchInput(props: SearchInputProps): JSX.Element {
     'class',
     'style',
   )
+
   const [value, change] = createValue(
     () => props.value,
     () => props.defaultValue ?? '',

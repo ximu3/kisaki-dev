@@ -1,5 +1,3 @@
-/** @fileoverview Exercises native forms, controlled editing and field feedback in Chromium. */
-
 import { expect } from 'vite-plus/test'
 import { expect as browserExpect } from '@playwright/test'
 import { test } from './page'

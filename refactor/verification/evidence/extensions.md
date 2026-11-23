@@ -44,7 +44,7 @@
 | Kotatsu          | [备份、分类、记录与下载索引](kotatsu-importer/source-and-fixtures.md)       |
 | YACReader        | [三种输入、共享文件与页位](yacreader-importer/source-and-fixtures.md)       |
 
-合成输入与真实导出分别标明，正式本体采用、目标环境和发行消费按[验收场景](../scenarios/sources.md)核对。
+合成输入与真实导出分别标明。正式本体采用、目标环境和发行消费按[迁移导入验收场景](../scenarios/importers.md)核对。
 
 <a id="vndb"></a>
 

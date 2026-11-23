@@ -1,5 +1,3 @@
-/* System glyphs occupy a stable box independent of neighboring text baselines. */
-
 @layer components {
   .glyph {
     display: block;

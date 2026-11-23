@@ -1,8 +1,3 @@
-/**
- * @fileoverview Selects native compilation, declaration regeneration or source checks from
- * explicit command arguments.
- */
-
 import { parseArgs } from 'node:util'
 import { hostTarget, parseTarget } from '../lib/targets'
 import { buildNative } from './build'

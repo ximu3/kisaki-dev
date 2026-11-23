@@ -1,5 +1,3 @@
-/** @fileoverview Previews the selected user's font files in an independently owned dialog. */
-
 import { createMemo, For, Show } from 'solid-js'
 import { FileType } from '@lucide/solid'
 import { Alert } from '@kisaki3/desktop-ui/alert'

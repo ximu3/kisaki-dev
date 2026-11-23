@@ -1,8 +1,6 @@
 # 界面与交互
 
-界面遵守[共同原则](../engineering/conventions.md#quality)，以清楚的信息和连贯的操作帮助用户理解当前对象、可用动作与实际结果。系统能力、控件语义和有意义的平台差异沿[共同交互规则](components.md#native-interaction)落实，交付按[整体一致性](../engineering/conventions.md#final-state)核对。
-
-理解界面时先读共同交互与视图状态，再查具体浏览或导航场景；信息组织、名称与说明遵守[可读性准则](../engineering/conventions.md#readability-principle)。
+先查[共同界面](components.md)和[视图状态](state.md)，再按具体操作查阅浏览、导航或编辑规则。
 
 | 文档                              | 主要责任                                                 |
 | --------------------------------- | -------------------------------------------------------- |

@@ -1,5 +1,3 @@
-/** @fileoverview Reads ordinary finite JSON data before a transport can coerce or drop values. */
-
 import { RpcError } from './errors'
 
 /** Finite ordinary JSON data shared by JSON IPC and structured-clone transports. */

@@ -1,12 +1,9 @@
-//! Owns the Node callbacks passed to the Windows and macOS notification APIs.
-
 use super::{Click, Completion};
 use napi::threadsafe_function::ThreadsafeFunctionCallMode::NonBlocking;
 use napi::{Error, Result};
 use std::ffi::{CStr, CString, c_char, c_void};
 use std::sync::Mutex;
 
-/// One delegate delivers default notification actions for this application process.
 static RECEIVER: Mutex<Option<Click>> = Mutex::new(None);
 
 unsafe extern "C" {
@@ -16,7 +13,7 @@ unsafe extern "C" {
         receive: Option<extern "C" fn(*const c_char)>,
     ) -> i32;
 
-    /// Copies all three strings before returning and calls completion exactly once.
+    /// Retains no borrowed strings after returning and calls completion exactly once.
     fn kisaki_post_notification(
         app_id: *const c_char,
         identifier: *const c_char,
@@ -27,7 +24,6 @@ unsafe extern "C" {
     );
 }
 
-/// Copies the request identity while the platform callback owns its UTF-8 bytes.
 extern "C" fn clicked(identifier: *const c_char) {
     if let Some(receive) = RECEIVER.lock().unwrap().as_ref() {
         // SAFETY: The native adapter passes a live, NUL-terminated string for this callback.
@@ -38,7 +34,6 @@ extern "C" fn clicked(identifier: *const c_char) {
     }
 }
 
-/// Keeps the Node receiver alive only while the application accepts OS activations.
 pub(super) fn set_receiver(app_id: String, receive: Option<Click>) -> Result<bool> {
     let id =
         CString::new(app_id).map_err(|_| Error::from_reason("Invalid application identity"))?;
@@ -60,7 +55,6 @@ pub(super) fn set_receiver(app_id: String, receive: Option<Click>) -> Result<boo
     }
 }
 
-/// Transfers the single asynchronous submission outcome back to the calling Node environment.
 extern "C" fn completed(context: *mut c_void, status: i32) {
     // SAFETY: Each submitted operation owns one boxed callback until this sole completion.
     let complete = unsafe { Box::from_raw(context.cast::<Completion>()) };

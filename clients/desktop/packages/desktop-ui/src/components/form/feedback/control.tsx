@@ -1,5 +1,3 @@
-/** @fileoverview Compact form feedback with direct field location and read-only hover details. */
-
 import {
   createEffect,
   createMemo,
@@ -51,10 +49,6 @@ export function FormFeedback(props: FormFeedbackProps): JSX.Element {
     return active === undefined ? previous : active
   })
   const current = createMemo(() => issues().find((issue) => issue.id === remembered()))
-  /**
-   * Returns the explicit form message, active issue summary or formatted issue count in priority
-   * order.
-   */
   const text = () =>
     message() ?? current()?.summary ?? (issues().length ? props.summary(issues().length) : '')
 
@@ -79,7 +73,6 @@ export function FormFeedback(props: FormFeedbackProps): JSX.Element {
 function FeedbackPrompt(props: {
   text: string
   detail: string | undefined
-  /** Reveals the selected field after tooltip dismissal. */
   onLocate: (() => void) | undefined
 }): JSX.Element {
   const tooltip = createTooltip()

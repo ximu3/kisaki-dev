@@ -1,12 +1,9 @@
-/** @fileoverview Verifies mixed entry projections preserve requested and applicable field boundaries. */
-
 import { test, expect } from 'vite-plus/test'
 
 import { parseEntryListOptions } from './listing'
 import type { EntryQuery } from './definition'
 import { parseEntryListItem } from './projections'
 
-/** Mixed game/person query reused by the keyed projection validation cases. */
 const query: EntryQuery = {
   scope: { type: 'library' },
   search: '',

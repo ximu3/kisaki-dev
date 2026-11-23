@@ -1,8 +1,3 @@
-/**
- * @fileoverview Locates the desktop workspace and its finite build outputs for each
- * target.
- */
-
 import { isAbsolute, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { DesktopTarget } from './targets'
@@ -13,7 +8,6 @@ import type { DesktopTarget } from './targets'
  */
 export const appRoot = fileURLToPath(new URL('../..', import.meta.url))
 
-/** The containing Kisaki checkout used by workspace-level engineering tasks. */
 export const repositoryRoot = resolve(appRoot, '../../..')
 
 /**

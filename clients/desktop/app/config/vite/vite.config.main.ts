@@ -1,5 +1,3 @@
-/** @fileoverview Compiles the Electron main process and its application database worker. */
-
 import { defineConfig } from 'vite'
 
 export default defineConfig({

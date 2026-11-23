@@ -1,5 +1,3 @@
-/** @fileoverview Defines read-only scan discovery and clue-extraction preview results. */
-
 import type { WorkType } from '../library/catalog'
 import type { ScanDefinition } from './configs'
 import type { PathFilter } from '../paths'
@@ -29,11 +27,7 @@ export type ScanPreviewPath = {
   | { readonly outcome: 'failed'; readonly error: ErrorSummary }
 )
 
-/**
- * Discovery outcome and native clue-extraction results from a draft preview.
- *
- * Remote metadata acquisition and catalog adoption are separate operations.
- */
+/** Remote metadata acquisition and catalog adoption are separate operations. */
 export interface ScanPreviewResult {
   readonly discovery: ScanDiscovery
   readonly paths: readonly ScanPreviewPath[]

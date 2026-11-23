@@ -51,7 +51,13 @@ text、category、offset 和 limit 均必填。offset 为非负安全整数，li
 ```ts
 type SearchTarget =
   | { type: 'entry'; ref: EntryRef }
-  | { type: 'part'; work: WorkRef; ref: PartRef }
+  | {
+      [K in PartType]: {
+        readonly type: 'part'
+        readonly work: WorkRef<PartWorkType<K>>
+        readonly ref: PartRef<K>
+      }
+    }[PartType]
   | { type: 'collection'; id: string }
   | { type: 'tag'; id: string }
   | { type: 'note'; id: string }
@@ -111,7 +117,7 @@ SearchTarget 属于原生导航目标合同，由 search 直接引用，导航�
 
 category 与 target 分支关联：catalog 只包含 entry、part、collection、tag，configurations 只包含 metadataProfile、scanConfig、launchConfig，其余类别仅包含对应单一目标分支。正式 SearchResult 声明按输入 category 收窄，不允许调用方以显式泛型伪造另一类结果。
 
-context 是仅用于展示的普通文字，表达所属作品、配置类别或设置路径；没有上下文时为 null，不解析它执行导航。excerpt 从本次匹配的已保存纯文本取得，最多 160 个 UTF-16 单元并收敛到完整扩展字素边界，无正文命中时为 null。
+`context` 显示所属作品、配置类别或设置路径，缺少上下文时为 null。导航使用结果中的正式目标。`excerpt` 从命中的已保存纯文本取得，最多 160 个 UTF-16 单元，截断时保留完整的扩展字素簇。正文未命中时为 null。
 
 imageId 为已有正式附件 ID，icon 使用[共同目录](../extensions/webview.md#icons)中的 LucideIconName 或已安装扩展的包内资源；缺席均为 null。扩展图标保留 extensionId 以确定资源归属，path 仅为包内受控相对路径。结果自身不占用图片字节，视图按需沿已有附件或扩展资源入口取得、绑定和释放，过期引用使用共同缺图呈现；查询不返回无释放入口的 ReadResourceRef。展示资源不授予查看隐藏对象或读取任意文件的权限。
 

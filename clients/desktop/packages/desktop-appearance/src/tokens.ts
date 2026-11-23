@@ -1,5 +1,3 @@
-/** @fileoverview Defines the complete, framework-independent visual vocabulary. */
-
 /** The CSS value grammar assigned to one base appearance token. */
 export type TokenKind =
   | 'color'

@@ -142,9 +142,7 @@ desktop-ui 通过 props、事件、回调和普通呈现值接入行为，不导
 
 公共组件的原生交互、状态、表单、组合、目录与公开入口由[UI 包规范](../ui/package.md)定义。desktop-appearance 维护共同默认视觉值，desktop-ui 维护组件样式；应用通过公开入口消费。视觉核对沿[既有体验](../ui/components.md#existing-ui)开展，类型、样式消费和实际呈现分别验证。
 
-desktop-ui 使用 CSS Modules 编写组件样式，组织、状态与宿主覆盖遵守[UI 样式合同](../ui/package.md#styles)。src/styles.css 接入 desktop-appearance 的普通 CSS 并声明层叠顺序；vp pack 提取各组件的局部样式，统一生成 dist/styles.css，通过包的样式入口交付。消费者直接使用构建后的类名映射和普通 CSS，无须安装 Tailwind 或处理 CSS Modules 源文件。
-
-`vp pack` 提取组件 CSS Modules，组装工具按声明的层叠顺序生成公开样式。真实 tarball 验证类名、层叠、资源与无框架消费，各组件交互使用同一份源码样式。
+desktop-ui 使用 CSS Modules 编写组件样式。`src/styles.css` 接入 desktop-appearance 的 CSS 并声明[层叠顺序](../ui/package.md#styles)。`vp pack` 提取局部样式，组装工具生成公开的 `dist/styles.css`。消费者直接使用构建后的类名映射和 CSS，tarball 测试核对类名、层叠及资源，其中包括不使用 Tailwind 的宿主。
 
 UI 成品包含组件自身必要的基础规则，文档级重置由实际宿主统一安排。应用页面继续使用 Tailwind，扩展页面按自身工程选择样式工具。使用 Tailwind 的工程只处理自身代码及实际共享组件，并通过 desktop-appearance 采用同一视觉映射与[层叠顺序](../ui/package.md#styles)；桌面的具体位置遵守[窗口样式组织](layout.md#renderer-styles)。
 

@@ -1,24 +1,20 @@
-/** @fileoverview Validates initial files, directories and launch configurations against graph references. */
-
-import type { FileWorkType, EntryType, PartType } from '../catalog'
-import type { FileCreateFields } from '../holdings/files'
-import type { GraphPartRef, GraphEntryRef } from './nodes'
-import type { FilePartType } from '../holdings/associations'
-import type { DirectoryCreateFields } from '../holdings/directories'
-import type { GameLaunchConfigCreate } from '../holdings/game-configuration'
-
+import { workTypes, type FileWorkType } from '../catalog'
+import { DesktopError } from '../../errors'
+import type { GraphReferences } from './references'
 import * as v from 'valibot'
-import { parseRecord, parseValue, unique } from '../../validation'
-import { parseFileCreateFields } from '../holdings/files'
-import { filePartTypes } from '../holdings/associations'
-import { partKey } from './nodes'
-import { parseDirectoryCreateFields } from '../holdings/directories'
-import { parseGameLaunchConfigCreate } from '../holdings/game-configuration'
+import { fromParser, parseRecord, parseValue, unique } from '../../validation'
+import { parseFileCreateFields, type FileCreateFields } from '../holdings/files'
+import { filePartTypes, type FilePartType } from '../holdings/associations'
+import { entryKey, partKey, type GraphPartRef, type GraphEntryRef } from './nodes'
+import { parseDirectoryCreateFields, type DirectoryCreateFields } from '../holdings/directories'
+import {
+  parseGameLaunchConfigCreate,
+  type GameLaunchConfigCreate,
+} from '../holdings/game-configuration'
 
 /**
- * Resolved initial file input whose part associations can refer to graph-created parts.
- *
- * Graph commit does not scan, fetch metadata or open content.
+ * Initial file associations may address parts created in this graph. Graph commits work with the
+ * inputs already resolved by the caller.
  */
 export type GraphFileCreate<T extends FileWorkType> = Omit<FileCreateFields<T>, 'associations'> & {
   readonly associations?: readonly {
@@ -27,7 +23,6 @@ export type GraphFileCreate<T extends FileWorkType> = Omit<FileCreateFields<T>, 
   }[]
 }
 
-/** Initial directories, files and game launch configurations attached to graph work references. */
 export interface GraphLocalContent {
   readonly game?: readonly {
     readonly work: GraphEntryRef<'game'>
@@ -54,21 +49,14 @@ export interface GraphLocalContent {
   }[]
 }
 
-/**
- * Parses optional initial holdings using graph-owner reference schemas.
- *
- * Those schemas resolve request-local create keys against the complete create index.
- */
 export function parseGraphLocalContent(
   input: unknown,
-  entryReference: <T extends EntryType>(
-    types: readonly T[],
-  ) => v.GenericSchema<unknown, GraphEntryRef<T>>,
-  partReference: <T extends PartType>(
-    types: readonly T[],
-  ) => v.GenericSchema<unknown, GraphPartRef<T>>,
+  { entryReference, partReference, requirePartOwner }: GraphReferences,
 ): GraphLocalContent | undefined {
-  /** Parses one medium's file fields and distinct graph-local part associations. */
+  if (input === undefined) {
+    return
+  }
+
   function parseGraphFile<T extends FileWorkType>(type: T, input: unknown): GraphFileCreate<T> {
     const source = parseRecord(input)
     const { associations, ...fields } = source
@@ -88,57 +76,66 @@ export function parseGraphLocalContent(
     return { ...value, ...members } as GraphFileCreate<T>
   }
 
-  /** Builds initial directory and file schemas for a file-bearing work kind. */
   function mediaLocal<T extends FileWorkType>(type: T) {
     return v.array(
       v.strictObject({
         work: entryReference([type]),
         directories: v.exactOptional(
-          v.array(
-            v.pipe(
-              v.unknown(),
-              v.transform((value) => parseDirectoryCreateFields(type, value)),
-            ),
-          ),
+          v.array(fromParser((value) => parseDirectoryCreateFields(type, value))),
         ),
-        files: v.exactOptional(
-          v.array(
-            v.pipe(
-              v.unknown(),
-              v.transform((value) => parseGraphFile(type, value)),
-            ),
-          ),
-        ),
+        files: v.exactOptional(v.array(fromParser((value) => parseGraphFile(type, value)))),
       }),
     )
   }
-  return input === undefined
-    ? undefined
-    : parseValue(
-        v.strictObject({
-          game: v.exactOptional(
-            v.array(
-              v.strictObject({
-                work: entryReference(['game'] as const),
-                directories: v.exactOptional(
-                  v.array(
-                    v.pipe(
-                      v.unknown(),
-                      v.transform((value) => parseDirectoryCreateFields('game', value)),
-                    ),
-                  ),
-                ),
-                launchConfigs: v.exactOptional(
-                  v.array(v.pipe(v.unknown(), v.transform(parseGameLaunchConfigCreate))),
-                ),
-              }),
+  const localContent = parseValue(
+    v.strictObject({
+      game: v.exactOptional(
+        v.array(
+          v.strictObject({
+            work: entryReference(['game'] as const),
+            directories: v.exactOptional(
+              v.array(fromParser((value) => parseDirectoryCreateFields('game', value))),
             ),
-          ),
-          anime: v.exactOptional(mediaLocal('anime')),
-          comic: v.exactOptional(mediaLocal('comic')),
-          novel: v.exactOptional(mediaLocal('novel')),
-        }),
-        input,
-        'Invalid initial local content',
-      )
+            launchConfigs: v.exactOptional(v.array(fromParser(parseGameLaunchConfigCreate))),
+          }),
+        ),
+      ),
+      anime: v.exactOptional(mediaLocal('anime')),
+      comic: v.exactOptional(mediaLocal('comic')),
+      novel: v.exactOptional(mediaLocal('novel')),
+    }),
+    input,
+    'Invalid initial local content',
+  )
+
+  const localPaths = new Set<string>()
+  for (const type of workTypes) {
+    const groups = localContent[type] ?? []
+    for (const group of groups) {
+      for (const directory of group.directories ?? []) {
+        const key = JSON.stringify([entryKey(group.work), 'directory', directory.path])
+        if (localPaths.has(key)) {
+          throw new DesktopError('InvalidInput', 'Initial directory paths must not be duplicated')
+        }
+        localPaths.add(key)
+      }
+      if (type === 'game' || !('files' in group)) {
+        continue
+      }
+
+      for (const file of group.files ?? []) {
+        const key = JSON.stringify([entryKey(group.work), 'file', file.path])
+        if (localPaths.has(key)) {
+          throw new DesktopError('InvalidInput', 'Initial file paths must not be duplicated')
+        }
+        localPaths.add(key)
+
+        for (const association of file.associations ?? []) {
+          requirePartOwner(association.part, group.work)
+        }
+      }
+    }
+  }
+
+  return localContent
 }

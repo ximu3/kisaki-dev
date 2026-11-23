@@ -1,12 +1,12 @@
 # RanobeDB 接入设计
 
-RanobeDB 提供小说系列、内容单册、发行及制作资料。本文区分 Series、Book、Release 与已明确主体的含义，并规定读取、字段、图片和配置；个人导入与同步不在接入范围内。
+RanobeDB 提供小说系列、内容单册、发行及制作资料。扩展通过官方 v0 API 匿名读取。
 
 <a id="scope"></a>
 
 ## 职责与页面
 
-| 能力     | 终态方案                                                                                |
+| 能力     | 接入范围                                                                                |
 | -------- | --------------------------------------------------------------------------------------- |
 | 小说作品 | Series 的搜索、定位、普通资料、直接作品关系、标签与真实单册目录                         |
 | 卷与发行 | Book 的单册资料；按明确范围采用 Release 的页数、ISBN、链接和图片                        |
@@ -15,8 +15,6 @@ RanobeDB 提供小说系列、内容单册、发行及制作资料。本文区�
 | 图片     | 真实 Book／Release 封面，以及来源为 Series 选用的代表封面；没有背景、标题标志或档案图片 |
 | 本人接入 | 不提供账号、清单导入或持续同步；公开个人 API 缺少完整读取能力                           |
 | Webview  | 一个“资料采集”页面                                                                      |
-
-扩展接入 RanobeDB 的小说资料，公开读取使用固定的官方 v0 API，无须本人账号。其他媒介超出本扩展范围。个人接口的能力与接入边界见[个人接口边界](#account)。
 
 <a id="identity"></a>
 
@@ -163,12 +161,12 @@ Book／Series 的 PUT 使用完整表单形状，包含状态、自定义标签�
 src/
 ├── node/
 │   ├── entry.ts
-│   ├── client/        # API requests, validation, pagination and pacing
-│   ├── metadata/      # Series, books, releases, archives and relations
+│   ├── client/
+│   ├── metadata/
 │   ├── settings.ts
 │   └── ipc.ts
-├── webview/           # One Metadata page
-└── shared/            # Pure private contracts and validation
+├── webview/
+└── shared/
 ```
 
 client 拥有来源 DTO 和协议，metadata 的 provider、session、identity、fields、parts、credits、images 按实际职责拆分。私有 IPC 仅转发配置及联网测试，页面使用既定 Solid 与公共组件。没有个人能力就不创建 account、import、sync 空模块，不维护全站图书或发行镜像。

@@ -1,23 +1,14 @@
-/** @fileoverview Defines work recognition participants and their input and result values. */
-
 import * as v from 'valibot'
 import { parseAbsolutePath } from '../paths'
-import type { WorkType } from '../library/catalog'
-import type { WorkClues } from '../metadata/fields'
 import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
 import type { NonEmptyArray, ExecutionContext, CallOptions, Registration } from '../operations'
-import { parseIdentificationClues } from '../metadata/fields'
-import { parseValue } from '../validation'
-import { workTypes } from '../library/catalog'
+import { parseIdentificationClues, type WorkClues } from '../metadata/fields'
+import { fromParser, parseValue } from '../validation'
+import { workTypes, type WorkType } from '../library/catalog'
 
-/** Validated absolute candidate location supplied to a work recognizer. */
-const path = v.pipe(v.unknown(), v.transform(parseAbsolutePath))
+const path = fromParser(parseAbsolutePath)
 
-/**
- * Fixed candidate path, kind, work medium and original clues supplied to a recognizer.
- *
- * Every selected recognizer receives the same original input.
- */
+/** Every selected recognizer receives the same original input. */
 export interface RecognitionInput {
   readonly entryType: WorkType
   readonly path: string
@@ -39,7 +30,6 @@ export interface WorkRecognizer {
   recognize(input: RecognitionInput, context: ExecutionContext): Promise<WorkClues | null>
 }
 
-/** Discoverable recognizer identity, localized description and supported work media. */
 export interface WorkRecognizerDescriptor {
   readonly id: string
   readonly name: LocalizedText
@@ -47,7 +37,6 @@ export interface WorkRecognizerDescriptor {
   readonly workTypes: NonEmptyArray<WorkType>
 }
 
-/** Discovery and lifetime registration of scanner recognition implementations. */
 export interface WorkRecognizersApi {
   /** Reads registered recognizer descriptions and supported work media. */
   list(call?: CallOptions): Promise<readonly WorkRecognizerDescriptor[]>
@@ -68,10 +57,7 @@ export interface WorkRecognizersApi {
 }
 
 /** Original work-identification clues, validated independently from resolved metadata. */
-export const clues = v.pipe(
-  v.unknown(),
-  v.transform((value) => parseIdentificationClues('game', value)),
-)
+export const clues = fromParser((value) => parseIdentificationClues('game', value))
 
 /** Parses the candidate boundary, work medium and original clues supplied to recognition. */
 export function parseRecognitionInput(input: unknown): RecognitionInput {
@@ -87,11 +73,7 @@ export function parseRecognitionInput(input: unknown): RecognitionInput {
   )
 }
 
-/**
- * Parses additional work clues or a null result.
- *
- * Execution checks that a non-null result adds usable evidence.
- */
+/** Execution checks that a non-null result adds usable evidence. */
 export function parseRecognitionResult(input: RecognitionInput, result: unknown): WorkClues | null {
   if (result === null) {
     return null

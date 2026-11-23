@@ -1,5 +1,3 @@
-/** @fileoverview Checks activity creation time and work-specific context values. */
-
 import { expect, test } from 'vite-plus/test'
 import { parseActivityCreate } from './activities'
 import { DesktopError } from '../errors'

@@ -1,5 +1,3 @@
-/** @fileoverview Checks portable absolute paths and root-relative filter syntax. */
-
 import { expect, test } from 'vite-plus/test'
 import { parseAbsolutePath, parsePathFilter } from './paths'
 

@@ -1,10 +1,7 @@
-/** @fileoverview Defines the anime activity ranking and verifies its part, file and duration totals. */
-
 import assert from 'node:assert/strict'
 import { join } from 'node:path'
 import type Database from 'better-sqlite3'
 
-/** Ranks all anime by watched duration and counts both kinds of parts and all files on the page. */
 export const animeStatisticsSql = `
   with activity as (
     select anime_id, sum(duration_ms) as duration
@@ -20,7 +17,6 @@ export const animeStatisticsSql = `
     (select count(*) from anime_files where anime_id = ranked.id) as files
   from ranked order by duration desc, id`
 
-/** Checks tied durations and anime with no activity, parts or files, then rolls back the test rows. */
 export function verifySparseAnimeStatistics(
   connection: Database.Database,
   directory: string,

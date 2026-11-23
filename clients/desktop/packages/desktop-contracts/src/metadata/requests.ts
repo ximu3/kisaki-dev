@@ -1,20 +1,27 @@
-/** @fileoverview Parses finite metadata read requests without silently intersecting away unsupported requested fields. */
-
 import * as v from 'valibot'
 import { unique, parseValue, nonemptyText } from '../validation'
-import { identitiesSchema, entryTypes } from '../library/catalog'
-import type { EntryType } from '../library/catalog'
-import { fieldNamesSchema, getMetadataEntryFields, getMetadataPartFields } from './fields'
-import { metadataPartKinds } from './objects'
-import { getMetadataRelations, metadataRelationFields } from './relations'
+import { identitiesSchema, entryTypes, type EntryType } from '../library/catalog'
+import {
+  fieldNamesSchema,
+  getMetadataEntryFields,
+  getMetadataPartFields,
+  type MetadataEntryField,
+  type MetadataPartField,
+} from './fields'
+import {
+  metadataPartKinds,
+  type ObjectFieldRequest,
+  type MetadataPartKey,
+  type MetadataPartType,
+} from './objects'
+import {
+  getMetadataRelations,
+  metadataRelationFields,
+  type MetadataRelationKey,
+  type MetadataRelationAttributeValues,
+} from './relations'
 import { DesktopError } from '../errors'
-import type { MetadataRelationKey, MetadataRelationAttributeValues } from './relations'
-import type { ObjectFieldRequest, MetadataPartKey, MetadataPartType } from './objects'
-import type { MetadataEntryField, MetadataPartField } from './fields'
 
-/**
- * Creates a field-request schema with source references enabled only for supported object groups.
- */
 function objectRequest(names: readonly string[], withRefs: boolean) {
   return v.strictObject({
     fields: fieldNamesSchema(names),
@@ -23,17 +30,14 @@ function objectRequest(names: readonly string[], withRefs: boolean) {
 }
 
 /**
- * Parses a read request for the selected root kind.
- *
- * Source references narrow object fields while independently requested relation memberships retain
- * their full scope.
+ * Source references narrow object fields. Separately requested relation membership retains its full
+ * scope.
  */
 export function parseMetadataReadRequest<T extends EntryType>(
   root: T,
   input: unknown,
 ): MetadataReadRequest<T>
 
-/** Builds root-specific object and relation request schemas and validates the complete input. */
 export function parseMetadataReadRequest(root: EntryType, input: unknown): MetadataReadRequest {
   const related = Object.fromEntries(
     entryTypes.map((type) => [
@@ -84,11 +88,7 @@ export function parseMetadataReadRequest(root: EntryType, input: unknown): Metad
   ) as MetadataReadRequest
 }
 
-/**
- * Checks that every requested object group, relation and field is supported.
- *
- * A relation request with no attribute fields still requires membership support.
- */
+/** A relation request with an empty attribute list still requires membership support. */
 export function requireMetadataRequestSupport<T extends EntryType>(
   root: T,
   requested: MetadataReadRequest<T>,
@@ -97,12 +97,10 @@ export function requireMetadataRequestSupport<T extends EntryType>(
   const request = parseMetadataReadRequest(root, requested)
   const available = parseMetadataReadRequest(root, supported)
 
-  /** Field-name projection used to compare a requested group with its supported capability. */
   interface RequestedFields {
     readonly fields: readonly PropertyKey[]
   }
 
-  /** Requires a requested group and each of its fields to be present in the support declaration. */
   function objectFields(
     request: RequestedFields | undefined,
     support: RequestedFields | undefined,
@@ -141,21 +139,17 @@ export function requireMetadataRequestSupport<T extends EntryType>(
   }
 }
 
-/** Related-entry field and source-reference requests grouped by entry kind. */
 export type MetadataRelatedEntryRequests = {
   readonly [K in EntryType]?: ObjectFieldRequest<MetadataEntryField<K>>
 }
 
-/** Part field and source-reference requests grouped by root-compatible slots. */
 export type MetadataPartRequests<T extends EntryType> = {
   readonly [K in MetadataPartKey<T>]?: ObjectFieldRequest<MetadataPartField<MetadataPartType<T, K>>>
 }
 
 /**
- * Independent object-field and relation-membership selections for one source read.
- *
- * An empty fields array requests no ordinary attributes; a relation still requests its membership.
- * An explicit empty refs array selects no object fields.
+ * An empty fields array requests no ordinary attributes. A relation still requests its membership.
+ * Empty refs select no object fields.
  */
 export type MetadataReadRequest<T extends EntryType = EntryType> = {
   [K in T]: {

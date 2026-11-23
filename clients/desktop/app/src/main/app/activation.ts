@@ -1,5 +1,3 @@
-/** @fileoverview Holds undelivered native entry requests until the current main document can receive them. */
-
 import { format, parse, type DeeplinkRequest } from '@kisaki3/desktop-contracts/deeplink'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
@@ -14,8 +12,7 @@ export function createActivation(report: (cause: unknown) => void) {
   let deliver: ((request: ActivationRequest) => Promise<void>) | undefined
   let accepting = true
 
-  /** Withdraws unadmitted requests without replaying them after a cancelled exit. */
-  function clear() {
+  function clearPending() {
     for (const { timer } of queued.values()) {
       clearTimeout(timer)
     }
@@ -32,10 +29,12 @@ export function createActivation(report: (cause: unknown) => void) {
       if (!request) {
         return
       }
+
       if (deliver) {
         void deliver(request).catch(report)
         return
       }
+      // Extension requests retain their own identity, including equivalent links.
       let key: string
       if (request.type === 'native') {
         key = 'native:' + JSON.stringify(request.target)
@@ -48,6 +47,7 @@ export function createActivation(report: (cause: unknown) => void) {
       if (queued.size >= 32) {
         throw new DesktopError('Busy', 'Too many application links are waiting')
       }
+
       const timer = setTimeout(() => {
         queued.delete(key)
         report(
@@ -65,26 +65,24 @@ export function createActivation(report: (cause: unknown) => void) {
   }
 
   return {
-    /** Parses the external link before any business or navigation receives it. */
     receive(this: void, url: string) {
       receive(() => parse(url))
     },
-    /** Admits a native menu destination through the same receiver as an external activation. */
     open(target: NativeViewTarget) {
       receive(() => ({ type: 'native', target }))
     },
-    /** Restores the target carried by the operating system. */
     notification(appId: string, input: unknown) {
       receive(() => {
         const target = readNotificationTarget(appId, input)
         return target ? { type: 'native', target } : null
       })
     },
+
     /** Hands off all waiting requests to the newly bound receiver in their arrival order. */
     async ready(handler: (request: ActivationRequest) => Promise<void>) {
       deliver = handler
       const pending = [...queued.values()]
-      clear()
+      clearPending()
       await Promise.all(pending.map(({ request }) => handler(request).catch(report)))
     },
     /** Keeps new requests queued while a replacement document establishes its receiver. */
@@ -95,7 +93,8 @@ export function createActivation(report: (cause: unknown) => void) {
     setAccepting(value: boolean) {
       accepting = value
       if (!value) {
-        clear()
+        // A cancelled exit accepts new activations. The withdrawn requests do not replay.
+        clearPending()
       }
     },
   }

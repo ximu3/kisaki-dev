@@ -1,5 +1,3 @@
-/* Native radio hit targets cover the shared segment presentation. */
-
 @layer components {
   .segment {
     position: relative;

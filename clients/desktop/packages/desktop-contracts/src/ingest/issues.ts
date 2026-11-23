@@ -1,10 +1,4 @@
-/** @fileoverview Defines finite local adoption issues without arbitrary diagnostic payloads or field paths. */
-
-import type { EntryType, ExternalIdentity, EntryRef, PartRef, WorkRef } from '../library/catalog'
-import type { MetadataRelationKey } from '../metadata/relations'
-import type { ErrorSummary } from '../errors'
-import type { MetadataFieldRef, MetadataImageFieldRef } from '../metadata/fields'
-import { parseValue, nonemptyText, id } from '../validation'
+import { fromParser, parseValue, nonemptyText, id } from '../validation'
 import * as v from 'valibot'
 import {
   entryTypes,
@@ -12,21 +6,25 @@ import {
   partRefSchema,
   identitySchema,
   workRefSchema,
+  type EntryType,
+  type ExternalIdentity,
+  type EntryRef,
+  type PartRef,
+  type WorkRef,
 } from '../library/catalog'
-import { getMetadataRelations } from '../metadata/relations'
-import { parseErrorSummary } from '../errors'
-import { parseMetadataFieldRef } from '../metadata/fields'
+import { getMetadataRelations, type MetadataRelationKey } from '../metadata/relations'
+import { parseErrorSummary, type ErrorSummary } from '../errors'
+import {
+  parseMetadataFieldRef,
+  type MetadataFieldRef,
+  type MetadataImageFieldRef,
+} from '../metadata/fields'
 
-/** A known metadata relation identified within its applicable root-entry context. */
 export type IngestRelationRef = {
   [K in EntryType]: { readonly entryType: K; readonly relation: MetadataRelationKey<K> }
 }[EntryType]
 
-/**
- * An excluded adoption branch or post-commit ancillary failure with code-specific context.
- *
- * Issues do not authorize a partially valid graph write.
- */
+/** Issues do not authorize a partially valid graph write. */
 export type IngestIssue = { readonly message: string } & (
   | {
       readonly code: 'providerFailed'
@@ -74,7 +72,6 @@ export type IngestIssue = { readonly message: string } & (
   | { readonly code: 'holdingsFailed'; readonly work: WorkRef; readonly error: ErrorSummary }
 )
 
-/** Parses a known relation within its applicable root-entry context. */
 export function parseIngestRelationRef(input: unknown): IngestRelationRef {
   const { entryType } = parseValue(v.looseObject({ entryType: v.picklist(entryTypes) }), input)
   return parseValue(
@@ -92,8 +89,8 @@ export function parseIngestRelationRef(input: unknown): IngestRelationRef {
  */
 export function parseIngestIssue(input: unknown): IngestIssue {
   const message = nonemptyText
-  const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
-  const field = v.pipe(v.unknown(), v.transform(parseMetadataFieldRef))
+  const error = fromParser(parseErrorSummary)
+  const field = fromParser(parseMetadataFieldRef)
   const target = v.union([entryRefSchema, partRefSchema])
   return parseValue(
     v.variant('code', [
@@ -130,7 +127,7 @@ export function parseIngestIssue(input: unknown): IngestIssue {
       v.strictObject({
         code: v.literal('associationSkipped'),
         message,
-        relation: v.pipe(v.unknown(), v.transform(parseIngestRelationRef)),
+        relation: fromParser(parseIngestRelationRef),
         reason: v.picklist([
           'missingEndpoint',
           'ambiguousEndpoint',

@@ -1,6 +1,4 @@
-/** @fileoverview Stages file inputs and coordinates attachment publication, reader protection and garbage collection. */
-
-import { releaseAll } from '../release'
+import { releaseAll, rethrowAfterRelease } from '../release'
 import { randomUUID } from 'node:crypto'
 import { mkdir, readdir, rm, rename, rmdir, open } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
@@ -28,7 +26,8 @@ import {
   type StagedFile,
 } from '../files'
 import type { DatabaseCall } from '../database/executor'
-import { createCollection, directory, entryInfo } from './collection'
+import { createCollection } from './collection'
+import { checkDirectory, entryInfo } from './paths'
 import type { attachmentStorage } from './storage'
 import type { createResources } from '../resources'
 import type { createNetwork } from '../network'
@@ -59,8 +58,8 @@ export function createAttachments(
   /** Resolves the private layout without following an externally replaced shard or file link. */
   async function managedPath(id: string) {
     const path = storedFilePath(root, id)
-    await directory(root)
-    await directory(dirname(path))
+    await checkDirectory(root)
+    await checkDirectory(dirname(path))
     const info = await entryInfo(path)
     if (info && !info.isFile()) {
       throw new DesktopError('PathConflict', 'The attachment path is not a managed file')
@@ -127,7 +126,6 @@ export function createAttachments(
     )
   }
 
-  /** Acquires the actual source using the authority established by its caller. */
   async function stage(input: FileInput | Readable, limit: number, signal?: AbortSignal) {
     signal?.throwIfAborted()
     if (input instanceof Readable) {
@@ -178,7 +176,7 @@ export function createAttachments(
     stage,
     /** Snapshots former staging directories before this process starts accepting file inputs. */
     async interruptedStages() {
-      if (!(await directory(temporary))) {
+      if (!(await checkDirectory(temporary))) {
         return []
       }
       return (await readdir(temporary, { withFileTypes: true }))
@@ -191,8 +189,8 @@ export function createAttachments(
         signal.throwIfAborted()
         const path = join(temporary, name)
         try {
-          await directory(temporary)
-          await directory(path)
+          await checkDirectory(temporary)
+          await checkDirectory(path)
           const members = await readdir(path, { withFileTypes: true })
           if (members.some((file) => file.name !== 'content' || !file.isFile())) {
             continue
@@ -209,7 +207,6 @@ export function createAttachments(
       const reads: ReadResource[] = []
       const records: Attachment[] = []
       const existing: string[] = []
-      /** Releases all prepared and registered attachments pinned by the save. */
       const dispose = async () => {
         await releaseAll(reads.map((read) => () => read.dispose()))
       }
@@ -238,8 +235,7 @@ export function createAttachments(
         })
         return { records, dispose }
       } catch (error) {
-        await dispose()
-        throw error
+        return rethrowAfterRelease(error, dispose)
       }
     },
     /** Publishes verified bytes under a fresh identity but creates no formal attachment row. */
@@ -283,7 +279,6 @@ export function createAttachments(
         return hold(metadata, false)
       })
     },
-    /** Checks byte availability for one page of registered attachments. */
     async inspect(options: ListOptions, context?: CallOptions) {
       context?.signal?.throwIfAborted()
       const { items, total } = await call('listAttachments', parseListOptions(options))

@@ -1,5 +1,3 @@
-/** @fileoverview Presents system registrations as fields with immediately adopted actions. */
-
 import { createMemo, createSignal, onCleanup, Show } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
 import type { ProtocolIntegrationState } from '@kisaki3/desktop-contracts/app'
@@ -19,7 +17,6 @@ import type { MainClient } from '../../../../infrastructure/api'
 import { errorMessage } from '../../../../infrastructure/notifications'
 import { DataLocation } from './data-location'
 
-/** System operations report errors in the field that owns them. */
 type Operation = 'login' | 'protocol' | 'launcher' | 'data'
 
 /** Describes what will open this scheme using the system's observed association. */
@@ -243,7 +240,6 @@ export function SystemSettings(props: { api: MainClient; report: (error: unknown
   )
 }
 
-/** Displays the operation error below the corresponding setting. */
 function IntegrationError(props: { message?: string | undefined }) {
   return (
     <Show when={props.message}>

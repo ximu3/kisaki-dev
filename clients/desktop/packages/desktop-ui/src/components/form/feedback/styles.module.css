@@ -1,5 +1,3 @@
-/* A stable footer slot keeps action geometry independent of validation text. */
-
 @layer components {
   .root {
     flex: 1 1 0;

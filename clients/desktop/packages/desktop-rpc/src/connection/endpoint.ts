@@ -1,5 +1,3 @@
-/** @fileoverview Defines the handshake, explicitly opened methods, notifications and safe failure boundary. */
-
 import { RpcError, safeFailure } from '../errors'
 import { isErrorSummary, type RpcProtocol } from '../frames'
 import type { JsonValue } from '../json'

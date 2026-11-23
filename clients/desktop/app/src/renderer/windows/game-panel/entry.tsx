@@ -1,11 +1,9 @@
-/** @fileoverview Adopts the real game-panel document's language, appearance and window lifecycle. */
-
 import { render } from '@solidjs/web'
 import { connect } from '../../infrastructure/api'
 import { Notifications } from '../../infrastructure/notifications'
 
-/** Verified game-panel client bound to this document. */
 const client = await connect('game-panel')
+
 render(
   () => (
     <>
@@ -17,4 +15,5 @@ render(
   ),
   document.getElementById('root')!,
 )
+
 await client.ready()

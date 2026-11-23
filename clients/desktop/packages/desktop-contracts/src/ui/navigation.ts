@@ -1,19 +1,11 @@
-/** @fileoverview Defines native and search navigation targets, retaining exact entry selectors and stable field identities. */
-
-import type {
-  ExternalIdentity,
-  EntryType,
-  EntryRef,
-  PartType,
-  WorkRef,
-  PartWorkType,
-  PartRef,
-} from '../library/catalog'
-import type { AnnotationRef } from '../library/annotations'
-import type { ThemeRef } from '../appearance'
-import type { PageRef } from './pages'
-import type { PreferenceKey } from '../preferences/api'
-import { optionalFields, id, parseValue, parseRecord, parseExternalValue } from '../validation'
+import {
+  fromParser,
+  optionalFields,
+  id,
+  parseValue,
+  parseRecord,
+  parseExternalValue,
+} from '../validation'
 import * as v from 'valibot'
 import {
   identitySchema,
@@ -21,25 +13,27 @@ import {
   parseEntryRef,
   parsePartRef,
   parseWorkRef,
+  type ExternalIdentity,
+  type EntryType,
+  type EntryRef,
+  type PartType,
+  type WorkRef,
+  type PartWorkType,
+  type PartRef,
 } from '../library/catalog'
 import { DesktopError } from '../errors'
-import { parseAnnotationRef } from '../library/annotations'
-import { parsePreferenceKey } from '../preferences/api'
+import { parseAnnotationRef, type AnnotationRef } from '../library/annotations'
+import { parsePreferenceKey, type PreferenceKey } from '../preferences/api'
 import { parseId } from '@kisaki3/extension-distribution/metadata'
-import { parseThemeRef } from '../appearance'
-import { parsePageRef } from './pages'
+import { parseThemeRef, type ThemeRef } from '../appearance'
+import { parsePageRef, type PageRef } from './pages'
 import { partWorkType } from '../library/parts'
 
-/**
- * Explicit local identity or external identity used to resolve an existing root entry.
- *
- * Parts always use local IDs.
- */
+/** Parts always use local IDs. */
 export type EntryIdentifier =
   | { readonly type: 'local'; readonly id: string }
   | ({ readonly type: 'external' } & ExternalIdentity)
 
-/** Optional detail-view selectors permitted for each entry kind. */
 export interface EntryViewSelectionByType {
   readonly game: { readonly launchConfigId?: string }
 
@@ -61,7 +55,6 @@ export interface EntryViewSelectionByType {
   readonly organization: object
 }
 
-/** Detail-view selection constrained to the chosen entry kind. */
 export type EntryViewSelection<T extends EntryType> = EntryViewSelectionByType[T]
 
 /** Root-entry navigation intent combining its kind, identity and permitted detail selectors. */
@@ -73,11 +66,7 @@ export type EntryViewTarget = {
   } & EntryViewSelection<K>
 }[EntryType]
 
-/**
- * Native navigation destination returned by search.
- *
- * Navigating to it opens the relevant view without starting content or writing preferences.
- */
+/** Navigating to it opens the relevant view without starting content or writing preferences. */
 export type SearchTarget =
   | { readonly type: 'entry'; readonly ref: EntryRef }
   | {
@@ -103,8 +92,6 @@ export type SearchTarget =
   | { readonly type: 'preference'; readonly key: PreferenceKey }
 
 /**
- * Native view or management destination with optional focused-object selection.
- *
  * Internal destinations do not automatically gain a public URL or notification restoration across
  * restarts.
  */
@@ -148,7 +135,6 @@ export function parseEntryIdentifier(input: unknown): EntryIdentifier {
   )
 }
 
-/** Rejects simultaneous anime episode and extra selectors. */
 function checkPartSelection(selection: object): void {
   if (Object.hasOwn(selection, 'episodeId') && Object.hasOwn(selection, 'extraId')) {
     throw new DesktopError('InvalidInput', 'Episode and extra selectors are mutually exclusive')
@@ -184,7 +170,7 @@ export function parseNativeViewTarget(input: unknown): NativeViewTarget {
       v.strictObject({
         type: v.literal('entry'),
         entryType: v.literal(entryType),
-        identifier: v.pipe(v.unknown(), v.transform(parseEntryIdentifier)),
+        identifier: fromParser(parseEntryIdentifier),
         ...entrySelectionEntries[entryType],
       }),
       input,
@@ -201,7 +187,7 @@ export function parseNativeViewTarget(input: unknown): NativeViewTarget {
       v.strictObject({ type: v.picklist(['collection', 'tag', 'note']), id: v.exactOptional(id) }),
       v.strictObject({
         type: v.literal('annotation'),
-        ref: v.pipe(v.unknown(), v.transform(parseAnnotationRef)),
+        ref: fromParser(parseAnnotationRef),
       }),
       v.strictObject({ type: v.literal('tasks'), runId: v.exactOptional(id) }),
       v.strictObject({
@@ -213,23 +199,18 @@ export function parseNativeViewTarget(input: unknown): NativeViewTarget {
       v.strictObject({ type: v.literal('sessions.recordings'), sessionId: v.exactOptional(id) }),
       v.strictObject({
         type: v.literal('preferences'),
-        key: v.exactOptional(v.pipe(v.unknown(), v.transform(parsePreferenceKey))),
+        key: v.exactOptional(fromParser(parsePreferenceKey)),
       }),
       v.strictObject({
         type: v.literal('extensions'),
         extensionId: v.exactOptional(
-          v.pipe(
-            v.unknown(),
-            v.transform((value) =>
-              parseExternalValue(parseId, value, 'Invalid extension identity'),
-            ),
-          ),
+          fromParser((value) => parseExternalValue(parseId, value, 'Invalid extension identity')),
         ),
         pageId: v.exactOptional(id),
       }),
       v.strictObject({
         type: v.literal('themes'),
-        ref: v.exactOptional(v.pipe(v.unknown(), v.transform(parseThemeRef))),
+        ref: v.exactOptional(fromParser(parseThemeRef)),
       }),
       v.strictObject({ type: v.literal('fonts'), fontId: v.exactOptional(id) }),
       v.strictObject({ type: v.picklist(['systemIntegration', 'updates', 'about']) }),
@@ -252,22 +233,18 @@ export function parseNativeViewTarget(input: unknown): NativeViewTarget {
   return value
 }
 
-/**
- * Parses a search destination and checks that a part's work medium matches its kind.
- *
- * The library checks actual ownership.
- */
+/** The library checks actual ownership. */
 export function parseSearchTarget(input: unknown): SearchTarget {
   const value = parseValue(
     v.variant('type', [
       v.strictObject({
         type: v.literal('entry'),
-        ref: v.pipe(v.unknown(), v.transform(parseEntryRef)),
+        ref: fromParser(parseEntryRef),
       }),
       v.strictObject({
         type: v.literal('part'),
-        ref: v.pipe(v.unknown(), v.transform(parsePartRef)),
-        work: v.pipe(v.unknown(), v.transform(parseWorkRef)),
+        ref: fromParser(parsePartRef),
+        work: fromParser(parseWorkRef),
       }),
       v.strictObject({
         type: v.picklist(['collection', 'tag', 'note', 'metadataProfile', 'scanConfig', 'font']),
@@ -275,27 +252,24 @@ export function parseSearchTarget(input: unknown): SearchTarget {
       }),
       v.strictObject({
         type: v.literal('extension'),
-        id: v.pipe(
-          v.unknown(),
-          v.transform((value) => parseExternalValue(parseId, value, 'Invalid extension identity')),
-        ),
+        id: fromParser((value) => parseExternalValue(parseId, value, 'Invalid extension identity')),
       }),
       v.strictObject({
         type: v.literal('annotation'),
-        ref: v.pipe(v.unknown(), v.transform(parseAnnotationRef)),
+        ref: fromParser(parseAnnotationRef),
       }),
       v.strictObject({ type: v.literal('launchConfig'), gameId: id, id }),
       v.strictObject({
         type: v.literal('theme'),
-        ref: v.pipe(v.unknown(), v.transform(parseThemeRef)),
+        ref: fromParser(parseThemeRef),
       }),
       v.strictObject({
         type: v.literal('page'),
-        ref: v.pipe(v.unknown(), v.transform(parsePageRef)),
+        ref: fromParser(parsePageRef),
       }),
       v.strictObject({
         type: v.literal('preference'),
-        key: v.pipe(v.unknown(), v.transform(parsePreferenceKey)),
+        key: fromParser(parsePreferenceKey),
       }),
     ]),
     input,

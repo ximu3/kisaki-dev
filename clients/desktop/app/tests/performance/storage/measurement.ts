@@ -1,5 +1,3 @@
-/** @fileoverview Measures validated storage queries on the complete workload in an Electron database worker. */
-
 import assert from 'node:assert/strict'
 import { createHash } from 'node:crypto'
 import { mkdir, readFile, readdir } from 'node:fs/promises'
@@ -13,19 +11,21 @@ import { initializeDatabase } from '../../../src/main/infrastructure/database'
 import { entries as entryTable } from '../../../src/main/infrastructure/database/schema'
 import { getPreferenceDefaults } from '../../../src/main/features/preferences/defaults'
 import { animeStatisticsSql, verifySparseAnimeStatistics } from './anime-statistics'
-import { pageStatement, positionStatement } from './selection'
-import type { EntrySelection } from './selection'
-import { fixtureId, prepareWorkload, workerMedianBudgetMs, workload } from './workload'
-import type { FixtureEntry } from './workload'
+import { pageStatement, positionStatement, type EntrySelection } from './selection'
+import {
+  fixtureId,
+  prepareWorkload,
+  workerMedianBudgetMs,
+  workload,
+  type FixtureEntry,
+} from './workload'
 import manifest from '../../../package.json' with { type: 'json' }
 
-/** Isolated profile and deployed resources for one Electron storage measurement. */
 export interface StorageMeasurementInput {
   readonly profile: string
   readonly resources: string
 }
 
-/** Raw samples and timing distribution for repeated execution of one worker operation. */
 interface SampleDistribution {
   readonly samplesMs: readonly number[]
   readonly medianMs: number
@@ -33,7 +33,6 @@ interface SampleDistribution {
   readonly maxMs: number
 }
 
-/** One validated query with its first read, repeated samples and reproducible execution plan. */
 interface QueryMeasurement extends SampleDistribution {
   readonly name: string
   readonly statement: string
@@ -43,14 +42,12 @@ interface QueryMeasurement extends SampleDistribution {
   readonly firstReadMs: number
 }
 
-/** A measured synchronous operation and its separately executed result assertion. */
 interface QueryCase {
   readonly name: string
   readonly statement: string
   readonly parameters: readonly (string | number | Buffer)[]
   readonly expectedRows: number
 
-  /** Executes the complete synchronous operation without result verification overhead. */
   run(): unknown
 
   /** Checks independently calculated results before sampling begins. */
@@ -64,7 +61,6 @@ const fixtureCollator = new Intl.Collator('en', {
   sensitivity: 'accent',
 })
 
-/** Applies the fixture comparator and the same stable identity tie-break to expected results. */
 function compareEntries(left: FixtureEntry, right: FixtureEntry): number {
   return (
     fixtureCollator.compare(left.name, right.name) ||
@@ -72,7 +68,6 @@ function compareEntries(left: FixtureEntry, right: FixtureEntry): number {
   )
 }
 
-/** Summarizes the workload's 31 samples without reordering the recorded observations. */
 function summarizeSamples(samplesMs: readonly number[]): SampleDistribution {
   const sorted = samplesMs.toSorted((left, right) => left - right)
   return {
@@ -83,7 +78,6 @@ function summarizeSamples(samplesMs: readonly number[]): SampleDistribution {
   }
 }
 
-/** Measures a distant page, total and zero-based position against one set of eligible entries. */
 function resultSet(
   connection: Database.Database,
   name: string,
@@ -106,7 +100,6 @@ function resultSet(
       statement: listSql,
       parameters: [200, offset],
       expectedRows: Math.min(200, expected.length),
-      /** Reads the requested distant interval in its stable order. */
       run: () => list.all(200, offset),
       /** Compares every returned identity against the fixture's independent interval. */
       verify: (value) =>
@@ -120,9 +113,7 @@ function resultSet(
       statement: countSql,
       parameters: [],
       expectedRows: 1,
-      /** Counts all members of the measured set. */
       run: () => count.get(),
-      /** Checks the complete membership count. */
       verify: (value) => assert.deepEqual(value, { total: expected.length }),
     },
     {
@@ -130,15 +121,12 @@ function resultSet(
       statement: positionSql,
       parameters: [target.name, target.id],
       expectedRows: 1,
-      /** Counts members preceding the known target's sort key and identity. */
       run: () => position.get(target.name, target.id),
-      /** Confirms the target's independently computed zero-based position. */
       verify: (value) => assert.deepEqual(value, { position: Math.floor(expected.length * 0.8) }),
     },
   ]
 }
 
-/** Builds and measures the fixed fixture; every connection is closed before returning a report. */
 export async function measureStorage({ profile, resources }: StorageMeasurementInput) {
   assert(
     process.platform === 'win32' || process.platform === 'darwin' || process.platform === 'linux',
@@ -270,7 +258,6 @@ export async function measureStorage({ profile, resources }: StorageMeasurementI
       expectedRows: 1,
       /** Finds the exact source identity without normalizing either coordinate. */
       run: () => identity.get('fixture-source', 'source-42000'),
-      /** Confirms that identity lookup returns its original entry. */
       verify: (value) => assert.deepEqual(value, { entry_id: entries[42000]!.id }),
     })
 
@@ -298,9 +285,7 @@ export async function measureStorage({ profile, resources }: StorageMeasurementI
       statement: dateSql,
       parameters: [],
       expectedRows: 200,
-      /** Reads a distant interval ordered by civil date components. */
       run: () => dates.all(),
-      /** Checks date order and its stable owner tie-break. */
       verify: (value) =>
         assert.deepEqual(
           value,
@@ -320,9 +305,7 @@ export async function measureStorage({ profile, resources }: StorageMeasurementI
       statement: animeStatisticsSql,
       parameters: [],
       expectedRows: 200,
-      /** Computes activity ordering and the selected rows' part and file counts. */
       run: () => statistics.all(),
-      /** Confirms every selected aggregate against fixture facts. */
       verify: (value) => assert.deepEqual(value, expectedStatistics),
     })
 
@@ -345,9 +328,7 @@ export async function measureStorage({ profile, resources }: StorageMeasurementI
       statement: 'select id,name,aliases from entries order by effective_sort_name,id limit 200',
       parameters: [],
       expectedRows: 200,
-      /** Reads a typed projection through Drizzle and the production list codec. */
       run: () => projection.all(),
-      /** Checks decoded aliases alongside names and stable identities. */
       verify: (value) => assert.deepEqual(value, expectedProjection),
     })
 

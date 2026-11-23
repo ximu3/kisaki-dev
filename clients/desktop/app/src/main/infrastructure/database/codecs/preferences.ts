@@ -1,12 +1,22 @@
-/** @fileoverview Maps preference groups to field-local snapshots while preserving unusable identities and execution choices. */
-
 import { customType } from 'drizzle-orm/sqlite-core'
-import { parsePreferences, parsePreferencesUpdate } from '@kisaki3/desktop-contracts/preferences'
-import type { Preferences, PreferencesSnapshot } from '@kisaki3/desktop-contracts/preferences'
-import { parseNetworkPreferences } from '@kisaki3/desktop-contracts/network'
-import type { NetworkPreferences } from '@kisaki3/desktop-contracts/network'
+import {
+  parsePreferences,
+  parsePreferencesUpdate,
+  type Preferences,
+  type PreferencesSnapshot,
+} from '@kisaki3/desktop-contracts/preferences'
+import {
+  parseNetworkPreferences,
+  type NetworkPreferences,
+} from '@kisaki3/desktop-contracts/network'
 import type { StoredDefinition } from '@kisaki3/desktop-contracts/operations'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import {
+  hasStoredDefinition,
+  readPreferenceField,
+  setPreferenceField,
+  storedPreferencePaths,
+} from '../preference-fields'
 import { isInvalidValue, readJsonText, ready, storedJsonColumn } from './json'
 
 /** Preference groups whose ordinary fields can independently adopt their defined defaults. */
@@ -20,95 +30,67 @@ export type StoredPreferences = Omit<PreferencesSnapshot, 'network'> & {
   readonly network: StoredDefinition<StoredNetworkPreferences>
 }
 
-/**
- * Preference paths whose selections retain explicit invalid states instead of adopting ordinary
- * defaults.
- */
-const identityFields = new Set([
-  'general.uiTranslation',
-  'appearance.theme',
-  'navigation.order',
-  'usage.comic.text.font',
-  'usage.novel.text.font',
-])
-
-/** Recognizes nested preference records without interpreting arrays as groups. */
 function isRecord(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === 'object' && !Array.isArray(value)
 }
 
-/** Identifies selections and executable bindings that must retain an explicit invalid state. */
-function isProtectedField(path: readonly string[]): boolean {
-  return identityFields.has(path.join('.')) || (path[0] === 'shortcuts' && path.length === 2)
-}
-
-/** Validates one field through its actual public edit boundary and returns the normalized value. */
 function parseField(path: readonly string[], value: unknown): unknown {
   if (value === undefined) {
     throw new DesktopError('InvalidInput', 'A stored preference field is missing')
   }
-  let input: unknown = value
-  for (let index = path.length - 1; index >= 0; index -= 1) {
-    input = { [path[index]!]: input }
-  }
-  let parsed: unknown = parsePreferencesUpdate({ changes: input }).changes
-  for (const key of path) {
-    parsed = (parsed as Record<string, unknown>)[key]
-  }
-  return parsed
+
+  const changes = {}
+  setPreferenceField(changes, path, value)
+  return readPreferenceField(parsePreferencesUpdate({ changes }).changes, path)
 }
 
-/** Decodes independent fields; invalid identities never replace valid sibling choices. */
-function readFields(value: unknown, defaults: unknown, path: readonly string[]): unknown {
-  if (isProtectedField(path)) {
+function readGroup<K extends OrdinaryGroup>(group: K, source: unknown, defaults: Preferences[K]) {
+  const fields = {}
+  for (const path of storedPreferencePaths[group]) {
+    const explicitFailure = hasStoredDefinition(group, path)
+    let value: unknown
     try {
-      return ready(parseField(path, value))
+      value = parseField([group, ...path], readPreferenceField(source, path))
+      if (explicitFailure) {
+        value = ready(value)
+      }
     } catch (error) {
       if (!isInvalidValue(error)) {
         throw error
       }
-      return {
-        status: 'invalid',
-        error: { code: 'DataIntegrityError', message: 'The stored preference field is invalid' },
-      }
+      value = explicitFailure
+        ? {
+            status: 'invalid',
+            error: {
+              code: 'DataIntegrityError',
+              message: 'The stored preference field is invalid',
+            },
+          }
+        : structuredClone(readPreferenceField(defaults, path))
     }
+    setPreferenceField(fields, path, value)
   }
-  if (isRecord(defaults) && !('type' in defaults)) {
-    const source = isRecord(value) ? value : {}
-    return Object.fromEntries(
-      Object.entries(defaults).map(([key, fallback]) => [
-        key,
-        readFields(source[key], fallback, [...path, key]),
-      ]),
-    )
-  }
-  try {
-    return parseField(path, value)
-  } catch (error) {
-    if (!isInvalidValue(error)) {
-      throw error
-    }
-    return structuredClone(defaults)
-  }
+  return fields as PreferencesSnapshot[K]
 }
 
-/** Unwraps explicitly valid selections before strict full-group write validation. */
-function writeFields(value: unknown, defaults: unknown, path: readonly string[]): unknown {
-  if (isProtectedField(path)) {
-    if (!isRecord(value) || value.status !== 'ready') {
+function unwrapSelections(group: OrdinaryGroup, value: unknown): unknown {
+  if (!isRecord(value)) {
+    return value
+  }
+
+  const fields = structuredClone(value)
+  for (const path of storedPreferencePaths[group]) {
+    if (!hasStoredDefinition(group, path)) {
+      continue
+    }
+
+    const choice = readPreferenceField(fields, path)
+    if (!isRecord(choice) || choice.status !== 'ready') {
       throw new DesktopError('InvalidInput', 'Cannot save an invalid preference field')
     }
-    return value.value
+    setPreferenceField(fields, path, choice.value)
   }
-  if (isRecord(defaults) && !('type' in defaults) && isRecord(value)) {
-    return Object.fromEntries(
-      Object.entries(value).map(([key, field]) => [
-        key,
-        writeFields(field, defaults[key], [...path, key]),
-      ]),
-    )
-  }
-  return value
+  return fields
 }
 
 /**
@@ -118,7 +100,6 @@ function writeFields(value: unknown, defaults: unknown, path: readonly string[])
  * fields when committing an edit; invalid selections can only be explicitly rebuilt or removed.
  */
 export function preferenceColumn<K extends OrdinaryGroup>(key: K, defaults: Preferences) {
-  /** Reads one group without allowing malformed JSON to hide its ordinary sibling defaults. */
   function read(source: unknown): PreferencesSnapshot[K] {
     let value: unknown
     try {
@@ -128,15 +109,14 @@ export function preferenceColumn<K extends OrdinaryGroup>(key: K, defaults: Pref
         throw error
       }
     }
-    return readFields(value, defaults[key], [key]) as PreferencesSnapshot[K]
+
+    return readGroup(key, value, defaults[key])
   }
 
   return customType<{ data: PreferencesSnapshot[K]; driverData: string; jsonData: unknown }>({
-    /** Keeps each fixed preference group in one SQLite JSON-text column. */
     dataType: () => 'text',
-    /** Serializes a complete explicit group after unwrapping its valid selections. */
     toDriver(value) {
-      const input = writeFields(value, defaults[key], [key])
+      const input = unwrapSelections(key, value)
       return JSON.stringify(parsePreferences({ ...defaults, [key]: input })[key])
     },
     fromDriver: read,
@@ -162,12 +142,15 @@ export const networkPreferences = storedJsonColumn(parseStoredNetwork)
 /** Wraps complete validated values for an explicit first-row or whole-configuration insertion. */
 export function preparePreferences(input: Preferences): StoredPreferences {
   const values = parsePreferences(input)
+  const groups = Object.keys(storedPreferencePaths).filter(
+    (group): group is OrdinaryGroup => group !== 'network',
+  )
+  const storedGroups = Object.fromEntries(
+    groups.map((group) => [group, readGroup(group, values[group], values[group])]),
+  ) as Omit<PreferencesSnapshot, 'network'>
+
   return {
-    ...(Object.fromEntries(
-      Object.entries(values)
-        .filter(([key]) => key !== 'network')
-        .map(([key, value]) => [key, readFields(value, value, [key])]),
-    ) as Omit<PreferencesSnapshot, 'network'>),
+    ...storedGroups,
     network: ready({
       mode: values.network.mode,
       endpoint: values.network.endpoint,

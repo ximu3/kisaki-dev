@@ -1,5 +1,3 @@
-/** @fileoverview Renders active task controls and confirmed history rows. */
-
 import { createSignal, onCleanup, Show } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { FileText, Pause, Play, Trash2, X } from '@lucide/solid'
@@ -15,7 +13,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@kisaki3/desktop-ui/too
 import type { MainClient } from '../../../../infrastructure/api'
 import { TaskStatus, TaskTypeIcon, taskDuration } from './presentation'
 
-/** Row identity and the action that opens its independently read detail. */
 interface RowProps {
   api: MainClient
   row: TaskRunSummary
@@ -98,7 +95,6 @@ function TaskAction(props: {
   )
 }
 
-/** Shows the task type icon and a single-line task title. */
 function TaskTitle(props: { title: string; type: string }) {
   return (
     <div class="flex min-w-0 items-center gap-2">
@@ -192,7 +188,6 @@ function ActiveCells(props: RowProps & { report: (error: unknown) => void }) {
   )
 }
 
-/** Presents the ended task with actions to read or remove its saved record. */
 function FinishedCells(props: RowProps & { remove: () => void }) {
   const locale = () => document.documentElement.lang
   return (

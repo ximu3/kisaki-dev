@@ -1,11 +1,13 @@
-/** @fileoverview Lazily loaded chart, Markdown and drag capabilities from the packed public subpaths. */
-
 import { Show, createSignal, onCleanup } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { BookOpen } from '@lucide/solid'
 import { Button } from '@kisaki3/desktop-ui/button'
-import { MarkdownEditor, MarkdownPreview } from '@kisaki3/desktop-ui/markdown'
-import type { MarkdownCommand, MarkdownToolbarAction } from '@kisaki3/desktop-ui/markdown'
+import {
+  MarkdownEditor,
+  MarkdownPreview,
+  type MarkdownCommand,
+  type MarkdownToolbarAction,
+} from '@kisaki3/desktop-ui/markdown'
 import {
   Chart,
   XYContainer,
@@ -31,15 +33,13 @@ import {
   DragFeedback,
   attachClosestEdge,
   extractClosestEdge,
+  type Edge,
 } from '@kisaki3/desktop-ui/drag'
-import type { Edge } from '@kisaki3/desktop-ui/drag'
 import type {} from './api.js'
 import { SourceOrder } from './source-order.js'
 
-/** Synthetic chart coordinate with two plotted series values. */
 type Datum = { x: number; y: number; z: number }
 
-/** Accessible command labels used by the synthetic Markdown editing toolbar. */
 const labels: Record<MarkdownCommand, string> = {
   bold: 'Bold',
   italic: 'Italic',
@@ -59,35 +59,25 @@ const labels: Record<MarkdownCommand, string> = {
 const initial =
   '# Sample\n\nSelect text and use the toolbar.\n\n- [x] Completed task\n- [ ] Pending task\n\nA footnote[^a].\n\n[^a]: Local reference.\n\n| A | B |\n| - | - |\n| 1 | 2 |\n\n<img src=x onerror=alert(1)>\n\n![Unresolved](https://example.invalid/untrusted.png)\n\n[External](https://example.com/)'
 
-/** Mounts packed Markdown, chart and drag capabilities against consumer-owned synthetic data. */
 export default function Resources(): JSX.Element {
-  /** Shared Markdown draft used to compare editing, preview and external updates. */
   const [text, setText] = createSignal(initial)
-  /** Reactive read-only state applied to the rich-content editor. */
   const [readOnly, setReadOnly] = createSignal(false)
-  /** Whether the fixture presents only the Markdown source editor. */
   const [sourceOnly, setSourceOnly] = createSignal(false)
   const insertReference: MarkdownToolbarAction = {
     id: 'reference',
     label: 'Insert reference',
-    /** Renders the fixture's decorative reference-action symbol. */
     icon: () => <BookOpen />,
-    /** Inserts synthetic reference text through the active editor transaction. */
     run: (editor) => editor.dispatch(editor.state.replaceSelection('Reference')),
   }
 
-  /** Mutable synthetic chart data used to verify live series updates. */
   const [data, setData] = createSignal([
     { x: 1, y: 2, z: 1 },
     { x: 2, y: 4, z: 3 },
     { x: 3, y: 3, z: 2 },
   ])
-  /** Synthetic legend selection used to verify chart visibility updates. */
   const [selected, setSelected] = createSignal(true)
 
-  /** Current drag target edge observed by the fixture. */
   const [edge, setEdge] = createSignal<Edge | null>(null)
-  /** Visible outcome text from the synthetic drag interaction. */
   const [feedback, setFeedback] = createSignal('')
   let source!: HTMLDivElement
   let handle!: HTMLButtonElement
@@ -96,19 +86,14 @@ export default function Resources(): JSX.Element {
   createDraggable(() => ({
     element: source,
     dragHandle: handle,
-    /** Supplies the synthetic drag source's stable identity. */
     getInitialData: () => ({ id: 'sample' }),
   }))
   createDropTarget(() => ({
     element: target,
-    /** Publishes target identity and the nearest supported vertical drop edge. */
     getData: ({ input, element }) =>
       attachClosestEdge({ id: 'target' }, { input, element, allowedEdges: ['top', 'bottom'] }),
-    /** Displays the currently observed target insertion edge. */
     onDrag: ({ self }) => setEdge(extractClosestEdge(self.data)),
-    /** Clears insertion feedback when the pointer leaves the target. */
     onDragLeave: () => setEdge(null),
-    /** Records the synthetic drop outcome and clears its insertion marker. */
     onDrop: () => {
       setEdge(null)
       setFeedback('Sample moved')
@@ -144,9 +129,7 @@ export default function Resources(): JSX.Element {
           commandLabel={(command) => labels[command]}
           toolbar={(standard) => (sourceOnly() ? [] : [...standard, insertReference])}
           onViewChange={(current) => {
-            /** Reads the current borrowed editor document or returns empty text after release. */
             window.fixture.editorText = () => current?.state.doc.toString() ?? ''
-            /** Selects the fixed sample heading range for formatting-command checks. */
             window.fixture.editorSelect = () =>
               current?.dispatch({ selection: { anchor: 2, head: 8 } })
             window.fixture.editorReleased = current === undefined

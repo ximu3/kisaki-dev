@@ -1,13 +1,10 @@
-/** @fileoverview Defines and validates reorder requests with a complete baseline and move requests with an anchor. */
-
 import type { NonEmptyArray } from '../operations'
 import * as v from 'valibot'
 import { id, unique, parseValue } from '../validation'
 
 /**
- * A selected subset's new slot order and the complete original-side baseline.
- *
- * Only the subset's existing slots are permuted.
+ * Only existing slots of the selected identities are permuted. The baseline covers the entire
+ * ordered side.
  */
 export interface ReorderInput<T = string> {
   readonly order: NonEmptyArray<T>
@@ -20,7 +17,6 @@ export interface MoveInput<T = string> {
   readonly before: T | null
 }
 
-/** A nonempty ordered identity sequence that rejects repeated members. */
 const uniqueIds = v.pipe(
   v.tupleWithRest([id], id),
   v.check((items) => unique(items, (item) => item)),

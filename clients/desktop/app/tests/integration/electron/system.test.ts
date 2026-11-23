@@ -1,5 +1,3 @@
-/** @fileoverview Checks the visible system-integration state and exercises registrations only in isolated OS scopes. */
-
 import { join } from 'node:path'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'

@@ -1,5 +1,3 @@
-/** @fileoverview Checks consumer-visible correlations and forbidden combinations; the functions are never executed. */
-
 import type { PartialDate } from '@kisaki3/desktop-contracts/date'
 import type {
   LibraryApi,
@@ -10,12 +8,12 @@ import type {
   EntryRef,
   PartRef,
 } from '@kisaki3/desktop-contracts/library'
-import type {
-  MetadataReadRequest,
-  MetadataProfilesApi,
-  MetadataProfile,
+import {
+  parseFieldProcessingResult,
+  type MetadataReadRequest,
+  type MetadataProfilesApi,
+  type MetadataProfile,
 } from '@kisaki3/desktop-contracts/metadata'
-import { parseFieldProcessingResult } from '@kisaki3/desktop-contracts/metadata'
 import type { ThemesApi, UserThemeCreate } from '@kisaki3/desktop-contracts/appearance'
 import type { IngestApi, IngestUpdateInput } from '@kisaki3/desktop-contracts/ingest'
 import type {
@@ -39,13 +37,11 @@ import type { AppApi } from '@kisaki3/desktop-contracts/app'
 import type { PrivateStorageApi } from '@kisaki3/desktop-contracts/private-data'
 import type { ExtensionUiIcon, ViewClientIpc } from '@kisaki3/desktop-contracts/ui'
 
-/** Consumer method catalog exercising void and required private-call inputs. */
 interface ExampleViewMethods {
   readonly read: { readonly input: void; readonly result: string }
   readonly save: { readonly input: { readonly value: string }; readonly result: void }
 }
 
-/** Consumer notification catalog exercising a typed change payload. */
 interface ExampleViewNotifications {
   readonly changed: { readonly value: string }
 }

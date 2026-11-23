@@ -1,11 +1,8 @@
-/** @fileoverview Drag handles, insertion geometry and accessible host-authored feedback. */
-
 import { omit } from 'solid-js'
 import { dynamic } from '@solidjs/web'
 import type { Component } from 'solid-js'
 import type { JSX } from '@solidjs/web'
-import { Button } from '../button/control'
-import type { ButtonProps } from '../button/control'
+import { Button, type ButtonProps } from '../button'
 import { callHandler } from '../../internal/dom'
 import { Icon, GripVertical } from '../../internal/icon/glyph'
 import styles from './styles.module.css'
@@ -68,6 +65,7 @@ export interface DropIndicatorProps extends JSX.HTMLAttributes<HTMLDivElement> {
  */
 export function DropIndicator(props: DropIndicatorProps): JSX.Element {
   const rest = omit(props, 'edge', 'gap', 'class', 'style')
+  const gap = () => (typeof props.gap === 'number' ? `${props.gap}px` : props.gap)
 
   return (
     <div
@@ -77,11 +75,8 @@ export function DropIndicator(props: DropIndicatorProps): JSX.Element {
       class={[styles.indicator, props.class]}
       style={
         typeof props.style === 'string'
-          ? `--drop-gap: ${typeof props.gap === 'number' ? `${props.gap}px` : props.gap}; ${props.style}`
-          : {
-              '--drop-gap': typeof props.gap === 'number' ? `${props.gap}px` : props.gap,
-              ...props.style,
-            }
+          ? `--drop-gap: ${gap()}; ${props.style}`
+          : { '--drop-gap': gap(), ...props.style }
       }
     />
   )

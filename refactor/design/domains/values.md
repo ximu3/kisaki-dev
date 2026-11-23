@@ -82,7 +82,11 @@ codec 按上述逐值规则处理读取异常，不能统一回落到 {}、[] �
 CalendarDate 表示确定的公历年月日，三个分量全部必需：
 
 ```ts
-type CalendarDate = { year: number; month: number; day: number }
+interface CalendarDate {
+  readonly year: number
+  readonly month: number
+  readonly day: number
+}
 ```
 
 它与 PartialDate 分别定义，不能省略分量或用 null、0 占位未知月日。年份使用下文的天文纪年和安全整数范围，月份为 1–12，日期按对应年份的真实月长校验。没有日期时由所属字段使用整值 null。完成记录使用这个值，不接受只有年、年月或月日的个人完成日期。

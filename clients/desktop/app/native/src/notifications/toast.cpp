@@ -1,5 +1,3 @@
-// Submits to the installed AUMID and receives local COM activations without writing OS registrations.
-
 #include <windows.h>
 #include <notificationactivationcallback.h>
 #include <shellapi.h>
@@ -21,13 +19,11 @@ using Microsoft::WRL::RuntimeClassFlags;
 /// The host owns the JS receiver independently of the lifetime of a COM object.
 using Click = void (*)(const char *);
 
-/// One accepted submission owns its Node completion until the platform result is available.
 using Completion = void (*)(void *, int);
 
 /// Process-local class registration, revoked before the host releases its activation receiver.
 DWORD registration = 0;
 
-/// The two application identities have independent installation and activation lifetimes.
 const wchar_t *class_id(std::wstring_view app_id) {
     if (app_id == L"me.kisaki") {
         return L"{FA2B87ED-E2BE-44D5-A0D4-845CE29A35FB}";
@@ -67,13 +63,10 @@ bool owns_server(const wchar_t *id) {
     return std::filesystem::equivalent(executable, server, error);
 }
 
-/// Windows delivers both running and cold clicks to this one installed notification receiver.
 class Activator final : public RuntimeClass<RuntimeClassFlags<ClassicCom>, INotificationActivationCallback> {
 public:
-    /// Binds the receiver to this AUMID for the lifetime of the COM request.
     Activator(std::wstring app_id, Click receive) : app_id_(std::move(app_id)), receive_(receive) {}
 
-    /// Delivers the clicked toast's launch value to the validated host receiver.
     HRESULT STDMETHODCALLTYPE Activate(LPCWSTR app_id, LPCWSTR arguments,
                                       const NOTIFICATION_USER_INPUT_DATA *, ULONG) noexcept override {
         if (!app_id || app_id_ != app_id || !arguments) {
@@ -92,13 +85,10 @@ private:
     Click receive_;
 };
 
-/// Supplies a fresh activation object for each COM request to the running process.
 class Factory final : public RuntimeClass<RuntimeClassFlags<ClassicCom>, IClassFactory> {
 public:
-    /// Retains the application identity and callback for subsequent OS activations.
     Factory(std::wstring app_id, Click receive) : app_id_(std::move(app_id)), receive_(receive) {}
 
-    /// Creates an unaggregated instance of the SDK's requested activation interface.
     HRESULT STDMETHODCALLTYPE CreateInstance(IUnknown *outer, REFIID iid, void **object) noexcept override {
         if (outer) {
             return CLASS_E_NOAGGREGATION;
@@ -119,12 +109,9 @@ private:
     Click receive_;
 };
 
-/// Balances WinRT apartment initialization on the background submission thread.
 struct Apartment {
-    /// Enters the multithreaded apartment for this WinRT call.
     Apartment() { winrt::init_apartment(winrt::apartment_type::multi_threaded); }
 
-    /// Releases the thread's apartment reference on every completion path.
     ~Apartment() { winrt::uninit_apartment(); }
 };
 

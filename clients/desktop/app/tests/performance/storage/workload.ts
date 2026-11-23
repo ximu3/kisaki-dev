@@ -1,5 +1,3 @@
-/** @fileoverview Creates the complete deterministic W06 workload through the formal schema and durable driver. */
-
 import { setImmediate } from 'node:timers/promises'
 import { createHash } from 'node:crypto'
 import { join } from 'node:path'
@@ -11,8 +9,9 @@ import {
   canUsePersonRole,
   canUseOrganizationRole,
   parseDynamicRules,
+  type EntryType,
+  type WorkType,
 } from '@kisaki3/desktop-contracts/library'
-import type { EntryType, WorkType } from '@kisaki3/desktop-contracts/library'
 import type { Storage } from '../../../src/main/infrastructure/database'
 
 /** Fixed simultaneous object counts and sampling policy, selected before measurement. */
@@ -51,10 +50,8 @@ export const workload = {
   samples: 31,
 } as const
 
-/** Maximum median duration of each repeated query or short transaction on the database worker. */
 export const workerMedianBudgetMs = 100
 
-/** Entry data retained by the fixture to check query results outside the timed operation. */
 export interface FixtureEntry {
   readonly id: string
   readonly type: EntryType
@@ -63,12 +60,10 @@ export interface FixtureEntry {
   readonly name: string
 }
 
-/** Stable synthetic identities remain independent of filesystem spelling and source data. */
 export function fixtureId(kind: string, index: number): string {
   return `${kind}:${String(index).padStart(7, '0')}`
 }
 
-/** Distinguishes actual work rows from independently stored people, characters and organizations. */
 export function isFixtureWork(
   entry: FixtureEntry,
 ): entry is FixtureEntry & { readonly type: WorkType } {
@@ -114,7 +109,6 @@ export async function prepareWorkload(storage: Storage, directory: string) {
     const prepared = connection.prepare(statement)
     inputHash.update(statement)
 
-    /** Inserts and fingerprints the table's rows within one durable transaction. */
     const populate = connection.transaction(() => {
       for (let index = 0; index < count; index += 1) {
         const row = values(index)

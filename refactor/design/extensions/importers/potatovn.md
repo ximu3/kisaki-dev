@@ -190,6 +190,7 @@ PreferredInstallationId 随源软件每次成功启动更新，表达最近采�
     │   ├── import.ts
     │   └── ipc.ts
     ├── webview/
+    │   ├── index.html
     │   ├── entry.tsx
     │   ├── page.tsx
     │   ├── selection.tsx

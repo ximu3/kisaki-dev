@@ -1,5 +1,3 @@
-/** @fileoverview Edits bindings by their native window and editor scope. */
-
 import { For } from 'solid-js'
 import { shortcutKeys, type DesktopPlatform } from '@kisaki3/desktop-contracts/preferences'
 import { FieldGroup, FieldLegend } from '@kisaki3/desktop-ui/field'

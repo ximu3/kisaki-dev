@@ -1,5 +1,3 @@
-/** @fileoverview Reads the full library of selectable user font identities in bounded intervals. */
-
 import { onCleanup } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
 import type { MainClient } from '../../../../infrastructure/api'

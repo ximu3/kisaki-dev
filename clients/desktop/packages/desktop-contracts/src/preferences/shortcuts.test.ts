@@ -1,8 +1,10 @@
-/** @fileoverview Checks canonical shortcut syntax and conflicts between effective key combinations. */
-
 import { expect, test } from 'vite-plus/test'
-import { parseAccelerator, findShortcutConflicts, shortcutKeys } from './shortcuts'
-import type { ShortcutsPreferences } from './shortcuts'
+import {
+  parseAccelerator,
+  findShortcutConflicts,
+  shortcutKeys,
+  type ShortcutsPreferences,
+} from './shortcuts'
 import { DesktopError } from '../errors'
 
 test('accelerators preserve supported aliases and reject invalid combinations', () => {

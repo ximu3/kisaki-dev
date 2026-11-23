@@ -1,5 +1,3 @@
-/** @fileoverview Keeps generic task history and scanner reports independently readable and removable. */
-
 import { desc } from 'drizzle-orm'
 import { primaryKey, index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { parseJsonValue } from '@kisaki3/desktop-contracts/json'
@@ -12,6 +10,8 @@ import {
 } from '@kisaki3/desktop-contracts/scanner'
 import { storedJsonColumn } from '../codecs/json'
 import { enumValue, idColumn } from './constraints'
+
+const scanStatuses = ['active', 'completed', 'failed', 'cancelled', 'interrupted'] as const
 
 /** Creates lifecycle times without inferring a finish for interrupted work. */
 function runTimes() {
@@ -59,22 +59,14 @@ export const scanRuns = sqliteTable(
     configSnapshot: storedJsonColumn(parseScanConfigSnapshot)('config_snapshot').notNull(),
     scope: storedJsonColumn(parseScanScope)('scope').notNull(),
     description: text('description'),
-    status: text('status', {
-      enum: ['active', 'completed', 'failed', 'cancelled', 'interrupted'],
-    }).notNull(),
+    status: text('status', { enum: scanStatuses }).notNull(),
     result: storedJsonColumn(parseScanResult)('result'),
     error: storedJsonColumn(parseErrorSummary)('error'),
     ...runTimes(),
   },
   (table) => [
     primaryKey({ columns: [table.id] }),
-    enumValue('scan_runs_status', table.status, [
-      'active',
-      'completed',
-      'failed',
-      'cancelled',
-      'interrupted',
-    ]),
+    enumValue('scan_runs_status', table.status, scanStatuses),
     index('scan_runs_config_created').on(table.scanConfigId, desc(table.createdAt), table.id),
     index('scan_runs_status_created').on(table.status, desc(table.createdAt), table.id),
     index('scan_runs_created').on(desc(table.createdAt), table.id),

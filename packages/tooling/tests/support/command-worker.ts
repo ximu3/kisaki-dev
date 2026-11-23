@@ -1,14 +1,8 @@
-/**
- * @fileoverview Creates a persistent parent and leaf process for command-tree cancellation
- * tests.
- */
-
 import { spawn } from 'node:child_process'
 import { writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-/** Parent-selected disposable directory and role for this synthetic process-tree worker. */
 const [directory, role] = process.argv.slice(2)
 if (!directory) {
   throw new Error('The fixture directory is required')

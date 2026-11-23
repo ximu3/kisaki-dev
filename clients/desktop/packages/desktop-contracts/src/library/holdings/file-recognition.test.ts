@@ -1,5 +1,3 @@
-/** @fileoverview Checks file-recognition definition shape and complete target constraints. */
-
 import { expect, test } from 'vite-plus/test'
 import { parseFileRecognitionDefinition } from './file-recognition'
 

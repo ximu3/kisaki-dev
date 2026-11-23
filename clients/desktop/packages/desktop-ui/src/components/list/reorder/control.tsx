@@ -1,5 +1,3 @@
-/** @fileoverview Coordinates one controlled ordered list and its input-independent move requests. */
-
 import { createContext, createSignal, onCleanup, omit, useContext } from 'solid-js'
 import type { ElementEventBasePayload } from '@atlaskit/pragmatic-drag-and-drop/element/adapter'
 import { extractClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge'

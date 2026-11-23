@@ -44,7 +44,7 @@ books.id、books.uuid、library_id，以及 OPF 中 calibre／uuid scheme 都是
 | 来源内容                                                   | 采用规则                                                                                          |
 | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | title、排序标题、作者文字                                  | 名称及查询线索；明确选择保留名称时更新同范围对象，排序文字不成为别名                              |
-| authors、publisher、author_sort                            | 展示实际署名及版本出版者；不凭名字创建 Person／Company 或猜测原作职责，人员资料主要由所选方案取得 |
+| authors、publisher、author_sort                            | 展示实际署名及版本出版者；不凭名字创建人物或组织，也不推断原作职责                               |
 | identifiers、languages                                     | 使用已验证的正式身份及语言值；未知标识保留在结果说明中，不构造身份空间                            |
 | comments／dc:description                                   | 书目简介，安全转换后只在明确选择保留简介时采用，不默认创建私人 Note                               |
 | pubdate／dc:date                                           | 当前书目出版日期；不能把单卷或再版日期覆盖为母体首次发行日期                                      |
@@ -169,6 +169,7 @@ calibre 的 CFI 与标准 EPUB package CFI 不能原样互换。书签／续读�
     │   ├── import.ts
     │   └── ipc.ts
     ├── webview/
+    │   ├── index.html
     │   ├── entry.tsx
     │   ├── page.tsx
     │   ├── selection.tsx

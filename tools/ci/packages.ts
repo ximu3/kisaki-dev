@@ -1,8 +1,5 @@
-/** @fileoverview Registers package verification tasks and the runner facilities each task uses. */
-
 import type { Project } from '../workspace.ts'
 
-/** GitHub-hosted runners for the supported operating systems and architectures. */
 export const runners = {
   'linux-x64': 'ubuntu-22.04',
   'linux-arm64': 'ubuntu-22.04-arm',
@@ -12,13 +9,10 @@ export const runners = {
   'macos-arm64': 'macos-15',
 } as const
 
-/** An operating system and architecture with a native runner. */
 type Target = keyof typeof runners
 
-/** All supported native hosts, including the Linux host used by Workspace checks. */
 const nativeTargets = Object.keys(runners) as Target[]
 
-/** Host facilities and package-relative evidence for one local task. */
 interface TaskEnvironment {
   chromium?: boolean
   window?: boolean
@@ -26,24 +20,19 @@ interface TaskEnvironment {
   performanceReport?: string
 }
 
-/** A package's automatic check and the tasks available for reproduction. */
 interface PackageChecks {
   defaultTask: string
   targets: readonly Target[]
-  /** Build dependencies shared by this package's Linux checks. */
   linuxPackages?: readonly string[]
   manualTargets?: readonly Target[]
   tasks: Readonly<Record<string, TaskEnvironment>>
   macosDeploymentTarget?: string
 }
 
-/** A candidate workspace member with its applicable host and task policy. */
 export type VerificationPackage = Project & PackageChecks
 
-/** The browser executable for headless Playwright checks. */
 const chromium = { chromium: true }
 
-/** Additional facilities used by each public package's independent consumer installations. */
 const consumerEnvironments: Readonly<Record<string, TaskEnvironment>> = {
   '@kisaki3/desktop-appearance': chromium,
   '@kisaki3/desktop-contracts': chromium,
@@ -53,7 +42,6 @@ const consumerEnvironments: Readonly<Record<string, TaskEnvironment>> = {
   '@kisaki3/extension-distribution': chromium,
 }
 
-/** Registers each public library through its shared verify and tarball consumer entry points. */
 function libraryChecks(name: string): PackageChecks {
   const consumers = consumerEnvironments[name] ?? {}
   const tasks: Record<string, TaskEnvironment> = { verify: consumers, 'test:consumers': consumers }
@@ -68,16 +56,12 @@ function libraryChecks(name: string): PackageChecks {
   }
 }
 
-/** Linux tools for building the desktop formats and observing their native windows. */
 const linuxPackaging = ['wmctrl', 'libfuse2', 'rpm']
 
-/** Desktop services exercised on a private Linux display and session bus. */
 const linuxIntegration = ['xdg-utils', 'dbus-daemon', 'dunst']
 
-/** Playwright measurements retained after the desktop performance task succeeds. */
 const performanceReport = 'test-results/performance/results.json'
 
-/** Host and task registrations for packages with their own verification contracts. */
 const packageChecks: Readonly<Record<string, PackageChecks>> = {
   '@kisaki3/tooling': {
     defaultTask: 'test',
@@ -107,7 +91,6 @@ const packageChecks: Readonly<Record<string, PackageChecks>> = {
   },
 }
 
-/** Registers each package with target checks. Root checks cover the shared configuration itself. */
 export function verificationPackages(workspace: readonly Project[]): VerificationPackage[] {
   return workspace.flatMap((project) => {
     if (!project.directory || project.name === '@kisaki3/config') {

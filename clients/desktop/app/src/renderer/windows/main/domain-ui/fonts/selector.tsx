@@ -1,5 +1,3 @@
-/** @fileoverview Selects a library, system or context-specific default font without discarding missing identities. */
-
 import { createMemo } from 'solid-js'
 import { Combobox, type ComboboxOption } from '@kisaki3/desktop-ui/combobox'
 import type { FontRef } from '@kisaki3/desktop-contracts/fonts'

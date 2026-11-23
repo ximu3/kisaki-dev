@@ -1,5 +1,3 @@
-/** @fileoverview Binds durable preference choices, translation registration, name collation and live window invalidation. */
-
 import { isDeepStrictEqual } from 'node:util'
 import { releaseAll } from '../infrastructure/release'
 import { createSignal } from '../infrastructure/events'
@@ -18,11 +16,10 @@ export async function bindSettings(
   network: ReturnType<typeof createNetwork>,
   adoptLocale: (locale: string) => Promise<void>,
 ) {
-  /** Signals that a saved application choice or effective locale has changed. */
   const updated = createSignal<void>()
   let saved = await preferences.get()
   let applying = Promise.resolve()
-  /** Adopts exactly the saved groups whose choices changed. */
+
   async function adopt(value: typeof saved, initial = false) {
     const old = saved
     saved = value
@@ -33,6 +30,7 @@ export async function bindSettings(
           : defaults.general.uiTranslation,
       )
     }
+
     if (initial || !isDeepStrictEqual(old.appearance, value.appearance)) {
       appearance.select({
         ...value.appearance,
@@ -42,11 +40,13 @@ export async function bindSettings(
             : defaults.appearance.theme,
       })
     }
+
     if (initial || !isDeepStrictEqual(old.network, value.network)) {
       await network.apply(value.network)
     }
     updated.emit()
   }
+
   const locale = i18n.onChanged(() => {
     applying = applying
       .then(() => adoptLocale(i18n.current.locale))
@@ -56,10 +56,12 @@ export async function bindSettings(
   const settings = preferences.onInvalidated(() => {
     applying = applying.then(async () => adopt(await preferences.get())).catch(console.error)
   })
+
   /** Unsubscribes after admission has stopped and waits for the final adoption work. */
   async function dispose() {
     await releaseAll([() => settings.dispose(), () => locale.dispose(), () => applying])
   }
+
   const presentationDeadline = Date.now() + 5_000
   try {
     await adopt(saved, true)
@@ -72,10 +74,10 @@ export async function bindSettings(
   return {
     presentationDeadline,
     onUpdated: updated.on,
-    /** Provides the currently adopted settings for native actions. */
     get saved() {
       return saved
     },
+
     /** Waits for queued settings and name-index adoption. */
     settled: () => applying,
     dispose,

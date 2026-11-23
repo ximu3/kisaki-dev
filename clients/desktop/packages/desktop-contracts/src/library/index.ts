@@ -1,5 +1,3 @@
-/** @fileoverview Publishes the library capability contract. */
-
 export type {
   EntryType,
   WorkType,

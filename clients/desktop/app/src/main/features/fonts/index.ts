@@ -1,5 +1,3 @@
-/** @fileoverview Prepares real font metadata, commits user font edits and hands out independent fixed file reads. */
-
 import { releaseAll } from '../../infrastructure/release'
 import { readFile } from 'node:fs/promises'
 import type { Readable } from 'node:stream'
@@ -96,7 +94,6 @@ export function createFonts(
   listFontFamilies: NativeCapabilities['listFontFamilies'],
 ) {
   const decoder = createRequire(join(runtime, 'media', 'index.cjs'))
-  /** Notifies consumers after a committed library change. */
   const invalidated = createSignal<void>()
   const prepared = new Map<string, { file: FontFile; content: PreparedContent }>()
 
@@ -125,7 +122,6 @@ export function createFonts(
       return {
         ...file,
         resource: content.resource,
-        /** Releases the verified bytes and withdraws this preparation. */
         async dispose() {
           prepared.delete(content.resource.id)
           await content.dispose()
@@ -220,7 +216,6 @@ export function createFonts(
     /** Prepares a new user font for atomic adoption with the theme which references it. */
     async prepareCopy(inputs: readonly FileInput[], options?: CallOptions) {
       const holds: PreparedFontFile[] = []
-      /** Releases every held file in an uncommitted font copy. */
       const dispose = async () => {
         await releaseAll(holds.map((file) => () => file.dispose()))
       }
@@ -245,13 +240,11 @@ export function createFonts(
     adopted() {
       invalidated.emit()
     },
-    /** Returns distinct installed family names as reported by the host's font system. */
     async listSystem(options?: CallOptions) {
       options?.signal?.throwIfAborted()
       const installed = await listFontFamilies(options?.signal)
       return [...new Set(installed)].sort((a, b) => a.localeCompare(b))
     },
-    /** Reads one bounded interval of user font summaries. */
     async list(query: { search: string }, options: ListOptions, context?: CallOptions) {
       context?.signal?.throwIfAborted()
       return call('listFonts', query.search, parseListOptions(options))
@@ -261,17 +254,14 @@ export function createFonts(
       options?.signal?.throwIfAborted()
       return call('getFont', id)
     },
-    /** Parses and commits all files as one new font. */
     import(input: FontImportInput, options?: CallOptions) {
       const value = parseFontImport(input)
       return save(null, value.name, value.files, undefined, options)
     },
-    /** Commits only the submitted name or final file-set changes. */
     update(id: string, input: FontUpdate, options?: CallOptions) {
       const { changes, expected } = parseFontUpdate(input)
       return save(id, changes.name, changes.files, expected, options)
     },
-    /** Removes the user font and invalidates the library. */
     async delete(id: string, options?: CallOptions) {
       options?.signal?.throwIfAborted()
       attachments.retire(await call('deleteFont', id))
@@ -285,7 +275,6 @@ export function createFonts(
         throw new DesktopError('NotFound', 'The font does not exist')
       }
       const reads: Record<string, ReadResource> = {}
-      /** Releases every file acquired for the font read. */
       const dispose = async () => {
         await releaseAll(Object.values(reads).map((read) => () => read.dispose()))
       }

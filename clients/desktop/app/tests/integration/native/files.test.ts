@@ -1,8 +1,3 @@
-/**
- * @fileoverview Exercises the shipped native loader, no-replace moves and file
- * synchronization against real filesystem outcomes.
- */
-
 import { afterEach, beforeEach, expect, test } from 'vite-plus/test'
 import { chmod, mkdtemp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
@@ -12,7 +7,6 @@ import { appRoot } from '../../../tools/lib/paths'
 import { hostTarget } from '../../../tools/lib/targets'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
-/** Prepared native binding selected for the current host target. */
 const binding = join(appRoot, 'out', 'native', hostTarget(), 'kisaki-native.node')
 
 /** Paths that the host-native absolute-path contract rejects before scheduling work. */
@@ -21,7 +15,6 @@ const invalidPaths =
     ? ['relative', '\\drive-rooted', '\\\\?\\UNC\\localhost']
     : ['relative']
 
-/** Temporary filesystem root owned by the current native operation case. */
 let directory: string
 
 beforeEach(async () => {

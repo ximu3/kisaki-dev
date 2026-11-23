@@ -1,6 +1,3 @@
-/** @fileoverview Defines English labels for common editing and navigation actions. */
-
-/** Canonical English labels for shared explicit user actions. */
 export const actionMessages = {
   save: 'Save',
   cancel: 'Cancel',

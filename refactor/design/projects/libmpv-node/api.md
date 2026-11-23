@@ -13,7 +13,7 @@
 
 ## 绑定模型与调用入口
 
-libmpv-node 定位为 libmpv 的 Node 原生绑定，保留上游的能力与语义，完整承担 JavaScript 与原生运行时之间的适配。命令、属性、事件与错误依据 [libmpv Client API](https://github.com/mpv-player/mpv/blob/master/include/mpv/client.h)，公开模型以同一个 Mpv 实例为中心：
+libmpv-node 通过 Mpv 提供命令、属性、事件和实例管理，沿用[固定版本的 libmpv Client API](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/include/mpv/client.h)语义。
 
 | 入口                | 合同                                                         |
 | ------------------- | ------------------------------------------------------------ |
@@ -46,10 +46,10 @@ command 完成遵守对应 mpv 命令的含义，不自动表示文件、定位�
 | 职责     | 接口                                                           | 完成含义                                     |
 | -------- | -------------------------------------------------------------- | -------------------------------------------- |
 | 一次操作 | command、getProperty、setProperty 等返回 Promise               | 这次原生调用及约定的结果交付完成             |
-| 持续通知 | observeProperty、observeEvents、observeLogs 使用 Observer.next | 接收一项事实；回调返回值不控制播放或后续交付 |
-| 参与执行 | addHook 使用 HookHandler.run，允许返回 Promise                 | 正常完成后继续原生 hook；停止时由库解除等待  |
+| 持续通知 | observeProperty、observeEvents、observeLogs 使用 MpvObserver.next | 接收一项事实；回调返回值不控制播放或后续交付 |
+| 参与执行 | addHook 使用 MpvHookHandler.run，可返回 PromiseLike            | 正常完成后继续原生 hook；停止时由库解除等待  |
 
-通知采用[订阅合同](notifications.md#callbacks)，hook 采用[异步处理器合同](#hooks)。两者的 error 与 complete 都是整个登记的终止通知，只有 run 的返回值参与任务完成。处理器拒绝是库接纳的工作结果，接收器自身抛错则是通知代码失败；因此异常归属不同。名称和类型直接表达这个差异，不把返回值是否被等待藏在相同的 next 签名下。
+[订阅](notifications.md#callbacks)和 [hook](#hooks) 都通过 error 或 complete 通知登记结束。库等待 run 的结果，再决定如何继续原生 hook。通知回调抛出的异常交给 Node 处理。
 
 [Node EventEmitter](https://nodejs.org/download/release/v24.11.1/docs/api/events.html#events)忽略监听器的返回值，[Web Streams 的底层写入处理](https://nodejs.org/download/release/v24.11.1/docs/api/webstreams.html#new-writablestreamunderlyingsink-strategy)则用 Promise 表达工作的完成。[mpv hook](https://github.com/mpv-player/mpv/blob/41f6a645068483470267271e1d09966ca3b9f413/include/mpv/client.h)本身要求参与执行与继续。这些依据支持按职责选择回调协议；本库的 Observer 和 HookHandler 是自己的轻量协议，不声称它们是 Node 规定的唯一接口。
 
@@ -95,7 +95,8 @@ observeProperty 的一次值通知采用可用与不可用两种明确状态：
 
 ```ts
 type PropertyState<T> =
-  { readonly status: 'available'; readonly value: T } | { readonly status: 'unavailable' }
+  | { readonly status: 'available'; readonly value: T }
+  | { readonly status: 'unavailable' }
 ```
 
 此处的 unavailable 表示这次通知没有可用值。此分支不附带 reason：上游观察事件没有提供具体原因码，绑定不虚构属性不存在、未加载媒体或读取错误中的某一个原因，也不固定填入 unknown。补做 getProperty 是另一次读取，不能用来可靠归因原通知。订阅建立失败、绑定转换失败或事件流中断分别报告，不压入 unavailable。普通值中的 null 仍可以出现在 available 分支，不能与外层状态合并。
@@ -213,7 +214,7 @@ loadConfigFile 保留上游的部分应用语义：即使最终报错，某些�
 
 ## 额外客户端的归属
 
-提供 mpv.createClient({ name?, signal? })，返回 MpvClient。它有与 Mpv 相同的命令、属性、文本、时钟、订阅和 hook 控制能力，以及自己的实际 clientId／clientName。原生可以调整请求的名称，返回快照以实际名称为准。clientId 的身份范围是所属播放核心，不能用它跨不同 Mpv 实例建立全局身份。
+mpv.createClient({ name?, signal? }) 返回 Promise<MpvClient>。客户端有与 Mpv 相同的命令、属性、文本、时钟、订阅和 hook 控制能力。clientName 是原生实际分配的名称，clientId 只在所属播放核心内标识该通道。
 
 每次 createMpv 都创建独立的播放核心；只有从同一个 Mpv 创建的额外客户端共享该核心，不使用库级全局播放器单例。MpvClient 表达控制通道，独立播放、预览或后台处理需要另建 Mpv，不能靠增加客户端隔离媒体、位置或播放状态。
 
@@ -235,7 +236,7 @@ Mpv 与客户端在所属 Node 环境中作为活动资源使用，跨进程调�
 
 ## 异步 hook 与原生接续
 
-使用 addHook(name, handler, { priority?, signal? })，返回 MpvSubscription。handler 是 MpvHookHandler，包含 run(context)、必填的 error(reason) 和可选 complete()。run 可以同步完成，也可以返回 PromiseLike<void>；绑定等待它完成，随后自动执行原生继续。创建成功先交付登记句柄，首次 run 安排在后续调度轮次；创建失败只拒绝 Promise，不调用尚未建立的接收器。priority 缺省 0，名称与优先级继续遵守上游语义。
+addHook(name, handler, { priority?, signal? }) 返回 Promise<MpvSubscription>。handler 是 MpvHookHandler，包含 run(context)、必填的 error(reason) 和可选 complete()。run 可以同步完成，也可以返回 PromiseLike<void>。绑定等它完成后继续原生 hook。首次 run 安排在成功交付登记句柄后的调度轮次。创建失败只拒绝 Promise。priority 缺省为 0，名称与优先级沿用上游规则。
 
 返回句柄管理整个 hook 登记，context 管理其中一次执行。句柄的 closed 表示不再开始新的 run，不单独证明原生收尾或已经运行的用户任务全部完成；等待库拥有的清理仍使用 dispose。整体接口关系见[工作职责](#libmpv-model)。
 
@@ -244,11 +245,11 @@ const hook = await mpv.addHook('on_load', {
   async run({ signal }) {
     await prepareFile(signal)
   },
-  error: reportHookFailure
+  error: reportHookFailure,
 })
 ```
 
-这里区分两种真实职责：Observer 接收已经发生的通知，不决定引擎何时继续；HookHandler 参与一个执行过程，其完成就是继续的条件。共用停止、错误接收和资源清理原则。登记时捕获函数引用，以原 handler 作为 this，并恢复登记调用时的 Node 异步上下文；后续改写对象上的函数不改变已登记处理器。
+登记时保存处理器的函数引用及当前 Node 异步上下文。执行时以原 handler 作为 this，并恢复该上下文。改写 handler 上的函数只影响后续登记。
 
 Node 接口以回调返回的 Promise 表达本次 hook 工作的完成，binding 在对应时点调用上游 mpv_hook_continue，公共接口只使用这一种完成机制。上游 Lua 封装同样默认在回调返回后继续，其 defer／cont 组合说明了上游允许延迟完成的机制。
 

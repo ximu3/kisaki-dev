@@ -132,7 +132,7 @@ ErrorSummary.code 的传输类型保留 string，以便同一通信机制承载�
 
 失败结果的 code、message、partialResult 按[共同失败合同](../../../communication.md#failure)传递；不增加任意 details、retryable 或“强制保存”开关。需要让程序处理逐项上下文时，由所属业务的合法结果／issues 定义明确字段。没有合法结果的普通原子写入不带 partialResult，不能把半份请求装成成功内容。
 
-文件切换沿[FileSwitchResult](../../sessions.md#switch)交付阶段事实：尚未离开原文件的失败不带部分结果；原内容已经结束时，失败携带 previousEnded。错误码仍表达实际原因，例如 RecordingSaveFailed、FileUnavailable、ReadFailed 或 Cancelled。previousEnded 不代替这些分类，也不承诺记录和资源已经全部收尾。
+文件切换用 [`FileSwitchResult`](../../sessions.md#switch) 交付结果。尚未离开原文件时，失败不带部分结果。原内容已经结束时，失败携带 `previousEnded`。错误码仍说明实际原因，例如 `RecordingSaveFailed`、`FileUnavailable`、`ReadFailed` 或 `Cancelled`。`previousEnded` 表示原内容已经结束，记录保存和资源释放结果分别按所属合同判断。
 
 输入形状与调用权限在接纳前检查；事务中按目标、必要引用、使用占用与提交基线核对。多个错误同时存在时不承诺全局优先级，调用者不得用先遇到哪种错误探测隐藏资料。相同具体失败不能在 IPC、SDK 和原生调用中改成不同的业务 code。
 

@@ -8,7 +8,7 @@ MangaDex 提供漫画资料、真实卷话、本人清单导入和个人记录�
 
 ## 对象、身份与创作者边界
 
-正式 source 为 mangadex，sourceId 使用原生资源类别和规范小写 UUID：manga/<uuid>、chapter/<uuid>、author/<uuid>。UUID 格式由本接入验证，不把标题、卷号、话号或数组位置编码为正式身份。
+`source` 使用 `mangadex`。`sourceId` 由原生资源类别和规范小写 UUID 组成，采用 `manga/<uuid>`、`chapter/<uuid>` 或 `author/<uuid>`。UUID 格式由来源接入校验，标题、卷号、话号和数组位置各自保留原义。
 
 | 来源资源                                  | 本体采用                                                     |
 | ----------------------------------------- | ------------------------------------------------------------ |
@@ -27,7 +27,7 @@ author 同时容纳个人与创作团体，author、artist 关系只说明职责
 
 ## 卷话分组与来源身份
 
-卷话目录以 /manga/<id>/aggregate 的公开分组为依据，读取 includeUnavailable=1，不按资料语言或翻译组过滤成员。语言只影响可采用的标题与图像，不使同一话因切换语言变成另一条本地记录。
+卷话目录使用 `/manga/<id>/aggregate` 的公开分组，传入 `includeUnavailable=1`。成员范围涵盖各语言和翻译组。资料语言只影响标题与图像的选用，同一话保持原身份。
 
 聚合组的 id 与 others 都是真实 chapter UUID。需要普通话字段、确认归属或同步标记时，按 UUID 批量读取 /chapter，核对 manga 关系、卷号和话号；不把不同漫画中的同号话合并。对已由公开聚合给出的 UUID，批量查询显式包含不可用、空页面、外部链接和未来 publishAt 的元数据，避免永久外链或站内延迟发布被默认筛选漏掉；这些时间不证明原作尚未发表，也不触发个人完成。读取不调用图片服务器取得正文。
 
@@ -118,11 +118,11 @@ contentRating=safe 对应 isNsfw=false，suggestive、erotica、pornographic 对
 
 | 来源键与值            | 正式目标身份                                                            |
 | --------------------- | ----------------------------------------------------------------------- |
-| al 的规范数值 ID      | anilist / media/<id>                                                    |
-| mal 的规范数值 ID     | myanimelist / manga/<id>                                                |
-| kt 的规范数值 ID      | kitsu / manga/<id>；slug 形态只保留官方可解释的查询链接 |
-| mu 的明确新式系列代码 | mangaupdates / series/<code>；纯数字旧编号不直接当作新式系列代码        |
-| bw 的明确 series/<id> | bookwalker-jp / series/<id>；单册或无法确定作品范围的地址不绑定根作品   |
+| `al` 的规范数值 ID      | `anilist / media/<id>`                                                |
+| `mal` 的规范数值 ID     | `myanimelist / manga/<id>`                                            |
+| `kt` 的规范数值 ID      | `kitsu / manga/<id>`；slug 形态只保留官方可解释的查询链接               |
+| `mu` 的明确新式系列代码 | `mangaupdates / series/<code>`；纯数字旧编号不直接当作新式系列代码    |
+| `bw` 的明确 `series/<id>` | `bookwalker-jp / series/<id>`；单册或无法确定作品范围的地址不绑定根作品 |
 
 mu 的旧编号与新式代码使用各自明确的网址形态，不能猜测换算。其他 URL 只按真实目标资源范围解析；原文连载、授权译文、商店和作者网站不因同处一个对象而获得相同身份含义。作者只交付自己的官网与实际社交网站，不把其作品链接绑定到作者本身。
 

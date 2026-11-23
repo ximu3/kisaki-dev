@@ -1,5 +1,3 @@
-/** @fileoverview Edits proxy settings and displays adoption state from the main process. */
-
 import { onCleanup, Show } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
 import type { ProxyCredentials } from '@kisaki3/desktop-contracts/network'
@@ -14,10 +12,8 @@ import type { MainClient } from '../../../../infrastructure/api'
 import type { PreferenceDraft, PreferenceFields } from './draft'
 import { focusPreferenceValue, PreferenceField } from './field'
 
-/** Draft identity shared by the authentication field and the separate editor. */
 export const proxyCredentialsKey = 'network.credentials'
 
-/** Edits the manual route and its protected credentials in the shared preference draft. */
 export function NetworkFields(props: {
   api: MainClient
   draft: PreferenceDraft

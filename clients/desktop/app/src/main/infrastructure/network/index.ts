@@ -1,5 +1,3 @@
-/** @fileoverview Applies one saved network route to host and browser sessions and owns request cancellation. */
-
 import {
   app,
   type Session,
@@ -9,8 +7,7 @@ import {
   type AuthInfo,
 } from 'electron'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
-import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
-import type { StoredDefinition } from '@kisaki3/desktop-contracts/operations'
+import type { CallOptions, StoredDefinition } from '@kisaki3/desktop-contracts/operations'
 import type {
   NetworkPreferences,
   NetworkFetchOptions,
@@ -30,7 +27,6 @@ export function createNetwork(
   const sessions = new Set<Session>([host])
   const routed = new Set<Session>()
   const localSources = new Map<Session, string>()
-  /** Publishes adoption state independently of HTTP response completion. */
   const changed = createSignal<NetworkState>()
   let state: NetworkState = { status: 'applying' }
   let applying = Promise.resolve()
@@ -39,7 +35,6 @@ export function createNetwork(
   let authentication: { host: string; port: number; credentials: ProxyCredentials } | null = null
   let requests = new AbortController()
 
-  /** Supplies the current readiness before subsequent route transitions. */
   function publish(next: NetworkState) {
     state = next
     changed.emit(next)
@@ -85,6 +80,27 @@ export function createNetwork(
   }
   app.on('login', browserLogin)
   guard(host)
+
+  function configForSession(config: ProxyConfig, session: Session): ProxyConfig {
+    const source = localSources.get(session)
+    if (!source || config.mode !== 'fixed_servers') {
+      return config
+    }
+    return {
+      ...config,
+      proxyBypassRules: [config.proxyBypassRules, source].filter(Boolean).join(';'),
+    }
+  }
+
+  async function updateSessions(update: (session: Session) => Promise<void>) {
+    // A failed session must not let a later route overtake an unfinished update.
+    const outcomes = await Promise.allSettled([...sessions].map(update))
+    const failure = outcomes.find((outcome) => outcome.status === 'rejected')
+    if (failure) {
+      throw failure.reason
+    }
+  }
+
   return {
     /** Sets the route before the next networking operation and closes connections opened under the previous route. */
     apply(saved: StoredDefinition<NetworkPreferences>) {
@@ -98,12 +114,10 @@ export function createNetwork(
           if (version !== generation) {
             return
           }
-          await Promise.all(
-            [...sessions].map(async (session) => {
-              await session.closeAllConnections()
-              await session.clearAuthCache()
-            }),
-          )
+          await updateSessions(async (session) => {
+            await session.closeAllConnections()
+            await session.clearAuthCache()
+          })
           if (saved.status === 'invalid') {
             throw new DesktopError(saved.error.code, saved.error.message)
           }
@@ -121,22 +135,12 @@ export function createNetwork(
               ? await credentials(prefs.credentials.revision)
               : null
           const endpoint = prefs.endpoint && new URL(prefs.endpoint)
-          await Promise.all(
-            [...sessions].map(async (session) => {
-              const source = localSources.get(session)
-              const effective =
-                source && config.mode === 'fixed_servers'
-                  ? {
-                      ...config,
-                      proxyBypassRules: [config.proxyBypassRules, source].filter(Boolean).join(';'),
-                    }
-                  : config
-              await session.setProxy(effective)
-              if (version === generation) {
-                routed.add(session)
-              }
-            }),
-          )
+          await updateSessions(async (session) => {
+            await session.setProxy(configForSession(config, session))
+            if (version === generation) {
+              routed.add(session)
+            }
+          })
           if (version !== generation) {
             return
           }
@@ -179,15 +183,7 @@ export function createNetwork(
       guard(session)
       const attached = applying.then(async () => {
         if (route) {
-          const source = localSources.get(session)
-          const effective =
-            source && route.mode === 'fixed_servers'
-              ? {
-                  ...route,
-                  proxyBypassRules: [route.proxyBypassRules, source].filter(Boolean).join(';'),
-                }
-              : route
-          await session.setProxy(effective)
+          await session.setProxy(configForSession(route, session))
           routed.add(session)
         }
       })
@@ -226,12 +222,10 @@ export function createNetwork(
         authentication,
       )
     },
-    /** Reads route readiness for new traffic. */
     async getState(options?: CallOptions) {
       options?.signal?.throwIfAborted()
       return state
     },
-    /** Delivers current and subsequent route adoption states. */
     observe(listener: (state: NetworkState) => void) {
       return changed.observe(listener, state)
     },

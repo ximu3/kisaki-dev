@@ -1,12 +1,9 @@
-//! Determines the backing filesystem of an existing path on a worker before database access.
-
 use super::FilesystemQueryFailure;
 use napi::bindgen_prelude::{AsyncTask, Either};
 use napi::{Env, Error, Result, Status, Task};
 use napi_derive::napi;
 use std::io;
 
-/// Reads actual volume or mount information, following the supplied path to its backing location.
 #[cfg(windows)]
 fn location(path: &str) -> io::Result<&'static str> {
     use std::os::windows::ffi::OsStrExt;
@@ -34,7 +31,6 @@ fn location(path: &str) -> io::Result<&'static str> {
     })
 }
 
-/// Reads the actual Darwin mount containing a path.
 #[cfg(target_os = "macos")]
 pub(super) fn mount_info(path: &std::path::Path) -> io::Result<libc::statfs> {
     use std::os::unix::ffi::OsStrExt;
@@ -49,7 +45,6 @@ pub(super) fn mount_info(path: &std::path::Path) -> io::Result<libc::statfs> {
     Ok(unsafe { information.assume_init() })
 }
 
-/// Reads the mounted filesystem's local flag on macOS.
 #[cfg(target_os = "macos")]
 fn location(path: &str) -> io::Result<&'static str> {
     let information = mount_info(std::path::Path::new(path))?;
@@ -60,7 +55,6 @@ fn location(path: &str) -> io::Result<&'static str> {
     })
 }
 
-/// Classifies recognized local and shared Linux filesystems by their statfs magic.
 #[cfg(target_os = "linux")]
 fn location(path: &str) -> io::Result<&'static str> {
     let path = std::ffi::CString::new(path)?;
@@ -82,24 +76,19 @@ fn location(path: &str) -> io::Result<&'static str> {
     })
 }
 
-/// Owns one existing path while its filesystem is inspected off the JavaScript thread.
 pub struct FilesystemTask {
     path: String,
 }
 
 impl Task for FilesystemTask {
-    /// The observed mount classification or its original I/O error.
     type Output = io::Result<&'static str>;
 
-    /// The classification or structured failure delivered to Node.
     type JsValue = Either<String, FilesystemQueryFailure>;
 
-    /// Obtains the actual filesystem without opening or mutating a database.
     fn compute(&mut self) -> Result<Self::Output> {
         Ok(location(&self.path))
     }
 
-    /// Delivers the completed filesystem observation.
     fn resolve(&mut self, _env: Env, output: Self::Output) -> Result<Self::JsValue> {
         Ok(match output {
             Ok(location) => Either::A(location.to_owned()),

@@ -1,5 +1,3 @@
-/** @fileoverview Submits OS-owned notifications and restores clicks through the application's navigation receiver. */
-
 import { Notification } from 'electron'
 import { randomUUID } from 'node:crypto'
 import type { NativeCapabilities } from '#native'
@@ -30,7 +28,6 @@ export function createNotifications(
   let closed = false
 
   const api: NotificationsApi = {
-    /** Submits the target with the system notification and reports the platform's acceptance. */
     async show(input, options) {
       options?.signal?.throwIfAborted()
       if (closed) {

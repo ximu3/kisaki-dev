@@ -1,5 +1,3 @@
-/** @fileoverview Verifies extension event identities and delivery through their declared payload parser. */
-
 import { test, expect } from 'vite-plus/test'
 
 import { parseExtensionEventRef, extensionEvent, parseExtensionEventPayload } from './events'

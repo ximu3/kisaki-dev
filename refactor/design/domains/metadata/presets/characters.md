@@ -49,8 +49,6 @@ AniList 按[来源范围](../../../extensions/sources/anilist.md#relations)提�
 
 ## 关系成员与属性
 
-关系成员及属性按[共同取值规则](README.md#selection)采用。
-
 | 关系项目          | 简体                          | 繁体                          | 英文                          | 日文                          |
 | ----------------- | ----------------------------- | ----------------------------- | ----------------------------- | ----------------------------- |
 | workCharacters    | union：Bangumi、VNDB、AniList | union：Bangumi、VNDB、AniList | union：Bangumi、VNDB、AniList | union：Bangumi、VNDB、AniList |
@@ -63,8 +61,6 @@ AniList 按[来源范围](../../../extensions/sources/anilist.md#relations)提�
 | workVolumes       | 不配置                        | 不配置                        | 不配置                        | 不配置                        |
 | workChapters      | 不配置                        | 不配置                        | 不配置                        | 不配置                        |
 | volumeChapters    | 不配置                        | 不配置                        | 不配置                        | 不配置                        |
-
-以下规则定义关系属性的取值：
 
 | 关系属性                        | 版本     | 固定取值                 |
 | ------------------------------- | -------- | ------------------------ |
@@ -79,8 +75,6 @@ AniList 按[来源范围](../../../extensions/sources/anilist.md#relations)提�
 <a id="tags"></a>
 
 ## 标签自身字段
-
-标签自身字段遵守[共同规则](README.md#selection)，本表列出适用来源。
 
 | 标签自身字段 | 版本     | 固定取值 |
 | ------------ | -------- | -------- |

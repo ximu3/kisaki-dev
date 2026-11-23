@@ -1,5 +1,3 @@
-/** @fileoverview Selects the fields for one work preference branch in the staged editor. */
-
 import { Match, Show, Switch } from 'solid-js'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
@@ -10,7 +8,6 @@ import type { PreferenceFields } from '../draft'
 import { AnimeUsageFields, GameUsageFields, type UsageMedium } from './fields'
 import { ReadingFields } from './reading'
 
-/** Renders the selected medium's editable defaults inside the staged form. */
 export function UsageEditorFields(props: {
   api: MainClient
   medium: UsageMedium

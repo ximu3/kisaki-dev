@@ -1,8 +1,6 @@
-/** @fileoverview Verifies safe failures preserve unknown categories and only valid partial business results. */
-
 import { expect, test } from 'vite-plus/test'
 import { DesktopError, parseExecutionFailure } from './errors'
-import { parsePlaybackSettingResult } from './sessions/api'
+import { parsePlaybackSettingResult } from './sessions/playback'
 
 test('retains a legal partial result without accepting an incomplete replacement', () => {
   const partialResult = {

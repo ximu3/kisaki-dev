@@ -1,12 +1,10 @@
 # libmpv-node 流提供器
 
-流提供器注册、实际字节源、取消与重入遵守本页合同。
-
 <a id="registration"></a>
 
 ## 协议登记与流资源
 
-提供 mpv.registerProtocol(name, provider, { output? })，返回 Promise<void>。它只属于拥有核心的 Mpv，不放在 MpvClient 上。登记成功后才加载对应 URI；已有初始化配置或脚本不会因之后的登记而自动重放。
+mpv.registerProtocol(name, provider, { output? }) 返回 Promise<void>，由拥有核心的 Mpv 提供。登记成功后才加载对应 URI，先前执行的配置和脚本不会自动重放。
 
 ```ts
 await mpv.registerProtocol('app-media', {
@@ -15,7 +13,7 @@ await mpv.registerProtocol('app-media', {
   },
   onError(failure) {
     reportStreamFailure(failure.operation, failure.reason)
-  }
+  },
 })
 
 await mpv.command(['loadfile', 'app-media://example'])
@@ -58,7 +56,7 @@ Mpv.close 可以通过库自己的登记表取消尚在打开中的提供器，�
 
 取消先结束工作时，消费其迟到结果与拒绝，不再将普通取消交给 onError；迟到交付的源仍要关闭。close 本身的清理失败继续报告，因为取消不能把失败的资源收尾改写为成功。
 
-这项等待与 hook 的停止不同：hook 处理器没有向库交付外部字节源的资源所有权，流提供器则明确交付了需要关闭的资源。提供器不响应取消或不完成清理时，公开关闭可能继续等待；库不能同时保证任意用户代码立即终止和外部资源已经全部释放。Node 环境强制退出仍按原生清理合同解除 C 等待，不承诺执行已经无法运行的 JavaScript 清理逻辑。
+流提供器把字节源交给库，所以关闭要等已接纳的提供器工作结束，以及库发起的源 close 完成。提供器不响应取消或未完成清理时，关闭仍会等待。Node 环境强制退出时由原生层解除 C 等待，JavaScript 清理只能在环境还能执行回调时完成。
 
 <a id="reentry"></a>
 

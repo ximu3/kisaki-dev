@@ -1,8 +1,3 @@
-/**
- * @fileoverview Exercises explicit command environments and cancellation of real
- * child-process trees.
- */
-
 import { expect, onTestFinished, test, vi } from 'vite-plus/test'
 import { mkdtemp, readFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'

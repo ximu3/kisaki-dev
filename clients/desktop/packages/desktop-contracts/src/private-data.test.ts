@@ -1,5 +1,3 @@
-/** @fileoverview Verifies private mutations preserve JSON null, deletion intent and independent revision comparisons. */
-
 import { it, expect } from 'vite-plus/test'
 
 import { parsePrivateCommit } from './private-data'

@@ -1,68 +1,53 @@
-/** @fileoverview Assembles appearance styles and third-party notices for the published package. */
-
 import { copyFile, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { createRequire } from 'node:module'
 import { runCli } from '@kisaki3/tooling/cli'
 import { defaults } from '../src/defaults'
-import type { TokenValues } from '../src/tokens'
 
-/** Serializes the package's authored token values as CSS custom-property declarations. */
-function declarations(values: TokenValues): string {
-  return Object.entries(values)
-    .map(([name, value]) => `    ${name}: ${value};`)
-    .join('\n')
+const sourceDirectory = join(import.meta.dirname, '../src')
+const defaultsFile = join(sourceDirectory, 'defaults.generated.css')
+const outputDirectory = join(import.meta.dirname, '../dist')
+
+function renderDefaultsStylesheet(): string {
+  const schemes = Object.entries(defaults).map(([scheme, values]) => {
+    const selector = `[data-color-scheme='${scheme}']`
+    const scope = scheme === 'light' ? `:root, ${selector}` : selector
+    const declarations = Object.entries(values).map(([name, value]) => `    ${name}: ${value};`)
+    return [`  ${scope} {`, `    color-scheme: ${scheme};`, ...declarations, '  }'].join('\n')
+  })
+
+  return ['/* Generated from defaults.ts. */', '@layer theme {', ...schemes, '}', ''].join('\n')
 }
 
-/**
- * Assembles the source styles and third-party notices into the completed package output.
- *
- * The caller consumes the output only after this operation succeeds.
- */
-export async function assembleStyles(signal?: AbortSignal, generate = false): Promise<void> {
-  const project = join(import.meta.dirname, '..')
-  const outDir = join(project, 'dist')
-  signal?.throwIfAborted()
-  const styles = await readFile(join(project, 'src/styles.css'), 'utf8')
-  const base = `/* Generated from defaults.ts; host font loading is separate. */
-@layer theme {
-  :root, [data-color-scheme='light'] {
-color-scheme: light;
-${declarations(defaults.light)}
-  }
-  [data-color-scheme='dark'] {
-color-scheme: dark;
-${declarations(defaults.dark)}
-  }
+async function writeDefaultsStylesheet(signal: AbortSignal): Promise<void> {
+  const stylesheet = renderDefaultsStylesheet()
+  signal.throwIfAborted()
+  await writeFile(defaultsFile, stylesheet)
 }
 
-`
-  const generated = base.trimEnd() + '\n'
-  const defaultsFile = join(project, 'src/defaults.generated.css')
-  if (generate) {
-    await writeFile(defaultsFile, generated)
-    return
-  }
-  if ((await readFile(defaultsFile, 'utf8')) !== generated) {
+async function assembleStylesheets(): Promise<void> {
+  const defaultsCss = await readFile(defaultsFile, 'utf8')
+  if (defaultsCss !== renderDefaultsStylesheet()) {
     throw new Error('Refresh the default stylesheet with generate:styles')
   }
-  await writeFile(
-    join(outDir, 'styles.css'),
-    styles.replace("@import './defaults.generated.css';", base.trimEnd()),
-  )
-  await copyFile(join(project, 'src/tailwind.css'), join(outDir, 'tailwind.css'))
 
+  const styles = await readFile(join(sourceDirectory, 'styles.css'), 'utf8')
+  await writeFile(
+    join(outputDirectory, 'styles.css'),
+    styles.replace("@import './defaults.generated.css';", defaultsCss.trimEnd()),
+  )
+  await copyFile(join(sourceDirectory, 'tailwind.css'), join(outputDirectory, 'tailwind.css'))
+}
+
+async function writeLicenseNotices(): Promise<void> {
   // The value parser bundles CSS Tree and its grammar data; preserve their actual licenses.
-  /** Resolves the installed CSS parser from this package's build environment. */
-  const require = createRequire(import.meta.url)
-  const cssTree = require.resolve('css-tree/package.json')
-  /** Resolves the CSS parser's data and license dependencies relative to their owner. */
-  const dependencyRequire = createRequire(cssTree)
+  const cssTreeManifest = createRequire(import.meta.url).resolve('css-tree/package.json')
+  const resolveCssTreeDependency = createRequire(cssTreeManifest).resolve
   const notices = []
   for (const manifest of [
-    cssTree,
-    dependencyRequire.resolve('mdn-data/package.json'),
-    dependencyRequire.resolve('source-map-js/package.json'),
+    cssTreeManifest,
+    resolveCssTreeDependency('mdn-data/package.json'),
+    resolveCssTreeDependency('source-map-js/package.json'),
   ]) {
     const { name, version } = JSON.parse(await readFile(manifest, 'utf8')) as {
       name: string
@@ -72,11 +57,16 @@ ${declarations(defaults.dark)}
       `${name} ${version}\n\n${await readFile(join(dirname(manifest), 'LICENSE'), 'utf8')}`,
     )
   }
-  await writeFile(join(outDir, 'THIRD-PARTY-NOTICES.txt'), notices.join('\n\n---\n\n'))
+  await writeFile(join(outputDirectory, 'THIRD-PARTY-NOTICES.txt'), notices.join('\n\n---\n\n'))
+}
 
+export async function assembleStyles(signal?: AbortSignal): Promise<void> {
+  signal?.throwIfAborted()
+  await assembleStylesheets()
+  await writeLicenseNotices()
   signal?.throwIfAborted()
 }
 
 if (import.meta.main) {
-  await runCli((signal) => assembleStyles(signal, process.argv.includes('--generate')))
+  await runCli(process.argv.includes('--generate') ? writeDefaultsStylesheet : assembleStyles)
 }

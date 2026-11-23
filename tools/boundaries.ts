@@ -1,5 +1,3 @@
-/** @fileoverview Runs shared dependency rules against the source scope owned by one project. */
-
 import { readdir } from 'node:fs/promises'
 import { runCli } from '@kisaki3/tooling/cli'
 import { runPnpm } from '@kisaki3/tooling/process'

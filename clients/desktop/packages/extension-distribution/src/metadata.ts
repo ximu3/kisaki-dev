@@ -1,5 +1,3 @@
-/** @fileoverview Defines extension identity, static display text and deterministic locale matching. */
-
 import { match } from '@formatjs/intl-localematcher'
 import { DistributionError } from './errors'
 import type { FieldPath } from './errors'

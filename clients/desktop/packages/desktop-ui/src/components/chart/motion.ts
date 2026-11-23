@@ -1,5 +1,3 @@
-/** @fileoverview Chart animation clocks follow the document motion preference. */
-
 import { createSignal, onSettled } from 'solid-js'
 import type { Accessor } from 'solid-js'
 
@@ -12,11 +10,9 @@ export function createChartDuration(
   duration: Accessor<number | undefined>,
   fallback = 140,
 ): Accessor<number> {
-  /** Reactive reduced-motion state observed from the owning document's media query. */
   const [reduced, setReduced] = createSignal(false)
   onSettled(() => {
     const query = window.matchMedia('(prefers-reduced-motion: reduce)')
-    /** Updates the duration preference from the current media-query match. */
     const changed = () => setReduced(query.matches)
     changed()
     query.addEventListener('change', changed)

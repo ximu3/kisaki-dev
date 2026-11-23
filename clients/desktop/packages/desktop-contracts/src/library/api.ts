@@ -1,5 +1,3 @@
-/** @fileoverview Composes library capabilities and complete graph, merge and deletion operations. */
-
 import type { EntriesApi, EntryMergeInput } from './entries'
 import type { PartsApi } from './parts'
 import type { RelationsApi } from './relations'
@@ -16,10 +14,8 @@ import type { EntryRef } from './catalog'
 import type { LibraryInvalidation } from './changes'
 
 /**
- * Saved library facts and complete graph, merge and deletion operations.
- *
- * Each capability owns its business transaction. Views consume snapshots; runtime sessions and
- * metadata acquisition remain separate owners.
+ * Reads return saved snapshots. Each write capability owns its transaction. Sessions and metadata
+ * acquisition have separate entry points.
  */
 export interface LibraryApi {
   readonly entries: EntriesApi
@@ -51,17 +47,14 @@ export interface LibraryApi {
   merge<I extends EntryMergeInput>(input: I, call?: CallOptions): Promise<I['target']>
 
   /**
-   * Deletes selected entries with their complete owned scope atomically.
-   *
-   * Independent notes and user media bytes remain.
+   * Deletion includes the entries' owned scope in one transaction. Independent notes and user media
+   * bytes remain.
    */
   delete(refs: NonEmptyArray<EntryRef>, call?: CallOptions): Promise<void>
 
   /**
-   * Subscribes to library-read invalidation.
-   *
-   * Callers subscribe before the first read and read again if invalidation occurs during it.
-   * Editing drafts remain under their owners.
+   * Subscribe before the first read. Read again if an invalidation arrives during it. Drafts retain
+   * their own state.
    */
   onInvalidated(listener: (value: LibraryInvalidation) => void): Disposable
 }

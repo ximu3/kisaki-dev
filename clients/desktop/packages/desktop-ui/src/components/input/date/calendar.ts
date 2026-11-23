@@ -1,7 +1,7 @@
-/** @fileoverview Complete ISO calendar dates use UTC arithmetic independent of daylight saving. */
-
-/** Milliseconds per civil-day step used by the calendar's UTC date arithmetic. */
 const dayMs = 86_400_000
+
+export const earliestDate = '0001-01-01'
+export const latestDate = '9999-12-31'
 
 /**
  * Parses a complete YYYY-MM-DD date in years 1 through 9999 as UTC midnight.
@@ -25,10 +25,10 @@ export function parseDate(value: string): Date | undefined {
  */
 export function dateValue(date: Date): string {
   if (date.getUTCFullYear() < 1) {
-    return '0001-01-01'
+    return earliestDate
   }
   if (date.getUTCFullYear() > 9999) {
-    return '9999-12-31'
+    return latestDate
   }
   return date.toISOString().slice(0, 10)
 }
@@ -68,9 +68,9 @@ export function addMonths(value: string, months: number): string {
  * Dates outside the supported year range become empty cells.
  */
 export function calendarDays(month: string, weekStartsOn: number): (string | undefined)[][] {
-  const first = `${month.slice(0, 7)}-01`
-  const offset = (parseDate(first)!.getUTCDay() - weekStartsOn + 7) % 7
-  const start = parseDate(first)!.getTime() - offset * dayMs
+  const first = parseDate(`${month.slice(0, 7)}-01`)!
+  const offset = (first.getUTCDay() - weekStartsOn + 7) % 7
+  const start = first.getTime() - offset * dayMs
 
   return Array.from({ length: 6 }, (_, week) =>
     Array.from({ length: 7 }, (_, day) => {

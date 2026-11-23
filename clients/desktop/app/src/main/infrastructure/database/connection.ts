@@ -1,5 +1,3 @@
-/** @fileoverview Establishes and verifies the desktop library's SQLite connection settings. */
-
 import type Database from 'better-sqlite3'
 
 /**

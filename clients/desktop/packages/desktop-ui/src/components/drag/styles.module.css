@@ -1,5 +1,3 @@
-/* Drag-handle states, native preview surfaces and target-edge insertion markers. */
-
 @layer components {
   :global([data-ui-dragging]) {
     opacity: 0.4;

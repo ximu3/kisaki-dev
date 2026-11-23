@@ -1,5 +1,3 @@
-/** @fileoverview Composes the desktop UI capability surface from its actual view, menu and feedback contracts. */
-
 import type { CallOptions } from '../operations'
 import type { ExtensionPagesApi } from './pages'
 import type { ExtensionDialogsApi } from './views'
@@ -7,9 +5,6 @@ import type { ExtensionMenusApi } from './menus'
 import type { ToastApi } from './feedback'
 import type { NativeViewTarget, SearchTarget } from './navigation'
 
-/**
- * Native desktop UI capabilities from which SDK and window entry points select authorized subsets.
- */
 export interface UiApi {
   readonly pages: ExtensionPagesApi
   readonly dialogs: ExtensionDialogsApi

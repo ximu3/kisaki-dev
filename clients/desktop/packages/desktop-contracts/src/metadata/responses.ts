@@ -1,36 +1,38 @@
-/** @fileoverview Defines source read responses and validates graph references and request scope. */
-
-import type { EntryType, ExternalIdentity, PartType } from '../library/catalog'
-import type { MetadataReadRequest } from './requests'
 import { parseValue } from '../validation'
 import * as v from 'valibot'
-import { objectsSchema, metadataPartKinds } from './objects'
-import { relationSchemas, validateGraph } from './graph'
-import { parseMetadataReadRequest } from './requests'
-import type {
-  ParsedObjects,
-  ParsedNode,
-  MetadataObjectIdentity,
-  MetadataPartKey,
-  MetadataPartType,
-  CandidateTag,
+import {
+  objectsSchema,
+  metadataPartKinds,
+  type ParsedObjects,
+  type ParsedNode,
+  type MetadataObjectIdentity,
+  type MetadataPartKey,
+  type MetadataPartType,
+  type CandidateTag,
 } from './objects'
+import { relationSchemas, validateGraph } from './graph'
+import { parseMetadataReadRequest, type MetadataReadRequest } from './requests'
 import type { MetadataRelations, MetadataRelationMembers } from './relations'
 import { DesktopError } from '../errors'
-import { identityKey, entryTypes } from '../library/catalog'
+import {
+  identityKey,
+  entryTypes,
+  type EntryType,
+  type ExternalIdentity,
+  type PartType,
+} from '../library/catalog'
 import { tagNameKey } from '../library/organizers'
 import {
   identificationEntries,
   partIdentificationEntries,
   metadataRelationAttributeEntries,
+  type MetadataEntryFields,
+  type MetadataPartFields,
 } from './fields'
-import type { MetadataEntryFields, MetadataPartFields } from './fields'
 
 /**
- * Parses source field answers and graph relationships.
- *
- * Supplying the actual request also checks returned object fields, memberships and attributes
- * against its scope.
+ * Supplying the original request checks returned fields, memberships and attributes against its
+ * scope.
  */
 export function parseMetadataReadResult<T extends EntryType>(
   root: T,
@@ -38,10 +40,6 @@ export function parseMetadataReadResult<T extends EntryType>(
   request?: MetadataReadRequest<T>,
 ): MetadataReadResult<T>
 
-/**
- * Validates source object shapes and graph references, then applies request-scope checks when
- * supplied.
- */
 export function parseMetadataReadResult(
   root: EntryType,
   input: unknown,
@@ -69,10 +67,6 @@ export function parseMetadataReadResult(
   return value as MetadataReadResult
 }
 
-/**
- * Rejects returned objects, fields and relationship data outside the parsed request's permitted
- * scope.
- */
 function validateRequestedFields(
   root: EntryType,
   objects: ParsedObjects | undefined,
@@ -80,10 +74,6 @@ function validateRequestedFields(
   request: MetadataReadRequest,
   referenced: ReadonlySet<string>,
 ): void {
-  /**
-   * Checks a returned node against requested references and fields while allowing identity evidence
-   * for graph endpoints.
-   */
   function fields(
     node: ParsedNode,
     wanted:
@@ -179,25 +169,19 @@ function validateRequestedFields(
   }
 }
 
-/** Direct source field answers for an entry together with graph and external identities. */
 export type MetadataReadEntry<T extends EntryType> = MetadataObjectIdentity & MetadataEntryFields<T>
 
-/** Direct source field answers for a part together with graph and external identities. */
 export type MetadataReadPart<T extends PartType> = MetadataObjectIdentity & MetadataPartFields<T>
 
-/** Source answers for related entries grouped by their actual kind. */
 export type MetadataReadRelatedEntries = {
   readonly [K in EntryType]?: readonly MetadataReadEntry<K>[]
 }
 
-/** Source answers for parts grouped by root-compatible slots. */
 export type MetadataReadParts<T extends EntryType> = {
   readonly [K in MetadataPartKey<T>]?: readonly MetadataReadPart<MetadataPartType<T, K>>[]
 }
 
 /**
- * Source field and relationship answers for one read in a fixed session.
- *
  * Omission means unanswered. Successful arrays are complete within the declared session and request
  * scope.
  */

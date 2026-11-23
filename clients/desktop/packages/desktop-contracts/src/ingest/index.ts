@@ -1,5 +1,3 @@
-/** @fileoverview Publishes the ingest capability contract. */
-
 export { parseMetadataInput, parseMetadataUpdateInput } from './metadata'
 
 export { parseIngestAddInput, parseIngestAddResult } from './add'

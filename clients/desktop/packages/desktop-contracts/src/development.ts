@@ -1,18 +1,20 @@
-/** @fileoverview Owns the versioned development endpoint and immutable build adoption/release values, independently of RPC frames. */
-
-import type { ExtensionViewDocument } from './ui/views'
-import type { ErrorSummary } from './errors'
-import type { ExtensionActivationResult } from './extensions'
 import type { CallOptions } from './operations'
 import * as v from 'valibot'
-import { parseExternalValue, positiveInteger, parseValue, unique, id } from './validation'
+import {
+  fromParser,
+  parseExternalValue,
+  positiveInteger,
+  parseValue,
+  unique,
+  id,
+} from './validation'
 import { parseId } from '@kisaki3/extension-distribution/metadata'
 import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
-import { parseErrorSummary, DesktopError } from './errors'
-import { parseExtensionActivationResult } from './extensions'
+import { parseErrorSummary, DesktopError, type ErrorSummary } from './errors'
+import { parseExtensionActivationResult, type ExtensionActivationResult } from './extensions'
 import { parseHttpUrl } from './network'
 import { parseAbsolutePath } from './paths'
-import { parseExtensionViewDocument } from './ui/views'
+import { parseExtensionViewDocument, type ExtensionViewDocument } from './ui/views'
 import { parseApplicationVersion } from './app'
 
 /** Wire identity of the desktop extension-development control protocol. */
@@ -22,8 +24,6 @@ export const developmentProtocolId = 'kisaki.development'
 export const developmentProtocolVersion = 1
 
 /**
- * An immutable extension build and its development document mappings.
- *
  * Build numbers increase per extension on the connection. Directories remain unchanged until their
  * actual readers release them.
  */
@@ -40,19 +40,15 @@ export interface DevelopmentBuildRef {
   readonly buildId: number
 }
 
-/** The actual adoption outcome for one requested extension build. */
 export type DevelopmentBuildResult = DevelopmentBuildRef &
   (
     | { readonly outcome: 'adopted' }
     | { readonly outcome: 'notAdopted'; readonly error: ErrorSummary }
   )
 
-/** An extension activation outcome reported during development build adoption. */
 export type DevelopmentActivationResult = ExtensionActivationResult
 
 /**
- * Build-adoption receipts and shared-host activation outcomes for one batch.
- *
  * Interrupted reports contain only known results. Activation attempts can include other affected
  * installed extensions.
  */
@@ -71,8 +67,6 @@ export interface DevelopmentAccepted {
 }
 
 /**
- * The ready development peer's identity and available extension API version.
- *
  * A null apiVersion means the extension API is unavailable; readiness alone does not establish
  * extension activation.
  */
@@ -85,7 +79,6 @@ export type DevelopmentStopResult =
   | { readonly outcome: 'exiting' | 'cancelled' }
   | { readonly outcome: 'failed'; readonly error: ErrorSummary }
 
-/** Development peer readiness, resource release and terminal notifications. */
 export interface DevelopmentNotifications {
   readonly ready: DevelopmentReady
   /** Builds with no remaining readers, whose directories the development tool can reclaim. */
@@ -94,7 +87,6 @@ export interface DevelopmentNotifications {
   readonly failed: { readonly error: ErrorSummary }
 }
 
-/** Development build adoption and coordinated application shutdown. */
 export interface DevelopmentApi {
   /** Accepts one complete batch at a time and reports actual adoption and activation outcomes. */
   adoptBuilds(
@@ -110,28 +102,20 @@ export interface DevelopmentApi {
   stop(call?: CallOptions): Promise<DevelopmentStopResult>
 }
 
-/** Validated extension identity carried by development control messages. */
-const extensionId = v.pipe(
-  v.unknown(),
-  v.transform((value) => parseExternalValue(parseId, value, 'Invalid extension identity')),
+const extensionId = fromParser((value) =>
+  parseExternalValue(parseId, value, 'Invalid extension identity'),
 )
 
-/** Validated extension build version reported through development control. */
-const version = v.pipe(
-  v.unknown(),
-  v.transform((value) => parseExternalValue(parseVersion, value, 'Invalid development version')),
+const version = fromParser((value) =>
+  parseExternalValue(parseVersion, value, 'Invalid development version'),
 )
 
-/** Validated application release version used by development handshakes. */
-const appVersion = v.pipe(v.unknown(), v.transform(parseApplicationVersion))
+const appVersion = fromParser(parseApplicationVersion)
 
-/** Safe failure details carried by development control results. */
-const error = v.pipe(v.unknown(), v.transform(parseErrorSummary))
+const error = fromParser(parseErrorSummary)
 
-/** Exact extension and positive build generation addressed by one control operation. */
 const ref = v.strictObject({ extensionId, buildId: positiveInteger })
 
-/** Adoption outcome for one exact development build, retaining failed-adoption details. */
 const buildResult = v.variant('outcome', [
   v.strictObject({ extensionId, buildId: positiveInteger, outcome: v.literal('adopted') }),
   v.strictObject({
@@ -142,8 +126,7 @@ const buildResult = v.variant('outcome', [
   }),
 ])
 
-/** Validated activation outcome kept separate from build adoption. */
-const activation = v.pipe(v.unknown(), v.transform(parseExtensionActivationResult))
+const activation = fromParser(parseExtensionActivationResult)
 
 /**
  * Parses a loopback HTTP or HTTPS document URL without a fragment.
@@ -173,12 +156,12 @@ export function parseDevelopmentBuild(input: unknown): DevelopmentBuild {
     v.strictObject({
       extensionId,
       buildId: positiveInteger,
-      rootPath: v.pipe(v.unknown(), v.transform(parseAbsolutePath)),
+      rootPath: fromParser(parseAbsolutePath),
       webviews: v.pipe(
         v.array(
           v.strictObject({
-            document: v.pipe(v.unknown(), v.transform(parseExtensionViewDocument)),
-            url: v.pipe(v.unknown(), v.transform(parseDevelopmentUrl)),
+            document: fromParser(parseExtensionViewDocument),
+            url: fromParser(parseDevelopmentUrl),
           }),
         ),
         v.check((views) => unique(views, (view) => JSON.stringify(view.document))),
@@ -197,7 +180,7 @@ export function parseDevelopmentBuild(input: unknown): DevelopmentBuild {
 export function parseDevelopmentBuilds(input: unknown): readonly DevelopmentBuild[] {
   return parseValue(
     v.pipe(
-      v.array(v.pipe(v.unknown(), v.transform(parseDevelopmentBuild))),
+      v.array(fromParser(parseDevelopmentBuild)),
       v.check((builds) => unique(builds, (build) => build.extensionId)),
     ),
     input,
@@ -224,8 +207,6 @@ export function parseDevelopmentReady(input: unknown): DevelopmentReady {
 }
 
 /**
- * Parses adoption and activation outcomes.
- *
  * When requested builds are supplied, receipts must identify those builds in input order. Completed
  * reports must include every requested build; interrupted reports may contain a subset.
  */

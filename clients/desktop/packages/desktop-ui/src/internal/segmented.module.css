@@ -1,5 +1,3 @@
-/* Tabs and value segments share geometry and selection styles. */
-
 @layer components {
   .group {
     display: inline-flex;

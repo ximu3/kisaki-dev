@@ -32,7 +32,7 @@ preload 桥接所属窗口的最小明确能力。窗口客户端与主进程接
 
 接入层核对传输、来源、资源及任务控制的实际归属，适配参数与安全错误。业务输入由所属入口使用共同纯规则校验，业务拥有者判断对象、引用范围、采用政策和事务条件。回调、AbortSignal 与本地对象通过连接内的调用、取消与资源映射表达。
 
-结构化失败显式通过 RPC 和 contextBridge，再由客户端恢复为可识别错误；code、message 和 partialResult 按共同合同传递。调用方直接等待业务值或捕获失败。
+结构化失败通过 RPC 传递。客户端按共同合同读取 `code`、`message` 和 `partialResult`，恢复为调用方可捕获的错误。
 
 各端点使用同一内核并保留独立的方法表、身份与资源寿命，具体帧和版本见[协议合同](engineering/protocols.md)。普通调用的等待时间由操作语义决定，写入重试由业务拥有者判断。断连结束本地等待，远端提交与清理按实际事实核对。
 
@@ -190,9 +190,9 @@ library.changed 的载荷为 { committedAt, changes: readonly LibraryChange[] }�
 
 ```ts
 interface EntryIdentitySnapshot {
-  ref: EntryRef
-  name: string
-  externalIdentities: ExternalIdentity[]
+  readonly ref: EntryRef
+  readonly name: string
+  readonly externalIdentities: readonly ExternalIdentity[]
 }
 ```
 

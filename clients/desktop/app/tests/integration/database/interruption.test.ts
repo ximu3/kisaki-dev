@@ -1,5 +1,3 @@
-/** @fileoverview Checks WAL recovery after the actual Electron Node writer dies with an open transaction. */
-
 import { expect, test } from 'vite-plus/test'
 import { fork } from 'node:child_process'
 import { once } from 'node:events'

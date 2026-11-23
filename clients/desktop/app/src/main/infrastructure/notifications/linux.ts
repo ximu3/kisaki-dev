@@ -1,5 +1,3 @@
-/** @fileoverview Exports the installed Linux application's actions and submits persistent notifications to its desktop portal. */
-
 import { sessionBus, Variant, variantValue } from 'dbus-native'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type { NotificationMessage } from '@kisaki3/desktop-contracts/ui'
@@ -35,7 +33,6 @@ export async function linuxNotifications(appId: string, receiver: DesktopActivat
       {
         /** Handles an ordinary desktop launch without changing the current destination. */
         Activate: receiver.activate,
-        /** Routes each URL supplied by the desktop through the application parser. */
         Open(urls: string[]) {
           for (const url of urls) {
             receiver.openUrl(url)

@@ -1,5 +1,3 @@
-/** @fileoverview Shares a mounted form's field issues and focus with field and feedback parts. */
-
 import { createContext, createSignal } from 'solid-js'
 import type { Accessor } from 'solid-js'
 

@@ -1,46 +1,37 @@
-/** @fileoverview Configures public ESM library builds, tarball verification and output cleanup. */
-
 import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
 import { defineConfig } from 'vite-plus'
 import type { PackUserConfig } from 'vite-plus/pack'
 
-/** The public subpaths and authored source files belonging to one library. */
 interface LibraryOptions {
-  /** Public subpaths mapped to source programs or stylesheets. */
   entries: Record<string, string>
-  /** Optional source generator whose --check mode validates a finite build. */
+  /** The generator accepts --check to verify its committed output. */
   generated?: { task: string; command: string }
-  pack?: PackUserConfig
+  pack?: Pick<PackUserConfig, 'platform' | 'hooks' | 'plugins' | 'deps' | 'css'>
   browserTests?: boolean
   consumerHookTimeout?: number
 }
 
-/** Workspace production dependencies supply built exports before a reader starts. */
 const dependencyBuilds = { task: 'build', from: 'dependencies' } as const
 
-/** Both source validation and packaging depend on the files they read and the locked build tools. */
 const buildInputs = [
   { auto: true },
   { pattern: 'pnpm-lock.yaml', base: 'workspace' as const },
   { pattern: 'packages/config/vite/**', base: 'workspace' as const },
 ]
 
-/** Resolves TypeScript from the configuration package that declares the compiler. */
-const compiler = createRequire(import.meta.resolve('typescript/package.json'))
-
-/** The native compiler package installed for this host. */
-const platform = compiler.resolve(
+const requireTypeScript = createRequire(import.meta.resolve('typescript/package.json'))
+const nativeCompilerManifest = requireTypeScript.resolve(
   `@typescript/typescript-${process.platform}-${process.arch}/package.json`,
 )
 
 /** tsdown detects 7.0 automatically; pin its generator to the installed 7.1 executable. */
-const tsc = join(dirname(platform), 'lib', process.platform === 'win32' ? 'tsc.exe' : 'tsc')
+const tscPath = join(
+  dirname(nativeCompilerManifest),
+  'lib',
+  process.platform === 'win32' ? 'tsc.exe' : 'tsc',
+)
 
-/**
- * Configures compilation, source and published exports, package checks and independent consumers.
- * Package-specific hooks, plugins and browser tests belong to the caller.
- */
 export function defineLibrary({
   entries,
   generated,
@@ -48,39 +39,40 @@ export function defineLibrary({
   browserTests = false,
   consumerHookTimeout = 120_000,
 }: LibraryOptions) {
-  const sources = Object.entries(entries)
-  const programs = sources.filter(([, source]) => !source.endsWith('.css'))
+  const sources = Object.entries(entries).map(([subpath, source]) => ({
+    subpath,
+    source,
+    outputName: subpath === '.' ? 'index' : subpath.slice(2),
+  }))
+  const programs = sources.filter(({ source }) => !source.endsWith('.css'))
   const testName = browserTests ? 'browser' : 'unit'
   const consumerReport =
     '--reporter=default --reporter=json --outputFile.json=test-results/consumers/results.json'
 
   return defineConfig({
     pack: {
-      entry: Object.fromEntries(
-        programs.map(([name, source]) => [name === '.' ? 'index' : name.slice(2), source]),
-      ),
+      ...pack,
+      entry: Object.fromEntries(programs.map(({ outputName, source }) => [outputName, source])),
       tsconfig: 'tsconfig.pack.json',
       target: 'es2023',
       fixedExtension: false,
-      dts: { generator: 'tsgo', tsgo: { path: tsc } },
+      dts: { generator: 'tsgo', tsgo: { path: tscPath } },
       exports: {
         devExports: 'kisaki-source',
         inlinedDependencies: false,
 
-        /** Preserves public condition order and includes the styles assembled by the package. */
         customExports(_generated, { isPublish }) {
           return Object.fromEntries(
-            sources.map(([name, source]) => {
-              const output = './dist/' + (name === '.' ? 'index' : name.slice(2))
+            sources.map(({ subpath, source, outputName }) => {
+              const output = './dist/' + outputName
               const published = source.endsWith('.css')
                 ? { default: output }
                 : { types: output + '.d.ts', import: output + '.js' }
-              return [name, isPublish ? published : { 'kisaki-source': source, ...published }]
+              return [subpath, isPublish ? published : { 'kisaki-source': source, ...published }]
             }),
           )
         },
       },
-      ...pack,
     },
 
     test: {

@@ -1,5 +1,3 @@
-/* Radio group structure uses a real fieldset and option focus targets. */
-
 .option {
   composes: control from '../../internal/control/styles.module.css';
 }

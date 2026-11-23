@@ -1,10 +1,7 @@
-/** @fileoverview Binds the native form and its submitter to an editor's asynchronous operation. */
-
 import { flush, createEffect, createMemo, onSettled, omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { FormContext, nativeValidityChanged, observeValidity } from '../../internal/form'
-import { createForm, formBinding } from './state'
-import type { FormOptions, FormState } from './state'
+import { createForm, formBinding, type FormOptions, type FormState } from './state'
 import styles from './styles.module.css'
 
 /** Native form attributes with callbacks or an instance held by the owning editor. */
@@ -32,25 +29,30 @@ export function Form(props: FormProps): JSX.Element {
 
   onSettled(() => {
     const doc = element.ownerDocument
+
     function belongs(target: EventTarget | null) {
       return (
         target instanceof HTMLElement &&
         ('form' in target ? target.form === element : target.closest('form') === element)
       )
     }
+
     function changed(event: Event) {
       if (belongs(event.target)) {
         nativeValidityChanged(element)
       }
     }
+
     function focused(event: FocusEvent) {
       form()[formBinding].focus(belongs(event.target) ? event.target : null)
     }
+
     function blurred(event: FocusEvent) {
       if (!event.relatedTarget && belongs(event.target)) {
         form()[formBinding].focus(null)
       }
     }
+
     function reset(event: Event) {
       if (event.target === element) {
         const owner = form()
@@ -61,18 +63,15 @@ export function Form(props: FormProps): JSX.Element {
         })
       }
     }
-    doc.addEventListener('focusin', focused)
-    doc.addEventListener('focusout', blurred)
-    doc.addEventListener('input', changed)
-    doc.addEventListener('change', changed)
-    doc.addEventListener('reset', reset)
-    return () => {
-      doc.removeEventListener('focusin', focused)
-      doc.removeEventListener('focusout', blurred)
-      doc.removeEventListener('input', changed)
-      doc.removeEventListener('change', changed)
-      doc.removeEventListener('reset', reset)
-    }
+
+    const listeners = new AbortController()
+    const options = { signal: listeners.signal }
+    doc.addEventListener('focusin', focused, options)
+    doc.addEventListener('focusout', blurred, options)
+    doc.addEventListener('input', changed, options)
+    doc.addEventListener('change', changed, options)
+    doc.addEventListener('reset', reset, options)
+    return () => listeners.abort()
   })
 
   createEffect(

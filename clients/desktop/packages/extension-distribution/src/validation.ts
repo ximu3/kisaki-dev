@@ -1,5 +1,3 @@
-/** @fileoverview Reads strict JSON and supplies the shared field checks used by distribution formats. */
-
 import { visit } from 'jsonc-parser'
 import { DistributionError } from './errors'
 import type { FieldPath } from './errors'
@@ -16,7 +14,6 @@ export type JsonValue =
   | JsonValue[]
   | { [key: string]: JsonValue }
 
-/** Throws invalid-format at the supplied document field path. */
 export function rejectFormat(path: FieldPath, message: string): never {
   throw new DistributionError('invalid-format', message, path)
 }
@@ -32,15 +29,12 @@ export function parseJson(text: string): JsonValue {
   visit(
     text,
     {
-      /** Starts property-name tracking for the next registry or manifest object. */
       onObjectBegin() {
         objects.push(new Set())
       },
-      /** Releases property-name tracking when the current object ends. */
       onObjectEnd() {
         objects.pop()
       },
-      /** Validates scalar property names and rejects duplicates with their exact input path. */
       onObjectProperty(name, _offset, _length, _line, _character, path) {
         parseString(name, [...path(), name], false)
         const names = objects.at(-1)!
@@ -52,7 +46,6 @@ export function parseJson(text: string): JsonValue {
         }
         names.add(name)
       },
-      /** Validates scalar string content and finite numeric values before normalization. */
       onLiteralValue(value: unknown, _offset, _length, _line, _character, path) {
         if (typeof value === 'string') {
           parseString(value, path(), false)
@@ -60,7 +53,6 @@ export function parseJson(text: string): JsonValue {
           rejectFormat(path(), 'Expected a finite JSON number')
         }
       },
-      /** Reports invalid JSON syntax using the parser's one-based source location. */
       onError(_error, _offset, _length, line, character) {
         throw new DistributionError(
           'invalid-json',
@@ -75,7 +67,6 @@ export function parseJson(text: string): JsonValue {
   return JSON.parse(text) as JsonValue
 }
 
-/** Accepts a non-null, non-array object for field parsing. */
 export function parseRecord(value: unknown, path: FieldPath): Record<string, unknown> {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) {
     rejectFormat(path, 'Expected an object')
@@ -145,7 +136,6 @@ export function parseSchemaVersion(value: unknown, path: FieldPath): 1 {
   return 1
 }
 
-/** Parses a nonnegative safe-integer byte count. */
 export function parseUnsignedInteger(value: unknown, path: FieldPath): number {
   if (typeof value !== 'number' || !Number.isSafeInteger(value) || value < 0) {
     rejectFormat(path, 'Expected a nonnegative safe integer')

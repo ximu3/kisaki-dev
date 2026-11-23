@@ -1,5 +1,3 @@
-/** @fileoverview Assembles the main window's management scenes and the resource dialogs they can open. */
-
 import { createMemo, Loading, refresh, Show, type Accessor, type Component } from 'solid-js'
 import { dynamic } from '@solidjs/web'
 import { deferDialogUntil } from '@kisaki3/desktop-ui/dialog'
@@ -43,30 +41,24 @@ function loadScene<P extends { api: MainClient }>(load: () => Promise<Component<
   }
 }
 
-/** On-demand preference editing and staged forms. */
 const PreferenceEditor = loadScene(() =>
   import('../../features/preferences/editor').then((module) => module.PreferenceEditor),
 )
 
-/** On-demand task queries, details and history maintenance. */
 const TaskCenter = loadScene(() =>
   import('../../features/tasks/center').then((module) => module.TaskCenter),
 )
 
-/** On-demand theme catalog and editing. */
 const Themes = loadScene(() =>
   import('../../features/themes/manager').then((module) => module.Themes),
 )
 
-/** On-demand font catalog and editing. */
 const Fonts = loadScene(() => import('../../features/fonts/manager').then((module) => module.Fonts))
 
-/** On-demand system integration and data location settings. */
 const SystemSettings = loadScene(() =>
   import('../../features/system/settings').then((module) => module.SystemSettings),
 )
 
-/** Reads only the fields belonging to the named destination. */
 function targetOf<K extends ManagementTarget['type']>(
   target: ManagementTarget,
   type: K,

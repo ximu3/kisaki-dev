@@ -1,5 +1,3 @@
-/** @fileoverview Real browser acceptance for packed controls, modal composition and resource lifetimes. */
-
 import { lintConsumer } from '@kisaki3/tooling/testing/consumer'
 import { expect } from 'vite-plus/test'
 import { expect as browserExpect } from '@playwright/test'

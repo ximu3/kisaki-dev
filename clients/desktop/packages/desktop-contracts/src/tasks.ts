@@ -1,7 +1,3 @@
-/** @fileoverview Defines task execution, lightweight control observation and independently retained business-result history. */
-
-import type { JsonValue } from './json'
-import type { ErrorSummary } from './errors'
 import type {
   ExecutionContext,
   CallOptions,
@@ -12,6 +8,7 @@ import type {
 } from './operations'
 import * as v from 'valibot'
 import {
+  fromParser,
   nonemptyText,
   nonnegativeNumber,
   parseValue,
@@ -20,43 +17,33 @@ import {
   timestamp,
   unique,
 } from './validation'
-import { parseJsonValue } from './json'
-import { parseErrorSummary } from './errors'
+import { parseJsonValue, type JsonValue } from './json'
+import { parseErrorSummary, type ErrorSummary } from './errors'
 
-/** Managed execution identity, separate from any business report or source configuration. */
 export interface TaskRunRef {
   readonly taskRunId: string
 }
 
-/** Task lifecycle vocabulary shared by live observations and independently retained history. */
+const terminalStatuses = ['completed', 'failed', 'cancelled', 'interrupted'] as const
+
 export const taskRunStatuses = Object.freeze([
   'queued',
   'running',
   'pausing',
   'paused',
   'cancelling',
-  'completed',
-  'failed',
-  'cancelled',
-  'interrupted',
+  ...terminalStatuses,
 ] as const)
 
-/** Managed task lifecycle state from admission through terminal completion. */
 export type TaskRunStatus = (typeof taskRunStatuses)[number]
 
-/** Task outcome whose execution and required cleanup have ended. */
-export type TaskTerminalStatus = 'completed' | 'failed' | 'cancelled' | 'interrupted'
+export type TaskTerminalStatus = (typeof terminalStatuses)[number]
 
-/**
- * Current phase or known completed-to-total progress.
- *
- * Reaching the total does not itself finish the task.
- */
+/** Reaching the reported total does not finish the task. */
 export type TaskProgress =
   | { readonly phase: string }
   | { readonly phase?: string; readonly completed: number; readonly total: number }
 
-/** Lightweight ordered observation of task progress and currently available controls. */
 export interface TaskState {
   readonly taskRunId: string
 
@@ -68,11 +55,7 @@ export interface TaskState {
   readonly canCancel: boolean
 }
 
-/**
- * Persisted task description, lifecycle and validated JSON input and result snapshots.
- *
- * A failed task may retain a valid partial result independently of its error.
- */
+/** Times are Unix milliseconds. A failed run can carry both an error and a valid partial result. */
 export interface TaskRun<Result = JsonValue, Input = JsonValue> {
   readonly id: string
   readonly type: string
@@ -84,28 +67,18 @@ export interface TaskRun<Result = JsonValue, Input = JsonValue> {
   readonly result: Result | null
   readonly error: ErrorSummary | null
 
-  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
-  /** UTC milliseconds since the Unix epoch. */
   readonly startedAt: number | null
-  /** UTC milliseconds since the Unix epoch. */
   readonly finishedAt: number | null
 }
 
-/** Task-history projection omitting full input and result documents. */
 export type TaskRunSummary = Omit<TaskRun, 'input' | 'result'>
 
-/** Persisted task outcome restricted to a terminal lifecycle state. */
 export type TaskTerminalRun<Result = JsonValue, Input = JsonValue> = Omit<
   TaskRun<Result, Input>,
   'status'
 > & { readonly status: TaskTerminalStatus }
 
-/**
- * Task admission metadata, optional recorded input and declared pause support.
- *
- * History stores data rather than the execution callback or context.
- */
 export interface TaskDefinition<Input = JsonValue> {
   readonly type: string
   readonly title: string
@@ -115,33 +88,19 @@ export interface TaskDefinition<Input = JsonValue> {
   readonly supportsPause?: boolean
 }
 
-/**
- * Managed execution identity, cancellation and business-owned progress and persistence checkpoints.
- */
 export interface TaskExecutionContext<Result> extends ExecutionContext {
   readonly ref: TaskRunRef
 
-  /**
-   * Honors pause and cancellation at a business-owned safe point.
-   *
-   * Callers must not wait at a checkpoint while holding a synchronous database transaction.
-   */
+  /** Honors pause and cancellation at a safe point. Release synchronous database transactions before waiting. */
   checkpoint(): Promise<void>
 
-  /**
-   * Publishes lightweight progress without replacing the recorded result or declaring completion.
-   */
+  /** Publishes live progress independently of the saved result. */
   reportProgress(progress: TaskProgress): void
 
-  /**
-   * Validates and saves the result the task has produced so far.
-   *
-   * Callers await this checkpoint and handle persistence failure.
-   */
+  /** Resolves after the checkpoint is saved. A write failure stops further work. */
   reportResult(result: Result): Promise<void>
 }
 
-/** Task-history filters for type, state, creation interval and search text. */
 export interface TaskQuery {
   readonly types?: readonly string[]
   readonly statuses?: readonly TaskRunStatus[]
@@ -152,92 +111,59 @@ export interface TaskQuery {
   readonly search?: string
 }
 
-/** Type and creation-time filters for terminal task-history cleanup. */
 export interface TaskHistoryFilter {
   readonly types?: readonly string[]
   /** Exclusive creation-time upper bound in UTC milliseconds since the Unix epoch. */
   readonly createdBefore?: number
 }
 
-/** Managed task execution, lightweight control observation and independent history access. */
+/** Pause, resume and cancel on an ended run return its terminal state without restarting work. */
 export interface TasksApi {
-  /**
-   * Runs the callback and waits for its work and the task's cleanup to finish.
-   *
-   * Cancellation preserves completed work and any valid partial result.
-   */
+  /** Waits for execution and cleanup. Cancellation preserves completed work and any valid partial result. */
   run<Result, Input = JsonValue>(
     definition: TaskDefinition<Input>,
     execute: (context: TaskExecutionContext<Result>) => Promise<Result>,
     call?: CallOptions,
   ): Promise<Result>
 
-  /** Reads an interval of persisted task summaries matching the requested scope. */
   list(
     query: TaskQuery,
     options: ListOptions,
     call?: CallOptions,
   ): Promise<ListResult<TaskRunSummary>>
 
-  /**
-   * Reads recorded input, result and error for a task identity, returning null when absent.
-   *
-   * Historical data does not authorize execution resumption.
-   */
+  /** After execution ends, history can confirm only the last successful write. */
   get(ref: TaskRunRef, call?: CallOptions): Promise<TaskRun | null>
 
-  /**
-   * Delivers current task control state and subsequent changes and returns the observation
-   * lifetime.
-   *
-   * Ending observation leaves execution running.
-   */
+  /** Delivers the current state first. Disposing the observation leaves the task running. */
   observe(ref: TaskRunRef, listener: Listener<TaskState>, call?: CallOptions): Promise<Disposable>
 
   /**
-   * Waits for a terminal record and returns its recorded outcome.
-   *
-   * Cancelling this wait leaves the managed execution running.
+   * A live waiter receives the execution outcome, including a valid result if the final history write fails.
+   * After the live run is released, a new wait reads the last saved checkpoint. An unconfirmed
+   * completion appears as interrupted. Cancelling the wait leaves the task running.
    */
   wait(ref: TaskRunRef, call?: CallOptions): Promise<TaskTerminalRun>
 
-  /**
-   * Requests pause and returns acknowledged control state.
-   *
-   * The task reaches a pause at its safe checkpoint; terminal calls are idempotent.
-   */
+  /** Requests a pause at the next safe checkpoint. Returns the current control state. */
   pause(ref: TaskRunRef, call?: CallOptions): Promise<TaskState>
 
-  /**
-   * Requests resumption from pause and returns acknowledged control state.
-   *
-   * Terminal runs remain ended.
-   */
+  /** Withdraws a pending pause or releases a paused task. */
   resume(ref: TaskRunRef, call?: CallOptions): Promise<TaskState>
 
-  /**
-   * Requests cancellation and returns actual control state.
-   *
-   * Callers use wait to observe completed cleanup. Terminal control calls are idempotent.
-   */
+  /** Requests cancellation. Wait for the task to observe its final result after cleanup. */
   cancel(ref: TaskRunRef, call?: CallOptions): Promise<TaskState>
 
-  /**
-   * Removes matching terminal task history and returns its count.
-   *
-   * Accepted work and domain-owned reports or recovery records remain intact.
-   */
+  /** Deletes matching terminal records and returns their count. Business reports and recovery records survive. */
   clearHistory(filter?: TaskHistoryFilter, call?: CallOptions): Promise<number>
 
   /**
-   * Subscribes to changes in stored history and membership of status-filtered task queries.
-   *
-   * Callers subscribe before reading; runtime progress uses separate observation.
+   * Subscribe before querying. History writes and status changes that affect query membership
+   * invalidate the read. Observe the run for live progress.
    */
   onInvalidated(listener: () => void): Disposable
 }
 
-/** Phase-only or bounded quantitative progress with a strictly positive total. */
 const progress = v.union([
   v.strictObject({ phase: nonemptyText }),
   v.pipe(
@@ -250,29 +176,18 @@ const progress = v.union([
   ),
 ])
 
-/** Checks whether a lifecycle status denotes terminal completion. */
 export function isTaskTerminal(status: TaskRunStatus): status is TaskTerminalStatus {
-  return (
-    status === 'completed' ||
-    status === 'failed' ||
-    status === 'cancelled' ||
-    status === 'interrupted'
-  )
+  return terminalStatuses.some((terminal) => terminal === status)
 }
 
-/** Parses a managed execution reference without resolving live state or history. */
 export function parseTaskRunRef(input: unknown): TaskRunRef {
   return parseValue(v.strictObject({ taskRunId: id }), input, 'Invalid task reference')
 }
 
-/** Parses a phase or bounded progress ratio while preserving unknown-total reporting. */
 export function parseTaskProgress(input: unknown): TaskProgress {
   return parseValue(progress, input, 'Invalid task progress')
 }
 
-/**
- * Parses lightweight state and checks that control affordances are legal for its lifecycle status.
- */
 export function parseTaskState(input: unknown): TaskState {
   return parseValue(
     v.pipe(
@@ -285,26 +200,22 @@ export function parseTaskState(input: unknown): TaskState {
         canResume: v.boolean(),
         canCancel: v.boolean(),
       }),
-      v.check(
-        (value) =>
-          (!isTaskTerminal(value.status) ||
-            (!value.canPause && !value.canResume && !value.canCancel)) &&
-          (value.status !== 'cancelling' ||
-            (!value.canPause && !value.canResume && !value.canCancel)) &&
-          (!value.canResume || value.status === 'paused' || value.status === 'pausing') &&
-          (!value.canPause || value.status === 'queued' || value.status === 'running'),
-      ),
+      v.check(({ status, canPause, canResume, canCancel }) => {
+        if (isTaskTerminal(status) || status === 'cancelling') {
+          return !canPause && !canResume && !canCancel
+        }
+        return (
+          (!canResume || status === 'paused' || status === 'pausing') &&
+          (!canPause || status === 'queued' || status === 'running')
+        )
+      }),
     ),
     input,
     'Invalid task observation',
   )
 }
 
-/**
- * Parses persisted task data and preserves nullable lifecycle timestamps.
- *
- * Wall-clock values are not forced into monotonic order.
- */
+/** Wall-clock timestamps need not be monotonic. */
 export function parseTaskRun(input: unknown): TaskRun {
   return parseValue(
     v.strictObject({
@@ -314,9 +225,9 @@ export function parseTaskRun(input: unknown): TaskRun {
       description: v.nullable(text),
 
       status: v.picklist(taskRunStatuses),
-      input: v.pipe(v.unknown(), v.transform(parseJsonValue)),
-      result: v.pipe(v.unknown(), v.transform(parseJsonValue)),
-      error: v.nullable(v.pipe(v.unknown(), v.transform(parseErrorSummary))),
+      input: fromParser(parseJsonValue),
+      result: fromParser(parseJsonValue),
+      error: v.nullable(fromParser(parseErrorSummary)),
 
       createdAt: timestamp,
       startedAt: v.nullable(timestamp),
@@ -327,14 +238,13 @@ export function parseTaskRun(input: unknown): TaskRun {
   )
 }
 
-/** Parses admission metadata and validates recorded JSON input before execution registration. */
 export function parseTaskDefinition(input: unknown): TaskDefinition {
   return parseValue(
     v.strictObject({
       type: nonemptyText,
       title: nonemptyText,
       description: v.exactOptional(v.nullable(text)),
-      input: v.exactOptional(v.pipe(v.unknown(), v.transform(parseJsonValue))),
+      input: v.exactOptional(fromParser(parseJsonValue)),
       supportsPause: v.exactOptional(v.boolean()),
     }),
     input,

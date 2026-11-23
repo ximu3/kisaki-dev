@@ -1,5 +1,3 @@
-/** @fileoverview Holds one shortcut candidate until all of its keys have been released. */
-
 import { createSignal } from 'solid-js'
 
 /** A live key preview and its accepted host binding, if the press completes a chord. */

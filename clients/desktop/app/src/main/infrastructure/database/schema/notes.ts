@@ -1,8 +1,12 @@
-/** @fileoverview Stores independent notes and four content-annotation families while retaining history after file removal. */
-
 import { desc } from 'drizzle-orm'
-import { index, integer, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import type { AnySQLiteColumn } from 'drizzle-orm/sqlite-core'
+import {
+  index,
+  integer,
+  primaryKey,
+  sqliteTable,
+  text,
+  type AnySQLiteColumn,
+} from 'drizzle-orm/sqlite-core'
 import {
   parsePlaybackAnnotationLocation,
   parseReadingAnnotationLocation,

@@ -1,8 +1,5 @@
-/** @fileoverview Positions one mounted row and binds its border box to the current geometry index. */
-
 import { createEffect, type Accessor } from 'solid-js'
 import type { JSX } from '@solidjs/web'
-
 import type { VirtualItem, Virtualizer } from './viewport'
 
 /** Binds position and border-box measurement to the row's semantic element in a virtual track. */

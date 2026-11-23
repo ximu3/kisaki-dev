@@ -1,11 +1,8 @@
-/** @fileoverview Exercises the same package archive over Node JSON IPC and an actual Electron window port. */
-
 import { join, resolve } from 'node:path'
 import { onTestFinished, test } from 'vite-plus/test'
 import { run, runPnpm } from '@kisaki3/tooling/process'
 import { installConsumer, lintConsumer } from '@kisaki3/tooling/testing/consumer'
 
-/** This package's root and completed distribution artifacts. */
 const packageRoot = resolve(import.meta.dirname, '../..')
 
 /** Installs and compiles the selected transport fixture; its test owns child-process closure. */

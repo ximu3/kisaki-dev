@@ -1,5 +1,3 @@
-/** @fileoverview Assembles the published UI stylesheet and notices after component compilation. */
-
 import { readFile, writeFile, rm } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'

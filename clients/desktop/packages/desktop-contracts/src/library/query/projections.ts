@@ -1,5 +1,3 @@
-/** @fileoverview Defines requested projection fields and validates their entry-specific result shapes. */
-
 import * as v from 'valibot'
 import {
   nonnegativeInteger,
@@ -19,24 +17,21 @@ import {
   measureSchema,
   calendarDateSchema,
   entryTypes,
+  type LanguageTag,
+  type WorkStatus,
+  type ReleaseStatus,
+  type AnimeEpisodeType,
+  type AnimeExtraType,
+  type Gender,
+  type BloodType,
+  type CharacterMeasure,
+  type EntryType,
 } from '../catalog'
 import { entryFieldTypes } from './fields'
 import type { PartialDate, CalendarDate } from '../../date'
-import type {
-  LanguageTag,
-  WorkStatus,
-  ReleaseStatus,
-  AnimeEpisodeType,
-  AnimeExtraType,
-  Gender,
-  BloodType,
-  CharacterMeasure,
-  EntryType,
-} from '../catalog'
 import type { EntryQuery } from './definition'
 import { DesktopError } from '../../errors'
 
-/** Complete nonnegative counts for registered, completed, associated and accessible parts. */
 const counts = v.strictObject({
   registered: nonnegativeInteger,
   completed: nonnegativeInteger,
@@ -44,10 +39,6 @@ const counts = v.strictObject({
   accessible: nonnegativeInteger,
 })
 
-/**
- * Creates a part-count schema with totals and a required breakdown for each supplied
- * classification.
- */
 function classifiedCounts(keys: readonly string[]) {
   return v.strictObject({
     ...counts.entries,
@@ -55,7 +46,6 @@ function classifiedCounts(keys: readonly string[]) {
   })
 }
 
-/** Per-medium part-count projections, including explicit unknown anime classifications. */
 const partCountSchemas = {
   anime: v.strictObject({
     animeEpisode: classifiedCounts(['regular', 'special', 'unknown']),
@@ -72,13 +62,10 @@ const partCountSchemas = {
   novel: v.strictObject({ novelVolume: counts }),
 }
 
-/** Optional partial civil date used by catalog projections. */
 const date = v.nullable(partialDateSchema)
 
-/** Optional nonnegative safe count used by declared catalog projections. */
 const count = v.nullable(nonnegativeInteger)
 
-/** Validators for individually requested scalar and resource projection fields. */
 const fieldSchemas: Readonly<Record<Exclude<EntryProjectionField, 'partCounts'>, v.GenericSchema>> =
   {
     originalName: v.nullable(text),
@@ -134,11 +121,7 @@ const fieldSchemas: Readonly<Record<Exclude<EntryProjectionField, 'partCounts'>,
     uncheckedFileCount: nonnegativeInteger,
   }
 
-/**
- * Parses an entry identity and exactly its requested, applicable projection fields.
- *
- * Rejects missing required values and any unrequested or inapplicable property.
- */
+/** Requires requested and applicable fields. Extra or inapplicable fields are invalid. */
 export function parseEntryListItem(
   input: unknown,
   fields: readonly EntryProjectionField[] = [],
@@ -181,7 +164,6 @@ export interface PartCounts {
   readonly accessible: number
 }
 
-/** Projectable identity metadata, user marks and dates shared by all entry types. */
 interface CommonProjection {
   readonly originalName: string | null
   readonly sortName: string | null
@@ -199,7 +181,6 @@ interface CommonProjection {
   readonly updatedAt: number
 }
 
-/** Projectable release, activity and completion facts shared by works. */
 interface WorkProjection {
   readonly releaseDate: PartialDate | null
   readonly originalLanguages: readonly LanguageTag[]
@@ -214,7 +195,6 @@ interface WorkProjection {
   readonly lastCompletedDate: CalendarDate | null
 }
 
-/** Projectable publication and registered-file facts shared by anime, comics and novels. */
 interface MediaProjection {
   readonly releaseStatus: ReleaseStatus | null
   readonly releaseEndDate: PartialDate | null
@@ -225,9 +205,7 @@ interface MediaProjection {
 }
 
 /**
- * Available projection fields and their value types for each entry kind.
- *
- * List items include only requested fields applicable to their kind. Anime count breakdowns use the
+ * Includes only requested fields applicable to each entry kind. Anime count breakdowns use the
  * read-only unknown key for unspecified classifications.
  */
 export interface EntryProjectionByType {
@@ -292,14 +270,9 @@ export interface EntryProjectionByType {
   }
 }
 
-/** Selectable field name from any supported entry projection. */
 export type EntryProjectionField = { [K in EntryType]: keyof EntryProjectionByType[K] }[EntryType]
 
-/**
- * Entry identity with the requested subset of fields applicable to its kind.
- *
- * Unrequested fields are omitted; null retains its field-specific meaning.
- */
+/** Unrequested fields are omitted. Null retains the meaning of the individual field. */
 export type EntryListItem = {
   [K in EntryType]: { readonly id: string; readonly type: K; readonly name: string } & Partial<
     EntryProjectionByType[K]
@@ -355,10 +328,8 @@ export const entryProjectionFields: readonly EntryProjectionField[] = Object.fre
 ])
 
 /**
- * Rejects a requested field unsupported by every enabled query type.
- *
- * Queries with no enabled types permit any declared projection field because their result set is
- * empty.
+ * Requires every requested projection to apply to at least one enabled query type. A query with no
+ * enabled types accepts any declared field and has an empty result.
  */
 export function checkProjection(
   fields: readonly EntryProjectionField[] | undefined,

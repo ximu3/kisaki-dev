@@ -1,5 +1,3 @@
-/** @fileoverview Runs the complete storage workload in a worker attached to real Electron and records plans and distributions. */
-
 import { expect, test } from '../support/electron'
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
@@ -54,7 +52,6 @@ test('worker operation medians meet their budget and the window reaches main dur
                 'id' in frame
               ) {
                 MessagePort.prototype.postMessage = send
-                /** Completes the latency sample only for the matching task-type response. */
                 const reply = (event: MessageEvent<{ id?: number; type: string }>) => {
                   if (event.data.id !== frame.id) {
                     return

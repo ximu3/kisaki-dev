@@ -1,12 +1,11 @@
-/** @fileoverview Defines transient Toast feedback and independent system notification delivery. */
-
-import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
 import type { CallOptions } from '../operations'
-import type { NativeViewTarget } from './navigation'
 import * as v from 'valibot'
-import { parseExternalValue, parseValue, nonemptyText } from '../validation'
-import { normalizeLocalizedText } from '@kisaki3/extension-distribution/metadata'
-import { parseNativeViewTarget } from './navigation'
+import { fromParser, parseExternalValue, parseValue, nonemptyText } from '../validation'
+import {
+  normalizeLocalizedText,
+  type LocalizedText,
+} from '@kisaki3/extension-distribution/metadata'
+import { parseNativeViewTarget, type NativeViewTarget } from './navigation'
 
 /** Localized feedback content and status shown within the owning view. */
 export interface ToastMessage {
@@ -30,7 +29,6 @@ export interface ToastHandle {
   dismiss(): void
 }
 
-/** Transient feedback delivery within the actual view's lifetime. */
 export interface ToastApi {
   /**
    * Shows feedback owned by the actual view and returns its control handle.
@@ -41,14 +39,12 @@ export interface ToastApi {
   show(message: ToastMessage, options?: { readonly persistent?: boolean }): ToastHandle
 }
 
-/** System notification text with an optional native destination opened on activation. */
 export interface NotificationMessage {
   readonly title: string
   readonly body: string
   readonly open?: NativeViewTarget
 }
 
-/** Independent operating-system notification delivery. */
 export interface NotificationsApi {
   /**
    * Requests operating-system notification delivery and reports acceptance or unavailability.
@@ -62,14 +58,11 @@ export interface NotificationsApi {
  * Parses feedback content and normalizes static text using the contribution owner's default locale.
  */
 export function parseToastMessage(input: unknown, defaultLocale: string): ToastMessage {
-  const localized = v.pipe(
-    v.unknown(),
-    v.transform((value) =>
-      parseExternalValue(
-        (value) => normalizeLocalizedText(value, defaultLocale),
-        value,
-        'Invalid UI text',
-      ),
+  const localized = fromParser((value) =>
+    parseExternalValue(
+      (value) => normalizeLocalizedText(value, defaultLocale),
+      value,
+      'Invalid UI text',
     ),
   )
   return parseValue(
@@ -89,7 +82,7 @@ export function parseNotificationMessage(input: unknown): NotificationMessage {
     v.strictObject({
       title: nonemptyText,
       body: nonemptyText,
-      open: v.exactOptional(v.pipe(v.unknown(), v.transform(parseNativeViewTarget))),
+      open: v.exactOptional(fromParser(parseNativeViewTarget)),
     }),
     input,
     'Invalid notification message',

@@ -1,5 +1,3 @@
-/** @fileoverview Defines normalized source-page geometry independently of any renderer or media engine. */
-
 import * as v from 'valibot'
 import { parseValue } from './validation'
 
@@ -27,22 +25,17 @@ export type NormalizedQuad = readonly [
   NormalizedPoint,
 ]
 
-/** Finite normalized coordinate in the inclusive unit interval. */
 const unit = v.pipe(v.number(), v.finite(), v.minValue(0), v.maxValue(1))
 
-/** Strictly positive normalized extent that fits within the unit interval. */
 const extent = v.pipe(unit, v.gtValue(0))
 
-/** A point expressed in the normalized coordinate space. */
 const pointSchema = v.strictObject({ x: unit, y: unit })
 
-/** A positive normalized rectangle contained within the unit square. */
 const rectSchema = v.pipe(
   v.strictObject({ x: unit, y: unit, width: extent, height: extent }),
   v.check((rect) => rect.x + rect.width <= 1 && rect.y + rect.height <= 1),
 )
 
-/** An ordered convex normalized quadrilateral with a canonical first corner. */
 const quadSchema = v.pipe(
   v.strictTuple([pointSchema, pointSchema, pointSchema, pointSchema]),
   v.check((points) => {
@@ -59,11 +52,7 @@ const quadSchema = v.pipe(
   }),
 )
 
-/**
- * Parses finite coordinates within the source page.
- *
- * Callers resolve display rounding before submission.
- */
+/** Callers resolve display rounding before submission. */
 export function parseNormalizedPoint(input: unknown): NormalizedPoint {
   return parseValue(pointSchema, input, 'Invalid normalized point')
 }

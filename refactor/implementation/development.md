@@ -16,6 +16,8 @@
 | `clients/desktop/app/tools` | 桌面程序构建、资源准备、原生编译、开发会话与打包 |
 | `clients/desktop/app/src/main/infrastructure/database`    | 正式 schema、逐值 codec、连接、同步事务、初始化与资料库语言排序          |
 | `clients/desktop/app/src/main/infrastructure/files`       | 实际路径比较、本地资料根检查、有限字节准备、不覆盖发布与流式 ZIP                |
+| `clients/desktop/app/src/main/app/window` | 创建与关闭原生窗口，按文档绑定端口、资源和带准入策略的方法 |
+| `clients/desktop/app/src/main/features/tasks` | 接纳执行，区分业务结果与历史写入，向当前等待者交付终态 |
 | `clients/desktop/app/src/main/features/preferences`       | 按字段保存偏好、并发基线和代理凭据，初始化与恢复默认共用产品值                                   |
 | `clients/desktop/app/drizzle`                            | Drizzle Kit 生成并审阅的 SQL 迁移及 snapshot，随资源原样交付                    |
 | `clients/desktop/app/native` | 文件系统操作、资料库名称排序、系统字体族读取及 Node 加载与声明 |
@@ -46,7 +48,7 @@ desktop-localization 的英语 ICU 源文位于 src/en，按领域维护并由 i
 
 正式程序位于 `clients/desktop/app/src`。main 装配数据库 worker、任务、偏好、外观及资源。四类窗口各有独立文档和沙箱 preload，通过已绑定的 MessagePort 接入 desktop-rpc，并分别装配样式与 Toaster。
 
-主窗口 `app` 装配标题栏、侧栏和页面出口。`app/management` 承载固定管理工具，以及从偏好独立打开的字体库和主题库。导航在切换目标前协调编辑器的离开决定，管理 Dialog 实际打开后向导航报告呈现就绪。`features` 维护各编辑器的草稿、当前表单提交和任务查询。`domain-ui` 提供共用的字体选择和页面排序。资料库、展示柜与统计由 W09 接入。
+主窗口 `app` 装配标题栏、侧栏和页面出口。`app/management` 承载固定管理工具，以及从偏好独立打开的字体库和主题库。切换页面前，导航模块先向编辑器确认能否离开。管理对话框打开后通知导航模块。`features` 维护各编辑器的草稿、当前表单提交和任务查询。`domain-ui` 提供共用的字体选择和页面排序。资料库、展示柜与统计由 W09 接入。
 
 应用通过数据库执行线程打开当前基线、读取偏好、采用生效语言并保持连接至退出。存储性能用例通过 Playwright 在 Electron 主进程中启动独立编译的测量 worker。worker 返回完整报告并正常退出后，用例将报告保存为附件。执行失败时，原始错误传回用例。
 

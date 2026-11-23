@@ -1,5 +1,3 @@
-/* Tabs retain panel ownership and focus independently of their shared segmented appearance. */
-
 .list {
   composes: native from '../../internal/scrollbars.module.css';
 }

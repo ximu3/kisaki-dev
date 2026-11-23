@@ -1,5 +1,3 @@
-/** @fileoverview Builds all native Solid documents and grants the local development server its HMR connection. */
-
 import { defineConfig, normalizePath } from 'vite'
 import solid from '@solidjs/vite-plugin'
 import tailwind from '@tailwindcss/vite'
@@ -8,7 +6,6 @@ import { readFileSync, realpathSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 
-/** Root of the native document entry pages. */
 const root = fileURLToPath(new URL('../../src/renderer/windows', import.meta.url))
 
 /** Makes Tailwind's CSS resolver honor the workspace source exports while serving the renderer. */
@@ -42,7 +39,6 @@ export default defineConfig(({ command, mode }) => ({
     tailwind(),
     {
       name: 'kisaki-development-document',
-      /** Keeps Vite's development bootstrap and local HMR sockets within the source session. */
       transformIndexHtml(html) {
         if (mode !== 'development') {
           return html

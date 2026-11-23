@@ -1,5 +1,3 @@
-/** @fileoverview Persists complete user themes with field and token comparison inside short writes. */
-
 import { eq } from 'drizzle-orm'
 import { randomUUID } from 'node:crypto'
 import { isDeepStrictEqual } from 'node:util'
@@ -34,7 +32,6 @@ function readTheme(db: Storage['db'] | StorageTransaction, id: string): Theme<'u
 /** Worker operations for independently stored user theme definitions. */
 export function themeStorage({ db }: Storage) {
   return {
-    /** Reads the specified user theme from its stable identity. */
     getTheme: (id: string) => readTheme(db, id),
     /** Queries user theme names without decoding full branches. */
     listThemes: () =>
@@ -66,7 +63,6 @@ export function themeStorage({ db }: Storage) {
       })
       return { type: 'user' as const, id }
     },
-    /** Checks the original values of submitted tokens before the update. */
     updateTheme(id: string, input: UserThemeUpdate) {
       const { changes, expected } = parseUserThemeUpdate(input)
       db.transaction((tx) => {
@@ -96,7 +92,6 @@ export function themeStorage({ db }: Storage) {
           .run()
       })
     },
-    /** Removes the theme row and reports a missing identity. */
     deleteTheme(id: string) {
       if (!db.delete(themes).where(eq(themes.id, id)).run().changes) {
         throw new DesktopError('NotFound', 'The theme does not exist')

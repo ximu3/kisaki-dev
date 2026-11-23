@@ -1,13 +1,8 @@
-/**
- * @fileoverview Runs external commands and pnpm with inherited diagnostics and cancellation.
- */
-
 import { spawn } from 'node:child_process'
 import { basename } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { stopProcessGroup } from './unix.ts'
 
-/** Working directory, environment and cancellation for one finite child command. */
 export interface ProcessOptions {
   /** Child working directory; omission inherits the current process directory. */
   cwd?: string
@@ -17,7 +12,6 @@ export interface ProcessOptions {
   signal?: AbortSignal | undefined
 }
 
-/** A failed child command's exit status. */
 export class CommandFailed extends Error {
   readonly exitCode: number
 
@@ -58,7 +52,6 @@ export async function run(
   let failure: unknown
   let stopping: Promise<void> | undefined
 
-  /** Starts one termination request and retains any failure while the child closes. */
   const cancel = () => {
     if (windows) {
       // Ending the job owner closes the kernel's last job handle, including all inherited writers.
@@ -104,7 +97,6 @@ export async function run(
   }
 }
 
-/** Resolves the pnpm executable provided to the current workspace command. */
 function pnpmExecutable(): string {
   const executable = process.env.npm_execpath
   if (!executable) {

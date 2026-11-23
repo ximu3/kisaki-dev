@@ -23,16 +23,6 @@ interface AnnotationQuery {
   refs?: readonly AnnotationRef[]
 }
 
-interface AnnotationListOptions {
-  offset: number
-  limit: number
-}
-
-interface AnnotationListResult {
-  items: readonly AnnotationSummary[]
-  total: number
-}
-
 type AnnotationPositionHint =
   | { type: 'video'; startSeconds: number; endSeconds: number | null }
   | { type: 'page'; page: ReadingPageRef }
@@ -52,11 +42,11 @@ interface AnnotationSummary {
 }
 ```
 
-scope、search 和读取区间必填。workTypes 省略表示四类作品，明确空数组表示空结果；refs 省略不限制身份，空数组同样为空结果。两种数组均拒绝重复或非法引用，各条件与 scope、普通可见范围相交。文件必须与所给作品类型和归属相容，不能只凭跨表相同 fileId 查找。search 为空时不加文字条件，非空按已有标题、批注、摘录文字规则执行。
+`list` 使用共用的 `ListOptions`，返回 `ListResult<AnnotationSummary>`。`scope`、`search` 和读取区间必填。省略 `workTypes` 时查四类作品，省略 `refs` 时不限制身份。两者显式为空数组时都返回空结果。数组内的身份须合法且唯一，各条件与 `scope`、普通可见范围相交。文件须属于所给作品。`search` 为空时不加文字条件，非空时查询标题、批注及摘录文字。
 
 offset 是非负安全整数，limit 是 1–200 的安全整数。越界参数返回 InvalidInput；offset 超过 total 时返回空 items 和真实 total。结果按 createdAt 降序，再按 workType、id 升序；这里的 workType 顺序固定为 game、anime、comic、novel。所有筛选、数量和区间来自同次只读快照。
 
-摘要片段从已保存纯文本取得，各自最多 160 个 UTF-16 单元，并收敛到完整扩展字素边界；没有实际文字时为 null，不补占位正文。title 保留正式标题，位置提示只提供保存值可以直接解释的时间或原始页身份，不打开文件、推导章节名或返回选区几何。不能直接解释的文字锚点提示为 null。game 使用 image，其他 locationKind 沿各自位置分支；imageId 的实际必填性仍由所属类型验证。
+摘要片段来自已保存的纯文本，每段最多 160 个 UTF-16 单元，截断时保留完整的扩展字素簇。没有文字时返回 null。`title` 保留正式标题。位置提示只提供可直接从保存值取得的时间或原始页身份，无法直接解释的文字锚点返回 null。game 使用 image，其余位置按各自的 `locationKind` 解释。`imageId` 是否必填由对应类型规定。
 
 get(ref) 根据 AnnotationRef 的 workType 返回对应的 `Annotation<T>` 或 null。完整 Annotation 使用 workType 判别：游戏包含 gameId 与 imageId；动画包含 animeId、可空 fileId、PlaybackAnnotationLocation 与可空 imageId；漫画／小说包含各自作品 ID、可空 fileId、ReadingAnnotationLocation、可空 quote 和 imageId。四类均包含 id、title、content、createdAt、updatedAt；不存在的类型字段不交付。
 

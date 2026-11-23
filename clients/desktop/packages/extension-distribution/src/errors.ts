@@ -1,5 +1,3 @@
-/** @fileoverview Provides locatable format, compatibility and trust failures for distribution consumers. */
-
 /** Stable failure categories; callers should not classify human-readable messages. */
 export type DistributionErrorCode =
   | 'invalid-json'

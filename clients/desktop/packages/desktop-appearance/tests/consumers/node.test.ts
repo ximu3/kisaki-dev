@@ -1,16 +1,12 @@
-/** @fileoverview Exercises the packed pure entrypoints in an independent Node-only consumer. */
-
-import { lintConsumer } from '@kisaki3/tooling/testing/consumer'
-import { expect } from 'vite-plus/test'
+import { createConsumerTest, lintConsumer } from '@kisaki3/tooling/testing/consumer'
+import { expect, test as base } from 'vite-plus/test'
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { runPnpm } from '@kisaki3/tooling/process'
-import { consumerTest } from './installation'
 
-/** Isolated Node fixtures that install and exercise the actual appearance tarball. */
-const test = consumerTest('node')
+const test = createConsumerTest(base, join(import.meta.dirname, '../..'), 'node')
 
 test('NodeNext declarations and pure entrypoints work without browser dependencies', async ({
   consumerDirectory,

@@ -76,7 +76,7 @@ Mihon 与 Tachiyomi 按已核实的备份格式系列共同交付，各系列分
 
 官方扩展的项目包名统一使用 `@kisaki3/ext-<名称>`，名称采用稳定的小写 kebab-case，例如 @kisaki3/ext-vndb 和 @kisaki3/ext-bangumi。ext- 专用于可安装扩展项目，来源、导入器和译本遵守同一规则；SDK、CLI 等公共工具包保持各自的名称。该前缀属于官方工程命名规范，不约束第三方扩展的包名或 manifest.id。
 
-每个项目维护自己的 package.json、kisx.config.ts、README、release-notes 和 tests/fixtures。来源响应与输入格式样本归实际扩展；读取、映射及真实运行分别验证，测试目录按[共同结构](../engineering/layout.md#tests)采用适用部分。out、dist 和 .local 按[开发制品规则](development.md#build)保存运行布局、安装包和持续开发状态。
+每个项目维护自己的 package.json、kisx.config.ts、README 和 release-notes。来源响应与输入格式样本由实际消费它们的扩展在 tests/fixtures 中维护。读取、映射及真实运行分别验证，测试目录按[共同结构](../engineering/layout.md#tests)采用适用部分。out、dist 和 .local 按[开发制品规则](development.md#build)保存运行布局、安装包和持续开发状态。
 
 源码按实际能力展开：[来源扩展](sources/README.md#organization)组织客户端、资料与适用的个人操作，[导入器](importers/README.md#organization)保留各自输入语义，[译本](languages.md#implementation)负责轻量登记与消息目录。三种 CLI 模板提供工程起点，具体模块由逐项设计确定；共用解析使用普通依赖，不导入其他扩展的私有源码。
 

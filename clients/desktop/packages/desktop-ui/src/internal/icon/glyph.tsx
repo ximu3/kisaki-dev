@@ -1,10 +1,11 @@
-/** @fileoverview Shares Lucide component presentation and status symbols across desktop controls. */
-
-import { CircleExclamationPoint, TriangleExclamationPoint, CircleCheck, Info } from '@lucide/solid'
-import type { LucideIcon } from '@lucide/solid'
-import type { JSX } from '@solidjs/web'
-import { dynamic } from '@solidjs/web'
-
+import {
+  CircleExclamationPoint,
+  TriangleExclamationPoint,
+  CircleCheck,
+  Info,
+  type LucideIcon,
+} from '@lucide/solid'
+import { dynamic, type JSX } from '@solidjs/web'
 import { classes } from '../dom'
 import styles from './styles.module.css'
 
@@ -29,11 +30,7 @@ export {
  *
  * The enclosing control owns its accessible name and any size override.
  */
-export function Icon(props: {
-  /** Renders the selected Lucide glyph with the shared presentation props. */
-  icon: LucideIcon
-  class?: string | undefined
-}): JSX.Element {
+export function Icon(props: { icon: LucideIcon; class?: string | undefined }): JSX.Element {
   const Glyph = dynamic(() => props.icon)
   return (
     <Glyph

@@ -1,5 +1,3 @@
-//! Registers the library's language-aware name order on the caller's own SQLite connection.
-
 use icu_collator::options::{CaseLevel, CollatorOptions, Strength};
 use icu_collator::preferences::CollationNumericOrdering;
 use icu_collator::{Collator, CollatorBorrowed, CollatorPreferences};
@@ -12,7 +10,6 @@ use std::sync::{Arc, RwLock};
 /// Identity of the comparison policy and the compiled ICU algorithm and locale data.
 const REVISION: &str = concat!("numeric-secondary/1:", env!("KISAKI_ICU_COMPONENTS"));
 
-/// Creates the native numeric, accent-sensitive and case-insensitive order for one BCP 47 locale.
 fn name_collator(locale: &str) -> Result<CollatorBorrowed<'static>> {
     let locale: Locale = locale
         .parse()
@@ -25,7 +22,6 @@ fn name_collator(locale: &str) -> Result<CollatorBorrowed<'static>> {
     Collator::try_new(preferences, options).map_err(|e| Error::UserFunctionError(Box::new(e)))
 }
 
-/// Installs the comparison and its connection-local configuration before any index can use it.
 fn register(connection: Connection) -> Result<bool> {
     let active = Arc::new(RwLock::new(name_collator("en")?));
     let reader = Arc::clone(&active);

@@ -1,11 +1,8 @@
-/** @fileoverview Holds an intentionally uncommitted transaction until the interruption test terminates this process. */
-
 import { sql } from 'drizzle-orm'
 import { initializeDatabase } from '../../../src/main/infrastructure/database'
 import { entries } from '../../../src/main/infrastructure/database/schema'
 import { storageOptions } from './sample'
 
-/** The parent test's isolated profile whose interrupted transaction will be reopened. */
 const directory = process.argv[2]
 if (!directory || !process.send) {
   throw new Error('The interruption worker requires a test directory and IPC parent')

@@ -1,10 +1,7 @@
-/** @fileoverview Connects the popup's query editor to its logical candidate list. */
-
 import type { JSX } from '@solidjs/web'
 import { SearchInput } from '../input/search/control'
 import { FieldContext } from '../../internal/field'
-import { optionId } from './collection'
-import type { SelectionCollection } from './collection'
+import { optionId, type SelectionCollection } from './collection'
 import type { SelectionOption } from './types'
 import styles from './styles.module.css'
 

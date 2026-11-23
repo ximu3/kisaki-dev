@@ -1,5 +1,3 @@
-/** @fileoverview Keeps safe wire failures separate from local exceptions and endpoint-specific results. */
-
 /**
  * A local error whose code and message are explicitly safe for peer delivery.
  *

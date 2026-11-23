@@ -1,7 +1,5 @@
 # libmpv-node 的初始化与运行寿命
 
-初始化、控制执行、关闭、运行库与 Node 环境各有明确的资源归属，沿同一条实例寿命衔接。
-
 | 阅读目的 | 入口 |
 | --- | --- |
 | 创建可用实例 | [创建配置](#configuration) · [选项顺序](#options) · [就绪条件](#publication) |
@@ -22,7 +20,7 @@ createMpv(options) 异步建立可用的 Mpv，内容随后通过 loadfile 命�
 | NativeFrame  | 每次交付后由接收方持有，保持画面有效所需资源，release 后归还本次持有 |
 | 截图命令结果 | 拥有已经取得的独立图像数据，不继续借用播放器缓冲或依赖 GPU 帧存活    |
 
-受管视频输出是同一包内的可选技术能力。创建时明确是否启用；启用时，库先准备图形环境与渲染上下文，再由调用方加载带视频的内容。纯音频和不使用图形输出的调用不必创建图形上下文。按照 [libmpv Render API](https://github.com/mpv-player/mpv/blob/master/include/mpv/render.h)，每个播放核心最多有一个活动渲染上下文，并在播放前完成建立、在播放核心销毁前完成释放。
+创建 Mpv 时可以启用受管视频输出。库在播放前建立渲染上下文，在核心销毁前释放。每个播放核心最多有一个活动渲染上下文。[固定版本的 libmpv Render API](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/include/mpv/render.h)
 
 Windows 已采用官方合入的直接 D3D11 Render API，macOS 与 Linux 保留各自的 OpenGL 接入，软件输出仍为独立选择；固定上游来源与终态合同见[视频输出设计](video.md)。
 
@@ -43,10 +41,10 @@ const mpv = await createMpv({
   options: [
     ['pause', true],
     ['volume', 80],
-    ['hwdec', 'auto']
+    ['hwdec', 'auto'],
   ],
   videoOutput: { width: 1280, height: 720 },
-  signal
+  signal,
 })
 ```
 
@@ -64,7 +62,7 @@ createMpv() 本身有效，使用 libmpv 的嵌入默认配置。当前基线包
 
 未配置 VideoOutput 时，库省略自身受管图形输出，视频解码与 mpv 原生输出仍按原生选项执行。纯音频调用可以显式设置 vid=no，其他输出选择也由对应原生选项表达。
 
-受管模式要求对应输出准备成功才交付 Mpv；创建失败不能静默降为另一种输出方式。配置、返回类型、帧结构和 GPU 不透明播放边界由[视频输出](video.md#configuration)定义，声明复用这些类型。renderer 选择 GPU 或软件能力，Windows 直接 D3D11 与其他平台的 OpenGL 接入保持内部实现；sRGB 与 Display P3 SDR 的实际颜色、HDR 片源到 SDR 的映射及六个平台目标的完整链路仍须验证。
+受管模式在所选输出准备成功后交付 Mpv。`videoOutput.renderer` 选择 GPU 或软件输出，D3D11 和 OpenGL 的平台接入由库负责。配置、返回类型和帧结构见[视频输出](video.md#configuration)，六目标运行验收覆盖两种 SDR 目标、HDR 片源映射和完整资源交接。
 
 <a id="options"></a>
 
@@ -77,8 +75,8 @@ await createMpv({
   input: 'native',
   options: [
     ['pause', { format: 'flag', value: true }],
-    ['volume', { format: 'double', value: 80 }]
-  ]
+    ['volume', { format: 'double', value: 80 }],
+  ],
 })
 ```
 
@@ -116,17 +114,17 @@ options 明确应用在 mpv_initialize 之前。调用方启用 config、profile
 const mpv = await createMpv({
   options: [
     ['config', true],
-    ['config-dir', configDirectory]
+    ['config-dir', configDirectory],
   ],
   initializationLogs: {
     level: 'warn',
     observer: {
       next: receiveInitializationDiagnostic,
       error: receiveDiagnosticFailure,
-      complete: finishInitializationDiagnostics
-    }
+      complete: finishInitializationDiagnostics,
+    },
   },
-  signal
+  signal,
 })
 ```
 
@@ -142,7 +140,7 @@ const mpv = await createMpv({
 
 同步回调抛错、异步上下文、void 返回值和异步任务归属沿用订阅规则；库不等待接收器启动的 Promise。工厂结束后不再开始初始化日志回调。signal 取消主动停止此次创建，也立即抑制尚未开始的初始化日志与终止回调，继续完成原生清理。
 
-运行期日志需要成功后显式 observeLogs，不把初始化日志重放给它，也不承诺两次不同接收之间没有空档。若调用方需要从初始化到运行期的连续诊断，这是另一项寿命合同，不能把有限的 initializationLogs 偷换成持续订阅。
+创建成功后，调用 observeLogs 订阅运行期日志。新订阅只接收登记后的记录，两次接收之间可能有空档。
 
 上游早期 terminal-default 缓冲仍由初始化流程取得并释放。已经登记的初始化日志请求负责自己的诊断流，不把早期缓冲再次合入而造成重复；没有初始化接收器时也不能把这段历史留给第一个运行期订阅。
 

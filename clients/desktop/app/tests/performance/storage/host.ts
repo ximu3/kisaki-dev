@@ -1,5 +1,3 @@
-/** @fileoverview Hosts a single storage measurement inside the Electron process controlled by Playwright. */
-
 import type { ElectronApplication } from '@playwright/test'
 import type { StorageMeasurementInput } from './measurement'
 

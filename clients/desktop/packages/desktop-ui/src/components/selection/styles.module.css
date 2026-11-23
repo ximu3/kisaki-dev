@@ -1,5 +1,3 @@
-/* Shared selector surface, virtual viewport and trailing selection-mark slot. */
-
 .options {
   composes: native from '../../internal/scrollbars.module.css';
 }

@@ -1,5 +1,3 @@
-/** @fileoverview Public semantic table family. */
-
 export {
   Table,
   TableHeader,

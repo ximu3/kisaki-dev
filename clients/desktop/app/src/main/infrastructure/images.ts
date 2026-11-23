@@ -1,5 +1,3 @@
-/** @fileoverview Decodes and transforms bounded image inputs while retaining the original bytes of unedited raster images. */
-
 import { readFile } from 'node:fs/promises'
 import type { Readable } from 'node:stream'
 import type { FileInput } from '@kisaki3/desktop-contracts/resources'
@@ -98,12 +96,10 @@ export function createImages(
         throw new DesktopError('Busy', 'The image processing queue is full')
       }
       await new Promise<void>((resolve, reject) => {
-        /** Grants the next queued image operation a processing slot. */
         const next = () => {
           signal?.removeEventListener('abort', cancel)
           resolve()
         }
-        /** Removes a cancelled operation from the bounded wait queue. */
         const cancel = () => {
           waiting.delete(next)
           reject(signal!.reason)
@@ -147,8 +143,8 @@ export function createImages(
         throw new DesktopError('InvalidInput', 'Unsupported image format')
       }
       const frames = meta.pages ?? 1
-      const height = meta.pageHeight ?? meta.height
-      checkPixels(meta.width, height, frames)
+      const frameHeight = meta.pageHeight ?? meta.height
+      checkPixels(meta.width, frameHeight, frames)
       await image.stats()
       signal?.throwIfAborted()
       let resultFormat: ImageFormat = format as ImageFormat
@@ -161,22 +157,21 @@ export function createImages(
         )
         resultFormat = 'png'
       }
-      const transpose = !!meta.orientation && meta.orientation >= 5
-      const width = transpose ? height : meta.width
-      const h = transpose ? meta.width : height
+      const transposed = !!meta.orientation && meta.orientation >= 5
+      const width = transposed ? frameHeight : meta.width
+      const height = transposed ? meta.width : frameHeight
       const content = await attachments.prepare(
         converted ?? stage,
         'image/' + resultFormat,
         width,
-        h,
+        height,
       )
       return {
         attachmentId: content.metadata.id,
         resource: content.resource,
-        /** Releases these prepared image bytes after adoption or cancellation. */
         dispose: () => content.dispose(),
         width,
-        height: h,
+        height,
         format: resultFormat,
         frameCount: frames,
       }
@@ -186,7 +181,6 @@ export function createImages(
   }
 
   return {
-    /** Stages the source under the byte budget and validates its complete image content. */
     prepare(input, options) {
       return work(options?.signal, async () => {
         const stage = await attachments.stage(input, imageLimits.bytes, options?.signal)

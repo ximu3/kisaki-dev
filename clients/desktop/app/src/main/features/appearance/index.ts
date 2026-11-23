@@ -1,5 +1,3 @@
-/** @fileoverview Resolves theme selection, one application-wide preview and per-document font resources. */
-
 import { catalogKey } from '../../../shared/catalog-ref'
 import { createDocumentFonts } from './document-fonts'
 import { nativeTheme } from 'electron'
@@ -57,10 +55,8 @@ export function createAppearance(
   call: DatabaseCall<ReturnType<typeof themeStorage>>,
   digest: (ref: ReadResourceRef) => string,
 ) {
-  /** Publishes changes that require a new effective appearance. */
-  const changed = createSignal<void>()
-  /** Invalidates the theme catalog independently of current selection. */
-  const directory = createSignal<void>()
+  const appearanceChanged = createSignal<void>()
+  const catalogInvalidated = createSignal<void>()
   const extensions = new Map<
     string,
     { theme: Theme<'extension'>; read: PrivateFontRead; locale: string }
@@ -99,11 +95,10 @@ export function createAppearance(
         metadata: file.metadata,
         resource: opened.resources[file.attachmentId]!,
       })),
-      /** Releases this independently acquired font set. */
       dispose: () => opened.dispose(),
     }
   }
-  const previews = createPreviews(slots, acquire, () => changed.emit())
+  const previews = createPreviews(slots, acquire, () => appearanceChanged.emit())
 
   const documents = new WeakMap<ViewResourcesApi, ReturnType<typeof createDocumentFonts>>()
 
@@ -145,21 +140,18 @@ export function createAppearance(
     }
   }
 
-  /** Recomputes the active branch when the system controls color mode. */
-  const systemChanged = () => {
+  const systemColorChanged = () => {
     if (preferences.mode === 'system') {
-      changed.emit()
+      appearanceChanged.emit()
     }
   }
-  nativeTheme.on('updated', systemChanged)
-  const fontChanges = fonts.onInvalidated(() => changed.emit())
-  /** Notifies catalog readers and all documents using the changed theme. */
+  nativeTheme.on('updated', systemColorChanged)
+  const fontChanges = fonts.onInvalidated(() => appearanceChanged.emit())
   const invalidate = () => {
-    directory.emit()
-    changed.emit()
+    catalogInvalidated.emit()
+    appearanceChanged.emit()
   }
 
-  /** Catalog and persistence operations retain their theme-specific ownership. */
   const themes = {
     get,
 
@@ -182,7 +174,6 @@ export function createAppearance(
       ]
     },
 
-    /** Creates a complete user theme and invalidates its directory. */
     async create(input: UserThemeCreate, options?: CallOptions) {
       options?.signal?.throwIfAborted()
       const ref = await call('createTheme', input)
@@ -242,7 +233,6 @@ export function createAppearance(
       }
     },
 
-    /** Commits the edited user theme and refreshes current consumers. */
     async update(id: string, input: UserThemeUpdate, options?: CallOptions) {
       options?.signal?.throwIfAborted()
       await call('updateTheme', id, input)
@@ -280,7 +270,6 @@ export function createAppearance(
       invalidate()
       return {
         ref,
-        /** Replaces this live registration's validated two-branch definition. */
         update(input: ExtensionThemeDefinition, options?: CallOptions) {
           options?.signal?.throwIfAborted()
           if (extensions.get(key) !== registration) {
@@ -310,7 +299,6 @@ export function createAppearance(
         ColorScheme,
         Partial<Record<FontTokenName, readonly ThemeFontResourceFile[]>>
       > = { light: {}, dark: {} }
-      /** Releases all unique font sets acquired for this theme read. */
       const dispose = async () => {
         await releaseAll([...reads.values()].map((read) => () => read?.dispose()))
       }
@@ -337,7 +325,7 @@ export function createAppearance(
       }
     },
 
-    onInvalidated: directory.on,
+    onInvalidated: catalogInvalidated.on,
   }
 
   return {
@@ -349,7 +337,6 @@ export function createAppearance(
       options?.signal?.throwIfAborted()
       let active = true
       let queued = Promise.resolve()
-      /** Queues an effective snapshot for this observer. */
       const deliver = () => {
         const snapshot = getState()
         // Later reads can settle before an earlier notification has been delivered.
@@ -363,7 +350,7 @@ export function createAppearance(
         queued = delivery.catch(() => {})
         return delivery
       }
-      const change = changed.on(() => deliver().catch(console.error))
+      const change = appearanceChanged.on(() => deliver().catch(console.error))
       try {
         await deliver()
         options?.signal?.throwIfAborted()
@@ -372,7 +359,6 @@ export function createAppearance(
         throw error
       }
       return {
-        /** Stops subsequent snapshots without modifying the selected theme. */
         dispose() {
           active = false
           return change.dispose()
@@ -405,7 +391,7 @@ export function createAppearance(
     /** Adopts the saved theme, mode and scale without changing their stored values. */
     select(value: AppearancePreferences) {
       preferences = value
-      changed.emit()
+      appearanceChanged.emit()
     },
 
     preview: (
@@ -433,7 +419,6 @@ export function createAppearance(
       const faces: ViewFontFace[] = []
       const holds: Array<{ dispose(): Promise<void> }> = []
       const issues = [...state.issues]
-      /** Releases each document binding after replacement or failed acquisition. */
       const dispose = async () => {
         await releaseAll(holds.map((hold) => () => hold.dispose()))
       }
@@ -483,12 +468,11 @@ export function createAppearance(
       }
     },
 
-    onChanged: changed.on,
+    onChanged: appearanceChanged.on,
 
-    /** Releases system observation, the active preview and the font-library subscription. */
     async close(this: void) {
       await releaseAll([
-        () => nativeTheme.off('updated', systemChanged),
+        () => nativeTheme.off('updated', systemColorChanged),
         () => previews.close(),
         () => fontChanges.dispose(),
       ])

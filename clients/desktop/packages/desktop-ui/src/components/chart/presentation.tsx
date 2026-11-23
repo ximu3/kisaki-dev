@@ -1,5 +1,3 @@
-/** @fileoverview Chart theme, accessible text alternatives and caller-owned interactive legends. */
-
 import { For, omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import styles from './styles.module.css'

@@ -1,5 +1,3 @@
-/* Switch presentation keeps the actual checkbox as the focus and submission target. */
-
 .root {
   composes: control from '../../internal/control/styles.module.css';
 }

@@ -1,21 +1,17 @@
-/** @fileoverview Validates stored file observations and configuration values without opening user content. */
-
 import * as v from 'valibot'
 import { DesktopError, parseErrorSummary } from '@kisaki3/desktop-contracts/errors'
 import {
   parseAnimePlaybackPreferences,
   parseReadingPreferences,
+  type AnimePlaybackPreferences,
+  type ReadingPreferences,
+  type UsageOverride,
 } from '@kisaki3/desktop-contracts/preferences'
 import type {
   AnimeFileMetadata,
   ReadingFileMetadata,
   FileAvailability,
 } from '@kisaki3/desktop-contracts/library'
-import type {
-  AnimePlaybackPreferences,
-  ReadingPreferences,
-  UsageOverride,
-} from '@kisaki3/desktop-contracts/preferences'
 
 /** Nonnegative safe-integer observations used for file counts and dimensions. */
 const count = v.pipe(v.number(), v.safeInteger(), v.minValue(0))

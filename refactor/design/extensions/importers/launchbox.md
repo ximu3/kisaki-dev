@@ -10,7 +10,9 @@ LaunchBox 导入器读取 Windows Data XML 或官方备份中的明确资料，�
 
 支持源程序关闭后取得的一致 Data 目录副本，以及官方 Create Data Backup 生成的 .7z 数据归档。官方备份只保存 Data 内的库数据与设置，不含游戏、模拟器、Images、视频或源程序。另行提供的 LaunchBox 根和本地内容根用于资源解析，不能把备份解包目录当作源程序根。
 
-识别 Data/Platforms/_.xml 内的 LaunchBox 根、Game 行与明确关系行；平台定义为 Data/Platforms.xml，播放列表为 Data/Playlists/_.xml，模拟器为 Data/Emulators.xml。归档允许直接以 Data 内容为根，或有唯一 Data 外层；不会在多份备份、多个 Data 根或嵌套压缩包中自行择一。没有所选平台游戏文件时拒绝本次输入；缺少可选列表或模拟器文件只影响对应范围。
+各平台的游戏文件位于 `Data/Platforms/*.xml`，其中包含 `LaunchBox` 根、`Game` 行及关系行。平台定义位于 `Data/Platforms.xml`，播放列表位于 `Data/Playlists/*.xml`，模拟器位于 `Data/Emulators.xml`。
+
+归档允许直接以 `Data` 内容为根，或使用唯一的 `Data` 外层。遇到多份备份、多个 `Data` 根或嵌套压缩包时，须另行提供明确输入。没有所选平台游戏文件时拒绝本次输入；缺少可选列表或模拟器文件只影响对应范围。
 
 本项声明的是已列明字段的 Windows Data XML 系列。旧单体 LaunchBox.xml、Android 导出、公开 Metadata.xml 全站缓存、其他插件私有库和任意 XML 不是本输入。新版 XML 中未改变含义的字段仍按各自结构读取，未知字段不清空目标；未知的必要结构在写入前拒绝。不能依据文件名或用户填写的版本号接受结构不同的文件。
 

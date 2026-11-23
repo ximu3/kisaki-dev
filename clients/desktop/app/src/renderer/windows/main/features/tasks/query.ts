@@ -1,18 +1,14 @@
-/** @fileoverview Owns one task-center scope's filters and buffered history range. */
-
 import { createMemo, createSignal } from 'solid-js'
 import type { ListResult } from '@kisaki3/desktop-contracts/operations'
 import type { TaskRunStatus, TaskRunSummary } from '@kisaki3/desktop-contracts/tasks'
 import { createQuery } from '../../../../infrastructure/query'
 import type { MainClient } from '../../../../infrastructure/api'
 
-/** Maximum buffered task summaries from one consistent history snapshot. */
-const windowSize = 100
+const intervalSize = 100
 
 /** Starts a replacement while these many rows remain available in the direction of travel. */
 const preloadRows = 12
 
-/** The user-selected conditions inside one fixed status scope. */
 interface TaskFilters {
   search: string
   type: string
@@ -20,15 +16,14 @@ interface TaskFilters {
 }
 
 /** The complete count and the buffered rows from one history read. */
-interface TaskWindow extends ListResult<TaskRunSummary> {
+interface TaskInterval extends ListResult<TaskRunSummary> {
   key: string
   revision: number
   offset: number
 }
 
-/** Keeps a buffered interval within the known bounds of the current query. */
 function fitOffset(offset: number, total = Infinity) {
-  return Math.max(0, Math.min(offset, total - windowSize))
+  return Math.max(0, Math.min(offset, total - intervalSize))
 }
 
 /** Keeps one tab's query and buffered results through scrolling and invalidation. */
@@ -43,14 +38,14 @@ export function createTaskQuery(
   let revision = 0
   let attemptedKey: string | undefined
 
-  const list = createQuery<TaskWindow | undefined>({
+  const list = createQuery<TaskInterval | undefined>({
     prepare() {
       const queryKey = key()
       const { search, type, status } = filters()
       const requested = offset()
       const shown = visible()
 
-      return async (signal): Promise<TaskWindow | undefined> => {
+      return async (signal): Promise<TaskInterval | undefined> => {
         const previous = list.value
         if (!shown) {
           return previous
@@ -73,7 +68,7 @@ export function createTaskQuery(
           ...(type && { types: [type] }),
         }
         const read = (offset: number) =>
-          api.request(signal, 'tasks.list', query, { offset, limit: windowSize })
+          api.request(signal, 'tasks.list', query, { offset, limit: intervalSize })
 
         let result = await read(start)
         // Resolve a shortened tail before changing the track height and clamping its scroll position.
@@ -113,7 +108,7 @@ export function createTaskQuery(
     }
 
     const start = fitOffset(offset(), count)
-    const end = start + windowSize
+    const end = start + intervalSize
     if (
       first >= (start ? start + preloadRows : 0) &&
       lastExclusive <= (end >= count ? count : end - preloadRows)
@@ -121,7 +116,7 @@ export function createTaskQuery(
       return
     }
 
-    const padding = Math.floor((windowSize - (lastExclusive - first)) / 2)
+    const padding = Math.floor((intervalSize - (lastExclusive - first)) / 2)
     setOffset(fitOffset(first - padding, count))
   }
 

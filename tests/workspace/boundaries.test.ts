@@ -1,8 +1,3 @@
-/**
- * @fileoverview Verifies dependency boundaries with synthetic allowed and forbidden
- * imports across project scopes.
- */
-
 import { afterAll, beforeAll, expect, test } from 'vite-plus/test'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
@@ -11,10 +6,8 @@ import { dirname, join, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
 import { listProjects } from '../../tools/workspace'
 
-/** Installed dependency-cruiser entry used to inspect the synthetic import graph. */
 const executable = resolve('node_modules/dependency-cruiser/bin/dependency-cruiser.mjs')
 
-/** Synthetic imports exercising project, runtime and public-package dependency boundaries. */
 const cases: {
   name: string
   from: string
@@ -68,9 +61,9 @@ const cases: {
   },
   {
     name: 'distribution-pure-does-not-import-signing',
-    from: 'clients/desktop/packages/extension-distribution/src/registry.ts',
+    from: 'clients/desktop/packages/extension-distribution/src/registry/index.ts',
     to: 'clients/desktop/packages/extension-distribution/src/node/signing.ts',
-    source: "export type { Value } from './node/signing'\n",
+    source: "export type { Value } from '../node/signing'\n",
   },
   {
     name: 'distribution-has-no-application-runtime',
@@ -158,10 +151,8 @@ const cases: {
   },
 ]
 
-/** Isolated source root containing only the dependency-boundary test cases. */
 let directory: string
 
-/** Dependency-cruiser graph and rule violations collected for the current suite. */
 let result: {
   modules: { source: string }[]
   summary: { violations: { from: string; rule: { name: string } }[] }

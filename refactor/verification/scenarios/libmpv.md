@@ -34,7 +34,7 @@ media 完整操作与命令、脚本交错时，状态始终取自实际引擎�
 
 按[当前 SDR 范围](../../design/projects/libmpv-node/video.md#targets)验证 Kisaki 的 sRGB 和库的 Display P3 SDR。覆盖普通 SDR、十位 SDR、HDR 片源到 SDR 的色调与色域映射、复杂动态字幕、抖动和最终显示。HDR 显示、PQ／扩展线性受管帧、显示亮度查询和可变 nit 单位仍在交付范围之外。
 
-截图按[采集条件与路径差异](../../design/engineering/integrations.md#screenshot)核对原生布局、有效行、独立字节、颜色及后续编码。sRGB／Display P3 不能仅从 rgba 格式名推导。Kisaki 正常 GPU 路径采用 screenshot-sw=no，并分别核对 HDR 到 SDR 与字幕；软件对照及上游可能发生的自动回退按实际路径记录，命令成功或选项值不足以证明 GPU 路径已采用。覆盖持续播放、设备失败和实际产品采集。
+截图核对原生布局、有效行、独立字节、颜色及后续编码。以实际颜色描述和像素结果区分 sRGB 与 Display P3。Kisaki 正常 GPU 路径采用 `screenshot-sw=no`，核对 HDR 到 SDR 的映射和字幕，并用软件输出对照。分别记录实际采集来源，覆盖持续播放、设备失败和实际产品采集。[采集条件与路径差异](../../design/engineering/integrations.md#screenshot)
 
 按[平台画面交接](../../design/projects/libmpv-node/platforms.md)检查像素排列、原色、传递曲线、RGB／full-range、尺寸／stride 和宿主别名，并使用错误颜色标签作为对照。生产完成同步与消费引用回收分别验证。
 

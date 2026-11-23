@@ -1,12 +1,9 @@
-/** @fileoverview Builds and serves the four Solid fixture windows with their document policies. */
-
 import { defineConfig } from 'vite'
 import solid from '@solidjs/vite-plugin'
 import tailwind from '@tailwindcss/vite'
 import { fileURLToPath } from 'node:url'
 import { resolve } from 'node:path'
 
-/** The fixture window-source root used to resolve renderer HTML entries. */
 const root = fileURLToPath(new URL('../../src/renderer/windows', import.meta.url))
 
 export default defineConfig(({ mode }) => ({
@@ -17,7 +14,6 @@ export default defineConfig(({ mode }) => ({
     tailwind(),
     {
       name: 'desktop-development-csp',
-      /** Adds Vite's development-only allowances to the fixture document policy. */
       transformIndexHtml(html) {
         if (mode !== 'development') {
           return html

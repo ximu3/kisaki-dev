@@ -1,49 +1,38 @@
-/** @fileoverview Defines field-only batch processors and validates complete or explicitly partial per-key results. */
-
-import type { EntryType, PartType } from '../library/catalog'
-import type {
-  IdentificationFields,
-  PartIdentificationFields,
-  MetadataFieldRef,
-  MetadataFieldValue,
-} from './fields'
 import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
 import type { ExecutionContext, CallOptions, Registration, KeyedResult } from '../operations'
-import { parseValue, id, unique, parseRecord } from '../validation'
+import { fromParser, parseValue, id, unique, parseRecord } from '../validation'
 import * as v from 'valibot'
-import { entryTypes, partTypes } from '../library/catalog'
+import { entryTypes, partTypes, type EntryType, type PartType } from '../library/catalog'
 import {
   parseIdentificationFields,
   parsePartIdentificationFields,
   parseMetadataFieldRef,
   parseMetadataFieldValue,
+  type IdentificationFields,
+  type PartIdentificationFields,
+  type MetadataFieldRef,
+  type MetadataFieldValue,
 } from './fields'
 import { DesktopError } from '../errors'
 
 /**
- * Original entry identification shared as field-processing context.
- *
- * The context excludes local database IDs and unrelated resource credentials.
+ * Supplies original evidence for field processing while local IDs and resource credentials stay
+ * with their owners.
  */
 export type ProcessingEntryContext = {
   [K in EntryType]: { readonly type: K; readonly identification: IdentificationFields<K> }
 }[EntryType]
 
-/** Original part identification shared as field-processing context. */
 export type ProcessingPartContext = {
   [K in PartType]: { readonly type: K; readonly identification: PartIdentificationFields<K> }
 }[PartType]
 
-/** Relevant entry, part and related-entry evidence accompanying a field value. */
 export interface FieldProcessingContext {
   readonly entry?: ProcessingEntryContext
   readonly part?: ProcessingPartContext
   readonly relatedEntries?: readonly ProcessingEntryContext[]
 }
 
-/**
- * Keyed processing item preserving the relationship between a selected field and its value type.
- */
 type ProcessingItem<F extends MetadataFieldRef> = F extends MetadataFieldRef
   ? {
       readonly key: string
@@ -54,22 +43,17 @@ type ProcessingItem<F extends MetadataFieldRef> = F extends MetadataFieldRef
   : never
 
 /**
- * Concrete field value and optional original context supplied to a processor.
- *
- * Processor output changes the field value; identities, endpoints and matching evidence retain
- * their owners.
+ * Processors replace only the field value. Identity, endpoints and matching evidence retain their
+ * original owners.
  */
 export type FieldProcessingItem = ProcessingItem<MetadataFieldRef>
 
-/** Fixed batch of keyed field values for one processor call. */
 export interface FieldProcessingInput {
   readonly items: readonly FieldProcessingItem[]
 }
 
 /**
- * Processed values keyed by their original input identities.
- *
- * Normal completion covers every input key. A failure may carry only the successfully processed
+ * Normal completion covers every input key. A failed call can return the successfully processed
  * keys.
  */
 export type FieldProcessingResult<I extends FieldProcessingInput = FieldProcessingInput> =
@@ -78,21 +62,15 @@ export type FieldProcessingResult<I extends FieldProcessingInput = FieldProcessi
     { readonly [Item in I['items'][number] as Item['key']]: MetadataFieldValue<Item['field']> }
   >
 
-/** Registered batch implementation for a declared set of metadata fields. */
 export interface MetadataFieldProcessor {
   readonly name: LocalizedText
   readonly description?: LocalizedText
   readonly fields: readonly MetadataFieldRef[]
 
-  /**
-   * Processes the supplied field values and returns results for every input key.
-   *
-   * Failure may retain valid completed keys as a partial result.
-   */
+  /** Uses the original input keys. Failure can carry only valid completed values. */
   process(input: FieldProcessingInput, context: ExecutionContext): Promise<FieldProcessingResult>
 }
 
-/** Discoverable processor identity, localized description and supported fields. */
 export interface MetadataFieldProcessorDescriptor {
   readonly id: string
   readonly name: LocalizedText
@@ -100,16 +78,10 @@ export interface MetadataFieldProcessorDescriptor {
   readonly fields: readonly MetadataFieldRef[]
 }
 
-/**
- * Discovery and lifetime registration of metadata field processors.
- *
- * Profiles explicitly select processor IDs and order for each allowed field.
- */
+/** Profiles explicitly select processor identities and order for each allowed field. */
 export interface MetadataFieldProcessorsApi {
-  /** Reads registered processor descriptions and supported fields. */
   list(call?: CallOptions): Promise<readonly MetadataFieldProcessorDescriptor[]>
 
-  /** Reads the current processor descriptor, returning null when its identity is unavailable. */
   get(processorId: string, call?: CallOptions): Promise<MetadataFieldProcessorDescriptor | null>
 
   /**
@@ -122,55 +94,40 @@ export interface MetadataFieldProcessorsApi {
   ): Promise<Registration<string>>
 }
 
-/** Parses an entry kind and the original identification fields allowed for it. */
 function parseProcessingEntryContext(input: unknown): ProcessingEntryContext {
   const { type } = parseValue(v.looseObject({ type: v.picklist(entryTypes) }), input)
   return parseValue(
     v.strictObject({
       type: v.literal(type),
-      identification: v.pipe(
-        v.unknown(),
-        v.transform((value) => parseIdentificationFields(type, value)),
-      ),
+      identification: fromParser((value) => parseIdentificationFields(type, value)),
     }),
     input,
   ) as ProcessingEntryContext
 }
 
-/** Parses a part kind and the original identification fields allowed for it. */
 function parseProcessingPartContext(input: unknown): ProcessingPartContext {
   const { type } = parseValue(v.looseObject({ type: v.picklist(partTypes) }), input)
   return parseValue(
     v.strictObject({
       type: v.literal(type),
-      identification: v.pipe(
-        v.unknown(),
-        v.transform((value) => parsePartIdentificationFields(type, value)),
-      ),
+      identification: fromParser((value) => parsePartIdentificationFields(type, value)),
     }),
     input,
   ) as ProcessingPartContext
 }
 
-/** Optional read-only entry, part and related-entry context supplied to a field processor. */
 const contextSchema = v.strictObject({
-  entry: v.exactOptional(v.pipe(v.unknown(), v.transform(parseProcessingEntryContext))),
-  part: v.exactOptional(v.pipe(v.unknown(), v.transform(parseProcessingPartContext))),
-  relatedEntries: v.exactOptional(
-    v.array(v.pipe(v.unknown(), v.transform(parseProcessingEntryContext))),
-  ),
+  entry: v.exactOptional(fromParser(parseProcessingEntryContext)),
+  part: v.exactOptional(fromParser(parseProcessingPartContext)),
+  relatedEntries: v.exactOptional(v.array(fromParser(parseProcessingEntryContext))),
 })
 
-/**
- * Parses a fixed batch with unique keys, field-specific values and optional original context.
- *
- * Legal empty field values remain ordinary input data.
- */
+/** Requires unique keys and field-specific values. Legal empty values are ordinary data. */
 export function parseFieldProcessingInput(input: unknown): FieldProcessingInput {
   const item = v.pipe(
     v.strictObject({
       key: id,
-      field: v.pipe(v.unknown(), v.transform(parseMetadataFieldRef)),
+      field: fromParser(parseMetadataFieldRef),
       value: v.unknown(),
       context: v.exactOptional(contextSchema),
     }),
@@ -195,10 +152,8 @@ export function parseFieldProcessingInput(input: unknown): FieldProcessingInput 
 }
 
 /**
- * Parses returned values against the fixed call's keys and field types.
- *
- * Complete results must cover every input key; partial results may omit keys. Both reject extra
- * keys and preserve only returned values.
+ * Completion requires every key from the fixed call. Partial results can omit keys. Both reject
+ * extra keys and use the requested types.
  */
 export function parseFieldProcessingResult<
   const I extends FieldProcessingInput,
@@ -231,15 +186,11 @@ export function parseFieldProcessingResult(
   )
 }
 
-/**
- * Parses a processor's distinct supported fields.
- *
- * An empty list declares no field-processing capability.
- */
+/** An empty list declares no field-processing capability. */
 export function parseProcessorFields(input: unknown): readonly MetadataFieldRef[] {
   return parseValue(
     v.pipe(
-      v.array(v.pipe(v.unknown(), v.transform(parseMetadataFieldRef))),
+      v.array(fromParser(parseMetadataFieldRef)),
       v.check((fields) => unique(fields, (field) => JSON.stringify(field))),
     ),
     input,

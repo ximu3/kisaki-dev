@@ -1,17 +1,15 @@
-/** @fileoverview Defines preference snapshots, field navigation and optimistic changes without choosing defaults. */
-
-import type { UiTranslationRef } from '../i18n'
-import type { PageRef } from '../ui/pages'
-import type { AppearancePreferences } from '../appearance'
-import type { UsagePreferences, UsagePreferencesChanges, ReadingPreferences } from './usage'
-import type { ShortcutsPreferences, ShortcutKey, DesktopPlatform } from './shortcuts'
-import type { NetworkPreferences, ProxyCredentials } from '../network'
 import type { StoredDefinition, CallOptions, Disposable } from '../operations'
 import * as v from 'valibot'
-import { parseUiTranslationRef } from '../i18n'
-import { appearanceModes, interfaceScaleRange, parseThemeRef } from '../appearance'
-import { parsePageRef } from '../ui/pages'
+import { parseUiTranslationRef, type UiTranslationRef } from '../i18n'
 import {
+  appearanceModes,
+  interfaceScaleRange,
+  parseThemeRef,
+  type AppearancePreferences,
+} from '../appearance'
+import { parsePageRef, type PageRef } from '../ui/pages'
+import {
+  fromParser,
   unique,
   integer,
   nonnegativeInteger,
@@ -26,8 +24,17 @@ import {
   parseProxyCredentials,
   parseProxyCredentialState,
   parseNetworkPreferences,
+  type NetworkPreferences,
+  type ProxyCredentials,
 } from '../network'
-import { parseShortcutAccelerators, shortcutKeys, findShortcutConflicts } from './shortcuts'
+import {
+  parseShortcutAccelerators,
+  shortcutKeys,
+  findShortcutConflicts,
+  type ShortcutsPreferences,
+  type ShortcutKey,
+  type DesktopPlatform,
+} from './shortcuts'
 import {
   gamePreferenceEntries,
   playbackPreferenceEntries,
@@ -36,48 +43,39 @@ import {
   readingPageEntries,
   readingTextEntries,
   validateReadingExpected,
+  type UsagePreferences,
+  type UsagePreferencesChanges,
+  type ReadingPreferences,
 } from './usage'
 import { DesktopError } from '../errors'
 
-/** Interface translation selection and main-window close behavior. */
 export interface GeneralPreferences {
   readonly uiTranslation: UiTranslationRef
   readonly closeMainWindow: 'background' | 'quit'
 }
 
-/** Saved page order and limit for visible navigation entries. */
 export interface NavigationPreferences {
   readonly order: readonly PageRef[]
   readonly visibleLimit: number
 }
 
-/** Library visibility and automatic local-content refresh choices. */
 export interface LibraryPreferences {
   readonly showNsfw: boolean
   readonly autoRefreshHoldings: boolean
 }
 
-/**
- * Application-wide remembered volume and mute state.
- *
- * Per-medium playback configuration is stored separately.
- */
+/** Per-medium playback configuration is stored separately. */
 export interface PlaybackPreferences {
   readonly volumePercent: number
   readonly muted: boolean
 }
 
-/** Automatic update checks and prerelease eligibility preferences. */
 export interface UpdatePreferences {
   readonly autoCheck: boolean
   readonly allowPrerelease: boolean
 }
 
-/**
- * Complete preference values used for initialization and explicit defaults.
- *
- * Credentials appear as opaque saved state rather than plaintext.
- */
+/** Credentials appear as opaque saved state rather than plaintext. */
 export interface Preferences {
   readonly general: GeneralPreferences
   readonly appearance: AppearancePreferences
@@ -91,8 +89,6 @@ export interface Preferences {
 }
 
 /**
- * Submitted preference fields grouped by their native editing boundaries.
- *
  * Credential changes carry protected write values, while other fields use their ordinary value
  * types.
  */
@@ -110,26 +106,17 @@ export interface PreferencesChanges {
   readonly updates?: Partial<UpdatePreferences>
 }
 
-/**
- * Original values for comparing submitted preference changes.
- *
- * Credential baselines use the opaque state returned by get.
- */
+/** Credential baselines use the opaque state returned by get. */
 export type PreferencesExpected = Omit<PreferencesChanges, 'network'> & {
   readonly network?: Partial<NetworkPreferences>
 }
 
-/** Preference edits with optional original values for optimistic comparison. */
 export interface PreferencesUpdate {
   readonly changes: PreferencesChanges
   readonly expected?: PreferencesExpected
 }
 
-/**
- * Saved reading preferences with explicit validity for the selected font.
- *
- * Valid sibling preferences retain their own values when the font identity is invalid.
- */
+/** Valid sibling preferences retain their own values when the font identity is invalid. */
 export type ReadingPreferencesSnapshot = Omit<ReadingPreferences, 'text'> & {
   readonly text: Omit<ReadingPreferences['text'], 'font'> & {
     readonly font: StoredDefinition<ReadingPreferences['text']['font']>
@@ -166,18 +153,14 @@ export type PreferencesSnapshot = Omit<
   readonly network: StoredDefinition<NetworkPreferences>
 }
 
-/** Native field-navigation key within comic or novel reading preferences. */
 export type ReadingPreferenceKey =
-  | 'flow'
-  | 'colors'
-  | `pages.${'arrangement' | 'progression' | 'firstPage' | 'fit' | 'autoCrop' | 'brightness' | 'contrast'}`
-  | `text.${'pagesPerView' | 'writingMode' | 'font' | 'fontSize' | 'lineHeight' | 'paragraphSpacing' | 'alignment' | 'padding' | 'maxLineLength'}`
+  | Exclude<keyof ReadingPreferences, 'pages' | 'text'>
+  | `pages.${keyof ReadingPreferences['pages']}`
+  | `text.${keyof ReadingPreferences['text']}`
 
 /**
- * Native preference-field identity for navigation and search.
- *
- * These keys grant no arbitrary path-write capability. Playback volume and mute controls
- * are outside the field catalog.
+ * Identifies a preference field for navigation or search. Playback volume and mute have separate
+ * controls.
  */
 export type PreferenceKey =
   | `general.${keyof GeneralPreferences}`
@@ -192,7 +175,6 @@ export type PreferenceKey =
   | `network.${keyof NetworkPreferences}`
   | `updates.${keyof UpdatePreferences}`
 
-/** Localized native field-catalog entry shared by preference navigation and search. */
 export interface PreferenceField {
   readonly key: PreferenceKey
   readonly name: string
@@ -200,57 +182,43 @@ export interface PreferenceField {
   readonly keywords: readonly string[]
 }
 
-/** Saved preference reads, defaults, atomic edits and field-catalog discovery. */
 export interface PreferencesApi {
   /**
    * Reads saved preferences with explicit states for invalid identities and execution definitions.
    */
   get(call?: CallOptions): Promise<PreferencesSnapshot>
 
-  /**
-   * Reads complete defaults for the current application context.
-   *
-   * Saved preferences and caller drafts remain unchanged.
-   */
+  /** Saved preferences and caller drafts remain unchanged. */
   getDefaults(call?: CallOptions): Promise<Preferences>
 
   /**
-   * Compares and commits submitted fields atomically.
-   *
-   * Runtime adoption is a separate observable result.
+   * Compares and commits all submitted fields atomically. Runtime adoption happens after the
+   * commit.
    */
   update(input: PreferencesUpdate, call?: CallOptions): Promise<PreferencesSnapshot>
 
   /** Reads localized descriptions for field navigation and preference search. */
   listFields(call?: CallOptions): Promise<readonly PreferenceField[]>
 
-  /**
-   * Subscribes to saved-preference invalidation and returns the subscription lifetime.
-   *
-   * Callers subscribe before reading and refresh snapshots while preserving unsaved edits.
-   */
+  /** Callers subscribe before reading and refresh snapshots while preserving unsaved edits. */
   onInvalidated(listener: () => void): Disposable
 }
 
-/** Validated saved interface-translation identity. */
-const translated = v.pipe(v.unknown(), v.transform(parseUiTranslationRef))
+const translated = fromParser(parseUiTranslationRef)
 
-/** Validated saved theme identity independent of current resource availability. */
-const theme = v.pipe(v.unknown(), v.transform(parseThemeRef))
+const theme = fromParser(parseThemeRef)
 
 /** Complete navigation-page order with distinct stable page references. */
 export const order = v.pipe(
-  v.array(v.pipe(v.unknown(), v.transform(parsePageRef))),
+  v.array(fromParser(parsePageRef)),
   v.check((pages) => unique(pages, (page) => JSON.stringify(page))),
 )
 
-/** Interface translation and main-window close choices shared by preference reads and edits. */
 export const generalEntries = {
   uiTranslation: translated,
   closeMainWindow: v.picklist(['background', 'quit']),
 }
 
-/** Saved theme, mode and interface-scale fields owned by application appearance. */
 export const appearanceEntries = {
   theme,
   mode: v.picklist(appearanceModes),
@@ -261,37 +229,29 @@ export const appearanceEntries = {
   ),
 }
 
-/** Saved page order and nonnegative visible-navigation limit. */
 const navigationEntries = { order, visibleLimit: nonnegativeInteger }
 
-/** Saved sensitive-content visibility and automatic holding-refresh choices. */
 export const libraryEntries = { showNsfw: v.boolean(), autoRefreshHoldings: v.boolean() }
 
-/** Application-wide remembered volume and mute state, separate from usage overrides. */
 export const playbackEntries = {
   volumePercent: v.pipe(v.number(), v.finite(), v.minValue(0), v.maxValue(100)),
   muted: v.boolean(),
 }
 
-/** Saved automatic-check and prerelease choices for application updates. */
 export const updateEntries = { autoCheck: v.boolean(), allowPrerelease: v.boolean() }
 
-/** Non-secret proxy mode, endpoint and bypass fields shared by reads and edits. */
 const networkEntries = {
   mode: v.picklist(['system', 'direct', 'manual']),
-  endpoint: v.nullable(v.pipe(v.unknown(), v.transform(parseProxyEndpoint))),
+  endpoint: v.nullable(fromParser(parseProxyEndpoint)),
   bypassRules: text,
 }
 
-/** Validates the canonical accelerator list for a native action. */
-const shortcutAccelerators = v.pipe(v.unknown(), v.transform(parseShortcutAccelerators))
+const shortcutAccelerators = fromParser(parseShortcutAccelerators)
 
-/** Complete shortcut settings keyed by the fixed native action catalog. */
 const shortcuts = Object.fromEntries(
   shortcutKeys.map((key) => [key, shortcutAccelerators]),
 ) as Record<ShortcutKey, typeof shortcutAccelerators>
 
-/** Complete application timing and independent per-medium usage preferences. */
 const usageEntries = {
   foregroundGracePeriodMs: nonnegativeNumber,
   game: v.strictObject(gamePreferenceEntries),
@@ -300,7 +260,6 @@ const usageEntries = {
   novel: v.strictObject(readingPreferenceEntries),
 }
 
-/** Explicit submitted preference fields, including protected credential write values. */
 const changes = {
   general: v.strictObject(optionalFields(generalEntries)),
   appearance: v.strictObject(optionalFields(appearanceEntries)),
@@ -313,50 +272,52 @@ const changes = {
   network: v.strictObject(
     optionalFields({
       ...networkEntries,
-      credentials: v.nullable(v.pipe(v.unknown(), v.transform(parseProxyCredentials))),
+      credentials: v.nullable(fromParser(parseProxyCredentials)),
     }),
   ),
 }
 
-/** Field-local comparison values whose credential baseline is opaque saved state. */
 const expected = {
   ...changes,
   network: v.strictObject(
     optionalFields({
       ...networkEntries,
-      credentials: v.pipe(v.unknown(), v.transform(parseProxyCredentialState)),
+      credentials: fromParser(parseProxyCredentialState),
     }),
   ),
 }
 
-/** Reading-editor field paths shared by comic and novel preference navigation. */
-const readingKeys = [
-  'flow',
-  'colors',
-  ...Object.keys(readingPageEntries).map((key) => `pages.${key}`),
-  ...Object.keys(readingTextEntries).map((key) => `text.${key}`),
-] as readonly ReadingPreferenceKey[]
+function fieldKeys<Prefix extends string, Fields extends object>(
+  prefix: Prefix,
+  fields: Fields,
+): `${Prefix}.${keyof Fields & string}`[] {
+  return Object.keys(fields).map((key) => `${prefix}.${key as keyof Fields & string}` as const)
+}
 
-/** Closed native preference-field catalog used by navigation and search. */
+function readingKeys<Medium extends 'comic' | 'novel'>(medium: Medium) {
+  return [
+    `usage.${medium}.flow`,
+    `usage.${medium}.colors`,
+    ...fieldKeys(`usage.${medium}.pages`, readingPageEntries),
+    ...fieldKeys(`usage.${medium}.text`, readingTextEntries),
+  ] as const
+}
+
 export const preferenceKeys: readonly PreferenceKey[] = Object.freeze([
-  ...Object.keys(generalEntries).map((key) => `general.${key}`),
-  ...Object.keys(appearanceEntries).map((key) => `appearance.${key}`),
-  ...Object.keys(navigationEntries).map((key) => `navigation.${key}`),
-  ...Object.keys(libraryEntries).map((key) => `library.${key}`),
+  ...fieldKeys('general', generalEntries),
+  ...fieldKeys('appearance', appearanceEntries),
+  ...fieldKeys('navigation', navigationEntries),
+  ...fieldKeys('library', libraryEntries),
   'usage.foregroundGracePeriodMs',
-  ...Object.keys(gamePreferenceEntries).map((key) => `usage.game.${key}`),
-  ...Object.keys(playbackPreferenceEntries).map((key) => `usage.anime.${key}`),
-  ...(['comic', 'novel'] as const).flatMap((kind) =>
-    readingKeys.map((key) => `usage.${kind}.${key}`),
-  ),
-  ...shortcutKeys.map((key) => `shortcuts.${key}`),
-  'network.mode',
-  'network.endpoint',
-  'network.bypassRules',
+  ...fieldKeys('usage.game', gamePreferenceEntries),
+  ...fieldKeys('usage.anime', playbackPreferenceEntries),
+  ...readingKeys('comic'),
+  ...readingKeys('novel'),
+  ...fieldKeys('shortcuts', shortcuts),
+  ...fieldKeys('network', networkEntries),
   'network.credentials',
-  'updates.autoCheck',
-  'updates.allowPrerelease',
-] as PreferenceKey[])
+  ...fieldKeys('updates', updateEntries),
+] satisfies PreferenceKey[])
 
 /** Parses a field-navigation identity from the current native catalog. */
 export function parsePreferenceKey(input: unknown): PreferenceKey {
@@ -378,7 +339,7 @@ export function parsePreferences(input: unknown, platform?: DesktopPlatform): Pr
       usage: v.strictObject(usageEntries),
       playback: v.strictObject(playbackEntries),
       shortcuts: v.strictObject(shortcuts),
-      network: v.pipe(v.unknown(), v.transform(parseNetworkPreferences)),
+      network: fromParser(parseNetworkPreferences),
       updates: v.strictObject(updateEntries),
     }),
     input,
@@ -405,8 +366,6 @@ export function effectiveShortcutBindings(
 }
 
 /**
- * Parses partial edits at declared native field boundaries and checks their baselines.
- *
  * Identity choices and arrays replace as whole values. Credential changes require the original
  * opaque credential state.
  */

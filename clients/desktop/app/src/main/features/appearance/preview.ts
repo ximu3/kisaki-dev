@@ -1,5 +1,3 @@
-/** @fileoverview Retains the validated font files of the active preview until its replacement or release. */
-
 import { releaseAll } from '../../infrastructure/release'
 import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
@@ -46,7 +44,6 @@ export function createPreviews(
     const value = parseAppearancePreviewInput(input)
     const unique = new Map<string, ThemeFontRead | null>()
     const resources: Partial<Record<FontTokenName, readonly ThemeFontResourceFile[]>> = {}
-    /** Releases the group of read handles owned by this prepared branch. */
     const dispose = async () => {
       await releaseAll([...unique.values()].map((item) => () => item?.dispose()))
     }
@@ -75,7 +72,6 @@ export function createPreviews(
     | { branch: Awaited<ReturnType<typeof prepare>>; end: (replacement?: boolean) => Promise<void> }
     | undefined
   return {
-    /** Supplies the fixed branch and its held files to each document's own binder. */
     get current() {
       return active?.branch
     },
@@ -93,7 +89,6 @@ export function createPreviews(
         await first.dispose()
         throw new DesktopError('Cancelled', 'A newer preview was requested')
       }
-      /** Delivers termination once to every editor observing this handle. */
       const ended = createSignal<void>()
       let revision = 0
       let releasing: Promise<void> | undefined

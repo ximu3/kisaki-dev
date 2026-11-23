@@ -1,5 +1,3 @@
-/** @fileoverview Identifies the supported database, applies Drizzle's migration chain and initializes only missing singleton data. */
-
 import { drizzle } from 'drizzle-orm/better-sqlite3'
 import { migrate } from 'drizzle-orm/better-sqlite3/migrator'
 import { readMigrationFiles } from 'drizzle-orm/migrator'
@@ -34,8 +32,7 @@ export class DatabaseFormatError extends Error {
   }
 }
 
-/** Claims an empty file or reads an owned ledger within a single SQLite transaction. */
-function claimOrReadHistory(connection: Database.Database) {
+function readMigrationHistory(connection: Database.Database, purpose: 'initialize' | 'inspect') {
   const objects = connection
     .prepare("select type, name from main.sqlite_schema where name not glob 'sqlite_*'")
     .all() as { type: string; name: string }[]
@@ -45,8 +42,10 @@ function claimOrReadHistory(connection: Database.Database) {
     objects.length === 0 &&
     connection.pragma('user_version', { simple: true }) === 0
   ) {
-    // Persist ownership before Drizzle creates its ledger so an interrupted first migration is identifiable.
-    connection.pragma(`application_id = ${applicationId}`)
+    if (purpose === 'initialize') {
+      // Persist ownership before Drizzle creates its ledger so an interrupted first migration is identifiable.
+      connection.pragma(`application_id = ${applicationId}`)
+    }
     return []
   }
   if (identity !== applicationId) {
@@ -73,9 +72,12 @@ function claimOrReadHistory(connection: Database.Database) {
   return applied
 }
 
-/** Establishes file ownership and returns whether the library has a verified migration baseline. */
-function prepareFormat(connection: Database.Database, migrationsDirectory: string): boolean {
-  const applied = connection.transaction(() => claimOrReadHistory(connection))()
+function hasMigrationBaseline(
+  connection: Database.Database,
+  migrationsDirectory: string,
+  purpose: 'initialize' | 'inspect',
+): boolean {
+  const applied = connection.transaction(() => readMigrationHistory(connection, purpose))()
   if (applied.length === 0) {
     return false
   }
@@ -109,7 +111,7 @@ export function initializeDatabase(options: DatabaseOptions) {
   const connection = new Database(path, { nativeBinding })
   try {
     configureConnection(connection)
-    const hasBaseline = prepareFormat(connection, migrationsDirectory)
+    const hasBaseline = hasMigrationBaseline(connection, migrationsDirectory, 'initialize')
     connection.loadExtension(collationExtension)
     enableWal(connection)
     // Pending migrations may write names; reopen existing indexes with their own comparator first.
@@ -161,7 +163,7 @@ export function verifyExistingLibrary(
     nativeBinding: options.nativeBinding,
   })
   try {
-    if (!prepareFormat(connection, options.migrationsDirectory)) {
+    if (!hasMigrationBaseline(connection, options.migrationsDirectory, 'inspect')) {
       throw new DatabaseFormatError('The selected library has no complete migration baseline')
     }
   } finally {

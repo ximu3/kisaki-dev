@@ -1,5 +1,3 @@
-/* Read-only explanations use compact text and stay within available space. */
-
 @layer components {
   .content {
     max-width: min(24rem, var(--popup-available-width, calc(100vw - 1rem)));

@@ -1,5 +1,3 @@
-/** @fileoverview Launches the source application with its own profile and controls readiness and normal exit over RPC. */
-
 import { spawn } from 'node:child_process'
 import { addAbortListener } from 'node:events'
 import { RpcConnection } from '@kisaki3/desktop-rpc'
@@ -11,6 +9,7 @@ import {
 } from '@kisaki3/desktop-contracts/development'
 import {
   startDevelopmentSession,
+  UnconfirmedApplicationExit,
   type DevelopmentApplication,
   type DevelopmentLaunchOptions,
   type DevelopmentOptions,
@@ -47,16 +46,15 @@ export async function launchApplication(
       child.once('close', (code, signal) => resolve({ code, signal }))
     },
   )
+  void exited.catch(() => {})
   const ready = Promise.withResolvers<void>()
   const rpc = new RpcConnection(
     {
-      /** Binds transport reads and disconnects to the spawned application. */
       start(receive, closed) {
         child.on('message', receive)
         child.once('disconnect', closed)
         child.once('error', closed)
       },
-      /** Sends one ordered development frame through the child IPC channel. */
       send(frame) {
         child.send(frame, (error) => {
           if (error) {
@@ -64,7 +62,6 @@ export async function launchApplication(
           }
         })
       },
-      /** Releases this launcher's end of the child connection. */
       close() {
         if (child.connected) {
           child.disconnect()
@@ -76,7 +73,6 @@ export async function launchApplication(
       handshake: {
         role: 'initiator',
         context: {},
-        /** Verifies the exact build the launcher prepared. */
         accepts: (value) =>
           !!value &&
           typeof value === 'object' &&
@@ -85,7 +81,6 @@ export async function launchApplication(
       },
       notifications: {
         topics: {
-          /** Checks the reported build before acknowledging application readiness. */
           ready(value) {
             const state = parseDevelopmentReady(value)
             if (state.buildId === options.buildId) {
@@ -95,7 +90,6 @@ export async function launchApplication(
             }
           },
         },
-        /** Reports invalid readiness notifications to the waiting launcher. */
         onError: (error) => ready.reject(error),
       },
     },
@@ -106,7 +100,6 @@ export async function launchApplication(
     options.startupTimeoutMs,
   )
   const cancel = addAbortListener(options.signal, () => ready.reject(options.signal.reason))
-  /** Terminates the owned child and waits for actual process exit. */
   const terminate = async () => {
     if (child.exitCode === null && child.signalCode === null) {
       child.kill('SIGKILL')
@@ -116,7 +109,16 @@ export async function launchApplication(
   try {
     await Promise.all([rpc.ready, ready.promise])
   } catch (error) {
-    await terminate()
+    try {
+      await terminate()
+    } catch (cleanup) {
+      if (child.pid !== undefined) {
+        throw new UnconfirmedApplicationExit(
+          [error, cleanup],
+          'The source application could not be closed after startup failed',
+        )
+      }
+    }
     throw error
   } finally {
     clearTimeout(timer)

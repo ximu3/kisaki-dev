@@ -1,5 +1,3 @@
-/** @fileoverview The editor's format buttons share its live state, selection and keyboard tab stop. */
-
 import { createMemo, createSignal, For, Show } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import type { EditorState } from '@codemirror/state'
@@ -22,9 +20,8 @@ import {
 import type { LucideIcon } from '@lucide/solid'
 import { createFocusNavigation } from '../../internal/focus'
 import { Icon } from '../../internal/icon/glyph'
-import { Tooltip, TooltipContent, TooltipTrigger } from '../tooltip/parts'
-import { runMarkdownCommand } from './commands'
-import type { MarkdownCommand } from './commands'
+import { Tooltip, TooltipContent, TooltipTrigger } from '../tooltip'
+import { runMarkdownCommand, type MarkdownCommand } from './commands'
 import styles from './styles.module.css'
 
 /** Lucide glyph assigned to each supported Markdown editing command. */
@@ -93,14 +90,11 @@ function commandAction<C extends MarkdownCommand>(
 ): MarkdownToolbarAction {
   return {
     id: command,
-    /** Reads the current localized label for the built-in command. */
     get label() {
       return label(command)
     },
-    /** Renders the package-owned glyph for the built-in command. */
     icon: () => <Icon icon={icons[command]} />,
 
-    /** Checks undo or redo availability while leaving ordinary formatting commands enabled. */
     isEnabled: (state) => {
       if (command === 'undo') {
         return undoDepth(state) > 0
@@ -111,7 +105,6 @@ function commandAction<C extends MarkdownCommand>(
 
       return true
     },
-    /** Applies the built-in command to the supplied live editor. */
     run: (view) => runMarkdownCommand(view, command),
   }
 }
@@ -123,9 +116,7 @@ function commandAction<C extends MarkdownCommand>(
  */
 export function MarkdownToolbar<C extends MarkdownCommand>(props: ToolbarProps<C>): JSX.Element {
   let root!: HTMLDivElement
-  /** Current command and custom-action catalog keyed by stable toolbar identities. */
   const buttons = createMemo(() => {
-    /** Caller toolbar configuration captured for this reactive catalog rebuild. */
     const config = props.config
     // Omitting the configuration requires a label provider for the entire standard set.
     const items =
@@ -142,9 +133,7 @@ export function MarkdownToolbar<C extends MarkdownCommand>(props: ToolbarProps<C
     return result
   })
 
-  /** Toolbar action serving as the remembered keyboard focus target. */
   const [focusedId, setFocusedId] = createSignal<string>()
-  /** Action identities currently available under editor state and read-only policy. */
   const enabled = createMemo(() => {
     const state = props.state
     return Array.from(buttons().values())
@@ -154,11 +143,7 @@ export function MarkdownToolbar<C extends MarkdownCommand>(props: ToolbarProps<C
       )
       .map((action) => action.id)
   })
-  /**
-   * Chooses the remembered enabled action or the first available action as the toolbar's tab entry.
-   */
   const tabStop = () => enabled().find((id) => id === focusedId()) ?? enabled()[0]
-  /** Horizontal keyboard navigation over the toolbar's enabled buttons. */
   const navigate = createFocusNavigation(
     () => root,
     'button',
@@ -178,7 +163,6 @@ export function MarkdownToolbar<C extends MarkdownCommand>(props: ToolbarProps<C
       >
         <For each={Array.from(buttons().keys())}>
           {(id) => {
-            /** Reads current action data for the stable toolbar item identity. */
             const action = () => buttons().get(id)!
 
             return (

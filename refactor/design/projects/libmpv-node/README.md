@@ -21,7 +21,7 @@
 
 Rust core 以同一个 Mpv 及其原生资源为中心，按 Client API 控制与视频输出组织。client.rs 和 video.rs 承载实际入口与生命周期实现，各自目录保存内部协作拆分：
 
-    core/src/
+    crates/core/src/
     ├── lib.rs
     ├── runtime.rs
     ├── ffi.rs

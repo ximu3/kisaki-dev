@@ -1,18 +1,11 @@
-/** @fileoverview Defines allowed source or candidate inputs for metadata adoption. */
-
 import type { EntryType } from '../library/catalog'
-import type { IdentificationClues } from '../metadata/fields'
-import type { MetadataCandidate } from '../metadata/candidates'
-import type { MetadataRelationScopes } from '../metadata/relations'
 import * as v from 'valibot'
-import { parseIdentificationClues } from '../metadata/fields'
-import { parseMetadataCandidate } from '../metadata/candidates'
-import { parseValue, id } from '../validation'
-import { parseMetadataRelationScopes } from '../metadata/relations'
+import { parseIdentificationClues, type IdentificationClues } from '../metadata/fields'
+import { parseMetadataCandidate, type MetadataCandidate } from '../metadata/candidates'
+import { fromParser, parseValue, id } from '../validation'
+import { parseMetadataRelationScopes, type MetadataRelationScopes } from '../metadata/relations'
 
 /**
- * A profile with identification clues or a prepared source candidate for initial adoption.
- *
  * Prepared candidates contain source facts and completeness evidence, rather than local graph
  * patches.
  */
@@ -25,8 +18,6 @@ export type MetadataInput<T extends EntryType> =
     }
 
 /**
- * A metadata source for updating a fixed local target.
- *
  * Profile clues may be omitted and derived from that target. Prepared input retains a complete
  * candidate root.
  */
@@ -55,16 +46,12 @@ export function parseMetadataUpdateInput<T extends EntryType>(
   return parseMetadataSource(root, input, true) as MetadataUpdateInput<T>
 }
 
-/** Parses root-specific profile or candidate data with the clue requirements for add or update. */
 function parseMetadataSource(
   root: EntryType,
   input: unknown,
   update: boolean,
 ): MetadataInput<EntryType> | MetadataUpdateInput<EntryType> {
-  const clues = v.pipe(
-    v.unknown(),
-    v.transform((value) => parseIdentificationClues(root, value)),
-  )
+  const clues = fromParser((value) => parseIdentificationClues(root, value))
   const data = v.pipe(
     v.unknown(),
     v.transform(parseMetadataCandidate),
@@ -81,10 +68,7 @@ function parseMetadataSource(
         type: v.literal('prepared'),
         data,
         relationScopes: v.exactOptional(
-          v.pipe(
-            v.unknown(),
-            v.transform((value) => parseMetadataRelationScopes(root, value)),
-          ),
+          fromParser((value) => parseMetadataRelationScopes(root, value)),
         ),
       }),
     ]),

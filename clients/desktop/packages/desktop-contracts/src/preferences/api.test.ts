@@ -1,5 +1,3 @@
-/** @fileoverview Checks changed preference fields and credential comparison baselines. */
-
 import { expect, test } from 'vite-plus/test'
 import { parsePreferencesUpdate } from './api'
 import { DesktopError } from '../errors'

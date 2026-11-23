@@ -1,11 +1,8 @@
-/** @fileoverview Defines independently saved showcase sections, explicit batch creation and fixed preset configurations. */
-
-import type { QueryReferenceLabel, EntryQuery } from './query/definition'
-import type { CollectionQuery, TagQuery } from './organizers'
 import type { NonEmptyArray, StoredDefinition, CallOptions } from '../operations'
 import type { ReorderInput } from './ordering'
 import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
 import {
+  fromParser,
   parseRecord,
   parseValue,
   nonemptyText,
@@ -14,10 +11,19 @@ import {
   validateExpectedKeys,
 } from '../validation'
 import * as v from 'valibot'
-import { parseCollectionQuery, parseTagQuery } from './organizers'
-import { parseEntryQuery, parseQueryReferenceLabels } from './query/definition'
+import {
+  parseCollectionQuery,
+  parseTagQuery,
+  type CollectionQuery,
+  type TagQuery,
+} from './organizers'
+import {
+  parseEntryQuery,
+  parseQueryReferenceLabels,
+  type QueryReferenceLabel,
+  type EntryQuery,
+} from './query/definition'
 
-/** Showcase query routed by kind to an existing entry, collection or tag reader. */
 export type ShowcaseQuery =
   | ({
       readonly kind: 'entry'
@@ -26,7 +32,6 @@ export type ShowcaseQuery =
   | ({ readonly kind: 'collection' } & CollectionQuery)
   | ({ readonly kind: 'tag' } & TagQuery)
 
-/** Saved query and display configuration for one showcase section. */
 export interface ShowcaseFields {
   readonly name: string
   readonly query: ShowcaseQuery
@@ -40,11 +45,7 @@ export interface ShowcaseFields {
   readonly isVisible: boolean
 }
 
-/**
- * Saved showcase section with its order, timestamps and explicit query validity.
- *
- * A damaged query remains local to its section and is preserved as invalid.
- */
+/** An invalid query stays local to its section and is preserved as invalid. */
 export interface ShowcaseSection extends Omit<ShowcaseFields, 'query'> {
   readonly id: string
   readonly query: StoredDefinition<ShowcaseQuery>
@@ -56,9 +57,7 @@ export interface ShowcaseSection extends Omit<ShowcaseFields, 'query'> {
 }
 
 /**
- * Section field edits and optional original values.
- *
- * The query and its reference labels form one edit unit; name and display fields have independent
+ * The query and reference labels form one edit unit. Name and display fields have independent
  * baselines.
  */
 export interface ShowcaseUpdate {
@@ -66,7 +65,6 @@ export interface ShowcaseUpdate {
   readonly expected?: Partial<ShowcaseFields>
 }
 
-/** Fixed, localized configuration available as the starting point for a section draft. */
 export interface ShowcasePreset {
   readonly id: string
   readonly defaultLocale: string
@@ -75,7 +73,6 @@ export interface ShowcasePreset {
   readonly initial: ShowcaseFields
 }
 
-/** Operations on independently saved showcase sections and fixed draft presets. */
 export interface ShowcaseApi {
   /**
    * Reads all saved sections in formal order, including hidden sections and invalid stored queries.
@@ -87,20 +84,15 @@ export interface ShowcaseApi {
    */
   get(id: string, call?: CallOptions): Promise<ShowcaseSection | null>
 
-  /**
-   * Reads fixed preset configurations for copying into drafts.
-   *
-   * Listing presets does not create sections.
-   */
+  /** Preset definitions are copied to drafts. Use creation to save a section. */
   listPresets(call?: CallOptions): Promise<readonly ShowcasePreset[]>
 
   /** Saves a new independent section at the end of the directory. */
   create(input: ShowcaseFields, call?: CallOptions): Promise<ShowcaseSection>
 
   /**
-   * Atomically appends an explicit batch and returns saved sections in input order.
-   *
-   * Equal configurations remain independent sections.
+   * Appends atomically and returns sections in input order. Equal configurations create separate
+   * sections.
    */
   createMany(
     input: NonEmptyArray<ShowcaseFields>,
@@ -140,15 +132,12 @@ export function parseShowcaseQuery(input: unknown): ShowcaseQuery {
   return { kind, ...query, referenceLabels: labels }
 }
 
-/**
- * Complete editable showcase-section query and presentation fields shared by creation and updates.
- */
 const fields = {
   name: v.pipe(
     nonemptyText,
     v.transform((value) => value.trim()),
   ),
-  query: v.pipe(v.unknown(), v.transform(parseShowcaseQuery)),
+  query: fromParser(parseShowcaseQuery),
 
   layout: v.picklist(['horizontal', 'grid']),
   itemSize: v.picklist(['xs', 'sm', 'md', 'lg', 'xl']),
@@ -169,11 +158,7 @@ export function parseShowcaseCreateMany(input: unknown): NonEmptyArray<ShowcaseF
   return parseValue(v.tupleWithRest([section], section), input, 'Invalid showcase creation batch')
 }
 
-/**
- * Parses section edits and requires baselines to correspond to changed fields.
- *
- * The query and its reference labels are validated as one complete value.
- */
+/** The query and its reference labels are validated as one complete value. */
 export function parseShowcaseUpdate(input: unknown): ShowcaseUpdate {
   const partial = v.strictObject(optionalFields(fields))
   const value = parseValue(

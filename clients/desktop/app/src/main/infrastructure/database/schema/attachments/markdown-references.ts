@@ -1,7 +1,4 @@
-/** @fileoverview Declares each Markdown owner's exact attachment references with reverse lookup and restricted attachment deletion. */
-
-import { index, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import type { AnySQLiteColumn } from 'drizzle-orm/sqlite-core'
+import { index, primaryKey, sqliteTable, text, type AnySQLiteColumn } from 'drizzle-orm/sqlite-core'
 import { attachments } from './metadata'
 import {
   entries,

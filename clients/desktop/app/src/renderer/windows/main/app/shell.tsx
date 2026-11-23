@@ -1,5 +1,3 @@
-/** @fileoverview Arranges the platform caption, navigation rail, fixed tools and mounted page. */
-
 import {
   createEffect,
   createMemo,

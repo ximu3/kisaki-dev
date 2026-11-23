@@ -24,14 +24,14 @@ Fanart.tv 负责已有对象的图片补充与独立素材浏览，不承担作�
 
 ## 明确身份与定位
 
-source 使用 fanarttv，各资源沿下表的原生编号形成身份。
+`source` 使用 `fanarttv`。下表区分正式身份和只用于取得图片的查询编号。
 
 | 来源资源 | 实际查询依据                   | 本扩展身份用途                                               |
 | -------- | ------------------------------ | ------------------------------------------------------------ |
-| Movie    | TMDB Movie ID 或 IMDb title ID | 规范为 fanarttv 的 movie/{tmdbMovieId}，核对实际响应中的编号 |
+| Movie    | TMDB Movie ID 或 IMDb title ID | 规范为 `movie/{tmdbMovieId}`，核对实际响应中的编号           |
 | TV       | TVDB series ID                 | 只作为图片检索坐标，不作为 Anime 根身份                      |
-| Artist   | MusicBrainz Artist UUID        | artist/{uuid}，仅用于已确认人物或团体的图片读取              |
-| Label    | MusicBrainz Label UUID         | label/{uuid}，用于已确认组织的图片读取                       |
+| Artist   | MusicBrainz Artist UUID        | `artist/{uuid}`，用于已确认人物或团体的图片读取              |
+| Label    | MusicBrainz Label UUID         | `label/{uuid}`，用于已确认组织的图片读取                     |
 
 Movie 的明确编号可以由已有资料线索取得，resolve 核对真实资源后返回同一影片；只有名称或不适用的 TV 线索时返回 insufficientInput。不提供 Entry 名称搜索，不抓取全站更新列表建立本地搜索库，也不从图片标题推断动画类别或发行信息。
 
@@ -116,7 +116,7 @@ src/
 ├── webview/
 │   ├── index.html
 │   ├── entry.tsx
-│   └── settings/
+│   └── metadata.tsx
 └── shared/
     ├── contracts.ts
     └── validation.ts

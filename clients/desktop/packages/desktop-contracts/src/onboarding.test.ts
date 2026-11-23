@@ -1,5 +1,3 @@
-/** @fileoverview Checks onboarding request baselines and independently durable partial results. */
-
 import { expect, test } from 'vite-plus/test'
 import {
   parseOnboardingState,

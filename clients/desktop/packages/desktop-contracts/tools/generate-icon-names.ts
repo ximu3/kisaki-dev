@@ -1,5 +1,3 @@
-/** @fileoverview Generates the pure host icon-name catalog from the pinned Lucide distribution. */
-
 import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { lucideIconNames } from '@lucide/icons/dynamic'

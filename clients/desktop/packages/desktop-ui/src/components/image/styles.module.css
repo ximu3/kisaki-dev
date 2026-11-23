@@ -1,5 +1,3 @@
-/* Images preserve aspect ratio and explicit alternate content. */
-
 @layer components {
   .root {
     display: block;

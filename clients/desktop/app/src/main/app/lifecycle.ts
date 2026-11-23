@@ -1,5 +1,3 @@
-/** @fileoverview Coordinates cancellable exit attempts with actual editing, accepted work and final resource release. */
-
 import { addAbortListener } from 'node:events'
 import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
 import { setTimeout as delay } from 'node:timers/promises'
@@ -13,7 +11,8 @@ import type {
 import { createSignal } from '../infrastructure/events'
 import { waitFor } from '../infrastructure/wait'
 
-/** Admission and teardown callbacks supplied by the owners of the running application. */
+const waitPromptDelayMs = 5_000
+
 interface ExitDependencies {
   /** Asks the open editors whether the attempt may proceed. */
   confirm(signal: AbortSignal): Promise<boolean>
@@ -41,20 +40,18 @@ function exitErrorMessage(cause: unknown): string {
 
 /** Creates one coordinator shared by the tray, windows, development control and restart. */
 export function createLifecycle(deps: ExitDependencies): ApplicationExitApi {
-  /** Delivers each change of exit phase to its observers. */
   const changed = createSignal<ApplicationExitState>()
   let state: ApplicationExitState = { status: 'idle' }
   let current: Promise<ApplicationExitResult> | undefined
   let controller: AbortController | undefined
 
-  /** Publishes actual progress without creating durable quit plans or task history. */
-  function set(next: ApplicationExitState) {
+  function publishState(next: ApplicationExitState) {
     state = next
     changed.emit(next)
   }
 
   /** Starts one attempt and returns the same result to concurrent callers and continued waits. */
-  async function start(
+  async function requestExit(
     intent: 'quit' | 'restart',
     call?: CallOptions,
   ): Promise<ApplicationExitResult> {
@@ -62,17 +59,17 @@ export function createLifecycle(deps: ExitDependencies): ApplicationExitApi {
     if (current) {
       return waitFor(current, call?.signal)
     }
+
     const abort = new AbortController()
     controller = abort
     const cancel = call?.signal && addAbortListener(call.signal, () => abort.abort())
     const cancelled = Promise.withResolvers<'cancel'>()
     abort.signal.addEventListener('abort', () => cancelled.resolve('cancel'), { once: true })
     let committed = false
-
     const stopping = { intent, sessions: [], pendingRecordings: 0, error: null } as const
 
     /** Waits for accepted work and offers one prompt if draining exceeds the wait budget. */
-    async function drain() {
+    async function waitForOwners() {
       const settled = Promise.race([
         deps.drain().then(() => 'finished' as const),
         cancelled.promise,
@@ -81,7 +78,7 @@ export function createLifecycle(deps: ExitDependencies): ApplicationExitApi {
       try {
         const first = await Promise.race([
           settled,
-          delay(5000, 'timeout' as const, { signal: timer.signal }),
+          delay(waitPromptDelayMs, 'timeout' as const, { signal: timer.signal }),
         ])
         if (first !== 'timeout') {
           return first
@@ -90,7 +87,7 @@ export function createLifecycle(deps: ExitDependencies): ApplicationExitApi {
         timer.abort()
       }
 
-      set({ ...stopping, status: 'waiting' })
+      publishState({ ...stopping, status: 'waiting' })
       const prompt = new AbortController()
       try {
         const next = await Promise.race([deps.waiting(prompt.signal), settled])
@@ -103,26 +100,25 @@ export function createLifecycle(deps: ExitDependencies): ApplicationExitApi {
       return settled
     }
 
-    /** Checks editors, drains accepted work and commits only an approved exit. */
     const attempt = async (): Promise<ApplicationExitResult> => {
       try {
         const confirmed =
           !abort.signal.aborted &&
           (await Promise.race([deps.confirm(abort.signal), cancelled.promise.then(() => false)]))
         if (!confirmed || abort.signal.aborted) {
-          set({ status: 'idle' })
+          publishState({ status: 'idle' })
           return { outcome: 'cancelled' }
         }
 
         deps.accept(false)
-        if ((await drain()) === 'cancel' || abort.signal.aborted) {
+        if ((await waitForOwners()) === 'cancel' || abort.signal.aborted) {
           deps.accept(true)
-          set({ status: 'idle' })
+          publishState({ status: 'idle' })
           return { outcome: 'cancelled' }
         }
 
         committed = true
-        set({ ...stopping, status: 'exiting' })
+        publishState({ ...stopping, status: 'exiting' })
         await deps.release()
         deps.finish(intent === 'restart')
         return { outcome: 'exiting' }
@@ -137,7 +133,7 @@ export function createLifecycle(deps: ExitDependencies): ApplicationExitApi {
                 code: 'OperationFailed',
                 message: exitErrorMessage(cause),
               }
-        set({ ...stopping, status: 'failed', error })
+        publishState({ ...stopping, status: 'failed', error })
         console.error('Application exit failed', cause)
         if (committed) {
           deps.fail(error.message)
@@ -156,25 +152,22 @@ export function createLifecycle(deps: ExitDependencies): ApplicationExitApi {
         }
         controller = undefined
       })
-    set({ ...stopping, status: 'closing' })
+    publishState({ ...stopping, status: 'closing' })
     return current
   }
 
   return {
-    /** Reads the current attempt state. */
     async getState(call) {
       call?.signal?.throwIfAborted()
       return state
     },
-    /** Delivers the current phase and subsequent progress until disposal. */
     observe(listener) {
       return changed.observe(listener, state)
     },
-    /** Requests a normal application quit. */
-    quit: (call) => start('quit', call),
-    /** Requests the normal close sequence followed by relaunch. */
-    restart: (call) => start('restart', call),
-    /** Reopens admission when cancellation is still possible. */
+
+    quit: (call) => requestExit('quit', call),
+    restart: (call) => requestExit('restart', call),
+
     async cancel(call) {
       call?.signal?.throwIfAborted()
       if (state.status === 'closing' || state.status === 'waiting') {
@@ -182,7 +175,6 @@ export function createLifecycle(deps: ExitDependencies): ApplicationExitApi {
         await current
       }
     },
-    /** Joins the existing attempt without issuing another quit. */
     async continueWaiting(call) {
       call?.signal?.throwIfAborted()
       if (!current) {

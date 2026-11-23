@@ -1,5 +1,3 @@
-/** @fileoverview Defines held-file usage overrides, preferred-file selection and playback choices. */
-
 import type {
   AnimePlaybackPreferences,
   ReadingPreferences,
@@ -9,7 +7,6 @@ import type {
 } from '../../preferences/usage'
 import type { FileWorkType, PartRef, EntryRef } from '../catalog'
 
-import type { FilePartType } from './associations'
 import type { CallOptions, StoredDefinition, NonEmptyArray } from '../../operations'
 import * as v from 'valibot'
 import {
@@ -21,22 +18,19 @@ import {
   unique,
 } from '../../validation'
 import { path } from './directories'
-import { partSchema, partKey } from './associations'
+import { partSchema, partKey, type FilePartType } from './associations'
 
 /**
- * A source-local saved track selection.
- *
- * Index is the zero-based ordinal among tracks of the field's kind in the source file, independent
- * of runtime track IDs.
+ * Index is the zero-based ordinal among tracks of the field's kind in this source file. It remains
+ * independent of runtime track IDs.
  */
 export type FileTrackSelection =
   | { readonly type: 'embedded'; readonly index: number }
   | { readonly type: 'external'; readonly path: string; readonly index: number }
 
 /**
- * Saved source-track choices and signed synchronization offsets for one video file.
- *
- * Null selections use language, file and engine fallback rules; they do not disable subtitles.
+ * Null selections use the language, file and engine fallback rules. Subtitle disablement is
+ * separate.
  */
 export interface FilePlaybackChoices {
   readonly audioTrack: FileTrackSelection | null
@@ -45,26 +39,22 @@ export interface FilePlaybackChoices {
   readonly subtitleDelaySeconds: number
 }
 
-/** The complete usage settings applicable to each file-bearing medium. */
 export interface FilePreferencesByType {
   readonly anime: AnimePlaybackPreferences
   readonly comic: ReadingPreferences
   readonly novel: ReadingPreferences
 }
 
-/** The override-edit contract applicable to each file-bearing medium. */
 export interface FilePreferenceChangeByType {
   readonly anime: PlaybackOverrideChange
   readonly comic: ReadingOverrideChange
   readonly novel: ReadingOverrideChange
 }
 
-/** The work-wide or directly associated part scope of a preferred-file choice. */
 export type PreferredFileScope<T extends FileWorkType = FileWorkType> =
   | { readonly type: 'work' }
   | { readonly type: 'part'; readonly part: PartRef<FilePartType<T>> }
 
-/** An explicit preferred-file choice or clearing within one scope, with an optional baseline. */
 export interface PreferredFileInput<T extends FileWorkType = FileWorkType> {
   readonly scope: PreferredFileScope<T>
   readonly fileId: string | null
@@ -78,23 +68,16 @@ export interface PreferredPartFile<T extends FileWorkType = FileWorkType> {
   readonly expected?: { readonly preferredFileId: string | null }
 }
 
-/** The work or file owning a complete saved usage override. */
 export type UsagePreferenceTarget =
   | { readonly type: 'work' }
   | { readonly type: 'file'; readonly fileId: string }
 
 /**
- * Saved work and file usage overrides and effective configuration selection.
- *
- * Complete custom settings remain independent of parent changes. Saving does not itself reconfigure
- * open content.
+ * Saved custom settings retain their values when parent settings change. Saving leaves open content
+ * as it is.
  */
 export interface HoldingsPreferencesApi {
-  /**
-   * Reads a complete saved override.
-   *
-   * Null means customization is absent; invalid stored definitions remain explicit.
-   */
+  /** Null means customization is absent. An invalid stored definition is reported explicitly. */
   get<T extends FileWorkType>(
     work: EntryRef<T>,
     target: UsagePreferenceTarget,
@@ -102,9 +85,8 @@ export interface HoldingsPreferencesApi {
   ): Promise<StoredDefinition<UsageOverride<FilePreferencesByType[T]>> | null>
 
   /**
-   * Initializes an override from a complete snapshot or compares and changes the existing override.
-   *
-   * Parent changes do not silently rebase saved custom settings.
+   * Initialization takes a complete snapshot. Later parent changes leave saved custom settings
+   * independent.
    */
   update<
     Args extends {
@@ -120,9 +102,8 @@ export interface HoldingsPreferencesApi {
   ): Promise<UsageOverride<FilePreferencesByType[Args[0]['type']]>>
 
   /**
-   * Selects one complete enabled file, work or global configuration for the file.
-   *
-   * Selection does not merge individual fields or reconfigure open content.
+   * Chooses a complete enabled configuration from file, work or global settings. Selection leaves
+   * open content as it is.
    */
   getEffective<T extends FileWorkType>(
     work: EntryRef<T>,
@@ -134,11 +115,6 @@ export interface HoldingsPreferencesApi {
   }>
 }
 
-/**
- * Saved per-file source-track choices and offsets.
- *
- * Whole playback overrides and runtime track IDs remain separately owned.
- */
 export interface FilePlaybackChoicesApi {
   /** Reads saved source-local choices and offsets, retaining invalid stored values explicitly. */
   get(
@@ -147,7 +123,6 @@ export interface FilePlaybackChoicesApi {
     call?: CallOptions,
   ): Promise<StoredDefinition<FilePlaybackChoices>>
 
-  /** Compares and commits only the submitted saved track choices and offsets. */
   update(
     animeId: string,
     fileId: string,
@@ -159,7 +134,6 @@ export interface FilePlaybackChoicesApi {
   ): Promise<void>
 }
 
-/** Embedded or external track identity with a nonnegative source track index. */
 const track = v.variant('type', [
   v.strictObject({ type: v.literal('embedded'), index: nonnegativeInteger }),
   v.strictObject({ type: v.literal('external'), path, index: nonnegativeInteger }),
@@ -170,7 +144,6 @@ export function parseFileTrackSelection(input: unknown): FileTrackSelection {
   return parseValue(track, input, 'Invalid saved track selection')
 }
 
-/** Saved source tracks and finite signed offsets shared by whole values and partial edits. */
 const playbackChoiceFields = {
   audioTrack: v.nullable(track),
   subtitleTrack: v.nullable(track),
@@ -178,7 +151,6 @@ const playbackChoiceFields = {
   subtitleDelaySeconds: v.pipe(v.number(), v.finite()),
 }
 
-/** Parses a complete saved playback choice without applying update or baseline semantics. */
 export function parseFilePlaybackChoices(input: unknown): FilePlaybackChoices {
   return parseValue(v.strictObject(playbackChoiceFields), input, 'Invalid saved playback choices')
 }
@@ -200,11 +172,7 @@ export function parseFilePlaybackChoicesUpdate(input: unknown): {
   return value
 }
 
-/**
- * Parses an explicit preferred-file scope, selection and optional baseline.
- *
- * Commit separately checks availability and direct same-work association.
- */
+/** The write owner verifies file availability and direct same-work association. */
 export function parsePreferredFileInput<T extends FileWorkType>(
   workType: T,
   input: unknown,
@@ -223,11 +191,7 @@ export function parsePreferredFileInput<T extends FileWorkType>(
   ) as PreferredFileInput<T>
 }
 
-/**
- * Parses a nonempty preferred-file batch with each part represented once.
- *
- * One file may be preferred for multiple directly associated parts.
- */
+/** Each part can appear once. A file can be preferred for several directly associated parts. */
 export function parsePreferredPartFiles<T extends FileWorkType>(
   workType: T,
   input: unknown,

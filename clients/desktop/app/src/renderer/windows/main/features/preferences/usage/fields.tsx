@@ -1,5 +1,3 @@
-/** @fileoverview Presents work timing, media editor entries and the short media forms. */
-
 import { For } from 'solid-js'
 import { ChevronRight } from '@lucide/solid'
 import { Button } from '@kisaki3/desktop-ui/button'
@@ -11,19 +9,15 @@ import type { Translate } from '@kisaki3/desktop-localization'
 import type { PreferenceFields } from '../draft'
 import { PreferenceField } from '../field'
 
-/** Matches the per-medium branches in the work usage preferences. */
 export const usageMedia = ['game', 'anime', 'comic', 'novel'] as const
 
-/** Stable identity of a media settings branch. */
 export type UsageMedium = (typeof usageMedia)[number]
 
-/** The current translation and typed fields owned by the containing editor. */
 interface UsageFieldsProps {
   t: Translate
   draft: PreferenceFields
 }
 
-/** Presents the shared timer followed by direct entry points for each separate work form. */
 export function UsageFields(props: UsageFieldsProps & { open: (medium: UsageMedium) => void }) {
   const { t, draft } = props
 
@@ -70,7 +64,6 @@ export function UsageFields(props: UsageFieldsProps & { open: (medium: UsageMedi
   )
 }
 
-/** Edits the two game panel defaults. */
 export function GameUsageFields(props: UsageFieldsProps) {
   const { t, draft } = props
 
@@ -93,7 +86,6 @@ export function GameUsageFields(props: UsageFieldsProps) {
   )
 }
 
-/** Arranges anime playback, audio and subtitle settings by their use in the player. */
 export function AnimeUsageFields(props: UsageFieldsProps) {
   const { t, draft } = props
 

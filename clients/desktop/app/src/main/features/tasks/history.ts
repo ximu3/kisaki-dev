@@ -1,22 +1,21 @@
-/** @fileoverview Stores confirmed task checkpoints and projects orphaned histories consistently for reads and cleanup. */
-
 import { and, count, desc, eq, inArray, lt, gte, sql, type SQL } from 'drizzle-orm'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type { StoredDefinition, ListOptions } from '@kisaki3/desktop-contracts/operations'
 import type { JsonValue } from '@kisaki3/desktop-contracts/json'
-import type {
-  TaskRun,
-  TaskQuery,
-  TaskRunStatus,
-  TaskHistoryFilter,
-  TaskTerminalRun,
+import {
+  isTaskTerminal,
+  taskRunStatuses,
+  type TaskRun,
+  type TaskQuery,
+  type TaskRunStatus,
+  type TaskHistoryFilter,
+  type TaskTerminalRun,
 } from '@kisaki3/desktop-contracts/tasks'
 import type { Storage } from '../../infrastructure/database'
 import { taskRuns } from '../../infrastructure/database/schema/history'
 import { ready } from '../../infrastructure/database/codecs/json'
 
-/** Execution states whose completion cannot be inferred from the last committed checkpoint. */
-const unfinished = ['queued', 'running', 'pausing', 'paused', 'cancelling'] as const
+const activeStatuses = taskRunStatuses.filter((status) => !isTaskTerminal(status))
 
 /** Requires a usable stored field when the caller asks for its value. */
 function unwrap<T>(value: StoredDefinition<T> | null): T | null {
@@ -26,17 +25,35 @@ function unwrap<T>(value: StoredDefinition<T> | null): T | null {
   return value?.value ?? null
 }
 
-/** Projects active control states and unconfirmed endings using the same expression for all queries. */
+/** Orphaned histories have an unconfirmed ending even if they last recorded an active state. */
 function projectedStatus(active: ReadonlyArray<readonly [string, TaskRunStatus]>) {
   const live = active.map(([id, status]) => sql`when ${taskRuns.id} = ${id} then ${status} `)
-  return sql<TaskRunStatus>`case ${sql.join(live)} when ${inArray(taskRuns.status, [...unfinished])} then 'interrupted' else ${taskRuns.status} end`
+  return sql<TaskRunStatus>`case ${sql.join(live)} when ${inArray(taskRuns.status, activeStatuses)} then 'interrupted' else ${taskRuns.status} end`
+}
+
+function endedStatus(status: TaskRunStatus): TaskTerminalRun['status'] {
+  return isTaskTerminal(status) ? status : 'interrupted'
 }
 
 /** Builds worker operations on the generic history table, independent of business-owned reports. */
 export function taskHistory(storage: Storage) {
   const db = storage.db
+
+  function readRecord(id: string): TaskRun | null {
+    const row = db.select().from(taskRuns).where(eq(taskRuns.id, id)).get()
+    if (!row) {
+      return null
+    }
+
+    return {
+      ...row,
+      input: unwrap(row.input),
+      result: unwrap(row.result),
+      error: unwrap(row.error),
+    }
+  }
+
   return {
-    /** Provides the history's actual operation types without loading result or input documents. */
     taskTypes() {
       return db
         .selectDistinct({ type: taskRuns.type })
@@ -45,14 +62,15 @@ export function taskHistory(storage: Storage) {
         .all()
         .map((row) => row.type)
     },
+
     /** Records incomplete executions from the previous process without inventing an ending time. */
     interruptTasks() {
       db.update(taskRuns)
         .set({ status: 'interrupted', finishedAt: null })
-        .where(inArray(taskRuns.status, [...unfinished]))
+        .where(inArray(taskRuns.status, activeStatuses))
         .run()
     },
-    /** Commits the required starting record before handing the task to its business callback. */
+
     startTask(run: TaskRun) {
       db.insert(taskRuns)
         .values({
@@ -63,14 +81,12 @@ export function taskHistory(storage: Storage) {
         })
         .run()
     },
-    /** Persists a validated result independently of lightweight progress. */
     checkpointTask(id: string, result: JsonValue) {
       db.update(taskRuns)
         .set({ result: ready(result) })
         .where(eq(taskRuns.id, id))
         .run()
     },
-    /** Commits the terminal status, retained result and safe failure as one database write. */
     finishTask(run: TaskTerminalRun) {
       db.update(taskRuns)
         .set({
@@ -82,22 +98,16 @@ export function taskHistory(storage: Storage) {
         .where(eq(taskRuns.id, run.id))
         .run()
     },
-    /** Reads full recorded facts for one task under the supplied execution state. */
+
     getTask(id: string, active: TaskRunStatus | null): TaskRun | null {
-      const row = db.select().from(taskRuns).where(eq(taskRuns.id, id)).get()
-      if (!row) {
-        return null
-      }
-      const status =
-        active ?? (unfinished.some((s) => s === row.status) ? 'interrupted' : row.status)
-      return {
-        ...row,
-        input: unwrap(row.input),
-        result: unwrap(row.result),
-        error: unwrap(row.error),
-        status,
-      }
+      const record = readRecord(id)
+      return record && { ...record, status: active ?? endedStatus(record.status) }
     },
+    getEndedTask(id: string): TaskTerminalRun | null {
+      const record = readRecord(id)
+      return record && { ...record, status: endedStatus(record.status) }
+    },
+
     /** Reads a summary interval and its total from one snapshot, excluding input and result bytes. */
     listTasks(
       query: TaskQuery,
@@ -147,7 +157,7 @@ export function taskHistory(storage: Storage) {
         return { items: items.map((row) => ({ ...row, error: unwrap(row.error) })), total }
       })
     },
-    /** Removes ended history matching a run identity or the requested type and time interval. */
+
     clearTasks(filter: TaskHistoryFilter, active: readonly string[], id?: string) {
       const conditions: SQL[] = id === undefined ? [] : [eq(taskRuns.id, id)]
       if (filter.types) {
@@ -156,6 +166,8 @@ export function taskHistory(storage: Storage) {
       if (filter.createdBefore !== undefined) {
         conditions.push(lt(taskRuns.createdAt, filter.createdBefore))
       }
+
+      // A history whose live context has ended may still show its last saved checkpoint.
       if (active.length) {
         conditions.push(sql`not ${inArray(taskRuns.id, [...active])}`)
       }

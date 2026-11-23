@@ -1,20 +1,13 @@
-/** @fileoverview Verifies package selection, native host coverage and manual task ownership. */
-
 import { expect, test } from 'vite-plus/test'
-import { verificationPackages } from '../../tools/ci/packages'
-import type { VerificationPackage } from '../../tools/ci/packages'
-import { planChecks } from '../../tools/ci/plan'
-import type { CheckRequest } from '../../tools/ci/plan'
+import { verificationPackages, type VerificationPackage } from '../../tools/ci/packages'
+import { planChecks, type CheckRequest } from '../../tools/ci/plan'
 import { selectPackages } from '../../tools/ci/selection'
 import { listProjects } from '../../tools/workspace'
 
-/** The candidate's actual workspace manifests. */
 const workspace = listProjects()
 
-/** Target checks registered for this checkout. */
 const packages = verificationPackages(workspace)
 
-/** Plans a candidate diff or a manual request against the actual pnpm graph. */
 function plan(paths?: readonly string[], request?: CheckRequest) {
   return planChecks(selectPackages(paths, workspace), packages, request)
 }

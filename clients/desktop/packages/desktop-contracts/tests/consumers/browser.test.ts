@@ -1,5 +1,3 @@
-/** @fileoverview Checks packed desktop contracts in a browser type environment, a document and an iframe. */
-
 import { lintConsumer } from '@kisaki3/tooling/testing/consumer'
 import { expect } from 'vite-plus/test'
 import { join } from 'node:path'
@@ -8,7 +6,6 @@ import { chromium } from '@playwright/test'
 import { runPnpm } from '@kisaki3/tooling/process'
 import { consumerTest } from './installation'
 
-/** Packed-contract consumer fixtures owning the browser and its built test site. */
 const test = consumerTest('browser')
   .extend('browser', { scope: 'file' }, async ({}, { onCleanup }) => {
     const browser = await chromium.launch()

@@ -1,17 +1,15 @@
-/** @fileoverview Owns initial preference values shared by database initialization and explicit default requests. */
-
-import { parsePreferences, shortcutKeys } from '@kisaki3/desktop-contracts/preferences'
-import type {
-  DesktopPlatform,
-  Preferences,
-  ReadingPreferences,
-  ShortcutKey,
-  ShortcutsPreferences,
+import {
+  parsePreferences,
+  shortcutKeys,
+  type DesktopPlatform,
+  type Preferences,
+  type ReadingPreferences,
+  type ShortcutKey,
+  type ShortcutsPreferences,
 } from '@kisaki3/desktop-contracts/preferences'
 import type { PageRef } from '@kisaki3/desktop-contracts/ui'
 import type { UiTranslationRef } from '@kisaki3/desktop-contracts/i18n'
 
-/** Creates independent complete reading defaults without consulting the reading engine. */
 function readingDefaults(): ReadingPreferences {
   return {
     flow: 'paginated',
@@ -39,7 +37,6 @@ function readingDefaults(): ReadingPreferences {
   }
 }
 
-/** Creates the fixed shortcut catalog using the selected desktop platform's fullscreen binding. */
 function shortcutDefaults(platform: DesktopPlatform): ShortcutsPreferences {
   const fullscreen = platform === 'darwin' ? 'Control+Command+F' : 'F11'
   const bindings: Partial<Record<ShortcutKey, readonly string[]>> = {

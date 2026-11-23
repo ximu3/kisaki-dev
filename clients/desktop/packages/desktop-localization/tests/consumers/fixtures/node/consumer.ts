@@ -1,11 +1,8 @@
-/** @fileoverview Consumes only the packed localization entrypoint and its declared runtime dependencies. */
-
 import {
   createTranslator,
   validateExtensionUiTranslationDefinition,
 } from '@kisaki3/desktop-localization'
 
-/** Observed translation, fallback, literal-text and locale results from the installed package. */
 export const summary = {
   english: createTranslator('en')('library.selection', { count: 2 }),
   translated: createTranslator('zh-CN', { actions: { save: '保存' } })('actions.save'),

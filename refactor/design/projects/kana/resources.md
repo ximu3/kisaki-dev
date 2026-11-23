@@ -56,7 +56,7 @@ Kana 取消并收尾自己发起的读取，释放自己创建或明确接管的
 
 ## 部署与接入条件
 
-浏览器消费者在 HTTPS 或浏览器认可的本地安全上下文中部署同源包资产。资产包含固定版本的内容转发脚本和专用作用域，注册完成后即可打开书籍，普通宿主页面继续独立运行。脚本使用受控的同源固定地址，平台条件见 [register](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerContainer/register)。
+浏览器消费者在 HTTPS 或浏览器认可的本地安全上下文中部署同源包资产，为固定版本的内容转发脚本配置专用作用域。宿主页面继续使用自己的作用域。脚本使用受控的同源固定地址，平台条件见 [register](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerContainer/register)。
 
 Electron 通过标准、安全且支持 fetch 与 Service Worker 的受控协议提供应用页面和包资产，并注册到真实窗口的 Session。内容文档与宿主控制代码保持测量、事件所需的同源 DOM 访问，资源加载同时遵守 CSP。实现依据[协议能力](https://www.electronjs.org/docs/latest/api/protocol#protocolregisterschemesasprivilegedcustomschemes)完成登记与读取。
 

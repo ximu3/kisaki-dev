@@ -1,8 +1,13 @@
-/** @fileoverview Stores independent evaluations, current work records, completion facts and actual activity intervals. */
-
 import { desc, sql } from 'drizzle-orm'
-import { primaryKey, check, index, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core'
-import type { AnySQLiteColumn } from 'drizzle-orm/sqlite-core'
+import {
+  primaryKey,
+  check,
+  index,
+  integer,
+  sqliteTable,
+  text,
+  type AnySQLiteColumn,
+} from 'drizzle-orm/sqlite-core'
 import { parseActivityContextNames } from '@kisaki3/desktop-contracts/library'
 import { calendarDate } from '../codecs/catalog'
 import { storedJsonColumn } from '../codecs/json'
@@ -38,18 +43,20 @@ export const entryEvaluations = sqliteTable(
   ],
 )
 
+const workStatuses = ['planned', 'active', 'onHold'] as const
+
 /** Creates a work-specific optional current record, separate from all history. */
 function workRecord<TName extends string>(name: TName, ownerName: string, owner: AnySQLiteColumn) {
   return sqliteTable(
     name,
     {
       workId: idColumn(ownerName).references(() => owner, { onDelete: 'cascade' }),
-      status: text('status', { enum: ['planned', 'active', 'onHold'] }),
+      status: text('status', { enum: workStatuses }),
       additionalDurationMs: integer('additional_duration_ms').notNull().default(0),
     },
     (table) => [
       primaryKey({ columns: [table.workId] }),
-      enumValue(`${name}_status`, table.status, ['planned', 'active', 'onHold']),
+      enumValue(`${name}_status`, table.status, workStatuses),
       safeInteger(`${name}_duration`, table.additionalDurationMs),
       index(`${name}_status_order`).on(table.status, table.workId),
     ],

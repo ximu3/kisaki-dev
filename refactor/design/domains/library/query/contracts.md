@@ -8,67 +8,68 @@
 
 ```ts
 type EntryScope =
-  | { type: 'library' }
-  | { type: 'favorites' }
-  | { type: 'unclassified' }
-  | { type: 'collection'; id: string }
-  | { type: 'tag'; id: string }
-  | { type: 'note'; id: string }
+  | { readonly type: 'library' | 'favorites' | 'unclassified' }
+  | { readonly type: 'collection' | 'tag' | 'note'; readonly id: string }
 
 interface EntryQuery {
-  scope: EntryScope
-  search: string
-  rules: readonly EntryRule[]
-  sort: EntrySort
+  readonly scope: EntryScope
+  readonly search: string
+  readonly rules: readonly EntryRule[]
+  readonly sort: EntrySort
 }
 
 interface EntryRule {
-  enabled: boolean
-  types: readonly [EntryType, ...EntryType[]]
-  filter: {
-    match: 'all' | 'any'
-    conditions: readonly EntryCondition[]
+  readonly enabled: boolean
+  readonly types: NonEmptyArray<EntryType>
+  readonly filter: {
+    readonly match: 'all' | 'any'
+    readonly conditions: readonly EntryCondition[]
   }
 }
 
 type EntrySort =
-  | { type: 'scope' }
-  | { type: 'field'; field: EntrySortField; direction: 'asc' | 'desc' }
+  | { readonly type: 'scope' }
+  | { readonly type: 'field'; readonly field: EntrySortField; readonly direction: 'asc' | 'desc' }
   | {
-      type: 'parts'
-      scope: PartCountScope
-      measure: 'registered' | 'completed' | 'withFiles' | 'accessible'
-      direction: 'asc' | 'desc'
+      readonly type: 'parts'
+      readonly scope: PartCountScope
+      readonly measure: 'registered' | 'completed' | 'withFiles' | 'accessible'
+      readonly direction: 'asc' | 'desc'
     }
 
 type PartCountScope =
-  | { partType: 'animeEpisode'; classification?: EnumTest<AnimeEpisodeType | null> }
-  | { partType: 'animeExtra'; classification?: EnumTest<AnimeExtraType | null> }
-  | { partType: 'comicVolume' | 'comicChapter' | 'novelVolume' }
+  | {
+      readonly partType: 'animeEpisode'
+      readonly classification?: EnumTest<AnimeEpisodeType | null>
+    }
+  | { readonly partType: 'animeExtra'; readonly classification?: EnumTest<AnimeExtraType | null> }
+  | { readonly partType: 'comicVolume' | 'comicChapter' | 'novelVolume' }
 
-type EntryGroupKey = { type: 'collection'; id: string } | { type: 'unclassified' }
+type EntryGroupKey =
+  | { readonly type: 'collection'; readonly id: string }
+  | { readonly type: 'unclassified' }
 
 interface EntryListOptions {
-  offset: number
-  limit: number
-  fields?: readonly EntryProjectionField[]
-  group?: EntryGroupKey
+  readonly offset: number
+  readonly limit: number
+  readonly fields?: readonly EntryProjectionField[]
+  readonly group?: EntryGroupKey
 }
 
 interface EntryLocateOptions {
-  limit: number
-  fields?: readonly EntryProjectionField[]
-  group?: EntryGroupKey
+  readonly limit: number
+  readonly fields?: readonly EntryProjectionField[]
+  readonly group?: EntryGroupKey
 }
 
 interface EntryListResult {
-  items: readonly EntryListItem[]
-  total: number
+  readonly items: readonly EntryListItem[]
+  readonly total: number
 }
 
 interface EntryLocateResult extends EntryListResult {
-  index: number
-  offset: number
+  readonly index: number
+  readonly offset: number
 }
 ```
 
@@ -101,18 +102,19 @@ get(ref) 返回与 `EntryRef<T>` 对应的 `EntryDetails<T>` 或 null；findByEx
 以下语法中的字段族是闭合集合。实现将字段与操作数组合为判别联合；不采用 `{ field: string, op: string, value: unknown }` 作为公共条件。字段目录只承担纯值与适用性，不同时持有 SQL、组件或持久化策略。
 
 ```ts
-type Bounds<T> = { min: T; max?: T } | { min?: T; max: T }
+import type { Bounds, NonEmptyArray } from '@kisaki3/desktop-contracts/operations'
 
-type Presence = { op: 'present' } | { op: 'absent' }
+type Presence = { readonly op: 'present' } | { readonly op: 'absent' }
 
-type NumberTest = { op: 'range'; bounds: Bounds<number> }
+type NumberTest = { readonly op: 'range'; readonly bounds: Bounds<number> }
 
 type SetTest<T> =
-  { op: 'any' | 'all' | 'none'; values: readonly [T, ...T[]] } | { op: 'empty' | 'notEmpty' }
+  | { readonly op: 'any' | 'all' | 'none'; readonly values: NonEmptyArray<T> }
+  | { readonly op: 'empty' | 'notEmpty' }
 
-type EnumTest<T> = { op: 'in' | 'notIn'; values: readonly [T, ...T[]] }
+type EnumTest<T> = { readonly op: 'in' | 'notIn'; readonly values: NonEmptyArray<T> }
 
-type TextTest = { op: 'equals' | 'contains'; value: string }
+type TextTest = { readonly op: 'equals' | 'contains'; readonly value: string }
 ```
 
 数值范围、日期范围、集合补集和未知值遵守[统一运算](README.md#operators)。选择数组按准确值去重；重复值不改变含义，空选择非法。TextTest 的 value 经检索空白处理后必须非空。普通检索的大小写与全半角规则同样用于 contains；cupSize 的 equals 保留原文精确比较，不能把不同标准的标记合并。`present/absent` 判断是否填写，不能用于替代数值 0 或布尔 false。
@@ -144,7 +146,7 @@ Gender 只包含五个非空分类；联合中的 null 表达未知，不是一�
 
 分部数量另用 `{ field: 'parts', scope: PartCountScope, measure, ...NumberTest }`。partType 与所属 Work 类型必须相符，动画可用 classification 按[分集／附加分类](../../anime.md#classification)限定真实子集，省略则包含全部分类与未知项；四个 measure 与排序中的含义相同。registered 是真实行数，completed 是当前标记数，withFiles 是有关联的去重分部数，accessible 是至少一项关联文件最近确认为可访问的分部数。游戏没有该条件。uncheckedFileCount 只计尚未检查的文件，不能与不可访问混为一类。
 
-日期字段的条件形状为以下有限联合；每项都带所属 field：
+日期字段的条件按下表定义，每项都带有所属字段的标识。
 
 | 操作                               | 输入                                                            | 适用范围                                                                 |
 | ---------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------ |
@@ -233,17 +235,17 @@ groups(query, { type: 'collections' }) 返回 `{ total, groups }`。total 始终
 
 ```ts
 type EntryGroupResult =
-  | { key: EntryGroupKey; status: 'ready'; count: number }
-  | { key: EntryGroupKey; status: 'failed'; error: ErrorSummary }
+  | { readonly key: EntryGroupKey; readonly status: 'ready'; readonly count: number }
+  | { readonly key: EntryGroupKey; readonly status: 'failed'; readonly error: ErrorSummary }
 
 type EntrySelection =
-  | { type: 'all' }
-  | { type: 'range'; anchor: EntryRef; focus: EntryRef }
+  | { readonly type: 'all' }
+  | { readonly type: 'range'; readonly anchor: EntryRef; readonly focus: EntryRef }
   | {
-      type: 'groupRange'
-      anchor: { group: EntryGroupKey; ref: EntryRef }
-      focus: { group: EntryGroupKey; ref: EntryRef }
-      expandedGroups: readonly EntryGroupKey[]
+      readonly type: 'groupRange'
+      readonly anchor: { readonly group: EntryGroupKey; readonly ref: EntryRef }
+      readonly focus: { readonly group: EntryGroupKey; readonly ref: EntryRef }
+      readonly expandedGroups: readonly EntryGroupKey[]
     }
 ```
 

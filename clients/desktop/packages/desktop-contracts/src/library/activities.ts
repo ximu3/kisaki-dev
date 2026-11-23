@@ -1,15 +1,12 @@
-/** @fileoverview Describes actual activity intervals and preserves their occurrence context during ordinary edits. */
-
-import type { PartRef, WorkType, EntryRef, WorkRef } from './catalog'
 import type { WorkStatisticsScope } from './completions'
 import type { CalendarDate } from '../date'
 import type { ListOptions, CallOptions, ListResult, NonEmptyArray } from '../operations'
 import { timestamp, nonnegativeInteger, id, parseValue, text } from '../validation'
 import * as v from 'valibot'
-import { workRefSchema } from './catalog'
+import { workRefSchema, type PartRef, type WorkType, type EntryRef, type WorkRef } from './catalog'
 import { DesktopError } from '../errors'
 
-/** UTC millisecond interval with a separately recorded effective duration; overlapping records are not unioned. */
+/** Overlapping intervals each contribute their recorded effective duration. */
 export interface ActivityTiming {
   /** UTC milliseconds since the Unix epoch. */
   readonly startedAt: number
@@ -20,9 +17,7 @@ export interface ActivityTiming {
 }
 
 /**
- * Known file, part or launch-configuration context recorded with an activity.
- *
- * A compound file produces one activity rather than one record per part.
+ * A compound file produces one activity for the whole file, even when it contains multiple parts.
  */
 export interface ActivityContextByType {
   readonly game: { readonly launchConfigId: string | null }
@@ -40,7 +35,7 @@ export interface ActivityContextByType {
   readonly novel: { readonly fileId: string | null; readonly part: PartRef<'novelVolume'> | null }
 }
 
-/** A manually supplied actual fact; the executor verifies current ownership and endedAt <= its submission time. */
+/** The executor verifies current ownership and requires endedAt at or before submission. */
 export type ActivityCreate = {
   [K in WorkType]: ActivityTiming & {
     readonly work: EntryRef<K>
@@ -48,11 +43,7 @@ export type ActivityCreate = {
   }
 }[WorkType]
 
-/**
- * A saved usage interval with stable identity and historical context names.
- *
- * Names survive ordinary renaming or removal of referenced context.
- */
+/** Recorded context names survive renaming or removal of the referenced objects. */
 export type Activity<T extends WorkType = WorkType> = {
   [K in T]: ActivityTiming & {
     readonly id: string
@@ -67,9 +58,8 @@ export type Activity<T extends WorkType = WorkType> = {
 }[T]
 
 /**
- * A complete timing correction with optional comparison against original timing and context.
- *
- * The edit preserves the original occurrence context.
+ * The baseline can compare original timing and context. The edit preserves the occurrence
+ * context.
  */
 export type ActivityUpdate<K extends WorkType = WorkType> = {
   readonly changes: ActivityTiming
@@ -78,17 +68,13 @@ export type ActivityUpdate<K extends WorkType = WorkType> = {
   }
 }
 
-/** UTC milliseconds since the Unix epoch; the interval includes from and excludes to. */
+/** UTC milliseconds since the Unix epoch. The interval includes from and excludes to. */
 export interface InstantRange {
   readonly from: number
   readonly to: number
 }
 
-/**
- * An activity's work or occurrence-context filter.
- *
- * Context filters exclude unallocated work-level additional duration.
- */
+/** Occurrence-context filters exclude unallocated work-level additional duration. */
 export type ActivityFilter =
   | { readonly type: 'work'; readonly work: WorkRef }
   | { readonly type: 'launchConfig'; readonly gameId: string; readonly launchConfigId: string }
@@ -99,7 +85,6 @@ export type ActivityFilter =
     }
   | { readonly type: 'part'; readonly part: PartRef }
 
-/** Work scope, optional instant range and occurrence-context constraints for activity reads. */
 export interface ActivityQuery {
   readonly scope: WorkStatisticsScope
   readonly range?: InstantRange
@@ -107,10 +92,8 @@ export interface ActivityQuery {
 }
 
 /**
- * Activity totals and calendar or work-group aggregates.
- *
- * Allocated durations retain fractional precision. Record totals cannot be obtained by summing
- * per-day record counts.
+ * Allocated durations retain fractional precision. Use the overall activity count because one
+ * record may contribute to several date groups.
  */
 export interface ActivityStatistics {
   readonly activityCount: number
@@ -136,41 +119,28 @@ export interface ActivityStatistics {
 }
 
 /**
- * Saved usage intervals, manual corrections and activity statistics.
- *
- * Managed active intervals must end before editing or deletion. These operations do not control
- * sessions.
+ * End managed use before editing or deleting its activities. Session controls have their own entry.
  */
 export interface ActivitiesApi {
-  /**
-   * Lists saved activities in the requested work, time and context scope.
-   *
-   * Work-level additional duration is not an activity record.
-   */
+  /** Work-level additional duration is counted separately from activity records. */
   list(
     query: ActivityQuery,
     options: ListOptions,
     call?: CallOptions,
   ): Promise<ListResult<Activity>>
 
-  /** Reads a saved activity belonging to the supplied work, or null when it is absent. */
+  /** Returns null when the activity is absent from the supplied work. */
   get<T extends WorkType>(
     work: WorkRef<T>,
     activityId: string,
     call?: CallOptions,
   ): Promise<Activity<T> | null>
 
-  /**
-   * Records an explicit past interval and its actual context.
-   *
-   * The operation does not start a session or infer missing history.
-   */
   create(input: ActivityCreate, call?: CallOptions): Promise<string>
 
   /**
-   * Compares and corrects a saved activity after managed use has ended.
-   *
-   * Additional duration and reading position remain unchanged.
+   * Wait for managed use to end before correcting timing. The edit preserves additional duration
+   * and reading position.
    */
   update(
     ...args: {
@@ -184,27 +154,20 @@ export interface ActivitiesApi {
   ): Promise<void>
 
   /**
-   * Deletes the supplied activities after managed use has ended.
-   *
-   * The operation leaves sessions and additional duration unchanged.
+   * End managed use before deletion. Deleting activity records leaves the work's additional
+   * duration unchanged.
    */
   delete(work: WorkRef, ids: string | NonEmptyArray<string>, call?: CallOptions): Promise<void>
 
-  /**
-   * Aggregates saved intervals by the requested scope and calendar grouping.
-   *
-   * Undated additional duration has no period allocation.
-   */
+  /** Undated additional duration has no calendar-period allocation. */
   statistics(
     query: ActivityQuery & { readonly groupBy?: 'hour' | 'day' | 'week' | 'month' | 'year' },
     call?: CallOptions,
   ): Promise<ActivityStatistics>
 }
 
-/** UTC start and end times with independently recorded effective milliseconds. */
 const timingEntries = { startedAt: timestamp, endedAt: timestamp, durationMs: nonnegativeInteger }
 
-/** Nonempty actual activity interval whose effective duration does not exceed elapsed time. */
 const timingSchema = v.pipe(
   v.strictObject(timingEntries),
   v.check(
@@ -213,7 +176,6 @@ const timingSchema = v.pipe(
   ),
 )
 
-/** Current file, part or launch-configuration references permitted for each work medium. */
 const contexts = {
   game: v.strictObject({ launchConfigId: v.nullable(id) }),
 
@@ -233,7 +195,10 @@ const contexts = {
   }),
 }
 
-/** Parses a positive-length interval and effective duration without applying a wall-clock limit. */
+/**
+ * Requires a positive-length interval and checks effective duration independently of the wall
+ * clock.
+ */
 export function parseActivityTiming(input: unknown): ActivityTiming {
   return parseValue(timingSchema, input, 'Invalid activity timing')
 }
@@ -292,7 +257,6 @@ export function parseActivityUpdate(
   return value
 }
 
-/** Parses historical context labels independently of current referenced names. */
 export function parseActivityContextNames(input: unknown): Activity['contextNames'] {
   return parseValue(
     v.strictObject({

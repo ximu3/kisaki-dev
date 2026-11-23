@@ -1,5 +1,3 @@
-/* The control center follows the first line, including when its label wraps. */
-
 .row {
   composes: control from '../control/styles.module.css';
 }

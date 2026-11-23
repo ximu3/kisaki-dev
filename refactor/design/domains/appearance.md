@@ -10,7 +10,7 @@ appearance 负责主题目录、用户主题、扩展主题登记、全应用预
 
 @kisaki3/desktop-appearance 提供纯视觉词表、值规则和 CSS。desktop-contracts/appearance 定义桌面主题、字体选择及外观交付，desktop-contracts/fonts 定义 FontRef 和字体读取合同。SDK 使用相同的本体定义。
 
-内置主题、用户主题和扩展主题共用目录与呈现方式，但生命周期不同。内置主题由应用维护，用户主题可以原生编辑和删除，扩展主题由所属实例登记，其他消费者只读。同一身份的主题更新会作用于选用者；Clone 则创建独立的用户主题。资源不可用时保留选择，并按实际影响范围回退，不复制一份扩展定义作为长期镜像。
+内置主题、用户主题和扩展主题共用目录与呈现方式。应用维护内置主题，用户在原生界面编辑和删除自己的主题，扩展实例登记自己的主题。其他消费者通过目录读取已发布的定义。同一主题的更新会作用于选用者，复制会创建独立的用户主题。资源不可用时保留选择，并按实际影响范围回退。
 
 主题只定义 token 的视觉属性，不控制组件结构、内容、菜单、操作顺序或布局，也不注入任意 CSS。ui 模块协调页面、菜单、真实视图身份及跨进程打开和关闭，windows 实现原生窗口，renderer 负责路由、组件、草稿和 Toast，具体分工见[界面入口](../ui/navigation.md)。扩展适配层负责登记，并在实例结束时释放；原生能力仍由各本体模块拥有，原生页面无需改为 Webview。
 
@@ -76,17 +76,17 @@ chart-1 至 chart-5 是五个可独立编辑的系列色，亮暗分支分别提
 type ColorScheme = 'light' | 'dark'
 
 interface AppearancePreferences {
-  mode: 'system' | ColorScheme
-  interfaceScale: number
-  theme: ThemeRef
+  readonly mode: 'system' | ColorScheme
+  readonly interfaceScale: number
+  readonly theme: ThemeRef
 }
 
 type Theme<T extends ThemeRef['type'] = ThemeRef['type']> = {
   [K in T]: {
-    ref: Extract<ThemeRef, { type: K }>
-    name: K extends 'user' ? string : LocalizedText
-    light: K extends 'extension' ? AppearanceTokens : UserAppearanceTokens
-    dark: K extends 'extension' ? AppearanceTokens : UserAppearanceTokens
+    readonly ref: Extract<ThemeRef, { readonly type: K }>
+    readonly name: K extends 'user' ? string : LocalizedText
+    readonly light: K extends 'extension' ? AppearanceTokens : UserAppearanceTokens
+    readonly dark: K extends 'extension' ? AppearanceTokens : UserAppearanceTokens
   }
 }[T]
 ```
@@ -95,16 +95,16 @@ type Theme<T extends ThemeRef['type'] = ThemeRef['type']> = {
 
 ```ts
 type ThemeRef =
-  | { type: 'builtin'; id: 'default' }
-  | { type: 'user'; id: string }
-  | { type: 'extension'; extensionId: string; id: string }
+  | { readonly type: 'builtin'; readonly id: 'default' }
+  | { readonly type: 'user'; readonly id: string }
+  | { readonly type: 'extension'; readonly extensionId: string; readonly id: string }
 ```
 
-选择、更新和 Clone 都以包含完整 light、dark 分支的 Theme 为单位。mode 决定采用哪个分支：切换主题保留 mode，切换明暗保留主题引用。两种操作均直接采用主题定义。用户组合不同作者的亮暗分支时，需要将它们保存为自己的完整主题。
+Theme 包含完整的 light 和 dark 分支，由 mode 决定采用哪一支。切换主题保留 mode，切换明暗保留主题引用。需要组合不同作者的亮暗分支时，将两套值保存为自己的主题。
 
-ThemeRef 保存稳定身份。用户主题 id 由本体生成；扩展登记使用扩展内部 id，宿主将其绑定到真实 extensionId。get 和 open 统一接收完整 ref。Clone 必须成功读取该 ref 指向的来源，读取失败则报告失败。
+`ThemeRef` 保存稳定身份。本体生成用户主题 ID。扩展登记使用内部 ID，宿主将其绑定到真实 `extensionId`。`get`、`open` 和 `clone` 都接收完整引用。复制时先读取引用指向的来源，读取失败则结束操作。
 
-用户主题名称是普通字符串，在目录中使用 LocalizedText 的字符串分支。创建或 Clone 后普通保存不会自动选用，修改已经选中的用户主题则会正常更新正式外观。默认主题同样具备完整亮暗两套值，公共入口可以取得桌面默认，不从其他扩展或上次主题补齐空缺。新增 token 通过合同和所属数据的正常演进处理，不靠重新套用模板。
+用户主题名称是普通字符串，在目录中使用 `LocalizedText` 的字符串分支。创建、复制或普通保存保留正式选择。保存当前已选用的主题时，正式外观随定义更新。公共入口可以读取具备完整亮暗值的默认主题。新增 token 通过合同与所属数据的演进处理。
 
 AppearanceTokens 表达共同的桌面外观分支。UserAppearanceTokens 使用相同词表，字体槽限定为默认、系统或用户字体。Theme 的来源同时约束身份、名称与字体；get 和 open 根据传入的 ThemeRef 保留来源类型，用户主题的读取值可直接建立创建或更新草稿。目录摘要使用 ThemeSummary，保留身份与名称的来源关联。
 
@@ -154,7 +154,9 @@ await appearance.themes.update(themeId, {
 字体引用定义如下：
 
 ```ts
-type FontRef = { type: 'system'; family: string } | { type: 'user'; id: string }
+type FontRef =
+  | { readonly type: 'system'; readonly family: string }
+  | { readonly type: 'user'; readonly id: string }
 ```
 
 FontRef 只表示系统字体族或用户字体 id。主题另行提供默认字体和所属扩展文件选项，阅读另行提供 document 选项，不把消费者专属分支放入 FontRef。系统字体、书内字体和扩展私有字体不会自动导入用户库。fonts.list 只列用户字体，listSystem 只列系统字体，选择器分组搜索，再由用途加入默认或文档选项。字体库以单列分页浏览已导入的字体。预览从对应条目打开，展示字体文件、实际样张和字面资料。只为正在查看或编辑的对象取得文档专属读句柄，换项和关闭时释放。未保存的文件草稿明确显示保留、新增、移除和准备失败，移除仍在草稿期间可以恢复。
@@ -175,9 +177,9 @@ import({ name, files }) 接收非空的 FileInput 或 PreparedFontFile 集合，
 
 主题目录用标准列表条目显示名称、来源和当前使用项。预览从对应条目展示实际亮暗色样。复制保存后在目录定位副本，编辑使用独立对话框。编辑器将名称、亮暗分支与全应用预览置于正文上方，背景与对应前景成对编辑，宽度足够时同行，空间不足时顺序堆叠。
 
-Clone 读取主题完整的亮暗定义。系统字体保留族名，用户 FontRef 保留共享身份；只有扩展私有字体需要实际读取并准备为新的用户字体，再重写主题中的引用。不能根据同名或相同字节复用已有的可变 FontId。源主题更新或停用不会改变副本，但副本保留的用户字体引用仍会共享字体更新，用户可以另选资源。复制不要求先读取全部用户字体文件，也不必执行完整 ThemeRead。
+复制主题先读取完整的亮暗定义。系统字体保留族名，用户字体继续使用原 `FontRef`，两者只需复制选择值。复制时读取扩展私有字体并创建独立的用户字体，副本引用新身份。复制完成后，副本有独立的主题定义，仍会跟随它引用的用户字体更新。
 
-来源读取和文件准备在事务外完成，新字体、附件关联及主题在同一短事务中提交。失败时不能留下缺少必要字体的主题，也不能留下只为本次复制建立的可见半成品。保留原扩展私有路径不算独立副本，读取也不能暴露扩展的任意安装或私有目录。已经独立完成的普通字体导入不随 Clone 失败回滚。
+来源读取和文件准备在事务外完成。复制产生的新字体、附件关联及主题在同一短事务中提交，任何一项失败均不产生本次副本或关联。扩展字体读取遵守所属资源范围，已经独立完成的普通字体导入保留其结果。
 
 删除主题不删除它引用的字体，删除资源也不递归改写消费者。原引用继续保留并明确回退，只有用户重新选择才修改配置。界面可以提示已知使用位置，但不能要求完全观察扩展私有引用后才允许删除。删除字体记录与回收字节是不同阶段，已采用该字体的阅读过程或资源句柄可以继续持有内容到结束，不能提前删除文件。
 
@@ -200,12 +202,14 @@ Clone 读取主题完整的亮暗定义。系统字体保留族名，用户 Font
 interface ThemeRead<T extends ThemeRef['type'] = ThemeRef['type']> {
   readonly theme: Theme<T>
   readonly fontResources: ThemeFontResources
+
   dispose(): Promise<void>
 }
 
 interface FontRead {
   readonly font: Font
   readonly resources: Readonly<Record<string, ReadResourceRef>>
+
   dispose(): Promise<void>
 }
 ```
@@ -257,16 +261,16 @@ Node 侧登记扩展内部稳定且唯一的 id，宿主绑定真实拥有者。
 
 ```ts
 interface ViewAppearance {
-  colorScheme: ColorScheme
-  interfaceScale: number
-  cssVariables: Readonly<Record<keyof AppearanceTokens, string>>
-  fontFaces: readonly ViewFontFace[]
+  readonly colorScheme: ColorScheme
+  readonly interfaceScale: number
+  readonly cssVariables: TokenValues
+  readonly fontFaces: readonly ViewFontFace[]
 }
 ```
 
 ViewAppearance 交付当前文档的运行呈现值。colorScheme 已解析为实际 light 或 dark；cssVariables 将固定 token 转为 CSS，字体选择转为运行族名，interfaceScale 单独交付。ViewFontFace 为 { family, url, descriptors }，url 已绑定到目标文档，可直接使用。描述符包含合法的 weight、style 和 stretch；unicodeRange、variationSettings 和 featureSettings 按真实数据提供。FontFace 实例与释放函数由实际运行端管理，持久主题仍使用 Theme。
 
-appearance 读取当前分支所需资源，宿主绑定目标文档并交付完整外观。接收方创建 FontFace，加载后加入自己的 document.fonts，等必要字体就绪或取得明确回退结果，再采用 CSS。每个主窗口、阅读器和 iframe 都要自己加载，不能复制字体族名后就假定另一文档的字体可用。具体机制见[CSS Font Loading](https://www.w3.org/TR/css-font-loading-3/)与[CSS Fonts](https://www.w3.org/TR/css-fonts-4/#font-face-rule)。
+appearance 读取当前分支所需资源，宿主绑定目标文档并交付完整外观。主窗口、播放窗口、阅读窗口、游戏面板及 Webview 都在自己的文档中创建 `FontFace`，加载后加入 `document.fonts`。必要字体就绪或取得明确回退结果后，文档采用 CSS。[CSS Font Loading](https://www.w3.org/TR/css-font-loading-3/) · [CSS Fonts](https://www.w3.org/TR/css-fonts-4/#font-face-rule)
 
 多个静态字重可以用多条描述共享字体族，可变字体则可以使用一条范围描述。多 face 文件必须提供可独立加载的内容，必要的技术转换资源归本次读取范围，不假定浏览器会按文件内部 index 自动选择。
 
@@ -288,8 +292,8 @@ appearance 读取当前分支所需资源，宿主绑定目标文档并交付完
 
 ```ts
 interface AppearancePreviewInput {
-  colorScheme: ColorScheme
-  tokens: AppearanceTokens
+  readonly colorScheme: ColorScheme
+  readonly tokens: AppearanceTokens
 }
 
 interface AppearancePreview {
@@ -301,7 +305,7 @@ interface AppearancePreview {
 
 入口从调用环境绑定真实拥有者，原生调用无需伪造扩展 context。SDK Node 侧负责主题登记和资源持久操作，Webview 侧负责真实视图的外观与预览，业务保存经私有 IPC 完成。预览只需要当前分支的完整 tokens 和 colorScheme，不要求主题 ref 或另一分支。
 
-全应用同时只存在一个预览。后一次明确开启会接管预览，原编辑器同步停止；接管后原预览结束。关闭开关、实际关闭编辑器或拥有者失效时 dispose，取消关闭则继续预览。结束通知只发生一次，结束后订阅也能得知已结束。已结束句柄拒绝 update，重复 dispose 没有副作用；旧句柄的迟到操作只作用于其已结束状态。
+全应用同时只存在一个预览。后一次明确开启时同步结束旧预览，并将结束通知交付原编辑器。关闭开关、实际关闭编辑器或拥有者失效时释放预览，取消关闭则继续预览。结束通知只交付一次，迟到订阅也能得知已结束。已结束句柄拒绝 `update`，重复调用 `dispose` 无副作用。
 
 新值校验失败时保留原有效预览。再次开启会取得新句柄，并沿用仍在内存中的草稿。创建或更新预览成功，表示校验、必要资源准备和发布完成，不代表所有文档已绘制；各文档仍按完整快照协调应用。停止后解析届时最新的正式选择、明暗和缩放，不恢复编辑开始前的旧快照。关闭预览不会丢弃编辑草稿。
 
@@ -321,4 +325,4 @@ interface AppearancePreview {
 
 主题和模板目录使用现有 i18n 与 LocalizedText。扩展可以提供普通字符串或多语值，品牌名称可以不翻译；显示按有效 UI 语言和扩展 defaultLocale 回退。身份、token 与字段键、枚举、正则、筛选值和资源都不翻译。翻译预设说明也不能改变资料语言或来源规则。
 
-模板中用于初始化用户名称、区块标题等明确显示文本的值，在载入草稿时按当前语言解析为普通文字。保存后，它们就是用户内容。切换语言只更新目录，不改正在编辑的草稿或已有名称。各模板明确声明哪些初值可本地化，不按任意 JSON 路径翻译全部字符串。原生用户主题和 Clone 主题使用普通字符串命名，不要求用户维护译本目录。
+模板明确声明哪些初值可本地化，例如用户名称和区块标题。载入草稿时按当前语言解析为普通文字，保存后成为用户内容。切换语言只更新目录，已有名称与正在编辑的草稿保持原值。原生创建或复制的用户主题使用普通字符串命名。

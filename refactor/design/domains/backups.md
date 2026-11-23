@@ -24,21 +24,18 @@ library/holdings/game/backups 负责将游戏存档保存为完整归档，并�
 
 ```ts
 type GameBackupSource =
+  | { readonly type: 'config'; readonly launchConfigId: string }
   | {
-      type: 'config'
-      launchConfigId: string
-    }
-  | {
-      type: 'snapshot'
-      launchConfigId: string
-      launchConfigName: string
-      path: string
+      readonly type: 'snapshot'
+      readonly launchConfigId: string
+      readonly launchConfigName: string
+      readonly path: string
     }
 
 interface GameBackupCreateResult {
-  outcome: 'created' | 'unchanged'
-  backupId: string
-  issues: GameBackupIssue[]
+  readonly outcome: 'created' | 'unchanged'
+  readonly backupId: string
+  readonly issues: readonly GameBackupIssue[]
 }
 ```
 
@@ -102,14 +99,19 @@ archive_attachment_id 引用应用归档。归档字节大小和校验值来自�
 
 ```ts
 type GameBackupArchiveEntry =
-  | { path: string; type: 'directory' }
-  | { path: string; type: 'file'; sizeBytes: number; sha256: string }
+  | { readonly path: string; readonly type: 'directory' }
+  | {
+      readonly path: string
+      readonly type: 'file'
+      readonly sizeBytes: number
+      readonly sha256: string
+    }
 
 interface GameBackupArchiveManifest {
-  format: 'kisaki-game-save'
-  formatVersion: 1
-  entries: readonly [GameBackupArchiveEntry, ...GameBackupArchiveEntry[]]
-  treeDigest: string
+  readonly format: 'kisaki-game-save'
+  readonly formatVersion: 1
+  readonly entries: NonEmptyArray<GameBackupArchiveEntry>
+  readonly treeDigest: string
 }
 ```
 
@@ -161,22 +163,23 @@ treeDigest 是上述确切字节的 SHA-256，小写十六进制输出。它不�
 
 ```ts
 interface GameBackupRestoreInput {
-  gameId: string
-  backupId: string
-  target: { type: 'config'; launchConfigId: string } | { type: 'path'; path: string }
+  readonly gameId: string
+  readonly backupId: string
+  readonly target:
+    | { readonly type: 'config'; readonly launchConfigId: string }
+    | { readonly type: 'path'; readonly path: string }
 }
 
 interface GameBackupRestoreResult {
-  backupId: string
-  target: {
-    path: string
-    kind: 'file' | 'directory'
-  }
-  targetState: 'restored' | 'preserved' | 'recoveryRequired' | 'keptCurrent'
-  protectionBackupId: string | null
-  recoveryId: string | null
-  recoveryResolution: RecoveryResolution | null
-  issues: GameBackupIssue[]
+  readonly backupId: string
+  readonly target: { readonly path: string; readonly kind: 'file' | 'directory' }
+  readonly targetState: 'restored' | 'preserved' | 'recoveryRequired' | 'keptCurrent'
+
+  readonly protectionBackupId: string | null
+  readonly recoveryId: string | null
+  readonly recoveryResolution: RecoveryResolution | null
+
+  readonly issues: readonly GameBackupIssue[]
 }
 ```
 
@@ -199,7 +202,7 @@ targetState 表达实际目标状态：
 
 这些值不能根据任务终态推断。
 
-失败或取消时，如果已经形成合法结果，通过 `ExecutionFailure<GameBackupRestoreResult>.partialResult` 返回；准备阶段尚未形成结果时不能伪造报告。protectionBackupId 指向锁定的保护备份，原本没有目标时可以为空。recoveryId 用于定位备份模块自己的恢复材料，不依赖任务历史。 recoveryId 为空时 recoveryResolution 也为空；ID 非空且 resolution 为 null 表示仍需处理，非空 resolution 表示已经处理但尚有材料或清理结果。调用方不必借任务终态猜测这一区别。
+失败或取消时，通过 `ExecutionFailure<GameBackupRestoreResult>.partialResult` 返回已形成的合法结果。protectionBackupId 指向锁定的保护备份，原本没有目标时可以为空。recoveryId 对应备份模块的恢复材料。recoveryId 为空时 recoveryResolution 也为空。ID 非空且 resolution 为 null 表示仍需处理，非空 resolution 表示已处理，但尚有材料或清理结果。
 
 替换前收到取消，停止后续工作。关键替换已经开始后，先完成当前安全步骤或回退，再响应取消。如果目标与完成事实都已经确认，只是多余临时资源清理失败，可以成功返回并附 issues；尚未解决的恢复材料必须继续保留。
 
@@ -233,15 +236,18 @@ manifest.json 使用 UTF-8 保存以下不可变信息，发布后不原位修�
 
 ```ts
 interface GameBackupRecoveryManifest {
-  formatVersion: 1
-  recoveryId: string
-  gameId: string
-  backupId: string
-  protectionBackupId: string | null
-  target: { path: string; kind: 'file' | 'directory' }
-  before: { type: 'absent' } | { type: 'present'; treeDigest: string }
-  after: { treeDigest: string }
-  createdAt: number
+  readonly formatVersion: 1
+  readonly recoveryId: string
+  readonly gameId: string
+  readonly backupId: string
+  readonly protectionBackupId: string | null
+  readonly target: { readonly path: string; readonly kind: 'file' | 'directory' }
+
+  readonly before:
+    | { readonly type: 'absent' }
+    | { readonly type: 'present'; readonly treeDigest: string }
+  readonly after: { readonly treeDigest: string }
+  readonly createdAt: number
 }
 ```
 
@@ -318,23 +324,27 @@ type RecoveryAction = 'continue' | 'rollback' | 'keepCurrent'
 type RecoveryResolution = 'restored' | 'rolledBack' | 'keptCurrent'
 
 type RecoveryLocationObservation =
-  | { status: 'absent' }
-  | { status: 'readable'; kind: 'file' | 'directory'; treeDigest: string }
-  | { status: 'unavailable'; error: ErrorSummary }
+  | { readonly status: 'absent' }
+  | {
+      readonly status: 'readable'
+      readonly kind: 'file' | 'directory'
+      readonly treeDigest: string
+    }
+  | { readonly status: 'unavailable'; readonly error: ErrorSummary }
 
 interface GameBackupRecoveryInspection {
-  recoveryId: string
-  resolution: RecoveryResolution | null
+  readonly recoveryId: string
+  readonly resolution: RecoveryResolution | null
 
-  manifest: GameBackupRecoveryManifest | null
-  locations: Record<RecoveryLocation, RecoveryLocationObservation>
+  readonly manifest: GameBackupRecoveryManifest | null
+  readonly locations: Readonly<Record<RecoveryLocation, RecoveryLocationObservation>>
 
-  actions: readonly RecoveryAction[]
-  issues: readonly {
-    location: RecoveryLocation | 'manifest' | 'index'
-    error: ErrorSummary
+  readonly actions: readonly RecoveryAction[]
+  readonly issues: readonly {
+    readonly location: RecoveryLocation | 'manifest' | 'index'
+    readonly error: ErrorSummary
   }[]
-  basis: string
+  readonly basis: string
 }
 ```
 

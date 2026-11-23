@@ -62,6 +62,8 @@
 
 PDF 以 Poppler 的 pdftoppm -cropbox -png -r 96 渲染。三页 [第一页](preview/page-1.png)、[第二页](preview/page-2.png)、[第三页](preview/page-3.png)均已由 Codex 查看，文字和两段蓝色区域可辨，旋转符合文件属性。[verify-render.py](verify-render.py)再逐个查找蓝色连通区域，与转换后的六个 quad 对照，9 项通过，误差限为 2 个栅格像素，见 [render-results.json](render-results.json)。
 
+人工查看结论对应历史报告列出的三个 PNG 摘要。复跑 `python verify-render.py` 将几何对照及输入摘要写到标准输出。可用 `--evidence-dir` 指向另行生成预览的试件目录。
+
 渲染输出报告 Symbol／ArialUnicode 显示字体告警；样本使用 Helvetica 和矢量矩形，逐页查看未见缺字。栅格对照只证明规范化页面几何，不宣称 Poppler 对物理 UserUnit 的缩放已验证。UserUnit 字段与计算另由 pypdf 核对；正式阅读内核仍需独立验收。
 
 生成与验证使用本机已提供的 Python、ReportLab、pypdf、Pillow、lxml、SQLite、Poppler，以及仓库现有 Acorn 8.16.0；没有安装依赖。已记录版本与字节摘要。源码、合成模型和实际应用验收是三种证据，不互相替代。

@@ -21,14 +21,14 @@ MyAnimeList 使用官方 API 提供动画、漫画与小说资料，以及本人
 
 ## 对象与身份
 
-source 使用 myanimelist；sourceId 使用真实资源类别与规范十进制编号：
+`source` 使用 `myanimelist`。`sourceId` 由真实资源类别和规范十进制编号组成。
 
 | 来源资源                                                                  | 本地目标                                                                |
 | ------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| anime/<id>                                                                | 来源按独立作品管理的 Anime，包括不同季、独立 OVA、特别篇、短片与动画 MV |
-| manga/<id>，media_type 为 novel 或 light_novel                            | Novel                                                                   |
-| manga/<id>，media_type 为 manga、one_shot、doujinshi、manhwa、manhua、oel | Comic                                                                   |
-| producer/<id>                                                             | 动画 studios 中的真实 Organization 引用，仅在作品上下文读取             |
+| `anime/<id>`                                                              | 来源按独立作品管理的 Anime，包括不同季、独立 OVA、特别篇、短片与动画 MV |
+| `manga/<id>`，`media_type` 为 `novel` 或 `light_novel`                    | Novel                                                                   |
+| `manga/<id>`，`media_type` 为 `manga`、`one_shot`、`doujinshi`、`manhwa`、`manhua`、`oel` | Comic |
+| `producer/<id>`                                                           | 动画 `studios` 中的真实 Organization 引用，仅在作品上下文读取           |
 
 动画格式中的 music 表达动画视频，不能按名称改作音频条目。独立编号的 OVA、特别篇和 MV 不自动改成另一作品的 Part。单篇漫画仍是独立 Comic；卷数为 1 不证明记录就是某系列的一卷。没有书籍类别依据的 unknown 不默认归为漫画。
 
@@ -219,6 +219,7 @@ src/
 │   ├── settings.ts
 │   └── ipc.ts
 ├── webview/
+│   ├── index.html
 │   ├── entry.tsx
 │   └── pages/
 │       ├── metadata/page.tsx

@@ -1,5 +1,3 @@
-/** @fileoverview Bundles the storage workload for the Electron performance worker. */
-
 import { defineConfig } from 'vite-plus'
 
 export default defineConfig({

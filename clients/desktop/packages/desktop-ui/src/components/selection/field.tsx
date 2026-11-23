@@ -1,5 +1,3 @@
-/** @fileoverview A desktop choice field presents committed values, owns disclosure and participates in its form. */
-
 import { createMemo, For, merge, createEffect, Show, omit, createSignal } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { classes } from '../../internal/dom'
@@ -119,12 +117,9 @@ export function SelectionField<O extends SelectionOption>(
   )
   const [trigger, bindTrigger] = createSignal<HTMLButtonElement>()
   let field!: HTMLDivElement
-  let mirror!: HTMLSelectElement
 
   const empty = { options: [] as readonly O[], loading: false }
-  /**
-   * Visible candidate records retained through exit, with loading distinct from an empty result.
-   */
+  // Keep the last list available to the closing animation.
   const candidates = createMemo<typeof empty>((last = empty) => {
     if (!present()) {
       return empty
@@ -168,41 +163,35 @@ export function SelectionField<O extends SelectionOption>(
       .map((option) => option.label)
       .join(', ') || props.placeholder
 
-  /**
-   * Synchronizes selected and default options and marks disabled committed records invalid on the
-   * native select.
-   */
-  const selection = createMemo(() => ({
+  let submission!: HTMLSelectElement
+  const nativeSelection = createMemo(() => ({
     values: new Set(keys()),
     defaults: new Set(props.defaults),
     multiple: !!props.chips,
     message: records().some((option) => option.disabled) ? props.invalidSelectionMessage : '',
   }))
-  const sync = (state: ReturnType<typeof selection>) => {
-    for (const option of mirror.options) {
+  const sync = (state: ReturnType<typeof nativeSelection>) => {
+    for (const option of submission.options) {
       option.defaultSelected = state.defaults.has(option.value)
       option.selected = state.values.has(option.value)
     }
     if (!state.multiple && !state.values.size) {
-      mirror.value = ''
+      submission.value = ''
     }
-    mirror.setCustomValidity(state.message)
-    nativeValidityChanged(mirror.form)
+    submission.setCustomValidity(state.message)
+    nativeValidityChanged(submission.form)
   }
-  createEffect(selection, sync)
+  createEffect(nativeSelection, sync)
   const flushReset = onFormReset(
-    () => mirror,
+    () => submission,
     () => {
       props.onReset()
-      queueMicrotask(() => sync(selection()))
+      queueMicrotask(() => sync(nativeSelection()))
       setOpen(false)
     },
   )
 
-  /**
-   * Closes and refocuses a single-choice popup before forwarding its chosen record; multiple-choice
-   * lists stay open.
-   */
+  // Return focus before giving single-choice handlers a chance to remove the popup.
   const choose = (option: O) => {
     flushReset()
     if (!props.chips) {
@@ -211,6 +200,7 @@ export function SelectionField<O extends SelectionOption>(
     }
     props.onChoose(option)
   }
+
   return (
     <div
       ref={(node) => {
@@ -279,7 +269,7 @@ export function SelectionField<O extends SelectionOption>(
       </Show>
       <select
         ref={(node) => {
-          mirror = node
+          submission = node
         }}
         class={styles.submission}
         tabindex={-1}

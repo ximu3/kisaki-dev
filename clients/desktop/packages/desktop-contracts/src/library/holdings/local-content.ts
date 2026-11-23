@@ -1,22 +1,23 @@
-/** @fileoverview Defines local-content registration inputs and actual refresh outcomes. */
-
 import type { NonEmptyArray } from '../../operations'
-import type { ExternalIdentity, WorkRef, WorkType, EntryRef, FileWorkType } from '../catalog'
-import type { ErrorSummary } from '../../errors'
 import type { FileRecognitionResult } from './file-recognition'
 
 import type { FileAvailability } from './files'
-import { parseValue, unique, id } from '../../validation'
+import { fromParser, parseValue, unique, id } from '../../validation'
 import * as v from 'valibot'
 import { path } from './directories'
-import { identitySchema, identityKey, workRefSchema } from '../catalog'
-import { parseErrorSummary, DesktopError } from '../../errors'
+import {
+  identitySchema,
+  identityKey,
+  workRefSchema,
+  type ExternalIdentity,
+  type WorkRef,
+  type WorkType,
+  type EntryRef,
+  type FileWorkType,
+} from '../catalog'
+import { parseErrorSummary, DesktopError, type ErrorSummary } from '../../errors'
 
-/**
- * One real file or directory input for a known work.
- *
- * File registration does not implicitly register the parent directory.
- */
+/** Registering a file leaves its parent directory unregistered unless explicitly included. */
 export interface LocalContentInput {
   readonly type: 'directory' | 'file'
   readonly path: string
@@ -27,7 +28,6 @@ export interface LocalContentRegistrationOptions {
   readonly expectedIdentities?: NonEmptyArray<ExternalIdentity>
 }
 
-/** Actual new or reused holdings identities and any initial-refresh or incomplete-launch issues. */
 export type LocalContentRegistrationResult<T extends WorkType = WorkType> = {
   [K in T]: {
     readonly work: WorkRef<K>
@@ -45,11 +45,7 @@ export type LocalContentRegistrationResult<T extends WorkType = WorkType> = {
   }
 }[T]
 
-/**
- * Discovery progress and actual per-file maintenance and recognition outcomes.
- *
- * Unavailable files and failed matching retain existing holdings data.
- */
+/** Unavailable files and failed matching preserve existing holdings data. */
 export type HoldingsRefreshResult<T extends FileWorkType = FileWorkType> = {
   [K in T]: {
     readonly work: EntryRef<K>
@@ -96,7 +92,6 @@ export function parseLocalContentRegistrationOptions(
   )
 }
 
-/** Parses registered or reused identities and issues, checking applicability to the work kind. */
 export function parseLocalContentRegistrationResult(
   input: unknown,
 ): LocalContentRegistrationResult {
@@ -113,7 +108,7 @@ export function parseLocalContentRegistrationResult(
         v.variant('code', [
           v.strictObject({
             code: v.literal('initialRefreshFailed'),
-            error: v.pipe(v.unknown(), v.transform(parseErrorSummary)),
+            error: fromParser(parseErrorSummary),
           }),
           v.strictObject({ code: v.literal('launchConfigIncomplete'), launchConfigId: id }),
         ]),

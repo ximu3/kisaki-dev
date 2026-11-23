@@ -187,6 +187,7 @@ Fabric 手绘画布含路径、文字、缩放与画布尺寸，不对应现有�
     │   ├── import.ts
     │   └── ipc.ts
     ├── webview/
+    │   ├── index.html
     │   ├── entry.tsx
     │   ├── page.tsx
     │   ├── selection.tsx

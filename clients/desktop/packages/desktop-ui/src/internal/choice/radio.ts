@@ -1,5 +1,3 @@
-/** @fileoverview Keeps native radio selection aligned with its value owner after edits and resets. */
-
 import { createEffect, type Accessor } from 'solid-js'
 import { nativeValidityChanged } from '../form'
 import { createValue, onFormReset } from '../state'

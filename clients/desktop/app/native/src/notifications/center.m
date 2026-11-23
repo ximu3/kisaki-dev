@@ -1,23 +1,16 @@
-// Delivers macOS notifications under the host bundle identity and receives both warm and cold clicks.
-
 #import <Foundation/Foundation.h>
 #import <UserNotifications/UserNotifications.h>
 
-/// Receives the stable identifier of a default notification action.
 typedef void (*KisakiNotificationClick)(const char *);
 
-/// Resolves one submission as accepted, denied or failed.
 typedef void (*KisakiNotificationCompletion)(void *, int);
 
-/// The host application's delegate, installed before launch completes.
 @interface KisakiNotificationDelegate : NSObject <UNUserNotificationCenterDelegate>
-/// Delivers the stable identifier to the process's retained Node receiver.
 @property(nonatomic, assign) KisakiNotificationClick receive;
 @end
 
 @implementation KisakiNotificationDelegate
 
-/// Presents the native notification when the app is already in the foreground.
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center
        willPresentNotification:(UNNotification *)notification
          withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completion {
@@ -56,7 +49,6 @@ int kisaki_set_notification_receiver(const char *app_id, KisakiNotificationClick
     return 1;
 }
 
-/// Requests OS delivery and reports the actual authorization and scheduling outcome.
 void kisaki_post_notification(const char *app_id, const char *identifier, const char *title, const char *body,
                               void *context, KisakiNotificationCompletion complete) {
     // The center resolves the bundle identity already checked when the receiver connected.

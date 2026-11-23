@@ -1,13 +1,8 @@
-/** @fileoverview Configures and compiles desktop programs through Vite's public build API. */
-
-import { build, loadConfigFromFile } from 'vite-plus'
-import type { InlineConfig } from 'vite-plus'
+import { build, loadConfigFromFile, type InlineConfig } from 'vite-plus'
 import { join } from 'node:path'
 import { existsSync } from 'node:fs'
 
-/** Independently compiled desktop programs with separate runtime environments. */
 export const programNames = ['main', 'preload', 'extension-host', 'renderer'] as const
-/** Identity of one independently compiled desktop runtime program. */
 export type ProgramName = (typeof programNames)[number]
 
 /** Includes a utility process when the input supplies that independently delivered program. */
@@ -17,7 +12,6 @@ export function sourcePrograms(root: string) {
   )
 }
 
-/** Creates a program's Vite configuration with its output directory and shared build identity. */
 export function programConfig(
   sourceRoot: string,
   program: ProgramName,
@@ -61,14 +55,12 @@ export async function programConfigurations(
       lib: {
         ...library,
         entry,
-        /** Keeps this sandbox preload in its declared single-file CommonJS entry. */
         fileName: () => `${name}.cjs`,
       },
     },
   }))
 }
 
-/** Compiles the current program entries and waits for all finite output writes to finish. */
 export async function buildProgram(
   sourceRoot: string,
   program: ProgramName,

@@ -1,8 +1,4 @@
 #!/usr/bin/env node
-/**
- * @fileoverview Removes declared, reproducible outputs within their owning projects.
- */
-
 import { rm } from 'node:fs/promises'
 import { isAbsolute, relative, resolve, sep } from 'node:path'
 import { runCli } from './cli.ts'

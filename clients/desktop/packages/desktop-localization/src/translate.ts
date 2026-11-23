@@ -1,5 +1,3 @@
-/** @fileoverview Formats a validated immutable catalog snapshot without owning language selection or registration. */
-
 import { IntlMessageFormat } from 'intl-messageformat'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {

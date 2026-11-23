@@ -1,5 +1,3 @@
-/** @fileoverview Ordered Solid children describe the Unovis instances mounted by a chart container. */
-
 import { children, createMemo } from 'solid-js'
 import type { Accessor } from 'solid-js'
 import type { JSX } from '@solidjs/web'
@@ -62,7 +60,6 @@ export function chartPart<
   let applied: Config | undefined
   const configuration = createMemo(() => ({ ...config() }))
 
-  /** Drops the resource before another child can take over its slot. */
   function release(): void {
     if (engine instanceof ComponentCore) {
       engine._setUpComponentEventsThrottled.cancel()
@@ -76,7 +73,7 @@ export function chartPart<
     applied = undefined
   }
 
-  /** Captures inputs during the container's reactive read to keep its writes untracked. */
+  // Capture inputs in the container's tracked read so engine writes can remain untracked.
   function read() {
     const value = configuration()
     return {

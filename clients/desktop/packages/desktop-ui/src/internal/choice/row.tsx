@@ -1,5 +1,3 @@
-/** @fileoverview Labeled choices use the native control and one shared first-line alignment. */
-
 import { children, Show } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import type { ControlSize } from '../control/size'
@@ -15,7 +13,6 @@ export function ChoiceRow(props: {
   size?: ControlSize | undefined
   children: JSX.Element
 }): JSX.Element {
-  /** Resolved child control retained by the surrounding choice-row presentation. */
   const control = children(() => props.children)
 
   return (

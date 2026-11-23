@@ -1,5 +1,3 @@
-/** @fileoverview Composes provider search, profile fetching and participant management. */
-
 import type {
   MetadataProvidersApi,
   MetadataSearchResult,
@@ -12,38 +10,26 @@ import type { MetadataSearchRequest, MetadataImageSearchRequest } from './search
 import type { CallOptions } from '../operations'
 import type { MetadataFetchInput, MetadataFetchResult } from './fetch'
 
-/**
- * Provider search, profile-based metadata fetching and participant management.
- *
- * Search and fetch return source information without writing local catalog data.
- */
+/** Search and fetch return source facts before adoption into the local catalog. */
 export interface MetadataApi {
   readonly providers: MetadataProvidersApi
   readonly fieldProcessors: MetadataFieldProcessorsApi
   readonly profiles: MetadataProfilesApi
 
-  /**
-   * Searches the selected provider and preserves result identities, matching evidence and
-   * pagination.
-   */
   search<T extends EntryType>(
     input: MetadataSearchRequest<T>,
     call?: CallOptions,
   ): Promise<MetadataSearchResult<T>>
 
-  /**
-   * Searches the selected provider for an image use and returns source candidates without
-   * downloading them.
-   */
+  /** Returns source image candidates. Download and adoption occur through separate operations. */
   searchImages<T extends EntryType>(
     input: MetadataImageSearchRequest<T>,
     call?: CallOptions,
   ): Promise<MetadataImageSearchResult>
 
   /**
-   * Captures the selected profile and composes source facts into a validated candidate.
-   *
-   * Source sessions are released before the operation completes.
+   * Captures the selected profile and releases its source sessions before returning the validated
+   * candidate.
    */
   fetch<T extends EntryType>(
     input: MetadataFetchInput<T>,

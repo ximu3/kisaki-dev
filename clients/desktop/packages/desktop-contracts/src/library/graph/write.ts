@@ -1,73 +1,55 @@
-/** @fileoverview Validates one complete graph using a shared create index and cross-region consistency checks. */
-
-import type {
-  GraphEntryCreate,
-  GraphPartCreate,
-  GraphTagCreate,
-  GraphTagUpdate,
-  GraphEntryRef,
-  GraphPartRef,
-} from './nodes'
-import type { EntryUpdate, EntryRef, PartRef, EntryType, PartType, WorkType } from '../catalog'
-import type { PartUpdate } from '../parts'
-import type {
-  GraphRelations,
-  GraphPersonWorkAdd,
-  GraphOrganizationWorkAdd,
-  GraphWorkRelationAdd,
-  GraphWorkCharacterAdd,
-} from './relations'
-import type { GraphLocalContent } from './local-content'
-import type { PreparedAttachment } from '../../resources'
-import type { KeyedResult } from '../../operations'
 import * as v from 'valibot'
-import {
-  preparedSchema,
-  entryTypes,
-  partTypes,
-  entryRefSchema,
-  isWorkType,
-  parseEntryCreate,
-  parseEntryUpdate,
-  workTypes,
-  entryTagsSchema,
-  partRefSchema,
-} from '../catalog'
 import { DesktopError } from '../../errors'
 import {
-  parseValue,
+  fromParser,
   id,
-  text,
-  unique,
-  parseRecord,
   optionalFields,
   parseDictionary,
+  parseRecord,
+  parseValue,
+  unique,
 } from '../../validation'
-import { keySchema, tagKey, partKey, entryKey } from './nodes'
-import { partWorkType, partCommonEntries, partSpecificEntries, parsePartUpdate } from '../parts'
-import { tagEntries, parseTagCreate, parseTagUpdate } from '../organizers'
+import type { PreparedAttachment } from '../../resources'
+import type { KeyedResult } from '../../operations'
 import {
-  characterRoles,
-  personRoles,
-  organizationRoles,
-  workRelationTypes,
-  canUsePersonRole,
-  canUseOrganizationRole,
-  canonicalWorkRelation,
-  validateWorkRelation,
-  parseWorkCharacterBinding,
-  parsePersonWorkBinding,
-  parseOrganizationWorkBinding,
-  parseStoredWorkRelationBinding,
-} from '../relations'
-import { properties, relationEdit, actions } from './relations'
-import { parseGraphLocalContent } from './local-content'
+  entryRefSchema,
+  partRefSchema,
+  partTypes,
+  preparedSchema,
+  parseEntryCreate,
+  parseEntryUpdate,
+  type EntryRef,
+  type PartRef,
+  type EntryUpdate,
+} from '../catalog'
+import { parseTagCreate, parseTagUpdate, tagEntries } from '../organizers'
+import {
+  partCommonEntries,
+  partSpecificEntries,
+  partWorkType,
+  parsePartUpdate,
+  type PartUpdate,
+} from '../parts'
+import {
+  entryKey,
+  partKey,
+  tagKey,
+  type GraphEntryCreate,
+  type GraphTagMember,
+  type GraphPartCreate,
+  type GraphTagCreate,
+  type GraphTagUpdate,
+} from './nodes'
+import { bindingEdits, checkRemovedCharacterBindings } from './bindings'
+import { distinctMembers } from '../membership'
+import { membershipEdits, tagMemberSchema } from './memberships'
+import { indexGraphReferences, type GraphReferences } from './references'
+import type { GraphRelations } from './relations'
+import { parseGraphLocalContent, type GraphLocalContent } from './local-content'
 
 /**
- * One atomic library write spanning entry, part, tag, relation and initial-holdings regions.
- *
- * Empty graphs succeed with changed false and empty creation maps. Prepared holds alone do not
- * constitute a write.
+ * Commits all regions atomically. An empty graph returns changed false and empty creation maps.
+ * Prepared holds alone produce no write.
  */
 export interface LibraryWriteGraph {
   readonly entries?: {
@@ -91,7 +73,6 @@ export interface LibraryWriteGraph {
   readonly prepared?: readonly PreparedAttachment[]
 }
 
-/** Creation items and their presence within one optional graph region. */
 type CreatedItems<Region> = Region extends {
   readonly create: infer Items extends readonly { readonly key: string }[]
 }
@@ -101,9 +82,8 @@ type CreatedItems<Region> = Region extends {
     : undefined
 
 /**
- * The graph's change indicator and exact request-key mappings for successful creates.
- *
- * Failures do not return invented identities or partial creation maps.
+ * Successful creates return a map keyed by the original request keys. Failure exposes no partial
+ * creation map.
  */
 export interface LibraryWriteResult<G extends LibraryWriteGraph = LibraryWriteGraph> {
   readonly entries: KeyedResult<
@@ -139,21 +119,16 @@ export interface LibraryWriteResult<G extends LibraryWriteGraph = LibraryWriteGr
   readonly changed: boolean
 }
 
-/**
- * Requires an explicitly supplied section before its owning graph parser validates the contents.
- */
 const present = v.pipe(
   v.unknown(),
   v.check((value) => value !== undefined),
 )
 
-/** Initial create/update section shape before object-kind-specific graph validation. */
 const rawActions = v.strictObject({
   create: v.exactOptional(v.array(v.unknown())),
   update: v.exactOptional(v.array(v.unknown())),
 })
 
-/** Top-level graph envelope preserving each section for its owned validation stage. */
 const rawGraphSchema = v.strictObject({
   entries: v.exactOptional(rawActions),
   parts: v.exactOptional(rawActions),
@@ -163,492 +138,107 @@ const rawGraphSchema = v.strictObject({
   prepared: v.exactOptional(v.array(preparedSchema)),
 })
 
-/** Rejects a graph contradiction with the shared InvalidInput classification. */
-function invalid(message: string): never {
-  throw new DesktopError('InvalidInput', message)
+function parseEntry(
+  item: unknown,
+  graphTagMembers: v.GenericSchema<unknown, readonly GraphTagMember[]>,
+): GraphEntryCreate {
+  const source = parseRecord(item)
+  const { key: keyInput, tags: tagInput, ...fields } = source
+  const key = parseValue(id, keyInput)
+  const value = parseEntryCreate(fields)
+  const members = Object.hasOwn(source, 'tags')
+    ? { tags: parseValue(graphTagMembers, tagInput) }
+    : {}
+  return { ...value, key, ...members } as GraphEntryCreate
+}
+
+function parsePart(item: unknown, { entryReference }: GraphReferences): GraphPartCreate {
+  const { type } = parseValue(v.looseObject({ type: v.picklist(partTypes) }), item)
+  return parseValue(
+    v.strictObject({
+      key: id,
+      type: v.literal(type),
+      work: entryReference([partWorkType(type)]),
+      data: v.strictObject(optionalFields({ ...partCommonEntries, ...partSpecificEntries[type] })),
+      completed: v.exactOptional(v.boolean()),
+    }),
+    item,
+  ) as GraphPartCreate
+}
+
+function parseTag(item: unknown): GraphTagCreate {
+  const { key, ...fields } = parseValue(
+    v.strictObject({
+      key: id,
+      name: tagEntries.name,
+      description: v.exactOptional(tagEntries.description),
+      isNsfw: v.exactOptional(tagEntries.isNsfw),
+    }),
+    item,
+  )
+  return { key, ...parseTagCreate(fields) }
+}
+
+function parseTagEdit(item: unknown) {
+  const { id: tagIdInput, ...fields } = parseRecord(item)
+  const tagId = parseValue(id, tagIdInput)
+  return { id: tagId, ...parseTagUpdate(fields) }
+}
+
+function parseNodeEdits<Create, Update>(
+  region: v.InferOutput<typeof rawActions> | undefined,
+  parseCreate: (value: unknown) => Create,
+  parseUpdate: (value: unknown) => Update,
+) {
+  if (!region) {
+    return
+  }
+  return {
+    ...(region.create && { create: region.create.map(parseCreate) }),
+    ...(region.update && { update: region.update.map(parseUpdate) }),
+  }
 }
 
 /**
- * Parses the complete graph and checks request-local types and contradictions before preparation.
- *
- * The host checks existing-object ownership, visibility, uniqueness, occupancy, actual prepared
- * holds and transaction baselines.
+ * Checks request-local types and contradictions before preparation. The host checks existing-object
+ * ownership, visibility, uniqueness, occupancy, prepared holds and transaction baselines.
  */
 export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
   const raw = parseValue(rawGraphSchema, input, 'Invalid library write graph')
-  const keys = new Set<string>()
-  const entries = new Map<string, EntryType>()
-  const parts = new Map<string, { readonly type: PartType; readonly work: GraphEntryRef }>()
-  const tags = new Set<string>()
-
-  /** Indexes a create key, rejecting reuse across any graph region. */
-  function addKey(key: string): void {
-    if (keys.has(key)) {
-      invalid('Create keys must be unique across the complete graph')
-    }
-    keys.add(key)
-  }
-
-  // Index every created identity before resolving references across graph regions.
-  for (const item of raw.entries?.create ?? []) {
-    const node = parseValue(v.looseObject({ key: id, type: v.picklist(entryTypes) }), item)
-    addKey(node.key)
-    entries.set(node.key, node.type)
-  }
-
-  for (const item of raw.parts?.create ?? []) {
-    const node = parseValue(
-      v.looseObject({
-        key: id,
-        type: v.picklist(partTypes),
-        work: v.union([entryRefSchema, keySchema]),
-      }),
-      item,
-    )
-    addKey(node.key)
-    parts.set(node.key, { type: node.type, work: node.work })
-  }
-
-  for (const item of raw.tags?.create ?? []) {
-    const node = parseValue(v.looseObject({ key: id }), item)
-    addKey(node.key)
-    tags.add(node.key)
-  }
-
-  /** Resolves a graph entry reference's kind from its saved reference or indexed create key. */
-  function entryType(ref: GraphEntryRef): EntryType {
-    if ('type' in ref) {
-      return ref.type
-    }
-
-    const type = entries.get(ref.key)
-    if (!type) {
-      invalid('Graph reference does not identify an entry created in this request')
-    }
-    return type
-  }
-
-  /** Resolves a graph entry reference and requires a work kind. */
-  function workType(ref: GraphEntryRef<WorkType>): WorkType {
-    const type = entryType(ref)
-    if (!isWorkType(type)) {
-      invalid('Graph reference must identify a work')
-    }
-    return type
-  }
-
-  /** Builds a typed entry-reference schema that resolves graph-local create keys. */
-  function entryReference<T extends EntryType>(
-    types: readonly T[],
-  ): v.GenericSchema<unknown, GraphEntryRef<T>> {
-    return v.pipe(
-      v.union([v.strictObject({ type: v.picklist(types), id }), keySchema]),
-      v.check((ref) => types.some((type) => type === entryType(ref))),
-    )
-  }
-
-  /** Builds a typed part-reference schema that resolves graph-local create keys. */
-  function partReference<T extends PartType>(
-    types: readonly T[],
-  ): v.GenericSchema<unknown, GraphPartRef<T>> {
-    return v.pipe(
-      v.union([v.strictObject({ type: v.picklist(types), id }), keySchema]),
-      v.check((ref) => {
-        if ('type' in ref) {
-          return true
-        }
-
-        const target = parts.get(ref.key)
-        return target !== undefined && types.some((type) => type === target.type)
-      }),
-    )
-  }
-
-  const tagReference = v.pipe(
-    v.union([v.strictObject({ id }), keySchema]),
-    v.check((ref) => !('key' in ref) || tags.has(ref.key)),
+  const references = indexGraphReferences(raw)
+  const tagMember = tagMemberSchema(references.tagReference)
+  const tagMembers = distinctMembers(tagMember, (member) => tagKey(member.tagId))
+  const parsedEntries = parseNodeEdits(
+    raw.entries,
+    (item) => parseEntry(item, tagMembers),
+    parseEntryUpdate,
   )
-  const graphTagMember = v.strictObject({
-    tagId: tagReference,
-    note: v.exactOptional(v.nullable(text)),
-    isSpoiler: v.exactOptional(v.boolean()),
-  })
-  const graphTagMembers = v.pipe(
-    v.array(graphTagMember),
-    v.check((items) => unique(items, (item) => tagKey(item.tagId))),
+  const parsedParts = parseNodeEdits(
+    raw.parts,
+    (item) => parsePart(item, references),
+    parsePartUpdate,
   )
+  const parsedTags = parseNodeEdits(raw.tags, parseTag, parseTagEdit)
 
-  /** Parses an ordinary entry creation with its request key and graph-capable tag memberships. */
-  function parseEntry(item: unknown): GraphEntryCreate {
-    const source = parseRecord(item)
-    const { key: keyInput, tags: tagInput, ...fields } = source
-    const key = parseValue(id, keyInput)
-    const value = parseEntryCreate(fields)
-    const members = Object.hasOwn(source, 'tags')
-      ? { tags: parseValue(graphTagMembers, tagInput) }
-      : {}
-    return { ...value, key, ...members } as GraphEntryCreate
-  }
-
-  /** Parses a part creation and checks that its graph owner has the applicable work kind. */
-  function parsePart(item: unknown): GraphPartCreate {
-    const { type } = parseValue(v.looseObject({ type: v.picklist(partTypes) }), item)
-    return parseValue(
-      v.strictObject({
-        key: id,
-        type: v.literal(type),
-        work: entryReference([partWorkType(type)]),
-        data: v.strictObject(
-          optionalFields({ ...partCommonEntries, ...partSpecificEntries[type] }),
-        ),
-        completed: v.exactOptional(v.boolean()),
-      }),
-      item,
-    ) as GraphPartCreate
-  }
-
-  /** Parses a request-local tag creation through the ordinary tag-field contract. */
-  function parseTag(item: unknown): {
-    readonly key: string
-    readonly name: string
-    readonly description?: string | null
-    readonly isNsfw?: boolean
-  } {
-    const { key, ...fields } = parseValue(
-      v.strictObject({
-        key: id,
-        name: tagEntries.name,
-        description: v.exactOptional(tagEntries.description),
-        isNsfw: v.exactOptional(tagEntries.isNsfw),
-      }),
-      item,
-    )
-    return { key, ...parseTagCreate(fields) }
-  }
-
-  /** Parses an existing tag identity and its ordinary field edit. */
-  function parseTagEdit(item: unknown) {
-    const { id: tagIdInput, ...fields } = parseRecord(item)
-    const tagId = parseValue(id, tagIdInput)
-    return { id: tagId, ...parseTagUpdate(fields) }
-  }
-
-  const parsedEntries = raw.entries
-    ? {
-        ...(raw.entries.create === undefined ? {} : { create: raw.entries.create.map(parseEntry) }),
-        ...(raw.entries.update === undefined
-          ? {}
-          : { update: raw.entries.update.map(parseEntryUpdate) }),
-      }
-    : undefined
-  const parsedParts = raw.parts
-    ? {
-        ...(raw.parts.create === undefined ? {} : { create: raw.parts.create.map(parsePart) }),
-        ...(raw.parts.update === undefined
-          ? {}
-          : { update: raw.parts.update.map(parsePartUpdate) }),
-      }
-    : undefined
-  const parsedTags = raw.tags
-    ? {
-        ...(raw.tags.create === undefined ? {} : { create: raw.tags.create.map(parseTag) }),
-        ...(raw.tags.update === undefined ? {} : { update: raw.tags.update.map(parseTagEdit) }),
-      }
-    : undefined
   if (
     !unique(parsedEntries?.update ?? [], (item) => item.ref.id) ||
     !unique(parsedParts?.update ?? [], (item) => partKey(item.ref)) ||
     !unique(parsedTags?.update ?? [], (item) => item.id)
   ) {
-    invalid('Each existing graph node may be updated at most once')
+    throw new DesktopError('InvalidInput', 'Each existing graph node may be updated at most once')
   }
-
-  // Relation and local-content parsers below close over the complete create index, never the order of creation arrays.
-  const work = entryReference(workTypes)
-  const character = entryReference(['character'] as const)
-  const person = entryReference(['person'] as const)
-  const organization = entryReference(['organization'] as const)
-
-  const characterFields = { work, character, role: v.nullable(v.picklist(characterRoles)) }
-  const personFields = {
-    work,
-    person,
-    character: v.nullable(character),
-    role: v.picklist(personRoles),
-  }
-  const organizationFields = { work, organization, role: v.picklist(organizationRoles) }
-  const relationFields = { from: work, to: work, type: v.picklist(workRelationTypes) }
-
-  /** Checks person-role applicability when the work, role and character context are all known. */
-  function checkPerson(value: Partial<GraphPersonWorkAdd>): void {
-    if (
-      value.work &&
-      value.role &&
-      value.character !== undefined &&
-      !canUsePersonRole(value.role, workType(value.work), value.character !== null)
-    ) {
-      invalid('Person responsibility is not applicable to its graph work or character')
-    }
-  }
-
-  /** Checks organization-role applicability when its work and role are known. */
-  function checkOrganization(value: Partial<GraphOrganizationWorkAdd>): void {
-    if (value.work && value.role && !canUseOrganizationRole(value.role, workType(value.work))) {
-      invalid('Organization responsibility is not applicable to its graph work')
-    }
-  }
-
-  /** Projects graph work endpoints into typed identities for shared relation validation. */
-  function workRelationBinding(value: GraphWorkRelationAdd) {
-    return {
-      from: { type: workType(value.from), id: entryKey(value.from) },
-      to: { type: workType(value.to), id: entryKey(value.to) },
-      type: value.type,
-    }
-  }
-
-  /** Encodes a canonical work relationship so inverse-direction duplicates share a key. */
-  function relationKey(value: GraphWorkRelationAdd): string {
-    const normalized = canonicalWorkRelation(workRelationBinding(value))
-    return JSON.stringify([normalized.from.id, normalized.to.id, normalized.type])
-  }
-
-  /** Validates a work relationship when both endpoints and its type are known. */
-  function checkRelation(value: Partial<GraphWorkRelationAdd>): void {
-    if (value.from && value.to && value.type) {
-      validateWorkRelation(
-        workRelationBinding({ from: value.from, to: value.to, type: value.type }),
-      )
-    }
-  }
-
-  /** Encodes the work-character endpoint pair used to identify one graph association. */
-  function characterKey(value: GraphWorkCharacterAdd): string {
-    return JSON.stringify([entryKey(value.work), entryKey(value.character)])
-  }
-
-  /** Encodes a person's work responsibility, including role and optional character context. */
-  function personKey(value: GraphPersonWorkAdd): string {
-    return JSON.stringify([
-      entryKey(value.work),
-      entryKey(value.person),
-      value.role,
-      value.character === null ? null : entryKey(value.character),
-    ])
-  }
-
-  /** Encodes an organization's work responsibility by endpoints and role. */
-  function organizationKey(value: GraphOrganizationWorkAdd): string {
-    return JSON.stringify([entryKey(value.work), entryKey(value.organization), value.role])
-  }
-
-  const characterBinding = v.pipe(v.unknown(), v.transform(parseWorkCharacterBinding))
-  const personBinding = v.pipe(v.unknown(), v.transform(parsePersonWorkBinding))
-  const organizationBinding = v.pipe(v.unknown(), v.transform(parseOrganizationWorkBinding))
-  const relationBinding = v.pipe(v.unknown(), v.transform(parseStoredWorkRelationBinding))
-
-  const characterAdd = v.strictObject({ ...characterFields, ...optionalFields(properties) })
-  const personAdd = v.pipe(
-    v.strictObject({ ...personFields, ...optionalFields(properties) }),
-    v.transform((value) => {
-      checkPerson(value)
-      return value
-    }),
-  )
-  const organizationAdd = v.pipe(
-    v.strictObject({ ...organizationFields, ...optionalFields(properties) }),
-    v.transform((value) => {
-      checkOrganization(value)
-      return value
-    }),
-  )
-  const relationAdd = v.pipe(
-    v.strictObject({ ...relationFields, note: v.exactOptional(properties.note) }),
-    v.transform((value) => {
-      checkRelation(value)
-      return value
-    }),
-  )
-
-  const personEdit = v.pipe(
-    relationEdit(personFields, personBinding, true),
-    v.transform((value) => {
-      checkPerson({ ...value.expected?.binding, ...value.changes })
-      return value
-    }),
-  )
-  const organizationEdit = v.pipe(
-    relationEdit(organizationFields, organizationBinding, true),
-    v.transform((value) => {
-      checkOrganization({ ...value.expected?.binding, ...value.changes })
-      return value
-    }),
-  )
-  const workRelationEdit = v.pipe(
-    relationEdit(relationFields, relationBinding, false),
-    v.transform((value) => {
-      checkRelation({ ...value.expected?.binding, ...value.changes })
-      return value
-    }),
-  )
-
-  const tagChange = v.union([
-    v.strictObject({ type: v.literal('replace'), items: graphTagMembers }),
-    v.pipe(
-      v.strictObject({
-        type: v.literal('modify'),
-        add: v.exactOptional(graphTagMembers),
-        remove: v.exactOptional(
-          v.pipe(
-            v.array(tagReference),
-            v.check((refs) => unique(refs, tagKey)),
-          ),
-        ),
-      }),
-      v.check(
-        (value) =>
-          (value.add?.length ?? 0) + (value.remove?.length ?? 0) > 0 &&
-          !(value.add ?? []).some((member) =>
-            value.remove?.some((ref) => tagKey(ref) === tagKey(member.tagId)),
-          ),
-      ),
-    ),
-  ])
-
-  const volume = partReference(['comicVolume'] as const)
-  const chapter = partReference(['comicChapter'] as const)
-  const chapterMember = v.strictObject({ chapter, numberLabel: v.nullable(text) })
-  const chapterMembers = v.pipe(
-    v.array(chapterMember),
-    v.check((items) => unique(items, (item) => partKey(item.chapter))),
-  )
-  const chapterChange = v.union([
-    v.strictObject({ type: v.literal('replace'), items: chapterMembers }),
-    v.pipe(
-      v.strictObject({
-        type: v.literal('modify'),
-        add: v.exactOptional(chapterMembers),
-        remove: v.exactOptional(
-          v.pipe(
-            v.array(chapter),
-            v.check((refs) => unique(refs, partKey)),
-          ),
-        ),
-      }),
-      v.check(
-        (value) =>
-          (value.add?.length ?? 0) + (value.remove?.length ?? 0) > 0 &&
-          !(value.add ?? []).some((member) =>
-            value.remove?.some((ref) => partKey(ref) === partKey(member.chapter)),
-          ),
-      ),
-    ),
-  ])
-  const existingChapters = v.pipe(
-    v.array(
-      v.strictObject({
-        chapter: v.strictObject({ type: v.literal('comicChapter'), id }),
-        numberLabel: v.nullable(text),
-      }),
-    ),
-    v.check((items) => unique(items, (item) => item.chapter.id)),
-  )
 
   const relations: GraphRelations | undefined =
     raw.relations === undefined
       ? undefined
       : parseValue(
           v.strictObject({
-            workCharacters: v.exactOptional(
-              actions(
-                characterAdd,
-                relationEdit(characterFields, characterBinding, true),
-                v.strictObject({ id, binding: characterBinding, ...properties }),
-                characterKey,
-              ),
-            ),
-            personWorks: v.exactOptional(
-              actions(
-                personAdd,
-                personEdit,
-                v.strictObject({ id, binding: personBinding, ...properties }),
-                personKey,
-              ),
-            ),
-            organizationWorks: v.exactOptional(
-              actions(
-                organizationAdd,
-                organizationEdit,
-                v.strictObject({ id, binding: organizationBinding, ...properties }),
-                organizationKey,
-              ),
-            ),
-            workRelations: v.exactOptional(
-              actions(
-                relationAdd,
-                workRelationEdit,
-                v.strictObject({ id, binding: relationBinding, note: properties.note }),
-                relationKey,
-              ),
-            ),
-            entryTags: v.exactOptional(
-              v.pipe(
-                v.array(
-                  v.strictObject({
-                    entry: entryReference(entryTypes),
-                    change: tagChange,
-                    expected: v.exactOptional(entryTagsSchema),
-                  }),
-                ),
-                v.check(
-                  (items) =>
-                    unique(items, (item) => entryKey(item.entry)) &&
-                    items.every(
-                      (item) => item.expected === undefined || item.change.type === 'replace',
-                    ),
-                ),
-              ),
-            ),
-            volumeChapters: v.exactOptional(
-              v.pipe(
-                v.array(
-                  v.strictObject({
-                    volume,
-                    change: chapterChange,
-                    expected: v.exactOptional(existingChapters),
-                  }),
-                ),
-                v.check(
-                  (items) =>
-                    unique(items, (item) => partKey(item.volume)) &&
-                    items.every(
-                      (item) => item.expected === undefined || item.change.type === 'replace',
-                    ),
-                ),
-              ),
-            ),
+            ...bindingEdits(references),
+            ...membershipEdits(references, tagMember),
           }),
           raw.relations,
           'Invalid graph relation actions',
         )
-
-  /** Rejects different work owners when both owners can be established from the graph input. */
-  function requireSameKnownOwner(
-    left: GraphPartRef,
-    right: GraphPartRef | GraphEntryRef,
-    rightIsWork: boolean,
-  ): void {
-    const leftOwner = 'key' in left ? parts.get(left.key)?.work : undefined
-    let rightOwner: GraphEntryRef | undefined
-    if (rightIsWork) {
-      rightOwner = right as GraphEntryRef
-    } else if ('key' in right) {
-      rightOwner = parts.get(right.key)?.work
-    }
-    if (leftOwner && rightOwner && entryKey(leftOwner) !== entryKey(rightOwner)) {
-      invalid('Graph parts and local files must share the same real work')
-    }
-  }
 
   for (const item of relations?.volumeChapters ?? []) {
     const chapters =
@@ -656,7 +246,7 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
         ? item.change.items.map((item) => item.chapter)
         : [...(item.change.add ?? []).map((item) => item.chapter), ...(item.change.remove ?? [])]
     for (const chapter of chapters) {
-      requireSameKnownOwner(chapter, item.volume, false)
+      references.requirePartOwner(chapter, references.partOwner(item.volume))
     }
   }
 
@@ -673,53 +263,14 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
     }
   }
   if (relations?.entryTags?.some((item) => tagOwners.has(entryKey(item.entry)))) {
-    invalid('An entry tag set cannot be written through two graph regions')
+    throw new DesktopError(
+      'InvalidInput',
+      'An entry tag set cannot be written through two graph regions',
+    )
   }
 
-  const removedCharacterBindings = new Set(
-    (relations?.workCharacters?.expected ?? []).map((item) => characterKey(item.binding)),
-  )
-  for (const item of relations?.personWorks?.add ?? []) {
-    if (
-      item.character &&
-      removedCharacterBindings.has(
-        characterKey({ work: item.work, character: item.character, role: null }),
-      )
-    ) {
-      invalid('A character-specific work cannot depend on a removed work-character relation')
-    }
-  }
-
-  const localContent = parseGraphLocalContent(raw.localContent, entryReference, partReference)
-
-  const localPaths = new Set<string>()
-  for (const type of workTypes) {
-    const groups = localContent?.[type] ?? []
-    for (const group of groups) {
-      for (const directory of group.directories ?? []) {
-        const key = JSON.stringify([entryKey(group.work), 'directory', directory.path])
-        if (localPaths.has(key)) {
-          invalid('Initial directory paths must not be duplicated')
-        }
-        localPaths.add(key)
-      }
-      if (type === 'game' || !('files' in group)) {
-        continue
-      }
-
-      for (const file of group.files ?? []) {
-        const key = JSON.stringify([entryKey(group.work), 'file', file.path])
-        if (localPaths.has(key)) {
-          invalid('Initial file paths must not be duplicated')
-        }
-        localPaths.add(key)
-
-        for (const association of file.associations ?? []) {
-          requireSameKnownOwner(association.part, group.work, true)
-        }
-      }
-    }
-  }
+  checkRemovedCharacterBindings(relations)
+  const localContent = parseGraphLocalContent(raw.localContent, references)
 
   return {
     ...(parsedEntries ? { entries: parsedEntries } : {}),
@@ -732,10 +283,8 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
 }
 
 /**
- * Parses complete creation maps against the already parsed graph request.
- *
- * Checks exact keys, requested kinds, distinct created identities and consistency with the change
- * indicator.
+ * Checks response maps against the original parsed graph, including exact keys, requested kinds,
+ * distinct created identities and consistency with the change indicator.
  */
 export function parseLibraryWriteResult<const G extends LibraryWriteGraph>(
   input: unknown,
@@ -748,31 +297,24 @@ export function parseLibraryWriteResult(
 ): LibraryWriteResult {
   const value = parseValue(
     v.strictObject({
-      entries: v.pipe(
-        v.unknown(),
-        v.transform((value) => parseDictionary(id, entryRefSchema, value)),
-      ),
-      parts: v.pipe(
-        v.unknown(),
-        v.transform((value) => parseDictionary(id, partRefSchema, value)),
-      ),
-      tags: v.pipe(
-        v.unknown(),
-        v.transform((value) => parseDictionary(id, id, value)),
-      ),
+      entries: fromParser((value) => parseDictionary(id, entryRefSchema, value)),
+      parts: fromParser((value) => parseDictionary(id, partRefSchema, value)),
+      tags: fromParser((value) => parseDictionary(id, id, value)),
       changed: v.boolean(),
     }),
     input,
     'Invalid graph write result',
   )
 
-  /** Requires a result map to contain exactly the keys of its requested creates. */
   function exactKeys(actual: object, expected: readonly { readonly key: string }[]): void {
     if (
       Object.keys(actual).length !== expected.length ||
       expected.some((item) => !Object.hasOwn(actual, item.key))
     ) {
-      invalid('Graph result must map exactly the successfully created keys')
+      throw new DesktopError(
+        'InvalidInput',
+        'Graph result must map exactly the successfully created keys',
+      )
     }
   }
 
@@ -784,7 +326,10 @@ export function parseLibraryWriteResult(
     request.entries?.create?.some((item) => value.entries[item.key]?.type !== item.type) ||
     request.parts?.create?.some((item) => value.parts[item.key]?.type !== item.type)
   ) {
-    invalid('Graph result identity kinds must match the requested creates')
+    throw new DesktopError(
+      'InvalidInput',
+      'Graph result identity kinds must match the requested creates',
+    )
   }
 
   const entries = Object.values(value.entries)
@@ -796,7 +341,7 @@ export function parseLibraryWriteResult(
     !unique(tags, (id) => id) ||
     (!value.changed && entries.length + parts.length + tags.length > 0)
   ) {
-    invalid('Graph result contains inconsistent created identities')
+    throw new DesktopError('InvalidInput', 'Graph result contains inconsistent created identities')
   }
   return value
 }

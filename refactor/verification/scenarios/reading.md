@@ -66,7 +66,7 @@ Kana 的终态浏览器验收覆盖[范围与维护窗口](../../design/projects
 
 正文根基准与作者元素计算字号的比例在绝对字号、相对字号和重排后保持；正文根 16px、局部段落 14px、目标基准 20px 时，该段应为 17.5px，不被强制为 20px。固定图像尺寸不随普通文字统一放大，原始源位置不变。ReadingView.forwardDirection 与 pageSlots 对应已采用布局，固定页面数非空、连续重排为 null，视口里同时可见多个组不改变该字段的含义，主应用不据此回写偏好。
 
-A12、A14 和 A27 按[作者断页规则](../../design/projects/kana/layout.md)与[分页支持边界](../../design/projects/kana/layout.md)验证格式结构和 CSS 能力。章节切换、固定源页及格式页位形成正确阅读顺序；单面只产生可见阅读面，连续正文保持连续流。
+A12、A14 和 A27 按[作者断页规则](../../design/projects/kana/layout.md#meaning)与[分页支持边界](../../design/projects/kana/layout.md#保留原生排版边界)验证格式结构和 CSS 能力。章节切换、固定源页及格式页位形成正确阅读顺序。单面只产生可见阅读面，连续正文保持连续流。
 
 支持的 CSS 断页核对前后内容、间距和源映射，相邻 before 与 after 按同一边界处理。外部 CSS、style 元素和 style 属性均进入相同流程。Firefox 当前的强制断页缺口按已声明限制验收，并保持自然流、自动分页、内容、定位和选择可用；解析成功本身不代表排版支持。
 
@@ -88,7 +88,9 @@ A12、A14 和 A27 按[语义文档与焦点机制](../../design/projects/kana/in
 
 ## 整包消费与文档执行边界
 
-A12、A23、A27 和 A28 按[整包接入](../../design/projects/kana/distribution.md)验收单入口的真实代码与声明、worker／WASM、完整资产清单和独立 tarball 消费。缺失 JS／Wasm、版本错配或 HTML 回退不能作为成功加载；不同 Reader 的 PDF／ZIP 执行范围、资产地址和关闭相互独立。构建完整复制实际依赖闭包，接入提供必需的 assetsBaseUrl；Kisaki 只映射偏好、持久位置、标记和产品会话，不导入私有格式源码；实际保存与重开保留位置及 Annotation，产品会话正确收尾。
+A12、A23、A27 和 A28 从同一份 tarball 验证 Kana 两个代码入口的脚本与声明。主入口在浏览器执行阅读操作，`@ximu3/kana/contracts` 在 Node 消费纯值。宿主构建按完整资产清单复制 worker、Wasm 及其依赖，并传入 `assetsBaseUrl`。缺少脚本或 Wasm、版本错配、返回 HTML 时报告加载失败。[整包接入](../../design/projects/kana/distribution.md)
+
+多个 Reader 使用各自的资产输入准备 PDF／ZIP 后端，分别持有内容地址并独立关闭。Kisaki 通过公开入口映射偏好、持久位置、标记和产品会话。实际保存与重开后位置及 Annotation 保留，产品会话按各自寿命收尾。
 
 A12 和 A27 按[内容文档职责](../../design/projects/kana/layout.md#documents)验证正常排版、点击、资源加载与执行边界共同成立：内容 CSP 在书籍内容进入活动文档前建立，书内脚本与事件属性不执行，资源从本次授权入口读取，书籍样式不影响宿主。sandbox 参数可以满足实际事件接入需要，不以是否出现 allow-scripts 单独判定通过；启用该参数时仍须证明内容执行限制成立，不把同一个条件重复当作多份保障。宿主业务与系统能力不注入书籍内容。
 
@@ -120,9 +122,9 @@ CFI 另核对精确数字、完整转义和范围、真实 package／spine 路�
 
 [源索引](../../design/projects/kana/formats.md#indexes)核对有状态解码、XML 派生记录、按页索引和上下文驻留，暂存写入须完成后才能被读取；原书位置不依赖缓存块编号。性能验收测量真实热数据、解析峰值与单次结果，容量调参不成为新公开偏好。[结构进度](../../design/projects/kana/formats.md#progress)核对页序、TXT 的完整分母、重排估算、重复 spine 和独立路径；加载或改字号不切换进度权重，100% 不产生完成记录。
 
-图片容器按字节类型与必要元信息建立页表，ZIP 和目录采用同一自然排序，保留成员的大小写及 Unicode 身份；支持类型、SVG 来源、固有方向和动画的单页身份按所属解码器验收。已识别的损坏或未支持图像不能靠删页改变后续编号。完整图像与出版物执行相应回归，已有[格式组合证据](../evidence/kana-format-integration/integration.md)保留其实际范围。
+图片容器按字节类型与必要元信息建立页表。ZIP 和目录采用同一自然排序，覆盖大小写、Unicode 十进制数字、前导零、超安全整数与目录分组。持久 `memberPath` 保留成员的实际名称与 Unicode 身份，重开后的新页序仍定位到同一成员。已识别但损坏或不受支持的图像保留源页，后续页编号保持。支持类型、SVG 来源、固有方向和动画的单页身份按所属解码器验收。[格式组合证据](../evidence/kana-format-integration/integration.md)
 
-URL 验证打开阶段的 Range 或单响应快照选择，包括强 ETag、If-Match、CORS 可见性、HTTP 解码、实际字节预算、取消和临时文件收尾；输入发布后不拼接新版本或切换为另一份快照。明确来源变化与普通读取失败分别分类。图片目录和 ZIP 使用同一固定自然排序，覆盖大小写、Unicode 十进制数字、前导零、超安全整数与目录分组；持久 memberPath 不随页序变化，损坏页不通过删页和重编号掩盖。机制试件不能代替固定 KF8、完整源映射及真实大输入的验收。
+URL 验证打开阶段的 Range 或单响应快照选择，包括强 ETag、If-Match、CORS 可见性、HTTP 解码、实际字节预算、取消和临时文件收尾。输入发布后保持同一版本的字节。明确来源变化与普通读取失败分别分类。固定 KF8、完整源映射及真实大输入使用对应的完整样本验收。
 
 <a id="work-navigation"></a>
 

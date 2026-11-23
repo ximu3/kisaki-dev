@@ -1,5 +1,3 @@
-/* Removable field tags keep one line and expose overflow actions when needed. */
-
 @layer components {
   .chips {
     position: absolute;

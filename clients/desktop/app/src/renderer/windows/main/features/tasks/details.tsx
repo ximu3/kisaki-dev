@@ -1,5 +1,3 @@
-/** @fileoverview Opens a prepared task report with its result and execution information. */
-
 import { createEffect, createMemo, For, Match, Show, Switch, type ParentProps } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
 import { CircleAlert, CircleCheck, Info, XCircle } from '@lucide/solid'
@@ -19,7 +17,6 @@ import { errorMessage } from '../../../../infrastructure/notifications'
 import type { MainClient } from '../../../../infrastructure/api'
 import { TaskStatus, TaskTypeIcon, taskDuration, taskTypeLabel } from './presentation'
 
-/** Associates outcome symbols with the task's actual terminal status. */
 const resultMarkers = {
   completed: { icon: CircleCheck, tone: 'text-success' },
   failed: { icon: CircleAlert, tone: 'text-destructive' },
@@ -161,7 +158,6 @@ function TaskReport(props: { api: MainClient; item: TaskRun }) {
   )
 }
 
-/** Groups the status, recorded scalar values and complete output in one result surface. */
 function TaskResult(props: { api: MainClient; item: TaskRun }) {
   const { t } = props.api
   const result = () => props.item.result
@@ -226,7 +222,6 @@ function TaskResult(props: { api: MainClient; item: TaskRun }) {
   )
 }
 
-/** Uses the dialog's quiet section title and its measured gap to the contents. */
 function DetailSection(props: ParentProps<{ heading: string }>) {
   return (
     <section class="grid gap-2">
@@ -236,7 +231,6 @@ function DetailSection(props: ParentProps<{ heading: string }>) {
   )
 }
 
-/** Keeps complete input or output available in a selectable, bounded code surface. */
 function TaskJson(props: { value: JsonValue }) {
   return (
     <pre class="m-0 max-h-56 overflow-auto bg-muted/50 p-3 text-xs leading-relaxed whitespace-pre-wrap wrap-anywhere">

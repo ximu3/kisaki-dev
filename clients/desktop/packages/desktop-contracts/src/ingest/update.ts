@@ -1,33 +1,38 @@
-/** @fileoverview Defines adoption update scopes, field policies and actual update outcomes. */
-
-import type { EntryType, EntryRef, PartType, PartWorkType, PartRef } from '../library/catalog'
-import { parseValue, parseRecord, unique } from '../validation'
+import { fromParser, parseValue, parseRecord, unique } from '../validation'
 import * as v from 'valibot'
 import { characterRefSchema } from '../library/relations'
 import {
   parseMetadataRelationScope,
   metadataRelationFields,
   getMetadataRelations,
-} from '../metadata/relations'
-import type {
-  ScopedMetadataRelationKey,
-  MetadataRelationScopeValues,
-  PersonWorkScopeCondition,
-  MetadataRelationAttributeValues,
-  MetadataRelationKey,
+  type ScopedMetadataRelationKey,
+  type MetadataRelationScopeValues,
+  type PersonWorkScopeCondition,
+  type MetadataRelationAttributeValues,
+  type MetadataRelationKey,
 } from '../metadata/relations'
 import { DesktopError } from '../errors'
 import type { NonEmptyArray } from '../operations'
-import type { MetadataUpdateInput } from './metadata'
-import type { MetadataEntryField, MetadataPartField } from '../metadata/fields'
-import type { IngestIssue } from './issues'
-import { entryRefSchema, partRefSchema, partTypes } from '../library/catalog'
+import {
+  entryRefSchema,
+  partRefSchema,
+  partTypes,
+  type EntryType,
+  type EntryRef,
+  type PartType,
+  type PartWorkType,
+  type PartRef,
+} from '../library/catalog'
 import { partWorkType } from '../library/parts'
-import { getMetadataPartFields, getMetadataEntryFields } from '../metadata/fields'
-import { parseMetadataUpdateInput } from './metadata'
-import { parseIngestIssue } from './issues'
+import {
+  getMetadataPartFields,
+  getMetadataEntryFields,
+  type MetadataEntryField,
+  type MetadataPartField,
+} from '../metadata/fields'
+import { parseMetadataUpdateInput, type MetadataUpdateInput } from './metadata'
+import { parseIngestIssue, type IngestIssue } from './issues'
 
-/** Parses person-work adoption conditions and rejects contradictory character selections. */
 function parsePersonAdoptionScope(root: EntryType, input: unknown): PersonAdoptionScope {
   if (input === 'all') {
     return 'all'
@@ -75,8 +80,6 @@ function parsePersonAdoptionScope(root: EntryType, input: unknown): PersonAdopti
 }
 
 /**
- * Builds the update-policy schema for known relations in the supplied root context.
- *
  * Owned part lists permit append only; other relations expose their allowed attribute policies and
  * scopes.
  */
@@ -100,17 +103,14 @@ export function relationSelection(root: EntryType, keys: readonly string[]) {
         mode: v.picklist(['update', 'append', 'replace']),
         fields: v.exactOptional(v.strictObject(attrs)),
         scope: v.exactOptional(
-          v.pipe(
-            v.unknown(),
-            v.transform((value) =>
-              relation === 'personWorks'
-                ? parsePersonAdoptionScope(root, value)
-                : parseMetadataRelationScope(
-                    root,
-                    relation as ScopedMetadataRelationKey<typeof root>,
-                    value,
-                  ),
-            ),
+          fromParser((value) =>
+            relation === 'personWorks'
+              ? parsePersonAdoptionScope(root, value)
+              : parseMetadataRelationScope(
+                  root,
+                  relation as ScopedMetadataRelationKey<typeof root>,
+                  value,
+                ),
           ),
         ),
       }),
@@ -149,8 +149,6 @@ export type IngestRelationScope<K extends keyof MetadataRelationScopeValues> =
 export type FieldAdoption = 'fill' | 'overwrite'
 
 /**
- * Relation membership and attribute-adoption choices.
- *
  * Update touches corresponding existing members. Owned part lists can only append missing parts.
  */
 export type IngestRelationUpdate<K extends keyof MetadataRelationAttributeValues> = K extends
@@ -167,18 +165,13 @@ export type IngestRelationUpdate<K extends keyof MetadataRelationAttributeValues
       readonly scope?: K extends keyof MetadataRelationScopeValues ? IngestRelationScope<K> : never
     }
 
-/** An entry's metadata source and explicit field and relation adoption choices. */
 export type IngestEntryUpdate<T extends EntryType> = {
   readonly metadata: MetadataUpdateInput<T>
   readonly fields?: Readonly<Partial<Record<MetadataEntryField<T>, FieldAdoption>>>
   readonly relations?: { readonly [K in MetadataRelationKey<T>]?: IngestRelationUpdate<K> }
 }
 
-/**
- * A part's root-work metadata source and explicit field adoption choices.
- *
- * Comic volumes may additionally adopt their chapter membership.
- */
+/** Comic volumes may additionally adopt their chapter membership. */
 export type IngestPartUpdate<T extends PartType> = {
   readonly metadata: MetadataUpdateInput<PartWorkType<T>>
   readonly fields?: Readonly<Partial<Record<MetadataPartField<T>, FieldAdoption>>>
@@ -186,17 +179,14 @@ export type IngestPartUpdate<T extends PartType> = {
   ? { readonly relations?: { readonly volumeChapters?: IngestRelationUpdate<'volumeChapters'> } }
   : object)
 
-/** Entry and part kinds accepted as fixed adoption-update targets. */
 export type IngestUpdateType = EntryType | PartType
 
-/** The local entry or part reference corresponding to an adoption target kind. */
 export type IngestUpdateRef<T extends IngestUpdateType> = T extends EntryType
   ? EntryRef<T>
   : T extends PartType
     ? PartRef<T>
     : never
 
-/** The metadata source and adoption choices allowed for a target kind. */
 export type IngestUpdateInput<T extends IngestUpdateType> = T extends EntryType
   ? IngestEntryUpdate<T>
   : T extends PartType
@@ -204,8 +194,6 @@ export type IngestUpdateInput<T extends IngestUpdateType> = T extends EntryType
     : never
 
 /**
- * One fixed local target paired with its type-specific update intent.
- *
  * The target is fixed before acquisition; extra source objects do not become additional update
  * targets.
  */
@@ -217,8 +205,6 @@ export type IngestUpdateItem = {
 }[IngestUpdateType]
 
 /**
- * The actual target's changed or unchanged outcome and adoption issues.
- *
  * Updated includes relation-only or part-list changes. Unchanged does not establish source
  * completeness.
  */
@@ -257,10 +243,7 @@ export function parseIngestUpdateItem(input: unknown): IngestUpdateItem {
     v.strictObject({
       target: v.union([entryRefSchema, partRefSchema]),
       input: v.strictObject({
-        metadata: v.pipe(
-          v.unknown(),
-          v.transform((value) => parseMetadataUpdateInput(root, value)),
-        ),
+        metadata: fromParser((value) => parseMetadataUpdateInput(root, value)),
         fields: v.exactOptional(fields),
         relations: v.exactOptional(relations),
       }),
@@ -271,8 +254,6 @@ export function parseIngestUpdateItem(input: unknown): IngestUpdateItem {
 }
 
 /**
- * Checks whether field or relationship choices require acquisition and adoption.
- *
  * Empty field choices and update-only relations without attributes require no fetch and cannot
  * adopt identities.
  */
@@ -299,14 +280,13 @@ export function parseIngestUpdateResult(input: unknown): IngestUpdateResult {
     v.strictObject({
       outcome: v.picklist(['updated', 'unchanged']),
       target: v.union([entryRefSchema, partRefSchema]),
-      issues: v.array(v.pipe(v.unknown(), v.transform(parseIngestIssue))),
+      issues: v.array(fromParser(parseIngestIssue)),
     }),
     input,
     'Invalid update result',
   )
 }
 
-/** Parses an actual local entry or part reference as an adoption-update target. */
 export function parseIngestUpdateTarget(input: unknown): EntryRef | PartRef {
   return parseValue(v.union([entryRefSchema, partRefSchema]), input, 'Invalid adoption target')
 }

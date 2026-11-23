@@ -1,10 +1,7 @@
-/** @fileoverview Builds the host-native binding and checks its generated Node declarations. */
-
 import { mkdir } from 'node:fs/promises'
 import { join } from 'node:path'
 import { appRoot } from '../lib/paths'
-import { hostTarget, targetTriples } from '../lib/targets'
-import type { DesktopTarget } from '../lib/targets'
+import { hostTarget, targetTriples, type DesktopTarget } from '../lib/targets'
 import { removeOutputs } from '@kisaki3/tooling/output'
 import { run, runPnpm } from '@kisaki3/tooling/process'
 import { checkDeclarations } from './declarations'

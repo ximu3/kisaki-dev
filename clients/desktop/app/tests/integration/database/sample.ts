@@ -1,5 +1,3 @@
-/** @fileoverview Builds isolated database options and a nonempty fixture covering the formal storage families. */
-
 import { join } from 'node:path'
 import { entryTypes } from '@kisaki3/desktop-contracts/library'
 import type { DatabaseOptions, Storage } from '../../../src/main/infrastructure/database'
@@ -9,7 +7,6 @@ import { getPreferenceDefaults } from '../../../src/main/features/preferences/de
 import { appRoot } from '../../../tools/lib/paths'
 import { hostTarget } from '../../../tools/lib/targets'
 
-/** Uses the actually prepared resources and a caller-owned disposable database location. */
 export function storageOptions(
   directory: string,
   migrationsDirectory = join(appRoot, 'out/resources', hostTarget(), 'drizzle'),
@@ -30,7 +27,6 @@ export function storageOptions(
   }
 }
 
-/** Creates seven actual entry types, five part kinds, all relation families and persistent resources. */
 export function seedStorage(storage: Storage, directory: string): void {
   const times = { createdAt: 1, updatedAt: 1 }
   storage.db.transaction((db) => {

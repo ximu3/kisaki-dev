@@ -1,5 +1,3 @@
-/* A checker-backed swatch and two-axis pointer surface complement native keyboard sliders. */
-
 @layer components {
   .swatch::before,
   .swatch span {

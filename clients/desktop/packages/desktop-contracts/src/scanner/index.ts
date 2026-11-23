@@ -1,5 +1,3 @@
-/** @fileoverview Publishes the scanner capability contract. */
-
 export {
   parseScanDefinitionShape,
   parseScanDefinition,

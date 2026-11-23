@@ -1,5 +1,3 @@
-//! Bridges installed desktop notification activations and OS submission to the Node main process.
-
 use napi::threadsafe_function::ThreadsafeFunction;
 use napi::{Result, Status};
 use napi_derive::napi;
@@ -7,7 +5,6 @@ use napi_derive::napi;
 /// A click can arrive on the platform's callback thread before the first window exists.
 type Click = ThreadsafeFunction<String, (), String, Status, false, true>;
 
-/// Submission resolves on the Node thread with OS acceptance or denied permission.
 type Completion = ThreadsafeFunction<bool, (), bool, Status, true, true>;
 
 #[cfg(any(target_os = "macos", windows))]

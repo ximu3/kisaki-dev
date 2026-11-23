@@ -1,11 +1,9 @@
-/** @fileoverview Relates native keyboard events to the saved Electron accelerator vocabulary. */
-
 import {
   acceleratorIdentity,
   parseAccelerator,
   type DesktopPlatform,
+  type PreferencesSnapshot,
 } from '@kisaki3/desktop-contracts/preferences'
-import type { PreferencesSnapshot } from '@kisaki3/desktop-contracts/preferences'
 
 /** DOM key names whose Electron spelling differs. */
 const names: Readonly<Record<string, string>> = {
@@ -18,7 +16,6 @@ const names: Readonly<Record<string, string>> = {
   '+': 'Plus',
 }
 
-/** Captures modifier names in the same order as a complete saved accelerator. */
 function eventModifiers(event: KeyboardEvent): string[] {
   const modifiers = []
   if (event.ctrlKey) {
@@ -58,7 +55,6 @@ function eventAccelerator(event: KeyboardEvent) {
   }
 }
 
-/** Finds the saved spelling of a combination that has the same effect on this platform. */
 function matchingBinding(key: string, bindings: readonly string[], platform: DesktopPlatform) {
   const identity = acceleratorIdentity(key, platform)
   return bindings.find((binding) => acceleratorIdentity(binding, platform) === identity)
@@ -92,7 +88,6 @@ export function matchesShortcut(
   return key !== null && matchingBinding(key, binding.value, platform) !== undefined
 }
 
-/** Names a single key using the keyboard terminology of the actual desktop platform. */
 function keycap(key: string, platform: DesktopPlatform) {
   const mac = platform === 'darwin'
   const systemLabel = { darwin: '⌘', win32: 'Win', linux: 'Super' }[platform]
@@ -106,7 +101,6 @@ function keycap(key: string, platform: DesktopPlatform) {
   return labels[key] ?? key
 }
 
-/** Shows the binding using the keyboard terminology of the actual desktop platform. */
 export function shortcutKeycaps(value: string, platform: DesktopPlatform): readonly string[] {
   return value.split('+').map((part) => keycap(part, platform))
 }

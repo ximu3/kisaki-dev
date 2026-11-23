@@ -42,7 +42,7 @@ Google 的[发现文档](https://accounts.google.com/.well-known/openid-configur
 
 Google 撤销是明确的上游操作，可能影响该项目关联的授权范围及其他访问／刷新令牌；不能描述为仅退出一个本地连接。relay 只转交请求和实际结果，不维护自己的撤销状态。[Google 撤销说明](https://developers.google.com/identity/protocols/oauth2/web-server#tokenrevoke)
 
-各操作的具体上游字段、结果校验和传输细节见[来源适配与客户端交接](#integration-providers)。该细化不改变本页的端点与字段形状；客户端凭据采用仍是独立于 relay 会话的责任。
+各操作的上游字段见[实际请求](#integration-providers)，接纳条件与资源收尾分别见[结果校验](#responses)和[HTTP 传输](#transport)。已取得凭据的采用由客户端负责。
 
 <a id="upstream-binding"></a>
 

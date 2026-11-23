@@ -1,5 +1,3 @@
-/** @fileoverview Reads immutable attachment metadata and rechecks all real foreign keys before reclaiming it. */
-
 import { count, eq, gt, inArray, and, sql } from 'drizzle-orm'
 import type { Attachment } from '@kisaki3/desktop-contracts/attachments'
 import type { ListOptions } from '@kisaki3/desktop-contracts/operations'
@@ -36,12 +34,10 @@ export function attachmentStorage(storage: Storage) {
     sql` and `,
   )
   return {
-    /** Reads immutable attachment metadata by identity. */
     getAttachment(id: string) {
       const row = db.select().from(attachments).where(eq(attachments.id, id)).get()
       return row ? attachment(row) : null
     },
-    /** Reads an ordered metadata interval with its count. */
     listAttachments(options: ListOptions) {
       return db.transaction((tx) => ({
         items: tx

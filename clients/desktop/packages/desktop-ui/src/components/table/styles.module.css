@@ -1,5 +1,3 @@
-/* Native table styling and shared column alignment in a bounded viewport. */
-
 .scrollBody {
   composes: native from '../../internal/scrollbars.module.css';
 }

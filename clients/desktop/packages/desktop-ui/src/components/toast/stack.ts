@@ -1,5 +1,3 @@
-/** @fileoverview Animates surviving cards between their actual positions after a queue change. */
-
 import { onCleanup } from 'solid-js'
 import type { Accessor } from 'solid-js'
 
@@ -14,7 +12,6 @@ export function createStackMotion(track: Accessor<HTMLElement | undefined>) {
   const animations = new Map<HTMLElement, Animation>()
   let previous: Map<HTMLElement, DOMRect> | undefined
 
-  /** Discards pending geometry and cancels every active stack-position animation. */
   const stop = () => {
     previous = undefined
     for (const animation of animations.values()) {
@@ -22,7 +19,6 @@ export function createStackMotion(track: Accessor<HTMLElement | undefined>) {
     }
     animations.clear()
   }
-  /** Stops stack motion when the user enables reduced motion. */
   const preferenceChanged = () => {
     if (reduced.matches) {
       stop()
@@ -55,10 +51,6 @@ export function createStackMotion(track: Accessor<HTMLElement | undefined>) {
     }
     previous = before
     // Solid may batch several insertions, updates or releases into one layout.
-    /**
-     * Measures the updated stack and animates cards from their last painted positions after batched
-     * changes settle.
-     */
     const moveCards = () => {
       if (previous !== before) {
         return
@@ -93,9 +85,6 @@ export function createStackMotion(track: Accessor<HTMLElement | undefined>) {
           { duration, easing: 'ease-in-out' },
         )
         animations.set(card, animation)
-        /**
-         * Removes a settled animation record only if it is still the card's current stack motion.
-         */
         const finish = () => {
           if (animations.get(card) === animation) {
             animations.delete(card)

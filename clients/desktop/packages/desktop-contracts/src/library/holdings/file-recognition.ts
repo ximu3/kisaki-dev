@@ -1,11 +1,10 @@
-/** @fileoverview Defines complete per-medium filename rules and their pure output semantics for isolated execution. */
-
 import type { FileWorkType, AnimeEpisodeType, AnimeExtraType, EntryRef, PartRef } from '../catalog'
 
 import type { NonEmptyArray, StoredDefinition, CallOptions } from '../../operations'
 import type { ReorderInput } from '../ordering'
 import * as v from 'valibot'
 import {
+  fromParser,
   text,
   integer,
   parseValue,
@@ -20,7 +19,6 @@ import { inspectTextPattern, parseTextTemplate } from '../../text-rules'
 import type { FilePartType } from './associations'
 import type { ErrorSummary } from '../../errors'
 
-/** Expanded per-medium conditions used to find actual parts after rule interpretation. */
 export interface FileConditionByType {
   readonly anime:
     | (NumberedPartCondition & {
@@ -40,17 +38,12 @@ export interface FileConditionByType {
   readonly novel: NumberedPartCondition & { readonly kind: 'volume' }
 }
 
-/**
- * A number-label template and signed safe-integer offset.
- *
- * The offset is subtracted from the integer portion after template expansion.
- */
+/** Subtracts the signed safe-integer offset from the integer portion after template expansion. */
 export interface FileNumberValue {
   readonly value: string
   readonly offset: number
 }
 
-/** A single number-label template or range templates with their common offset. */
 export type FileNumberOutput =
   | ({ readonly kind: 'single' } & FileNumberValue)
   | {
@@ -60,7 +53,6 @@ export type FileNumberOutput =
       readonly offset: number
     }
 
-/** A rule target with at least a number-label template or a name template. */
 export type NumberedPartOutput =
   | { readonly number: FileNumberOutput; readonly name?: string }
   | { readonly number?: FileNumberOutput; readonly name: string }
@@ -70,7 +62,6 @@ export type ComicVolumeScopeOutput =
   | { readonly number: FileNumberValue; readonly name?: string }
   | { readonly number?: FileNumberValue; readonly name: string }
 
-/** An episode or extra described by an anime filename rule. */
 export type AnimeFileTarget =
   | (NumberedPartOutput & {
       readonly kind: 'episode'
@@ -79,10 +70,8 @@ export type AnimeFileTarget =
   | { readonly kind: 'extra'; readonly name: string; readonly extraType?: AnimeExtraType | null }
 
 /**
- * A volume or chapter described by a comic filename rule.
- *
- * Numbered chapters declare work-wide or volume-relative numbering; volume-relative numbers require
- * a volume scope.
+ * Volume-relative chapter numbers require a volume scope. Work-wide numbers are evaluated within
+ * the work.
  */
 export type ComicFileTarget =
   | (NumberedPartOutput & { readonly kind: 'volume' })
@@ -105,21 +94,15 @@ export type ComicFileTarget =
         }
     ))
 
-/** A real novel volume described by number or name templates. */
 export type NovelFileTarget = NumberedPartOutput & { readonly kind: 'volume' }
 
-/** The output target vocabulary owned by each file-bearing medium. */
 export interface FileTargetByType {
   readonly anime: AnimeFileTarget
   readonly comic: ComicFileTarget
   readonly novel: NovelFileTarget
 }
 
-/**
- * One ordered filename rule with a complete set of output targets.
- *
- * The first enabled full match owns interpretation. All targets are jointly required.
- */
+/** Interpretation uses the first enabled full match. All targets must match together. */
 export interface FileRecognitionRule<TTarget> {
   readonly id: string
   readonly name: string
@@ -138,10 +121,8 @@ export interface FileRecognitionDefinition<T extends FileWorkType = FileWorkType
 }
 
 /**
- * A saved, ordered filename-recognition profile and its stored definition.
- *
- * Changes affect later interpretation. An unavailable selected definition does not trigger built-in
- * fallback.
+ * Changes affect later interpretation. An unavailable selected definition remains unavailable
+ * instead of triggering fallback.
  */
 export type FileRecognitionProfile<T extends FileWorkType = FileWorkType> = {
   [K in T]: {
@@ -160,7 +141,6 @@ export type FileRecognitionProfile<T extends FileWorkType = FileWorkType> = {
   }
 }[T]
 
-/** Editable profile metadata and one complete recognition definition. */
 export interface FileRecognitionProfileFields<T extends FileWorkType> {
   readonly name: string
   readonly description: string | null
@@ -176,37 +156,26 @@ export interface FileRecognitionPreset<T extends FileWorkType> {
 }
 
 /**
- * Independent recognition-profile management for one medium.
- *
- * Referenced profiles require explicit dependency handling before deletion.
+ * A referenced profile requires explicit handling of its directory dependencies before deletion.
  */
 export interface FileRecognitionProfilesApi<T extends FileWorkType> {
-  /** Lists saved profile identities and descriptions in the medium's formal order. */
   list(
     call?: CallOptions,
   ): Promise<readonly Pick<FileRecognitionProfile<T>, 'id' | 'workType' | 'name' | 'description'>[]>
 
   /**
-   * Reads a profile with its stored definition, or null when absent.
-   *
-   * Corruption remains an explicit unavailable value.
+   * A missing profile returns null. Corrupted saved definitions remain explicit unavailable values.
    */
   get(id: string, call?: CallOptions): Promise<FileRecognitionProfile<T> | null>
 
-  /**
-   * Creates an independent profile from a complete definition.
-   *
-   * Preset copies use the same ordinary save path.
-   */
+  /** A preset copy uses the same ordinary save path as any complete definition. */
   create(
     input: FileRecognitionProfileFields<T>,
     call?: CallOptions,
   ): Promise<FileRecognitionProfile<T>>
 
   /**
-   * Compares and saves changed profile fields with the definition treated as one value.
-   *
-   * Existing file associations remain unchanged.
+   * The definition is one comparison value. Updating it leaves saved file associations unchanged.
    */
   update(
     id: string,
@@ -225,7 +194,6 @@ export interface FileRecognitionProfilesApi<T extends FileWorkType> {
   /** Reorders selected profiles against the complete media-specific profile-order baseline. */
   reorder(input: ReorderInput, call?: CallOptions): Promise<void>
 
-  /** Lists actual content directories referencing the profile. */
   references(
     id: string,
     call?: CallOptions,
@@ -237,31 +205,25 @@ export interface FileRecognitionProfilesApi<T extends FileWorkType> {
   listPresets(call?: CallOptions): Promise<readonly FileRecognitionPreset<T>[]>
 }
 
-/** Captured display-number text paired with its explicit numeric adjustment. */
 const numberValue = v.strictObject({ value: text, offset: integer })
 
-/** Single or ranged display-number output, retaining source text and adjustment. */
 const numberOutput = v.variant('kind', [
   v.strictObject({ kind: v.literal('single'), ...numberValue.entries }),
   v.strictObject({ kind: v.literal('range'), start: text, end: text, offset: integer }),
 ])
 
-/** Optional number and name outputs shared by recognized numbered parts. */
 const numbered = { number: v.exactOptional(numberOutput), name: v.exactOptional(text) }
 
-/** Nonempty volume identification used to scope recognized comic chapters. */
 const volumeScope = v.pipe(
   v.strictObject({ number: v.exactOptional(numberValue), name: v.exactOptional(text) }),
   v.check((value) => value.number !== undefined || value.name !== undefined),
 )
 
-/** Recognized volume output requiring a number or name. */
 const volume = v.pipe(
   v.strictObject({ kind: v.literal('volume'), ...numbered }),
   v.check((value) => value.number !== undefined || value.name !== undefined),
 )
 
-/** Recognition output shapes permitted by each file-bearing medium. */
 const targetSchemas = {
   anime: v.union([
     v.pipe(
@@ -302,11 +264,7 @@ const targetSchemas = {
   novel: volume,
 }
 
-/**
- * Parses the medium's output-target structure.
- *
- * Template capture names are checked separately against the owning rule.
- */
+/** The owning rule separately checks template capture names. */
 export function parseFileTarget<T extends FileWorkType>(
   workType: T,
   input: unknown,
@@ -318,7 +276,6 @@ export function parseFileTarget<T extends FileWorkType>(
   ) as FileTargetByType[T]
 }
 
-/** Collects name, number and volume-scope templates from a file target. */
 function targetTemplates(
   target: AnimeFileTarget | ComicFileTarget | NovelFileTarget,
 ): readonly string[] {
@@ -346,10 +303,8 @@ function targetTemplates(
 }
 
 /**
- * Parses every rule, compiles its pattern and checks referenced capture names.
- *
- * The caller runs this function in a bounded terminable unit. Disabled rules are validated too; an
- * empty list remains valid.
+ * Run pattern compilation and capture-name validation in a bounded terminable unit. Disabled rules
+ * are validated too. An empty list is valid.
  */
 export function parseFileRecognitionDefinition<T extends FileWorkType>(
   workType: T,
@@ -369,19 +324,14 @@ export function parseFileRecognitionDefinition<T extends FileWorkType>(
 }
 
 /**
- * Parses closed recognition values without compiling patterns.
- *
- * History and codec reads can use this shape parser; execution still requires isolated semantic
- * validation.
+ * Shape validation suits storage and history reads. Execution requires separate isolated pattern
+ * compilation.
  */
 export function parseFileRecognitionDefinitionShape<T extends FileWorkType>(
   workType: T,
   input: unknown,
 ): FileRecognitionDefinition<T> {
-  const target = v.pipe(
-    v.unknown(),
-    v.transform((value) => parseFileTarget(workType, value)),
-  )
+  const target = fromParser((value) => parseFileTarget(workType, value))
   const rule = v.strictObject({
     id,
     name: nonemptyText,
@@ -404,11 +354,7 @@ export function parseFileRecognitionDefinitionShape<T extends FileWorkType>(
   return value
 }
 
-/**
- * Parses changed profile fields and matching expected values.
- *
- * Definitions are compiled within the caller's bounded terminable unit.
- */
+/** The caller compiles submitted definitions in a bounded terminable unit. */
 export function parseFileRecognitionProfileUpdate<T extends FileWorkType>(
   workType: T,
   input: unknown,
@@ -420,10 +366,7 @@ export function parseFileRecognitionProfileUpdate<T extends FileWorkType>(
     optionalFields({
       name: nonemptyText,
       description: v.nullable(text),
-      definition: v.pipe(
-        v.unknown(),
-        v.transform((value) => parseFileRecognitionDefinition(workType, value)),
-      ),
+      definition: fromParser((value) => parseFileRecognitionDefinition(workType, value)),
     }),
   )
   const value = parseValue(
@@ -434,34 +377,25 @@ export function parseFileRecognitionProfileUpdate<T extends FileWorkType>(
   return value
 }
 
-/**
- * Expanded number labels ready for matching.
- *
- * Templates and offsets have already been applied.
- */
 export type FileNumberCondition =
   | { readonly kind: 'single'; readonly value: string }
   | { readonly kind: 'range'; readonly start: string; readonly end: string }
 
-/** Expanded number or name constraints identifying a part. */
 export type NumberedPartCondition =
   | { readonly number: FileNumberCondition; readonly name?: string }
   | { readonly number?: FileNumberCondition; readonly name: string }
 
-/** Expanded number or name constraints identifying the chapter's volume scope. */
 export type ComicVolumeScopeCondition =
   | { readonly number: string; readonly name?: string }
   | { readonly number?: string; readonly name: string }
 
-/** The single built-in or profile-rule owner of a complete file interpretation. */
 export type FileRecognitionSource =
   | { readonly type: 'builtin' }
   | { readonly type: 'profile'; readonly profileId: string; readonly ruleId: string }
 
 /**
- * A complete part match, absence of a match or a typed interpretation failure.
- *
- * Matched results retain the interpretation source, expanded conditions and actual part identities.
+ * A matched result retains its interpretation source, expanded conditions and actual part
+ * identities.
  */
 export type FileRecognitionResult<T extends FileWorkType = FileWorkType> = {
   [K in T]:
@@ -486,7 +420,6 @@ export type FileRecognitionResult<T extends FileWorkType = FileWorkType> = {
       }
 }[T]
 
-/** Per-file recognition outcomes and whether each selected file's saved associations changed. */
 export type FileReidentificationResult<T extends FileWorkType = FileWorkType> = {
   [K in T]: {
     readonly work: EntryRef<K>

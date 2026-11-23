@@ -1,11 +1,8 @@
-/** @fileoverview Defines verified image preparation and deterministic transforms on retained source content. */
-
 import type { PreparedAttachment, FileInput, ReadResourceRef } from './resources'
 import type { CallOptions } from './operations'
 import { parseValue, nonnegativeInteger, positiveInteger } from './validation'
 import * as v from 'valibot'
 
-/** Formats of verified prepared bytes; SVG and ICO are converted to PNG before this result is exposed. */
 export type ImageFormat = 'jpeg' | 'png' | 'webp' | 'avif' | 'gif'
 
 /** An independently held image preparation with decoded dimensions, format and frame count. */
@@ -20,8 +17,6 @@ export interface PreparedImage extends PreparedAttachment {
 }
 
 /**
- * A frame selection and ordered image transforms.
- *
  * Processing corrects source orientation, applies flips, rotates clockwise and then crops. Crop
  * coordinates use pixels after the preceding steps.
  */
@@ -43,11 +38,7 @@ export interface ImageTransform {
   }
 }
 
-/**
- * Image preparation and transformation with independent result holds.
- *
- * The caller releases each result. Failed work preserves the existing image.
- */
+/** The caller releases each result. Failed work preserves the existing image. */
 export interface ImagesApi {
   /**
    * Reads and verifies image bytes, converting supported vector or icon inputs to PNG.
@@ -57,10 +48,8 @@ export interface ImagesApi {
   prepare(input: FileInput, call?: CallOptions): Promise<PreparedImage>
 
   /**
-   * Transforms held source content into a new static PNG preparation.
-   *
-   * Animated inputs require an explicit frameIndex. The host verifies frame availability and final
-   * crop bounds.
+   * Produces a new static PNG. Animated input requires an explicit frame index; the host checks
+   * frame and crop bounds.
    */
   transform(
     resource: ReadResourceRef,

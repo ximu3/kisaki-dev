@@ -1,5 +1,3 @@
-/** @fileoverview Resolves the selected translation against live instance registrations and the built-in English catalog. */
-
 import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
 import { catalogKey } from '../../shared/catalog-ref'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
@@ -30,34 +28,31 @@ export function createI18n(builtin?: TranslationEntry) {
   if (builtin) {
     translations.set(catalogKey(builtin.ref), builtin)
   }
-  /** Signals a change of effective messages, including same-locale replacements. */
-  const changed = createSignal<void>()
-  /** Notifies translation pickers when a registration appears or disappears. */
-  const directory = createSignal<void>()
+  const messagesChanged = createSignal<void>()
+  const catalogInvalidated = createSignal<void>()
   let selection: UiTranslationRef = english.ref
   let effective = english
   let translator = createTranslator('en')
 
-  /** Resolves the stable reference after selection, registration or instance release. */
   function adopt() {
     const next = translations.get(catalogKey(selection)) ?? english
+    // Two catalogs may use the same locale but supply different messages.
     if (effective === next) {
       return
     }
     effective = next
     translator = createTranslator(next.locale, next.messages)
-    changed.emit()
+    messagesChanged.emit()
   }
 
   return {
-    /** Reads the currently effective catalog and locale. */
     get current() {
       return effective
     },
-    /** Reads the formatter bound to the currently adopted messages. */
     get t() {
       return translator
     },
+
     /** Returns translation names and identities without transferring every catalog. */
     list(options?: CallOptions) {
       options?.signal?.throwIfAborted()
@@ -67,11 +62,12 @@ export function createI18n(builtin?: TranslationEntry) {
         locale,
       }))
     },
-    /** Resolves the selected stable identity against the live registrations. */
+
     select(ref: UiTranslationRef) {
       selection = ref
       adopt()
     },
+
     /** Registers a validated catalog under a trusted extension's actual identity. */
     register(
       extensionId: string,
@@ -85,10 +81,12 @@ export function createI18n(builtin?: TranslationEntry) {
       if (translations.has(key)) {
         throw new DesktopError('Conflict', 'This translation is already registered')
       }
+
       const entry = { ...value, ref }
       translations.set(key, entry)
       adopt()
-      directory.emit()
+      catalogInvalidated.emit()
+
       return {
         ref,
         /** Removes only the matching instance and recomputes the effective language. */
@@ -96,12 +94,12 @@ export function createI18n(builtin?: TranslationEntry) {
           if (translations.get(key) === entry) {
             translations.delete(key)
             adopt()
-            directory.emit()
+            catalogInvalidated.emit()
           }
         },
       }
     },
-    onChanged: changed.on,
-    onInvalidated: directory.on,
+    onChanged: messagesChanged.on,
+    onInvalidated: catalogInvalidated.on,
   }
 }

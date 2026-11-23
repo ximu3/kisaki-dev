@@ -217,6 +217,7 @@ Type=Deleted、DoublePage、Rotation、Manga 阅读方向、ImageSize／尺寸�
     │   ├── import.ts
     │   └── ipc.ts
     ├── webview/
+    │   ├── index.html
     │   ├── entry.tsx
     │   ├── page.tsx
     │   ├── selection.tsx

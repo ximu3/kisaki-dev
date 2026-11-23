@@ -1,5 +1,3 @@
-/** @fileoverview Transfers a selected browser File with bounded reads through a document-owned binary port. */
-
 import { fileChunkBytes } from '../../shared/window-api/protocol'
 
 /** Receives the host's input reference without reading any bytes until the preparation requests them. */

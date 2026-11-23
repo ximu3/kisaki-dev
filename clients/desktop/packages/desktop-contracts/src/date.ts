@@ -1,5 +1,3 @@
-/** @fileoverview Defines civil date values, precision, canonical era conversion and valid query bounds. */
-
 import { DesktopError } from './errors'
 import type { Bounds } from './operations'
 
@@ -10,11 +8,7 @@ export interface CalendarDate {
   readonly day: number
 }
 
-/**
- * A civil date with at least one known component.
- *
- * A supplied value replaces the entire date rather than merging components.
- */
+/** A supplied value replaces the entire date rather than merging components. */
 export type PartialDate =
   | { readonly year: number; readonly month?: number; readonly day?: number }
   | { readonly year?: number; readonly month: number; readonly day?: number }
@@ -37,28 +31,20 @@ export interface CalendarDateRange {
   readonly to: CalendarDate
 }
 
-/**
- * An era and positive decimal year for lossless display and input.
- *
- * The year uses text because the minimum internal year maps to 9007199254740992 BCE.
- */
+/** The year uses text because the minimum internal year maps to 9007199254740992 BCE. */
 export interface EraYear {
   readonly era: 'ce' | 'bce'
   readonly year: string
 }
 
-/** Lowest supported astronomical year represented exactly for calendar arithmetic. */
 const minYear = BigInt(Number.MIN_SAFE_INTEGER)
 
-/** Highest supported astronomical year represented exactly for calendar arithmetic. */
 const maxYear = BigInt(Number.MAX_SAFE_INTEGER)
 
-/** Rejects an invalid Gregorian date with the shared InvalidInput classification. */
 function invalidDate(): never {
   throw new DesktopError('InvalidInput', 'Invalid Gregorian date')
 }
 
-/** Checks the safe-integer year range and normalizes negative zero. */
 function requireYear(year: number): number {
   if (!Number.isSafeInteger(year)) {
     invalidDate()
@@ -91,8 +77,6 @@ export function daysInMonth(month: number, year?: number): number {
 }
 
 /**
- * Parses the seven nonempty date-component combinations.
- *
  * Rejects null, unknown keys, overflows and impossible calendar values; present components are
  * preserved.
  */
@@ -133,11 +117,7 @@ export function parsePartialDate(input: unknown): PartialDate {
   } as PartialDate
 }
 
-/**
- * Parses all three components of a real day.
- *
- * Date absence is represented by the owning nullable field.
- */
+/** Date absence is represented by the owning nullable field. */
 export function parseCalendarDate(input: unknown): CalendarDate {
   const value = parsePartialDate(input)
   if (value.year === undefined || value.month === undefined || value.day === undefined) {

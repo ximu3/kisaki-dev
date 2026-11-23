@@ -1,5 +1,3 @@
-/* Styles and utility sources used by the main document. */
-
 @import '../../styles/tailwind.css';
 @import '../../styles/base.css';
 @import './app/titlebar.css';

@@ -1,5 +1,3 @@
-/** @fileoverview Signs original registry JSON and verifies explicitly trusted Ed25519 identities and bytes. */
-
 import {
   createHash,
   createPrivateKey,
@@ -40,7 +38,6 @@ export interface RegistryInspection {
   readonly fingerprint: string
 }
 
-/** Generates an Ed25519 SPKI public key and PKCS8 private key in memory. */
 export function generateRegistryKeyPair(): RegistryKeyPair {
   return generateKeyPairSync('ed25519', {
     publicKeyEncoding: { type: 'spki', format: 'pem' },
@@ -48,7 +45,6 @@ export function generateRegistryKeyPair(): RegistryKeyPair {
   })
 }
 
-/** Parses a declared SPKI PEM value into an Ed25519 public KeyObject. */
 function publicKey(value: string): KeyObject {
   let key: KeyObject
   try {
@@ -68,7 +64,6 @@ function publicKey(value: string): KeyObject {
   return key
 }
 
-/** Accepts an Ed25519 private KeyObject or parses one from PEM, rejecting other key types. */
 function privateKey(value: string | KeyObject): KeyObject {
   let key: KeyObject
   try {
@@ -136,15 +131,10 @@ export function signRegistry(text: string, inputKey: string | KeyObject): string
   return `${JSON.stringify({ ...body, signature }, null, 2)}\n`
 }
 
-/**
- * Verifies original registry JSON against caller-saved identity and public key.
- *
- * Checks identity, key and signature before normalizing known fields. Verification covers unknown
- * fields and original field spellings. The returned value is normalized; original JSON remains the
- * signing input.
- */
-export function verifyRegistry(text: string, trust: RegistryTrust): SignedRegistry {
-  const document = parseRecord(parseJson(text), [])
+function verifyRegistryDocument(
+  document: Record<string, unknown>,
+  trust: RegistryTrust,
+): SignedRegistry {
   if (parseId(document.id, ['id']) !== parseId(trust.id)) {
     throw new DistributionError(
       'identity-mismatch',
@@ -173,6 +163,14 @@ export function verifyRegistry(text: string, trust: RegistryTrust): SignedRegist
 }
 
 /**
+ * Checks the original document against the caller's trusted identity and key before normalizing it.
+ * The signature covers unknown fields and original field spellings.
+ */
+export function verifyRegistry(text: string, trust: RegistryTrust): SignedRegistry {
+  return verifyRegistryDocument(parseRecord(parseJson(text), []), trust)
+}
+
+/**
  * Checks a registry's internal signature consistency and returns its key fingerprint.
  *
  * Uses the document's declared identity and key for first-use inspection. The caller decides trust;
@@ -186,7 +184,7 @@ export function inspectRegistry(text: string): RegistryInspection {
   }
 
   return {
-    registry: verifyRegistry(text, trust),
+    registry: verifyRegistryDocument(document, trust),
     fingerprint: publicKeyFingerprint(trust.publicKey),
   }
 }

@@ -1,5 +1,3 @@
-/* A single shell aligns both ends of each separator to its actual inner edges. */
-
 @layer components {
   .frame {
     display: flex;

@@ -1,18 +1,13 @@
-//! Reads family names from the operating system's font catalog on a libuv worker.
-
 use font_kit::source::SystemSource;
 use napi::bindgen_prelude::{AbortSignal, AsyncTask};
 use napi::{Env, Error, Result, Task};
 use napi_derive::napi;
 
-/// A single read of the host's current DirectWrite, Core Text or Fontconfig catalog.
 pub struct FontFamilies;
 
 impl Task for FontFamilies {
-    /// System family names read on the worker.
     type Output = Vec<String>;
 
-    /// The same family names delivered to the application.
     type JsValue = Vec<String>;
 
     /// Opens the native catalog for this request so later reads see installed and removed fonts.

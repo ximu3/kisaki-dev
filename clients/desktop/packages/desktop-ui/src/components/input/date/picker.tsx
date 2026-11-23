@@ -1,12 +1,18 @@
-/** @fileoverview Calendar navigation owns the viewed period and focus until the caller accepts a day. */
-
 import { createEffect, createMemo, createSignal, For, Show } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { Icon, ChevronLeft, ChevronRight } from '../../../internal/icon/glyph'
 import { createPopup } from '../../../internal/popup/controller'
 import { displayedWhileOpen } from '../../../internal/popup/presentation'
 import frame from '../../../internal/popup/surface.module.css'
-import { addDays, addMonths, calendarDays, parseDate, todayValue } from './calendar'
+import {
+  addDays,
+  addMonths,
+  calendarDays,
+  earliestDate,
+  latestDate,
+  parseDate,
+  todayValue,
+} from './calendar'
 import { PeriodSelect } from './period'
 import styles from './styles.module.css'
 
@@ -28,17 +34,13 @@ export interface CalendarProps {
 /** Calendar popup state and host connections for anchoring, validation, selection and closing. */
 interface PickerProps extends CalendarProps {
   open: boolean
-  /** Publishes the mounted popup element to its presentation owner. */
   panelRef: (node: HTMLDivElement) => void
   id: string
   /** Returns the button used to position and return focus from the calendar. */
   anchor: () => HTMLButtonElement | undefined
   value: string
-  /** Checks whether a day satisfies the owning editor's native constraints. */
   allowed: (date: string) => boolean
-  /** Submits an allowed day to the owning date editor. */
   choose: (date: string) => void
-  /** Requests closing the calendar without choosing a day. */
   close: () => void
 }
 
@@ -49,17 +51,12 @@ interface PickerProps extends CalendarProps {
  */
 export function DatePicker(props: PickerProps): JSX.Element {
   let calendar!: HTMLDivElement
-  /** Applies the configured lower and upper browsing bounds to an ISO date. */
+  const min = () => props.min ?? earliestDate
+  const max = () => props.max ?? latestDate
   const clamp = (date: string) => {
-    if (date < (props.min ?? '0001-01-01')) {
-      date = props.min ?? '0001-01-01'
-    }
-    if (date > (props.max ?? '9999-12-31')) {
-      return props.max ?? '9999-12-31'
-    }
-    return date
+    const first = date < min() ? min() : date
+    return first > max() ? max() : first
   }
-  /** Locale-sensitive Gregorian label formats using UTC calendar interpretation. */
   const formats = createMemo(() => ({
     month: new Intl.DateTimeFormat(props.locale, {
       calendar: 'gregory',
@@ -82,70 +79,56 @@ export function DatePicker(props: PickerProps): JSX.Element {
     shortWeekday: new Intl.DateTimeFormat(props.locale, { weekday: 'short', timeZone: 'UTC' }),
   }))
 
-  /** Displayed selection retained while the calendar finishes closing. */
+  // Keep the last selected day visible while the popup exits.
   const selected = displayedWhileOpen(
     () => props.open,
     () => props.value,
   )
   const initial = clamp(parseDate(props.value) ? props.value : todayValue())
-  /** Keyboard-active day within the current calendar view. */
   const [active, setActive] = createSignal(initial)
-  /** Displayed calendar month, separate from the selected date. */
   const [month, setMonth] = createSignal(`${initial.slice(0, 7)}-01`)
-  /** Returns the year represented by the current displayed month. */
   const viewYear = () => Number(month().slice(0, 4))
-  /** Returns the one-based month used by period navigation. */
   const viewMonth = () => Number(month().slice(5, 7))
-  /** Returns the first year offered by the year selector. */
-  const minYear = () => Number(props.min?.slice(0, 4) ?? 1)
-  /** Returns the last year offered by the year selector. */
-  const maxYear = () => Number(props.max?.slice(0, 4) ?? 9999)
-  /** Locale-derived order of year and month navigation controls. */
+  const minYear = () => Number(min().slice(0, 4))
+  const maxYear = () => Number(max().slice(0, 4))
   const periodOrder = createMemo(() =>
     formats()
       .month.formatToParts(parseDate(month()))
       .map((part) => part.type)
       .filter((type) => type === 'year' || type === 'month'),
   )
-  /** Day grid for the displayed month and the requested week-start convention. */
   const days = createMemo(() => calendarDays(month(), props.weekStartsOn ?? 1))
-  /** Builds reference dates in week-start order for localized weekday headers. */
   const weekdays = () =>
     Array.from({ length: 7 }, (_, index) =>
       addDays('2023-01-01', (props.weekStartsOn ?? 1) + index),
     )
 
-  /**
-   * Updates the active day and displayed month within browsing bounds without committing a value.
-   */
   const browse = (date: string) => {
     const next = clamp(date)
     setActive(next)
     setMonth(`${next.slice(0, 7)}-01`)
   }
-  /** Browses to a bounded day and focuses its cell after the view updates. */
+  // Focus the day after its month has rendered.
   const focusDay = (date: string) => {
     browse(date)
-    queueMicrotask(() =>
-      calendar.querySelector<HTMLButtonElement>(`[data-date="${active()}"]`)?.focus(),
-    )
+    queueMicrotask(() => {
+      if (props.open) {
+        calendar.querySelector<HTMLButtonElement>(`[data-date="${active()}"]`)?.focus()
+      }
+    })
   }
   createPopup({
-    /** Reads the currently mounted calendar surface. */
     element: () => calendar,
     anchor: props.anchor,
 
-    /** Reads the calendar visibility requested by its owner. */
     open: () => props.open,
 
-    /** Forwards a dismissal request through the calendar owner's close operation. */
     change: (open) => {
       if (!open) {
         props.close()
       }
     },
 
-    /** Selects the calendar's preferred logical ending placement. */
     placement: () => 'bottom-end',
   })
   createEffect(
@@ -160,15 +143,9 @@ export function DatePicker(props: PickerProps): JSX.Element {
   createEffect(
     () => props.open,
     (opening) => {
-      if (!opening) {
-        return
+      if (opening) {
+        focusDay(parseDate(props.value) ? props.value : todayValue())
       }
-      browse(parseDate(props.value) ? props.value : todayValue())
-      queueMicrotask(() => {
-        if (props.open) {
-          calendar.querySelector<HTMLButtonElement>(`[data-date="${active()}"]`)?.focus()
-        }
-      })
     },
   )
 
@@ -198,7 +175,7 @@ export function DatePicker(props: PickerProps): JSX.Element {
           <button
             type="button"
             aria-label={props.previousMonthLabel}
-            disabled={month().slice(0, 7) <= (props.min ?? '0001-01-01').slice(0, 7)}
+            disabled={month().slice(0, 7) <= min().slice(0, 7)}
             onClick={() => browse(addMonths(month(), -1))}
           >
             <Icon icon={ChevronLeft} />
@@ -235,7 +212,7 @@ export function DatePicker(props: PickerProps): JSX.Element {
           <button
             type="button"
             aria-label={props.nextMonthLabel}
-            disabled={month().slice(0, 7) >= (props.max ?? '9999-12-31').slice(0, 7)}
+            disabled={month().slice(0, 7) >= max().slice(0, 7)}
             onClick={() => browse(addMonths(month(), 1))}
           >
             <Icon icon={ChevronRight} />

@@ -1,5 +1,3 @@
-/** @fileoverview Reads strict JSON without duplicate decoded property names or lossy primitive values. */
-
 import { DesktopError } from './errors'
 import { parseRecord } from './validation'
 import { visit } from 'jsonc-parser'
@@ -21,10 +19,8 @@ export type JsonValue =
 export function parseJsonValue(input: unknown): JsonValue {
   const holder: Record<string, JsonValue> = { value: null }
 
-  /** A mutable output object or array receiving validated child values. */
   type Container = Record<string, JsonValue> | JsonValue[]
 
-  /** An iterative traversal step that copies a value or leaves its ancestor scope. */
   type Visit =
     | {
         readonly type: 'value'
@@ -37,12 +33,10 @@ export function parseJsonValue(input: unknown): JsonValue {
   const pending: Visit[] = [{ type: 'value', input, target: holder, key: 'value' }]
   const ancestors = new Set<object>()
 
-  /** Assigns a validated value to an output object's key or an array index. */
   function set(target: Container, key: string | number, value: JsonValue): void {
     ;(target as Record<string | number, JsonValue>)[key] = value
   }
 
-  /** Rejects a value outside the finite ordinary JSON data model. */
   function invalid(): never {
     throw new DesktopError('InvalidInput', 'Expected a finite ordinary JSON value')
   }
@@ -118,7 +112,6 @@ export function parseJsonValue(input: unknown): JsonValue {
 export function parseStrictJson(source: string): unknown {
   const objects: Set<string>[] = []
 
-  /** Rejects malformed strict JSON with the shared InvalidInput classification. */
   function invalid(): never {
     throw new DesktopError('InvalidInput', 'Invalid strict JSON document')
   }
@@ -130,17 +123,14 @@ export function parseStrictJson(source: string): unknown {
   visit(
     source,
     {
-      /** Starts duplicate-property tracking for the next JSON object. */
       onObjectBegin() {
         objects.push(new Set())
       },
 
-      /** Releases property-name tracking when the current JSON object ends. */
       onObjectEnd() {
         objects.pop()
       },
 
-      /** Rejects a repeated property name within the same JSON object. */
       onObjectProperty(name) {
         const names = objects.at(-1)!
         if (names.has(name)) {
@@ -149,7 +139,6 @@ export function parseStrictJson(source: string): unknown {
         names.add(name)
       },
 
-      /** Rejects numeric literals that resolve to non-finite JavaScript values. */
       onLiteralValue(value: unknown) {
         if (typeof value === 'number' && !Number.isFinite(value)) {
           invalid()

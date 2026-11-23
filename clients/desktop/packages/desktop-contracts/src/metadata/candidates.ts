@@ -1,18 +1,16 @@
-/** @fileoverview Defines composed metadata candidates and validates complete graph inputs. */
-
-import { parseValue } from '../validation'
+import { fromParser, parseValue } from '../validation'
 import * as v from 'valibot'
-import { entryTypes } from '../library/catalog'
-import { metadataPartKinds, objectsSchema } from './objects'
-import { relationSchemas, validateGraph } from './graph'
-import { parsePartMatchingRules } from './matching'
-import type { EntryType, PartType } from '../library/catalog'
-import type {
-  MetadataObjectIdentity,
-  MetadataPartKey,
-  MetadataPartType,
-  CandidateTag,
+import { entryTypes, type EntryType, type PartType } from '../library/catalog'
+import {
+  metadataPartKinds,
+  objectsSchema,
+  type MetadataObjectIdentity,
+  type MetadataPartKey,
+  type MetadataPartType,
+  type CandidateTag,
 } from './objects'
+import { relationSchemas, validateGraph } from './graph'
+import { parsePartMatchingRules, type PartMatchingRules } from './matching'
 import type {
   IdentificationFields,
   MetadataEntryFields,
@@ -20,13 +18,10 @@ import type {
   MetadataPartFields,
 } from './fields'
 import type { MetadataRelations } from './relations'
-import type { PartMatchingRules } from './matching'
 
 /**
- * Parses a composed candidate and validates its graph references and relationship constraints.
- *
- * The accepted shape contains metadata facts; personal data, local references and write
- * instructions are rejected.
+ * Accepts metadata facts and validates graph references and constraints. Personal data, local
+ * references and write instructions are invalid.
  */
 export function parseMetadataCandidate(input: unknown): MetadataCandidate {
   const { entryType } = parseValue(
@@ -41,12 +36,7 @@ export function parseMetadataCandidate(input: unknown): MetadataCandidate {
       objects: objectsSchema(entryType, true),
       relations: v.exactOptional(relationSchemas(entryType)),
       partMatching: v.exactOptional(
-        hasParts
-          ? v.pipe(
-              v.unknown(),
-              v.transform((value) => parsePartMatchingRules(entryType, value)),
-            )
-          : v.never(),
+        hasParts ? fromParser((value) => parsePartMatchingRules(entryType, value)) : v.never(),
       ),
     }),
     input,
@@ -57,11 +47,7 @@ export function parseMetadataCandidate(input: unknown): MetadataCandidate {
   return value as MetadataCandidate
 }
 
-/**
- * Composed entry with adoptable fields and original matching evidence.
- *
- * Identification retains source facts before field processing.
- */
+/** Identification retains original source evidence before field processing. */
 export interface CandidateEntry<T extends EntryType> extends MetadataObjectIdentity {
   readonly identification: IdentificationFields<T>
   readonly fields: MetadataEntryFields<T>
@@ -73,20 +59,13 @@ export interface CandidatePart<T extends PartType> extends MetadataObjectIdentit
   readonly fields: MetadataPartFields<T>
 }
 
-/** Related candidate entries grouped by their actual catalog kind. */
 export type CandidateRelatedEntries = { readonly [K in EntryType]?: readonly CandidateEntry<K>[] }
 
-/** Candidate parts grouped by slots supported by the root entry kind. */
 export type CandidateParts<T extends EntryType> = {
   readonly [K in MetadataPartKey<T>]?: readonly CandidatePart<MetadataPartType<T, K>>[]
 }
 
-/**
- * Composed metadata graph with one root and a request-local object key space.
- *
- * The graph carries source facts and matching rules; local identity and adoption decisions belong
- * to ingest.
- */
+/** Object keys are local to the graph. Ingest decides local identity and adoption. */
 export type MetadataCandidate<T extends EntryType = EntryType> = {
   [K in T]: {
     readonly entryType: K

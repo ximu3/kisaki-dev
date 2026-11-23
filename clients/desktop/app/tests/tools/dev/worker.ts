@@ -1,29 +1,18 @@
-/**
- * @fileoverview Runs a real development session in a test-owned child and reports its
- * state to the parent test.
- */
-
 import { join } from 'node:path'
 import { appRoot } from '../../../tools/lib/paths'
 import { hostTarget } from '../../../tools/lib/targets'
 import { isCancellation } from '@kisaki3/tooling/errors'
 import { launchFixtureApplication } from './application'
-import { startDevelopmentSession } from '../../../tools/dev/session'
-import type { DevelopmentSession } from '../../../tools/dev/session'
+import { startDevelopmentSession, type DevelopmentSession } from '../../../tools/dev/session'
 
-/** Cancellation owner for initial development preparation. */
 const controller = new AbortController()
 
-/** Fault or lifecycle scenario selected by the parent test. */
 const scenario = process.argv[2]
 
-/** Rejects the controller wait when an application declines to complete its stop operation. */
 const stopFailure = Promise.withResolvers<never>()
 
-/** Development session owned and closed by this child process. */
 let session: DevelopmentSession | undefined
 
-/** Records whether the worker must report an unsuccessful terminal outcome. */
 let failed = false
 
 /**
@@ -69,7 +58,6 @@ async function cleanup(): Promise<void> {
   }
 }
 
-/** Dispatches recognized stop and cleanup commands from the parent test. */
 const message = (value: unknown) => {
   if (!value || typeof value !== 'object' || !('type' in value)) {
     return
@@ -82,7 +70,6 @@ const message = (value: unknown) => {
   }
 }
 
-/** Requests test-session cleanup when the parent IPC channel disconnects. */
 const disconnected = () => {
   void cleanup().catch(stopFailure.reject)
 }
@@ -98,7 +85,6 @@ try {
       resources: join(appRoot, 'out/resources', hostTarget()),
       nativeBinding: join(appRoot, 'out/native', hostTarget(), 'kisaki-native.node'),
     },
-    /** Launches the real carrier and wraps only the lifecycle fault selected by the parent test. */
     async launch(options) {
       const application = await launchFixtureApplication({
         ...options,
@@ -115,9 +101,6 @@ try {
       let rejectStop = true
       return {
         ...application,
-        /**
-         * Injects one normal-stop failure, then delegates subsequent calls to the real application.
-         */
         stop() {
           if (rejectStop) {
             rejectStop = false
@@ -129,10 +112,6 @@ try {
       }
     },
     signal: controller.signal,
-    /**
-     * Forwards session state and diagnostic messages to the parent while its IPC channel is
-     * connected.
-     */
     onState(state, error) {
       if (process.connected) {
         process.send?.(

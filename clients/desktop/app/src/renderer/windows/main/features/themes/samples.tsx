@@ -1,5 +1,3 @@
-/** @fileoverview Presents a saved theme's paired color branches without changing the current UI. */
-
 import { For } from 'solid-js'
 import type { Theme } from '@kisaki3/desktop-contracts/appearance'
 import type { Translate } from '@kisaki3/desktop-localization'

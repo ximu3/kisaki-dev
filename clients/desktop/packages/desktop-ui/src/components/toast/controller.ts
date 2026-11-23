@@ -1,5 +1,3 @@
-/** @fileoverview Owns one document-level feedback queue independently of publishing components. */
-
 import { createSignal, onCleanup } from 'solid-js'
 import type { Accessor } from 'solid-js'
 
@@ -50,11 +48,9 @@ export interface ToastApi {
 export interface ToastEntry {
   id: number
 
-  /** Reads the current complete message content. */
   message: Accessor<ToastMessage>
   /** Reports whether dismissal has begun and the message's actions are inert. */
   ended: Accessor<boolean>
-  /** Marks the message ended so its exit presentation can release it. */
   end: () => void
 
   persistent: boolean
@@ -90,20 +86,19 @@ export function createToastController(
     throw new Error('Only one Toaster may be installed in a document.')
   }
 
-  /** Reactive toast queue owned by this controller instance. */
   const [entries, setEntries] = createSignal<ToastEntry[]>([])
   let nextId = 0
-  /** Removes a message from the rendered stack through the layout-motion coordinator. */
+
+  // Measure the stack before removing an entry so its neighbors can animate from their previous positions.
   const release = (id: number) =>
     arrange(() => setEntries((items) => items.filter((item) => item.id !== id)))
+
   const api: ToastApi = {
-    /** Appends an independent reactive message and returns handles bound to that queue entry. */
     show(message, options = {}) {
       const id = nextId++
-      /** Live message value observed by a toast handle and its rendered entry. */
       const [value, replace] = createSignal(message, { equals: false })
-      /** Terminal state preventing an ended toast handle from becoming active again. */
       const [ended, setEnded] = createSignal(false)
+      // Dismissal disables the handle immediately, before Solid publishes the exit state.
       let live = true
       const end = () => {
         live = false
@@ -116,7 +111,6 @@ export function createToastController(
             id,
             message: value,
             ended,
-            /** Marks this queue entry ended. */
             end,
             persistent: options.persistent ?? false,
             durationMs: options.durationMs ?? defaultDurationMs(),
@@ -125,11 +119,7 @@ export function createToastController(
       )
 
       return {
-        /** Requests dismissal of this entry by its stable queue ID. */
         dismiss: end,
-        /**
-         * Replaces this entry's content through stack coordination while the entry remains live.
-         */
         update: (next) => {
           if (live && current === api) {
             arrange(() => replace(next))

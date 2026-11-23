@@ -1,5 +1,3 @@
-/** @fileoverview Compares actual filesystem locations while preserving spelling and unresolved path information. */
-
 import { realpath, stat } from 'node:fs/promises'
 import { join, sep } from 'node:path'
 import { nativeHostPath, parseHostPath, type HostPath } from '#host-path'

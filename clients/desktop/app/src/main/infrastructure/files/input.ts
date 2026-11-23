@@ -1,5 +1,3 @@
-/** @fileoverview Pulls bounded binary chunks from a file dropped or pasted into the owning document. */
-
 import type { MessagePortMain } from 'electron'
 import { Readable } from 'node:stream'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
@@ -18,7 +16,6 @@ export function receiveFile(port: MessagePortMain) {
         port.postMessage('read')
       }
     },
-    /** Closes the binary transfer and delivers its final stream error. */
     destroy(error, done) {
       ended = true
       port.close()

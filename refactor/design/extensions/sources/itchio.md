@@ -22,7 +22,7 @@ itch.io 提供独立游戏资料，以及本人拥有库、可编辑项目和公
 
 ## 来源身份与公开读取
 
-source 使用 itchio，正式身份为 game/&lt;规范十进制 project ID&gt;，例如 game/106599。项目 ID、上传文件 ID、账号 ID、购买记录 ID 和合集 ID 各自独立；不以可改名的作者账号和 URL slug 作为作品身份。
+`source` 使用 `itchio`，正式身份为 `game/<id>`，例如 `game/106599`。`id` 是项目 ID 的规范十进制形式。项目、上传文件、账号、购买记录和合集各有自己的编号，作者名与 URL slug 可以变化。
 
 按数字 ID 读取官方公开 embed 页面，取得当前项目地址，再读取该项目的 /data.json 与必要 HTML。这一链路已由官方 widget、公开 JavaScript API 及《DDLC》的真实响应核对，不依赖上次运行留下的 ID→URL 私有表。公开 JSON、页面 itch:path 与所请求 ID 必须一致，重定向不得暗中换成另一个项目。
 
@@ -119,7 +119,7 @@ src/
 │   │   ├── gateway.ts
 │   │   ├── public.ts
 │   │   └── types.ts
-│   ├── account/manager.ts
+│   ├── account.ts
 │   ├── metadata/
 │   │   ├── provider.ts
 │   │   ├── identity.ts

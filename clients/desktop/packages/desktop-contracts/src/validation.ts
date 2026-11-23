@@ -1,5 +1,3 @@
-/** @fileoverview Shares internal value checks while keeping validation-library types out of public declarations. */
-
 import * as v from 'valibot'
 import { DesktopError } from './errors'
 import { DistributionError } from '@kisaki3/extension-distribution/errors'
@@ -24,16 +22,12 @@ export const nonemptyText = v.pipe(
 /** Nonblank opaque identity text; domain-specific identities may impose additional format rules. */
 export const id = nonemptyText
 
-/** Integers represented exactly within JavaScript's safe range. */
 export const integer = v.pipe(v.number(), v.safeInteger())
 
-/** Nonnegative safe integers used for counts, indexes and ordered positions. */
 export const nonnegativeInteger = v.pipe(integer, v.minValue(0))
 
-/** Strictly positive safe integers used for required counts and limits. */
 export const positiveInteger = v.pipe(integer, v.minValue(1))
 
-/** Finite nonnegative quantities that may retain fractional values. */
 export const nonnegativeNumber = v.pipe(v.number(), v.finite(), v.minValue(0))
 
 /** UTC milliseconds within the range supported by JavaScript Date. */
@@ -43,19 +37,17 @@ export const timestamp = v.pipe(
   v.maxValue(8_640_000_000_000_000),
 )
 
-/** Personal rating in integer points from zero through one hundred. */
 export const rating = v.pipe(integer, v.minValue(0), v.maxValue(100))
 
-/** Zero-based interval offset and positive limit capped at two hundred results. */
 export const intervalEntries = {
   offset: nonnegativeInteger,
   limit: v.pipe(positiveInteger, v.maxValue(200)),
 }
 
-/**
- * Parses input with a schema and translates validation failure into InvalidInput with its local
- * cause.
- */
+export function fromParser<T>(parse: (input: unknown) => T) {
+  return v.pipe(v.unknown(), v.transform(parse))
+}
+
 export function parseValue<T extends v.GenericSchema>(
   schema: T,
   input: unknown,
@@ -90,10 +82,6 @@ export function parseExternalValue<T>(
   }
 }
 
-/**
- * Creates field schemas that permit omission and validate present values with their original
- * schema.
- */
 export function optionalFields<T extends v.ObjectEntries>(
   entries: T,
 ): { [K in keyof T]: v.ExactOptionalSchema<T[K], undefined> } {
@@ -102,7 +90,6 @@ export function optionalFields<T extends v.ObjectEntries>(
   ) as { [K in keyof T]: v.ExactOptionalSchema<T[K], undefined> }
 }
 
-/** Copies enumerable own string-keyed fields except the explicitly omitted names. */
 export function omitFields<T extends object, K extends keyof T & string>(
   value: T,
   keys: readonly K[],
@@ -150,7 +137,6 @@ export function parseDictionary<T extends v.GenericSchema>(
   return Object.fromEntries(entries)
 }
 
-/** Checks whether selected identity keys are distinct without changing item order or values. */
 export function unique<T>(items: readonly T[], key: (item: T) => string): boolean {
   return new Set(items.map(key)).size === items.length
 }

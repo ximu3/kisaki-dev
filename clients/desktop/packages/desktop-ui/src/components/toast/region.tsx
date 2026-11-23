@@ -1,14 +1,11 @@
-/** @fileoverview Window notification presentation, paused clocks and active-modal mounting. */
-
 import { createEffect, createSignal, For, onCleanup, onSettled, Show, untrack } from 'solid-js'
 import type { JSX } from '@solidjs/web'
-import { createToastController } from './controller'
+import { createToastController, type ToastEntry } from './controller'
 import { createStackMotion } from './stack'
-import type { ToastEntry } from './controller'
 import { Icon, X, StatusIcon } from '../../internal/icon/glyph'
 import { observeModalHost } from '../../internal/modal-host'
-import { Button } from '../button/control'
-import { Spinner } from '../spinner/control'
+import { Button } from '../button'
+import { Spinner } from '../spinner'
 import surface from '../../internal/popup/surface.module.css'
 import styles from './styles.module.css'
 
@@ -33,7 +30,6 @@ export function Toaster(props: ToasterProps): JSX.Element {
     () => props.durationMs ?? 5000,
     createStackMotion(() => track),
   )
-  /** Shows the manual popover when its queue contains messages and the region is closed. */
   const show = () => {
     if (controller.entries().length && !region.matches(':popover-open')) {
       region.showPopover()
@@ -48,7 +44,6 @@ export function Toaster(props: ToasterProps): JSX.Element {
     })
     resize.observe(track)
     resize.observe(region)
-    /** Disposer for modal-host observation while this toast region is mounted. */
     const stop = observeModalHost(region.ownerDocument, (host) => {
       untrack(() => {
         if (region.matches(':popover-open')) {
@@ -125,7 +120,6 @@ export function Toaster(props: ToasterProps): JSX.Element {
 function ToastItem(props: {
   entry: ToastEntry
   closeLabel: string
-  /** Marks the owning queue entry ended when its display lifetime is complete. */
   dismiss: () => void
   /** Removes the ended entry after exit presentation settles. */
   release: () => void
@@ -137,7 +131,6 @@ function ToastItem(props: {
   let started = 0
   let hovered = false
   let focused = false
-  /** Local visual exit state for a toast whose reading time has elapsed. */
   const [expiring, setExpiring] = createSignal(false)
 
   onSettled(() => {
@@ -148,13 +141,11 @@ function ToastItem(props: {
     })
   })
 
-  /** Returns the status-icon tone, using info for the loading fallback. */
   const statusType = () => {
     const type = props.entry.message().type
     return type === 'loading' ? 'info' : type
   }
 
-  /** Stops expiration timers and preserves the unspent display duration. */
   const stop = () => {
     clearTimeout(fadeTimer)
     setExpiring(false)
@@ -164,9 +155,7 @@ function ToastItem(props: {
       remaining = Math.max(0, remaining - (performance.now() - started))
     }
   }
-  /**
-   * Starts remaining display and exit timers when the message is live, unpaused and nonpersistent.
-   */
+
   const resume = () => {
     if (
       props.entry.ended() ||
@@ -216,7 +205,6 @@ function ToastItem(props: {
         const exit = card
           .getAnimations()
           .find((a) => a instanceof CSSTransition && a.transitionProperty === 'opacity')
-        /** Releases the entry after exit settles if the rendering effect is still current. */
         const finish = () => {
           if (current) {
             props.release()

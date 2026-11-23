@@ -1,5 +1,3 @@
-/* Native modal geometry keeps headings and actions around a scrollable content area. */
-
 .body {
   composes: native from '../../internal/scrollbars.module.css';
 }

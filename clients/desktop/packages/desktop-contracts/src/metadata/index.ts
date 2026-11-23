@@ -1,5 +1,3 @@
-/** @fileoverview Publishes the metadata capability contract. */
-
 export { parseMetadataFetchInput, parseMetadataFetchResult } from './fetch'
 
 export { parseMetadataSearchRequest, parseMetadataImageSearchRequest } from './search'

@@ -1,11 +1,15 @@
-/** @fileoverview Owns one handshake, bidirectional message pump and the lifetime of its calls and transport. */
-
 import { connectionClosed, RpcError, safeFailure } from '../errors'
 import { hasUnknownWireVersion, parseRpcFrame, rpcWireVersion, type RpcFrame } from '../frames'
 import { parseJsonValue, type JsonValue } from '../json'
 import type { RpcTransport } from '../transport'
 import { defaultErrorCodec, type RpcEndpoint, type RpcErrorCodec, type RpcMethod } from './endpoint'
 import { OutgoingCalls } from './outgoing'
+
+interface ActiveConnection {
+  readonly transport: RpcTransport
+  readonly endpoint: RpcEndpoint
+  established: boolean
+}
 
 /**
  * One handshake-bound, bidirectional RPC connection over an owned transport.
@@ -14,9 +18,7 @@ import { OutgoingCalls } from './outgoing'
  * resources. Each instance serves one connection lifetime.
  */
 export class RpcConnection {
-  /** Completes readiness with the accepted peer context. */
   #resolveReady!: (context: JsonValue) => void
-  /** Rejects readiness when the handshake cannot be completed. */
   #rejectReady!: (error: RpcError) => void
   /** Resolves with the peer's verified context, or rejects if the handshake ends unsuccessfully. */
   readonly ready = new Promise<JsonValue>((resolve, reject) => {
@@ -24,16 +26,13 @@ export class RpcConnection {
     this.#rejectReady = reject
   })
 
-  /** Completes connection-lifetime observation with its local release reason. */
   #resolveClosed!: (reason: RpcError) => void
   /** Resolves once with the local reason when the connection and its listeners have been released. */
   readonly closed = new Promise<RpcError>((resolve) => {
     this.#resolveClosed = resolve
   })
 
-  #transport: RpcTransport | undefined
-  #endpoint: RpcEndpoint | undefined
-  #established = false
+  #active: ActiveConnection | undefined
   readonly #timer: ReturnType<typeof setTimeout>
 
   readonly #outgoing = new OutgoingCalls()
@@ -46,8 +45,7 @@ export class RpcConnection {
    * Handshake and transport failures settle ready and closed through the connection's release path.
    */
   constructor(transport: RpcTransport, endpoint: RpcEndpoint) {
-    this.#transport = transport
-    this.#endpoint = endpoint
+    this.#active = { transport, endpoint, established: false }
     this.#timer = setTimeout(
       () => this.#end(new RpcError('ConnectionClosed', 'RPC handshake timed out')),
       10_000,
@@ -58,7 +56,7 @@ export class RpcConnection {
         (input) => this.#receive(input),
         (cause) => this.#end(connectionClosed(cause)),
       )
-      if (endpoint.handshake.role === 'initiator' && this.#transport) {
+      if (endpoint.handshake.role === 'initiator' && this.#active) {
         this.#send(
           parseRpcFrame({
             type: 'hello',
@@ -74,11 +72,9 @@ export class RpcConnection {
   }
 
   /**
-   * Invokes a remote method and waits for its result or failure.
-   *
-   * Requires a completed handshake. A pre-aborted signal sends no request; an in-flight abort
-   * requests cancellation and continues waiting for the peer's outcome. Connection loss rejects
-   * outstanding waits with ConnectionClosed.
+   * Requires an established connection. Aborting before transmission rejects with `Cancelled`.
+   * After transmission, abort asks the peer to cancel and the promise waits for its outcome.
+   * Connection loss rejects outstanding requests with `ConnectionClosed`.
    */
   async request(
     method: string,
@@ -124,28 +120,24 @@ export class RpcConnection {
     this.#end(connectionClosed())
   }
 
-  /** Requires an open transport and a completed handshake before admitting local calls. */
   #requireReady(): void {
-    if (!this.#transport) {
+    const connection = this.#active
+    if (!connection) {
       throw connectionClosed()
     }
-    if (!this.#established) {
+    if (!connection.established) {
       throw new RpcError('ProtocolViolation', 'RPC handshake is incomplete')
     }
   }
 
-  /**
-   * Attempts to send a frame through the bound transport.
-   *
-   * Returns false after closure or a send failure; send failures also end the connection.
-   */
   #send(frame: RpcFrame): boolean {
-    if (!this.#transport) {
+    const connection = this.#active
+    if (!connection) {
       return false
     }
 
     try {
-      this.#transport.send(frame)
+      connection.transport.send(frame)
       return true
     } catch (cause) {
       this.#end(connectionClosed(cause))
@@ -153,21 +145,16 @@ export class RpcConnection {
     }
   }
 
-  /**
-   * Parses and dispatches one frame for this connection.
-   *
-   * Ignores traffic after closure. Unexpected frames or correlation failures end the connection; an
-   * unsupported wire version rejects an acceptor's handshake before context inspection.
-   */
   #receive(input: unknown): void {
-    const endpoint = this.#endpoint
-    if (!endpoint) {
+    const connection = this.#active
+    if (!connection) {
       return
     }
+    const { endpoint } = connection
 
     try {
       if (
-        !this.#established &&
+        !connection.established &&
         endpoint.handshake.role === 'acceptor' &&
         hasUnknownWireVersion(input)
       ) {
@@ -176,8 +163,8 @@ export class RpcConnection {
       }
 
       const frame = parseRpcFrame(input)
-      if (!this.#established) {
-        this.#handshake(frame, endpoint)
+      if (!connection.established) {
+        this.#handshake(frame, connection)
         return
       }
 
@@ -213,13 +200,8 @@ export class RpcConnection {
     }
   }
 
-  /**
-   * Processes a handshake frame according to the endpoint's role and context policy.
-   *
-   * The acceptor sends acceptance before resolving ready. The initiator resolves ready after
-   * checking the accepted context.
-   */
-  #handshake(frame: RpcFrame, { handshake, protocol }: RpcEndpoint): void {
+  #handshake(frame: RpcFrame, connection: ActiveConnection): void {
+    const { handshake, protocol } = connection.endpoint
     if (handshake.role === 'initiator' && frame.type === 'rejected') {
       this.#end(new RpcError(frame.error.code, frame.error.message))
       return
@@ -246,25 +228,22 @@ export class RpcConnection {
       throw new RpcError('ProtocolViolation', 'Unexpected frame during RPC handshake')
     }
 
+    if (this.#active !== connection) {
+      return
+    }
     clearTimeout(this.#timer)
-    this.#established = true
+    // The peer can send its first request reentrantly when it receives acceptance.
+    connection.established = true
     if (!reply || this.#send(reply)) {
       this.#resolveReady(frame.context)
     }
   }
 
-  /** Converts a handshake failure to a safe rejection frame and ends the connection. */
   #rejectHandshake(cause: unknown): void {
     const error = safeFailure(cause)
     this.#end(new RpcError(error.code, error.message, { cause }), { type: 'rejected', error })
   }
 
-  /**
-   * Checks that the peer's request ID increases, then dispatches the request to the local method.
-   *
-   * Unknown methods or exhausted local IDs receive a failure reply. Each accepted request receives
-   * its own cancellation signal.
-   */
   #receiveRequest(frame: Extract<RpcFrame, { type: 'request' }>, endpoint: RpcEndpoint): void {
     if (frame.id <= this.#lastIncomingId) {
       throw new RpcError('ProtocolViolation', 'RPC request IDs must increase')
@@ -298,12 +277,6 @@ export class RpcConnection {
     )
   }
 
-  /**
-   * Runs one admitted method and delivers its result or encoded failure.
-   *
-   * Uses the endpoint's error codec, falling back to a safe failure value if encoding fails.
-   * Completion removes inbound cancellation state; connection closure discards late output.
-   */
   async #execute(
     frame: Extract<RpcFrame, { type: 'request' }>,
     method: RpcMethod,
@@ -313,7 +286,7 @@ export class RpcConnection {
     let reply: RpcFrame
     try {
       const result = await method(frame.args, signal)
-      if (!this.#transport) {
+      if (!this.#active) {
         return
       }
       reply =
@@ -321,7 +294,7 @@ export class RpcConnection {
           ? { type: 'success', id: frame.id }
           : { type: 'success', id: frame.id, value: parseJsonValue(result) }
     } catch (cause) {
-      if (!this.#transport) {
+      if (!this.#active) {
         return
       }
 
@@ -339,7 +312,6 @@ export class RpcConnection {
     this.#closeIfDrained()
   }
 
-  /** Dispatches a known notification topic and forwards handler failures to its local reporter. */
   #receiveNotification(
     frame: Extract<RpcFrame, { type: 'notify' }>,
     notifications: RpcEndpoint['notifications'],
@@ -348,7 +320,6 @@ export class RpcConnection {
       return
     }
 
-    /** Reports this notification handler's failure together with its topic. */
     const failed = (error: unknown) => notifications.onError(error, frame.topic)
     try {
       const result = notifications.topics[frame.topic]!(frame.value)
@@ -360,33 +331,24 @@ export class RpcConnection {
     }
   }
 
-  /** Reports whether either direction has used the largest safe request ID. */
   get #exhausted(): boolean {
     return this.#outgoing.exhausted || this.#lastIncomingId === Number.MAX_SAFE_INTEGER
   }
 
-  /** Closes an ID-exhausted connection once incoming and outgoing calls have settled. */
   #closeIfDrained(): void {
     if (this.#exhausted && this.#incoming.size === 0 && this.#outgoing.idle) {
       this.close()
     }
   }
 
-  /**
-   * Releases connection resources and settles its lifetime promises once.
-   *
-   * Stops admission before an optional rejection is sent, rejects outbound waits with
-   * ConnectionClosed, and aborts inbound signals. Transport-release failures become the reason
-   * returned by closed; method cleanup remains endpoint-owned.
-   */
   #end(reason: RpcError, rejection?: Extract<RpcFrame, { type: 'rejected' }>): void {
-    const transport = this.#transport
-    if (!transport) {
+    const connection = this.#active
+    if (!connection) {
       return
     }
+    const { transport } = connection
 
-    this.#transport = undefined
-    this.#endpoint = undefined
+    this.#active = undefined
     clearTimeout(this.#timer)
 
     // Stop admission before handing off a final rejection, even if the peer closes during send.

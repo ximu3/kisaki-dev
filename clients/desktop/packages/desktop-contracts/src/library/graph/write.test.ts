@@ -1,13 +1,7 @@
-/** @fileoverview Verifies complete graph identity, endpoint ownership, relation consistency and creation results. */
-
 import { test, expect } from 'vite-plus/test'
 
 import { parseLibraryWriteGraph, parseLibraryWriteResult } from './write'
 
-/**
- * Synthetic graph connecting new works, parts, people, tags and prepared resources by input-local
- * keys.
- */
 const graph = {
   entries: {
     create: [

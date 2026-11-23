@@ -1,5 +1,3 @@
-/** @fileoverview Stops the command's Unix process group and allows cooperative shutdown first. */
-
 import { execFile } from 'node:child_process'
 import { setTimeout as delay } from 'node:timers/promises'
 import { promisify } from 'node:util'

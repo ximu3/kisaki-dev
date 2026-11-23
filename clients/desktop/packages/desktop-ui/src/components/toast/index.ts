@@ -1,5 +1,3 @@
-/** @fileoverview Public window-level notification API and its single presentation host. */
-
 export {
   toast,
   type ToastApi,

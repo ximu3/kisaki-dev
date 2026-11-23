@@ -31,10 +31,7 @@ iframe 共用承载窗口的实际 Electron Session；独立 origin 隔离浏览
 ## 请求与响应
 
 ```ts
-fetch(
-  url: string | URL,
-  options?: NetworkFetchOptions
-): Promise<NetworkResponse>
+declare function fetch(url: string | URL, options?: NetworkFetchOptions): Promise<NetworkResponse>
 
 interface NetworkFetchOptions {
   method?: string

@@ -1,5 +1,3 @@
-/** @fileoverview Owns the independent UI consumer, its preview server and its browser resources. */
-
 import { cp, mkdir, readFile, writeFile } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
 import { test, expect } from 'vite-plus/test'
@@ -9,7 +7,6 @@ import { runPnpm } from '@kisaki3/tooling/process'
 import { join, resolve } from 'node:path'
 import { installConsumer, lintConsumer } from '@kisaki3/tooling/testing/consumer'
 
-/** This package's root for the independent tarball installation. */
 export const packageRoot = resolve(import.meta.dirname, '../..')
 
 /** Isolates installation, browser pages and evidence for the public UI consumer. */

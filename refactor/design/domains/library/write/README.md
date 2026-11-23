@@ -55,12 +55,12 @@ partialResult 必须符合该操作自身的结果类型，只包含已经确定
 创建、更新和独立动作分别使用 create、update 及对应动作名，不让 save 根据是否有 id 猜测行为。创建输入直接包含条目 type 和字段，不再包裹 entry.fields。evaluation 表示适用评价，record 表示该主体对应的当前个人值，completionRecords 表示明确的初始作品完成记录，tags 和 collections 表示初始关联。非 Work 不能带作品状态或完成记录，缺少个人值时不创建空行。
 
 ```ts
-await library.entries.create({
+const gameRef = await library.entries.create({
   type: 'game',
   name: '星屿',
-  evaluation: { rating: 85, favorite: true },
+  evaluation: { rating: 85, favorite: false },
   record: { status: 'planned' },
-  tags: [{ tagId }],
+  tags: [{ tagId: oldTagId }],
   collections: [{ collectionId }],
 })
 
@@ -99,7 +99,7 @@ note_entry_links 的 order_in_note 与 order_in_entry，以及其他 order_in_*�
 
 ### 条目资料：library.entries
 
-create 接收七种 EntryCreate 判别分支及适用的初始 evaluation、record、completionRecords、tags 和 collections，返回 EntryRef；update 与短事务 updateMany 返回 void；get、list、locate、groups、selectRefs 和 findByExternalIdentity 按[读取接口](../query/README.md#api)。
+`create` 接收七种 `EntryCreate` 判别分支及适用的初始 `evaluation`、`record`、`completionRecords`、`tags` 和 `collections`，返回 `EntryRef`。`update` 与短事务 `updateMany` 返回 void。`get`、`list`、`locate`、`groups`、`selectRefs` 和 `findByExternalIdentity` 按[读取接口](../query/README.md#api)执行。`bindExternalIdentity` 和 `unbindExternalIdentity` 分别建立和解除指定的来源绑定。
 
 七类具体字段来自[条目字段](../../catalog.md#entry-fields)；类型与私人记录的适用性在输入分支体现；禁止修改派生值；SDK Node 开放。
 
@@ -117,13 +117,13 @@ list、get、statistics、create、createMany、recordCurrent、recordCurrentMan
 
 ### 真实分部：library.parts
 
-list、get、create、update、delete、merge、changeKind、reorder、setCompleted 和 setCompletedMany；创建和种类更正返回 PartRef，merge 按[分部合并](#part-merges)接收 { source, target } 并返回实际保留的 PartRef，其余修改返回 void；完成设置接收明确 PartRef 或非空集合及一个布尔值。
+读取使用 `list` 和 `get`，修改使用 `create`、`update`、`delete`、`merge`、`changeKind`、`reorder`、`move`、`setCompleted` 和 `setCompletedMany`。创建和种类更正返回 `PartRef`。`merge` 按[分部合并](#part-merges)接收 `{ source, target }` 并返回保留的 `PartRef`。其他修改返回 void，完成设置接收明确的 `PartRef` 或非空集合及一个布尔值。
 
 五种 Part 只保存完成标记；批量共同提交；changeKind 仅更正同一动画内的 Episode 与 Extra，按[更正规则](../../anime.md#kind-correction)保留资料、关联和标记；SDK Node 开放。
 
 ### 资料关系：library.relations
 
-workCharacters、personWorks、organizationWorks、workRelations 各自 list/get/create/update/delete/reorder；创建返回实际关系 id，更新保持 id。
+`workCharacters`、`personWorks`、`organizationWorks` 和 `workRelations` 分别提供 `list`、`get`、`create`、`update`、`delete`、`reorder` 和 `move`。创建返回关系 ID，更新保留原 ID。
 
 四张资料关系表的必要端点、职责/类型、可选 character 及属性按 [模型范围](../../../product.md#model)、[关系表与业务键](../../relations.md#schema)；不增人物—组织等关系；普通创建或更新遇到重复业务键返回 Conflict，明确条目合并按固定合并规则处理。
 

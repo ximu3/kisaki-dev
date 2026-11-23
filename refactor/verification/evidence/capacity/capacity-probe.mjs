@@ -3,9 +3,14 @@ import { cpus, totalmem } from 'node:os'
 
 const count = Number(process.argv[2])
 const kind = process.argv[3]
+if (!Number.isSafeInteger(count) || count < 1 || (kind !== 'refs' && kind !== 'scan')) {
+  throw new Error('Usage: node --expose-gc capacity-probe.mjs <count> <refs|scan>')
+}
+
 const id = (index) => `00000000-0000-4000-8000-${String(index).padStart(12, '0')}`
-const refs = () => Array.from({ length: count }, (_, index) => ({ type: 'comic', id: id(index) }))
-const scan = () => ({
+const createRefs = () =>
+  Array.from({ length: count }, (_, index) => ({ type: 'comic', id: id(index) }))
+const createScanReport = () => ({
   discovery: { finished: true, candidateCount: count, issues: [] },
   candidates: Array.from({ length: count }, (_, index) => ({
     path: `F:/fixture/漫画资料库/出版社/${String(index).padStart(8, '0')} 星屿系列第${index}部`,
@@ -13,27 +18,32 @@ const scan = () => ({
     result: {
       outcome: 'added',
       entry: { type: 'comic', id: id(index) },
-      issues: []
+      issues: [],
     },
-    localContent: { status: 'included' }
-  }))
+    localContent: { status: 'included' },
+  })),
 })
+
 global.gc()
 const baseline = process.memoryUsage()
 let started = performance.now()
-const value = kind === 'refs' ? refs() : scan()
+const value = kind === 'refs' ? createRefs() : createScanReport()
 const createMs = performance.now() - started
+
 started = performance.now()
 const json = JSON.stringify(value)
 const stringifyMs = performance.now() - started
+
 started = performance.now()
 const parsed = JSON.parse(json)
 const parseMs = performance.now() - started
+
 started = performance.now()
 const cloned = structuredClone(parsed)
 const cloneMs = performance.now() - started
 const peak = process.memoryUsage()
 if (!cloned || !value) throw new Error('Fixture was not retained.')
+
 process.stdout.write(
   JSON.stringify({
     node: process.version,
@@ -49,6 +59,6 @@ process.stdout.write(
     retainedHeapDeltaBytes: peak.heapUsed - baseline.heapUsed,
     rssDeltaBytes: peak.rss - baseline.rss,
     scope:
-      'Synthetic Node JSON and structured-clone model; not Electron IPC or the production application.'
-  }) + '\n'
+      'Synthetic Node JSON and structured-clone model; not Electron IPC or the production application.',
+  }) + '\n',
 )

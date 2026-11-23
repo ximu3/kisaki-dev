@@ -1,5 +1,3 @@
-/** @fileoverview Transfers the bound native port only to the top-level document in this sandboxed window. */
-
 import { ipcRenderer } from 'electron'
 import type { WindowKind } from '../shared/window-api/protocol'
 
@@ -8,8 +6,9 @@ export function connectWindow(kind: WindowKind) {
   if (!process.isMainFrame) {
     return
   }
-  /** Consume only this document's port request; dev tooling may also post ordinary window messages. */
+
   function requestPort(event: MessageEvent) {
+    // Dev tooling also posts window messages, independent of the port request.
     if (
       event.source !== window ||
       event.origin !== window.location.origin ||
@@ -21,6 +20,7 @@ export function connectWindow(kind: WindowKind) {
     ipcRenderer.send('kisaki-connect', kind)
   }
   window.addEventListener('message', requestPort)
+
   if (kind === 'main') {
     window.addEventListener('message', (event) => {
       if (
@@ -33,6 +33,7 @@ export function connectWindow(kind: WindowKind) {
       }
     })
   }
+
   ipcRenderer.once('kisaki-port', (event) => {
     window.postMessage('kisaki-port', window.location.origin, event.ports)
   })

@@ -1,5 +1,3 @@
-/* Use native scrollbar geometry and shared colors on the library's own viewports. */
-
 @layer components {
   .native {
     scrollbar-width: thin;

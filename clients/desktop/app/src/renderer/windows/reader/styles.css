@@ -1,5 +1,3 @@
-/* Styles and utility sources used by the reader document. */
-
 @import '../../styles/tailwind.css';
 @import '../../styles/base.css';
 @source './';

@@ -149,7 +149,7 @@ const registration = await context.metadata.providers.register({
 })
 ```
 
-capabilities 分别为七种 Entry 上下文声明实际实现的 search、resolve、read 和图片候选能力，字段使用[固定目录](../domains/metadata/profiles.md#fields)。执行时按来源要求核对连接与网络条件，各记录只回答真实可用的值。能力缺席表示不支持，已声明能力须有实现。search 面向条目，并独立声明搜索方式；Part 经 parts 读取。
+capabilities 分别为七种 Entry 上下文声明实际实现的 search、resolve、read 和图片候选能力，字段使用[固定目录](../domains/metadata/profiles.md#fields)。执行时按来源要求核对连接与网络条件，各记录只回答真实可用的值。能力缺席表示不支持，已声明能力须有实现。search 交付条目候选。Part 经 parts 读取。
 
 read.objects 的 fields 声明普通字段，identitySources 声明可直接读取的 ExternalIdentity.source。根节点用它解释 openSession.identity，相关 Entry 与 Part 节点用它解释 refs；来源优先序由资料方案决定。相关节点省略 identitySources 时，读取限于真实根或关系上下文；支持根身份读取时须明确声明该列表。关系读取可以使用 entry.fields: []，仅为已知相关 Entry 或 Part 补字段时也可以省略根 entry。
 
@@ -191,9 +191,7 @@ provider 必须核实根目标和 Part 的粒度，不能把卷或集包装成 S
 
 openSession({ entryType, identity?, preferredLanguages? }, context) 返回 MetadataReadSession。identity 是根对象的完整身份，可以是已知可读身份，也可以来自 resolve；输入不再重复携带 target 或 SourceEntry record。语言在本次会话内固定，账号连接仍属于扩展私有状态。Entry 表达本次读取的组织范围，并不要求每个来源都存在对应的根记录。
 
-只读取已知相关 Entry 或 Part refs 的字段时，可以省略根 identity。本地作品和采用目标由 metadata 与 ingest 持有，provider 只取得来源引用。
-
-缺少根 identity 时，会话只读取明确 refs 的字段；关系读取使用已经确定的根上下文。
+只读取明确的相关 Entry 或 Part 字段时，可以提供 refs 并省略根 identity。关系读取使用已经确定的根上下文。本地作品和采用目标由 metadata 与 ingest 持有，provider 取得来源引用。
 
 MetadataReadSession 提供只读 relationScopes，以及 read 和 close。openSession 成功前，provider 按根身份、Entry 类型和本次来源设置确定关系范围：固定声明原样采用，scope 为 'session' 的节点解析为具体范围或 null。workCharacters 在 Work 根通常使用 all，在 Character 根按支持的 workTypes 声明。entryTags 和 volumeChapters 的适用范围为 all，分部所属清单按根作品读取。只有字段 refs 的会话使用空 relationScopes。
 
@@ -259,12 +257,12 @@ session.read(request, context) 返回 `Promise<MetadataReadResult<T>>`。objects
 metadata 将本次取值和匹配需要的字段合并成请求，例如同时请求简介与编号，provider 对每个原始字段只返回一次。最终输出仍受选定范围和来源约束，不能因为辅助匹配而扩大写入。执行中可以复用已有 SourceEntry 的真实识别资料，无须另造一份 identification。
 
 ```ts
-{
+const result: MetadataReadResult<'anime'> = {
   objects: {
     entry: {
       key: 'work',
       identity: { source: 'bangumi', sourceId: 'subject/123' },
-      name: '作品 A'
+      name: '作品 A',
     },
     parts: {
       episode: [
@@ -273,14 +271,14 @@ metadata 将本次取值和匹配需要的字段合并成请求，例如同时�
           identity: { source: 'bangumi', sourceId: 'episode/789' },
           numberLabel: '1',
           name: '第一集',
-          description: '本集简介'
-        }
-      ]
-    }
+          description: '本集简介',
+        },
+      ],
+    },
   },
   relations: {
-    workEpisodes: [{ work: 'work', episode: 'episode-1' }]
-  }
+    workEpisodes: [{ work: 'work', episode: 'episode-1' }],
+  },
 }
 ```
 
@@ -398,16 +396,13 @@ await recognizer.recognize(
 entryType 来自 ScanConfig，path 是绝对路径，kind 已由本体判断，clues 是原生提取的线索，也可以为空对象。多个被选实现分别取得相同的只读基础输入，不接收其他识别器的结果、整份扫描配置或资料方案、扫描队列及本地 Entry ID。返回值不能改变作品类型、路径或候选边界，也不能认定本地对象或创建作品。
 
 ```ts
-// A name read from the candidate's metadata.
-return { name: 'Example', originalName: 'Original Example' }
+const nameClues: WorkClues = { name: 'Example', originalName: 'Original Example' }
 
-// A complete source identity accepted by the recognizer.
-return {
+const identityClues: WorkClues = {
   externalIdentities: [{ source: 'example', sourceId: 'work/42' }],
 }
 
-// No usable information.
-return null
+const noClues: WorkClues | null = null
 ```
 
 识别器返回至少一项合法的新线索，或在没有足够依据时返回 null。结果可以只有名称、原名或日期，无须先定位到唯一来源记录；身份一旦提供，就须完整且属于当前 Work。发行日期使用内容证据，文件修改时间只属于文件属性。

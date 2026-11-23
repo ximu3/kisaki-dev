@@ -1,5 +1,3 @@
-/** @fileoverview Exercises overlay motion, keyboard focus and notification lifetime in Chromium. */
-
 import { expect } from 'vite-plus/test'
 import { expect as browserExpect } from '@playwright/test'
 import type { Locator } from '@playwright/test'
@@ -14,8 +12,7 @@ async function checkSurface(panel: Locator, textSelector: string): Promise<void>
   const result = await panel.evaluate((node, selector) => {
     const range = document.createRange()
     range.selectNodeContents(node.querySelector(selector)!)
-    /** Samples the selected text range's viewport position and dimensions in CSS pixels. */
-    const geometry = () => {
+    const textBounds = () => {
       const { x, y, width, height } = range.getBoundingClientRect()
       return [x, y, width, height]
     }
@@ -26,14 +23,14 @@ async function checkSurface(panel: Locator, textSelector: string): Promise<void>
       animation.pause()
       animation.currentTime = Number(animation.effect!.getTiming().duration) / 2
     }
-    const mid = geometry()
+    const mid = textBounds()
     const opacity = Number(getComputedStyle(node).opacity)
     for (const animation of animations) {
       animation.finish()
     }
     return {
       mid,
-      end: geometry(),
+      end: textBounds(),
       opacity,
     }
   }, textSelector)

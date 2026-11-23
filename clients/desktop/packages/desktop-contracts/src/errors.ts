@@ -1,5 +1,3 @@
-/** @fileoverview Defines safe desktop failures without serializing implementation exceptions. */
-
 /** Stable desktop failure categories; unknown extension codes remain valid transport values. */
 export const desktopErrorCodes = Object.freeze([
   'InvalidInput',
@@ -63,8 +61,6 @@ export interface ErrorSummary {
 }
 
 /**
- * A failed call with an optional complete, valid business result.
- *
  * The retained result uses the operation's full result type, including its partial-progress
  * variants.
  */
@@ -73,8 +69,6 @@ export interface ExecutionFailure<Result> extends ErrorSummary {
 }
 
 /**
- * A recognizable local failure with a stable code and optional business result.
- *
  * The owning operation supplies safe English text. Only code, message and a validated partialResult
  * cross boundaries; cause remains local and does not authorize retries.
  */
@@ -104,8 +98,6 @@ export function parseErrorSummary(input: unknown): ErrorSummary {
 }
 
 /**
- * Parses a call failure using the operation's result parser.
- *
  * If a partial result is present, it must pass the operation's parser even for an unknown error
  * code. A malformed partial result makes the entire failure payload invalid.
  */
@@ -125,7 +117,6 @@ export function parseExecutionFailure<Result>(
   return { code: value.code, message: value.message }
 }
 
-/** Parses nonempty error code and message fields with only the permitted additional keys. */
 function parseErrorRecord(
   input: unknown,
   keys: readonly string[],

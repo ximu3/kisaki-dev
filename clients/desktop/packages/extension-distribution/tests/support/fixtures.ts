@@ -1,5 +1,3 @@
-/** @fileoverview Supplies synthetic package and registry documents with no personal data or live resources. */
-
 import type { ExtensionManifest } from '../../src/manifest'
 import type { RegistryArtifact, RegistryDocument, RegistryRelease } from '../../src/registry'
 

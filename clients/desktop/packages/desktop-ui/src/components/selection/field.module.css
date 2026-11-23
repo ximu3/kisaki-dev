@@ -1,5 +1,3 @@
-/* Single and multiple choices share a visible field while chip actions stay separate buttons. */
-
 @layer components {
   .container {
     position: relative;

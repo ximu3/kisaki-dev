@@ -1,15 +1,8 @@
-/**
- * @fileoverview Loads the explicitly selected desktop binding and adapts its exports to
- * application-owned capabilities.
- */
-
 import { createRequire } from 'node:module'
 import { isAbsoluteHostPath } from '#host-path'
-import { createNativeFiles } from './files'
-import type { NativeFiles } from './files'
+import { createNativeFiles, type NativeFiles } from './files'
 import type * as Binding from './binding'
 
-/** Application-facing capabilities backed by the selected desktop native module. */
 export interface NativeCapabilities {
   files: NativeFiles
   /** Reads the installed font families on the native worker pool. */
@@ -22,7 +15,6 @@ export interface NativeCapabilities {
 
 /** Failure to load a usable native module, retaining the original loading or export error. */
 export class NativeLoadError extends Error {
-  /** Wraps the failure that prevented native capabilities from becoming available. */
   constructor(cause: unknown) {
     super('Could not load the desktop native module', { cause })
     this.name = 'NativeLoadError'
@@ -58,7 +50,6 @@ export function loadNative(modulePath: string): NativeCapabilities {
       files: createNativeFiles(binding),
       listFontFamilies: binding.listFontFamilies,
       setNotificationReceiver: binding.setNotificationReceiver,
-      /** Adapts the platform's completion callback to the application promise. */
       postNotification(appId, identifier, title, body) {
         return new Promise((resolve, reject) => {
           binding.postSystemNotification(appId, identifier, title, body, (error, accepted) => {

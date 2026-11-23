@@ -1,5 +1,3 @@
-/** @fileoverview Enabled-item navigation with actual DOM order and bounded typeahead lifetime. */
-
 import { createTypeahead, printableKey } from './typeahead'
 import type { Accessor } from 'solid-js'
 
@@ -26,7 +24,6 @@ export function createFocusNavigation(
   orientation: Accessor<'horizontal' | 'vertical'>,
   moved?: (item: HTMLElement) => void,
 ) {
-  /** Prefix search scoped to this focus group. */
   const typeahead = createTypeahead()
 
   return (event: KeyboardEvent) => {

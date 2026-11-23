@@ -1,5 +1,3 @@
-/** @fileoverview Hints share an initial hover wait within their document. Each owns its reading targets. */
-
 import { createSignal } from 'solid-js'
 import { restoringModalFocus } from '../modal-host'
 import type { Accessor } from 'solid-js'
@@ -25,9 +23,8 @@ const groups = new WeakMap<Document, TooltipGroup>()
  * connection owner releases timers and shared ownership through its returned cleanup.
  */
 export function createTooltip(delay?: Accessor<number | undefined>) {
-  /** Requested visibility of this tooltip within its document hover group. */
   const [open, setOpen] = createSignal(false)
-  /** Whether this opening follows an already active tooltip in the same hover group. */
+  // An opening handed off from a warm tooltip has no pointer delay.
   const [handoff, setHandoff] = createSignal(false)
   const hovered = { trigger: false, content: false }
   let focused = false
@@ -36,12 +33,7 @@ export function createTooltip(delay?: Accessor<number | undefined>) {
   let timer: ReturnType<typeof setTimeout> | undefined
   let group: TooltipGroup | undefined
 
-  /**
-   * Checks whether trigger hover, content hover or keyboard focus still owns the reading
-   * interaction.
-   */
   const reading = () => hovered.trigger || hovered.content || focused
-  /** Closes this hint and optionally retains its document's immediate-handoff interval. */
   const hide = (keepWarm: boolean) => {
     clearTimeout(timer)
     if (group?.owner === yieldToNext) {
@@ -53,16 +45,12 @@ export function createTooltip(delay?: Accessor<number | undefined>) {
     setHandoff(false)
     setOpen(false)
   }
-  /** Cancels the pending wait and marks this hint closed for handoff to another owner. */
   const yieldToNext = () => {
     clearTimeout(timer)
     setHandoff(true)
     setOpen(false)
   }
 
-  /**
-   * Schedules opening or closure from current hover, focus, dismissal and document-handoff state.
-   */
   const update = (entering: boolean) => {
     clearTimeout(timer)
     const session = group
@@ -86,7 +74,6 @@ export function createTooltip(delay?: Accessor<number | undefined>) {
       session.owner?.()
       session.owner = yieldToNext
     }
-    /** Opens the owned hint and marks the document's immediate-handoff period active. */
     const show = () => {
       session.warmUntil = Infinity
       setHandoff(continuing)
@@ -102,10 +89,6 @@ export function createTooltip(delay?: Accessor<number | undefined>) {
   return {
     open,
     handoff,
-    /**
-     * Connects to the document's shared hint group and returns cleanup for timers and current
-     * ownership.
-     */
     connect: (owner: Document) => {
       group = groups.get(owner)
       if (!group) {
@@ -119,14 +102,11 @@ export function createTooltip(delay?: Accessor<number | undefined>) {
         hovered.content = false
       }
     },
-    /**
-     * Updates pointer presence on the trigger or explanation and reconciles the reading lifetime.
-     */
     hover: (part: keyof typeof hovered, inside: boolean) => {
       hovered[part] = inside
       update(inside)
     },
-    /** Native focus return restores the action without starting another hint above its dialog. */
+    // Native focus restoration should return to the action without reopening its hint.
     focus: (event: FocusEvent & { currentTarget: HTMLElement }) => {
       const target = event.currentTarget
       const previous = event.relatedTarget
@@ -137,7 +117,6 @@ export function createTooltip(delay?: Accessor<number | undefined>) {
         !(popup && !popup.contains(target))
       update(focused)
     },
-    /** Hides the hint and suppresses reopening until the current reading interaction fully ends. */
     dismiss: () => {
       dismissed = reading()
       hide(false)

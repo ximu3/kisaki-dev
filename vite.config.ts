@@ -1,5 +1,3 @@
-/** @fileoverview Defines workspace tasks and configures repository checks, formatting and staged files. */
-
 import { globSync } from 'node:fs'
 import { dirname } from 'node:path'
 import { defineConfig, normalizePath } from 'vite-plus'

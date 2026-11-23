@@ -1,5 +1,3 @@
-/** @fileoverview Defines target and SemVer conditions shared by discovery, installation and activation. */
-
 import { compare, parse, prerelease, satisfies, validRange } from 'semver'
 import type { FieldPath } from './errors'
 import { parseArray, rejectFormat, parseOptionalField, parseString } from './validation'
@@ -76,12 +74,13 @@ export function parseVersionRange(input: unknown, path: FieldPath = []): string 
 
 /** Parses one supported OS and process-architecture target. */
 export function parseTarget(input: unknown, path: FieldPath = []): ExtensionTarget {
-  const target = parseString(input, path)
-  if (!extensionTargets.some((known) => known === target)) {
+  const value = parseString(input, path)
+  const target = extensionTargets.find((known) => known === value)
+  if (target === undefined) {
     rejectFormat(path, 'Unsupported extension target')
   }
 
-  return target as ExtensionTarget
+  return target
 }
 
 /** Normalizes a nonempty, duplicate-free target list into a sorted copy. */

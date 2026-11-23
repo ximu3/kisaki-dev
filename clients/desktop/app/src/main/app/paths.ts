@@ -1,5 +1,3 @@
-/** @fileoverview Selects a single data root from the actual carrier before Electron creates its browser session. */
-
 import { app } from 'electron'
 import {
   existsSync,

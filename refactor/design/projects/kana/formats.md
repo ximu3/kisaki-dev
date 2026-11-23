@@ -40,7 +40,7 @@ password 是本次打开的运行时输入。需要密码、密码错误和不�
 
 URL 适配的目标是提供既有 ByteSource 所要求的稳定字节。HTTP 范围针对所选表示的字节，If-Range 失配可能返回完整 200，压缩表示的字节坐标也不同于解压后的文件。见 [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html#name-range-requests)。跨域响应还可能无法读取 ETag、Content-Range 等所需信息；[Fetch 的响应头规则](https://fetch.spec.whatwg.org/#cors-safelisted-response-header-name)不会因服务器支持 Range 就自动暴露它们。
 
-openUrlSource 在打开期间选择下述一种方式，完成后交付稳定的 ByteSource，由普通 Reader 输入合同消费。
+`openUrlSource` 在打开期间选择下述一种方式。返回的 `UrlSource` 持有稳定的字节读取能力，并通过 `source` 交给普通 Reader 输入。读取和释放的归属见[输入与持有](api.md#inputs)。
 
 | 方式         | 采用条件                                                                       | 交付后的含义                                                                   |
 | ------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |

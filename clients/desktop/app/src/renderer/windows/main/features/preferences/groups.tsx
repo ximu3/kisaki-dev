@@ -1,24 +1,20 @@
-/** @fileoverview Presents the short preference groups in the shared draft. */
-
 import { For } from 'solid-js'
 import { appearanceModes, interfaceScaleRange } from '@kisaki3/desktop-contracts/appearance'
 import { FieldGroup } from '@kisaki3/desktop-ui/field'
 import { NumberInput } from '@kisaki3/desktop-ui/input'
 import { Select } from '@kisaki3/desktop-ui/select'
-import { Switch as Toggle } from '@kisaki3/desktop-ui/switch'
+import { Switch } from '@kisaki3/desktop-ui/switch'
 import type { MainClient } from '../../../../infrastructure/api'
 import { PageOrder, type NavigationPage } from '../../domain-ui/navigation/list'
 import type { PreferenceDraft } from './draft'
 import { PreferenceField } from './field'
 import { ThemeField, TranslationField } from './resources'
 
-/** Draft and current translations needed by these preference panels. */
 interface GroupProps {
   api: MainClient
   draft: PreferenceDraft
 }
 
-/** Edits the general group's fields against the surrounding draft. */
 export function GeneralFields(props: GroupProps) {
   const { api, draft } = props
 
@@ -48,7 +44,6 @@ export function GeneralFields(props: GroupProps) {
   )
 }
 
-/** Edits the appearance group's fields against the surrounding draft. */
 export function AppearanceFields(props: GroupProps & { manage: () => void }) {
   const { api, draft } = props
 
@@ -93,7 +88,6 @@ export function AppearanceFields(props: GroupProps & { manage: () => void }) {
   )
 }
 
-/** Edits the navigation group's fields against the surrounding draft. */
 export function NavigationFields(props: GroupProps & { pages: readonly NavigationPage[] }) {
   const { api, draft } = props
 
@@ -127,7 +121,6 @@ export function NavigationFields(props: GroupProps & { pages: readonly Navigatio
   )
 }
 
-/** Edits the library group's fields against the surrounding draft. */
 export function LibraryFields(props: GroupProps) {
   const { api, draft } = props
 
@@ -138,7 +131,10 @@ export function LibraryFields(props: GroupProps) {
           const key = `library.${name}` as const
           return (
             <PreferenceField field={key} label={api.t(`runtime.fields.${name}`)} valueClass="w-fit">
-              <Toggle checked={draft.read(key)} onCheckedChange={(v) => draft.write(key, v)} />
+              <Switch
+                checked={draft.read(key)}
+                onCheckedChange={(value) => draft.write(key, value)}
+              />
             </PreferenceField>
           )
         }}
@@ -147,7 +143,6 @@ export function LibraryFields(props: GroupProps) {
   )
 }
 
-/** Edits the updates group's fields against the surrounding draft. */
 export function UpdateFields(props: GroupProps) {
   const { api, draft } = props
 
@@ -158,7 +153,10 @@ export function UpdateFields(props: GroupProps) {
           const key = `updates.${name}` as const
           return (
             <PreferenceField field={key} label={api.t(`runtime.fields.${name}`)} valueClass="w-fit">
-              <Toggle checked={draft.read(key)} onCheckedChange={(v) => draft.write(key, v)} />
+              <Switch
+                checked={draft.read(key)}
+                onCheckedChange={(value) => draft.write(key, value)}
+              />
             </PreferenceField>
           )
         }}

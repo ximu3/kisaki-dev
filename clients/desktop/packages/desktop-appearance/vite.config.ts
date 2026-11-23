@@ -1,10 +1,7 @@
-/** @fileoverview Builds appearance tokens, bundled CSS values and the published stylesheets. */
-
 import { defineLibrary } from '@kisaki3/config/vite/library'
 import { defineConfig, mergeConfig } from 'vite-plus'
 import { assembleStyles } from './tools/styles'
 
-/** Builds the published JavaScript and stylesheets with the shared library tasks. */
 const library = defineLibrary({
   entries: {
     './tokens': './src/tokens.ts',
@@ -16,7 +13,6 @@ const library = defineLibrary({
   pack: {
     platform: 'browser',
     hooks: {
-      /** Writes the published stylesheets after the token and value modules have been built. */
       'build:done': () => assembleStyles(),
     },
     deps: {

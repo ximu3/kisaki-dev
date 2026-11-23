@@ -1,5 +1,3 @@
-/** @fileoverview Queries the user font library and opens item-local previews or edits. */
-
 import { createEffect, createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
 import { CaseSensitive, Eye, Pencil, Plus, Trash2 } from '@lucide/solid'
@@ -25,10 +23,8 @@ import { errorMessage, reportError } from '../../../../infrastructure/notificati
 import { FontEditor } from './editor'
 import { FontDetails, type FontSelection } from './details'
 
-/** Number of catalog entries read in one interval. */
 const pageSize = 50
 
-/** Receives an optional preview target and the window's editor scope. */
 interface FontsProps {
   api: MainClient
   target?: string | undefined
@@ -67,12 +63,16 @@ export function Fonts(props: FontsProps) {
   )
   const [edit, setEdit] = createSignal<{ font: Font | null; files: readonly File[] }>()
   const confirm = createConfirmation(api.t)
-  let request = 0
+  let editRequest = 0
+  let focusFrame: number | undefined
 
   const refresh = () => void list.reload()
   api.topics.addEventListener('fonts.changed', refresh)
   onCleanup(() => {
-    request++
+    editRequest++
+    if (focusFrame !== undefined) {
+      cancelAnimationFrame(focusFrame)
+    }
     api.topics.removeEventListener('fonts.changed', refresh)
   })
 
@@ -91,13 +91,13 @@ export function Fonts(props: FontsProps) {
   )
 
   function start(files: readonly File[] = []) {
-    request++
+    editRequest++
     setEdit({ font: null, files })
   }
   async function open(id: string) {
-    const owner = ++request
+    const version = ++editRequest
     const font = await api.call('fonts.get', id)
-    if (owner !== request) {
+    if (version !== editRequest) {
       return
     }
     if (!font) {
@@ -119,13 +119,25 @@ export function Fonts(props: FontsProps) {
   }
 
   async function saved(font: Font) {
+    const version = ++editRequest
     setEdit(undefined)
     await Promise.resolve()
     const previous = document.activeElement
     await list.reload()
-    requestAnimationFrame(() => {
+    if (version !== editRequest) {
+      return
+    }
+
+    if (focusFrame !== undefined) {
+      cancelAnimationFrame(focusFrame)
+    }
+    focusFrame = requestAnimationFrame(() => {
+      focusFrame = undefined
+      if (version !== editRequest) {
+        return
+      }
       if (document.activeElement === previous || document.activeElement === document.body) {
-        document.getElementById('font-preview-' + font.id)?.focus()
+        viewport.querySelector<HTMLElement>(`#${CSS.escape('font-preview-' + font.id)}`)?.focus()
       }
     })
   }

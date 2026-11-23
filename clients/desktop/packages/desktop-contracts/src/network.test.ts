@@ -1,5 +1,3 @@
-/** @fileoverview Checks proxy endpoints reject embedded credentials and script paths. */
-
 import { expect, test } from 'vite-plus/test'
 import { parseProxyEndpoint } from './network'
 import { DesktopError } from './errors'

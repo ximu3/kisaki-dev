@@ -1,9 +1,3 @@
-/**
- * @fileoverview Maps supported desktop targets to native toolchains and validates host or
- * explicit target selection.
- */
-
-/** An operating-system and native-architecture pair supported by the desktop application. */
 export type DesktopTarget =
   | 'windows-x64'
   | 'windows-arm64'
@@ -12,7 +6,6 @@ export type DesktopTarget =
   | 'linux-x64'
   | 'linux-arm64'
 
-/** The six supported toolchain targets, shared by resource, native and package workflows. */
 export const targetTriples: Record<DesktopTarget, string> = {
   'windows-x64': 'x86_64-pc-windows-msvc',
   'windows-arm64': 'aarch64-pc-windows-msvc',
@@ -22,7 +15,6 @@ export const targetTriples: Record<DesktopTarget, string> = {
   'linux-arm64': 'aarch64-unknown-linux-gnu',
 }
 
-/** Returns the target for this process, rejecting unsupported platforms or architectures. */
 export function hostTarget(): DesktopTarget {
   const platforms: Partial<Record<NodeJS.Platform, string>> = {
     win32: 'windows',
@@ -33,7 +25,6 @@ export function hostTarget(): DesktopTarget {
   return parseTarget(`${platform}-${process.arch}`)
 }
 
-/** Parses an explicitly selected desktop build target. */
 export function parseTarget(value: string): DesktopTarget {
   if (!Object.hasOwn(targetTriples, value)) {
     throw new Error(`Unsupported desktop target: ${value}`)

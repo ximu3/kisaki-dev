@@ -1,24 +1,27 @@
-/** @fileoverview Defines typed native facts and explicit extension payload contracts, separately from observations and invalidation. */
-
 import type { TaskTerminalStatus } from './tasks'
-import type { ScanResult } from './scanner/runs'
-import type { ErrorSummary } from './errors'
-import type { JsonValue } from './json'
-import type { LibraryChanged } from './library/changes'
-import type { SessionStartedMap, SessionEndedMap } from './sessions/api'
 import type { Disposable } from './operations'
 import * as v from 'valibot'
-import { parseErrorSummary, DesktopError } from './errors'
-import { parseValue, id, timestamp, nonemptyText, parseExternalValue } from './validation'
-import { parseScanResult, requireCompleteScanResult } from './scanner/runs'
-import { parseJsonValue } from './json'
-import { parseLibraryChanged } from './library/changes'
-import { parseSessionStarted, parseSessionEnded } from './sessions/api'
+import { parseErrorSummary, DesktopError, type ErrorSummary } from './errors'
+import {
+  fromParser,
+  parseValue,
+  id,
+  timestamp,
+  nonemptyText,
+  parseExternalValue,
+} from './validation'
+import { parseScanResult, requireCompleteScanResult, type ScanResult } from './scanner/runs'
+import { parseJsonValue, type JsonValue } from './json'
+import { parseLibraryChanged, type LibraryChanged } from './library/changes'
+import {
+  parseSessionStarted,
+  parseSessionEnded,
+  type SessionStartedMap,
+  type SessionEndedMap,
+} from './sessions/state'
 import { parseId } from '@kisaki3/extension-distribution/metadata'
 
 /**
- * The scan's final status, report and any error.
- *
  * The scan may finish before its managed task. This event can still be delivered if saving the
  * history fails.
  */
@@ -32,11 +35,7 @@ export interface ScannerFinished {
   readonly finishedAt: number
 }
 
-/**
- * The managed task's final status, result and any error.
- *
- * The event includes the task result even if saving its history fails.
- */
+/** The event includes the task result even if saving its history fails. */
 export interface TaskFinished<Result = JsonValue> {
   readonly taskRunId: string
   readonly type: string
@@ -47,7 +46,6 @@ export interface TaskFinished<Result = JsonValue> {
   readonly finishedAt: number
 }
 
-/** Native fact names paired with the snapshots published at their business boundaries. */
 export interface NativeEventMap {
   readonly 'app.ready': {
     /** UTC milliseconds since the Unix epoch. */
@@ -70,32 +68,24 @@ export interface NativeEventMap {
   readonly 'sessions.novel.sessionEnded': SessionEndedMap['novel']
 }
 
-/** A supported native fact name from the shared event map. */
 export type NativeEventName = keyof NativeEventMap
 
 /** A stable owner:localId identity, not an occurrence ID or authority to publish. */
 export type ExtensionEventRef = `${string}:${string}`
 
-/** A shared extension-event identity paired with its payload parser. */
 export interface ExtensionEventContract<Payload> {
   readonly ref: ExtensionEventRef
 
-  /**
-   * Parses an incoming snapshot against the event's payload contract.
-   *
-   * Invalid input must fail before listener delivery.
-   */
+  /** Invalid input must fail before listener delivery. */
   readonly parse: (input: unknown) => Payload
 }
 
 /**
- * A fact listener that owns any asynchronous work it accepts.
- *
- * Listener failures are isolated from the publisher and other subscribers.
+ * Async work accepted by a listener belongs to it. Listener failures are isolated from the
+ * publisher and other subscribers.
  */
 export type EventListener<Payload> = (payload: Payload) => void | Promise<void>
 
-/** Instance-owned subscriptions to future native and extension facts. */
 export interface EventsApi {
   /**
    * Subscribes to future native facts using their associated payload type.
@@ -105,8 +95,6 @@ export interface EventsApi {
   on<K extends NativeEventName>(event: K, listener: EventListener<NativeEventMap[K]>): Disposable
 
   /**
-   * Subscribes through the shared extension payload contract.
-   *
    * Invalid payloads and listener failures are isolated. The instance owns the subscription;
    * disposal leaves accepted work under its owner.
    */
@@ -114,19 +102,13 @@ export interface EventsApi {
 }
 
 /**
- * An instance-owned extension publishing registration.
- *
  * Publication waits for host handoff. Subscriber work remains independently owned after publication
  * or disposal.
  */
 export interface ExtensionEventPublisher<Payload> {
   readonly ref: ExtensionEventRef
 
-  /**
-   * Validates the payload and hands the fact to the host.
-   *
-   * Completion does not wait for subscribers' asynchronous work or remote business completion.
-   */
+  /** Resolves after host handoff. Subscribers may still be working. */
   emit(payload: Payload): Promise<void>
 
   /**
@@ -137,7 +119,6 @@ export interface ExtensionEventPublisher<Payload> {
   dispose(): Promise<void>
 }
 
-/** Fact subscriptions and publishing registrations for the current extension instance. */
 export interface ExtensionEventsApi extends EventsApi {
   /**
    * Creates a publisher bound to the actual extension owner and instance.
@@ -160,15 +141,11 @@ export interface NativeEventPublisher<K extends NativeEventName> {
   emit(payload: NativeEventMap[K]): void
 }
 
-/** Completed task outcomes that may produce a terminal fact event. */
 const terminal = v.picklist(['completed', 'failed', 'cancelled', 'interrupted'])
 
-/** Optional safe failure details attached to terminal task facts. */
-const error = v.nullable(v.pipe(v.unknown(), v.transform(parseErrorSummary)))
+const error = v.nullable(fromParser(parseErrorSummary))
 
 /**
- * Parses a scanning terminal fact and checks its result and error requirements.
- *
  * Completion requires a complete report. Failure and interruption require a safe error while
  * retaining any legal result already formed.
  */
@@ -178,7 +155,7 @@ export function parseScannerFinished(input: unknown): ScannerFinished {
       scanRunId: id,
       scanConfigId: id,
       status: terminal,
-      result: v.nullable(v.pipe(v.unknown(), v.transform(parseScanResult))),
+      result: v.nullable(fromParser(parseScanResult)),
       error,
       finishedAt: timestamp,
     }),
@@ -206,7 +183,7 @@ export function parseTaskFinished(input: unknown): TaskFinished {
       taskRunId: id,
       type: nonemptyText,
       status: terminal,
-      result: v.pipe(v.unknown(), v.transform(parseJsonValue)),
+      result: fromParser(parseJsonValue),
       error,
       finishedAt: timestamp,
     }),
@@ -220,7 +197,6 @@ export function parseTaskFinished(input: unknown): TaskFinished {
   return value
 }
 
-/** Payload validators keyed by the actual native fact-event catalog. */
 const nativeParsers: { readonly [K in NativeEventName]: (input: unknown) => NativeEventMap[K] } = {
   /** Parses the application's readiness timestamp. */
   'app.ready': (input) =>
@@ -283,11 +259,7 @@ export function parseExtensionEventRef(input: unknown): ExtensionEventRef {
   return value as ExtensionEventRef
 }
 
-/**
- * Creates a shared subscription contract from an event identity and payload parser.
- *
- * The contract grants no publishing authority and creates no live registration.
- */
+/** The contract grants no publishing authority and creates no live registration. */
 export function extensionEvent<Payload>(
   ref: string,
   parse: (input: unknown) => Payload,

@@ -1,13 +1,8 @@
-/** @fileoverview Defines complete entry queries, retained references and saved dynamic rules. */
-
-import type { EntryRule } from './conditions'
-import type { EntrySort } from './sort'
-import type { EntryRef } from '../catalog'
 import * as v from 'valibot'
-import { id, parseValue, text, nonemptyText, unique } from '../../validation'
-import { parseEntryRule } from './conditions'
-import { parseEntrySort } from './sort'
-import { entryRefSchema } from '../catalog'
+import { fromParser, id, parseValue, text, nonemptyText, unique } from '../../validation'
+import { parseEntryRule, type EntryRule } from './conditions'
+import { parseEntrySort, type EntrySort } from './sort'
+import { entryRefSchema, type EntryRef } from '../catalog'
 import { DesktopError } from '../../errors'
 
 /** Fixed query entrance intersected with rules, search and the caller's actual visibility. */
@@ -15,10 +10,6 @@ export type EntryScope =
   | { readonly type: 'library' | 'favorites' | 'unclassified' }
   | { readonly type: 'collection' | 'tag' | 'note'; readonly id: string }
 
-/**
- * Reusable entry result-set definition, independent of paging, projected fields and view
- * components.
- */
 export interface EntryQuery {
   readonly scope: EntryScope
   readonly search: string
@@ -27,10 +18,8 @@ export interface EntryQuery {
 }
 
 /**
- * Last-saved display name for a referenced query target.
- *
- * The label supports display when the target cannot be resolved; it grants no lookup authority and
- * does not establish identity.
+ * Retains the last saved name of an unresolved target for display. Identity and access come from
+ * the actual target.
  */
 export interface QueryReferenceLabel {
   readonly target: EntryRef | { readonly type: 'tag' | 'collection' | 'note'; readonly id: string }
@@ -45,19 +34,16 @@ export interface DynamicRules {
   readonly referenceLabels: readonly QueryReferenceLabel[]
 }
 
-/** Fixed query entrances that intersect the remaining rules, search and visibility. */
 const entryScopeSchema = v.union([
   v.strictObject({ type: v.picklist(['library', 'favorites', 'unclassified']) }),
   v.strictObject({ type: v.picklist(['collection', 'tag', 'note']), id }),
 ])
 
-/** Validated reusable entry-rule groups in their supplied order. */
-const queryRulesSchema = v.array(v.pipe(v.unknown(), v.transform(parseEntryRule)))
+const queryRulesSchema = v.array(fromParser(parseEntryRule))
 
 /**
- * Parses the complete query definition and validates sorting against its enabled entry types.
- *
- * Empty or entirely disabled rules remain valid definitions of an empty result set.
+ * Empty or entirely disabled rules define an empty result set. Enabled types determine which sorts
+ * are allowed.
  */
 export function parseEntryQuery(input: unknown): EntryQuery {
   const value = parseValue(
@@ -103,7 +89,7 @@ export function parseDynamicRules(input: unknown): DynamicRules {
       search: text,
       rules: queryRulesSchema,
       sort: v.unknown(),
-      referenceLabels: v.pipe(v.unknown(), v.transform(parseQueryReferenceLabels)),
+      referenceLabels: fromParser(parseQueryReferenceLabels),
     }),
     input,
     'Invalid dynamic rules',

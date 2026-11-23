@@ -1,5 +1,3 @@
-/** @fileoverview Restores native window bounds and presentation on an attached display. */
-
 import { screen, type BrowserWindow, type Rectangle } from 'electron'
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
@@ -26,26 +24,29 @@ export async function windowGeometry(root: string, kind: WindowKind) {
       Math.min(kind === 'main' ? 850 : 520, Math.round(area.height * 0.9)),
     ),
   }
-  let maximized = false,
-    fullScreen = false
+  let maximized = false
+  let fullScreen = false
+
   try {
     const stored = JSON.parse(await readFile(file, 'utf8')) as Geometry
-    const r = stored.bounds
+    const savedBounds = stored.bounds
     if (
-      [r.x, r.y, r.width, r.height].every(Number.isSafeInteger) &&
-      r.width >= minWidth &&
-      r.height >= minHeight &&
+      [savedBounds.x, savedBounds.y, savedBounds.width, savedBounds.height].every(
+        Number.isSafeInteger,
+      ) &&
+      savedBounds.width >= minWidth &&
+      savedBounds.height >= minHeight &&
       screen
         .getAllDisplays()
         .some(
-          ({ workArea: s }) =>
-            r.x + r.width > s.x &&
-            r.y + r.height > s.y &&
-            r.x < s.x + s.width &&
-            r.y < s.y + s.height,
+          ({ workArea }) =>
+            savedBounds.x + savedBounds.width > workArea.x &&
+            savedBounds.y + savedBounds.height > workArea.y &&
+            savedBounds.x < workArea.x + workArea.width &&
+            savedBounds.y < workArea.y + workArea.height,
         )
     ) {
-      bounds = r
+      bounds = savedBounds
       maximized = stored.maximized === true
       fullScreen = stored.fullScreen === true
     }

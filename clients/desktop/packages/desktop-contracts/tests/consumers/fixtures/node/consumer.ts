@@ -1,5 +1,3 @@
-/** @fileoverview Consumes the packed desktop value and operation contracts with standard host APIs. */
-
 import { parsePartialDate } from '@kisaki3/desktop-contracts/date'
 import { parseEntryCreate } from '@kisaki3/desktop-contracts/library'
 import { parseSourceEntry } from '@kisaki3/desktop-contracts/metadata'
@@ -9,7 +7,6 @@ import { parseThemeRef } from '@kisaki3/desktop-contracts/appearance'
 import { developmentProtocolVersion } from '@kisaki3/desktop-contracts/development'
 import { parseExtensionUiIcon } from '@kisaki3/desktop-contracts/ui'
 
-/** Values actually parsed through the installed package's independent public entry points. */
 export const summary = {
   date: parsePartialDate({ year: 2004 }),
   entryType: parseEntryCreate({ type: 'game', name: 'CLANNAD', evaluation: { rating: 90 } }).type,

@@ -1,14 +1,13 @@
-/** @fileoverview Defines work and file selectors for session operations and public opening links. */
-
 import * as v from 'valibot'
 import type { FileWorkType } from '../library/catalog'
-import type { PlaybackPositionInput, ReadingPositionInput } from '../library/reading'
-import { parseReadingPosition } from '../library/reading'
-import { parseValue, nonnegativeNumber, id, optionalFields } from '../validation'
+import {
+  parseReadingPosition,
+  type PlaybackPositionInput,
+  type ReadingPositionInput,
+} from '../library/reading'
+import { fromParser, parseValue, nonnegativeNumber, id, optionalFields } from '../validation'
 
 /**
- * Optional file selection with a position allowed only when the file is explicit.
- *
  * The start instruction also requires a file ID; all supplied selectors constrain the target
  * together.
  */
@@ -16,48 +15,37 @@ export type FilePositionChoice<P> =
   | { readonly fileId?: string; readonly position?: never }
   | { readonly fileId: string; readonly position: P }
 
-/** Local game target with an optional explicit launch configuration. */
 export interface GameOpenInput {
   readonly gameId: string
   readonly launchConfigId?: string
 }
 
-/** Anime target with an optional episode or extra and file-bound playback position. */
 export type AnimeOpenInput = { readonly animeId: string } & (
   | { readonly episodeId?: string; readonly extraId?: never }
   | { readonly episodeId?: never; readonly extraId: string }
 ) &
   FilePositionChoice<PlaybackPositionInput>
 
-/** Comic target constrained by any supplied volume, chapter, file and reading position. */
 export type ComicOpenInput = {
   readonly comicId: string
   readonly volumeId?: string
   readonly chapterId?: string
 } & FilePositionChoice<ReadingPositionInput>
 
-/** Novel target constrained by any supplied volume, file and reading position. */
 export type NovelOpenInput = {
   readonly novelId: string
   readonly volumeId?: string
 } & FilePositionChoice<ReadingPositionInput>
 
-/** Explicit target file with an optional position for a session switch. */
 export interface FileSwitchInput<P> {
   readonly fileId: string
   readonly position?: P
 }
 
-/** Explicit file-local playback position or the transient start instruction. */
 const playbackInput = v.union([v.literal('start'), nonnegativeNumber])
 
-/** Persistent source location or the transient start instruction for opening content. */
-const readingInput = v.union([
-  v.literal('start'),
-  v.pipe(v.unknown(), v.transform(parseReadingPosition)),
-])
+const readingInput = v.union([v.literal('start'), fromParser(parseReadingPosition)])
 
-/** Per-medium launch, part, file and position selections accepted by session opening. */
 export const openSelectionEntries = {
   game: optionalFields({ launchConfigId: id }),
   anime: optionalFields({ episodeId: id, extraId: id, fileId: id, position: playbackInput }),
@@ -65,11 +53,7 @@ export const openSelectionEntries = {
   novel: optionalFields({ volumeId: id, fileId: id, position: readingInput }),
 }
 
-/**
- * Builds a medium-specific opening schema around the entry point's accepted identity fields.
- *
- * Positions require a file, and anime episode and extra selectors are mutually exclusive.
- */
+/** Positions require a file, and anime episode and extra selectors are mutually exclusive. */
 export function openTargetSchema<
   K extends keyof typeof openSelectionEntries,
   E extends v.ObjectEntries,
@@ -87,11 +71,7 @@ export function openTargetSchema<
   )
 }
 
-/**
- * Parses file-local seconds or the transient start instruction.
- *
- * The executor resolves start to an actual position.
- */
+/** The executor resolves start to an actual position. */
 export function parsePlaybackPositionInput(input: unknown): PlaybackPositionInput {
   return parseValue(playbackInput, input, 'Invalid playback position')
 }

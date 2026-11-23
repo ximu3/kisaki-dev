@@ -1,16 +1,7 @@
-/** @fileoverview Defines metadata relation members and completeness evidence used by local replacement. */
-
-import type {
-  CharacterRole,
-  PersonRole,
-  OrganizationRole,
-  WorkRelationType,
-} from '../library/relations'
-import type { EntryType, WorkType } from '../library/catalog'
 import type { NonEmptyArray } from '../operations'
-import { isWorkType, workTypes } from '../library/catalog'
+import { isWorkType, workTypes, type EntryType, type WorkType } from '../library/catalog'
 import * as v from 'valibot'
-import { unique, parseValue } from '../validation'
+import { fromParser, unique, parseValue } from '../validation'
 import {
   personRoles,
   organizationRoles,
@@ -18,14 +9,13 @@ import {
   canUsePersonRole,
   canUseWorkRelation,
   canUseOrganizationRole,
+  type CharacterRole,
+  type PersonRole,
+  type OrganizationRole,
+  type WorkRelationType,
 } from '../library/relations'
 import { DesktopError } from '../errors'
 
-/**
- * Relationship fact shapes using keys from one response or candidate graph.
- *
- * Optional attributes belong directly to each fact.
- */
 export interface MetadataRelationMembers {
   readonly workCharacters: {
     readonly work: string
@@ -78,11 +68,7 @@ export interface MetadataRelationMembers {
   }
 }
 
-/**
- * Selectable, processable non-identity attribute types for each relation family.
- *
- * Empty maps identify membership-only relations.
- */
+/** An empty attribute map denotes membership-only relations. */
 export interface MetadataRelationAttributeValues {
   readonly workCharacters: {
     readonly role: CharacterRole | null
@@ -101,7 +87,6 @@ export interface MetadataRelationAttributeValues {
   readonly workExtras: Readonly<Record<never, never>>
 }
 
-/** Relation family available in the selected metadata root context. */
 export type MetadataRelationKey<T extends EntryType = EntryType> =
   | 'entryTags'
   | (T extends WorkType
@@ -119,41 +104,27 @@ export type MetadataRelationKey<T extends EntryType = EntryType> =
           ? 'workVolumes'
           : never)
 
-/** Graph-local relation members grouped by families supported by the root kind. */
 export type MetadataRelations<T extends EntryType> = {
   readonly [K in MetadataRelationKey<T>]?: readonly MetadataRelationMembers[K][]
 }
 
-/** Composed graph relations with the same member meanings as source response relations. */
 export type CandidateRelations<T extends EntryType> = MetadataRelations<T>
 
-/** Object shape requiring at least one selected dimension while leaving the others optional. */
 type AtLeastOne<T> = { [K in keyof T]: Required<Pick<T, K>> & Partial<Omit<T, K>> }[keyof T]
 
-/**
- * Complete work-character coverage, either all legal relations or a union of work-type conditions.
- */
 export type WorkCharacterMetadataScope =
   | 'all'
   | NonEmptyArray<{ readonly workTypes: NonEmptyArray<WorkType> }>
 
-/**
- * Intersecting work-type, responsibility and character-presence constraints on person-work
- * coverage.
- */
+/** Supplied work types, responsibilities and character-presence conditions intersect. */
 export type PersonWorkScopeCondition = AtLeastOne<{
   readonly workTypes: NonEmptyArray<WorkType>
   readonly roles: NonEmptyArray<PersonRole>
   readonly character: 'none' | 'present'
 }>
 
-/** Complete person-work coverage, either all legal relations or a union of explicit conditions. */
 export type PersonWorkMetadataScope = 'all' | NonEmptyArray<PersonWorkScopeCondition>
 
-/**
- * Complete organization-work coverage expressed as all relations or a union of intersecting
- * work-type and role conditions.
- */
 export type OrganizationWorkMetadataScope =
   | 'all'
   | NonEmptyArray<
@@ -163,10 +134,6 @@ export type OrganizationWorkMetadataScope =
       }>
     >
 
-/**
- * Complete work-relation coverage expressed as all relations or a union of intersecting
- * relation-kind and target-medium conditions.
- */
 export type WorkRelationMetadataScope =
   | 'all'
   | NonEmptyArray<
@@ -176,9 +143,6 @@ export type WorkRelationMetadataScope =
       }>
     >
 
-/**
- * Finite completeness-scope vocabulary for relation families with explicit replacement evidence.
- */
 export interface MetadataRelationScopeValues {
   readonly workCharacters: WorkCharacterMetadataScope
   readonly personWorks: PersonWorkMetadataScope
@@ -188,27 +152,22 @@ export interface MetadataRelationScopeValues {
   readonly volumeChapters: 'all'
 }
 
-/** Root-compatible relation family whose completeness has an explicit scope value. */
 export type ScopedMetadataRelationKey<T extends EntryType = EntryType> = Extract<
   MetadataRelationKey<T>,
   keyof MetadataRelationScopeValues
 >
 
 /**
- * Expressible completeness evidence supplied alongside a composed candidate.
- *
- * Omission means no replacement evidence for that relation. User scope separately authorizes
- * changes; part-ownership lists use their implicit root-work scope.
+ * Omission supplies no replacement evidence. User scope separately authorizes changes.
+ * Part-ownership lists use their implicit root-work scope.
  */
 export type MetadataRelationScopes<T extends EntryType = EntryType> = {
   readonly [K in ScopedMetadataRelationKey<T>]?: MetadataRelationScopeValues[K]
 }
 
 /**
- * Completeness scopes fixed by a provider session.
- *
- * Null denotes coverage outside the finite scope vocabulary and supplies adoptable facts without
- * replacement evidence. The provider still owes a complete read of that coverage.
+ * Null denotes coverage outside the finite vocabulary. Providers still owe a complete read of that
+ * coverage. The resulting facts are adoptable without replacement evidence.
  */
 export type MetadataSessionRelationScopes<T extends EntryType = EntryType> = {
   readonly [K in ScopedMetadataRelationKey<T>]?:
@@ -216,10 +175,6 @@ export type MetadataSessionRelationScopes<T extends EntryType = EntryType> = {
     | (K extends 'entryTags' | 'volumeChapters' ? never : null)
 }
 
-/**
- * Returns relation families applicable to the root kind for capabilities, requests, candidates and
- * profiles.
- */
 export function getMetadataRelations<T extends EntryType>(
   root: T,
 ): readonly MetadataRelationKey<T>[] {
@@ -247,7 +202,7 @@ export function getMetadataRelations<T extends EntryType>(
   return result as MetadataRelationKey<T>[]
 }
 
-/** The exact non-identity property vocabulary; an empty field list still requests the whole relation membership. */
+/** An empty attribute request still asks for the complete membership. */
 export const metadataRelationFields: {
   readonly [K in keyof MetadataRelationMembers]: readonly Extract<
     keyof MetadataRelationAttributeValues[K],
@@ -266,7 +221,6 @@ export const metadataRelationFields: {
   workExtras: [],
 }
 
-/** Creates a nonempty, duplicate-free selection schema for a finite scope dimension. */
 function choices<T extends string>(values: readonly T[]) {
   return v.pipe(
     v.tupleWithRest([v.picklist(values)], v.picklist(values)),
@@ -274,19 +228,14 @@ function choices<T extends string>(values: readonly T[]) {
   )
 }
 
-/** Nonempty selected work media used by relation-coverage conditions. */
 const workChoices = choices(workTypes)
 
-/** Nonempty selected person responsibilities used by relation-coverage conditions. */
 const personChoices = choices(personRoles)
 
-/** Nonempty selected organization responsibilities used by relation-coverage conditions. */
 const organizationChoices = choices(organizationRoles)
 
-/** Nonempty selected work-relation directions used by coverage conditions. */
 const relationChoices = choices(workRelationTypes)
 
-/** Nonempty combination of work medium, responsibility and character-binding coverage. */
 const personCondition = v.pipe(
   v.strictObject({
     workTypes: v.exactOptional(workChoices),
@@ -296,7 +245,6 @@ const personCondition = v.pipe(
   v.check((value) => Object.keys(value).length > 0),
 )
 
-/** Nonempty combination of work medium and organization-role coverage. */
 const organizationCondition = v.pipe(
   v.strictObject({
     workTypes: v.exactOptional(workChoices),
@@ -305,7 +253,6 @@ const organizationCondition = v.pipe(
   v.check((value) => Object.keys(value).length > 0),
 )
 
-/** Nonempty relation-direction or target-medium coverage condition. */
 const workRelationCondition = v.pipe(
   v.strictObject({
     types: v.exactOptional(relationChoices),
@@ -314,10 +261,8 @@ const workRelationCondition = v.pipe(
   v.check((value) => Object.keys(value).length > 0),
 )
 
-/** Work-medium coverage condition for character participation. */
 const characterCondition = v.strictObject({ workTypes: workChoices })
 
-/** Complete or explicitly bounded coverage shapes for each supported metadata relation view. */
 const scopeSchemas = {
   workCharacters: v.union([
     v.literal('all'),
@@ -336,7 +281,6 @@ const scopeSchemas = {
   volumeChapters: v.literal('all'),
 }
 
-/** Checks whether a scope condition admits at least one legal relation in its root context. */
 function hasScopeMembers(
   root: EntryType,
   relation: keyof MetadataRelationScopeValues,
@@ -379,7 +323,7 @@ function hasScopeMembers(
   return matchingTypes.length > 0
 }
 
-/** Parses one completeness scope and rejects conditions impossible in the declared root context. */
+/** Rejects conditions impossible in the declared root context. */
 export function parseMetadataRelationScope<
   T extends EntryType,
   K extends ScopedMetadataRelationKey<T>,
@@ -403,11 +347,6 @@ export function parseMetadataRelationScope<
   return value
 }
 
-/**
- * Parses explicit completeness evidence for root-compatible relation families.
- *
- * Omitted scopes remain absent.
- */
 export function parseMetadataRelationScopes<T extends EntryType>(
   root: T,
   input: unknown,
@@ -418,11 +357,8 @@ export function parseMetadataRelationScopes<T extends EntryType>(
       .map((relation) => [
         relation,
         v.exactOptional(
-          v.pipe(
-            v.unknown(),
-            v.transform((value) =>
-              parseMetadataRelationScope(root, relation as ScopedMetadataRelationKey<T>, value),
-            ),
+          fromParser((value) =>
+            parseMetadataRelationScope(root, relation as ScopedMetadataRelationKey<T>, value),
           ),
         ),
       ]),
@@ -435,9 +371,8 @@ export function parseMetadataRelationScopes<T extends EntryType>(
 }
 
 /**
- * Parses session completeness scopes, preserving non-expressible coverage as null where allowed.
- *
- * Tag and volume-chapter scopes remain fixed to all.
+ * Null preserves coverage outside the finite vocabulary where permitted. Tag and volume-chapter
+ * scopes are fixed to all.
  */
 export function parseMetadataSessionRelationScopes<T extends EntryType>(
   root: T,
@@ -447,11 +382,8 @@ export function parseMetadataSessionRelationScopes<T extends EntryType>(
     getMetadataRelations(root)
       .filter((relation) => Object.hasOwn(scopeSchemas, relation))
       .map((relation) => {
-        const schema = v.pipe(
-          v.unknown(),
-          v.transform((value) =>
-            parseMetadataRelationScope(root, relation as ScopedMetadataRelationKey<T>, value),
-          ),
+        const schema = fromParser((value) =>
+          parseMetadataRelationScope(root, relation as ScopedMetadataRelationKey<T>, value),
         )
         return [
           relation,

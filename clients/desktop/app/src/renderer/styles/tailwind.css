@@ -1,4 +1,2 @@
-/* Native app layout utilities consume the shared visual token mapping. */
-
 @import 'tailwindcss' source(none);
 @import '@kisaki3/desktop-appearance/tailwind.css';

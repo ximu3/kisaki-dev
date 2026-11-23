@@ -1,5 +1,3 @@
-/** @fileoverview Checks replacement scope values against root and role applicability. */
-
 import { expect, test } from 'vite-plus/test'
 import { parseMetadataRelationScope } from './relations'
 

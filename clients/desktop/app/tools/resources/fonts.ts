@@ -1,14 +1,10 @@
-/** @fileoverview Copies selected font files and notices from the workspace's locked dependencies. */
-
 import { createRequire } from 'node:module'
 import { copyFile, mkdir } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { appRoot } from '../lib/paths'
 
-/** Resolves resource dependencies from the desktop package's declared installation. */
 const requireDependency = createRequire(join(appRoot, 'package.json'))
 
-/** Files selected from a font dependency pinned by the workspace lockfile. */
 export interface FontInput {
   package: string
   files: string[]

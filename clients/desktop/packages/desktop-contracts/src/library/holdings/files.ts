@@ -1,13 +1,4 @@
-/** @fileoverview Defines held-file facts, queries, editing and merge operations. */
-
 import type { ErrorSummary } from '../../errors'
-import type {
-  FileAssociationMode,
-  FileAssociation,
-  FileAssociationInput,
-  FilePartType,
-  FileAssociationEdit,
-} from './associations'
 import type {
   FileReidentificationResult,
   FileRecognitionDefinition,
@@ -31,13 +22,21 @@ import type {
   FilePlaybackChoicesApi,
 } from './preferences'
 import type { ReadingPosition, TextEncoding } from '../reading'
-import type { HoldingsRelocationResult } from './directories'
 import { parseValue, text, unique, id } from '../../validation'
 import * as v from 'valibot'
-import { path } from './directories'
-import { associationSchema, partKey, partSchema, mode } from './associations'
+import { path, type HoldingsRelocationResult } from './directories'
+import {
+  associationSchema,
+  partKey,
+  partSchema,
+  mode,
+  type FileAssociationMode,
+  type FileAssociation,
+  type FileAssociationInput,
+  type FilePartType,
+  type FileAssociationEdit,
+} from './associations'
 
-/** The latest saved file-access observation: unchecked, accessible or known unavailable. */
 export type FileAvailability =
   | { readonly status: 'unchecked' }
   | {
@@ -53,9 +52,6 @@ export type FileAvailability =
       readonly error: ErrorSummary
     }
 
-/**
- * Decoded video container, duration and frame dimensions, retaining unknown measurements as null.
- */
 export interface AnimeFileMetadata {
   readonly container: string
   readonly durationSeconds: number | null
@@ -65,26 +61,17 @@ export interface AnimeFileMetadata {
   readonly height: number | null
 }
 
-/** Detected reading format and page count when the content provides one. */
 export interface ReadingFileMetadata {
   readonly format: 'epub' | 'mobi' | 'fb2' | 'txt' | 'pdf' | 'images'
   readonly pageCount: number | null
 }
 
-/**
- * The saved matching mode or an explicit corruption error.
- *
- * An unreadable mode disables automatic adoption while the file and its other facts remain visible.
- */
+/** An unreadable matching mode disables automatic adoption. Other file facts remain visible. */
 type FileAssociationState =
   | { readonly associationMode: FileAssociationMode; readonly associationError: null }
   | { readonly associationMode: null; readonly associationError: ErrorSummary }
 
-/**
- * A work-owned file registration with saved associations, availability and usage state.
- *
- * Unavailable stored definitions remain explicit and do not remove the registration.
- */
+/** An unavailable stored definition leaves the file registration visible. */
 export type HeldFile<T extends FileWorkType = FileWorkType> = {
   [K in T]: {
     readonly id: string
@@ -126,9 +113,7 @@ export type HeldFile<T extends FileWorkType = FileWorkType> = {
 }[T]
 
 /**
- * A file path and optional initial note, preferences and direct associations.
- *
- * Explicit associations, including an empty array, select manual mode. Omission permits automatic
+ * An explicit association list selects manual mode, even when empty. Omission permits automatic
  * matching.
  */
 export interface FileCreateFields<T extends FileWorkType = FileWorkType> {
@@ -139,9 +124,7 @@ export interface FileCreateFields<T extends FileWorkType = FileWorkType> {
 }
 
 /**
- * Filters over saved file facts and access observations.
- *
- * Listing does not probe disk or start content; part filtering uses direct associations.
+ * Filters use saved observations and direct associations. Listing leaves files and sessions closed.
  */
 export interface FileQuery<T extends FileWorkType = FileWorkType> {
   readonly search: string
@@ -159,20 +142,14 @@ export interface FileMergeInput {
   readonly path: string
 }
 
-/** The surviving file identity, removed registration and retained access path after merge. */
 export interface FileMergeResult {
   readonly fileId: string
   readonly removedFileId: string
   readonly path: string
 }
 
-/**
- * Work-owned file registrations, associations, preferred choices and identity maintenance.
- *
- * Association and path changes respect active-file occupancy.
- */
+/** Association and path changes respect active-file occupancy. */
 export interface HeldFilesApi {
-  /** Lists saved registrations under the requested filters, retaining unavailable files. */
   list<T extends FileWorkType>(
     work: EntryRef<T>,
     query: FileQuery<T>,
@@ -181,9 +158,7 @@ export interface HeldFilesApi {
   ): Promise<ListResult<HeldFile<T>>>
 
   /**
-   * Reads saved file facts and availability, or null when the registration is absent.
-   *
-   * The read leaves content sessions and position unchanged.
+   * Returns null for an absent registration. Reading preserves the current session and position.
    */
   get<T extends FileWorkType>(
     work: EntryRef<T>,
@@ -192,9 +167,8 @@ export interface HeldFilesApi {
   ): Promise<HeldFile<T> | null>
 
   /**
-   * Registers a file or reuses its existing same-position identity.
-   *
-   * Existing state remains unless explicit association intent was supplied.
+   * Reuses a same-position registration. Existing state changes only when explicit association
+   * intent is supplied.
    */
   add(
     ...args: {
@@ -214,9 +188,8 @@ export interface HeldFilesApi {
   ): Promise<void>
 
   /**
-   * Removes selected registrations and maintains their references after checking active use.
-   *
-   * User-file bytes remain untouched.
+   * Checks active use before removing registrations and their references. User-file bytes remain in
+   * place.
    */
   delete(
     work: EntryRef<FileWorkType>,
@@ -224,11 +197,7 @@ export interface HeldFilesApi {
     call?: CallOptions,
   ): Promise<void>
 
-  /**
-   * Compares and commits explicit association changes together with manual matching mode.
-   *
-   * Active-file occupancy is rechecked before adoption.
-   */
+  /** Association edits adopt manual mode in the same commit after rechecking occupancy. */
   editAssociations(
     ...args: {
       [K in FileWorkType]: [
@@ -240,11 +209,7 @@ export interface HeldFilesApi {
     }[FileWorkType]
   ): Promise<void>
 
-  /**
-   * Changes the matching mode while preserving the association set.
-   *
-   * Mode-only changes are allowed during current use.
-   */
+  /** A mode-only change preserves associations and is allowed during current use. */
   setAssociationMode(
     work: EntryRef<FileWorkType>,
     fileId: string,
@@ -262,11 +227,7 @@ export interface HeldFilesApi {
     }[FileWorkType]
   ): Promise<void>
 
-  /**
-   * Compares and commits all supplied part preferences atomically.
-   *
-   * An invalid target or failed baseline rejects the complete batch.
-   */
+  /** A failed baseline or invalid part preference rejects the whole batch. */
   setPreferredMany(
     ...args: {
       [K in FileWorkType]: [
@@ -278,9 +239,8 @@ export interface HeldFilesApi {
   ): Promise<void>
 
   /**
-   * Verifies a selected access path and retains the file's identity and saved state.
-   *
-   * Another registration at that path produces a conflict.
+   * Relocation preserves saved identity and state. Another registration at the selected path causes
+   * a conflict.
    */
   relocate<T extends FileWorkType>(
     work: EntryRef<T>,
@@ -290,9 +250,8 @@ export interface HeldFilesApi {
   ): Promise<HoldingsRelocationResult<T>>
 
   /**
-   * Retains the chosen survivor and participant path, migrating saved references atomically.
-   *
-   * Both registrations are checked for occupancy before commit.
+   * Both registrations must be free of active use before their references can move to the chosen
+   * survivor in one transaction.
    */
   merge(
     work: EntryRef<FileWorkType>,
@@ -301,10 +260,8 @@ export interface HeldFilesApi {
   ): Promise<FileMergeResult>
 
   /**
-   * Computes recognition for all selected files before committing valid association changes
-   * together.
-   *
-   * Each file retains its matching mode.
+   * Computes recognition for the entire selection before adopting valid associations together. Each
+   * file retains its matching mode.
    */
   reidentify<T extends FileWorkType>(
     work: EntryRef<T>,
@@ -348,7 +305,6 @@ export function parseFileCreateFields<T extends FileWorkType>(
   ) as FileCreateFields<T>
 }
 
-/** Parses saved-fact filters and a medium-specific direct-association scope. */
 export function parseFileQuery<T extends FileWorkType>(workType: T, input: unknown): FileQuery<T> {
   return parseValue(
     v.strictObject({
@@ -365,9 +321,7 @@ export function parseFileQuery<T extends FileWorkType>(workType: T, input: unkno
 }
 
 /**
- * Parses distinct merge participants and an absolute retained path.
- *
- * The host checks actual owners and whether the path belongs to a participant.
+ * The operation verifies actual ownership and whether the retained path belongs to a participant.
  */
 export function parseFileMergeInput(input: unknown): FileMergeInput {
   return parseValue(

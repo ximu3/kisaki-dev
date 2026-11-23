@@ -1,11 +1,5 @@
-/**
- * @fileoverview Locates the installed development Electron executable from its package
- * export.
- */
-
 import { createRequire } from 'node:module'
 
-/** Returns the executable path exported by the installed development Electron package. */
 export function electronExecutable(): string {
   const executable: unknown = createRequire(import.meta.url)('electron')
   if (typeof executable !== 'string') {

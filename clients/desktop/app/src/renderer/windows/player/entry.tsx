@@ -1,11 +1,9 @@
-/** @fileoverview Adopts the real player document's language, appearance and window lifecycle. */
-
 import { render } from '@solidjs/web'
 import { connect } from '../../infrastructure/api'
 import { Notifications } from '../../infrastructure/notifications'
 
-/** Verified player client bound to this document. */
 const client = await connect('player')
+
 render(
   () => (
     <>
@@ -17,4 +15,5 @@ render(
   ),
   document.getElementById('root')!,
 )
+
 await client.ready()

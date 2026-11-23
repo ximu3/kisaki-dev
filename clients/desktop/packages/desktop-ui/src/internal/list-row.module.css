@@ -1,5 +1,3 @@
-/* A compact row and trailing mark serve menu actions and selectable options. */
-
 @layer components {
   .row {
     --kui-row-active-background: var(--accent);

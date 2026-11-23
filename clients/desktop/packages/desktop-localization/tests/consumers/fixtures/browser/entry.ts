@@ -1,5 +1,3 @@
-/** @fileoverview Renders a translated action and a missing message with English plural rules. */
-
 import { createTranslator } from '@kisaki3/desktop-localization'
 
 /** Partial Chinese translation used to verify real browser fallback behavior. */

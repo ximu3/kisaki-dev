@@ -1,12 +1,9 @@
-/** @fileoverview Selection buttons keep native focus while navigating a logical listbox. */
-
 import { printableKey } from '../../internal/typeahead'
 import { omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { callHandler } from '../../internal/dom'
 import { closeWhenUnavailable } from '../../internal/field'
-import { optionId } from './collection'
-import type { SelectionCollection } from './collection'
+import { optionId, type SelectionCollection } from './collection'
 import type { SelectionOption } from './types'
 import type { SelectionPopup } from './popup'
 

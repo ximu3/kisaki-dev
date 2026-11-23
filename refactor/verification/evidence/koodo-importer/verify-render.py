@@ -1,44 +1,109 @@
-"""Compare PDF probe geometry with the rendered blue rectangles without editing images."""
+"""Measure how closely rendered blue regions match the normalized PDF quads."""
 
+import argparse
 import hashlib
 import json
-import subprocess
+from io import BytesIO
 from pathlib import Path
 
 from PIL import Image
 
-ROOT = Path(__file__).resolve().parent
-geometry = json.loads((ROOT / "synthetic-results.json").read_text(encoding="utf-8"))["pdfGeometry"]
-checks = []
-images = []
-for page in geometry:
-    path = ROOT / "preview" / f'page-{page["pageIndex"] + 1}.png'
-    with Image.open(path) as original:
-        picture = original.convert("RGB")
-    width, height = picture.size
-    blue = {(x, y) for y in range(height) for x in range(width) if (lambda rgb: rgb[0] < 70 and 60 < rgb[1] < 140 and rgb[2] > 170)(picture.getpixel((x, y)))}
-    components = []
-    while blue:
-        seed = blue.pop()
-        stack = [seed]
-        points = [seed]
-        while stack:
-            x, y = stack.pop()
+
+def blue_regions(image):
+    """Return four-connected blue regions as half-open pixel bounds."""
+    width, height = image.size
+    pixels = image.load()
+    remaining = set()
+    for y in range(height):
+        for x in range(width):
+            red, green, blue = pixels[x, y]
+            if red < 70 and 60 < green < 140 and blue > 170:
+                remaining.add((x, y))
+
+    bounds = []
+    while remaining:
+        seed = remaining.pop()
+        region = [seed]
+        pending = [seed]
+        while pending:
+            x, y = pending.pop()
             for neighbor in ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)):
-                if neighbor in blue:
-                    blue.remove(neighbor)
-                    stack.append(neighbor)
-                    points.append(neighbor)
-        components.append([min(x for x, _ in points), min(y for _, y in points), max(x for x, _ in points) + 1, max(y for _, y in points) + 1])
-    checks.append({"name": f'page {page["pageIndex"]} renders two separate selected lines', "passed": len(components) == 2})
-    for index, quad in enumerate(page["quads"]):
-        expected = [min(point[0] for point in quad) * width, min(point[1] for point in quad) * height, max(point[0] for point in quad) * width, max(point[1] for point in quad) * height]
-        match = any(max(abs(actual - wanted) for actual, wanted in zip(component, expected)) <= 2 for component in components)
-        checks.append({"name": f'page {page["pageIndex"]} line {index} matches normalized PDF quad within two raster pixels', "passed": match})
-    images.append({"path": path.relative_to(ROOT).as_posix(), "width": width, "height": height, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
-version = subprocess.run(["pdftoppm", "-v"], capture_output=True, text=True, check=True).stderr.splitlines()[0]
-result = {"evidenceClass": "rendered-synthetic-pdf-geometry", "renderer": version, "inputPdfSha256": hashlib.sha256((ROOT / "fixtures/library/book/pdf-book.pdf").read_bytes()).hexdigest(), "passed": sum(item["passed"] for item in checks), "failed": sum(not item["passed"] for item in checks), "checks": checks, "images": images, "visualReview": "Codex inspected all three previews; page labels and two blue lines are visible with the declared rotations.", "limitations": "Raster comparison verifies normalized crop/rotation geometry, not physical UserUnit scaling or source-reader execution."}
-(ROOT / "render-results.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
-print(json.dumps({"passed": result["passed"], "failed": result["failed"]}))
-if result["failed"]:
-    raise SystemExit(1)
+                if neighbor in remaining:
+                    remaining.remove(neighbor)
+                    pending.append(neighbor)
+                    region.append(neighbor)
+
+        xs, ys = zip(*region)
+        bounds.append([min(xs), min(ys), max(xs) + 1, max(ys) + 1])
+
+    return sorted(bounds)
+
+
+def quad_bounds(quad, width, height):
+    """Convert a normalized quad to raster coordinates."""
+    xs, ys = zip(*quad)
+    return [min(xs) * width, min(ys) * height, max(xs) * width, max(ys) * height]
+
+
+def review(root):
+    """Compare each fixture page and identify the exact inputs in the report."""
+    geometry_path = root / "synthetic-results.json"
+    geometry_source = geometry_path.read_bytes()
+    geometry = json.loads(geometry_source)["pdfGeometry"]
+    checks = []
+    images = []
+    for page in geometry:
+        page_index = page["pageIndex"]
+        path = root / "preview" / f"page-{page_index + 1}.png"
+        image_source = path.read_bytes()
+        with Image.open(BytesIO(image_source)) as original:
+            width, height = original.size
+            regions = blue_regions(original.convert("RGB"))
+
+        checks.append({
+            "name": f"page {page_index} renders two separate selected lines",
+            "passed": len(regions) == 2,
+        })
+        expected_regions = [quad_bounds(quad, width, height) for quad in page["quads"]]
+        for index, expected in enumerate(expected_regions):
+            match = any(
+                max(abs(actual - wanted) for actual, wanted in zip(region, expected)) <= 2
+                for region in regions
+            )
+            checks.append({
+                "name": f"page {page_index} line {index} matches normalized PDF quad within two raster pixels",
+                "passed": match,
+            })
+
+        images.append({
+            "path": path.relative_to(root).as_posix(),
+            "width": width,
+            "height": height,
+            "sha256": hashlib.sha256(image_source).hexdigest(),
+            "blueRegions": regions,
+            "expectedRegions": expected_regions,
+        })
+
+    pdf_path = root / "fixtures/library/book/pdf-book.pdf"
+    return {
+        "evidenceClass": "rendered-synthetic-pdf-geometry",
+        "inputPdfSha256": hashlib.sha256(pdf_path.read_bytes()).hexdigest(),
+        "geometrySourceSha256": hashlib.sha256(geometry_source).hexdigest(),
+        "passed": sum(item["passed"] for item in checks),
+        "failed": sum(not item["passed"] for item in checks),
+        "checks": checks,
+        "images": images,
+    }
+
+
+def main():
+    """Write the computed report to standard output."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--evidence-dir", type=Path, default=Path(__file__).resolve().parent)
+    result = review(parser.parse_args().evidence_dir)
+    print(json.dumps(result, indent=2))
+    return int(result["failed"] > 0)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

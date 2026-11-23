@@ -1,12 +1,8 @@
-/** @fileoverview Renders a stateful Solid fixture for browser loading and hot updates. */
-
 import { createSignal } from 'solid-js'
 import { render } from '@solidjs/web'
 import './styles.css'
 
-/** Renders a button-driven counter with state local to the fixture component. */
 function Counter() {
-  /** Local counter state used to observe component interaction and hot-update preservation. */
   const [count, setCount] = createSignal(0)
 
   return (

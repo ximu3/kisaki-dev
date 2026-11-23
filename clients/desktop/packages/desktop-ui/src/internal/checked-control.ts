@@ -1,5 +1,3 @@
-/** @fileoverview Native checked-state ownership shared by checkbox and switch. */
-
 import { createEffect, flush } from 'solid-js'
 import type { Accessor } from 'solid-js'
 import { createValue, onFormReset } from './state'
@@ -20,13 +18,11 @@ export interface CheckedValueProps {
  * owner.
  */
 export function bindCheckedControl(props: CheckedValueProps, element: Accessor<HTMLInputElement>) {
-  /** Live checked state and owner-directed updates shared by native boolean controls. */
   const [checked, change] = createValue(
     () => props.checked,
     () => props.defaultChecked ?? false,
     (next) => props.onCheckedChange?.(next),
   )
-  /** Copies the owned checked state to the native checkbox. */
   const sync = (next = checked()) => {
     const node = element()
     node.checked = next
@@ -41,7 +37,7 @@ export function bindCheckedControl(props: CheckedValueProps, element: Accessor<H
     },
   )
 
-  /** Settles the value owner before a native callback reads or submits the control. */
+  // A native change callback can synchronously inspect the input after its owner adopts the value.
   function commit(next: boolean) {
     change(next)
     flush()

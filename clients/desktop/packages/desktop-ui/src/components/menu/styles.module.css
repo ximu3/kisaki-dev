@@ -1,5 +1,3 @@
-/* Menus use real focused buttons inside native top-layer content. */
-
 @layer components {
   .root {
     min-width: 10rem;

@@ -1,6 +1,3 @@
-/** @fileoverview Reads stable pages, counts and positions from a distinct set of eligible entry IDs. */
-
-/** SQL returning unique IDs and an optional indexed membership probe for a name-ordered scan. */
 export interface EntrySelection {
   ids: string
   /** Equivalent predicate on the current entries row e, for link sets with multiple hits per entry. */
@@ -21,7 +18,6 @@ export function pageStatement({ ids, probe }: EntrySelection, offset: number): s
   const count = `select count(*) from ${probe ? `(${ids})` : 'members'}`
   const matches = probe ?? 'e.id in members'
 
-  /** Walks the ordering index only for the direction selected by the actual page bounds. */
   function scan(order: 'asc' | 'desc', condition: string, skip: 'head' | 'tail') {
     return `select e.id, e.effective_sort_name as name from entries e indexed by entries_sort
       where ${matches} order by e.effective_sort_name ${order}, e.id ${order}
@@ -39,7 +35,6 @@ export function pageStatement({ ids, probe }: EntrySelection, offset: number): s
     select id from (select * from forward union all select * from backward) order by name, id`
 }
 
-/** Counts strict predecessors of the supplied name and ID using the same eligible entries. */
 export function positionStatement({ ids, probe }: EntrySelection): string {
   if (!probe) {
     return `select count(*) as position from (${ids}) m join entries e on e.id = m.id

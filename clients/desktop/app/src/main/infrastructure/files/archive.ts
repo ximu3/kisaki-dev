@@ -1,7 +1,4 @@
-/** @fileoverview Reads and writes bounded Store/Deflate ZIP archives, preserving exact member paths and complete byte validation. */
-
-import { openPromise } from 'yauzl'
-import type { Entry, ZipFile as InputZip } from 'yauzl'
+import { openPromise, type Entry, type ZipFile as InputZip } from 'yauzl'
 import { ZipWriter } from '@zip.js/zip.js'
 import { crc32 } from 'node:zlib'
 import { PassThrough, Readable, Transform, Writable } from 'node:stream'
@@ -9,8 +6,7 @@ import { finished, pipeline } from 'node:stream/promises'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { isAbsoluteHostPath } from '#host-path'
 import type { NativeFiles } from '#native'
-import { stageFile } from './storage'
-import type { StagedFile } from './storage'
+import { stageFile, type StagedFile } from './storage'
 
 /** Actual expansion and metadata budgets supplied by the archive's owning operation. */
 export interface ArchiveLimits {
@@ -122,23 +118,19 @@ class ArchiveBudget {
 /** Waits for one entry or the end marker without accumulating an archive-wide entry queue. */
 function nextEntry(zip: InputZip): Promise<Entry | null> {
   return new Promise((resolve, reject) => {
-    /** Removes the listeners belonging to this one directory read. */
     function cleanup(): void {
       zip.off('entry', entry)
       zip.off('end', end)
       zip.off('error', failure)
     }
-    /** Delivers the one requested entry. */
     function entry(value: Entry): void {
       cleanup()
       resolve(value)
     }
-    /** Delivers the actual end of the central directory. */
     function end(): void {
       cleanup()
       resolve(null)
     }
-    /** Rejects this pending directory read. */
     function failure(error: unknown): void {
       cleanup()
       reject(error)
@@ -157,12 +149,10 @@ async function closeArchive(zip: InputZip): Promise<void> {
     return
   }
   await new Promise<void>((resolve, reject) => {
-    /** Completes descriptor cleanup and removes the paired failure listener. */
     function closed(): void {
       zip.off('error', failed)
       resolve()
     }
-    /** Reports a descriptor cleanup failure and removes the paired close listener. */
     function failed(error: unknown): void {
       zip.off('close', closed)
       reject(error)

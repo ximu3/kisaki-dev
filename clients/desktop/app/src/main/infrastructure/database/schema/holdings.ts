@@ -1,5 +1,3 @@
-/** @fileoverview Defines per-medium directories, files, direct part bindings and saved usage choices. */
-
 import { sql } from 'drizzle-orm'
 import {
   check,
@@ -11,8 +9,8 @@ import {
   text,
   unique,
   uniqueIndex,
+  type AnySQLiteColumn,
 } from 'drizzle-orm/sqlite-core'
-import type { AnySQLiteColumn } from 'drizzle-orm/sqlite-core'
 import {
   parseGameLaunchDefinition,
   parseDirectoryDiscoveryDefinition,
@@ -200,13 +198,16 @@ export const gameLaunchConfigs = sqliteTable(
   ],
 )
 
+const associationModes = ['automatic', 'manual'] as const
+const readingFileKinds = ['file', 'directory'] as const
+
 /** Defines the file columns. A file keeps its ID and associations when it becomes unavailable. */
 function fileFields() {
   return {
     id: idColumn(),
     path: text('path').notNull(),
     note: text('note'),
-    associationMode: text('association_mode', { enum: ['automatic', 'manual'] })
+    associationMode: text('association_mode', { enum: associationModes })
       .notNull()
       .default('automatic'),
     isPreferred: integer('is_preferred', { mode: 'boolean' }).notNull().default(false),
@@ -220,7 +221,7 @@ function fileFields() {
 /** Creates independent file-local reading state. */
 function readingFileFields() {
   return {
-    kind: text('kind', { enum: ['file', 'directory'] }).notNull(),
+    kind: text('kind', { enum: readingFileKinds }).notNull(),
     metadata: storedJsonColumn(parseReadingMetadata)('metadata'),
     position: storedJsonColumn(parseReadingPosition)('position'),
     progress: real('progress'),
@@ -238,7 +239,7 @@ function fileConstraints(
   return [
     unique(`${name}_path`).on(owner, table.path),
     booleanValue(`${name}_preferred_value`, table.isPreferred),
-    enumValue(`${name}_association_mode`, table.associationMode, ['automatic', 'manual']),
+    enumValue(`${name}_association_mode`, table.associationMode, associationModes),
     uniqueIndex(`${name}_preferred`)
       .on(owner)
       .where(sql`${table.isPreferred} = 1`),
@@ -291,7 +292,7 @@ export const comicFiles = sqliteTable(
   (table) => [
     primaryKey({ columns: [table.id] }),
     ...fileConstraints('comic_files', table.comicId, table),
-    enumValue('comic_files_kind', table.kind, ['file', 'directory']),
+    enumValue('comic_files_kind', table.kind, readingFileKinds),
     check('comic_files_progress', sql`${table.progress} between 0 and 1`),
   ],
 )
@@ -312,7 +313,7 @@ export const novelFiles = sqliteTable(
   (table) => [
     primaryKey({ columns: [table.id] }),
     ...fileConstraints('novel_files', table.novelId, table),
-    enumValue('novel_files_kind', table.kind, ['file', 'directory']),
+    enumValue('novel_files_kind', table.kind, readingFileKinds),
     check('novel_files_progress', sql`${table.progress} between 0 and 1`),
   ],
 )

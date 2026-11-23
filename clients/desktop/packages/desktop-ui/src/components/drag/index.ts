@@ -1,5 +1,3 @@
-/** @fileoverview Public drag registration, handles, insertion markers and feedback. */
-
 export {
   createDraggable,
   createDropTarget,

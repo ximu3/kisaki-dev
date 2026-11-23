@@ -1,5 +1,3 @@
-/* Default palettes, shared visual derivations and document typography. */
-
 @import './defaults.generated.css';
 
 @layer theme {
@@ -41,7 +39,6 @@
     --color-chart-4: var(--chart-4);
     --color-chart-5: var(--chart-5);
 
-    /* Clamp derived smaller radii at zero. */
     --radius-sm: max(0px, calc(var(--radius) - 4px));
     --radius-md: max(0px, calc(var(--radius) - 2px));
     --radius-lg: var(--radius);

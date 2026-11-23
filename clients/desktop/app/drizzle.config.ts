@@ -1,5 +1,3 @@
-/** @fileoverview Defines the SQLite schema used to generate the desktop migration chain. */
-
 import { defineConfig } from 'drizzle-kit'
 
 export default defineConfig({

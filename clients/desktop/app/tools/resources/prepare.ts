@@ -1,7 +1,3 @@
-/**
- * @fileoverview Assembles fonts, icons, database migrations and native dependencies into the target build workspace.
- */
-
 import { createRequire } from 'node:module'
 import { copyFile, cp, mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
@@ -10,14 +6,11 @@ import pngToIco from 'png-to-ico'
 import { appRoot } from '../lib/paths'
 import type { DesktopTarget } from '../lib/targets'
 import { removeOutputs } from '@kisaki3/tooling/output'
-import { copyFonts } from './fonts'
+import { copyFonts, type FontInput } from './fonts'
 import { copyMediaRuntime } from './media'
-import type { FontInput } from './fonts'
 
-/** Resolves resource dependencies from the desktop package's declared installation. */
 const requireDependency = createRequire(join(appRoot, 'package.json'))
 
-/** Writes packaging PNG and ICO variants from the project's source icon. */
 async function prepareIcons(icons: string): Promise<void> {
   await mkdir(icons, { recursive: true })
   const sourceIcon = join(appRoot, 'assets', 'icons', 'source.png')

@@ -1,5 +1,3 @@
-/** @fileoverview Cancels a caller's wait independently of the operation that owns the work. */
-
 import { addAbortListener } from 'node:events'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 

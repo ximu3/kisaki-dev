@@ -1,5 +1,3 @@
-/** @fileoverview Prefix sums of estimated and measured row sizes for one vertical layout. */
-
 /** Indexes positive row heights with logarithmic position lookup and measurement updates. */
 export class RowGeometry {
   private readonly tree: Float64Array

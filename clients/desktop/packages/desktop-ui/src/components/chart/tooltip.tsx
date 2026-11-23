@@ -1,9 +1,6 @@
-/** @fileoverview Unovis owns pointer placement and its public visibility state drives the shared surface. */
-
 import { createMemo, createUniqueId, omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
-import { Tooltip } from '@unovis/ts'
-import type { TooltipConfigInterface } from '@unovis/ts'
+import { Tooltip, type TooltipConfigInterface } from '@unovis/ts'
 import { classes } from '../../internal/dom'
 import surface from '../../internal/popup/surface.module.css'
 import { chartPart } from './parts'
@@ -40,7 +37,7 @@ function observeTooltip(engine: Tooltip): () => void {
   const element = engine.element
   let pending = 0
 
-  /** Mirrors Unovis visibility and settles exits when an opacity transition ends or is skipped. */
+  // A skipped opacity transition still needs to settle the exiting tooltip.
   const sync = () => {
     const visible = element.classList.contains(Tooltip.selectors.show)
     if (visible === element.hasAttribute('data-kui-chart-open')) {
@@ -48,7 +45,6 @@ function observeTooltip(engine: Tooltip): () => void {
     }
     element.toggleAttribute('data-kui-chart-open', visible)
     if (!visible) {
-      /** Finds the tooltip's current opacity transition, if any. */
       const fade = () =>
         element
           .getAnimations()
@@ -56,7 +52,6 @@ function observeTooltip(engine: Tooltip): () => void {
             (animation) =>
               animation instanceof CSSTransition && animation.transitionProperty === 'opacity',
           )
-      /** Marks the tooltip hidden if it is still closed when an exit is canceled. */
       const finish = () => {
         if (!element.classList.contains(Tooltip.selectors.show) && !fade()) {
           element.classList.add(Tooltip.selectors.hidden)
@@ -108,9 +103,8 @@ function observeTooltip(engine: Tooltip): () => void {
 
 /** Tracks trigger listeners and surface observation for one active tooltip. */
 class ChartTooltipEngine extends Tooltip {
-  private readonly stopObserving = observeTooltip(this)
+  readonly #stopObserving = observeTooltip(this)
 
-  /** Unbinds trigger events from marks that are leaving this tooltip. */
   override setComponents(components: Tooltip['components']): void {
     const retained = new Set(components)
     for (const component of this.components) {
@@ -121,10 +115,9 @@ class ChartTooltipEngine extends Tooltip {
     super.setComponents(components)
   }
 
-  /** Releases tooltip-owned listeners, timers and markup. */
   override destroy(): void {
     this.setComponents([])
-    this.stopObserving()
+    this.#stopObserving()
     super.destroy()
   }
 }
@@ -138,7 +131,6 @@ export function ChartTooltip(props: ChartTooltipProps): JSX.Element {
   const id = createUniqueId()
   const render = createTooltipViewport()
 
-  /** Wraps each trigger's template using the tooltip's shared text viewport. */
   const triggers = createMemo(() => {
     const bound: NonNullable<ChartTooltipProps['triggers']> = {}
     for (const [selector, template] of Object.entries(props.triggers ?? {})) {

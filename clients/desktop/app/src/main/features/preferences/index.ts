@@ -1,10 +1,4 @@
-/** @fileoverview Owns atomic preference changes, protected proxy credentials and saved-state invalidation. */
-
-import {
-  parsePreferencesUpdate,
-  type Preferences,
-  type PreferencesUpdate,
-} from '@kisaki3/desktop-contracts/preferences'
+import { parsePreferencesUpdate, type Preferences } from '@kisaki3/desktop-contracts/preferences'
 import { parseProxyCredentials } from '@kisaki3/desktop-contracts/network'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
@@ -21,31 +15,30 @@ export function createPreferences(
   defaults: Preferences,
   translator: () => Translate,
 ) {
-  /** Invalidates readers after an entire preference edit has committed. */
   const invalidated = createSignal<void>()
+
   return {
-    /** Describes the field catalog in the effective software language. */
     async listFields(options?: CallOptions) {
       options?.signal?.throwIfAborted()
       return preferenceFields(translator())
     },
-    /** Reads a fresh public snapshot, including only the opaque credential revision. */
     async get(options?: CallOptions) {
       options?.signal?.throwIfAborted()
       return call('getPreferences')
     },
-    /** Supplies a fresh reset draft without modifying storage. */
     async getDefaults(options?: CallOptions) {
       options?.signal?.throwIfAborted()
       return structuredClone(defaults)
     },
-    /** Commits an edit, then notifies consumers so each can adopt the relevant saved values. */
-    async update(input: PreferencesUpdate, options?: CallOptions) {
+
+    async update(input: unknown, options?: CallOptions) {
       options?.signal?.throwIfAborted()
       const { changes, expected } = parsePreferencesUpdate(input)
+
       const { network, ...ordinary } = changes
       const { credentials, ...route } = network ?? {}
       const encrypted = credentials ? await protectSecret(JSON.stringify(credentials)) : credentials
+
       options?.signal?.throwIfAborted()
       const result = await call(
         'changePreferences',
@@ -53,15 +46,18 @@ export function createPreferences(
         expected ?? {},
         encrypted,
       )
+
       invalidated.emit()
       return result
     },
+
     /** Opens proxy credentials for an authenticated route, rewrapping only its original revision. */
     async readProxyCredentials(this: void, expectedRevision: string) {
       const { ciphertext, revision } = await call('getProxySecret')
       if (!ciphertext || revision !== expectedRevision) {
         throw new DesktopError('Conflict', 'The saved proxy credential changed during adoption')
       }
+
       const { result, shouldReEncrypt } = await openSecret(ciphertext)
       const credentials = parseProxyCredentials(JSON.parse(result))
       if (shouldReEncrypt) {
@@ -69,6 +65,7 @@ export function createPreferences(
       }
       return credentials
     },
+
     onInvalidated: invalidated.on,
   }
 }

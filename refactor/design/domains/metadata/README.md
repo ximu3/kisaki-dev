@@ -15,12 +15,13 @@ ingest 负责本地采用。它查询 library，取得已有身份、当前值�
 | 操作                               | 行为                                                                        |
 | ---------------------------------- | --------------------------------------------------------------------------- |
 | metadata.search                    | 调用一个指定 provider 的条目搜索，返回 SourceEntry 候选。                   |
+| metadata.searchImages              | 调用指定 provider 的图片搜索，返回图片候选。                                |
 | metadata.fetch                     | 按方案完成来源定位、读取、对应和整合，返回候选资料与本次结果信息。          |
 | ingest.add                         | 从 profile 或 prepared 输入执行标准新增；根条目已有对应对象时，返回已存在。 |
 | ingest.update                      | 固定本地目标，从 profile 或 prepared 输入取得资料，再执行完整更新。         |
 | ingest.addMany / ingest.updateMany | 对各输入执行相应的完整操作，逐项提交，并汇总实际结果。                      |
 
-来源搜索和独立获取可直接调用 metadata。普通新增只调用一次 ingest，由它组织获取、对应与提交。界面在 features/ingest 中组合方案选择与搜索，提供新增和更新操作。
+来源搜索和独立获取可直接调用 metadata。普通新增和更新各调用一次 ingest，由它组织获取、对应与提交。界面在 features/ingest 中组合方案选择与搜索。
 
 scanner 发现待新增候选后调用 ingest。library/holdings 负责识别本地文件，只把文件绑定到已有作品和分部，不创建分部，也不反向调用 ingest 或 scanner。新增采用来源明确提供的真实分部清单，不要求本地文件齐全；资料缺失时不补造分部，也不把部分清单称为完整清单。
 
@@ -36,7 +37,7 @@ scanner 发现待新增候选后调用 ingest。library/holdings 负责识别本
 
 ## 方案输入与已取得的候选
 
-MetadataInput 通过 profile 和 prepared 分配资料获取责任。profile 提供方案与定位线索，由本体读取并合成；prepared.data 提供已经取得的候选，relationScopes 一次声明其完整关系范围。两种输入共用本地对应、对象复用或创建及采用规则。候选可以包含条目、分部和关系，实际创建所需资料由对应操作核对。
+`profile` 输入提供方案与定位线索，由本体读取并合成。更新时省略线索，使用固定目标的身份与原始资料。`prepared` 输入直接提供候选 `data`，可用 `relationScopes` 声明已完整取得的关系范围。省略完整范围时，仍可采用已取得的合法事实。两种输入共用本地对应、对象复用或创建及采用规则。完整形状见[获取与采用输入](contracts.md#inputs)。
 
 ingest.add 和 addMany 的单项输入可以另带 initial，接收主条目适用的 evaluation、record 和 completionRecords，复用 library.entries.create 的初始个人值合同。initial 与 MetadataInput 分开，由调用方明确提供，不来自 provider、processor、资料方案或 MetadataCandidate。创建时，主条目和这些初值在同一个图事务提交，再发布实际变更；不能先暴露空个人记录，再靠来源订阅补写。alreadyExists 不采用 initial，调用方明确更新已有个人值时，分别使用 entries 的当前值操作与 completions 的适用历史操作。
 
@@ -54,7 +55,7 @@ MetadataCandidate 按 objects 和 relations 组织，使用正式字段、关系
 
 条目搜索查找来源 Entry，read 读取明确对象的资料，图片候选能力提供可选资源。这三个入口各有用途。系统不提供通用字段搜索、任意图选择，或混合 entry/field 的请求。简介等内容通过字段读取取得；Part 从所属 Entry 的范围内读取，不作为与 Entry 平级的搜索目标。已知完整身份时可以直接定位。
 
-metadata.search 每次调用一个 provider，输入 providerId、entryType、query，以及可选的 cursor 和 preferredLanguages。provider.search 接收同样的业务输入，但不再包含 providerId；运行资源通过 context 提供。返回值为 { records: SourceEntry[], nextCursor?: string }。
+`metadata.search` 每次调用一个 provider，输入 `providerId`、`entryType`、`query` 及可选的 `cursor` 和 `preferredLanguages`。`provider.search` 接收除 `providerId` 之外的业务输入，通过 `context` 取得运行资源。结果包含候选 `records` 及可选的 `nextCursor`。
 
 cursor 只适用于同一 provider、条目类型、查询和语言条件。首次请求省略 cursor，续读时原样传回 nextCursor；条件改变后重新开始。是否存在 nextCursor 决定能否继续，空页本身不表示搜索结束。
 
@@ -94,9 +95,7 @@ Entry 和 Part 优先按完整 ExternalIdentity 对应。Part 还必须属于当
 
 ## 定位补足与执行依赖
 
-definition.providers 是本次方案参与提供者的唯一显式集合，同时限定定位补足和普通读取。已对应的来源可以贡献真实名称、日期和交叉身份，帮助其他来源继续定位。系统不会扫描全部已安装 provider，也不会根据 source 自动加入实现。哪个 provider 先具备执行条件、先返回结果，都不决定它是主来源。
-
-providers 是方案唯一的参与来源清单。未被 fields 或 relations 引用的 provider 只帮助定位，其普通资料不参与采用。每份方案至少提供一项可请求资料能力。Wikidata 等来源可以在不同方案中承担不同用途；各来源仍需确认自己的真实身份。
+只有 `definition.providers` 选中的提供者参与定位补足或普通读取。已对应的来源可以提供真实名称、日期和交叉身份，帮助其他来源继续定位。未被字段或关系规则引用的提供者只协助定位。各项资料按照方案指定的来源顺序取值，定位与响应的先后不改变优先级。[资料方案规则](profiles.md#definition)
 
 定位补足使用原始识别事实，不使用翻译或加工后的显示值，并保留事实出处和推断依据。尚未确认的候选不能混入目标事实，重复出现同一推断也不会使其变成直接映射。新取得的直接证据继续按身份规则判断。
 
@@ -128,7 +127,7 @@ providers 是方案唯一的参与来源清单。未被 fields 或 relations 引
 }
 ```
 
-read 按 objects 和 relations 接收请求，每个节点的 fields 选择普通字段。relations 中出现某项，即请求该关系集合及必要端点；fields: [] 表示只读取成员维度。relatedEntries 和 parts 可以通过 refs: ExternalIdentity[] 指定对象。未提供 refs 时，只读取本次关系端点或已确认的 Entry 上下文内的对象。refs 只限制对象字段范围，不缩小另外请求的关系集合。完整输入见 [Provider](../../extensions/providers.md)。
+read 按 objects 和 relations 接收请求，每个节点的 fields 选择普通字段。relations 中出现某项，即请求该关系集合及必要端点；fields: [] 表示只读取成员维度。relatedEntries 和 parts 可以通过 refs: ExternalIdentity[] 指定对象。未提供 refs 时，只读取本次关系端点或已确认的 Entry 上下文内的对象。refs 只限制对象字段范围，不缩小另外请求的关系集合。完整输入见[字段请求与对象范围](../../extensions/providers.md#read-request)。
 
 ingest 将所选本地对象转换为来源身份或 Entry 范围，provider 不接收本地主键。人物、角色、组织和关联作品必须来自真实关系或明确候选，不能在缺少关系时补造。分部有完整身份时，可直接读取，无需先取同源根或全部兄弟分部；缺少身份时，按作品目录对应，不能把编号当作身份。
 
@@ -169,13 +168,11 @@ update 固定已有 Entry 或 Part 以及明确选择的字段和关系范围。
 
 已有关系中的同名对象也遵守这张表。结果可引导用户打开条目或关系编辑，明确整理对象；这不插入执行中的采用预览。仍缺少可靠身份时，后续资料更新继续保留人工关系。名称不足以对应的分支也不能提供删除旧关系的依据。
 
-Part 按下述同作品唯一匹配规则处理，复用已有匹配值与比较语义。
-
-Part 先按完整身份或本次已明确的本地目标对应；其余情况按本次 partMatching 在同作品、同类分部及相同编号范围内匹配。编号本身不是身份，只有本次明确启用相应规则且结果唯一、没有身份或范围冲突时，才允许复用。新建同时要求本次已选择的真实清单范围，不能把未回答、不可判断或身份冲突当作缺少成员。
-
 <a id="local-parts"></a>
 
 ### 分部的本地对应决策
+
+Part 先按完整身份或本次已明确的本地目标对应，再在同作品、同类分部和相同编号范围内应用本次的 `partMatching`。回退结果必须唯一且与身份和范围相容。新建必须在本次已选择的真实清单范围内，未回答、依据不足和身份冲突均不能证明清单缺项。
 
 | 已确认事实                                           | 本地结果                                                                                         |
 | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
@@ -279,40 +276,40 @@ update 和 updateMany 在目标及方式确定后，直接完成获取、对应�
 ## 单项与批量结果
 
 ```ts
-type IngestAddResult =
+type IngestAddResult<T extends EntryType = EntryType> =
   | {
-      outcome: 'added'
-      entry: EntryRef
-      issues: IngestIssue[]
+      readonly outcome: 'added'
+      readonly entry: EntryRef<T>
+      readonly issues: readonly IngestIssue[]
     }
   | {
-      outcome: 'alreadyExists'
-      entry: EntryRef
-      matchedIdentities: readonly ExternalIdentity[]
-      issues: IngestIssue[]
+      readonly outcome: 'alreadyExists'
+      readonly entry: EntryRef<T>
+      readonly matchedIdentities: NonEmptyArray<ExternalIdentity>
+      readonly issues: readonly IngestIssue[]
     }
 
-interface IngestUpdateResult {
-  outcome: 'updated' | 'unchanged'
-  target: EntryRef | PartRef
-  issues: IngestIssue[]
+interface IngestUpdateResult<T extends IngestUpdateType = IngestUpdateType> {
+  readonly outcome: 'updated' | 'unchanged'
+  readonly target: IngestUpdateRef<T>
+  readonly issues: readonly IngestIssue[]
 }
 ```
 
 added 表示根条目已经实际创建。alreadyExists 表示完整身份已准确对应已有根条目，matchedIdentities 是本次用于对应的非空完整身份集合；同名不产生此结果。该结果自身不写资料或持有，scanner 仅在已启用登记选项时另行调用 holdings，提交时再核对这组身份。updated 表示本次产生了真实变化，变化可以只发生在分部或关系上；unchanged 表示处理后没有变化，并不保证来源资料齐全。
 
-根条目已创建，但部分关系或首次本地识别失败时，结果仍为 added，并通过 issues 说明局部问题。某个来源失败，但其他资料足以合法采用时，正常结果也可附带来源失败问题。若根目标不明、必要值缺失、身份冲突或业务图提交失败，导致整项操作不能成立，应返回 ExecutionFailure，不能伪装成已存在或未变化。
+根条目已创建，但部分关系或首次本地识别失败时，结果为 added，并通过 issues 说明局部问题。某个来源失败，但其他资料足以采用时，正常结果也可附带来源失败问题。根目标不明、必要值缺失、身份冲突或业务图提交失败导致整项操作未完成时，返回 ExecutionFailure。
 
 可选字段正常缺失、fill 遇到已有值、取得相同值，都不自动构成 issue。issue 表达提交前已排除的分支，或提交后附带工作的失败，不能用来允许写图时忽略约束。公共定义见[采用问题](#issues)。
 
 ```ts
-{
+const report: IngestBatchResult<IngestAddResult> = {
   total: 3,
   items: [
     { index: 0, result: addedResult },
     { index: 1, error: failure },
-    { index: 2, result: existingResult }
-  ]
+    { index: 2, result: existingResult },
+  ],
 }
 ```
 

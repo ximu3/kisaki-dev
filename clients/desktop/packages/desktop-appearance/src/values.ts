@@ -1,5 +1,3 @@
-/** @fileoverview Parses complete visual values without evaluating formulas or consulting a host. */
-
 import { generate, ident, lexer, parse, walk } from 'css-tree/dist/csstree.esm'
 import type { CssNode, Value } from 'css-tree'
 import { tokens } from './tokens'
@@ -8,7 +6,6 @@ import type { TokenKind, TokenName, TokenValues } from './tokens'
 /** Standalone color grammar that excludes inherited and context-dependent token values. */
 const colorSyntax = '<hex-color> | <named-color> | transparent | <color-function>'
 
-/** CSS value grammar owned by each appearance token kind. */
 const syntaxes: Readonly<Record<TokenKind, string>> = {
   color: colorSyntax,
   radius: '<length [0,∞]>',
@@ -21,7 +18,6 @@ const syntaxes: Readonly<Record<TokenKind, string>> = {
   'letter-spacing': 'normal | <length>',
 }
 
-/** CSS color functions allowed in a standalone color token. */
 const colorFunctions = new Set([
   'rgb',
   'rgba',
@@ -35,7 +31,6 @@ const colorFunctions = new Set([
   'color',
 ])
 
-/** Checks finite literal components and standard units after CSS grammar matching. */
 function hasLiteralComponents(value: Value): boolean {
   let valid = true
   walk(value, (node) => {

@@ -1,18 +1,12 @@
-/** @fileoverview Validates fixed selections and explicit expanded group ranges. */
-
-import type { EntryRef } from '../catalog'
-import type { EntryGroupKey } from './listing'
 import * as v from 'valibot'
-import { groupSchema } from './listing'
-import { entryRefSchema } from '../catalog'
+import { groupSchema, type EntryGroupKey } from './listing'
+import { entryRefSchema, type EntryRef } from '../catalog'
 import { parseValue, unique } from '../../validation'
 import { DesktopError } from '../../errors'
 
 /**
- * Selection intent resolved into a fixed set in one read.
- *
- * Ranges include both endpoints and select the same interval in either direction. The all variant
- * selects the complete query result regardless of collapsed groups.
+ * Resolve the selection in one read. Ranges include both endpoints in either direction. The all
+ * variant includes the entire query even when groups are collapsed.
  */
 export type EntrySelection =
   | { readonly type: 'all' }
@@ -24,15 +18,13 @@ export type EntrySelection =
       readonly expandedGroups: readonly EntryGroupKey[]
     }
 
-/** Encodes a group identity for equality and uniqueness checks. */
 function groupKey(group: EntryGroupKey): string {
   return group.type === 'collection' ? JSON.stringify(['collection', group.id]) : 'unclassified'
 }
 
 /**
- * Parses selection intent and requires grouped endpoints to name declared expanded groups.
- *
- * Execution reports SelectionChanged when endpoints disappear or a crossed group cannot be read.
+ * Grouped endpoints must name declared expanded groups. Execution reports SelectionChanged if a
+ * required endpoint disappears or a crossed group cannot be read.
  */
 export function parseEntrySelection(input: unknown): EntrySelection {
   const endpoint = v.strictObject({ group: groupSchema, ref: entryRefSchema })

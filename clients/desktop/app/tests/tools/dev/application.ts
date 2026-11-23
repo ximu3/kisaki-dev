@@ -1,12 +1,12 @@
-/** @fileoverview Owns the test carrier's local IPC handshake and process lifetime. */
-
 import { spawn } from 'node:child_process'
 import { once } from 'node:events'
 import { debuglog } from 'node:util'
-import { UnconfirmedApplicationExit } from '../../../tools/dev/session'
-import type { DevelopmentApplication, DevelopmentLaunchOptions } from '../../../tools/dev/session'
+import {
+  UnconfirmedApplicationExit,
+  type DevelopmentApplication,
+  type DevelopmentLaunchOptions,
+} from '../../../tools/dev/session'
 
-/** Opt-in diagnostics for fixture startup, readiness and confirmed process closure. */
 const debug = debuglog('kisaki:fixture-launch')
 
 /**
@@ -44,7 +44,6 @@ export async function launchFixtureApplication(
   )
   void exited.catch(() => undefined)
 
-  /** Sends SIGKILL to a running fixture and waits for process and stream closure. */
   const terminate = async () => {
     if (child.exitCode === null && child.signalCode === null) {
       child.kill('SIGKILL')
@@ -53,9 +52,7 @@ export async function launchFixtureApplication(
   }
 
   let timer: ReturnType<typeof setTimeout> | undefined
-  /** Rejects the startup wait with the caller's cancellation reason. */
   let abort: (() => void) | undefined
-  /** Accepts readiness only when the fixture reports the requested build identity. */
   let message: ((value: unknown) => void) | undefined
   try {
     await new Promise<void>((resolve, reject) => {
@@ -132,7 +129,6 @@ export async function launchFixtureApplication(
           return 'exited' as const
         }
 
-        /** Recognizes the fixture's explicit cancellation acknowledgement during normal close. */
         let cancelled: ((value: unknown) => void) | undefined
         let deadline: ReturnType<typeof setTimeout> | undefined
         try {

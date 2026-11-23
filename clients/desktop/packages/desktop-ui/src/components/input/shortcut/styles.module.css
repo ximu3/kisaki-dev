@@ -1,5 +1,3 @@
-/* Committed bindings share chip geometry. The trailing action opens a separate recorder. */
-
 @layer components {
   .root {
     position: relative;

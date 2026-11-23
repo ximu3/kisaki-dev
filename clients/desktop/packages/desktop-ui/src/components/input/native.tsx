@@ -1,11 +1,8 @@
-/** @fileoverview Native single-line editing with field associations and reset synchronization. */
-
 import { omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { callHandler } from '../../internal/dom'
 import { fieldAttributes } from '../../internal/field'
-import { bindTextControl } from '../../internal/text-control'
-import type { TextValueProps } from '../../internal/text-control'
+import { bindTextControl, type TextValueProps } from '../../internal/text-control'
 
 /**
  * Native single-line input attributes and shared text-value binding for dedicated input controls.
@@ -29,7 +26,6 @@ export function NativeInput(props: NativeInputProps): JSX.Element {
   const rest = omit(props, 'value', 'defaultValue', 'onValueChange', 'htmlSize', 'ref', 'onInput')
 
   let input!: HTMLInputElement
-  /** Text-value dispatcher shared by the input owner and native form integration. */
   const update = bindTextControl(props, () => input)
 
   return (

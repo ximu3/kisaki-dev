@@ -1,5 +1,3 @@
-/** @fileoverview Serves trusted packaged document assets and the desktop's licensed built-in fonts. */
-
 import { readFile } from 'node:fs/promises'
 import { isAbsolute, join, relative, resolve, extname } from 'node:path'
 

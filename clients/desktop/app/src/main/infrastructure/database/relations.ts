@@ -1,5 +1,3 @@
-/** @fileoverview Defines relational read paths over the same formal tables used by ordinary SQL queries. */
-
 import { defineRelations } from 'drizzle-orm'
 import * as schema from './schema'
 

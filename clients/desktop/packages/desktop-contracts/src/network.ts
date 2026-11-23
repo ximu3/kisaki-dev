@@ -1,9 +1,6 @@
-/** @fileoverview Defines host HTTP consumption and explicit proxy values without exposing Electron networking objects. */
-
-import type { ErrorSummary } from './errors'
 import type { Listener, Disposable } from './operations'
-import { asciiControl, parseValue, text, id } from './validation'
-import { DesktopError } from './errors'
+import { fromParser, asciiControl, parseValue, text, id } from './validation'
+import { DesktopError, type ErrorSummary } from './errors'
 import * as v from 'valibot'
 
 /**
@@ -13,7 +10,6 @@ import * as v from 'valibot'
  */
 export type ProxyEndpoint = string
 
-/** Plaintext proxy credentials accepted at the protected native write boundary. */
 export interface ProxyCredentials {
   readonly username: string
   readonly password: string
@@ -33,10 +29,8 @@ export interface NetworkPreferences {
 }
 
 /**
- * Readiness of the host network route after applying saved preferences.
- *
- * A failed apply blocks new HTTP requests and WebSocket handshakes. Established browser
- * WebSockets retain their original route until they close.
+ * A failed apply blocks new HTTP requests and WebSocket handshakes. Established browser WebSockets
+ * retain their original route until they close.
  */
 export type NetworkState =
   | { readonly status: 'ready' }
@@ -96,7 +90,6 @@ export interface NetworkResponse {
   formData(): Promise<FormData>
 }
 
-/** Host HTTP access through the applied route and observation of route readiness. */
 export interface NetworkApi {
   /**
    * Starts an HTTP request and resolves when response headers arrive.
@@ -108,11 +101,7 @@ export interface NetworkApi {
   /** Reads whether the saved network choice has been applied successfully. */
   getState(): Promise<NetworkState>
 
-  /**
-   * Delivers current readiness and subsequent changes and returns the observation lifetime.
-   *
-   * Releasing observation leaves requests running.
-   */
+  /** Delivers the current route first. Releasing observation leaves requests running. */
   observe(listener: Listener<NetworkState>): Disposable
 }
 
@@ -142,11 +131,7 @@ export function parseHttpUrl(input: unknown): string {
   }
 }
 
-/**
- * Parses a single supported proxy endpoint and returns its canonical host and explicit port.
- *
- * Rejects credentials, resource paths, query strings, fragments and invalid ports.
- */
+/** Rejects credentials, resource paths, query strings, fragments and invalid ports. */
 export function parseProxyEndpoint(input: unknown): ProxyEndpoint {
   const value = parseValue(text, input, 'Invalid proxy endpoint')
   try {
@@ -191,11 +176,7 @@ export function parseProxyCredentials(input: unknown): ProxyCredentials {
   )
 }
 
-/**
- * Parses absent credentials or their saved opaque revision.
- *
- * The revision exposes no plaintext and does not establish successful decryption.
- */
+/** The revision exposes no plaintext and does not establish successful decryption. */
 export function parseProxyCredentialState(input: unknown): ProxyCredentialState | null {
   return parseValue(
     v.nullable(v.strictObject({ revision: id })),
@@ -219,18 +200,14 @@ export function manualProxyIssue(
   return authenticated && endpoint.startsWith('socks5:') ? 'credentials' : null
 }
 
-/**
- * Parses complete network preferences and checks manual proxy requirements.
- *
- * Manual mode requires an endpoint and rejects credentials for SOCKS5 proxies.
- */
+/** Manual mode requires an endpoint and rejects credentials for SOCKS5 proxies. */
 export function parseNetworkPreferences(input: unknown): NetworkPreferences {
   const value = parseValue(
     v.strictObject({
       mode: v.picklist(['system', 'direct', 'manual']),
-      endpoint: v.nullable(v.pipe(v.unknown(), v.transform(parseProxyEndpoint))),
+      endpoint: v.nullable(fromParser(parseProxyEndpoint)),
       bypassRules: text,
-      credentials: v.pipe(v.unknown(), v.transform(parseProxyCredentialState)),
+      credentials: fromParser(parseProxyCredentialState),
     }),
     input,
     'Invalid network preferences',

@@ -1,5 +1,3 @@
-/** @fileoverview Presents removable shortcut bindings and stages new chords in an anchored recorder. */
-
 import { createEffect, createSignal, createUniqueId, For, Show } from 'solid-js'
 import { SelectedChips, type ChipLabels } from '../../../internal/chips/control'
 import type { ControlSize } from '../../../internal/control/size'
@@ -7,7 +5,7 @@ import { closeWhenUnavailable, fieldAttributes } from '../../../internal/field'
 import { Icon, Keyboard } from '../../../internal/icon/glyph'
 import { createPopup } from '../../../internal/popup/controller'
 import { onFormReset } from '../../../internal/state'
-import { Button } from '../../button/control'
+import { Button } from '../../button'
 import { InputFrame } from '../frame'
 import { createShortcutRecording, type ShortcutKeypress } from './recording'
 import popup from '../../../internal/popup/surface.module.css'

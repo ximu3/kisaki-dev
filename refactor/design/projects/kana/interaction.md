@@ -6,7 +6,7 @@
 
 ## 源选区、原文与显示投影
 
-selection 在源层保存一次连续选择的起止点、方向与匹配文本，各章节的 Range 和高亮投影这份状态。显示片段随章节加载、排版与回收重建，源选区保持连续。Kana 统一接续跨页、跨章、横竖排和自动滚动中的选择。
+selection 保存一次连续选择的源端点和方向，各章节的 Range 和高亮投影这份状态。显示片段随章节加载、排版与回收重建，源选区保持连续。Kana 统一接续跨页、跨章、横竖排和自动滚动中的选择。
 
 内部保留选择的固定端与活动端，使用所属格式能够可靠表达的定位；有序范围在交付时由实际源顺序导出。PDF 的页面几何与可靠文字锚点继续沿既有合同分别处理，不为外观统一再创造一种通用文字坐标。命中与视觉移动由视图提供，源比较与原文由格式能力提供，selection 组合它们。
 
@@ -14,7 +14,7 @@ selection 在源层保存一次连续选择的起止点、方向与匹配文本�
 
 摘录保留用户本次实际选择的正文，排除脚本／样式、界面注入内容和布局产生的装饰字形；空白、段落分隔、ruby 与隐藏内容遵守已确定的[文字流与提取规则](content.md#text-flow)。源范围可以覆盖不绘制的节点，不要求把其中每个源字符都拼入用户摘录，也不允许只返回当前已加载章节的部分文字。已保存摘录不会因后续排版或提取规则变化而重写。
 
-getSelection 固定调用时的源范围，完整读取该范围的原文；期间改选不使旧范围与新文字混用。提取与搜索共同遵守[文字流与提取规则](content.md#text-flow)。
+getSelection 固定调用时的源范围，再取得完整原文。期间改选不影响该次结果。[摘录与邻近原文](content.md#quotation)
 
 标记只读投影复用源映射和当前几何，来源顺序、同起点并列和无法恢复的 ID 一并回传。高亮不得靠改写源树实现。PDF 仍使用原始页上的有序四边形，不增加 PDF.js 文字项编号作为持久身份。框选区域始终属于一张原始页面，截图与业务保存仍由 Kisaki 接入负责。
 
@@ -123,7 +123,7 @@ interface ReadingKeyInput {
 }
 
 interface OpenReaderOptions {
-  // Receives keyboard input left unhandled by the reading content.
+  /** Return true synchronously to prevent the default action for this key. */
   readonly handleKeyDown?: (input: ReadingKeyInput) => boolean
 }
 ```

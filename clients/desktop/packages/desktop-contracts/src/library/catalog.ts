@@ -1,9 +1,7 @@
-/** @fileoverview Owns the seven entry identities, five real part identities and their editable catalog values. */
-
-import type { PartialDate, CalendarDate } from '../date'
-import type { PreparedAttachment } from '../resources'
+import { membershipChangeSchema } from './membership'
 import * as v from 'valibot'
 import {
+  fromParser,
   id,
   nonemptyText,
   parseExternalValue,
@@ -16,9 +14,9 @@ import {
   parseValue,
   validateExpectedKeys,
 } from '../validation'
-import { parsePartialDate, parseCalendarDate } from '../date'
+import { parsePartialDate, parseCalendarDate, type PartialDate, type CalendarDate } from '../date'
 import { normalizeLocale } from '@kisaki3/extension-distribution/metadata'
-import { parsePreparedAttachment } from '../resources'
+import { parsePreparedAttachment, type PreparedAttachment } from '../resources'
 import { DesktopError } from '../errors'
 import type { NonEmptyArray } from '../operations'
 
@@ -33,10 +31,8 @@ export const entryTypes = Object.freeze([
   'organization',
 ] as const)
 
-/** The four entry kinds that support work-specific catalog and usage behavior. */
 export const workTypes = Object.freeze(['game', 'anime', 'comic', 'novel'] as const)
 
-/** The five real part kinds, each owned by its corresponding work medium. */
 export const partTypes = Object.freeze([
   'novelVolume',
   'comicVolume',
@@ -45,13 +41,10 @@ export const partTypes = Object.freeze([
   'animeExtra',
 ] as const)
 
-/** The seven independently cataloged entry kinds. */
 export type EntryType = (typeof entryTypes)[number]
 
-/** Entry kinds that own usage records and playable or readable local content. */
 export type WorkType = (typeof workTypes)[number]
 
-/** The five independently identified part kinds owned by anime, comic or novel works. */
 export type PartType = (typeof partTypes)[number]
 
 /** A type-qualified catalog identity. The type never grants access to an otherwise hidden object. */
@@ -60,7 +53,6 @@ export interface EntryRef<T extends EntryType = EntryType> {
   readonly id: string
 }
 
-/** A type-qualified catalog reference restricted to works. */
 export type WorkRef<T extends WorkType = WorkType> = EntryRef<T>
 
 /** Part identities are scoped by kind, with actual ownership supplied or read separately. */
@@ -94,7 +86,6 @@ export type LanguageTag = string
 /** Adopted explicit classifications; null in the owning field means unknown. */
 export type Gender = 'male' | 'female' | 'nonBinary' | 'genderless' | 'other'
 
-/** An explicitly known ABO blood-group classification. */
 export type BloodType = 'a' | 'b' | 'ab' | 'o'
 
 /** The user's current plan or usage arrangement for a work, separate from completion history. */
@@ -103,10 +94,8 @@ export type WorkStatus = 'planned' | 'active' | 'onHold'
 /** A work's publication lifecycle, independent of the user's usage state. */
 export type ReleaseStatus = 'planned' | 'ongoing' | 'finished' | 'paused' | 'cancelled'
 
-/** The regular or special classification of a numbered anime episode. */
 export type AnimeEpisodeType = 'regular' | 'special'
 
-/** The content role of an anime extra outside the episode catalog. */
 export type AnimeExtraType = 'opening' | 'ending' | 'promotion' | 'interview' | 'other'
 
 /** A definite nonnegative quantity or the full nonempty source wording; no inferred units or range truncation. */
@@ -114,11 +103,7 @@ export type CharacterMeasure =
   | { readonly kind: 'number'; readonly value: number }
   | { readonly kind: 'text'; readonly value: string }
 
-/**
- * Editable catalog facts shared by every entry kind.
- *
- * Bodies and dates are whole replacement values. Null explicitly clears nullable facts.
- */
+/** Bodies and dates are whole replacement values. Null explicitly clears nullable fields. */
 export interface EntryCommonFields {
   readonly name: string
   readonly originalName: string | null
@@ -136,9 +121,8 @@ export interface EntryCommonFields {
 }
 
 /**
- * Catalog facts shared by works.
- *
- * Original languages describe creative language rather than subtitles or the UI locale.
+ * Original languages describe a work's creative language, independently of subtitles and the
+ * interface locale.
  */
 export interface WorkFields {
   readonly releaseDate: PartialDate | null
@@ -148,17 +132,12 @@ export interface WorkFields {
   readonly titleLogoId: string | null
 }
 
-/** Serial publication facts remain independent of personal status, completion history and local content. */
 export interface SerialWorkFields {
   readonly releaseStatus: ReleaseStatus | null
   readonly releaseEndDate: PartialDate | null
 }
 
-/**
- * Explicit character biography and measurements.
- *
- * Numeric age uses years, height and circumferences use centimetres, and weight uses kilograms.
- */
+/** Numeric age uses years. Height and circumferences use centimetres. Weight uses kilograms. */
 export interface CharacterFields {
   readonly birthDate: PartialDate | null
   readonly gender: Gender | null
@@ -173,11 +152,6 @@ export interface CharacterFields {
   readonly cupSize: string | null
 }
 
-/**
- * Catalog fields owned by each entry kind.
- *
- * Declared counts and duration are nullable nonnegative safe integers.
- */
 export interface EntrySpecificFields {
   readonly game: WorkFields & { readonly iconImageId: string | null }
 
@@ -214,13 +188,10 @@ export interface EntrySpecificFields {
   }
 }
 
-/** An entry's editable catalog facts, without technical timestamps, derived summaries or private values. */
 export type EntryFields<T extends EntryType> = EntryCommonFields & EntrySpecificFields[T]
 
 /**
- * An entry's personal rating and favorite choice.
- *
- * Rating is an integer from 0 to 100 or null. An absent saved evaluation reads as null rating and
+ * Rating is an integer from 0 to 100 or null. A missing saved evaluation reads as null rating and
  * false favorite.
  */
 export interface Evaluation {
@@ -240,24 +211,20 @@ export interface CompletionFields {
   readonly note: string | null
 }
 
-/** A saved tag association includes its attributes; array order belongs to this entry side. */
 export interface EntryTag {
   readonly tagId: string
   readonly note: string | null
   readonly isSpoiler: boolean
 }
 
-/** Entry-side collection membership has no separate ordering; display follows global collection order. */
 export interface EntryCollection {
   readonly collectionId: string
   readonly note: string | null
 }
 
 /**
- * A tag association supplied for creation or membership changes.
- *
- * New associations default note to null and isSpoiler to false. Omitted attributes on existing
- * associations remain unchanged.
+ * New associations default note to null and isSpoiler to false. Omitted attributes preserve their
+ * values on existing associations.
  */
 export interface EntryTagInput {
   readonly tagId: string
@@ -265,22 +232,13 @@ export interface EntryTagInput {
   readonly isSpoiler?: boolean
 }
 
-/**
- * A collection association with an optional note.
- *
- * New associations default the note to null; an omitted note preserves an existing association's
- * value.
- */
+/** New memberships default note to null. Omission preserves the note on an existing membership. */
 export interface EntryCollectionInput {
   readonly collectionId: string
   readonly note?: string | null
 }
 
-/**
- * Complete entry-side tag replacement or disjoint incremental membership changes.
- *
- * Only replacement can compare a whole-set baseline.
- */
+/** Only complete replacement supports comparing a whole-set baseline. */
 export type EntryTagChange =
   | { readonly type: 'replace'; readonly items: readonly EntryTagInput[] }
   | {
@@ -289,11 +247,7 @@ export type EntryTagChange =
       readonly remove?: readonly string[]
     }
 
-/**
- * Complete entry-side collection replacement or disjoint incremental membership changes.
- *
- * Collection display order remains globally owned.
- */
+/** Collection display order belongs to the collection directory. */
 export type EntryCollectionChange =
   | { readonly type: 'replace'; readonly items: readonly EntryCollectionInput[] }
   | {
@@ -303,10 +257,7 @@ export type EntryCollectionChange =
     }
 
 /**
- * Explicit changes to editable catalog, personal and membership facts.
- *
- * Omission preserves a field; null clears only nullable values. Work records apply only to work
- * entries.
+ * Omission preserves a field. Null clears nullable values. Work records apply only to work entries.
  */
 export type EntryChanges<T extends EntryType> = Partial<EntryFields<T>> & {
   readonly evaluation?: Partial<Evaluation>
@@ -314,18 +265,13 @@ export type EntryChanges<T extends EntryType> = Partial<EntryFields<T>> & {
   readonly collections?: EntryCollectionChange
 } & (T extends WorkType ? { readonly record?: Partial<WorkRecord> } : { readonly record?: never })
 
-/**
- * Expected values for the independent fields and whole replacements being changed.
- *
- * Formal membership baselines include hidden associations.
- */
+/** A whole membership baseline includes hidden associations. */
 export type EntryExpected<T extends EntryType> = Partial<EntryFields<T>> & {
   readonly evaluation?: Partial<Evaluation>
   readonly tags?: readonly EntryTag[]
   readonly collections?: readonly EntryCollection[]
 } & (T extends WorkType ? { readonly record?: Partial<WorkRecord> } : { readonly record?: never })
 
-/** A new entry's required name and type-specific catalog and personal inputs. */
 export type EntryCreate<T extends EntryType = EntryType> = {
   [K in T]: { readonly type: K; readonly name: string } & Partial<Omit<EntryFields<K>, 'name'>> & {
       readonly evaluation?: Partial<Evaluation>
@@ -340,11 +286,7 @@ export type EntryCreate<T extends EntryType = EntryType> = {
       : object)
 }[T]
 
-/**
- * An atomic edit of one type-qualified entry with optional baselines and prepared resources.
- *
- * Prepared holds support the submitted changes without expanding the saved field set.
- */
+/** Prepared holds support the submitted fields without expanding the save. */
 export type EntryUpdate<T extends EntryType = EntryType> = {
   [K in T]: {
     readonly ref: EntryRef<K>
@@ -355,9 +297,8 @@ export type EntryUpdate<T extends EntryType = EntryType> = {
 }[T]
 
 /**
- * An entry's catalog details, personal facts and derived summaries.
- *
- * Long descriptions and complete relations have dedicated reads. Derived summaries are read-only.
+ * Use dedicated reads for long descriptions and complete relations. Derived summaries are
+ * read-only.
  */
 export type EntryDetails<T extends EntryType = EntryType> = {
   [K in T]: Omit<EntryFields<K>, 'description'> & {
@@ -381,20 +322,16 @@ export type EntryDetails<T extends EntryType = EntryType> = {
       : object)
 }[T]
 
-/** Stable local entry identity qualified by one of the seven entry kinds. */
 export const entryRefSchema = v.strictObject({ type: v.picklist(entryTypes), id })
 
-/** Stable local entry reference restricted to the four work kinds. */
 export const workRefSchema = v.strictObject({ type: v.picklist(workTypes), id })
 
-/** Stable local part identity qualified by its concrete part kind. */
 export const partRefSchema = v.strictObject({ type: v.picklist(partTypes), id })
 
-/** Known civil-date components validated through the shared calendar contract. */
-export const partialDateSchema = v.pipe(v.unknown(), v.transform(parsePartialDate))
+export const partialDateSchema = fromParser(parsePartialDate)
 
 /** Complete civil-date values validated without timestamp or timezone conversion. */
-export const calendarDateSchema = v.pipe(v.unknown(), v.transform(parseCalendarDate))
+export const calendarDateSchema = fromParser(parseCalendarDate)
 
 /** Parses a language tag without dropping script, region or collation identifiers. */
 export const languageSchema = v.pipe(
@@ -402,7 +339,6 @@ export const languageSchema = v.pipe(
   v.transform((value) => parseExternalValue(normalizeLocale, value, 'Invalid language tag')),
 )
 
-/** Exact external source coordinates, preserving the complete source item identity. */
 export const identitySchema = v.strictObject({
   source: v.pipe(nonemptyText, v.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)),
   sourceId: nonemptyText,
@@ -414,13 +350,10 @@ export const identitiesSchema = v.pipe(
   v.check((items) => unique(items, identityKey)),
 )
 
-/** A descriptive link with nonblank label and target text. */
 export const externalLinkSchema = v.strictObject({ name: nonemptyText, url: nonemptyText })
 
-/** Ordered aliases shared by entries and parts; every item retains nonblank source text. */
 export const aliasesSchema = v.array(nonemptyText)
 
-/** Ordered descriptive links accepted by catalog and part values. */
 export const externalLinksSchema = v.array(externalLinkSchema)
 
 /** Canonical language tags retained in order with no duplicate language identity. */
@@ -429,13 +362,10 @@ export const languagesSchema = v.pipe(
   v.check((items) => unique(items, (item) => item)),
 )
 
-/** The shared finite gender vocabulary for character and person facts. */
 export const genderSchema = v.picklist(['male', 'female', 'nonBinary', 'genderless', 'other'])
 
-/** Current personal work status, separate from completion history. */
 export const statusSchema = v.picklist(['planned', 'active', 'onHold'])
 
-/** Publication-progress vocabulary used by serial work catalog facts. */
 export const releaseStatusSchema = v.picklist([
   'planned',
   'ongoing',
@@ -444,16 +374,13 @@ export const releaseStatusSchema = v.picklist([
   'cancelled',
 ])
 
-/** A definite nonnegative character measurement or complete nonblank source wording. */
 export const measureSchema = v.variant('kind', [
   v.strictObject({ kind: v.literal('number'), value: nonnegativeNumber }),
   v.strictObject({ kind: v.literal('text'), value: nonemptyText }),
 ])
 
-/** Independent personal rating and favorite fields shared by every entry kind. */
 export const evaluationEntries = { rating: v.nullable(rating), favorite: v.boolean() }
 
-/** Current personal work status and additional duration, independent of recorded activity. */
 export const recordEntries = {
   status: v.nullable(statusSchema),
   additionalDurationMs: nonnegativeInteger,
@@ -468,43 +395,34 @@ export const completionFieldsSchema = v.strictObject({
   ),
 })
 
-/** Saved tag-application identity, note and spoiler attributes. */
 export const entryTagEntries = { tagId: id, note: v.nullable(text), isSpoiler: v.boolean() }
 
-/** Saved collection-membership identity and its independent note. */
 export const entryCollectionEntries = { collectionId: id, note: v.nullable(text) }
 
-/** Explicit tag-application input with optional relationship attributes. */
 export const entryTagInputSchema = v.strictObject({
   tagId: id,
   ...optionalFields({ note: v.nullable(text), isSpoiler: v.boolean() }),
 })
 
-/** Explicit collection-membership input with an optional note. */
 export const entryCollectionInputSchema = v.strictObject({
   collectionId: id,
   note: v.exactOptional(v.nullable(text)),
 })
 
-/** Saved tag applications with one row per tag identity. */
 export const entryTagsSchema = v.pipe(
   v.array(v.strictObject(entryTagEntries)),
   v.check((items) => unique(items, (item) => item.tagId)),
 )
 
-/** Saved collection memberships with one row per collection identity. */
 export const entryCollectionsSchema = v.pipe(
   v.array(v.strictObject(entryCollectionEntries)),
   v.check((items) => unique(items, (item) => item.collectionId)),
 )
 
-/** Optional partial catalog date, retaining null as a distinct unset value. */
 const nullableDate = v.nullable(partialDateSchema)
 
-/** Optional declared count whose known value is a nonnegative safe integer. */
 const nullableCount = v.nullable(nonnegativeInteger)
 
-/** Descriptive facts and identity bindings shared by all entry creation and edit contracts. */
 export const entryCommonEntries = {
   name: nonemptyText,
   originalName: v.nullable(text),
@@ -521,7 +439,6 @@ export const entryCommonEntries = {
   addedDate: nullableDate,
 }
 
-/** Catalog facts shared by the four work media, separate from personal records. */
 const workEntries = {
   releaseDate: nullableDate,
   originalLanguages: languagesSchema,
@@ -530,13 +447,11 @@ const workEntries = {
   titleLogoId: v.nullable(id),
 }
 
-/** Publication status and end date for serial media. */
 const serialEntries = {
   releaseStatus: v.nullable(releaseStatusSchema),
   releaseEndDate: nullableDate,
 }
 
-/** Catalog field vocabulary and validators owned by each concrete entry kind. */
 export const entrySpecificEntries = {
   game: { ...workEntries, iconImageId: v.nullable(id) },
 
@@ -597,7 +512,6 @@ export function parseEntryRef(input: unknown): EntryRef {
   return parseValue(entryRefSchema, input, 'Invalid entry reference')
 }
 
-/** Parses a reference restricted to the four work kinds. */
 export function parseWorkRef(input: unknown): WorkRef {
   return parseValue(workRefSchema, input, 'Invalid work reference')
 }
@@ -622,12 +536,10 @@ export function parseLanguageTag(input: unknown): LanguageTag {
   return parseValue(languageSchema, input, 'Invalid language tag')
 }
 
-/** Parses a complete ordered list of nonblank entry or part aliases. */
 export function parseAliases(input: unknown): readonly string[] {
   return parseValue(aliasesSchema, input, 'Invalid catalog aliases')
 }
 
-/** Parses descriptive links independently of a catalog operation. */
 export function parseExternalLinks(input: unknown): readonly ExternalLink[] {
   return parseValue(externalLinksSchema, input, 'Invalid external links')
 }
@@ -637,59 +549,25 @@ export function parseLanguages(input: unknown): readonly LanguageTag[] {
   return parseValue(languagesSchema, input, 'Invalid catalog languages')
 }
 
-/** Parses a numeric measurement or its original descriptive wording. */
 export function parseCharacterMeasure(input: unknown): CharacterMeasure {
   return parseValue(measureSchema, input, 'Invalid character measurement')
 }
 
 /** A resource interface is checked only for shape here. The host validates actual ownership and retention. */
-export const preparedSchema = v.pipe(v.unknown(), v.transform(parsePreparedAttachment))
+export const preparedSchema = fromParser(parsePreparedAttachment)
 
-/**
- * Builds complete-replacement and incremental-membership schemas for keyed members.
- *
- * Rejects duplicate members, empty incremental intent and overlapping add/remove identities.
- */
-export function membershipSchema<T extends v.GenericSchema>(
-  member: T,
-  key: (item: v.InferOutput<T>) => string,
-) {
-  const members = v.pipe(
-    v.array(member),
-    v.check((items) => unique(items, key)),
-  )
-  return v.variant('type', [
-    v.strictObject({ type: v.literal('replace'), items: members }),
-    v.pipe(
-      v.strictObject({
-        type: v.literal('modify'),
-        add: v.exactOptional(members),
-        remove: v.exactOptional(
-          v.pipe(
-            v.array(id),
-            v.check((items) => unique(items, (item) => item)),
-          ),
-        ),
-      }),
-      v.check(
-        (value) =>
-          (value.add?.length ?? 0) + (value.remove?.length ?? 0) > 0 &&
-          !(value.add ?? []).some((item) => value.remove?.includes(key(item))),
-      ),
-    ),
-  ])
-}
+export const entryTagChangeSchema = membershipChangeSchema(
+  entryTagInputSchema,
+  id,
+  (item) => item.tagId,
+  (tagId) => tagId,
+)
 
-/** Whole replacement or explicit tag-membership edits with conflict checks by tag identity. */
-export const entryTagChangeSchema = membershipSchema(entryTagInputSchema, (item) => item.tagId)
-
-/**
- * Whole replacement or explicit collection-membership edits with conflict checks by collection
- * identity.
- */
-export const entryCollectionChangeSchema = membershipSchema(
+export const entryCollectionChangeSchema = membershipChangeSchema(
   entryCollectionInputSchema,
+  id,
   (item) => item.collectionId,
+  (collectionId) => collectionId,
 )
 
 /** Parses tag replacement or disjoint incremental intent while preserving requested order. */
@@ -702,7 +580,6 @@ export function parseEntryCollectionChange(input: unknown): EntryCollectionChang
   return parseValue(entryCollectionChangeSchema, input, 'Invalid entry collection change')
 }
 
-/** Builds the creation schema for one entry kind and its applicable personal facts. */
 function entryCreateSchema<T extends EntryType>(type: T) {
   return v.strictObject({
     type: v.literal(type),
@@ -731,16 +608,11 @@ function entryCreateSchema<T extends EntryType>(type: T) {
   })
 }
 
-/** Checks whether a known entry kind belongs to the work subset. */
 export function isWorkType(type: EntryType): type is WorkType {
   return workTypes.some((value) => value === type)
 }
 
-/**
- * Parses creation fields for the selected entry kind.
- *
- * Work records and completion history are restricted to works; derived fields are rejected.
- */
+/** Only works accept initial work records or completion history. Derived fields are read-only. */
 export function parseEntryCreate(input: unknown): EntryCreate {
   const { type } = parseValue(
     v.looseObject({ type: v.picklist(entryTypes) }),
@@ -748,15 +620,11 @@ export function parseEntryCreate(input: unknown): EntryCreate {
     'Invalid entry creation',
   )
 
-  // The selected schema and its work-only fields were chosen by the validated discriminator.
+  // The validated discriminator selects the schema and its work-only fields.
   return parseValue(entryCreateSchema(type), input, 'Invalid entry creation') as EntryCreate
 }
 
-/**
- * Parses an entry edit and checks expected fields against their actual save units.
- *
- * Whole membership baselines require replacement intent. Empty changes remain a no-op.
- */
+/** Whole membership baselines require replacement intent. Empty changes are a no-op. */
 export function parseEntryUpdate(input: unknown): EntryUpdate {
   const { ref } = parseValue(v.looseObject({ ref: entryRefSchema }), input, 'Invalid entry edit')
   const catalog = { ...entryCommonEntries, ...entrySpecificEntries[ref.type] }
@@ -827,5 +695,4 @@ export function parseEntryRefs(input: unknown): NonEmptyArray<EntryRef> {
   )
 }
 
-/** Work kinds with file-based holdings and recognition profiles. */
 export type FileWorkType = 'anime' | 'comic' | 'novel'

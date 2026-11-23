@@ -1,5 +1,3 @@
-/** @fileoverview Combines domain English messages into the validation and generated-type baseline. */
-
 import { actionMessages } from './actions'
 import { libraryMessages } from './library'
 import { taskMessages } from './tasks'

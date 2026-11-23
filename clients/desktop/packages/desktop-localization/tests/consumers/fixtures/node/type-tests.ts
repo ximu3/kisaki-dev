@@ -1,5 +1,3 @@
-/** @fileoverview Verifies generated key and argument correlations in this consumer's actual type environment. */
-
 import type { Translate } from '@kisaki3/desktop-localization'
 
 /** Exercises generated call types so invalid keys and uncorrelated arguments fail compilation. */

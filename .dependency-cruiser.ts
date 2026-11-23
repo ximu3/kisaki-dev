@@ -1,13 +1,9 @@
-/** @fileoverview Defines workspace import ownership and the runtime boundaries checked by dependency-cruiser. */
-
 import { existsSync, readFileSync, realpathSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { join } from 'node:path'
 import type { IConfiguration, IRegularForbiddenRuleType } from 'dependency-cruiser'
-import { listProjects, repositoryRoot } from './tools/workspace.ts'
-import type { Project } from './tools/workspace.ts'
+import { listProjects, repositoryRoot, type Project } from './tools/workspace.ts'
 
-/** Direct dependency declarations available to an importing workspace member. */
 interface PackageDependencies {
   dependencies?: Record<string, string>
   devDependencies?: Record<string, string>
@@ -56,7 +52,6 @@ function declaredManifests(file: string): Set<string> {
   return declared
 }
 
-/** Requires local paths to stay in their package and other workspace packages to be declared. */
 function workspaceImportRules(): IRegularForbiddenRuleType[] {
   const projects = listProjects()
   const members = projects.map((project) => ({

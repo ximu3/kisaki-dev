@@ -1,8 +1,5 @@
-/** @fileoverview Presents independent desktop reads while a window keeps its existing controls mounted. */
-
 import { createEffect, createSignal, onCleanup } from 'solid-js'
 
-/** One read with all reactive inputs already captured. */
 type QueryRead<T> = (signal: AbortSignal) => Promise<T>
 
 /** The previous value remains visible while a replacement request is outstanding. */
@@ -12,7 +9,6 @@ interface QueryState<T> {
   pending: boolean
 }
 
-/** The active read owns its cancellation and the callers waiting for its result. */
 interface QueryRequest {
   controller: AbortController
   completion: PromiseWithResolvers<void>

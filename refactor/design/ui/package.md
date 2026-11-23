@@ -60,7 +60,7 @@ desktop-ui 通过 props、事件与回调接入行为。异步选项、加载结
 
 `@kisaki3/desktop-ui/form` 提供 `Form`、`FormFeedback`、`FieldIssue` 和按实例使用的 `createForm`。普通表单直接写 `<Form onSubmit={save}>`，有业务约束时传入 `validate` 与 `locate`。需由表单外的快捷键或关闭确认等待保存时，编辑器用同一组回调创建一个 `createForm` 实例，并通过 `<Form state={form}>` 接入。替换 `state` 时，原生表单、字段反馈和提交一起切换到新实例。两种入口共享一套提交实现，回调只在实例拥有者处定义一次。Form 渲染真正的 `<form>`，保留元素 ref、表单归属、submitter、Enter 与可取消的 reset。
 
-`Form` 设置 `novalidate`，在原生 submit 中取消默认导航。提交先读取适用控件的 `validity`，按稳定字段身份与业务校验合并，按照表单阅读顺序交付问题。未挂载分组的约束由拥有完整草稿的业务校验提供。同一字段同时违反原生与业务约束时，采用业务给出的具体纠错说明，该字段只计一次。第一次提交前保持安静。提交失败后，用户输入、宿主回写、原生约束以及表单成员或归属变化都会更新相应反馈。只有提交或用户点击定位才移动焦点。定位回调先展开所属分组，再聚焦真实控件。Field 按控件的原生表单归属关联字段错误；通过 HTML 的 `form` 属性从外部接入或更换归属时，控件与错误说明一起更新。FormFeedback 呈现整表反馈。被取消的原生 reset 保持当前状态。草稿拥有者用保存值执行放弃，用产品默认值恢复选定字段。
+`Form` 设置 `novalidate`，在原生 submit 中取消默认导航。提交先读取适用控件的 `validity`，按稳定字段身份与业务校验合并，按照表单阅读顺序交付问题。未挂载分组的约束由拥有完整草稿的业务校验提供。同一字段同时违反原生与业务约束时，采用业务给出的具体纠错说明，该字段只计一次。首次提交前，表单不主动显示字段校验错误。提交失败后，用户输入、宿主回写、原生约束以及表单成员或归属变化都会更新相应反馈。只有提交或用户点击定位才移动焦点。定位回调先展开所属分组，再聚焦真实控件。Field 按控件的原生表单归属关联字段错误；通过 HTML 的 `form` 属性从外部接入或更换归属时，控件与错误说明一起更新。FormFeedback 呈现整表反馈。被取消的原生 reset 保持当前状态。草稿拥有者用保存值执行放弃，用产品默认值恢复选定字段。
 
 实例的 `submit()` 返回本次操作的 Promise。按钮、快捷键与关闭前保存进入同一个提交流程，校验未通过时返回 `false`，业务提交成功返回 `true`，业务失败按原错误拒绝。在途请求固定首次接纳的动作，重复请求等待同一结果。多动作表单通过原生 submitter 区分提交按钮，快捷键与关闭前保存使用常规保存。`busy` 表示正在提交，编辑器仍可接收新输入。FormFeedback 在 Form 内从本实例取得结果与当前字段，汇总文案和操作错误由发起者提供。独立消费反馈区时仍可显式传入 issues、activeFieldId、summary 和 onLocate。草稿、脏状态、提交快照、并发基线、资源与部分成功结果归业务拥有者。独立消费者的原生 HTML 表单也能直接使用各公共控件。
 
@@ -130,7 +130,7 @@ Dialog 的内容在打开请求时挂载。内容可通过 `deferDialogUntil` �
 
 受控 Popover 由调用方采纳关闭请求后退出顶层，展示与触发器的展开状态读取同一份值。外点请求需要同一次指针操作的按下和释放都在触发器与面板之外。闭合由 Escape 发起时回到触发位置，由外点发起时保留新目标。面板使用原生手动顶层和平台关闭观察器，监听随本次打开结束。[顶层与原生外点关闭](https://html.spec.whatwg.org/multipage/popover.html#the-popover-attribute) · [平台关闭观察器](https://html.spec.whatwg.org/multipage/interaction.html#the-closewatcher-interface)
 
-Tooltip 在所属文档内接续阅读。普通提示和字段反馈详情首次悬停默认等待 400ms，Tooltip 的 delayMs 可指定首次等待。键盘聚焦立即触发。离开触发点后有 120ms 宽限移入提示正文。连续移至其他提示，或在自然关闭后的 300ms 内移入下一项时，直接交接内容。Escape 结束本次阅读，当前触发点在指针与焦点都离开后可再次唤起提示。
+普通提示和字段反馈详情首次悬停时默认等待 400ms，Tooltip 的 `delayMs` 可调整这段等待。键盘聚焦立即显示提示。移出触发点后，指针有 120ms 移入提示正文。连续移到其他触发点，或在自然关闭后的 300ms 内移入下一项时，立即显示新的提示。按 Escape 关闭后，指针和焦点均离开原触发点即可再次触发。
 
 浮层与 Toast 在所属文档和实际模态范围内呈现；原生 top layer 与模态外的 inert 状态由浏览器决定，定位或层叠不能扩大交互范围。Webview 内的 Dialog 只约束自己的文档，宿主容器遵守[扩展视图合同](../extensions/webview.md#container)。
 
@@ -222,9 +222,8 @@ src/components 按组件家族或完整能力组织，家族内共同维护实�
 desktop-ui/
 ├─ src/
 │  ├─ components/
-│  │  ├─ button/
-│  │  │  ├─ index.ts
-│  │  │  ├─ control.tsx
+│  │  ├─ spinner/
+│  │  │  ├─ index.tsx
 │  │  │  └─ styles.module.css
 │  │  ├─ form/
 │  │  ├─ field/
@@ -249,7 +248,7 @@ desktop-ui/
 
 共享状态且经常一起阅读、修改的内容集中组织；可以独立使用、依赖或资源寿命不同的职责，在同一家族内分文件协作。Props、变体与专用辅助跟随所属实现，文件数量与层级由实际阅读和修改路径决定。
 
-公开子路径定义消费边界，内部文件承载实现分工。正式构建入口遵守[主题目录与入口规则](../engineering/conventions.md#module-imports)，由家族内的 index.ts 选择公开接口，通过构建配置与 exports 映射到 /button 等子路径。components 与 internal 是源码组织目录，分类目录不增加汇总导出；包内协作直接引用实际模块。
+公开子路径定义消费边界，内部文件承载实现分工。正式构建入口遵守[主题目录与入口规则](../engineering/conventions.md#module-imports)，单一组件直接从实现导出，多模块家族在 index.ts 组合公开接口。构建配置与 exports 将入口映射到 /button 等子路径。components 与 internal 是源码组织目录，分类目录不增加汇总导出；包内协作直接引用实际模块。
 
 公开 Props 表达组件自身行为及适用原生元素能力。活跃 props 按 Solid 的响应式语义读取，使用 omit 和 merge 透传属性；真实资源在明确的挂载、更新与清理边界接入。
 
