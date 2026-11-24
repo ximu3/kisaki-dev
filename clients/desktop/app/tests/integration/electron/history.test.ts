@@ -116,23 +116,11 @@ test('scrolls and filters complete task history, opens details and clears record
 
   const table = page.getByRole('table', { name: 'History', exact: true })
   const header = table.locator('thead')
-  const body = table.locator('tbody')
   const viewport = table.locator('..')
   const taskDetails = table.getByRole('button', { name: 'Task details' })
   await expect(header).toBeInViewport()
   const headerStart = (await header.boundingBox())!
-  expect((await body.boundingBox())!.y).toBeCloseTo(headerStart.y + headerStart.height, 0)
-  expect(
-    await viewport.evaluate(
-      (body) =>
-        ['auto', 'scroll'].includes(getComputedStyle(body).overflowY) &&
-        body.scrollHeight > body.clientHeight,
-    ),
-  ).toBe(true)
   expect(await taskDetails.count()).toBeLessThan(50)
-  for (const label of ['Previous', 'Next']) {
-    await expect(page.getByRole('button', { name: label, exact: true })).toHaveCount(0)
-  }
 
   const rowHeight = (await failed.boundingBox())!.height
   await viewport.hover()

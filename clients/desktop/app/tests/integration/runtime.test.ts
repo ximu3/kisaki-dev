@@ -284,7 +284,7 @@ test('prepared images and fonts survive independent holds and only adopted font 
     code: 'InstanceExpired',
   })
   await original.dispose()
-  expect(previews.current).toBeDefined()
+  expect(previews.current?.input.tokens['--font-sans']).toEqual({ type: 'default' })
   await replacement.dispose()
   await attachments.drain()
   expect(await attachments.get(user.files[0].attachmentId)).toBeNull()

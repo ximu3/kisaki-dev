@@ -72,7 +72,7 @@ function libraryChecks(project: Project): PackageChecks {
 
 const linuxPackaging = ['wmctrl', 'libfuse2', 'rpm']
 
-const linuxIntegration = ['xdg-utils', 'dbus-daemon', 'dunst']
+const linuxIntegration = ['xdg-utils', 'dbus-daemon', 'dunst', 'xdotool']
 
 const performanceReport = 'test-results/performance/results.json'
 

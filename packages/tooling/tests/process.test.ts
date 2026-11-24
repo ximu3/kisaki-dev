@@ -32,31 +32,27 @@ test('cancelling a command waits for the command and its descendant to exit', as
     await operation.catch(() => undefined)
   })
 
-  let processes: { parent: number; leaf: number } | undefined
-  await expect
-    .poll(
-      async () => {
-        try {
-          processes = JSON.parse(
-            await readFile(join(directory, 'tree.json'), 'utf8'),
-          ) as typeof processes
-          return true
-        } catch (cause) {
-          if ((cause as NodeJS.ErrnoException).code !== 'ENOENT') {
-            throw cause
-          }
-          return false
+  const processes = await vi.waitUntil(
+    async () => {
+      try {
+        return JSON.parse(await readFile(join(directory, 'tree.json'), 'utf8')) as {
+          parent: number
+          leaf: number
         }
-      },
-      { timeout: 10_000 },
-    )
-    .toBe(true)
+      } catch (cause) {
+        if ((cause as NodeJS.ErrnoException).code !== 'ENOENT') {
+          throw cause
+        }
+        return undefined
+      }
+    },
+    { timeout: 10_000 },
+  )
 
   controller.abort()
   await cancelled
 
-  expect(processes).toBeDefined()
-  for (const pid of [processes!.parent, processes!.leaf]) {
+  for (const pid of [processes.parent, processes.leaf]) {
     await expect
       .poll(() => {
         try {

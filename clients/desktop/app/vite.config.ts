@@ -1,6 +1,6 @@
 import { configDefaults, defineConfig } from 'vite-plus'
 
-const developmentTests = ['tests/tools/dev/session.test.ts', 'tests/integration/source.test.ts']
+const developmentTests = ['tests/tools/dev/session.test.ts', 'tests/integration/source/*.test.ts']
 
 const dependencyBuilds = { task: 'build', from: 'dependencies' } as const
 
