@@ -16,3 +16,24 @@
 - Worker 持有独立核心时强制终止，原宿主核心仍可继续读写。重复关闭等待完成，关闭后 `hasRef()` 为 false。
 
 [六目标控制代码 CI](https://github.com/ximu3/libmpv-node-dev/actions/runs/45353425235)验证了 Rust/Node 绑定构建、固定源码与补丁，以及包位置缺少引擎时的错误。完整媒体依赖和播放后端须按[专项场景](../../scenarios/libmpv.md)分别取得运行结果。免费托管的两个 Linux runner 均未提供 DRM render node，X11 和原生 Wayland 的 dma-buf 消费待实机验收。[x64 作业](https://github.com/ximu3/libmpv-node-dev/actions/runs/45351073308/job/138297361031) · [arm64 作业](https://github.com/ximu3/libmpv-node-dev/actions/runs/45351073308/job/138297361267)
+
+<a id="windows-fonts"></a>
+
+## Windows 字体与宿主设备
+
+Windows x64 研究候选中的 Fontconfig 2.18.3 使用 ANSI 接口定位 DLL。在代码页 936 的 Node 26.13.1 和 Electron 45.3.2 中，从普通绝对路径加载时，Fontconfig 读到主配置和包含项共 25 项；从含 📚 的路径加载同一批文件，两种宿主都未读到配置。Windows 扩展长度前缀的普通目录只读到主配置和目录两项。libass 是该候选中唯一直接导入 Fontconfig 的 DLL。固定上游的 Windows 路径处理见 [Fontconfig 源码](https://gitlab.freedesktop.org/fontconfig/fontconfig/-/blob/2.18.3/src/fccfg.c)。
+
+采用 DirectWrite 的候选从固定的 libass 0.17.5 源码构建，实际列出的提供器为 none、autodetect 和 DirectWrite。使用同一条 ASS 字幕和同一个内嵌 Ahem 字体，在含空格、中文及 📚 的仓库外目录安装开发包。Node 和 Electron 分别加载样本、定位到一秒并执行软件截图。在 160 × 96 画面中，两种宿主都得到以下结果。
+
+| 系统字体 | 附件字体 | 亮像素数 |
+| --- | --- | ---: |
+| 关闭 | 关闭 | 0 |
+| 自动 | 关闭 | 101 |
+| 关闭 | 开启 | 1,024 |
+| 自动 | 开启 | 1,024 |
+
+启用附件的两幅像素掩码逐点相同。101 是此台 Windows 主机的系统字体测量值，消费用例检查是否实际绘制及其与 Ahem 的区别。[消费样本与断言](https://github.com/ximu3/libmpv-node-dev/blob/7d5f19d/tests/consumers/fixtures/subtitle-fonts.ts)
+
+控制接口已接入独立客户端、属性和事件观察、初始化与运行期日志以及异步 hook。[客户端与观察](https://github.com/ximu3/libmpv-node-dev/pull/3) · [日志](https://github.com/ximu3/libmpv-node-dev/pull/4) · [hook](https://github.com/ximu3/libmpv-node-dev/pull/6)
+
+平台枚举在本机 Windows x64 返回 4 个适配器。两台托管 macOS runner 均返回 0 个加速 CGL 渲染器，IOSurface 播放和画面交接待具备 GPU 的 Mac 实测。Linux 的 X11 与原生 Wayland 交接待具备 render node 的桌面验证。[六目标设备枚举](https://github.com/ximu3/libmpv-node-dev/actions/runs/45365878895)
