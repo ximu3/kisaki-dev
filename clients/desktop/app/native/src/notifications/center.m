@@ -17,7 +17,6 @@ typedef void (*KisakiNotificationCompletion)(void *, int);
     completion(UNNotificationPresentationOptionBanner | UNNotificationPresentationOptionList);
 }
 
-/// Handles the default click once, including the response that launched this process.
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center
 didReceiveNotificationResponse:(UNNotificationResponse *)response
          withCompletionHandler:(void (^)(void))completion {
@@ -29,10 +28,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 
 @end
 
-/// The notification center holds its delegate weakly; the application owns it through shutdown.
 static KisakiNotificationDelegate *receiver;
 
-/// Detaching the delegate leaves delivered requests and their targets in Notification Center.
 int kisaki_set_notification_receiver(const char *app_id, KisakiNotificationClick receive) {
     if (receive && ![NSBundle.mainBundle.bundleIdentifier isEqualToString:[NSString stringWithUTF8String:app_id]]) {
         return 0;
@@ -41,6 +38,7 @@ int kisaki_set_notification_receiver(const char *app_id, KisakiNotificationClick
     if (receive) {
         receiver = [KisakiNotificationDelegate new];
         receiver.receive = receive;
+        // The center holds its delegate weakly. Keep the receiver alive until shutdown.
         center.delegate = receiver;
     } else {
         if (center.delegate == receiver) center.delegate = nil;

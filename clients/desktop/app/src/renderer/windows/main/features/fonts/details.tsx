@@ -1,7 +1,5 @@
 import { createMemo, For, Show } from 'solid-js'
 import { FileType } from '@lucide/solid'
-import { Alert } from '@kisaki3/desktop-ui/alert'
-import { Button } from '@kisaki3/desktop-ui/button'
 import {
   Dialog,
   DialogContent,
@@ -13,17 +11,15 @@ import {
 import { List, ListItem } from '@kisaki3/desktop-ui/list'
 import { Spinner } from '@kisaki3/desktop-ui/spinner'
 import type { MainClient } from '../../../../infrastructure/api'
-import { errorMessage } from '../../../../infrastructure/notifications'
 import { createFontRead } from './read'
 import { FontSpecimen, fontFaceName } from './specimen'
+import { QueryError } from '../../../../infrastructure/query/error'
 
-/** The saved font addressed by a row or native navigation target. */
 export interface FontSelection {
   id: string
   name?: string | undefined
 }
 
-/** Displays the held files at their actual face and releases them when the preview ends. */
 export function FontDetails(props: {
   api: MainClient
   selected: FontSelection | undefined
@@ -50,7 +46,6 @@ export function FontDetails(props: {
   )
 }
 
-/** Loads the selected record and mounts its document-owned samples before showing the dialog. */
 function FontPreview(props: { api: MainClient; selection: FontSelection }) {
   const { api } = props
   const preview = createFontRead(api, () => props.selection)
@@ -67,16 +62,11 @@ function FontPreview(props: { api: MainClient; selection: FontSelection }) {
         <Show when={preview.loading()}>
           <Spinner label={api.t('runtime.loadingFonts')} />
         </Show>
-        <Show when={preview.error()}>
-          {(cause) => (
-            <Alert tone="destructive" role="alert">
-              {errorMessage(cause())}{' '}
-              <Button variant="outline" onClick={preview.retry}>
-                {api.t('runtime.retry')}
-              </Button>
-            </Alert>
-          )}
-        </Show>
+        <QueryError
+          error={preview.error()}
+          retryLabel={api.t('runtime.retry')}
+          retry={preview.retry}
+        />
         <Show when={preview.value()}>
           {(opened) => (
             <List>

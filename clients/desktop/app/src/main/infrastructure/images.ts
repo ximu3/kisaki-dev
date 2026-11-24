@@ -16,17 +16,14 @@ import type { createAttachments } from './attachments'
 import type { createResources } from './resources'
 import type { StagedFile } from './files'
 
-/** Processing budgets include every decoded frame and all waiting operations. */
 const imageLimits = { bytes: 64 * 1024 * 1024, pixels: 48_000_000, concurrent: 2, waiting: 8 }
 
-/** Checks source and intermediate decoded dimensions before allocating pixel storage. */
 function checkPixels(width: number, height: number, pages = 1) {
   if (width * height * pages > imageLimits.pixels) {
     throw new DesktopError('ResourceLimit', 'The image exceeds the 48 megapixel decoding limit')
   }
 }
 
-/** Reads each icon directory entry separately so an invalid layer cannot hide a valid larger image. */
 async function iconPng(bytes: Buffer, engine: typeof sharp) {
   const count = bytes.readUInt16LE(4)
   let best: { area: number; bpp: number; png: Buffer } | undefined
@@ -75,20 +72,17 @@ async function iconPng(bytes: Buffer, engine: typeof sharp) {
   return best.png
 }
 
-/** Creates image operations using the exact native runtime deployed alongside this application. */
 export function createImages(
   runtime: string,
   attachments: ReturnType<typeof createAttachments>,
   resources: ReturnType<typeof createResources>,
 ): Omit<ImagesApi, 'prepare'> & {
-  /** Prepares a verified image from an admitted input stream or file source. */
   prepare(input: FileInput | Readable, options?: CallOptions): ReturnType<ImagesApi['prepare']>
 } {
   const engine = createRequire(join(runtime, 'media', 'index.cjs'))('sharp') as typeof sharp
   const waiting = new Set<() => void>()
   let running = 0
 
-  /** Acquires capacity before reading or decoding bytes; queued callers retain cancellation. */
   async function work<T>(signal: AbortSignal | undefined, run: () => Promise<T>) {
     signal?.throwIfAborted()
     if (running >= imageLimits.concurrent) {
@@ -124,7 +118,6 @@ export function createImages(
     }
   }
 
-  /** Validates all decoded frames before exposing the prepared content. */
   async function publish(stage: StagedFile, bytes: Buffer, signal?: AbortSignal) {
     let converted: StagedFile | undefined
     try {
@@ -191,7 +184,6 @@ export function createImages(
         }
       })
     },
-    /** Keeps the source held through the ordered transform and PNG preparation. */
     async transform(ref, parameters, options) {
       const input = parseImageTransform(parameters)
       const hold = resources.hold(ref)

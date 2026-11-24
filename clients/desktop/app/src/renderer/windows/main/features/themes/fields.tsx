@@ -8,7 +8,6 @@ import type { UserFontOption } from '../../domain-ui/fonts/options'
 import { FontSelector } from '../../domain-ui/fonts/selector'
 import { tokens, type TokenName } from '@kisaki3/desktop-appearance/tokens'
 
-/** Field order shared by the editor and its validation locator. */
 export const themeGroups = [
   {
     id: 'surfaces',
@@ -71,7 +70,6 @@ export const themeGroups = [
   names: readonly (TokenName extends `--${infer Name}` ? Name : never)[]
 }[]
 
-/** Presents every editable token without changing its stored CSS syntax or font identity. */
 export function ThemeFields(props: {
   t: Translate
   scheme: ColorScheme

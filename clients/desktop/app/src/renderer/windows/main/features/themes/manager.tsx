@@ -2,7 +2,6 @@ import { createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
 import { Check, Copy, Eye, Palette, Pencil, Plus, Trash2 } from '@lucide/solid'
 import type { Theme, ThemeRef } from '@kisaki3/desktop-contracts/appearance'
-import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Badge } from '@kisaki3/desktop-ui/badge'
 import { Button } from '@kisaki3/desktop-ui/button'
 import {
@@ -18,11 +17,13 @@ import type { MainClient } from '../../../../infrastructure/api'
 import type { EditorGuard } from '../../../../infrastructure/dialogs/closing'
 import { EditorDialog } from '../../../../infrastructure/dialogs/editor'
 import { createConfirmation } from '../../../../infrastructure/dialogs/confirmation'
-import { errorMessage, reportError } from '../../../../infrastructure/notifications'
+import { reportError } from '../../../../infrastructure/notifications'
 import { catalogKey } from '../../../../../shared/catalog-ref'
 import { themeSource } from '../../domain-ui/themes/selector'
-import { ThemeEditor, type ThemeEdit } from './editor'
+import { ThemeEditor } from './editor'
+import type { ThemeEdit } from './draft'
 import { ThemeInspection } from './inspection'
+import { QueryError } from '../../../../infrastructure/query/error'
 
 const initialTheme = { type: 'builtin', id: 'default' } as const
 
@@ -33,7 +34,6 @@ interface ThemesProps {
   confirmLeave: (guard: EditorGuard) => Promise<boolean>
 }
 
-/** Keeps one catalog viewport while the user previews or edits a theme. */
 export function Themes(props: ThemesProps) {
   const { api } = props
   const catalog = createQuery((signal) => api.request(signal, 'themes.list'))
@@ -169,16 +169,12 @@ export function Themes(props: ThemesProps) {
           viewport = node
         }}
       >
-        <Show when={failure()}>
-          {(cause) => (
-            <Alert tone="destructive" role="alert" class="mb-3">
-              {errorMessage(cause())}{' '}
-              <Button variant="outline" onClick={retry}>
-                {api.t('runtime.retry')}
-              </Button>
-            </Alert>
-          )}
-        </Show>
+        <QueryError
+          error={failure()}
+          retryLabel={api.t('runtime.retry')}
+          retry={retry}
+          class="mb-3"
+        />
         <Show when={catalog.pending && !entries().size}>
           <Spinner label={api.t('runtime.loading')} />
         </Show>
@@ -302,7 +298,6 @@ export function Themes(props: ThemesProps) {
   )
 }
 
-/** Extension-private font references become editable through duplication. */
 function editable(theme: Theme): theme is Theme<'user' | 'builtin'> {
   return theme.ref.type !== 'extension'
 }

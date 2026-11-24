@@ -1,7 +1,6 @@
 import type { PageRef } from '@kisaki3/desktop-contracts/ui'
 import { moveListItems, type ListMove } from '@kisaki3/desktop-ui/list'
 
-/** Uses saved positions first and appends newly available pages in catalog order. */
 export function arrangePages<T extends { id: string }>(
   pages: readonly T[],
   order: readonly PageRef[],
@@ -25,7 +24,6 @@ export function arrangePages<T extends { id: string }>(
   return { slots, visible }
 }
 
-/** Reorders available pages within their existing slots, retaining unavailable references in place. */
 export function movePages(order: ReturnType<typeof arrangePages>, move: ListMove) {
   const ids = order.visible.map((page) => page.id)
   const next = moveListItems(ids, move)

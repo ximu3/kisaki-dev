@@ -1,21 +1,10 @@
-import type { MessageCatalog } from '@kisaki3/desktop-contracts/i18n'
-import { parseMessageCatalog } from '@kisaki3/desktop-contracts/i18n'
-import type { MessageFormatElement } from '@formatjs/icu-messageformat-parser'
-import { parse, TYPE } from '@formatjs/icu-messageformat-parser'
+import { parseMessageCatalog, type MessageCatalog } from '@kisaki3/desktop-contracts/i18n'
+import { parse, TYPE, type MessageFormatElement } from '@formatjs/icu-messageformat-parser'
 import { IntlMessageFormat } from 'intl-messageformat'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 
-/**
- * ICU arguments accept strings, finite numbers and valid Date objects.
- * A timestamp is a number in the ECMAScript Date range.
- */
 export type MessageArgumentKind = 'string' | 'number' | 'timestamp' | 'date'
 
-/**
- * Allowed runtime kinds for every parameter used by one message.
- *
- * Each kind set is the intersection of all uses, including nested select and plural branches.
- */
 export type MessageParameterContract = Readonly<Record<string, readonly MessageArgumentKind[]>>
 
 export type MessageContracts = Readonly<Record<string, MessageParameterContract>>
@@ -42,22 +31,10 @@ export function flattenParsedCatalog(catalog: MessageCatalog): Readonly<Record<s
   return Object.fromEntries(result)
 }
 
-/**
- * Parses a catalog and indexes all leaf strings by dot-separated path.
- *
- * Retains unknown keys and empty strings for compatibility checks and fallback decisions.
- */
 export function flattenMessages(input: unknown): Readonly<Record<string, string>> {
   return flattenParsedCatalog(parseMessageCatalog(input))
 }
 
-/**
- * Derives the accepted runtime kinds for each parameter in an ICU message.
- *
- * Intersects uses across nested branches and checks number-format options through Intl. Invalid
- * ICU, incompatible uses or invalid number options throw InvalidInput. Markup is parsed as literal
- * text.
- */
 export function getMessageParameterContract(message: string): MessageParameterContract {
   let ast: MessageFormatElement[]
   try {
@@ -145,17 +122,10 @@ export function indexMessageSource(source: MessageCatalog) {
   return { messages, contracts }
 }
 
-/** Derives source-message parameter contracts for author validation and generated call types. */
 export function getMessageContracts(source: MessageCatalog): MessageContracts {
   return indexMessageSource(source).contracts
 }
 
-/**
- * Checks known translated messages against source argument contracts.
- *
- * Translations may omit parameters but cannot introduce names or exclude kinds accepted by the
- * source. complete requires all source keys; unknown translation keys are outside this check.
- */
 export function checkMessageCompatibility(
   translated: Readonly<Record<string, string>>,
   contracts: MessageContracts,
@@ -181,12 +151,6 @@ export function checkMessageCompatibility(
   }
 }
 
-/**
- * Parses a translation catalog and checks known messages against the supplied source.
- *
- * Missing keys are allowed by default; complete=true requires every source leaf. Empty leaves count
- * as present, and unknown leaves remain in the returned catalog.
- */
 export function validateMessageCatalog(
   input: unknown,
   source: MessageCatalog,
@@ -201,13 +165,6 @@ export function validateMessageCatalog(
   return catalog
 }
 
-/**
- * Validates one call against the complete source message contract.
- *
- * Requires all source parameters even when a translation omits them. Rejects unknown names and
- * invalid runtime kinds. Returns the accepted argument object; undefined supplies an empty object
- * for an argument-free call.
- */
 export function validateMessageArguments(
   contract: MessageParameterContract,
   input: unknown,

@@ -1,7 +1,6 @@
 import { ipcRenderer } from 'electron'
 import type { WindowKind } from '../shared/window-api/protocol'
 
-/** Establishes the native channel after the document installs its message receiver. */
 export function connectWindow(kind: WindowKind) {
   if (!process.isMainFrame) {
     return

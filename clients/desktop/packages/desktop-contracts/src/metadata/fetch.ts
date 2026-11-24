@@ -16,7 +16,6 @@ export type MetadataFetchInput<T extends EntryType = EntryType> = {
   }
 }[T]
 
-/** Ingest determines creation sufficiency and correspondence to existing local objects. */
 export type MetadataFetchResult<T extends EntryType = EntryType> = {
   [K in T]: {
     readonly data: MetadataCandidate<K>
@@ -25,10 +24,6 @@ export type MetadataFetchResult<T extends EntryType = EntryType> = {
   }
 }[T]
 
-/**
- * Execution verifies the read scope against the selected profile. Unsupported requests fail as
- * submitted.
- */
 export function parseMetadataFetchInput(input: unknown): MetadataFetchInput {
   const { entryType } = parseValue(v.looseObject({ entryType: v.picklist(entryTypes) }), input)
   return parseValue(

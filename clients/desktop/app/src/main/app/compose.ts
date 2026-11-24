@@ -25,7 +25,6 @@ import { developmentTranslation } from './development/translation'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type { DesktopPlatform } from '@kisaki3/desktop-contracts/preferences'
 
-/** Opens the chosen library before exposing any product operation to a document. */
 export async function compose(
   paths: AppPaths,
   native: NativeCapabilities,
@@ -60,7 +59,6 @@ export async function compose(
     const events = createEvents()
     const system = systemIntegration({
       ...paths,
-      /** Verifies the target volume and existing migration ledger before committing a new mode. */
       setDataMode: (input, signal) =>
         paths.setDataMode(
           input,
@@ -116,7 +114,6 @@ export async function compose(
     })
     const maintenance = new AbortController()
     let recovery: Promise<void> | undefined
-    /** Reconciles the previous process's leftovers after the first window is ready. */
     function recoverAttachments() {
       recovery = (async () => {
         await attachments.cleanInterruptedStages(interrupted, maintenance.signal)
@@ -170,5 +167,4 @@ export async function compose(
   }
 }
 
-/** Main-owned application capabilities shared by window and lifecycle composition. */
 export type Application = Awaited<ReturnType<typeof compose>>

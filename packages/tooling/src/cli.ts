@@ -1,10 +1,6 @@
 import { CommandFailed } from './process/index.ts'
 import { isCancellation } from './errors.ts'
 
-/**
- * Sets the exit status after the action settles. Cancellation uses the first signal's shell status.
- * An independent failure during cancellation reports its own error or child status.
- */
 export async function runCli(action: (signal: AbortSignal) => Promise<void>): Promise<void> {
   const controller = new AbortController()
   let cancelledCode = 130

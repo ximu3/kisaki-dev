@@ -2,11 +2,6 @@ import assert from 'node:assert/strict'
 import { join } from 'node:path'
 import { app, BrowserWindow, MessageChannelMain } from 'electron'
 
-/**
- * Verifies packed RPC over a transferred port, ending with loss of the actual fixture window.
- *
- * Releases the RPC connection on completion or failure; the caller owns the window.
- */
 async function verifyChannel(window: BrowserWindow): Promise<void> {
   const { RpcConnection } = await import('@kisaki3/desktop-rpc')
   const { port1, port2 } = new MessageChannelMain()

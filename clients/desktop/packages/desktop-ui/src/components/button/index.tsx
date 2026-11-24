@@ -9,11 +9,6 @@ export type {
   ActionVariant as ButtonVariant,
 } from '../../internal/action/types'
 
-/**
- * Native action-button attributes, visual size and variant, and explicit busy state.
- *
- * Callers supply an accessible name for icon-only content. Busy disables new activation.
- */
 export interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ActionVariant
   size?: ActionSize
@@ -21,9 +16,6 @@ export interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement>
   busy?: boolean
 }
 
-/**
- * Renders a native action button, defaulting to type=button and disabling activation while busy.
- */
 export function Button(props: ButtonProps): JSX.Element {
   const rest = omit(props, 'class', 'variant', 'size', 'busy', 'disabled', 'children')
 

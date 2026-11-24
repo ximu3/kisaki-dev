@@ -20,11 +20,6 @@ async function prepareIcons(icons: string): Promise<void> {
   await writeFile(join(icons, 'icon.ico'), ico)
 }
 
-/**
- * Prepares immutable migration resources, licenses, fonts, icons and the selected SQLite binding.
- *
- * The caller consumes the completed resources after this operation succeeds.
- */
 export async function prepareResources(
   target: DesktopTarget,
   signal?: AbortSignal,
@@ -42,6 +37,8 @@ export async function prepareResources(
   await copyMediaRuntime(join(output, 'media'))
   await cp(join(appRoot, 'drizzle'), join(output, 'drizzle'), { recursive: true })
   await cp(join(appRoot, 'assets', 'licenses'), join(output, 'licenses'), { recursive: true })
+  const dequalRoot = dirname(requireDependency.resolve('dequal/package.json'))
+  await copyFile(join(dequalRoot, 'license'), join(output, 'licenses', 'dequal.txt'))
 
   // SQLite 13 provides Node-API prebuilds shared by the development and Electron runtimes.
   const sqliteRoot = dirname(requireDependency.resolve('better-sqlite3/package.json'))

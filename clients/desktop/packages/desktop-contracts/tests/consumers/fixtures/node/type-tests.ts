@@ -48,7 +48,6 @@ interface ExampleViewNotifications {
   readonly changed: { readonly value: string }
 }
 
-/** Both recovery reads expose an index before a manifest has been published. */
 export function unpublishedRecovery(index: GameBackupRecovery) {
   const preparing = {
     ...index,
@@ -61,7 +60,6 @@ export function unpublishedRecovery(index: GameBackupRecovery) {
   >
 }
 
-/** Checks that typed reads provide the editable values required by their matching write APIs. */
 export async function checkReadEditing(themes: ThemesApi, library: LibraryApi): Promise<void> {
   const theme = await themes.get({ type: 'user', id: 'theme' })
   if (theme) {
@@ -106,7 +104,6 @@ export async function checkReadEditing(themes: ThemesApi, library: LibraryApi): 
   }
 }
 
-/** Checks that creation and update results retain their explicitly selected object kinds. */
 export async function checkResultKinds(
   library: LibraryApi,
   profiles: MetadataProfilesApi,
@@ -151,7 +148,6 @@ export async function checkResultKinds(
   void settings
 }
 
-/** Checks submitted keys and their value types across resource binding and atomic writes. */
 export async function checkResultKeys(
   resources: ViewResourcesApi,
   resource: ReadResourceRef,
@@ -183,7 +179,6 @@ export async function checkResultKeys(
   void removed
 }
 
-/** Checks field-specific values and the distinction between complete and partial keyed results. */
 export function checkProcessorKeys(raw: unknown): void {
   const input = {
     items: [
@@ -210,10 +205,6 @@ export function checkProcessorKeys(raw: unknown): void {
   void required
 }
 
-/**
- * Checks saved section results and explicit creation inputs against the shared showcase and
- * onboarding types.
- */
 export async function checkShowcase(
   showcase: ShowcaseApi,
   initial: ShowcaseFields,
@@ -249,7 +240,6 @@ export async function checkShowcase(
   void batch
 }
 
-/** Checks named-interface method catalogs, required inputs and notification payload inference. */
 export function checkViewIpc(
   typed: ViewClientIpc<ExampleViewMethods, ExampleViewNotifications>,
   dynamic: ViewClientIpc,
@@ -267,7 +257,6 @@ export function checkViewIpc(
   void typed.invoke('save')
 }
 
-/** Checks accepted API signatures and rejected medium, date and event-payload combinations. */
 export function checkContracts(
   library: LibraryApi,
   sessions: AnimeSessionsApi,
@@ -325,15 +314,10 @@ export function checkContracts(
   void person
 }
 
-/**
- * Receives an opening intent to check structural assignability independently of excess-property
- * checks.
- */
 export function acceptOpen(target: DeeplinkOpenTarget): void {
   void target
 }
 
-/** Checks that per-call interaction options appear only on supported session operations. */
 export function checkInteraction(
   game: GameSessionsApi,
   anime: AnimeSessionsApi,
@@ -350,17 +334,14 @@ export function checkInteraction(
   void context.allowInteraction
 }
 
-/** Receives a committed setting to check its correlated field and persistence scope. */
 export function acceptSetting(setting: SavedPlaybackSetting): void {
   void setting
 }
 
-/** Receives a novel read request to check root-specific part-slot restrictions. */
 export function acceptNovelRead(request: MetadataReadRequest<'novel'>): void {
   void request
 }
 
-/** Checks correlated result, intent and native-scope types across consumer entry points. */
 export function checkAssociations(): void {
   const icon: ExtensionUiIcon = { type: 'lucide', name: 'book-open' }
   // @ts-expect-error: Built-in names use the fixed catalog rather than component identifiers.

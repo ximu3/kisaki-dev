@@ -5,15 +5,11 @@ import type * as Binding from './binding'
 
 export interface NativeCapabilities {
   files: NativeFiles
-  /** Reads the installed font families on the native worker pool. */
   listFontFamilies: typeof Binding.listFontFamilies
-  /** Connects the OS receiver before activation can reach the application. */
   setNotificationReceiver: typeof Binding.setNotificationReceiver
-  /** Returns OS acceptance or denied permission for one native submission. */
   postNotification(appId: string, identifier: string, title: string, body: string): Promise<boolean>
 }
 
-/** Failure to load a usable native module, retaining the original loading or export error. */
 export class NativeLoadError extends Error {
   constructor(cause: unknown) {
     super('Could not load the desktop native module', { cause })
@@ -21,12 +17,6 @@ export class NativeLoadError extends Error {
   }
 }
 
-/**
- * Loads the explicitly selected native module and exposes its application capabilities.
- *
- * Requires an absolute deployment path. Relative paths throw TypeError; loading or required-export
- * failures throw NativeLoadError with their cause.
- */
 export function loadNative(modulePath: string): NativeCapabilities {
   if (!isAbsoluteHostPath(modulePath)) {
     throw new TypeError('Expected an absolute native module path')

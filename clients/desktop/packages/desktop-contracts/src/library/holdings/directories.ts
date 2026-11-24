@@ -14,29 +14,18 @@ import {
 } from '../../validation'
 import { DesktopError, type ErrorSummary } from '../../errors'
 
-/**
- * Changes govern discovery of new files. Existing registrations and naming-profile selection are
- * separate.
- */
 export interface DirectoryDiscoveryDefinition {
-  /**
-   * Positive safe-integer depth: 1 includes direct children; null allows recursive discovery
-   * without a depth limit.
-   */
   readonly maxDepth: number | null
   readonly include: readonly PathFilter[]
   readonly exclude: readonly PathFilter[]
 }
 
-/** A null recognitionProfileId selects built-in recognition only. */
 export type ContentDirectory<T extends WorkType = WorkType> = {
   [K in T]: {
     readonly id: string
     readonly work: EntryRef<K>
     readonly path: string
-    /** UTC milliseconds since the Unix epoch. */
     readonly createdAt: number
-    /** UTC milliseconds since the Unix epoch. */
     readonly updatedAt: number
   } & (K extends FileWorkType
     ? {
@@ -46,10 +35,6 @@ export type ContentDirectory<T extends WorkType = WorkType> = {
     : object)
 }[T]
 
-/**
- * File-bearing directories default to unlimited depth, empty include/exclude lists and built-in
- * recognition.
- */
 export type DirectoryCreateFields<T extends WorkType = WorkType> = {
   [K in T]: { readonly path: string } & (K extends FileWorkType
     ? {
@@ -70,10 +55,6 @@ export interface DirectoryUpdate {
   }
 }
 
-/**
- * Relocation covers only explicitly selected path mappings. Commands and historical text retain
- * their original spelling.
- */
 export type DirectoryRelocationInput<T extends WorkType = WorkType> = {
   [K in T]: {
     readonly path: string
@@ -127,21 +108,12 @@ export type HoldingsRelocationResult<T extends WorkType = WorkType> = {
   }
 }[T]
 
-/**
- * Deleting a directory registration preserves files and configurations. Relocation updates
- * registrations while keeping user bytes in place.
- */
 export interface ContentDirectoriesApi {
-  /**
-   * Lists the work's registered roots and saved discovery definitions, including unavailable
-   * values.
-   */
   list<T extends WorkType>(
     work: EntryRef<T>,
     call?: CallOptions,
   ): Promise<readonly ContentDirectory<T>[]>
 
-  /** Reads one registered root under the work, returning null when it is absent. */
   get<T extends WorkType>(
     work: EntryRef<T>,
     directoryId: string,
@@ -154,10 +126,6 @@ export interface ContentDirectoriesApi {
     }[WorkType]
   ): Promise<string>
 
-  /**
-   * Changing discovery settings or the profile leaves existing associations and matching modes
-   * unchanged.
-   */
   update(
     work: EntryRef<FileWorkType>,
     directoryId: string,
@@ -165,16 +133,8 @@ export interface ContentDirectoriesApi {
     call?: CallOptions,
   ): Promise<void>
 
-  /**
-   * Removes the directory registration while preserving files, launch configurations and user
-   * bytes.
-   */
   delete(work: WorkRef, directoryId: string, call?: CallOptions): Promise<void>
 
-  /**
-   * Verifies selected mappings before updating registrations. Reported conflicts leave user files
-   * in place.
-   */
   relocate<
     Args extends {
       [K in WorkType]: [
@@ -201,7 +161,6 @@ export function parseDirectoryDiscoveryDefinition(input: unknown): DirectoryDisc
   return parseValue(discoverySchema, input, 'Invalid directory discovery definition')
 }
 
-/** Game directories reject discovery and recognition-profile fields. */
 export function parseDirectoryCreateFields<T extends WorkType>(
   workType: T,
   input: unknown,
@@ -230,7 +189,6 @@ export function parseDirectoryUpdate(input: unknown): DirectoryUpdate {
   return value
 }
 
-/** Disk verification and path updates belong to the relocation operation. */
 export function parseDirectoryRelocationInput<T extends WorkType>(
   workType: T,
   input: unknown,

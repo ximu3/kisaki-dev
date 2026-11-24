@@ -2,14 +2,8 @@ import { omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import styles from './styles.module.css'
 
-/**
- * Native progress attributes requiring a caller-supplied accessible label.
- *
- * Omitting value represents indeterminate work.
- */
 export type ProgressProps = JSX.ProgressHTMLAttributes<HTMLProgressElement>
 
-/** Renders supplied progress with a default maximum of 1, independently of operation success. */
 export function Progress(props: ProgressProps): JSX.Element {
   const rest = omit(props, 'class', 'value')
 

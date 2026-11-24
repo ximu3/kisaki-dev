@@ -10,7 +10,6 @@ import type {
   ViewResourceBinding,
 } from '@kisaki3/desktop-contracts/resources'
 
-/** File metadata fixed for the entire lifetime of an acquired resource. */
 export interface ResourceFile {
   readonly sha256: string
   readonly path: string
@@ -18,7 +17,6 @@ export interface ResourceFile {
   readonly mediaType: string
 }
 
-/** Reference counts represent actual held content, including in-flight protocol response streams. */
 export function createResources() {
   const readers = new Map<
     string,
@@ -35,7 +33,6 @@ export function createResources() {
     content.count++
     return {
       resource: ref,
-      /** Withdraws this capability and releases the backing content after its last hold. */
       async dispose() {
         if (readers.delete(ref.id) && --content.count === 0) {
           await content.release()
@@ -44,7 +41,6 @@ export function createResources() {
     }
   }
 
-  /** Resolves a host-issued capability or rejects a revoked read. */
   function resolve(ref: ReadResourceRef) {
     const content = readers.get(ref.id)
     if (!content) {
@@ -54,7 +50,6 @@ export function createResources() {
   }
   const sessions = new Map<Session, Map<string, Map<string, ReadResource>>>()
 
-  /** Resolves an address only in the session and document scope holding its content. */
   async function respond(scopes: Map<string, Map<string, ReadResource>>, request: Request) {
     const url = new URL(request.url)
     const read = scopes.get(url.hostname)?.get(url.pathname.slice(1))
@@ -117,18 +112,15 @@ export function createResources() {
   }
 
   return {
-    /** Acquires a new held immutable file with its owner's final release callback. */
     acquire(file: ResourceFile, release: () => Promise<void>) {
       return retain({ file, release, count: 0 })
     },
-    /** Acquires an independent capability for already-held bytes. */
     hold(ref: ReadResourceRef) {
       return retain(resolve(ref))
     },
     file(ref: ReadResourceRef) {
       return resolve(ref).file
     },
-    /** Installs a distinct resource origin for each document in its actual Electron session. */
     view(session: Session) {
       const scope = randomUUID()
       const bound = new Map<string, ReadResource>()
@@ -143,7 +135,6 @@ export function createResources() {
       scopes.set(scope, bound)
       return {
         origin: 'kisaki-resource://' + scope,
-        /** Retains each input in this document's own scope; revocation of the source leaves these URLs usable. */
         async bind<K extends string>(
           inputs: Readonly<Record<K, ReadResourceRef>>,
         ): Promise<ViewResourceBinding<K>> {
@@ -165,7 +156,6 @@ export function createResources() {
                 'kisaki-resource://' + scope + '/' + read.resource.id,
               ]),
             ) as Record<K, string>,
-            /** Revokes this binding's URLs and returns its independent holds. */
             async dispose() {
               for (const [, read] of holds) {
                 bound.delete(read.resource.id)
@@ -180,7 +170,6 @@ export function createResources() {
             },
           }
         },
-        /** Revokes the document's remaining bindings while in-flight streams retain their own holds. */
         async dispose() {
           if (disposed) {
             return

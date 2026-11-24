@@ -21,7 +21,6 @@ import { errorMessage } from '../../../../infrastructure/notifications'
 import type { TaskQueryState } from './query'
 import { TaskRow } from './rows'
 
-/** Query, visibility and task operations for one independently scrollable tab. */
 interface TaskTableProps {
   api: MainClient
   active: boolean
@@ -32,14 +31,12 @@ interface TaskTableProps {
   report: (error: unknown) => void
 }
 
-/** A focused row can outlive the read buffer while the same history snapshot is displayed. */
 interface FocusedRow {
   index: number
   record: TaskRunSummary
   generation: string
 }
 
-/** Displays initial loading, empty and failure states without treating unloaded ranges as empty. */
 export function TaskTable(props: TaskTableProps) {
   const { api, query } = props
   let region!: HTMLDivElement
@@ -111,7 +108,6 @@ export function TaskTable(props: TaskTableProps) {
   )
 }
 
-/** Connects the table body's geometry to bounded reads and the mounted rows to real task IDs. */
 function RunTable(
   props: TaskTableProps & {
     remove: (record: TaskRunSummary, viewport: HTMLDivElement | undefined) => void

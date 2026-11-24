@@ -7,7 +7,6 @@ import { hostTarget } from '../../../tools/lib/targets'
 import { electronExecutable } from '../../../tools/dev/electron-executable'
 import { notificationTarget } from '../../../src/main/infrastructure/notifications/target'
 
-/** Calls the isolated Windows registration fixture using argument boundaries that preserve the payload. */
 async function fixture(action: 'register' | 'remove' | 'click', value: string) {
   await promisify(execFile)(
     'powershell.exe',
@@ -25,7 +24,6 @@ async function fixture(action: 'register' | 'remove' | 'click', value: string) {
   )
 }
 
-/** Owns a disposable COM registration before the Electron process selects its activation identity. */
 const registered = test.extend({
   profile: async ({ profile }, use) => {
     const entry = join(buildDirectory(hostTarget()), 'main', 'entry.js')

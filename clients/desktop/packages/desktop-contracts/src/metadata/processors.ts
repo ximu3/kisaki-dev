@@ -15,10 +15,6 @@ import {
 } from './fields'
 import { DesktopError } from '../errors'
 
-/**
- * Supplies original evidence for field processing while local IDs and resource credentials stay
- * with their owners.
- */
 export type ProcessingEntryContext = {
   [K in EntryType]: { readonly type: K; readonly identification: IdentificationFields<K> }
 }[EntryType]
@@ -42,20 +38,12 @@ type ProcessingItem<F extends MetadataFieldRef> = F extends MetadataFieldRef
     }
   : never
 
-/**
- * Processors replace only the field value. Identity, endpoints and matching evidence retain their
- * original owners.
- */
 export type FieldProcessingItem = ProcessingItem<MetadataFieldRef>
 
 export interface FieldProcessingInput {
   readonly items: readonly FieldProcessingItem[]
 }
 
-/**
- * Normal completion covers every input key. A failed call can return the successfully processed
- * keys.
- */
 export type FieldProcessingResult<I extends FieldProcessingInput = FieldProcessingInput> =
   KeyedResult<
     I['items'],
@@ -67,7 +55,6 @@ export interface MetadataFieldProcessor {
   readonly description?: LocalizedText
   readonly fields: readonly MetadataFieldRef[]
 
-  /** Uses the original input keys. Failure can carry only valid completed values. */
   process(input: FieldProcessingInput, context: ExecutionContext): Promise<FieldProcessingResult>
 }
 
@@ -78,15 +65,11 @@ export interface MetadataFieldProcessorDescriptor {
   readonly fields: readonly MetadataFieldRef[]
 }
 
-/** Profiles explicitly select processor identities and order for each allowed field. */
 export interface MetadataFieldProcessorsApi {
   list(call?: CallOptions): Promise<readonly MetadataFieldProcessorDescriptor[]>
 
   get(processorId: string, call?: CallOptions): Promise<MetadataFieldProcessorDescriptor | null>
 
-  /**
-   * Registers a field processor for the actual owner and instance and returns its lifetime handle.
-   */
   register(
     processorId: string,
     processor: MetadataFieldProcessor,
@@ -122,7 +105,6 @@ const contextSchema = v.strictObject({
   relatedEntries: v.exactOptional(v.array(fromParser(parseProcessingEntryContext))),
 })
 
-/** Requires unique keys and field-specific values. Legal empty values are ordinary data. */
 export function parseFieldProcessingInput(input: unknown): FieldProcessingInput {
   const item = v.pipe(
     v.strictObject({
@@ -151,10 +133,6 @@ export function parseFieldProcessingInput(input: unknown): FieldProcessingInput 
   )
 }
 
-/**
- * Completion requires every key from the fixed call. Partial results can omit keys. Both reject
- * extra keys and use the requested types.
- */
 export function parseFieldProcessingResult<
   const I extends FieldProcessingInput,
   C extends 'complete' | 'partial' = 'complete',
@@ -186,7 +164,6 @@ export function parseFieldProcessingResult(
   )
 }
 
-/** An empty list declares no field-processing capability. */
 export function parseProcessorFields(input: unknown): readonly MetadataFieldRef[] {
   return parseValue(
     v.pipe(

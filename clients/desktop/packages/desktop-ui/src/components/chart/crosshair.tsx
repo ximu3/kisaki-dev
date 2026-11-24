@@ -5,14 +5,8 @@ import { createChartDuration } from './motion'
 import { chartPart, type ChartDataProps } from './parts'
 import { createTooltipViewport } from './tooltip'
 
-/** Crosshair data, presentation and tooltip-template options from the Unovis TypeScript engine. */
 export type CrosshairProps<Datum> = CrosshairConfigInterface<Datum> & ChartDataProps<Datum>
 
-/**
- * Renders pointer-following chart feedback with immediate motion by default.
- *
- * Explicit animation duration still follows reduced-motion preferences.
- */
 export function Crosshair<Datum>(props: CrosshairProps<Datum>): JSX.Element {
   const rest = omit(props, 'data', 'duration', 'template')
   const duration = createChartDuration(() => props.duration, 0)

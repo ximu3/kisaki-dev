@@ -11,10 +11,8 @@ import { ToastOwner } from './toast-owner.js'
 import '@kisaki3/desktop-ui/styles.css'
 import './page.css'
 
-/** Deferred rich-content showcase that keeps heavy adapters outside the initial consumer view. */
 const Resources = lazy(() => import('./resources.js'))
 
-/** Provides an inert test hook until its fixture owner installs an active implementation. */
 const noop = () => {}
 window.fixture = {
   setExternal: noop,
@@ -31,10 +29,6 @@ window.fixture = {
   dispose: noop,
 } satisfies FixtureApi
 
-/**
- * Composes the synthetic component workshop and controls optional publisher and capability
- * lifetimes.
- */
 function App(): JSX.Element {
   const [owner, setOwner] = createSignal(true)
   const [resources, setResources] = createSignal(false)

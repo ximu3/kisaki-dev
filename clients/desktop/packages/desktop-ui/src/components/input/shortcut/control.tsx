@@ -12,7 +12,6 @@ import popup from '../../../internal/popup/surface.module.css'
 import frame from '../styles.module.css'
 import styles from './styles.module.css'
 
-/** An ordered list of bindings with host-defined keyboard syntax and localized actions. */
 export interface ShortcutInputProps extends ChipLabels {
   class?: string
   size?: ControlSize | undefined
@@ -25,15 +24,11 @@ export interface ShortcutInputProps extends ChipLabels {
   resetLabel: string
   cancelLabel: string
   confirmLabel: string
-  /** Returns the live modifier or chord display and the binding accepted for this key press. */
   capture: (event: KeyboardEvent) => ShortcutKeypress
-  /** Displays the individual keys of a committed binding in order. */
   keycaps: (value: string) => readonly string[]
-  /** Receives a new list after confirmation or removal of an individual binding. */
   onValueChange: (value: readonly string[]) => void
 }
 
-/** Holds new chords in the popover until the user confirms the finished recording. */
 export function ShortcutInput(props: ShortcutInputProps) {
   const id = createUniqueId()
   const valueId = id + '-value'

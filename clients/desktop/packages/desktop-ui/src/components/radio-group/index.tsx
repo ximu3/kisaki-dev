@@ -1,5 +1,4 @@
-import { createContext, createUniqueId, omit, useContext } from 'solid-js'
-import type { Accessor } from 'solid-js'
+import { createContext, createUniqueId, omit, useContext, type Accessor } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import type { ControlSize } from '../../internal/control/size'
 import { callHandler } from '../../internal/dom'
@@ -8,7 +7,6 @@ import { bindRadioSelection } from '../../internal/choice/radio'
 import { ChoiceRow } from '../../internal/choice/row'
 import styles from './styles.module.css'
 
-/** Native form identity and selection ownership shared by a radio group's options. */
 const RadioContext = createContext<{
   name: Accessor<string>
   value: Accessor<string>
@@ -18,7 +16,6 @@ const RadioContext = createContext<{
   size: Accessor<ControlSize | undefined>
 }>()
 
-/** Named native fieldset with shared radio value, submission and reset ownership. */
 export interface RadioGroupProps extends Omit<
   JSX.FieldsetHTMLAttributes<HTMLFieldSetElement>,
   'onChange'
@@ -28,17 +25,12 @@ export interface RadioGroupProps extends Omit<
   value?: string
   defaultValue?: string
   required?: boolean
-  /** Reports the proposed selected option value. */
   onValueChange?: (value: string) => void
 
   orientation?: 'horizontal' | 'vertical'
   size?: ControlSize | undefined
 }
 
-/**
- * Owns a group of Radio children with native keyboard selection, form submission and reset
- * behavior.
- */
 export function RadioGroup(props: RadioGroupProps): JSX.Element {
   const rest = omit(
     props,
@@ -98,7 +90,6 @@ export function RadioGroup(props: RadioGroupProps): JSX.Element {
   )
 }
 
-/** Native radio attributes with a stable option value and optional inline label. */
 export interface RadioProps extends Omit<
   JSX.InputHTMLAttributes<HTMLInputElement>,
   'type' | 'value' | 'checked' | 'name' | 'size'
@@ -107,11 +98,6 @@ export interface RadioProps extends Omit<
   value: string
 }
 
-/**
- * Renders an option using its RadioGroup's value, name and form owner.
- *
- * Callers provide an inline label or another native accessible naming association.
- */
 export function Radio(props: RadioProps): JSX.Element {
   const group = useContext(RadioContext)
 

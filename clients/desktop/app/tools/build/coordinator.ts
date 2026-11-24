@@ -8,10 +8,6 @@ import { hostTarget, type DesktopTarget } from '../lib/targets'
 import { runtimeFiles, type DesktopBuild } from './manifest'
 import { buildProgram, sourcePrograms } from './programs'
 
-/**
- * Requires a matching native runner and prepared resources. The build manifest is written only
- * after all compilers finish and the complete runtime has been checked.
- */
 export async function buildDesktop(
   sourceRoot: string,
   target: DesktopTarget,

@@ -17,13 +17,11 @@ import {
 } from '../catalog'
 import { parseErrorSummary, DesktopError, type ErrorSummary } from '../../errors'
 
-/** Registering a file leaves its parent directory unregistered unless explicitly included. */
 export interface LocalContentInput {
   readonly type: 'directory' | 'file'
   readonly path: string
 }
 
-/** Optional exact external identities to recheck against the fixed work before registration. */
 export interface LocalContentRegistrationOptions {
   readonly expectedIdentities?: NonEmptyArray<ExternalIdentity>
 }
@@ -45,7 +43,6 @@ export type LocalContentRegistrationResult<T extends WorkType = WorkType> = {
   }
 }[T]
 
-/** Unavailable files and failed matching preserve existing holdings data. */
 export type HoldingsRefreshResult<T extends FileWorkType = FileWorkType> = {
   [K in T]: {
     readonly work: EntryRef<K>
@@ -65,7 +62,6 @@ export type HoldingsRefreshResult<T extends FileWorkType = FileWorkType> = {
   }
 }[T]
 
-/** Parses one file or directory input without inspecting the filesystem. */
 export function parseLocalContentInput(input: unknown): LocalContentInput {
   return parseValue(
     v.strictObject({ type: v.picklist(['directory', 'file']), path }),
@@ -74,7 +70,6 @@ export function parseLocalContentInput(input: unknown): LocalContentInput {
   )
 }
 
-/** Parses an optional nonempty, distinct external-identity precondition. */
 export function parseLocalContentRegistrationOptions(
   input: unknown,
 ): LocalContentRegistrationOptions {

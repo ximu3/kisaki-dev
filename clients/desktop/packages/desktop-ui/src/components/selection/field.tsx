@@ -15,7 +15,6 @@ import type { SelectionListProps, SelectionOption } from './types'
 import input from '../../internal/input-surface.module.css'
 import styles from './field.module.css'
 
-/** Shared field-trigger, option-list and native form-validation props for choice controls. */
 export interface ChoiceFieldProps<O extends SelectionOption = SelectionOption>
   extends
     Omit<
@@ -24,60 +23,36 @@ export interface ChoiceFieldProps<O extends SelectionOption = SelectionOption>
     >,
     SelectionListProps<O> {
   options: readonly O[]
-  /** Sizes the closed field and its affordances independently of the option list. */
   size?: ControlSize | undefined
   placeholder?: string
   emptyMessage: JSX.Element
   invalidSelectionMessage: string
   required?: boolean
-  /** Handles the validation event from the native submission select. */
   onInvalid?: JSX.SelectHTMLAttributes<HTMLSelectElement>['onInvalid']
 }
 
-/**
- * Search-query ownership and result presentation for a choice field.
- *
- * The host may supply prefiltered or asynchronous options with filter=false.
- */
 export interface ChoiceSearchProps<O extends SelectionOption = SelectionOption> {
   searchLabel: string
   clearSearchLabel: string
   searchPlaceholder?: string
   query?: string
-  /** Reports query edits and requests an empty query after popup presentation ends. */
   onQueryChange?: (query: string) => void
-  /**
-   * Tests an option against the raw query for custom local filtering.
-   *
-   * False delegates filtering to the host; omission uses case-folded substring matching.
-   */
   filter?: false | ((option: O, query: string) => boolean)
   loading?: boolean
   loadingMessage: JSX.Element
 }
 
-/** Committed records and wrapper callbacks connected to the shared choice-field presentation. */
 interface SelectionFieldProps<O extends SelectionOption> extends ChoiceFieldProps<O> {
   selected: readonly O[]
   defaults: readonly string[]
   chips?: ChipLabels & {
-    /** Requests removal of a committed chip by its stable key. */
     remove: (key: string) => void
   }
   search?: ChoiceSearchProps<O>
-  /** Reports the chosen record to the value-owning wrapper. */
   onChoose: (option: O) => void
-  /** Requests restoration of the wrapper's default selection after an accepted form reset. */
   onReset: () => void
 }
 
-/**
- * Renders committed choices and optional search while connecting popup interaction to native form
- * submission.
- *
- * Selected records survive query changes; unavailable committed choices remain visible and
- * invalidate submission.
- */
 export function SelectionField<O extends SelectionOption>(
   props: SelectionFieldProps<O>,
 ): JSX.Element {
@@ -119,12 +94,12 @@ export function SelectionField<O extends SelectionOption>(
   let field!: HTMLDivElement
 
   const empty = { options: [] as readonly O[], loading: false }
-  // Keep the last list available to the closing animation.
   const candidates = createMemo<typeof empty>((last = empty) => {
     if (!present()) {
       return empty
     }
     if (!open()) {
+      // Keep the last list available to the closing animation.
       return last
     }
     const search = props.search
@@ -191,11 +166,11 @@ export function SelectionField<O extends SelectionOption>(
     },
   )
 
-  // Return focus before giving single-choice handlers a chance to remove the popup.
   const choose = (option: O) => {
     flushReset()
     if (!props.chips) {
       setOpen(false)
+      // Return focus before giving single-choice handlers a chance to remove the popup.
       trigger()?.focus({ preventScroll: true })
     }
     props.onChoose(option)

@@ -37,12 +37,6 @@ function pickerColor(css: string): Hsv {
   return toHsv({ mode: 'rgb', r: r! / 255, g: g! / 255, b: b! / 255, alpha })
 }
 
-/**
- * Color-text input with an alpha-capable picker and localized channel and validation labels.
- *
- * Typed standalone appearance colors retain their CSS text and color space. Editing a picker
- * channel produces sRGB hexadecimal.
- */
 export interface ColorInputProps extends Omit<InputProps, 'type'> {
   pickerLabel: string
   hueLabel: string
@@ -52,10 +46,6 @@ export interface ColorInputProps extends Omit<InputProps, 'type'> {
   invalidColorMessage: string
 }
 
-/**
- * Connects color text and picker edits to one form value while retaining invalid text for
- * correction.
- */
 export function ColorInput(props: ColorInputProps): JSX.Element {
   const rest = omit(
     props,

@@ -1,7 +1,6 @@
 import { Show } from 'solid-js'
 import { createQuery } from '../../../infrastructure/query'
 import { Copy } from '@lucide/solid'
-import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
 import {
   DialogBody,
@@ -13,9 +12,8 @@ import {
 import { Spinner } from '@kisaki3/desktop-ui/spinner'
 import { toast } from '@kisaki3/desktop-ui/toast'
 import type { MainClient } from '../../../infrastructure/api'
-import { errorMessage } from '../../../infrastructure/notifications'
+import { QueryError } from '../../../infrastructure/query/error'
 
-/** Reads the environment of this running application and copies the same facts on request. */
 export function About(props: { api: MainClient; report: (error: unknown) => void }) {
   const { api } = props
   const info = createQuery((signal) => api.request(signal, 'app.environment'))
@@ -40,16 +38,11 @@ export function About(props: { api: MainClient; report: (error: unknown) => void
           </div>
         </div>
 
-        <Show when={info.error}>
-          {(cause) => (
-            <Alert tone="destructive" role="alert">
-              {errorMessage(cause())}{' '}
-              <Button variant="outline" onClick={() => void info.reload()}>
-                {api.t('runtime.retry')}
-              </Button>
-            </Alert>
-          )}
-        </Show>
+        <QueryError
+          error={info.error}
+          retryLabel={api.t('runtime.retry')}
+          retry={() => void info.reload()}
+        />
         <Show
           when={!info.error && info.value}
           fallback={!info.error && <Spinner label={api.t('runtime.loading')} />}

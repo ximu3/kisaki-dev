@@ -8,36 +8,21 @@ import {
   omit,
   useContext,
 } from 'solid-js'
-import { dynamic } from '@solidjs/web'
-import type { JSX } from '@solidjs/web'
+import { dynamic, type JSX } from '@solidjs/web'
 import { FormContext, type FieldIssue } from '../../../internal/form'
 import { TooltipSurface } from '../../../internal/tooltip/content'
 import { createTooltip } from '../../../internal/tooltip/controller'
 import styles from './styles.module.css'
 
-/**
- * Form feedback inputs, localized count formatting and caller-owned field navigation.
- *
- * An active field ID selects its issue; null selects the overview, and undefined retains the
- * current context while feedback is read.
- */
 export interface FormFeedbackProps extends JSX.HTMLAttributes<HTMLDivElement> {
   issues?: readonly FieldIssue[]
   activeFieldId?: string | null | undefined
-  /** Requests that the caller reveal and focus the identified field. */
   onLocate?: (id: string) => void
 
-  /** Formats a standalone error-count message when no erroneous field is active. */
   summary: (count: number) => string
-  /** Explicit form-level feedback takes precedence over field and count prompts. */
   message?: string
 }
 
-/**
- * Reserves one feedback row and selects form-level, field-specific or error-count content.
- *
- * The caller owns validation and revealing the requested field.
- */
 export function FormFeedback(props: FormFeedbackProps): JSX.Element {
   const form = useContext(FormContext)
   const rest = omit(props, 'issues', 'activeFieldId', 'summary', 'onLocate', 'message', 'class')
@@ -69,7 +54,6 @@ export function FormFeedback(props: FormFeedbackProps): JSX.Element {
   )
 }
 
-/** Renders a field-location button with read-only tooltip details for extra or clipped text. */
 function FeedbackPrompt(props: {
   text: string
   detail: string | undefined

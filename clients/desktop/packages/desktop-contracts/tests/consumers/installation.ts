@@ -7,7 +7,6 @@ const packageRoot = resolve(import.meta.dirname, '../..')
 
 export function consumerTest(host: 'node' | 'browser') {
   return createConsumerTest(test, packageRoot, host, async (consumerDirectory) => {
-    // Include every published declaration through the same package resolution used by the consumer.
     const installed = JSON.parse(
       await readFile(
         join(consumerDirectory, 'node_modules/@kisaki3/desktop-contracts/package.json'),

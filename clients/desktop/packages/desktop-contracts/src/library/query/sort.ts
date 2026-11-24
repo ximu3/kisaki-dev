@@ -48,7 +48,6 @@ export type EntrySortField =
   | 'accessibleFileCount'
   | 'uncheckedFileCount'
 
-/** Null values sort last in either direction. Identity tie-breaks are always ascending. */
 export type EntrySort =
   | { readonly type: 'scope' }
   | { readonly type: 'field'; readonly field: EntrySortField; readonly direction: 'asc' | 'desc' }
@@ -97,10 +96,6 @@ export const entrySortFields: readonly EntrySortField[] = Object.freeze([
   'uncheckedFileCount',
 ])
 
-/**
- * Ordering must apply to every supplied type. An empty type list still requires a valid ordering
- * shape.
- */
 export function parseEntrySort(input: unknown, types: readonly EntryType[] = []): EntrySort {
   const sort = parseValue(
     v.variant('type', [

@@ -3,11 +3,6 @@ import { runCli } from '@kisaki3/tooling/cli'
 import { runPnpm } from '@kisaki3/tooling/process'
 import { listProjects, repositoryRoot } from './workspace.ts'
 
-/**
- * Checks one explicit project, or all workspace members and repository-owned tools and configuration.
- *
- * Package builds provide the public exports before the workspace graph is checked.
- */
 export async function checkBoundaries(project?: string, signal?: AbortSignal): Promise<void> {
   const inputs = project
     ? [project]

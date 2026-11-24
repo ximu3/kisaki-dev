@@ -1,23 +1,13 @@
-import { createEffect, flush, onSettled } from 'solid-js'
-import type { Accessor } from 'solid-js'
-import { createValue, onFormReset } from './state'
+import { createEffect, onSettled, type Accessor } from 'solid-js'
+import { commitNativeValue, createValue, onFormReset } from './state'
 import { nativeValidityChanged } from './form'
 
-/** Controlled text or a local default baseline with native-edit and reset notification. */
 export interface TextValueProps {
   value?: string | undefined
   defaultValue?: string | undefined
-  /** Reports text requested by native input or an accepted reset to the current default value. */
   onValueChange?: ((value: string) => void) | undefined
 }
 
-/**
- * Binds one native editable element to text ownership and form reset within the current Solid
- * owner.
- *
- * Composition defers external writes; the returned updater publishes native edits and
- * resynchronizes the owned value.
- */
 export function bindTextControl(
   props: TextValueProps,
   element: Accessor<HTMLInputElement | HTMLTextAreaElement>,
@@ -67,12 +57,7 @@ export function bindTextControl(
     },
   )
 
-  // A native input callback can synchronously read or submit the reconciled value.
-  function commit(next: string) {
-    change(next)
-    flush()
-    sync()
-  }
+  const commit = commitNativeValue(change, sync)
 
   const flushReset = onFormReset(element, () => commit(props.defaultValue ?? ''))
   return () => {

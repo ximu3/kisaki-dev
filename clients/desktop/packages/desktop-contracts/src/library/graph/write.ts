@@ -47,10 +47,6 @@ import { indexGraphReferences, type GraphReferences } from './references'
 import type { GraphRelations } from './relations'
 import { parseGraphLocalContent, type GraphLocalContent } from './local-content'
 
-/**
- * Commits all regions atomically. An empty graph returns changed false and empty creation maps.
- * Prepared holds alone produce no write.
- */
 export interface LibraryWriteGraph {
   readonly entries?: {
     readonly create?: readonly GraphEntryCreate[]
@@ -81,10 +77,6 @@ type CreatedItems<Region> = Region extends {
     ? readonly Node[] | undefined
     : undefined
 
-/**
- * Successful creates return a map keyed by the original request keys. Failure exposes no partial
- * creation map.
- */
 export interface LibraryWriteResult<G extends LibraryWriteGraph = LibraryWriteGraph> {
   readonly entries: KeyedResult<
     CreatedItems<G['entries']>,
@@ -199,10 +191,6 @@ function parseNodeEdits<Create, Update>(
   }
 }
 
-/**
- * Checks request-local types and contradictions before preparation. The host checks existing-object
- * ownership, visibility, uniqueness, occupancy, prepared holds and transaction baselines.
- */
 export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
   const raw = parseValue(rawGraphSchema, input, 'Invalid library write graph')
   const references = indexGraphReferences(raw)
@@ -282,10 +270,6 @@ export function parseLibraryWriteGraph(input: unknown): LibraryWriteGraph {
   }
 }
 
-/**
- * Checks response maps against the original parsed graph, including exact keys, requested kinds,
- * distinct created identities and consistency with the change indicator.
- */
 export function parseLibraryWriteResult<const G extends LibraryWriteGraph>(
   input: unknown,
   request: G,

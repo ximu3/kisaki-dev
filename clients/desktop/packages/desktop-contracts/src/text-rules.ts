@@ -1,24 +1,16 @@
 import { RegExpParser, visitRegExpAST } from '@eslint-community/regexpp'
 import { DesktopError } from './errors'
 
-/** Whole-input regular-expression source, permitted flags and canonical named captures. */
 export interface TextPattern {
   readonly source: string
   readonly flags: 'u' | 'iu'
   readonly captureNames: readonly string[]
 }
 
-/** Literal text or a named-capture reference in a non-executable replacement template. */
 export type TextTemplatePart =
   | { readonly type: 'text'; readonly value: string }
   | { readonly type: 'capture'; readonly name: string }
 
-/**
- * Parses and compiles a user pattern with whole-input anchors and returns its named captures.
- *
- * Callers provide a terminable unit whose budget covers compilation, matching and output expansion.
- * A main-thread Promise timeout cannot enforce that boundary.
- */
 export function inspectTextPattern(pattern: string, ignoreCase: boolean): TextPattern {
   try {
     const parser = new RegExpParser({ ecmaVersion: 2025 })
@@ -43,11 +35,6 @@ export function inspectTextPattern(pattern: string, ignoreCase: boolean): TextPa
   }
 }
 
-/**
- * Parses literal text, escaped dollars and named-capture references.
- *
- * When captureNames is supplied, undeclared references are rejected.
- */
 export function parseTextTemplate(
   template: string,
   captureNames?: readonly string[],

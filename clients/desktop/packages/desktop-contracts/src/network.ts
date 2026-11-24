@@ -3,11 +3,6 @@ import { fromParser, asciiControl, parseValue, text, id } from './validation'
 import { DesktopError, type ErrorSummary } from './errors'
 import * as v from 'valibot'
 
-/**
- * Single HTTP, HTTPS or SOCKS5 proxy address with an explicit port.
- *
- * Credentials are supplied separately as protected values.
- */
 export type ProxyEndpoint = string
 
 export interface ProxyCredentials {
@@ -15,12 +10,10 @@ export interface ProxyCredentials {
   readonly password: string
 }
 
-/** Opaque revision identifying saved proxy credentials in ordinary read projections. */
 export interface ProxyCredentialState {
   readonly revision: string
 }
 
-/** Saved route selection, manual proxy settings and protected-credential revision. */
 export interface NetworkPreferences {
   readonly mode: 'system' | 'direct' | 'manual'
   readonly endpoint: ProxyEndpoint | null
@@ -28,32 +21,19 @@ export interface NetworkPreferences {
   readonly credentials: ProxyCredentialState | null
 }
 
-/**
- * A failed apply blocks new HTTP requests and WebSocket handshakes. Established browser WebSockets
- * retain their original route until they close.
- */
 export type NetworkState =
   | { readonly status: 'ready' }
   | { readonly status: 'applying' }
   | { readonly status: 'failed'; readonly error: ErrorSummary }
 
-/** Host HTTP request options with explicit body encoding, redirect policy and cancellation. */
 export interface NetworkFetchOptions {
-  /** Defaults to GET; the caller supplies any method required by its explicitly encoded body. */
   readonly method?: string
   readonly headers?: NonNullable<RequestInit['headers']>
   readonly body?: Exclude<RequestInit['body'], undefined>
   readonly signal?: AbortSignal
-  /** Defaults to follow; credential-bearing source requests explicitly choose error. */
   readonly redirect?: 'follow' | 'error'
 }
 
-/**
- * HTTP response metadata and a body that can be consumed once.
- *
- * Callers cancel unused streams to release them. This surface exposes no clone operation and does
- * not promise a native Response instance.
- */
 export interface NetworkResponse {
   readonly url: string
   readonly redirected: boolean
@@ -65,51 +45,27 @@ export interface NetworkResponse {
   readonly body: ReadableStream<Uint8Array> | null
   readonly bodyUsed: boolean
 
-  /** Consumes the body once as text, rejecting on stream failure or cancellation. */
   text(): Promise<string>
 
-  /**
-   * Consumes the body once and parses JSON, rejecting invalid JSON, stream failure or cancellation.
-   */
   json(): Promise<unknown>
 
-  /** Consumes the body once into an owned buffer, rejecting on stream failure or cancellation. */
   arrayBuffer(): Promise<ArrayBuffer>
 
-  /** Consumes the body once into owned bytes, rejecting on stream failure or cancellation. */
   bytes(): Promise<Uint8Array<ArrayBuffer>>
 
-  /** Consumes the body once as a Blob, rejecting on stream failure or cancellation. */
   blob(): Promise<Blob>
 
-  /**
-   * Consumes the body once as form data according to its content type.
-   *
-   * Unsupported or invalid form data, stream failure and cancellation reject the read.
-   */
   formData(): Promise<FormData>
 }
 
 export interface NetworkApi {
-  /**
-   * Starts an HTTP request and resolves when response headers arrive.
-   *
-   * HTTP error statuses remain normal responses. Later cancellation fails outstanding body reads.
-   */
   fetch(url: string | URL, options?: NetworkFetchOptions): Promise<NetworkResponse>
 
-  /** Reads whether the saved network choice has been applied successfully. */
   getState(): Promise<NetworkState>
 
-  /** Delivers the current route first. Releasing observation leaves requests running. */
   observe(listener: Listener<NetworkState>): Disposable
 }
 
-/**
- * Parses and serializes an absolute HTTP(S) URL using the native URL implementation.
- *
- * Rejects embedded credentials, surrounding whitespace and control characters.
- */
 export function parseHttpUrl(input: unknown): string {
   const value = parseValue(text, input, 'Invalid HTTP URL')
   try {
@@ -131,7 +87,6 @@ export function parseHttpUrl(input: unknown): string {
   }
 }
 
-/** Rejects credentials, resource paths, query strings, fragments and invalid ports. */
 export function parseProxyEndpoint(input: unknown): ProxyEndpoint {
   const value = parseValue(text, input, 'Invalid proxy endpoint')
   try {
@@ -167,7 +122,6 @@ export function parseProxyEndpoint(input: unknown): ProxyEndpoint {
   }
 }
 
-/** Parses the username and password supplied to a protected proxy-credential write. */
 export function parseProxyCredentials(input: unknown): ProxyCredentials {
   return parseValue(
     v.strictObject({ username: text, password: text }),
@@ -176,7 +130,6 @@ export function parseProxyCredentials(input: unknown): ProxyCredentials {
   )
 }
 
-/** The revision exposes no plaintext and does not establish successful decryption. */
 export function parseProxyCredentialState(input: unknown): ProxyCredentialState | null {
   return parseValue(
     v.nullable(v.strictObject({ revision: id })),
@@ -185,7 +138,6 @@ export function parseProxyCredentialState(input: unknown): ProxyCredentialState 
   )
 }
 
-/** Identifies the manual route field that needs correction once individual inputs have been parsed. */
 export function manualProxyIssue(
   mode: NetworkPreferences['mode'],
   endpoint: ProxyEndpoint | null,
@@ -200,7 +152,6 @@ export function manualProxyIssue(
   return authenticated && endpoint.startsWith('socks5:') ? 'credentials' : null
 }
 
-/** Manual mode requires an endpoint and rejects credentials for SOCKS5 proxies. */
 export function parseNetworkPreferences(input: unknown): NetworkPreferences {
   const value = parseValue(
     v.strictObject({

@@ -1,17 +1,17 @@
 import { createEffect, omit, onCleanup } from 'solid-js'
 import type { JSX } from '@solidjs/web'
-import { XYContainer as XY, SingleContainer as Single } from '@unovis/ts'
-import type {
-  ComponentCore,
-  XYContainerConfigInterface,
-  SingleContainerConfigInterface,
-  Spacing,
-  Tooltip,
+import {
+  XYContainer as XY,
+  SingleContainer as Single,
+  type ComponentCore,
+  type XYContainerConfigInterface,
+  type SingleContainerConfigInterface,
+  type Spacing,
+  type Tooltip,
 } from '@unovis/ts'
 import { createChartDuration } from './motion'
 import { chartParts, releaseRemoved, type ChartPart, type ChartPartLifetime } from './parts'
 
-/** Read-only CSS-pixel geometry from one completed chart render. */
 export interface ChartGeometry {
   readonly margin: Readonly<Spacing>
   readonly bleed: Readonly<Spacing>
@@ -23,25 +23,20 @@ export interface ChartGeometry {
   readonly componentHeight: number
 }
 
-/** Shared configuration for the plot element and the data inherited by its children. */
 interface PlotProps<Data> {
   children?: JSX.Element
   data?: Data | undefined
   class?: string | undefined
   style?: JSX.CSSProperties | undefined
-  /** Receives copied geometry when the engine completes a render. */
   onRenderComplete?: (geometry: ChartGeometry) => void
 }
 
-/** Empty fallback shared by data-bearing parts without a dataset. */
 const empty: never[] = []
 
-/** Gives tooltips a local positioning context and lets callers size the plot using CSS. */
 function plotStyle(style: JSX.CSSProperties | undefined): JSX.CSSProperties {
   return { display: 'block', position: 'relative', width: '100%', ...style }
 }
 
-/** Attaches the tooltip to its explicit target or the plot's own element. */
 function attachTooltip(tooltip: Tooltip | undefined, host: HTMLElement): void {
   if (!tooltip) {
     return
@@ -52,7 +47,6 @@ function attachTooltip(tooltip: Tooltip | undefined, host: HTMLElement): void {
   }
 }
 
-/** Layout and data accepted by a Cartesian chart. */
 export type XYContainerProps<Datum> = Omit<
   XYContainerConfigInterface<Datum>,
   | 'components'
@@ -66,7 +60,6 @@ export type XYContainerProps<Datum> = Omit<
 > &
   PlotProps<Datum[]> & { bleed?: Readonly<Spacing> }
 
-/** Maintains one Cartesian plot while its data, axes and series change. */
 export function XYContainer<Datum>(props: XYContainerProps<Datum>): JSX.Element {
   let host!: HTMLDivElement
   let plot: XY<Datum> | undefined
@@ -177,14 +170,12 @@ export function XYContainer<Datum>(props: XYContainerProps<Datum>): JSX.Element 
   )
 }
 
-/** Layout and data accepted by a single-component plot. */
 export type SingleContainerProps<Data> = Omit<
   SingleContainerConfigInterface<Data>,
   'component' | 'tooltip' | 'annotations' | 'onRenderComplete'
 > &
   PlotProps<Data>
 
-/** Maintains a single-component plot and releases it when its mark is removed. */
 export function SingleContainer<Data>(props: SingleContainerProps<Data>): JSX.Element {
   let host!: HTMLDivElement
   let plot: Single<Data | never[]> | undefined
@@ -193,8 +184,8 @@ export function SingleContainer<Data>(props: SingleContainerProps<Data>): JSX.El
   const options = omit(props, 'children', 'data', 'class', 'style', 'duration', 'onRenderComplete')
   const duration = createChartDuration(() => props.duration)
   const children = chartParts<never, Data>(() => props.children)
-  // Release child engines before destroying their shared container.
   function disposePlot(): void {
+    // Release child engines before destroying their shared container.
     plot?.updateContainer({}, true)
     plot?.destroy()
     plot = undefined

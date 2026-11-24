@@ -166,15 +166,12 @@ export async function connect<K extends WindowKind>(kind: K) {
     topics,
     appearanceIssues: appearance.issues,
     t: ((...args) => translate()(...args)) as Translate,
-    /** Registers this document's dirty-editor close workflow. */
     onClose(handler: typeof confirmClose) {
       confirmClose = handler
     },
-    /** Registers the navigation receiver belonging to this document. */
     onNavigate(handler: NonNullable<typeof navigate>) {
       navigate = handler
     },
-    /** Acknowledges that this document is ready to receive native actions. */
     ready: () => common('window.ready'),
   }
 }

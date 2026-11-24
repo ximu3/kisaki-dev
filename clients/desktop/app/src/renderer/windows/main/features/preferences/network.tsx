@@ -7,10 +7,10 @@ import { Button } from '@kisaki3/desktop-ui/button'
 import { Field, FieldGroup, FieldLabel } from '@kisaki3/desktop-ui/field'
 import { Input } from '@kisaki3/desktop-ui/input'
 import { Select } from '@kisaki3/desktop-ui/select'
-import { errorMessage } from '../../../../infrastructure/notifications'
 import type { MainClient } from '../../../../infrastructure/api'
 import type { PreferenceDraft, PreferenceFields } from './draft'
 import { focusPreferenceValue, PreferenceField } from './field'
+import { QueryError } from '../../../../infrastructure/query/error'
 
 export const proxyCredentialsKey = 'network.credentials'
 
@@ -105,16 +105,7 @@ export function NetworkFields(props: {
         </Show>
       </FieldGroup>
 
-      <Show when={state.error}>
-        {(cause) => (
-          <Alert tone="destructive" role="alert">
-            {errorMessage(cause())}{' '}
-            <Button variant="outline" onClick={refresh}>
-              {api.t('runtime.retry')}
-            </Button>
-          </Alert>
-        )}
-      </Show>
+      <QueryError error={state.error} retryLabel={api.t('runtime.retry')} retry={refresh} />
       <Show when={adoption()?.status === 'applying'}>
         <p role="status" class="m-0 text-sm text-muted-foreground">
           {api.t('runtime.networkApplying')}
@@ -132,7 +123,6 @@ export function NetworkFields(props: {
   )
 }
 
-/** Edits the protected pair as one value in the staged credential dialog. */
 export function ProxyCredentialFields(props: { t: Translate; draft: PreferenceFields }) {
   const { t, draft } = props
   const entered = () => {

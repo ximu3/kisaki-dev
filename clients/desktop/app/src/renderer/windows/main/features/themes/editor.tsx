@@ -1,12 +1,10 @@
-import { createSignal, onCleanup, Show } from 'solid-js'
+import { createMemo, createSignal, onCleanup } from 'solid-js'
 import type { TokenName } from '@kisaki3/desktop-appearance/tokens'
 import {
   parseUserThemeUpdate,
   type ColorScheme,
   type UserAppearanceTokens,
-  type UserThemeCreate,
   type ThemeRef,
-  type UserThemeUpdate,
 } from '@kisaki3/desktop-contracts/appearance'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { DialogBody, DialogFooter, DialogHeader, DialogTitle } from '@kisaki3/desktop-ui/dialog'
@@ -16,53 +14,14 @@ import { Input } from '@kisaki3/desktop-ui/input'
 import { SegmentedControl } from '@kisaki3/desktop-ui/segmented-control'
 import { Toolbar, ToolbarRow } from '@kisaki3/desktop-ui/toolbar'
 import { Switch } from '@kisaki3/desktop-ui/switch'
-import { Alert } from '@kisaki3/desktop-ui/alert'
-import { errorMessage } from '../../../../infrastructure/notifications'
 import type { MainClient } from '../../../../infrastructure/api'
 import type { EditorGuard } from '../../../../infrastructure/dialogs/closing'
+import { themeUpdate, type ThemeEdit } from './draft'
 import { createThemePreview } from './preview'
 import { createFontOptions } from '../../domain-ui/fonts/options'
 import { ThemeFields, themeGroups } from './fields'
+import { QueryError } from '../../../../infrastructure/query/error'
 
-/** A complete editable definition and the saved identity it compares against. */
-export interface ThemeEdit {
-  id: string | null
-  definition: UserThemeCreate
-}
-
-/** Returns the independently changed properties and their original values. */
-function themeUpdate(value: UserThemeCreate, original: UserThemeCreate): UserThemeUpdate {
-  function difference<T extends object>(next: T, old: T) {
-    const keys = Object.keys(next) as (keyof T)[]
-    const changes: Partial<T> = {},
-      expected: Partial<T> = {}
-    for (const key of keys) {
-      if (JSON.stringify(next[key]) === JSON.stringify(old[key])) {
-        continue
-      }
-      changes[key] = next[key]
-      expected[key] = old[key]
-    }
-    return { changes, expected }
-  }
-
-  const light = difference(value.light, original.light)
-  const dark = difference(value.dark, original.dark)
-  return {
-    changes: {
-      ...(value.name !== original.name && { name: value.name }),
-      ...(Object.keys(light.changes).length && { light: light.changes }),
-      ...(Object.keys(dark.changes).length && { dark: dark.changes }),
-    },
-    expected: {
-      ...(value.name !== original.name && { name: original.name }),
-      ...(Object.keys(light.expected).length && { light: light.expected }),
-      ...(Object.keys(dark.expected).length && { dark: dark.expected }),
-    },
-  }
-}
-
-/** Receives one opening's initial theme and the catalog's editor callbacks. */
 interface ThemeEditorProps {
   api: MainClient
   initial: ThemeEdit
@@ -71,14 +30,13 @@ interface ThemeEditorProps {
   onSaved: (ref: ThemeRef) => void
 }
 
-/** Holds one theme draft and releases only the application preview this instance acquired. */
 export function ThemeEditor(props: ThemeEditorProps) {
   const { api } = props
   const [draft, setDraft] = createSignal(props.initial.definition)
   const [original, setOriginal] = createSignal(props.initial)
   const [scheme, setScheme] = createSignal<ColorScheme>('light')
-  const dirty = () =>
-    !original().id || JSON.stringify(draft()) !== JSON.stringify(original().definition)
+  const update = createMemo(() => themeUpdate(draft(), original().definition))
+  const dirty = () => !original().id || Object.keys(update().changes).length > 0
 
   const fonts = createFontOptions(api)
 
@@ -137,14 +95,13 @@ export function ThemeEditor(props: ThemeEditorProps) {
       submitter instanceof HTMLButtonElement &&
       submitter.name === 'intent' &&
       submitter.value === 'use'
-    const value = draft(),
-      old = original()
+    const value = draft()
+    const edits = update()
+    let id = original().id
     const selected = use ? (await api.call('preferences.get')).appearance.theme : undefined
-    let id = old.id
     if (id) {
-      const update = themeUpdate(value, old.definition)
-      if (Object.keys(update.changes).length) {
-        await api.call('themes.update', id, update)
+      if (Object.keys(edits.changes).length) {
+        await api.call('themes.update', id, edits)
       }
     } else {
       const ref = await api.call('themes.create', value)
@@ -224,16 +181,11 @@ export function ThemeEditor(props: ThemeEditorProps) {
           </ToolbarRow>
         </Toolbar>
         <DialogBody class="@container space-y-5">
-          <Show when={fonts.error()}>
-            {(cause) => (
-              <Alert tone="destructive" role="alert">
-                {errorMessage(cause())}{' '}
-                <Button variant="outline" onClick={fonts.retry}>
-                  {api.t('runtime.retry')}
-                </Button>
-              </Alert>
-            )}
-          </Show>
+          <QueryError
+            error={fonts.error()}
+            retryLabel={api.t('runtime.retry')}
+            retry={fonts.retry}
+          />
           <ThemeFields
             t={api.t}
             scheme={scheme()}

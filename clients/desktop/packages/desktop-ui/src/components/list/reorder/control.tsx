@@ -6,36 +6,26 @@ import { DragFeedback } from '../../drag/presentation'
 import { List, type ListProps } from '../parts'
 import { moveListItems, type ListMove } from './move'
 
-/** Navigation commands available from the move menu and keyboard. */
 export type MoveCommand = 'first' | 'previous' | 'next' | 'last'
 
-/** Localized commands and the announcement of an adopted move. */
 export interface ReorderLabels {
   first: string
   previous: string
   next: string
   last: string
-  /** Formats the source item and its one-based position after the move. */
   moved: (sourceId: string, position: number, move: ListMove) => string
 }
 
-/** Host-owned visible order, permissions and adoption for one ordered list. */
 export interface ReorderableListProps extends Omit<ListProps, 'ordered'> {
-  /** Stable unique item IDs in logical display order. */
   order: readonly string[]
   selected?: ReadonlySet<string>
   labels: ReorderLabels
-  /** Returns the actual scrolling element when an ancestor owns the viewport. */
   viewport?: () => HTMLElement | undefined
-  /** Determines whether a move within the current display range is available. */
   canMove?: (move: ListMove) => boolean
-  /** Adopts the request and exposes the committed or staged order before resolving. */
   onMove: (move: ListMove) => void | Promise<void>
-  /** Presents the host-owned failure when adoption rejects. */
   onMoveError: (reason: unknown) => void
 }
 
-/** Pointer lifetimes distinguish independent lists and retain the source identity during a drag. */
 const ReorderContext = createContext<{
   readonly scope: symbol
   readonly busy: () => boolean
@@ -48,7 +38,6 @@ const ReorderContext = createContext<{
   readonly submit: (sourceId: string, move: ListMove | undefined) => void
 }>()
 
-/** Installs one drag monitor, autoscroll owner and adoption gate for the ordered list. */
 export function ReorderableList(props: ReorderableListProps) {
   const rest = omit(
     props,
@@ -193,7 +182,6 @@ export function ReorderableList(props: ReorderableListProps) {
   )
 }
 
-/** Provides the owning list to its move-enabled item and rejects detached composition. */
 export function useReorderableList() {
   return useContext(ReorderContext)
 }

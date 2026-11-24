@@ -14,7 +14,6 @@ import { parsePackagePath } from '@kisaki3/extension-distribution/manifest'
 import { parseSearchTarget, type SearchTarget } from './ui/navigation'
 import { DesktopError } from './errors'
 
-/** Native search domains, separate from extension-defined result identities. */
 export const searchCategories = Object.freeze([
   'catalog',
   'notes',
@@ -44,12 +43,10 @@ export interface SearchTargetMap {
   readonly preferences: Extract<SearchTarget, { type: 'preference' }>
 }
 
-/** Results retain the actual extension owner and hold no read-resource leases. */
 export type SearchIcon =
   | { readonly type: 'lucide'; readonly name: LucideIconName }
   | { readonly type: 'extension'; readonly extensionId: string; readonly path: string }
 
-/** Text query scoped to one native search category. */
 export interface SearchQuery<T extends SearchCategory = SearchCategory> {
   readonly text: string
   readonly category: T
@@ -70,10 +67,6 @@ export interface SearchResult<T extends SearchCategory = SearchCategory> {
 }
 
 export interface SearchApi {
-  /**
-   * Empty text succeeds with zero results; query failures are reported separately from an empty
-   * result.
-   */
   query<T extends SearchCategory>(
     input: SearchQuery<T>,
     options: ListOptions,
@@ -109,7 +102,6 @@ const icon = v.variant('type', [
   }),
 ])
 
-/** An all-category view composes separate category requests. */
 export function parseSearchQuery(input: unknown): SearchQuery {
   return parseValue(
     v.strictObject({ text, category: v.picklist(searchCategories) }),
@@ -118,16 +110,11 @@ export function parseSearchQuery(input: unknown): SearchQuery {
   )
 }
 
-/** Parses display records and checks their native targets against the requested category. */
 export function parseSearchResult<T extends SearchCategory>(
   category: T,
   input: unknown,
 ): SearchResult<T>
 
-/**
- * Validates result fields, target-category membership and a total at least as large as the returned
- * interval.
- */
 export function parseSearchResult(category: SearchCategory, input: unknown): SearchResult {
   const value = parseValue(
     v.strictObject({

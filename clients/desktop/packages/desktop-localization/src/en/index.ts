@@ -6,7 +6,6 @@ import { scannerMessages } from './scanner'
 import { showcaseMessages } from './showcase'
 import { runtimeMessages } from './runtime'
 
-/** English source catalog shared by call-type generation and translation validation. */
 export const englishMessages = {
   actions: actionMessages,
   library: libraryMessages,

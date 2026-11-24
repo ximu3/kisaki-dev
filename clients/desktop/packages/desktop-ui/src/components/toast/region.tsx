@@ -9,20 +9,13 @@ import { Spinner } from '../spinner'
 import surface from '../../internal/popup/surface.module.css'
 import styles from './styles.module.css'
 
-/** Document-owned notification host labels, default duration and presentation class. */
 export interface ToasterProps {
   regionLabel: string
   closeLabel: string
-  /** Default display duration in milliseconds; omission uses 5000. */
   durationMs?: number
   class?: string
 }
 
-/**
- * Installs the document's notification region and moves it into the active native modal.
- *
- * The same cards and clocks survive modal-host changes. Only one Toaster is installed per document.
- */
 export function Toaster(props: ToasterProps): JSX.Element {
   let region!: HTMLDivElement
   let track!: HTMLDivElement
@@ -111,17 +104,10 @@ export function Toaster(props: ToasterProps): JSX.Element {
   )
 }
 
-/**
- * Renders one message with its own display clock and exit lifetime.
- *
- * Hover and focus pause remaining time; loading and persistent messages do not automatically
- * dismiss.
- */
 function ToastItem(props: {
   entry: ToastEntry
   closeLabel: string
   dismiss: () => void
-  /** Removes the ended entry after exit presentation settles. */
   release: () => void
 }): JSX.Element {
   let card!: HTMLDivElement

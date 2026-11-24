@@ -4,13 +4,11 @@ import { Dialog, DialogContent, type DialogContentProps } from '@kisaki3/desktop
 import { reportError } from '../notifications'
 import type { EditorGuard } from './closing'
 
-/** Gives the mounted editor its lifetime registration and cancel action. */
 interface EditorDialogControls {
   registerEditor: (guard: EditorGuard) => void
   requestClose: () => void
 }
 
-/** Receives one opening's initial values and the catalog's close coordination. */
 interface EditorDialogProps<T extends object> {
   edit: T | undefined
   size: NonNullable<DialogContentProps['size']>
@@ -20,7 +18,6 @@ interface EditorDialogProps<T extends object> {
   children: (edit: T, controls: EditorDialogControls) => JSX.Element
 }
 
-/** Mounts one guarded item editor while preserving the catalog below it. */
 export function EditorDialog<T extends object>(props: EditorDialogProps<T>) {
   let guard: EditorGuard | undefined
 

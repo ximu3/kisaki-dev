@@ -16,7 +16,8 @@ import type {
 } from '../relations'
 import type { VolumeChapter } from '../parts'
 import * as v from 'valibot'
-import { text, id, optionalFields, validateExpectedKeys, unique } from '../../validation'
+import { id, validateExpectedKeys, unique } from '../../validation'
+import { relationUpdateEntries } from '../relations'
 
 export interface GraphWorkCharacterAdd {
   readonly work: GraphEntryRef<WorkType>
@@ -50,7 +51,6 @@ export interface GraphWorkRelationAdd {
   readonly note?: string | null
 }
 
-/** Changed endpoints may use graph keys. The baseline still describes a complete saved binding. */
 export interface GraphWorkCharacterUpdate {
   readonly id: string
   readonly changes: Partial<GraphWorkCharacterAdd>
@@ -102,7 +102,6 @@ export interface WorkRelationSnapshot {
   readonly note: string | null
 }
 
-/** Removal snapshots compare only named removals. Updates supply their own field baselines. */
 interface GraphRelationActions<Add, Update, Snapshot> {
   readonly add?: readonly Add[]
   readonly update?: readonly Update[]
@@ -123,7 +122,6 @@ export type GraphVolumeChapterChange =
       readonly remove?: readonly GraphPartRef<'comicChapter'>[]
     }
 
-/** GraphPartCreate.work defines ownership. Writable relations describe other associations. */
 export interface GraphRelations {
   readonly workCharacters?: GraphRelationActions<
     GraphWorkCharacterAdd,
@@ -162,22 +160,13 @@ export interface GraphRelations {
   }[]
 }
 
-export const properties = { note: v.nullable(text), isSpoiler: v.boolean() }
-
-export function relationEdit<E extends v.ObjectEntries, B extends v.GenericSchema>(
-  fields: E,
-  binding: B,
-  spoiler: boolean,
-) {
-  const attrs = { note: properties.note, isSpoiler: spoiler ? properties.isSpoiler : v.never() }
+export function relationEdit<
+  E extends v.ObjectEntries,
+  B extends v.GenericSchema,
+  P extends v.ObjectEntries,
+>(fields: E, binding: B, properties: P) {
   return v.pipe(
-    v.strictObject({
-      id,
-      changes: v.strictObject(optionalFields({ ...fields, ...attrs })),
-      expected: v.exactOptional(
-        v.strictObject({ ...optionalFields(attrs), binding: v.exactOptional(binding) }),
-      ),
-    }),
+    v.strictObject({ id, ...relationUpdateEntries(fields, binding, properties) }),
     v.transform((value) => {
       validateExpectedKeys(value.changes!, value.expected, ['binding'])
       return value
@@ -185,7 +174,6 @@ export function relationEdit<E extends v.ObjectEntries, B extends v.GenericSchem
   )
 }
 
-/** Rejects an action set that updates and removes the same existing relation. */
 export function actions<
   A extends v.GenericSchema,
   U extends v.GenericSchema<unknown, { id: string }>,

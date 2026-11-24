@@ -10,7 +10,6 @@ import { metadataPartKinds, type MetadataPartKey, type MetadataPartType } from '
 import { entryTypes, type PartType, type EntryType } from '../library/catalog'
 import type { NonEmptyArray } from '../operations'
 
-/** Creates an ordered rule-list schema with nonempty, distinct field selections in each rule. */
 export function rules(fields: readonly string[]) {
   const field = v.picklist(fields)
   return v.array(
@@ -23,7 +22,6 @@ export function rules(fields: readonly string[]) {
   )
 }
 
-/** For comic chapters, volumeNumberLabel belongs to scoped matching rather than field adoption. */
 export function getPartMatchingFields<T extends PartType>(
   type: T,
 ): readonly PartMatchingField<T>[] {
@@ -33,7 +31,6 @@ export function getPartMatchingFields<T extends PartType>(
   ] as PartMatchingField<T>[]
 }
 
-/** Omission or an empty rule list means no fallback for that slot. */
 export function parsePartMatchingRules<T extends EntryType>(
   root: T,
   input: unknown,
@@ -80,10 +77,6 @@ export type PartMatchingField<T extends PartType> =
   | Extract<keyof PartIdentificationFields<T>, string>
   | (T extends 'comicChapter' ? 'volumeNumberLabel' : never)
 
-/**
- * Every selected field requires an original comparable value. Only zero matches advances to the
- * next rule.
- */
 export interface MatchingRule<Field extends PropertyKey> {
   readonly fields: NonEmptyArray<Field>
 }

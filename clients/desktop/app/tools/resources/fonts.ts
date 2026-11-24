@@ -10,11 +10,6 @@ export interface FontInput {
   files: string[]
 }
 
-/**
- * Copies selected font files and notices from locked dependencies into the target font directory.
- *
- * The resource workflow owns the output directory; the final build inventories its runtime bytes.
- */
 export async function copyFonts(fontInputs: FontInput[], output: string): Promise<void> {
   for (const font of fontInputs) {
     const directory = dirname(requireDependency.resolve(`${font.package}/package.json`))

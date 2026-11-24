@@ -22,7 +22,6 @@ import {
 import { entries, characters, persons, organizations } from './catalog'
 import { booleanValue, enumValue, idColumn, safeInteger } from './constraints'
 
-/** Creates common work endpoint and relationship attributes. */
 function participationFields() {
   return {
     id: idColumn(),
@@ -34,9 +33,6 @@ function participationFields() {
   }
 }
 
-/**
- * Stores each work-character association once with role, spoiler state and ordering on both sides.
- */
 export const workCharacterLinks = sqliteTable(
   'work_character_links',
   {
@@ -64,10 +60,6 @@ export const workCharacterLinks = sqliteTable(
   ],
 )
 
-/**
- * Derives stored person-role and character-binding constraints from the public compatibility
- * rules.
- */
 const personRoleCompatibility = workTypes
   .map((type) => {
     const unrestricted = personRoles
@@ -82,9 +74,6 @@ const personRoleCompatibility = workTypes
   })
   .join(' or ')
 
-/**
- * Stores credited responsibilities, optionally tied to a character associated with the same work.
- */
 export const workPersonLinks = sqliteTable(
   'work_person_links',
   {
@@ -129,7 +118,6 @@ export const workPersonLinks = sqliteTable(
   ],
 )
 
-/** Derives stored organization-role constraints from the public per-medium compatibility rules. */
 const organizationRoleCompatibility = workTypes
   .map((type) => {
     const roles = organizationRoles
@@ -140,7 +128,6 @@ const organizationRoleCompatibility = workTypes
   })
   .join(' or ')
 
-/** Stores credited organizations with work-specific roles and independently ordered views. */
 export const workOrganizationLinks = sqliteTable(
   'work_organization_links',
   {
@@ -176,7 +163,6 @@ export const workOrganizationLinks = sqliteTable(
   ],
 )
 
-/** Canonical stored work-relation directions shared with the public relation contract. */
 const storedRelationTypes = [
   'sequel',
   'sideStory',
@@ -192,10 +178,6 @@ const storedRelationTypes = [
   'related',
 ] as const satisfies readonly StoredWorkRelationType[]
 
-/**
- * Stores one canonical work-relation fact with validated endpoint kinds and symmetric identity
- * order.
- */
 export const workRelations = sqliteTable(
   'work_relations',
   {

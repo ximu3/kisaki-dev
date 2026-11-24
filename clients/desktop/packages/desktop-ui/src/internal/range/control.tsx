@@ -5,7 +5,6 @@ import { onFormReset } from '../state'
 import { nativeValidityChanged } from '../form'
 import styles from './styles.module.css'
 
-/** Native numeric bounds, step and DOM attributes for a horizontal range control. */
 export interface RangeAttributes extends Omit<
   JSX.InputHTMLAttributes<HTMLInputElement>,
   'type' | 'value' | 'min' | 'max' | 'step'
@@ -15,21 +14,13 @@ export interface RangeAttributes extends Omit<
   step?: number | 'any'
 }
 
-/** Owned numeric range value with native-edit notification and an optional model-reset callback. */
 interface RangeInputProps extends RangeAttributes {
   value: number
   defaultValue?: number
-  /** Reports the numeric value produced by native range editing. */
   onValueChange: (value: number) => void
-  /** Restores the owning control's reset value before the native element resynchronizes. */
   resetValue?: () => void
 }
 
-/**
- * Renders a native range with synchronized value, reset baseline and visual fill.
- *
- * After editing it resynchronizes even when a controlled owner retains the previous value.
- */
 export function RangeInput(props: RangeInputProps): JSX.Element {
   const rest = omit(
     props,
@@ -62,8 +53,8 @@ export function RangeInput(props: RangeInputProps): JSX.Element {
   }
   createEffect(state, sync)
 
-  // A native callback can read or submit a range before Solid processes its pending update.
   function syncOwner() {
+    // A native callback can read or submit a range before Solid processes its pending update.
     flush()
     sync(state())
   }

@@ -8,21 +8,13 @@ import {
 import { DistributionError, type FieldPath } from '../errors'
 import type { RegistryArtifact, RegistryExtension, RegistryRelease } from './contracts'
 
-/**
- * A chosen release and its compatible artifact for the requested host.
- *
- * The caller retains this selection while handling download failures.
- */
 export interface SelectedRelease {
   readonly release: RegistryRelease
   readonly artifact: RegistryArtifact
 }
 
-/** Owner-supplied prerelease and version constraints for release selection. */
 export interface ReleaseSelectionOptions {
-  /** Defaults to false. This controls extension versions, not host runtime range semantics. */
   readonly allowPrerelease?: boolean
-  /** Automatic updates supply the installed version; only strictly newer releases can be selected. */
   readonly newerThan?: string
 }
 
@@ -47,12 +39,6 @@ export function rankReleases(
   return ordered.reverse().map(({ release }) => release)
 }
 
-/**
- * Selects the release that supplies the listing's current display metadata.
- *
- * Chooses the highest stable version, or the highest prerelease when none is stable. Platform
- * compatibility and publication time do not affect this choice. An empty list returns undefined.
- */
 export function getCurrentRelease(
   releases: readonly RegistryRelease[],
 ): RegistryRelease | undefined {
@@ -60,13 +46,6 @@ export function getCurrentRelease(
   return ranked.find((release) => !isPrereleaseVersion(release.version)) ?? ranked[0]
 }
 
-/**
- * Selects the highest compatible release and its matching artifact.
- *
- * Requires validated listing and host values, then applies the supplied prerelease and newerThan
- * constraints. Returns undefined when no candidate qualifies; equal precedence is rejected before
- * filtering.
- */
 export function selectRelease(
   extension: RegistryExtension,
   environment: CompatibilityEnvironment,

@@ -2,16 +2,11 @@ import type { NonEmptyArray } from '../operations'
 import * as v from 'valibot'
 import { id, unique, parseValue } from '../validation'
 
-/**
- * Only existing slots of the selected identities are permuted. The baseline covers the entire
- * ordered side.
- */
 export interface ReorderInput<T = string> {
   readonly order: NonEmptyArray<T>
   readonly expected: { readonly order: readonly T[] }
 }
 
-/** Current-position intent, with ids moved in input order before a nonselected identity or to the end. */
 export interface MoveInput<T = string> {
   readonly ids: NonEmptyArray<T>
   readonly before: T | null
@@ -22,7 +17,6 @@ const uniqueIds = v.pipe(
   v.check((items) => unique(items, (item) => item)),
 )
 
-/** Parses a nonempty unique requested order and an explicit unique original-order baseline. */
 export function parseReorderInput(input: unknown): ReorderInput {
   return parseValue(
     v.strictObject({
@@ -39,7 +33,6 @@ export function parseReorderInput(input: unknown): ReorderInput {
   )
 }
 
-/** Parses a current-position move and rejects an anchor included among the moved identities. */
 export function parseMoveInput(input: unknown): MoveInput {
   return parseValue(
     v.pipe(

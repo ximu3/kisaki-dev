@@ -1,10 +1,6 @@
 import { RpcConnection, RpcError } from '@kisaki3/desktop-rpc'
 import { ipcTransport } from './ipc.js'
 
-/**
- * Child-side connection exercising reverse calls, safe failures and cancellation over real process
- * IPC.
- */
 const rpc: RpcConnection = new RpcConnection(ipcTransport(process), {
   protocol: { id: 'fixture.child', version: 1 },
   handshake: {

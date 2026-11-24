@@ -3,12 +3,10 @@ import type { ThemeFontResourceFile, ViewFontFace } from '@kisaki3/desktop-contr
 import type { FontMetricRange } from '@kisaki3/desktop-contracts/fonts'
 import type { ReadResourceRef, ViewResourcesApi } from '@kisaki3/desktop-contracts/resources'
 
-/** Formats a verified static or variable font metric as a CSS descriptor. */
 function range(value: FontMetricRange, unit = '') {
   return value.min + unit + (value.min === value.max ? '' : ' ' + value.max + unit)
 }
 
-/** Binds identical immutable bytes once until the last snapshot using this set is released. */
 export function createDocumentFonts(
   view: ViewResourcesApi,
   digest: (ref: ReadResourceRef) => string,

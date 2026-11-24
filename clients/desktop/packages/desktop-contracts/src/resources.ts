@@ -3,12 +3,10 @@ import { fromParser, id, text, nonemptyText, parseDictionary, parseValue } from 
 import { parseHttpUrl } from './network'
 import { DesktopError } from './errors'
 
-/** Opaque reference to acquired, fixed content whose authority is checked for the actual caller. */
 export interface ReadResourceRef {
   readonly id: string
 }
 
-/** Transient source for one file operation, supplied as a path, URL, bytes or acquired resource. */
 export type FileInput =
   | { readonly type: 'path'; readonly path: string }
   | {
@@ -20,40 +18,26 @@ export type FileInput =
   | { readonly type: 'bytes'; readonly bytes: Uint8Array }
   | { readonly type: 'resource'; readonly resource: ReadResourceRef }
 
-/** Verified, retained content awaiting adoption under a host-allocated attachment ID. */
 export interface PreparedAttachment {
   readonly attachmentId: string
   readonly resource: ReadResourceRef
 
-  /** Idempotent. Other holds and adopted references remain valid. */
   dispose(): Promise<void>
 }
 
-/** Owned hold on fixed readable content with an asynchronous release operation. */
 export interface ReadResource {
   readonly resource: ReadResourceRef
 
-  /**
-   * Stops new reads and waits for in-flight cleanup. Other holders remain valid and repeated
-   * disposal is safe.
-   */
   dispose(): Promise<void>
 }
 
-/** View-owned transient URLs backed by holds independent of the original resource holder. */
 export interface ViewResourceBinding<K extends string = string> {
   readonly urls: Readonly<Record<K, string>>
 
-  /** Revokes this binding's URLs and releases its holds while preserving other view bindings. */
   dispose(): Promise<void>
 }
 
 export interface ViewResourcesApi {
-  /**
-   * Acquires independent view holds and returns resource URLs under the original input keys.
-   *
-   * Failure cleans partial bindings while preserving the caller's holds.
-   */
   bind<K extends string>(
     resources: Readonly<Record<K, ReadResourceRef>>,
   ): Promise<ViewResourceBinding<K>>
@@ -61,10 +45,8 @@ export interface ViewResourcesApi {
 
 const resourceSchema = v.strictObject({ id })
 
-/** HTTP token syntax accepted for an explicitly supplied request header name. */
 const headerName = v.pipe(text, v.regex(/^[!#$%&'*+.^_`|~0-9A-Za-z-]+$/))
 
-/** Request header text that excludes line breaks and NUL. */
 const headerValue = v.pipe(
   text,
   v.check((value) => !/[\r\n\0]/.test(value)),
@@ -84,16 +66,10 @@ const fileInputSchema = v.variant('type', [
   v.strictObject({ type: v.literal('resource'), resource: resourceSchema }),
 ])
 
-/** The host checks existence, ownership and expiry. */
 export function parseReadResourceRef(input: unknown): ReadResourceRef {
   return parseValue(resourceSchema, input, 'Invalid read resource reference')
 }
 
-/**
- * Checks a preparation handle's interface and returns the original object with its methods intact.
- *
- * The host verifies actual authority and ownership of the hold.
- */
 export function parsePreparedAttachment(input: unknown): PreparedAttachment {
   if (typeof input !== 'object' || input === null) {
     throw new DesktopError('InvalidInput', 'Invalid prepared attachment')
@@ -109,12 +85,6 @@ export function parsePreparedAttachment(input: unknown): PreparedAttachment {
   return value as PreparedAttachment
 }
 
-/**
- * Parses a transient source and checks credential-bearing HTTP redirect policy.
- *
- * Nonempty Authorization or Cookie headers, matched case-insensitively, require explicit redirect:
- * error. Resource acquisition and authority checks belong to execution.
- */
 export function parseFileInput(input: unknown): FileInput {
   const value = parseValue(fileInputSchema, input, 'Invalid file input')
   if (value.type === 'url') {

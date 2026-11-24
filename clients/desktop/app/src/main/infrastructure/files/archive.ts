@@ -8,7 +8,6 @@ import { isAbsoluteHostPath } from '#host-path'
 import type { NativeFiles } from '#native'
 import { stageFile, type StagedFile } from './storage'
 
-/** Actual expansion and metadata budgets supplied by the archive's owning operation. */
 export interface ArchiveLimits {
   readonly entries: number
   readonly namesBytes: number
@@ -17,14 +16,12 @@ export interface ArchiveLimits {
   readonly archiveBytes: number
 }
 
-/** A canonical relative member identity, with directory markers kept separate from the path. */
 export interface ArchiveMember {
   readonly path: string
   readonly type: 'file' | 'directory'
   readonly byteSize: number
 }
 
-/** One input member; file streams transfer to the archive writer and are consumed sequentially. */
 export type ArchiveInput =
   | { readonly path: string; readonly type: 'directory' }
   | {
@@ -34,7 +31,6 @@ export type ArchiveInput =
       readonly data: Readable
     }
 
-/** Rejects member aliases and traversal while retaining original case and Unicode spelling. */
 export function parseArchivePath(path: string): string {
   if (
     !path ||
@@ -50,7 +46,6 @@ export function parseArchivePath(path: string): string {
   return path
 }
 
-/** Owns bounded member uniqueness, parent-kind and byte-count checks for one archive. */
 class ArchiveBudget {
   private readonly members = new Set<string>()
   private readonly files = new Set<string>()
@@ -59,14 +54,12 @@ class ArchiveBudget {
   private namesBytes = 0
   private totalBytes = 0
 
-  /** Establishes finite nonnegative byte and entry budgets before accepting archive work. */
   constructor(private readonly limits: ArchiveLimits) {
     if (Object.values(limits).some((value) => !Number.isSafeInteger(value) || value < 0)) {
       throw new TypeError('Archive budgets must be nonnegative safe integers')
     }
   }
 
-  /** Admits a member only when its complete declared work fits the remaining budget. */
   add(member: ArchiveMember): void {
     parseArchivePath(member.path)
     if (this.members.has(member.path)) {
@@ -107,7 +100,6 @@ class ArchiveBudget {
     this.checkNames()
   }
 
-  /** Bounds retained names, including inferred parent paths. */
   private checkNames(): void {
     if (this.namesBytes > this.limits.namesBytes) {
       throw new DesktopError('ResourceLimit', 'The archive contains too much path metadata')
@@ -115,7 +107,6 @@ class ArchiveBudget {
   }
 }
 
-/** Waits for one entry or the end marker without accumulating an archive-wide entry queue. */
 function nextEntry(zip: InputZip): Promise<Entry | null> {
   return new Promise((resolve, reject) => {
     function cleanup(): void {
@@ -143,7 +134,6 @@ function nextEntry(zip: InputZip): Promise<Entry | null> {
   })
 }
 
-/** Waits until yauzl has released its file descriptor after all member streams have ended. */
 async function closeArchive(zip: InputZip): Promise<void> {
   if (!zip.isOpen) {
     return
@@ -163,7 +153,6 @@ async function closeArchive(zip: InputZip): Promise<void> {
   })
 }
 
-/** Validates the declared member kind and strict UTF-8 names before any bytes are consumed. */
 function memberValue(entry: Entry): ArchiveMember {
   if ((entry.generalPurposeBitFlag & 1) !== 0 || ![0, 8].includes(entry.compressionMethod)) {
     throw new DesktopError(
@@ -202,12 +191,6 @@ function memberValue(entry: Entry): ArchiveMember {
   }
 }
 
-/**
- * Reads complete members one at a time, verifying expanded lengths and CRC before success.
- *
- * The visitor consumes the complete supplied stream, including empty files. Paths are data only;
- * the owning business validates its manifest and destination filesystem before restoring content.
- */
 export async function readArchive(
   path: string,
   limits: ArchiveLimits,
@@ -226,13 +209,11 @@ export async function readArchive(
   })
   let archiveFailure: unknown
 
-  /** Retains an archive failure even while a member visitor owns the current asynchronous work. */
   function recordFailure(error: unknown): void {
     archiveFailure = error
   }
   zip.on('error', recordFailure)
 
-  /** Closes the archive descriptor before releasing this operation's error observation. */
   async function dispose(): Promise<void> {
     try {
       await closeArchive(zip)
@@ -261,7 +242,6 @@ export async function readArchive(
       let bytes = 0
       let checksum = 0
       const verified = new Transform({
-        /** Checks actual expanded bytes as they pass to the member consumer. */
         transform(chunk: Buffer, _encoding, callback) {
           bytes += chunk.length
           checksum = crc32(chunk, checksum)
@@ -275,7 +255,6 @@ export async function readArchive(
             chunk,
           )
         },
-        /** Confirms complete content independently of ZIP's central-directory claims. */
         flush(callback) {
           callback(
             bytes === member.byteSize && checksum === entry.crc32
@@ -322,13 +301,6 @@ export async function readArchive(
   await dispose()
 }
 
-/**
- * Creates a complete ZIP preparation from sequential, caller-owned input streams.
- *
- * ZIP64 is selected when required by the actual archive. Failure and cancellation end the current
- * stream and discard the owned output preparation; no user destination is replaced.
- * The input producer owns cancellation of the work needed to yield its next member.
- */
 export async function createArchive(
   temporaryRoot: string,
   inputs: AsyncIterable<ArchiveInput> | Iterable<ArchiveInput>,
@@ -369,7 +341,6 @@ export async function createArchive(
 
         let bytes = 0
         const verified = new Transform({
-          /** Rejects incorrect lengths while consuming the actual input stream. */
           transform(chunk: Buffer, _encoding, callback) {
             bytes += chunk.length
             callback(
@@ -382,7 +353,6 @@ export async function createArchive(
               chunk,
             )
           },
-          /** Rejects incomplete input before finalizing the member. */
           flush(callback) {
             callback(
               bytes === input.byteSize

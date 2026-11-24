@@ -1,5 +1,3 @@
-/* Optional Tailwind 4 vocabulary. Reference mode keeps runtime variables owned by styles.css. */
-
 @theme inline reference {
   --color-background: var(--color-background);
   --color-foreground: var(--color-foreground);

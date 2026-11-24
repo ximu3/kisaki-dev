@@ -5,25 +5,18 @@ import { parseGameBackupSource, type GameBackupSource } from '../library/holding
 import { DesktopError, parseErrorSummary, type ErrorSummary } from '../errors'
 import { type PlaybackState, playbackStateSchema } from './playback'
 
-/**
- * Time counted here is confirmed effective usage. Timing eligibility and user pause are tracked
- * independently.
- */
 export interface SessionTiming {
   readonly paused: boolean
   readonly counting: boolean
   readonly elapsedMs: number
-  /** UTC display deadline in milliseconds; null means no active grace period. */
   readonly graceEndsAt: number | null
 }
 
-/** Game process-observation availability and independently known foreground state. */
 export interface GameMonitoringState {
   readonly available: boolean
   readonly foreground: boolean | null
 }
 
-/** The position survives reflow; progress is nullable display information from 0 through 1. */
 export interface ReadingState {
   readonly position: ReadingPosition
   readonly progress: number | null
@@ -31,13 +24,10 @@ export interface ReadingState {
   readonly reflowing: boolean
 }
 
-/** Save-source snapshot fixed at game launch and unaffected by later configuration edits. */
 export type SessionSaveSource = Extract<GameBackupSource, { readonly type: 'snapshot' }>
 
-/** Actual session identity, start time and timing state shared by all work media. */
 export interface SessionBase {
   readonly sessionId: string
-  /** UTC milliseconds since the Unix epoch. */
   readonly startedAt: number
 
   readonly timing: SessionTiming
@@ -81,10 +71,6 @@ export type FileSession = AnimeSession | ComicSession | NovelSession
 
 export type WorkSession = GameSession | FileSession
 
-/**
- * The start event identifies the target at launch. Read the live session for timing and engine
- * controls.
- */
 export interface SessionStartedMap {
   readonly game: Pick<
     GameSession,
@@ -102,20 +88,14 @@ export interface SessionEndReasonMap {
   readonly novel: 'stopped' | 'replaced' | 'interrupted'
 }
 
-/** A detached game has already saved its final recording. */
 export type SessionEndedMap = {
   readonly [K in keyof SessionStartedMap]: SessionStartedMap[K] & {
-    /** UTC milliseconds since the Unix epoch. */
     readonly endedAt: number
     readonly reason: SessionEndReasonMap[K]
     readonly recordingError?: ErrorSummary
   }
 }
 
-/**
- * Only ready is a normal return. The previousEnded variant is a partial failure result and does not
- * establish successful recording or cleanup.
- */
 export type FileSwitchResult<S extends FileSession = FileSession> =
   | { readonly outcome: 'ready'; readonly session: S }
   | {
@@ -205,10 +185,6 @@ function checkSaveSource(session: Pick<GameSession, 'launchConfigId' | 'saveSour
   }
 }
 
-/**
- * Parses a medium-specific live session snapshot and checks timing and game save-source
- * consistency.
- */
 export function parseWorkSession(input: unknown): WorkSession {
   const value = parseValue(
     v.variant('type', [game, anime, comic, novel]),
@@ -222,10 +198,6 @@ export function parseWorkSession(input: unknown): WorkSession {
   return value
 }
 
-/**
- * Parses start-event context and checks a game save source against the reported launch
- * configuration.
- */
 export function parseSessionStarted<T extends keyof SessionStartedMap>(
   type: T,
   input: unknown,
@@ -239,7 +211,6 @@ export function parseSessionStarted<T extends keyof SessionStartedMap>(
   return value as SessionStartedMap[T]
 }
 
-/** A detached game cannot report unsaved final recording. */
 export function parseSessionEnded<T extends keyof SessionEndedMap>(
   type: T,
   input: unknown,
@@ -264,11 +235,6 @@ export function parseSessionEnded<T extends keyof SessionEndedMap>(
   return value as SessionEndedMap[T]
 }
 
-/**
- * Parses a complete file-switch result and checks the ready session's medium.
- *
- * The success boundary additionally requires the ready outcome.
- */
 export function parseFileSwitchResult<T extends FileSession['type']>(
   type: T,
   input: unknown,

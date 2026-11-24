@@ -25,11 +25,6 @@ export {
   ChevronsUpDown,
 } from '@lucide/solid'
 
-/**
- * Renders a decorative Lucide component in the shared glyph box and follows icon changes.
- *
- * The enclosing control owns its accessible name and any size override.
- */
 export function Icon(props: { icon: LucideIcon; class?: string | undefined }): JSX.Element {
   const Glyph = dynamic(() => props.icon)
   return (
@@ -44,7 +39,6 @@ export function Icon(props: { icon: LucideIcon; class?: string | undefined }): J
   )
 }
 
-/** Semantic feedback states mapped to their shared decorative glyphs. */
 const statusIcons = {
   info: Info,
   success: CircleCheck,
@@ -53,7 +47,6 @@ const statusIcons = {
   destructive: CircleExclamationPoint,
 }
 
-/** Renders the distinct outline symbol corresponding to a message's status. */
 export function StatusIcon(props: {
   type: keyof typeof statusIcons
   class?: string | undefined

@@ -10,24 +10,19 @@ import { preparePreferences } from './codecs/preferences'
 import { relations } from './relations'
 import { openNameOrder } from './name-order'
 
-/** SQLite file identity used to claim an empty library and retained by its formal migration chain. */
 const applicationId = 0x4b534b33
 
 type Queries = Omit<BetterSQLite3Database<typeof relations>, 'transaction'>
 
-/** Explicit deployment paths and complete product defaults used by database initialization. */
 export interface DatabaseOptions {
   readonly path: string
   readonly nativeBinding: string
-  /** Deployed private SQLite collation extension, also used by the app's Node-API loader. */
   readonly collationExtension: string
   readonly migrationsDirectory: string
   readonly defaults: Preferences
 }
 
-/** An unsupported or structurally incomplete database, retaining the original cause for diagnostics. */
 export class DatabaseFormatError extends Error {
-  /** Describes why the file cannot be opened by this migration chain without changing it. */
   constructor(message: string, options?: ErrorOptions) {
     super(message, options)
     this.name = 'DatabaseFormatError'
@@ -98,13 +93,6 @@ function hasMigrationBaseline(
   return true
 }
 
-/**
- * Opens the already selected local data path and completes initialization before returning.
- *
- * The path owner verifies local filesystem support before this synchronous call. The returned
- * queries and native transactions share one connection. Unsupported files retain their contents.
- * A failed first migration closes the connection and leaves the claimed library retryable.
- */
 export function initializeDatabase(options: DatabaseOptions) {
   const { path, nativeBinding, collationExtension, migrationsDirectory, defaults } = options
   if (![path, nativeBinding, collationExtension, migrationsDirectory].every(isAbsoluteHostPath)) {
@@ -133,7 +121,6 @@ export function initializeDatabase(options: DatabaseOptions) {
       db,
       preferences,
       adoptLocale,
-      /** Runs synchronously on this connection. Nested writes commit with the outer transaction. */
       transaction<Result>(
         operation: (
           queries: Queries,
@@ -142,7 +129,6 @@ export function initializeDatabase(options: DatabaseOptions) {
       ): Result {
         return connection.transaction(() => operation(db))[mode]()
       },
-      /** Closes this connection after its consumers have finished; repeated close is harmless. */
       close() {
         if (connection.open) {
           connection.close()
@@ -163,7 +149,6 @@ export function initializeDatabase(options: DatabaseOptions) {
   }
 }
 
-/** Checks an existing target library's migration chain in a read-only connection before a mode switch. */
 export function verifyExistingLibrary(
   path: string,
   options: Pick<DatabaseOptions, 'nativeBinding' | 'migrationsDirectory'>,
@@ -181,5 +166,4 @@ export function verifyExistingLibrary(
   }
 }
 
-/** The initialized connection and singleton mappings owned by one application instance. */
 export type Storage = Omit<ReturnType<typeof initializeDatabase>, 'db'> & { db: Queries }

@@ -26,7 +26,6 @@ import { errorMessage } from '../../../../infrastructure/notifications'
 import type { MainClient } from '../../../../infrastructure/api'
 import { TaskStatus, TaskTypeIcon, taskDuration, taskTypeLabel } from './presentation'
 
-/** Retains the report's identity through its exit and leaves the initiating row mounted. */
 export function TaskDetails(props: {
   api: MainClient
   id: string | null
@@ -53,7 +52,6 @@ export function TaskDetails(props: {
   )
 }
 
-/** Reads this report before showing the dialog and retains confirmed data during refresh. */
 function TaskDetailView(props: { api: MainClient; id: string; revision: number }) {
   const { api } = props
   const detail = createQuery({
@@ -97,7 +95,6 @@ function TaskDetailView(props: { api: MainClient; id: string; revision: number }
   )
 }
 
-/** Shows result, information and recorded input as directly readable sections. */
 function TaskReport(props: { api: MainClient; item: TaskRun }) {
   const { t } = props.api
   const item = () => props.item

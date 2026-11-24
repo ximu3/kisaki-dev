@@ -4,7 +4,6 @@ import type { FileWorkType, PartRef } from '../catalog'
 import * as v from 'valibot'
 import { fromParser, id, unique, parseValue } from '../../validation'
 
-/** Persistent permission for later automatic association, independent of current association contents. */
 export type FileAssociationMode = 'automatic' | 'manual'
 
 export type FilePartType<T extends FileWorkType> = {
@@ -23,7 +22,6 @@ export interface FileAssociationInput<T extends FileWorkType = FileWorkType> {
   readonly isPreferred?: boolean
 }
 
-/** Associating a comic file with a volume does not create direct associations with its chapters. */
 export type FileAssociationChange<T extends FileWorkType = FileWorkType> =
   | { readonly type: 'replace'; readonly items: readonly FileAssociationInput<T>[] }
   | {
@@ -32,7 +30,6 @@ export type FileAssociationChange<T extends FileWorkType = FileWorkType> =
       readonly remove?: readonly PartRef<FilePartType<T>>[]
     }
 
-/** Association changes with an optional baseline of the complete direct set and matching mode. */
 export interface FileAssociationEdit<T extends FileWorkType = FileWorkType> {
   readonly change: FileAssociationChange<T>
   readonly expected?: {
@@ -56,7 +53,6 @@ export function partSchema<T extends FileWorkType>(
   return v.strictObject({ type: v.picklist(types), id })
 }
 
-/** Encodes a part's kind and identity as an unambiguous association key. */
 export function partKey(part: PartRef): string {
   return JSON.stringify([part.type, part.id])
 }
@@ -65,10 +61,6 @@ export function associationSchema<T extends FileWorkType>(type: T) {
   return v.strictObject({ part: partSchema(type), isPreferred: v.exactOptional(v.boolean()) })
 }
 
-/**
- * A complete replacement needs the whole direct association set, including associations outside a
- * volume or chapter view.
- */
 export function parseFileAssociationChange<T extends FileWorkType>(
   workType: T,
   input: unknown,
@@ -104,7 +96,6 @@ export function parseFileAssociationEdit<T extends FileWorkType>(
   ) as FileAssociationEdit<T>
 }
 
-/** Parses a matching-mode change and optional baseline without changing association membership. */
 export function parseFileAssociationModeChange(input: unknown): {
   readonly mode: FileAssociationMode
   readonly expected?: { readonly associationMode: FileAssociationMode }

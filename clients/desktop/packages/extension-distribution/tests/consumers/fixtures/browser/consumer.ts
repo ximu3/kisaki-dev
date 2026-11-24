@@ -22,10 +22,6 @@ const manifest = normalizeManifest({
   entry: 'entry.js',
 })
 
-/**
- * Synthetic registry content used for browser parsing and release selection without
- * authentication.
- */
 const registry = parseRegistry(
   JSON.stringify({
     schemaVersion: 1,

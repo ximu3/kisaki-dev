@@ -139,7 +139,6 @@ export function terminalRecord(
   }
 }
 
-/** A failed final write changes the delivered outcome. Later history reads use the saved checkpoint. */
 export async function persistTaskOutcome<Result>(
   call: HistoryCall,
   started: TaskRun,

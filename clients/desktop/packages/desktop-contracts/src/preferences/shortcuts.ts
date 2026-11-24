@@ -2,7 +2,6 @@ import { fromParser, parseValue, nonemptyText } from '../validation'
 import { DesktopError } from '../errors'
 import * as v from 'valibot'
 
-/** Native action identities whose shortcut settings are persisted by preferences. */
 export const shortcutKeys = Object.freeze([
   'main.search',
   'main.preferences',
@@ -122,13 +121,6 @@ keys.set('enter', 'Return')
 
 keys.set('esc', 'Escape')
 
-/**
- * Parses and canonicalizes supported case-insensitive Electron accelerator syntax.
- *
- * Explicit modifiers remain distinct from the platform-dependent CommandOrControl choice.
- *
- * @see https://www.electronjs.org/docs/latest/tutorial/keyboard-shortcuts
- */
 export function parseAccelerator(input: unknown): string {
   const source = parseValue(nonemptyText, input, 'Invalid accelerator')
   let normalized = source
@@ -157,7 +149,6 @@ export function parseAccelerator(input: unknown): string {
   return [...modifierOrder.filter((part) => parsed.includes(part)), key].join('+')
 }
 
-/** Parses one action's accelerator list and deduplicates canonical combinations. */
 export function parseShortcutAccelerators(input: unknown): readonly string[] {
   return parseValue(
     v.pipe(
@@ -169,14 +160,12 @@ export function parseShortcutAccelerators(input: unknown): readonly string[] {
   )
 }
 
-/** Pair of distinct actions whose effective key combination can overlap in their scopes. */
 export interface ShortcutConflict {
   readonly first: ShortcutKey
   readonly second: ShortcutKey
   readonly accelerator: string
 }
 
-/** Electron's shifted punctuation carries both the base key code and Shift, independently of its display spelling. */
 const shiftedKeyCodes = new Map(
   Object.entries({
     '!': '1',
@@ -203,7 +192,6 @@ const shiftedKeyCodes = new Map(
   }),
 )
 
-/** Resolves a saved spelling to Electron's effective modifier and key identity on this platform. */
 export function acceleratorIdentity(accelerator: string, platform: DesktopPlatform): string {
   const parts = parseAccelerator(accelerator).split('+')
   const keyCode = parts.pop()!
@@ -229,10 +217,6 @@ export function acceleratorIdentity(accelerator: string, platform: DesktopPlatfo
   return [...effective].sort().join('+') + ':' + (shiftedCode ?? keyCode)
 }
 
-/**
- * Checks effective accelerator collisions in overlapping scopes, including inactive game actions.
- * OS registration is checked at runtime.
- */
 export function findShortcutConflicts(
   preferences: ShortcutsPreferences,
   platform: DesktopPlatform,

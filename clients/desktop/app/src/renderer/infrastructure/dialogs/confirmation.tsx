@@ -11,7 +11,6 @@ import {
 import { Button } from '@kisaki3/desktop-ui/button'
 import type { Translate } from '@kisaki3/desktop-localization'
 
-/** Asks about a named action and resolves false when its owner or dialog closes. */
 export function createConfirmation(t: Translate) {
   let decision: PromiseWithResolvers<boolean> | undefined
   const [prompt, setPrompt] = createSignal<{ title: string; action: string; description: string }>()

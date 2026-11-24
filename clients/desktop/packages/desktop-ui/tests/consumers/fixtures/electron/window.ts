@@ -1,6 +1,5 @@
 import { app, BrowserWindow } from 'electron'
 
-/** Loads the built consumer in a hidden sandboxed Electron window after application readiness. */
 async function start(): Promise<void> {
   await app.whenReady()
   const window = new BrowserWindow({

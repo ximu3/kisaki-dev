@@ -3,7 +3,6 @@ import type { OpenedFont } from '../../../../../shared/window-api'
 import type { MainClient } from '../../../../infrastructure/api'
 import { reportError } from '../../../../infrastructure/notifications'
 
-/** Updates without holding the previous record's bytes and releases any late reply. */
 export function createFontRead(api: MainClient, selection: Accessor<{ id: string } | undefined>) {
   const [value, setValue] = createSignal<OpenedFont>()
   const [error, setError] = createSignal<unknown>()

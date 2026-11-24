@@ -38,7 +38,6 @@ const managementEntries = [
 
 const modeIcons = { system: Monitor, light: Sun, dark: Moon }
 
-/** Applies quick choices immediately through the same field baselines as the preference editor. */
 export function ApplicationMenu(props: {
   api: MainClient
   preferences: PreferencesSnapshot | undefined

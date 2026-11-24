@@ -4,14 +4,12 @@ import { runners, verificationPackages, type VerificationPackage } from './packa
 import { selectPackages, type PackageSelection } from './selection.ts'
 import { listProjects, repositoryRoot } from '../workspace.ts'
 
-/** Manual workflow inputs. An omitted task uses the package's complete check. */
 export interface CheckRequest {
   package?: string | undefined
   task?: string | undefined
   target?: string | undefined
 }
 
-/** Creates one job for each selected package and host. A named task belongs to one package. */
 export function planChecks(
   selection: PackageSelection,
   packages: readonly VerificationPackage[],
@@ -76,7 +74,6 @@ export function planChecks(
   return { scope, code: scope !== 'docs', matrix }
 }
 
-/** Gets both sides of moves and deletions, or requests full verification without a usable baseline. */
 function changedPaths(base: string | undefined, head: string): string[] | undefined {
   if (!base || /^0+$/.test(base) || process.env.GITHUB_EVENT_NAME === 'workflow_dispatch') {
     return undefined

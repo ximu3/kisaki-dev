@@ -6,7 +6,6 @@ import { createActivation } from '../../../../../src/main/app/activation'
 
 const appId = 'me.kisaki.dev'
 
-/** The test controls the portal so its submitted action can be retained after the original sender exits. */
 const portal = {
   destination: 'org.freedesktop.portal.Desktop',
   path: '/org/freedesktop/portal/desktop',
@@ -90,7 +89,6 @@ export async function verifyPortalHandoff(target: NativeViewTarget) {
   }
 }
 
-/** Receives an OS activation before window readiness and delivers it once when navigation becomes available. */
 export async function receivePortalAction() {
   const received = Promise.withResolvers<void>()
   const activation = createActivation(received.reject)

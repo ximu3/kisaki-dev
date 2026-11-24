@@ -9,7 +9,6 @@ import type { preferenceStorage } from './storage'
 import type { Translate } from '@kisaki3/desktop-localization'
 import { preferenceFields } from './fields'
 
-/** Creates preference operations for the current data root and platform's defaults. */
 export function createPreferences(
   call: DatabaseCall<ReturnType<typeof preferenceStorage>>,
   defaults: Preferences,
@@ -51,7 +50,6 @@ export function createPreferences(
       return result
     },
 
-    /** Opens proxy credentials for an authenticated route, rewrapping only its original revision. */
     async readProxyCredentials(this: void, expectedRevision: string) {
       const { ciphertext, revision } = await call('getProxySecret')
       if (!ciphertext || revision !== expectedRevision) {

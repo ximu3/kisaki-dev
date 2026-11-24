@@ -9,12 +9,10 @@ import type { InputProps } from '../control'
 import frame from '../styles.module.css'
 import styles from './styles.module.css'
 
-/** Native search attributes with a localized accessible name for the clear button. */
 export interface SearchInputProps extends Omit<InputProps, 'type'> {
   clearLabel: string
 }
 
-/** Edits a query using its native input and returns focus there before clearing. */
 export function SearchInput(props: SearchInputProps): JSX.Element {
   const rest = omit(
     props,

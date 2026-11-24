@@ -2,12 +2,10 @@ import { fromParser, parseValue, nonemptyText } from './validation'
 import { DesktopError } from './errors'
 import * as v from 'valibot'
 
-/** Literal paths preserve wildcard-looking characters. Globs support *, ? and whole ** segments. */
 export type PathFilter =
   | { readonly kind: 'path'; readonly path: string }
   | { readonly kind: 'glob'; readonly pattern: string; readonly ignoreCase: boolean }
 
-/** Checks a Windows input's drive, UNC share or named volume without consulting the current host. */
 function hasWindowsRoot(value: string): boolean {
   let path = value.replaceAll('/', '\\')
   if (path.startsWith('\\\\?\\') || path.startsWith('\\\\.\\')) {
@@ -25,11 +23,6 @@ function hasWindowsRoot(value: string): boolean {
   )
 }
 
-/**
- * Checks absolute path syntax while preserving the supplied spelling.
- *
- * The host owns symlink resolution, parent traversal and filesystem name equivalence.
- */
 export function parseAbsolutePath(input: unknown): string {
   const value = parseValue(nonemptyText, input, 'Invalid absolute path')
   if (value.includes('\0') || !(value.startsWith('/') || hasWindowsRoot(value))) {
@@ -39,10 +32,6 @@ export function parseAbsolutePath(input: unknown): string {
   return value
 }
 
-/**
- * The root is represented by a dot. Other paths require nonempty segments and reject dot segments,
- * parent traversal and drive prefixes.
- */
 export function parseRelativePath(input: unknown): string {
   const value = parseValue(nonemptyText, input, 'Invalid relative path')
   if (value === '.') {
@@ -59,12 +48,6 @@ export function parseRelativePath(input: unknown): string {
   return value
 }
 
-/**
- * Parses a literal path or restricted glob and requires recursive wildcards to occupy complete
- * segments.
- *
- * Character-class and brace-looking text remains literal.
- */
 export function parsePathFilter(input: unknown): PathFilter {
   const value = parseValue(
     v.variant('kind', [

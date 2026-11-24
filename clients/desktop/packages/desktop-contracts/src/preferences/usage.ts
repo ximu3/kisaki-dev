@@ -16,26 +16,17 @@ export interface GamePreferences {
   readonly panelAlwaysOnTop: boolean
 }
 
-/**
- * Specific tracks, synchronization offsets, remembered volume and temporary speed have separate
- * owners.
- */
 export interface AnimePlaybackPreferences {
-  /** Preferred audio languages in priority order; an empty list expresses no preference. */
   readonly audioLanguages: readonly string[]
-  /** Preferred subtitle languages in priority order; an empty list expresses no preference. */
   readonly subtitleLanguages: readonly string[]
   readonly subtitlesEnabled: boolean
 
-  /** Playback-rate multiplier, from 0.01 through 100. */
   readonly playbackSpeed: number
-  /** Positive subtitle-size multiplier, at most 100. */
   readonly subtitleScale: number
 
   readonly autoAdvance: boolean
 }
 
-/** Original-page grouping and display transforms independent of source page identity and pixels. */
 export interface ReadingPagePreferences {
   readonly arrangement: 'single' | 'spread'
   readonly progression: 'document' | 'ltr' | 'rtl'
@@ -43,9 +34,7 @@ export interface ReadingPagePreferences {
 
   readonly fit: 'page' | 'width' | 'height'
   readonly autoCrop: boolean
-  /** Display brightness multiplier from 0 through 2, with 1 preserving the original brightness. */
   readonly brightness: number
-  /** Display contrast multiplier from 0 through 2, with 1 preserving the original contrast. */
   readonly contrast: number
 }
 
@@ -54,21 +43,15 @@ export interface ReadingTextPreferences {
   readonly writingMode: 'document' | 'horizontal-tb' | 'vertical-rl' | 'vertical-lr'
 
   readonly font: { readonly type: 'document' } | FontRef
-  /** Base text size in CSS pixels. */
   readonly fontSize: number
-  /** Positive line-height multiplier. */
   readonly lineHeight: number
-  /** Document spacing or a nonnegative distance in base-font em units. */
   readonly paragraphSpacing: 'document' | number
   readonly alignment: 'document' | 'start' | 'justify'
 
-  /** Content padding in CSS pixels. */
   readonly padding: number
-  /** Maximum line length in base-font em units. */
   readonly maxLineLength: number
 }
 
-/** Resolved display colors are not written back into a document or theme choice. */
 export type ReadingColors =
   | { readonly type: 'document' }
   | { readonly type: 'theme' }
@@ -89,7 +72,6 @@ export interface UsagePreferences {
   readonly novel: ReadingPreferences
 }
 
-/** Font and color choices replace as complete values. */
 export interface ReadingPreferencesChanges {
   readonly flow?: ReadingPreferences['flow']
   readonly pages?: Partial<ReadingPagePreferences>
@@ -105,16 +87,11 @@ export interface UsagePreferencesChanges {
   readonly novel?: ReadingPreferencesChanges
 }
 
-/**
- * Disabling retains complete settings. A null value in the owning field means the override has
- * never been initialized.
- */
 export interface UsageOverride<T> {
   readonly enabled: boolean
   readonly settings: T
 }
 
-/** Initialization supplies a complete independent unit; later edits preserve unrelated fields. */
 export type ReadingOverrideChange =
   | {
       readonly type: 'initialize'
@@ -133,7 +110,6 @@ export type ReadingOverrideChange =
       }
     }
 
-/** Playback-override initialization or field-specific update with optional original values. */
 export type PlaybackOverrideChange =
   | {
       readonly type: 'initialize'
@@ -231,7 +207,6 @@ export const readingPreferenceEntries = {
   colors,
 }
 
-/** Field-local reading edits with whole font and color choices. */
 export const readingChangeEntries = {
   flow: readingPreferenceEntries.flow,
   pages: v.strictObject(optionalFields(readingPageEntries)),
@@ -247,12 +222,10 @@ export const usageChangeEntries = {
   novel: v.strictObject(optionalFields(readingChangeEntries)),
 }
 
-/** Parses all reading settings, including those inactive in the current layout. */
 export function parseReadingPreferences(input: unknown): ReadingPreferences {
   return parseValue(v.strictObject(readingPreferenceEntries), input, 'Invalid reading preferences')
 }
 
-/** Values are validated rather than clamped. */
 export function parseAnimePlaybackPreferences(input: unknown): AnimePlaybackPreferences {
   return parseValue(
     v.strictObject(playbackPreferenceEntries),
@@ -261,7 +234,6 @@ export function parseAnimePlaybackPreferences(input: unknown): AnimePlaybackPref
   )
 }
 
-/** Parses explicit reading edits while retaining font and color choices as indivisible values. */
 export function parseReadingPreferencesChanges(input: unknown): ReadingPreferencesChanges {
   return parseValue(
     v.strictObject(optionalFields(readingChangeEntries)),
@@ -270,7 +242,6 @@ export function parseReadingPreferencesChanges(input: unknown): ReadingPreferenc
   )
 }
 
-/** Checks that reading baselines refer only to fields submitted in the current edit. */
 export function validateReadingExpected(
   changes: ReadingPreferencesChanges,
   expected: ReadingPreferencesChanges | undefined,
@@ -280,7 +251,6 @@ export function validateReadingExpected(
   validateExpectedKeys(changes.text ?? {}, expected?.text)
 }
 
-/** Parses complete initialization or partial reading-override edits and their field baselines. */
 export function parseReadingOverrideChange(input: unknown): ReadingOverrideChange {
   const update = v.strictObject(
     optionalFields({
@@ -311,7 +281,6 @@ export function parseReadingOverrideChange(input: unknown): ReadingOverrideChang
   return value
 }
 
-/** Ordered language lists replace as whole values. */
 export function parsePlaybackOverrideChange(input: unknown): PlaybackOverrideChange {
   const update = v.strictObject(
     optionalFields({

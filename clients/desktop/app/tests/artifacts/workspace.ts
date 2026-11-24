@@ -11,16 +11,9 @@ export interface ArtifactWorkspace {
   resourceDirectory: string
   fusePath: string
 
-  /** Removes the extraction after the caller has confirmed application exit. */
   close(): Promise<void>
 }
 
-/**
- * Extracts a supplied build artifact into an isolated test directory.
- *
- * Returns platform launch, resource and fuse-inspection paths. Extraction failure removes partial
- * output; after success the caller closes the workspace after its application exits.
- */
 export async function prepareArtifactWorkspace(archivePath: string): Promise<ArtifactWorkspace> {
   const directory = await mkdtemp(join(tmpdir(), 'kisaki-artifact-'))
 

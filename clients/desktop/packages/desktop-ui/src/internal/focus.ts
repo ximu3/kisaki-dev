@@ -1,10 +1,6 @@
 import { createTypeahead, printableKey } from './typeahead'
 import type { Accessor } from 'solid-js'
 
-/**
- * Returns matching descendants with layout boxes that are neither disabled nor explicitly hidden,
- * in DOM order.
- */
 export function focusableItems(container: HTMLElement, selector: string): HTMLElement[] {
   return Array.from(container.querySelectorAll<HTMLElement>(selector)).filter(
     (item) =>
@@ -13,11 +9,6 @@ export function focusableItems(container: HTMLElement, selector: string): HTMLEl
   )
 }
 
-/**
- * Creates a Solid-owned handler for directional focus, Home and End, and timed prefix search.
- *
- * Targets follow current DOM order and writing direction; owner cleanup clears the search timer.
- */
 export function createFocusNavigation(
   root: Accessor<HTMLElement>,
   selector: string,
@@ -31,10 +22,12 @@ export function createFocusNavigation(
       return
     }
 
-    const items = focusableItems(root(), selector)
-    const current = items.indexOf(root().ownerDocument.activeElement as HTMLElement)
+    const container = root()
+    const items = focusableItems(container, selector)
+    const focused = container.ownerDocument.activeElement
+    const current = items.findIndex((item) => item === focused)
     const horizontal = orientation() === 'horizontal'
-    const rtl = getComputedStyle(root()).direction === 'rtl'
+    const rtl = getComputedStyle(container).direction === 'rtl'
     const forward = rtl ? 'ArrowLeft' : 'ArrowRight'
     const backward = rtl ? 'ArrowRight' : 'ArrowLeft'
     const next = horizontal ? forward : 'ArrowDown'
@@ -42,15 +35,15 @@ export function createFocusNavigation(
 
     let target: HTMLElement | undefined
     if (event.key === next) {
-      target = items[(current + 1) % items.length]
+      target = items[current + 1] ?? items[0]
     } else if (event.key === previous) {
-      target = items[(current - 1 + items.length) % items.length]
+      target = current > 0 ? items[current - 1] : items.at(-1)
     } else if (event.key === 'Home') {
       target = items[0]
     } else if (event.key === 'End') {
       target = items.at(-1)
     } else if (printableKey(event.key)) {
-      const matches = typeahead(event.key, root())
+      const matches = typeahead(event.key, container)
       const ordered = [...items.slice(current + 1), ...items.slice(0, current + 1)]
       target = ordered.find((item) =>
         matches(item.getAttribute('aria-label') ?? item.textContent ?? ''),

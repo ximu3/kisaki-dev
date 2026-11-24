@@ -11,10 +11,8 @@ import {
   walk,
 } from 'css-tree/dist/csstree.esm'
 import type { CssNode, Value } from 'css-tree'
-import { tokens } from './tokens'
-import type { TokenKind, TokenName, TokenValues } from './tokens'
+import { tokens, type TokenKind, type TokenName, type TokenValues } from './tokens'
 
-/** Standalone color grammar that excludes inherited and context-dependent token values. */
 const colorSyntax = '<hex-color> | <named-color> | transparent | <color-function>'
 
 const syntaxes: Readonly<Record<TokenKind, string>> = {
@@ -93,11 +91,6 @@ function hasLiteralComponents(value: Value): boolean {
   return valid
 }
 
-/**
- * Checks that each shadow layer has a nonnegative blur radius.
- *
- * Offsets and spread may be negative.
- */
 function hasValidShadowBlur(value: Value): boolean {
   let lengthIndex = 0
   for (const node of value.children) {
@@ -114,12 +107,6 @@ function hasValidShadowBlur(value: Value): boolean {
   return true
 }
 
-/**
- * Parses a known base token into a standalone CSS value.
- *
- * Normalizes whitespace, comments and standalone zero lengths. Unknown names, invalid syntax,
- * formulas and references throw TypeError. Consumers own font resources and style application.
- */
 export function parseTokenValue(name: TokenName, input: unknown): string {
   if (!Object.hasOwn(tokens, name)) {
     throw new TypeError('Unknown appearance token')
@@ -171,12 +158,6 @@ export function parseTokenValue(name: TokenName, input: unknown): string {
   return generate(ast)
 }
 
-/**
- * Parses all base tokens into a new frozen appearance branch.
- *
- * Missing or extra keys and invalid CSS values throw TypeError. The input is preserved, and a
- * failed parse delivers no partial branch.
- */
 export function parseTokenValues(input: unknown): TokenValues {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new TypeError('Appearance values must be an object')

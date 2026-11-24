@@ -2,7 +2,6 @@ import { DesktopError } from './errors'
 import { parseRecord } from './validation'
 import { visit } from 'jsonc-parser'
 
-/** Plain persisted desktop data. RPC frame values are independently owned by the environment-neutral transport package. */
 export type JsonValue =
   | null
   | boolean
@@ -11,11 +10,6 @@ export type JsonValue =
   | readonly JsonValue[]
   | { readonly [key: string]: JsonValue }
 
-/**
- * Validates and copies finite ordinary JSON data.
- *
- * Rejects cycles, sparse arrays and unsupported values without invoking toJSON or dropping keys.
- */
 export function parseJsonValue(input: unknown): JsonValue {
   const holder: Record<string, JsonValue> = { value: null }
 
@@ -104,11 +98,6 @@ export function parseJsonValue(input: unknown): JsonValue {
   return holder.value!
 }
 
-/**
- * Parses a complete strict JSON document for its owning contract to interpret.
- *
- * Rejects comments, a byte-order mark, duplicate decoded property names and nonfinite numbers.
- */
 export function parseStrictJson(source: string): unknown {
   const objects: Set<string>[] = []
 

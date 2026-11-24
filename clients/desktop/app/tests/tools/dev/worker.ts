@@ -15,12 +15,6 @@ let session: DevelopmentSession | undefined
 
 let failed = false
 
-/**
- * Requests normal session shutdown, or cancels startup before a session handle exists.
- *
- * Reports a declined close to the parent and forwards stop failures to the worker's failure
- * promise.
- */
 function stop(): void {
   if (session) {
     void session.stop().then((result) => {
@@ -37,11 +31,6 @@ function stop(): void {
   }
 }
 
-/**
- * Stops an existing test session, allowing its deliberate first-close refusal once.
- *
- * Before a session exists, requests startup cancellation. A second close refusal rejects cleanup.
- */
 async function cleanup(): Promise<void> {
   const current = session
   if (!current) {

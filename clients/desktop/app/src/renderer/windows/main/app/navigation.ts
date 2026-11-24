@@ -14,7 +14,6 @@ import {
 } from './management/layer'
 import type { PageRoute } from './routes'
 
-/** Binds navigation and leave requests to this document and its two management presentations. */
 export function createNavigation(
   api: MainClient,
   pages: readonly PageRoute[],

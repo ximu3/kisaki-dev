@@ -7,10 +7,8 @@ import { taskHistory } from '../features/tasks/history'
 import { themeStorage } from '../features/appearance/storage'
 import { fontStorage } from '../features/fonts/storage'
 
-/** Installs each owner's storage operations on the initialized worker connection. */
 function operations(storage: Storage, options: DatabaseOptions) {
   return {
-    /** Checks another selected root without migrating it or acquiring a second writer. */
     inspectLibrary(path: string) {
       verifyExistingLibrary(path, options)
     },
@@ -22,7 +20,6 @@ function operations(storage: Storage, options: DatabaseOptions) {
   }
 }
 
-/** Typed main-to-worker operation table. */
 export type ApplicationOperations = ReturnType<typeof operations>
 
 serveDatabase(operations)

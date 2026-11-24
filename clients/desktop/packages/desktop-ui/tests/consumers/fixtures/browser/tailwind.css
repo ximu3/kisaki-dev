@@ -1,5 +1,3 @@
-/* A real Tailwind consumer declares the same layer order before its first rules. */
-
 @layer theme, base, components, utilities;
 @import 'tailwindcss/theme.css' layer(theme);
 @import '@kisaki3/desktop-appearance/tailwind.css';

@@ -1,24 +1,21 @@
+import { rethrowAfterRelease } from '../../release'
 import { Worker } from 'node:worker_threads'
 import type { DatabaseOptions, Storage } from '../initialize'
 import type { UiLocale } from '@kisaki3/desktop-contracts/i18n'
 import { DesktopError, type ErrorSummary } from '@kisaki3/desktop-contracts/errors'
 
-/** Storage initialization and every operation complete before the next command is accepted. */
 export type DatabaseCommand =
   | { type: 'adopt-locale'; locale: UiLocale }
   | { type: 'operation'; name: string; args: readonly unknown[] }
   | { type: 'close' }
 
-/** Calls a complete synchronous worker operation with its declared input and result. */
 export type DatabaseCall<Operations> = <K extends keyof Operations & string>(
   name: K,
   ...args: Operations[K] extends (...args: infer A) => unknown ? A : never
 ) => Promise<Operations[K] extends (...args: never[]) => infer R ? R : never>
 
-/** The actual decoded singleton row returned by the database. */
 export type PreferenceRow = Storage['preferences']['$inferSelect']
 
-/** Opens the deployed worker, returning a handle only after schema and preferences are ready. */
 export async function openDatabaseExecutor<Operations = never>(
   entry: URL,
   options: DatabaseOptions,
@@ -33,7 +30,6 @@ export async function openDatabaseExecutor<Operations = never>(
   let closing: Promise<void> | undefined
   let queue = Promise.resolve()
 
-  /** Delivers an unexpected worker exit to its readiness and currently outstanding request. */
   const fail = (error: Error) => {
     failure = error
     ready.reject(error)
@@ -77,11 +73,9 @@ export async function openDatabaseExecutor<Operations = never>(
   try {
     await ready.promise
   } catch (cause) {
-    await worker.terminate()
-    throw cause
+    return rethrowAfterRelease(cause, () => worker.terminate())
   }
 
-  /** Preserves FIFO order, lets later requests continue after a rejected operation and drains before closing. */
   function request(command: DatabaseCommand): Promise<unknown> {
     if (closing) {
       return Promise.reject(new Error('Database executor is closing'))
@@ -108,11 +102,9 @@ export async function openDatabaseExecutor<Operations = never>(
   return {
     call: ((name: string, ...args: unknown[]) =>
       request({ type: 'operation', name, args })) as DatabaseCall<Operations>,
-    /** Resolves after the comparator and all name indexes have committed the effective language. */
     async adoptLocale(locale: UiLocale) {
       await request({ type: 'adopt-locale', locale })
     },
-    /** Drains accepted work, closes SQLite and waits for the worker to exit. */
     close(this: void) {
       return (closing ??= request({ type: 'close' }).then(
         async () => {

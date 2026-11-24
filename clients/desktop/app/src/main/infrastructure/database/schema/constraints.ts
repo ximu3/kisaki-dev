@@ -1,7 +1,6 @@
 import { sql } from 'drizzle-orm'
 import { check, foreignKey, integer, text, type AnySQLiteColumn } from 'drizzle-orm/sqlite-core'
 
-/** Creates the required UTC millisecond fields supplied by the record's owning operation. */
 export function timestamps() {
   return {
     createdAt: integer('created_at').notNull(),
@@ -9,12 +8,10 @@ export function timestamps() {
   }
 }
 
-/** Creates a required identity column; its table declares the primary-key constraint. */
 export function idColumn(name = 'id') {
   return text(name).notNull()
 }
 
-/** Restricts a nullable or required integer to a safe range; NULL follows the column's own rule. */
 export function safeInteger(
   name: string,
   column: AnySQLiteColumn,
@@ -27,23 +24,19 @@ export function safeInteger(
   )
 }
 
-/** Restricts a nullable or required boolean to SQLite's two integer values. */
 export function booleanValue(name: string, column: AnySQLiteColumn) {
   return check(name, sql`${column} in (0, 1)`)
 }
 
-/** Restricts a textual classification to its fixed storage vocabulary. */
 export function enumValue(name: string, column: AnySQLiteColumn, values: readonly string[]) {
   const literals = values.map((value) => `'${value.replaceAll("'", "''")}'`).join(', ')
   return check(name, sql`${column} in (${sql.raw(literals)})`)
 }
 
-/** Requires a nonempty stored identifier without reinterpreting its spelling. */
 export function nonempty(name: string, column: AnySQLiteColumn) {
   return check(name, sql`length(${column}) > 0`)
 }
 
-/** Constrains a child reference to the parent's identity within the same work. */
 export function workForeignKey(
   id: AnySQLiteColumn,
   work: AnySQLiteColumn,
@@ -53,7 +46,6 @@ export function workForeignKey(
   return foreignKey({ columns: [id, work], foreignColumns: [parentId, parentWork] })
 }
 
-/** Deleting the target clears only its ID. SQLite checks the pair after that action. */
 export function retainedWorkReference(
   id: AnySQLiteColumn,
   work: AnySQLiteColumn,

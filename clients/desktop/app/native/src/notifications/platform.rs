@@ -7,13 +7,11 @@ use std::sync::Mutex;
 static RECEIVER: Mutex<Option<Click>> = Mutex::new(None);
 
 unsafe extern "C" {
-    /// Installs or detaches the application's delegate on the calling main thread.
     fn kisaki_set_notification_receiver(
         app_id: *const c_char,
         receive: Option<extern "C" fn(*const c_char)>,
     ) -> i32;
 
-    /// Retains no borrowed strings after returning and calls completion exactly once.
     fn kisaki_post_notification(
         app_id: *const c_char,
         identifier: *const c_char,
@@ -68,7 +66,6 @@ extern "C" fn completed(context: *mut c_void, status: i32) {
     complete.call(result, NonBlocking);
 }
 
-/// Submits without keeping a libuv worker blocked on a user's permission decision.
 pub(super) fn post(
     app_id: String,
     identifier: String,

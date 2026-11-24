@@ -3,6 +3,8 @@ import { DesktopError } from '../../errors'
 import { fromParser, id, optionalFields } from '../../validation'
 import { workTypes } from '../catalog'
 import {
+  relationPropertyEntries,
+  relationNoteEntry,
   characterRoles,
   personRoles,
   organizationRoles,
@@ -19,7 +21,6 @@ import {
 import { entryKey } from './nodes'
 import {
   actions,
-  properties,
   relationEdit,
   type GraphPersonWorkAdd,
   type GraphOrganizationWorkAdd,
@@ -93,7 +94,6 @@ export function bindingEdits({ entryReference, workType }: GraphReferences) {
     }
   }
 
-  // Inverse presentations of the same relationship share one key.
   function relationKey(value: GraphWorkRelationAdd): string {
     const normalized = canonicalWorkRelation(workRelationBinding(value))
     return JSON.stringify([normalized.from.id, normalized.to.id, normalized.type])
@@ -112,23 +112,26 @@ export function bindingEdits({ entryReference, workType }: GraphReferences) {
   const organizationBinding = fromParser(parseOrganizationWorkBinding)
   const relationBinding = fromParser(parseStoredWorkRelationBinding)
 
-  const characterAdd = v.strictObject({ ...characterFields, ...optionalFields(properties) })
+  const characterAdd = v.strictObject({
+    ...characterFields,
+    ...optionalFields(relationPropertyEntries),
+  })
   const personAdd = v.pipe(
-    v.strictObject({ ...personFields, ...optionalFields(properties) }),
+    v.strictObject({ ...personFields, ...optionalFields(relationPropertyEntries) }),
     v.transform((value) => {
       checkPerson(value)
       return value
     }),
   )
   const organizationAdd = v.pipe(
-    v.strictObject({ ...organizationFields, ...optionalFields(properties) }),
+    v.strictObject({ ...organizationFields, ...optionalFields(relationPropertyEntries) }),
     v.transform((value) => {
       checkOrganization(value)
       return value
     }),
   )
   const relationAdd = v.pipe(
-    v.strictObject({ ...relationFields, note: v.exactOptional(properties.note) }),
+    v.strictObject({ ...relationFields, ...optionalFields(relationNoteEntry) }),
     v.transform((value) => {
       checkRelation(value)
       return value
@@ -136,21 +139,21 @@ export function bindingEdits({ entryReference, workType }: GraphReferences) {
   )
 
   const personEdit = v.pipe(
-    relationEdit(personFields, personBinding, true),
+    relationEdit(personFields, personBinding, relationPropertyEntries),
     v.transform((value) => {
       checkPerson({ ...value.expected?.binding, ...value.changes })
       return value
     }),
   )
   const organizationEdit = v.pipe(
-    relationEdit(organizationFields, organizationBinding, true),
+    relationEdit(organizationFields, organizationBinding, relationPropertyEntries),
     v.transform((value) => {
       checkOrganization({ ...value.expected?.binding, ...value.changes })
       return value
     }),
   )
   const workRelationEdit = v.pipe(
-    relationEdit(relationFields, relationBinding, false),
+    relationEdit(relationFields, relationBinding, relationNoteEntry),
     v.transform((value) => {
       checkRelation({ ...value.expected?.binding, ...value.changes })
       return value
@@ -161,8 +164,8 @@ export function bindingEdits({ entryReference, workType }: GraphReferences) {
     workCharacters: v.exactOptional(
       actions(
         characterAdd,
-        relationEdit(characterFields, characterBinding, true),
-        v.strictObject({ id, binding: characterBinding, ...properties }),
+        relationEdit(characterFields, characterBinding, relationPropertyEntries),
+        v.strictObject({ id, binding: characterBinding, ...relationPropertyEntries }),
         characterKey,
       ),
     ),
@@ -170,7 +173,7 @@ export function bindingEdits({ entryReference, workType }: GraphReferences) {
       actions(
         personAdd,
         personEdit,
-        v.strictObject({ id, binding: personBinding, ...properties }),
+        v.strictObject({ id, binding: personBinding, ...relationPropertyEntries }),
         personKey,
       ),
     ),
@@ -178,7 +181,7 @@ export function bindingEdits({ entryReference, workType }: GraphReferences) {
       actions(
         organizationAdd,
         organizationEdit,
-        v.strictObject({ id, binding: organizationBinding, ...properties }),
+        v.strictObject({ id, binding: organizationBinding, ...relationPropertyEntries }),
         organizationKey,
       ),
     ),
@@ -186,7 +189,7 @@ export function bindingEdits({ entryReference, workType }: GraphReferences) {
       actions(
         relationAdd,
         workRelationEdit,
-        v.strictObject({ id, binding: relationBinding, note: properties.note }),
+        v.strictObject({ id, binding: relationBinding, ...relationNoteEntry }),
         relationKey,
       ),
     ),

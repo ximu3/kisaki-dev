@@ -13,19 +13,14 @@ import type {
   FileAvailability,
 } from '@kisaki3/desktop-contracts/library'
 
-/** Nonnegative safe-integer observations used for file counts and dimensions. */
 const count = v.pipe(v.number(), v.safeInteger(), v.minValue(0))
 
-/** Positive safe-integer observations for known dimensions and page counts. */
 const positiveCount = v.pipe(count, v.minValue(1))
 
-/** Safe integer UTC milliseconds used by saved file-access observations. */
 const instant = v.pipe(v.number(), v.safeInteger())
 
-/** Finite nonnegative seconds used for media duration and playback position. */
 const seconds = v.pipe(v.number(), v.finite(), v.minValue(0))
 
-/** Applies a local storage schema and uses the shared value-error category. */
 function parse<T>(schema: v.GenericSchema<unknown, T>, input: unknown): T {
   const result = v.safeParse(schema, input)
   if (!result.success) {
@@ -34,7 +29,6 @@ function parse<T>(schema: v.GenericSchema<unknown, T>, input: unknown): T {
   return result.output
 }
 
-/** Validates actual observed video metadata, retaining unknown dimensions and duration. */
 export function parseAnimeMetadata(input: unknown): AnimeFileMetadata {
   return parse(
     v.strictObject({
@@ -47,7 +41,6 @@ export function parseAnimeMetadata(input: unknown): AnimeFileMetadata {
   )
 }
 
-/** Validates actual reading metadata without inventing a page count for reflowable text. */
 export function parseReadingMetadata(input: unknown): ReadingFileMetadata {
   return parse(
     v.strictObject({
@@ -58,7 +51,6 @@ export function parseReadingMetadata(input: unknown): ReadingFileMetadata {
   )
 }
 
-/** Validates a saved access observation and its safe failure explanation. */
 export function parseFileAvailability(input: unknown): FileAvailability {
   return parse(
     v.variant('status', [
@@ -75,12 +67,10 @@ export function parseFileAvailability(input: unknown): FileAvailability {
   )
 }
 
-/** Validates a stored playback position in seconds. */
 export function parsePlaybackPosition(input: unknown): number {
   return parse(seconds, input)
 }
 
-/** Validates one complete playback override, including its independent enablement. */
 export function parsePlaybackOverride(input: unknown): UsageOverride<AnimePlaybackPreferences> {
   return parse(
     v.strictObject({
@@ -91,7 +81,6 @@ export function parsePlaybackOverride(input: unknown): UsageOverride<AnimePlayba
   )
 }
 
-/** Validates one complete reading override without merging it with a parent configuration. */
 export function parseReadingOverride(input: unknown): UsageOverride<ReadingPreferences> {
   return parse(
     v.strictObject({

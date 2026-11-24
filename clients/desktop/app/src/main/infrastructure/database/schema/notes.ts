@@ -17,7 +17,6 @@ import { entries, games, animes, comics, novels } from './catalog'
 import { animeFiles, comicFiles, novelFiles } from './holdings'
 import { idColumn, retainedWorkReference, safeInteger, timestamps } from './constraints'
 
-/** Stores independently identified Markdown notes whose lifetime is separate from entry links. */
 export const notes = sqliteTable(
   'notes',
   {
@@ -36,7 +35,6 @@ export const notes = sqliteTable(
   ],
 )
 
-/** Associates notes and entries with independent order on each side. */
 export const noteEntryLinks = sqliteTable(
   'note_entry_links',
   {
@@ -58,7 +56,6 @@ export const noteEntryLinks = sqliteTable(
   ],
 )
 
-/** Creates the independently stored content fields shared by the four annotation tables. */
 function annotationFields() {
   return {
     id: idColumn(),
@@ -68,7 +65,6 @@ function annotationFields() {
   }
 }
 
-/** Indexes chronological annotation reads and the owner's image reference. */
 function annotationIndexes(
   name: string,
   owner: AnySQLiteColumn,
@@ -81,7 +77,6 @@ function annotationIndexes(
   ]
 }
 
-/** Stores game-owned screenshot annotations and their separately referenced image bytes. */
 export const gameAnnotations = sqliteTable(
   'game_annotations',
   {
@@ -99,10 +94,6 @@ export const gameAnnotations = sqliteTable(
   ],
 )
 
-/**
- * Stores video annotations whose saved content and location survive removal of the registered
- * file.
- */
 export const animeAnnotations = sqliteTable(
   'anime_annotations',
   {
@@ -122,7 +113,6 @@ export const animeAnnotations = sqliteTable(
   ],
 )
 
-/** Stores comic annotations with source locations and optional quotes that survive file removal. */
 export const comicAnnotations = sqliteTable(
   'comic_annotations',
   {
@@ -143,7 +133,6 @@ export const comicAnnotations = sqliteTable(
   ],
 )
 
-/** Stores novel annotations with source locations and optional quotes that survive file removal. */
 export const novelAnnotations = sqliteTable(
   'novel_annotations',
   {

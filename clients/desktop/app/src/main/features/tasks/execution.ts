@@ -40,10 +40,10 @@ export function createTaskExecution(id: string, supportsPause: boolean, invalida
     }
   }
 
-  // Control transitions change membership in status-filtered queries.
   function transition(status: TaskRunStatus) {
     if (status !== current.status) {
       publishState(status)
+      // Control transitions change membership in status-filtered queries.
       invalidate()
     }
   }

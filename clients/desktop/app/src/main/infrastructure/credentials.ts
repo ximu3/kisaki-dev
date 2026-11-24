@@ -1,7 +1,6 @@
 import { safeStorage } from 'electron'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 
-/** Requires a usable system secret service before submitting plaintext or opening ciphertext. */
 async function requireProtection() {
   if (
     !(await safeStorage.isAsyncEncryptionAvailable()) ||
@@ -15,7 +14,6 @@ async function requireProtection() {
   }
 }
 
-/** Encrypts a new secret before the transaction that commits it. */
 export async function protectSecret(value: string) {
   await requireProtection()
   try {
@@ -29,7 +27,6 @@ export async function protectSecret(value: string) {
   }
 }
 
-/** Opens one saved secret and reports the system's key-rotation request to its owner. */
 export async function openSecret(ciphertext: Uint8Array) {
   await requireProtection()
   try {

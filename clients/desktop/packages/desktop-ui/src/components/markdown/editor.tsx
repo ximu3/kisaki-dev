@@ -11,7 +11,6 @@ import styles from './styles.module.css'
 import { editorTheme } from './theme'
 import { MarkdownToolbar, type MarkdownToolbarConfig } from './toolbar'
 
-/** CodeMirror syntax color and emphasis rules resolved through host appearance tokens. */
 const highlighting = HighlightStyle.define([
   { tag: tags.heading, color: 'var(--primary)', fontWeight: '600' },
   { tag: tags.link, color: 'var(--primary)', textDecoration: 'underline' },
@@ -22,71 +21,40 @@ const highlighting = HighlightStyle.define([
   { tag: tags.meta, color: 'var(--muted-foreground)' },
 ])
 
-/**
- * Shared source-editor values, configuration and borrowed-view lifecycle callbacks.
- *
- * The host owns text persistence and save policy.
- */
 interface EditorProps<C extends MarkdownCommand> extends Omit<
   JSX.HTMLAttributes<HTMLDivElement>,
   'onChange' | 'children'
 > {
   value?: string
   defaultValue?: string
-  /** Reports document changes outside external-value synchronization. */
   onValueChange?: (value: string) => void
 
   label: string
   placeholder?: string
   readOnly?: boolean
-  /** Selects toolbar items directly or derives them from the standard command list. */
   toolbar?: MarkdownToolbarConfig<C> | undefined
-  /** Defaults to the editor's localized accessible name. */
   toolbarLabel?: string
-  /** Returns the localized accessible label for a displayed built-in command. */
   commandLabel?: (command: NoInfer<C>) => string
 
   extensions?: Extension
-  /**
-   * Publishes the mounted editor and reports undefined when it is released.
-   *
-   * The component retains ownership of the borrowed view.
-   */
   onViewChange?: (view: EditorView | undefined) => void
   cspNonce?: string
 }
 
-/**
- * Editor props coupling displayed built-in commands to their required localized labels.
- *
- * Custom-only and empty toolbars carry their own names.
- */
 export type MarkdownEditorProps<C extends MarkdownCommand = MarkdownCommand> = EditorProps<C> &
   (
     | {
-        /** Provides a custom-only or empty toolbar without requiring built-in command labels. */
         toolbar: MarkdownToolbarConfig<never>
       }
     | ({
-        /** Returns labels for the built-in commands permitted by this toolbar configuration. */
         commandLabel: (command: NoInfer<C>) => string
       } & ([MarkdownCommand] extends [C]
         ? unknown
         : {
-            /**
-             * Selects or derives items from the declared subset of built-in commands and custom
-             * actions.
-             */
             toolbar: MarkdownToolbarConfig<C>
           }))
   )
 
-/**
- * Creates and owns one CodeMirror source-editing view.
- *
- * External value updates wait for composition and do not add undo steps. Owner cleanup destroys the
- * view and invalidates its borrowed reference.
- */
 export function MarkdownEditor<C extends MarkdownCommand = MarkdownCommand>(
   input: MarkdownEditorProps<C>,
 ): JSX.Element {

@@ -4,38 +4,29 @@ import { fromParser, nonemptyText, id, unique, text, parseValue } from './valida
 import { parseJsonValue, type JsonValue } from './json'
 import { DesktopError } from './errors'
 
-/** Null outside this snapshot means absence; a stored JSON null remains present. */
 export interface PrivateValue<T> {
   readonly value: T
   readonly revision: string
 }
 
-/**
- * Omission permits an unconditional write, null requires absence, and a string requires that exact
- * revision.
- */
 export interface PrivateWriteOptions {
   readonly expectedRevision?: string | null
 }
 
-/** Set or delete intent for one owned key with an optional revision precondition. */
 export type PrivateMutation<T> = {
   readonly key: string
   readonly expectedRevision?: string | null
 } & ({ readonly type: 'set'; readonly value: T } | { readonly type: 'delete' })
 
-/** Atomic batch of private JSON and secret mutations within the actual owner's namespace. */
 export interface PrivateCommit {
   readonly values?: readonly PrivateMutation<JsonValue>[]
   readonly secrets?: readonly PrivateMutation<string>[]
 }
 
-/** Mutations submitted to one optional private store in a commit. */
 type SubmittedMutations<Items> = Items extends readonly (infer Mutation)[]
   ? Extract<Mutation, PrivateMutation<JsonValue>>
   : never
 
-/** Sets receive fresh revisions; deleted or absent keys return null. Unrelated keys are omitted. */
 export interface PrivateCommitResult<I extends PrivateCommit = PrivateCommit> {
   readonly values: KeyedResult<
     I['values'],
@@ -55,16 +46,9 @@ export interface PrivateCommitResult<I extends PrivateCommit = PrivateCommit> {
   >
 }
 
-/** Private JSON reads and per-key writes scoped to the actual extension owner. */
 export interface PrivateValuesApi {
-  /** Reads an owned value and revision, distinguishing absence from a stored JSON null. */
   get(key: string, call?: CallOptions): Promise<PrivateValue<JsonValue> | null>
 
-  /**
-   * Commits a JSON value and returns its value with a fresh revision.
-   *
-   * An optional revision is compared atomically; a mismatch preserves the old value.
-   */
   set<T extends JsonValue>(
     key: string,
     value: T,
@@ -72,30 +56,14 @@ export interface PrivateValuesApi {
     call?: CallOptions,
   ): Promise<PrivateValue<T>>
 
-  /**
-   * Deletes an owned key after its optional revision comparison.
-   *
-   * An absent key succeeds when no precondition conflicts.
-   */
   delete(key: string, options?: PrivateWriteOptions, call?: CallOptions): Promise<void>
 }
 
-/**
- * Only its owning Node instance can read plaintext. Presence and revision reads do not decrypt or
- * establish remote authentication validity.
- */
 export interface PrivateSecretsApi {
-  /**
-   * Decrypts an owned secret for its Node instance.
-   *
-   * Absence, unavailable protection and unreadable ciphertext remain distinct outcomes.
-   */
   get(key: string, call?: CallOptions): Promise<PrivateValue<string> | null>
 
-  /** Reads secret presence and revision without decrypting its value. */
   getState(key: string, call?: CallOptions): Promise<{ readonly revision: string } | null>
 
-  /** Protection failure preserves the old ciphertext. */
   set(
     key: string,
     value: string,
@@ -103,32 +71,19 @@ export interface PrivateSecretsApi {
     call?: CallOptions,
   ): Promise<{ readonly revision: string }>
 
-  /** Remote-provider credentials remain unaffected. */
   delete(key: string, options?: PrivateWriteOptions, call?: CallOptions): Promise<void>
 }
 
-/** Owner-scoped private stores with atomic commits across JSON values and protected secrets. */
 export interface PrivateStorageApi {
   readonly values: PrivateValuesApi
   readonly secrets: PrivateSecretsApi
 
-  /**
-   * Prepares protected bytes and atomically commits the submitted keys.
-   *
-   * Any protection or revision-comparison failure preserves all previous values.
-   */
   commit<const I extends PrivateCommit>(
     input: I,
     call?: CallOptions,
   ): Promise<PrivateCommitResult<I>>
 }
 
-/**
- * Parses a nonempty mutation batch and requires each store's keys to be unique.
- *
- * Set values follow their store's JSON or text contract; owner identity comes from the actual
- * caller.
- */
 export function parsePrivateCommit(input: unknown): PrivateCommit {
   const mutation = <T extends v.GenericSchema>(value: T) =>
     v.variant('type', [

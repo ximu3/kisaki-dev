@@ -25,20 +25,12 @@ export {
   type MenuRadioItemProps,
 } from './items'
 
-/**
- * Controlled or locally initialized state for a menu composition.
- *
- * Controlled callers adopt native dismissal requests. Nesting a Menu inside content creates a
- * submenu.
- */
 export interface MenuProps extends ParentProps {
   open?: boolean
   defaultOpen?: boolean
-  /** Reports the requested menu open state to its caller. */
   onOpenChange?: (open: boolean) => void
 }
 
-/** Owns dropdown, context-menu or submenu state and coordinates its menu-tree relationships. */
 export function Menu(props: MenuProps): JSX.Element {
   const parent = useContext(MenuContext)
   const [open, change] = createValue(

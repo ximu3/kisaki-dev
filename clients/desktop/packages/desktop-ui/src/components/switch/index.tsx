@@ -7,11 +7,6 @@ import { bindCheckedControl, type CheckedValueProps } from '../../internal/check
 import { ChoiceRow } from '../../internal/choice/row'
 import styles from './styles.module.css'
 
-/**
- * Two-state switch attributes with checked-state ownership and an optional inline label.
- *
- * The caller supplies a stable accessible name.
- */
 export interface SwitchProps
   extends
     Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'type' | 'checked' | 'role' | 'size'>,
@@ -20,10 +15,6 @@ export interface SwitchProps
   size?: ControlSize | undefined
 }
 
-/**
- * Renders switch semantics on a native checkbox, retaining Space activation, form submission and
- * reset.
- */
 export function Switch(props: SwitchProps): JSX.Element {
   const rest = omit(
     props,

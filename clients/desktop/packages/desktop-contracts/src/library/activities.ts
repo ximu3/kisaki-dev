@@ -6,19 +6,12 @@ import * as v from 'valibot'
 import { workRefSchema, type PartRef, type WorkType, type EntryRef, type WorkRef } from './catalog'
 import { DesktopError } from '../errors'
 
-/** Overlapping intervals each contribute their recorded effective duration. */
 export interface ActivityTiming {
-  /** UTC milliseconds since the Unix epoch. */
   readonly startedAt: number
-  /** UTC milliseconds since the Unix epoch. */
   readonly endedAt: number
-  /** Nonnegative safe integer milliseconds, no greater than the interval length. */
   readonly durationMs: number
 }
 
-/**
- * A compound file produces one activity for the whole file, even when it contains multiple parts.
- */
 export interface ActivityContextByType {
   readonly game: { readonly launchConfigId: string | null }
 
@@ -35,7 +28,6 @@ export interface ActivityContextByType {
   readonly novel: { readonly fileId: string | null; readonly part: PartRef<'novelVolume'> | null }
 }
 
-/** The executor verifies current ownership and requires endedAt at or before submission. */
 export type ActivityCreate = {
   [K in WorkType]: ActivityTiming & {
     readonly work: EntryRef<K>
@@ -43,7 +35,6 @@ export type ActivityCreate = {
   }
 }[WorkType]
 
-/** Recorded context names survive renaming or removal of the referenced objects. */
 export type Activity<T extends WorkType = WorkType> = {
   [K in T]: ActivityTiming & {
     readonly id: string
@@ -57,10 +48,6 @@ export type Activity<T extends WorkType = WorkType> = {
   }
 }[T]
 
-/**
- * The baseline can compare original timing and context. The edit preserves the occurrence
- * context.
- */
 export type ActivityUpdate<K extends WorkType = WorkType> = {
   readonly changes: ActivityTiming
   readonly expected?: {
@@ -68,13 +55,11 @@ export type ActivityUpdate<K extends WorkType = WorkType> = {
   }
 }
 
-/** UTC milliseconds since the Unix epoch. The interval includes from and excludes to. */
 export interface InstantRange {
   readonly from: number
   readonly to: number
 }
 
-/** Occurrence-context filters exclude unallocated work-level additional duration. */
 export type ActivityFilter =
   | { readonly type: 'work'; readonly work: WorkRef }
   | { readonly type: 'launchConfig'; readonly gameId: string; readonly launchConfigId: string }
@@ -91,10 +76,6 @@ export interface ActivityQuery {
   readonly context?: ActivityFilter
 }
 
-/**
- * Allocated durations retain fractional precision. Use the overall activity count because one
- * record may contribute to several date groups.
- */
 export interface ActivityStatistics {
   readonly activityCount: number
   readonly durationMs: number
@@ -118,18 +99,13 @@ export interface ActivityStatistics {
   }[]
 }
 
-/**
- * End managed use before editing or deleting its activities. Session controls have their own entry.
- */
 export interface ActivitiesApi {
-  /** Work-level additional duration is counted separately from activity records. */
   list(
     query: ActivityQuery,
     options: ListOptions,
     call?: CallOptions,
   ): Promise<ListResult<Activity>>
 
-  /** Returns null when the activity is absent from the supplied work. */
   get<T extends WorkType>(
     work: WorkRef<T>,
     activityId: string,
@@ -138,10 +114,6 @@ export interface ActivitiesApi {
 
   create(input: ActivityCreate, call?: CallOptions): Promise<string>
 
-  /**
-   * Wait for managed use to end before correcting timing. The edit preserves additional duration
-   * and reading position.
-   */
   update(
     ...args: {
       [K in WorkType]: [
@@ -153,13 +125,8 @@ export interface ActivitiesApi {
     }[WorkType]
   ): Promise<void>
 
-  /**
-   * End managed use before deletion. Deleting activity records leaves the work's additional
-   * duration unchanged.
-   */
   delete(work: WorkRef, ids: string | NonEmptyArray<string>, call?: CallOptions): Promise<void>
 
-  /** Undated additional duration has no calendar-period allocation. */
   statistics(
     query: ActivityQuery & { readonly groupBy?: 'hour' | 'day' | 'week' | 'month' | 'year' },
     call?: CallOptions,
@@ -195,15 +162,10 @@ const contexts = {
   }),
 }
 
-/**
- * Requires a positive-length interval and checks effective duration independently of the wall
- * clock.
- */
 export function parseActivityTiming(input: unknown): ActivityTiming {
   return parseValue(timingSchema, input, 'Invalid activity timing')
 }
 
-/** Parses manual activity timing and work-specific context against an explicit submission time. */
 export function parseActivityCreate(input: unknown, submittedAt: number): ActivityCreate {
   const { work } = parseValue(v.looseObject({ work: workRefSchema }), input)
   const value = parseValue(
@@ -227,7 +189,6 @@ export function parseActivityCreate(input: unknown, submittedAt: number): Activi
   return value as ActivityCreate
 }
 
-/** Parses a complete timing edit and any original context, rejecting a new end after submission. */
 export function parseActivityUpdate<T extends WorkType>(
   work: WorkRef<T>,
   input: unknown,

@@ -10,7 +10,6 @@ import { fonts, fontAttachments } from '../../infrastructure/database/schema/app
 import { ready } from '../../infrastructure/database/codecs/json'
 import { adoptAttachments } from '../../infrastructure/attachments/storage'
 
-/** Reads the complete font definition from one database snapshot. */
 function readFont(db: Storage['db'], id: string): Font | null {
   const row = db.select().from(fonts).where(eq(fonts.id, id)).get()
   if (!row) {
@@ -34,7 +33,6 @@ function readFont(db: Storage['db'], id: string): Font | null {
   return { ...row, files: [files[0]!, ...files.slice(1)] }
 }
 
-/** Installs a nonempty final file set, reusing only the records actually owned by this font. */
 function replaceFiles(tx: Storage['db'], id: string, files: readonly FontFile[]) {
   tx.delete(fontAttachments).where(eq(fontAttachments.fontId, id)).run()
   tx.insert(fontAttachments)
@@ -48,7 +46,6 @@ function replaceFiles(tx: Storage['db'], id: string, files: readonly FontFile[])
     .run()
 }
 
-/** A new font and all verified bytes to adopt in the transaction creating it. */
 export interface NewFont {
   id: string
   name: string
@@ -56,7 +53,6 @@ export interface NewFont {
   attachments: readonly Attachment[]
 }
 
-/** Commits a new font and its verified files inside the font or theme creator's transaction. */
 export function adoptNewFont(tx: Storage['db'], input: NewFont) {
   const now = Date.now()
   tx.insert(fonts).values({ id: input.id, name: input.name, createdAt: now, updatedAt: now }).run()
@@ -64,12 +60,9 @@ export function adoptNewFont(tx: Storage['db'], input: NewFont) {
   replaceFiles(tx, input.id, input.files)
 }
 
-/** Provides serial worker operations for font metadata and its attachment references. */
 export function fontStorage({ transaction }: Storage) {
   return {
-    /** Reads a complete font and its files in one transaction. */
     getFont: (id: string) => transaction((tx) => readFont(tx, id)),
-    /** Queries the font library with a count under the same filter. */
     listFonts(search: string, options: ListOptions) {
       const filter = search ? sql`instr(lower(${fonts.name}),lower(${search}))` : undefined
       return transaction((tx) => ({
@@ -84,7 +77,6 @@ export function fontStorage({ transaction }: Storage) {
         total: tx.select({ n: count() }).from(fonts).where(filter).get()!.n,
       }))
     },
-    /** Compares and commits an entire font edit and its newly adopted attachments. */
     saveFont(
       id: string | null,
       name: string | undefined,
@@ -144,7 +136,6 @@ export function fontStorage({ transaction }: Storage) {
         }
       }, 'immediate')
     },
-    /** Deletes the user font while foreign keys release only its file links. */
     deleteFont(id: string) {
       return transaction((tx) => {
         const released = tx

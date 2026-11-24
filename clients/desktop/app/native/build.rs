@@ -1,6 +1,5 @@
 use std::fs;
 
-/// Embeds the locked ICU component versions so changing their ordering rebuilds derived indexes.
 fn main() {
     napi_build::setup();
 

@@ -27,10 +27,9 @@ import type { createFonts } from '../fonts'
 import type { themeStorage } from './storage'
 import type { DatabaseCall } from '../../infrastructure/database/executor'
 import { createSignal } from '../../infrastructure/events'
-import { releaseAll } from '../../infrastructure/release'
+import { releaseAll, rethrowAfterRelease } from '../../infrastructure/release'
 import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
 
-/** Built-in theme uses stable default font selections in both complete visual branches. */
 const builtin: Theme<'builtin'> = {
   ref: { type: 'builtin', id: 'default' },
   name: 'Kisaki',
@@ -46,10 +45,8 @@ const builtin: Theme<'builtin'> = {
   },
 }
 
-/** Both slots are resolved from the same acquired branch. */
 const slots = ['--font-sans', '--font-mono'] as const
 
-/** Creates a theme directory, effective selection and preview owned by this app instance. */
 export function createAppearance(
   fonts: ReturnType<typeof createFonts>,
   call: DatabaseCall<ReturnType<typeof themeStorage>>,
@@ -66,7 +63,6 @@ export function createAppearance(
     theme: builtin.ref,
     interfaceScale: 100,
   }
-  /** Fetches a definition without opening either branch's resources. */
   async function get(ref: ThemeRef, options?: CallOptions): Promise<Theme | null> {
     options?.signal?.throwIfAborted()
     if (ref.type === 'builtin') {
@@ -77,7 +73,6 @@ export function createAppearance(
     }
     return extensions.get(catalogKey(ref))?.theme ?? null
   }
-  /** Resolves one stable file selection into a fixed read, including its verified metadata. */
   async function acquire(font: ThemeFont, read?: PrivateFontRead, options?: CallOptions) {
     options?.signal?.throwIfAborted()
     if (font.type === 'extension') {
@@ -102,7 +97,6 @@ export function createAppearance(
 
   const documents = new WeakMap<ViewResourcesApi, ReturnType<typeof createDocumentFonts>>()
 
-  /** Resolves the selected theme independently from the system's current light or dark branch. */
   async function getState(options?: CallOptions): Promise<AppearanceState> {
     options?.signal?.throwIfAborted()
     const prefs = preferences
@@ -155,7 +149,6 @@ export function createAppearance(
   const themes = {
     get,
 
-    /** Resolves catalog text using this theme owner's fallback locale. */
     displayName(theme: Pick<Theme, 'ref' | 'name'>, locale: string) {
       return resolveLocalizedText(
         theme.name,
@@ -164,7 +157,6 @@ export function createAppearance(
       )
     },
 
-    /** Lists the complete catalog without acquiring its font files. */
     async list(options?: CallOptions) {
       options?.signal?.throwIfAborted()
       return [
@@ -181,7 +173,6 @@ export function createAppearance(
       return ref
     },
 
-    /** Copies private font sets once per source selection and commits them with the new theme. */
     async clone(ref: ThemeRef, input: { name: string }, options?: CallOptions) {
       const theme = await get(ref, options)
       if (!theme) {
@@ -239,14 +230,12 @@ export function createAppearance(
       invalidate()
     },
 
-    /** Removes the definition while preserving references and independently held reads. */
     async delete(id: string, options?: CallOptions) {
       options?.signal?.throwIfAborted()
       await call('deleteTheme', id)
       invalidate()
     },
 
-    /** Registers an extension's own definition and file reader; old handles cannot affect a successor. */
     register(
       extensionId: string,
       id: string,
@@ -278,7 +267,6 @@ export function createAppearance(
           registration.theme = { ref, ...parseExtensionThemeDefinition(input, locale) }
           invalidate()
         },
-        /** Removes only this registration, leaving a replacement owner intact. */
         dispose() {
           if (extensions.get(key) === registration) {
             extensions.delete(key)
@@ -288,7 +276,6 @@ export function createAppearance(
       }
     },
 
-    /** Opens both complete branches as a fixed snapshot and releases all partial reads on failure. */
     async open(ref: ThemeRef, options?: CallOptions): Promise<ThemeRead> {
       const theme = await get(ref, options)
       if (!theme) {
@@ -320,8 +307,7 @@ export function createAppearance(
         options?.signal?.throwIfAborted()
         return { theme, fontResources, dispose }
       } catch (error) {
-        await dispose()
-        throw error
+        return rethrowAfterRelease(error, dispose)
       }
     },
 
@@ -332,7 +318,6 @@ export function createAppearance(
     themes,
     getState,
 
-    /** Delivers a first effective snapshot and rereads after changes for the lifetime of this observer. */
     async observe(listener: (state: AppearanceState) => void, options?: CallOptions) {
       options?.signal?.throwIfAborted()
       let active = true
@@ -366,7 +351,6 @@ export function createAppearance(
       }
     },
 
-    /** Supplies the current palette and scale while individual document fonts are still pending. */
     async base(): Promise<ViewAppearance> {
       const state = await getState()
       const cssVariables = {
@@ -388,7 +372,6 @@ export function createAppearance(
       }
     },
 
-    /** Adopts the saved theme, mode and scale without changing their stored values. */
     select(value: AppearancePreferences) {
       preferences = value
       appearanceChanged.emit()
@@ -402,7 +385,6 @@ export function createAppearance(
       read?: PrivateFontRead,
     ) => previews.open(input, read, options),
 
-    /** Resolves the current branch into CSS and independent resource URLs for one actual document. */
     async forView(view: ViewResourcesApi, options?: CallOptions) {
       options?.signal?.throwIfAborted()
       let bind = documents.get(view)
@@ -482,8 +464,7 @@ export function createAppearance(
         }
         return { appearance, fontFamilies, issues, dispose }
       } catch (error) {
-        await dispose()
-        throw error
+        return rethrowAfterRelease(error, dispose)
       }
     },
 

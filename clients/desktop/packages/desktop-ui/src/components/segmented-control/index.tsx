@@ -5,18 +5,12 @@ import { bindRadioSelection } from '../../internal/choice/radio'
 import styles from './styles.module.css'
 import segmented from '../../internal/segmented.module.css'
 
-/** Stable native form value with caller-provided label content and optional disabled state. */
 export interface SegmentOption {
   readonly value: string
   readonly label: JSX.Element
   readonly disabled?: boolean
 }
 
-/**
- * Named segmented-choice field with controlled or local selection.
- *
- * Options share one native form owner and keyboard selection model.
- */
 export interface SegmentedControlProps extends Omit<
   JSX.FieldsetHTMLAttributes<HTMLFieldSetElement>,
   'onChange'
@@ -27,11 +21,9 @@ export interface SegmentedControlProps extends Omit<
   value?: string
   defaultValue?: string
   required?: boolean
-  /** Reports the proposed selected segment value. */
   onValueChange?: (value: string) => void
 }
 
-/** Renders a single-value segmented choice using native radio keyboard and reset behavior. */
 export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
   const rest = omit(
     props,
@@ -49,7 +41,6 @@ export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
   const id = createUniqueId()
   const name = () => props.name || id
   let group!: HTMLFieldSetElement
-  // Initialization and accepted form resets use the same first-enabled fallback.
   const baseline = () =>
     props.defaultValue ?? props.options.find((option) => !option.disabled)?.value ?? ''
   const [value, change] = bindRadioSelection(

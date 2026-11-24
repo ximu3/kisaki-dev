@@ -5,7 +5,6 @@ import type { ThemeRef } from '@kisaki3/desktop-contracts/appearance'
 import type { Translate } from '@kisaki3/desktop-localization'
 import { catalogSelection } from '../catalog-selection'
 
-/** Localized ownership labels used by the selection and library views. */
 export const themeSource = {
   builtin: 'runtime.themeBuiltin',
   user: 'runtime.themeUser',
@@ -17,7 +16,6 @@ export interface ThemeChoice {
   name: string
 }
 
-/** Renders a theme reference as its listed name or its original identity when unavailable. */
 export function ThemeSelector(props: {
   value: ThemeRef | undefined
   themes: readonly ThemeChoice[]

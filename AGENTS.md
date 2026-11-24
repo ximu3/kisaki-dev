@@ -20,15 +20,15 @@
 
 ## 工作原则
 
+现代化、简洁、清晰、干净与克制是同等重要的首要原则，适用于设计、实现、审阅和交付。见[共同原则](refactor/design/engineering/conventions.md#quality)。
+
 ### 设计与变更
 
 设计或修改一项功能前，先确认哪些模块维护数据、哪些模块定义规则。比较所有同类对象和入口，统一模型层次、命名、交互、风格和验收标准。遇到共有问题，在定义规则的模块修正，并更新所有受影响的调用方。差异须能由对象语义、资源归属或运行环境解释。具体判断与审查方法见[全局设计与一致性](refactor/design/engineering/conventions.md#global-design)。
 
 要求或方案与设计原则冲突，或存在正确性、质量或技术问题时，按[整体判断](refactor/design/engineering/conventions.md#judgment)说明依据、影响、选项与建议，由用户决定方向。涉及模型、主要行为、公开合同、架构边界或交付范围的取舍遵守[实施讨论规则](refactor/implementation/work-packages.md#unexpected-issues)。既定合同内的修复与验证由实施者完成。
 
-设计、实现、审阅和交付采用相同的[质量标准](refactor/design/engineering/conventions.md#quality)。现代化、简洁、清晰、干净与克制同等重要，均为首要要求。
-
-设计、实现、重构、文档和验证均须满足已确认的质量要求。工作量、工期或返工成本不能作为降低要求、保留已知问题或不一致的理由。运行性能、资源占用和长期维护复杂度仍按成果质量评估，具体遵守[判断与取舍](refactor/design/engineering/conventions.md#judgment)。
+工作量、工期或返工成本不能作为降低要求、保留已知问题或不一致的理由。运行性能、资源占用和长期维护复杂度仍按成果质量评估，具体遵守[判断与取舍](refactor/design/engineering/conventions.md#judgment)。
 
 以已确认的目标、合同和资源归属为依据制定方案，现有结构与目标冲突时重做受影响的部分。工作包可以分步实施。交付时，正式入口须支持全部约定操作，明确失败后保留的结果，并完成约定的资源清理。见[终态与整体一致](refactor/design/engineering/conventions.md#final-state)和[工作包边界](refactor/implementation/work-packages.md#boundary)。
 
@@ -38,9 +38,15 @@
 
 旧项目仅作 UI 设计参考。涉及桌面界面与公共 UI 库时，阅读[参考工程](refactor/README.md)的 `.agents/skills/kisaki/references/ui-system.md` 和对应部件。可在旧工程根目录运行 `pnpm dev`，直接参考实际界面。旧 Kisaki 会自动加载已有的开发数据。产品行为、接口、资源与交付要求由本仓库现行规格定义。按[界面设计](refactor/design/ui/components.md#existing-ui)在正式窗口核对[代表场景](refactor/verification/scenarios/ui.md#baseline)。
 
-### 实现与测试
+### 代码风格
+
+代码应易读、美观。名称说明操作和结果，同类操作使用一致的词汇与参数顺序。从调用处进入实现，应能顺着主流程看清数据由谁修改、资源由谁释放。选用目标版本支持的语言和框架惯用写法，平台已有的能力能完整表达操作时直接使用。见[可读性与表达](refactor/design/engineering/conventions.md#readability)。
 
 函数按操作步骤分段。例如，外部输入的读取和校验放在同一段，订阅事件后紧接着注册清理函数。Solid 组件把同一交互的状态和事件处理函数放在一起，JSX 按界面区域组织。见[逻辑分段](refactor/design/engineering/conventions.md#logical-sections)和[组件组织](refactor/design/engineering/conventions.md#tsx-style)。
+
+源码不写文件或声明的说明性注释。调用约定随包或协议文档交付，具体语句旁可以用英文行注释说明影响维护的局部事实。见[注释与说明](refactor/design/engineering/conventions.md#comments)。
+
+### 实现与测试
 
 只有风险有明确后果，且现有类型、平台或流程尚未提供相应保证时，才保留防御分支。能从模型或流程中消除错误状态时，修正根因并清理相应的补救分支。外部输入、权限、持久化和副作用的风险由所属边界处理，内部调用直接依赖已有保证。删去重复校验和只为假想异常设置的分支。
 
@@ -49,8 +55,6 @@
 ### 文档与源码组织
 
 文档、注释和界面文案用自然、直接的语言说明具体做法、条件和结果。标题写明主题或操作，省去口号、刻意的比喻和重复正文的开场句。会影响选择的差异、取舍依据和失败后果应就近说明。见[写作要求](refactor/design/engineering/documentation.md#writing)和[界面文案](refactor/design/ui/components.md#copy)。
-
-普通实现默认不写注释。公开 API 的定义说明调用者需要知道、且类型无法表达的条件和结果。实现中的英文注释用于解释外部事实、关键次序或安全前提。见[注释与说明](refactor/design/engineering/conventions.md#comments)。
 
 实施和审阅时，检查代码、测试和文档是否位于对应的功能目录，文件名和目录名是否与内容相符。入口遵循语言和工具的原生规则。普通 TypeScript 多文件主题和成篇文档按主题集中，所需入口与内容放在同一目录，不以同级前缀文件模拟内部层级。收尾时核对[组织与命名](refactor/design/engineering/conventions.md#source-layout)和[导入与公开入口](refactor/design/engineering/conventions.md#module-imports)。
 

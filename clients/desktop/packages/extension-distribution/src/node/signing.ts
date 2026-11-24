@@ -10,31 +10,29 @@ import {
 import canonicalize from 'canonicalize'
 import { DistributionError } from '../errors'
 import { parseId } from '../metadata'
-import type { FileReference, SignedRegistry } from '../registry'
-import { normalizeRegistry, parsePublicKey, parseSignature } from '../registry'
+import {
+  normalizeRegistry,
+  parsePublicKey,
+  parseSignature,
+  type FileReference,
+  type SignedRegistry,
+} from '../registry'
 import { parseJson, parseRecord } from '../validation'
 
-/** Domain separation for registry signatures; the final character is exactly one LF. */
 export const registrySignaturePrefix = 'kisaki-extension-registry:v1\n'
 
-/** The identity and public key previously accepted by the caller's trust owner. */
 export interface RegistryTrust {
   readonly id: string
   readonly publicKey: string
 }
 
-/** Ed25519 PEM key pair whose storage, encryption and publication belong to the caller. */
 export interface RegistryKeyPair {
-  /** Ed25519 public key in SPKI PEM form. */
   readonly publicKey: string
-  /** Unencrypted Ed25519 PKCS8 PEM; storage and encryption are caller responsibilities. */
   readonly privateKey: string
 }
 
-/** Self-consistent registry data and a public-key fingerprint presented to the trust owner. */
 export interface RegistryInspection {
   readonly registry: SignedRegistry
-  /** Lowercase SHA-256 of the public SPKI DER bytes, independent of PEM line endings. */
   readonly fingerprint: string
 }
 
@@ -79,28 +77,16 @@ function privateKey(value: string | KeyObject): KeyObject {
   return key
 }
 
-/**
- * Copies a registry object and removes its root signature.
- *
- * Nested signature-named fields and unknown data remain in the payload.
- */
 function unsignedBody(document: Record<string, unknown>): Record<string, unknown> {
   const body = { ...document }
   delete body.signature
   return body
 }
 
-/** Encodes validated registry data with the purpose prefix and RFC8785 canonical JSON. */
 function signingBytes(body: Record<string, unknown>): Buffer {
   return Buffer.from(registrySignaturePrefix + canonicalize(body)!, 'utf8')
 }
 
-/**
- * Builds canonical purpose-prefixed signing bytes from original registry JSON.
- *
- * Validates the structure without adopting normalized values. Only the root signature is excluded;
- * unknown fields and original field spellings remain covered.
- */
 export function registrySigningPayload(text: string): Uint8Array {
   const body = unsignedBody(parseRecord(parseJson(text), []))
   normalizeRegistry(body)
@@ -108,12 +94,6 @@ export function registrySigningPayload(text: string): Uint8Array {
   return signingBytes(body)
 }
 
-/**
- * Signs registry JSON with the supplied Ed25519 private key.
- *
- * Requires a key matching the document's declared public key. Preserves original field values,
- * replaces the root signature and returns complete signed JSON text.
- */
 export function signRegistry(text: string, inputKey: string | KeyObject): string {
   const body = unsignedBody(parseRecord(parseJson(text), []))
   const registry = normalizeRegistry(body)
@@ -162,20 +142,10 @@ function verifyRegistryDocument(
   return { ...normalizeRegistry(body), signature }
 }
 
-/**
- * Checks the original document against the caller's trusted identity and key before normalizing it.
- * The signature covers unknown fields and original field spellings.
- */
 export function verifyRegistry(text: string, trust: RegistryTrust): SignedRegistry {
   return verifyRegistryDocument(parseRecord(parseJson(text), []), trust)
 }
 
-/**
- * Checks a registry's internal signature consistency and returns its key fingerprint.
- *
- * Uses the document's declared identity and key for first-use inspection. The caller decides trust;
- * subsequent refreshes use {@link verifyRegistry} with saved trust.
- */
 export function inspectRegistry(text: string): RegistryInspection {
   const document = parseRecord(parseJson(text), [])
   const trust = {
@@ -189,24 +159,12 @@ export function inspectRegistry(text: string): RegistryInspection {
   }
 }
 
-/**
- * Returns lowercase SHA-256 of a validated Ed25519 public key's SPKI DER bytes.
- *
- * Equivalent PEM encodings produce the same display fingerprint; the caller owns the trust
- * decision.
- */
 export function publicKeyFingerprint(pem: string): string {
   return createHash('sha256')
     .update(publicKey(pem).export({ type: 'spki', format: 'der' }))
     .digest('hex')
 }
 
-/**
- * Checks complete resource bytes against a validated reference's size and SHA-256.
- *
- * Checks size before hashing. Mismatches throw integrity-mismatch at size or sha256; downloading
- * and installation state belong to the caller.
- */
 export function verifyFileBytes(bytes: Uint8Array, reference: FileReference): void {
   if (bytes.byteLength !== reference.size) {
     throw new DistributionError(

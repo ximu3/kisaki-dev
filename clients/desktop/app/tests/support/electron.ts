@@ -16,7 +16,6 @@ interface DesktopFixtures {
   kind: WindowKind
 }
 
-/** Launches the selected host build with its private profile. The caller owns process teardown. */
 export async function launchBuiltDesktop(
   runtime: string,
   profile: string,
@@ -61,7 +60,6 @@ export const test = base.extend<DesktopFixtures>({
     }
   },
 
-  /** Launches the verified host build and closes its actual Electron process after the test. */
   desktop: async ({ profile, kind }, use, info) => {
     const application = await launchBuiltDesktop(buildDirectory(hostTarget()), profile, kind)
     const child = application.process()

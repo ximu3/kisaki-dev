@@ -1,5 +1,3 @@
-/* The window document owns its root surface and inherits the public component layers. */
-
 @import '@kisaki3/desktop-ui/styles.css';
 
 @layer base {

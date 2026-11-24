@@ -5,15 +5,9 @@ import { createValue } from '../../internal/state'
 import { Icon, ChevronRight } from '../../internal/icon/glyph'
 import styles from './styles.module.css'
 
-/** Interactive content inside a summary keeps its own native click action. */
 const activationTargets =
   'summary, a[href], audio[controls], button, details, embed, iframe, img[usemap], input:not([type=hidden]), label, select, textarea, video[controls]'
 
-/**
- * Native disclosure attributes with a focusable summary and controlled or local open state.
- *
- * Callers using the same native name keep at most one controlled member open.
- */
 export interface CollapsibleProps extends Omit<
   JSX.DetailsHtmlAttributes<HTMLDetailsElement>,
   'open'
@@ -23,11 +17,9 @@ export interface CollapsibleProps extends Omit<
 
   open?: boolean
   defaultOpen?: boolean
-  /** Requests the next state. In controlled mode the caller adopts it through open. */
   onOpenChange?: (open: boolean) => void
 }
 
-/** Renders a native details disclosure whose content remains mounted while collapsed. */
 export function Collapsible(props: CollapsibleProps): JSX.Element {
   const rest = omit(
     props,

@@ -1,7 +1,6 @@
 import { nativeHostPath } from '#host-path'
 import type * as Binding from './binding'
 
-/** Reasons for a failed filesystem observation, including arguments rejected before lookup. */
 export type FilesystemQueryFailureReason = 'invalidArgument' | `${Binding.FilesystemQueryReason}`
 
 export class FilesystemQueryError extends Error {
@@ -50,32 +49,13 @@ export class FileSyncError extends Error {
   }
 }
 
-/**
- * Application-facing file primitives implemented by the private native module.
- *
- * Paths follow native platform rules; Windows drive-rooted paths without a drive prefix are rejected.
- */
 export interface NativeFiles {
-  /** Reads an existing path's mount classification on a worker. Failures reject with FilesystemQueryError. */
   getFilesystemLocation(path: string): Promise<'local' | 'network' | 'unknown'>
 
-  /** Compares Windows volume roots or entries in an established common parent, preserving each final link. */
   sameDirectoryEntry(first: string, second: string): Promise<boolean>
 
-  /**
-   * Moves an absolute source to an absent target within the same filesystem.
-   *
-   * Runs on a worker and resolves after the atomic operation succeeds. Invalid arguments reject
-   * with TypeError; platform failures reject with FileMoveError.
-   */
   moveNoReplace(source: string, target: string): Promise<void>
 
-  /**
-   * Synchronizes an existing regular file and closes its native handle before resolving.
-   *
-   * Runs on a worker. Argument and platform failures reject with FileSyncError; parent-directory
-   * synchronization belongs to the caller.
-   */
   syncFile(path: string): Promise<void>
 }
 

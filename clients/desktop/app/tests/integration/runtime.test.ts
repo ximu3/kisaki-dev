@@ -39,7 +39,6 @@ async function library() {
   return { root, storage, options }
 }
 
-/** Calls worker-owned operations locally so these tests can inject a failed final checkpoint. */
 function dispatch<T extends Record<string, (...args: never[]) => unknown>>(
   operations: T,
 ): DatabaseCall<T> {
@@ -58,7 +57,6 @@ test('a failed history commit delivers the actual result to live waiters and onl
   const tasks = await createTasks(
     dispatch({
       ...history,
-      /** Injects a failure only at the generic terminal-history write. */
       finishTask() {
         throw new Error('Synthetic history write failure')
       },

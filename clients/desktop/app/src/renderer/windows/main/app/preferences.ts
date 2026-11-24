@@ -5,7 +5,6 @@ import type { MainClient } from '../../../infrastructure/api'
 import { reportError } from '../../../infrastructure/notifications'
 import { createQuery } from '../../../infrastructure/query'
 
-/** Reads the saved snapshot while the shell is mounted and adopts its completed writes. */
 export function createShellPreferences(api: MainClient) {
   const preferences = createQuery((signal) => api.request(signal, 'preferences.get'))
   const current = () => (preferences.error ? undefined : preferences.value)

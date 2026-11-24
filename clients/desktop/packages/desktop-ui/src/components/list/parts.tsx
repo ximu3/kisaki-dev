@@ -1,17 +1,14 @@
 import { Show, omit } from 'solid-js'
-import { dynamic } from '@solidjs/web'
-import type { JSX } from '@solidjs/web'
+import { dynamic, type JSX } from '@solidjs/web'
 import type { ButtonProps } from '../button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../tooltip'
 import styles from './styles.module.css'
 
-/** Native list attributes and the shared presentation for its rows. */
 export interface ListProps extends JSX.HTMLAttributes<HTMLUListElement | HTMLOListElement> {
   ordered?: boolean
   variant?: 'framed' | 'plain'
 }
 
-/** Renders an unordered catalog or an ordered sequence of items. */
 export function List(props: ListProps): JSX.Element {
   const rest = omit(props, 'class', 'ordered', 'variant')
   const Control = dynamic(() => (props.ordered ? 'ol' : 'ul'))
@@ -25,19 +22,15 @@ export function List(props: ListProps): JSX.Element {
   )
 }
 
-/** Specifies the visible identity, supplementary content and optional item-specific actions. */
 export interface ListItemProps extends Omit<JSX.LiHTMLAttributes<HTMLLIElement>, 'title'> {
   title: JSX.Element
   description?: JSX.Element
   icon?: JSX.Element
-  /** Displays persistent row information next to the available actions. */
   accessory?: JSX.Element
   actions?: JSX.Element
-  /** Displays an independent ordering handle at the trailing edge. */
   handle?: JSX.Element
 }
 
-/** Renders one item with a decorative glyph slot, readable title and actions at the trailing edge. */
 export function ListItem(props: ListItemProps): JSX.Element {
   const rest = omit(
     props,
@@ -76,13 +69,11 @@ export function ListItem(props: ListItemProps): JSX.Element {
   )
 }
 
-/** Supplies the accessible name and visible tooltip of an icon-only row action. */
 export interface ListItemActionProps extends Omit<ButtonProps, 'size' | 'variant'> {
   label: string
   destructive?: boolean
 }
 
-/** Renders one compact row action with its original button semantics. */
 export function ListItemAction(props: ListItemActionProps): JSX.Element {
   const rest = omit(props, 'label', 'destructive', 'class', 'aria-label')
   return (

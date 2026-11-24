@@ -23,7 +23,6 @@ import { bytesToHex } from '@noble/hashes/utils.js'
 import { sha256 } from '@noble/hashes/sha2.js'
 import { parseErrorSummary, DesktopError, type ErrorSummary } from '../../../errors'
 
-/** A launch snapshot retains the session's path and source name after configuration changes. */
 export type GameBackupSource =
   | { readonly type: 'config'; readonly launchConfigId: string }
   | {
@@ -48,17 +47,12 @@ export interface GameBackup {
   readonly archiveAttachmentId: string
   readonly treeDigest: string
   readonly unpackedSizeBytes: number
-  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
 
   readonly note: string | null
   readonly locked: boolean
 }
 
-/**
- * Ancillary failures can accompany a committed backup. Use the main outcome to determine whether an
- * archive exists.
- */
 export type GameBackupIssue =
   | { readonly code: 'retentionFailed'; readonly backupId: string; readonly error: ErrorSummary }
   | { readonly code: 'cleanupFailed'; readonly path: string; readonly error: ErrorSummary }
@@ -80,7 +74,6 @@ export interface GameBackupCreateInput {
   readonly note?: string | null
 }
 
-/** Restoration fixes the selected target and requires native confirmation before replacement. */
 export interface GameBackupRestoreInput {
   readonly gameId: string
   readonly backupId: string
@@ -95,10 +88,6 @@ export type RecoveryAction = 'continue' | 'rollback' | 'keepCurrent'
 
 export type RecoveryResolution = 'restored' | 'rolledBack' | 'keptCurrent'
 
-/**
- * The target's actual state on disk can differ from task status and the recorded recovery
- * resolution.
- */
 export interface GameBackupRestoreResult {
   readonly backupId: string
   readonly target: { readonly path: string; readonly kind: 'file' | 'directory' }
@@ -123,18 +112,15 @@ export interface GameBackupRecoveryManifest {
     | { readonly type: 'absent' }
     | { readonly type: 'present'; readonly treeDigest: string }
   readonly after: { readonly treeDigest: string }
-  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
 }
 
-/** After interruption, check the actual disk state before repeating a filesystem mutation. */
 export interface GameBackupRecoveryProgress {
   readonly recoveryId: string
   readonly sequence: number
   readonly phase: 'ready' | 'originalPreserved' | 'replacementPlaced' | 'rollbackStarted'
 }
 
-/** Pending records block conflicting work. Resolved records permit explicit cleanup. */
 export type GameBackupRecovery = {
   readonly id: string
   readonly gameId: string
@@ -145,27 +131,22 @@ export type GameBackupRecovery = {
   readonly targetKind: 'file' | 'directory'
 
   readonly workspacePath: string
-  /** Null until the durable manifest is registered. */
   readonly manifestSha256: string | null
 
-  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
 } & (
   | { readonly resolution: null; readonly resolvedAt: null }
   | {
       readonly resolution: 'keptCurrent'
-      /** UTC milliseconds since the Unix epoch. */
       readonly resolvedAt: number
     }
   | {
       readonly resolution: 'restored' | 'rolledBack'
       readonly manifestSha256: string
-      /** UTC milliseconds since the Unix epoch. */
       readonly resolvedAt: number
     }
 )
 
-/** A published manifest can be unreadable or invalid. An unpublished one has no stored value. */
 export type GameBackupRecoveryDetail = GameBackupRecovery &
   (
     | { readonly manifestSha256: null; readonly manifest: null }
@@ -184,10 +165,6 @@ export type RecoveryLocationObservation =
     }
   | { readonly status: 'unavailable'; readonly error: ErrorSummary }
 
-/**
- * Use the basis to compare the displayed evidence at resolve time. Resolve reinspects the actual
- * locations before executing an action.
- */
 export interface GameBackupRecoveryInspection {
   readonly recoveryId: string
   readonly resolution: RecoveryResolution | null
@@ -203,26 +180,16 @@ export interface GameBackupRecoveryInspection {
   readonly basis: string
 }
 
-/** Records survive clearing task history. Recovery resumes only through explicit operations. */
 export interface GameBackupRecoveriesApi {
   list(
     query: ListOptions & { readonly gameId?: string; readonly state?: 'pending' | 'resolved' },
     call?: CallOptions,
   ): Promise<ListResult<GameBackupRecovery>>
 
-  /** Returns null for an absent record. A read leaves recovery progress unchanged. */
   get(id: string, call?: CallOptions): Promise<GameBackupRecoveryDetail | null>
 
-  /**
-   * Returns the actions available for the observed locations and a basis to compare before
-   * executing any of them.
-   */
   inspect(id: string, call?: CallOptions): Promise<GameBackupRecoveryInspection>
 
-  /**
-   * Reinspects actual state and rejects a stale evidence basis before executing the requested
-   * action.
-   */
   resolve(
     input: {
       readonly recoveryId: string
@@ -232,62 +199,30 @@ export interface GameBackupRecoveriesApi {
     call?: CallOptions,
   ): Promise<GameBackupRestoreResult>
 
-  /**
-   * Cleanup requires a resolved recovery. A missing record is idempotent success. Protection
-   * backups remain.
-   */
   remove(id: string, call?: CallOptions): Promise<void>
 }
 
-/**
- * Operations check actual paths and occupancy. Use their results to determine filesystem
- * completion.
- */
 export interface GameBackupsApi {
-  /**
-   * Lists the game's archived snapshots by creation time, retaining source identity and lock state.
-   */
   list(
     gameId: string,
     options: ListOptions & { readonly sourceConfigId?: string; readonly locked?: boolean },
     call?: CallOptions,
   ): Promise<ListResult<GameBackup>>
 
-  /**
-   * Returns null for an absent record. The record remains readable independently of archive and
-   * source availability.
-   */
   get(gameId: string, backupId: string, call?: CallOptions): Promise<GameBackup | null>
 
-  /**
-   * Verifies the complete archive before committing. The reuse policy can return the actual
-   * previous backup when content is unchanged.
-   */
   create(
     gameId: string,
     input: GameBackupCreateInput,
     call?: CallOptions,
   ): Promise<GameBackupCreateResult>
 
-  /**
-   * Includes known target state and recovery details in any partial result after failure or
-   * cancellation. The fixed target is confirmed and existing content protected before replacement.
-   */
   restore(input: GameBackupRestoreInput, call?: CallOptions): Promise<GameBackupRestoreResult>
 
-  /**
-   * Protects the backup from automatic retention cleanup while leaving explicit deletion available.
-   */
   lock(gameId: string, backupId: string, call?: CallOptions): Promise<void>
 
-  /**
-   * Removes automatic-retention protection without immediately deleting or cleaning up the backup.
-   */
   unlock(gameId: string, backupId: string, call?: CallOptions): Promise<void>
 
-  /**
-   * Only the note can change. Archive bytes, creation facts and source identity remain immutable.
-   */
   update(
     gameId: string,
     backupId: string,
@@ -298,10 +233,6 @@ export interface GameBackupsApi {
     call?: CallOptions,
   ): Promise<void>
 
-  /**
-   * Manual deletion may include locked backups. It checks occupancy and preserves the current save
-   * target.
-   */
   delete(gameId: string, backupIds: NonEmptyArray<string>, call?: CallOptions): Promise<void>
 
   readonly recoveries: GameBackupRecoveriesApi
@@ -318,7 +249,6 @@ const backupSource = v.variant('type', [
   v.strictObject({ type: v.literal('snapshot'), launchConfigId: id, launchConfigName: text, path }),
 ])
 
-/** Parses a current configuration choice or fixed source snapshot without resolving live files. */
 export function parseGameBackupSource(input: unknown): GameBackupSource {
   return parseValue(backupSource, input, 'Invalid game backup source')
 }
@@ -350,7 +280,6 @@ export function parseGameBackupRestoreInput(input: unknown): GameBackupRestoreIn
   )
 }
 
-/** The recovery owner verifies the index, actual bytes and target relationship. */
 export function parseGameBackupRecoveryManifest(input: unknown): GameBackupRecoveryManifest {
   return parseValue(
     v.strictObject({
@@ -372,7 +301,6 @@ export function parseGameBackupRecoveryManifest(input: unknown): GameBackupRecov
   )
 }
 
-/** The recovery owner checks progress sequence and actual disk state. */
 export function parseGameBackupRecoveryProgress(input: unknown): GameBackupRecoveryProgress {
   return parseValue(
     v.strictObject({
@@ -385,10 +313,6 @@ export function parseGameBackupRecoveryProgress(input: unknown): GameBackupRecov
   )
 }
 
-/**
- * The comparison basis hashes indexed identity, manifest digest and location observations.
- * Diagnostic wording and observation timestamps are excluded.
- */
 export function gameBackupRecoveryBasis(
   index: GameBackupRecovery,
   actualManifestSha256: string | null,
@@ -427,10 +351,6 @@ export function gameBackupRecoveryBasis(
   )
 }
 
-/**
- * Checks recovery-reference consistency. The target's actual state remains independent of the
- * committed recovery state.
- */
 export function parseGameBackupRestoreResult(input: unknown): GameBackupRestoreResult {
   const error = fromParser(parseErrorSummary)
   const issue = v.variant('code', [

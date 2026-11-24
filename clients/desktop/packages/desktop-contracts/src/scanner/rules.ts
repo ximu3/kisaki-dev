@@ -26,11 +26,6 @@ const outputSchema = v.pipe(
   v.check((value) => Object.keys(value).length > 0),
 )
 
-/**
- * Parses extraction-rule structure without compiling its pattern.
- *
- * Saving and execution also require the full bounded validator.
- */
 export function parseClueExtractionRuleShape(input: unknown): ClueExtractionRule {
   return parseValue(
     v.strictObject({
@@ -47,12 +42,6 @@ export function parseClueExtractionRuleShape(input: unknown): ClueExtractionRule
   )
 }
 
-/**
- * Compiles a rule's pattern and validates every template against its named captures, including
- * disabled rules.
- *
- * Callers provide a bounded, terminable execution unit.
- */
 export function parseClueExtractionRule(input: unknown): ClueExtractionRule {
   const rule = parseClueExtractionRuleShape(input)
   const pattern = inspectTextPattern(rule.pattern, rule.ignoreCase)
@@ -102,7 +91,6 @@ export interface ClueExtractionResult {
   readonly captures: Readonly<Record<string, string>>
 }
 
-/** Localized rule template copied into an independently identified scanner draft rule. */
 export interface ClueExtractionPreset {
   readonly id: string
   readonly name: LocalizedText

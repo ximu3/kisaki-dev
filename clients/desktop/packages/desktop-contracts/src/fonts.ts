@@ -19,26 +19,21 @@ import {
   type FileInput,
 } from './resources'
 
-/** Consumers define their own default or document-font selections. */
 export type FontRef =
   | { readonly type: 'system'; readonly family: string }
   | { readonly type: 'user'; readonly id: string }
 
-/** Static metrics have equal minimum, default and maximum values. */
 export interface FontMetricRange {
   readonly min: number
   readonly default: number
   readonly max: number
 }
 
-/** An actual four-byte OpenType variation-axis tag and its supported metric range. */
 export interface FontVariationAxis extends FontMetricRange {
   readonly tag: string
 }
 
-/** Weight and width use font/CSS metric units rather than interface pixels. */
 export interface FontFaceMetadata {
-  /** Zero-based face index within the font file. */
   readonly index: number
   readonly family: string
   readonly subfamily: string
@@ -51,42 +46,31 @@ export interface FontFaceMetadata {
   readonly axes: readonly FontVariationAxis[]
 }
 
-/** The nonempty sequence of faces decoded from a font file in index order. */
 export interface FontFileMetadata {
   readonly faces: NonEmptyArray<FontFaceMetadata>
 }
 
-/** Preparation creates no user Font record. The caller owns release of the hold. */
 export interface PreparedFontFile extends PreparedAttachment {
   readonly metadata: FontFileMetadata
 }
 
-/** An immutable attachment and its host-parsed font metadata. */
 export interface FontFile {
   readonly attachmentId: string
   readonly metadata: FontFileMetadata
 }
 
-/** A user-library font identity with a name, file set and creation and update times. */
 export interface Font {
   readonly id: string
   readonly name: string
   readonly files: NonEmptyArray<FontFile>
-  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
-  /** UTC milliseconds since the Unix epoch. */
   readonly updatedAt: number
 }
 
-/** Disposal leaves the plain snapshot readable while ending access through its resources. */
 export interface FontRead {
   readonly font: Font
-  /** Acquired file resources indexed by attachment ID. */
   readonly resources: Readonly<Record<string, ReadResourceRef>>
 
-  /**
-   * Releases this read's holds idempotently while preserving other reads and saved font references.
-   */
   dispose(): Promise<void>
 }
 
@@ -99,58 +83,32 @@ export interface FontImportInput {
   readonly files: NonEmptyArray<FontFileInput>
 }
 
-/**
- * Omitted files remain unchanged. A supplied nonempty file set replaces the existing set as one
- * comparison unit.
- */
 export interface FontUpdate {
   readonly changes: { readonly name?: string; readonly files?: NonEmptyArray<FontFileUpdateInput> }
   readonly expected?: { readonly name?: string; readonly files?: NonEmptyArray<FontFile> }
 }
 
-/**
- * Saved records and byte holds have separate lifetimes. User fonts remain until explicitly deleted.
- */
 export interface FontsApi {
-  /** Searches and pages user-font records; system families are listed separately. */
   list(
     query: { readonly search: string },
     options: ListOptions,
     call?: CallOptions,
   ): Promise<ListResult<Pick<Font, 'id' | 'name' | 'createdAt' | 'updatedAt'>>>
 
-  /** Reads saved font metadata without acquiring files, returning null for an absent identity. */
   get(id: string, call?: CallOptions): Promise<Font | null>
 
-  /** Lists distinct system family names without importing their files into the user library. */
   listSystem(call?: CallOptions): Promise<readonly string[]>
 
-  /** The caller releases the hold; preparation creates no Font record. */
   prepare(input: FileInput, call?: CallOptions): Promise<PreparedFontFile>
 
-  /** Failure leaves no partially created font. */
   import(input: FontImportInput, call?: CallOptions): Promise<Font>
 
-  /**
-   * Compares submitted fields and commits the name or final file set after preparing new files.
-   *
-   * Failure preserves the saved set.
-   */
   update(id: string, input: FontUpdate, call?: CallOptions): Promise<Font>
 
-  /**
-   * Saved selections survive deletion. Previously acquired reads keep their bytes until release.
-   */
   delete(id: string, call?: CallOptions): Promise<void>
 
-  /**
-   * Acquires one fixed font and all its readable files for the caller to release.
-   *
-   * Failure releases partial acquisitions and rejects the read.
-   */
   open(id: string, call?: CallOptions): Promise<FontRead>
 
-  /** Subscribe before reading the font directory. Refreshes preserve local edits. */
   onInvalidated(listener: () => void): Disposable
 }
 
@@ -198,7 +156,6 @@ const metadata = v.strictObject({
 
 const file = v.strictObject({ attachmentId: id, metadata })
 
-/** Parses a stable font reference without checking current family or resource availability. */
 export function parseFontRef(input: unknown): FontRef {
   return parseValue(
     v.variant('type', [
@@ -210,12 +167,10 @@ export function parseFontRef(input: unknown): FontRef {
   )
 }
 
-/** Registration and adoption separately require provenance from the actual host decoder. */
 export function parseFontFileMetadata(input: unknown): FontFileMetadata {
   return parseValue(metadata, input, 'Invalid font file metadata')
 }
 
-/** Checks a prepared font interface and metadata while preserving its actual resource hold. */
 export function parsePreparedFontFile(input: unknown): PreparedFontFile {
   const attachment = parsePreparedAttachment(input)
   const withMetadata = input as PreparedFontFile
@@ -229,7 +184,6 @@ function parseFontFileInput(input: unknown): FontFileInput {
     : parseFileInput(input)
 }
 
-/** The update operation separately verifies ownership of retained attachments. */
 function parseFontFileUpdateInput(input: unknown): FontFileUpdateInput {
   if (
     typeof input === 'object' &&
@@ -243,7 +197,6 @@ function parseFontFileUpdateInput(input: unknown): FontFileUpdateInput {
   return parseFontFileInput(input)
 }
 
-/** The import operation owns source decoding and byte-level deduplication. */
 export function parseFontImport(input: unknown): FontImportInput {
   const source = fromParser(parseFontFileInput)
   return parseValue(
@@ -253,7 +206,6 @@ export function parseFontImport(input: unknown): FontImportInput {
   )
 }
 
-/** Parses font changes and expected values for the same name or complete file-set units. */
 export function parseFontUpdate(input: unknown): FontUpdate {
   const source = fromParser(parseFontFileUpdateInput)
   const value = parseValue(

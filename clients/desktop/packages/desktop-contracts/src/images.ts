@@ -5,31 +5,18 @@ import * as v from 'valibot'
 
 export type ImageFormat = 'jpeg' | 'png' | 'webp' | 'avif' | 'gif'
 
-/** An independently held image preparation with decoded dimensions, format and frame count. */
 export interface PreparedImage extends PreparedAttachment {
-  /** Width in pixels after source orientation. */
   readonly width: number
-  /** Height in pixels after source orientation. */
   readonly height: number
   readonly format: ImageFormat
-  /** Actual readable frame count; static images have one frame. */
   readonly frameCount: number
 }
 
-/**
- * Processing corrects source orientation, applies flips, rotates clockwise and then crops. Crop
- * coordinates use pixels after the preceding steps.
- */
 export interface ImageTransform {
-  /** Zero-based frame index, required for animation; static images accept zero or omission. */
   readonly frameIndex?: number
-  /** Whether to flip horizontally before rotation; defaults to false. */
   readonly flipHorizontal?: boolean
-  /** Whether to flip vertically before rotation; defaults to false. */
   readonly flipVertical?: boolean
-  /** Clockwise rotation in finite degrees within [0, 360); defaults to zero. */
   readonly rotationDegrees?: number
-  /** Integer pixel bounds with positive extents, wholly inside the transformed image. */
   readonly crop?: {
     readonly left: number
     readonly top: number
@@ -38,19 +25,9 @@ export interface ImageTransform {
   }
 }
 
-/** The caller releases each result. Failed work preserves the existing image. */
 export interface ImagesApi {
-  /**
-   * Reads and verifies image bytes, converting supported vector or icon inputs to PNG.
-   *
-   * Returns an independent hold before any business reference is committed.
-   */
   prepare(input: FileInput, call?: CallOptions): Promise<PreparedImage>
 
-  /**
-   * Produces a new static PNG. Animated input requires an explicit frame index; the host checks
-   * frame and crop bounds.
-   */
   transform(
     resource: ReadResourceRef,
     input: ImageTransform,
@@ -58,11 +35,6 @@ export interface ImagesApi {
   ): Promise<PreparedImage>
 }
 
-/**
- * Parses transform values without decoding image content.
- *
- * The executor separately checks image-dependent frame and crop bounds.
- */
 export function parseImageTransform(input: unknown): ImageTransform {
   return parseValue(
     v.strictObject({

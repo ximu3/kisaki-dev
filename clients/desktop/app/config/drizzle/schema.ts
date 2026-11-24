@@ -3,5 +3,5 @@ import { getPreferenceDefaults } from '../../src/main/features/preferences/defau
 
 export * from '../../src/main/infrastructure/database/schema'
 
-// These platform defaults configure the preference codecs. The DDL is shared across platforms.
-export const preferences = createPreferencesTable(getPreferenceDefaults('win32', []))
+const migrationCodecDefaults = getPreferenceDefaults('win32', [])
+export const preferences = createPreferencesTable(migrationCodecDefaults)

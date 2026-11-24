@@ -1,13 +1,8 @@
 import { expect } from 'vite-plus/test'
-import { expect as browserExpect } from '@playwright/test'
-import type { Locator } from '@playwright/test'
+import { expect as browserExpect, type Locator } from '@playwright/test'
 import { test } from './page'
 import type {} from '../fixtures/workshop/api'
 
-/**
- * Checks that entry opacity changes while text geometry remains fixed between the transition
- * midpoint and rest.
- */
 async function checkSurface(panel: Locator, textSelector: string): Promise<void> {
   const result = await panel.evaluate((node, selector) => {
     const range = document.createRange()
@@ -166,6 +161,11 @@ test('dialogs, menus and popovers close the active scope and return focus', asyn
   await page.getByRole('button', { name: 'Actions', exact: true }).click()
   await browserExpect(page.getByRole('menuitem', { name: 'First action' })).toBeFocused()
   const firstAction = page.getByRole('menuitem', { name: 'First action' })
+  await page.getByRole('menu', { name: 'Actions', exact: true }).focus()
+  await page.keyboard.press('ArrowUp')
+  await browserExpect(page.getByRole('menuitem', { name: 'More', exact: true })).toBeFocused()
+  await page.keyboard.press('ArrowDown')
+  await browserExpect(firstAction).toBeFocused()
   await firstAction.dispatchEvent('keydown', { key: 'ı', bubbles: true })
   await browserExpect(page.getByRole('menuitem', { name: 'Işık' })).toBeFocused()
   await page.keyboard.press('Escape')

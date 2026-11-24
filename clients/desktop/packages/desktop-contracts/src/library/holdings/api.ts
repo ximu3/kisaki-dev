@@ -26,10 +26,6 @@ export interface HoldingsApi {
     readonly novel: FileRecognitionProfilesApi<'novel'>
   }
 
-  /**
-   * The work stays fixed through the identity recheck and commit. An initial refresh can fail after
-   * registration succeeds. Both outcomes are returned.
-   */
   registerLocalContent<T extends WorkType>(
     work: WorkRef<T>,
     input: LocalContentInput,
@@ -37,10 +33,6 @@ export interface HoldingsApi {
     call?: CallOptions,
   ): Promise<LocalContentRegistrationResult<T>>
 
-  /**
-   * Reports availability and applied changes per file. Discovered facts preserve held data and
-   * manual associations.
-   */
   refresh<T extends FileWorkType>(
     work: EntryRef<T>,
     call?: CallOptions,

@@ -4,11 +4,6 @@ import { classes } from '../../internal/dom'
 import surface from '../../internal/popup/surface.module.css'
 import styles from './styles.module.css'
 
-/**
- * Creates a compact text drag image using the toolkit's capture and cleanup lifecycle.
- *
- * The host calls it from onGenerateDragPreview with a description of the moved selection.
- */
 export function setDragPreview(options: {
   nativeSetDragImage: Parameters<typeof setCustomNativeDragPreview>[0]['nativeSetDragImage']
   label: string

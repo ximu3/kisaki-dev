@@ -121,7 +121,6 @@ const fieldSchemas: Readonly<Record<Exclude<EntryProjectionField, 'partCounts'>,
     uncheckedFileCount: nonnegativeInteger,
   }
 
-/** Requires requested and applicable fields. Extra or inapplicable fields are invalid. */
 export function parseEntryListItem(
   input: unknown,
   fields: readonly EntryProjectionField[] = [],
@@ -153,10 +152,6 @@ export function parseEntryListItem(
   ) as EntryListItem
 }
 
-/**
- * Separate counts of registered parts, completion marks, file associations and saved accessible
- * observations.
- */
 export interface PartCounts {
   readonly registered: number
   readonly completed: number
@@ -175,9 +170,7 @@ interface CommonProjection {
 
   readonly addedDate: PartialDate | null
   readonly effectiveAddedDate: PartialDate
-  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
-  /** UTC milliseconds since the Unix epoch. */
   readonly updatedAt: number
 }
 
@@ -188,7 +181,6 @@ interface WorkProjection {
 
   readonly additionalDurationMs: number
   readonly totalDurationMs: number
-  /** UTC milliseconds since the Unix epoch. */
   readonly lastActiveAt: number | null
   readonly completionCount: number
   readonly firstCompletedDate: CalendarDate | null
@@ -204,10 +196,6 @@ interface MediaProjection {
   readonly uncheckedFileCount: number
 }
 
-/**
- * Includes only requested fields applicable to each entry kind. Anime count breakdowns use the
- * read-only unknown key for unspecified classifications.
- */
 export interface EntryProjectionByType {
   readonly game: CommonProjection & WorkProjection
 
@@ -272,14 +260,12 @@ export interface EntryProjectionByType {
 
 export type EntryProjectionField = { [K in EntryType]: keyof EntryProjectionByType[K] }[EntryType]
 
-/** Unrequested fields are omitted. Null retains the meaning of the individual field. */
 export type EntryListItem = {
   [K in EntryType]: { readonly id: string; readonly type: K; readonly name: string } & Partial<
     EntryProjectionByType[K]
   >
 }[EntryType]
 
-/** Requested list columns are bounded scalar facts and summaries, never arbitrary relation expansions or full bodies. */
 export const entryProjectionFields: readonly EntryProjectionField[] = Object.freeze([
   'originalName',
   'sortName',
@@ -327,10 +313,6 @@ export const entryProjectionFields: readonly EntryProjectionField[] = Object.fre
   'partCounts',
 ])
 
-/**
- * Requires every requested projection to apply to at least one enabled query type. A query with no
- * enabled types accepts any declared field and has an empty result.
- */
 export function checkProjection(
   fields: readonly EntryProjectionField[] | undefined,
   query: EntryQuery,
@@ -347,7 +329,6 @@ export function checkProjection(
   }
 }
 
-/** Supported projection fields deduplicated in their first requested order. */
 export const projectionSchema = v.pipe(
   v.array(v.picklist(entryProjectionFields)),
   v.transform((fields) => [...new Set(fields)]),

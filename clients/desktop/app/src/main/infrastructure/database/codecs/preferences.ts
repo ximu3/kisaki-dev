@@ -19,13 +19,10 @@ import {
 } from '../preference-fields'
 import { isInvalidValue, readJsonText, ready, storedJsonColumn } from './json'
 
-/** Preference groups whose ordinary fields can independently adopt their defined defaults. */
 type OrdinaryGroup = Exclude<keyof Preferences, 'network'>
 
-/** Non-secret network configuration; credentials occupy protected columns on the singleton. */
 export type StoredNetworkPreferences = Omit<NetworkPreferences, 'credentials'>
 
-/** Storage projection before the preference owner attaches opaque credential state. */
 export type StoredPreferences = Omit<PreferencesSnapshot, 'network'> & {
   readonly network: StoredDefinition<StoredNetworkPreferences>
 }
@@ -93,12 +90,6 @@ function unwrapSelections(group: OrdinaryGroup, value: unknown): unknown {
   return fields
 }
 
-/**
- * Creates a JSON mapping with strict writes and field-local read results.
- *
- * A decoded snapshot is never an implicit update. The preference owner preserves untouched raw
- * fields when committing an edit; invalid selections can only be explicitly rebuilt or removed.
- */
 export function preferenceColumn<K extends OrdinaryGroup>(key: K, defaults: Preferences) {
   function read(source: unknown): PreferencesSnapshot[K] {
     let value: unknown
@@ -124,7 +115,6 @@ export function preferenceColumn<K extends OrdinaryGroup>(key: K, defaults: Pref
   })
 }
 
-/** Validates non-secret network configuration independently from protected credential columns. */
 function parseStoredNetwork(input: unknown): StoredNetworkPreferences {
   if (!isRecord(input) || 'credentials' in input) {
     throw new DesktopError('InvalidInput', 'Proxy credentials are stored separately')
@@ -136,10 +126,8 @@ function parseStoredNetwork(input: unknown): StoredNetworkPreferences {
   return { mode: value.mode, endpoint: value.endpoint, bypassRules: value.bypassRules }
 }
 
-/** Builds non-secret proxy-configuration columns with explicit validity for execution. */
 export const networkPreferences = storedJsonColumn(parseStoredNetwork)
 
-/** Wraps complete validated values for an explicit first-row or whole-configuration insertion. */
 export function preparePreferences(input: Preferences): StoredPreferences {
   const values = parsePreferences(input)
   const groups = Object.keys(storedPreferencePaths).filter(

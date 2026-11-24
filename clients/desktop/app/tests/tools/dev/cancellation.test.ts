@@ -10,7 +10,7 @@ const paths = vi.hoisted(() => ({ appRoot: process.cwd(), repositoryRoot: proces
 vi.mock('../../../tools/lib/paths', () => paths)
 vi.mock('../../../tools/resources/prepare', () => ({ prepareResources: vi.fn() }))
 vi.mock('../../../tools/dev/electron-executable', () => ({ electronExecutable: vi.fn() }))
-vi.mock('../../../tools/dev/renderer', () => ({
+vi.mock('../../../tools/dev/renderer/server', () => ({
   createRenderer: vi.fn().mockResolvedValue({
     resolvedUrls: { local: ['http://localhost'] },
     listen: vi.fn().mockResolvedValue(undefined),

@@ -5,27 +5,22 @@ import { optionId, type SelectionCollection } from './collection'
 import type { SelectionOption } from './types'
 import styles from './styles.module.css'
 
-/** Search-editor labels and query ownership. */
 export interface SearchState {
   label: string
   clearLabel: string
   placeholder: string | undefined
   query: string
-  /** Requests a new query value from the search owner. */
   change: (query: string) => void
 }
 
-/** Search state linked to the logical candidate collection and its listbox identity. */
 interface ComboboxSearchProps<O extends SelectionOption> {
   state: SearchState
   listId: string
   collection: SelectionCollection<O>
   open: boolean
-  /** Commits the highlighted candidate from the query editor. */
   choose: (option: O) => void
 }
 
-/** Keeps editing focus in the query while coordinating candidate navigation and composition. */
 export function ComboboxSearch<O extends SelectionOption>(
   props: ComboboxSearchProps<O>,
 ): JSX.Element {

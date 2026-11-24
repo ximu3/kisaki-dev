@@ -6,7 +6,6 @@ use napi_derive::napi;
 use std::io;
 use std::path::{Path, PathBuf};
 
-/// Reads the NT volume and normalized path of the opened entry, including a reparse point itself.
 #[cfg(windows)]
 fn entry_path(path: &Path) -> io::Result<Vec<u16>> {
     use std::fs::OpenOptions;
@@ -49,7 +48,6 @@ fn same_entry(left: &Path, right: &Path) -> io::Result<bool> {
     Ok(entry_path(left)? == entry_path(right)?)
 }
 
-/// Pins both Linux directory entries before reading their kernel paths, including symbolic links.
 #[cfg(target_os = "linux")]
 fn same_entry(left: &Path, right: &Path) -> io::Result<bool> {
     use std::fs::{OpenOptions, read_link};
@@ -67,7 +65,6 @@ fn same_entry(left: &Path, right: &Path) -> io::Result<bool> {
     Ok(left_path == right_path)
 }
 
-/// Reads Darwin's volume-local link ID for the named entry without following its final link.
 #[cfg(target_os = "macos")]
 fn link_id(path: &Path) -> io::Result<u64> {
     use std::ffi::CString;
@@ -101,7 +98,6 @@ fn link_id(path: &Path) -> io::Result<u64> {
     Ok(u64::from_ne_bytes(result[4..].try_into().unwrap()))
 }
 
-/// Resolves multi-link names on a filesystem without documented per-link IDs from its directory.
 #[cfg(target_os = "macos")]
 fn listed_links(left: &Path, right: &Path, inode: u64) -> io::Result<bool> {
     use std::os::unix::fs::DirEntryExt;
@@ -176,10 +172,6 @@ impl Task for EntryComparison {
     }
 }
 
-/// Compares entries in an established common directory, or two Windows volume roots.
-///
-/// # Errors
-/// Returns InvalidArg for invalid paths. Lookup failures retain their OS code.
 #[napi(ts_return_type = "Promise<boolean | FilesystemQueryFailure>")]
 pub fn same_directory_entry(first: String, second: String) -> Result<AsyncTask<EntryComparison>> {
     if [&first, &second]

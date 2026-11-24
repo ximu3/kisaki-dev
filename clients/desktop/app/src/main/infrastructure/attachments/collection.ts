@@ -7,7 +7,6 @@ import { storedFilePath } from '../files'
 import { checkDirectory, entryInfo } from './paths'
 import type { attachmentStorage } from './storage'
 
-/** Removes one proven regular file, reporting only bytes actually unlinked. */
 async function removeFile(root: string, path: string) {
   await checkDirectory(root)
   await checkDirectory(dirname(path))
@@ -29,7 +28,6 @@ async function removeFile(root: string, path: string) {
   }
 }
 
-/** Collects unreferenced rows using the same serialized acquisition boundary as preparation and reading. */
 export function createCollection(
   root: string,
   held: ReadonlyMap<string, number>,
@@ -41,7 +39,6 @@ export function createCollection(
   const batchSize = 128
   const retirements = new Set<Promise<void>>()
 
-  /** Rechecks references under the write transaction and finishes physical removals outside SQLite. */
   async function reclaim(ids: readonly string[]) {
     const removed = await owned(async () => {
       const eligible = ids.filter((id) => {
@@ -78,14 +75,12 @@ export function createCollection(
     return { removedCount, reclaimedBytes, issues }
   }
 
-  /** Reports deferred maintenance failures independently of the completed business transaction. */
   function reportIssues(result: AttachmentCleanupResult) {
     for (const issue of result.issues) {
       report(new DesktopError(issue.error.code, issue.error.message))
     }
   }
 
-  /** Schedules only the identities detached by a committed edit. */
   function retire(ids: readonly string[]) {
     if (!ids.length) {
       return
@@ -102,17 +97,14 @@ export function createCollection(
 
   return {
     retire,
-    /** Waits for all business-triggered batches accepted before database shutdown. */
     async drain(this: void) {
       await Promise.all(retirements)
     },
-    /** Retries held candidates when their last reader releases them inside the ownership boundary. */
     released(id: string) {
       if (deferred.delete(id)) {
         retire([id])
       }
     },
-    /** Reconciles registered rows and orphan files while yielding the ownership queue between batches. */
     async cleanup(this: void, signal?: AbortSignal): Promise<AttachmentCleanupResult> {
       const files = new Set<string>()
       const issues: { attachmentId: string; error: ErrorSummary }[] = []

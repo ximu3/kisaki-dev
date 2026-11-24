@@ -5,7 +5,6 @@ import type { DesktopTarget } from '../lib/targets'
 
 export interface DesktopBuild {
   schemaVersion: 1
-  /** Opaque identifier shared by the programs compiled in this build. */
   buildId: string
   version: string
   target: DesktopTarget
@@ -13,11 +12,6 @@ export interface DesktopBuild {
   electronVersion: string
 }
 
-/**
- * Builds a relative-path-to-SHA-256 index of completed runtime files.
- *
- * The caller finishes output writes first. build.json is excluded because it contains this index.
- */
 export async function runtimeFiles(directory: string): Promise<Record<string, string>> {
   const files: Record<string, string> = {}
 

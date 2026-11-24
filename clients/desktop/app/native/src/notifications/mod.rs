@@ -2,7 +2,6 @@ use napi::threadsafe_function::ThreadsafeFunction;
 use napi::{Result, Status};
 use napi_derive::napi;
 
-/// A click can arrive on the platform's callback thread before the first window exists.
 type Click = ThreadsafeFunction<String, (), String, Status, false, true>;
 
 type Completion = ThreadsafeFunction<bool, (), bool, Status, true, true>;
@@ -10,7 +9,6 @@ type Completion = ThreadsafeFunction<bool, (), bool, Status, true, true>;
 #[cfg(any(target_os = "macos", windows))]
 mod platform;
 
-/// Connects the macOS delegate or registered Windows COM identity, or detaches the receiver at exit.
 #[napi(ts_args_type = "appId: string, receive: ((identifier: string) => void) | null")]
 pub fn set_notification_receiver(app_id: String, receive: Option<Click>) -> Result<bool> {
     #[cfg(any(target_os = "macos", windows))]
@@ -24,7 +22,6 @@ pub fn set_notification_receiver(app_id: String, receive: Option<Click>) -> Resu
     }
 }
 
-/// Submits a system-owned notification whose identifier survives the lifetime of this Node process.
 #[napi(
     ts_args_type = "appId: string, identifier: string, title: string, body: string, complete: (error: Error | null, accepted?: boolean) => void"
 )]

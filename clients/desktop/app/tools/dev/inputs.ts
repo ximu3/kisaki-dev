@@ -8,13 +8,10 @@ import { appRoot, containsPath, repositoryRoot } from '../lib/paths'
 export type PreparationChange = 'native' | 'resources' | 'configuration'
 
 interface InputWatchOptions {
-  /** Watches rebuildable native and resource inputs when the session owns them. */
   watchAssets: boolean
-  /** Cancels initialization; the session owns closure after readiness. */
   signal?: AbortSignal
 
   onChange(change: PreparationChange): void
-  /** Delivers a post-readiness watcher failure to the owning session. */
   onError(cause: unknown): void
 }
 
@@ -42,12 +39,6 @@ function isDevelopmentInput(path: string): boolean {
   )
 }
 
-/**
- * Watches native resources and program configuration outside the compiler graph.
- *
- * Waits for initial readiness before delivering changes. Startup failure or cancellation closes the
- * watcher before rejection; after success the session owns close().
- */
 export async function startInputWatcher(
   sourceRoot: string,
   options: InputWatchOptions,

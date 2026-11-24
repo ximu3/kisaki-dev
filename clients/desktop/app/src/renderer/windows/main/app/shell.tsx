@@ -21,7 +21,6 @@ import { PageOrder } from '../domain-ui/navigation/list'
 import { ApplicationMenu } from './menu'
 import type { PageRoute } from './routes'
 
-/** Keeps the current page mounted while native navigation or fixed tools open a dialog. */
 export function AppShell(
   props: ParentProps<{
     api: MainClient

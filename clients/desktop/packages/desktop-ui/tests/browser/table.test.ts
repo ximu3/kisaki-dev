@@ -1,7 +1,6 @@
 import { chromium, expect } from '@playwright/test'
 import { test as workshop } from './page'
 
-/** Runs the table check with classic scrollbars. */
 const test = workshop.extend('browser', { scope: 'file' }, async ({}, { onCleanup }) => {
   const browser = await chromium.launch({
     ignoreDefaultArgs: ['--hide-scrollbars'],

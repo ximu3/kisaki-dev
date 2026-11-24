@@ -38,7 +38,6 @@ const selectionFields: ReadonlySet<string> = new Set([
   'usage.novel.text.font',
 ])
 
-/** Preserves an explicit read error for identity choices and saved shortcut bindings. */
 export function hasStoredDefinition(group: PreferenceGroup, path: readonly string[]) {
   return group === 'shortcuts' || selectionFields.has([group, ...path].join('.'))
 }

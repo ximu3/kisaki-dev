@@ -1,6 +1,5 @@
-/** @fileoverview Generated from the pinned @lucide/icons catalog by generate:icon-names. */
+// Generated from the pinned @lucide/icons catalog by generate:icon-names.
 
-/** Names supported by the host's fixed Lucide catalog, including its published aliases. */
 export const lucideIconNames = Object.freeze([
   "a-arrow-down",
   "a-arrow-up",
@@ -2360,5 +2359,4 @@ export const lucideIconNames = Object.freeze([
   "zoom-out",
 ] as const)
 
-/** Icon name supported by the host's fixed Lucide catalog. */
 export type LucideIconName = (typeof lucideIconNames)[number]

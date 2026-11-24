@@ -36,7 +36,6 @@ const scopes = [
   },
 ] as const
 
-/** Keeps each tab's query and scroll position while detail dialogs are open. */
 export function TaskCenter(props: {
   api: MainClient
   target: string | null

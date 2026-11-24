@@ -9,7 +9,6 @@ import {
   type ProxyCredentials,
 } from '@kisaki3/desktop-contracts/network'
 
-/** Executes one host request without ambient cookies, preserving explicit response headers and stream backpressure. */
 export async function request(
   session: Session,
   input: string | URL,
@@ -144,7 +143,6 @@ export async function request(
       req.end()
     } else {
       req.chunkedEncoding = true
-      /** Waits for each Chromium write before pulling the next upload chunk. */
       async function send() {
         for (;;) {
           const { done, value } = await reader!.read()
@@ -175,14 +173,12 @@ export async function request(
   }
 }
 
-/** Keeps cancellation attached to the consumer even after Chromium ends its request-side events. */
 function responseBody(stream: Readable, signal: AbortSignal, abort: () => void) {
   const source = (Readable.toWeb(stream) as ReadableStream<Uint8Array<ArrayBuffer>>).getReader()
   let listener: ReturnType<typeof addAbortListener>
   let ended = false
   return new ReadableStream<Uint8Array<ArrayBuffer>>(
     {
-      /** Binds the consumer stream to cancellation after headers have arrived. */
       start(controller) {
         listener = addAbortListener(signal, () => {
           if (ended) {
@@ -194,7 +190,6 @@ function responseBody(stream: Readable, signal: AbortSignal, abort: () => void) 
           void source.cancel().catch(() => {})
         })
       },
-      /** Reads only as much response data as requested by this consumer. */
       async pull(controller) {
         try {
           const chunk = await source.read()

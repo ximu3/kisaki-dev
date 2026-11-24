@@ -12,10 +12,6 @@ import {
   type GameLaunchConfigCreate,
 } from '../holdings/game-configuration'
 
-/**
- * Initial file associations may address parts created in this graph. Graph commits work with the
- * inputs already resolved by the caller.
- */
 export type GraphFileCreate<T extends FileWorkType> = Omit<FileCreateFields<T>, 'associations'> & {
   readonly associations?: readonly {
     readonly part: GraphPartRef<FilePartType<T>>

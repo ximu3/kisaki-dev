@@ -5,10 +5,6 @@ export interface PackageSelection {
   projects: readonly Project[]
 }
 
-/**
- * Attributes paths to the nearest workspace package. Repository inputs and missing baselines
- * select the entire workspace. Package-owned documentation follows its package.
- */
 export function selectPackages(
   paths: readonly string[] | undefined,
   workspace: readonly Project[],

@@ -6,13 +6,11 @@ import { parseNotificationMessage, type NotificationsApi } from '@kisaki3/deskto
 import { notificationTarget } from './target'
 import type { linuxNotifications, DesktopActivation } from './linux'
 
-/** Installs early macOS activation and retains only resources owned by the current host process. */
 export function createNotifications(
   appId: string,
   receiver: DesktopActivation,
   native?: Pick<NativeCapabilities, 'postNotification' | 'setNotificationReceiver'>,
 ) {
-  /** OS integration failure leaves the library usable and the notification operation unavailable. */
   function connectNative() {
     try {
       return !!native?.setNotificationReceiver(appId, receiver.notification)
@@ -95,7 +93,6 @@ export function createNotifications(
   }
   return {
     ...api,
-    /** Connects a present installation identity after the process and its platform facilities are ready. */
     async ready(packaged: boolean) {
       if (process.platform === 'win32') {
         attached = connectNative()
@@ -109,7 +106,6 @@ export function createNotifications(
         }
       }
     },
-    /** Detaches activation without withdrawing a notice the installed OS identity can still deliver. */
     async close(this: void) {
       if (closed) {
         return

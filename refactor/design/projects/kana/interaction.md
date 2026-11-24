@@ -123,7 +123,6 @@ interface ReadingKeyInput {
 }
 
 interface OpenReaderOptions {
-  /** Return true synchronously to prevent the default action for this key. */
   readonly handleKeyDown?: (input: ReadingKeyInput) => boolean
 }
 ```

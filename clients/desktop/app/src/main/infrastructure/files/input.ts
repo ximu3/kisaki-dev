@@ -3,13 +3,11 @@ import { Readable } from 'node:stream'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { fileChunkBytes } from '../../../shared/window-api/protocol'
 
-/** Claims each chunk only after the file consumer asks for more, and closes the port on cancellation. */
 export function receiveFile(port: MessagePortMain) {
   let requested = false
   let ended = false
   const stream = new Readable({
     highWaterMark: fileChunkBytes,
-    /** Requests the next bounded chunk only when the file pipeline has capacity. */
     read() {
       if (!requested && !ended) {
         requested = true

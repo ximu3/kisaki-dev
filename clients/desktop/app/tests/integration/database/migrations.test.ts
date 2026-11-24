@@ -9,7 +9,6 @@ import { verifyExistingLibrary } from '../../../src/main/infrastructure/database
 import { entries } from '../../../src/main/infrastructure/database/schema'
 import { storageOptions } from './sample'
 
-/** Creates an owned directory and registers cleanup after all test connections have closed. */
 async function fixtureDirectory(): Promise<string> {
   const path = await mkdtemp(join(tmpdir(), 'kisaki-migrations-'))
   onTestFinished(() => rm(path, { recursive: true, force: true }))

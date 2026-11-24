@@ -4,20 +4,17 @@ import type { Translate } from '@kisaki3/desktop-localization'
 import { deferDialogUntil } from '@kisaki3/desktop-ui/dialog'
 import { errorMessage } from '../../../../infrastructure/notifications'
 
-/** Names the face as recorded in the verified file, including its subfamily when needed. */
 export function fontFaceName(metadata: FontFileMetadata): string {
   const face = metadata.faces[0]
   return face.fullName ?? [face.family, face.subfamily].filter(Boolean).join(' ')
 }
 
-/** Formats the default value and the bounds of a variable metric. */
 function metric(value: FontMetricRange, suffix = ''): string {
   return value.min === value.max
     ? String(value.default) + suffix
     : value.min + suffix + '–' + value.max + suffix
 }
 
-/** Shows the file's own face rather than resolving a same-named font installed on the system. */
 export function FontSpecimen(props: {
   t: Translate
   metadata: FontFileMetadata

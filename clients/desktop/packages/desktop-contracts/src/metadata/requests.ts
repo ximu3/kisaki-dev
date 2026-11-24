@@ -29,10 +29,6 @@ function objectRequest(names: readonly string[], withRefs: boolean) {
   })
 }
 
-/**
- * Source references narrow object fields. Separately requested relation membership retains its full
- * scope.
- */
 export function parseMetadataReadRequest<T extends EntryType>(
   root: T,
   input: unknown,
@@ -88,7 +84,6 @@ export function parseMetadataReadRequest(root: EntryType, input: unknown): Metad
   ) as MetadataReadRequest
 }
 
-/** A relation request with an empty attribute list still requires membership support. */
 export function requireMetadataRequestSupport<T extends EntryType>(
   root: T,
   requested: MetadataReadRequest<T>,
@@ -147,10 +142,6 @@ export type MetadataPartRequests<T extends EntryType> = {
   readonly [K in MetadataPartKey<T>]?: ObjectFieldRequest<MetadataPartField<MetadataPartType<T, K>>>
 }
 
-/**
- * An empty fields array requests no ordinary attributes. A relation still requests its membership.
- * Empty refs select no object fields.
- */
 export type MetadataReadRequest<T extends EntryType = EntryType> = {
   [K in T]: {
     readonly objects?: {

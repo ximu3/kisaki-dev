@@ -1,20 +1,12 @@
 import { onCleanup } from 'solid-js'
 
-/** Viewport coordinate in CSS pixels used by submenu pointer geometry. */
 interface Point {
   x: number
   y: number
 }
 
-/**
- * Creates delayed submenu hover intent with a protected pointer corridor.
- *
- * The current timer and transit listener are released with the Solid owner; keyboard opening
- * remains owned by the menu.
- */
 export function createSubmenuHover(options: {
   anchor: () => HTMLElement | undefined
-  /** Returns the submenu surface whose near edge defines the pointer corridor. */
   content: () => HTMLElement | undefined
   isOpen: () => boolean
   open: () => void
@@ -80,7 +72,6 @@ export function createSubmenuHover(options: {
   }
 }
 
-/** Checks inclusive triangle containment using consistent signed edge orientations. */
 function insideTriangle(point: Point, a: Point, b: Point, c: Point): boolean {
   const side = (p: Point, q: Point, r: Point) =>
     (p.x - r.x) * (q.y - r.y) - (q.x - r.x) * (p.y - r.y)

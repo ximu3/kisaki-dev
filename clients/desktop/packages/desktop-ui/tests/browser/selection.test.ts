@@ -72,10 +72,6 @@ test('virtual selection keeps offscreen values while keyboard navigation mounts 
   })
   const form = page.locator('#virtual-form')
   await browserExpect(form.getByRole('button', { name: 'Previous selected items' })).toBeHidden()
-  /**
-   * Dispatches a backward wheel sample over a selected chip and reports whether it remained
-   * uncancelled.
-   */
   const wheelPrevious = () =>
     form
       .getByRole('button', { name: 'Remove Item 9000' })

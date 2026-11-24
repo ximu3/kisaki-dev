@@ -55,7 +55,6 @@ const labels: Record<MarkdownCommand, string> = {
   redo: 'Redo',
 }
 
-/** Synthetic Markdown covering formatting, footnotes, tables and untrusted HTML and image URLs. */
 const initial =
   '# Sample\n\nSelect text and use the toolbar.\n\n- [x] Completed task\n- [ ] Pending task\n\nA footnote[^a].\n\n[^a]: Local reference.\n\n| A | B |\n| - | - |\n| 1 | 2 |\n\n<img src=x onerror=alert(1)>\n\n![Unresolved](https://example.invalid/untrusted.png)\n\n[External](https://example.com/)'
 

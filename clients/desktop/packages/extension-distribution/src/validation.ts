@@ -1,11 +1,6 @@
 import { visit } from 'jsonc-parser'
-import { DistributionError } from './errors'
-import type { FieldPath } from './errors'
+import { DistributionError, type FieldPath } from './errors'
 
-/**
- * JSON data retained from the complete distribution document, including fields used only by
- * signing.
- */
 export type JsonValue =
   | null
   | boolean
@@ -18,12 +13,6 @@ export function rejectFormat(path: FieldPath, message: string): never {
   throw new DistributionError('invalid-format', message, path)
 }
 
-/**
- * Parses strict JSON with unique decoded property names and finite, well-formed values.
- *
- * Rejects comments, trailing commas, duplicate keys and unpaired surrogate code units. Unknown
- * fields remain available for canonical signing.
- */
 export function parseJson(text: string): JsonValue {
   const objects: Set<string>[] = []
   visit(
@@ -75,11 +64,6 @@ export function parseRecord(value: unknown, path: FieldPath): Record<string, unk
   return value as Record<string, unknown>
 }
 
-/**
- * Parses a well-formed Unicode string while preserving its exact contents.
- *
- * The default requires nonblank text; nonempty=false also accepts empty or whitespace-only strings.
- */
 export function parseString(value: unknown, path: FieldPath, nonempty = true): string {
   if (
     typeof value !== 'string' ||
@@ -92,7 +76,6 @@ export function parseString(value: unknown, path: FieldPath, nonempty = true): s
   return value
 }
 
-/** Parses every array position, including holes, using its original indexed field path. */
 export function parseArray<T>(
   value: unknown,
   path: FieldPath,
@@ -104,12 +87,6 @@ export function parseArray<T>(
   return Array.from(value, (item: unknown, index) => parse(item, [...path, index]))
 }
 
-/**
- * Parses an own property when present and returns an object containing that field.
- *
- * Absent properties produce an empty object. Explicit null and undefined values go through the
- * supplied parser.
- */
 export function parseOptionalField<K extends string, T>(
   object: Record<string, unknown>,
   key: K,
@@ -123,7 +100,6 @@ export function parseOptionalField<K extends string, T>(
   return result
 }
 
-/** Accepts distribution schema version 1 and reports unsupported-schema for other values. */
 export function parseSchemaVersion(value: unknown, path: FieldPath): 1 {
   if (value !== 1) {
     throw new DistributionError(
@@ -144,7 +120,6 @@ export function parseUnsignedInteger(value: unknown, path: FieldPath): number {
   return value
 }
 
-/** Parses UTC epoch milliseconds as a safe integer within JavaScript's Date range. */
 export function parseTimestamp(value: unknown, path: FieldPath): number {
   if (
     typeof value !== 'number' ||
@@ -157,7 +132,6 @@ export function parseTimestamp(value: unknown, path: FieldPath): number {
   return value
 }
 
-/** Parses a 64-character lowercase SHA-256 hexadecimal digest. */
 export function parseSha256(value: unknown, path: FieldPath): string {
   const digest = parseString(value, path)
   if (!/^[a-f0-9]{64}$/.test(digest)) {

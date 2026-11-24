@@ -30,7 +30,7 @@
 | `clients/desktop/packages/desktop-contracts`             | 桌面接口、值约束、规范编码、查询与写入合同、参与接口、会话、管理、深链和开发控制 |
 | `clients/desktop/packages/desktop-rpc`                   | 有限 JSON 帧、握手、双向调用与通知、按调用取消、安全失败和断连清理               |
 
-桌面公共包通过构建后的公开入口交付 ESM、声明和各自资源。包内 `tests/consumers` 使用仓库外的独立工程核对同一 tarball，用例、样板、配置、依赖和报告分别由所属包维护。公开值和消费方式可从源码声明、消费者样板及 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md)、[W03](../verification/evidence/w03/README.md)、[W04](../verification/evidence/w04/README.md)、[W05](../verification/evidence/w05/README.md) 验证入口查阅。
+桌面公共包通过构建后的公开入口交付 ESM、声明和各自资源。包内 `tests/consumers` 使用仓库外的独立工程核对同一 tarball，用例、样板、配置、依赖和报告分别由所属包维护。类型随构建后的声明提供，调用约定随制品中的 API.md 提供。见[视觉值](../../clients/desktop/packages/desktop-appearance/API.md)、[公共控件](../../clients/desktop/packages/desktop-ui/API.md)、[扩展分发](../../clients/desktop/packages/extension-distribution/API.md)、[本地化](../../clients/desktop/packages/desktop-localization/API.md)、[桌面合同](../../clients/desktop/packages/desktop-contracts/API.md)和 [RPC](../../clients/desktop/packages/desktop-rpc/API.md)。实际消费见包内样板及 [W01](../verification/evidence/w01/README.md)、[W02](../verification/evidence/w02/README.md)、[W03](../verification/evidence/w03/README.md)、[W04](../verification/evidence/w04/README.md)、[W05](../verification/evidence/w05/README.md) 验证入口查阅。
 
 desktop-ui 从组件家族子路径消费，样式入口为 `/styles.css`，包含 appearance 的普通样式；图表、Markdown 和拖拽按完整能力独立导入。长列表和规则网格通过 `/virtualization` 接入尺寸估计、按行测量和稳定键定位。`/form` 合并浏览器有效性与业务问题，统一提交、快捷键和关闭确认等待的操作。宿主拥有草稿、业务校验与写入，以及图表统计、正文资源和排序规则。接口和组合示例见包内源码与仓库外消费者样板。`pnpm exec vp run @kisaki3/desktop-ui#test:consumers` 验证真实 tarball、完整声明、浏览器、Tailwind 和 Electron，报告位于包内 `test-results/consumers`。
 

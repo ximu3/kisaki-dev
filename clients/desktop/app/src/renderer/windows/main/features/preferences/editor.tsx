@@ -1,7 +1,6 @@
 import { createEffect, createSignal, For, onCleanup, Show } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { preferenceKeys, type PreferenceKey } from '@kisaki3/desktop-contracts/preferences'
-import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
 import {
   DialogBody,
@@ -15,7 +14,6 @@ import { ScrollArea } from '@kisaki3/desktop-ui/scroll-area'
 import { Toolbar, ToolbarRow } from '@kisaki3/desktop-ui/toolbar'
 import { Tabs, TabList, Tab, TabPanel } from '@kisaki3/desktop-ui/tabs'
 import { Spinner } from '@kisaki3/desktop-ui/spinner'
-import { errorMessage } from '../../../../infrastructure/notifications'
 import type { MainClient } from '../../../../infrastructure/api'
 import type { EditorGuard } from '../../../../infrastructure/dialogs/closing'
 import type { NavigationPage } from '../../domain-ui/navigation/list'
@@ -37,6 +35,7 @@ import {
 } from './staged-dialog'
 import { UsageEditorFields } from './usage/editor'
 import { UsageFields, usageMedia, type UsageMedium } from './usage/fields'
+import { QueryError } from '../../../../infrastructure/query/error'
 
 const sections = [
   'general',
@@ -266,16 +265,12 @@ export function PreferenceEditor(props: PreferenceEditorProps) {
               orientation="vertical"
               class="min-w-0 grow"
             >
-              <Show when={draft.error()}>
-                {(cause) => (
-                  <Alert tone="destructive" role="alert" class="m-4">
-                    {errorMessage(cause())}{' '}
-                    <Button variant="outline" onClick={draft.retry}>
-                      {api.t('runtime.retry')}
-                    </Button>
-                  </Alert>
-                )}
-              </Show>
+              <QueryError
+                error={draft.error()}
+                retryLabel={api.t('runtime.retry')}
+                retry={draft.retry}
+                class="m-4"
+              />
               <Show
                 when={draft.ready()}
                 fallback={!draft.error() && <Spinner label={api.t('runtime.loading')} />}

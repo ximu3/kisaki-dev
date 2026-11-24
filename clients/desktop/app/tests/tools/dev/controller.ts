@@ -5,7 +5,6 @@ import { tmpdir } from 'node:os'
 import { onTestFailed, onTestFinished } from 'vite-plus/test'
 import type { DevelopmentBuild } from '../../../tools/dev/session'
 
-/** Three minutes cover cold package/native preparation and readiness; the application handshake has its own deadline. */
 const developmentStartupTimeoutMs = 180_000
 
 export interface DevelopmentObservation {
@@ -20,13 +19,6 @@ interface DevelopmentControllerOptions {
   expectedExitCode?: number
 }
 
-/**
- * Starts a development-test worker and exposes its observed lifecycle.
- *
- * Registers worker shutdown and diagnostic reporting with the active test. Source-editing tests
- * register input-restoration hooks first so reverse-order cleanup stops the worker before restoring
- * those inputs.
- */
 export async function startDevelopmentController(
   app: string,
   options: DevelopmentControllerOptions = {},

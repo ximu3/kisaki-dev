@@ -4,10 +4,6 @@ import { entryRefSchema, type EntryRef } from '../catalog'
 import { parseValue, unique } from '../../validation'
 import { DesktopError } from '../../errors'
 
-/**
- * Resolve the selection in one read. Ranges include both endpoints in either direction. The all
- * variant includes the entire query even when groups are collapsed.
- */
 export type EntrySelection =
   | { readonly type: 'all' }
   | { readonly type: 'range'; readonly anchor: EntryRef; readonly focus: EntryRef }
@@ -22,10 +18,6 @@ function groupKey(group: EntryGroupKey): string {
   return group.type === 'collection' ? JSON.stringify(['collection', group.id]) : 'unclassified'
 }
 
-/**
- * Grouped endpoints must name declared expanded groups. Execution reports SelectionChanged if a
- * required endpoint disappears or a crossed group cannot be read.
- */
 export function parseEntrySelection(input: unknown): EntrySelection {
   const endpoint = v.strictObject({ group: groupSchema, ref: entryRefSchema })
   const value = parseValue(

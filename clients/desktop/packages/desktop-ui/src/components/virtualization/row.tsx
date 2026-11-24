@@ -2,7 +2,6 @@ import { createEffect, type Accessor } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import type { VirtualItem, Virtualizer } from './viewport'
 
-/** Binds position and border-box measurement to the row's semantic element in a virtual track. */
 export function createVirtualRow(virtualizer: Accessor<Virtualizer>, item: Accessor<VirtualItem>) {
   let node!: HTMLElement
   createEffect(
@@ -29,7 +28,6 @@ export function createVirtualRow(virtualizer: Accessor<Virtualizer>, item: Acces
   }
 }
 
-/** Renders a measured row inside a relatively positioned track of the virtualizer's total height. */
 export function VirtualRow(props: {
   virtualizer: Virtualizer
   item: VirtualItem

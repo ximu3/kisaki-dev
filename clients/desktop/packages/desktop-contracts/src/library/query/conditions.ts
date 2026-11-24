@@ -50,10 +50,8 @@ import {
 import { DesktopError } from '../../errors'
 import { entryFieldTypes } from './fields'
 
-/** Zero, false and a known empty authoritative answer count as present. */
 export type Presence = { readonly op: 'present' } | { readonly op: 'absent' }
 
-/** Inclusive numeric range predicate with at least one bound. */
 export type NumberTest = { readonly op: 'range'; readonly bounds: Bounds<number> }
 
 export type TextTest = { readonly op: 'equals' | 'contains'; readonly value: string }
@@ -64,10 +62,6 @@ export type SetTest<T> =
 
 export type EnumTest<T> = { readonly op: 'in' | 'notIn'; readonly values: NonEmptyArray<T> }
 
-/**
- * An absolute range must contain every possible day of a partial date. Component comparisons
- * require the tested component to be known.
- */
 export type DateTest =
   | { readonly op: 'absoluteRange'; readonly bounds: Bounds<YearDate> }
   | {
@@ -85,10 +79,6 @@ export type BirthdayTest =
   | DateTest
   | { readonly op: 'monthDayRange'; readonly from: MonthDate; readonly to: MonthDate }
 
-/**
- * Calendar ranges use the actual display zone. Instant bounds use UTC milliseconds and the
- * half-open interval [from, to).
- */
 export type InstantTest =
   | { readonly op: 'calendarRange'; readonly bounds: Bounds<YearDate> }
   | ({ readonly op: 'instantRange' } & (
@@ -115,7 +105,6 @@ interface NoteQualifier {
   readonly note?: TextTest | Presence
 }
 
-/** Optional character-role selection, with null selecting an unspecified role. */
 interface CharacterRolesQualifier {
   readonly characterRoles?: NonEmptyArray<CharacterRole | null>
 }
@@ -136,10 +125,6 @@ interface PersonCharacterQualifier extends CharacterRolesQualifier, PersonRolesQ
   readonly character?: CharacterQualifier
 }
 
-/**
- * All qualifiers apply to the same relation before its targets are projected. Each branch fixes the
- * allowed target kind and qualifiers.
- */
 export type EntryRelationCondition =
   | {
       readonly field: 'workCharacters'
@@ -204,7 +189,6 @@ export type EntryRelationCondition =
         WorkTypesQualifier & { readonly organizationRoles?: NonEmptyArray<OrganizationRole> }
     }
 
-/** Rule groups are flat. */
 export type EntryCondition =
   | {
       readonly field:
@@ -285,10 +269,6 @@ export type EntryCondition =
     }
   | EntryRelationCondition
 
-/**
- * Enabled groups form a union that intersects query scope, search and visibility. Disabled groups
- * still undergo validation.
- */
 export interface EntryRule {
   readonly enabled: boolean
   readonly types: NonEmptyArray<EntryType>
@@ -343,7 +323,6 @@ function numberTest<T extends v.GenericSchema<unknown, number>>(schema: T) {
 
 export const presenceSchema = v.strictObject({ op: v.picklist(['present', 'absent']) })
 
-/** Exact or substring text predicate with a nonblank search value. */
 export const textTestSchema = v.strictObject({
   op: v.picklist(['equals', 'contains']),
   value: nonemptyText,
@@ -601,10 +580,6 @@ const conditionSchemas: Readonly<
   }),
 }
 
-/**
- * Deduplicates selections. Unknown fields, operations and qualifiers are invalid, including a
- * character-role qualifier for a relation explicitly lacking a character.
- */
 export function parseEntryCondition(input: unknown): EntryCondition {
   const { field: fieldInput, ...body } = parseRecord(input)
   const field = parseValue(nonemptyText, fieldInput, 'Invalid entry condition')
@@ -634,22 +609,16 @@ export function parseEntryCondition(input: unknown): EntryCondition {
   return condition
 }
 
-/** Null selects unspecified anime classification. */
 export function parsePartCountScope(input: unknown): PartCountScope {
   return parseValue(partCountScopeSchema, input, 'Invalid part count scope')
 }
 
-/** Returns the entry types whose facts a parsed predicate can compare. */
 export function getEntryConditionTypes(condition: EntryCondition): readonly EntryType[] {
   return condition.field === 'parts'
     ? [partWorkType(condition.scope.partType)]
     : entryFieldTypes[condition.field]
 }
 
-/**
- * Every condition must apply to every selected type, including in disabled rules. Execution checks
- * reference existence.
- */
 export function parseEntryRule(input: unknown): EntryRule {
   const rule = parseValue(
     v.strictObject({

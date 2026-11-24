@@ -1,6 +1,5 @@
 import { DesktopError } from '../errors'
 
-/** Checks the XML Char production used by CFI assertions, including tab, LF and CR. */
 function isXmlCharacter(codePoint: number): boolean {
   return (
     codePoint === 0x9 ||
@@ -12,10 +11,6 @@ function isXmlCharacter(codePoint: number): boolean {
   )
 }
 
-/**
- * Validates a point in the EPUB CFI 1.1 subset while preserving its spelling. The document resolves
- * the address. Ranges use two complete ReadingAnchor values.
- */
 export function parseCfiPoint(value: string): string {
   let offset = 8
 
@@ -28,7 +23,6 @@ export function parseCfiPoint(value: string): string {
   }
   const end = value.length - 1
 
-  /** Consumes a canonical integer or decimal token without converting it to a JavaScript number. */
   function numberToken(integer: boolean): string {
     const start = offset
     while (offset < end && /[0-9]/.test(value[offset]!)) {

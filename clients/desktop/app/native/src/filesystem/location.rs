@@ -97,12 +97,6 @@ impl Task for FilesystemTask {
     }
 }
 
-/// Inspects the actual backing filesystem of an existing absolute path.
-///
-/// No files are created. Unknown classification is not evidence of local filesystem support.
-///
-/// # Errors
-/// Returns InvalidArg before queueing an invalid path. Platform failures retain their cause and code.
 #[napi(ts_return_type = "Promise<'local' | 'network' | 'unknown' | FilesystemQueryFailure>")]
 pub fn get_filesystem_location(path: String) -> Result<AsyncTask<FilesystemTask>> {
     if !crate::files::valid_path(&path) {

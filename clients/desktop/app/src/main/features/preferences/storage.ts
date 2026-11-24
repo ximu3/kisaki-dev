@@ -19,12 +19,10 @@ import {
   storedPreferencePaths,
 } from '../../infrastructure/database/preference-fields'
 
-/** Nonsecret changes sent to the worker after credentials are encrypted in the main process. */
 export type SavedChanges = Omit<PreferencesChanges, 'network'> & {
   network?: Partial<Omit<PreferencesChanges['network'] & object, 'credentials'>>
 }
 
-/** Reads only public preference values. Ciphertext stays on the protected path. */
 export function snapshot(row: PreferenceRow): PreferencesSnapshot {
   const { proxyCredentialsRevision, network } = row
   const groups = {
@@ -85,7 +83,6 @@ function fieldReplacements(
   return fields
 }
 
-/** Creates complete preference read/write operations for the application database. */
 export function preferenceStorage(storage: Storage) {
   const { db, preferences: table } = storage
 
@@ -94,7 +91,6 @@ export function preferenceStorage(storage: Storage) {
       return snapshot(db.select().from(table).get()!)
     },
 
-    /** Reads the protected pair only for adoption by the host network. */
     getProxySecret() {
       return db
         .select({
@@ -104,7 +100,6 @@ export function preferenceStorage(storage: Storage) {
         .from(table)
         .get()!
     },
-    /** Rewraps only the revision whose decryption asked for key rotation. */
     rotateProxySecret(revision: string, ciphertext: Uint8Array) {
       db.update(table)
         .set({ proxyCredentialsCiphertext: Buffer.from(ciphertext) })

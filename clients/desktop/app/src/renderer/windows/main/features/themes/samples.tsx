@@ -2,7 +2,6 @@ import { For } from 'solid-js'
 import type { Theme } from '@kisaki3/desktop-contracts/appearance'
 import type { Translate } from '@kisaki3/desktop-localization'
 
-/** Displays both branches using their actual background, text and accent pairs. */
 export function ThemeSamples(props: { theme: Theme; t: Translate }) {
   return (
     <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,12rem),1fr))] gap-3">

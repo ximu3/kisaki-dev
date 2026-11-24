@@ -122,10 +122,6 @@ function indexNodes(root: EntryType, objects: ParsedObjects | undefined) {
   return nodes
 }
 
-/**
- * Returns the object keys referenced by relations after validating the graph. Duplicate business
- * keys and invalid root contexts are rejected.
- */
 export function validateGraph(
   root: EntryType,
   objects: ParsedObjects | undefined,
@@ -298,10 +294,6 @@ export function validateGraph(
   return referenced
 }
 
-/**
- * Requires the relationship to contain the metadata root and returns its direction from that
- * endpoint.
- */
 export function metadataRelationTypeFromRoot(
   rootKey: string,
   relation: MetadataRelationMembers['workRelations'],

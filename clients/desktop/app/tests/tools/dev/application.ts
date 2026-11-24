@@ -9,12 +9,6 @@ import {
 
 const debug = debuglog('kisaki:fixture-launch')
 
-/**
- * Launches the engineering carrier and waits for its matching build handshake.
- *
- * Owns the startup deadline and cancellation wait, terminating failed startup before rejection.
- * Returns process controls after readiness; exited also waits for child output streams to close.
- */
 export async function launchFixtureApplication(
   options: DevelopmentLaunchOptions,
 ): Promise<DevelopmentApplication> {
@@ -116,12 +110,6 @@ export async function launchFixtureApplication(
     pid: child.pid!,
     exited,
     terminate,
-    /**
-     * Requests normal fixture shutdown and waits for exit or an explicit refusal.
-     *
-     * Coalesces concurrent requests and releases the decision listener and deadline on every
-     * outcome. Timeout or IPC failure rejects while process ownership remains with the handle.
-     */
     stop() {
       stopping ??= (async () => {
         if (child.exitCode !== null || child.signalCode !== null) {

@@ -17,7 +17,6 @@ import { ready } from '../../infrastructure/database/codecs/json'
 
 const activeStatuses = taskRunStatuses.filter((status) => !isTaskTerminal(status))
 
-/** Requires a usable stored field when the caller asks for its value. */
 function unwrap<T>(value: StoredDefinition<T> | null): T | null {
   if (value?.status === 'invalid') {
     throw new DesktopError(value.error.code, value.error.message)
@@ -25,7 +24,6 @@ function unwrap<T>(value: StoredDefinition<T> | null): T | null {
   return value?.value ?? null
 }
 
-/** Orphaned histories have an unconfirmed ending even if they last recorded an active state. */
 function projectedStatus(active: ReadonlyArray<readonly [string, TaskRunStatus]>) {
   const live = active.map(([id, status]) => sql`when ${taskRuns.id} = ${id} then ${status} `)
   return sql<TaskRunStatus>`case ${sql.join(live)} when ${inArray(taskRuns.status, activeStatuses)} then 'interrupted' else ${taskRuns.status} end`
@@ -35,7 +33,6 @@ function endedStatus(status: TaskRunStatus): TaskTerminalRun['status'] {
   return isTaskTerminal(status) ? status : 'interrupted'
 }
 
-/** Builds worker operations on the generic history table, independent of business-owned reports. */
 export function taskHistory(storage: Storage) {
   const db = storage.db
 
@@ -63,7 +60,6 @@ export function taskHistory(storage: Storage) {
         .map((row) => row.type)
     },
 
-    /** Records incomplete executions from the previous process without inventing an ending time. */
     interruptTasks() {
       db.update(taskRuns)
         .set({ status: 'interrupted', finishedAt: null })
@@ -108,7 +104,6 @@ export function taskHistory(storage: Storage) {
       return record && { ...record, status: endedStatus(record.status) }
     },
 
-    /** Reads a summary interval and its total from one snapshot, excluding input and result bytes. */
     listTasks(
       query: TaskQuery,
       options: ListOptions,

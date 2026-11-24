@@ -1,4 +1,3 @@
-/** The CSS value grammar assigned to one base appearance token. */
 export type TokenKind =
   | 'color'
   | 'radius'
@@ -9,11 +8,9 @@ export type TokenKind =
   | 'line-height'
   | 'letter-spacing'
 
-/** The fixed visual vocabulary; grouping and persistence belong to consumers. */
 export const tokens = Object.freeze({
   '--background': 'color',
   '--foreground': 'color',
-  /** Background for the application frame, navigation and control regions. */
   '--chrome': 'color',
   '--chrome-foreground': 'color',
   '--popover': 'color',
@@ -23,13 +20,9 @@ export const tokens = Object.freeze({
 
   '--primary': 'color',
   '--primary-foreground': 'color',
-  /** Fill for secondary buttons and badges. */
   '--secondary': 'color',
-  /** Text and icons paired with the secondary fill. */
   '--secondary-foreground': 'color',
-  /** Subtle fill for bands, tracks and other low-emphasis areas. */
   '--muted': 'color',
-  /** Text and icons for supporting information such as descriptions and placeholders. */
   '--muted-foreground': 'color',
   '--accent': 'color',
   '--accent-foreground': 'color',
@@ -66,21 +59,12 @@ export const tokens = Object.freeze({
   '--text-base-letter-spacing': 'letter-spacing',
 } as const satisfies Record<string, TokenKind>)
 
-/** Name of a base appearance token; host scale and derived CSS variables have separate owners. */
 export type TokenName = keyof typeof tokens
 
-/** Name of a font-family slot whose value is a CSS stack. */
 export type FontTokenName = '--font-sans' | '--font-mono'
 
-/** Name of a base appearance token other than the two font-family slots. */
 export type VisualTokenName = Exclude<TokenName, FontTokenName>
 
-/**
- * A complete read-only CSS-value branch for the base appearance vocabulary.
- *
- * External values are parsed through the values entry before adoption.
- */
 export type TokenValues = Readonly<Record<TokenName, string>>
 
-/** Resolved light or dark appearance branch, selected by the host. */
 export type ColorScheme = 'light' | 'dark'

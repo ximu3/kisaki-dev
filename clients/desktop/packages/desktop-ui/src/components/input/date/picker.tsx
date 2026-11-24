@@ -16,12 +16,10 @@ import {
 import { PeriodSelect } from './period'
 import styles from './styles.module.css'
 
-/** Calendar bounds, locale and navigation labels supplied by the document owner. */
 export interface CalendarProps {
   min?: string | undefined
   max?: string | undefined
   locale?: string | undefined
-  /** First weekday: 0 is Sunday and 1 is Monday; omission uses Monday. */
   weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined
 
   calendarLabel: string
@@ -31,12 +29,10 @@ export interface CalendarProps {
   nextMonthLabel: string
 }
 
-/** Calendar popup state and host connections for anchoring, validation, selection and closing. */
 interface PickerProps extends CalendarProps {
   open: boolean
   panelRef: (node: HTMLDivElement) => void
   id: string
-  /** Returns the button used to position and return focus from the calendar. */
   anchor: () => HTMLButtonElement | undefined
   value: string
   allowed: (date: string) => boolean
@@ -44,11 +40,6 @@ interface PickerProps extends CalendarProps {
   close: () => void
 }
 
-/**
- * Renders calendar browsing and keyboard navigation independently of committed selection.
- *
- * Opening initializes the visible period and focuses the current day choice.
- */
 export function DatePicker(props: PickerProps): JSX.Element {
   let calendar!: HTMLDivElement
   const min = () => props.min ?? earliestDate
@@ -79,7 +70,6 @@ export function DatePicker(props: PickerProps): JSX.Element {
     shortWeekday: new Intl.DateTimeFormat(props.locale, { weekday: 'short', timeZone: 'UTC' }),
   }))
 
-  // Keep the last selected day visible while the popup exits.
   const selected = displayedWhileOpen(
     () => props.open,
     () => props.value,
@@ -108,9 +98,9 @@ export function DatePicker(props: PickerProps): JSX.Element {
     setActive(next)
     setMonth(`${next.slice(0, 7)}-01`)
   }
-  // Focus the day after its month has rendered.
   const focusDay = (date: string) => {
     browse(date)
+    // Focus the day after its month has rendered.
     queueMicrotask(() => {
       if (props.open) {
         calendar.querySelector<HTMLButtonElement>(`[data-date="${active()}"]`)?.focus()

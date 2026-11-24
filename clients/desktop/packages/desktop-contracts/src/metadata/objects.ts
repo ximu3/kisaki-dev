@@ -105,15 +105,11 @@ function candidatePart(type: PartType): v.GenericSchema<unknown, ParsedCandidate
   )
 }
 
-/**
- * Creates a composed-object schema requiring one root and allowing only root-compatible part slots.
- */
 export function objectsSchema(
   root: EntryType,
   composed: true,
 ): v.GenericSchema<unknown, ParsedCandidateObjects>
 
-/** Creates a source-response object schema with an optional root and root-compatible part slots. */
 export function objectsSchema(
   root: EntryType,
   composed: false,
@@ -160,7 +156,6 @@ export interface CandidateTag {
   readonly isNsfw?: boolean
 }
 
-/** Part slots belong to the root context. Search and resolve still use entry roots. */
 export interface MetadataPartKinds {
   readonly game: Readonly<Record<never, never>>
   readonly anime: { readonly episode: 'animeEpisode'; readonly extra: 'animeExtra' }
@@ -183,10 +178,6 @@ export interface ObjectFieldRequest<Field extends PropertyKey> {
   readonly refs?: readonly ExternalIdentity[]
 }
 
-/**
- * Additional identities must be distinct from the primary identity. Object keys are local to the
- * graph.
- */
 export interface MetadataObjectIdentity {
   readonly key: string
   readonly identity?: ExternalIdentity

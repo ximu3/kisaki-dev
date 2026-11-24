@@ -9,7 +9,6 @@ import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
 const binding = join(appRoot, 'out', 'native', hostTarget(), 'kisaki-native.node')
 
-/** Paths that the host-native absolute-path contract rejects before scheduling work. */
 const invalidPaths =
   process.platform === 'win32'
     ? ['relative', '\\drive-rooted', '\\\\?\\UNC\\localhost']

@@ -1,13 +1,10 @@
 import { preferenceKeys, type PreferenceField } from '@kisaki3/desktop-contracts/preferences'
 import type { englishMessages, Translate } from '@kisaki3/desktop-localization'
 
-/** Field-label keys scoped to the native preference catalog. */
 type FieldName = keyof typeof englishMessages.runtime.fields
 
-/** Single-key calls from the field catalog retain the associated generated message type. */
 type FieldLabelCall = { [K in FieldName]: [`runtime.fields.${K}`] }[FieldName]
 
-/** Uses effective language at read time while keeping domain and shortcut identities stable. */
 export function preferenceFields(t: Translate): readonly PreferenceField[] {
   return preferenceKeys.map((key) => {
     const segments = key.split('.')

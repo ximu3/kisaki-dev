@@ -16,17 +16,14 @@ export interface ExtensionMenuItemPresentation {
   readonly disabled?: boolean
 }
 
-/** Loading messages require a live handle and are outside this result shape. */
 export type ExtensionMenuFeedback =
   | void
   | (ToastMessage & { readonly type: Exclude<ToastMessage['type'], 'loading'> })
 
-/** Each submenu defines a separate scope for sibling radio groups. */
 export type ExtensionMenuItem =
   | { readonly type: 'separator' }
   | (ExtensionMenuItemPresentation & {
       readonly type: 'action'
-      /** Executes the selected action and returns optional completion feedback. */
       readonly onSelect: (
         execution: ExecutionContext,
       ) => ExtensionMenuFeedback | Promise<ExtensionMenuFeedback>
@@ -34,7 +31,6 @@ export type ExtensionMenuItem =
   | (ExtensionMenuItemPresentation & {
       readonly type: 'checkbox'
       readonly checked: boolean
-      /** Handles the requested checked state and returns optional completion feedback. */
       readonly onChange: (
         nextChecked: boolean,
         execution: ExecutionContext,
@@ -44,7 +40,6 @@ export type ExtensionMenuItem =
       readonly type: 'radio'
       readonly group: string
       readonly checked: boolean
-      /** Handles selection of this radio item and returns optional completion feedback. */
       readonly onSelect: (
         execution: ExecutionContext,
       ) => ExtensionMenuFeedback | Promise<ExtensionMenuFeedback>
@@ -60,10 +55,6 @@ export interface ExtensionMenuContextMap {
 }
 
 export interface ExtensionMenusApi {
-  /**
-   * Construction receives fixed local targets and its own signal. Accepted action callbacks outlive
-   * menu closure.
-   */
   add<K extends keyof ExtensionMenuContextMap>(
     contextKind: K,
     getItems: (
@@ -73,11 +64,6 @@ export interface ExtensionMenusApi {
   ): Disposable
 }
 
-/**
- * Validates menu presentation, live callback shapes and sibling radio-group selection.
- *
- * Callbacks are retained without invoking business operations.
- */
 export function validateExtensionMenuItems(
   input: unknown,
   defaultLocale: string,

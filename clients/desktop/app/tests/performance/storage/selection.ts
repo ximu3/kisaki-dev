@@ -1,13 +1,8 @@
 export interface EntrySelection {
   ids: string
-  /** Equivalent predicate on the current entries row e, for link sets with multiple hits per entry. */
   probe?: string
 }
 
-/**
- * Reads a page in the library's name and ID order. For an offset page the live count and both
- * traversal bounds belong to one SQLite statement. Only the nearer end supplies rows.
- */
 export function pageStatement({ ids, probe }: EntrySelection, offset: number): string {
   if (offset === 0) {
     return `select e.id from entries e where ${probe ?? `e.id in (${ids})`}

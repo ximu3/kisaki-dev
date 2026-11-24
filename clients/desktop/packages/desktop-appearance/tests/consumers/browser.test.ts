@@ -60,7 +60,6 @@ test('ordinary CSS works by itself, preserves document controls and has complete
   consumerDirectory,
   page,
 }) => {
-  // Load only the public stylesheet, with no Tailwind runtime or compiled utilities.
   const css = await readFile(
     join(consumerDirectory, 'node_modules/@kisaki3/desktop-appearance/dist/styles.css'),
     'utf8',

@@ -19,30 +19,24 @@ import {
   type LocalizedText,
 } from '@kisaki3/extension-distribution/metadata'
 
-/** Release artifact address, optional byte size and canonical Base64 SHA-512 digest. */
 export interface ApplicationUpdateFile {
   readonly url: string
-  /** File size in bytes; null when release metadata does not provide it. */
   readonly size: number | null
   readonly sha512: string
 }
 
-/** In-app update artifacts or a manual download destination for the release. */
 export type ApplicationDelivery =
   | { readonly type: 'inApp'; readonly files: readonly ApplicationUpdateFile[] }
   | { readonly type: 'manual'; readonly downloadUrl: string }
 
-/** Desktop release identity, publication time and target-specific delivery information. */
 export interface ApplicationRelease {
   readonly version: string
   readonly tagName: string
   readonly releaseUrl: string
-  /** UTC milliseconds since the Unix epoch. */
   readonly publishedAt: number
   readonly delivery: ApplicationDelivery
 }
 
-/** Receipt identifying the selected desktop update bytes verified during preparation. */
 export interface PreparedApplicationUpdate {
   readonly version: string
   readonly tagName: string
@@ -56,23 +50,19 @@ export interface ApplicationReleaseNotes {
   readonly releaseNotes: LocalizedText
 }
 
-/** Last release-check outcome, including its timestamp or safe failure summary. */
 export type ApplicationUpdateCheck =
   | { readonly status: 'notChecked' }
   | {
       readonly status: 'upToDate'
-      /** UTC milliseconds since the Unix epoch. */
       readonly checkedAt: number
     }
   | {
       readonly status: 'available'
-      /** UTC milliseconds since the Unix epoch. */
       readonly checkedAt: number
       readonly release: ApplicationRelease
     }
   | {
       readonly status: 'failed'
-      /** UTC milliseconds since the Unix epoch. */
       readonly checkedAt: number
       readonly error: ErrorSummary
     }
@@ -88,9 +78,6 @@ export type ApplicationUpdateOperation = { readonly taskRef?: TaskRunRef } & (
   | { readonly type: 'installing'; readonly prepared: PreparedApplicationUpdate }
 )
 
-/**
- * Starting a check or preparing an update preserves the last check result and any verified update.
- */
 export interface ApplicationUpdateState {
   readonly currentVersion: string
   readonly check: ApplicationUpdateCheck
@@ -99,33 +86,16 @@ export interface ApplicationUpdateState {
 }
 
 export interface UpdatesApi {
-  /** Reads the last check result, any verified update and the operation currently in progress. */
   getState(call?: CallOptions): Promise<ApplicationUpdateState>
 
-  /**
-   * Delivers current state first. Checking, preparation and installation continue after disposal.
-   */
   observe(listener: Listener<ApplicationUpdateState>): Disposable
 
-  /** A successful check with no candidate returns null; a failed check rejects. */
   check(call?: CallOptions): Promise<ApplicationRelease | null>
 
-  /** Unavailable notes leave its verified update artifact valid. */
   getReleaseNotes(release: ApplicationRelease, call?: CallOptions): Promise<ApplicationReleaseNotes>
 
-  /**
-   * Acquires and verifies every selected in-app update artifact before returning a receipt.
-   *
-   * Manual delivery does not support preparation.
-   */
   prepare(release: ApplicationRelease, call?: CallOptions): Promise<PreparedApplicationUpdate>
 
-  /**
-   * Hands the prepared update to installation and restart.
-   *
-   * The promise resolves after handoff only if the environment survives; successful restart
-   * normally ends the old process.
-   */
   installAndRestart(call?: CallOptions): Promise<void>
 }
 
@@ -154,10 +124,6 @@ const error = fromParser(parseErrorSummary)
 
 const taskRef = v.exactOptional(fromParser(parseTaskRunRef))
 
-/**
- * Extracts a valid desktop version from its release tag, returning null for unrelated or malformed
- * tags.
- */
 export function getDesktopReleaseVersion(tag: string): string | null {
   if (!tag.startsWith('desktop@')) {
     return null
@@ -174,7 +140,6 @@ export function getDesktopReleaseVersion(tag: string): string | null {
   }
 }
 
-/** The updates owner checks origin and target support. */
 export function parseApplicationRelease(input: unknown): ApplicationRelease {
   const value = parseValue(
     v.strictObject({
@@ -197,7 +162,6 @@ export function parseApplicationRelease(input: unknown): ApplicationRelease {
   return value
 }
 
-/** Artifact-byte verification belongs to preparation execution. */
 export function parsePreparedApplicationUpdate(input: unknown): PreparedApplicationUpdate {
   const value = parseValue(
     v.strictObject({ version, tagName: text, files }),
@@ -211,10 +175,6 @@ export function parsePreparedApplicationUpdate(input: unknown): PreparedApplicat
   return value
 }
 
-/**
- * Parses and normalizes localized desktop release notes, checking the expected version when
- * supplied.
- */
 export function parseApplicationReleaseNotes(
   input: unknown,
   expectedVersion?: string,
@@ -245,10 +205,6 @@ export function parseApplicationReleaseNotes(
   }
 }
 
-/**
- * Parses independent check, preparation and active-operation state with their associated release
- * values.
- */
 export function parseApplicationUpdateState(input: unknown): ApplicationUpdateState {
   return parseValue(
     v.strictObject({

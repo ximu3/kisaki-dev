@@ -8,7 +8,6 @@ import { dirname, join } from 'node:path'
 
 const root = fileURLToPath(new URL('../../src/renderer/windows', import.meta.url))
 
-/** Makes Tailwind's CSS resolver honor the workspace source exports while serving the renderer. */
 function sourceStyleAliases() {
   return ['@kisaki3/desktop-ui', '@kisaki3/desktop-appearance'].flatMap((name) => {
     const manifestPath = findPackageJSON(name, import.meta.url)!

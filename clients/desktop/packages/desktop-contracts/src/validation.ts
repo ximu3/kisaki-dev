@@ -2,24 +2,18 @@ import * as v from 'valibot'
 import { DesktopError } from './errors'
 import { DistributionError } from '@kisaki3/extension-distribution/errors'
 
-/** C0 control characters and DEL are invalid in raw application and network addresses. */
 export const asciiControl = /(?=\p{ASCII})\p{Control}/u
 
-/** Unicode scalar text retained without trimming or rejecting legitimate empty content. */
 export const text = v.pipe(
   v.string(),
   v.check((value) => !/[\uD800-\uDFFF]/u.test(value), 'Invalid Unicode'),
 )
 
-/**
- * Scalar text containing at least one non-whitespace character, preserving its original wording.
- */
 export const nonemptyText = v.pipe(
   text,
   v.check((value) => value.trim().length > 0, 'Empty text'),
 )
 
-/** Nonblank opaque identity text; domain-specific identities may impose additional format rules. */
 export const id = nonemptyText
 
 export const integer = v.pipe(v.number(), v.safeInteger())
@@ -30,7 +24,6 @@ export const positiveInteger = v.pipe(integer, v.minValue(1))
 
 export const nonnegativeNumber = v.pipe(v.number(), v.finite(), v.minValue(0))
 
-/** UTC milliseconds within the range supported by JavaScript Date. */
 export const timestamp = v.pipe(
   integer,
   v.minValue(-8_640_000_000_000_000),
@@ -61,11 +54,6 @@ export function parseValue<T extends v.GenericSchema>(
   return result.output
 }
 
-/**
- * Translates external DistributionError and TypeError parser failures into desktop InvalidInput.
- *
- * Unexpected failures propagate unchanged.
- */
 export function parseExternalValue<T>(
   parser: (input: unknown) => T,
   input: unknown,
@@ -100,10 +88,6 @@ export function omitFields<T extends object, K extends keyof T & string>(
   ) as T extends unknown ? Omit<T, K> : never
 }
 
-/**
- * Checks a record's object and prototype shape while preserving its original properties for
- * downstream validation.
- */
 export function parseRecord(input: unknown): Record<string, unknown> {
   if (typeof input !== 'object' || input === null || Array.isArray(input)) {
     throw new DesktopError('InvalidInput', 'Expected an ordinary data object')
@@ -117,11 +101,6 @@ export function parseRecord(input: unknown): Record<string, unknown> {
   return input as Record<string, unknown>
 }
 
-/**
- * Parses dictionary entries into own data properties, preserving prototype-like names.
- *
- * Keys that collide after normalization are rejected.
- */
 export function parseDictionary<T extends v.GenericSchema>(
   keys: v.GenericSchema<unknown, string>,
   values: T,
@@ -141,10 +120,6 @@ export function unique<T>(items: readonly T[], key: (item: T) => string): boolea
   return new Set(items.map(key)).size === items.length
 }
 
-/**
- * Requires every expected key to belong to the submitted changes or the explicitly allowed context
- * fields.
- */
 export function validateExpectedKeys(
   changes: object,
   expected: object | undefined,

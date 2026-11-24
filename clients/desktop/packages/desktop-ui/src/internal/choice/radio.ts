@@ -2,7 +2,6 @@ import { createEffect, type Accessor } from 'solid-js'
 import { nativeValidityChanged } from '../form'
 import { createValue, onFormReset } from '../state'
 
-/** Connects a named radio fieldset to one controlled or locally owned selection. */
 export function bindRadioSelection(
   group: Accessor<HTMLFieldSetElement>,
   name: Accessor<string>,

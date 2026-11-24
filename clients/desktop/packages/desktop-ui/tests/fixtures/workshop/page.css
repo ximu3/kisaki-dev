@@ -1,5 +1,3 @@
-/* Host-owned workshop layout; UI defaults work without Tailwind. */
-
 @layer theme, base, components, utilities;
 
 body {

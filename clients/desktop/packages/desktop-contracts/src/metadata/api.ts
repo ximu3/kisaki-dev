@@ -10,7 +10,6 @@ import type { MetadataSearchRequest, MetadataImageSearchRequest } from './search
 import type { CallOptions } from '../operations'
 import type { MetadataFetchInput, MetadataFetchResult } from './fetch'
 
-/** Search and fetch return source facts before adoption into the local catalog. */
 export interface MetadataApi {
   readonly providers: MetadataProvidersApi
   readonly fieldProcessors: MetadataFieldProcessorsApi
@@ -21,16 +20,11 @@ export interface MetadataApi {
     call?: CallOptions,
   ): Promise<MetadataSearchResult<T>>
 
-  /** Returns source image candidates. Download and adoption occur through separate operations. */
   searchImages<T extends EntryType>(
     input: MetadataImageSearchRequest<T>,
     call?: CallOptions,
   ): Promise<MetadataImageSearchResult>
 
-  /**
-   * Captures the selected profile and releases its source sessions before returning the validated
-   * candidate.
-   */
   fetch<T extends EntryType>(
     input: MetadataFetchInput<T>,
     call?: CallOptions,

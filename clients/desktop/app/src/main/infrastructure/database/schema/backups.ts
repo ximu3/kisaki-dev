@@ -24,7 +24,6 @@ const sourceKinds = ['file', 'directory'] as const
 const backupReasons = ['manual', 'automatic', 'beforeRestore'] as const
 const recoveryResolutions = ['restored', 'rolledBack', 'keptCurrent'] as const
 
-/** Stores immutable archive provenance and saved retention choices for one game backup. */
 export const gameSaveBackups = sqliteTable(
   'game_save_backups',
   {
@@ -74,9 +73,6 @@ export const gameSaveBackups = sqliteTable(
   ],
 )
 
-/**
- * Keeps recovery workspaces and their backup references until an explicit resolution is recorded.
- */
 export const gameBackupRecoveries = sqliteTable(
   'game_backup_recoveries',
   {

@@ -1,11 +1,6 @@
 import type { ChildProcess } from 'node:child_process'
 import type { RpcTransport } from '@kisaki3/desktop-rpc'
 
-/**
- * Creates an RPC transport for one parent/child JSON IPC channel.
- *
- * Send failures and disconnects are reported through the channel's own lifetime callbacks.
- */
 export function ipcTransport(channel: ChildProcess | NodeJS.Process): RpcTransport {
   let failed: (cause: Error) => void
   let detach: () => void

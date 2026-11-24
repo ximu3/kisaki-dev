@@ -12,7 +12,6 @@ export async function entryInfo(path: string) {
   }
 }
 
-/** Reports a missing directory as false and rejects a replaced entry before traversal. */
 export async function checkDirectory(path: string) {
   const info = await entryInfo(path)
   if (info && !info.isDirectory()) {

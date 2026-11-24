@@ -4,12 +4,9 @@ use napi_derive::napi;
 use std::io;
 use std::path::Path;
 
-/// Outcome of one native file operation; an absent reason denotes success.
 #[napi(object)]
 pub struct FileOperationResult {
-    /// Stable reason consumed by the Node boundary, never parsed from an error message.
     pub reason: Option<String>,
-    /// Platform error code for diagnostics; absent for successful or structural results.
     pub system_code: Option<i32>,
 }
 
@@ -31,9 +28,6 @@ pub(crate) fn valid_path(path: &str) -> bool {
     Path::new(path).is_absolute() && !path.contains('\0')
 }
 
-/// Classifies a move failure while retaining its original system code.
-///
-/// Ambiguous missing-path errors are classified using the source's current existence.
 fn move_failure(error: io::Error, source: &str) -> FileOperationResult {
     let missing_reason = || {
         if std::fs::symlink_metadata(source)
@@ -67,12 +61,6 @@ fn move_failure(error: io::Error, source: &str) -> FileOperationResult {
     failure(reason, Some(error))
 }
 
-/// Moves a checked path atomically without replacing the target.
-///
-/// Both paths are absolute and NUL-free, as checked before queueing the operation.
-///
-/// # Errors
-/// Returns the platform rename error when the operation cannot complete.
 fn move_no_replace_impl(source: &str, target: &str) -> io::Result<()> {
     #[cfg(windows)]
     {
@@ -155,13 +143,6 @@ impl Task for MoveTask {
     }
 }
 
-/// Queues an atomic, non-replacing move within one filesystem.
-///
-/// The worker reports platform failures through FileOperationResult. Once queued, the
-/// operation runs to completion; cross-device moves are reported as failures.
-///
-/// # Errors
-/// Returns InvalidArg before queueing if either path is not absolute for the platform or contains NUL.
 #[napi(ts_return_type = "Promise<FileOperationResult>")]
 pub fn move_no_replace(source: String, target: String) -> Result<AsyncTask<MoveTask>> {
     if !valid_path(&source) || !valid_path(&target) {
@@ -253,13 +234,6 @@ impl Task for SyncTask {
     }
 }
 
-/// Queues platform synchronization for an existing regular file.
-///
-/// The worker closes the file handle before delivering its result. Parent-directory
-/// barriers and application transaction policy belong to the caller.
-///
-/// # Errors
-/// Returns InvalidArg before queueing if the path is not absolute for the platform or contains NUL.
 #[napi(ts_return_type = "Promise<FileOperationResult>")]
 pub fn sync_file(path: String) -> Result<AsyncTask<SyncTask>> {
     if !valid_path(&path) {

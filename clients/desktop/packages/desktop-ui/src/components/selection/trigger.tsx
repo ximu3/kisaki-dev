@@ -7,22 +7,15 @@ import { optionId, type SelectionCollection } from './collection'
 import type { SelectionOption } from './types'
 import type { SelectionPopup } from './popup'
 
-/** Field-button attributes linked to popup disclosure, logical options and selection callbacks. */
 interface SelectionTriggerProps<
   O extends SelectionOption,
 > extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
   popup: SelectionPopup
   collection: SelectionCollection<O>
   selected: readonly string[]
-  /** Reports the active option chosen through trigger keyboard interaction. */
   onChoose: (option: O) => void
 }
 
-/**
- * Keeps focus on the trigger while browsing or committing logical options.
- *
- * The value owner decides whether choosing an option closes the list.
- */
 export function SelectionTrigger<O extends SelectionOption>(
   props: SelectionTriggerProps<O>,
 ): JSX.Element {
@@ -59,6 +52,54 @@ export function SelectionTrigger<O extends SelectionOption>(
     () => props.popup.setOpen(false),
   )
 
+  const onKeyDown: JSX.EventHandler<HTMLButtonElement, KeyboardEvent> = (event) => {
+    callHandler(props.onKeyDown, event)
+    if (event.defaultPrevented || event.isComposing) {
+      return
+    }
+
+    const { popup, collection } = props
+    const open = popup.open()
+    switch (event.key) {
+      case 'ArrowDown':
+      case 'ArrowUp':
+        event.preventDefault()
+        if (open) {
+          collection.move(event.key === 'ArrowDown' ? 1 : -1)
+        } else {
+          show()
+        }
+        return
+      case 'Home':
+      case 'End':
+        if (open) {
+          event.preventDefault()
+          collection.move(event.key === 'Home' ? 'first' : 'last')
+        }
+        return
+      case 'Enter':
+      case ' ':
+        if (open) {
+          event.preventDefault()
+          const active = collection.active()
+          if (active !== undefined) {
+            props.onChoose(collection.get(active)!)
+          }
+        }
+        return
+    }
+
+    if (event.ctrlKey || event.altKey || event.metaKey || !printableKey(event.key)) {
+      return
+    }
+    event.preventDefault()
+    if (open) {
+      collection.type(event.key, trigger)
+    } else {
+      show(event.key)
+    }
+  }
+
   return (
     <button
       {...rest}
@@ -90,43 +131,7 @@ export function SelectionTrigger<O extends SelectionOption>(
           }
         }
       }}
-      onKeyDown={(event) => {
-        callHandler(props.onKeyDown, event)
-        if (event.defaultPrevented || event.isComposing) {
-          return
-        }
-
-        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-          event.preventDefault()
-          if (props.popup.open()) {
-            props.collection.move(event.key === 'ArrowDown' ? 1 : -1)
-          } else {
-            show()
-          }
-        } else if (props.popup.open() && (event.key === 'Home' || event.key === 'End')) {
-          event.preventDefault()
-          props.collection.move(event.key === 'Home' ? 'first' : 'last')
-        } else if (props.popup.open() && (event.key === 'Enter' || event.key === ' ')) {
-          event.preventDefault()
-          const key = props.collection.active()
-          if (key !== undefined) {
-            props.onChoose(props.collection.get(key)!)
-          }
-        } else if (
-          !event.isComposing &&
-          printableKey(event.key) &&
-          !event.ctrlKey &&
-          !event.altKey &&
-          !event.metaKey
-        ) {
-          event.preventDefault()
-          if (props.popup.open()) {
-            props.collection.type(event.key, trigger)
-          } else {
-            show(event.key)
-          }
-        }
-      }}
+      onKeyDown={onKeyDown}
     />
   )
 }

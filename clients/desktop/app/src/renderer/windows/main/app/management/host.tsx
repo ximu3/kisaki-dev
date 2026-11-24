@@ -21,7 +21,6 @@ export interface ManagementScene<T extends ManagementTarget> {
   render: (presentation: ManagementPresentation<T>) => JSX.Element
 }
 
-/** Shows a scene or module-loading failure and allows the user to retry in place. */
 export function ManagementFailure(props: { t: Translate; error: unknown; retry: () => void }) {
   const { t } = props
 
@@ -44,7 +43,6 @@ export function ManagementFailure(props: { t: Translate; error: unknown; retry: 
   )
 }
 
-/** Keeps each native dialog mounted through exit and acknowledges presentation on its open toggle. */
 export function ManagementDialog<T extends ManagementTarget>(props: {
   t: Translate
   current: Accessor<ManagementPresentation<T> | undefined>

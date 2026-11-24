@@ -2,7 +2,6 @@ import { appendFile, mkdir, rename, stat } from 'node:fs/promises'
 import { join } from 'node:path'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 
-/** Opens the runtime log for this verified local root; one previous file is kept across rotation. */
 export async function createRuntimeLog(root: string) {
   const directory = join(root, 'logs')
   const file = join(directory, 'runtime.log')
@@ -22,7 +21,6 @@ export async function createRuntimeLog(root: string) {
   let pending = Promise.resolve()
   const startupSteps = new Set<string>()
 
-  /** Serializes safe process milestones and records only the stable category of a failure. */
   function record(
     event:
       | 'opening'

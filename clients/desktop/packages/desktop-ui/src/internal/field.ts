@@ -1,8 +1,6 @@
-import { createContext, onSettled, useContext } from 'solid-js'
-import type { Accessor } from 'solid-js'
+import { createContext, onSettled, useContext, type Accessor } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 
-/** Local control or group identity, validation state and mounted accessible-text associations. */
 export interface FieldContextValue {
   id: string
 
@@ -18,14 +16,8 @@ export interface FieldContextValue {
   setError: (value: boolean) => void
 }
 
-/** Form-field labels, descriptions and validation state inherited by nested controls. */
 export const FieldContext = createContext<FieldContextValue | null>(null)
 
-/**
- * Creates reactive native attribute defaults from the nearest Field context.
- *
- * Controls spread explicit attributes after these defaults to override them.
- */
 export function fieldAttributes(props: JSX.AriaAttributes, ownLabel?: Accessor<JSX.Element>) {
   const field = useContext(FieldContext)
 
@@ -62,12 +54,6 @@ export function fieldAttributes(props: JSX.AriaAttributes, ownLabel?: Accessor<J
   }
 }
 
-/**
- * Watches editor attributes and mounted ancestor fieldsets to close custom editing when the control
- * becomes unavailable.
- *
- * Owner cleanup disconnects the observer.
- */
 export function closeWhenUnavailable(element: Accessor<HTMLElement>, close: () => void): void {
   onSettled(() => {
     const node = element()

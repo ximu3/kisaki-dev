@@ -3,7 +3,6 @@ import type { JSX } from '@solidjs/web'
 import { createVirtualizer, VirtualRow } from '@kisaki3/desktop-ui/virtualization'
 import { MultiSelect } from '@kisaki3/desktop-ui/select'
 
-/** Ten-thousand-option synthetic input for virtualized selection and scrolling checks. */
 const choices = Array.from({ length: 10_000 }, (_, index) => ({
   value: String(index),
   label: `Item ${index + 1}`,

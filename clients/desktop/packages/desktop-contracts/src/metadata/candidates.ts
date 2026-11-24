@@ -19,10 +19,6 @@ import type {
 } from './fields'
 import type { MetadataRelations } from './relations'
 
-/**
- * Accepts metadata facts and validates graph references and constraints. Personal data, local
- * references and write instructions are invalid.
- */
 export function parseMetadataCandidate(input: unknown): MetadataCandidate {
   const { entryType } = parseValue(
     v.looseObject({ entryType: v.picklist(entryTypes) }),
@@ -47,13 +43,11 @@ export function parseMetadataCandidate(input: unknown): MetadataCandidate {
   return value as MetadataCandidate
 }
 
-/** Identification retains original source evidence before field processing. */
 export interface CandidateEntry<T extends EntryType> extends MetadataObjectIdentity {
   readonly identification: IdentificationFields<T>
   readonly fields: MetadataEntryFields<T>
 }
 
-/** Composed part with adoptable fields and original matching evidence. */
 export interface CandidatePart<T extends PartType> extends MetadataObjectIdentity {
   readonly identification: PartIdentificationFields<T>
   readonly fields: MetadataPartFields<T>
@@ -65,7 +59,6 @@ export type CandidateParts<T extends EntryType> = {
   readonly [K in MetadataPartKey<T>]?: readonly CandidatePart<MetadataPartType<T, K>>[]
 }
 
-/** Object keys are local to the graph. Ingest decides local identity and adoption. */
 export type MetadataCandidate<T extends EntryType = EntryType> = {
   [K in T]: {
     readonly entryType: K

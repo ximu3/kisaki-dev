@@ -15,7 +15,6 @@ export function windowMethod(admission: WindowAdmission, invoke: RpcMethod): Win
   return { admission, invoke }
 }
 
-/** Controls admission without cancelling accepted saves when the RPC document disappears. */
 export async function runWindowCall(
   { admission, invoke }: WindowMethod,
   [values, signal]: Parameters<RpcMethod>,

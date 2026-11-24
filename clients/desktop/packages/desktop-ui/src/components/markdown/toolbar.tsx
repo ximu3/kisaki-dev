@@ -16,15 +16,14 @@ import {
   Link,
   Redo2,
   Undo2,
+  type LucideIcon,
 } from '@lucide/solid'
-import type { LucideIcon } from '@lucide/solid'
 import { createFocusNavigation } from '../../internal/focus'
 import { Icon } from '../../internal/icon/glyph'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../tooltip'
 import { runMarkdownCommand, type MarkdownCommand } from './commands'
 import styles from './styles.module.css'
 
-/** Lucide glyph assigned to each supported Markdown editing command. */
 const icons: Record<MarkdownCommand, LucideIcon> = {
   bold: Bold,
   italic: Italic,
@@ -40,50 +39,34 @@ const icons: Record<MarkdownCommand, LucideIcon> = {
   redo: Redo2,
 }
 
-/** Default toolbar command order derived from the supported icon map. */
 const standardCommands = Object.freeze(Object.keys(icons) as MarkdownCommand[])
 
-/** Host action applied to the mounted editor, identified uniquely within its toolbar. */
 export interface MarkdownToolbarAction {
   id: string
   label: string
-  /** Renders the action's decorative toolbar icon. */
   icon: () => JSX.Element
 
-  /** Set for actions such as opening a preview that also work on read-only source. */
   allowReadOnly?: boolean
-  /** Checks action availability against the current editor state. */
   isEnabled?: (state: EditorState) => boolean
-  /** Executes the action against the current mounted editor view. */
   run: (view: EditorView) => void
 }
 
-/** Built-in formatting command or fully described host toolbar action. */
 export type MarkdownToolbarItem<C extends MarkdownCommand = MarkdownCommand> =
   | C
   | MarkdownToolbarAction
 
-/**
- * Complete toolbar order or a factory deriving it from standard commands.
- *
- * An empty result hides the toolbar.
- */
 export type MarkdownToolbarConfig<C extends MarkdownCommand = MarkdownCommand> =
   | readonly MarkdownToolbarItem<C>[]
   | ((standard: readonly MarkdownCommand[]) => readonly MarkdownToolbarItem<C>[])
 
-/** Live editor state, localized labels and optional toolbar composition. */
 interface ToolbarProps<C extends MarkdownCommand> {
   view: EditorView
   state: EditorState
   label: string
-  /** Returns the current localized label for a built-in toolbar command. */
   commandLabel: ((command: C) => string) | undefined
-  /** Provides or derives the complete toolbar order; undefined uses the standard command set. */
   config: MarkdownToolbarConfig<C> | undefined
 }
 
-/** Adapts a built-in command to a labeled action with its package icon and history availability. */
 function commandAction<C extends MarkdownCommand>(
   command: C,
   label: (command: C) => string,
@@ -109,11 +92,6 @@ function commandAction<C extends MarkdownCommand>(
   }
 }
 
-/**
- * Renders formatting actions with one tab entry and arrow navigation in visible order.
- *
- * Pointer activation preserves the editor's text selection.
- */
 export function MarkdownToolbar<C extends MarkdownCommand>(props: ToolbarProps<C>): JSX.Element {
   let root!: HTMLDivElement
   const buttons = createMemo(() => {

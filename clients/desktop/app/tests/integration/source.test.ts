@@ -8,14 +8,13 @@ import { once } from 'node:events'
 import { createServer, type AddressInfo } from 'node:net'
 import Database from 'better-sqlite3'
 import { launchApplication } from '../../tools/dev/application'
-import { createRenderer } from '../../tools/dev/renderer'
+import { createRenderer } from '../../tools/dev/renderer/server'
 import { startDevelopmentSession } from '../../tools/dev/session'
 import { appRoot } from '../../tools/lib/paths'
 import { hostTarget } from '../../tools/lib/targets'
 import { windowKinds } from '../../src/shared/window-api/protocol'
 import { hasNativeWindow } from '../support/window-observation'
 
-/** Creates one disposable public CSS export with independently writable source and build files. */
 async function stylePackage(root: string, name: string, styles: Readonly<Record<string, string>>) {
   const directory = join(root, 'packages', name)
   const scope = join(root, 'node_modules', '@kisaki3')
@@ -160,7 +159,6 @@ test('the source session styles its native window, opens its migrated library an
     sourceRoot: appRoot,
     profile,
     startupTimeoutMs: 90_000,
-    /** Adds a loopback inspector to this disposable development child only. */
     async launch(options) {
       port = await inspectorPort()
       return launchApplication({
