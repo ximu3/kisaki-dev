@@ -12,20 +12,20 @@ function plan(paths?: readonly string[], request?: CheckRequest) {
   return planChecks(selectPackages(paths, workspace), packages, request)
 }
 
-test('repository docs skip targets and package changes select installed consumption and dependent hosts', () => {
+test('repository docs skip targets and a package-owned change runs its entire check', () => {
   const docs = plan(['refactor/README.md', 'AGENTS.md'])
-  expect(docs.scope).toBe('docs')
+  expect(docs.code).toBe(false)
   expect(docs.matrix).toEqual([])
 
   const rpc = plan([
     'refactor/README.md',
     'clients/desktop/packages/desktop-rpc/src/frames.test.ts',
   ])
-  expect(rpc.scope).toBe('affected')
+  expect(rpc.code).toBe(true)
   expect(rpc.matrix.filter((row) => row.package === '@kisaki3/desktop-rpc')).toMatchObject([
     {
       label: '@kisaki3/desktop-rpc, linux-x64',
-      task: '@kisaki3/desktop-rpc#test:consumers',
+      task: '@kisaki3/desktop-rpc#verify',
       consumerNode: '24.11.1',
       x11: true,
     },
@@ -54,9 +54,6 @@ test('mixed package changes include their direct and transitive dependents', () 
     ]),
   )
   expect(matrix.filter((row) => row.package === '@kisaki3/desktop')).toHaveLength(6)
-  expect(matrix.find((row) => row.package === '@kisaki3/desktop-ui')?.task).toBe(
-    '@kisaki3/desktop-ui#test:hosts',
-  )
 })
 
 test('shared or unowned inputs use the full native plan, including the tooling hosts', () => {
@@ -89,9 +86,7 @@ test('manual checks resolve the task within its package and run on the requested
     },
   ])
   const rpc = { package: '@kisaki3/desktop-rpc', target: 'windows-arm64' }
-  const requested = plan(undefined, rpc)
-  expect(requested.scope).toBe('requested')
-  expect(requested.matrix).toMatchObject([{ task: rpc.package + '#verify', x11: false }])
+  expect(plan(undefined, rpc).matrix).toMatchObject([{ task: rpc.package + '#verify', x11: false }])
   expect(() => plan(undefined, { ...rpc, task: 'test:browser' })).toThrow(rpc.package)
   expect(() => plan(undefined, { ...rpc, target: 'unknown-target' })).toThrow('unknown-target')
   expect(() => plan(undefined, { task: request.task })).toThrow('Select a workspace package')

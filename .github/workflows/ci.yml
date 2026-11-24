@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-22.04
     outputs:
       reused: ${{ steps.prior.outputs.reused }}
-      scope: ${{ steps.plan.outputs.scope }}
+      code: ${{ steps.plan.outputs.code }}
       selected: ${{ steps.plan.outputs.selected }}
       matrix: ${{ steps.plan.outputs.matrix }}
     steps:
@@ -115,7 +115,7 @@ jobs:
   workspace:
     name: Workspace checks
     needs: plan
-    if: needs.plan.outputs.reused != 'true' && needs.plan.outputs.scope != 'requested'
+    if: needs.plan.outputs.reused != 'true'
     runs-on: ubuntu-22.04
     timeout-minutes: 20
     steps:
@@ -128,11 +128,11 @@ jobs:
           package-manager-cache: false
       - name: Check document links
         run: node tools/check-doc-links.ts
-      - if: needs.plan.outputs.scope != 'docs'
+      - if: needs.plan.outputs.code == 'true'
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320
-      - if: needs.plan.outputs.scope != 'docs'
+      - if: needs.plan.outputs.code == 'true'
         run: pnpm install --frozen-lockfile
-      - if: needs.plan.outputs.scope != 'docs'
+      - if: needs.plan.outputs.code == 'true'
         run: pnpm exec vp run check
 
   target:
@@ -231,7 +231,7 @@ jobs:
           jq -e '
             .plan.result == "success" and
             ((.plan.outputs.reused == "true" and .workspace.result == "skipped" and .target.result == "skipped") or
-             (.workspace.result == (if .plan.outputs.scope == "requested" then "skipped" else "success" end) and
+             (.workspace.result == "success" and
               ((.plan.outputs.selected == "true" and .target.result == "success") or
                (.plan.outputs.selected == "false" and .target.result == "skipped"))))
           ' <<< "$RESULTS"

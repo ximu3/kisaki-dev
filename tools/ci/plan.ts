@@ -29,10 +29,7 @@ export function planChecks(
   }
 
   const matrix = selected.flatMap((project) => {
-    const defaultTask = manual
-      ? project.defaultTask
-      : (project.automaticTask ?? project.defaultTask)
-    const task = request.task || defaultTask
+    const task = request.task || project.defaultTask
     if (!Object.hasOwn(project.tasks, task)) {
       throw new Error(
         `Unknown task ${project.name}#${task}. Available tasks: ${Object.keys(project.tasks).join(', ')}`,
@@ -48,7 +45,7 @@ export function planChecks(
       return {
         package: project.name,
         task: project.name + '#' + task,
-        label: [project.name, ...(task === defaultTask ? [] : [task]), target].join(', '),
+        label: [project.name, ...(task === project.defaultTask ? [] : [task]), target].join(', '),
         target,
         runner: runners[target],
         arch: target.split('-')[1]!,
@@ -74,7 +71,7 @@ export function planChecks(
     throw new Error(`No selected package runs on ${requestedTarget}`)
   }
   const scope = manual ? 'requested' : selection.scope
-  return { scope, matrix }
+  return { scope, code: scope !== 'docs', matrix }
 }
 
 function changedPaths(base: string | undefined, head: string): string[] | undefined {
@@ -110,11 +107,11 @@ if (import.meta.main) {
 
   if (process.env.GITHUB_OUTPUT) {
     for (const [key, value] of Object.entries({
-      scope: plan.scope,
-      selected: String(plan.matrix.length > 0),
-      matrix: JSON.stringify(plan.matrix),
+      code: plan.code,
+      selected: plan.matrix.length > 0,
+      matrix: plan.matrix,
     })) {
-      appendFileSync(process.env.GITHUB_OUTPUT, key + '=' + value + '\n')
+      appendFileSync(process.env.GITHUB_OUTPUT, key + '=' + JSON.stringify(value) + '\n')
     }
   }
   if (process.env.GITHUB_STEP_SUMMARY) {

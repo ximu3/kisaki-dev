@@ -25,7 +25,6 @@ interface TaskEnvironment {
 
 interface PackageChecks {
   defaultTask: string
-  automaticTask?: string
   targets: readonly Target[]
   linuxPackages?: readonly string[]
   manualTargets?: readonly Target[]
@@ -60,13 +59,11 @@ function libraryChecks(project: Project): PackageChecks {
   const tasks: Record<string, TaskEnvironment> = { verify: consumers, 'test:consumers': consumers }
   if (project.name === '@kisaki3/desktop-ui') {
     tasks['test:browser'] = chromium
-    tasks['test:hosts'] = consumers
   } else {
     tasks.test = {}
   }
   return {
     defaultTask: 'verify',
-    automaticTask: project.name === '@kisaki3/desktop-ui' ? 'test:hosts' : 'test:consumers',
     targets: ['linux-x64'],
     manualTargets: nativeTargets,
     tasks,
