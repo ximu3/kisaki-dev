@@ -13,9 +13,9 @@
 | `packages/checksums.json` | 7 | `7e11aad95a8164abf4f31d30408bc1b9e89116c062197e97e40c065ae26a58ff` |
 | `sources/checksums.json` | 6 | `3fd3fb321a34db790e0968420961c3ff41203c653c82871cb2cfc3e64b322ced` |
 
-普通 Node 26.13.1 和实际 Electron 45.3.2 消费已安装的配对包。Electron 另验 ASAR 内的主包、解包的平台资源和引擎清单被改动时的错误。公开声明核对了显式属性格式、原生节点、初始化选项和嵌套的 SDR 目标。受管输出拒绝从同一核心的客户端写入冲突的窗口和图形上下文选项。[平台消费入口](https://github.com/ximu3/libmpv-node-dev/blob/31e374c37523d20efc420fd7e4c1ddd648d6f3a6/tools/package/verify.ts)
+普通 Node 26.13.1 和实际 Electron 45.3.2 消费已安装的配对包。Electron 另验 ASAR 内的主包、解包的平台资源和引擎清单被改动时的错误。八组设计消费样例对安装后的公开声明通过严格类型检查，覆盖显式属性格式、原生节点、初始化选项和嵌套的 SDR 目标。受管输出拒绝从同一核心的客户端写入冲突的窗口和图形上下文选项。[平台消费入口](https://github.com/ximu3/libmpv-node-dev/blob/31e374c37523d20efc420fd7e4c1ddd648d6f3a6/tools/package/verify.ts)
 
-在 Windows 10 x64 的 RTX 4060 Laptop GPU 上，这一版平台包从 HEVC Main 10 样本报告 D3D11VA，Node 和 Electron 均完成 WASAPI 播放。可见的 Electron 窗口呈现了 16 个不同画面。用包内的 `libmpv-2.dll` 重跑下文的浮点回归，49 组场景中 5,103 个原先非有限的 RGB 分量恢复为有限值，原先有限的 534,975 个分量逐位一致。交付引擎与同源补丁构建的差异为零。
+在 Windows 10 x64 的 RTX 4060 Laptop GPU 上，这一版平台包从 HEVC Main 10 样本报告 D3D11VA，Node 和 Electron 均完成 WASAPI 播放。可见的 Electron 窗口呈现了 16 个不同画面。另以 Electron 的 Node 模式运行已安装包的元数据示例，读到 2 秒时长、FFV1 视频轨和 ASS 字幕轨。用包内的 `libmpv-2.dll` 重跑下文的浮点回归，49 组场景中 5,103 个原先非有限的 RGB 分量恢复为有限值，原先有限的 534,975 个分量逐位一致。交付引擎与同源补丁构建的差异为零。
 
 Ubuntu 22.04 的两个架构均使用系统 libdrm 2.4.113。Mesa 在两种架构上实际创建了离屏 OpenGL ES 3.2 上下文，完成释放并退出所属线程。需要 DRM 设备、桌面会话或特定客户端的项目列在[实机验收范围](#hardware)。
 
