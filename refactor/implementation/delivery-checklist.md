@@ -50,11 +50,11 @@
 
 ## 四个独立项目
 
-各项目在自己的公开开发仓库完成[实现与验收](work-packages.md#independent-projects)和对应项目文档，仓库接续遵守[共同规则](../design/engineering/repository.md#temporary-repositories)。当前均未开始正式实施，开发远端在建立时登记。
+各项目在自己的公开开发仓库完成[实现与验收](work-packages.md#independent-projects)和对应项目文档，仓库接续遵守[共同规则](../design/engineering/repository.md#temporary-repositories)。各自的开发远端及验收进度见下表。
 
 | 实施工作包                              | 实现与验收 | 项目文档 | Kisaki 消费验收 | 公开发行与生产部署 |
 | --------------------------------------- | ---------- | -------- | --------------- | ------------------ |
-| [W08 libmpv-node](work-packages.md#w08) | 未开始     | 未开始   | 未开始          | 未执行             |
+| [W08 libmpv-node](work-packages.md#w08) | [独立开发仓库](https://github.com/ximu3/libmpv-node-dev)已建立，控制接口进行中；完整平台制品及后端待验收 | 未开始 | 未开始 | 未执行 |
 | [W10 Vantage](work-packages.md#w10)     | 未开始     | 未开始   | 未开始          | 未执行             |
 | [W11 Kana](work-packages.md#w11)        | 未开始     | 未开始   | 未开始          | 未执行             |
 | [W12 oauth-relay](work-packages.md#w12) | 未开始     | 未开始   | 未开始          | 未执行             |
