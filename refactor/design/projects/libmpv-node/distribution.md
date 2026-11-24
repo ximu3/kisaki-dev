@@ -76,7 +76,7 @@ Windows 使用上游直接 D3D11 Render API。源码输入固定为完整上游�
 
 libcurl 未编入 mpv 不能单独证明没有 HTTP(S)：FFmpeg 自身的协议与 TLS 后端也可承担输入。类似地，启用了 D3D11 渲染不能证明已启用 D3D11VA 解码，已有 Lua 也不能证明 JavaScript 可用。清单按这些真实责任分别检查。
 
-字体发现同样按平台明确：Windows 的 DirectWrite、macOS 的 CoreText，以及 Linux 的 Fontconfig 与配置各自记录。额外编入的字体后端也要说明所需数据，不能因 DLL 完整就忽略配置文件。当前 libass 来源的自动选择优先使用适用的原生提供器。[libass 的提供器顺序](https://github.com/libass/libass/blob/0.17.5/libass/ass_fontselect.c)
+三平台采用同一项字体约定。Windows 的 libass 只编入 DirectWrite，macOS 只编入 CoreText，Linux 编入 Fontconfig 并交付对应配置。系统字体由本平台后端查找，容器里的附件字体按 libass 规则参与匹配。显式强制 Fontconfig 的系统字体查找仅在 Linux 提供。按实际编译目录和同一份字幕、附件字体的像素结果验收。[Windows 候选对照](../../../verification/evidence/w08/README.md#windows-fonts)。[libass 的提供器顺序](https://github.com/libass/libass/blob/0.17.5/libass/ass_fontselect.c)
 
 <a id="licenses"></a>
 

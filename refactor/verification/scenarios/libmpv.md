@@ -30,6 +30,8 @@ media 完整操作与命令、脚本交错时，状态始终取自实际引擎�
 
 ## 颜色、截图与显示
 
+使用同一条 ASS 字幕和同一份容器附件字体，分别核对仅系统字体、仅附件字体、两者同时启用及两者都关闭时的实际字幕像素。Windows、macOS、Linux 的编译目录与安装后的系统字体查找均遵循[原生字体后端](../../design/projects/libmpv-node/distribution.md#inputs)。验证含空格和 Unicode 字符的安装路径。
+
 截图来源标记分别覆盖正常 VO、显式软件与 screenshot-sw=no 下的 VO 取图失败回退。实际 source 与同次字节路径一致，VO 回退为 software 时本体在图片准备前返回 CaptureUnavailable；不因命令成功或 no 选项而接纳。来源字段缺失或未知同样拒绝。普通与 native 结果都保留该字段，原图尺寸、字幕与独立字节仍按原合同验证；测试注入不进入正式构建。
 
 按[GPU SDR 合同](../../design/projects/libmpv-node/video.md#targets)验证 Kisaki 的 sRGB 和库的 Display P3 SDR。覆盖普通 SDR、十位 SDR、HDR 片源到 SDR 的色调与色域映射、复杂动态字幕、抖动和最终显示。请求 PQ／扩展线性输出或显示亮度参数时核对明确拒绝，HDR 片源仍走受管 SDR。
