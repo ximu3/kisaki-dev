@@ -3,6 +3,9 @@
   "version": "0.1.0-dev.0",
   "private": true,
   "type": "module",
+  "config": {
+    "macosDeploymentTarget": "13.0"
+  },
   "imports": {
     "#host-path": "./src/host-path.ts",
     "#native": "./native/node/index.ts"

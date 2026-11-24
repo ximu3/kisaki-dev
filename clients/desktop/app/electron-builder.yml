@@ -30,7 +30,6 @@ nsis:
 
 mac:
   target: [dmg, zip]
-  minimumSystemVersion: '13.0'
   forceCodeSigning: true
   notarize: false
 

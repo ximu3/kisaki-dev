@@ -1,5 +1,7 @@
 import { expect, onTestFailed, onTestFinished, test } from 'vite-plus/test'
-import { spawn } from 'node:child_process'
+import { execFile, spawn } from 'node:child_process'
+import { promisify } from 'node:util'
+import desktop from '../../package.json' with { type: 'json' }
 import { getCurrentFuseWire, FuseState, FuseV1Options } from '@electron/fuses'
 import { extractFile, listPackage } from '@electron/asar'
 import { readFile, readdir, mkdir, writeFile, cp } from 'node:fs/promises'
@@ -80,6 +82,22 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     target: receipt.target,
     testOnly: receipt.testOnly,
   })
+
+  if (process.platform === 'darwin') {
+    const minimum = desktop.config.macosDeploymentTarget
+    const plist = join(dirname(resourceDirectory), 'Info.plist')
+    const bundle = await promisify(execFile)('plutil', [
+      '-extract',
+      'LSMinimumSystemVersion',
+      'raw',
+      plist,
+    ])
+    expect(bundle.stdout.trim()).toBe(minimum)
+
+    const addon = join(resourceDirectory, 'resources', 'native', 'kisaki-native.node')
+    const binary = await promisify(execFile)('vtool', ['-show-build', addon])
+    expect(binary.stdout.match(/^\s*minos\s+(\S+)/m)?.[1]).toBe(minimum)
+  }
 
   const desktopName =
     applicationIdentities[receipt.testOnly ? 'development' : 'production'].appId + '.desktop'

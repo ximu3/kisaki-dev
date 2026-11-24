@@ -29,10 +29,12 @@ interface PackageChecks {
   linuxPackages?: readonly string[]
   manualTargets?: readonly Target[]
   tasks: Readonly<Record<string, TaskEnvironment>>
-  macosDeploymentTarget?: string
 }
 
-export type VerificationPackage = Project & PackageChecks
+export type VerificationPackage = Project &
+  PackageChecks & {
+    macosDeploymentTarget?: string | undefined
+  }
 
 const chromium = { chromium: true }
 
@@ -45,13 +47,8 @@ const consumerEnvironments: Readonly<Record<string, TaskEnvironment>> = {
   '@kisaki3/extension-distribution': chromium,
 }
 
-function libraryChecks(project: Project): PackageChecks {
-  const { engines } = JSON.parse(
-    readFileSync(join(repositoryRoot, project.directory, 'package.json'), 'utf8'),
-  ) as {
-    engines?: { node?: string }
-  }
-  const consumerNode = engines?.node?.match(/^>=(\d+\.\d+\.\d+)$/)?.[1]
+function libraryChecks(project: Project, nodeRange?: string): PackageChecks {
+  const consumerNode = nodeRange?.match(/^>=(\d+\.\d+\.\d+)$/)?.[1]
   const consumers = {
     ...consumerEnvironments[project.name],
     ...(consumerNode && { consumerNode }),
@@ -88,7 +85,6 @@ const packageChecks: Readonly<Record<string, PackageChecks>> = {
     defaultTask: 'verify',
     targets: nativeTargets,
     linuxPackages: ['libfontconfig1-dev', 'libfreetype-dev'],
-    macosDeploymentTarget: '13.0',
     tasks: {
       verify: {
         chromium: true,
@@ -110,12 +106,21 @@ export function verificationPackages(workspace: readonly Project[]): Verificatio
     if (!project.directory || project.name === '@kisaki3/config') {
       return []
     }
-    const checks = project.directory.startsWith('clients/desktop/packages/')
-      ? libraryChecks(project)
-      : packageChecks[project.name]
-    if (!checks) {
+    const library = project.directory.startsWith('clients/desktop/packages/')
+    if (!library && !Object.hasOwn(packageChecks, project.name)) {
       throw new Error('No CI verification registered for ' + project.name)
     }
-    return [{ ...project, ...checks }]
+    const manifest = JSON.parse(
+      readFileSync(join(repositoryRoot, project.directory, 'package.json'), 'utf8'),
+    ) as {
+      engines?: { node?: string }
+      config?: { macosDeploymentTarget?: string }
+    }
+    const checks = library
+      ? libraryChecks(project, manifest.engines?.node)
+      : packageChecks[project.name]!
+    return [
+      { ...project, ...checks, macosDeploymentTarget: manifest.config?.macosDeploymentTarget },
+    ]
   })
 }

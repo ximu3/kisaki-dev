@@ -1,3 +1,11 @@
+import desktop from '../../package.json' with { type: 'json' }
+
+export function nativeBuildEnvironment(): NodeJS.ProcessEnv {
+  return process.platform === 'darwin'
+    ? { ...process.env, MACOSX_DEPLOYMENT_TARGET: desktop.config.macosDeploymentTarget }
+    : process.env
+}
+
 export type DesktopTarget =
   | 'windows-x64'
   | 'windows-arm64'

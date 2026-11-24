@@ -2,6 +2,7 @@ import { copyFile, cp, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from '
 import { join } from 'node:path'
 import { observeDmg } from './dmg-diagnostics'
 import { parseDocument } from 'yaml'
+import desktop from '../../package.json' with { type: 'json' }
 import { appRoot, buildDirectory, repositoryRoot } from '../lib/paths'
 import { hostTarget, type DesktopTarget } from '../lib/targets'
 import { runtimeFiles, type DesktopBuild } from '../build/manifest'
@@ -129,6 +130,7 @@ async function writeBuilderConfig(context: PackagingContext): Promise<string> {
   config.set('extraResources', [{ from: join(staging, 'resources'), to: 'resources' }])
   config.setIn(['win', 'icon'], join(staging, 'resources', 'icons', 'icon.ico'))
   config.setIn(['mac', 'icon'], join(staging, 'resources', 'icons', 'icon.png'))
+  config.setIn(['mac', 'minimumSystemVersion'], desktop.config.macosDeploymentTarget)
   config.setIn(['linux', 'icon'], join(staging, 'resources', 'icons', 'icon.png'))
 
   config.set('artifactName', `Kisaki-${build.version}-${build.target}.\${ext}`)
