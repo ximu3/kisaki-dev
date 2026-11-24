@@ -153,10 +153,12 @@ test('source styles and live updates survive gaps in independent public package 
   ])
   await writeFile(stylesheet, 'main { padding-right: 23px; }')
   record('Source edit written')
-  await browserExpect(sample).toHaveCSS('padding-right', '23px')
+  const updated = ['flex', '7px', '23px', '13px']
+  await browserExpect
+    .poll(metrics, { message: 'The open document adopts the edited stylesheet' })
+    .toEqual(updated)
   record('Edited style applied')
-  expect(await metrics()).toEqual(['flex', '7px', '23px', '13px'])
   expect(await page.evaluate(() => performance.timeOrigin)).toBe(documentStarted)
   await page.reload()
-  expect(await metrics()).toEqual(['flex', '7px', '23px', '13px'])
+  expect(await metrics()).toEqual(updated)
 })

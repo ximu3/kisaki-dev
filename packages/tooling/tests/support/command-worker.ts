@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process'
-import { writeFile } from 'node:fs/promises'
+import { rename, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -28,7 +28,8 @@ if (role === 'leaf') {
   }
 
   await writeFile(
-    join(directory, 'tree.json'),
+    join(directory, 'tree.tmp'),
     JSON.stringify({ parent: process.pid, leaf: child.pid }),
   )
+  await rename(join(directory, 'tree.tmp'), join(directory, 'tree.json'))
 }

@@ -21,7 +21,7 @@ test('complete manifests normalize locales and targets while preserving free dis
   })
   const before = structuredClone(input)
 
-  const parsed = parseManifest(JSON.stringify(input))
+  const parsed = normalizeManifest(input)
 
   expect(parsed).toMatchObject({
     defaultLocale: 'en',

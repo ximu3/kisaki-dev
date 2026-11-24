@@ -220,7 +220,9 @@ test('form feedback retains geometry and per-field errors while revealing and lo
   page,
 }) => {
   expect(await page.locator('#title').getAttribute('aria-invalid')).toBeNull()
-  const before = await page.locator('#feedback').boundingBox()
+  const feedback = page.locator('#feedback')
+  const height = () => feedback.evaluate((node) => node.getBoundingClientRect().height)
+  const initialHeight = await height()
   await page.getByRole('button', { name: 'Save sample' }).click()
   await browserExpect(page.locator('#title')).toBeFocused()
   await browserExpect(page.locator('#title')).toHaveAttribute('aria-invalid', 'true')
@@ -233,7 +235,7 @@ test('form feedback retains geometry and per-field errors while revealing and lo
 
   for (const language of ['English', '简体中文', '繁體中文', '日本語']) {
     await page.evaluate((language) => window.fixture.setLongMessage(language), language)
-    expect((await page.locator('#feedback').boundingBox())?.height).toBe(before?.height)
+    expect(await height()).toBe(initialHeight)
   }
 
   await prompt.hover()
@@ -261,17 +263,17 @@ test('form feedback retains geometry and per-field errors while revealing and lo
   await prompt.click()
   await browserExpect(page.locator('#description')).toBeFocused()
 
-  await page.locator('#feedback').evaluate((element) => {
+  await feedback.evaluate((element) => {
     element.style.maxWidth = '4ch'
   })
   await prompt.hover()
   await browserExpect(detail).toHaveText('Enter a description.')
   await browserExpect(detail).toBeVisible()
-  await page.locator('#feedback').evaluate((element) => element.style.removeProperty('max-width'))
+  await feedback.evaluate((element) => element.style.removeProperty('max-width'))
   await browserExpect(detail).toHaveCount(0)
   await page.locator('#description').fill('A useful description')
-  await browserExpect(page.locator('#feedback')).toHaveText('')
-  expect((await page.locator('#feedback').boundingBox())?.height).toBe(before?.height)
+  await browserExpect(feedback).toHaveText('')
+  expect(await height()).toBe(initialHeight)
 })
 
 test('native and imperative submissions share one write, its submitter and its rejection', async ({

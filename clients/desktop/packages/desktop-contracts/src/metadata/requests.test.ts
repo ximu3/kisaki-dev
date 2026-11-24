@@ -30,7 +30,7 @@ test('read requests never silently lose unsupported fields or expand relation me
       },
       request,
     ),
-  ).toBeDefined()
+  ).toMatchObject({ objects: { parts: { episode: [{ description: 'Text' }] } } })
 
   expect(() =>
     parseMetadataReadResult(

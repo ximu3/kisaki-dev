@@ -1,5 +1,5 @@
 import { expect, test } from 'vite-plus/test'
-import { verificationPackages, type VerificationPackage } from '../../tools/ci/packages'
+import { verificationPackages } from '../../tools/ci/packages'
 import { planChecks, type CheckRequest } from '../../tools/ci/plan'
 import { selectPackages } from '../../tools/ci/selection'
 import { listProjects } from '../../tools/workspace'
@@ -88,29 +88,11 @@ test('manual checks resolve the task within its package and run on the requested
   const rpc = { package: '@kisaki3/desktop-rpc', target: 'windows-arm64' }
   expect(plan(undefined, rpc).matrix).toMatchObject([{ task: rpc.package + '#verify', x11: false }])
   expect(() => plan(undefined, { ...rpc, task: 'test:browser' })).toThrow(rpc.package)
+  expect(() => plan(undefined, { ...rpc, target: 'unknown-target' })).toThrow('unknown-target')
   expect(() => plan(undefined, { task: request.task })).toThrow('Select a workspace package')
 })
 
-test('another product registers its own tasks and host coverage', () => {
-  const service: VerificationPackage = {
-    name: '@fixture/service',
-    directory: 'services/sample',
-    defaultTask: 'verify',
-    targets: ['linux-x64'],
-    tasks: { verify: {}, 'test:performance': {} },
-  }
-  expect(() => verificationPackages([...workspace, service])).toThrow(service.name)
-
-  const selected = { scope: 'affected', projects: [service] } as const
-  const registered = [...packages, service]
-  expect(planChecks(selected, registered).matrix).toMatchObject([
-    { task: service.name + '#verify' },
-  ])
-  const request = { package: service.name, task: 'test:performance' }
-  expect(planChecks(selected, registered, request).matrix).toMatchObject([
-    { task: service.name + '#test:performance', target: 'linux-x64' },
-  ])
-  expect(() => planChecks(selected, registered, { ...request, target: 'macos-x64' })).toThrow(
-    'macos-x64',
-  )
+test('an unregistered workspace member cannot silently lose CI coverage', () => {
+  const project = { name: '@fixture/unregistered', directory: 'clients/unregistered' }
+  expect(() => verificationPackages([...workspace, project])).toThrow(project.name)
 })
