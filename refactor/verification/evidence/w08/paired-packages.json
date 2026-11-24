@@ -1,0 +1,55 @@
+{
+  "version": "0.1.0-dev.0",
+  "mpvCommit": "b0841e8c4d156b8403dc1876c4cbd9011eb583f3",
+  "files": {
+    "ximu3-libmpv-node-darwin-arm64-0.1.0-dev.0.tgz": "66f95e35c5b56178c41994269d13b23acd7dd89c7e32a4c899ce26ca46a8b890",
+    "ximu3-libmpv-node-darwin-x64-0.1.0-dev.0.tgz": "4e87fee169d3baa6ed6eba996d0145c9c472b0e6034ee1de5eedc223c6bcbc91",
+    "ximu3-libmpv-node-linux-arm64-0.1.0-dev.0.tgz": "0e17edd4ee620860b3b69c2005597fbb297bfab11ff0db4c44d0044b889f2362",
+    "ximu3-libmpv-node-linux-x64-0.1.0-dev.0.tgz": "ef96a58099d5df9e537688992933ba6c6cac4dfd5f78e4c3946d664d388b8beb",
+    "ximu3-libmpv-node-win32-arm64-0.1.0-dev.0.tgz": "d93f7b1bc0d1813510814a5db2dcbd72b1da2f8eca89fb6fa04e448b25ee80e8",
+    "ximu3-libmpv-node-win32-x64-0.1.0-dev.0.tgz": "a4b4411569191c95bb44f860528ec2221629fe5a9f57229d53657b416e8713b0",
+    "ximu3-libmpv-node-0.1.0-dev.0.tgz": "0752101cb0293a429cddc659704505b6a29e2145a489fc146cfcb3b6fcb6216a"
+  },
+  "bindingCommit": "d7765b5d827da62fc9400e2d0e0b1cafdc0587f2",
+  "verification": "https://github.com/ximu3/libmpv-node-dev/actions/runs/45398797879",
+  "node": "26.13.1",
+  "electron": "45.3.2",
+  "targets": {
+    "linux-arm64": {
+      "libraries": 56,
+      "commands": 87,
+      "properties": 960,
+      "options": 819
+    },
+    "linux-x64": {
+      "libraries": 56,
+      "commands": 87,
+      "properties": 960,
+      "options": 819
+    },
+    "darwin-arm64": {
+      "libraries": 45,
+      "commands": 87,
+      "properties": 960,
+      "options": 819
+    },
+    "darwin-x64": {
+      "libraries": 45,
+      "commands": 87,
+      "properties": 960,
+      "options": 819
+    },
+    "win32-arm64": {
+      "libraries": 44,
+      "commands": 87,
+      "properties": 950,
+      "options": 809
+    },
+    "win32-x64": {
+      "libraries": 45,
+      "commands": 87,
+      "properties": 950,
+      "options": 809
+    }
+  }
+}
