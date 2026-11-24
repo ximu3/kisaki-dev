@@ -147,9 +147,18 @@ export function defineLibrary({
           dependsOn: ['check:package'],
           cache: false,
         },
+        ...(browserTests && {
+          'test:hosts': {
+            command: [],
+            dependsOn: ['test:browser', 'test:consumers'],
+            cache: false,
+          },
+        }),
         verify: {
           command: [],
-          dependsOn: ['typecheck', 'test:consumers', browserTests ? 'test:browser' : 'test'],
+          dependsOn: browserTests
+            ? ['typecheck', 'test:hosts']
+            : ['typecheck', 'test', 'test:consumers'],
           cache: false,
         },
 

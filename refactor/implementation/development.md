@@ -189,7 +189,7 @@ macOS CI 在制作 DMG 期间记录当前输出目录对应的挂载设备、卷
 
 在候选检出运行 `pnpm --config.verify-deps-before-run=false exec node tools/ci/plan.ts <base> <head>`，可在安装依赖前查看变更文件、受影响的包和各宿主任务。按[自动验证规则](../design/engineering/workspace.md#ci-selection)，单改 desktop-rpc 会选中该包的 Linux x64 专项和消费它的桌面应用六个目标。单改 desktop-appearance 的 CSS 会选中外观、合同、本地化、UI 和桌面应用。
 
-`Select checks` 生成包与宿主矩阵。Linux x64 上的 `Workspace checks` 核对文档链接，代码与手动验证还执行冻结安装和 `pnpm exec vp run check`。每个 `Target checks` 作业直接调用一个包任务，例如 `Target checks (@kisaki3/desktop-rpc, linux-x64)`。矩阵跳过时显示 `Target checks`。性能报告按包和宿主命名，包名使用百分号编码，例如 `performance-%40kisaki3%2Fdesktop-macos-x64`，保留 7 天。
+`Select checks` 生成包与宿主矩阵。Linux x64 上的 `Workspace checks` 核对文档链接，工程变更还执行冻结安装和 `pnpm exec vp run check`。公共包作业运行 `test:consumers`，UI 包用 `test:hosts` 同时覆盖浏览器交互。桌面作业在六个目标运行 `verify`。手动指定包或宿主时直接运行所选包任务。矩阵跳过时显示 `Target checks`。性能报告按包和宿主命名，包名使用百分号编码，例如 `performance-%40kisaki3%2Fdesktop-macos-x64`，保留 7 天。
 
 手动运行的默认值执行全部自动检查。填写 `package` 选择一个包，`task` 留空执行该包的完整验证，也可填写登记的本地任务名。`target` 可指定单个宿主，选择包后保留 `all` 会在该包支持的所有宿主上复现。例如 `package=@kisaki3/desktop`、`task=test:performance`、`target=macos-x64` 只在该宿主运行桌面性能专项。只指定宿主时，运行所有支持该宿主的包任务。
 
