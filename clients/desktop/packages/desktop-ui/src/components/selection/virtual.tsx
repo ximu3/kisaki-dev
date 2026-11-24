@@ -1,18 +1,15 @@
-import { createMemo, For, Show } from 'solid-js'
-import type { Accessor } from 'solid-js'
+import { createMemo, For, Show, type Accessor } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { VirtualRow } from '../virtualization/row'
 import { createVirtualizer, type VirtualItem } from '../virtualization/viewport'
 import type { SelectionOption } from './types'
 import styles from './styles.module.css'
 
-/** One contiguous group from the logical option collection in display order. */
 export interface OptionGroup<O extends SelectionOption> {
   label: string | undefined
   options: O[]
 }
 
-/** Flattens group headings and options into one measured axis and reveals a logical option by key. */
 export function createVirtualChoices<O extends SelectionOption>(
   groups: Accessor<readonly OptionGroup<O>[]>,
   list: Accessor<HTMLDivElement | undefined>,

@@ -9,23 +9,14 @@ import { InputFrame } from '../frame'
 import frame from '../styles.module.css'
 import styles from './styles.module.css'
 
-/**
- * Native numeric editing props with localized step-button labels.
- *
- * Values retain the native string model, including empty state; min, max and step use browser
- * constraints.
- */
 export interface NumberInputProps extends Omit<InputProps, 'type' | 'step'> {
   step?: number | 'any'
-  /** Number of native steps applied by a button. Typed values still use the input's step constraint. */
   stepCount?: number
-  /** Displays a fixed unit beside the value while preserving native numeric submission. */
   unit?: string | undefined
   increaseLabel: string
   decreaseLabel: string
 }
 
-/** Reads an HTML number boundary with the same numeric syntax as the native editor. */
 function numberBound(value: InputProps['min'], unbounded: number): number {
   if (value == null || value === false || value === '') {
     return unbounded
@@ -37,9 +28,6 @@ function numberBound(value: InputProps['min'], unbounded: number): number {
   return Number.isNaN(parser.valueAsNumber) ? unbounded : parser.valueAsNumber
 }
 
-/**
- * Renders a numeric editor with themed step buttons following native range and availability state.
- */
 export function NumberInput(props: NumberInputProps): JSX.Element {
   const rest = omit(
     props,

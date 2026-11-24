@@ -1,7 +1,6 @@
 import type { MessageCatalog, UiTranslation } from '@kisaki3/desktop-contracts/i18n'
 import { runtimeMessages } from './zh-hans/runtime'
 
-/** Simplified Chinese source-session translation with the application's regular fallback. */
 export const developmentTranslation = {
   ref: { type: 'builtin', id: 'zh-Hans' },
   name: '简体中文',

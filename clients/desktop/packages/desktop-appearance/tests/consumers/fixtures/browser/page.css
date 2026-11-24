@@ -1,5 +1,3 @@
-/* Consumer-owned layout; the library supplies visual values. */
-
 main {
   margin: 2rem;
   max-width: 40rem;

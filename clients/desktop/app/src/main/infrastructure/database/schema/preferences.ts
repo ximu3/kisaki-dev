@@ -3,11 +3,6 @@ import { blob, check, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core
 import type { Preferences } from '@kisaki3/desktop-contracts/preferences'
 import { preferenceColumn, networkPreferences } from '../codecs/preferences'
 
-/**
- * Creates the singleton's column mappings with this application's current read defaults.
- *
- * Defaults affect decoding and first-row initialization, never schema generation or existing rows.
- */
 export function createPreferencesTable(defaults: Preferences) {
   return sqliteTable(
     'preferences',

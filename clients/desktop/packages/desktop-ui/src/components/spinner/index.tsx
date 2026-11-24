@@ -4,11 +4,9 @@ import { Icon, LoaderCircle } from '../../internal/icon/glyph'
 import styles from './styles.module.css'
 
 export interface SpinnerProps extends JSX.HTMLAttributes<HTMLSpanElement> {
-  /** Accessible status label. Omit it for a decorative indicator. */
   label?: string
 }
 
-/** Remains still when the user requests reduced motion. */
 export function Spinner(props: SpinnerProps): JSX.Element {
   const rest = omit(props, 'class', 'label')
 

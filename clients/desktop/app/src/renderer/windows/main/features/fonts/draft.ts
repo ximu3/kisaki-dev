@@ -5,14 +5,12 @@ import type { MainClient } from '../../../../infrastructure/api'
 import { fileInput } from '../../../../infrastructure/file-input'
 import { errorMessage, reportError } from '../../../../infrastructure/notifications'
 
-/** One attempted file addition and its current preparation outcome. */
 type FileDraft = { key: number; name: string } & (
   | { status: 'pending' }
   | { status: 'ready'; file: FontChoice }
   | { status: 'failed'; error: string }
 )
 
-/** Keeps confirmed and uncommitted files separate until one explicit save succeeds. */
 export function createFontDraft(api: MainClient, initial: Font | null) {
   const [original, setOriginal] = createSignal(initial)
   const [name, setName] = createSignal(initial?.name ?? '')

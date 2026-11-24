@@ -64,7 +64,6 @@ export interface LibraryPreferences {
   readonly autoRefreshHoldings: boolean
 }
 
-/** Per-medium playback configuration is stored separately. */
 export interface PlaybackPreferences {
   readonly volumePercent: number
   readonly muted: boolean
@@ -75,7 +74,6 @@ export interface UpdatePreferences {
   readonly allowPrerelease: boolean
 }
 
-/** Credentials appear as opaque saved state rather than plaintext. */
 export interface Preferences {
   readonly general: GeneralPreferences
   readonly appearance: AppearancePreferences
@@ -88,10 +86,6 @@ export interface Preferences {
   readonly updates: UpdatePreferences
 }
 
-/**
- * Credential changes carry protected write values, while other fields use their ordinary value
- * types.
- */
 export interface PreferencesChanges {
   readonly general?: Partial<GeneralPreferences>
   readonly appearance?: Partial<AppearancePreferences>
@@ -106,7 +100,6 @@ export interface PreferencesChanges {
   readonly updates?: Partial<UpdatePreferences>
 }
 
-/** Credential baselines use the opaque state returned by get. */
 export type PreferencesExpected = Omit<PreferencesChanges, 'network'> & {
   readonly network?: Partial<NetworkPreferences>
 }
@@ -116,17 +109,12 @@ export interface PreferencesUpdate {
   readonly expected?: PreferencesExpected
 }
 
-/** Valid sibling preferences retain their own values when the font identity is invalid. */
 export type ReadingPreferencesSnapshot = Omit<ReadingPreferences, 'text'> & {
   readonly text: Omit<ReadingPreferences['text'], 'font'> & {
     readonly font: StoredDefinition<ReadingPreferences['text']['font']>
   }
 }
 
-/**
- * Saved preference projection preserving invalid identities and execution definitions as explicit
- * states.
- */
 export type PreferencesSnapshot = Omit<
   Preferences,
   'general' | 'appearance' | 'navigation' | 'usage' | 'shortcuts' | 'network'
@@ -158,10 +146,6 @@ export type ReadingPreferenceKey =
   | `pages.${keyof ReadingPreferences['pages']}`
   | `text.${keyof ReadingPreferences['text']}`
 
-/**
- * Identifies a preference field for navigation or search. Playback volume and mute have separate
- * controls.
- */
 export type PreferenceKey =
   | `general.${keyof GeneralPreferences}`
   | `appearance.${keyof AppearancePreferences}`
@@ -183,24 +167,14 @@ export interface PreferenceField {
 }
 
 export interface PreferencesApi {
-  /**
-   * Reads saved preferences with explicit states for invalid identities and execution definitions.
-   */
   get(call?: CallOptions): Promise<PreferencesSnapshot>
 
-  /** Saved preferences and caller drafts remain unchanged. */
   getDefaults(call?: CallOptions): Promise<Preferences>
 
-  /**
-   * Compares and commits all submitted fields atomically. Runtime adoption happens after the
-   * commit.
-   */
   update(input: PreferencesUpdate, call?: CallOptions): Promise<PreferencesSnapshot>
 
-  /** Reads localized descriptions for field navigation and preference search. */
   listFields(call?: CallOptions): Promise<readonly PreferenceField[]>
 
-  /** Callers subscribe before reading and refresh snapshots while preserving unsaved edits. */
   onInvalidated(listener: () => void): Disposable
 }
 
@@ -208,7 +182,6 @@ const translated = fromParser(parseUiTranslationRef)
 
 const theme = fromParser(parseThemeRef)
 
-/** Complete navigation-page order with distinct stable page references. */
 export const order = v.pipe(
   v.array(fromParser(parsePageRef)),
   v.check((pages) => unique(pages, (page) => JSON.stringify(page))),
@@ -319,16 +292,10 @@ export const preferenceKeys: readonly PreferenceKey[] = Object.freeze([
   ...fieldKeys('updates', updateEntries),
 ] satisfies PreferenceKey[])
 
-/** Parses a field-navigation identity from the current native catalog. */
 export function parsePreferenceKey(input: unknown): PreferenceKey {
   return parseValue(v.picklist(preferenceKeys), input, 'Invalid preference field')
 }
 
-/**
- * Parses complete preference values and checks shortcut conflicts when a platform is supplied.
- *
- * Resource owners check actual referenced-resource existence.
- */
 export function parsePreferences(input: unknown, platform?: DesktopPlatform): Preferences {
   const value = parseValue(
     v.strictObject({
@@ -352,7 +319,6 @@ export function parsePreferences(input: unknown, platform?: DesktopPlatform): Pr
   return value
 }
 
-/** Resolves each action's edited or usable saved list. Invalid saved lists have no active binding. */
 export function effectiveShortcutBindings(
   saved: PreferencesSnapshot['shortcuts'],
   edits?: PreferencesChanges['shortcuts'],
@@ -365,10 +331,6 @@ export function effectiveShortcutBindings(
   ) as ShortcutsPreferences
 }
 
-/**
- * Identity choices and arrays replace as whole values. Credential changes require the original
- * opaque credential state.
- */
 export function parsePreferencesUpdate(input: unknown): PreferencesUpdate {
   const value = parseValue(
     v.strictObject({

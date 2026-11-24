@@ -2,7 +2,6 @@ import { createEffect, createMemo, createSignal, For, onCleanup, Show } from 'so
 import { createQuery } from '../../../../infrastructure/query'
 import { CaseSensitive, Eye, Pencil, Plus, Trash2 } from '@lucide/solid'
 import type { Font } from '@kisaki3/desktop-contracts/fonts'
-import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
 import {
   DialogBody,
@@ -19,9 +18,10 @@ import type { MainClient } from '../../../../infrastructure/api'
 import type { EditorGuard } from '../../../../infrastructure/dialogs/closing'
 import { EditorDialog } from '../../../../infrastructure/dialogs/editor'
 import { createConfirmation } from '../../../../infrastructure/dialogs/confirmation'
-import { errorMessage, reportError } from '../../../../infrastructure/notifications'
+import { reportError } from '../../../../infrastructure/notifications'
 import { FontEditor } from './editor'
 import { FontDetails, type FontSelection } from './details'
+import { QueryError } from '../../../../infrastructure/query/error'
 
 const pageSize = 50
 
@@ -32,7 +32,6 @@ interface FontsProps {
   confirmLeave: (guard: EditorGuard) => Promise<boolean>
 }
 
-/** Keeps the catalog query and viewport mounted beneath item dialogs. */
 export function Fonts(props: FontsProps) {
   const { api } = props
   const [offset, setOffset] = createSignal(0)
@@ -169,16 +168,7 @@ export function Fonts(props: FontsProps) {
           }
         }}
       >
-        <Show when={list.error}>
-          {(cause) => (
-            <Alert tone="destructive" role="alert">
-              {errorMessage(cause())}{' '}
-              <Button variant="outline" onClick={refresh}>
-                {api.t('runtime.retry')}
-              </Button>
-            </Alert>
-          )}
-        </Show>
+        <QueryError error={list.error} retryLabel={api.t('runtime.retry')} retry={refresh} />
         <Show
           when={page()}
           fallback={!list.error && <Spinner label={api.t('runtime.loadingFonts')} />}

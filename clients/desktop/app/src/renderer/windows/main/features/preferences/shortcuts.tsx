@@ -7,7 +7,6 @@ import { captureShortcut, shortcutKeycaps } from '../../../../infrastructure/sho
 import { PreferenceField } from './field'
 import type { PreferenceDraft } from './draft'
 
-/** Each scope has its own localized heading and independent set of allowed actions. */
 const scopes = {
   main: 'runtime.mainWindow',
   editor: 'runtime.editor',
@@ -16,7 +15,6 @@ const scopes = {
   game: 'runtime.game-panel',
 } as const
 
-/** Preserves the other bindings and groups while editing a single action. */
 export function ShortcutFields(props: {
   t: Translate
   draft: PreferenceDraft

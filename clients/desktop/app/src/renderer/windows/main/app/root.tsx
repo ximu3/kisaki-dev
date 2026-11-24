@@ -9,7 +9,6 @@ import { createShellPreferences } from './preferences'
 import type { PageRoute } from './routes'
 import { AppShell } from './shell'
 
-/** Preserves the mounted page and its selection while management dialogs are open. */
 export function MainWindow(props: { api: MainClient; pages: readonly PageRoute[] }) {
   const { api } = props
   const preferences = createShellPreferences(api)

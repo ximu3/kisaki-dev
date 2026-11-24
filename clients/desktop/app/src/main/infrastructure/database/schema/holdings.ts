@@ -47,7 +47,6 @@ import {
   workForeignKey,
 } from './constraints'
 
-/** Creates one medium's independent, strictly validated filename-recognition profiles. */
 function recognitionProfiles<TName extends string>(
   name: TName,
   medium: 'anime' | 'comic' | 'novel',
@@ -72,33 +71,25 @@ function recognitionProfiles<TName extends string>(
   )
 }
 
-/** Stores reusable anime filename-recognition definitions and their formal order. */
 export const animeFileRecognitionProfiles = recognitionProfiles(
   'anime_file_recognition_profiles',
   'anime',
 )
 
-/** Stores reusable comic filename-recognition definitions and their formal order. */
 export const comicFileRecognitionProfiles = recognitionProfiles(
   'comic_file_recognition_profiles',
   'comic',
 )
 
-/** Stores reusable novel filename-recognition definitions and their formal order. */
 export const novelFileRecognitionProfiles = recognitionProfiles(
   'novel_file_recognition_profiles',
   'novel',
 )
 
-/**
- * Defines the ID, path and timestamps for all four directory tables.
- * The file-access layer checks whether paths identify the same directory.
- */
 function directoryFields() {
   return { id: idColumn(), path: text('path').notNull(), ...timestamps() }
 }
 
-/** Registers game-owned directory locations without assigning a preferred or current directory. */
 export const gameDirectories = sqliteTable(
   'game_directories',
   {
@@ -113,7 +104,6 @@ export const gameDirectories = sqliteTable(
   ],
 )
 
-/** Registers anime content roots with saved discovery rules and optional recognition profiles. */
 export const animeDirectories = sqliteTable(
   'anime_directories',
   {
@@ -134,7 +124,6 @@ export const animeDirectories = sqliteTable(
   ],
 )
 
-/** Registers comic content roots with saved discovery rules and optional recognition profiles. */
 export const comicDirectories = sqliteTable(
   'comic_directories',
   {
@@ -155,7 +144,6 @@ export const comicDirectories = sqliteTable(
   ],
 )
 
-/** Registers novel content roots with saved discovery rules and optional recognition profiles. */
 export const novelDirectories = sqliteTable(
   'novel_directories',
   {
@@ -176,10 +164,6 @@ export const novelDirectories = sqliteTable(
   ],
 )
 
-/**
- * Stores game launch and monitoring choices independently from actual processes and backup
- * history.
- */
 export const gameLaunchConfigs = sqliteTable(
   'game_launch_configs',
   {
@@ -209,7 +193,6 @@ export const gameLaunchConfigs = sqliteTable(
 const associationModes = ['automatic', 'manual'] as const
 const readingFileKinds = ['file', 'directory'] as const
 
-/** Defines the file columns. A file keeps its ID and associations when it becomes unavailable. */
 function fileFields() {
   return {
     id: idColumn(),
@@ -226,7 +209,6 @@ function fileFields() {
   }
 }
 
-/** Creates independent file-local reading state. */
 function readingFileFields() {
   return {
     kind: text('kind', { enum: readingFileKinds }).notNull(),
@@ -238,7 +220,6 @@ function readingFileFields() {
   }
 }
 
-/** Supplies same-work exact-path uniqueness and preferred-file indexes. */
 function fileConstraints(
   name: string,
   owner: AnySQLiteColumn,
@@ -260,9 +241,6 @@ function fileConstraints(
   ]
 }
 
-/**
- * Stores registered video identity, access observations, playback position and file-local choices.
- */
 export const animeFiles = sqliteTable(
   'anime_files',
   {
@@ -290,10 +268,6 @@ export const animeFiles = sqliteTable(
   ],
 )
 
-/**
- * Stores registered comic documents and their independent reading state and optional complete
- * override.
- */
 export const comicFiles = sqliteTable(
   'comic_files',
   {
@@ -311,10 +285,6 @@ export const comicFiles = sqliteTable(
   ],
 )
 
-/**
- * Stores registered novel documents and their independent reading state and optional complete
- * override.
- */
 export const novelFiles = sqliteTable(
   'novel_files',
   {
@@ -332,7 +302,6 @@ export const novelFiles = sqliteTable(
   ],
 )
 
-/** Creates a direct file-part binding with a part-owned preferred choice. */
 function fileParts<TName extends string>(
   name: TName,
   partName: string,
@@ -360,7 +329,6 @@ function fileParts<TName extends string>(
   )
 }
 
-/** Binds video files directly to real episodes and records each episode's preferred file. */
 export const animeFileEpisodes = fileParts(
   'anime_file_episodes',
   'episode_id',
@@ -368,7 +336,6 @@ export const animeFileEpisodes = fileParts(
   { id: animeEpisodes.id, work: animeEpisodes.animeId },
 )
 
-/** Binds video files directly to real extras and records each extra's preferred file. */
 export const animeFileExtras = fileParts(
   'anime_file_extras',
   'extra_id',
@@ -376,7 +343,6 @@ export const animeFileExtras = fileParts(
   { id: animeExtras.id, work: animeExtras.animeId },
 )
 
-/** Binds comic files directly to real volumes and records each volume's preferred file. */
 export const comicFileVolumes = fileParts(
   'comic_file_volumes',
   'volume_id',
@@ -384,7 +350,6 @@ export const comicFileVolumes = fileParts(
   { id: comicVolumes.id, work: comicVolumes.comicId },
 )
 
-/** Binds comic files directly to real chapters and records each chapter's preferred file. */
 export const comicFileChapters = fileParts(
   'comic_file_chapters',
   'chapter_id',
@@ -392,7 +357,6 @@ export const comicFileChapters = fileParts(
   { id: comicChapters.id, work: comicChapters.comicId },
 )
 
-/** Binds novel files directly to real volumes and records each volume's preferred file. */
 export const novelFileVolumes = fileParts(
   'novel_file_volumes',
   'volume_id',
@@ -400,7 +364,6 @@ export const novelFileVolumes = fileParts(
   { id: novelVolumes.id, work: novelVolumes.novelId },
 )
 
-/** Creates one explicit complete usage override for a concrete work or file. */
 function usagePreferences<TName extends string, T>(
   name: TName,
   ownerName: string,
@@ -417,7 +380,6 @@ function usagePreferences<TName extends string, T>(
   )
 }
 
-/** Stores one optional complete playback override per anime, retaining settings when disabled. */
 export const animePlaybackPreferences = usagePreferences(
   'anime_playback_preferences',
   'anime_id',
@@ -425,7 +387,6 @@ export const animePlaybackPreferences = usagePreferences(
   parsePlaybackOverride,
 )
 
-/** Stores one optional complete reading override per comic, retaining settings when disabled. */
 export const comicReadingPreferences = usagePreferences(
   'comic_reading_preferences',
   'comic_id',
@@ -433,7 +394,6 @@ export const comicReadingPreferences = usagePreferences(
   parseReadingOverride,
 )
 
-/** Stores one optional complete reading override per novel, retaining settings when disabled. */
 export const novelReadingPreferences = usagePreferences(
   'novel_reading_preferences',
   'novel_id',

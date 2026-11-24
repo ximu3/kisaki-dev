@@ -1,13 +1,10 @@
-import { createEffect, createMemo, createSignal, untrack } from 'solid-js'
-import type { Accessor } from 'solid-js'
+import { createEffect, createMemo, createSignal, untrack, type Accessor } from 'solid-js'
 
-/** Keeps the last visible sample throughout the exit transition. */
 export function displayedWhileOpen<T>(open: Accessor<boolean>, value: Accessor<T>): Accessor<T> {
   const initial = untrack(value)
   return createMemo<T>((previous = initial) => (open() ? value() : previous))
 }
 
-/** Remains present through the native exit transition. Reopening supersedes a pending close. */
 export function createPresentation(
   open: Accessor<boolean>,
   element: Accessor<HTMLElement | undefined>,

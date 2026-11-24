@@ -3,15 +3,12 @@ import { join, sep } from 'node:path'
 import { nativeHostPath, parseHostPath, type HostPath } from '#host-path'
 import { FilesystemQueryError, type NativeFiles } from '#native'
 
-/** A confirmed relationship between two locations, or an explicit inability to establish it. */
 export type PathRelation = 'same' | 'contains' | 'within' | 'separate' | 'unknown'
 
-/** Normalizes separators, current-directory segments and drive spelling without folding linked '..' segments. */
 export function normalizeAbsolutePath(input: string): string {
   return parseHostPath(input).path
 }
 
-/** Uses Node's lookup namespace for literal names and leaves parent traversal to the host. */
 function lexicalPosition(position: HostPath): string {
   if (position.names.length === 0) {
     return position.volume
@@ -22,7 +19,6 @@ function lexicalPosition(position: HostPath): string {
   return position.lookupRoot + position.names.join(sep)
 }
 
-/** Locates the host's observed parent through the nearest surviving registered ancestor. */
 async function registeredParent(current: HostPath): Promise<string> {
   const reached = await realpath(current.path + sep + '..')
   const names = current.names.slice(0, -1)
@@ -42,7 +38,6 @@ async function registeredParent(current: HostPath): Promise<string> {
   return reached
 }
 
-/** Observes the lookup route, retaining explicit links outside any consumed parent traversal. */
 async function inspectPosition(input: HostPath) {
   // Node selects the Windows lookup spelling before handing parent traversal to the filesystem.
   const position =
@@ -72,12 +67,6 @@ async function inspectPosition(input: HostPath) {
   return parseHostPath(current)
 }
 
-/**
- * Compares registered positions by the directory entries selected at each step.
- *
- * Identical normalized positions compare equal while offline. A failed filesystem observation
- * leaves the relationship unknown. Containment follows the chosen entry through a linked directory.
- */
 export async function comparePaths(
   first: string,
   second: string,
@@ -127,11 +116,6 @@ export async function comparePaths(
   }
 }
 
-/**
- * Verifies an existing data directory's backing volume before SQLite is opened.
- *
- * Network and unverified filesystems fail explicitly; media access is unaffected.
- */
 export async function assertLocalDataDirectory(path: string, native: NativeFiles): Promise<void> {
   const location = await native.getFilesystemLocation(normalizeAbsolutePath(path))
   if (location !== 'local') {

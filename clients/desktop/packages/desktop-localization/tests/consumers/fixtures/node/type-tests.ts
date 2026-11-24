@@ -1,6 +1,5 @@
 import type { Translate } from '@kisaki3/desktop-localization'
 
-/** Exercises generated call types so invalid keys and uncorrelated arguments fail compilation. */
 export function checkTranslation(
   translate: Translate,
   key: 'library.selection' | 'library.completion.recorded',

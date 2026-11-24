@@ -27,16 +27,11 @@ import {
 } from './reading'
 import { DesktopError } from '../errors'
 
-/** An annotation's table-qualified identity, independent of its file's continued existence. */
 export interface AnnotationRef<T extends WorkType = WorkType> {
   readonly workType: T
   readonly id: string
 }
 
-/**
- * Explicit file-record deletion may clear the file reference while preserving saved annotation
- * content.
- */
 export interface AnnotationTargetByType {
   readonly game: { readonly imageId: string }
 
@@ -67,26 +62,18 @@ type NewTarget<K extends WorkType> = K extends 'game'
   ? AnnotationTargetByType[K]
   : Omit<AnnotationTargetByType[K], 'fileId'> & { readonly fileId: string }
 
-/**
- * Game annotations retain captured images. Other media require their corresponding location form.
- */
 export type Annotation<T extends WorkType = WorkType> = {
   [K in T]: {
     readonly workType: K
     readonly id: string
     readonly title: string | null
     readonly content: string
-    /** UTC milliseconds since the Unix epoch. */
     readonly createdAt: number
-    /** UTC milliseconds since the Unix epoch. */
     readonly updatedAt: number
   } & WorkId<K> &
     AnnotationTargetByType[K]
 }[T]
 
-/**
- * Title and body may be empty. Prepared attachments can be adopted in the same save.
- */
 export type AnnotationCreate = {
   [K in WorkType]: {
     readonly workType: K
@@ -97,10 +84,6 @@ export type AnnotationCreate = {
   } & WorkId<K>
 }[WorkType]
 
-/**
- * The complete target is one save unit. Editing title or body compares only submitted fields and
- * leaves the media closed.
- */
 export interface AnnotationUpdate<K extends WorkType = WorkType> {
   readonly changes: {
     readonly title?: string | null
@@ -124,10 +107,6 @@ export type AnnotationScope =
       readonly fileId: string
     }
 
-/**
- * Constraints intersect ordinary visibility. Omitted arrays add no restriction. Empty arrays
- * produce no matches.
- */
 export interface AnnotationQuery {
   readonly scope: AnnotationScope
   readonly search: string
@@ -139,10 +118,6 @@ export type AnnotationPositionHint =
   | { readonly type: 'video'; readonly startSeconds: number; readonly endSeconds: number | null }
   | { readonly type: 'page'; readonly page: ReadingPageRef }
 
-/**
- * Excerpts stop at a complete extended grapheme boundary within 160 UTF-16 code units. Full bodies
- * and geometry have dedicated reads.
- */
 export interface AnnotationSummary {
   readonly ref: AnnotationRef
   readonly work: WorkRef
@@ -156,20 +131,16 @@ export interface AnnotationSummary {
   readonly locationKind: 'image' | 'position' | 'range' | 'text' | 'region'
   readonly positionHint: AnnotationPositionHint | null
 
-  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
-  /** UTC milliseconds since the Unix epoch. */
   readonly updatedAt: number
 }
 
-/** Lightweight original locations for a live file's content-order index, without saved text or images. */
 export type AnnotationLocationItem<
   T extends 'anime' | 'comic' | 'novel' = 'anime' | 'comic' | 'novel',
 > = {
   [K in T]: {
     readonly ref: AnnotationRef<K>
     readonly location: AnnotationTargetByType[K]['location']
-    /** UTC milliseconds since the Unix epoch. */
     readonly createdAt: number
   }
 }[T]
@@ -181,7 +152,6 @@ export interface AnnotationLocationResult<
   readonly total: number
 }
 
-/** A saved target can be opened through the session API. */
 export interface AnnotationsApi {
   list(
     query: AnnotationQuery,
@@ -189,44 +159,27 @@ export interface AnnotationsApi {
     call?: CallOptions,
   ): Promise<ListResult<AnnotationSummary>>
 
-  /** Returns null when the annotation is absent. Reading leaves the current session unchanged. */
   get<T extends WorkType>(ref: AnnotationRef<T>, call?: CallOptions): Promise<Annotation<T> | null>
 
-  /**
-   * This index projects original locations from a single file. Read full annotations for saved text
-   * and images.
-   */
   listLocations<T extends 'anime' | 'comic' | 'novel'>(
     scope: { readonly work: EntryRef<T>; readonly fileId: string },
     options: ListOptions,
     call?: CallOptions,
   ): Promise<AnnotationLocationResult<T>>
 
-  /**
-   * The location and adopted content commit together. Optional evidence remains separate from
-   * source identity.
-   */
   create(input: AnnotationCreate, call?: CallOptions): Promise<string>
 
-  /**
-   * Compares submitted fields and preserves saved locations against the bytes they originally
-   * addressed.
-   */
   update(
     ...args: {
       [K in WorkType]: [ref: AnnotationRef<K>, input: AnnotationUpdate<K>, call?: CallOptions]
     }[WorkType]
   ): Promise<void>
 
-  /**
-   * Deletes selected annotations and their owned references while preserving underlying content.
-   */
   delete(refs: AnnotationRef | NonEmptyArray<AnnotationRef>, call?: CallOptions): Promise<void>
 }
 
 export const annotationRefSchema = v.strictObject({ workType: v.picklist(workTypes), id })
 
-/** Optional annotation title with blank input normalized to an absent title. */
 export const nullableTitleSchema = v.pipe(
   v.nullable(text),
   v.transform((value) => value?.trim() || null),
@@ -262,14 +215,10 @@ const targetSchemas = {
   novel: v.strictObject(targetEntries.novel),
 }
 
-/** Parses a table-qualified annotation identity without checking visibility or existence. */
 export function parseAnnotationRef(input: unknown): AnnotationRef {
   return parseValue(annotationRefSchema, input, 'Invalid annotation reference')
 }
 
-/**
- * Parses annotation query constraints, rejecting duplicate identities and preserving empty arrays.
- */
 export function parseAnnotationQuery(input: unknown): AnnotationQuery {
   return parseValue(
     v.strictObject({
@@ -301,7 +250,6 @@ export function parseAnnotationQuery(input: unknown): AnnotationQuery {
   )
 }
 
-/** The host checks ownership, prepared holds and attachment availability. */
 export function parseAnnotationCreate(input: unknown): AnnotationCreate {
   const common = {
     title: v.exactOptional(nullableTitleSchema),
@@ -340,9 +288,6 @@ export function parseAnnotationCreate(input: unknown): AnnotationCreate {
   )
 }
 
-/**
- * Rejects a supplied transition from a nonnull file to null. The write owner checks current state.
- */
 export function parseAnnotationUpdate<T extends WorkType>(
   ref: AnnotationRef<T>,
   input: unknown,

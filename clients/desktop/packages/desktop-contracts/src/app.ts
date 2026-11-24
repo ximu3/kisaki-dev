@@ -14,16 +14,11 @@ import {
 import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
 import { parseWorkRef, type WorkType, type WorkRef } from './library/catalog'
 
-/** Stable application and protocol identities for production and isolated development. */
 export const applicationIdentities = Object.freeze({
   production: { appId: 'me.kisaki', scheme: 'kisaki' },
   development: { appId: 'me.kisaki.dev', scheme: 'kisaki-dev' },
 } as const)
 
-/**
- * Architecture describes the running application, rather than physical hardware. The snapshot
- * excludes private paths and accounts.
- */
 export interface ApplicationEnvironment {
   readonly version: string
   readonly operatingSystem: { readonly name: string; readonly version: string }
@@ -32,10 +27,6 @@ export interface ApplicationEnvironment {
 
 export type DataMode = 'normal' | 'portable'
 
-/**
- * The current root is fixed for this process. Changing nextMode leaves both directories and their
- * contents in place.
- */
 export interface DataLocationState {
   readonly current: { readonly mode: DataMode; readonly path: string }
   readonly normalPath: string
@@ -45,7 +36,6 @@ export interface DataLocationState {
     | { readonly status: 'unavailable'; readonly error: ErrorSummary }
 }
 
-/** A next-launch mode change with explicit intent to use an existing or empty target root. */
 export interface DataModeChange {
   readonly mode: DataMode
   readonly target: 'existing' | 'empty'
@@ -61,7 +51,6 @@ export type LoginItemState =
   | { readonly status: 'unsupported' }
   | { readonly status: 'unavailable'; readonly error: ErrorSummary }
 
-/** A null isDefault means the platform cannot establish which application owns the association. */
 export type ProtocolIntegrationState =
   | {
       readonly status: 'available'
@@ -72,9 +61,6 @@ export type ProtocolIntegrationState =
     }
   | { readonly status: 'unavailable'; readonly error: ErrorSummary }
 
-/**
- * Desktop-entry registration, its read failure, or a platform where registration does not apply.
- */
 export type DesktopEntryState =
   | { readonly status: 'notApplicable' }
   | { readonly status: 'available'; readonly registered: boolean }
@@ -88,34 +74,19 @@ export interface SystemIntegrationState {
 }
 
 export interface SystemIntegrationApi {
-  /** Reports unsupported registrations separately from failures to read them. */
   getState(call?: CallOptions): Promise<SystemIntegrationState>
 
-  /** Applies login-item registration and returns the reread operating-system state. */
   setLoginItem(enabled: boolean, call?: CallOptions): Promise<LoginItemState>
 
-  /** Registration may still require operating-system approval. */
   registerProtocol(call?: CallOptions): Promise<ProtocolIntegrationState>
 
-  /**
-   * Registers supported desktop integration and returns its actual state.
-   *
-   * Platforms without this integration return notApplicable.
-   */
   registerDesktopEntry(call?: CallOptions): Promise<DesktopEntryState>
 
   openSettings(target: 'loginItem' | 'protocol', call?: CallOptions): Promise<void>
 
-  /**
-   * The selected root takes effect at next launch. Existing directories and their contents stay in
-   * place.
-   */
   setDataMode(input: DataModeChange, call?: CallOptions): Promise<DataLocationState>
 }
 
-/**
- * Only game sessions can detach. A failure identifies the close, save or release stage that failed.
- */
 export type SessionExitProgress = {
   [K in WorkType]: {
     readonly sessionId: string
@@ -134,10 +105,6 @@ export type SessionExitProgress = {
   }
 }[WorkType]
 
-/**
- * The coordinator includes accepted preparation work before a TaskRun exists; task counts alone
- * cannot establish readiness.
- */
 export type ApplicationExitState =
   | { readonly status: 'idle' }
   | {
@@ -148,39 +115,21 @@ export type ApplicationExitState =
       readonly error: ErrorSummary | null
     }
 
-/** The outcome of an exit attempt, including cancellation or a reported failure. */
 export type ApplicationExitResult =
   | { readonly outcome: 'exiting' | 'cancelled' }
   | { readonly outcome: 'failed'; readonly error: ErrorSummary }
 
 export interface ApplicationExitApi {
-  /** Reads exit progress, including accepted work that has not yet created a task record. */
   getState(call?: CallOptions): Promise<ApplicationExitState>
 
-  /** Delivers the current state, then changes. Disposing the listener leaves exit in progress. */
   observe(listener: Listener<ApplicationExitState>): Disposable
 
-  /**
-   * Waits for content, recording and resource cleanup before exit.
-   *
-   * Final teardown attempts all remaining cleanup. A cleanup failure is reported before the process exits with an error.
-   */
   quit(call?: CallOptions): Promise<ApplicationExitResult>
 
-  /**
-   * Runs the same close, recording and release sequence as quit before restarting.
-   *
-   * Relaunch requires successful final cleanup. Cancellation preserves completed work.
-   */
   restart(call?: CallOptions): Promise<ApplicationExitResult>
 
-  /**
-   * Withdraws a pending confirmation or wait before final teardown. Admission resumes with
-   * completed changes and ended sessions preserved.
-   */
   cancel(call?: CallOptions): Promise<void>
 
-  /** Continues waiting for accepted close work without sending another round of exit requests. */
   continueWaiting(call?: CallOptions): Promise<ApplicationExitResult>
 }
 
@@ -188,10 +137,8 @@ export interface AppApi {
   readonly systemIntegration: SystemIntegrationApi
   readonly exit: ApplicationExitApi
 
-  /** Reads a shareable version, operating-system and process-architecture snapshot. */
   getEnvironment(call?: CallOptions): Promise<ApplicationEnvironment>
 
-  /** Resolves after the copy succeeds; the action does not upload the summary. */
   copyEnvironment(call?: CallOptions): Promise<void>
 }
 
@@ -201,7 +148,6 @@ const path = fromParser(parseAbsolutePath)
 
 const error = fromParser(parseErrorSummary)
 
-/** Release versions exclude SemVer build metadata. Build identity is carried separately. */
 export function parseApplicationVersion(input: unknown): string {
   const version = parseExternalValue(parseVersion, input, 'Invalid application version')
   if (version.includes('+')) {
@@ -211,7 +157,6 @@ export function parseApplicationVersion(input: unknown): string {
   return version
 }
 
-/** Parses the shareable environment fields and rejects extra diagnostic fields. */
 export function parseApplicationEnvironment(input: unknown): ApplicationEnvironment {
   return parseValue(
     v.strictObject({
@@ -224,10 +169,6 @@ export function parseApplicationEnvironment(input: unknown): ApplicationEnvironm
   )
 }
 
-/**
- * Parses the current data directory and next-launch mode, including a failed read of the
- * portable-mode marker.
- */
 export function parseDataLocationState(input: unknown): DataLocationState {
   return parseValue(
     v.strictObject({
@@ -244,7 +185,6 @@ export function parseDataLocationState(input: unknown): DataLocationState {
   )
 }
 
-/** Parses the next-launch mode and explicit existing-or-empty target intent. */
 export function parseDataModeChange(input: unknown): DataModeChange {
   return parseValue(
     v.strictObject({ mode, target: v.picklist(['existing', 'empty']) }),
@@ -253,7 +193,6 @@ export function parseDataModeChange(input: unknown): DataModeChange {
   )
 }
 
-/** Parses session exit progress and checks that its target and phase match the work type. */
 export function parseSessionExitProgress(input: unknown): SessionExitProgress {
   const value = parseValue(
     v.strictObject({
@@ -284,7 +223,6 @@ export function parseSessionExitProgress(input: unknown): SessionExitProgress {
   return value as SessionExitProgress
 }
 
-/** Parses exit progress with distinct session identities and a nonnegative recording count. */
 export function parseApplicationExitState(input: unknown): ApplicationExitState {
   return parseValue(
     v.variant('status', [

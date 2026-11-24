@@ -7,7 +7,6 @@ import { Button } from '@kisaki3/desktop-ui/button'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import type { MainClient } from '../../../../infrastructure/api'
 
-/** Prepares a destination with the user's existing-or-empty library choice. */
 export function DataLocation(props: {
   api: MainClient
   value: DataLocationState

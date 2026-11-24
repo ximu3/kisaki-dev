@@ -107,5 +107,4 @@ export const dark: TokenValues = Object.freeze({
   '--text-base-letter-spacing': 'normal',
 })
 
-/** Frozen default branches shared by JavaScript and generated CSS. */
 export const defaults: Readonly<Record<ColorScheme, TokenValues>> = Object.freeze({ light, dark })

@@ -1,64 +1,44 @@
 import { createEffect, createMemo, createSignal, flush } from 'solid-js'
 import { RowGeometry } from './geometry'
 
-/** One visible or retained logical row, in CSS pixels from the top of the track. */
 export interface VirtualItem {
   index: number
   key: string | number
   start: number
 }
 
-/** Half-open logical interval covering the viewport and its overscan. */
 export interface VirtualRange {
   first: number
   lastExclusive: number
 }
 
-/** Reactive inputs for one logical layout. Estimates and keys are synchronous. */
 export interface VirtualizerOptions {
   count: number
-  /** The vertical scroll container. The track starts after any supplied sticky header. */
   viewport: HTMLElement | undefined
-  /** In-flow header pinned at the start of the viewport for the whole track. */
   stickyHeader?: HTMLElement | undefined
-  /** Pauses mounted rows and observers while preserving the geometry of this layout. */
   enabled?: boolean
-  /** Number of extra rows on each side of the viewport, four by default. */
   overscan?: number
-  /** Additional zero-based row indices that stay mounted in a visible viewport. */
   retained?: readonly number[]
-  /** Changes when the query, row order or layout invalidates measured positions. */
   layout?: unknown
-  /** Estimates a logical row's positive border-box height in CSS pixels. */
   estimateSize: (index: number) => number
-  /** Supplies a unique stable identity within the layout. Defaults to the row index. */
   key?: (index: number) => string | number
 }
 
-/** Owns the geometry of a track. Observe a row for the lifetime of its element and index. */
 export interface Virtualizer {
-  /** Reads the contiguous interval to load, independently of retained interaction rows. */
   range: () => VirtualRange
-  /** Reads the current window and retained rows in logical order. */
   items: () => readonly VirtualItem[]
-  /** Reads the estimated and measured height of the complete track in CSS pixels. */
   totalSize: () => number
-  /** Registers a mounted border box and returns the cleanup for that element and index. */
   observe: (element: HTMLElement, index: number) => () => void
-  /** Reveals a row on the next viewport update. Alignment incorporates its first measurement. */
   scrollToIndex: (index: number, align?: ScrollAlignment) => void
 }
 
-/** Positions a logical row relative to the viewport. */
 type ScrollAlignment = 'nearest' | 'start' | 'center' | 'end'
 
-/** Index and alignment requested for the next viewport update. */
 interface ScrollRequest {
   index: number
   align: ScrollAlignment
 }
 
-/** Computes the requested top offset from the current row edges. */
 function alignedTop(
   rows: RowGeometry,
   index: number,
@@ -86,7 +66,6 @@ function alignedTop(
   }
 }
 
-/** Creates an instance-owned geometry index and observes only mounted rows in a visible viewport. */
 export function createVirtualizer(options: VirtualizerOptions): Virtualizer {
   const geometry = createMemo(() => {
     void options.layout

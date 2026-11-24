@@ -1,23 +1,16 @@
 import * as v from 'valibot'
 import { parseValue } from './validation'
 
-/** A source-page point with coordinates in [0, 1], a top-left origin and downward positive y. */
 export interface NormalizedPoint {
   readonly x: number
   readonly y: number
 }
 
-/** A nonempty rectangle wholly inside the source page; display rotation and zoom are not stored here. */
 export interface NormalizedRect extends NormalizedPoint {
   readonly width: number
   readonly height: number
 }
 
-/**
- * A convex source-page quadrilateral in clockwise vertex order.
- *
- * The first vertex is topmost, then leftmost; vertex order is independent of text reading order.
- */
 export type NormalizedQuad = readonly [
   NormalizedPoint,
   NormalizedPoint,
@@ -52,17 +45,14 @@ const quadSchema = v.pipe(
   }),
 )
 
-/** Callers resolve display rounding before submission. */
 export function parseNormalizedPoint(input: unknown): NormalizedPoint {
   return parseValue(pointSchema, input, 'Invalid normalized point')
 }
 
-/** Parses a wholly contained rectangle with positive extents, without clamping. */
 export function parseNormalizedRect(input: unknown): NormalizedRect {
   return parseValue(rectSchema, input, 'Invalid normalized rectangle')
 }
 
-/** Parses a nondegenerate convex quadrilateral with the canonical start and clockwise order. */
 export function parseNormalizedQuad(input: unknown): NormalizedQuad {
   return parseValue(quadSchema, input, 'Invalid normalized quadrilateral')
 }

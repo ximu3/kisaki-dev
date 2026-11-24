@@ -14,23 +14,15 @@ import { waitFor } from '../infrastructure/wait'
 const waitPromptDelayMs = 5_000
 
 interface ExitDependencies {
-  /** Asks the open editors whether the attempt may proceed. */
   confirm(signal: AbortSignal): Promise<boolean>
-  /** Closes or restores admission for this exit attempt. */
   accept(enabled: boolean): void
-  /** Waits for work accepted by the participating owners. */
   drain(): Promise<void>
-  /** Offers a continued wait or cancellation after the wait budget expires. */
   waiting(signal: AbortSignal): Promise<'wait' | 'cancel'>
-  /** Releases owners in dependency order after their work has drained. */
   release(): Promise<void>
-  /** Requests the chosen process disposition after cleanup succeeds. */
   finish(restart: boolean): void
-  /** Delivers an irreversible cleanup failure and terminates the process without relaunching. */
   fail(message: string): void
 }
 
-/** Preserves the individual reasons from teardown of independently owned resources. */
 function exitErrorMessage(cause: unknown): string {
   if (cause instanceof AggregateError && cause.errors.length) {
     return cause.errors.map(exitErrorMessage).join('\n')
@@ -38,7 +30,6 @@ function exitErrorMessage(cause: unknown): string {
   return cause instanceof Error ? cause.message : String(cause)
 }
 
-/** Creates one coordinator shared by the tray, windows, development control and restart. */
 export function createLifecycle(deps: ExitDependencies): ApplicationExitApi {
   const changed = createSignal<ApplicationExitState>()
   let state: ApplicationExitState = { status: 'idle' }
@@ -50,7 +41,6 @@ export function createLifecycle(deps: ExitDependencies): ApplicationExitApi {
     changed.emit(next)
   }
 
-  /** Starts one attempt and returns the same result to concurrent callers and continued waits. */
   async function requestExit(
     intent: 'quit' | 'restart',
     call?: CallOptions,
@@ -68,7 +58,6 @@ export function createLifecycle(deps: ExitDependencies): ApplicationExitApi {
     let committed = false
     const stopping = { intent, sessions: [], pendingRecordings: 0, error: null } as const
 
-    /** Waits for accepted work and offers one prompt if draining exceeds the wait budget. */
     async function waitForOwners() {
       const settled = Promise.race([
         deps.drain().then(() => 'finished' as const),

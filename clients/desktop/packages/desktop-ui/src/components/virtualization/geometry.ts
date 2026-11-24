@@ -1,4 +1,3 @@
-/** Indexes positive row heights with logarithmic position lookup and measurement updates. */
 export class RowGeometry {
   private readonly tree: Float64Array
   private readonly sizes: Float64Array
@@ -16,7 +15,6 @@ export class RowGeometry {
     }
   }
 
-  /** Returns the start of a row, or the total height at the end of the index. */
   offset(index: number): number {
     let sum = 0
     for (let i = index; i > 0; i -= i & -i) {
@@ -25,7 +23,6 @@ export class RowGeometry {
     return sum
   }
 
-  /** Finds the row containing a scroll offset. The end position is the row count. */
   at(position: number): number {
     let index = 0
     for (let step = 2 ** Math.floor(Math.log2(this.sizes.length || 1)); step >= 1; step /= 2) {
@@ -38,7 +35,6 @@ export class RowGeometry {
     return index
   }
 
-  /** Applies a measured height and returns its signed change in pixels. */
   measure(index: number, size: number): number {
     const delta = size - this.sizes[index]!
     if (delta) {

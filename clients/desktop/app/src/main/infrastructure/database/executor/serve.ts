@@ -3,7 +3,6 @@ import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { initializeDatabase, type DatabaseOptions, type Storage } from '../initialize'
 import type { DatabaseCommand } from './index'
 
-/** Opens storage once and serves the synchronous operation table supplied by the composition root. */
 export function serveDatabase(
   createOperations: (
     storage: Storage,

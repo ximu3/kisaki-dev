@@ -50,11 +50,6 @@ export {
   assertRegistryUpdate,
 } from './publication'
 
-/**
- * Parses a resource locator and original-byte integrity constraints.
- *
- * Preserves URL spelling; resolution and byte verification are later consumer operations.
- */
 export function parseFileReference(input: unknown, path: FieldPath = []): FileReference {
   const value = parseRecord(input, path)
   return {
@@ -64,11 +59,6 @@ export function parseFileReference(input: unknown, path: FieldPath = []): FileRe
   }
 }
 
-/**
- * Validates SPKI PEM framing while preserving its spelling.
- *
- * The Node signing entry separately parses the key and requires Ed25519.
- */
 export function parsePublicKey(input: unknown, path: FieldPath = []): string {
   const value = parseString(input, path)
   if (
@@ -82,7 +72,6 @@ export function parsePublicKey(input: unknown, path: FieldPath = []): string {
   return value
 }
 
-/** Parses canonical Base64 for a 64-byte Ed25519 signature. */
 export function parseSignature(input: unknown, path: FieldPath = []): string {
   const value = parseString(input, path)
   if (!/^[A-Za-z0-9+/]{85}[AQgw]==$/.test(value)) {
@@ -101,11 +90,6 @@ function parseArtifact(input: unknown, path: FieldPath): RegistryArtifact {
   }
 }
 
-/**
- * Parses publication facts and a nonempty artifact set for one release.
- *
- * Rejects targets claimed by multiple artifacts. Localized notes use the release's default locale.
- */
 function parseRelease(input: unknown, path: FieldPath): RegistryRelease {
   const value = parseRecord(input, path)
   const defaultLocale = normalizeLocale(value.defaultLocale, [...path, 'defaultLocale'])
@@ -159,12 +143,6 @@ function parseExtension(input: unknown, path: FieldPath): RegistryExtension {
   }
 }
 
-/**
- * Parses a registry body into a fresh normalized projection of its known fields.
- *
- * Rejects duplicate extension IDs and invalid releases. Additional original JSON fields remain
- * signing data and are omitted from this projection.
- */
 export function normalizeRegistry(input: unknown): RegistryDocument {
   const value = parseRecord(input, [])
   const defaultLocale = normalizeLocale(value.defaultLocale, ['defaultLocale'])
@@ -193,30 +171,15 @@ export function normalizeRegistry(input: unknown): RegistryDocument {
   }
 }
 
-/**
- * Parses strict registry JSON and normalizes its unsigned fields.
- *
- * Duplicate keys are rejected before known-field extraction.
- */
 export function parseRegistry(text: string): RegistryDocument {
   return normalizeRegistry(parseJson(text))
 }
 
-/**
- * Parses a signed registry's known fields and signature encoding.
- *
- * Authentication requires the Node signing entry and caller-supplied trust.
- */
 export function parseSignedRegistry(text: string): SignedRegistry {
   const value = parseRecord(parseJson(text), [])
   return { ...normalizeRegistry(value), signature: parseSignature(value.signature, ['signature']) }
 }
 
-/**
- * Resolves a verified resource URL against the final index response URL.
- *
- * Returns a new reference with unchanged size and digest. Failed resolution throws invalid-format.
- */
 export function resolveFileReference(reference: FileReference, responseUrl: string): FileReference {
   try {
     return { ...reference, url: new URL(reference.url, responseUrl).href }

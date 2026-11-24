@@ -4,18 +4,12 @@ import { fromParser, parseValue, id, timestamp, unique } from '../validation'
 import { DesktopError, parseErrorSummary, type ErrorSummary } from '../errors'
 import { parseWorkRef, type WorkRef } from '../library/catalog'
 
-/** Safe failure summary for one remaining activity or position recording unit. */
 export type RecordingIssue =
   | { readonly kind: 'activity'; readonly activityId: string; readonly error: ErrorSummary }
   | { readonly kind: 'position'; readonly error: ErrorSummary }
 
-/**
- * Activity records and positions still waiting to be saved after a session ends, identified by
- * their original work and target.
- */
 export type PendingRecording = {
   readonly sessionId: string
-  /** UTC milliseconds since the Unix epoch. */
   readonly endedAt: number
   readonly activityIds: readonly string[]
   readonly positionPending: boolean
@@ -32,7 +26,6 @@ export type PendingRecording = {
     }
 )
 
-/** Failed or cancelled retry execution retains both sets in this same result shape. */
 export interface RecordingRetryResult {
   readonly sessionId: string
 
@@ -44,32 +37,13 @@ export interface RecordingRetryResult {
   readonly issues: readonly RecordingIssue[]
 }
 
-/** Discarding unsaved recordings requires the user's explicit choice. */
 export interface SessionRecordingsApi {
-  /**
-   * Lists recordings that still need saving, including those from sessions that have ended.
-   */
   list(call?: CallOptions): Promise<readonly PendingRecording[]>
 
-  /**
-   * Retries saving the pending activity records and file position. Reports what was saved and what
-   * remains pending.
-   *
-   * Retry preserves unresolved work without reopening content or duplicating committed activities.
-   */
   retry(sessionId: string, call?: CallOptions): Promise<RecordingRetryResult>
 
-  /**
-   * Discards the session's unsaved recordings when the user chooses to do so.
-   *
-   * Already saved records remain intact.
-   */
   discard(sessionId: string, call?: CallOptions): Promise<void>
 
-  /**
-   * Subscribe before reading the list. Refreshing it leaves pending recordings available for retry
-   * or discard.
-   */
   onInvalidated(listener: () => void): Disposable
 }
 
@@ -110,10 +84,6 @@ function validateRecordingIssues(
   }
 }
 
-/**
- * Parses an ended session's pending-recording summary and checks its target, remaining units and
- * issues.
- */
 export function parsePendingRecording(input: unknown): PendingRecording {
   const value = parseValue(
     v.strictObject({
@@ -142,7 +112,6 @@ export function parsePendingRecording(input: unknown): PendingRecording {
   return value as PendingRecording
 }
 
-/** An idempotent retry of an ended recording can return an empty receipt. */
 export function parseRecordingRetryResult(input: unknown): RecordingRetryResult {
   const value = parseValue(
     v.strictObject({

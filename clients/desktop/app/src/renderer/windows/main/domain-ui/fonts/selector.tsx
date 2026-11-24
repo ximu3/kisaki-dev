@@ -4,15 +4,12 @@ import type { FontRef } from '@kisaki3/desktop-contracts/fonts'
 import type { Translate } from '@kisaki3/desktop-localization'
 import type { UserFontOption } from './options'
 
-/** The surrounding editor determines the meaning of its default font. */
 type FontSelection<F extends 'default' | 'document'> = FontRef | { readonly type: F }
 
-/** A rendered key carries its exact domain value through a search or value change. */
 interface FontOption<F extends 'default' | 'document'> extends ComboboxOption {
   ref?: FontSelection<F>
 }
 
-/** Encodes identity independently of display names, including colliding user and system names. */
 function fontKey<F extends 'default' | 'document'>(ref: FontSelection<F>) {
   if ('id' in ref) {
     return 'user:' + ref.id
@@ -23,7 +20,6 @@ function fontKey<F extends 'default' | 'document'>(ref: FontSelection<F>) {
   return ref.type
 }
 
-/** Renders one searchable font selection and keeps the caller's fallback type intact. */
 export function FontSelector<F extends 'default' | 'document'>(props: {
   t: Translate
   fallback: F

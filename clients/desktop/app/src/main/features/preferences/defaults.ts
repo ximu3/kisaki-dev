@@ -71,12 +71,6 @@ function shortcutDefaults(platform: DesktopPlatform): ShortcutsPreferences {
   ) as ShortcutsPreferences
 }
 
-/**
- * Returns a fresh complete preference value for initialization or a reset draft.
- *
- * The application supplies the actual native page-catalog order and its launch environment's
- * initial translation.
- */
 export function getPreferenceDefaults(
   platform: DesktopPlatform,
   navigationOrder: readonly PageRef[],

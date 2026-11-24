@@ -1,11 +1,5 @@
-import { createSignal, onSettled } from 'solid-js'
-import type { Accessor } from 'solid-js'
+import { createSignal, onSettled, type Accessor } from 'solid-js'
 
-/**
- * Creates a duration accessor that becomes zero while reduced motion is requested.
- *
- * Durations are milliseconds; the media-query listener is released with the Solid owner.
- */
 export function createChartDuration(
   duration: Accessor<number | undefined>,
   fallback = 140,

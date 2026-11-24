@@ -1,5 +1,12 @@
-import { createEffect, createMemo, createSignal, For, onSettled, Show } from 'solid-js'
-import type { Accessor } from 'solid-js'
+import {
+  createEffect,
+  createMemo,
+  createSignal,
+  For,
+  onSettled,
+  Show,
+  type Accessor,
+} from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { Icon, Check } from '../../internal/icon/glyph'
 import { createPopup } from '../../internal/popup/controller'
@@ -13,18 +20,12 @@ import frame from '../../internal/popup/surface.module.css'
 import row from '../../internal/list-row.module.css'
 import styles from './styles.module.css'
 
-/**
- * Logical option and selection state connected to a popup, optional search editor and row renderer.
- */
 interface ListProps<O extends SelectionOption> extends SelectionListProps<O> {
   popup: SelectionPopup
-  /** Returns the interaction anchor used by native popup and focus handling. */
   anchor: Accessor<HTMLButtonElement | undefined>
-  /** Returns an optional geometry reference distinct from the interaction anchor. */
   reference?: Accessor<HTMLElement> | undefined
   collection: SelectionCollection<O>
   selected: readonly string[]
-  /** Reports an enabled chosen option to the value owner. */
   onChoose: (option: O) => void
   multiple?: boolean | undefined
   loading?: boolean | undefined
@@ -35,13 +36,6 @@ interface ListProps<O extends SelectionOption> extends SelectionListProps<O> {
   search?: SearchState | undefined
 }
 
-/**
- * Renders logical options and selection marks in an anchored popup with optional search and
- * virtualization.
- *
- * The trigger or search editor retains focus; the collection owns navigation across mounted and
- * offscreen rows.
- */
 export function SelectionList<O extends SelectionOption>(props: ListProps<O>): JSX.Element {
   const [list, setList] = createSignal<HTMLDivElement>()
   const { id, open, present } = props.popup

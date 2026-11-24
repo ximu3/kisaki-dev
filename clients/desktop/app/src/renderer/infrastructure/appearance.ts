@@ -35,10 +35,10 @@ export function createDocumentAppearance(
       sample.width = sample.height = 1
       const context = sample.getContext('2d', { willReadFrequently: true })!
       context.globalCompositeOperation = 'copy'
-      // Electron's native overlay accepts sRGB bytes. A CSS color may use another color space.
       const color = (token: '--chrome' | '--chrome-foreground') => {
         context.fillStyle = value.cssVariables[token]
         context.fillRect(0, 0, 1, 1)
+        // Electron's native overlay accepts sRGB bytes. A CSS color may use another color space.
         const bytes = context.getImageData(0, 0, 1, 1).data
         return '#' + Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('')
       }
@@ -46,7 +46,6 @@ export function createDocumentAppearance(
     }
   }
 
-  /** Replaces the complete document font set and releases superseded bindings, including late reads. */
   async function refreshAppearance() {
     const version = ++generation
     const result = await call('appearance.get')

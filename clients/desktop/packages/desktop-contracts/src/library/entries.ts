@@ -57,19 +57,12 @@ export type EntryMergeInput = {
 }[EntryType]
 
 export interface EntriesApi {
-  /** The total and interval rows come from the same read. */
   list(query: EntryQuery, options: EntryListOptions, call?: CallOptions): Promise<EntryListResult>
 
-  /**
-   * Returns null outside the visible scope. A details read leaves content closed and acquires no
-   * attachment hold.
-   */
   get<T extends EntryType>(ref: EntryRef<T>, call?: CallOptions): Promise<EntryDetails<T> | null>
 
-  /** Returns null when the entry is hidden, missing or has an empty Markdown body. */
   getDescription(ref: EntryRef, call?: CallOptions): Promise<string | null>
 
-  /** Returns null if the target is absent or falls outside the current query. */
   locate(
     query: EntryQuery,
     target: EntryRef,
@@ -77,60 +70,36 @@ export interface EntriesApi {
     call?: CallOptions,
   ): Promise<EntryLocateResult | null>
 
-  /** Reads complete collection-group boundaries independently of loaded intervals. */
   groups(
     query: EntryQuery,
     grouping: { readonly type: 'collections' },
     call?: CallOptions,
   ): Promise<EntryGroupsResult>
 
-  /**
-   * Changed endpoints or crossed groups fail with SelectionChanged. The selection otherwise
-   * reflects one read and deduplicates identities.
-   */
   selectRefs(
     query: EntryQuery,
     selection: EntrySelection,
     call?: CallOptions,
   ): Promise<readonly EntryRef[]>
 
-  /**
-   * Looks up the exact identity in the visible scope. Hidden bindings can still prevent a new
-   * binding.
-   */
   findByExternalIdentity(identity: ExternalIdentity, call?: CallOptions): Promise<EntryRef | null>
 
-  /** The entry, initial personal values and adopted attachments commit together. */
   create<I extends EntryCreate>(input: I, call?: CallOptions): Promise<EntryRef<I['type']>>
 
-  /**
-   * The write compares submitted fields and their related references independently of unrelated
-   * fields.
-   */
   update(
     ...args: {
       [K in EntryType]: [ref: EntryRef<K>, input: Omit<EntryUpdate<K>, 'ref'>, call?: CallOptions]
     }[EntryType]
   ): Promise<void>
 
-  /** A missing target or failed baseline rejects the entire edit batch. */
   updateMany(input: NonEmptyArray<EntryUpdate>, call?: CallOptions): Promise<void>
 
-  /** Compares and saves submitted rating or favorite fields independently of work status. */
   setEvaluation(ref: EntryRef, input: EvaluationUpdate, call?: CallOptions): Promise<void>
 
-  /**
-   * Sets or clears current work status after an optional comparison, preserving completion history.
-   */
   setWorkStatus(work: WorkRef, input: WorkStatusUpdate, call?: CallOptions): Promise<void>
 
-  /**
-   * Uniqueness checks include hidden records. Merging entries requires the explicit merge
-   * operation.
-   */
   bindExternalIdentity(ref: EntryRef, identity: ExternalIdentity, call?: CallOptions): Promise<void>
 
-  /** Removes the exact binding while preserving the entry, source data and other identities. */
   unbindExternalIdentity(
     ref: EntryRef,
     identity: ExternalIdentity,
@@ -160,7 +129,6 @@ export function parseWorkStatusUpdate(input: unknown): WorkStatusUpdate {
   )
 }
 
-/** Parses a nonempty batch and rejects repeated edits of the same entry identity. */
 export function parseEntryUpdates(input: unknown): NonEmptyArray<EntryUpdate> {
   const item = fromParser(parseEntryUpdate)
   return parseValue(
@@ -173,10 +141,6 @@ export function parseEntryUpdates(input: unknown): NonEmptyArray<EntryUpdate> {
   )
 }
 
-/**
- * Requires distinct same-kind sources and a separate survivor. The write owner checks existence,
- * occupancy, external-identity uniqueness and merge rules.
- */
 export function parseEntryMergeInput(input: unknown): EntryMergeInput {
   const value = parseValue(
     v.strictObject({

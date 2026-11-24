@@ -20,7 +20,6 @@ import { parsePreparedAttachment, type PreparedAttachment } from '../resources'
 import { DesktopError } from '../errors'
 import type { NonEmptyArray } from '../operations'
 
-/** Actual independently cataloged kinds. Work is a subset, not another identity layer. */
 export const entryTypes = Object.freeze([
   'game',
   'anime',
@@ -47,7 +46,6 @@ export type WorkType = (typeof workTypes)[number]
 
 export type PartType = (typeof partTypes)[number]
 
-/** A type-qualified catalog identity. The type never grants access to an otherwise hidden object. */
 export interface EntryRef<T extends EntryType = EntryType> {
   readonly type: T
   readonly id: string
@@ -55,55 +53,45 @@ export interface EntryRef<T extends EntryType = EntryType> {
 
 export type WorkRef<T extends WorkType = WorkType> = EntryRef<T>
 
-/** Part identities are scoped by kind, with actual ownership supplied or read separately. */
 export interface PartRef<T extends PartType = PartType> {
   readonly type: T
   readonly id: string
 }
 
-/** Each real part belongs to exactly one work of the corresponding medium. */
 export type PartWorkType<T extends PartType> = T extends 'novelVolume'
   ? 'novel'
   : T extends 'comicVolume' | 'comicChapter'
     ? 'comic'
     : 'anime'
 
-/** Exact source identity; sourceId is opaque and may include native kind and parent scope. */
 export interface ExternalIdentity {
   readonly source: string
   readonly sourceId: string
 }
 
-/** An ordinary named page link, never evidence of an external identity or authority to fetch content. */
 export interface ExternalLink {
   readonly name: string
   readonly url: string
 }
 
-/** A canonical language identifier, not a closed list of official UI languages. */
 export type LanguageTag = string
 
-/** Adopted explicit classifications; null in the owning field means unknown. */
 export type Gender = 'male' | 'female' | 'nonBinary' | 'genderless' | 'other'
 
 export type BloodType = 'a' | 'b' | 'ab' | 'o'
 
-/** The user's current plan or usage arrangement for a work, separate from completion history. */
 export type WorkStatus = 'planned' | 'active' | 'onHold'
 
-/** A work's publication lifecycle, independent of the user's usage state. */
 export type ReleaseStatus = 'planned' | 'ongoing' | 'finished' | 'paused' | 'cancelled'
 
 export type AnimeEpisodeType = 'regular' | 'special'
 
 export type AnimeExtraType = 'opening' | 'ending' | 'promotion' | 'interview' | 'other'
 
-/** A definite nonnegative quantity or the full nonempty source wording; no inferred units or range truncation. */
 export type CharacterMeasure =
   | { readonly kind: 'number'; readonly value: number }
   | { readonly kind: 'text'; readonly value: string }
 
-/** Bodies and dates are whole replacement values. Null explicitly clears nullable fields. */
 export interface EntryCommonFields {
   readonly name: string
   readonly originalName: string | null
@@ -120,10 +108,6 @@ export interface EntryCommonFields {
   readonly addedDate: PartialDate | null
 }
 
-/**
- * Original languages describe a work's creative language, independently of subtitles and the
- * interface locale.
- */
 export interface WorkFields {
   readonly releaseDate: PartialDate | null
   readonly originalLanguages: readonly LanguageTag[]
@@ -137,7 +121,6 @@ export interface SerialWorkFields {
   readonly releaseEndDate: PartialDate | null
 }
 
-/** Numeric age uses years. Height and circumferences use centimetres. Weight uses kilograms. */
 export interface CharacterFields {
   readonly birthDate: PartialDate | null
   readonly gender: Gender | null
@@ -190,22 +173,16 @@ export interface EntrySpecificFields {
 
 export type EntryFields<T extends EntryType> = EntryCommonFields & EntrySpecificFields[T]
 
-/**
- * Rating is an integer from 0 to 100 or null. A missing saved evaluation reads as null rating and
- * false favorite.
- */
 export interface Evaluation {
   readonly rating: number | null
   readonly favorite: boolean
 }
 
-/** Current work arrangement and an absolute nonnegative millisecond amount with no fabricated activity date. */
 export interface WorkRecord {
   readonly status: WorkStatus | null
   readonly additionalDurationMs: number
 }
 
-/** One initial completion fact, including a fact whose date and note are both unknown. */
 export interface CompletionFields {
   readonly completedDate: CalendarDate | null
   readonly note: string | null
@@ -222,23 +199,17 @@ export interface EntryCollection {
   readonly note: string | null
 }
 
-/**
- * New associations default note to null and isSpoiler to false. Omitted attributes preserve their
- * values on existing associations.
- */
 export interface EntryTagInput {
   readonly tagId: string
   readonly note?: string | null
   readonly isSpoiler?: boolean
 }
 
-/** New memberships default note to null. Omission preserves the note on an existing membership. */
 export interface EntryCollectionInput {
   readonly collectionId: string
   readonly note?: string | null
 }
 
-/** Only complete replacement supports comparing a whole-set baseline. */
 export type EntryTagChange =
   | { readonly type: 'replace'; readonly items: readonly EntryTagInput[] }
   | {
@@ -247,7 +218,6 @@ export type EntryTagChange =
       readonly remove?: readonly string[]
     }
 
-/** Collection display order belongs to the collection directory. */
 export type EntryCollectionChange =
   | { readonly type: 'replace'; readonly items: readonly EntryCollectionInput[] }
   | {
@@ -256,16 +226,12 @@ export type EntryCollectionChange =
       readonly remove?: readonly string[]
     }
 
-/**
- * Omission preserves a field. Null clears nullable values. Work records apply only to work entries.
- */
 export type EntryChanges<T extends EntryType> = Partial<EntryFields<T>> & {
   readonly evaluation?: Partial<Evaluation>
   readonly tags?: EntryTagChange
   readonly collections?: EntryCollectionChange
 } & (T extends WorkType ? { readonly record?: Partial<WorkRecord> } : { readonly record?: never })
 
-/** A whole membership baseline includes hidden associations. */
 export type EntryExpected<T extends EntryType> = Partial<EntryFields<T>> & {
   readonly evaluation?: Partial<Evaluation>
   readonly tags?: readonly EntryTag[]
@@ -286,7 +252,6 @@ export type EntryCreate<T extends EntryType = EntryType> = {
       : object)
 }[T]
 
-/** Prepared holds support the submitted fields without expanding the save. */
 export type EntryUpdate<T extends EntryType = EntryType> = {
   [K in T]: {
     readonly ref: EntryRef<K>
@@ -296,24 +261,17 @@ export type EntryUpdate<T extends EntryType = EntryType> = {
   }
 }[T]
 
-/**
- * Use dedicated reads for long descriptions and complete relations. Derived summaries are
- * read-only.
- */
 export type EntryDetails<T extends EntryType = EntryType> = {
   [K in T]: Omit<EntryFields<K>, 'description'> & {
     readonly id: string
     readonly type: K
-    /** UTC milliseconds since the Unix epoch. */
     readonly createdAt: number
-    /** UTC milliseconds since the Unix epoch. */
     readonly updatedAt: number
     readonly evaluation: Evaluation
   } & (K extends WorkType
       ? {
           readonly record: WorkRecord
           readonly totalDurationMs: number
-          /** UTC milliseconds since the Unix epoch. */
           readonly lastActiveAt: number | null
           readonly completionCount: number
           readonly firstCompletedDate: CalendarDate | null
@@ -330,10 +288,8 @@ export const partRefSchema = v.strictObject({ type: v.picklist(partTypes), id })
 
 export const partialDateSchema = fromParser(parsePartialDate)
 
-/** Complete civil-date values validated without timestamp or timezone conversion. */
 export const calendarDateSchema = fromParser(parseCalendarDate)
 
-/** Parses a language tag without dropping script, region or collation identifiers. */
 export const languageSchema = v.pipe(
   nonemptyText,
   v.transform((value) => parseExternalValue(normalizeLocale, value, 'Invalid language tag')),
@@ -344,7 +300,6 @@ export const identitySchema = v.strictObject({
   sourceId: nonemptyText,
 })
 
-/** External source bindings that reject repeated source-coordinate pairs. */
 export const identitiesSchema = v.pipe(
   v.array(identitySchema),
   v.check((items) => unique(items, identityKey)),
@@ -356,7 +311,6 @@ export const aliasesSchema = v.array(nonemptyText)
 
 export const externalLinksSchema = v.array(externalLinkSchema)
 
-/** Canonical language tags retained in order with no duplicate language identity. */
 export const languagesSchema = v.pipe(
   v.array(languageSchema),
   v.check((items) => unique(items, (item) => item)),
@@ -386,7 +340,6 @@ export const recordEntries = {
   additionalDurationMs: nonnegativeInteger,
 }
 
-/** One completion fact with an optional complete date and blank-note normalization. */
 export const completionFieldsSchema = v.strictObject({
   completedDate: v.nullable(calendarDateSchema),
   note: v.pipe(
@@ -497,17 +450,14 @@ export const entrySpecificEntries = {
   organization: { foundedDate: nullableDate, dissolvedDate: nullableDate },
 } as const
 
-/** Compares source and opaque source ID exactly, without normalization or truncation. */
 export function sameExternalIdentity(left: ExternalIdentity, right: ExternalIdentity): boolean {
   return left.source === right.source && left.sourceId === right.sourceId
 }
 
-/** Encodes a complete external identity as an unambiguous internal map key. */
 export function identityKey(value: ExternalIdentity): string {
   return JSON.stringify([value.source, value.sourceId])
 }
 
-/** Parses a type-qualified entry reference without checking current existence or visibility. */
 export function parseEntryRef(input: unknown): EntryRef {
   return parseValue(entryRefSchema, input, 'Invalid entry reference')
 }
@@ -516,22 +466,18 @@ export function parseWorkRef(input: unknown): WorkRef {
   return parseValue(workRefSchema, input, 'Invalid work reference')
 }
 
-/** Parses a real part reference; the business owner separately checks work ownership. */
 export function parsePartRef(input: unknown): PartRef {
   return parseValue(partRefSchema, input, 'Invalid part reference')
 }
 
-/** Parses a complete source identity while preserving the opaque source ID text. */
 export function parseExternalIdentity(input: unknown): ExternalIdentity {
   return parseValue(identitySchema, input, 'Invalid external identity')
 }
 
-/** Parses distinct complete identities, allowing different IDs from the same source. */
 export function parseExternalIdentities(input: unknown): readonly ExternalIdentity[] {
   return parseValue(identitiesSchema, input, 'Invalid external identities')
 }
 
-/** Normalizes a language tag through the shared distribution locale rules. */
 export function parseLanguageTag(input: unknown): LanguageTag {
   return parseValue(languageSchema, input, 'Invalid language tag')
 }
@@ -544,7 +490,6 @@ export function parseExternalLinks(input: unknown): readonly ExternalLink[] {
   return parseValue(externalLinksSchema, input, 'Invalid external links')
 }
 
-/** Parses distinct canonical language tags without reordering them. */
 export function parseLanguages(input: unknown): readonly LanguageTag[] {
   return parseValue(languagesSchema, input, 'Invalid catalog languages')
 }
@@ -553,7 +498,6 @@ export function parseCharacterMeasure(input: unknown): CharacterMeasure {
   return parseValue(measureSchema, input, 'Invalid character measurement')
 }
 
-/** A resource interface is checked only for shape here. The host validates actual ownership and retention. */
 export const preparedSchema = fromParser(parsePreparedAttachment)
 
 export const entryTagChangeSchema = membershipChangeSchema(
@@ -570,12 +514,10 @@ export const entryCollectionChangeSchema = membershipChangeSchema(
   (collectionId) => collectionId,
 )
 
-/** Parses tag replacement or disjoint incremental intent while preserving requested order. */
 export function parseEntryTagChange(input: unknown): EntryTagChange {
   return parseValue(entryTagChangeSchema, input, 'Invalid entry tag change')
 }
 
-/** Parses collection membership intent without creating entry-side collection ordering. */
 export function parseEntryCollectionChange(input: unknown): EntryCollectionChange {
   return parseValue(entryCollectionChangeSchema, input, 'Invalid entry collection change')
 }
@@ -612,7 +554,6 @@ export function isWorkType(type: EntryType): type is WorkType {
   return workTypes.some((value) => value === type)
 }
 
-/** Only works accept initial work records or completion history. Derived fields are read-only. */
 export function parseEntryCreate(input: unknown): EntryCreate {
   const { type } = parseValue(
     v.looseObject({ type: v.picklist(entryTypes) }),
@@ -624,7 +565,6 @@ export function parseEntryCreate(input: unknown): EntryCreate {
   return parseValue(entryCreateSchema(type), input, 'Invalid entry creation') as EntryCreate
 }
 
-/** Whole membership baselines require replacement intent. Empty changes are a no-op. */
 export function parseEntryUpdate(input: unknown): EntryUpdate {
   const { ref } = parseValue(v.looseObject({ ref: entryRefSchema }), input, 'Invalid entry edit')
   const catalog = { ...entryCommonEntries, ...entrySpecificEntries[ref.type] }
@@ -683,7 +623,6 @@ export function parseEntryUpdate(input: unknown): EntryUpdate {
   return value as EntryUpdate
 }
 
-/** Parses a nonempty, distinct collection of caller-fixed entry identities. */
 export function parseEntryRefs(input: unknown): NonEmptyArray<EntryRef> {
   return parseValue(
     v.pipe(

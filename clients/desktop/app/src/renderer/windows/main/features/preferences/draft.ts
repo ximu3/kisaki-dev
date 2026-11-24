@@ -1,4 +1,5 @@
 import { createMemo, createSignal, onCleanup, type Accessor } from 'solid-js'
+import { dequal as equalValue } from 'dequal/lite'
 import { interfaceScaleRange } from '@kisaki3/desktop-contracts/appearance'
 import { manualProxyIssue, type ProxyCredentials } from '@kisaki3/desktop-contracts/network'
 import {
@@ -133,10 +134,6 @@ function updateInput(edits: Iterable<readonly [PreferenceKey, FieldEdit]>) {
     putField(expected, path, edit.expected)
   }
   return parsePreferencesUpdate({ changes, expected })
-}
-
-function equalValue(first: unknown, second: unknown) {
-  return JSON.stringify(first) === JSON.stringify(second)
 }
 
 function isChanged(key: PreferenceKey, edit: FieldEdit) {

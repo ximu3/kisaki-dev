@@ -1,8 +1,8 @@
-import { tokens } from '@kisaki3/desktop-appearance/tokens'
-import type {
-  TokenValues,
-  VisualTokenName,
-  FontTokenName,
+import {
+  tokens,
+  type TokenValues,
+  type VisualTokenName,
+  type FontTokenName,
 } from '@kisaki3/desktop-appearance/tokens'
 import { defaults } from '@kisaki3/desktop-appearance/defaults'
 import { parseTokenValue, parseTokenValues } from '@kisaki3/desktop-appearance/values'

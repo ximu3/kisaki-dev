@@ -1,6 +1,5 @@
 import { match } from '@formatjs/intl-localematcher'
-import { DistributionError } from './errors'
-import type { FieldPath } from './errors'
+import { DistributionError, type FieldPath } from './errors'
 import {
   parseArray,
   rejectFormat,
@@ -9,15 +8,8 @@ import {
   parseString,
 } from './validation'
 
-/**
- * Literal display text or translations keyed by canonical locale identifiers.
- *
- * Translation maps include their declaring object's default locale. Contents are displayed
- * literally, including braces.
- */
 export type LocalizedText = string | Readonly<Record<string, string>>
 
-/** Known display categories. Unknown categories remain valid and have no capability meaning. */
 export const extensionCategories = Object.freeze([
   'metadata',
   'integration',
@@ -26,14 +18,8 @@ export const extensionCategories = Object.freeze([
   'language',
 ] as const)
 
-/** Categories accepted for newly authored values; readers retain unknown category strings. */
 export type ExtensionCategory = (typeof extensionCategories)[number]
 
-/**
- * Parses a category for a newly authored declaration.
- *
- * Manifest and registry readers separately preserve unknown category strings.
- */
 export function parseCategory(input: unknown, path: FieldPath = []): ExtensionCategory {
   const value = parseString(input, path)
   const category = extensionCategories.find((known) => known === value)
@@ -44,13 +30,11 @@ export function parseCategory(input: unknown, path: FieldPath = []): ExtensionCa
   return category
 }
 
-/** An author's displayed name and optional contact address; this does not establish identity. */
 export interface ExtensionAuthor {
   readonly name: string
   readonly url?: string
 }
 
-/** Static display fields shared by manifests and current registry listings. */
 export interface ExtensionMetadata {
   readonly defaultLocale: string
   readonly name: LocalizedText
@@ -65,11 +49,6 @@ export interface ExtensionMetadata {
   readonly issues?: string
 }
 
-/**
- * Parses a canonical opaque extension or registry identifier.
- *
- * Dots separate syntax segments and carry no ownership or permission meaning.
- */
 export function parseId(input: unknown, path: FieldPath = []): string {
   const value = parseString(input, path)
   if (!/^[a-z](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z](?:[a-z0-9-]*[a-z0-9])?)*$/.test(value)) {
@@ -79,11 +58,6 @@ export function parseId(input: unknown, path: FieldPath = []): string {
   return value
 }
 
-/**
- * Canonicalizes a locale using the host's Intl implementation.
- *
- * Invalid identifiers produce invalid-format at the submitted field path.
- */
 export function normalizeLocale(input: unknown, path: FieldPath = []): string {
   const locale = parseString(input, path)
   try {
@@ -93,12 +67,6 @@ export function normalizeLocale(input: unknown, path: FieldPath = []): string {
   }
 }
 
-/**
- * Normalizes locale keys while preserving literal text contents.
- *
- * Dictionary values require the declared default and reject canonical-key collisions. Returns a new
- * dictionary; string inputs retain their contents.
- */
 export function normalizeLocalizedText(
   input: unknown,
   defaultLocale: string,
@@ -126,12 +94,6 @@ export function normalizeLocalizedText(
   return Object.fromEntries(entries)
 }
 
-/**
- * Resolves literal display text for the requested locale.
- *
- * Prefers an exact canonical tag, then a same-language and same-script variant, then the declared
- * default. Candidate order is deterministic and text contents are preserved.
- */
 export function resolveLocalizedText(
   input: LocalizedText,
   locale: string,
@@ -158,11 +120,6 @@ export function resolveLocalizedText(
   return text[match([requested], candidates, fallback)]!
 }
 
-/**
- * Validates a URL reference and preserves its authored spelling.
- *
- * Resolution and network access belong to the consumer.
- */
 export function parseUrlReference(input: unknown, path: FieldPath = []): string {
   const value = parseString(input, path)
   if (!URL.canParse(value, 'https://registry.invalid/index.json')) {
@@ -172,11 +129,6 @@ export function parseUrlReference(input: unknown, path: FieldPath = []): string 
   return value
 }
 
-/**
- * Validates an absolute URL and preserves its authored spelling.
- *
- * Scheme policy belongs to the network or open operation that consumes it.
- */
 export function parseAbsoluteUrl(input: unknown, path: FieldPath = []): string {
   const value = parseUrlReference(input, path)
   if (!URL.canParse(value)) {
@@ -186,17 +138,10 @@ export function parseAbsoluteUrl(input: unknown, path: FieldPath = []): string {
   return value
 }
 
-/**
- * Parses shared display metadata and normalizes locale identifiers.
- *
- * Preserves free text and unknown category strings; returns only defined metadata fields.
- */
 export function parseMetadata(value: Record<string, unknown>, path: FieldPath): ExtensionMetadata {
   const defaultLocale = normalizeLocale(value.defaultLocale, [...path, 'defaultLocale'])
-  /** Parses a localized field using this metadata object's default locale. */
   const localized = (input: unknown, location: FieldPath) =>
     normalizeLocalizedText(input, defaultLocale, location)
-  /** Parses a metadata string list while preserving item order and contents. */
   const strings = (input: unknown, location: FieldPath) => parseArray(input, location, parseString)
 
   return {

@@ -40,7 +40,6 @@ import { parseStrictJson } from './json'
 
 export type DeeplinkScheme = 'kisaki' | 'kisaki-dev'
 
-/** Native view destinations exposed through public links, with preferences addressed as a whole. */
 export type PublicViewTarget =
   | Extract<
       NativeViewTarget,
@@ -69,7 +68,6 @@ export interface DeeplinkOpenInputMap {
   readonly novel: WithoutRoot<NovelOpenInput, 'novelId'>
 }
 
-/** An external identity resolves only the root; child and file identities remain local. */
 export type DeeplinkOpenTarget = {
   [K in WorkType]: {
     readonly workType: K
@@ -77,10 +75,6 @@ export type DeeplinkOpenTarget = {
   } & DeeplinkOpenInputMap[K]
 }[WorkType]
 
-/**
- * Clues require a useful name or one complete external identity and can contain at most one
- * external identity.
- */
 export type DeeplinkAddInput = {
   [K in EntryType]: {
     readonly entryType: K
@@ -91,10 +85,6 @@ export type DeeplinkAddInput = {
   }
 }[EntryType]
 
-/**
- * Path excludes the extension ID. Empty path components, ordered repeated query keys and an
- * explicitly empty fragment retain their meaning.
- */
 export interface ExtensionDeeplinkRequest {
   readonly path: readonly string[]
   readonly query: readonly (readonly [name: string, value: string])[]
@@ -109,11 +99,6 @@ export type DeeplinkRequest = { readonly scheme: DeeplinkScheme } & (
 )
 
 export interface DeeplinkApi {
-  /**
-   * Registers the instance's single live link handler and returns its removal handle.
-   *
-   * The handler resolves after the requested business operation and its necessary cleanup finish.
-   */
   register(
     handler: (request: ExtensionDeeplinkRequest, execution: ExecutionContext) => Promise<void>,
   ): Promise<Registration<{ readonly extensionId: string }>>
@@ -143,7 +128,6 @@ function invalid(message = 'Invalid application link'): never {
   throw new DesktopError('InvalidInput', message)
 }
 
-/** Query components first convert plus signs to spaces. */
 function decode(value: string, query = false): string {
   try {
     return decodeURIComponent(query ? value.replaceAll('+', ' ') : value)
@@ -176,7 +160,6 @@ function parseOpenTarget(input: unknown): DeeplinkOpenTarget {
   ) as DeeplinkOpenTarget
 }
 
-/** Parses add-link clues, requiring a useful name or exactly one complete external identity. */
 function parseAddInput(input: unknown): DeeplinkAddInput {
   const record = parseRecord(input)
   const entryType = parseValue(v.picklist(entryTypes), record.entryType)
@@ -198,7 +181,6 @@ function parseAddInput(input: unknown): DeeplinkAddInput {
   return result as DeeplinkAddInput
 }
 
-/** Interaction options are call context and cannot be carried as link data. */
 export function parseRequest(input: unknown): DeeplinkRequest {
   const value = parseValue(
     v.variant('type', [
@@ -456,10 +438,6 @@ function parseViewLink(
   return invalid('Unknown native view link')
 }
 
-/**
- * Checks raw dot segments before URL normalization and rejects malformed component encoding.
- * Extension routes preserve ordered query entries, empty path components and explicit fragments.
- */
 export function parse(input: string): DeeplinkRequest {
   const { scheme, authority, path, query, fragment } = decodeUrl(input)
   if (authority === 'extension') {
@@ -494,62 +472,84 @@ function address(identifier: EntryIdentifier): string[] {
     : ['external', identifier.source, identifier.sourceId]
 }
 
-/**
- * Validates and formats a structured request, encoding each path and value once.
- *
- * Formatting performs no lookup, installation or implicit selection.
- */
-export function format(input: DeeplinkRequest): string {
-  const request = parseRequest(input)
-  let path: readonly string[]
-  let query: readonly (readonly [string, string])[] = []
-  let fragment: string | undefined
+interface LinkParts {
+  path: readonly string[]
+  query?: readonly (readonly [string, string])[]
+  fragment?: string | undefined
+}
 
-  if (request.type === 'extension') {
-    path = [request.extensionId, ...request.path]
-    query = request.query
-    fragment = request.fragment
-  } else if (request.type === 'open') {
-    const { workType, identifier, ...selection } = request.target
-    path = [workType, ...address(identifier)]
-    query = Object.entries(selection).map(([key, value]) => [
-      key,
-      key === 'position' ? JSON.stringify(value) : String(value),
-    ])
-  } else if (request.type === 'add') {
-    path = []
-    const { entryType, clues, profileId } = request.input
-    const values: [string, string][] = [['entryType', entryType]]
-    for (const [key, value] of Object.entries(clues)) {
-      if (key === 'externalIdentities') {
-        const identity = clues.externalIdentities![0]
-        values.push(['source', identity.source], ['sourceId', identity.sourceId])
-      } else {
-        values.push([key, typeof value === 'string' ? value : JSON.stringify(value)])
+function viewParts(target: PublicViewTarget): LinkParts {
+  switch (target.type) {
+    case 'entry': {
+      const selection = omitFields(target, ['type', 'entryType', 'identifier'])
+      return {
+        path: [target.entryType, ...address(target.identifier)],
+        query: Object.entries(selection).map(([key, value]) => [key, String(value)]),
       }
     }
-    if (profileId !== undefined) {
-      values.push(['profileId', profileId])
-    }
-    query = values
-  } else {
-    const target = request.target
-    if (target.type === 'entry') {
-      path = [target.entryType, ...address(target.identifier)]
-      query = Object.entries(omitFields(target, ['type', 'entryType', 'identifier'])).map(
-        ([key, value]) => [key, String(value)],
-      )
-    } else if (target.type === 'entries') {
-      path = [target.entryType]
-    } else if (target.type === 'collection' || target.type === 'tag' || target.type === 'note') {
-      path = target.id === undefined ? [target.type] : [target.type, target.id]
-    } else {
+    case 'entries':
+      return { path: [target.entryType] }
+    case 'collection':
+    case 'tag':
+    case 'note':
+      return { path: target.id === undefined ? [target.type] : [target.type, target.id] }
+    case 'library':
+    case 'preferences':
+    case 'tasks':
+    case 'scanner':
+    case 'metadataProfiles':
+    case 'extensions': {
       const { type, ...selection } = target
-      path = [type === 'metadataProfiles' ? 'metadata-profiles' : type]
-      query = Object.entries(selection).map(([key, value]) => [key, String(value)])
+      return {
+        path: [type === 'metadataProfiles' ? 'metadata-profiles' : type],
+        query: Object.entries(selection).map(([key, value]) => [key, String(value)]),
+      }
     }
   }
+}
 
+function linkParts(request: DeeplinkRequest): LinkParts {
+  switch (request.type) {
+    case 'view':
+      return viewParts(request.target)
+    case 'extension':
+      return {
+        path: [request.extensionId, ...request.path],
+        query: request.query,
+        fragment: request.fragment,
+      }
+    case 'open': {
+      const { workType, identifier, ...selection } = request.target
+      return {
+        path: [workType, ...address(identifier)],
+        query: Object.entries(selection).map(([key, value]) => [
+          key,
+          key === 'position' ? JSON.stringify(value) : String(value),
+        ]),
+      }
+    }
+    case 'add': {
+      const { entryType, clues, profileId } = request.input
+      const query: [string, string][] = [['entryType', entryType]]
+      for (const [key, value] of Object.entries(clues)) {
+        if (key === 'externalIdentities') {
+          const identity = clues.externalIdentities![0]
+          query.push(['source', identity.source], ['sourceId', identity.sourceId])
+        } else {
+          query.push([key, typeof value === 'string' ? value : JSON.stringify(value)])
+        }
+      }
+      if (profileId !== undefined) {
+        query.push(['profileId', profileId])
+      }
+      return { path: [], query }
+    }
+  }
+}
+
+export function format(input: DeeplinkRequest): string {
+  const request = parseRequest(input)
+  const { path, query = [], fragment } = linkParts(request)
   if (path.some((part) => part === '.' || part === '..')) {
     invalid('Dot path components are not allowed')
   }

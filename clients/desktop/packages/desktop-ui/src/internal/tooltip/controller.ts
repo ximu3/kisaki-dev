@@ -1,27 +1,13 @@
-import { createSignal } from 'solid-js'
+import { createSignal, type Accessor } from 'solid-js'
 import { restoringModalFocus } from '../modal-host'
-import type { Accessor } from 'solid-js'
 
-/** Document-wide hint owner and the shared interval for immediate handoff. */
 interface TooltipGroup {
-  /** Relinquishes the current hint when another interaction takes document ownership. */
   owner?: (() => void) | undefined
-  /**
-   * Monotonic deadline in milliseconds for immediate handoff; Infinity represents the active warm
-   * period.
-   */
   warmUntil: number
 }
 
-/** Document-scoped hover groups coordinating tooltip delay and handoff timing. */
 const groups = new WeakMap<Document, TooltipGroup>()
 
-/**
- * Creates local hint-reading state that coordinates with a document after connection.
- *
- * Dismissal suppresses reopening until pointer and focus leave the current interaction. The
- * connection owner releases timers and shared ownership through its returned cleanup.
- */
 export function createTooltip(delay?: Accessor<number | undefined>) {
   const [open, setOpen] = createSignal(false)
   // An opening handed off from a warm tooltip has no pointer delay.

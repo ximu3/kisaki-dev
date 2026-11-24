@@ -7,7 +7,6 @@ import type { MainClient } from '../../../../infrastructure/api'
 import type { TaskQueryState } from './query'
 import { taskTypeLabel } from './presentation'
 
-/** Keeps search leading and exact-value filters trailing within the active scope. */
 export function TaskFilters(props: {
   api: MainClient
   query: TaskQueryState

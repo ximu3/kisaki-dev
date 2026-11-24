@@ -1,18 +1,16 @@
-import { createMemo, onCleanup, Show } from 'solid-js'
+import { createMemo, onCleanup } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
 import { Settings2 } from '@lucide/solid'
 import { catalogKey } from '../../../../../shared/catalog-ref'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@kisaki3/desktop-ui/tooltip'
-import { Alert } from '@kisaki3/desktop-ui/alert'
-import { Button } from '@kisaki3/desktop-ui/button'
 import { FieldAction } from '@kisaki3/desktop-ui/field'
 import { Select } from '@kisaki3/desktop-ui/select'
-import { errorMessage } from '../../../../infrastructure/notifications'
 import type { MainClient } from '../../../../infrastructure/api'
 import { ThemeSelector } from '../../domain-ui/themes/selector'
 import { catalogSelection } from '../../domain-ui/catalog-selection'
 import type { PreferenceDraft } from './draft'
 import { PreferenceField } from './field'
+import { QueryError } from '../../../../infrastructure/query/error'
 
 function createCatalog<T>(
   api: MainClient,
@@ -24,22 +22,6 @@ function createCatalog<T>(
   api.topics.addEventListener(topic, refresh)
   onCleanup(() => api.topics.removeEventListener(topic, refresh))
   return { items, refresh }
-}
-
-/** Keeps the currently edited appearance choice when a catalog read can be retried. */
-function CatalogError(props: { api: MainClient; error: unknown; retry: () => void }) {
-  return (
-    <Show when={props.error}>
-      {(cause) => (
-        <Alert tone="destructive" role="alert">
-          {errorMessage(cause())}{' '}
-          <Button variant="outline" onClick={props.retry}>
-            {props.api.t('runtime.retry')}
-          </Button>
-        </Alert>
-      )}
-    </Show>
-  )
 }
 
 export function ThemeField(props: { api: MainClient; draft: PreferenceDraft; manage: () => void }) {
@@ -69,7 +51,7 @@ export function ThemeField(props: { api: MainClient; draft: PreferenceDraft; man
           <TooltipContent>{api.t('runtime.manage')}</TooltipContent>
         </Tooltip>
       </PreferenceField>
-      <CatalogError api={api} error={items.error} retry={refresh} />
+      <QueryError retryLabel={api.t('runtime.retry')} error={items.error} retry={refresh} />
     </>
   )
 }
@@ -107,7 +89,7 @@ export function TranslationField(props: { api: MainClient; draft: PreferenceDraf
           }}
         />
       </PreferenceField>
-      <CatalogError api={api} error={items.error} retry={refresh} />
+      <QueryError retryLabel={api.t('runtime.retry')} error={items.error} retry={refresh} />
     </>
   )
 }

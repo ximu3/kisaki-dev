@@ -5,7 +5,6 @@ import type { PackUserConfig } from 'vite-plus/pack'
 
 interface LibraryOptions {
   manifest: { exports: Record<string, { 'kisaki-source': string }> }
-  /** The generator accepts --check to verify its committed output. */
   generated?: { task: string; command: string }
   pack?: Pick<PackUserConfig, 'platform' | 'hooks' | 'plugins' | 'deps' | 'css'>
   browserTests?: boolean
@@ -26,7 +25,6 @@ const nativeCompilerManifest = requireTypeScript.resolve(
   `@typescript/typescript-${process.platform}-${process.arch}/package.json`,
 )
 
-/** tsdown detects 7.0 automatically; pin its generator to the installed 7.1 executable. */
 const tscPath = join(
   dirname(nativeCompilerManifest),
   'lib',

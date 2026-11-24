@@ -23,17 +23,10 @@ import { parseMetadataProfileDefinition, type MetadataProfileSnapshot } from '..
 
 const path = fromParser(parseAbsolutePath)
 
-/** Matching files to an existing work's parts belongs to holdings. */
 export interface ScanDefinition {
-  /** Positive candidate depth from the discovery root; 1 selects direct children. */
   readonly entryDepth: number
   readonly inputKinds: NonEmptyArray<'directory' | 'file'>
-  /** Alternative inclusion filters; an empty list adds no restriction. */
   readonly include: readonly PathFilter[]
-  /**
-   * Alternative exclusions applied before inclusion; an excluded directory also excludes its
-   * subtree.
-   */
   readonly exclude: readonly PathFilter[]
 
   readonly identification: {
@@ -51,7 +44,6 @@ export interface ScanConfigFields {
   readonly watchEnabled: boolean
 }
 
-/** Saved scan configuration with explicit definition validity and formal order. */
 export interface ScanConfig<T extends WorkType = WorkType> {
   readonly id: string
   readonly name: string
@@ -64,13 +56,10 @@ export interface ScanConfig<T extends WorkType = WorkType> {
 
   readonly sortOrder: number
 
-  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
-  /** UTC milliseconds since the Unix epoch. */
   readonly updatedAt: number
 }
 
-/** Existing-content registration defaults to false and watch activation defaults to true. */
 export interface ScanConfigCreate {
   readonly name: string
   readonly workType: WorkType
@@ -88,7 +77,6 @@ export interface ScanConfigUpdate {
   readonly expected?: Partial<ScanConfigFields>
 }
 
-/** Configuration and metadata profile captured for one accepted scan and retained in its report. */
 export type ScanConfigSnapshot<T extends WorkType = WorkType> = {
   [K in T]: {
     readonly name: string
@@ -101,7 +89,6 @@ export type ScanConfigSnapshot<T extends WorkType = WorkType> = {
 }[T]
 
 export interface ScanConfigsApi {
-  /** Reads configuration summaries in formal order, optionally restricted to one work medium. */
   list<T extends WorkType>(
     filter: { readonly workType: T },
     call?: CallOptions,
@@ -111,39 +98,21 @@ export interface ScanConfigsApi {
     call?: CallOptions,
   ): Promise<readonly Omit<ScanConfig, 'definition'>[]>
 
-  /** Invalid definitions and unavailable references remain explicit. */
   get(id: string, call?: CallOptions): Promise<ScanConfig | null>
 
-  /**
-   * Commits a configuration before separately owned watch and initial-scan adoption.
-   *
-   * Saved success does not establish success of those later operations.
-   */
   create<I extends ScanConfigCreate>(
     input: I,
     call?: CallOptions,
   ): Promise<ScanConfig<I['workType']>>
 
-  /**
-   * Compares and commits changed fields.
-   *
-   * Accepted scans retain their captured configuration while later work adopts the new values.
-   */
   update(id: string, input: ScanConfigUpdate, call?: CallOptions): Promise<ScanConfig>
 
-  /**
-   * Accepted scans continue under their captured configuration. Existing library records stay
-   * intact.
-   */
   delete(id: string, call?: CallOptions): Promise<void>
 
-  /** Reorders selected configurations against the complete saved directory baseline. */
   reorder(input: ReorderInput, call?: CallOptions): Promise<void>
 
-  /** Reads fixed native clue-extraction presets for copying into a draft. */
   listRulePresets(call?: CallOptions): Promise<readonly ClueExtractionPreset[]>
 
-  /** Callers subscribe before reading; runtime state has its own observation API. */
   onInvalidated(listener: () => void): Disposable
 }
 
@@ -171,11 +140,6 @@ function definitionSchema(parseRule: typeof parseClueExtractionRuleShape) {
   })
 }
 
-/**
- * Parses stored definition structure without compiling user regular expressions.
- *
- * Saving or execution requires full definition validation.
- */
 export function parseScanDefinitionShape(input: unknown): ScanDefinition {
   return parseValue(
     definitionSchema(parseClueExtractionRuleShape),
@@ -184,20 +148,10 @@ export function parseScanDefinitionShape(input: unknown): ScanDefinition {
   )
 }
 
-/**
- * Parses a scan definition and validates all patterns and capture references, including disabled
- * rules.
- *
- * Callers run this validator in a bounded, terminable execution unit.
- */
 export function parseScanDefinition(input: unknown): ScanDefinition {
   return parseValue(definitionSchema(parseClueExtractionRule), input, 'Invalid scanner definition')
 }
 
-/**
- * The caller supplies a bounded, terminable validation unit; the configuration owner checks profile
- * existence, matching work type and path accessibility.
- */
 export function parseScanConfigCreate(input: unknown): ScanConfigCreate {
   return parseValue(
     v.strictObject({
@@ -214,13 +168,6 @@ export function parseScanConfigCreate(input: unknown): ScanConfigCreate {
   )
 }
 
-/**
- * Parses editable configuration fields and their baselines, treating definition as one complete
- * value.
- *
- * Definition validation runs in a caller-owned bounded, terminable unit. Work type, ordering and
- * timestamps are outside ordinary edits.
- */
 export function parseScanConfigUpdate(input: unknown): ScanConfigUpdate {
   const fields = v.strictObject(
     optionalFields({
@@ -241,10 +188,6 @@ export function parseScanConfigUpdate(input: unknown): ScanConfigUpdate {
   return value
 }
 
-/**
- * Parses historical rule structure without compiling patterns and checks the captured profile's
- * work type.
- */
 export function parseScanConfigSnapshot(input: unknown): ScanConfigSnapshot {
   const { workType } = parseValue(v.looseObject({ workType: v.picklist(workTypes) }), input)
   return parseValue(

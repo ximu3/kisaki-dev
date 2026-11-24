@@ -50,11 +50,9 @@ interface QueryCase {
 
   run(): unknown
 
-  /** Checks independently calculated results before sampling begins. */
   verify(value: unknown): void
 }
 
-/** Independent English comparator for this fixed workload's names, using natural number order. */
 const fixtureCollator = new Intl.Collator('en', {
   usage: 'sort',
   numeric: true,
@@ -101,7 +99,6 @@ function resultSet(
       parameters: [200, offset],
       expectedRows: Math.min(200, expected.length),
       run: () => list.all(200, offset),
-      /** Compares every returned identity against the fixture's independent interval. */
       verify: (value) =>
         assert.deepEqual(
           value,
@@ -204,7 +201,6 @@ export async function measureStorage({ profile, resources }: StorageMeasurementI
     // The entry-ordered covering index supports both distinct enumeration and a single-entry probe.
     const tagged = `select entry_id as id from entry_tags indexed by entry_tags_entry
       where tag_id in (${dynamicTags})`
-    /** Evaluates the fixture's hundred tag rules independently of SQL. */
     const isDynamic = (entry: FixtureEntry) =>
       entry.ordinal % 200 < 100 || (entry.ordinal + 73) % 200 < 100
     const queries: QueryCase[] = [
@@ -256,7 +252,6 @@ export async function measureStorage({ profile, resources }: StorageMeasurementI
       statement: identitySql,
       parameters: ['fixture-source', 'source-42000'],
       expectedRows: 1,
-      /** Finds the exact source identity without normalizing either coordinate. */
       run: () => identity.get('fixture-source', 'source-42000'),
       verify: (value) => assert.deepEqual(value, { entry_id: entries[42000]!.id }),
     })
@@ -335,7 +330,6 @@ export async function measureStorage({ profile, resources }: StorageMeasurementI
     const results: QueryMeasurement[] = []
     const writeSamplesMs: number[] = []
 
-    /** Measures a durable short transaction that restores the fixture's original favorite state. */
     const write = storage.db.$client.transaction(() => {
       connection
         .prepare('update entry_evaluations set favorite=1-favorite where entry_id=?')

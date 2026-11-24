@@ -1,4 +1,3 @@
-/** Connects outside pointer and platform close requests to the currently presented popup. */
 export function watchPopupDismissal(
   panel: HTMLElement,
   anchor: HTMLElement,

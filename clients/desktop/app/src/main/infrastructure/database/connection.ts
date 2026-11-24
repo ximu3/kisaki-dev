@@ -1,10 +1,5 @@
 import type Database from 'better-sqlite3'
 
-/**
- * Configures connection-local constraints and FULL durability before the first file-identity write.
- *
- * macOS additionally requests fullfsync. Unsupported settings fail without selecting weaker ones.
- */
 export function configureConnection(connection: Database.Database): void {
   connection.pragma('foreign_keys = ON')
   connection.pragma('synchronous = FULL')
@@ -23,7 +18,6 @@ export function configureConnection(connection: Database.Database): void {
   }
 }
 
-/** Enables WAL on an identified library and verifies the journaling mode SQLite actually selected. */
 export function enableWal(connection: Database.Database): void {
   if (connection.pragma('journal_mode = WAL', { simple: true }) !== 'wal') {
     throw new Error('The database filesystem could not provide WAL')

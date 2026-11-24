@@ -3,11 +3,6 @@ import { promisify } from 'node:util'
 
 const execute = promisify(execFile)
 
-/**
- * Runs a native window command and returns stdout after its output streams close.
- *
- * Cancellation ends the command, and the wrapper still waits for stream closure.
- */
 async function runWindowCommand(
   command: string,
   args: string[],
@@ -25,12 +20,6 @@ async function runWindowCommand(
   }
 }
 
-/**
- * Observes windows belonging to the test-owned process through host APIs.
- *
- * Uses Windows, macOS or X11 observation; Wayland requires its separate procedure. Cancellation
- * stops the observation command.
- */
 export async function hasNativeWindow(pid: number, signal?: AbortSignal): Promise<boolean> {
   if (process.platform === 'win32') {
     // Direct .NET access does not depend on PowerShell module discovery in the task environment.
@@ -72,12 +61,6 @@ export async function hasNativeWindow(pid: number, signal?: AbortSignal): Promis
   return stdout.split('\n').some((line) => Number(line.trim().split(/\s+/)[2]) === pid)
 }
 
-/**
- * Requests normal closure of a test-owned application window.
- *
- * The caller observes application exit separately because the application can decline closure.
- * Cancellation stops the command but cannot undo a request already sent.
- */
 export async function closeNativeWindow(pid: number, signal?: AbortSignal): Promise<void> {
   if (process.platform === 'win32') {
     const stdout = await runWindowCommand(
@@ -114,7 +97,6 @@ export async function closeNativeWindow(pid: number, signal?: AbortSignal): Prom
   }
 }
 
-/** Queries the Windows nonclient hit at a physical client point without moving the user's pointer. */
 export async function captionHit(handle: string, x: number, y: number): Promise<number> {
   const command = `Add-Type -Namespace KisakiTest -Name Window -MemberDefinition @'
 [System.Runtime.InteropServices.DllImport("user32.dll")]

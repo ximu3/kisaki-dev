@@ -9,14 +9,12 @@ import type { Translate } from '@kisaki3/desktop-localization'
 import { reportError } from '../../../../infrastructure/notifications'
 import { arrangePages, movePages } from './order'
 
-/** Stable identity and presentation shared by the navigation rail and its preference field. */
 export interface NavigationPage {
   id: string
   title: (t: Translate) => string
   icon: Component
 }
 
-/** Shares one controlled ordered list between the rail's saved order and the preference draft. */
 export function PageOrder<T extends NavigationPage>(props: {
   t: Translate
   pages: readonly T[]

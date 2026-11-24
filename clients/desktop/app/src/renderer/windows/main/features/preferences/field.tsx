@@ -22,7 +22,6 @@ export function focusPreferenceField(panel: HTMLElement, key: string) {
   }
 }
 
-/** Prioritizes the main input of a compound control over its auxiliary buttons. */
 export function focusPreferenceValue(field: HTMLElement) {
   const value = field.querySelector('[data-preference-value]')
   const target =

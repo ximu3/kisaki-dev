@@ -39,7 +39,6 @@ export type TaskRunStatus = (typeof taskRunStatuses)[number]
 
 export type TaskTerminalStatus = (typeof terminalStatuses)[number]
 
-/** Reaching the reported total does not finish the task. */
 export type TaskProgress =
   | { readonly phase: string }
   | { readonly phase?: string; readonly completed: number; readonly total: number }
@@ -55,7 +54,6 @@ export interface TaskState {
   readonly canCancel: boolean
 }
 
-/** Times are Unix milliseconds. A failed run can carry both an error and a valid partial result. */
 export interface TaskRun<Result = JsonValue, Input = JsonValue> {
   readonly id: string
   readonly type: string
@@ -84,42 +82,33 @@ export interface TaskDefinition<Input = JsonValue> {
   readonly title: string
   readonly description?: string | null
   readonly input?: Input | null
-  /** Defaults to false; only executions with real safe checkpoints can enable pause controls. */
   readonly supportsPause?: boolean
 }
 
 export interface TaskExecutionContext<Result> extends ExecutionContext {
   readonly ref: TaskRunRef
 
-  /** Honors pause and cancellation at a safe point. Release synchronous database transactions before waiting. */
   checkpoint(): Promise<void>
 
-  /** Publishes live progress independently of the saved result. */
   reportProgress(progress: TaskProgress): void
 
-  /** Resolves after the checkpoint is saved. A write failure stops further work. */
   reportResult(result: Result): Promise<void>
 }
 
 export interface TaskQuery {
   readonly types?: readonly string[]
   readonly statuses?: readonly TaskRunStatus[]
-  /** Inclusive creation-time lower bound in UTC milliseconds since the Unix epoch. */
   readonly createdFrom?: number
-  /** Exclusive creation-time upper bound in UTC milliseconds since the Unix epoch. */
   readonly createdBefore?: number
   readonly search?: string
 }
 
 export interface TaskHistoryFilter {
   readonly types?: readonly string[]
-  /** Exclusive creation-time upper bound in UTC milliseconds since the Unix epoch. */
   readonly createdBefore?: number
 }
 
-/** Pause, resume and cancel on an ended run return its terminal state without restarting work. */
 export interface TasksApi {
-  /** Waits for execution and cleanup. Cancellation preserves completed work and any valid partial result. */
   run<Result, Input = JsonValue>(
     definition: TaskDefinition<Input>,
     execute: (context: TaskExecutionContext<Result>) => Promise<Result>,
@@ -132,35 +121,20 @@ export interface TasksApi {
     call?: CallOptions,
   ): Promise<ListResult<TaskRunSummary>>
 
-  /** After execution ends, history can confirm only the last successful write. */
   get(ref: TaskRunRef, call?: CallOptions): Promise<TaskRun | null>
 
-  /** Delivers the current state first. Disposing the observation leaves the task running. */
   observe(ref: TaskRunRef, listener: Listener<TaskState>, call?: CallOptions): Promise<Disposable>
 
-  /**
-   * A live waiter receives the execution outcome, including a valid result if the final history write fails.
-   * After the live run is released, a new wait reads the last saved checkpoint. An unconfirmed
-   * completion appears as interrupted. Cancelling the wait leaves the task running.
-   */
   wait(ref: TaskRunRef, call?: CallOptions): Promise<TaskTerminalRun>
 
-  /** Requests a pause at the next safe checkpoint. Returns the current control state. */
   pause(ref: TaskRunRef, call?: CallOptions): Promise<TaskState>
 
-  /** Withdraws a pending pause or releases a paused task. */
   resume(ref: TaskRunRef, call?: CallOptions): Promise<TaskState>
 
-  /** Requests cancellation. Wait for the task to observe its final result after cleanup. */
   cancel(ref: TaskRunRef, call?: CallOptions): Promise<TaskState>
 
-  /** Deletes matching terminal records and returns their count. Business reports and recovery records survive. */
   clearHistory(filter?: TaskHistoryFilter, call?: CallOptions): Promise<number>
 
-  /**
-   * Subscribe before querying. History writes and status changes that affect query membership
-   * invalidate the read. Observe the run for live progress.
-   */
   onInvalidated(listener: () => void): Disposable
 }
 
@@ -215,7 +189,6 @@ export function parseTaskState(input: unknown): TaskState {
   )
 }
 
-/** Wall-clock timestamps need not be monotonic. */
 export function parseTaskRun(input: unknown): TaskRun {
   return parseValue(
     v.strictObject({
@@ -252,9 +225,6 @@ export function parseTaskDefinition(input: unknown): TaskDefinition {
   )
 }
 
-/**
- * Parses task filters and a half-open creation-time interval, preserving explicit empty selections.
- */
 export function parseTaskQuery(input: unknown): TaskQuery {
   return parseValue(
     v.pipe(

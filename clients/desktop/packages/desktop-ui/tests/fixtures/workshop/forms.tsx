@@ -230,9 +230,9 @@ export function Validation(): JSX.Element {
     ]
   }
 
-  // The selected field only exists after its tab renders.
   const locate = (id: string) => {
     setTab(id === 'title' ? 'basic' : 'long detail')
+    // The selected field only exists after its tab renders.
     queueMicrotask(() => document.getElementById(id)?.focus())
   }
 

@@ -68,7 +68,6 @@ export interface MetadataRelationMembers {
   }
 }
 
-/** An empty attribute map denotes membership-only relations. */
 export interface MetadataRelationAttributeValues {
   readonly workCharacters: {
     readonly role: CharacterRole | null
@@ -116,7 +115,6 @@ export type WorkCharacterMetadataScope =
   | 'all'
   | NonEmptyArray<{ readonly workTypes: NonEmptyArray<WorkType> }>
 
-/** Supplied work types, responsibilities and character-presence conditions intersect. */
 export type PersonWorkScopeCondition = AtLeastOne<{
   readonly workTypes: NonEmptyArray<WorkType>
   readonly roles: NonEmptyArray<PersonRole>
@@ -157,18 +155,10 @@ export type ScopedMetadataRelationKey<T extends EntryType = EntryType> = Extract
   keyof MetadataRelationScopeValues
 >
 
-/**
- * Omission supplies no replacement evidence. User scope separately authorizes changes.
- * Part-ownership lists use their implicit root-work scope.
- */
 export type MetadataRelationScopes<T extends EntryType = EntryType> = {
   readonly [K in ScopedMetadataRelationKey<T>]?: MetadataRelationScopeValues[K]
 }
 
-/**
- * Null denotes coverage outside the finite vocabulary. Providers still owe a complete read of that
- * coverage. The resulting facts are adoptable without replacement evidence.
- */
 export type MetadataSessionRelationScopes<T extends EntryType = EntryType> = {
   readonly [K in ScopedMetadataRelationKey<T>]?:
     | MetadataRelationScopeValues[K]
@@ -202,7 +192,6 @@ export function getMetadataRelations<T extends EntryType>(
   return result as MetadataRelationKey<T>[]
 }
 
-/** An empty attribute request still asks for the complete membership. */
 export const metadataRelationFields: {
   readonly [K in keyof MetadataRelationMembers]: readonly Extract<
     keyof MetadataRelationAttributeValues[K],
@@ -323,7 +312,6 @@ function hasScopeMembers(
   return matchingTypes.length > 0
 }
 
-/** Rejects conditions impossible in the declared root context. */
 export function parseMetadataRelationScope<
   T extends EntryType,
   K extends ScopedMetadataRelationKey<T>,
@@ -370,10 +358,6 @@ export function parseMetadataRelationScopes<T extends EntryType>(
   ) as MetadataRelationScopes<T>
 }
 
-/**
- * Null preserves coverage outside the finite vocabulary where permitted. Tag and volume-chapter
- * scopes are fixed to all.
- */
 export function parseMetadataSessionRelationScopes<T extends EntryType>(
   root: T,
   input: unknown,

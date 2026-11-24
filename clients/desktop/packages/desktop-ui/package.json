@@ -12,7 +12,8 @@
   "files": [
     "dist",
     "LICENSE",
-    "release-notes"
+    "release-notes",
+    "API.md"
   ],
   "sideEffects": [
     "**/*.css"

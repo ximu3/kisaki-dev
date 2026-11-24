@@ -1,10 +1,10 @@
-import { createEffect, createMemo, createSignal, createUniqueId, flush, Show, omit } from 'solid-js'
+import { createEffect, createMemo, createSignal, createUniqueId, Show, omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { callHandler } from '../../../internal/dom'
 import { closeWhenUnavailable, fieldAttributes } from '../../../internal/field'
 import { Icon, Calendar } from '../../../internal/icon/glyph'
 import { createPresentation } from '../../../internal/popup/presentation'
-import { createValue, onFormReset } from '../../../internal/state'
+import { commitNativeValue, createValue, onFormReset } from '../../../internal/state'
 import { InputFrame } from '../frame'
 import { nativeValidityChanged } from '../../../internal/form'
 import frame from '../styles.module.css'
@@ -13,24 +13,12 @@ import { latestDate, parseDate } from './calendar'
 import { DatePicker, type CalendarProps } from './picker'
 import styles from './styles.module.css'
 
-/**
- * Native date-editor and calendar props with localized validation feedback.
- *
- * Complete ISO dates and empty values cross the value boundary; incomplete segments remain native
- * drafts.
- */
 export interface DateInputProps
   extends Omit<InputProps, 'type' | 'min' | 'max' | 'step'>, CalendarProps {
   step?: number
   invalidDateMessage: string
 }
 
-/**
- * Connects native date segments and a themed calendar to one form value.
- *
- * The ref targets the editor. Browsing months or years leaves the value unchanged until a day is
- * chosen.
- */
 export function DateInput(props: DateInputProps): JSX.Element {
   const rest = omit(
     props,
@@ -74,8 +62,8 @@ export function DateInput(props: DateInputProps): JSX.Element {
   const min = createMemo(() => (parseDate(props.min ?? '') ? props.min : undefined))
   const max = createMemo(() => (parseDate(props.max ?? '') ? props.max! : latestDate))
 
-  // Ask the same native date constraint implementation about a day without disturbing the edited segments.
   const constraints = createMemo(() => {
+    // Ask the same native date constraint implementation about a day without disturbing the edited segments.
     const candidate = document.createElement('input')
     candidate.type = 'date'
     candidate.min = min() ?? ''
@@ -105,14 +93,8 @@ export function DateInput(props: DateInputProps): JSX.Element {
     nativeValidityChanged(input.form)
   }
 
-  // Native callbacks can inspect the accepted value before Solid would otherwise flush.
-  function commit(next: string) {
-    change(next)
-    flush()
-    sync()
-  }
+  const commit = commitNativeValue(change, sync)
 
-  // Picker edits travel through the same native events as typed edits.
   const enter = (date: string) => {
     input.value = date
     input.dispatchEvent(new Event('input', { bubbles: true }))

@@ -27,7 +27,6 @@ import { parseAbsolutePath } from '../paths'
 import { parseMetadataInput, type MetadataInput } from './metadata'
 import { parseIngestIssue, type IngestIssue } from './issues'
 
-/** Only file-bearing work directories can select a recognition profile. */
 export type IngestLocalContent<T extends WorkType> =
   | { readonly type: 'file'; readonly path: string }
   | ({ readonly type: 'directory'; readonly path: string } & (T extends 'game'
@@ -37,7 +36,6 @@ export type IngestLocalContent<T extends WorkType> =
           readonly recognitionProfileId?: string | null
         }))
 
-/** Work branches additionally accept local content and usage or completion records. */
 export type IngestAddInput<T extends EntryType = EntryType> = {
   [K in EntryType]: {
     readonly entryType: K
@@ -51,10 +49,6 @@ export type IngestAddInput<T extends EntryType = EntryType> = {
   } & (K extends WorkType ? { readonly localContent?: IngestLocalContent<K> } : object)
 }[T]
 
-/**
- * Issues retain excluded branches or ancillary failures. Name-only similarity cannot produce
- * alreadyExists.
- */
 export type IngestAddResult<T extends EntryType = EntryType> =
   | {
       readonly outcome: 'added'
@@ -68,10 +62,6 @@ export type IngestAddResult<T extends EntryType = EntryType> =
       readonly issues: readonly IngestIssue[]
     }
 
-/**
- * Parses an addition with the metadata, local content and personal fields allowed for its entry
- * type.
- */
 export function parseIngestAddInput(input: unknown): IngestAddInput {
   const { entryType } = parseValue(v.looseObject({ entryType: v.picklist(entryTypes) }), input)
   const initial = v.strictObject({
@@ -113,7 +103,6 @@ export function parseIngestAddInput(input: unknown): IngestAddInput {
   ) as IngestAddInput
 }
 
-/** Parses an addition outcome and requires distinct matched identities for alreadyExists. */
 export function parseIngestAddResult(input: unknown): IngestAddResult {
   const issues = v.array(fromParser(parseIngestIssue))
   return parseValue(

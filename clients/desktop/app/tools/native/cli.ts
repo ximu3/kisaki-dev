@@ -21,7 +21,11 @@ await runCli(async (signal) => {
 
     await checkNative(signal)
   } else {
-    const nativeDirectory = await buildNative(target, values['update-declarations'], signal)
+    const nativeDirectory = await buildNative({
+      target,
+      updateDeclarations: values['update-declarations'],
+      signal,
+    })
 
     console.info(nativeDirectory)
   }

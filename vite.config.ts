@@ -2,7 +2,6 @@ import { globSync } from 'node:fs'
 import { dirname } from 'node:path'
 import { defineConfig, normalizePath } from 'vite-plus'
 
-/** Standalone consumer projects are linted with their own installed tarballs and type declarations. */
 const installedConsumerInputs = globSync('**/tests/consumers/fixtures/*/package.json', {
   cwd: import.meta.dirname,
   exclude: [

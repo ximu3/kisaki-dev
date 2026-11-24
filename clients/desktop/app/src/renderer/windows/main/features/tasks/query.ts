@@ -6,7 +6,6 @@ import type { MainClient } from '../../../../infrastructure/api'
 
 const intervalSize = 100
 
-/** Starts a replacement while these many rows remain available in the direction of travel. */
 const preloadRows = 12
 
 interface TaskFilters {
@@ -15,7 +14,6 @@ interface TaskFilters {
   status: TaskRunStatus | ''
 }
 
-/** The complete count and the buffered rows from one history read. */
 interface TaskInterval extends ListResult<TaskRunSummary> {
   key: string
   revision: number
@@ -26,7 +24,6 @@ function fitOffset(offset: number, total = Infinity) {
   return Math.max(0, Math.min(offset, total - intervalSize))
 }
 
-/** Keeps one tab's query and buffered results through scrolling and invalidation. */
 export function createTaskQuery(
   api: MainClient,
   statuses: readonly TaskRunStatus[],
@@ -128,7 +125,6 @@ export function createTaskQuery(
   }
 
   return {
-    /** Identifies the adopted results across range reads of the same scope and filters. */
     generation,
     filtered: () => !!(filters().search || filters().type || filters().status),
     search: () => filters().search,
@@ -138,20 +134,15 @@ export function createTaskQuery(
     changeSearch: (value: string) => changeFilter('search', value),
     changeType: (value: string) => changeFilter('type', value),
     changeStatus: (value: TaskRunStatus | '') => changeFilter('status', value),
-    /** Full result count, undefined while the current filters have no snapshot. */
     total,
-    /** Reads a zero-based cached row. Undefined positions may be outside the buffered range. */
     rowAt(index: number) {
       const result = snapshot()
       return result?.items[index - result.offset]
     },
-    /** Requests the viewport's half-open range of logical rows, including overscan. */
     requestRange,
     error: (): unknown => (attemptedKey === key() ? list.error : undefined),
-    /** Invalidates the results and reloads the range when the tab is visible. */
     refresh,
   }
 }
 
-/** Query state shared by the toolbar and result area of one scope. */
 export type TaskQueryState = ReturnType<typeof createTaskQuery>

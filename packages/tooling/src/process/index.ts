@@ -4,28 +4,20 @@ import { fileURLToPath } from 'node:url'
 import { stopProcessGroup } from './unix.ts'
 
 export interface ProcessOptions {
-  /** Child working directory; omission inherits the current process directory. */
   cwd?: string
-  /** Complete child environment; omission inherits process.env as in Node's spawn(). */
   env?: NodeJS.ProcessEnv
-  /** Requests cancellation; command completion still waits for child stream closure. */
   signal?: AbortSignal | undefined
 }
 
 export class CommandFailed extends Error {
   readonly exitCode: number
 
-  /** Preserves a positive child exit status, using 1 for signal or startup failure. */
   constructor(command: string, code: number | null, signal: string | null) {
     super(`Tool failed: ${basename(command)} (${signal ?? code})`)
     this.exitCode = code && code > 0 ? code : 1
   }
 }
 
-/**
- * Runs a finite command with inherited diagnostics, waiting for closure and owned termination.
- * Startup failures and nonzero exit statuses reject the operation.
- */
 export async function run(
   command: string,
   args: string[],
@@ -105,7 +97,6 @@ function pnpmExecutable(): string {
   return executable
 }
 
-/** Runs a pnpm command with inherited diagnostics and waits for child closure. */
 export async function runPnpm(args: string[], options: ProcessOptions = {}): Promise<void> {
   await run(pnpmExecutable(), args, options)
 }

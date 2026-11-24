@@ -8,7 +8,6 @@ import { workTypes, type WorkType } from '../library/catalog'
 
 const path = fromParser(parseAbsolutePath)
 
-/** Every selected recognizer receives the same original input. */
 export interface RecognitionInput {
   readonly entryType: WorkType
   readonly path: string
@@ -16,17 +15,11 @@ export interface RecognitionInput {
   readonly clues: WorkClues
 }
 
-/** Registered source of additional work-identification clues for declared media. */
 export interface WorkRecognizer {
   readonly name: LocalizedText
   readonly description?: LocalizedText
   readonly workTypes: NonEmptyArray<WorkType>
 
-  /**
-   * Returns new usable clues or null when no clues can be added.
-   *
-   * A result cannot be an empty object, candidate list or unchanged copy of the input clues.
-   */
   recognize(input: RecognitionInput, context: ExecutionContext): Promise<WorkClues | null>
 }
 
@@ -38,17 +31,10 @@ export interface WorkRecognizerDescriptor {
 }
 
 export interface WorkRecognizersApi {
-  /** Reads registered recognizer descriptions and supported work media. */
   list(call?: CallOptions): Promise<readonly WorkRecognizerDescriptor[]>
 
-  /** Reads a current recognizer descriptor, returning null when its identity is unavailable. */
   get(id: string, call?: CallOptions): Promise<WorkRecognizerDescriptor | null>
 
-  /**
-   * Registers an implementation for its actual owner and instance and returns its lifetime handle.
-   *
-   * Scan configurations explicitly select participating recognizers.
-   */
   register(
     recognizerId: string,
     implementation: WorkRecognizer,
@@ -56,10 +42,8 @@ export interface WorkRecognizersApi {
   ): Promise<Registration<string>>
 }
 
-/** Original work-identification clues, validated independently from resolved metadata. */
 export const clues = fromParser((value) => parseIdentificationClues('game', value))
 
-/** Parses the candidate boundary, work medium and original clues supplied to recognition. */
 export function parseRecognitionInput(input: unknown): RecognitionInput {
   return parseValue(
     v.strictObject({
@@ -73,7 +57,6 @@ export function parseRecognitionInput(input: unknown): RecognitionInput {
   )
 }
 
-/** Execution checks that a non-null result adds usable evidence. */
 export function parseRecognitionResult(input: RecognitionInput, result: unknown): WorkClues | null {
   if (result === null) {
     return null

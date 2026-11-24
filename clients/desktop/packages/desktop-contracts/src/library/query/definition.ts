@@ -5,7 +5,6 @@ import { parseEntrySort, type EntrySort } from './sort'
 import { entryRefSchema, type EntryRef } from '../catalog'
 import { DesktopError } from '../../errors'
 
-/** Fixed query entrance intersected with rules, search and the caller's actual visibility. */
 export type EntryScope =
   | { readonly type: 'library' | 'favorites' | 'unclassified' }
   | { readonly type: 'collection' | 'tag' | 'note'; readonly id: string }
@@ -17,16 +16,11 @@ export interface EntryQuery {
   readonly sort: EntrySort
 }
 
-/**
- * Retains the last saved name of an unresolved target for display. Identity and access come from
- * the actual target.
- */
 export interface QueryReferenceLabel {
   readonly target: EntryRef | { readonly type: 'tag' | 'collection' | 'note'; readonly id: string }
   readonly name: string
 }
 
-/** Saved dynamic membership definition evaluated over the library with an explicit sort. */
 export interface DynamicRules {
   readonly search: string
   readonly rules: readonly EntryRule[]
@@ -41,10 +35,6 @@ const entryScopeSchema = v.union([
 
 const queryRulesSchema = v.array(fromParser(parseEntryRule))
 
-/**
- * Empty or entirely disabled rules define an empty result set. Enabled types determine which sorts
- * are allowed.
- */
 export function parseEntryQuery(input: unknown): EntryQuery {
   const value = parseValue(
     v.strictObject({
@@ -61,7 +51,6 @@ export function parseEntryQuery(input: unknown): EntryQuery {
   return { ...value, sort: parseEntrySort(value.sort, types) }
 }
 
-/** Parses display-name snapshots and requires each target identity to occur once. */
 export function parseQueryReferenceLabels(input: unknown): readonly QueryReferenceLabel[] {
   const label = v.strictObject({
     target: v.union([
@@ -82,7 +71,6 @@ export function parseQueryReferenceLabels(input: unknown): readonly QueryReferen
   )
 }
 
-/** Parses a saved membership definition, its explicit sort and display-only reference labels. */
 export function parseDynamicRules(input: unknown): DynamicRules {
   const value = parseValue(
     v.strictObject({

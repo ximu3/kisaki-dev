@@ -6,11 +6,6 @@ import surface from '../../internal/popup/surface.module.css'
 import { chartPart } from './parts'
 import styles from './styles.module.css'
 
-/**
- * Creates a renderer that reuses one tooltip viewport across samples.
- *
- * String content is inserted as text. An empty string remains the engine's empty-content signal.
- */
 export function createTooltipViewport() {
   let viewport: HTMLDivElement | undefined
   let last: string | HTMLElement | undefined
@@ -32,12 +27,10 @@ export function createTooltipViewport() {
   }
 }
 
-/** Applies the shared surface and returns a release function for its visibility observer. */
 function observeTooltip(engine: Tooltip): () => void {
   const element = engine.element
   let pending = 0
 
-  // A skipped opacity transition still needs to settle the exiting tooltip.
   const sync = () => {
     const visible = element.classList.contains(Tooltip.selectors.show)
     if (visible === element.hasAttribute('data-kui-chart-open')) {
@@ -58,6 +51,7 @@ function observeTooltip(engine: Tooltip): () => void {
         }
       }
 
+      // A skipped opacity transition still needs to settle the exiting tooltip.
       const exit = fade()
       if (exit) {
         void exit.finished.catch(finish)
@@ -101,7 +95,6 @@ function observeTooltip(engine: Tooltip): () => void {
   }
 }
 
-/** Tracks trigger listeners and surface observation for one active tooltip. */
 class ChartTooltipEngine extends Tooltip {
   readonly #stopObserving = observeTooltip(this)
 
@@ -122,10 +115,8 @@ class ChartTooltipEngine extends Tooltip {
   }
 }
 
-/** Tooltip placement, attributes and sample triggers from the Unovis TypeScript engine. */
 export type ChartTooltipProps = TooltipConfigInterface
 
-/** Contributes an engine-positioned tooltip with stable content and the shared popup surface. */
 export function ChartTooltip(props: ChartTooltipProps): JSX.Element {
   const rest = omit(props, 'attributes', 'triggers')
   const id = createUniqueId()

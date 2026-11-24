@@ -30,7 +30,6 @@ import { parseScanConfigCreate, type ScanConfigCreate } from './scanner/configs'
 import { parseShowcaseFields, type ShowcaseFields } from './library/showcase'
 import { parseApplicationVersion } from './app'
 
-/** Native recommendation groups with independently owned preparation and commit behavior. */
 export const onboardingGroups = Object.freeze([
   'preferences',
   'extensions',
@@ -43,7 +42,6 @@ export type OnboardingGroup = (typeof onboardingGroups)[number]
 
 export type OnboardingMode = 'firstUse' | 'update' | 'manual'
 
-/** Durable resource created or installed while applying a recommendation. */
 export type OnboardingResourceRef<G extends OnboardingGroup = OnboardingGroup> = {
   readonly preferences: never
   readonly extensions: { readonly type: 'extension'; readonly extensionId: string }
@@ -52,37 +50,24 @@ export type OnboardingResourceRef<G extends OnboardingGroup = OnboardingGroup> =
   readonly showcase: { readonly type: 'showcaseSection'; readonly sectionId: string }
 }[G]
 
-/** Established applied or skipped outcome with its handling time and any created resources. */
 export type OnboardingHandled =
   | {
       readonly outcome: 'skipped'
-      /** UTC milliseconds since the Unix epoch. */
       readonly handledAt: number
     }
   | {
       readonly outcome: 'applied'
-      /** UTC milliseconds since the Unix epoch. */
       readonly handledAt: number
       readonly resources: readonly OnboardingResourceRef[]
     }
 
-/**
- * Handled keys are stable native catalog identities. Deleted or unavailable resources leave
- * historical outcomes intact.
- */
 export interface OnboardingState {
-  /** UTC milliseconds since the Unix epoch; null until the guide is actually presented. */
   readonly firstPresentedAt: number | null
-  /** UTC milliseconds since the Unix epoch; null until first-use guidance is completed. */
   readonly firstCompletedAt: number | null
   readonly lastPresentedVersion: string | null
   readonly handled: Readonly<Record<string, OnboardingHandled>>
 }
 
-/**
- * Applicable recommendation with its native identity, current handling state and group-specific
- * source reference.
- */
 export type OnboardingItem = {
   readonly itemId: string
   readonly title: string
@@ -94,7 +79,6 @@ export type OnboardingItem = {
   | { readonly group: 'metadataProfiles' | 'showcase'; readonly presetId: string }
 )
 
-/** Existing repositories are referenced by their actual local IDs. */
 export type OnboardingExtensionSource =
   | ExtensionPackageSource
   | {
@@ -122,7 +106,6 @@ export interface OnboardingItemInput<G extends OnboardingGroup> {
   readonly input: OnboardingInputMap[G]
 }
 
-/** Preferences accepts exactly one item; other groups accept a nonempty selection. */
 export type OnboardingApplyInput = {
   [G in OnboardingGroup]: {
     readonly group: G
@@ -132,13 +115,11 @@ export type OnboardingApplyInput = {
   }
 }[OnboardingGroup]
 
-/** Safe failure summary attributed to installation, commit or runtime activation. */
 export interface OnboardingIssue {
   readonly stage: 'installation' | 'commit' | 'runtime'
   readonly error: ErrorSummary
 }
 
-/** One item's application outcome, retained resources and stage-specific issues. */
 export interface OnboardingItemResult<G extends OnboardingGroup = OnboardingGroup> {
   readonly itemId: string
   readonly outcome: 'applied' | 'notApplied' | 'notStarted'
@@ -146,10 +127,6 @@ export interface OnboardingItemResult<G extends OnboardingGroup = OnboardingGrou
   readonly issues: readonly OnboardingIssue[]
 }
 
-/**
- * Same-database groups commit atomically. Extension installation can remain durable even when its
- * handling record was not committed.
- */
 export type OnboardingApplyResult<G extends OnboardingGroup = OnboardingGroup> = {
   [K in G]: {
     readonly group: K
@@ -157,7 +134,6 @@ export type OnboardingApplyResult<G extends OnboardingGroup = OnboardingGroup> =
   }
 }[G]
 
-/** Explicit recommendation selection with the handling baselines required to mark it skipped. */
 export interface OnboardingSkipInput {
   readonly items: NonEmptyArray<{
     readonly itemId: string
@@ -166,51 +142,30 @@ export interface OnboardingSkipInput {
 }
 
 export interface OnboardingApi {
-  /** Reads saved presentation and handling state without changing it. */
   getState(call?: CallOptions): Promise<OnboardingState>
 
-  /** Reads recommendations applicable to the requested mode and their actual handling state. */
   listItems(
     input: { readonly mode: OnboardingMode },
     call?: CallOptions,
   ): Promise<readonly OnboardingItem[]>
 
-  /** Records a guide presentation after it has actually been shown. */
   markPresented(
     input: { readonly mode: OnboardingMode; readonly version: string },
     call?: CallOptions,
   ): Promise<OnboardingState>
 
-  /**
-   * Compares handling and business baselines before adopting the selected recommendations.
-   *
-   * Same-database groups commit together. Sequential extension installations preserve established
-   * outcomes when later work fails.
-   */
   apply<I extends OnboardingApplyInput>(
     input: I,
     call?: CallOptions,
   ): Promise<OnboardingApplyResult<I['group']>>
 
-  /**
-   * Marks selected unhandled recommendations as skipped after comparing their baselines.
-   *
-   * Already handled outcomes and timestamps remain unchanged when their baselines match. Skipping
-   * leaves accepted work running.
-   */
   skip(
     input: OnboardingSkipInput,
     call?: CallOptions,
   ): Promise<readonly { readonly itemId: string; readonly handled: OnboardingHandled }[]>
 
-  /**
-   * Finishes the guide presentation and records first completion when applicable.
-   *
-   * Closing the guide leaves unfinished items in their recorded state.
-   */
   complete(input: { readonly mode: OnboardingMode }, call?: CallOptions): Promise<OnboardingState>
 
-  /** Draft inputs remain owned by their editor. */
   onInvalidated(listener: () => void): Disposable
 }
 
@@ -246,16 +201,10 @@ const issue = v.strictObject({
   error: fromParser(parseErrorSummary),
 })
 
-/** Parses an established applied or skipped outcome with its timestamp and resource references. */
 export function parseOnboardingHandled(input: unknown): OnboardingHandled {
   return parseValue(handled, input, 'Invalid onboarding handled result')
 }
 
-/**
- * Parses saved presentation and handling state while preserving every valid catalog key.
- *
- * Keys matching Object.prototype names remain ordinary own properties.
- */
 export function parseOnboardingState(input: unknown): OnboardingState {
   return parseValue(
     v.strictObject({
@@ -340,10 +289,6 @@ const inputParsers = {
   showcase: parseShowcaseFields,
 }
 
-/**
- * Enforces unique item IDs, one preferences item and at most one new default profile per entry
- * kind. Callers run scanner regex validation in its normal bounded, terminable validation unit.
- */
 export function parseOnboardingApplyInput(input: unknown): OnboardingApplyInput {
   const record = parseRecord(input)
   const group = parseValue(v.picklist(onboardingGroups), record.group)
@@ -385,7 +330,6 @@ export function parseOnboardingApplyInput(input: unknown): OnboardingApplyInput 
   return value
 }
 
-/** Checks that every submitted item belongs to the requested group in the native catalog. */
 export function validateOnboardingItemGroups(
   input: OnboardingApplyInput,
   catalog: readonly Pick<OnboardingItem, 'itemId' | 'group'>[],
@@ -399,7 +343,6 @@ export function validateOnboardingItemGroups(
   }
 }
 
-/** Parses distinct recommendation IDs and their complete handling baselines. */
 export function parseOnboardingSkipInput(input: unknown): OnboardingSkipInput {
   const item = v.strictObject({ itemId: id, expectedHandled })
   return parseValue(
@@ -414,9 +357,6 @@ export function parseOnboardingSkipInput(input: unknown): OnboardingSkipInput {
   )
 }
 
-/**
- * Only extension reports may retain a durable resource for an item whose handling did not commit.
- */
 export function parseOnboardingApplyResult(input: unknown): OnboardingApplyResult {
   const value = parseValue(
     v.strictObject({

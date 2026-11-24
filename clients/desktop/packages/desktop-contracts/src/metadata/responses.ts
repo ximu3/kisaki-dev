@@ -30,10 +30,6 @@ import {
   type MetadataPartFields,
 } from './fields'
 
-/**
- * Supplying the original request checks returned fields, memberships and attributes against its
- * scope.
- */
 export function parseMetadataReadResult<T extends EntryType>(
   root: T,
   input: unknown,
@@ -181,10 +177,6 @@ export type MetadataReadParts<T extends EntryType> = {
   readonly [K in MetadataPartKey<T>]?: readonly MetadataReadPart<MetadataPartType<T, K>>[]
 }
 
-/**
- * Omission means unanswered. Successful arrays are complete within the declared session and request
- * scope.
- */
 export type MetadataReadResult<T extends EntryType = EntryType> = {
   [K in T]: {
     readonly objects?: {

@@ -32,15 +32,12 @@ import type { attachmentStorage } from './storage'
 import type { createResources } from '../resources'
 import type { createNetwork } from '../network'
 
-/** Immutable managed bytes plus the facts a business transaction may adopt. */
 export interface PreparedContent {
   readonly metadata: Attachment
   readonly resource: ReadResourceRef
-  /** Ends this acquisition after validation or ownership transfer. */
   dispose(): Promise<void>
 }
 
-/** Creates the attachment store for one locked data root. */
 export function createAttachments(
   dataRoot: string,
   native: NativeFiles,
@@ -55,7 +52,6 @@ export function createAttachments(
   const preparations = new Map<string, Attachment>()
   let queue = Promise.resolve()
 
-  /** Resolves the private layout without following an externally replaced shard or file link. */
   async function managedPath(id: string) {
     const path = storedFilePath(root, id)
     await checkDirectory(root)
@@ -67,7 +63,6 @@ export function createAttachments(
     return path
   }
 
-  /** Opens a local input or registered file with a stable public availability error. */
   async function openFile(path: string) {
     try {
       return await open(path, 'r')
@@ -78,7 +73,6 @@ export function createAttachments(
     }
   }
 
-  /** Checks actual readability and size without relinquishing the saved identity. */
   async function checkBytes(metadata: Attachment) {
     const handle = await openFile(await managedPath(metadata.id))
     try {
@@ -91,7 +85,6 @@ export function createAttachments(
     }
   }
 
-  /** Serializes acquisition/publication with physical reclamation, never blocking unrelated byte reads. */
   function owned<T>(action: () => Promise<T>) {
     const result = queue.then(action)
     queue = result.then(
@@ -103,7 +96,6 @@ export function createAttachments(
 
   const collection = createCollection(root, held, owned, call, report)
 
-  /** Retains one attachment until all resources derived from this acquisition end. */
   function hold(metadata: Attachment, prepared: boolean) {
     held.set(metadata.id, (held.get(metadata.id) ?? 0) + 1)
     const path = storedFilePath(root, metadata.id)
@@ -174,7 +166,6 @@ export function createAttachments(
 
   return {
     stage,
-    /** Snapshots former staging directories before this process starts accepting file inputs. */
     async interruptedStages() {
       if (!(await checkDirectory(temporary))) {
         return []
@@ -183,7 +174,6 @@ export function createAttachments(
         .filter((dir) => dir.isDirectory() && /^file-[a-zA-Z0-9]{6}$/.test(dir.name))
         .map((dir) => dir.name)
     },
-    /** Completes cleanup of the captured stages independently of this process's live preparations. */
     async cleanInterruptedStages(stages: readonly string[], signal: AbortSignal) {
       for (const name of stages) {
         signal.throwIfAborted()
@@ -202,7 +192,6 @@ export function createAttachments(
         }
       }
     },
-    /** Pins only the final referenced IDs until the owner's transaction adopts their metadata and references. */
     async forSave(ids: readonly string[], authorized: ReadonlyMap<string, ReadResourceRef>) {
       const reads: ReadResource[] = []
       const records: Attachment[] = []
@@ -238,7 +227,6 @@ export function createAttachments(
         return rethrowAfterRelease(error, dispose)
       }
     },
-    /** Publishes verified bytes under a fresh identity but creates no formal attachment row. */
     async prepare(
       file: StagedFile,
       mediaType: string,
@@ -261,12 +249,10 @@ export function createAttachments(
         return { metadata, ...hold(metadata, true) }
       })
     },
-    /** Reads metadata without claiming that the underlying file is available. */
     async get(id: string, options?: CallOptions) {
       options?.signal?.throwIfAborted()
       return call('getAttachment', id)
     },
-    /** Acquires only registered content and retains its identity if the file is missing. */
     read(id: string, options?: CallOptions) {
       return owned(async () => {
         options?.signal?.throwIfAborted()
@@ -295,7 +281,6 @@ export function createAttachments(
         ),
       }
     },
-    /** Replaces unavailable bytes only after checking the digest against the registered identity. */
     async repair(id: string, input: FileInput, options?: CallOptions) {
       const signal = options?.signal
       signal?.throwIfAborted()
@@ -327,7 +312,6 @@ export function createAttachments(
     },
     retire: collection.retire,
     cleanup: (options?: CallOptions) => collection.cleanup(options?.signal),
-    /** Waits for admitted reclamation and acquisitions before closing the database. */
     async drain() {
       await queue
       await collection.drain()

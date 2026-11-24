@@ -3,9 +3,6 @@ import { Button } from '@kisaki3/desktop-ui/button'
 import { toast, type ToastHandle } from '@kisaki3/desktop-ui/toast'
 import type {} from './api.js'
 
-/**
- * Publishes synthetic loading messages and exposes retained handles for publisher-lifetime checks.
- */
 export function ToastOwner(): JSX.Element {
   let handle: ToastHandle | undefined
 

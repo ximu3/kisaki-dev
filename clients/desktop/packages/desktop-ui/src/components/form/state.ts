@@ -1,25 +1,20 @@
 import { createMemo, createSignal, flush, type Accessor } from 'solid-js'
 import type { FieldIssue } from '../../internal/form'
 
-/** Business validation, field navigation and commitment supplied by the draft owner. */
 export interface FormOptions {
   validate?: (() => readonly FieldIssue[]) | undefined
-  /** Reading order across mounted and temporarily hidden fields. */
   order?: (() => readonly string[]) | undefined
   locate?: ((id: string) => void) | undefined
 
-  /** Commits the captured edit. A null submitter requests the regular save action. */
   onSubmit: (submitter: HTMLElement | null) => void | Promise<void>
 }
 
-/** Form-associated native controls with browser validity and a focus target. */
 type ValidatedControl =
   | HTMLInputElement
   | HTMLSelectElement
   | HTMLTextAreaElement
   | HTMLButtonElement
 
-/** Associates native validity with a Field or an independently named control. */
 function fieldKey(control: HTMLElement): string | undefined {
   return (
     control.closest<HTMLElement>('[data-field-key]')?.dataset.fieldKey ||
@@ -30,22 +25,16 @@ function fieldKey(control: HTMLElement): string | undefined {
   )
 }
 
-/** Native form binding used by Form while the instance is mounted. */
 export const formBinding = Symbol('form binding')
 
-/** State of one editable object's submission and its accessible feedback. */
 export interface FormState {
-  /** Stays true until the accepted business commit settles. */
   busy: Accessor<boolean>
   issues: Accessor<readonly FieldIssue[]>
   activeFieldId: Accessor<string | null>
   message: Accessor<string | undefined>
 
-  /** Shares any pending commit. Invalid fields resolve false and business failures reject. */
   submit: (submitter?: HTMLElement | null) => Promise<boolean>
-  /** Clears displayed feedback after the owner discards or replaces its draft. */
   clear: () => void
-  /** Reveals the field associated with the selected feedback message. */
   locate: (id: string) => void
 
   readonly [formBinding]: {
@@ -56,7 +45,6 @@ export interface FormState {
   }
 }
 
-/** Creates the instance shared by a form, its shortcuts and a close decision. */
 export function createForm(options: FormOptions): FormState {
   const [node, setNode] = createSignal<HTMLFormElement>()
   const [attempted, setAttempted] = createSignal(false)

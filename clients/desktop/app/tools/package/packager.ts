@@ -16,7 +16,6 @@ export interface ArtifactReceipt {
   version: string
   buildId: string
   testOnly: boolean
-  /** File names relative to the directory containing this receipt. */
   files: { path: string; sha256: string }[]
 }
 
@@ -27,12 +26,6 @@ interface PackagingContext {
   testOnly: boolean
 }
 
-/**
- * Packages a verified runtime on its matching target runner and returns the artifact receipt path.
- *
- * Checks the target and runtime byte inventory, then produces every target format. A test fixture
- * may request just its smoke carrier. The receipt records completed files before staging cleanup.
- */
 export async function packageDesktop(
   target: DesktopTarget,
   options: { testOnly?: boolean; smokeOnly?: boolean; signal?: AbortSignal } = {},
@@ -116,12 +109,6 @@ async function verifyStagedRuntime(
   }
 }
 
-/**
- * Writes builder configuration for the verified runtime and packaging output directory.
- *
- * Production macOS packaging requires the project's signing identity; test-only packaging disables
- * macOS signing.
- */
 async function writeBuilderConfig(context: PackagingContext): Promise<string> {
   const { build, staging, output, testOnly } = context
   const config = parseDocument(await readFile(join(appRoot, 'electron-builder.yml'), 'utf8'))

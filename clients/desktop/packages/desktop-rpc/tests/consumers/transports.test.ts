@@ -5,7 +5,6 @@ import { installConsumer, lintConsumer } from '@kisaki3/tooling/testing/consumer
 
 const packageRoot = resolve(import.meta.dirname, '../..')
 
-/** Installs and compiles the selected transport fixture; its test owns child-process closure. */
 async function prepareConsumer(host: 'node' | 'electron', signal: AbortSignal): Promise<string> {
   const directory = await installConsumer(
     join(import.meta.dirname, 'fixtures', host),

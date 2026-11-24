@@ -25,7 +25,6 @@ async function activate() {
   const clicked = Promise.withResolvers<NativeViewTarget>()
   const appId = 'me.kisaki.dev'
   const notifications = createNotifications(appId, {
-    /** Ordinary application launches do not acknowledge notification clicks. */
     activate: () => assert.fail('Unexpected plain activation'),
     openUrl: () => assert.fail('Unexpected URL activation'),
     notification(value) {

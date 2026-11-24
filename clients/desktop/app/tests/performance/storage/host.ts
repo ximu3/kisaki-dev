@@ -1,7 +1,6 @@
 import type { ElectronApplication } from '@playwright/test'
 import type { StorageMeasurementInput } from './measurement'
 
-/** Returns the worker's report after a clean exit and propagates its original failure. */
 export async function runStorageWorker(
   desktop: ElectronApplication,
   input: StorageMeasurementInput & { entry: string },

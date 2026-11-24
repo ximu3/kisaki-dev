@@ -10,23 +10,16 @@ import { serveDocument } from '../../infrastructure/windows/document'
 import type { Application } from '../compose'
 import { openWindowDocument } from './document'
 
-/** Height of the main window's chrome in DIP at 100% interface scale. */
 const baseTitlebarHeight = 31.5
 
-/** Window actions owned by the application across document replacements. */
 interface WindowHost {
-  /** Applies the current close preference to the native window. */
   close(): void
-  /** Requests a normal application restart and presents its outcome to the user. */
   restart(this: void): void
-  /** Binds navigation to the receiver installed by this document. */
   ready(navigate: (target: NativeViewTarget) => Promise<void>): Promise<void>
-  /** Withdraws the receiver when its document leaves. */
   disconnected(): void
   unavailable(error: Error): void
 }
 
-/** Creates one native window with its document session and closes every old endpoint on navigation. */
 export async function createWindow(
   application: Application,
   kind: WindowKind,
@@ -174,8 +167,8 @@ export async function createWindow(
     )
   }
 
-  // A development document can recover through HMR after the app has started.
   const failLoading = (cause: unknown) => {
+    // A development document can recover through HMR after the app has started.
     if (!devUrl || !started) {
       failWindow(cause)
     }
@@ -264,7 +257,6 @@ export async function createWindow(
     event.senderFrame.postMessage('kisaki-port', null, [endpoint.port])
   })
 
-  /** Ends the native window after its document's accepted writes and resources finish. */
   async function destroy() {
     destroying = true
     clearTimeout(startupTimer)
@@ -318,11 +310,9 @@ export async function createWindow(
     dispose,
     show,
     firstReady: firstReady.promise,
-    /** Closes or reopens admission of document mutations during exit. */
     setAccepting(enabled: boolean) {
       accepting = enabled
     },
-    /** Waits for all operations already admitted by this window. */
     async drain() {
       await Promise.allSettled([...pendingCalls])
     },

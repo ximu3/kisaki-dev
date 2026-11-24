@@ -14,7 +14,6 @@ import type { Disposable } from '@kisaki3/desktop-contracts/operations'
 import { loadNative } from '#native'
 import { createNotifications } from './infrastructure/notifications'
 
-/** Privileged scheme declarations must precede Electron readiness and session creation. */
 protocol.registerSchemesAsPrivileged([
   {
     scheme: 'kisaki-app',
@@ -33,25 +32,20 @@ protocol.registerSchemesAsPrivileged([
 ])
 app.setName('Kisaki')
 
-/** Normal process exit may proceed only after all application owners have finished. */
 let released = false
 
-/** Holds external requests only until the actual window navigation receiver is ready. */
 const activation = createActivation((error) => {
   if (!(error instanceof DesktopError && error.code === 'Cancelled')) {
     dialog.showErrorBox('Kisaki', error instanceof Error ? error.message : String(error))
   }
 })
 
-/** Receives a plain second launch even while the first process is still starting in the background. */
 let focusRequested = false
 
-/** Restores the live window once startup has supplied it. */
 let restore = () => {
   focusRequested = true
 }
 
-/** System activation starts a receiver; the delivered action decides which window to reveal. */
 function notificationLaunch(args: readonly string[]) {
   return args.includes('--gapplication-service') || args.some((arg) => /^[-/]embedding$/i.test(arg))
 }
@@ -71,7 +65,6 @@ app.on('second-instance', (_event, args) => {
 })
 app.on('window-all-closed', () => {})
 
-/** Reports initialization failures with their real cause and leaves the chosen library intact. */
 function failed(error: unknown) {
   console.error(error)
   dialog.showErrorBox(
@@ -82,7 +75,6 @@ function failed(error: unknown) {
   app.exit(1)
 }
 
-/** Runs the real window and tray until a confirmed exit ends accepted work. */
 async function run(paths: AppPaths) {
   const stop = Promise.withResolvers<() => Promise<boolean>>()
   const ready =
@@ -94,11 +86,8 @@ async function run(paths: AppPaths) {
   const notifications = createNotifications(
     appId,
     {
-      /** Shows the window once its document is ready. */
       activate: () => restore(),
-      /** Passes desktop URLs to the public link parser. */
       openUrl: activation.receive,
-      /** Only this installation's validated navigation target can reach the window. */
       notification: (input) => activation.notification(appId, input),
     },
     native,
@@ -130,7 +119,6 @@ async function run(paths: AppPaths) {
   }
 
   const lifecycle = createLifecycle({
-    /** Obtains the current document's close decision. */
     async confirm(signal) {
       if (!view || windowFailed) {
         return true
@@ -144,14 +132,12 @@ async function run(paths: AppPaths) {
         throw cause
       }
     },
-    /** Updates task and window admission together for this exit attempt. */
     accept(enabled) {
       acceptingThemeRestore = enabled
       activation.setAccepting(enabled)
       application.tasks.setAccepting(enabled)
       view?.setAccepting(enabled)
     },
-    /** Waits for accepted task execution and document operations. */
     async drain() {
       await Promise.all([application.tasks.drain(), view?.drain(), restoringTheme])
     },
@@ -179,7 +165,6 @@ async function run(paths: AppPaths) {
     async release() {
       await releaseAll([() => application.log.record('closing'), releaseApplication])
     },
-    /** Reports a failed committed teardown after cleanup, then exits under the failed disposition. */
     fail(message) {
       released = true
       try {
@@ -188,7 +173,6 @@ async function run(paths: AppPaths) {
         setImmediate(() => app.exit(1))
       }
     },
-    /** Schedules normal quit or relaunch after the exit decision is committed. */
     finish(restart) {
       released = true
       if (windowFailed) {
@@ -210,7 +194,6 @@ async function run(paths: AppPaths) {
     return result.outcome === 'exiting'
   })
 
-  /** Native quit and restart entries share one result presentation per exit attempt. */
   let nativeExit: Promise<void> | undefined
   function requestExit(intent: 'quit' | 'restart') {
     nativeExit ??= lifecycle[intent]()
@@ -313,7 +296,6 @@ async function run(paths: AppPaths) {
         })
     }
 
-    /** Builds the current-language tray and system menus for this process. */
     const menus = () => {
       const restoreTheme = {
         label: application.i18n.t('runtime.restoreDefaultTheme'),
@@ -326,7 +308,6 @@ async function run(paths: AppPaths) {
           { type: 'separator' },
           {
             label: application.i18n.t('runtime.quit'),
-            /** Starts normal application quit from the tray. */
             click: () => app.quit(),
           },
         ]),
@@ -338,7 +319,6 @@ async function run(paths: AppPaths) {
             submenu: [
               {
                 label: application.i18n.t('runtime.preferences'),
-                /** Restores the main window and opens native preferences. */
                 click: () => activation.open({ type: 'preferences' }),
               },
               restoreTheme,
@@ -346,7 +326,6 @@ async function run(paths: AppPaths) {
               {
                 label: application.i18n.t('runtime.quit'),
                 accelerator: 'CommandOrControl+Q',
-                /** Requests normal quit using the system menu. */
                 click: () => app.quit(),
               },
             ],

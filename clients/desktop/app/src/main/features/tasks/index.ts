@@ -23,7 +23,6 @@ type TaskService = Omit<TasksApi, 'list'> & {
   list(query: unknown, options: unknown, context?: CallOptions): ReturnType<TasksApi['list']>
 }
 
-/** Creates the application's task API after recovering history left by the previous process. */
 export async function createTasks(
   call: DatabaseCall<ReturnType<typeof taskHistory>>,
   finished: NativeEventPublisher<'tasks.finished'>,
@@ -187,11 +186,9 @@ export async function createTasks(
     setAccepting(value: boolean) {
       accepting = value
     },
-    /** Includes admitted runs still waiting for their starting history write. */
     get activeCount() {
       return active.size
     },
-    /** Waits for the runs already admitted after the application closes admission. */
     async drain() {
       await Promise.all([...active.values()].map((run) => run.settled))
     },

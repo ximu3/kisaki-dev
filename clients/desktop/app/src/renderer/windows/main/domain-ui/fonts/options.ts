@@ -4,10 +4,8 @@ import type { MainClient } from '../../../../infrastructure/api'
 import type { ListOptions, ListResult } from '@kisaki3/desktop-contracts/operations'
 import type { Font } from '@kisaki3/desktop-contracts/fonts'
 
-/** Identity and display name used when selecting a saved library font. */
 export type UserFontOption = Pick<Font, 'id' | 'name'>
 
-/** Reads intervals until the catalog is exhausted, without retaining file metadata. */
 async function listFontOptions(
   read: (options: ListOptions) => Promise<ListResult<UserFontOption>>,
 ) {
@@ -21,7 +19,6 @@ async function listFontOptions(
   }
 }
 
-/** Keeps library and system choices independent when one font source fails to load. */
 export function createFontOptions(api: MainClient) {
   const users = createQuery((signal) =>
     listFontOptions((options) => api.request(signal, 'fonts.list', '', options)),

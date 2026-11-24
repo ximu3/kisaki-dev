@@ -7,17 +7,13 @@ import { programConfigurations, sourcePrograms } from '../build/programs'
 import { sha256 } from '../lib/sha256'
 
 export interface ProgramOutput {
-  /** Compilation generation used to reject output copied across a concurrent rebuild. */
   revision: number
   files: readonly string[]
-  /** Identity of the completed file names and bytes, independent of rebuild notifications. */
   digest: string
 }
 
 export interface ProgramWatch {
-  /** Absent while any compiler is running or has failed. */
   readonly current: ProgramOutput | undefined
-  /** Closes every compiler before its workspace can be removed. */
   close(): Promise<void>
 }
 
@@ -28,12 +24,6 @@ type ViteWatcher = Extract<
   }
 >
 
-/**
- * Watches main, preload and extension-host using the compiler's own module graph.
- *
- * Completion follows writeBundle. Failed compilation invalidates the current batch until repair;
- * close waits for all compiler handles. The caller owns the supplied workspace directory.
- */
 export async function watchPrograms(
   sourceRoot: string,
   directory: string,
@@ -73,7 +63,6 @@ export async function watchPrograms(
     }
   }
 
-  /** Waits for every owned watcher and preserves all shutdown failures. */
   async function close(): Promise<void> {
     closed = true
     const results = await Promise.allSettled(watchers.map((watcher) => watcher.close()))
@@ -96,7 +85,6 @@ export async function watchPrograms(
         plugins: [
           {
             name: 'desktop-program-completion',
-            /** Invalidates the output inventory before this compiler starts writing a new batch. */
             buildStart() {
               revision += 1
               unsettled.add(index)
@@ -104,13 +92,11 @@ export async function watchPrograms(
                 onState('building')
               }
             },
-            /** Keeps failed output unavailable while the native watcher waits for a repair. */
             buildEnd(error) {
               if (error && !closed) {
                 onState('failed', error)
               }
             },
-            /** Publishes the files actually written by this completed compiler. */
             writeBundle(_options, bundle) {
               outputs.set(
                 index,

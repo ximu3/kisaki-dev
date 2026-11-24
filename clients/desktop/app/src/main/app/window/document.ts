@@ -46,7 +46,6 @@ interface DocumentOptions {
   onStartupError: (cause: unknown) => void
 }
 
-/** Opens a private endpoint for a verified document. Disposal revokes its new acquisitions. */
 export function openWindowDocument({
   application,
   kind,
@@ -69,7 +68,6 @@ export function openWindowDocument({
   const previews = new Map<string, AppearancePreview>()
   let revoked = false
 
-  /** Retains only resources owned by this document and releases late acquisitions after reload. */
   async function keep(hold: Disposable, signal: AbortSignal) {
     if (revoked || signal.aborted) {
       await hold.dispose()

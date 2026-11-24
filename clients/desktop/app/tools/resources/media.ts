@@ -4,11 +4,9 @@ import { dirname, join, basename } from 'node:path'
 import { existsSync } from 'node:fs'
 import { appRoot } from '../lib/paths'
 
-/** Copies required package bytes and only the native optional dependencies for the target host. */
 export async function copyMediaRuntime(destination: string) {
   const packages = new Map<string, string>()
   const platform = process.platform + '-' + process.arch
-  /** Resolves each dependency from its importing package, including non-exported manifests. */
   async function copyPackage(name: string, from: string) {
     const require = createRequire(join(from, 'package.json'))
     const path = require.resolve

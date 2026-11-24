@@ -2,13 +2,11 @@ import { For, omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import styles from './styles.module.css'
 
-/** Figure attributes with an accessible chart label and a visible text summary. */
 export interface ChartProps extends JSX.HTMLAttributes<HTMLElement> {
   label: string
   summary: string
 }
 
-/** Wraps a Solid chart composition in the shared theme and its text alternative. */
 export function Chart(props: ChartProps): JSX.Element {
   const rest = omit(props, 'label', 'summary', 'children', 'class')
 
@@ -20,7 +18,6 @@ export function Chart(props: ChartProps): JSX.Element {
   )
 }
 
-/** Series identity, display label and color with caller-owned selection state. */
 export interface ChartLegendItem {
   readonly id: string
   readonly label: string
@@ -28,18 +25,13 @@ export interface ChartLegendItem {
   readonly selected: boolean
 }
 
-/** Labeled legend items and a callback through which the host changes selection. */
 export interface ChartLegendProps {
   label: string
   items: readonly ChartLegendItem[]
-  /**
-   * Requests a selection change for the identified series; the host updates items and chart data.
-   */
   onToggle: (id: string) => void
   class?: string
 }
 
-/** Renders keyboard-activatable legend buttons with their current pressed states. */
 export function ChartLegend(props: ChartLegendProps): JSX.Element {
   return (
     <div role="group" aria-label={props.label} class={[styles.legend, props.class]}>
@@ -59,11 +51,6 @@ export function ChartLegend(props: ChartLegendProps): JSX.Element {
   )
 }
 
-/**
- * Creates a text-only tooltip description list in the supplied document.
- *
- * Labels and values are inserted as text rather than interpreted as HTML.
- */
 export function chartTooltipContent(
   document: Document,
   rows: readonly { label: string; value: string }[],

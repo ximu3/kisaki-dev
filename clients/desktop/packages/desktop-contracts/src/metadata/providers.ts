@@ -48,7 +48,6 @@ import {
 } from '@kisaki3/extension-distribution/metadata'
 import { DesktopError } from '../errors'
 
-/** The cursor is opaque and belongs to this provider, entry kind, query and language tuple. */
 export interface MetadataSearchInput<T extends EntryType = EntryType> {
   readonly entryType: T
   readonly query: string
@@ -56,7 +55,6 @@ export interface MetadataSearchInput<T extends EntryType = EntryType> {
   readonly preferredLanguages?: readonly string[]
 }
 
-/** Cursor absence marks completion. An empty page can still have a continuation. */
 export interface MetadataSearchResult<T extends EntryType = EntryType> {
   readonly records: readonly SourceEntry<T>[]
   readonly nextCursor?: string
@@ -70,26 +68,18 @@ export type MetadataResolveInput<T extends EntryType = EntryType> = {
   }
 }[T]
 
-/** A candidates result contains the complete usable range for that resolve operation. */
 export type MetadataResolveResult<T extends EntryType = EntryType> =
   | { readonly type: 'resolved'; readonly record: SourceEntry<T> }
   | { readonly type: 'candidates'; readonly records: readonly SourceEntry<T>[] }
   | { readonly type: 'notFound' }
   | { readonly type: 'insufficientInput' }
 
-/**
- * Omit the root identity when explicitly requesting related entries or parts without root context.
- */
 export interface MetadataOpenSessionInput<T extends EntryType = EntryType> {
   readonly entryType: T
   readonly identity?: ExternalIdentity
   readonly preferredLanguages?: readonly string[]
 }
 
-/**
- * The provider documents whether it accepts names, resource coordinates or links for this image
- * use.
- */
 export type MetadataImageSearchInput<T extends EntryType = EntryType> = {
   [K in T]: {
     readonly entryType: K
@@ -100,13 +90,11 @@ export type MetadataImageSearchInput<T extends EntryType = EntryType> = {
   }
 }[T]
 
-/** Continue as directed by a cursor, including when the current page is empty. */
 export interface MetadataImageSearchResult {
   readonly images: readonly ImageCandidate[]
   readonly nextCursor?: string
 }
 
-/** Without identitySources, related reads depend on the actual source context. */
 export interface MetadataObjectCapability<Field extends string> {
   readonly fields: readonly Field[]
   readonly identitySources?: NonEmptyArray<string>
@@ -137,7 +125,6 @@ export type MetadataReadCapabilities<T extends EntryType> = {
   }
 }
 
-/** Each image use declares a localized description of its accepted source coordinates. */
 export type MetadataProviderCapabilities<T extends EntryType = EntryType> = {
   readonly [K in T]?: {
     readonly search?: true
@@ -149,21 +136,14 @@ export type MetadataProviderCapabilities<T extends EntryType = EntryType> = {
   }
 }
 
-/** Owned source context with fixed language and relation scopes shared by overlapping reads. */
 export interface MetadataReadSession<T extends EntryType = EntryType> {
   readonly relationScopes: MetadataSessionRelationScopes<T>
 
-  /** Overlapping reads share the session context and have independent cancellation. */
   read(request: MetadataReadRequest<T>, context: ExecutionContext): Promise<MetadataReadResult<T>>
 
-  /**
-   * Close rejects new reads, waits for accepted reads and releases resources. It is idempotent and
-   * uses a separate lifetime from individual read signals.
-   */
   close(): Promise<void>
 }
 
-/** The provider owns its account and cache policy. The host decides local adoption. */
 export interface MetadataProvider<T extends EntryType = EntryType> {
   readonly name: LocalizedText
   readonly description?: LocalizedText
@@ -174,22 +154,16 @@ export interface MetadataProvider<T extends EntryType = EntryType> {
     context: ExecutionContext,
   ): Promise<MetadataSearchResult<T>>
 
-  /**
-   * Returns a resolved identity or complete candidate range, distinguishing no match from
-   * insufficient input.
-   */
   resolve?(
     input: MetadataResolveInput<T>,
     context: ExecutionContext,
   ): Promise<MetadataResolveResult<T>>
 
-  /** Failed setup releases any resources it already acquired. */
   openSession?(
     input: MetadataOpenSessionInput<T>,
     context: ExecutionContext,
   ): Promise<MetadataReadSession<T>>
 
-  /** The host owns adoption of returned image candidates. */
   searchImages?(
     input: MetadataImageSearchInput<T>,
     context: ExecutionContext,
@@ -203,16 +177,11 @@ export interface MetadataProviderDescriptor {
   readonly capabilities: MetadataProviderCapabilities
 }
 
-/** The SDK prefixes local IDs with the actual extension owner's identity. */
 export interface MetadataProvidersApi {
   list(call?: CallOptions): Promise<readonly MetadataProviderDescriptor[]>
 
   get(providerId: string, call?: CallOptions): Promise<MetadataProviderDescriptor | null>
 
-  /**
-   * Registers for the actual owner and instance and returns a removal handle. Duplicate identities
-   * fail.
-   */
   register(
     providerId: string,
     provider: MetadataProvider,
@@ -239,7 +208,6 @@ function nodeCapability(fields: readonly string[], root: boolean) {
   })
 }
 
-/** Declaration validation leaves account and service availability to execution. */
 export function parseMetadataProviderCapabilities(
   input: unknown,
   defaultLocale: string,
@@ -334,10 +302,6 @@ export function parseMetadataProviderCapabilities(
   ) as MetadataProviderCapabilities
 }
 
-/**
- * Checks promised methods and their declarations. Calls validate their actual arguments and
- * results.
- */
 export function validateMetadataProvider(provider: MetadataProvider, defaultLocale: string): void {
   parseExternalValue(
     (value) => normalizeLocalizedText(value, defaultLocale),
@@ -373,7 +337,6 @@ export function validateMetadataProvider(provider: MetadataProvider, defaultLoca
   }
 }
 
-/** Preserves the presence of a continuation token, including a source-defined empty token. */
 export function parseMetadataSearchInput(input: unknown): MetadataSearchInput {
   return parseValue(
     v.strictObject({ entryType: v.picklist(entryTypes), query: text, ...paging }),
@@ -424,7 +387,6 @@ export function parseMetadataImageSearchInput(input: unknown): MetadataImageSear
   ) as MetadataImageSearchInput
 }
 
-/** Every returned record must match the requested entry kind. */
 export function parseMetadataSearchResult<T extends EntryType>(
   root: T,
   input: unknown,
@@ -474,10 +436,6 @@ export function parseMetadataResolveResult<T extends EntryType>(
   return value as MetadataResolveResult<T>
 }
 
-/**
- * Parses image candidates and continuation state, retaining each resource's original and preview
- * policies.
- */
 export function parseMetadataImageSearchResult(input: unknown): MetadataImageSearchResult {
   return parseValue(
     v.strictObject({

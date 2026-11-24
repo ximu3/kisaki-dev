@@ -9,13 +9,11 @@ import type { PageRoute } from '../routes'
 import { ManagementDialog, ManagementFailure, type ManagementScene } from './host'
 import type { ManagementPresentation, ManagementTarget, ResourceTarget } from './layer'
 
-/** Keeps a lazily loaded scene outside the native modal layer until its module is ready. */
 function PendingScene() {
   deferDialogUntil(() => false)
   return null
 }
 
-/** Loads one scene on demand and allows a failed module load to be retried. */
 function loadScene<P extends { api: MainClient }>(load: () => Promise<Component<P>>): Component<P> {
   return (props) => {
     const loaded = createMemo(async () => {
@@ -66,7 +64,6 @@ function targetOf<K extends ManagementTarget['type']>(
   return target.type === type ? (target as Extract<ManagementTarget, { type: K }>) : undefined
 }
 
-/** Binds each management scene to its own inputs and shares resource scenes across the two layers. */
 export function ManagementDialogs(props: {
   api: MainClient
   pages: readonly PageRoute[]

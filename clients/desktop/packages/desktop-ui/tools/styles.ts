@@ -3,11 +3,6 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { runCli } from '@kisaki3/tooling/cli'
 
-/**
- * Assembles the cascade-ordered stylesheet and notices in the completed package output.
- *
- * The caller consumes the output only after this operation succeeds.
- */
 export async function assembleStyles(signal?: AbortSignal): Promise<void> {
   const project = join(import.meta.dirname, '..')
   const outDir = join(project, 'dist')

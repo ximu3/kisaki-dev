@@ -11,18 +11,14 @@ import {
 import { Button } from '@kisaki3/desktop-ui/button'
 import type { Translate } from '@kisaki3/desktop-localization'
 
-/** A business editor supplies its own save operation and reports whether it has an unsaved change. */
 export interface EditorGuard {
   busy: () => boolean
   dirty: () => boolean
-  /** Joins an in-flight save. Validation resolves false and write failures reject. */
   save: () => Promise<boolean>
 
-  /** Returns the current child edit's confirm action while that form owns the save shortcut. */
   currentFormAction?: () => (() => Promise<boolean>) | undefined
 }
 
-/** Cancels one wait without interrupting the operation or any other waiters. */
 export async function waitForDecision(action: Promise<boolean>, signal?: AbortSignal) {
   if (!signal) {
     return action
@@ -40,7 +36,6 @@ export async function waitForDecision(action: Promise<boolean>, signal?: AbortSi
   }
 }
 
-/** Presents one draft's leave decision and shares it with repeat requests for that draft. */
 export function createCloseConfirmation(t: Translate, reveal: () => Promise<void>) {
   let pending:
     | {
@@ -87,9 +82,7 @@ export function createCloseConfirmation(t: Translate, reveal: () => Promise<void
     }
   }
   return {
-    /** Reports whether the confirmation owns the active keyboard scope. */
     active: () => !!pending,
-    /** Allows a clean editor to leave, shares a matching decision and declines a competing draft. */
     async ask(this: void, guard?: EditorGuard, signal?: AbortSignal) {
       if (signal?.aborted) {
         return false
@@ -139,7 +132,6 @@ export function createCloseConfirmation(t: Translate, reveal: () => Promise<void
         }
       }
     },
-    /** Renders the native confirmation at the top of the window's existing modal stack. */
     Content(this: void) {
       return (
         <Dialog

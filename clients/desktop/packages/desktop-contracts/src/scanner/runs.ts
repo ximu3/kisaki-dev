@@ -27,10 +27,6 @@ import {
 import { clues } from './recognizers'
 import { parseScanConfigSnapshot, type ScanConfigSnapshot } from './configs'
 
-/**
- * Public scan uses the full current configuration; only internal watcher runs may use incremental
- * relative paths.
- */
 export type ScanScope =
   | { readonly type: 'full' }
   | { readonly type: 'incremental'; readonly paths: NonEmptyArray<string> }
@@ -41,9 +37,6 @@ export interface ScanDiscovery {
   readonly issues: readonly { readonly path: string; readonly error: ErrorSummary }[]
 }
 
-/**
- * Candidate local-content outcome, including registration failures with retained partial results.
- */
 export type ScanLocalContentResult<T extends WorkType = WorkType> =
   | { readonly status: 'included' }
   | { readonly status: 'skipped' }
@@ -54,9 +47,6 @@ export type ScanLocalContentResult<T extends WorkType = WorkType> =
     }
   | { readonly status: 'notStarted' }
 
-/**
- * Established root outcomes remain available when subsequent existing-content registration fails.
- */
 export type ScanCandidateResult<T extends WorkType = WorkType> = {
   [K in T]: { readonly path: string; readonly clues: WorkClues | null } & (
     | { readonly result: IngestAddResult<K>; readonly localContent: ScanLocalContentResult<K> }
@@ -71,7 +61,6 @@ export interface ScanResult<T extends WorkType = WorkType> {
 
 export type ScanRunStatus = 'active' | 'completed' | 'failed' | 'cancelled' | 'interrupted'
 
-/** Reports survive deletion of their configuration or associated task history. */
 export type ScanRun<T extends WorkType = WorkType> = {
   [K in T]: {
     readonly id: string
@@ -84,11 +73,8 @@ export type ScanRun<T extends WorkType = WorkType> = {
     readonly result: ScanResult<K> | null
     readonly error: ErrorSummary | null
 
-    /** UTC milliseconds since the Unix epoch. */
     readonly createdAt: number
-    /** UTC milliseconds since the Unix epoch. */
     readonly startedAt: number | null
-    /** UTC milliseconds since the Unix epoch. */
     readonly finishedAt: number | null
   }
 }[T]
@@ -98,48 +84,34 @@ export type ScanRunSummary = Omit<ScanRun, 'configSnapshot' | 'result'>
 export interface ScanRunQuery {
   readonly scanConfigId?: string
   readonly statuses?: readonly ScanRunStatus[]
-  /** Inclusive creation-time lower bound in UTC milliseconds since the Unix epoch. */
   readonly createdFrom?: number
-  /** Exclusive creation-time upper bound in UTC milliseconds since the Unix epoch. */
   readonly createdBefore?: number
 }
 
 export interface ScanRunsApi {
-  /** Reads an interval of persisted scan-report summaries matching the query. */
   list(
     query: ScanRunQuery,
     options: ListOptions,
     call?: CallOptions,
   ): Promise<ListResult<ScanRunSummary>>
 
-  /** Reads a stored report and its configuration snapshot, returning null when absent. */
   get(runId: string, call?: CallOptions): Promise<ScanRun | null>
 
-  /**
-   * Removes matching finished reports and returns the count.
-   *
-   * Tasks, configurations, library data and files retain their own lifetimes.
-   */
   clear(
     filter?: {
       readonly scanConfigId?: string
-      /** Exclusive creation-time upper bound in UTC milliseconds since the Unix epoch. */
       readonly createdBefore?: number
     },
     call?: CallOptions,
   ): Promise<number>
 
-  /** Callers subscribe before reading. Live scan progress uses task observation. */
   onInvalidated(listener: () => void): Disposable
 }
 
-/** Validated absolute candidate or traversal-issue location in a scan report. */
 export const path = fromParser(parseAbsolutePath)
 
-/** Safe scan failure details retained in reports and history. */
 export const error = fromParser(parseErrorSummary)
 
-/** Traversal completion, discovered candidate count and path-specific discovery issues. */
 export const discovery = v.strictObject({
   finished: v.boolean(),
   candidateCount: nonnegativeInteger,
@@ -214,12 +186,6 @@ function parseScanCandidateResult(input: unknown): ScanCandidateResult {
   return value as ScanCandidateResult
 }
 
-/**
- * Parses distinct candidate reports and checks that handled candidates do not exceed the discovered
- * count.
- *
- * Unstarted candidates remain outside the handled report list.
- */
 export function parseScanResult(input: unknown): ScanResult {
   const value = parseValue(
     v.strictObject({
@@ -242,10 +208,6 @@ export function parseScanResult(input: unknown): ScanResult {
   return value
 }
 
-/**
- * Requires finished discovery and an outcome for every candidate, with no unstarted local-content
- * step.
- */
 export function requireCompleteScanResult<T extends WorkType>(
   result: ScanResult<T> | null,
 ): ScanResult<T> {
@@ -261,7 +223,6 @@ export function requireCompleteScanResult<T extends WorkType>(
   return result
 }
 
-/** Parses one scan's exact full or incremental coverage without inventing missing paths. */
 export function parseScanScope(input: unknown): ScanScope {
   const relative = fromParser(parseRelativePath)
   const scope = v.union([
@@ -277,7 +238,6 @@ export function parseScanScope(input: unknown): ScanScope {
   return parseValue(scope, input, 'Invalid scan scope')
 }
 
-/** Parses same-medium scan history and requires completed runs to account for all discovered work. */
 export function parseScanRun(input: unknown): ScanRun {
   const value = parseValue(
     v.strictObject({
@@ -309,10 +269,6 @@ export function parseScanRun(input: unknown): ScanRun {
   return value as ScanRun
 }
 
-/**
- * Parses history filters with a strictly ordered, half-open creation-time interval when both bounds
- * are present.
- */
 export function parseScanRunQuery(input: unknown): ScanRunQuery {
   return parseValue(
     v.pipe(

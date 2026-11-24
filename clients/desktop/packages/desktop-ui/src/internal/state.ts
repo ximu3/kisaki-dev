@@ -1,12 +1,5 @@
-import { createMemo, createSignal, onSettled, untrack } from 'solid-js'
-import type { Accessor } from 'solid-js'
+import { createMemo, createSignal, flush, onSettled, untrack, type Accessor } from 'solid-js'
 
-/**
- * Creates a controlled-or-local value accessor and change requester from a captured initial value.
- *
- * A defined external value remains authoritative. Removing it restores the previous local value.
- * Requests equal to the exposed value by Object.is produce no notification.
- */
 export function createValue<T>(
   value: Accessor<T | undefined>,
   initial: Accessor<T>,
@@ -35,13 +28,15 @@ export function createValue<T>(
   ]
 }
 
-/**
- * Observes accepted resets for the element's current native form owner, including external form
- * associations.
- *
- * Runs an accepted reset after dispatch. Editors can flush it before processing a later change
- * in the same turn. A reset currently being dispatched can still be cancelled.
- */
+export function commitNativeValue<T>(change: (next: T) => void, sync: () => void) {
+  return (next: T) => {
+    change(next)
+    // Native event handlers can read or submit the adopted value in this turn.
+    flush()
+    sync()
+  }
+}
+
 export function onFormReset(
   element: Accessor<{ form: HTMLFormElement | null; ownerDocument: Document }>,
   reset: () => void,

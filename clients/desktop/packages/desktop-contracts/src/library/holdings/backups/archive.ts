@@ -9,10 +9,6 @@ import { bytesToHex } from '@noble/hashes/utils.js'
 import { sha256 } from '@noble/hashes/sha2.js'
 import { parseStrictJson } from '../../../json'
 
-/**
- * An empty path denotes the root. Relative paths preserve source names. Extraction checks
- * target-platform representability.
- */
 export type GameBackupArchiveEntry =
   | { readonly path: string; readonly type: 'directory' }
   | {
@@ -29,12 +25,10 @@ export interface GameBackupArchiveManifest {
   readonly treeDigest: string
 }
 
-/** Canonical JSON rows are independent of ZIP member order, compression and timestamps. */
 export type GameBackupTreeRow =
   | readonly [path: string, type: 'directory']
   | readonly [path: string, type: 'file', sizeBytes: number, sha256: string]
 
-/** Lowercase SHA-256 value used by canonical backup content identities. */
 export const digest = v.pipe(text, v.regex(/^[0-9a-f]{64}$/))
 
 const archivePath = v.pipe(
@@ -91,10 +85,6 @@ function encodeOrderedTree(entries: readonly GameBackupArchiveEntry[]): Uint8Arr
   return new TextEncoder().encode(JSON.stringify(rows))
 }
 
-/**
- * Validates the complete tree and encodes compact UTF-8 JSON in exact path-byte order, with no
- * byte-order mark or final newline.
- */
 export function encodeGameBackupTree(input: readonly GameBackupArchiveEntry[]): Uint8Array {
   const entries = parseValue(
     v.tupleWithRest([archiveEntry], archiveEntry),
@@ -105,18 +95,10 @@ export function encodeGameBackupTree(input: readonly GameBackupArchiveEntry[]): 
   return encodeOrderedTree(entries.toSorted((a, b) => compareIdentityText(a.path, b.path)))
 }
 
-/**
- * Digests the canonical tree as lowercase SHA-256. ZIP compression, member order, permissions and
- * timestamps leave the digest unchanged.
- */
 export function gameBackupTreeDigest(entries: readonly GameBackupArchiveEntry[]): string {
   return bytesToHex(sha256(encodeGameBackupTree(entries)))
 }
 
-/**
- * Unsupported identities and versions throw UnsupportedBackupFormat. Invalid version 1 tree
- * structure, order or digest throws DataIntegrityError.
- */
 export function parseGameBackupArchiveManifest(input: unknown): GameBackupArchiveManifest {
   if (
     typeof input !== 'object' ||
@@ -158,7 +140,6 @@ export function parseGameBackupArchiveManifest(input: unknown): GameBackupArchiv
   }
 }
 
-/** Malformed JSON, including duplicate decoded keys, is reported as DataIntegrityError. */
 export function parseGameBackupArchiveJson(source: string): GameBackupArchiveManifest {
   let value: unknown
 

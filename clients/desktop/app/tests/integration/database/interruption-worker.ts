@@ -8,7 +8,6 @@ if (!directory || !process.send) {
   throw new Error('The interruption worker requires a test directory and IPC parent')
 }
 
-/** Real storage connection intentionally left open until the parent terminates this worker. */
 const storage = initializeDatabase(storageOptions(directory))
 storage.db
   .insert(entries)

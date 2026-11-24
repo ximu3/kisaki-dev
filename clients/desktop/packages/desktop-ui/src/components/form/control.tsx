@@ -4,14 +4,12 @@ import { FormContext, nativeValidityChanged, observeValidity } from '../../inter
 import { createForm, formBinding, type FormOptions, type FormState } from './state'
 import styles from './styles.module.css'
 
-/** Native form attributes with callbacks or an instance held by the owning editor. */
 export type FormProps = Omit<JSX.FormHTMLAttributes<HTMLFormElement>, 'onSubmit' | 'novalidate'> &
   (
     | (FormOptions & { state?: never })
     | { state: FormState; validate?: never; order?: never; locate?: never; onSubmit?: never }
   )
 
-/** Keeps native form semantics and routes each submission through one validation and save path. */
 export function Form(props: FormProps): JSX.Element {
   const rest = omit(
     props,

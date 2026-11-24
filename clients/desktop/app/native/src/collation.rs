@@ -7,7 +7,6 @@ use rusqlite::{Connection, Error, Result, ffi};
 use std::ffi::{c_char, c_int};
 use std::sync::{Arc, RwLock};
 
-/// Identity of the comparison policy and the compiled ICU algorithm and locale data.
 const REVISION: &str = concat!("numeric-secondary/1:", env!("KISAKI_ICU_COMPONENTS"));
 
 fn name_collator(locale: &str) -> Result<CollatorBorrowed<'static>> {
@@ -41,12 +40,8 @@ fn register(connection: Connection) -> Result<bool> {
     Ok(false)
 }
 
-/// Loads the private collation through SQLite's extension API, using the driver's own ABI.
-///
-/// # Safety
-/// SQLite supplies the live connection, error slot and API table for this initialization call.
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn sqlite3_extension_init(
+unsafe extern "C" fn sqlite3_extension_init(
     db: *mut ffi::sqlite3,
     error: *mut *mut c_char,
     api: *mut ffi::sqlite3_api_routines,

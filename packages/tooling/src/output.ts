@@ -3,7 +3,6 @@ import { rm } from 'node:fs/promises'
 import { isAbsolute, relative, resolve, sep } from 'node:path'
 import { runCli } from './cli.ts'
 
-/** Resolves an output to a strict descendant of its owning project. */
 function projectOutput(project: string, output: string): string {
   const destination = resolve(project, output)
   const child = relative(resolve(project), destination)
@@ -14,12 +13,6 @@ function projectOutput(project: string, output: string): string {
   return destination
 }
 
-/**
- * Removes declared project outputs in the supplied order.
- *
- * The caller stops active writers first. Cancellation is checked before each removal; completed
- * removals remain applied.
- */
 export async function removeOutputs(
   project: string,
   outputs: readonly string[],

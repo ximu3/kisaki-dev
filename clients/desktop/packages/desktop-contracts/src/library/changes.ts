@@ -36,10 +36,6 @@ import {
   type StoredWorkRelationBinding,
 } from './relations'
 
-/**
- * Retains identity and naming context for a deleted or merged entry. Bodies, images, personal
- * records and relation graphs remain outside the snapshot.
- */
 export interface EntryIdentitySnapshot {
   readonly ref: EntryRef
   readonly name: string
@@ -72,7 +68,6 @@ type AnnotationChangeContext = {
     : { readonly fileId: string | null })
 }[WorkType]
 
-/** File merges retain both the removed and surviving identities. */
 export type HoldingsChangeContext = {
   [K in WorkType]: {
     readonly work: WorkRef<K>
@@ -162,9 +157,7 @@ export type LibraryChange =
   | ({ readonly type: 'holdingsChanged' } & HoldingsChangeContext)
   | { readonly type: 'showcaseChanged'; readonly sectionIds: readonly string[] }
 
-/** Successful no-op writes emit no event. Delivery failure leaves committed data intact. */
 export interface LibraryChanged {
-  /** UTC milliseconds since the Unix epoch. */
   readonly committedAt: number
   readonly changes: NonEmptyArray<LibraryChange>
 }
@@ -184,7 +177,6 @@ export const libraryInvalidationAreas = Object.freeze([
 
 export type LibraryInvalidationArea = (typeof libraryInvalidationAreas)[number]
 
-/** Invalidation areas can coalesce across operations. Use them to refresh an existing read. */
 export interface LibraryInvalidation {
   readonly areas: NonEmptyArray<LibraryInvalidationArea>
 }
@@ -250,9 +242,6 @@ export function parseRelationIdentitySnapshot(input: unknown): RelationIdentityS
   }
 }
 
-/**
- * Parses a typed change fact and checks media applicability, ownership kinds and merge identities.
- */
 export function parseLibraryChange(input: unknown): LibraryChange {
   const value = parseValue(
     v.variant('type', [
@@ -415,7 +404,6 @@ export function parseLibraryChange(input: unknown): LibraryChange {
   return value as LibraryChange
 }
 
-/** Parses a commit timestamp and nonempty set of complete-operation library facts. */
 export function parseLibraryChanged(input: unknown): LibraryChanged {
   const change = fromParser(parseLibraryChange)
   return parseValue(
@@ -425,7 +413,6 @@ export function parseLibraryChanged(input: unknown): LibraryChanged {
   )
 }
 
-/** Parses a nonempty, distinct set of affected read areas. */
 export function parseLibraryInvalidation(input: unknown): LibraryInvalidation {
   const area = v.picklist(libraryInvalidationAreas)
   return parseValue(

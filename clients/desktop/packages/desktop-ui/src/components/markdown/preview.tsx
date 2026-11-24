@@ -6,31 +6,15 @@ import { tasklist } from '@mdit/plugin-tasklist'
 import { callHandler } from '../../internal/dom'
 import styles from './styles.module.css'
 
-/** Untrusted Markdown source with host-owned image resolution and optional link navigation. */
 export interface MarkdownPreviewProps extends Omit<
   JSX.HTMLAttributes<HTMLDivElement>,
   'children' | 'innerHTML'
 > {
   value: string
-  /**
-   * Resolves an image source to a URL already owned by the host.
-   *
-   * An unresolved source displays escaped alternative text.
-   */
   resolveImage?: (source: string) => string | undefined
-  /**
-   * Handles a non-fragment link after native navigation is prevented.
-   *
-   * Fragment links remain native; omission leaves ordinary browser navigation in place.
-   */
   onNavigate?: (href: string, event: MouseEvent) => void
 }
 
-/**
- * Renders Markdown with raw HTML disabled, readonly task checkboxes and instance-local anchors.
- *
- * Images enter through the host resolver, and footnotes use native in-page navigation.
- */
 export function MarkdownPreview(props: MarkdownPreviewProps): JSX.Element {
   const rest = omit(props, 'value', 'resolveImage', 'onNavigate', 'class', 'onClick')
 

@@ -14,7 +14,6 @@ export type MetadataSearchRequest<T extends EntryType = EntryType> = MetadataSea
 export type MetadataImageSearchRequest<T extends EntryType = EntryType> =
   MetadataImageSearchInput<T> & { readonly providerId: string }
 
-/** The provider implementation ID is separate from an external identity's source namespace. */
 export function parseMetadataSearchRequest(input: unknown): MetadataSearchRequest {
   const { providerId, ...fields } = parseRecord(input)
   return { providerId: parseValue(id, providerId), ...parseMetadataSearchInput(fields) }

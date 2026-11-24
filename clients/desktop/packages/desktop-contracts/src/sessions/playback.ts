@@ -3,7 +3,6 @@ import { fromParser, parseValue, nonnegativeNumber, id } from '../validation'
 import { DesktopError } from '../errors'
 import { parseFileTrackSelection, type FileTrackSelection } from '../library/holdings/preferences'
 
-/** Actual adopted playback state, independent of timing pause and saved configuration. */
 export interface PlaybackState {
   readonly positionSeconds: number
   readonly durationSeconds: number | null
@@ -13,29 +12,21 @@ export interface PlaybackState {
   readonly seeking: boolean
   readonly atEnd: boolean
 
-  /** Actual playback-rate multiplier. */
   readonly speed: number
   readonly volumePercent: number
   readonly muted: boolean
 
   readonly subtitlesVisible: boolean
-  /** Actual subtitle-size multiplier. */
   readonly subtitleScale: number
   readonly audioDelaySeconds: number
   readonly subtitleDelaySeconds: number
 }
 
-/**
- * Opaque track identity valid only in the current playback execution.
- *
- * Persistable source selectors are supplied separately.
- */
 export interface PlaybackTrackRef {
   readonly type: 'video' | 'audio' | 'subtitle'
   readonly id: string
 }
 
-/** Observed track metadata and selection state with a persistable selector when supported. */
 export type PlaybackTrack = {
   readonly ref: PlaybackTrackRef
   readonly title: string | null
@@ -50,7 +41,6 @@ export type PlaybackTrack = {
     }
 )
 
-/** One committed playback setting with its actual persistence scope and value. */
 export type SavedPlaybackSetting =
   | { readonly field: 'volumePercent'; readonly scope: 'application'; readonly value: number }
   | { readonly field: 'muted'; readonly scope: 'application'; readonly value: boolean }
@@ -70,7 +60,6 @@ export type SavedPlaybackSetting =
       readonly value: FileTrackSelection
     }
 
-/** A saved outcome is a partial failure result; normal completion requires applied. */
 export type PlaybackSettingResult = {
   readonly sessionId: string
   readonly animeId: string
@@ -107,11 +96,6 @@ export const playbackStateSchema = v.strictObject({
   subtitleDelaySeconds: finite,
 })
 
-/**
- * Parses a runtime track identity and rejects remembered video-track selection.
- *
- * Runtime identity does not encode the persistent source selector.
- */
 export function parsePlaybackTrackRef(input: unknown, remember = false): PlaybackTrackRef {
   const value = parseValue(
     v.strictObject({ type: v.picklist(['video', 'audio', 'subtitle']), id }),
@@ -125,10 +109,6 @@ export function parsePlaybackTrackRef(input: unknown, remember = false): Playbac
   return value
 }
 
-/**
- * Parses a control value using the same permitted range as its persisted preference, without
- * clamping.
- */
 export function parsePlaybackControlValue(
   field: 'speed' | 'volumePercent' | 'subtitleScale' | 'audioDelaySeconds' | 'subtitleDelaySeconds',
   input: unknown,
@@ -171,11 +151,6 @@ const saved = v.variant('field', [
   }),
 ])
 
-/**
- * Parses adoption and persistence outcomes, requiring a committed setting for the saved variant.
- *
- * Normal completion requires applied at the operation boundary.
- */
 export function parsePlaybackSettingResult(input: unknown): PlaybackSettingResult {
   const value = parseValue(
     v.strictObject({

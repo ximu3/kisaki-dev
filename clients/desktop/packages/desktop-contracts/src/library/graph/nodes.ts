@@ -4,7 +4,6 @@ import type { TagUpdate } from '../organizers'
 import * as v from 'valibot'
 import { id } from '../../validation'
 
-/** A request-local key addresses a create in this graph. Saved IDs identify existing objects. */
 export type GraphEntryRef<T extends EntryType = EntryType> = EntryRef<T> | { readonly key: string }
 
 export type GraphPartRef<T extends PartType = PartType> = PartRef<T> | { readonly key: string }
@@ -53,19 +52,16 @@ export type GraphTagUpdate = { readonly id: string } & TagUpdate
 
 export const keySchema = v.strictObject({ key: id })
 
-/** Encodes a graph entry reference with separate namespaces for create keys and saved IDs. */
 export function entryKey(ref: GraphEntryRef): string {
   return 'key' in ref ? JSON.stringify(['key', ref.key]) : JSON.stringify(['entry', ref.id])
 }
 
-/** Encodes a graph part reference, retaining the kind of saved part IDs. */
 export function partKey(ref: GraphPartRef): string {
   return 'key' in ref
     ? JSON.stringify(['key', ref.key])
     : JSON.stringify(['part', ref.type, ref.id])
 }
 
-/** Encodes a graph tag reference with separate namespaces for create keys and saved IDs. */
 export function tagKey(ref: GraphTagRef): string {
   return 'key' in ref ? JSON.stringify(['key', ref.key]) : JSON.stringify(['tag', ref.id])
 }

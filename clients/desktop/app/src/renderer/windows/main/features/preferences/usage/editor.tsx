@@ -1,12 +1,10 @@
-import { Match, Show, Switch } from 'solid-js'
-import { Alert } from '@kisaki3/desktop-ui/alert'
-import { Button } from '@kisaki3/desktop-ui/button'
+import { Match, Switch } from 'solid-js'
 import type { MainClient } from '../../../../../infrastructure/api'
-import { errorMessage } from '../../../../../infrastructure/notifications'
 import { createFontOptions } from '../../../domain-ui/fonts/options'
 import type { PreferenceFields } from '../draft'
 import { AnimeUsageFields, GameUsageFields, type UsageMedium } from './fields'
 import { ReadingFields } from './reading'
+import { QueryError } from '../../../../../infrastructure/query/error'
 
 export function UsageEditorFields(props: {
   api: MainClient
@@ -39,7 +37,6 @@ export function UsageEditorFields(props: {
   )
 }
 
-/** Loads font choices only when a reading form needs them. */
 function ReadingUsageFields(props: {
   api: MainClient
   medium: 'comic' | 'novel'
@@ -51,16 +48,12 @@ function ReadingUsageFields(props: {
 
   return (
     <>
-      <Show when={fonts.error()}>
-        {(cause) => (
-          <Alert tone="destructive" role="alert" class="mb-3">
-            {errorMessage(cause())}{' '}
-            <Button variant="outline" onClick={fonts.retry}>
-              {api.t('runtime.retry')}
-            </Button>
-          </Alert>
-        )}
-      </Show>
+      <QueryError
+        error={fonts.error()}
+        retryLabel={api.t('runtime.retry')}
+        retry={fonts.retry}
+        class="mb-3"
+      />
       <ReadingFields
         medium={props.medium}
         t={api.t}

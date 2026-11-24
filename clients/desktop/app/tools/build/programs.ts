@@ -5,7 +5,6 @@ import { existsSync } from 'node:fs'
 export const programNames = ['main', 'preload', 'extension-host', 'renderer'] as const
 export type ProgramName = (typeof programNames)[number]
 
-/** Includes a utility process when the input supplies that independently delivered program. */
 export function sourcePrograms(root: string) {
   return programNames.filter(
     (name) => name !== 'extension-host' || existsSync(join(root, 'src/extension-host/entry.ts')),
@@ -28,7 +27,6 @@ export function programConfig(
   }
 }
 
-/** Resolves current program entries, giving each sandbox preload its own self-contained build. */
 export async function programConfigurations(
   sourceRoot: string,
   program: ProgramName,

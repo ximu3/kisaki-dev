@@ -2,13 +2,11 @@ import { randomUUID } from 'node:crypto'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { parseNativeViewTarget, type NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 
-/** Creates a distinct notification identifier even when several notices lead to the same destination. */
 export function notificationTarget(appId: string, target: NativeViewTarget) {
   const data = Buffer.from(JSON.stringify(target)).toString('base64url')
   return `${appId}/notification/${randomUUID()}/${data}`
 }
 
-/** Matches the application identity and validates the stored destination before navigation. */
 export function readNotificationTarget(appId: string, input: unknown): NativeViewTarget | null {
   const prefix = appId + '/notification/'
   if (typeof input !== 'string' || !input.startsWith(prefix)) {

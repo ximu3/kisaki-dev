@@ -29,7 +29,7 @@
 
 通用文档，包括 README、CONTRIBUTING、CONVENTIONS、ARCHITECTURE、AGENTS、共用规范、skill 指引与设计正文，只描述当前有效的规则、能力、使用方法和必要依据。实施状态列出已完成的工作、待办事项和验证记录。验证记录保存用来判断方案的来源、对照和实测结果。普通修改经过由 Git 历史与 PR 承载，必要的取舍理由在所属规则处直接说明。
 
-公开声明承载调用者需要知道的条件，架构与项目文档说明跨模块关系、生命周期和使用方法。局部约束按[注释规范](conventions.md#comments)就近说明。界面文字遵守[文案规范](../ui/components.md#copy)，发行变化记录在提交、PR 和发行说明中。
+公开声明交付类型与签名。所属包或协议文档按操作说明调用条件、完成和失败结果、取消与资源归属，面向包消费者的说明随制品提供。架构文档说明跨模块关系和生命周期。局部约束按[注释规范](conventions.md#comments)就近说明。界面文字遵守[文案规范](../ui/components.md#copy)，发行变化记录在提交、PR 和发行说明中。
 
 <a id="writing"></a>
 
@@ -117,7 +117,7 @@ SKILL.md 统一提供任务到参考文档的导航，references 直接按实际
 
 ## 项目文档交付与维护
 
-实施期间以 AGENTS.md 为任务入口，refactor 承载设计、共用规范、实施说明与验证依据。环境准备、当前源码职责和可运行命令见[当前工程与开发](../../implementation/development.md)。接口声明、schema、JSDoc、Rustdoc、代码注释、界面与 CLI 文案、测试及验证记录随所属实现维护。
+实施期间以 AGENTS.md 为任务入口，refactor 承载设计、共用规范、实施说明与验证依据。环境准备、当前源码职责和可运行命令见[当前工程与开发](../../implementation/development.md)。接口声明、schema、随包提供的调用约定、界面与 CLI 文案、测试及验证记录随所属实现维护。
 
 [W23 项目文档与协作入口](../../implementation/work-packages.md#w23)集中形成 README 及其语言版本、CONTRIBUTING、CONVENTIONS、ARCHITECTURE、模块与包说明、官方扩展说明、模板使用指南、项目 skill 和 GitHub Issue Forms。范围包括 Kisaki monorepo 与四个独立项目，按各对象的实现与验收进度分批完成，在 W24 整体验收前就绪。文档落在所属项目，职责遵守[归属定义](#owners)。
 

@@ -1,13 +1,12 @@
 import { dialog, type BrowserWindow } from 'electron'
-import { randomUUID } from 'node:crypto'
 import { basename } from 'node:path'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { parseListOptions, type Disposable } from '@kisaki3/desktop-contracts/operations'
 import { parseImageTransform, type PreparedImage } from '@kisaki3/desktop-contracts/images'
 import { parseFontUpdate, type PreparedFontFile } from '@kisaki3/desktop-contracts/fonts'
 import type { ViewResourcesApi, ReadResourceRef } from '@kisaki3/desktop-contracts/resources'
-import { releaseAll } from '../../infrastructure/release'
-import { receiveFile } from '../../infrastructure/files/input'
+import { releaseAll, rethrowAfterRelease } from '../../infrastructure/release'
+import { openDocumentFileInputs } from './file-inputs'
 import type { Application } from '../compose'
 import type { FontFileChoice, MainWindowApi } from '../../../shared/window-api'
 import { rpcData } from '../../../shared/window-api/protocol'
@@ -16,7 +15,6 @@ import { windowMethod, type WindowMethods } from './admission'
 
 type FileMethodName = Extract<keyof MainWindowApi, `fonts.${string}` | `images.${string}`>
 
-/** Installs the binary input channel and exposes only operations on this document's actual preparations. */
 export function createFileMethods(
   application: Application,
   window: BrowserWindow,
@@ -26,21 +24,18 @@ export function createFileMethods(
   canReceive: () => boolean,
 ) {
   const { fonts, images } = application
-  const contents = window.webContents
-  const fileInputs = new Map<string, ReturnType<typeof receiveFile>>()
+  const fileInputs = openDocumentFileInputs(window.webContents, canReceive)
   const preparedFonts = new Map<string, PreparedFontFile>()
   const preparedImages = new Map<string, PreparedImage>()
 
-  /** Transfers a file read and its document URLs to the same cancellable window acquisition. */
   async function bind<K extends string>(
     read: Disposable,
     inputs: Readonly<Record<K, ReadResourceRef>>,
     signal: AbortSignal,
   ) {
-    const binding = await view.bind(inputs).catch(async (cause: unknown) => {
-      await read.dispose()
-      throw cause
-    })
+    const binding = await view
+      .bind(inputs)
+      .catch((cause: unknown) => rethrowAfterRelease(cause, () => read.dispose()))
     const hold = await keep(
       {
         dispose: () => releaseAll([() => binding.dispose(), () => read.dispose()]),
@@ -62,35 +57,6 @@ export function createFileMethods(
       throw new DesktopError('InvalidReference', 'The font preparation has ended')
     }
     return file
-  }
-
-  /** Acquires the incoming binary port only from this bound top-level document. */
-  const receiveInput = (event: Electron.IpcMainEvent) => {
-    const port = event.ports[0]
-    if (!port) {
-      return
-    }
-    if (!canReceive() || event.senderFrame !== contents.mainFrame || fileInputs.size >= 32) {
-      port.close()
-      return
-    }
-    const id = randomUUID()
-    const stream = receiveFile(port)
-    fileInputs.set(id, stream)
-    stream.once('close', () => fileInputs.delete(id))
-    port.postMessage({ id })
-  }
-  contents.ipc.on('kisaki-file-input', receiveInput)
-
-  /** Consumes a file grant exactly once in the document that supplied its port. */
-  function takeInput(id: unknown) {
-    const key = textArgument(id)
-    const stream = fileInputs.get(key)
-    if (!stream) {
-      throw new DesktopError('InvalidReference', 'The file input is unavailable')
-    }
-    fileInputs.delete(key)
-    return stream
   }
 
   async function holdImage(image: PreparedImage, signal: AbortSignal) {
@@ -165,12 +131,11 @@ export function createFileMethods(
         signal.throwIfAborted()
         return rpcData(result)
       } catch (error) {
-        await Promise.all(added.map(release))
-        throw error
+        return rethrowAfterRelease(error, () => releaseAll(added.map((id) => () => release(id))))
       }
     }),
     'fonts.prepareInput': windowMethod('acquire', async ([token], signal) => {
-      const input = takeInput(token)
+      const input = fileInputs.take(token)
       try {
         const file = await fonts.prepare(input, { signal })
         return rpcData(await holdFont(file, signal))
@@ -258,7 +223,7 @@ export function createFileMethods(
       )
     }),
     'images.prepareInput': windowMethod('acquire', async ([token], signal) => {
-      const input = takeInput(token)
+      const input = fileInputs.take(token)
       try {
         return await holdImage(await images.prepare(input, { signal }), signal)
       } finally {
@@ -282,13 +247,8 @@ export function createFileMethods(
       preparedFonts.delete(id)
       preparedImages.delete(id)
     },
-    /** Ends unread file inputs and removes the previous document's lookup tables on reload. */
     close() {
-      contents.ipc.off('kisaki-file-input', receiveInput)
-      for (const input of fileInputs.values()) {
-        input.destroy()
-      }
-      fileInputs.clear()
+      fileInputs.close()
       preparedImages.clear()
       preparedFonts.clear()
     },

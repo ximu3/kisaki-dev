@@ -78,7 +78,6 @@ export function nativeHostPath(input: string): string | undefined {
   return lookup + sep === lookupRoot(root.root) ? lookup + sep : lookup
 }
 
-/** Keeps '..' for filesystem lookup, including across symlinks. */
 export function parseHostPath(input: string) {
   const path = hostSpelling(input)
   const root = hostRoot(path)

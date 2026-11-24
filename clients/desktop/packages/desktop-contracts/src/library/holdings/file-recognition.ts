@@ -38,7 +38,6 @@ export interface FileConditionByType {
   readonly novel: NumberedPartCondition & { readonly kind: 'volume' }
 }
 
-/** Subtracts the signed safe-integer offset from the integer portion after template expansion. */
 export interface FileNumberValue {
   readonly value: string
   readonly offset: number
@@ -57,7 +56,6 @@ export type NumberedPartOutput =
   | { readonly number: FileNumberOutput; readonly name?: string }
   | { readonly number?: FileNumberOutput; readonly name: string }
 
-/** Number or name templates that identify one volume for chapter interpretation. */
 export type ComicVolumeScopeOutput =
   | { readonly number: FileNumberValue; readonly name?: string }
   | { readonly number?: FileNumberValue; readonly name: string }
@@ -69,10 +67,6 @@ export type AnimeFileTarget =
     })
   | { readonly kind: 'extra'; readonly name: string; readonly extraType?: AnimeExtraType | null }
 
-/**
- * Volume-relative chapter numbers require a volume scope. Work-wide numbers are evaluated within
- * the work.
- */
 export type ComicFileTarget =
   | (NumberedPartOutput & { readonly kind: 'volume' })
   | ({ readonly kind: 'chapter'; readonly name?: string } & (
@@ -102,7 +96,6 @@ export interface FileTargetByType {
   readonly novel: NovelFileTarget
 }
 
-/** Interpretation uses the first enabled full match. All targets must match together. */
 export interface FileRecognitionRule<TTarget> {
   readonly id: string
   readonly name: string
@@ -115,15 +108,10 @@ export interface FileRecognitionRule<TTarget> {
   readonly output: { readonly targets: NonEmptyArray<TTarget> }
 }
 
-/** The ordered filename rules for one medium; an empty rule list is valid. */
 export interface FileRecognitionDefinition<T extends FileWorkType = FileWorkType> {
   readonly rules: readonly FileRecognitionRule<FileTargetByType[T]>[]
 }
 
-/**
- * Changes affect later interpretation. An unavailable selected definition remains unavailable
- * instead of triggering fallback.
- */
 export type FileRecognitionProfile<T extends FileWorkType = FileWorkType> = {
   [K in T]: {
     readonly id: string
@@ -134,9 +122,7 @@ export type FileRecognitionProfile<T extends FileWorkType = FileWorkType> = {
     readonly definition: StoredDefinition<FileRecognitionDefinition<K>>
     readonly sortOrder: number
 
-    /** UTC milliseconds since the Unix epoch. */
     readonly createdAt: number
-    /** UTC milliseconds since the Unix epoch. */
     readonly updatedAt: number
   }
 }[T]
@@ -147,7 +133,6 @@ export interface FileRecognitionProfileFields<T extends FileWorkType> {
   readonly definition: FileRecognitionDefinition<T>
 }
 
-/** A fixed recognition definition and display metadata for copying into a new draft. */
 export interface FileRecognitionPreset<T extends FileWorkType> {
   readonly id: string
   readonly name: string
@@ -155,28 +140,18 @@ export interface FileRecognitionPreset<T extends FileWorkType> {
   readonly definition: FileRecognitionDefinition<T>
 }
 
-/**
- * A referenced profile requires explicit handling of its directory dependencies before deletion.
- */
 export interface FileRecognitionProfilesApi<T extends FileWorkType> {
   list(
     call?: CallOptions,
   ): Promise<readonly Pick<FileRecognitionProfile<T>, 'id' | 'workType' | 'name' | 'description'>[]>
 
-  /**
-   * A missing profile returns null. Corrupted saved definitions remain explicit unavailable values.
-   */
   get(id: string, call?: CallOptions): Promise<FileRecognitionProfile<T> | null>
 
-  /** A preset copy uses the same ordinary save path as any complete definition. */
   create(
     input: FileRecognitionProfileFields<T>,
     call?: CallOptions,
   ): Promise<FileRecognitionProfile<T>>
 
-  /**
-   * The definition is one comparison value. Updating it leaves saved file associations unchanged.
-   */
   update(
     id: string,
     input: {
@@ -186,12 +161,8 @@ export interface FileRecognitionProfilesApi<T extends FileWorkType> {
     call?: CallOptions,
   ): Promise<FileRecognitionProfile<T>>
 
-  /**
-   * Deletes an unreferenced profile after its directory dependencies have been handled explicitly.
-   */
   delete(id: string, call?: CallOptions): Promise<void>
 
-  /** Reorders selected profiles against the complete media-specific profile-order baseline. */
   reorder(input: ReorderInput, call?: CallOptions): Promise<void>
 
   references(
@@ -201,7 +172,6 @@ export interface FileRecognitionProfilesApi<T extends FileWorkType> {
     readonly { readonly work: EntryRef<T>; readonly directoryId: string; readonly path: string }[]
   >
 
-  /** Lists fixed preset definitions for copying into drafts without creating saved profiles. */
   listPresets(call?: CallOptions): Promise<readonly FileRecognitionPreset<T>[]>
 }
 
@@ -264,7 +234,6 @@ const targetSchemas = {
   novel: volume,
 }
 
-/** The owning rule separately checks template capture names. */
 export function parseFileTarget<T extends FileWorkType>(
   workType: T,
   input: unknown,
@@ -302,10 +271,6 @@ function targetTemplates(
   return templates
 }
 
-/**
- * Run pattern compilation and capture-name validation in a bounded terminable unit. Disabled rules
- * are validated too. An empty list is valid.
- */
 export function parseFileRecognitionDefinition<T extends FileWorkType>(
   workType: T,
   input: unknown,
@@ -323,10 +288,6 @@ export function parseFileRecognitionDefinition<T extends FileWorkType>(
   return value
 }
 
-/**
- * Shape validation suits storage and history reads. Execution requires separate isolated pattern
- * compilation.
- */
 export function parseFileRecognitionDefinitionShape<T extends FileWorkType>(
   workType: T,
   input: unknown,
@@ -354,7 +315,6 @@ export function parseFileRecognitionDefinitionShape<T extends FileWorkType>(
   return value
 }
 
-/** The caller compiles submitted definitions in a bounded terminable unit. */
 export function parseFileRecognitionProfileUpdate<T extends FileWorkType>(
   workType: T,
   input: unknown,
@@ -393,10 +353,6 @@ export type FileRecognitionSource =
   | { readonly type: 'builtin' }
   | { readonly type: 'profile'; readonly profileId: string; readonly ruleId: string }
 
-/**
- * A matched result retains its interpretation source, expanded conditions and actual part
- * identities.
- */
 export type FileRecognitionResult<T extends FileWorkType = FileWorkType> = {
   [K in T]:
     | {

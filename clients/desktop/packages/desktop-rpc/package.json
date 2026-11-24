@@ -24,7 +24,8 @@
   "files": [
     "dist",
     "LICENSE",
-    "release-notes"
+    "release-notes",
+    "API.md"
   ],
   "sideEffects": false,
   "exports": {

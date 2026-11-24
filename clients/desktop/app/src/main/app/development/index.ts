@@ -5,7 +5,6 @@ import {
 } from '@kisaki3/desktop-contracts/development'
 import manifest from '../../../../package.json' with { type: 'json' }
 
-/** Announces the current build and waits for the same quit decision as native app commands. */
 export function developmentControl(stop: () => Promise<boolean>) {
   const identity = { buildId: __KISAKI_BUILD_ID__, appVersion: manifest.version }
   const rpc = new RpcConnection(

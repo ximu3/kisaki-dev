@@ -18,13 +18,11 @@ import {
 } from '@kisaki3/desktop-contracts/app'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 
-/** Fetches an explicit launch value from an isolated development or verification invocation. */
 export function launchArgument(key: string) {
   const prefix = '--' + key + '='
   return process.argv.find((value) => value.startsWith(prefix))?.slice(prefix.length)
 }
 
-/** Checks the marker's actual type and distinguishes absence from unreadable or invalid state. */
 function portableMarker(path: string) {
   const info = lstatSync(path, { throwIfNoEntry: false })
   if (!info) {
@@ -36,7 +34,6 @@ function portableMarker(path: string) {
   return true
 }
 
-/** Refuses to initialize over an incomplete existing portable library. */
 function checkPortableRoot(path: string) {
   if (!lstatSync(path).isDirectory()) {
     throw new Error('The portable data directory is unavailable')
@@ -49,7 +46,6 @@ function checkPortableRoot(path: string) {
   }
 }
 
-/** Fixes app, data and resource paths, and exposes carrier-appropriate next-start mode controls. */
 export function selectPaths() {
   const runtime = app.isPackaged
     ? app.getAppPath()
@@ -112,7 +108,6 @@ export function selectPaths() {
     data,
     isolated,
     carrier: distribution?.kind,
-    /** Rereads the marker while keeping the current process data root fixed. */
     status(): DataLocationState {
       const current = { mode: selected ? ('portable' as const) : ('normal' as const), path: data }
       if (!marker || !portable) {
@@ -139,7 +134,6 @@ export function selectPaths() {
         }
       }
     },
-    /** Commits the next startup's marker while the current process keeps its selected root. */
     async setDataMode(
       input: DataModeChange,
       verify: (directory: string, existing: boolean) => Promise<void>,
@@ -176,5 +170,4 @@ export function selectPaths() {
   }
 }
 
-/** Deployment and data-root choices belonging to this app process. */
 export type AppPaths = ReturnType<typeof selectPaths>

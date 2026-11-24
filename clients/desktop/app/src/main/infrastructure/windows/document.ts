@@ -1,7 +1,6 @@
 import { readFile } from 'node:fs/promises'
 import { isAbsolute, join, relative, resolve, extname } from 'node:path'
 
-/** Serves immutable build resources within their known document roots. */
 export function serveDocument(
   runtime: string,
   resources: string,

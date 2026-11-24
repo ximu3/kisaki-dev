@@ -1,4 +1,3 @@
-/** Labels, feedback and field names for the desktop runtime. */
 export const runtimeMessages = {
   notifications: '通知',
   calendar: '日历',

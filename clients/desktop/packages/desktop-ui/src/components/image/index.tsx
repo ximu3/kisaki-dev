@@ -3,21 +3,11 @@ import type { JSX } from '@solidjs/web'
 import { callHandler } from '../../internal/dom'
 import styles from './styles.module.css'
 
-/**
- * Image attributes requiring alternative text and permitting visible fallback content.
- *
- * The host acquires and releases the supplied URL.
- */
 export interface ImageProps extends Omit<JSX.ImgHTMLAttributes<HTMLImageElement>, 'alt'> {
   alt: string
   fallback?: JSX.Element
 }
 
-/**
- * Renders an image or accessible fallback for a missing or failed source.
- *
- * Changing the source candidates clears the failure state; URL ownership remains with the host.
- */
 export function Image(props: ImageProps): JSX.Element {
   const rest = omit(
     props,

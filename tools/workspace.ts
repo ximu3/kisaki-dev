@@ -9,7 +9,6 @@ export interface Project {
   directory: string
 }
 
-/** Reads native pnpm workspace selectors, including their transitive dependency edges. */
 export function listProjects(...filters: string[]): Project[] {
   const pnpm = process.env.npm_execpath
   if (!pnpm) {

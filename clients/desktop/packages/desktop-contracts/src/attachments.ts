@@ -2,57 +2,33 @@ import type { ErrorSummary } from './errors'
 import type { CallOptions, ListOptions, ListResult } from './operations'
 import type { ReadResource, FileInput } from './resources'
 
-/** The digest checks integrity; the attachment ID owns identity. */
 export interface Attachment {
   readonly id: string
   readonly mediaType: string
   readonly sizeBytes: number
   readonly sha256: string
 
-  /** Image width in pixels when known; null for content without known dimensions. */
   readonly width: number | null
-  /** Image height in pixels when known; null for content without known dimensions. */
   readonly height: number | null
 
-  /** UTC milliseconds since the Unix epoch. */
   readonly createdAt: number
 }
 
-/** Only unreferenced, unheld content is eligible for removal. */
 export interface AttachmentCleanupResult {
   readonly removedCount: number
   readonly reclaimedBytes: number
   readonly issues: readonly { readonly attachmentId: string; readonly error: ErrorSummary }[]
 }
 
-/**
- * A metadata read does not establish byte availability. Cleanup leaves business references
- * unchanged.
- */
 export interface AttachmentsApi {
-  /** The read does not acquire bytes or establish their current availability. */
   get(id: string, call?: CallOptions): Promise<Attachment | null>
 
-  /**
-   * The caller releases the acquired bytes. Failed reads preserve the attachment and its
-   * references.
-   */
   read(id: string, call?: CallOptions): Promise<ReadResource>
 
-  /**
-   * Repairs attachment storage only when the complete bytes match the registered digest.
-   *
-   * Different content requires a new attachment.
-   */
   repair(id: string, input: FileInput, call?: CallOptions): Promise<void>
 
-  /** Removes orphaned managed content after rechecking applicable references and holds. */
   cleanup(call?: CallOptions): Promise<AttachmentCleanupResult>
 
-  /**
-   * Inspection retains references and reports missing or unreadable content without substituting
-   * previews.
-   */
   inspect(
     options: ListOptions,
     call?: CallOptions,

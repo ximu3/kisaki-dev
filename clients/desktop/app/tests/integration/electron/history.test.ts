@@ -8,7 +8,6 @@ import { taskHistory } from '../../../src/main/features/tasks/history'
 import type { TaskRun } from '@kisaki3/desktop-contracts/tasks'
 
 test.use({
-  /** Seeds multiple read intervals and a confirmed checkpoint from a process that did not finish. */
   profile: async ({}, use) => {
     const root = await mkdtemp(join(tmpdir(), 'kisaki-task-center-'))
     try {

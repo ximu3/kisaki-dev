@@ -1,6 +1,5 @@
 import { fileChunkBytes } from '../../shared/window-api/protocol'
 
-/** Receives the host's input reference without reading any bytes until the preparation requests them. */
 export async function fileInput(file: File) {
   const channel = new MessageChannel()
   const ready = Promise.withResolvers<string>()
@@ -39,7 +38,6 @@ export async function fileInput(file: File) {
   try {
     return {
       id: await ready.promise,
-      /** Closes this document's source port after preparation finishes. */
       dispose: () => channel.port1.close(),
     }
   } catch (error) {

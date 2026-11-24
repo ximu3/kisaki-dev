@@ -7,16 +7,13 @@ import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { isAbsoluteHostPath } from '#host-path'
 import type { NativeFiles } from '#native'
 
-/** Completed bytes held in one exclusively owned preparation directory. */
 export interface StagedFile {
   readonly path: string
   readonly byteSize: number
   readonly sha256: string
-  /** Releases this preparation directory after its consumer has finished. */
   dispose(): Promise<void>
 }
 
-/** Synchronizes a POSIX namespace; Windows publication uses native write-through moves. */
 export async function syncDirectory(path: string): Promise<void> {
   if (!isAbsoluteHostPath(path)) {
     throw new TypeError('Expected an absolute directory path')
@@ -32,12 +29,6 @@ export async function syncDirectory(path: string): Promise<void> {
   }
 }
 
-/**
- * Moves to an absent destination and completes the platform's namespace barriers.
- *
- * The move may already have succeeded if a later synchronization fails. It never overwrites a
- * destination or emulates a cross-filesystem move through copy-and-delete.
- */
 export async function publishPath(
   source: string,
   target: string,
@@ -54,7 +45,6 @@ export async function publishPath(
   }
 }
 
-/** Maps an opaque attachment identity to a fixed, portable path without using content as identity. */
 export function storedFilePath(root: string, id: string): string {
   if (!isAbsoluteHostPath(root) || id.length === 0 || /[\uD800-\uDFFF]/u.test(id)) {
     throw new TypeError('Expected an absolute storage root and a nonempty scalar identity')
@@ -63,12 +53,6 @@ export function storedFilePath(root: string, id: string): string {
   return join(root, key.slice(0, 2), key.slice(2))
 }
 
-/**
- * Copies a byte stream into an owned temporary file, hashing and enforcing its actual byte limit.
- *
- * Takes ownership of the input. Failure releases the streams and preparation. Cancellation
- * waits for pending synchronization before cleanup. On success the caller owns the file and its disposal.
- */
 export async function stageFile(
   temporaryRoot: string,
   source: Readable,
@@ -83,7 +67,6 @@ export async function stageFile(
   let byteSize = 0
   let directory: string | undefined
 
-  /** Removes only the exclusively created preparation directory. */
   async function dispose(): Promise<void> {
     if (directory === undefined) {
       return
@@ -149,11 +132,6 @@ export async function stageFile(
   }
 }
 
-/**
- * Publishes prepared bytes at their immutable app-owned identity.
- *
- * The caller commits business references only after success and retains the stage until then.
- */
 export async function publishStoredFile(
   root: string,
   id: string,

@@ -1,5 +1,3 @@
-/* Window controls and dialogs use the actual boundary below the native title bar. */
-
 :root {
   --dialog-region-top: calc(
     env(titlebar-area-y, 0px) + env(titlebar-area-height, var(--main-titlebar-height))

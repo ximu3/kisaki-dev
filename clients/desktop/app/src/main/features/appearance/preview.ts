@@ -1,4 +1,4 @@
-import { releaseAll } from '../../infrastructure/release'
+import { releaseAll, rethrowAfterRelease } from '../../infrastructure/release'
 import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
@@ -11,19 +11,15 @@ import {
 import type { FontTokenName } from '@kisaki3/desktop-appearance/tokens'
 import { createSignal } from '../../infrastructure/events'
 
-/** Verified immutable files held together for one font selection. */
 export interface ThemeFontRead {
   files: readonly ThemeFontResourceFile[]
-  /** Releases the read without invalidating already bound documents. */
   dispose(): Promise<void>
 }
 
-/** Reader bound by the actual extension instance to its installed or private resource roots. */
 export type PrivateFontRead = (
   font: Extract<ThemeFont, { type: 'extension' }>,
 ) => Promise<ThemeFontRead>
 
-/** Owns exactly one preview; requests prepare a complete replacement before transferring ownership. */
 export function createPreviews(
   slots: readonly FontTokenName[],
   acquire: (
@@ -35,7 +31,6 @@ export function createPreviews(
 ) {
   let generation = 0
 
-  /** Acquires each distinct selection once and releases partial reads on any failure. */
   async function prepare(
     input: AppearancePreviewInput,
     read?: PrivateFontRead,
@@ -63,8 +58,7 @@ export function createPreviews(
       options?.signal?.throwIfAborted()
       return { input: value, resources, dispose }
     } catch (error) {
-      await dispose()
-      throw error
+      return rethrowAfterRelease(error, dispose)
     }
   }
 
@@ -75,7 +69,6 @@ export function createPreviews(
     get current() {
       return active?.branch
     },
-    /** Publishes the prepared branch, notifying the previous editor once on successful takeover. */
     async open(
       this: void,
       input: AppearancePreviewInput,
@@ -93,7 +86,6 @@ export function createPreviews(
       let revision = 0
       let releasing: Promise<void> | undefined
       const previous = active
-      /** Ends this handle without clearing a newer editor's preview. */
       function end(replacement = false) {
         if (releasing) {
           return releasing
@@ -115,7 +107,6 @@ export function createPreviews(
       changed()
       await retiring?.catch((error) => console.error('Previous preview cleanup failed', error))
       return {
-        /** Adopts a fully verified edit and releases the previous branch after publication. */
         async update(value) {
           if (active !== owned) {
             throw new DesktopError('InstanceExpired', 'The preview has ended')
@@ -134,21 +125,18 @@ export function createPreviews(
           changed()
           await original.dispose()
         },
-        /** Releases exactly this preview and restores the latest saved appearance. */
         dispose: () => end(),
-        /** Delivers termination immediately to an observer of an already ended preview. */
         onDispose(listener) {
           if (active === owned) {
             return ended.on(listener)
           }
           listener()
           return {
-            /** An already ended handle has no retained subscription. */ dispose() {},
+            dispose() {},
           }
         },
       }
     },
-    /** Revokes pending starts and releases the current preview on application exit. */
     async close() {
       generation++
       await active?.end()

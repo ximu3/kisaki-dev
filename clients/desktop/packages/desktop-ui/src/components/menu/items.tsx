@@ -8,31 +8,15 @@ import { Separator } from '../separator'
 import { useMenu, type MenuState } from './state'
 import styles from './styles.module.css'
 
-/**
- * Menu-action attributes with optional selection notification and closure policy.
- *
- * Selection closes the tree by default; preventing the click or setting closeOnSelect=false keeps
- * it open.
- */
 export interface MenuItemProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
-  /**
-   * Notifies the caller synchronously after accepted activation and before default menu closure.
-   */
   onSelect?: () => void
   closeOnSelect?: boolean
-  /** Supplies a decorative leading glyph in the menu's shared icon slot. */
   icon?: JSX.Element
   destructive?: boolean
 }
 
-/**
- * Renders a focusable menu action and coordinates selection and default tree closure.
- *
- * The caller owns asynchronous completion and feedback.
- */
 export function MenuItem(props: MenuItemProps): JSX.Element {
   const state = useMenu()
-  // Keep the last check state visible during the exit animation.
   const checked = displayedWhileOpen(state.open, () => props['aria-checked'])
   const rest = omit(
     props,
@@ -101,17 +85,11 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
   )
 }
 
-/** Checkable menu-action props with a caller-owned boolean value. */
 export interface MenuCheckboxItemProps extends MenuItemProps {
   checked: boolean
-  /** Reports the proposed checked value when the item is selected. */
   onCheckedChange: (checked: boolean) => void
 }
 
-/**
- * Renders menu-checkbox semantics and reports toggled state without adding form submission
- * behavior.
- */
 export function MenuCheckboxItem(props: MenuCheckboxItemProps): JSX.Element {
   const rest = omit(props, 'checked', 'onCheckedChange', 'onSelect')
 
@@ -128,19 +106,12 @@ export function MenuCheckboxItem(props: MenuCheckboxItemProps): JSX.Element {
   )
 }
 
-/** Radio menu-action props using the caller's shared selected value. */
 export interface MenuRadioItemProps extends MenuItemProps {
   value: string
   selectedValue: string
-  /** Reports this item's value when it is selected. */
   onValueChange: (value: string) => void
 }
 
-/**
- * Renders a radio menu action against the caller's selected value.
- *
- * Related items belong in a named MenuGroup.
- */
 export function MenuRadioItem(props: MenuRadioItemProps): JSX.Element {
   const rest = omit(props, 'value', 'selectedValue', 'onValueChange', 'onSelect')
 
@@ -157,7 +128,6 @@ export function MenuRadioItem(props: MenuRadioItemProps): JSX.Element {
   )
 }
 
-/** Keeps the decorative glyph, accessible caption and trailing marker in distinct slots. */
 export function MenuItemLabel(props: ParentProps<Pick<MenuItemProps, 'icon'>>): JSX.Element {
   return (
     <>
@@ -171,12 +141,10 @@ export function MenuItemLabel(props: ParentProps<Pick<MenuItemProps, 'icon'>>): 
   )
 }
 
-/** Renders a caller-named item group within the existing menu-navigation scope. */
 export function MenuGroup(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
   return <div {...props} role="group" />
 }
 
-/** Separates action groups semantically without adding a focus stop. */
 export function MenuSeparator(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
   const rest = omit(props, 'class')
 

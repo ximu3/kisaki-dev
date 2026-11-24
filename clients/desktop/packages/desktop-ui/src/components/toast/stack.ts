@@ -1,12 +1,5 @@
-import { onCleanup } from 'solid-js'
-import type { Accessor } from 'solid-js'
+import { onCleanup, type Accessor } from 'solid-js'
 
-/**
- * Creates a Solid-owned coordinator that animates card positions around batched queue mutations.
- *
- * Reduced motion cancels active movement, and owner cleanup releases animations and the preference
- * listener.
- */
 export function createStackMotion(track: Accessor<HTMLElement | undefined>) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)')
   const animations = new Map<HTMLElement, Animation>()
@@ -50,8 +43,8 @@ export function createStackMotion(track: Accessor<HTMLElement | undefined>) {
       before.set(card, card.getBoundingClientRect())
     }
     previous = before
-    // Solid may batch several insertions, updates or releases into one layout.
     const moveCards = () => {
+      // Solid may batch several insertions, updates or releases into one layout.
       if (previous !== before) {
         return
       }

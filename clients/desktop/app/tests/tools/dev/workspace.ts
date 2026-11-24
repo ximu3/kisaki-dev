@@ -3,7 +3,6 @@ import { join } from 'node:path'
 import { appRoot } from '../../../tools/lib/paths'
 import { rethrowAfterCleanup } from '@kisaki3/tooling/errors'
 
-/** Copies editable inputs and links read-only dependencies and product sources into their normal locations. */
 export async function prepareDevelopmentWorkspace() {
   const parent = join(appRoot, 'out/development')
   await mkdir(parent, { recursive: true })
@@ -13,7 +12,6 @@ export async function prepareDevelopmentWorkspace() {
   const contracts = join(root, 'desktop-contracts')
   const linkedPackages = join(root, 'node_modules/@kisaki3')
 
-  /** Removes only inputs and links owned by this test after its readers exit. */
   const close = () => rm(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 })
   try {
     await cp(join(appRoot, 'tests/fixtures/desktop-app'), join(app, 'tests/fixtures/desktop-app'), {

@@ -4,7 +4,6 @@ import manifest from '../../../package.json' with { type: 'json' }
 import { parseApplicationEnvironment } from '@kisaki3/desktop-contracts/app'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 
-/** Reports the running process architecture, application version and actual operating system. */
 export function environment(options?: CallOptions) {
   options?.signal?.throwIfAborted()
   const systems: Partial<Record<NodeJS.Platform, string>> = {
@@ -19,7 +18,6 @@ export function environment(options?: CallOptions) {
   })
 }
 
-/** Copies only the requested public environment summary and confirms the clipboard accepted it. */
 export async function copyEnvironment(options?: CallOptions) {
   const info = environment(options)
   const text =

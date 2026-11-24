@@ -11,23 +11,15 @@ interface ActiveConnection {
   established: boolean
 }
 
-/**
- * One handshake-bound, bidirectional RPC connection over an owned transport.
- *
- * The caller awaits ready before issuing calls and observes closed to release endpoint-owned
- * resources. Each instance serves one connection lifetime.
- */
 export class RpcConnection {
   #resolveReady!: (context: JsonValue) => void
   #rejectReady!: (error: RpcError) => void
-  /** Resolves with the peer's verified context, or rejects if the handshake ends unsuccessfully. */
   readonly ready = new Promise<JsonValue>((resolve, reject) => {
     this.#resolveReady = resolve
     this.#rejectReady = reject
   })
 
   #resolveClosed!: (reason: RpcError) => void
-  /** Resolves once with the local reason when the connection and its listeners have been released. */
   readonly closed = new Promise<RpcError>((resolve) => {
     this.#resolveClosed = resolve
   })
@@ -39,11 +31,6 @@ export class RpcConnection {
   readonly #incoming = new Map<number, AbortController>()
   #lastIncomingId = 0
 
-  /**
-   * Binds transport callbacks and starts the handshake with a ten-second deadline.
-   *
-   * Handshake and transport failures settle ready and closed through the connection's release path.
-   */
   constructor(transport: RpcTransport, endpoint: RpcEndpoint) {
     this.#active = { transport, endpoint, established: false }
     this.#timer = setTimeout(
@@ -71,11 +58,6 @@ export class RpcConnection {
     }
   }
 
-  /**
-   * Requires an established connection. Aborting before transmission rejects with `Cancelled`.
-   * After transmission, abort asks the peer to cancel and the promise waits for its outcome.
-   * Connection loss rejects outstanding requests with `ConnectionClosed`.
-   */
   async request(
     method: string,
     args: readonly JsonValue[] = [],
@@ -94,12 +76,6 @@ export class RpcConnection {
     return this.#outgoing.request(method, values, options?.signal, (frame) => this.#send(frame))
   }
 
-  /**
-   * Hands a transient topic value to the established transport.
-   *
-   * Returns after local handoff; remote processing has no acknowledgement. A send failure closes
-   * the connection and throws ConnectionClosed.
-   */
   notify(topic: string, value: JsonValue): void {
     this.#requireReady()
     if (typeof topic !== 'string') {
@@ -110,12 +86,6 @@ export class RpcConnection {
     }
   }
 
-  /**
-   * Ends the connection and releases its transport synchronously.
-   *
-   * Rejects outbound waits and aborts inbound method signals. Endpoint-owned cleanup may continue
-   * after closure; late results are discarded. Repeated calls have no further effect.
-   */
   close(): void {
     this.#end(connectionClosed())
   }

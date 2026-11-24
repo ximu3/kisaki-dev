@@ -10,17 +10,14 @@ import { Menu, MenuContent, MenuItem, MenuTrigger } from '../../menu'
 import { ListItem, type ListItemProps } from '../parts'
 import { useReorderableList, type MoveCommand } from './control'
 
-/** Commands appear in their corresponding order in the item's move menu. */
 const commands = ['first', 'previous', 'next', 'last'] as const satisfies readonly MoveCommand[]
 
-/** Row appearance together with its stable ID and localized pointer and keyboard labels. */
 export interface ReorderableListItemProps extends Omit<ListItemProps, 'handle'> {
   value: string
   moveLabel: string
   previewLabel: string
 }
 
-/** Composes one native ListItem with a move menu, keyboard shortcut and pointer target. */
 export function ReorderableListItem(props: ReorderableListItemProps) {
   const list = useReorderableList()
   const rest = omit(props, 'value', 'moveLabel', 'previewLabel', 'ref', 'children')

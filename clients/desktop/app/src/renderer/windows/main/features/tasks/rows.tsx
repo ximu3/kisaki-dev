@@ -19,7 +19,6 @@ interface RowProps {
   open: () => void
 }
 
-/** Renders one measured logical row, enabling its actions after its real record arrives. */
 export function TaskRow(props: {
   api: MainClient
   active: boolean
@@ -72,7 +71,6 @@ export function TaskRow(props: {
   )
 }
 
-/** Pairs a compact tool action with its accessible name and visible hint. */
 function TaskAction(props: {
   label: string
   icon: JSX.Element
@@ -104,7 +102,6 @@ function TaskTitle(props: { title: string; type: string }) {
   )
 }
 
-/** Owns the lightweight observation for one active row until that identity leaves the interval. */
 function ActiveCells(props: RowProps & { report: (error: unknown) => void }) {
   const { api } = props
   const [state, setState] = createSignal<TaskState>()

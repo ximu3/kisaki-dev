@@ -7,9 +7,6 @@ import { SelectionTrigger } from '../../selection/trigger'
 import type { SelectionOption } from '../../selection/types'
 import styles from './styles.module.css'
 
-/**
- * Inclusive numeric period range, current value and host-owned formatting and navigation callbacks.
- */
 interface PeriodProps {
   label: string
   value: number
@@ -19,7 +16,6 @@ interface PeriodProps {
   choose: (value: number) => void
 }
 
-/** Renders a virtualized period selector, including ranges spanning all 9,999 supported years. */
 export function PeriodSelect(props: PeriodProps): JSX.Element {
   const popup = createSelectionPopup()
   const { present, setOpen } = popup

@@ -16,11 +16,6 @@ import { prepareArtifactWorkspace } from './workspace'
 import type { DesktopBuild } from '../../tools/build/manifest'
 import type { DistributionKind, DistributionManifest } from '../../tools/package/distribution'
 
-/**
- * Waits for process closure until the deadline and releases its timer on every outcome.
- *
- * Timeout ends the wait; process termination remains the caller's responsibility.
- */
 async function waitForExit(
   closed: Promise<number | null>,
   timeoutMs: number,

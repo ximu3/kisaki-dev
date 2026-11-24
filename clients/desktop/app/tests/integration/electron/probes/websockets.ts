@@ -9,7 +9,6 @@ import type { AddressInfo, Socket } from 'node:net'
 import assert from 'node:assert/strict'
 import { createNetwork } from '../../../../src/main/infrastructure/network'
 
-/** Uses a certificate trusted only by this test's ephemeral Chromium session. */
 export async function verifyBrowserRoutes(directory: string) {
   const cert = await readFile(join(directory, 'loopback-cert.pem'), 'utf8')
   const key = await readFile(join(directory, 'loopback-key.pem'), 'utf8')
@@ -65,7 +64,6 @@ export async function verifyBrowserRoutes(directory: string) {
         target +
         ');socket.onopen=()=>resolve(true);socket.onerror=()=>reject(new Error("initial connection failed"))})',
     )
-    /** Waits for a fresh frame on the original browser socket, not just its reported readyState. */
     async function receive(value: string) {
       await window.webContents.executeJavaScript(
         'window.nextFrame=new Promise(resolve=>{socket.onmessage=e=>resolve(e.data)});true',

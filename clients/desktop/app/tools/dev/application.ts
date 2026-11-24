@@ -16,7 +16,6 @@ import {
 } from './session'
 import { appRoot } from '../lib/paths'
 
-/** Starts the complete source program with a budget covering a cold developer toolchain and the real renderer graph. */
 export function startSourceSession(
   options: Pick<DevelopmentOptions, 'signal' | 'onState' | 'profile' | 'prepared'> = {},
 ) {
@@ -28,7 +27,6 @@ export function startSourceSession(
   })
 }
 
-/** Owns the actual child and reports a cancelled stop without discarding its running directory. */
 export async function launchApplication(
   options: DevelopmentLaunchOptions,
 ): Promise<DevelopmentApplication> {
@@ -128,7 +126,6 @@ export async function launchApplication(
     pid: child.pid!,
     exited,
     terminate,
-    /** Requests normal stop and preserves a refused application. */
     async stop() {
       if (child.exitCode !== null || child.signalCode !== null) {
         await exited

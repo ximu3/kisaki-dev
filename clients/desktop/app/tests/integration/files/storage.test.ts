@@ -86,7 +86,6 @@ test('cancellation during file synchronization releases the stage before returni
   const reason = new Error('Cancelled during file synchronization')
   const files = {
     ...native,
-    /** Requests cancellation immediately after submitting the real file barrier. */
     syncFile(path: string) {
       const synchronized = native.syncFile(path)
       controller.abort(reason)

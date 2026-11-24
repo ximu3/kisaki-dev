@@ -11,7 +11,6 @@ import {
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type { Disposable } from '@kisaki3/desktop-contracts/operations'
 
-/** Hands each snapshot to the current subscribers before returning to its publisher. */
 export function createSignal<T>() {
   const listeners = new Set<EventListener<T>>()
 
@@ -28,7 +27,6 @@ export function createSignal<T>() {
   return {
     on,
 
-    /** Installs a subscription and rolls it back if initial delivery fails. */
     observe(listener: (value: T) => void, initial: T): Disposable {
       const hold = on(listener)
       try {
@@ -40,7 +38,6 @@ export function createSignal<T>() {
       }
     },
 
-    /** Isolates a listener's synchronous failure and its independently accepted asynchronous work. */
     emit(this: void, value: T) {
       for (const listener of [...listeners]) {
         try {
@@ -60,7 +57,6 @@ export function createSignal<T>() {
   }
 }
 
-/** Creates application-owned native fact subscriptions and individually scoped publishing rights. */
 export function createEvents() {
   const topics = new Map<string, ReturnType<typeof createSignal<unknown>>>()
   const publishers = new Map<string, symbol>()
@@ -94,7 +90,6 @@ export function createEvents() {
   return {
     on,
 
-    /** Grants one instance a publisher scoped to its bound extension identity and local name. */
     define<T>(owner: string, id: string, parse: (input: unknown) => T): ExtensionEventPublisher<T> {
       const contract = extensionEvent(owner + ':' + id, parse)
       if (publishers.has(contract.ref)) {
@@ -121,7 +116,6 @@ export function createEvents() {
       }
     },
 
-    /** Restricts the domain owner's capability to its assigned fact. */
     publisher<K extends NativeEventName>(name: K): NativeEventPublisher<K> {
       return { emit: topic(name).emit }
     },

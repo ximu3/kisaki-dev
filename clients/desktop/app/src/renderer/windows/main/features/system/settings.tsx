@@ -16,10 +16,10 @@ import { Button } from '@kisaki3/desktop-ui/button'
 import type { MainClient } from '../../../../infrastructure/api'
 import { errorMessage } from '../../../../infrastructure/notifications'
 import { DataLocation } from './data-location'
+import { QueryError } from '../../../../infrastructure/query/error'
 
 type Operation = 'login' | 'protocol' | 'launcher' | 'data'
 
-/** Describes what will open this scheme using the system's observed association. */
 function describeLinks(
   t: Translate,
   item: Extract<ProtocolIntegrationState, { status: 'available' }>,
@@ -34,7 +34,6 @@ function describeLinks(
   return t(isDefault ? 'runtime.linksOpenInKisaki' : 'runtime.linksOpenInOtherApp', { scheme })
 }
 
-/** Reads the real operating-system state before showing the settings and after every write. */
 export function SystemSettings(props: { api: MainClient; report: (error: unknown) => void }) {
   const { api } = props
   const state = createQuery((signal) => api.request(signal, 'system.get'))
@@ -89,16 +88,7 @@ export function SystemSettings(props: { api: MainClient; report: (error: unknown
         <DialogTitle>{api.t('runtime.system')}</DialogTitle>
       </DialogHeader>
       <DialogBody class="grid gap-5">
-        <Show when={state.error}>
-          {(cause) => (
-            <Alert tone="destructive" role="alert">
-              {errorMessage(cause())}{' '}
-              <Button variant="outline" onClick={refresh}>
-                {api.t('runtime.retry')}
-              </Button>
-            </Alert>
-          )}
-        </Show>
+        <QueryError error={state.error} retryLabel={api.t('runtime.retry')} retry={refresh} />
 
         <Show when={current()}>
           {(snapshot) => (

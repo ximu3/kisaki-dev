@@ -3,33 +3,22 @@ import type { JSX } from '@solidjs/web'
 import { Icon, ChevronLeft, ChevronRight, X } from '../icon/glyph'
 import styles from './styles.module.css'
 
-/** Accessible labels for removing a selected value and scrolling the selected-value viewport. */
 export interface ChipLabels {
-  /** Formats the removal action's accessible label from the selected value's display text. */
   removeLabel: (label: string) => string
   scrollPreviousLabel: string
   scrollNextLabel: string
 }
 
-/** Ordered selected keys with display labels, availability and field-focus coordination. */
 interface SelectedChipsProps extends ChipLabels {
   values: readonly string[]
   label: (value: string) => string
   disabled: boolean | undefined
-  /** Associates actions with an open choice list so that they do not dismiss it. */
   panelId?: string | undefined
-  /** Returns the complete field element that receives wheel input over the chip area. */
   field: () => HTMLElement
   onRemove: (value: string) => void
-  /** Restores field focus after removal or when a scroll control becomes hidden. */
   focusTrigger: () => void
 }
 
-/**
- * Renders removable selected values at their natural widths with overflow navigation when needed.
- *
- * Resize observation and wheel handling are released with the component owner.
- */
 export function SelectedChips(props: SelectedChipsProps): JSX.Element {
   const [canPrevious, setCanPrevious] = createSignal(false)
   const [canNext, setCanNext] = createSignal(false)
@@ -41,7 +30,6 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
 
   const direction = () => (getComputedStyle(viewport).direction === 'rtl' ? -1 : 1)
 
-  // Restore focus before hiding a focused scroll control.
   const update = () => {
     const max = viewport.scrollWidth - viewport.clientWidth
     const offset = direction() * viewport.scrollLeft
@@ -50,6 +38,7 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
     const focused = group.ownerDocument.activeElement
 
     if ((!before && focused === previous) || (!after && focused === next)) {
+      // Restore focus before hiding a focused scroll control.
       props.focusTrigger()
     }
     setCanPrevious(before)
@@ -76,8 +65,8 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
     }
   }
 
-  // Leave the platform zoom gesture to the browser.
   const wheel = (event: WheelEvent) => {
+    // Leave the platform zoom gesture to the browser.
     if (
       event.ctrlKey ||
       event.metaKey ||

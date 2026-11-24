@@ -1,8 +1,6 @@
 import { createMemo, Show } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
 import type { ThemeRef } from '@kisaki3/desktop-contracts/appearance'
-import { Alert } from '@kisaki3/desktop-ui/alert'
-import { Button } from '@kisaki3/desktop-ui/button'
 import {
   Dialog,
   DialogContent,
@@ -13,10 +11,9 @@ import {
 } from '@kisaki3/desktop-ui/dialog'
 import { Spinner } from '@kisaki3/desktop-ui/spinner'
 import type { MainClient } from '../../../../infrastructure/api'
-import { errorMessage } from '../../../../infrastructure/notifications'
 import { ThemeSamples } from './samples'
+import { QueryError } from '../../../../infrastructure/query/error'
 
-/** Reads a theme when the user opens its read-only preview. */
 export function ThemeInspection(props: {
   api: MainClient
   target: ThemeRef | undefined
@@ -44,7 +41,6 @@ export function ThemeInspection(props: {
   )
 }
 
-/** Preserves the last displayed palette through the dialog's exit. */
 function ThemePreview(props: { api: MainClient; target: ThemeRef; name?: string | undefined }) {
   const { api } = props
   const theme = createQuery({
@@ -61,16 +57,11 @@ function ThemePreview(props: { api: MainClient; target: ThemeRef; name?: string 
         <DialogTitle>{props.name ?? api.t('runtime.themePreview')}</DialogTitle>
       </DialogHeader>
       <DialogBody>
-        <Show when={theme.error}>
-          {(cause) => (
-            <Alert tone="destructive" role="alert">
-              {errorMessage(cause())}{' '}
-              <Button variant="outline" onClick={() => void theme.reload()}>
-                {api.t('runtime.retry')}
-              </Button>
-            </Alert>
-          )}
-        </Show>
+        <QueryError
+          error={theme.error}
+          retryLabel={api.t('runtime.retry')}
+          retry={() => void theme.reload()}
+        />
         <Show when={!theme.error}>
           <Show when={!theme.pending} fallback={<Spinner label={api.t('runtime.loading')} />}>
             <Show

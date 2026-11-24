@@ -3,14 +3,12 @@ import { mkdir, readFile, rename, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import type { WindowKind } from '../../../shared/window-api/protocol'
 
-/** Normal outer bounds in display-independent pixels, independent of the presentation mode. */
 interface Geometry {
   bounds: Rectangle
   maximized: boolean
   fullScreen: boolean
 }
 
-/** A sliver of the frame is insufficient to reach the title bar and move the window. */
 function canReachCaption(bounds: Rectangle, area: Rectangle) {
   const captionHeight = 24
   const minimumVisibleWidth = 96
@@ -21,7 +19,6 @@ function canReachCaption(bounds: Rectangle, area: Rectangle) {
   return visibleWidth >= minimumVisibleWidth && visibleHeight >= 16
 }
 
-/** Resolves visible geometry for this window kind and saves its final native state on release. */
 export async function windowGeometry(root: string, kind: WindowKind) {
   const dir = join(root, 'windows')
   const file = join(dir, kind + '.json')
@@ -82,7 +79,6 @@ export async function windowGeometry(root: string, kind: WindowKind) {
   let placed: Rectangle
   return {
     options: { ...bounds, minWidth, minHeight },
-    /** Restores native maximize and full-screen state after window creation. */
     restore(window: BrowserWindow) {
       if (
         process.platform === 'win32' &&
@@ -109,7 +105,6 @@ export async function windowGeometry(root: string, kind: WindowKind) {
         window.setFullScreen(true)
       }
     },
-    /** Persists normal bounds and presentation before the window is destroyed. */
     async save(window: BrowserWindow) {
       const normal = window.getNormalBounds()
       // At fractional display scales the native frame can round an unchanged request outwards.

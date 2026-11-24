@@ -13,10 +13,8 @@ import {
 } from '@kisaki3/desktop-localization'
 import { createSignal } from './events'
 
-/** A listed translation and the message catalog it supplies to the running application. */
 type TranslationEntry = UiTranslation & { messages: MessageCatalog }
 
-/** Tracks launch-provided and live instance translations against the saved selection. */
 export function createI18n(builtin?: TranslationEntry) {
   const english: TranslationEntry = {
     ref: { type: 'builtin', id: 'en' } as const,
@@ -53,7 +51,6 @@ export function createI18n(builtin?: TranslationEntry) {
       return translator
     },
 
-    /** Returns translation names and identities without transferring every catalog. */
     list(options?: CallOptions) {
       options?.signal?.throwIfAborted()
       return [...translations.values()].map(({ ref, name, locale }) => ({
@@ -68,7 +65,6 @@ export function createI18n(builtin?: TranslationEntry) {
       adopt()
     },
 
-    /** Registers a validated catalog under a trusted extension's actual identity. */
     register(
       extensionId: string,
       definition: ExtensionUiTranslationDefinition,
@@ -89,7 +85,6 @@ export function createI18n(builtin?: TranslationEntry) {
 
       return {
         ref,
-        /** Removes only the matching instance and recomputes the effective language. */
         dispose() {
           if (translations.get(key) === entry) {
             translations.delete(key)

@@ -1,11 +1,5 @@
 import { DesktopError } from './errors'
 
-/**
- * Compares valid Unicode scalar strings in scalar order, returning -1, 0 or 1.
- *
- * This matches UTF-8 byte order and differs from UTF-16 code-unit order. Unpaired surrogates are
- * rejected.
- */
 export function compareIdentityText(left: string, right: string): number {
   if (/[\uD800-\uDFFF]/u.test(left) || /[\uD800-\uDFFF]/u.test(right)) {
     throw new DesktopError('InvalidInput', 'Text must contain valid Unicode scalar values')

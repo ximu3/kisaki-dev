@@ -16,12 +16,10 @@ using Microsoft::WRL::Make;
 using Microsoft::WRL::RuntimeClass;
 using Microsoft::WRL::RuntimeClassFlags;
 
-/// The host owns the JS receiver independently of the lifetime of a COM object.
 using Click = void (*)(const char *);
 
 using Completion = void (*)(void *, int);
 
-/// Process-local class registration, revoked before the host releases its activation receiver.
 DWORD registration = 0;
 
 const wchar_t *class_id(std::wstring_view app_id) {
@@ -34,7 +32,6 @@ const wchar_t *class_id(std::wstring_view app_id) {
     return nullptr;
 }
 
-/// A portable or source executable may receive notifications only when it is the registered carrier.
 bool owns_server(const wchar_t *id) {
     const auto key = std::wstring(L"CLSID\\") + id + L"\\LocalServer32";
     DWORD bytes = 0;
@@ -101,7 +98,6 @@ public:
         }
     }
 
-    /// The desktop lifecycle owns process exit independently of individual class-factory clients.
     HRESULT STDMETHODCALLTYPE LockServer(BOOL) noexcept override { return S_OK; }
 
 private:
@@ -115,7 +111,6 @@ struct Apartment {
     ~Apartment() { winrt::uninit_apartment(); }
 };
 
-/// Uses the Windows thread pool for WinRT and keeps caller-controlled text in XML text nodes.
 winrt::fire_and_forget post(winrt::hstring app_id, winrt::hstring identifier, winrt::hstring title,
                             winrt::hstring body, void *context, Completion complete) {
     using namespace winrt::Windows::Data::Xml::Dom;
@@ -143,7 +138,6 @@ winrt::fire_and_forget post(winrt::hstring app_id, winrt::hstring identifier, wi
 
 } // namespace
 
-/// Connects only the running class factory. The installer owns the shortcut and LocalServer32.
 extern "C" int kisaki_set_notification_receiver(const char *app_id, Click receive) noexcept {
     try {
         if (registration) {
@@ -172,7 +166,6 @@ extern "C" int kisaki_set_notification_receiver(const char *app_id, Click receiv
     }
 }
 
-/// Copies the input strings before returning to Node and hands off one asynchronous submission.
 extern "C" void kisaki_post_notification(const char *app_id, const char *identifier, const char *title,
                                        const char *body, void *context, Completion complete) noexcept {
     try {

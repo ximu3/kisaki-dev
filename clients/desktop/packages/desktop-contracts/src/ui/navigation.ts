@@ -29,7 +29,6 @@ import { parseThemeRef, type ThemeRef } from '../appearance'
 import { parsePageRef, type PageRef } from './pages'
 import { partWorkType } from '../library/parts'
 
-/** Parts always use local IDs. */
 export type EntryIdentifier =
   | { readonly type: 'local'; readonly id: string }
   | ({ readonly type: 'external' } & ExternalIdentity)
@@ -57,7 +56,6 @@ export interface EntryViewSelectionByType {
 
 export type EntryViewSelection<T extends EntryType> = EntryViewSelectionByType[T]
 
-/** Root-entry navigation intent combining its kind, identity and permitted detail selectors. */
 export type EntryViewTarget = {
   [K in EntryType]: {
     readonly type: 'entry'
@@ -66,7 +64,6 @@ export type EntryViewTarget = {
   } & EntryViewSelection<K>
 }[EntryType]
 
-/** Navigating to it opens the relevant view without starting content or writing preferences. */
 export type SearchTarget =
   | { readonly type: 'entry'; readonly ref: EntryRef }
   | {
@@ -91,10 +88,6 @@ export type SearchTarget =
   | { readonly type: 'page'; readonly ref: PageRef }
   | { readonly type: 'preference'; readonly key: PreferenceKey }
 
-/**
- * Internal destinations do not automatically gain a public URL or notification restoration across
- * restarts.
- */
 export type NativeViewTarget =
   | { readonly type: 'library' }
   | { readonly type: 'entries'; readonly entryType: EntryType }
@@ -112,7 +105,6 @@ export type NativeViewTarget =
   | { readonly type: 'systemIntegration' | 'updates' | 'about' }
   | { readonly type: 'onboarding'; readonly mode?: 'firstUse' | 'update' | 'manual' }
 
-/** Per-entry navigation selections that retain concrete work and part kinds. */
 export const entrySelectionEntries = {
   game: optionalFields({ launchConfigId: id }),
   anime: optionalFields({ episodeId: id, extraId: id, fileId: id }),
@@ -123,7 +115,6 @@ export const entrySelectionEntries = {
   organization: {},
 }
 
-/** Parses an explicitly tagged local or external root identity. */
 export function parseEntryIdentifier(input: unknown): EntryIdentifier {
   return parseValue(
     v.variant('type', [
@@ -141,11 +132,6 @@ function checkPartSelection(selection: object): void {
   }
 }
 
-/**
- * Parses kind-specific selectors shared by internal navigation and public URLs.
- *
- * The receiving owner checks actual object membership.
- */
 export function parseEntryViewSelection<T extends EntryType>(
   type: T,
   input: unknown,
@@ -157,11 +143,6 @@ export function parseEntryViewSelection<T extends EntryType>(
   return value as EntryViewSelection<T>
 }
 
-/**
- * Parses a native destination and its selector relationships.
- *
- * Window creation, identity resolution and visibility changes belong to navigation execution.
- */
 export function parseNativeViewTarget(input: unknown): NativeViewTarget {
   const record = parseRecord(input)
   if (record.type === 'entry') {
@@ -233,7 +214,6 @@ export function parseNativeViewTarget(input: unknown): NativeViewTarget {
   return value
 }
 
-/** The library checks actual ownership. */
 export function parseSearchTarget(input: unknown): SearchTarget {
   const value = parseValue(
     v.variant('type', [

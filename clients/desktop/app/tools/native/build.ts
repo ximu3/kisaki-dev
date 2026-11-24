@@ -6,19 +6,19 @@ import { removeOutputs } from '@kisaki3/tooling/output'
 import { run, runPnpm } from '@kisaki3/tooling/process'
 import { checkDeclarations } from './declarations'
 
-/**
- * Builds a native binding for the current runner's target.
- *
- * Returns the prepared output directory after declaration checks.
- * updateDeclarations also replaces the tracked binding declaration with generated output for
- * review.
- */
-export async function buildNative(
-  target: DesktopTarget,
-  updateDeclarations = false,
-  signal?: AbortSignal,
+interface NativeBuildOptions {
+  target: DesktopTarget
+  output?: string
+  signal?: AbortSignal
+  updateDeclarations?: boolean
+}
+
+export async function buildNative({
+  target,
   output = join(appRoot, 'out', 'native', target),
-): Promise<string> {
+  signal,
+  updateDeclarations = false,
+}: NativeBuildOptions): Promise<string> {
   if (target !== hostTarget()) {
     throw new Error('Native builds require the matching target runner')
   }

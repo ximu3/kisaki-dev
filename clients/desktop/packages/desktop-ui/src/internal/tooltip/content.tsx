@@ -1,5 +1,4 @@
-import { onSettled, omit } from 'solid-js'
-import type { Accessor } from 'solid-js'
+import { onSettled, omit, type Accessor } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { callHandler } from '../dom'
 import { createPopup, type PopupPlacement } from '../popup/controller'
@@ -7,20 +6,12 @@ import type { createTooltip } from './controller'
 import frame from '../popup/surface.module.css'
 import styles from './styles.module.css'
 
-/**
- * Read-only explanation content with an anchor, shared reading controller and optional placement.
- */
 interface TooltipSurfaceProps extends JSX.HTMLAttributes<HTMLDivElement> {
   anchor: Accessor<HTMLElement | undefined>
   reading: ReturnType<typeof createTooltip>
   placement?: PopupPlacement
 }
 
-/**
- * Renders a native hint popover tied to the shared hover and focus reading lifetime.
- *
- * Its document connection is released with the surface, and closing does not move keyboard focus.
- */
 export function TooltipSurface(props: TooltipSurfaceProps): JSX.Element {
   const rest = omit(
     props,

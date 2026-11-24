@@ -19,7 +19,6 @@ import { waitFor } from '../wait'
 import { createSignal } from '../events'
 import { request } from './request'
 
-/** Creates a network owner for a dedicated host Session and the actual document Sessions it serves. */
 export function createNetwork(
   host: Session,
   credentials: (revision: string) => Promise<ProxyCredentials | null>,
@@ -40,7 +39,6 @@ export function createNetwork(
     changed.emit(next)
   }
 
-  /** Stops browser requests while a route is being changed or after an unsuccessful adoption. */
   function guard(session: Session) {
     session.webRequest.onBeforeRequest(
       { urls: ['http://*/*', 'https://*/*', 'ws://*/*', 'wss://*/*'] },
@@ -55,7 +53,6 @@ export function createNetwork(
       },
     )
   }
-  /** Answers only a matching proxy challenge from a browser owned by this network instance. */
   const browserLogin = (
     event: Electron.Event,
     contents: WebContents | null,
@@ -102,7 +99,6 @@ export function createNetwork(
   }
 
   return {
-    /** Sets the route before the next networking operation and closes connections opened under the previous route. */
     apply(saved: StoredDefinition<NetworkPreferences>) {
       const version = ++generation
       publish({ status: 'applying' })
@@ -174,7 +170,6 @@ export function createNetwork(
       applying = work
       return work
     },
-    /** Adds a native window's real browser session before loading its first document. */
     async attach(session: Session, developmentUrl?: string) {
       sessions.add(session)
       if (developmentUrl) {
@@ -206,7 +201,6 @@ export function createNetwork(
         ])
       }
     },
-    /** Opens one request against the current route and keeps its signal bound through body consumption. */
     async fetch(url: string | URL, options: NetworkFetchOptions = {}) {
       options.signal?.throwIfAborted()
       await waitFor(applying, options.signal)
@@ -229,7 +223,6 @@ export function createNetwork(
     observe(listener: (state: NetworkState) => void) {
       return changed.observe(listener, state)
     },
-    /** Closes host requests and removes browser proxy-authentication handling. */
     async close(this: void) {
       app.off('login', browserLogin)
       generation++

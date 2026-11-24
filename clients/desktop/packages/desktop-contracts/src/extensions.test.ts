@@ -10,7 +10,6 @@ import {
 import { DesktopError } from './errors'
 
 test('prepared extension identities retain explicit trust and cannot substitute another artifact', () => {
-  // A synthetic key proves the source format, without depending on a user's repository trust or credentials.
   const publicKey = generateKeyPairSync('ed25519')
     .publicKey.export({ format: 'pem', type: 'spki' })
     .toString()

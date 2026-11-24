@@ -9,7 +9,6 @@ import { seedStorage, storageOptions } from './sample'
 
 let directory: string
 
-/** Current real connection, replaced during reopen checks and closed before directory cleanup. */
 let storage: ReturnType<typeof initializeDatabase>
 
 beforeEach(async () => {
@@ -328,7 +327,6 @@ test('adopts the effective software locale with its indexes and rebuilds an obso
       .prepare("insert into entries(id,type,name,created_at,updated_at) values (?,'game',?,1,1)")
       .run(id, name)
   }
-  /** Reads the controlled names through their actual SQLite index and stable identity tie-break. */
   const order = (db: typeof storage, ids: string[]) =>
     db.db.$client
       .prepare(

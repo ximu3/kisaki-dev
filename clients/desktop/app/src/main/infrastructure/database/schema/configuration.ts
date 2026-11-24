@@ -20,11 +20,6 @@ import { languages } from '../codecs/catalog'
 import { isInvalidValue, storedJsonColumn } from '../codecs/json'
 import { booleanValue, enumValue, idColumn, safeInteger, timestamps } from './constraints'
 
-/**
- * Parses a profile's JSON value for its supported root shape.
- *
- * The profile owner additionally checks the selected entry type when committing a full row.
- */
 function parseProfileDefinition(input: unknown): MetadataProfileDefinition {
   for (const type of entryTypes) {
     try {
@@ -38,7 +33,6 @@ function parseProfileDefinition(input: unknown): MetadataProfileDefinition {
   throw new DesktopError('InvalidInput', 'Invalid metadata profile definition')
 }
 
-/** Stores source-adoption definitions and the optional default profile for each entry type. */
 export const metadataProfiles = sqliteTable(
   'metadata_profiles',
   {
@@ -65,7 +59,6 @@ export const metadataProfiles = sqliteTable(
   ],
 )
 
-/** Stores work-specific scan roots and definitions bound to a matching metadata-profile type. */
 export const scanConfigs = sqliteTable(
   'scan_configs',
   {
@@ -101,9 +94,6 @@ const showcaseLayouts = ['horizontal', 'grid'] as const
 const showcaseItemSizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const
 const showcaseOpenModes = ['page', 'dialog'] as const
 
-/**
- * Stores independently ordered showcase sections with complete queries and presentation choices.
- */
 export const showcaseSections = sqliteTable(
   'showcase_sections',
   {

@@ -4,7 +4,6 @@ import type { ListOptions } from '@kisaki3/desktop-contracts/operations'
 import { attachments } from '../database/schema/attachments/metadata'
 import type { Storage } from '../database'
 
-/** Registers prepared bytes within the transaction committing the owner's actual references. */
 export function adoptAttachments(db: Storage['db'], values: readonly Attachment[]) {
   if (!values.length) {
     return
@@ -27,13 +26,11 @@ export function adoptAttachments(db: Storage['db'], values: readonly Attachment[
   }
 }
 
-/** Projects the storage column into the public byte-size unit. */
 function attachment(row: typeof attachments.$inferSelect): Attachment {
   const { byteSize, ...metadata } = row
   return { ...metadata, sizeBytes: byteSize }
 }
 
-/** Builds metadata and collection operations for the initialized storage schema. */
 export function attachmentStorage(storage: Storage) {
   const db = storage.db
   const references = db.all<{ owner: string; field: string }>(
@@ -64,7 +61,6 @@ export function attachmentStorage(storage: Storage) {
         total: tx.select({ n: count() }).from(attachments).get()!.n,
       }))
     },
-    /** Reads a bounded page of registered identities with their current indexed reference state. */
     attachmentCandidates(after: string | null, limit: number) {
       return db
         .select({ id: attachments.id, unused: unreferenced.mapWith(Boolean) })
@@ -74,7 +70,6 @@ export function attachmentStorage(storage: Storage) {
         .limit(limit)
         .all()
     },
-    /** Atomically rechecks all actual references and returns only identities whose row was removed. */
     reclaimAttachments(ids: readonly string[]) {
       return db
         .delete(attachments)

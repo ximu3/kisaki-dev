@@ -14,7 +14,6 @@ import { themes } from '../../infrastructure/database/schema/application'
 import { ready } from '../../infrastructure/database/codecs/json'
 import { adoptNewFont, type NewFont } from '../fonts/storage'
 
-/** Decodes the stored user theme without treating a damaged branch as a new default. */
 function readTheme(db: Storage['db'], id: string): Theme<'user'> | null {
   const row = db.select().from(themes).where(eq(themes.id, id)).get()
   if (!row) {
@@ -29,11 +28,9 @@ function readTheme(db: Storage['db'], id: string): Theme<'user'> | null {
   }
 }
 
-/** Worker operations for independently stored user theme definitions. */
 export function themeStorage({ db, transaction }: Storage) {
   return {
     getTheme: (id: string) => readTheme(db, id),
-    /** Queries user theme names without decoding full branches. */
     listThemes: () =>
       db
         .select({ id: themes.id, name: themes.name })
@@ -41,7 +38,6 @@ export function themeStorage({ db, transaction }: Storage) {
         .orderBy(themes.name, themes.id)
         .all()
         .map(({ id, name }) => ({ ref: { type: 'user' as const, id }, name })),
-    /** Commits the new theme and any fonts imported for its private slots together. */
     createTheme(input: UserThemeCreate, copiedFonts: readonly NewFont[] = []) {
       const { name, light, dark } = parseUserThemeCreate(input)
       const id = randomUUID()

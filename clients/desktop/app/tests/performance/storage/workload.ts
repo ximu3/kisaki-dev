@@ -14,7 +14,6 @@ import {
 } from '@kisaki3/desktop-contracts/library'
 import type { initializeDatabase } from '../../../src/main/infrastructure/database'
 
-/** Fixed simultaneous object counts and sampling policy, selected before measurement. */
 export const workload = {
   revision: 2,
   entries: {
@@ -75,7 +74,6 @@ export function isFixtureWork(
   )
 }
 
-/** Builds the fixed tables before sampling, with foreign keys and FULL durability enabled. */
 export async function prepareWorkload(
   storage: ReturnType<typeof initializeDatabase>,
   directory: string,
@@ -103,7 +101,6 @@ export async function prepareWorkload(
     .filter((entry) => entry.type === 'anime')
     .map(({ id }) => ({ id, duration: 0, parts: 0, files: 0 }))
 
-  /** Commits one fixture table at a time and yields the worker between prepared statements. */
   async function insert(
     statement: string,
     count: number,

@@ -8,11 +8,6 @@ import { Icon, Check, Minus } from '../../internal/icon/glyph'
 import { ChoiceRow } from '../../internal/choice/row'
 import styles from './styles.module.css'
 
-/**
- * Native checkbox attributes, checked-state ownership and optional mixed presentation.
- *
- * Checked controls form submission; indeterminate is a separate visual state.
- */
 export interface CheckboxProps
   extends
     Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'type' | 'checked' | 'size'>,
@@ -22,11 +17,6 @@ export interface CheckboxProps
   indeterminate?: boolean
 }
 
-/**
- * Renders a native checkbox with optional inline labeling and Field associations.
- *
- * Native required, fieldset and form-submission behavior remains available.
- */
 export function Checkbox(props: CheckboxProps): JSX.Element {
   const rest = omit(
     props,

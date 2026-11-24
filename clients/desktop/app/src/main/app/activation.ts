@@ -3,10 +3,8 @@ import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 import { readNotificationTarget } from '../infrastructure/notifications/target'
 
-/** External links and native destinations share the current window's readiness and exit boundaries. */
 export type ActivationRequest = DeeplinkRequest | { type: 'native'; target: NativeViewTarget }
 
-/** Limits pending entry delivery without imposing a time limit on accepted business operations. */
 export function createActivation(report: (cause: unknown) => void) {
   const queued = new Map<string, { request: ActivationRequest; timer: NodeJS.Timeout }>()
   let deliver: ((request: ActivationRequest) => Promise<void>) | undefined
@@ -19,7 +17,6 @@ export function createActivation(report: (cause: unknown) => void) {
     queued.clear()
   }
 
-  /** Admits one request, coalescing equivalent activations until the document is ready. */
   function receive(read: () => ActivationRequest | null) {
     try {
       if (!accepting) {
@@ -78,18 +75,15 @@ export function createActivation(report: (cause: unknown) => void) {
       })
     },
 
-    /** Hands off all waiting requests to the newly bound receiver in their arrival order. */
     async ready(handler: (request: ActivationRequest) => Promise<void>) {
       deliver = handler
       const pending = [...queued.values()]
       clearPending()
       await Promise.all(pending.map(({ request }) => handler(request).catch(report)))
     },
-    /** Keeps new requests queued while a replacement document establishes its receiver. */
     disconnected(this: void) {
       deliver = undefined
     },
-    /** Stops admission at confirmed exit and restores only future requests after cancellation. */
     setAccepting(value: boolean) {
       accepting = value
       if (!value) {

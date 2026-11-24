@@ -5,7 +5,6 @@ import {
   type PreferencesSnapshot,
 } from '@kisaki3/desktop-contracts/preferences'
 
-/** DOM key names whose Electron spelling differs. */
 const names: Readonly<Record<string, string>> = {
   ' ': 'Space',
   ArrowUp: 'Up',
@@ -33,7 +32,6 @@ function eventModifiers(event: KeyboardEvent): string[] {
   return modifiers
 }
 
-/** Encodes the logical key and held modifiers, keeping shifted number-row keys readable. */
 function eventAccelerator(event: KeyboardEvent) {
   if (
     event.isComposing ||
@@ -60,7 +58,6 @@ function matchingBinding(key: string, bindings: readonly string[], platform: Des
   return bindings.find((binding) => acceleratorIdentity(binding, platform) === identity)
 }
 
-/** Previews held modifiers and recognizes equivalent bindings using the current platform. */
 export function captureShortcut(
   event: KeyboardEvent,
   bindings: readonly string[],
@@ -75,7 +72,6 @@ export function captureShortcut(
   return { keys: shortcutKeycaps(binding, platform), binding }
 }
 
-/** Compares an actual event against the saved binding without intercepting IME or composition keys. */
 export function matchesShortcut(
   event: KeyboardEvent,
   binding: PreferencesSnapshot['shortcuts'][keyof PreferencesSnapshot['shortcuts']] | undefined,

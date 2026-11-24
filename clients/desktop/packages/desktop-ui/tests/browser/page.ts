@@ -4,7 +4,6 @@ import { chromium } from '@playwright/test'
 import solid from '@solidjs/vite-plugin'
 import { resolve } from 'node:path'
 
-/** Launches the shared source workshop and browser, isolating each test's page state. */
 export const test = base
   .extend('siteUrl', { scope: 'file' }, async ({}, { onCleanup }) => {
     const server = await createServer({

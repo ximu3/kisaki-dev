@@ -8,7 +8,7 @@ import { appRoot } from '../lib/paths'
 import { hostTarget } from '../lib/targets'
 import { prepareResources } from '../resources/prepare'
 import { buildNative } from '../native/build'
-import { createRenderer } from './renderer'
+import { createRendererServers, type RunningRenderer } from './renderer'
 import { startInputWatcher, type PreparationChange } from './inputs'
 import { electronExecutable } from './electron-executable'
 import { prepareRuntime } from './prepare-runtime'
@@ -18,13 +18,10 @@ const debug = debuglog('kisaki:development')
 
 export interface DevelopmentApplication {
   pid: number
-  /** Completes after the launched process and its output streams close. */
   exited: Promise<{ code: number | null; signal: NodeJS.Signals | null }>
 
-  /** Requests normal exit and reports whether the application exited or declined the request. */
   stop(): Promise<'cancelled' | 'exited'>
 
-  /** Forces the owned process to end and waits for its exit. */
   terminate(): Promise<void>
 }
 
@@ -36,9 +33,7 @@ export interface DevelopmentLaunchOptions {
   profile: string
   buildId: string
 
-  /** Cancels startup; after readiness the returned application owns process control. */
   signal: AbortSignal
-  /** Budget in milliseconds for reaching the expected build's ready state. */
   startupTimeoutMs: number
 }
 
@@ -48,53 +43,29 @@ export interface DevelopmentBuild {
   processId: number
 }
 
-/** Startup failed and its process owner could not confirm closure of the runtime's readers. */
 export class UnconfirmedApplicationExit extends AggregateError {}
 
-/** Call stop or terminate even if readiness rejects. The persistent profile belongs to the caller. */
 export interface DevelopmentSession {
-  /** Resolves on the first ready application; recoverable build failures leave it pending. */
   readonly ready: Promise<void>
-  /** Settles after tool teardown; failures reject and unconfirmed-reader outputs remain on disk. */
   readonly closed: Promise<void>
   readonly rendererUrl: string
-  /** Adopted application generation; absent while the session owns no completed launch. */
   readonly current: DevelopmentBuild | undefined
 
-  /**
-   * Concurrent requests share one shutdown. A refused quit keeps the session usable. Teardown
-   * failures reject and preserve directories whose readers may still be live.
-   */
   stop(): Promise<'cancelled' | 'stopped'>
 
-  /** Tears down the session after confirming the application's forced exit. */
   terminate(): Promise<void>
 }
 
 export interface DevelopmentOptions {
-  /** Absolute root containing the program source and Vite configurations. */
   sourceRoot: string
-  /**
-   * Launches the expected build and resolves with a ready application. A failed start closes its
-   * readers before rejection. UnconfirmedApplicationExit means those readers may remain live.
-   */
   launch: (options: DevelopmentLaunchOptions) => Promise<DevelopmentApplication>
-  /** Persistent absolute profile directory; defaults to the desktop app's .local/development. */
   profile?: string
-  /** Maximum wait for the launched input's ready notification, including a cold renderer's compilation. */
   startupTimeoutMs?: number
-  /** Read-only resource directory and native file already prepared for this host. */
   prepared?: { resources: string; nativeBinding: string }
-  /** Cancels preparation until the first ready application; later lifetime uses the session handle. */
   signal?: AbortSignal
-  /**
-   * Reports build and session state; recoverable rebuild failures can leave the current application
-   * usable.
-   */
   onState?: (state: 'building' | 'failed' | 'ready' | 'stopped', error?: unknown) => void
 }
 
-/** Resolves once input observation is installed. Build failures stay recoverable while waiting for ready. */
 export async function startDevelopmentSession(
   options: DevelopmentOptions,
 ): Promise<DevelopmentSession> {
@@ -120,16 +91,16 @@ export async function startDevelopmentSession(
   options.signal?.addEventListener('abort', cancelPreparation, { once: true })
 
   let directory: string | undefined
-  type Renderer = Awaited<ReturnType<typeof createRenderer>>
-  let renderer: Renderer | undefined
-  const renderers = new Map<Renderer, string>()
+  const renderers = createRendererServers(options.sourceRoot, buildId)
   let inputs: Awaited<ReturnType<typeof startInputWatcher>> | undefined
   let compilers: ProgramWatch | undefined
 
-  async function closeRenderer(server: Renderer, cache: string): Promise<void> {
-    await server.close()
-    renderers.delete(server)
-    await rm(cache, { recursive: true, force: true })
+  async function closeDevelopmentInputs() {
+    const [watchers, servers] = await Promise.all([
+      Promise.allSettled([inputs?.close(), compilers?.close()]),
+      renderers.closeAll(),
+    ])
+    return [...watchers, ...servers]
   }
 
   try {
@@ -145,27 +116,7 @@ export async function startDevelopmentSession(
     const nativeDirectory = join(sessionDirectory, 'native')
     const nativeBinding =
       options.prepared?.nativeBinding ?? join(nativeDirectory, 'kisaki-native.node')
-    let rendererGeneration = 0
-    async function openRenderer(): Promise<Renderer> {
-      const cache = join(rendererCache, String(++rendererGeneration))
-      const server = await createRenderer(options.sourceRoot, buildId, cache)
-      renderers.set(server, cache)
-      try {
-        await server.listen()
-        if (!server.resolvedUrls?.local[0]) {
-          throw new Error('Renderer server did not publish a listening address')
-        }
-        return server
-      } catch (cause) {
-        return rethrowAfterCleanup(
-          cause,
-          () => closeRenderer(server, cache),
-          'Renderer startup and cleanup failed',
-        )
-      }
-    }
-    renderer = await openRenderer()
-    let rendererAddress = renderer.resolvedUrls!.local[0]!
+    let renderer = await renderers.open(rendererCache)
 
     let child: DevelopmentApplication | undefined
     let current: DevelopmentBuild | undefined
@@ -193,7 +144,6 @@ export async function startDevelopmentSession(
     void ready.promise.catch(() => undefined)
     void closed.promise.catch(() => undefined)
 
-    /** Reports a nonrecoverable watcher failure while preserving ownership of active resources. */
     function failSession(cause: unknown): void {
       terminalFailure = true
       pending.clear()
@@ -221,7 +171,6 @@ export async function startDevelopmentSession(
       runtimeChanged = true
     }
 
-    /** Launches one completed compiler batch and releases the previous runtime after its readers exit. */
     async function restartApplication(): Promise<void> {
       const owner = compilers
       const batch = owner?.current
@@ -241,13 +190,13 @@ export async function startDevelopmentSession(
         phase === 'open' && owner === compilers && owner.current?.revision === batch.revision
 
       let prepared = false
-      let replacement: Renderer | undefined
+      let replacement: RunningRenderer | undefined
 
       async function releaseUnlaunched() {
         const server = replacement
         if (server) {
           try {
-            await closeRenderer(server, renderers.get(server)!)
+            await server.close()
           } catch (cause) {
             return rethrowAfterCleanup(
               cause,
@@ -262,7 +211,7 @@ export async function startDevelopmentSession(
       try {
         await prepareRuntime(compilerDirectory, batch.files, resources, nativeBinding, candidate)
         if (rendererChanged && isCurrent()) {
-          replacement = await openRenderer()
+          replacement = await renderers.open(rendererCache)
         }
         if (isCurrent()) {
           const previous = current?.directory
@@ -285,14 +234,11 @@ export async function startDevelopmentSession(
             const previousRenderer = renderer
             renderer = replacement
             replacement = undefined
-            rendererAddress = renderer.resolvedUrls!.local[0]!
             rendererChanged = false
-            if (previousRenderer) {
-              try {
-                await closeRenderer(previousRenderer, renderers.get(previousRenderer)!)
-              } catch (cause) {
-                options.onState?.('failed', cause)
-              }
+            try {
+              await previousRenderer.close()
+            } catch (cause) {
+              options.onState?.('failed', cause)
             }
           }
           signal.throwIfAborted()
@@ -313,7 +259,7 @@ export async function startDevelopmentSession(
       try {
         child = await options.launch({
           executable: electronExecutable(),
-          args: [join(candidate, 'main/entry.js'), `--renderer-url=${rendererAddress}`],
+          args: [join(candidate, 'main/entry.js'), `--renderer-url=${renderer.url}`],
           cwd: appRoot,
           profile,
           buildId,
@@ -349,7 +295,6 @@ export async function startDevelopmentSession(
       options.onState?.('ready')
     }
 
-    /** Runs selected preparation work serially; compilers independently observe their module inputs. */
     async function drain(): Promise<void> {
       while (pending.size && phase === 'open' && !terminalFailure) {
         const selected = new Set(pending)
@@ -369,7 +314,7 @@ export async function startDevelopmentSession(
             selected.delete('resources')
           }
           if (selected.has('native')) {
-            await buildNative(target, false, signal, nativeDirectory)
+            await buildNative({ target, output: nativeDirectory, signal })
             runtimeChanged = true
             selected.delete('native')
           }
@@ -396,7 +341,6 @@ export async function startDevelopmentSession(
       }
     }
 
-    /** Coalesces real input or compiler completion events into the owned preparation loop. */
     function enqueue(kind: PreparationChange | 'runtime'): void {
       if (phase === 'closed' || terminalFailure) {
         return
@@ -415,7 +359,6 @@ export async function startDevelopmentSession(
       })
     }
 
-    /** Coordinates one application decision, then cancels work and releases each tool once. */
     function stop(force: boolean): Promise<'cancelled' | 'stopped'> {
       if (phase === 'closed') {
         return closed.promise.then(() => 'stopped')
@@ -438,7 +381,6 @@ export async function startDevelopmentSession(
       return stopPromise
     }
 
-    /** Preserves a refused or failed quit; an accepted stop has one terminal teardown result. */
     async function finish(force: boolean): Promise<'cancelled' | 'stopped'> {
       // A restart already negotiating application exit owns that decision until it settles.
       if (replacing) {
@@ -479,11 +421,7 @@ export async function startDevelopmentSession(
           retainOutputs = true
         }
       }
-      const results = await Promise.allSettled([
-        inputs?.close(),
-        compilers?.close(),
-        ...Array.from(renderers, ([server, cache]) => closeRenderer(server, cache)),
-      ])
+      const results = await closeDevelopmentInputs()
       for (const result of results) {
         if (result.status === 'rejected') {
           failures.push(result.reason)
@@ -522,7 +460,7 @@ export async function startDevelopmentSession(
       ready: ready.promise,
       closed: closed.promise,
       get rendererUrl() {
-        return renderer?.resolvedUrls?.local[0] ?? rendererAddress
+        return renderer.url
       },
       get current() {
         return current
@@ -549,11 +487,7 @@ export async function startDevelopmentSession(
   } catch (cause) {
     options.signal?.removeEventListener('abort', cancelPreparation)
     const failures: unknown[] = [cause]
-    const results = await Promise.allSettled([
-      inputs?.close(),
-      compilers?.close(),
-      ...Array.from(renderers, ([server, cache]) => closeRenderer(server, cache)),
-    ])
+    const results = await closeDevelopmentInputs()
     for (const result of results) {
       if (result.status === 'rejected') {
         failures.push(result.reason)

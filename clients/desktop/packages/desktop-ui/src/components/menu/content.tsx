@@ -7,11 +7,6 @@ import frame from '../../internal/popup/surface.module.css'
 import { useMenu } from './state'
 import styles from './styles.module.css'
 
-/**
- * Renders a native menu popup with real item focus and directional submenu navigation.
- *
- * Submenu content stays inside the parent content so native popover ancestry retains its parent.
- */
 export function MenuContent(
   props: JSX.HTMLAttributes<HTMLDivElement> & { placement?: PopupPlacement },
 ): JSX.Element {

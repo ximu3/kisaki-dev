@@ -2,7 +2,6 @@ import { createEffect, createSignal, onCleanup } from 'solid-js'
 
 type QueryRead<T> = (signal: AbortSignal) => Promise<T>
 
-/** The previous value remains visible while a replacement request is outstanding. */
 interface QueryState<T> {
   value?: T | undefined
   error?: unknown
@@ -14,12 +13,6 @@ interface QueryRequest {
   completion: PromiseWithResolvers<void>
 }
 
-/**
- * Owns a view's read, exposing its last successful snapshot, pending state and read error.
- * A prepared read captures reactive inputs; changing them cancels the previous request.
- * Invalidations during a read share one trailing request. Reload completes after its read or
- * the replacement for obsoleted inputs. Accepting a write or disposing releases pending callers.
- */
 export function createQuery<T>(source: QueryRead<T> | { prepare: () => QueryRead<T> }) {
   const [state, setState] = createSignal<QueryState<T>>({ pending: true })
   let read: QueryRead<T> | undefined

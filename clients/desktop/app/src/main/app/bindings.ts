@@ -1,5 +1,5 @@
 import { isDeepStrictEqual } from 'node:util'
-import { releaseAll } from '../infrastructure/release'
+import { releaseAll, rethrowAfterRelease } from '../infrastructure/release'
 import { createSignal } from '../infrastructure/events'
 import type { createPreferences } from '../features/preferences'
 import type { createI18n } from '../infrastructure/i18n'
@@ -7,7 +7,6 @@ import type { createAppearance } from '../features/appearance'
 import type { createNetwork } from '../infrastructure/network'
 import type { Preferences } from '@kisaki3/desktop-contracts/preferences'
 
-/** Establishes all fixed subscriptions and applies the initial choices before any document or business is admitted. */
 export async function bindSettings(
   preferences: ReturnType<typeof createPreferences>,
   defaults: Preferences,
@@ -57,7 +56,6 @@ export async function bindSettings(
     applying = applying.then(async () => adopt(await preferences.get())).catch(console.error)
   })
 
-  /** Unsubscribes after admission has stopped and waits for the final adoption work. */
   async function dispose() {
     await releaseAll([() => settings.dispose(), () => locale.dispose(), () => applying])
   }
@@ -67,8 +65,7 @@ export async function bindSettings(
     await adopt(saved, true)
     await adoptLocale(i18n.current.locale)
   } catch (error) {
-    await dispose()
-    throw error
+    return rethrowAfterRelease(error, dispose)
   }
 
   return {
@@ -78,7 +75,6 @@ export async function bindSettings(
       return saved
     },
 
-    /** Waits for queued settings and name-index adoption. */
     settled: () => applying,
     dispose,
   }

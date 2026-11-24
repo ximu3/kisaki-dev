@@ -7,35 +7,28 @@ import { createValue } from '../../internal/state'
 
 export type { ControlSize } from '../../internal/control/size'
 
-/** Stable selectable record retaining its display information across search queries. */
 export type ComboboxOption = SelectionOption
 
-/** Searchable field props for one committed option or an empty selection. */
 interface SingleComboboxProps<O extends ComboboxOption>
   extends ChoiceFieldProps<O>, ChoiceSearchProps<O> {
   multiple?: false
   value?: O | null
   defaultValue?: O | null
-  /** Reports the proposed committed option, or null when selection is cleared. */
   onValueChange?: (value: O | null) => void
 }
 
-/** Searchable field props for an ordered option selection with removable chips. */
 interface MultipleComboboxProps<O extends ComboboxOption>
   extends ChoiceFieldProps<O>, ChoiceSearchProps<O>, ChipLabels {
   multiple: true
   value?: readonly O[]
   defaultValue?: readonly O[]
-  /** Reports the proposed complete ordered selection. */
   onValueChange?: (value: readonly O[]) => void
 }
 
-/** Single or multiple searchable selection props with matching value and callback shapes. */
 export type ComboboxProps<O extends ComboboxOption = ComboboxOption> =
   | SingleComboboxProps<O>
   | MultipleComboboxProps<O>
 
-/** Search-owned combobox properties kept separate from the underlying selection control. */
 const searchProps = [
   'query',
   'onQueryChange',
@@ -47,7 +40,6 @@ const searchProps = [
   'loadingMessage',
 ] as const
 
-/** Connects single-value ownership and form reset to the shared searchable selection field. */
 function SingleCombobox<O extends ComboboxOption>(props: SingleComboboxProps<O>): JSX.Element {
   const rest = omit(props, 'multiple', 'value', 'defaultValue', 'onValueChange', ...searchProps)
   const [value, change] = createValue(
@@ -68,7 +60,6 @@ function SingleCombobox<O extends ComboboxOption>(props: SingleComboboxProps<O>)
   )
 }
 
-/** Connects ordered selection, chip removal and form reset to the shared searchable field. */
 function MultipleCombobox<O extends ComboboxOption>(props: MultipleComboboxProps<O>): JSX.Element {
   const rest = omit(
     props,
@@ -107,7 +98,6 @@ function MultipleCombobox<O extends ComboboxOption>(props: MultipleComboboxProps
   )
 }
 
-/** Renders committed single or multiple selections with a temporary search query in the popup. */
 export function Combobox<O extends ComboboxOption = ComboboxOption>(
   props: ComboboxProps<O>,
 ): JSX.Element {

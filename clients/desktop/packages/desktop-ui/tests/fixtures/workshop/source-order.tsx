@@ -8,10 +8,8 @@ import {
 
 const unavailable = new Set(['B', 'D'])
 
-/** A permission range that can move as one ordered group. */
 const selected = new Set(['A', 'C'])
 
-/** Applies intent to visible slots and leaves hidden source priorities in their stored positions. */
 export function SourceOrder() {
   const [order, setOrder] = createSignal<readonly string[]>(['A', 'B', 'C', 'D', 'E'])
   const [reject, setReject] = createSignal(false)

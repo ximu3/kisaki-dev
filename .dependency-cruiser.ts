@@ -11,7 +11,6 @@ interface PackageDependencies {
   optionalDependencies?: Record<string, string>
 }
 
-/** Matches shipped library modules; colocated tests run in their own host. */
 function librarySource(name: string, ...excluded: string[]) {
   return {
     path: '^clients/desktop/packages/' + name + '/src/',
@@ -19,7 +18,6 @@ function librarySource(name: string, ...excluded: string[]) {
   }
 }
 
-/** Matches files belonging to this member, leaving nested workspaces to their own manifests. */
 function ownedFiles(project: Project, projects: readonly Project[]): string {
   const prefix = project.directory ? project.directory + '/' : ''
   const children = projects
@@ -29,7 +27,6 @@ function ownedFiles(project: Project, projects: readonly Project[]): string {
   return children.length ? start + '(?!(?:' + children.join('|') + '))' : start
 }
 
-/** Resolves declared package names, including aliases and ancestor-installed peers, to their manifests. */
 function declaredManifests(file: string): Set<string> {
   const manifest = JSON.parse(readFileSync(file, 'utf8')) as PackageDependencies
   const names = Object.keys({

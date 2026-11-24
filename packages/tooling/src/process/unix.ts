@@ -2,7 +2,6 @@ import { execFile } from 'node:child_process'
 import { setTimeout as delay } from 'node:timers/promises'
 import { promisify } from 'node:util'
 
-/** Signals the owned group, treating reaped groups and Darwin zombie-only groups as closed. */
 async function signalGroup(group: number, signal: NodeJS.Signals | 0): Promise<boolean> {
   try {
     process.kill(-group, signal)
@@ -30,7 +29,6 @@ async function signalGroup(group: number, signal: NodeJS.Signals | 0): Promise<b
   }
 }
 
-/** Allows five seconds for SIGTERM handlers before forcibly ending the remaining group. */
 export async function stopProcessGroup(group: number): Promise<void> {
   if (!(await signalGroup(group, 'SIGTERM'))) {
     return

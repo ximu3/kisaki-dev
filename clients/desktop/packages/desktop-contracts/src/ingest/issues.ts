@@ -24,7 +24,6 @@ export type IngestRelationRef = {
   [K in EntryType]: { readonly entryType: K; readonly relation: MetadataRelationKey<K> }
 }[EntryType]
 
-/** Issues do not authorize a partially valid graph write. */
 export type IngestIssue = { readonly message: string } & (
   | {
       readonly code: 'providerFailed'
@@ -84,9 +83,6 @@ export function parseIngestRelationRef(input: unknown): IngestRelationRef {
   ) as IngestRelationRef
 }
 
-/**
- * Parses an issue's safe explanation and code-specific context, rejecting unknown detail fields.
- */
 export function parseIngestIssue(input: unknown): IngestIssue {
   const message = nonemptyText
   const error = fromParser(parseErrorSummary)

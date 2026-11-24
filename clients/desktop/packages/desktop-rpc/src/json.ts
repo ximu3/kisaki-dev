@@ -1,6 +1,5 @@
 import { RpcError } from './errors'
 
-/** Finite ordinary JSON data shared by JSON IPC and structured-clone transports. */
 export type JsonValue =
   | null
   | boolean
@@ -9,31 +8,17 @@ export type JsonValue =
   | readonly JsonValue[]
   | { readonly [key: string]: JsonValue }
 
-/**
- * Copies ordinary JSON data into a validated snapshot.
- *
- * Rejects cycles, sparse arrays, accessors, symbols, unsupported objects and nonfinite values with
- * InvalidInput. Repeated subtrees are accepted; returned containers are detached from input
- * containers.
- */
 export function parseJsonValue(input: unknown): JsonValue {
-  /** Mutable container assembled while the JSON snapshot is being built. */
   type Container = JsonValue[] | Record<string, JsonValue>
   const stack: { source: object; target: Container; keys: (string | symbol)[]; index: number }[] =
     []
   const ancestors = new Set<object>()
   const copies = new WeakMap<object, Container>()
 
-  /** Rejects a value that cannot be represented as ordinary finite JSON. */
   function invalid(): never {
     throw new RpcError('InvalidInput', 'Expected an ordinary finite JSON value')
   }
 
-  /**
-   * Validates a scalar or schedules an object or array for iterative traversal.
-   *
-   * Completed repeated subtrees reuse their snapshot; references to ancestors reject as cycles.
-   */
   function parseValue(value: unknown): JsonValue {
     if (value === null || typeof value === 'string' || typeof value === 'boolean') {
       return value

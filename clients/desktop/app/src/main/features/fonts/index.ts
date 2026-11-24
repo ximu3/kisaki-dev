@@ -1,4 +1,4 @@
-import { releaseAll } from '../../infrastructure/release'
+import { releaseAll, rethrowAfterRelease } from '../../infrastructure/release'
 import { readFile } from 'node:fs/promises'
 import type { Readable } from 'node:stream'
 import { createRequire } from 'node:module'
@@ -30,10 +30,8 @@ import type { createResources } from '../../infrastructure/resources'
 import type { DatabaseCall } from '../../infrastructure/database/executor'
 import type { fontStorage } from './storage'
 
-/** Upper bound on compressed font input retained by the parser. */
 const maxFontBytes = 32 * 1024 * 1024
 
-/** Decodes the supported containers and actual face metrics before publishing a preparation. */
 function inspectFont(bytes: Buffer, create: typeof Fontkit.create) {
   const formats: Readonly<Record<string, string>> = {
     wOFF: 'font/woff',
@@ -56,7 +54,6 @@ function inspectFont(bytes: Buffer, create: typeof Fontkit.create) {
     default: range!.default,
     max: range!.max,
   }))
-  /** Returns a variable-axis range or the actual static OS/2 metric. */
   const metric = (tag: string, standard: number) => {
     const axis = axes.find((value) => value.tag === tag)
     return axis
@@ -85,7 +82,6 @@ function inspectFont(bytes: Buffer, create: typeof Fontkit.create) {
   return { metadata, mediaType }
 }
 
-/** Creates the font library; the preparation map ties metadata to bytes verified in this process. */
 export function createFonts(
   runtime: string,
   attachments: ReturnType<typeof createAttachments>,
@@ -97,7 +93,6 @@ export function createFonts(
   const invalidated = createSignal<void>()
   const prepared = new Map<string, { file: FontFile; content: PreparedContent }>()
 
-  /** Acquires a verified temporary font for a caller's editing or save operation. */
   async function prepare(
     input: FileInput | Readable,
     options?: CallOptions,
@@ -132,7 +127,6 @@ export function createFonts(
     }
   }
 
-  /** Acquires save-owned holds before the caller can release its editing resources. */
   async function save(
     id: string | null,
     name: string | undefined,
@@ -213,7 +207,6 @@ export function createFonts(
 
   return {
     prepare,
-    /** Prepares a new user font for atomic adoption with the theme which references it. */
     async prepareCopy(inputs: readonly FileInput[], options?: CallOptions) {
       const holds: PreparedFontFile[] = []
       const dispose = async () => {
@@ -232,11 +225,9 @@ export function createFonts(
         }
         return { value, dispose }
       } catch (error) {
-        await dispose()
-        throw error
+        return rethrowAfterRelease(error, dispose)
       }
     },
-    /** Publishes the directory change after an owning transaction adopted copied font files. */
     adopted() {
       invalidated.emit()
     },
@@ -249,7 +240,6 @@ export function createFonts(
       context?.signal?.throwIfAborted()
       return call('listFonts', query.search, parseListOptions(options))
     },
-    /** Reads a complete saved font without acquiring its bytes. */
     async get(id: string, options?: CallOptions) {
       options?.signal?.throwIfAborted()
       return call('getFont', id)
@@ -267,7 +257,6 @@ export function createFonts(
       attachments.retire(await call('deleteFont', id))
       invalidated.emit()
     },
-    /** Acquires a fixed definition and independent holds on all its files. */
     async open(id: string, options?: CallOptions): Promise<FontRead> {
       options?.signal?.throwIfAborted()
       const font = await call('getFont', id)
@@ -292,8 +281,7 @@ export function createFonts(
           dispose,
         }
       } catch (error) {
-        await dispose()
-        throw error
+        return rethrowAfterRelease(error, dispose)
       }
     },
     onInvalidated: invalidated.on,

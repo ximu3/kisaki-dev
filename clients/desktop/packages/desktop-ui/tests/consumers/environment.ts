@@ -9,7 +9,6 @@ import { installConsumer, lintConsumer } from '@kisaki3/tooling/testing/consumer
 
 export const packageRoot = resolve(import.meta.dirname, '../..')
 
-/** Isolates installation, browser pages and evidence for the public UI consumer. */
 export const consumerTest = test
   .extend<'host', 'browser' | 'electron'>('host', { scope: 'file' }, 'browser')
   .extend('resultsDirectory', { scope: 'file' }, async () => {

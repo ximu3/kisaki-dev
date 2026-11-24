@@ -23,7 +23,6 @@ import { createFontRead } from './read'
 import { fontFaceName, FontSpecimen } from './specimen'
 import { createFontDraft } from './draft'
 
-/** Receives one opening's initial font and the catalog's editor callbacks. */
 interface FontEditorProps {
   api: MainClient
   initial: Font | null
@@ -33,7 +32,6 @@ interface FontEditorProps {
   onSaved: (font: Font) => void
 }
 
-/** Previews existing and proposed files, with reversible removal until the draft is saved. */
 export function FontEditor(props: FontEditorProps) {
   const { api } = props
   const draft = createFontDraft(api, props.initial)

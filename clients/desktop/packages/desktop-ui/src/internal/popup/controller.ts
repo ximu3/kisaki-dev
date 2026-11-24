@@ -1,10 +1,16 @@
-import { autoUpdate, computePosition, flip, offset, shift, size } from '@floating-ui/dom'
-import type { Placement, VirtualElement } from '@floating-ui/dom'
-import { createEffect, createSignal, onSettled } from 'solid-js'
-import type { Accessor } from 'solid-js'
+import {
+  autoUpdate,
+  computePosition,
+  flip,
+  offset,
+  shift,
+  size,
+  type Placement,
+  type VirtualElement,
+} from '@floating-ui/dom'
+import { createEffect, createSignal, onSettled, type Accessor } from 'solid-js'
 import { watchPopupDismissal } from './dismissal'
 
-/** Preferred popup side and optional alignment, with centered sides as the default alignment. */
 export type PopupPlacement = Placement
 
 const anchorAreas: Record<PopupPlacement, string> = {
@@ -22,32 +28,17 @@ const anchorAreas: Record<PopupPlacement, string> = {
   'right-end': 'right span-top',
 }
 
-/**
- * Connects native popup visibility, dismissal and collision-aware placement within the current
- * Solid owner.
- *
- * The surface is owned by this mount. Anchor bindings follow the current mounted trigger while
- * the popup is open.
- */
 export function createPopup(options: {
   element: Accessor<HTMLElement>
-  /** Returns the interaction anchor used for native popover ancestry and focus restoration. */
   anchor: Accessor<HTMLElement | undefined>
-  /**
-   * Returns a geometry reference when positioning should use a different element from the
-   * interaction anchor.
-   */
   reference?: Accessor<HTMLElement> | undefined
 
   open: Accessor<boolean>
   change: (open: boolean) => void
-  /** Requests dismissal before hiding a popup rendered in manual top-layer mode. */
   controlled?: Accessor<boolean>
 
   placement?: (anchor: HTMLElement) => PopupPlacement
-  /** Lets CSS place a surface that only needs an element anchor and viewport bounds. */
   nativePlacement?: boolean
-  /** Reads an optional pointer anchor in viewport CSS pixels. */
   point?: Accessor<{ x: number; y: number } | undefined>
   matchWidth?: boolean
   restoreFocus?: boolean
@@ -85,7 +76,6 @@ export function createPopup(options: {
     const node = options.element()
     let lastHighlight: HTMLElement | null = null
 
-    // Capture the hovered row while the closing popup is still laid out.
     const beforeToggle = (event: ToggleEvent) => {
       lastHighlight?.removeAttribute('data-exit-highlight')
       lastHighlight = null
@@ -93,6 +83,7 @@ export function createPopup(options: {
         return
       }
 
+      // Capture the hovered row while the closing popup is still laid out.
       const row =
         node.querySelector<HTMLElement>('[data-option-highlight]:hover') ??
         node.querySelector<HTMLElement>('[data-option-highlight~="focus"]:focus-visible')
@@ -102,8 +93,8 @@ export function createPopup(options: {
       }
     }
 
-    // Adopt native dismissal after the browser finishes hiding its top-layer surface.
     const toggle = (event: ToggleEvent) => {
+      // Adopt native dismissal after the browser finishes hiding its top-layer surface.
       if (event.newState === 'closed' && options.open() && !node.matches(':popover-open')) {
         options.change(false)
         queueMicrotask(() => {
@@ -201,7 +192,6 @@ export function createPopup(options: {
       }
 
       let active = true
-      // Floating UI can resolve after this positioning subscription has ended.
       const update = () => {
         void computePosition(reference, node, {
           strategy: 'fixed',
@@ -213,6 +203,7 @@ export function createPopup(options: {
             size({
               padding: 8,
               apply({ availableWidth, availableHeight, rects }) {
+                // Floating UI can resolve after this positioning subscription has ended.
                 if (active) {
                   node.style.setProperty('--popup-width', `${rects.reference.width}px`)
                   node.style.setProperty(

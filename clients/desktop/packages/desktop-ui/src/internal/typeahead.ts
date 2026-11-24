@@ -1,14 +1,11 @@
 import { onCleanup } from 'solid-js'
 
-/** Recognizes one printable grapheme, including composed characters and supplementary code points. */
 export function printableKey(key: string): boolean {
   return key !== ' ' && key.length > 0 && graphemes.segment(key).containing(0)?.segment === key
 }
 
-/** Grapheme boundaries for keyboard input are independent of the control's case-mapping locale. */
 const graphemes = new Intl.Segmenter(undefined, { granularity: 'grapheme' })
 
-/** Tracks one control's typed prefix and cycles repeated identical graphemes within 700 ms. */
 export function createTypeahead() {
   let letters: string[] = []
   let timeout: ReturnType<typeof setTimeout> | undefined
@@ -21,7 +18,6 @@ export function createTypeahead() {
     letters = []
   }
 
-  // Moving between items in this menu keeps the active prefix.
   function leave(event: FocusEvent): void {
     if (!(event.relatedTarget instanceof Node) || !scope?.contains(event.relatedTarget)) {
       reset()

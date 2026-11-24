@@ -8,10 +8,6 @@ import { MenuItemLabel, type MenuItemProps } from './items'
 import { useMenu } from './state'
 import styles from './styles.module.css'
 
-/**
- * Renders a button trigger with pointer activation and first-or-last-item entry from vertical arrow
- * keys.
- */
 export function MenuTrigger(props: ButtonProps): JSX.Element {
   const state = useMenu()
   const rest = omit(props, 'ref', 'onClick', 'onKeyDown')
@@ -46,9 +42,6 @@ export function MenuTrigger(props: ButtonProps): JSX.Element {
   )
 }
 
-/**
- * Renders a context-menu region supporting pointer requests and the keyboard context-menu command.
- */
 export function ContextMenuTrigger(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
   const state = useMenu()
   const rest = omit(props, 'ref', 'onContextMenu', 'onKeyDown')
@@ -87,11 +80,6 @@ export function ContextMenuTrigger(props: JSX.HTMLAttributes<HTMLDivElement>): J
   )
 }
 
-/**
- * Renders a nested-menu trigger with hover intent and directional keyboard entry.
- *
- * Entry and return arrows follow the document's writing direction.
- */
 export function MenuSubTrigger(props: ButtonProps & Pick<MenuItemProps, 'icon'>): JSX.Element {
   const state = useMenu()
   const rest = omit(

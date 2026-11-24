@@ -1,7 +1,3 @@
-/**
- * Canonical English catalog, relation, record and query messages with their parameter
- * placeholders.
- */
 export const libraryMessages = {
   types: {
     game: 'Game',

@@ -3,7 +3,6 @@ import type { AppearancePreviewInput } from '@kisaki3/desktop-contracts/appearan
 import type { MainClient } from '../../../../infrastructure/api'
 import { reportError } from '../../../../infrastructure/notifications'
 
-/** One uninterrupted preview request, from acquisition through its last delivered revision. */
 interface PreviewSession {
   request: string
   lifetime: AbortController
@@ -12,7 +11,6 @@ interface PreviewSession {
   updating: boolean
 }
 
-/** Serializes updates and adopts only the newest input queued while main prepares its fonts. */
 export function createThemePreview(api: MainClient, input: Accessor<AppearancePreviewInput>) {
   const [enabled, setEnabled] = createSignal(false)
   let session: PreviewSession | undefined

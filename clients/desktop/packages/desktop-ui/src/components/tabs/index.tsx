@@ -6,8 +6,8 @@ import {
   omit,
   useContext,
   createSignal,
+  type Accessor,
 } from 'solid-js'
-import type { Accessor } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { callHandler } from '../../internal/dom'
 import { createValue } from '../../internal/state'
@@ -15,18 +15,14 @@ import { createFocusNavigation } from '../../internal/focus'
 import styles from './styles.module.css'
 import segmented from '../../internal/segmented.module.css'
 
-/** Selection, tab registration and keyboard-entry state shared by the tabs compound parts. */
 const TabsContext = createContext<{
   id: string
 
-  /** Reads the selected panel value, falling back to the first registered tab when empty. */
   value: Accessor<string>
   change: (value: string) => void
 
-  /** Reads the enabled registered tab that serves as the list's keyboard entry. */
   focusValue: Accessor<string>
   setFocus: (value: string | undefined) => void
-  /** Registers an enabled tab for focus fallback and returns its removal callback. */
   register: (value: string) => () => void
 
   orientation: Accessor<'horizontal' | 'vertical'>
@@ -38,25 +34,15 @@ function tabIds(group: string, value: string) {
   return { tab: `${group}-tab-${suffix}`, panel: `${group}-panel-${suffix}` }
 }
 
-/**
- * Controlled or local tab selection with orientation and activation policy.
- *
- * Automatic activation follows arrow focus; manual activation uses Enter or Space. Panels remain
- * mounted.
- */
 export interface TabsProps extends JSX.HTMLAttributes<HTMLDivElement> {
   value?: string
   defaultValue?: string
-  /** Reports the requested selected-tab value. */
   onValueChange?: (value: string) => void
 
   orientation?: 'horizontal' | 'vertical'
   activation?: 'automatic' | 'manual'
 }
 
-/**
- * Owns tab identity, selection and enabled-tab registration while hidden panels retain local state.
- */
 export function Tabs(props: TabsProps): JSX.Element {
   const rest = omit(
     props,
@@ -131,13 +117,6 @@ export function Tabs(props: TabsProps): JSX.Element {
   )
 }
 
-/**
- * Renders a tab list with orientation-aware roving navigation and the configured activation policy.
- *
- * A horizontal list scrolls on wheel input when its tabs overflow. A vertical list grows
- * with its tabs so the surrounding rail can own scrolling.
- * Callers name the list when multiple tab sets need distinction.
- */
 export function TabList(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element {
   const tabs = useContext(TabsContext)
   let list!: HTMLDivElement
@@ -211,12 +190,10 @@ export function TabList(props: JSX.HTMLAttributes<HTMLDivElement>): JSX.Element 
   )
 }
 
-/** Native tab-button attributes with a value unique within the owning Tabs instance. */
 export interface TabProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
   value: string
 }
 
-/** Renders a native tab button and registers enabled choices for roving keyboard entry. */
 export function Tab(props: TabProps): JSX.Element {
   const tabs = useContext(TabsContext)
   const rest = omit(props, 'value', 'class', 'onClick', 'onFocus')
@@ -256,12 +233,10 @@ export function Tab(props: TabProps): JSX.Element {
   )
 }
 
-/** Panel attributes and the stable value linking it to its tab. */
 export interface TabPanelProps extends JSX.HTMLAttributes<HTMLDivElement> {
   value: string
 }
 
-/** Associates a panel with its tab and hides inactive content while keeping it mounted. */
 export function TabPanel(props: TabPanelProps): JSX.Element {
   const tabs = useContext(TabsContext)
   const rest = omit(props, 'value', 'class')

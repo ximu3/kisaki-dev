@@ -7,10 +7,6 @@ import type { test as viteTest } from 'vite-plus/test'
 import { stringify } from 'yaml'
 import { run, runPnpm } from '../process/index.ts'
 
-/**
- * Resolves the archives for the package under test and its workspace runtime dependencies.
- * pnpm's installed workspace links identify the owning projects.
- */
 async function consumerArchives(project: string): Promise<Record<string, string>> {
   const archives: Record<string, string> = {}
 
@@ -34,7 +30,6 @@ async function consumerArchives(project: string): Promise<Record<string, string>
   return archives
 }
 
-/** Creates a real external installation, registering cleanup before copying any fixture files. */
 export async function installConsumer(
   fixture: string,
   project: string,
@@ -83,7 +78,6 @@ export function createConsumerTest(
   })
 }
 
-/** Applies the workspace's lint rules to consumer sources using their installed declarations and type projects. */
 export async function lintConsumer(directory: string, signal?: AbortSignal): Promise<void> {
   const bin = fileURLToPath(import.meta.resolve('vite-plus/bin'))
   const workspace = searchForWorkspaceRoot(import.meta.dirname)

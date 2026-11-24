@@ -11,7 +11,6 @@ import type { UserFontOption } from '../../../domain-ui/fonts/options'
 import { PreferenceField } from '../field'
 import type { PreferenceFields } from '../draft'
 
-/** Compact choices for the fixed-page viewer. */
 const pageChoices = [
   { key: 'arrangement', choices: ['single', 'spread'] },
   { key: 'progression', choices: ['document', 'ltr', 'rtl'] },
@@ -19,7 +18,6 @@ const pageChoices = [
   { key: 'fit', choices: ['page', 'width', 'height'] },
 ] as const
 
-/** Fixed units for the native numeric fields in the shared reading contract. */
 const textNumbers = [
   { name: 'fontSize', unit: 'px' },
   { name: 'lineHeight', unit: '×' },
@@ -28,7 +26,6 @@ const textNumbers = [
   { name: 'pagesPerView', unit: undefined },
 ] as const
 
-/** Reading defaults are edited against the selected medium, independently of open books. */
 export function ReadingFields(props: {
   medium: 'comic' | 'novel'
   draft: PreferenceFields

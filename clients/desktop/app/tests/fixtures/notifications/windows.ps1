@@ -1,5 +1,3 @@
-# Exercises the development notification receiver in a disposable Windows account.
-
 param(
     [ValidateSet('register', 'click', 'remove')][string]$Action,
     [string]$Value

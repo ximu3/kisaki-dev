@@ -1,13 +1,7 @@
-import { createMemo, createSignal } from 'solid-js'
-import type { Accessor } from 'solid-js'
+import { createMemo, createSignal, type Accessor } from 'solid-js'
 import { createTypeahead } from '../../internal/typeahead'
 import type { SelectionOption } from './types'
 
-/**
- * Creates a reactive logical option collection independent of mounted rows.
- *
- * Navigation uses enabled stable keys, and owner cleanup clears the typeahead timer.
- */
 export function createSelection<O extends SelectionOption>(source: Accessor<readonly O[]>) {
   const options = createMemo(source)
 
@@ -60,13 +54,8 @@ export function createSelection<O extends SelectionOption>(source: Accessor<read
   return { options, get, positionOf, enabled, active, highlight, move, type }
 }
 
-/** Reactive option lookup, logical positions, highlight and navigation operations. */
 export type SelectionCollection<O extends SelectionOption> = ReturnType<typeof createSelection<O>>
 
-/**
- * Encodes a stable option key into the DOM identity shared by its row and active-descendant
- * reference.
- */
 export function optionId(listId: string, value: string): string {
   return `${listId}-${encodeURIComponent(value)}`
 }
