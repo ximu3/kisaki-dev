@@ -3,7 +3,14 @@ import { createQuery } from '../../../../infrastructure/query'
 import type { ProtocolIntegrationState } from '@kisaki3/desktop-contracts/app'
 import type { Translate } from '@kisaki3/desktop-localization'
 import { Switch } from '@kisaki3/desktop-ui/switch'
-import { DialogBody, DialogHeader, DialogTitle, deferDialogUntil } from '@kisaki3/desktop-ui/dialog'
+import {
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  deferDialogUntil,
+} from '@kisaki3/desktop-ui/dialog'
 import {
   Field,
   FieldContent,
@@ -14,6 +21,10 @@ import {
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
 import type { MainClient } from '../../../../infrastructure/api'
+import {
+  useDialogClose,
+  type DialogPresentation,
+} from '../../../../infrastructure/dialogs/presentation'
 import { errorMessage } from '../../../../infrastructure/notifications'
 import { DataLocation } from './data-location'
 import { QueryError } from '../../../../infrastructure/query/error'
@@ -34,7 +45,34 @@ function describeLinks(
   return t(isDefault ? 'runtime.linksOpenInKisaki' : 'runtime.linksOpenInOtherApp', { scheme })
 }
 
-export function SystemSettings(props: { api: MainClient; report: (error: unknown) => void }) {
+interface SystemSettingsProps {
+  api: MainClient
+  report: (error: unknown) => void
+  view: DialogPresentation
+}
+
+export function SystemSettings(props: SystemSettingsProps) {
+  const close = useDialogClose(props.view)
+
+  return (
+    <Dialog open={props.view.open()} onOpenChange={close.onOpenChange}>
+      <DialogContent
+        ref={close.ref}
+        size="md"
+        onCloseRequest={close.onCloseRequest}
+        onToggle={(event) => {
+          if (event.currentTarget.open) {
+            props.view.presented?.()
+          }
+        }}
+      >
+        <IntegrationSettings {...props} />
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function IntegrationSettings(props: SystemSettingsProps) {
   const { api } = props
   const state = createQuery((signal) => api.request(signal, 'system.get'))
   const current = createMemo((previous: typeof state.value) =>

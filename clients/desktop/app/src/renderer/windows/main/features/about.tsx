@@ -3,6 +3,8 @@ import { createQuery } from '../../../infrastructure/query'
 import { Copy } from '@lucide/solid'
 import { Button } from '@kisaki3/desktop-ui/button'
 import {
+  Dialog,
+  DialogContent,
   DialogBody,
   DialogFooter,
   DialogHeader,
@@ -12,9 +14,40 @@ import {
 import { Spinner } from '@kisaki3/desktop-ui/spinner'
 import { toast } from '@kisaki3/desktop-ui/toast'
 import type { MainClient } from '../../../infrastructure/api'
+import {
+  useDialogClose,
+  type DialogPresentation,
+} from '../../../infrastructure/dialogs/presentation'
 import { QueryError } from '../../../infrastructure/query/error'
 
-export function About(props: { api: MainClient; report: (error: unknown) => void }) {
+interface AboutProps {
+  api: MainClient
+  report: (error: unknown) => void
+  view: DialogPresentation
+}
+
+export function About(props: AboutProps) {
+  const close = useDialogClose(props.view)
+
+  return (
+    <Dialog open={props.view.open()} onOpenChange={close.onOpenChange}>
+      <DialogContent
+        ref={close.ref}
+        size="md"
+        onCloseRequest={close.onCloseRequest}
+        onToggle={(event) => {
+          if (event.currentTarget.open) {
+            props.view.presented?.()
+          }
+        }}
+      >
+        <AboutContent {...props} />
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function AboutContent(props: AboutProps) {
   const { api } = props
   const info = createQuery((signal) => api.request(signal, 'app.environment'))
   deferDialogUntil(() => !!info.error || !!info.value)

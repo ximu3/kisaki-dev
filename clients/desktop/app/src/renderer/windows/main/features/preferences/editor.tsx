@@ -1,8 +1,11 @@
-import { createEffect, createSignal, For, onCleanup, Show } from 'solid-js'
-import type { JSX } from '@solidjs/web'
+import { createEffect, createSignal, For, onCleanup, Show, useContext } from 'solid-js'
+import { dynamic, type JSX } from '@solidjs/web'
 import { preferenceKeys, type PreferenceKey } from '@kisaki3/desktop-contracts/preferences'
+import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { Button } from '@kisaki3/desktop-ui/button'
 import {
+  Dialog,
+  DialogContent,
   DialogBody,
   DialogFooter,
   DialogHeader,
@@ -15,7 +18,13 @@ import { Toolbar, ToolbarRow } from '@kisaki3/desktop-ui/toolbar'
 import { Tabs, TabList, Tab, TabPanel } from '@kisaki3/desktop-ui/tabs'
 import { Spinner } from '@kisaki3/desktop-ui/spinner'
 import type { MainClient } from '../../../../infrastructure/api'
-import type { EditorGuard } from '../../../../infrastructure/dialogs/closing'
+import { waitForDecision } from '../../../../infrastructure/dialogs/closing'
+import { WindowEditors } from '../../../../infrastructure/dialogs/editors'
+import {
+  createLocalDialog,
+  useDialogClose,
+  type NavigableDialog,
+} from '../../../../infrastructure/dialogs/presentation'
 import type { NavigationPage } from '../../domain-ui/navigation/list'
 import { createPreferenceDraft } from './draft'
 import { focusPreferenceField, PreferenceFieldsContext } from './field'
@@ -54,12 +63,43 @@ interface PreferenceEditorProps {
   api: MainClient
   pages: readonly NavigationPage[]
   field?: PreferenceKey | undefined
-  registerEditor: (guard: EditorGuard) => () => void
-  openResource: (type: 'themes' | 'fonts') => void
+  view: NavigableDialog
 }
 
 export function PreferenceEditor(props: PreferenceEditorProps) {
+  const close = useDialogClose(props.view)
+  const [visible, setVisible] = createSignal(false)
+
+  return (
+    <Dialog open={props.view.open()} onOpenChange={close.onOpenChange}>
+      <DialogContent
+        ref={close.ref}
+        size="xl"
+        fill
+        onCloseRequest={close.onCloseRequest}
+        onToggle={(event) => setVisible(event.currentTarget.open)}
+      >
+        <PreferenceForm {...props} visible={visible()} dialog={close.node} />
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+interface FieldRequest {
+  key: PreferenceKey | undefined
+  complete: (found: boolean) => void
+  failed: (error: unknown) => void
+  signal?: AbortSignal
+}
+
+function PreferenceForm(
+  props: PreferenceEditorProps & {
+    visible: boolean
+    dialog: () => HTMLDialogElement
+  },
+) {
   const { api } = props
+  const editors = useContext(WindowEditors)!
   const draft = createPreferenceDraft(api)
   deferDialogUntil(() => !!draft.ready() || !!draft.error())
 
@@ -68,6 +108,17 @@ export function PreferenceEditor(props: PreferenceEditorProps) {
   let tabList!: HTMLDivElement
   let fieldsViewport!: HTMLDivElement
   let fieldToReveal: string | undefined
+  let credentialsDialog: HTMLDialogElement | undefined
+  const themes = createLocalDialog(
+    () => import('../themes/manager').then((module) => module.Themes),
+    props.view.open,
+  )
+  const fonts = createLocalDialog(
+    () => import('../fonts/manager').then((module) => module.Fonts),
+    props.view.open,
+  )
+  const Themes = dynamic(themes.component)
+  const Fonts = dynamic(fonts.component)
 
   const [stagedEdit, setStagedEdit] = createSignal<
     StagedPreferenceEdit & { medium?: UsageMedium }
@@ -79,22 +130,18 @@ export function PreferenceEditor(props: PreferenceEditorProps) {
   let stagedForm: FormState | undefined
   let usageScrollTop = 0
 
-  function editUsage(medium: UsageMedium, field?: string) {
+  function editUsage(medium: UsageMedium, field?: string, located?: (found: boolean) => void) {
     usageScrollTop = fieldsViewport.scrollTop
     const keys = preferenceKeys.filter((key) => key.startsWith(`usage.${medium}.`))
     const stage = draft.stage(keys)
     setStagedEdit({
       draft: stage,
       field,
+      located,
       medium,
       title: () => api.t(`runtime.usageTitles.${medium}`),
       fields: () => (
-        <UsageEditorFields
-          api={api}
-          medium={medium}
-          draft={stage}
-          manageFonts={() => props.openResource('fonts')}
-        />
+        <UsageEditorFields api={api} medium={medium} draft={stage} manageFonts={fonts.show} />
       ),
     })
   }
@@ -141,9 +188,10 @@ export function PreferenceEditor(props: PreferenceEditorProps) {
     fieldsViewport.scrollTop = 0
   }
 
-  function revealField(key: string) {
+  function revealField(key: string, located?: (found: boolean) => void, signal?: AbortSignal) {
     const next = sections.find((candidate) => key.startsWith(`${candidate}.`))
     if (!next) {
+      located?.(false)
       return
     }
     fieldToReveal = key
@@ -155,29 +203,71 @@ export function PreferenceEditor(props: PreferenceEditorProps) {
         return
       }
       fieldToReveal = undefined
+      if (signal?.aborted) {
+        return
+      }
       tabList
         .querySelector('[aria-selected="true"]')
         ?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
 
       const medium = usageMedia.find((value) => key.startsWith(`usage.${value}.`))
       if (medium) {
-        editUsage(medium, key)
+        editUsage(medium, key, located)
       } else {
-        focusPreferenceField(fieldsViewport, key)
+        const found = focusPreferenceField(fieldsViewport, key)
+        located?.(found)
       }
     })
   }
 
-  let lastRequestedField: PreferenceKey | undefined
-  createEffect(
-    () => [props.field, draft.ready()],
-    ([key, ready]) => {
-      if (key && key !== lastRequestedField && ready) {
-        revealField(key)
+  const [requested, setRequested] = createSignal<FieldRequest | undefined>({
+    key: props.field,
+    complete(found) {
+      if (found) {
+        props.view.presented()
+      } else {
+        props.view.failed(new DesktopError('NotFound', api.t('runtime.unavailable')))
       }
-      lastRequestedField = ready ? key : undefined
+    },
+    failed: props.view.failed,
+  })
+  createEffect(
+    () => [requested(), props.visible, draft.ready(), draft.error()] as const,
+    ([request, visible, ready, error]) => {
+      if (!visible || !request || request.signal?.aborted) {
+        return
+      }
+      if (!request.key) {
+        request.complete(true)
+      } else if (ready) {
+        revealField(request.key, request.complete, request.signal)
+      } else if (error) {
+        request.failed(error)
+      } else {
+        return
+      }
+      setRequested(undefined)
     },
   )
+  props.view.onNavigate(async (target, signal) => {
+    if (target.type !== 'preferences' || stagedEdit() || themes.view.open() || fonts.view.open()) {
+      return false
+    }
+    const positioned = Promise.withResolvers<boolean>()
+    setRequested({
+      key: target.key,
+      complete(found) {
+        if (found) {
+          positioned.resolve(true)
+        } else {
+          positioned.reject(new DesktopError('NotFound', api.t('runtime.unavailable')))
+        }
+      },
+      failed: positioned.reject,
+      signal,
+    })
+    return waitForDecision(positioned.promise, signal)
+  })
 
   const form = createForm({
     order: () => preferenceKeys,
@@ -197,12 +287,16 @@ export function PreferenceEditor(props: PreferenceEditorProps) {
     return form.submit()
   }
 
-  const unregisterEditor = props.registerEditor({
-    busy: form.busy,
-    dirty: () => draft.dirty() || !!stagedEdit()?.draft.dirty(),
-    save: saveBeforeLeaving,
-    currentFormAction: () => (stagedEdit() ? confirmStagedEdit : undefined),
-  })
+  const unregisterEditor = editors.register(
+    {
+      busy: form.busy,
+      dirty: () => draft.dirty() || !!stagedEdit()?.draft.dirty(),
+      save: saveBeforeLeaving,
+      currentFormAction: () => (stagedEdit() ? confirmStagedEdit : undefined),
+    },
+    props.dialog,
+    () => !!credentialsDialog && credentialsDialog === document.activeElement?.closest('dialog'),
+  )
   onCleanup(() => {
     fieldToReveal = undefined
     unregisterEditor()
@@ -210,9 +304,7 @@ export function PreferenceEditor(props: PreferenceEditorProps) {
 
   const fields: Record<Section, () => JSX.Element> = {
     general: () => <GeneralFields api={api} draft={draft} />,
-    appearance: () => (
-      <AppearanceFields api={api} draft={draft} manage={() => props.openResource('themes')} />
-    ),
+    appearance: () => <AppearanceFields api={api} draft={draft} manage={themes.show} />,
     navigation: () => <NavigationFields api={api} draft={draft} pages={props.pages} />,
     library: () => <LibraryFields api={api} draft={draft} />,
     usage: () => <UsageFields t={api.t} draft={draft} open={editUsage} />,
@@ -319,10 +411,15 @@ export function PreferenceEditor(props: PreferenceEditorProps) {
 
       <StagedPreferenceDialog
         t={api.t}
+        dialogRef={(node) => {
+          credentialsDialog = node
+        }}
         edit={inlineEdit() ? undefined : stagedEdit()}
         bind={bindStagedForm}
         close={closeStagedEdit}
       />
+      <Themes api={api} view={themes.view} />
+      <Fonts api={api} view={fonts.view} />
     </>
   )
 }

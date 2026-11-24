@@ -2,8 +2,11 @@ import { createEffect, createMemo, createSignal, For, onCleanup, Show } from 'so
 import { createQuery } from '../../../../infrastructure/query'
 import { CaseSensitive, Eye, Pencil, Plus, Trash2 } from '@lucide/solid'
 import type { Font } from '@kisaki3/desktop-contracts/fonts'
+import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { Button } from '@kisaki3/desktop-ui/button'
 import {
+  Dialog,
+  DialogContent,
   DialogBody,
   DialogFooter,
   DialogHeader,
@@ -15,7 +18,10 @@ import { List, ListItem, ListItemAction } from '@kisaki3/desktop-ui/list'
 import { Spinner } from '@kisaki3/desktop-ui/spinner'
 import { ToolbarRow } from '@kisaki3/desktop-ui/toolbar'
 import type { MainClient } from '../../../../infrastructure/api'
-import type { EditorGuard } from '../../../../infrastructure/dialogs/closing'
+import {
+  useDialogClose,
+  type DialogPresentation,
+} from '../../../../infrastructure/dialogs/presentation'
 import { EditorDialog } from '../../../../infrastructure/dialogs/editor'
 import { createConfirmation } from '../../../../infrastructure/dialogs/confirmation'
 import { reportError } from '../../../../infrastructure/notifications'
@@ -28,11 +34,44 @@ const pageSize = 50
 interface FontsProps {
   api: MainClient
   target?: string | undefined
-  registerEditor: (guard: EditorGuard) => () => void
-  confirmLeave: (guard: EditorGuard) => Promise<boolean>
+  view: DialogPresentation
 }
 
 export function Fonts(props: FontsProps) {
+  const close = useDialogClose(props.view)
+  const [visible, setVisible] = createSignal(false)
+
+  return (
+    <Dialog open={props.view.open()} onOpenChange={close.onOpenChange}>
+      <DialogContent
+        ref={close.ref}
+        size="lg"
+        onCloseRequest={close.onCloseRequest}
+        onToggle={(event) => {
+          const open = event.currentTarget.open
+          setVisible(open)
+          if (open && !props.target) {
+            props.view.presented?.()
+          }
+        }}
+      >
+        <FontCatalog {...props} visible={visible()} />
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+export async function checkFontTarget(
+  api: MainClient,
+  id: string | undefined,
+  signal: AbortSignal,
+) {
+  if (id && !(await api.request(signal, 'fonts.get', id))) {
+    throw new DesktopError('NotFound', api.t('runtime.unavailable'))
+  }
+}
+
+function FontCatalog(props: FontsProps & { visible: boolean }) {
   const { api } = props
   const [offset, setOffset] = createSignal(0)
   const list = createQuery({
@@ -245,14 +284,13 @@ export function Fonts(props: FontsProps) {
         </Show>
       </DialogFooter>
 
-      <FontDetails api={api} selected={preview()} close={() => setPreview(undefined)} />
-      <EditorDialog
-        edit={edit()}
-        size="lg"
-        registerEditor={props.registerEditor}
-        confirmLeave={props.confirmLeave}
-        onClose={() => setEdit(undefined)}
-      >
+      <FontDetails
+        api={api}
+        selected={props.visible ? preview() : undefined}
+        presented={props.view.presented}
+        close={() => setPreview(undefined)}
+      />
+      <EditorDialog edit={edit()} size="lg" onClose={() => setEdit(undefined)}>
         {(value, controls) => (
           <FontEditor
             api={api}

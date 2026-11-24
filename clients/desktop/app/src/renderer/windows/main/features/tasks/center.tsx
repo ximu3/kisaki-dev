@@ -1,10 +1,13 @@
 import { createSignal, For, onCleanup, Show } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
 import { RefreshCw, Trash2 } from '@lucide/solid'
-import { isTaskTerminal, taskRunStatuses } from '@kisaki3/desktop-contracts/tasks'
+import { isTaskTerminal, taskRunStatuses, type TaskRun } from '@kisaki3/desktop-contracts/tasks'
+import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
 import {
+  Dialog,
+  DialogContent,
   DialogBody,
   DialogFooter,
   DialogHeader,
@@ -14,10 +17,12 @@ import {
 import { Tabs, TabList, Tab, TabPanel } from '@kisaki3/desktop-ui/tabs'
 import { Toolbar, ToolbarRow } from '@kisaki3/desktop-ui/toolbar'
 import { createConfirmation } from '../../../../infrastructure/dialogs/confirmation'
+import { waitForDecision } from '../../../../infrastructure/dialogs/closing'
+import type { NavigableDialog } from '../../../../infrastructure/dialogs/presentation'
 import { errorMessage } from '../../../../infrastructure/notifications'
 import type { MainClient } from '../../../../infrastructure/api'
 import { TaskTable } from './table'
-import { TaskDetails } from './details'
+import { TaskDetails, type TaskSelection } from './details'
 import { TaskFilters } from './filters'
 import { createTaskQuery } from './query'
 
@@ -36,11 +41,58 @@ const scopes = [
   },
 ] as const
 
-export function TaskCenter(props: {
+export async function readTaskTarget(
+  api: MainClient,
+  runId: string | undefined,
+  signal: AbortSignal,
+) {
+  if (!runId) {
+    return null
+  }
+  const task = await api.request(signal, 'tasks.get', { taskRunId: runId })
+  if (!task) {
+    throw new DesktopError('NotFound', api.t('runtime.unavailable'))
+  }
+  return task
+}
+
+interface TaskCenterProps {
   api: MainClient
-  target: string | null
+  task: TaskRun | null
   report: (error: unknown) => void
-}) {
+  view: NavigableDialog
+}
+
+export function TaskCenter(props: TaskCenterProps) {
+  const [visible, setVisible] = createSignal(false)
+
+  return (
+    <Dialog
+      open={props.view.open()}
+      onOpenChange={(open) => {
+        if (!open) {
+          props.view.close()
+        }
+      }}
+    >
+      <DialogContent
+        size="xl"
+        fill
+        onToggle={(event) => {
+          const open = event.currentTarget.open
+          setVisible(open)
+          if (open && !props.task) {
+            props.view.presented()
+          }
+        }}
+      >
+        <TaskCenterContent {...props} visible={visible()} />
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function TaskCenterContent(props: TaskCenterProps & { visible: boolean }) {
   const { api } = props
   const [revision, setRevision] = createSignal(0)
   const history = createQuery((signal) =>
@@ -55,7 +107,26 @@ export function TaskCenter(props: {
   }))
   const activeQuery = () => panels.find((scope) => scope.id === section())!.query
   deferDialogUntil(() => !!activeQuery().error() || activeQuery().total() !== undefined)
-  const [selected, select] = createSignal(() => props.target)
+  const [selected, select] = createSignal<TaskSelection | undefined>(
+    props.task
+      ? { id: props.task.id, initial: props.task, presented: props.view.presented }
+      : undefined,
+  )
+
+  props.view.onNavigate(async (target, signal) => {
+    if (target.type !== 'tasks') {
+      return false
+    }
+    const task = await readTaskTarget(api, target.runId, signal)
+    signal.throwIfAborted()
+    if (!task) {
+      select(undefined)
+      return true
+    }
+    const shown = Promise.withResolvers<boolean>()
+    select({ id: task.id, initial: task, presented: () => shown.resolve(true) })
+    return waitForDecision(shown.promise, signal)
+  })
 
   function refresh() {
     for (const { query } of panels) {
@@ -132,7 +203,7 @@ export function TaskCenter(props: {
                   active={scope.id === 'active'}
                   visible={section() === scope.id}
                   query={scope.query}
-                  open={select}
+                  open={(id) => select({ id })}
                   confirm={confirm.ask}
                   report={props.report}
                 />
@@ -164,7 +235,12 @@ export function TaskCenter(props: {
       </DialogFooter>
 
       <confirm.Content />
-      <TaskDetails api={api} id={selected()} revision={revision()} onClose={() => select(null)} />
+      <TaskDetails
+        api={api}
+        selection={props.visible ? selected() : undefined}
+        revision={revision()}
+        onClose={() => select(undefined)}
+      />
     </>
   )
 }

@@ -1,8 +1,9 @@
-import { createEffect, createMemo, onCleanup, Show } from 'solid-js'
+import { createEffect, createMemo, onCleanup, Show, useContext } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { Dialog, DialogContent, type DialogContentProps } from '@kisaki3/desktop-ui/dialog'
 import { reportError } from '../notifications'
 import type { EditorGuard } from './closing'
+import { WindowEditors } from './editors'
 
 interface EditorDialogControls {
   registerEditor: (guard: EditorGuard) => void
@@ -12,13 +13,15 @@ interface EditorDialogControls {
 interface EditorDialogProps<T extends object> {
   edit: T | undefined
   size: NonNullable<DialogContentProps['size']>
-  registerEditor: (guard: EditorGuard) => () => void
-  confirmLeave: (guard: EditorGuard) => Promise<boolean>
   onClose: () => void
   children: (edit: T, controls: EditorDialogControls) => JSX.Element
 }
 
 export function EditorDialog<T extends object>(props: EditorDialogProps<T>) {
+  const editors = useContext(WindowEditors)!
+  const lifetime = new AbortController()
+  onCleanup(() => lifetime.abort())
+  let dialog: HTMLDialogElement
   let guard: EditorGuard | undefined
 
   function registerEditor(edit: T, next: EditorGuard) {
@@ -29,7 +32,7 @@ export function EditorDialog<T extends object>(props: EditorDialogProps<T>) {
       () => props.edit,
       (value) => {
         if (value === edit) {
-          return props.registerEditor(next)
+          return editors.register(next, () => dialog)
         }
       },
     )
@@ -43,7 +46,7 @@ export function EditorDialog<T extends object>(props: EditorDialogProps<T>) {
   async function close(edit: T) {
     const current = guard
     if (
-      (!current || (await props.confirmLeave(current))) &&
+      (!current || (await editors.confirm(current, lifetime.signal))) &&
       props.edit === edit &&
       guard === current
     ) {
@@ -81,6 +84,9 @@ export function EditorDialog<T extends object>(props: EditorDialogProps<T>) {
       }}
     >
       <DialogContent
+        ref={(node) => {
+          dialog = node
+        }}
         size={props.size}
         onCloseRequest={(event) => {
           event.preventDefault()

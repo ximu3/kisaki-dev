@@ -2,9 +2,12 @@ import { createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
 import { Check, Copy, Eye, Palette, Pencil, Plus, Trash2 } from '@lucide/solid'
 import type { Theme, ThemeRef } from '@kisaki3/desktop-contracts/appearance'
+import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { Badge } from '@kisaki3/desktop-ui/badge'
 import { Button } from '@kisaki3/desktop-ui/button'
 import {
+  Dialog,
+  DialogContent,
   DialogBody,
   DialogFooter,
   DialogHeader,
@@ -14,7 +17,10 @@ import {
 import { List, ListItem, ListItemAction } from '@kisaki3/desktop-ui/list'
 import { Spinner } from '@kisaki3/desktop-ui/spinner'
 import type { MainClient } from '../../../../infrastructure/api'
-import type { EditorGuard } from '../../../../infrastructure/dialogs/closing'
+import {
+  useDialogClose,
+  type DialogPresentation,
+} from '../../../../infrastructure/dialogs/presentation'
 import { EditorDialog } from '../../../../infrastructure/dialogs/editor'
 import { createConfirmation } from '../../../../infrastructure/dialogs/confirmation'
 import { reportError } from '../../../../infrastructure/notifications'
@@ -30,11 +36,44 @@ const initialTheme = { type: 'builtin', id: 'default' } as const
 interface ThemesProps {
   api: MainClient
   target?: ThemeRef | undefined
-  registerEditor: (guard: EditorGuard) => () => void
-  confirmLeave: (guard: EditorGuard) => Promise<boolean>
+  view: DialogPresentation
 }
 
 export function Themes(props: ThemesProps) {
+  const close = useDialogClose(props.view)
+  const [visible, setVisible] = createSignal(false)
+
+  return (
+    <Dialog open={props.view.open()} onOpenChange={close.onOpenChange}>
+      <DialogContent
+        ref={close.ref}
+        size="lg"
+        onCloseRequest={close.onCloseRequest}
+        onToggle={(event) => {
+          const open = event.currentTarget.open
+          setVisible(open)
+          if (open && !props.target) {
+            props.view.presented?.()
+          }
+        }}
+      >
+        <ThemeCatalog {...props} visible={visible()} />
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+export async function checkThemeTarget(
+  api: MainClient,
+  ref: ThemeRef | undefined,
+  signal: AbortSignal,
+) {
+  if (ref && !(await api.request(signal, 'themes.get', ref))) {
+    throw new DesktopError('NotFound', api.t('runtime.unavailable'))
+  }
+}
+
+function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
   const { api } = props
   const catalog = createQuery((signal) => api.request(signal, 'themes.list'))
   const preferences = createQuery((signal) => api.request(signal, 'preferences.get'))
@@ -272,17 +311,12 @@ export function Themes(props: ThemesProps) {
 
       <ThemeInspection
         api={api}
-        target={preview()}
+        target={props.visible ? preview() : undefined}
+        presented={props.view.presented}
         name={previewName()}
         close={() => setPreview(undefined)}
       />
-      <EditorDialog
-        edit={edit()}
-        size="xl"
-        registerEditor={props.registerEditor}
-        confirmLeave={props.confirmLeave}
-        onClose={() => setEdit(undefined)}
-      >
+      <EditorDialog edit={edit()} size="xl" onClose={() => setEdit(undefined)}>
         {(value, controls) => (
           <ThemeEditor
             api={api}

@@ -138,6 +138,8 @@ Windows 生成 Internet Shortcut（`.url`），macOS 生成 Finder 的 Internet 
 
 反馈遵循[入口责任](components.md#notifications)：后台 add 使用桌面通知，进入界面的操作使用局部 Toast。同一结果不重复提示，也不按窗口焦点切换渠道。
 
+主窗口按类型化目标调用所属功能。内容页进入主内容区，窗口级 Dialog 由对应功能呈现。一次导航在功能接纳并呈现指定目标后完成。例如任务请求带 runId 时，在打开前核对该记录，等待任务详情实际呈现后再回执。无效目标保留原界面。功能内部打开的弹窗由发起视图直接组合。偏好打开主题或字体管理时，原草稿继续保留，原生 Dialog 负责模态和关闭回焦。窗口在实际离开编辑视图时协调[关闭确认](components.md#closing)。
+
 <a id="extension-pages"></a>
 
 ## 扩展页面寻址

@@ -245,8 +245,7 @@ async function run(paths: AppPaths) {
           if (
             request.type !== 'native' &&
             (request.scheme !== (paths.isolated ? 'kisaki-dev' : 'kisaki') ||
-              request.type !== 'view' ||
-              !['preferences', 'tasks'].includes(request.target.type))
+              request.type !== 'view')
           ) {
             throw new Error('This destination is unavailable')
           }
