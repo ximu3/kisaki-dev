@@ -1,7 +1,12 @@
 import { mkdir } from 'node:fs/promises'
 import { join } from 'node:path'
 import { appRoot } from '../lib/paths'
-import { hostTarget, targetTriples, type DesktopTarget } from '../lib/targets'
+import {
+  hostTarget,
+  nativeBuildEnvironment,
+  targetTriples,
+  type DesktopTarget,
+} from '../lib/targets'
 import { removeOutputs } from '@kisaki3/tooling/output'
 import { run, runPnpm } from '@kisaki3/tooling/process'
 import { checkDeclarations } from './declarations'
@@ -55,7 +60,7 @@ export async function buildNative({
       '--',
       '--locked',
     ],
-    { cwd: appRoot, signal },
+    { cwd: appRoot, env: nativeBuildEnvironment(), signal },
   )
 
   await checkDeclarations(

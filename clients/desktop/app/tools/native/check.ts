@@ -1,6 +1,6 @@
 import { join } from 'node:path'
 import { appRoot } from '../lib/paths'
-import { hostTarget } from '../lib/targets'
+import { hostTarget, nativeBuildEnvironment } from '../lib/targets'
 import { run } from '@kisaki3/tooling/process'
 
 export async function checkNative(signal?: AbortSignal): Promise<void> {
@@ -9,6 +9,9 @@ export async function checkNative(signal?: AbortSignal): Promise<void> {
   await run('cargo', ['clippy', '--locked', '--all-targets', '--', '-D', 'warnings'], {
     cwd,
     signal,
-    env: { ...process.env, CARGO_TARGET_DIR: join(appRoot, '.cache', 'native', hostTarget()) },
+    env: {
+      ...nativeBuildEnvironment(),
+      CARGO_TARGET_DIR: join(appRoot, '.cache', 'native', hostTarget()),
+    },
   })
 }
