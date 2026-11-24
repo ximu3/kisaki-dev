@@ -36,7 +36,7 @@
 | [W05 desktop-ui](work-packages.md#w05) | 34 个公共组件家族已实现，适用验收已完成。[外部字段反馈、焦点和数字步进](../verification/evidence/w05-w07/README.md#completion)已在 Chromium 复验。[表单、受控状态和原生交互](../verification/evidence/w05-w07/README.md#ui)已在 Windows x64 复验。Form 与 Field 统一提交和反馈，多选与快捷键共用滚动标签，选项行接入统一尺寸档位。[公共控件与制品验证](../verification/evidence/w05/README.md#rewrite-consumers)记录 Windows x64 与 Linux x64 的公共包验证。Windows x64 已复验[输入法组合后的连续更新](../verification/evidence/w05/README.md#composition-updates)。实际桌面消费见 W07。项目文档归 W23。 |
 | [W06 存储与原生基础](work-packages.md#w06) | 实现与适用验收已完成。此前基线的存储、文件设施和随语言切换的索引已通过六目标运行与制品验收。当前外键基线的复验范围见[同作品约束](../verification/evidence/w06/README.md#ownership)。[完整存储负载](../verification/evidence/w06/README.md#six-target-workload)在六个目标通过，Linux 同机对照验证了 worker 中位数门槛能拦住持续慢查询。 |
 | [W07 应用运行与设置](work-packages.md#w07)                    | 本包约定的实现与验收已完成。关闭前保存的字段定位、普通 Dialog 操作和运行文案见[当前工作树复验](../verification/evidence/w05-w07/README.md#completion)。[操作取消、退出收尾、文件准备、观察与资源寿命](../verification/evidence/w05-w07/README.md#runtime)已在 Windows x64 复验。四类窗口分别接入文档外观与通知。主窗口的任务、偏好、主题、字体与系统集成按场景加载，见[管理界面实机对照](../verification/evidence/w07/README.md#shared-dialogs)与[源码开发验证](../verification/evidence/w07/README.md#source-dev-styles)。[文档导航和管理查询](../verification/evidence/w07/README.md#document-navigation)已在 Windows x64 复验。此前 UI 重写的[六目标结果](../verification/evidence/w07/README.md#ui-rewrite-six-targets)按所列修订保留。W09 接入业务页面，W20 另验安装身份下的登记、升级、卸载与通知冷启动。 |
-| [W08 libmpv-node](work-packages.md#w08) | 进行中。mpv v0.42.0 的一份主包和六个平台包已通过 Node 和实际 Electron 的独立安装、控制、流、字幕、软件输出与 ASAR 验证。Windows x64 已验证 D3D11VA、共享图像、两种 SDR 目标、截图、引用回收和 WASAPI。macOS 的 IOSurface、Linux 的 X11 和原生 Wayland dma-buf 仍待实机验收。源码材料、系统下限与最终交接按[验证记录](../verification/evidence/w08/README.md)分别核对。 |
+| [W08 libmpv-node](work-packages.md#w08) | 进行中。mpv v0.42.0 的一份主包和六个平台包已通过 Node 和实际 Electron 的独立安装、控制、流、字幕、软件输出与 ASAR 验证。Windows x64 已验证 D3D11VA、共享图像、两种 SDR 目标、截图、引用回收和 WASAPI。macOS 的 IOSurface、Linux X11 和原生 Wayland 的 dma-buf 交接、Windows 10 ARM64 与 Windows 11 x64 客户端兼容性仍待实机验收。源码材料、系统下限与最终交接按[验证记录](../verification/evidence/w08/README.md)分别核对。 |
 | [W09 本地资料库、持有与个人记录](work-packages.md#w09)        | 未开始。                                                                                                                                                                                                                                     |
 | [W10 Vantage](work-packages.md#w10)                           | 未开始；分项结果见[项目交付](delivery-checklist.md#projects)。                                                                                                                                                                               |
 | [W11 Kana](work-packages.md#w11)                              | 未开始；分项结果见[项目交付](delivery-checklist.md#projects)。                                                                                                                                                                               |
@@ -59,7 +59,7 @@
 
 ## 待取得的运行与外部输入
 
-- W08 和 W10–W12 尚需取得完整实现、目标制品及主要后端结果。固定 libmpv 源码补丁已有依据，正式媒体、颜色、截图和 GPU 接入待验收。
+- W08 已取得六目标配对制品、两种宿主和 Windows x64 画面交接的运行结果。[平台验证记录](../verification/evidence/w08/README.md#hardware)列出仍需设备的项目。W10–W12 的实现、目标制品和主要后端仍待交付。
 - W21 尚需真实宿主、资源、安装与来源消费。Google OAuth 应用审核、AniList 高级评分和部分导入器真实样本的缺项见[交付清单](delivery-checklist.md#extensions)与[来源证据](../verification/evidence/extensions.md)。
 - 跨文件系统移动已在 Windows x64 取得运行证据；其余五个 CI 目标因测试根同属一个文件系统而跳过。完整平台组合、系统下限、签署与随包权利材料按所属交付继续验证。
 
