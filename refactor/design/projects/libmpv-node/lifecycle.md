@@ -20,7 +20,7 @@ createMpv(options) 异步建立可用的 Mpv，内容随后通过 loadfile 命�
 | NativeFrame  | 每次交付后由接收方持有，保持画面有效所需资源，release 后归还本次持有 |
 | 截图命令结果 | 拥有已经取得的独立图像数据，不继续借用播放器缓冲或依赖 GPU 帧存活    |
 
-创建 Mpv 时可以启用受管视频输出。库在播放前建立渲染上下文，在核心销毁前释放。每个播放核心最多有一个活动渲染上下文。[固定版本的 libmpv Render API](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/include/mpv/render.h)
+创建 Mpv 时可以启用受管视频输出。库在播放前建立渲染上下文，在核心销毁前释放。每个播放核心最多有一个活动渲染上下文。[固定版本的 libmpv Render API](https://github.com/mpv-player/mpv/blob/b0841e8c4d156b8403dc1876c4cbd9011eb583f3/include/mpv/render.h)
 
 Windows 已采用官方合入的直接 D3D11 Render API，macOS 与 Linux 保留各自的 OpenGL 接入，软件输出仍为独立选择；固定上游来源与终态合同见[视频输出设计](video.md)。
 
