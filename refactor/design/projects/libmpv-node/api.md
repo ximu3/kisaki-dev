@@ -13,7 +13,7 @@
 
 ## 绑定模型与调用入口
 
-libmpv-node 通过 Mpv 提供命令、属性、事件和实例管理，沿用[固定版本的 libmpv Client API](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/include/mpv/client.h)语义。
+libmpv-node 通过 Mpv 提供命令、属性、事件和实例管理，沿用[固定版本的 libmpv Client API](https://github.com/mpv-player/mpv/blob/b0841e8c4d156b8403dc1876c4cbd9011eb583f3/include/mpv/client.h)语义。
 
 | 入口                | 合同                                                         |
 | ------------------- | ------------------------------------------------------------ |
@@ -281,7 +281,7 @@ Mpv 正常关闭时也先取消并释放活动执行，再按生产者结束规�
 
 ## 制品能力目录与语义声明
 
-固定源码 01e2533f3143b8940857ca419b0b367f583e05ca 的 Client API 为 2.6，头文件包含 45 个函数和 20 项负数错误枚举。函数职责按[覆盖清单](../../../verification/evidence/libmpv-control/client-api-coverage.json)归属。
+固定源码 b0841e8c4d156b8403dc1876c4cbd9011eb583f3 的 Client API 为 2.6，头文件包含 45 个函数和 20 项负数错误枚举。函数职责按[覆盖清单](../../../verification/evidence/libmpv-control/client-api-coverage.json)归属。
 
 命令、选项和属性的目录由实际发行构建生成，和源码、功能配置、声明一起交付。原生目录提供名字集合与部分参数信息，属性返回结构和其他类型语义由受版本控制的语义定义补充。
 

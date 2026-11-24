@@ -1,6 +1,6 @@
 {
   "repository": "https://github.com/mpv-player/mpv.git",
-  "commit": "01e2533f3143b8940857ca419b0b367f583e05ca",
+  "commit": "b0841e8c4d156b8403dc1876c4cbd9011eb583f3",
   "patches": [
     {
       "file": "black-tone-map.patch",
@@ -9,12 +9,12 @@
       "changedFiles": [
         {
           "path": "video/out/gpu/video_shaders.c",
-          "beforeSha256": "b60130a8f3ead493ce34b511b579062a390efc29d616c97f5637370bf2f1c0cd",
-          "afterSha256": "35e8c1ea52c2f1b6be69ee1905a2f32291c512751ade35b80c8504f3f1ca2dd0"
+          "beforeSha256": "26f99a75199ae38d781f6164d8afa0a8771479c7321055cf6ee8db65c178510d",
+          "afterSha256": "a5d4ff0ff7cd6060fb7671465489da4d769dfd2118cebfd592fc63ca96845a6c"
         }
       ],
-      "verification": "../../../verification/evidence/libmpv-upstream-fix/verification.md",
-      "removalCondition": "The selected upstream commit contains an equivalent fix and passes the regression matrix without this patch."
+      "removalCondition": "The selected upstream commit contains an equivalent fix and passes the regression matrix without this patch.",
+      "verification": "../../../verification/evidence/libmpv-upstream-fix/verification.md"
     },
     {
       "file": "screenshot-source.patch",
@@ -27,8 +27,27 @@
           "afterSha256": "0f8bc0f02942f953f9148f934367747698b2bae153113843d0ddf9ed29f54e13"
         }
       ],
-      "verification": "../../../verification/evidence/contract-closure/2026-10-22/README.md#screenshot",
-      "removalCondition": "The selected upstream provides equivalent per-result provenance and passes normal GPU, explicit software and forced fallback tests without this patch."
+      "removalCondition": "The selected upstream provides equivalent per-result provenance and passes normal GPU, explicit software and forced fallback tests without this patch.",
+      "verification": "../../../verification/evidence/contract-closure/2026-10-22/README.md#screenshot"
+    },
+    {
+      "file": "drm-dumb-buffer.patch",
+      "sha256": "186dd02d5ee395ba9fbb532af4029218b31f36deab743872ed8f8c23772dc4fd",
+      "purpose": "Use kernel dumb-buffer ioctls with the system libdrm on Ubuntu 22.04.",
+      "changedFiles": [
+        {
+          "path": "meson.build",
+          "beforeSha256": "04754acaf772220d3fbba3a8415167c6d923b81cc9fc95ef47e1811d43a875db",
+          "afterSha256": "d364d82c6c5ce67c94506908dc335cdbcc3deb6a59a3dad0f8ef8ef363c71406"
+        },
+        {
+          "path": "video/out/vo_drm.c",
+          "beforeSha256": "8264229fec07f56f67690ee7ab77509fe5ce4bba617cb197e185752bee68ca9f",
+          "afterSha256": "af8771aa57e855ccb716b928799bdd73d510d4ee37e701ea53b6343cd7c5fc66"
+        }
+      ],
+      "removalCondition": "The minimum supported system provides the three DRM helpers, or upstream runs with libdrm 2.4.113 and passes installed playback on both Linux architectures.",
+      "verification": "../../../verification/evidence/w08/README.md#linux-drm"
     }
   ]
 }
