@@ -1,5 +1,7 @@
 # Kisaki
 
+本文件是 Kisaki、Vantage、Kana、libmpv-node 和 oauth-relay 的共同任务入口。五个项目共用工作原则、代码风格，以及仓库协作、构建、CI、验证和交付规范。实施或审阅独立项目时，按[所属项目的设计](refactor/design/projects/README.md)核对架构、公开合同和运行条件。
+
 ## 协作与讨论
 
 沟通默认使用简体中文。
