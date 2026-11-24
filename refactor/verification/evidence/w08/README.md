@@ -1,4 +1,4 @@
-# libmpv-node 控制接口验证
+# libmpv-node 制品与宿主验证
 
 2026-11-24 在 Windows 10 专业版 22H2（19045）、x64 上，从[独立项目提交](https://github.com/ximu3/libmpv-node-dev/commit/55379a3548ef1fc7efa41153aec56cb36774659b)构建 addon 和 Windows 开发包。上游 mpv 固定在 `01e2533f3143b8940857ca419b0b367f583e05ca`。源码准备核对了两项补丁及其修改前后的文件摘要。引擎构建使用[Windows 候选依赖](../libmpv-package/package.md)的 FFmpeg、MuJS 和 UCRT64 前缀，重新编译了 libmpv。
 
@@ -37,3 +37,9 @@ Windows x64 研究候选中的 Fontconfig 2.18.3 使用 ANSI 接口定位 DLL。
 控制接口已接入独立客户端、属性和事件观察、初始化与运行期日志以及异步 hook。[客户端与观察](https://github.com/ximu3/libmpv-node-dev/pull/3) · [日志](https://github.com/ximu3/libmpv-node-dev/pull/4) · [hook](https://github.com/ximu3/libmpv-node-dev/pull/6)
 
 平台枚举在本机 Windows x64 返回 4 个适配器。两台托管 macOS runner 均返回 0 个加速 CGL 渲染器，IOSurface 播放和画面交接待具备 GPU 的 Mac 实测。Linux 的 X11 与原生 Wayland 交接待具备 render node 的桌面验证。[六目标设备枚举](https://github.com/ximu3/libmpv-node-dev/actions/runs/45365878895)
+
+## Windows x64 媒体运行库
+
+干净的 Windows runner 从固定输入构建 FFmpeg、MuJS、仅启用 DirectWrite 的 libass 和带两项补丁的 libmpv，核对媒体 DLL 的导入和延迟导入，并生成许可材料与对应源码。随后从配对的 tarball 安装，在 Node 和 Electron 中执行消费用例。[构建与验收作业](https://github.com/ximu3/libmpv-node-dev/actions/runs/45379645529/job/138395141589)
+
+自定义协议用短读向引擎提供 WAV，两个宿主均能读出媒体时长，并验证取消后才返回的流资源得到关闭。软件输出用同一幅红色样本核对五种像素格式、步幅、填充字节，以及重新配置和关闭后原帧的数据。GPU 共享图像单独验收。[流消费用例](https://github.com/ximu3/libmpv-node-dev/blob/e5fb5e9f59d394475173fffd2b3b9303b5fabbfe/tests/consumers/fixtures/streams.ts) · [软件输出用例](https://github.com/ximu3/libmpv-node-dev/blob/e32d07a87f01c8f1d115605aac1feb2d28d23428/tests/consumers/fixtures/software.ts)
