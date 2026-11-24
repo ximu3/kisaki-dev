@@ -8,7 +8,7 @@
 
 组件用途与功能目录见[构建输入](#inputs)，包配对、非代码资源和加载见[发行清单](#artifact)与[加载规则](#loading)。六目标使用正式构建和消费验证后的制品。
 
-所选固定提交的 Meson 文件将 FFmpeg、libass 和 libplacebo 列为构建依赖。文件中的最低版本只表示兼容要求，不是本项目已经选定的版本组合；正式发行的完整版本与功能矩阵须通过实际六个平台目标构建后冻结。[构建依据](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/meson.build)
+所选固定提交的 Meson 文件将 FFmpeg、libass 和 libplacebo 列为构建依赖。文件中的最低版本只表示兼容要求，不是本项目已经选定的版本组合；正式发行的完整版本与功能矩阵须通过实际六个平台目标构建后冻结。[构建依据](https://github.com/mpv-player/mpv/blob/b0841e8c4d156b8403dc1876c4cbd9011eb583f3/meson.build)
 
 延续[既定交付](../native-runtime.md#delivery)和[许可方向](../../engineering/licensing.md#third-party)：优先满足完整播放要求的实际 LGPL 构建及动态交付。libmpv-node 自己装配匹配的媒体运行库，Kisaki 消费同一份平台包；不借用 Electron 附带的 ANGLE，也不依靠开发机 PATH 或系统安装的另一份媒体库。操作系统图形驱动与平台框架是明确的运行前提，尤其 Linux 的 EGL、GBM、DRM 与驱动组合需要单独列出。
 
@@ -41,7 +41,7 @@ mpv、补丁、FFmpeg、libass、libplacebo 和平台接入组件作为一套共
 
 ## 平台接入与上游来源
 
-Windows 使用上游直接 D3D11 Render API。源码输入固定为完整上游提交 01e2533f3143b8940857ca419b0b367f583e05ca，加清单中的色调映射零分母修复与逐次截图来源标记；应用、回归和移除规则见[固定上游修改](#当前采用的补丁)。本项目从固定源码自行构建，FFmpeg、libass、libplacebo 等完整依赖组合在验证后冻结。
+Windows 使用上游直接 D3D11 Render API。本轮采用 mpv v0.42.0（b0841e8c4d156b8403dc1876c4cbd9011eb583f3），应用清单中的色调映射、截图来源与 Linux DRM 修改；应用、回归和移除规则见[固定上游修改](#当前采用的补丁)。本项目从固定源码自行构建，FFmpeg、libass、libplacebo 等完整依赖组合在验证后冻结。
 
 本项入口通过提交 4255130de410e0cbdab694b951085409d466b704 合入上游，新增适配复用已有 ra_d3d11 与 gpu 渲染管线。它接纳调用方设备、包装目标纹理、提交和释放引用，媒体算法仍由上游处理。图形入口的选择不改变公开输出合同，也不自动提供 gpu-next 的嵌入能力。[上游提交](https://github.com/mpv-player/mpv/commit/4255130de410e0cbdab694b951085409d466b704)、[原生资源与线程合同](https://github.com/mpv-player/mpv/blob/4255130de410e0cbdab694b951085409d466b704/include/mpv/render_d3d11.h)
 
@@ -82,7 +82,7 @@ libcurl 未编入 mpv 不能单独证明没有 HTTP(S)：FFmpeg 自身的协议�
 
 ## 实际组合与许可
 
-继续优先采用满足能力要求的实际 LGPL 构建及动态交付。mpv 的 `-Dgpl=false` 只选择 mpv 自己的代码范围；FFmpeg、字体、着色器工具和其他依赖仍须分别核对配置、来源与适用条款。FFmpeg 启用 GPL 组件会改变其整体许可，不能以封装包的许可或单个 mpv 开关覆盖它。[mpv Copyright](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/Copyright)、[FFmpeg 许可说明](https://ffmpeg.org/legal.html)
+继续优先采用满足能力要求的实际 LGPL 构建及动态交付。mpv 的 `-Dgpl=false` 只选择 mpv 自己的代码范围；FFmpeg、字体、着色器工具和其他依赖仍须分别核对配置、来源与适用条款。FFmpeg 启用 GPL 组件会改变其整体许可，不能以封装包的许可或单个 mpv 开关覆盖它。[mpv Copyright](https://github.com/mpv-player/mpv/blob/b0841e8c4d156b8403dc1876c4cbd9011eb583f3/Copyright)、[FFmpeg 许可说明](https://ffmpeg.org/legal.html)
 
 上游 LGPL 模式排除的部分原生窗口输出与本库受管共享图像接入不是同一层能力。例如 Linux 的原生 X11 VO 和 EGL／dma-buf 交给 X11 桌面上的消费应用须分开判断，后者按既定路线核对接口与源码，并在正式平台验收记录运行结果。如果这组候选依赖无法提供必需的能力，先说明缺少什么，再讨论许可或支持平台是否需要调整。
 
@@ -135,7 +135,7 @@ Electron 接入方负责将平台包的原生文件和数据放到可由操作�
 
 ## 固定上游修改
 
-libmpv-node 维护色调映射和截图来源两项上游补丁，负责随固定构建应用、验证和升级。修复位于原生色调映射和实际取图处，绑定按公开合同交付对应结果。
+libmpv-node 随候选构建维护色调映射、截图来源和 Linux DRM 三项补丁。构建按清单验证上游文件和补丁的摘要。
 
 | 项目         | 固定内容                                                                                     |
 | ------------ | -------------------------------------------------------------------------------------------- |
@@ -145,7 +145,7 @@ libmpv-node 维护色调映射和截图来源两项上游补丁，负责随固�
 | 补丁 SHA-256 | 2a76d386261c4312e47b10f1336efbf8fba08e381c1038e98ebb8161879b41f9                             |
 | 已有证据     | [完整同源构建与像素对照](../../../verification/evidence/libmpv-upstream-fix/verification.md) |
 
-实施清单固定补丁文件及顺序。原版与修复版对照记录限定既有回归证据的范围；SDR 构建按当前输出合同另行完成媒体、字幕和宿主验证。固定上游的 pass_color_map 在源峰值高于目标峰值时调用该色调映射函数，HDR 片源到 SDR 输出属于该路径的适用场景。[共用映射实现](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/video/out/gpu/video_shaders.c#L880)
+实施清单固定补丁文件及顺序。原版与修复版对照记录限定既有回归证据的范围；SDR 构建按当前输出合同另行完成媒体、字幕和宿主验证。固定上游的 pass_color_map 在源峰值高于目标峰值时调用该色调映射函数，HDR 片源到 SDR 输出属于该路径的适用场景。[共用映射实现](https://github.com/mpv-player/mpv/blob/b0841e8c4d156b8403dc1876c4cbd9011eb583f3/video/out/gpu/video_shaders.c#L880)
 
 <a id="screenshot-source"></a>
 
@@ -160,6 +160,10 @@ libmpv-node 维护色调映射和截图来源两项上游补丁，负责随固�
 升级后分别检查正常 VO、显式软件、VO 失败回退与无图失败，以及原图布局、字幕、颜色和字节独立持有。上游提供等效的逐结果来源信息，并在不应用本补丁时通过同组回归后，才移除补丁。仅源码能够套用或编译通过不能代替这些检查。
 
 <a id="构建与升级"></a>
+
+## Linux 系统 libdrm
+
+Ubuntu 22.04 的系统 libdrm 为 2.4.113。mpv v0.42.0 的 DRM 窗口输出调用了 2.4.114 引入的三个辅助函数。该输出与 VAAPI 的 DRM 设备接入共用构建开关，媒体库在装载时就需要解析这些函数。Linux 补丁恢复上游原先用 drmIoctl 创建、映射和销毁缓冲区的实现，保留指定 render node 的硬件解码路线。两种架构均须检查动态符号和安装后的实际播放。支持下限或上游实现变化后，重新验证是否可以移除补丁。[兼容补丁](../../../implementation/patches/libmpv/drm-dumb-buffer.patch) · [Ubuntu 软件包](https://packages.ubuntu.com/jammy-updates/libdrm2)
 
 ## 构建与升级
 

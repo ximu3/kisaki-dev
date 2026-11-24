@@ -43,3 +43,18 @@ Windows x64 研究候选中的 Fontconfig 2.18.3 使用 ANSI 接口定位 DLL。
 干净的 Windows runner 从固定输入构建 FFmpeg、MuJS、仅启用 DirectWrite 的 libass 和带两项补丁的 libmpv，核对媒体 DLL 的导入和延迟导入，并生成许可材料与对应源码。随后从配对的 tarball 安装，在 Node 和 Electron 中执行消费用例。[构建与验收作业](https://github.com/ximu3/libmpv-node-dev/actions/runs/45379645529/job/138395141589)
 
 自定义协议用短读向引擎提供 WAV，两个宿主均能读出媒体时长，并验证取消后才返回的流资源得到关闭。软件输出用同一幅红色样本核对五种像素格式、步幅、填充字节，以及重新配置和关闭后原帧的数据。GPU 共享图像单独验收。[流消费用例](https://github.com/ximu3/libmpv-node-dev/blob/e5fb5e9f59d394475173fffd2b3b9303b5fabbfe/tests/consumers/fixtures/streams.ts) · [软件输出用例](https://github.com/ximu3/libmpv-node-dev/blob/e32d07a87f01c8f1d115605aac1feb2d28d23428/tests/consumers/fixtures/software.ts)
+
+## mpv v0.42.0 与 Windows 共享图像
+
+2026-11-24 在 Windows 10 x64 上重建 mpv v0.42.0 和 libplacebo 7.387.0。引擎保留 Client API 2.6。Node 26.13.1 和 Electron 45.3.2 从配对的 tarball 加载并通过了字体、软件输出和 D3D11 持有用例。在 RTX 4060 Laptop GPU 上调整尺寸并切换至 Display P3 后，旧帧保留原尺寸和 sRGB 标签，核心关闭后仍能读取其共享句柄。Electron 渲染进程将新帧画到 sRGB Canvas，中心像素为 RGBA (255, 0, 0, 255)。关闭最后一个 VideoFrame 后，生产者收到一次 allReferencesReleased。[引擎候选](https://github.com/ximu3/libmpv-node-dev/commit/30b8dbc8de3b3ec901435b232f483d353ca0127e) · [受管输出与消费用例](https://github.com/ximu3/libmpv-node-dev/pull/11)
+
+| Windows x64 本机构建 | SHA-256 |
+| --- | --- |
+| 主包 | `a21f9d6f28b871d9c7a11bbff373d12ea9a5414d26948e82038b2e370d313095` |
+| 平台包 | `77f7a666ca18400ee554d56a7e5f838cbaf535f039d5548e40b96158d573ee55` |
+
+<a id="linux-drm"></a>
+
+## Ubuntu 22.04 的 DRM 符号
+
+在 x64 和 arm64 上，使用较新 libdrm 头文件编译的首个候选都引用了系统没有的 drmModeCreateDumbBuffer、drmModeMapDumbBuffer 和 drmModeDestroyDumbBuffer。v0.42.0 和 11 月 23 日的上游主线仍使用这三个函数。加入兼容补丁并改用系统开发文件后，arm64 通过动态符号检查，仓库外的 Node 成功读取 Client API 2.6。该次消费作业随后超时，完整播放和 GPU 实机仍须分别取得结果。[arm64 消费日志](https://github.com/ximu3/libmpv-node-dev/actions/runs/45387160103/job/138421480287) · [上游 DRM 源码](https://github.com/mpv-player/mpv/blob/v0.42.0/video/out/vo_drm.c#L78)
