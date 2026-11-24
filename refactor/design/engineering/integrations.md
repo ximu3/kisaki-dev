@@ -84,13 +84,13 @@ infrastructure/media 关联打开、控制请求与显示交接。切换、采�
 
 接入按影响范围组织执行顺序：换文件、定位和采集共享内容操作顺序，保证采集原图与紧邻位置之间不插入另一次切换或定位。正常播放中的音量、暂停等普通控制不因此全部等待同一个长队列；开始替换文件时关闭旧上下文的接纳关口，并收尾已经接纳的控制，再采用新文件配置。连续定位可以合并尚未执行的意图，被替代调用按既有合同明确结束，不把最后一次成功当作所有请求成功。
 
-打开成功须满足适用内容的四项条件：原生加载完成、请求的初始定位完成、轨道与实际位置可用、显示接入就绪。loadfile 的回复完成原生调用，file-loaded 报告引擎文件加载，playback-restart 报告不连续变化后的引擎恢复；宿主显示由实际消费另行确认。无视频轨或明确关闭视频时按相应内容状态完成。事件含义见[原生定义](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/include/mpv/client.h)。
+打开成功须满足适用内容的四项条件：原生加载完成、请求的初始定位完成、轨道与实际位置可用、显示接入就绪。loadfile 的回复完成原生调用，file-loaded 报告引擎文件加载，playback-restart 报告不连续变化后的引擎恢复；宿主显示由实际消费另行确认。无视频轨或明确关闭视频时按相应内容状态完成。事件含义见[原生定义](https://github.com/mpv-player/mpv/blob/b0841e8c4d156b8403dc1876c4cbd9011eb583f3/include/mpv/client.h)。
 
 显示准备包含原生核心、纹理导入及消费端就绪。createMpv 完成核心准备后，由 infrastructure/media 继续组织实际导入；失败时归还尚未交接的持有，已导入引用等待消费端最终回收。交接、SDR 颜色和连续播放按各自条件验证。
 
 本体结合命令回复、原生条目身份、加载与定位完成事件及渲染边界，确认文件归属和内容就绪。请求序号只关联本体调用，NativeFrame 保持实际原生字段；文件归属由接入根据上述事实核对。跨文件复用的交接边界以真实原生时序验证为依据。
 
-源码中，普通渲染 reset 会保留当前帧用于重绘；没有下一帧时 render 也可以复用当前帧。因此交接时必须隔离旧接收与在途显示工作，不能将重置、重新订阅或任意一次重绘直接当作新文件画面的证据。该事实支持显式交接要求，不单独证明整个跨线程交接方案已经成立。[渲染重置与当前帧](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/video/out/vo_libmpv.c)
+源码中，普通渲染 reset 会保留当前帧用于重绘；没有下一帧时 render 也可以复用当前帧。因此交接时必须隔离旧接收与在途显示工作，不能将重置、重新订阅或任意一次重绘直接当作新文件画面的证据。该事实支持显式交接要求，不单独证明整个跨线程交接方案已经成立。[渲染重置与当前帧](https://github.com/mpv-player/mpv/blob/b0841e8c4d156b8403dc1876c4cbd9011eb583f3/video/out/vo_libmpv.c)
 
 受控换文件与帧持有的依据见[Node／Electron 交接检查](../../verification/evidence/libmpv-handoff/verification.md)，包括跨线程、原生 hook 与迟到消费回调。运行输入和实际覆盖范围保留在证据中；正式接入另验证脚本变化、并发加载取消、公共订阅和同一播放器内的核心复用，不额外建立核心池。
 
@@ -165,7 +165,7 @@ Kisaki 沿同一 command 入口请求 screenshot-raw subtitles rgba，使用已�
 
 固定上游在 GPU 后端未返回图像时仍可能转入软件截图，screenshot-sw=no 不禁止回退。本项目采用[截图来源补丁](../projects/libmpv-node/distribution.md#screenshot-source)：同一次 screenshot-raw 结果附带 source: vo 或 software，直接来自实际取图分支，绑定原样交付，不从选项、日志或稍后的状态推断。
 
-media 只接纳 source 为 vo、属于本次有效受管 GPU 输出且仍满足 sRGB 使用约定的结果。source 为 software、缺失或未知时，以 CaptureUnavailable 结束本次采集，不创建 PreparedImage、不编码或保存图片，也不自动重试、暂停或改变播放设置。尺寸、stride 和独立字节仍分别核对；source 只证明取图路径，不单独证明颜色、文件归属或精确帧时间。正常 GPU 路径的颜色由既定输出条件与对应像素回归保证。[原始回退路径](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/player/screenshot.c#L345)
+media 只接纳 source 为 vo、属于本次有效受管 GPU 输出且仍满足 sRGB 使用约定的结果。source 为 software、缺失或未知时，以 CaptureUnavailable 结束本次采集，不创建 PreparedImage、不编码或保存图片，也不自动重试、暂停或改变播放设置。尺寸、stride 和独立字节仍分别核对；source 只证明取图路径，不单独证明颜色、文件归属或精确帧时间。正常 GPU 路径的颜色由既定输出条件与对应像素回归保证。[原始回退路径](https://github.com/mpv-player/mpv/blob/b0841e8c4d156b8403dc1876c4cbd9011eb583f3/player/screenshot.c#L345)
 
 <a id="reading"></a>
 

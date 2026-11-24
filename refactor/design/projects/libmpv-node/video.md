@@ -78,7 +78,7 @@ getVideoDevices() 独立枚举当前平台设备，返回名称及本次系统�
 
 解码、渲染和消费分别记录实际选择。调用方通过原生选项表达解码偏好，由 libmpv 执行；宿主提出生产设备，库创建和管理资源；Electron 等消费宿主使用自身图形环境。软件解码可以配合 GPU 渲染与共享，硬件解码也不自动保证整条链路没有复制；正常 GPU 复制不改变帧独立持有的合同。
 
-Windows 的直接 D3D11 入口要求渲染纹理来自传入的同一个 ID3D11Device，直接 d3d11va 路径也使用该设备。消费方使用自己的图形设备时，还须满足资源共享与同步条件，不能把同一型号或某个设备可枚举视为已经可以导入。[原生设备约束](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/include/mpv/render_d3d11.h)
+Windows 的直接 D3D11 入口要求渲染纹理来自传入的同一个 ID3D11Device，直接 d3d11va 路径也使用该设备。消费方使用自己的图形设备时，还须满足资源共享与同步条件，不能把同一型号或某个设备可枚举视为已经可以导入。[原生设备约束](https://github.com/mpv-player/mpv/blob/b0841e8c4d156b8403dc1876c4cbd9011eb583f3/include/mpv/render_d3d11.h)
 
 设备选择的验证覆盖公开枚举、显式选择、缺省选择和跨 GPU 互操作，已有机制依据见[GPU 验证](../../../verification/evidence/libmpv-gpu/verification.md)。
 
@@ -101,7 +101,7 @@ software 的 pixelFormat 使用上游明确记录的 rgb0、bgr0、0rgb、0bgr �
 
 CPU 字节值不采用 GPU 持有协议：SoftwareFrame 没有 getSurface 或 release，已经交付的数据按普通 JavaScript 值寿命管理。库内渲染缓冲与待交付队列仍有界，并沿用最新帧合并；调用方主动保留的独立字节不计为仍由库持有的纹理。软件输出不接纳 GPU device、颜色 target 或 frameCapacity 来制造两种渲染器等价的表象。
 
-软件渲染器自身没有 GPU 目标配置路径，上游也明确指出 HDR 可能需要手动通过滤镜处理。软件输出按实际后端解释，不能仅从 target-trc 推定目标颜色。软件帧不补造 sRGB／HDR 目标描述，不照抄稍后取得的源视频属性；使用原生滤镜和软件能力仍遵守其真实语义。它不是 GPU 失败后的自动替代，也不代替 screenshot-raw 的命令合同。[软件 API](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/include/mpv/render.h)、[实际验证](../../../verification/evidence/libmpv-output/verification.md#software)
+软件渲染器自身没有 GPU 目标配置路径，上游也明确指出 HDR 可能需要手动通过滤镜处理。软件输出按实际后端解释，不能仅从 target-trc 推定目标颜色。软件帧不补造 sRGB／HDR 目标描述，不照抄稍后取得的源视频属性；使用原生滤镜和软件能力仍遵守其真实语义。它不是 GPU 失败后的自动替代，也不代替 screenshot-raw 的命令合同。[软件 API](https://github.com/mpv-player/mpv/blob/b0841e8c4d156b8403dc1876c4cbd9011eb583f3/include/mpv/render.h)、[实际验证](../../../verification/evidence/libmpv-output/verification.md#software)
 
 <a id="targets"></a>
 
@@ -191,7 +191,7 @@ Electron 接入从本帧映射尺寸、格式和颜色，导入后通过 sendSha
 
 公开同步的 VideoOutput.reportSwap()，直接表达上游翻页通知。它不接收任意 timestamp 或 sequence，因为上游入口也没有这些参数。只有实际负责显示节奏的一个宿主来源调用它；多个帧观察者不能分别重复通知。调用不等待下一次显示，也不释放帧。
 
-上游在第一次报告后要求持续一致地使用该入口；停止报告不能当作切换回无反馈模式。输出还在渲染时，宿主若要结束这一反馈方式，须显式重建输出所属实例。绑定不发送伪造报告填补停顿；关闭时正常解除原生等待。原生实现的超时是最后的退路，不能作为日常调度方式。[Render API](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/include/mpv/render.h)、[翻页等待](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/video/out/vo_libmpv.c)
+上游在第一次报告后要求持续一致地使用该入口；停止报告不能当作切换回无反馈模式。输出还在渲染时，宿主若要结束这一反馈方式，须显式重建输出所属实例。绑定不发送伪造报告填补停顿；关闭时正常解除原生等待。原生实现的超时是最后的退路，不能作为日常调度方式。[Render API](https://github.com/mpv-player/mpv/blob/b0841e8c4d156b8403dc1876c4cbd9011eb583f3/include/mpv/render.h)、[翻页等待](https://github.com/mpv-player/mpv/blob/b0841e8c4d156b8403dc1876c4cbd9011eb583f3/video/out/vo_libmpv.c)
 
 Kisaki 使用音频同步组织已选 Electron 消费链，sharedTexture 当前提供资源交接而没有逐帧实际呈现回执。生成纹理、导入、发送完成、引用回收和 requestAnimationFrame 各自只报告对应阶段。能够提供真实翻页反馈的宿主可以使用 reportSwap 及适用的原生同步选项，并验证 display-* 节奏、暂停与丢帧的实际效果。
 

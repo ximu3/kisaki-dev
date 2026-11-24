@@ -14,7 +14,7 @@
 
 ## Render API 与平台互操作
 
-所选上游范围提供直接 D3D11、OpenGL／OpenGL ES 与软件 Render API。D3D11 与 OpenGL 接入仍使用既有 gpu 渲染器；原生窗口输出能够选择 gpu-next，不表示它也提供已合入的相同嵌入入口。[Render API](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/include/mpv/render.h)、[D3D11 接入实现](https://github.com/mpv-player/mpv/blob/4255130de410e0cbdab694b951085409d466b704/video/out/d3d11/libmpv_d3d11.c)
+所选上游范围提供直接 D3D11、OpenGL／OpenGL ES 与软件 Render API。D3D11 与 OpenGL 接入仍使用既有 gpu 渲染器；原生窗口输出能够选择 gpu-next，不表示它也提供已合入的相同嵌入入口。[Render API](https://github.com/mpv-player/mpv/blob/b0841e8c4d156b8403dc1876c4cbd9011eb583f3/include/mpv/render.h)、[D3D11 接入实现](https://github.com/mpv-player/mpv/blob/b0841e8c4d156b8403dc1876c4cbd9011eb583f3/video/out/d3d11/libmpv_d3d11.c)
 
 沿上游公共入口完成下列已选路线，不预设维护一个新增 Vulkan／Metal Render API 的 mpv 分支：
 
@@ -138,7 +138,7 @@ Electron 接收导入进程内的 IOSurfaceRef 字节，并在入口增加引用
 
 ## Linux：缓冲与图像布局
 
-选定链路从 DRM render node 建立 GBM device、EGL display 与离屏 OpenGL ES 3 context，再接入 libmpv 的 OpenGL Render API。固定上游按实际 GL／ES 上下文加载函数，支持这一接口族；上下文、render context 和 FBO 操作始终由同一个原生图形执行范围拥有。[上游 GL 接入](https://github.com/mpv-player/mpv/blob/01e2533f3143b8940857ca419b0b367f583e05ca/video/out/opengl/libmpv_gl.c)
+选定链路从 DRM render node 建立 GBM device、EGL display 与离屏 OpenGL ES 3 context，再接入 libmpv 的 OpenGL Render API。固定上游按实际 GL／ES 上下文加载函数，支持这一接口族；上下文、render context 和 FBO 操作始终由同一个原生图形执行范围拥有。[上游 GL 接入](https://github.com/mpv-player/mpv/blob/b0841e8c4d156b8403dc1876c4cbd9011eb583f3/video/out/opengl/libmpv_gl.c)
 
 图像采用一条明确装配顺序：GBM 分配 BGRA8 的线性单 plane BO，取得真实 fd／stride／offset／modifier，通过 EGL_LINUX_DMA_BUF_EXT 创建 EGLImage，再绑定 GL texture 与完整 FBO。需要独立渲染目标时在 GPU 内复制到这份池图像；交付的就是该 BO 的实际缓冲描述，不另走“先建任意纹理、再猜能否导出”的并行路径。
 
