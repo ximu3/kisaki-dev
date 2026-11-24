@@ -1,5 +1,6 @@
 import { copyFile, cp, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import { observeDmg } from './dmg'
 import { parseDocument } from 'yaml'
 import { appRoot, buildDirectory, repositoryRoot } from '../lib/paths'
 import { hostTarget, type DesktopTarget } from '../lib/targets'
@@ -169,21 +170,31 @@ async function packageCarrier(
     }
   }
 
-  // electron-builder 26.15.3's API types reference a missing Snap type; use its public CLI.
-  await runPnpm(
-    [
-      'exec',
-      'electron-builder',
-      '--config',
-      configPath,
-      platform,
-      ...formats,
-      build.target.endsWith('arm64') ? '--arm64' : '--x64',
-      '--publish',
-      'never',
-    ],
-    { cwd: appRoot, env, signal },
-  )
+  const stopObservation =
+    formats.includes('dmg') && process.env.KISAKI_DMG_DIAGNOSTICS === '1'
+      ? observeDmg(context.output, join(appRoot, 'test-results', 'packaging', 'dmg.log'))
+      : undefined
+  let packaged = false
+  try {
+    // electron-builder 26.15.3's API types reference a missing Snap type; use its public CLI.
+    await runPnpm(
+      [
+        'exec',
+        'electron-builder',
+        '--config',
+        configPath,
+        platform,
+        ...formats,
+        build.target.endsWith('arm64') ? '--arm64' : '--x64',
+        '--publish',
+        'never',
+      ],
+      { cwd: appRoot, env, signal },
+    )
+    packaged = true
+  } finally {
+    await stopObservation?.(packaged)
+  }
 }
 
 async function writeArtifactReceipt(context: PackagingContext): Promise<void> {

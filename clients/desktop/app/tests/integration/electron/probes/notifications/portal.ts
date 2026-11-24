@@ -1,7 +1,9 @@
 import assert from 'node:assert/strict'
+import { setTimeout as delay } from 'node:timers/promises'
 import { sessionBus, toPlain, Variant } from 'dbus-native'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 import { createNotifications } from '../../../../../src/main/infrastructure/notifications'
+import { record } from './progress'
 import { createActivation } from '../../../../../src/main/app/activation'
 
 const appId = 'me.kisaki.dev'
@@ -61,16 +63,20 @@ export async function verifyPortalHandoff(target: NativeViewTarget) {
       portal.path,
       { name: 'me.kisaki.test.Receipt', methods: { Received: ['us', '', ['pid', 'target'], []] } },
     )
-    await bus.requestName(portal.destination, 4)
+    assert.equal(await bus.requestName(portal.destination, 4), 1)
+    record('Portal owns the test bus name')
 
     await sender.ready(true)
+    record('Submitting portal notification')
     assert.equal(
       await sender.show({ title: 'Sample task', body: 'Completed', open: target }),
       'accepted',
     )
     const token = await submitted.promise
+    record('Portal retained the notification action')
     await sender.close()
-    assert.ok(!(await bus.listNames()).includes(appId))
+    assert.equal(await bus.nameHasOwner(appId), false)
+    record('Sender released its bus name, activating the saved action')
 
     await bus.invoke({
       destination: appId,
@@ -80,9 +86,23 @@ export async function verifyPortalHandoff(target: NativeViewTarget) {
       signature: 'sava{sv}',
       body: ['open-notification', [new Variant('s', token)], []],
     })
+    record('Activation dispatched, waiting for receiver receipt')
     const receipt = await restored.promise
     assert.notEqual(receipt.pid, process.pid)
     assert.deepEqual(receipt.target, target)
+    record(`Receipt verified, waiting for receiver ${receipt.pid} to exit`)
+    for (;;) {
+      try {
+        process.kill(receipt.pid, 0)
+      } catch (cause) {
+        if ((cause as NodeJS.ErrnoException).code === 'ESRCH') {
+          break
+        }
+        throw cause
+      }
+      await delay(50)
+    }
+    record('Restored receiver exited')
   } finally {
     await sender.close()
     await bus.close()
@@ -102,23 +122,29 @@ export async function receivePortalAction() {
     },
   })
   try {
-    await service.ready(true)
-    await received.promise
-    let deliveries = 0
-    await activation.ready(async (request) => {
-      assert.equal(request.type, 'native')
-      deliveries++
-      await bus.invoke({
-        ...portal,
-        interface: 'me.kisaki.test.Receipt',
-        member: 'Received',
-        signature: 'us',
-        body: [process.pid, JSON.stringify(request.target)],
+    let delivered: NativeViewTarget | undefined
+    try {
+      await service.ready(true)
+      record('Receiver ready, waiting for the saved action')
+      await received.promise
+      await activation.ready(async (request) => {
+        assert.equal(request.type, 'native')
+        assert.equal(delivered, undefined, 'The action must be delivered once')
+        delivered = request.target
       })
+      assert.ok(delivered)
+    } finally {
+      await service.close()
+    }
+    record('Receiver delivered the action and released the service')
+    await bus.invoke({
+      ...portal,
+      interface: 'me.kisaki.test.Receipt',
+      member: 'Received',
+      signature: 'us',
+      body: [process.pid, JSON.stringify(delivered)],
     })
-    assert.equal(deliveries, 1)
   } finally {
-    await service.close()
     await bus.close()
   }
 }

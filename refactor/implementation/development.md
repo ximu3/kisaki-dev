@@ -157,7 +157,9 @@ ZIP 读取按需访问中央目录，写入逐成员消费流。拥有者提供�
 
 desktop-contracts 和 desktop-localization 的独立消费者同时安装所需公共依赖的实际 tarball，由 Vite Task 准备；尚未公开的依赖通过临时消费者的 pnpm-workspace.yaml 指向这些包，不使用源码别名。
 
-Linux CI 准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 AppImage 的 FUSE 条件。窗口用例使用 xdg-utils 登记并打开开发协议链接，另在独立 Xvfb 和 D-Bus 会话中用 dunst 接收并激活系统通知。Electron Node 模式在启动测试前选定，测试内部不修改 ABI。
+Linux CI 准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 AppImage 的 FUSE 条件。窗口用例使用 xdg-utils 登记并打开开发协议链接。通知用例分别在独立显示和会话总线上验证 dunst 的实际点击与 portal 冷启动，失败报告附带发送端和接收端的阶段记录。Electron Node 模式在启动测试前选定，测试内部不修改 ABI。
+
+macOS CI 在制作 DMG 期间记录当前输出目录对应的挂载设备、卷路径和打开该卷的进程。打包失败时可在同一作业的诊断附件中查阅 `test-results/packaging/dmg.log`，按时间与打包器报告的设备号核对。
 
 对已打包制品，运行 `pnpm exec vp run @kisaki3/desktop#test:artifacts`。设置 `KISAKI_ARTIFACT_RECEIPT` 指定收据，默认读取 `dist/<target>/artifacts.json`。用例核对归档摘要、包内构建身份、安全 fuses 和实际启停。Windows 使用窗口句柄，macOS 使用系统辅助功能，Linux X11 使用窗口管理器观察。
 

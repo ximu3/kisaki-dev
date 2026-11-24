@@ -192,6 +192,7 @@ jobs:
         env:
           TASK: ${{ matrix.task }}
           X11: ${{ matrix.x11 }}
+          KISAKI_DMG_DIAGNOSTICS: ${{ runner.os == 'macOS' && matrix.package == '@kisaki3/desktop' && '1' || '' }}
         run: |
           prefix=()
           if [[ "$X11" == true ]]; then
