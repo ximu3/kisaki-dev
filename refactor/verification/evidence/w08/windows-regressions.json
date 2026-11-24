@@ -1,0 +1,27 @@
+{
+  "cases": 49,
+  "framesPerVariant": 98,
+  "baselineFiniteComponents": 534975,
+  "nonfiniteResolved": 5103,
+  "changedPreviouslyFinite": 0,
+  "patchedNonfinite": 0,
+  "nonopaqueAlpha": 0,
+  "deliveredComponentDifferences": 0,
+  "corpus": "e7f0b032722c4ba5ddc3d94aaaa4575a9091d2cac7d4630e0f8d931749e0b2ca",
+  "addon": "30c9a16e5d5208597bd7440007a48f84fd1c729b3ee0f05dfa28ef7d58735e99",
+  "commit": "b0841e8c4d156b8403dc1876c4cbd9011eb583f3",
+  "dll": {
+    "baseline": "cee5eef094fa588e13705dbe8f6344987ca074356e51e52efb8bd15ae6646413",
+    "patched": "f27d672cc30709b81c966ad65dbf472daebee591b925bd6ebd3cde3b99fd8022",
+    "delivered": "829393e6732dc1651519888d3d9159c0636d66f6c33f4ec6f5f05236b44880c7"
+  },
+  "forcedScreenshot": {
+    "engineCommit": "b0841e8c4d156b8403dc1876c4cbd9011eb583f3",
+    "diagnosticDll": "586d55b88ad6544b631209eb05a5152628cae5c9d5a20787b0460fb5cad14a9c",
+    "injectedSource": "b82832213b2c78aba6ce6480ff87db0ca63b09f25a8ef1c2b3f09d6f7237bdb7",
+    "probe": "8ae77e8a7ae19a54c0023160cf771ae7e6a49932ab35dbeafeffe18c64c97240",
+    "source": "software",
+    "format": "rgba",
+    "bytes": 57344
+  }
+}

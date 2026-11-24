@@ -54,7 +54,7 @@
 
 | 实施工作包                              | 实现与验收 | 项目文档 | Kisaki 消费验收 | 公开发行与生产部署 |
 | --------------------------------------- | ---------- | -------- | --------------- | ------------------ |
-| [W08 libmpv-node](work-packages.md#w08) | Windows x64 已验证控制、自定义流、软件视频和字幕。六目标制品与 GPU 后端待验收。[验证记录](../verification/evidence/w08/README.md) | 未开始 | 未开始 | 未执行 |
+| [W08 libmpv-node](work-packages.md#w08) | 主包与六个平台包已通过独立安装和宿主验证。Windows x64 已验证共享图像和硬件解码，Mac 和 Linux 的实机图形交接待验收。[验证记录](../verification/evidence/w08/README.md) | 未开始 | 未开始 | 未执行 |
 | [W10 Vantage](work-packages.md#w10)     | 未开始     | 未开始   | 未开始          | 未执行             |
 | [W11 Kana](work-packages.md#w11)        | 未开始     | 未开始   | 未开始          | 未执行             |
 | [W12 oauth-relay](work-packages.md#w12) | 未开始     | 未开始   | 未开始          | 未执行             |

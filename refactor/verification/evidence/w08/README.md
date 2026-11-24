@@ -58,3 +58,19 @@ Windows x64 研究候选中的 Fontconfig 2.18.3 使用 ANSI 接口定位 DLL。
 ## Ubuntu 22.04 的 DRM 符号
 
 在 x64 和 arm64 上，使用较新 libdrm 头文件编译的首个候选都引用了系统没有的 drmModeCreateDumbBuffer、drmModeMapDumbBuffer 和 drmModeDestroyDumbBuffer。v0.42.0 和 11 月 23 日的上游主线仍使用这三个函数。加入兼容补丁并改用系统开发文件后，arm64 通过动态符号检查，仓库外的 Node 成功读取 Client API 2.6。该次消费作业随后超时，完整播放和 GPU 实机仍须分别取得结果。[arm64 消费日志](https://github.com/ximu3/libmpv-node-dev/actions/runs/45387160103/job/138421480287) · [上游 DRM 源码](https://github.com/mpv-player/mpv/blob/v0.42.0/video/out/vo_drm.c#L78)
+
+## 六目标配对制品
+
+同一份 0.1.0-dev.0 主包已与六个平台包分别在 Node 26.13.1 和实际 Electron 45.3.2 中安装验证。每个宿主从归档外的独立目录运行。Electron 还从 ASAR 加载主包，使用解包的平台资源，并验证配对引擎清单被改动时的失败。仓库外消费者检查安装后的声明、独立客户端、事件、日志、hook、自定义协议、字幕和五种软件帧格式。[六目标装配和最终消费](https://github.com/ximu3/libmpv-node-dev/actions/runs/45398797879)
+
+Windows x64、arm64 的包分别含 45、44 个媒体 DLL。macOS 两种架构各含 45 个媒体库，Ubuntu 22.04 两种架构各含 56 个。Linux 包使用系统 libdrm 2.4.113。打包时同时处理私有媒体库的 ELF 名称和媒体 API 符号，进程分配器仍由宿主解析。Node 与 Electron 的运行中模块已与安装文件逐个对照，两种 Linux 架构均可解码 FFV1 并绘制字幕。三平台分别采用 DirectWrite、CoreText 和 Fontconfig。[平台清单与所有归档摘要](paired-packages.json)
+
+该轮主包与平台包的本地留存位置为 Kisaki 工作区的 `.local/w08/d7765b5d827da62fc9400e2d0e0b1cafdc0587f2/packages/`。目录内的 `checksums.json` 与归档分别核对。源码提交和 CI 作业保存在验证清单中。
+
+## Windows 像素与截图回归
+
+在 Windows 10 x64 的 RTX 4060 Laptop GPU 上，Node 和 Electron 都运行了 sRGB、Display P3 和 HDR 输入的消费用例。同一组六个 sRGB 色块在 Display P3 截图中得到预期的八位编码；Electron 在 Canvas 中读回并与 VideoFrame 对照。把同一纹理故意标成 sRGB 时，负对照可区分两种标签。PQ 七档灰阶经映射后保持递增，ASS 红色覆盖区保持不透明。HEVC Main 10 样本实际报告 D3D11VA。另用静音 WAV 经 WASAPI 以 44,100 Hz 播放至 EOF。[公开包消费用例](https://github.com/ximu3/libmpv-node-dev/pull/15)
+
+针对 mpv v0.42.0 的色调映射修改，复用了[低峰值字幕诊断语料](../libmpv-upstream-fix/verification.md)和原生浮点读回探针。对同一源码和依赖构建分别保留及移除零分母保护，各运行 49 组、读回 98 帧。修复消除了 5,103 个非有限 RGB 分量，534,975 个原本有限的分量逐位一致。本次交付引擎与同源补丁构建的读回分量也逐位一致。
+
+正常 GPU 截图返回 `vo`，显式软件截图返回 `software`。仅在诊断引擎内释放 VO 已取得的图像后，原生回退仍在 `screenshot-sw=no` 下返回 `software`。无图时，正式接口返回原生命令错误。[源码、探针和对照收据](windows-regressions.json)
