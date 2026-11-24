@@ -18,6 +18,7 @@ import { focusPreferenceField, PreferenceFieldsContext } from './field'
 export interface StagedPreferenceEdit {
   draft: PreferenceStage
   field?: string | undefined
+  located?: ((found: boolean) => void) | undefined
   title: () => string
   fields: () => JSX.Element
 }
@@ -27,6 +28,7 @@ interface StagedDialogProps {
   edit: StagedPreferenceEdit | undefined
   bind: (form: FormState) => void
   close: () => void
+  dialogRef?: ((node: HTMLDialogElement) => void) | undefined
 }
 
 export function StagedPreferenceDialog(props: StagedDialogProps) {
@@ -50,6 +52,7 @@ export function StagedPreferenceDialog(props: StagedDialogProps) {
       }}
     >
       <DialogContent
+        ref={props.dialogRef}
         size="sm"
         onCloseRequest={(event) => {
           event.preventDefault()
@@ -84,7 +87,8 @@ export function StagedPreferenceForm(
     const field = edit.field
     queueMicrotask(() => {
       if (field && body.isConnected) {
-        form.locate(field)
+        const found = focusPreferenceField(body, field)
+        edit.located?.(found)
       } else {
         back?.focus()
       }

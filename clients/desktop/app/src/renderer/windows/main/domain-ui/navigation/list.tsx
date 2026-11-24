@@ -7,10 +7,10 @@ import { EmptyState } from '@kisaki3/desktop-ui/empty-state'
 import { ReorderableList, ReorderableListItem, type ListMove } from '@kisaki3/desktop-ui/list'
 import type { Translate } from '@kisaki3/desktop-localization'
 import { reportError } from '../../../../infrastructure/notifications'
-import { arrangePages, movePages } from './order'
+import { arrangePages, movePages, pageKey } from './order'
 
 export interface NavigationPage {
-  id: string
+  ref: PageRef
   title: (t: Translate) => string
   icon: Component
 }
@@ -20,14 +20,17 @@ export function PageOrder<T extends NavigationPage>(props: {
   pages: readonly T[]
   order: readonly PageRef[]
   visibleLimit: number
-  current?: string | undefined
+  current?: PageRef | undefined
   open?: (page: T) => void
   change: (order: readonly PageRef[]) => void | Promise<void>
 }) {
   const { t } = props
   const arranged = createMemo(() => arrangePages(props.pages, props.order))
-  const byId = createMemo(() => new Map(arranged().visible.map((page) => [page.id, page])))
+  const byId = createMemo(
+    () => new Map(arranged().visible.map((page) => [pageKey(page.ref), page])),
+  )
   const ids = () => [...byId().keys()]
+  const current = () => props.current && pageKey(props.current)
 
   function adopt(move: ListMove) {
     const next = movePages(arranged(), move)
@@ -80,7 +83,7 @@ export function PageOrder<T extends NavigationPage>(props: {
                       <Button
                         variant="ghost"
                         class="w-full min-w-0 justify-start"
-                        aria-current={props.current === id ? 'page' : undefined}
+                        aria-current={current() === id ? 'page' : undefined}
                         onClick={() => open()(page())}
                       >
                         <PageIcon />

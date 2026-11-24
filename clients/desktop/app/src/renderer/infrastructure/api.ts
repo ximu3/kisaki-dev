@@ -38,7 +38,7 @@ export async function connect<K extends WindowKind>(kind: K) {
 
   const topics = new EventTarget()
   let confirmClose: (signal: AbortSignal) => boolean | Promise<boolean> = () => true
-  let navigate: ((target: unknown) => void | Promise<void>) | undefined
+  let navigate: ((target: unknown, signal: AbortSignal) => void | Promise<void>) | undefined
   const notifications = Object.fromEntries(
     [
       'window.changed',
@@ -85,11 +85,11 @@ export async function connect<K extends WindowKind>(kind: K) {
       },
       methods: {
         'window.confirmClose': (_, signal) => confirmClose(signal),
-        'window.navigate': ([target]) => {
+        'window.navigate': ([target], signal) => {
           if (!navigate) {
             throw new DesktopError('NotFound', 'This document has no navigation receiver')
           }
-          return navigate(target)
+          return navigate(target, signal)
         },
       },
       notifications: { topics: notifications, onError: console.error },

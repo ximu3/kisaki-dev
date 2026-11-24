@@ -24,6 +24,7 @@ export function FontDetails(props: {
   api: MainClient
   selected: FontSelection | undefined
   close: () => void
+  presented?: (() => void) | undefined
 }) {
   const { api } = props
   const displayed = createMemo<FontSelection | undefined>((last) => props.selected ?? last)
@@ -37,7 +38,14 @@ export function FontDetails(props: {
         }
       }}
     >
-      <DialogContent size="lg">
+      <DialogContent
+        size="lg"
+        onToggle={(event) => {
+          if (event.currentTarget.open) {
+            props.presented?.()
+          }
+        }}
+      >
         <Show when={displayed()} keyed>
           {(selection) => <FontPreview api={api} selection={selection} />}
         </Show>

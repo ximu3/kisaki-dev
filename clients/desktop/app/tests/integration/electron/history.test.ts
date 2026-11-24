@@ -1,11 +1,16 @@
 import { mkdtemp, rm } from 'node:fs/promises'
+import { execFile } from 'node:child_process'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import { promisify } from 'node:util'
 import { test, expect } from '../../support/electron'
 import { storageOptions } from '../database/sample'
 import { initializeDatabase } from '../../../src/main/infrastructure/database'
 import { taskHistory } from '../../../src/main/features/tasks/history'
 import type { TaskRun } from '@kisaki3/desktop-contracts/tasks'
+import { electronExecutable } from '../../../tools/dev/electron-executable'
+import { buildDirectory } from '../../../tools/lib/paths'
+import { hostTarget } from '../../../tools/lib/targets'
 
 test.use({
   profile: async ({}, use) => {
@@ -72,6 +77,64 @@ test.use({
       await rm(root, { recursive: true, force: true, maxRetries: 4 })
     }
   },
+})
+
+interface TaskNavigationObservation {
+  failures: string[]
+  visible: string[]
+}
+
+test('task links reveal the requested details and leave an existing view in place on failure', async ({
+  desktop,
+  profile,
+}) => {
+  const page = await desktop.firstWindow()
+  await page.getByRole('button', { name: 'Task center' }).click()
+  const finished = page.getByRole('tab', { name: 'Finished', exact: true })
+  await finished.click()
+
+  await desktop.evaluate(({ app, BrowserWindow, dialog }) => {
+    const application = app as typeof app & { taskNavigation: TaskNavigationObservation }
+    const observation = { failures: [], visible: [] } as TaskNavigationObservation
+    application.taskNavigation = observation
+    dialog.showErrorBox = (_, message) => {
+      observation.failures.push(message)
+    }
+    const window = BrowserWindow.getAllWindows()[0]!
+    window.on('show', () => {
+      void window.webContents
+        .executeJavaScript(
+          "Array.from(document.querySelectorAll('dialog[open] h2'), node => node.textContent).at(-1)",
+        )
+        .then((title: string) => observation.visible.push(title))
+    })
+    window.hide()
+  })
+
+  const open = (id: string) =>
+    promisify(execFile)(electronExecutable(), [
+      join(buildDirectory(hostTarget()), 'main', 'entry.js'),
+      '--profile=' + profile,
+      'kisaki-dev://view/tasks?runId=' + id,
+    ])
+  const observe = () =>
+    desktop.evaluate(({ app, BrowserWindow }) => ({
+      ...(app as typeof app & { taskNavigation: TaskNavigationObservation }).taskNavigation,
+      windowVisible: BrowserWindow.getAllWindows()[0]!.isVisible(),
+    }))
+
+  await open('missing')
+  await expect.poll(async () => (await observe()).failures).toEqual(['Unavailable'])
+  expect((await observe()).windowVisible).toBe(false)
+
+  await open('sample-run')
+  await expect(page.getByRole('dialog', { name: 'Imported collection' })).toBeVisible()
+  await expect.poll(async () => (await observe()).visible).toEqual(['Imported collection'])
+
+  await open('unfinished')
+  const details = page.getByRole('dialog', { name: 'Interrupted import' })
+  await details.getByRole('button', { name: 'Close', exact: true }).click()
+  await expect(finished).toHaveAttribute('aria-selected', 'true')
 })
 
 test('scrolls and filters complete task history, opens details and clears records', async ({

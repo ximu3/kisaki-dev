@@ -19,6 +19,7 @@ export function ThemeInspection(props: {
   target: ThemeRef | undefined
   name: string | undefined
   close: () => void
+  presented?: (() => void) | undefined
 }) {
   const displayed = createMemo<ThemeRef | undefined>((last) => props.target ?? last)
   const name = createMemo<string | undefined>((last) => (props.target ? props.name : last))
@@ -32,7 +33,13 @@ export function ThemeInspection(props: {
         }
       }}
     >
-      <DialogContent>
+      <DialogContent
+        onToggle={(event) => {
+          if (event.currentTarget.open) {
+            props.presented?.()
+          }
+        }}
+      >
         <Show when={displayed()} keyed>
           {(ref) => <ThemePreview api={props.api} target={ref} name={name()} />}
         </Show>

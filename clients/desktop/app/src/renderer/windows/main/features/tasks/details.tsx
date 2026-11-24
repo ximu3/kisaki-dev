@@ -26,39 +26,61 @@ import { errorMessage } from '../../../../infrastructure/notifications'
 import type { MainClient } from '../../../../infrastructure/api'
 import { TaskStatus, TaskTypeIcon, taskDuration, taskTypeLabel } from './presentation'
 
+export interface TaskSelection {
+  id: string
+  initial?: TaskRun
+  presented?: () => void
+}
+
 export function TaskDetails(props: {
   api: MainClient
-  id: string | null
+  selection: TaskSelection | undefined
   revision: number
   onClose: () => void
 }) {
-  const displayed = createMemo<string | null>((last = null) => props.id ?? last)
+  const displayed = createMemo<TaskSelection | undefined>((last) => props.selection ?? last)
+  const [visible, setVisible] = createSignal(false)
 
   return (
     <Dialog
-      open={!!props.id}
+      open={!!props.selection}
       onOpenChange={(open) => {
         if (!open) {
           props.onClose()
         }
       }}
     >
-      <DialogContent size="xl">
+      <DialogContent size="xl" onToggle={(event) => setVisible(event.currentTarget.open)}>
         <Show when={displayed()} keyed>
-          {(id) => <TaskDetailView api={props.api} id={id} revision={props.revision} />}
+          {(selection) => (
+            <TaskDetailView
+              api={props.api}
+              selection={selection}
+              revision={props.revision}
+              visible={visible()}
+            />
+          )}
         </Show>
       </DialogContent>
     </Dialog>
   )
 }
 
-function TaskDetailView(props: { api: MainClient; id: string; revision: number }) {
-  const { api } = props
-  const detail = createQuery({
-    prepare() {
-      const id = props.id
-      return (signal) => api.request(signal, 'tasks.get', { taskRunId: id })
-    },
+function TaskDetailView(props: {
+  api: MainClient
+  selection: TaskSelection
+  revision: number
+  visible: boolean
+}) {
+  const { api, selection } = props
+  let initial = selection.initial
+  const detail = createQuery((signal) => {
+    if (initial) {
+      const task = initial
+      initial = undefined
+      return Promise.resolve(task)
+    }
+    return api.request(signal, 'tasks.get', { taskRunId: selection.id })
   })
   createEffect(
     () => props.revision,
@@ -67,6 +89,14 @@ function TaskDetailView(props: { api: MainClient; id: string; revision: number }
   )
   deferDialogUntil(() => !detail.pending)
   const record = () => (detail.error ? undefined : detail.value)
+  createEffect(
+    () => props.visible && !!record(),
+    (shown) => {
+      if (shown) {
+        selection.presented?.()
+      }
+    },
+  )
 
   return (
     <>

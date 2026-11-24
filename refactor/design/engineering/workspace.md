@@ -27,7 +27,7 @@
 
 Solid 的活跃属性、快照、派生值和副作用保持区别，不能为统一外观采用会改变其响应性的解构或封装。
 
-运行时、JSX 和编译插件必须相容，并使用同一组锁定版本。JSX 类型与 DOM 渲染来自 @solidjs/web，核心响应式能力来自 solid-js。当前桌面窗口按已校验的 NativeViewTarget 选择页面或管理面板，视图持有查询快照。公共 UI 的类型声明、CSS 和组件生命周期均由实际消费者验证。
+运行时、JSX 和编译插件必须相容，并使用同一组锁定版本。JSX 类型与 DOM 渲染来自 @solidjs/web，核心响应式能力来自 solid-js。主窗口按类型化目标和 Solid 视图状态执行[导航](../ui/navigation.md#delivery)，视图持有查询快照。公共 UI 的类型声明、CSS 和组件生命周期均由实际消费者验证。
 
 <a id="packages"></a>
 

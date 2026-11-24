@@ -20,6 +20,7 @@ export function focusPreferenceField(panel: HTMLElement, key: string) {
   if (field) {
     focusPreferenceValue(field)
   }
+  return !!field
 }
 
 export function focusPreferenceValue(field: HTMLElement) {

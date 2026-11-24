@@ -461,9 +461,13 @@ clients/desktop/app/src/renderer/
 │   │   ├── styles.css
 │   │   ├── app/
 │   │   │   ├── root.tsx
-│   │   │   ├── routes.ts
-│   │   │   ├── navigation.ts
-│   │   │   └── management/
+│   │   │   ├── shell.tsx
+│   │   │   ├── rail.tsx
+│   │   │   ├── menu.tsx
+│   │   │   ├── preferences.ts
+│   │   │   └── navigation/
+│   │   │       ├── navigate.ts
+│   │   │       └── destinations.ts
 │   │   ├── features/
 │   │   │   ├── library/
 │   │   │   ├── metadata/
