@@ -69,8 +69,21 @@ Windows x64、arm64 的包分别含 45、44 个媒体 DLL。macOS 两种架构�
 
 ## Windows 像素与截图回归
 
-在 Windows 10 x64 的 RTX 4060 Laptop GPU 上，Node 和 Electron 都运行了 sRGB、Display P3 和 HDR 输入的消费用例。同一组六个 sRGB 色块在 Display P3 截图中得到预期的八位编码；Electron 在 Canvas 中读回并与 VideoFrame 对照。把同一纹理故意标成 sRGB 时，负对照可区分两种标签。PQ 七档灰阶经映射后保持递增，ASS 红色覆盖区保持不透明。HEVC Main 10 样本实际报告 D3D11VA。另用静音 WAV 经 WASAPI 以 44,100 Hz 播放至 EOF。[公开包消费用例](https://github.com/ximu3/libmpv-node-dev/pull/15)
+在 Windows 10 x64 的 RTX 4060 Laptop GPU 上，Node 和 Electron 都运行了 sRGB、Display P3 和 HDR 输入的消费用例。同一组六个 sRGB 色块在 Display P3 截图中得到预期的八位编码；Electron 在 Canvas 中读回并与 VideoFrame 对照。把同一纹理故意标成 sRGB 时，负对照可区分两种标签。PQ 七档灰阶经映射后保持递增，ASS 红色覆盖区保持不透明。HEVC Main 10 样本实际报告 D3D11VA。一个可见的 Electron 窗口连续导入 16 帧，16 组采样各不相同，窗口合成读回与同帧采样相符。另用静音 WAV 经 WASAPI 以 44,100 Hz 播放至 EOF，并在 Node 和 Electron 中验证了启用证书校验的 HTTPS 媒体。[公开包消费用例](https://github.com/ximu3/libmpv-node-dev/pull/15)
 
-针对 mpv v0.42.0 的色调映射修改，复用了[低峰值字幕诊断语料](../libmpv-upstream-fix/verification.md)和原生浮点读回探针。对同一源码和依赖构建分别保留及移除零分母保护，各运行 49 组、读回 98 帧。修复消除了 5,103 个非有限 RGB 分量，534,975 个原本有限的分量逐位一致。本次交付引擎与同源补丁构建的读回分量也逐位一致。
+针对 mpv v0.42.0 的色调映射修改，复用了[低峰值字幕诊断语料](../libmpv-upstream-fix/verification.md)和原生浮点读回探针。对同一源码和依赖构建分别保留及移除零分母保护，各运行 49 组、读回 98 帧。修复消除了 5,103 个非有限 RGB 分量，534,975 个原本有限的分量逐位一致。本次交付引擎与同源补丁构建的读回分量也逐位一致。随后从固定输入重建原生探针和两份对照引擎，TypeScript 验证入口复跑了同一组场景，结果一致。
 
 正常 GPU 截图返回 `vo`，显式软件截图返回 `software`。仅在诊断引擎内释放 VO 已取得的图像后，原生回退仍在 `screenshot-sw=no` 下返回 `software`。无图时，正式接口返回原生命令错误。[源码、探针和对照收据](windows-regressions.json)
+
+<a id="hardware"></a>
+
+## 实机验收范围
+
+| 环境 | 已取得的结果 | 待验收 |
+| --- | --- | --- |
+| Windows x64 | Windows 10 22H2 的 RTX 4060 Laptop GPU 已验证 D3D11VA、共享图像和 WASAPI；Windows Server 2025 x64 已验证安装包 | Windows 11 x64 客户端 |
+| Windows ARM64 | Windows 11 ARM64 已验证原生媒体库以及两种宿主的安装包 | Windows 10 ARM64 客户端 |
+| macOS x64、arm64 | 两种架构的托管 runner 已验证动态库、Node、Electron 和 CoreText 字幕；CGL 枚举均返回 0 个加速渲染器 | 具备 GPU 的 Mac 上验证 VideoToolbox、IOSurface 导入、连续呈现及回收；macOS 13 实际运行另行登记 |
+| Linux x64、arm64 | Ubuntu 22.04 已验证系统 libdrm、配对媒体模块、Fontconfig、软件像素和两种宿主 | 带 DRM render node 的设备上分别验证 VAAPI、X11 和原生 Wayland 的 dma-buf 导入、呈现和回收 |
+
+以上实机缺项保留待验收。六目标构建、宿主测试和实际桌面显示的结果分别登记。

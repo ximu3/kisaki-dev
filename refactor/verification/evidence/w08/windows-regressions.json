@@ -23,5 +23,21 @@
     "source": "software",
     "format": "rgba",
     "bytes": 57344
+  },
+  "rebuiltProbe": {
+    "inputs": {
+      "baseline": "5262afaad373fcf30dfcad7e6051253043aa305c248465ec7ad94aecb7ba0fd7",
+      "candidate": "647025dff26893870e9c8bc9dd15f0fefbc3add81beef0b1f55bf51041a215f3",
+      "delivered": "829393e6732dc1651519888d3d9159c0636d66f6c33f4ec6f5f05236b44880c7"
+    },
+    "probe": "d3593e8c7dccc66f923d15c922e8220a814ebc92cd342a3d187878588e285850",
+    "cases": 49,
+    "framesPerVariant": 98,
+    "finite": 534975,
+    "resolved": 5103,
+    "changed": 0,
+    "nonfinite": 0,
+    "nonopaque": 0,
+    "deliveryDifferences": 0
   }
 }
