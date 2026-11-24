@@ -1,6 +1,6 @@
 import { copyFile, cp, mkdir, mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import { observeDmg } from './dmg'
+import { observeDmg } from './dmg-diagnostics'
 import { parseDocument } from 'yaml'
 import { appRoot, buildDirectory, repositoryRoot } from '../lib/paths'
 import { hostTarget, type DesktopTarget } from '../lib/targets'

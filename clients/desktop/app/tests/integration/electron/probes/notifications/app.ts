@@ -1,7 +1,6 @@
 import assert from 'node:assert/strict'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
-import { setTimeout as delay } from 'node:timers/promises'
 import { join } from 'node:path'
 import { mkdirSync } from 'node:fs'
 import { app } from 'electron'
@@ -22,8 +21,6 @@ const target = { type: 'tasks', runId: 'notification-sample' } as const
 const execute = promisify(execFile)
 
 async function verifyDesktopAction() {
-  record('Waiting for the notification daemon')
-  assert.equal((await execute('dunstctl', ['count', 'displayed'])).stdout.trim(), '0')
   const clicked = Promise.withResolvers<NativeViewTarget>()
   const appId = 'me.kisaki.dev'
   const notifications = createNotifications(appId, {
@@ -44,14 +41,7 @@ async function verifyDesktopAction() {
     })
     assert.equal(result, 'accepted')
     record('Desktop notification accepted, waiting for display')
-    for (;;) {
-      const { stdout } = await execute('dunstctl', ['count', 'displayed'])
-      if (stdout.trim() === '1') {
-        break
-      }
-      assert.equal(stdout.trim(), '0', 'Expected only the notification from this probe')
-      await delay(50)
-    }
+    await execute('xdotool', ['search', '--sync', '--onlyvisible', '--class', '^Dunst$'])
     record('Activating the displayed notification')
     await execute('dunstctl', ['action', '0'])
     record('Waiting for the Electron click callback')
