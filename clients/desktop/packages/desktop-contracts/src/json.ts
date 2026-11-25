@@ -26,9 +26,15 @@ export function parseJsonValue(input: unknown): JsonValue {
 
   const pending: Visit[] = [{ type: 'value', input, target: holder, key: 'value' }]
   const ancestors = new Set<object>()
+  const copies = new WeakMap<object, Container>()
 
   function set(target: Container, key: string | number, value: JsonValue): void {
-    ;(target as Record<string | number, JsonValue>)[key] = value
+    Object.defineProperty(target, key, {
+      value,
+      enumerable: true,
+      configurable: true,
+      writable: true,
+    })
   }
 
   function invalid(): never {
@@ -59,39 +65,35 @@ export function parseJsonValue(input: unknown): JsonValue {
     if (typeof value !== 'object' || ancestors.has(value)) {
       invalid()
     }
-    if (Object.getOwnPropertySymbols(value).length > 0) {
-      invalid()
+    const existing = copies.get(value)
+    if (existing) {
+      set(visit.target, visit.key, existing)
+      continue
     }
 
-    ancestors.add(value)
-    pending.push({ type: 'leave', input: value })
-
+    const keys = Reflect.ownKeys(value)
+    let output: Container
     if (Array.isArray(value)) {
-      if (Object.keys(value).length !== value.length) {
+      if (keys.pop() !== 'length' || keys.length !== value.length) {
         invalid()
       }
-
-      const output: JsonValue[] = new Array<JsonValue>(value.length)
-      set(visit.target, visit.key, output)
-      for (let index = value.length - 1; index >= 0; index -= 1) {
-        if (!Object.hasOwn(value, index)) {
-          invalid()
-        }
-        pending.push({ type: 'value', input: value[index], target: output, key: index })
-      }
+      output = []
     } else {
-      const entries = Object.entries(parseRecord(value))
-      if (Object.getOwnPropertyNames(value).length !== entries.length) {
+      parseRecord(value)
+      output = {}
+    }
+
+    copies.set(value, output)
+    ancestors.add(value)
+    set(visit.target, visit.key, output)
+    pending.push({ type: 'leave', input: value })
+    for (let i = keys.length - 1; i >= 0; i--) {
+      const key = keys[i]!
+      const property = Object.getOwnPropertyDescriptor(value, key)!
+      if (typeof key !== 'string' || !property.enumerable || !Object.hasOwn(property, 'value')) {
         invalid()
       }
-
-      const output: Record<string, JsonValue> = Object.fromEntries(
-        entries.map(([key]) => [key, null]),
-      )
-      set(visit.target, visit.key, output)
-      for (const [key, item] of entries.reverse()) {
-        pending.push({ type: 'value', input: item, target: output, key })
-      }
+      pending.push({ type: 'value', input: property.value, target: output, key })
     }
   }
 
