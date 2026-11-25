@@ -1,6 +1,6 @@
 # Kisaki
 
-本文件是 Kisaki、Vantage、Kana、libmpv-node 和 oauth-relay 的共同任务入口。五个项目共用工作原则、代码风格，以及仓库协作、构建、CI、验证和交付规范。实施或审阅独立项目时，按[所属项目的设计](refactor/design/projects/README.md)核对架构、公开合同和运行条件。
+本文件是 Kisaki、Vantage、Kana、libmpv-node 和 oauth-relay 的共同任务入口。五个项目共用工作原则与工程规范。
 
 ## 协作与讨论
 
@@ -62,7 +62,7 @@
 
 本仓库维护完整产品设计和已交付工程能力。桌面、八个公共包与 33 项官方扩展的目标归属见工作包。正式项目随所属工作包建立，成篇项目文档由 [W23](refactor/implementation/work-packages.md#w23) 按对象交付；实施期间维护 AGENTS 与 refactor，接口说明和代码注释随实现维护。
 
-Vantage、Kana、libmpv-node 和 oauth-relay 在各自独立仓库实现、验证与交付，并按合同接入。Web 客户端、官网和候选服务端留待相应项目启动时建立。
+[Vantage、Kana、libmpv-node 和 oauth-relay](refactor/design/projects/README.md) 在各自独立仓库实现、验证与交付，并按合同接入。Web 客户端、官网和候选服务端留待相应项目启动时建立。
 
 ## 架构与实现
 
