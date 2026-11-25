@@ -370,13 +370,7 @@ function PreferenceForm(
                 <PreferenceFieldsContext value={{ draft, t: api.t }}>
                   <For each={sections}>
                     {(name) => (
-                      <TabPanel
-                        value={name}
-                        class={[
-                          'p-4',
-                          { 'max-w-[34rem]': name !== 'shortcuts' && name !== 'navigation' },
-                        ]}
-                      >
+                      <TabPanel value={name} class="p-4">
                         <Show when={name === 'network' || section() === name}>
                           {fields[name]()}
                         </Show>
