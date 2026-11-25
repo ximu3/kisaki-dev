@@ -133,9 +133,7 @@ export function StagedPreferenceForm(
             body = element
           }}
         >
-          <div class={props.inline ? 'w-full max-w-[42rem]' : undefined}>
-            <PreferenceFieldsContext value={{ draft, t }}>{edit.fields()}</PreferenceFieldsContext>
-          </div>
+          <PreferenceFieldsContext value={{ draft, t }}>{edit.fields()}</PreferenceFieldsContext>
         </DialogBody>
 
         <DialogFooter>
