@@ -4,7 +4,8 @@ import { classes } from '../../internal/dom'
 import type { ControlSize } from '../../internal/control/size'
 import { nativeValidityChanged } from '../../internal/form'
 import { fieldAttributes } from '../../internal/field'
-import { Icon, ChevronDown, ChevronsUpDown } from '../../internal/icon/glyph'
+import { mdiChevronDown, mdiUnfoldMoreHorizontal } from '@mdi/js'
+import { Icon } from '../icon'
 import { createValue, onFormReset } from '../../internal/state'
 import { SelectedChips, type ChipLabels } from '../../internal/chips/control'
 import { createSelection } from './collection'
@@ -220,7 +221,7 @@ export function SelectionField<O extends SelectionOption>(
           {summary()}
         </span>
         <span class={styles.arrow} aria-hidden="true">
-          <Icon icon={props.search ? ChevronsUpDown : ChevronDown} />
+          <Icon path={props.search ? mdiUnfoldMoreHorizontal : mdiChevronDown} />
         </span>
       </SelectionTrigger>
       <Show when={props.chips && keys().length ? props.chips : undefined}>

@@ -8,7 +8,8 @@ import {
   type Accessor,
 } from 'solid-js'
 import type { JSX } from '@solidjs/web'
-import { Icon, Check } from '../../internal/icon/glyph'
+import { mdiCheck } from '@mdi/js'
+import { Icon } from '../icon'
 import { createPopup } from '../../internal/popup/controller'
 import { displayedWhileOpen } from '../../internal/popup/presentation'
 import type { SelectionPopup } from './popup'
@@ -154,7 +155,7 @@ export function SelectionList<O extends SelectionOption>(props: ListProps<O>): J
         </span>
         <span class={row.mark}>
           <Show when={selected().includes(option.value)}>
-            <Icon icon={Check} />
+            <Icon path={mdiCheck} />
           </Show>
         </span>
       </div>

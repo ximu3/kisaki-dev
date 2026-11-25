@@ -21,7 +21,7 @@
 | 基础控件       | Solid 2 与浏览器原生能力 | 按[UI 合同](../ui/package.md)实现并验证 |
 | 虚拟列表与网格 | desktop-ui | 自研纵向行几何，见[几何边界](../ui/virtualization.md#geometry) |
 | 拖拽排序       | Pragmatic Drag and Drop    | 核心与辅助包的固定版本见 [拖拽实现](../ui/virtualization.md#dependency)          |
-| 系统与功能图标 | Lucide 1.x | @lucide/solid 与 @lucide/icons 均为 1.72.0；名称合同见 [UI 图标值](../extensions/webview.md#icons) |
+| 系统与功能图标 | Material Design Icons | 静态路径使用 @mdi/js 7.4.47，名称和别名使用 @iconify-json/mdi 1.2.3。[UI 图标值](../extensions/webview.md#icons) |
 
 原生窗口、公共 UI 和官方扩展采用 Solid 2。应用的 Vite 构建使用 @solidjs/vite-plugin，公共 UI 的 vp pack 构建直接调用 @solidjs/compiler。具体版本以工作区 catalog 与锁文件为准。
 

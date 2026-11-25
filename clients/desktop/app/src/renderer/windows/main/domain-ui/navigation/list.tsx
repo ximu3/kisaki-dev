@@ -1,6 +1,7 @@
 import { createMemo, For, Show, type Component } from 'solid-js'
 import { dynamic } from '@solidjs/web'
-import { PanelsTopLeft, Pin } from '@lucide/solid'
+import { mdiViewDashboardOutline, mdiPinOutline } from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import type { PageRef } from '@kisaki3/desktop-contracts/ui'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { EmptyState } from '@kisaki3/desktop-ui/empty-state'
@@ -46,7 +47,7 @@ export function PageOrder<T extends NavigationPage>(props: {
         <EmptyState
           class="w-full rounded-md border border-dashed border-border"
           heading={t('runtime.noPages')}
-          icon={<PanelsTopLeft class="size-5" />}
+          icon={<Icon path={mdiViewDashboardOutline} class="size-5" />}
         />
       }
     >
@@ -94,10 +95,10 @@ export function PageOrder<T extends NavigationPage>(props: {
                 }
                 accessory={
                   <Show when={index() < props.visibleLimit}>
-                    <Pin
+                    <Icon
+                      path={mdiPinOutline}
                       class="size-3 text-muted-foreground"
-                      role="img"
-                      aria-label={t('runtime.visiblePage')}
+                      label={t('runtime.visiblePage')}
                     />
                   </Show>
                 }

@@ -1,5 +1,6 @@
 import { createMemo, For, Show } from 'solid-js'
-import { FileType } from '@lucide/solid'
+import { mdiFileDocumentOutline } from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import {
   Dialog,
   DialogContent,
@@ -80,7 +81,10 @@ function FontPreview(props: { api: MainClient; selection: FontSelection }) {
             <List>
               <For each={opened().font.files}>
                 {(file) => (
-                  <ListItem icon={<FileType />} title={fontFaceName(file.metadata)}>
+                  <ListItem
+                    icon={<Icon path={mdiFileDocumentOutline} />}
+                    title={fontFaceName(file.metadata)}
+                  >
                     <FontSpecimen
                       t={api.t}
                       metadata={file.metadata}

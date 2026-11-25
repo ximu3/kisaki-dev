@@ -24,5 +24,5 @@ export const summary = {
   link: format(parse('kisaki://view/anime/external/bangumi/subject%2F123')),
   theme: parseThemeRef({ type: 'builtin', id: 'default' }).type,
   protocol: developmentProtocolVersion,
-  icon: parseExtensionUiIcon({ type: 'lucide', name: 'book-open' }),
+  icon: parseExtensionUiIcon({ type: 'mdi', name: 'book-open' }),
 }

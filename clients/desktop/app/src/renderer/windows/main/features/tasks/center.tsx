@@ -1,6 +1,7 @@
 import { createSignal, For, onCleanup, Show } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
-import { RefreshCw, Trash2 } from '@lucide/solid'
+import { mdiRefresh, mdiTrashCanOutline } from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import { isTaskTerminal, taskRunStatuses, type TaskRun } from '@kisaki3/desktop-contracts/tasks'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { Alert } from '@kisaki3/desktop-ui/alert'
@@ -219,7 +220,7 @@ function TaskCenterContent(props: TaskCenterProps & { visible: boolean }) {
           disabled={!hasFinished()}
           onClick={() => void clearHistory().catch(props.report)}
         >
-          <Trash2 />
+          <Icon path={mdiTrashCanOutline} />
           {api.t('runtime.clear')}
         </Button>
         <Button
@@ -229,7 +230,7 @@ function TaskCenterContent(props: TaskCenterProps & { visible: boolean }) {
           variant="outline"
           onClick={refresh}
         >
-          <RefreshCw />
+          <Icon path={mdiRefresh} />
           {api.t('runtime.refresh')}
         </Button>
       </DialogFooter>

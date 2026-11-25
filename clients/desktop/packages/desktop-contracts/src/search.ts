@@ -1,5 +1,5 @@
 import type { ListOptions, CallOptions } from './operations'
-import { parseLucideIconName, type LucideIconName } from './ui/icons'
+import { parseMdiIconName, type MdiIconName } from './ui/icons'
 import * as v from 'valibot'
 import {
   fromParser,
@@ -44,7 +44,7 @@ export interface SearchTargetMap {
 }
 
 export type SearchIcon =
-  | { readonly type: 'lucide'; readonly name: LucideIconName }
+  | { readonly type: 'mdi'; readonly name: MdiIconName }
   | { readonly type: 'extension'; readonly extensionId: string; readonly path: string }
 
 export interface SearchQuery<T extends SearchCategory = SearchCategory> {
@@ -88,8 +88,8 @@ const targetTypes = {
 
 const icon = v.variant('type', [
   v.strictObject({
-    type: v.literal('lucide'),
-    name: fromParser(parseLucideIconName),
+    type: v.literal('mdi'),
+    name: fromParser(parseMdiIconName),
   }),
   v.strictObject({
     type: v.literal('extension'),

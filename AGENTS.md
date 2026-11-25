@@ -36,8 +36,6 @@
 
 首次发行前，接口、数据格式、配置、命令和目录均可按目标重做。同步更新全部调用方，重建开发样本，删除失去用途的旧路径。各发行单位的起点及已有外部约定见[首次发行前的兼容范围](refactor/design/engineering/conventions.md#before-first-release)。
 
-旧项目仅作 UI 设计参考。涉及桌面界面与公共 UI 库时，阅读[参考工程](refactor/README.md)的 `.agents/skills/kisaki/references/ui-system.md` 和对应部件。可在旧工程根目录运行 `pnpm dev`，直接参考实际界面。旧 Kisaki 会自动加载已有的开发数据。产品行为、接口、资源与交付要求由本仓库现行规格定义。按[界面设计](refactor/design/ui/components.md#existing-ui)在正式窗口核对[代表场景](refactor/verification/scenarios/ui.md#baseline)。
-
 ### 代码风格
 
 代码应易读、美观。名称说明操作和结果，同类操作使用一致的词汇与参数顺序。从调用处进入实现，应能顺着主流程看清数据由谁修改、资源由谁释放。选用目标版本支持的语言和框架惯用写法，平台已有的能力能完整表达操作时直接使用。见[可读性与表达](refactor/design/engineering/conventions.md#readability)。
@@ -57,6 +55,12 @@
 文档、注释和界面文案用自然、直接的语言说明具体做法、条件和结果。标题写明主题或操作，省去口号、刻意的比喻和重复正文的开场句。会影响选择的差异、取舍依据和失败后果应就近说明。见[写作要求](refactor/design/engineering/documentation.md#writing)和[界面文案](refactor/design/ui/components.md#copy)。
 
 实施和审阅时，检查代码、测试和文档是否位于对应的功能目录，文件名和目录名是否与内容相符。入口遵循语言和工具的原生规则。普通 TypeScript 多文件主题和成篇文档按主题集中，所需入口与内容放在同一目录，不以同级前缀文件模拟内部层级。收尾时核对[组织与命名](refactor/design/engineering/conventions.md#source-layout)和[导入与公开入口](refactor/design/engineering/conventions.md#module-imports)。
+
+## 桌面 UI 设计
+
+桌面页面、对话框和公共 UI 部件沿用旧 Kisaki 的设计。先到 `F:/project/3/kisaki` 阅读 `.agents/skills/kisaki/references/ui-system.md` 和对应部件，再在旧工程根目录运行 `pnpm dev`，用已有开发数据查看实际界面。已有界面沿用其布局、信息层次、密度和操作位置。新增界面沿用同类页面和部件的做法。系统与功能图标统一使用 Material Design Icons（MDI），同一操作优先沿用旧界面的图标。
+
+业务行为、接口和资源归属由本仓库的现行规格定义。交付前在默认主题、100% 应用缩放下，对照新旧窗口走完对应流程，再核对最小窗口和缩放边界。[界面设计基准](refactor/design/ui/components.md#existing-ui) · [代表场景](refactor/verification/scenarios/ui.md#baseline)
 
 ## 仓库范围
 

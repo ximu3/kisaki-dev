@@ -1,6 +1,7 @@
 import { Show } from 'solid-js'
 import { createQuery } from '../../../infrastructure/query'
-import { Copy } from '@lucide/solid'
+import { mdiContentCopy } from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import { Button } from '@kisaki3/desktop-ui/button'
 import {
   Dialog,
@@ -100,7 +101,7 @@ function AboutContent(props: AboutProps) {
           disabled={!!info.error || info.pending}
           onClick={() => void copy().catch(props.report)}
         >
-          <Copy />
+          <Icon path={mdiContentCopy} />
           {api.t('runtime.copyEnvironment')}
         </Button>
       </DialogFooter>

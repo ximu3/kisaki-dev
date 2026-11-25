@@ -1,5 +1,6 @@
 import { For, onCleanup, onSettled, Show } from 'solid-js'
-import { FileType, Plus, Trash2, RotateCcw } from '@lucide/solid'
+import { mdiFileDocumentOutline, mdiPlus, mdiDeleteOutline, mdiRestore } from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import type { Font } from '@kisaki3/desktop-contracts/fonts'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Badge } from '@kisaki3/desktop-ui/badge'
@@ -123,7 +124,7 @@ export function FontEditor(props: FontEditorProps) {
                       disabled={draft.choosing()}
                       onClick={() => void draft.choose().catch(reportError)}
                     >
-                      <Plus />
+                      <Icon path={mdiPlus} />
                       {api.t('runtime.addFiles')}
                     </Button>
                   </ToolbarRow>
@@ -141,7 +142,7 @@ export function FontEditor(props: FontEditorProps) {
 
                       return (
                         <ListItem
-                          icon={<FileType />}
+                          icon={<Icon path={mdiFileDocumentOutline} />}
                           title={
                             <div class="flex flex-wrap items-center gap-2">
                               <span>{name}</span>
@@ -162,7 +163,11 @@ export function FontEditor(props: FontEditorProps) {
                               destructive={kept()}
                               onClick={() => draft.toggle(file.attachmentId)}
                             >
-                              {kept() ? <Trash2 /> : <RotateCcw />}
+                              {kept() ? (
+                                <Icon path={mdiDeleteOutline} />
+                              ) : (
+                                <Icon path={mdiRestore} />
+                              )}
                             </ListItemAction>
                           }
                         >
@@ -180,7 +185,7 @@ export function FontEditor(props: FontEditorProps) {
                   <For each={draft.files()}>
                     {(entry) => (
                       <ListItem
-                        icon={<FileType />}
+                        icon={<Icon path={mdiFileDocumentOutline} />}
                         title={
                           <div class="flex flex-wrap items-center gap-2">
                             <span>{entry.name}</span>
@@ -198,7 +203,7 @@ export function FontEditor(props: FontEditorProps) {
                               destructive
                               onClick={() => draft.remove(entry.key)}
                             >
-                              <Trash2 />
+                              <Icon path={mdiDeleteOutline} />
                             </ListItemAction>
                           </Show>
                         }

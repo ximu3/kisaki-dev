@@ -1,7 +1,8 @@
 import { createMemo, createUniqueId, Show, omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { fieldAttributes } from '../../../internal/field'
-import { Icon, ChevronDown, ChevronUp } from '../../../internal/icon/glyph'
+import { mdiChevronDown, mdiChevronUp } from '@mdi/js'
+import { Icon } from '../../icon'
 import { createValue } from '../../../internal/state'
 import { NativeInput } from '../native'
 import type { InputProps } from '../control'
@@ -106,7 +107,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
           onPointerDown={(event) => event.preventDefault()}
           onClick={() => step(1)}
         >
-          <Icon icon={ChevronUp} />
+          <Icon path={mdiChevronUp} />
         </button>
         <button
           type="button"
@@ -116,7 +117,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
           onPointerDown={(event) => event.preventDefault()}
           onClick={() => step(-1)}
         >
-          <Icon icon={ChevronDown} />
+          <Icon path={mdiChevronDown} />
         </button>
       </span>
     </InputFrame>

@@ -24,7 +24,7 @@
     "@kisaki3/desktop-rpc": "workspace:*",
     "@kisaki3/desktop-ui": "workspace:*",
     "@kisaki3/extension-distribution": "workspace:*",
-    "@lucide/solid": "1.72.0",
+    "@mdi/js": "7.4.47",
     "@solidjs/web": "catalog:",
     "@zip.js/zip.js": "2.25.0",
     "better-sqlite3": "13.0.3",

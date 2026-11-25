@@ -2,7 +2,8 @@ import { omit, type Component } from 'solid-js'
 import { dynamic, type JSX } from '@solidjs/web'
 import { Button, type ButtonProps } from '../button'
 import { callHandler } from '../../internal/dom'
-import { Icon, GripVertical } from '../../internal/icon/glyph'
+import { mdiDragVertical } from '@mdi/js'
+import { Icon } from '../icon'
 import styles from './styles.module.css'
 
 export interface DragHandleProps extends ButtonProps {
@@ -34,7 +35,7 @@ export function DragHandle(props: DragHandleProps): JSX.Element {
         }
       }}
     >
-      {props.children ?? <Icon icon={GripVertical} />}
+      {props.children ?? <Icon path={mdiDragVertical} />}
     </Control>
   )
 }

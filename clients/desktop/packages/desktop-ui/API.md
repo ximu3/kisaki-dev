@@ -2,6 +2,10 @@
 
 Import each family from its package subpath and load `@kisaki3/desktop-ui/styles.css` once. This includes the appearance defaults. Supply localized labels and accessible names, including names for icon-only buttons and modal dialogs. The host owns application state, persistence and business validation.
 
+## Icons
+
+Import `Icon` from `@kisaki3/desktop-ui/icon` and a named MDI path from `@mdi/js`, for example `<Icon path={mdiCogOutline} />`. The icon inherits the text color and is decorative by default. Give an icon-only button its own accessible name. For a standalone icon that conveys information, pass a localized `label`.
+
 ## Form controls
 
 A supplied value is controlled. Adopt a requested change to make it visible. A default initializes local state and supplies the form reset baseline. Checkbox submission follows its checked state. Indeterminate presentation is independent. Numeric editing preserves the native string value, including an empty field. Date editing accepts complete calendar dates. Typed color values keep their CSS color space; picker channel edits produce sRGB hexadecimal.

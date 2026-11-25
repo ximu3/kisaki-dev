@@ -1,6 +1,7 @@
 import { Show, createSignal, onCleanup } from 'solid-js'
 import type { JSX } from '@solidjs/web'
-import { BookOpen } from '@lucide/solid'
+import { mdiBookOpenOutline } from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import { Button } from '@kisaki3/desktop-ui/button'
 import {
   MarkdownEditor,
@@ -65,7 +66,7 @@ export default function Resources(): JSX.Element {
   const insertReference: MarkdownToolbarAction = {
     id: 'reference',
     label: 'Insert reference',
-    icon: () => <BookOpen />,
+    icon: () => <Icon path={mdiBookOpenOutline} />,
     run: (editor) => editor.dispatch(editor.state.replaceSelection('Reference')),
   }
 

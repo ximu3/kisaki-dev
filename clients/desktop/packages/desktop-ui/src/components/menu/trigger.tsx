@@ -1,7 +1,8 @@
 import { omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { callHandler } from '../../internal/dom'
-import { Icon, ChevronRight } from '../../internal/icon/glyph'
+import { mdiChevronRight } from '@mdi/js'
+import { Icon } from '../icon'
 import { Button, type ButtonProps } from '../button'
 import row from '../../internal/list-row.module.css'
 import { MenuItemLabel, type MenuItemProps } from './items'
@@ -147,7 +148,7 @@ export function MenuSubTrigger(props: ButtonProps & Pick<MenuItemProps, 'icon'>)
     >
       <MenuItemLabel icon={props.icon}>{props.children}</MenuItemLabel>
       <span aria-hidden="true" class={styles.arrow}>
-        <Icon icon={ChevronRight} />
+        <Icon path={mdiChevronRight} />
       </span>
     </button>
   )

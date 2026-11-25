@@ -1,6 +1,7 @@
 import { createSignal, For, onSettled } from 'solid-js'
 import type { JSX } from '@solidjs/web'
-import { Icon, ChevronLeft, ChevronRight, X } from '../icon/glyph'
+import { mdiChevronLeft, mdiChevronRight, mdiClose } from '@mdi/js'
+import { Icon } from '../../components/icon'
 import styles from './styles.module.css'
 
 export interface ChipLabels {
@@ -137,7 +138,7 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
           scroll(-1, event.currentTarget)
         }}
       >
-        <Icon icon={ChevronLeft} />
+        <Icon path={mdiChevronLeft} />
       </button>
       <div
         class={styles.viewport}
@@ -182,7 +183,7 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
                     })
                   }}
                 >
-                  <Icon icon={X} />
+                  <Icon path={mdiClose} />
                 </button>
               </span>
             )}
@@ -205,7 +206,7 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
           scroll(1, event.currentTarget)
         }}
       >
-        <Icon icon={ChevronRight} />
+        <Icon path={mdiChevronRight} />
       </button>
     </div>
   )

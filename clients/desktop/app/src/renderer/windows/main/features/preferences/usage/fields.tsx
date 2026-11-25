@@ -1,5 +1,6 @@
 import { For } from 'solid-js'
-import { ChevronRight } from '@lucide/solid'
+import { mdiChevronRight } from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { FieldGroup, FieldLegend } from '@kisaki3/desktop-ui/field'
 import { Input, NumberInput } from '@kisaki3/desktop-ui/input'
@@ -53,7 +54,7 @@ export function UsageFields(props: UsageFieldsProps & { open: (medium: UsageMedi
                 onClick={() => props.open(medium)}
               >
                 {t(`runtime.fields.${medium}`)}
-                <ChevronRight aria-hidden="true" />
+                <Icon path={mdiChevronRight} />
               </Button>
             </li>
           )}

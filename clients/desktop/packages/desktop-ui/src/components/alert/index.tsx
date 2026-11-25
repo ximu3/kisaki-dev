@@ -1,6 +1,6 @@
 import { omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
-import { StatusIcon } from '../../internal/icon/glyph'
+import { StatusIcon } from '../../internal/icon/status'
 import styles from './styles.module.css'
 
 export interface AlertProps extends JSX.HTMLAttributes<HTMLDivElement> {

@@ -4,39 +4,38 @@ import type { EditorState } from '@codemirror/state'
 import type { EditorView } from '@codemirror/view'
 import { redoDepth, undoDepth } from '@codemirror/commands'
 import {
-  Code,
-  Bold,
-  Heading2,
-  Italic,
-  List,
-  ListTodo,
-  ListOrdered,
-  Quote,
-  Strikethrough,
-  Link,
-  Redo2,
-  Undo2,
-  type LucideIcon,
-} from '@lucide/solid'
+  mdiCodeTags,
+  mdiFormatBold,
+  mdiFormatHeader2,
+  mdiFormatItalic,
+  mdiFormatListBulleted,
+  mdiCheckboxMarkedOutline,
+  mdiFormatListNumbered,
+  mdiFormatQuoteClose,
+  mdiFormatStrikethrough,
+  mdiLinkVariant,
+  mdiRedoVariant,
+  mdiUndoVariant,
+} from '@mdi/js'
+import { Icon } from '../icon'
 import { createFocusNavigation } from '../../internal/focus'
-import { Icon } from '../../internal/icon/glyph'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../tooltip'
 import { runMarkdownCommand, type MarkdownCommand } from './commands'
 import styles from './styles.module.css'
 
-const icons: Record<MarkdownCommand, LucideIcon> = {
-  bold: Bold,
-  italic: Italic,
-  strike: Strikethrough,
-  code: Code,
-  heading: Heading2,
-  bullet: List,
-  ordered: ListOrdered,
-  quote: Quote,
-  task: ListTodo,
-  link: Link,
-  undo: Undo2,
-  redo: Redo2,
+const icons: Record<MarkdownCommand, string> = {
+  bold: mdiFormatBold,
+  italic: mdiFormatItalic,
+  strike: mdiFormatStrikethrough,
+  code: mdiCodeTags,
+  heading: mdiFormatHeader2,
+  bullet: mdiFormatListBulleted,
+  ordered: mdiFormatListNumbered,
+  quote: mdiFormatQuoteClose,
+  task: mdiCheckboxMarkedOutline,
+  link: mdiLinkVariant,
+  undo: mdiUndoVariant,
+  redo: mdiRedoVariant,
 }
 
 const standardCommands = Object.freeze(Object.keys(icons) as MarkdownCommand[])
@@ -76,7 +75,7 @@ function commandAction<C extends MarkdownCommand>(
     get label() {
       return label(command)
     },
-    icon: () => <Icon icon={icons[command]} />,
+    icon: () => <Icon path={icons[command]} />,
 
     isEnabled: (state) => {
       if (command === 'undo') {

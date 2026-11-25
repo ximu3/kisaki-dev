@@ -1,6 +1,7 @@
 import { omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
-import { Icon, LoaderCircle } from '../../internal/icon/glyph'
+import { mdiLoading } from '@mdi/js'
+import { Icon } from '../icon'
 import styles from './styles.module.css'
 
 export interface SpinnerProps extends JSX.HTMLAttributes<HTMLSpanElement> {
@@ -18,7 +19,7 @@ export function Spinner(props: SpinnerProps): JSX.Element {
       aria-label={props.label}
       aria-hidden={props.label ? undefined : 'true'}
     >
-      <Icon icon={LoaderCircle} class={styles.glyph} />
+      <Icon path={mdiLoading} class={styles.glyph} />
     </span>
   )
 }

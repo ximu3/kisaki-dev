@@ -1,16 +1,17 @@
 import { createSignal, For } from 'solid-js'
 import {
-  Eye,
-  Info,
-  Monitor,
-  MonitorCog,
-  Moon,
-  Palette,
-  Settings,
-  Sun,
-  SunMoon,
-  Type,
-} from '@lucide/solid'
+  mdiEyeOutline,
+  mdiInformationOutline,
+  mdiLaptop,
+  mdiMonitorEdit,
+  mdiWeatherNight,
+  mdiPaletteOutline,
+  mdiCogOutline,
+  mdiWeatherSunny,
+  mdiWeatherSunset,
+  mdiFormatFont,
+} from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import { appearanceModes, type AppearancePreferences } from '@kisaki3/desktop-contracts/appearance'
 import type { PreferencesSnapshot, PreferencesUpdate } from '@kisaki3/desktop-contracts/preferences'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
@@ -30,13 +31,13 @@ import type { MainClient } from '../../../infrastructure/api'
 import { reportError } from '../../../infrastructure/notifications'
 
 const managementEntries = [
-  { type: 'preferences', label: 'preferences', icon: Settings },
-  { type: 'themes', label: 'themes', icon: Palette },
-  { type: 'fonts', label: 'fonts', icon: Type },
-  { type: 'systemIntegration', label: 'system', icon: MonitorCog },
+  { type: 'preferences', label: 'preferences', icon: mdiCogOutline },
+  { type: 'themes', label: 'themes', icon: mdiPaletteOutline },
+  { type: 'fonts', label: 'fonts', icon: mdiFormatFont },
+  { type: 'systemIntegration', label: 'system', icon: mdiMonitorEdit },
 ] as const
 
-const modeIcons = { system: Monitor, light: Sun, dark: Moon }
+const modeIcons = { system: mdiLaptop, light: mdiWeatherSunny, dark: mdiWeatherNight }
 
 export function ApplicationMenu(props: {
   api: MainClient
@@ -91,24 +92,24 @@ export function ApplicationMenu(props: {
           class="rail-action size-10"
           aria-label={api.t('runtime.appMenu')}
         >
-          <Settings />
+          <Icon path={mdiCogOutline} />
         </TooltipTrigger>
         <TooltipContent placement="right">{api.t('runtime.appMenu')}</TooltipContent>
       </Tooltip>
 
       <MenuContent class="min-w-48" placement="right-end">
         <Menu>
-          <MenuSubTrigger icon={<SunMoon />} disabled={choicesDisabled()}>
+          <MenuSubTrigger icon={<Icon path={mdiWeatherSunset} />} disabled={choicesDisabled()}>
             {api.t('runtime.fields.mode')}
           </MenuSubTrigger>
           <MenuContent class="min-w-40" aria-label={api.t('runtime.fields.mode')}>
             <MenuGroup aria-label={api.t('runtime.fields.mode')}>
               <For each={appearanceModes}>
                 {(value) => {
-                  const Icon = modeIcons[value]
+                  const path = modeIcons[value]
                   return (
                     <MenuRadioItem
-                      icon={<Icon />}
+                      icon={<Icon path={path} />}
                       value={value}
                       selectedValue={mode() ?? ''}
                       disabled={choicesDisabled()}
@@ -123,7 +124,7 @@ export function ApplicationMenu(props: {
           </MenuContent>
         </Menu>
         <MenuCheckboxItem
-          icon={<Eye />}
+          icon={<Icon path={mdiEyeOutline} />}
           checked={showSensitive() ?? false}
           disabled={choicesDisabled()}
           onCheckedChange={changeSensitiveVisibility}
@@ -134,14 +135,20 @@ export function ApplicationMenu(props: {
         <MenuSeparator />
         <For each={managementEntries}>
           {(item) => (
-            <MenuItem icon={<item.icon />} onSelect={() => void props.open({ type: item.type })}>
+            <MenuItem
+              icon={<Icon path={item.icon} />}
+              onSelect={() => void props.open({ type: item.type })}
+            >
               {api.t(`runtime.${item.label}`)}
             </MenuItem>
           )}
         </For>
 
         <MenuSeparator />
-        <MenuItem icon={<Info />} onSelect={() => void props.open({ type: 'about' })}>
+        <MenuItem
+          icon={<Icon path={mdiInformationOutline} />}
+          onSelect={() => void props.open({ type: 'about' })}
+        >
           {api.t('runtime.about')}
         </MenuItem>
       </MenuContent>

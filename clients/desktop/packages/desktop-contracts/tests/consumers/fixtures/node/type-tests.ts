@@ -343,9 +343,9 @@ export function acceptNovelRead(request: MetadataReadRequest<'novel'>): void {
 }
 
 export function checkAssociations(): void {
-  const icon: ExtensionUiIcon = { type: 'lucide', name: 'book-open' }
+  const icon: ExtensionUiIcon = { type: 'mdi', name: 'book-open' }
   // @ts-expect-error: Built-in names use the fixed catalog rather than component identifiers.
-  const invalidIcon: ExtensionUiIcon = { type: 'lucide', name: 'BookOpen' }
+  const invalidIcon: ExtensionUiIcon = { type: 'mdi', name: 'BookOpen' }
 
   const missingFile = {
     workType: 'anime',

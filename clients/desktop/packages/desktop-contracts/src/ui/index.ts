@@ -35,8 +35,8 @@ export type {
   NotificationsApi,
 } from './feedback'
 
-export { parseExtensionUiIcon, parseLucideIconName } from './icons'
-export type { ExtensionUiIcon, LucideIconName } from './icons'
+export { parseExtensionUiIcon, parseMdiIconName } from './icons'
+export type { ExtensionUiIcon, MdiIconName } from './icons'
 
 export {
   parseEntryIdentifier,

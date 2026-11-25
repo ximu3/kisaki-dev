@@ -1,6 +1,7 @@
 import { createSignal } from 'solid-js'
 import type { JSX } from '@solidjs/web'
-import { Info } from '@lucide/solid'
+import { mdiInformationOutline } from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Badge } from '@kisaki3/desktop-ui/badge'
 import { Button } from '@kisaki3/desktop-ui/button'
@@ -121,7 +122,11 @@ export function Gallery(): JSX.Element {
         </TableRow>
       </ScrollableTable>
       <List>
-        <ListItem title="Sample item" description="Read-only entry" icon={<Info />} />
+        <ListItem
+          title="Sample item"
+          description="Read-only entry"
+          icon={<Icon path={mdiInformationOutline} />}
+        />
       </List>
       <Image alt="Unavailable sample" src="/missing.png" />
       <EmptyState

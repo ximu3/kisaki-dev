@@ -1,6 +1,7 @@
 import { createSignal, onCleanup, Show } from 'solid-js'
 import type { JSX } from '@solidjs/web'
-import { FileText, Pause, Play, Trash2, X } from '@lucide/solid'
+import { mdiInformationOutline, mdiPause, mdiPlay, mdiTrashCanOutline, mdiStop } from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import type { TaskRunSummary, TaskState } from '@kisaki3/desktop-contracts/tasks'
 import { Progress } from '@kisaki3/desktop-ui/progress'
 import { TableCell, TableRow } from '@kisaki3/desktop-ui/table'
@@ -159,26 +160,30 @@ function ActiveCells(props: RowProps & { report: (error: unknown) => void }) {
           <Show when={state()?.canPause}>
             <TaskAction
               label={api.t('runtime.pause')}
-              icon={<Pause />}
+              icon={<Icon path={mdiPause} />}
               run={() => control('tasks.pause')}
             />
           </Show>
           <Show when={state()?.canResume}>
             <TaskAction
               label={api.t('runtime.resume')}
-              icon={<Play />}
+              icon={<Icon path={mdiPlay} />}
               run={() => control('tasks.resume')}
             />
           </Show>
           <Show when={state()?.canCancel}>
             <TaskAction
               label={api.t('runtime.sendCancel')}
-              icon={<X />}
+              icon={<Icon path={mdiStop} />}
               run={() => control('tasks.cancel')}
               destructive
             />
           </Show>
-          <TaskAction label={api.t('runtime.detail')} icon={<FileText />} run={props.open} />
+          <TaskAction
+            label={api.t('runtime.detail')}
+            icon={<Icon path={mdiInformationOutline} />}
+            run={props.open}
+          />
         </div>
       </TableCell>
     </>
@@ -200,10 +205,14 @@ function FinishedCells(props: RowProps & { remove: () => void }) {
       </TableCell>
       <TableCell align="end">
         <div class="flex items-center justify-end gap-0.5">
-          <TaskAction label={props.api.t('runtime.detail')} icon={<FileText />} run={props.open} />
+          <TaskAction
+            label={props.api.t('runtime.detail')}
+            icon={<Icon path={mdiInformationOutline} />}
+            run={props.open}
+          />
           <TaskAction
             label={props.api.t('runtime.deleteTaskAction')}
-            icon={<Trash2 />}
+            icon={<Icon path={mdiTrashCanOutline} />}
             run={props.remove}
             destructive
           />

@@ -5,6 +5,6 @@
 - Define metadata participation and adoption, scanning, tasks, sessions, resources, views, preferences, application and extension management, and typed fact events.
 - Provide parsers for stored scan scopes and extension artifact identities, so each can be validated when read.
 - Share nonblank alias validation for entries and parts, and expose standalone catalog value and saved playback choice parsers.
-- Share a generated Lucide name catalog across extension contributions and search icons while preserving package-file ownership.
+- Share the MDI name and alias catalog across extension contributions and search icons while preserving package-file ownership.
 - Provide strict native and extension deeplink round trips, versioned development control values, generic message catalogs and translation registration.
 - Keep interface value validation independent from application execution, defaults and localization resources; verify packed NodeNext and browser consumers.

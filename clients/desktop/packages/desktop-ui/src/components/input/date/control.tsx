@@ -2,7 +2,8 @@ import { createEffect, createMemo, createSignal, createUniqueId, Show, omit } fr
 import type { JSX } from '@solidjs/web'
 import { callHandler } from '../../../internal/dom'
 import { closeWhenUnavailable, fieldAttributes } from '../../../internal/field'
-import { Icon, Calendar } from '../../../internal/icon/glyph'
+import { mdiCalendarMonthOutline } from '@mdi/js'
+import { Icon } from '../../icon'
 import { createPresentation } from '../../../internal/popup/presentation'
 import { commitNativeValue, createValue, onFormReset } from '../../../internal/state'
 import { InputFrame } from '../frame'
@@ -186,7 +187,7 @@ export function DateInput(props: DateInputProps): JSX.Element {
           setOpen(!open())
         }}
       >
-        <Icon icon={Calendar} />
+        <Icon path={mdiCalendarMonthOutline} />
       </button>
       <Show when={present()}>
         <DatePicker

@@ -1,6 +1,7 @@
 import { createMemo, onSettled, Show } from 'solid-js'
 import type { JSX } from '@solidjs/web'
-import { ArrowLeft } from '@lucide/solid'
+import { mdiArrowLeft } from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import type { Translate } from '@kisaki3/desktop-localization'
 import { Button } from '@kisaki3/desktop-ui/button'
 import {
@@ -121,7 +122,7 @@ export function StagedPreferenceForm(
             aria-label={t('runtime.back')}
             onClick={props.close}
           >
-            <ArrowLeft aria-hidden="true" />
+            <Icon path={mdiArrowLeft} aria-hidden="true" />
           </Button>
         </Show>
         <DialogTitle>{edit.title()}</DialogTitle>
