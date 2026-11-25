@@ -23,3 +23,5 @@ Install one Toaster for the document before calling `toast.show`. Its returned h
 ## Content and resources
 
 The host owns image URLs and releases them when their consumers finish. Markdown editing borrows the mounted CodeMirror view. The component destroys the view when its owner is released. External text updates wait for active composition and do not add an undo step. Chart instances, drag registrations, observers and presentation listeners follow their Solid owners. The host supplies chart data, stable item identity and permission to reorder or drop.
+
+For edge scrolling during a drag, pass `ReorderableList` a `viewport` accessor that returns the scrollable element. This can be the list itself or its scrolling parent. Omit `viewport` for a plain list.

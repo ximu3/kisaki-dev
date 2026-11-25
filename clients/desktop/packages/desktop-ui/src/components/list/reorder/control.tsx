@@ -146,10 +146,13 @@ export function ReorderableList(props: ReorderableListProps) {
       void submit(event.source.data.id as string, candidate(event))
     },
   }))
-  createDragAutoScroll(() => ({
-    element: props.viewport?.() ?? list,
-    canScroll: ({ source }) => source.data.list === scope && !busy(),
-  }))
+  createDragAutoScroll(() => {
+    const element = props.viewport?.()
+    if (!element) {
+      return
+    }
+    return { element, canScroll: ({ source }) => source.data.list === scope && !busy() }
+  })
 
   return (
     <ReorderContext
