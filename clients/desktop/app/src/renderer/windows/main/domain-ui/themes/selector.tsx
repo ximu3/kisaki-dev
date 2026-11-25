@@ -18,14 +18,15 @@ export interface ThemeChoice {
 
 export function ThemeSelector(props: {
   value: ThemeRef | undefined
-  themes: readonly ThemeChoice[]
+  themes: readonly ThemeChoice[] | undefined
+  loading: boolean
   disabled?: boolean
   t: Translate
   onValueChange: (ref: ThemeRef) => void
 }) {
   const selection = createMemo(() =>
     catalogSelection(
-      props.themes.map(({ ref, name }) => ({
+      props.themes?.map(({ ref, name }) => ({
         value: catalogKey(ref),
         label: name,
         description: props.t(themeSource[ref.type]),
@@ -40,11 +41,13 @@ export function ThemeSelector(props: {
       class="min-w-0 flex-1"
       value={selection().value}
       options={selection().options}
+      placeholder={props.loading ? props.t('runtime.loading') : ''}
+      aria-busy={props.loading ? 'true' : undefined}
       disabled={props.disabled}
       emptyMessage={props.t('runtime.noOptions')}
       invalidSelectionMessage={props.t('runtime.unavailable')}
       onValueChange={(key) => {
-        const theme = props.themes.find(({ ref }) => catalogKey(ref) === key)
+        const theme = props.themes?.find(({ ref }) => catalogKey(ref) === key)
         if (theme) {
           props.onValueChange(theme.ref)
         }
