@@ -59,11 +59,13 @@ function workRecord<TName extends string>(name: TName, ownerName: string, owner:
       workId: idColumn(ownerName).references(() => owner, { onDelete: 'cascade' }),
       status: text('status', { enum: workStatuses }),
       additionalDurationMs: integer('additional_duration_ms').notNull().default(0),
+      additionalCompletionCount: integer('additional_completion_count').notNull().default(0),
     },
     (table) => [
       primaryKey({ columns: [table.workId] }),
       enumValue(`${name}_status`, table.status, workStatuses),
       safeInteger(`${name}_duration`, table.additionalDurationMs),
+      safeInteger(`${name}_completion_count`, table.additionalCompletionCount),
       index(`${name}_status_order`).on(table.status, table.workId),
     ],
   )
@@ -127,6 +129,10 @@ export const workCompletionRecords = sqliteTable(
       foreignColumns: [entries.id, entries.type],
     }).onDelete('cascade'),
     enumValue('work_completion_records_work_type', table.workType, workTypes),
+    check(
+      'work_completion_records_detail',
+      sql`${table.completedDate} is not null or (${table.note} is not null and trim(${table.note}, char(9,10,11,12,13,32,160,5760,8192,8193,8194,8195,8196,8197,8198,8199,8200,8201,8202,8232,8233,8239,8287,12288,65279)) <> '')`,
+    ),
     index('work_completion_records_date').on(
       sql`json_extract(${table.completedDate}, '$.year')`,
       sql`json_extract(${table.completedDate}, '$.month')`,

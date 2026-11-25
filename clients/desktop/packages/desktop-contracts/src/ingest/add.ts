@@ -7,6 +7,7 @@ import {
   isWorkType,
   recordEntries,
   completionFieldsSchema,
+  checkCompletionTotal,
   entryRefSchema,
   identitySchema,
   identityKey,
@@ -91,7 +92,7 @@ export function parseIngestAddInput(input: unknown): IngestAddInput {
           ),
         }
   })
-  return parseValue(
+  const value = parseValue(
     v.strictObject({
       entryType: v.literal(entryType),
       metadata: fromParser((value) => parseMetadataInput(entryType, value)),
@@ -101,6 +102,13 @@ export function parseIngestAddInput(input: unknown): IngestAddInput {
     input,
     'Invalid complete add input',
   ) as IngestAddInput
+  if (value.initial && 'record' in value.initial) {
+    checkCompletionTotal(
+      value.initial.record?.additionalCompletionCount ?? 0,
+      value.initial.completionRecords?.length ?? 0,
+    )
+  }
+  return value
 }
 
 export function parseIngestAddResult(input: unknown): IngestAddResult {

@@ -181,12 +181,12 @@ export interface Evaluation {
 export interface WorkRecord {
   readonly status: WorkStatus | null
   readonly additionalDurationMs: number
+  readonly additionalCompletionCount: number
 }
 
-export interface CompletionFields {
-  readonly completedDate: CalendarDate | null
-  readonly note: string | null
-}
+export type CompletionFields =
+  | { readonly completedDate: CalendarDate; readonly note: string | null }
+  | { readonly completedDate: null; readonly note: string }
 
 export interface EntryTag {
   readonly tagId: string
@@ -338,15 +338,35 @@ export const evaluationEntries = { rating: v.nullable(rating), favorite: v.boole
 export const recordEntries = {
   status: v.nullable(statusSchema),
   additionalDurationMs: nonnegativeInteger,
+  additionalCompletionCount: nonnegativeInteger,
 }
 
-export const completionFieldsSchema = v.strictObject({
+export const completionEntries = {
   completedDate: v.nullable(calendarDateSchema),
   note: v.pipe(
     v.nullable(text),
     v.transform((value) => (value === null || value.trim().length === 0 ? null : value)),
   ),
-})
+}
+
+export function completionSchema<T extends v.ObjectEntries>(extra: T) {
+  return v.union([
+    v.strictObject({
+      ...extra,
+      completedDate: v.nonNullable(calendarDateSchema),
+      note: completionEntries.note,
+    }),
+    v.strictObject({ ...extra, completedDate: v.null(), note: nonemptyText }),
+  ])
+}
+
+export const completionFieldsSchema = completionSchema({})
+
+export function checkCompletionTotal(additional: number, details: number): void {
+  if (!Number.isSafeInteger(additional + details)) {
+    throw new DesktopError('InvalidInput', 'The total completion count exceeds the supported range')
+  }
+}
 
 export const entryTagEntries = { tagId: id, note: v.nullable(text), isSpoiler: v.boolean() }
 
@@ -562,7 +582,14 @@ export function parseEntryCreate(input: unknown): EntryCreate {
   )
 
   // The validated discriminator selects the schema and its work-only fields.
-  return parseValue(entryCreateSchema(type), input, 'Invalid entry creation') as EntryCreate
+  const value = parseValue(entryCreateSchema(type), input, 'Invalid entry creation') as EntryCreate
+  if ('record' in value) {
+    checkCompletionTotal(
+      value.record?.additionalCompletionCount ?? 0,
+      value.completionRecords?.length ?? 0,
+    )
+  }
+  return value
 }
 
 export function parseEntryUpdate(input: unknown): EntryUpdate {

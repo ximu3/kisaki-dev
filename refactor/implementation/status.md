@@ -8,6 +8,8 @@
 
 最终工作树通过全仓检查、六个公共包的独立验证及 Windows x64 桌面综合验证，含隔离打包载体的启动与退出。已在简化后的存储基线验证 13 处可空引用、27 项 Electron Node 用例和完整性能负载。真实窗口用例 15 项通过，另有 3 项按宿主条件跳过。其余五个目标、系统签署与生产服务未取得本轮新结果。[数据库验证](../verification/evidence/w06/README.md#ownership) · [窗口与设置](../verification/evidence/w07/README.md#window-lifetime)
 
+W03 的作品完成合同和 W06 的存储已区分附加次数与逐次明细。Windows x64 已验证旧库迁移：有日期或非空备注的明细保留原 ID，其余旧记录按作品计入附加次数。四类作品的编辑、查询与统计界面归 W09。[完成模型](../design/domains/records.md#additional-completions)
+
 工作区采用 Vite+，主线编译器锁定为 `7.1.0-beta`。升级到 7.1.x 正式版时重跑全部项目引用，用仓库外消费者检查发布声明，同时确认检查失败会返回非零退出码、类型感知 lint 能检出未等待的 Promise。六个公共包共用 `@kisaki3/config`，CI 按[包和宿主](../design/engineering/workspace.md#ci-selection)独立运行本地任务，制品验收直接读取指定归档。[工具链迁移 PR #39](https://github.com/ximu3/kisaki-dev/pull/39)
 
 桌面四类窗口和 desktop-ui 已迁移到 Solid 2.0.3。公共 UI 通过 `/virtualization` 提供自研行几何，图表直接使用 `@unovis/ts`。本轮复验覆盖 Windows x64、Chromium、沙箱 Electron、开发热更新与仓外安装。[W05／W07 复验](../verification/evidence/w05-w07/README.md#solid-2)

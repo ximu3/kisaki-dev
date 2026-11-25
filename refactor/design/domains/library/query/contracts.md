@@ -131,7 +131,7 @@ type TextTest = { readonly op: 'equals' | 'contains'; readonly value: string }
 | 图片是否采用       | hasBackdrop、hasTitleLogo                                              | 四类作品         | 布尔条件                                                                                                |
 | 游戏图标           | hasIcon                                                                | 游戏             | 布尔条件                                                                                                |
 | 发行状态           | releaseStatus                                                          | 动画、漫画、小说 | EnumTest<'planned' \| 'ongoing' \| 'finished' \| 'paused' \| 'cancelled' \| null>                       |
-| 非空数值           | additionalDurationMs、totalDurationMs、completionCount                 | 四类作品         | NumberTest；毫秒或次数，缺记录按各自正式缺省值解释                                                      |
+| 非空数值           | additionalDurationMs、additionalCompletionCount、totalDurationMs、completionCount                 | 四类作品         | NumberTest；毫秒或次数，缺记录按各自正式缺省值解释                                                      |
 | 声明时长           | declaredDurationMs                                                     | 动画             | NumberTest 或 Presence，非负安全整数毫秒                                                                |
 | 声明正片／特别篇数 | declaredRegularEpisodeCount、declaredSpecialEpisodeCount               | 动画             | NumberTest 或 Presence，非负安全整数                                                                    |
 | 声明页／卷数       | declaredPageCount、declaredVolumeCount                                 | 漫画、小说       | NumberTest 或 Presence，非负安全整数                                                                    |
@@ -160,7 +160,7 @@ Gender 只包含五个非空分类；联合中的 null 表达未知，不是一�
 
 日历事实字段：effectiveAddedDate（七类，整体 addedDate 为空才回退创建日）、releaseDate（四类作品）、releaseEndDate（动画／漫画／小说）、birthDate（角色／人物）、deathDate（人物）、foundedDate／dissolvedDate（组织）、firstCompletedDate／lastCompletedDate（四类作品）。effectiveAddedDate 不接受整体 absent；手填存在性使用 addedDate 条件。时间点字段为 createdAt、updatedAt（七类）和 lastActiveAt（四类作品，可空）。查询上下文从真实窗口或调用环境取得显示时区，不在每个条件里夹带时区。
 
-完成事实条件使用 `{ field: 'completions', match: 'exists' | 'notExists', where }`。where 只允许 `completedDate?: DateTest` 和 `note?: TextTest | Presence`；DateTest 采用上述 absoluteRange、component 操作及 Presence。where 为空表示是否有记录；where 内已提供的条件全部由同一条完成记录满足。未知日期用 absent 查询，统计次数使用 completionCount。这里没有任意子查询或新的规则组层级。
+完成事实条件使用 `{ field: 'completions', match: 'exists' | 'notExists', where }`。where 只允许 `completedDate?: DateTest` 和 `note?: TextTest | Presence`；DateTest 采用上述 absoluteRange、component 操作及 Presence。where 为空表示是否存在逐条明细；只填写附加次数的作品按 completionCount 判断是否完成过；where 内已提供的条件全部由同一条完成记录满足。未知日期用 absent 查询，统计次数使用 completionCount。这里没有任意子查询或新的规则组层级。
 
 <a id="relations"></a>
 
@@ -194,7 +194,7 @@ note 为 TextTest 或 Presence。character 为 `{ type: 'none' }`、`{ type: 'an
 EntrySortField 的完整集合如下；类型范围与相同条件字段一致：
 
 - name、originalName、effectiveSortName、rating、effectiveAddedDate、createdAt、updatedAt。
-- releaseDate、releaseEndDate、additionalDurationMs、totalDurationMs、lastActiveAt、completionCount、firstCompletedDate、lastCompletedDate。
+- releaseDate、releaseEndDate、additionalDurationMs、additionalCompletionCount、totalDurationMs、lastActiveAt、completionCount、firstCompletedDate、lastCompletedDate。
 - declaredDurationMs、declaredRegularEpisodeCount、declaredSpecialEpisodeCount、declaredPageCount、declaredVolumeCount、declaredChapterCount。
 - birthDate、birthMonthDay、deathDate、foundedDate、dissolvedDate、age、height、weight、bust、waist、hips。
 - registeredFileCount、accessibleFileCount、uncheckedFileCount。
@@ -209,7 +209,7 @@ EntryListItem 是按 type 区分的七分支联合，每项固定含 id、type�
 | primaryImageId                                                                        | 七类的附件 ID \| null；资源读取仍使用资源合同                                                                                                                              |
 | isNsfw、favorite、rating                                                              | 七类的 boolean、boolean、number \| null                                                                                                                                    |
 | addedDate、effectiveAddedDate、createdAt、updatedAt                                   | 七类；原始日历值、有效日历值及两个 UTC 毫秒时间点                                                                                                                          |
-| releaseDate、originalLanguages、status、additionalDurationMs                          | 四类作品；原始语言数组，当前状态及绝对附加毫秒值                                                                                                                           |
+| releaseDate、originalLanguages、status、additionalDurationMs、additionalCompletionCount                          | 四类作品；原始语言数组，当前状态、绝对附加毫秒值与附加完成次数                                                                                                                           |
 | releaseStatus、releaseEndDate                                                         | 动画、漫画、小说                                                                                                                                                           |
 | declaredDurationMs、declaredRegularEpisodeCount、declaredSpecialEpisodeCount          | 动画，可空数值                                                                                                                                                             |
 | declaredPageCount、declaredVolumeCount、declaredChapterCount                          | 按声明资料适用类型，可空数值                                                                                                                                               |

@@ -76,7 +76,7 @@ StarRatingFloat 是本人星级，0 表示未评分，合法正值在五分尺�
 
 CommunityStarRating、CommunityStarRatingTotalVotes 和依显示设置混用两者的 CommunityOrLocalStarRating 不作为本人分数。Favorite 的 true / false 对应特别喜爱；Hide、Broken、Installed、Portable 和 Missing* 都不是私人状态、内容敏感标记或文件存在性的证据。
 
-13.22 之前 Completed=true 表示至少完成过一次，选择后只能为空历史初始化一条未知日期完成记录；false 不删除已有历史。新格式中的 Progress 优先，旧 Completed 即便仍存在，也不能覆盖进度判断。Progress 缺失时可以使用明确旧字段；Progress 存在但为空、无效或未配置时，不借旧字段绕过选择。
+13.22 之前 Completed=true 表示至少完成过一次，选择后只能为空历史初始化 1 次附加完成；false 不删除已有历史。新格式中的 Progress 优先，旧 Completed 即便仍存在，也不能覆盖进度判断。Progress 缺失时可以使用明确旧字段；Progress 存在但为空、无效或未配置时，不借旧字段绕过选择。
 
 Progress 采用完整 Category / Value 文字，官方允许自定义类别与值，因此页面按本次不同值配置两项独立含义：
 
@@ -89,7 +89,7 @@ Progress 采用完整 Category / Value 文字，官方允许自定义类别与�
 
 旧版 Completed 经官方升级后成为 Done / Mastered。单凭这个新版状态，无法判断用户是否完整收集、是否达成 100% 成就、通关了几次或何时通关。自动进度规则可能依赖时长、成就和未游玩天数，本项采用已保存的当前值，不复制或重跑这些规则。
 
-新对象个人值随 initial 提交；已有个人值默认保留，只有明确选中采用的字段才更新。初始化已有对象空历史遵守 expected.completionCount: 0，不为已有历史追加“至少一次”。PlayCount 是启动／游玩次数，不是通关次数；LastPlayedDate 不是通关日期，二者均不生成完成历史。
+新对象个人值随 initial 提交；已有个人值默认保留，只有明确选中采用的字段才更新。初始化已有对象空历史使用 completions.initialize 确认总次数为零，不为已有历史追加“至少一次”。PlayCount 是启动／游玩次数，不是通关次数；LastPlayedDate 不是通关日期，二者均不生成完成历史。
 
 <a id="duration"></a>
 

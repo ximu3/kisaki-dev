@@ -3,6 +3,9 @@ import type { ListOptions, CallOptions, ListResult, NonEmptyArray } from '../ope
 import type { DateTest } from './query/conditions'
 import {
   completionFieldsSchema,
+  completionEntries,
+  checkCompletionTotal,
+  completionSchema,
   workRefSchema,
   type CompletionFields,
   type WorkRef,
@@ -12,24 +15,37 @@ import * as v from 'valibot'
 import { nonnegativeInteger, parseValue, optionalFields, validateExpectedKeys } from '../validation'
 import { DesktopError } from '../errors'
 
-export interface WorkCompletion<T extends WorkType = WorkType> extends CompletionFields {
+export interface WorkCompletion<T extends WorkType = WorkType> {
   readonly id: string
   readonly work: WorkRef<T>
+  readonly completedDate: CalendarDate | null
+  readonly note: string | null
   readonly createdAt: number
   readonly updatedAt: number
 }
 
-export interface CompletionCreate extends CompletionFields {
+export type CompletionCreate = CompletionFields & {
   readonly expected?: { readonly completionCount: number }
 }
 
-export interface CompletionCreateItem<T extends WorkType = WorkType> extends CompletionCreate {
+export type CompletionCreateItem<T extends WorkType = WorkType> = CompletionCreate & {
   readonly work: WorkRef<T>
 }
 
+interface CompletionFieldChanges {
+  readonly completedDate?: CalendarDate | null
+  readonly note?: string | null
+}
+
 export interface CompletionUpdate {
-  readonly changes: Partial<CompletionFields>
-  readonly expected?: Partial<CompletionFields>
+  readonly changes: CompletionFieldChanges
+  readonly expected?: CompletionFieldChanges
+}
+
+export interface CompletionInitialization {
+  readonly additionalCompletionCount: number
+  readonly records: readonly CompletionFields[]
+  readonly clearCurrentStatus?: boolean
 }
 
 export type WorkStatisticsScope =
@@ -77,6 +93,12 @@ export interface CompletionsApi {
 
   create(work: WorkRef, input: CompletionCreate, call?: CallOptions): Promise<string>
 
+  initialize(
+    work: WorkRef,
+    input: CompletionInitialization,
+    call?: CallOptions,
+  ): Promise<readonly string[]>
+
   createMany(
     items: NonEmptyArray<CompletionCreateItem>,
     call?: CallOptions,
@@ -100,24 +122,43 @@ export interface CompletionsApi {
 }
 
 const createEntries = {
-  ...completionFieldsSchema.entries,
   expected: v.exactOptional(v.strictObject({ completionCount: nonnegativeInteger })),
 }
 
-const itemSchema = v.strictObject({ work: workRefSchema, ...createEntries })
+const itemSchema = completionSchema({ work: workRefSchema, ...createEntries })
+
+export function parseCompletionInitialization(input: unknown): CompletionInitialization {
+  const value = parseValue(
+    v.strictObject({
+      additionalCompletionCount: nonnegativeInteger,
+      records: v.array(completionFieldsSchema),
+      clearCurrentStatus: v.exactOptional(v.boolean()),
+    }),
+    input,
+    'Invalid completion initialization',
+  )
+  checkCompletionTotal(value.additionalCompletionCount, value.records.length)
+  if (value.additionalCompletionCount === 0 && value.records.length === 0) {
+    throw new DesktopError('InvalidInput', 'Expected at least one completion')
+  }
+  return value
+}
 
 export function parseCompletionCreate(input: unknown): CompletionCreate {
-  return parseValue(v.strictObject(createEntries), input, 'Invalid completion creation')
+  return parseValue(completionSchema(createEntries), input, 'Invalid completion creation')
 }
 
 export function parseCompletionUpdate(input: unknown): CompletionUpdate {
-  const fields = v.strictObject(optionalFields(completionFieldsSchema.entries))
+  const fields = v.strictObject(optionalFields(completionEntries))
   const value = parseValue(
     v.strictObject({ changes: fields, expected: v.exactOptional(fields) }),
     input,
     'Invalid completion edit',
   )
   validateExpectedKeys(value.changes, value.expected)
+  if (value.changes.completedDate === null && value.changes.note === null) {
+    throw new DesktopError('InvalidInput', 'A completion needs a date or a note')
+  }
   return value
 }
 

@@ -192,8 +192,8 @@ test('rejects relationships across valid but different works and rejects non-wor
     "update game_save_backups set game_id = 'other-game' where id = 'backup'",
     `insert into game_backup_recoveries (id,game_id,backup_id,target_path,target_kind,workspace_path,manifest_sha256,created_at)
       values ('recovery','other-game','backup','saves','directory','recoveries',printf('%064d',0),1)`,
-    "insert into work_completion_records(id,work_id,work_type,created_at,updated_at) values ('wrong-subject','person','game',1,1)",
-    "insert into work_completion_records(id,work_id,work_type,created_at,updated_at) values ('wrong-type','anime','comic',1,1)",
+    "insert into work_completion_records(id,work_id,work_type,note,created_at,updated_at) values ('wrong-subject','person','game','Finished',1,1)",
+    "insert into work_completion_records(id,work_id,work_type,note,created_at,updated_at) values ('wrong-type','anime','comic','Finished',1,1)",
   ]) {
     expect(() => connection.prepare(statement).run()).toThrow(
       expect.objectContaining({ code: 'SQLITE_CONSTRAINT_FOREIGNKEY' }),
@@ -201,7 +201,7 @@ test('rejects relationships across valid but different works and rejects non-wor
   }
   expect(() =>
     connection.exec(
-      "insert into work_completion_records(id,work_id,work_type,created_at,updated_at) values ('person-completion','person','person',1,1)",
+      "insert into work_completion_records(id,work_id,work_type,note,created_at,updated_at) values ('person-completion','person','person','Finished',1,1)",
     ),
   ).toThrow(expect.objectContaining({ code: 'SQLITE_CONSTRAINT_CHECK' }))
   expect(connection.pragma('foreign_key_check')).toEqual([])

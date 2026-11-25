@@ -224,6 +224,7 @@ export type EntryCondition =
   | ({
       readonly field:
         | 'additionalDurationMs'
+        | 'additionalCompletionCount'
         | 'totalDurationMs'
         | 'completionCount'
         | 'registeredFileCount'
@@ -486,6 +487,7 @@ const conditionSchemas: Readonly<
   bloodType: enumTest(v.nullable(v.picklist(['a', 'b', 'ab', 'o']))),
 
   additionalDurationMs: numberTest(nonnegativeInteger),
+  additionalCompletionCount: numberTest(nonnegativeInteger),
   totalDurationMs: numberTest(nonnegativeInteger),
   completionCount: numberTest(nonnegativeInteger),
   declaredDurationMs: nullableCountTest,

@@ -320,6 +320,7 @@ export {
 
 export type {
   WorkCompletion,
+  CompletionInitialization,
   CompletionCreate,
   CompletionCreateItem,
   CompletionUpdate,
@@ -330,6 +331,7 @@ export type {
 
 export {
   parseCompletionCreate,
+  parseCompletionInitialization,
   parseCompletionUpdate,
   parseCompletionCreateMany,
 } from './completions'
