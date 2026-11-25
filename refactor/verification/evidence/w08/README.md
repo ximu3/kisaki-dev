@@ -4,20 +4,20 @@
 
 ## W09、W16 联调制品
 
-开发包版本为 `0.1.0-dev.0`，使用 mpv v0.42.0、Client API 2.6 和 Node-API 8。Windows、macOS 和 glibc Linux 各交付 x64、arm64 两个平台包。六个目标使用同一份主包，各自安装与其系统和架构相配的平台包。[绑定源码](https://github.com/ximu3/libmpv-node-dev/commit/31e374c37523d20efc420fd7e4c1ddd648d6f3a6) · [六目标构建、源码装配与消费](https://github.com/ximu3/libmpv-node-dev/actions/runs/45430700324)
+开发包版本为 `0.1.0-dev.0`，使用 mpv v0.42.0、Client API 2.6 和 Node-API 8。Windows、macOS 和 glibc Linux 各有 x64、arm64 两个平台包。六个目标从同一份主包和各自的平台包安装，在普通 Node 26.13.1 和实际 Electron 45.3.2 中通过消费验证，包括 ASAR 加载和引擎清单不配时的拒绝。[六目标候选与消费记录](https://github.com/ximu3/libmpv-node-dev/actions/runs/45555313839)
 
-在 Kisaki 工作区的 `.local/w08/31e374c37523d20efc420fd7e4c1ddd648d6f3a6/` 下，`packages/` 保存主包和六个平台包，`sources/` 保存六份对应源码。每个目录都有列出逐文件 SHA-256 的 `checksums.json`。源码包含对应提交的绑定、上游源码、三项 mpv 补丁、锁定的构建输入、第三方许可和重链接说明。平台包的 `abi.json` 记录构建提交、Node-API 和各原生文件的系统要求。[构建与重链接](https://github.com/ximu3/libmpv-node-dev/blob/31e374c37523d20efc420fd7e4c1ddd648d6f3a6/engine/RELINK.md)
+这批制品绑定 PR 合并候选 `b3ede2af9bd9a182b708e315217fb4469952314d`，其 Git 树与合并后的[主线提交](https://github.com/ximu3/libmpv-node-dev/commit/4f7356957768695936612afa76f7079d93cbb377)一致。在 Kisaki 工作区的 `.local/w08/b3ede2af9bd9a182b708e315217fb4469952314d/` 下，`packages/` 保存 CI 已验证的归档，`sources/` 保存按同一提交的六份 CI 输入、固定上游源码及摘要装配的对应源码。源码包包含绑定、上游源码、三项 mpv 补丁、构建输入、第三方许可与重链接说明。[构建与重链接](https://github.com/ximu3/libmpv-node-dev/blob/4f7356957768695936612afa76f7079d93cbb377/engine/RELINK.md)
 
 | 清单 | 归档数 | 清单文件的 SHA-256 |
 | --- | ---: | --- |
-| `packages/checksums.json` | 7 | `7e11aad95a8164abf4f31d30408bc1b9e89116c062197e97e40c065ae26a58ff` |
-| `sources/checksums.json` | 6 | `3fd3fb321a34db790e0968420961c3ff41203c653c82871cb2cfc3e64b322ced` |
+| `packages/checksums.json` | 7 | `db8d799a593b7bd99606ced119ca5c2f39a9e47d359bc9ea07ac6e78255aa4c3` |
+| `sources/checksums.json` | 6 | `14883ba151fabdcecb612197ec44bae44dcddec1f578f70f815bcb01e1396174` |
 
-普通 Node 26.13.1 和实际 Electron 45.3.2 消费已安装的配对包。Electron 另验 ASAR 内的主包、解包的平台资源和引擎清单被改动时的错误。八组设计消费样例对安装后的公开声明通过严格类型检查，覆盖显式属性格式、原生节点、初始化选项和嵌套的 SDR 目标。受管输出拒绝从同一核心的客户端写入冲突的窗口和图形上下文选项。[平台消费入口](https://github.com/ximu3/libmpv-node-dev/blob/31e374c37523d20efc420fd7e4c1ddd648d6f3a6/tools/package/verify.ts)
+安装后的主包通过八组设计消费样例和普通、原生输出选项的转发检查。Windows x64 分别在空闲核心、加载视频与字幕、使用 D3D11 和 WASAPI 三个场景核对属性实际返回值与公开声明，共取得 1,618、1,676、2,482 个成功结果。普通截图交付文件名，每帧截图开关关闭时返回 null。输入预算不足在读取待复制的成员前报告，编码中取消会归还接纳额度。[公开调用约定](https://github.com/ximu3/libmpv-node-dev/blob/4f7356957768695936612afa76f7079d93cbb377/docs/control.md)
 
-在 Windows 10 x64 的 RTX 4060 Laptop GPU 上，这一版平台包从 HEVC Main 10 样本报告 D3D11VA，Node 和 Electron 均完成 WASAPI 播放。可见的 Electron 窗口呈现了 16 个不同画面。另以 Electron 的 Node 模式运行已安装包的元数据示例，读到 2 秒时长、FFV1 视频轨和 ASS 字幕轨。用包内的 `libmpv-2.dll` 重跑下文的浮点回归，49 组场景中 5,103 个原先非有限的 RGB 分量恢复为有限值，原先有限的 534,975 个分量逐位一致。交付引擎与同源补丁构建的差异为零。
+在 Windows 10 x64 的 RTX 4060 Laptop GPU 上，HEVC Main 10 报告 D3D11VA。可见的 Electron 窗口呈现了 16 个不同画面。带音频和字幕的样本完成播放、定位、切换、VO 截图和共享帧消费，关闭播放器后仍可读取此前持有的画面。对交付 DLL 的 49 组浮点回归中，5,103 个原先非有限的 RGB 分量恢复为有限值，534,975 个原先有限的分量逐位一致，交付引擎与同源补丁构建的差异为零。
 
-Ubuntu 22.04 的两个架构均使用系统 libdrm 2.4.113。Mesa 在两种架构上实际创建了离屏 OpenGL ES 3.2 上下文，完成释放并退出所属线程。需要 DRM 设备、桌面会话或特定客户端的项目列在[实机验收范围](#hardware)。
+从这六个归档读取了 295 个引擎文件的大小，并从原生库复核了 2,185 项动态导入，均与对应清单一致。两种 macOS 架构的 Mach-O 最高部署目标为 13.0，两个 Linux 目标的最高 glibc 符号要求为 2.35。Ubuntu 22.04 的离屏 OpenGL ES 上下文和两种宿主中的媒体消费分别验证。仍需具体设备和系统的项目见[实机验收范围](#hardware)。
 
 ## Windows x64 初始制品
 
