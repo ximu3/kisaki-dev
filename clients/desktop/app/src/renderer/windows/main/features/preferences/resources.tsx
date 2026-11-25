@@ -37,8 +37,9 @@ export function ThemeField(props: { api: MainClient; draft: PreferenceDraft; man
         <ThemeSelector
           t={api.t}
           value={draft.read('appearance.theme')}
-          themes={items.error ? [] : (items.value ?? [])}
-          disabled={!!items.error || items.pending}
+          themes={items.value}
+          loading={items.pending}
+          disabled={items.pending || !!items.error}
           onValueChange={(ref) => draft.write('appearance.theme', ref)}
         />
         <Tooltip>
@@ -64,10 +65,7 @@ export function TranslationField(props: { api: MainClient; draft: PreferenceDraf
   )
   const selection = createMemo(() =>
     catalogSelection(
-      (items.error ? [] : (items.value ?? [])).map((item) => ({
-        value: catalogKey(item.ref),
-        label: item.name,
-      })),
+      items.value?.map((item) => ({ value: catalogKey(item.ref), label: item.name })),
       draft.read('general.uiTranslation'),
       api.t,
     ),
@@ -78,8 +76,10 @@ export function TranslationField(props: { api: MainClient; draft: PreferenceDraf
       <PreferenceField field="general.uiTranslation" label={api.t('runtime.fields.uiTranslation')}>
         <Select
           value={selection().value}
-          disabled={!!items.error || items.pending}
           options={selection().options}
+          placeholder={items.pending ? api.t('runtime.loading') : ''}
+          aria-busy={items.pending ? 'true' : undefined}
+          disabled={items.pending || !!items.error}
           emptyMessage={api.t('runtime.noOptions')}
           invalidSelectionMessage={api.t('runtime.unavailable')}
           onValueChange={(key) => {
