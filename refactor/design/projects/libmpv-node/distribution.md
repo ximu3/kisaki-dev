@@ -8,6 +8,8 @@
 
 组件用途与功能目录见[构建输入](#inputs)，包配对、非代码资源和加载见[发行清单](#artifact)与[加载规则](#loading)。六目标使用正式构建和消费验证后的制品。
 
+影响制品的 PR 在合并前从六个平台包生成一份主包。每个目标都从该主包与对应平台包安装，在普通 Node 和实际 Electron 中验证，结果纳入必需检查。合并后按[共同 CI 规则](../../engineering/workspace.md#collaboration)复用匹配的结果。手动运行可定点复现，也可重跑六目标装配和消费。
+
 所选固定提交的 Meson 文件将 FFmpeg、libass 和 libplacebo 列为构建依赖。文件中的最低版本只表示兼容要求，不是本项目已经选定的版本组合；正式发行的完整版本与功能矩阵须通过实际六个平台目标构建后冻结。[构建依据](https://github.com/mpv-player/mpv/blob/b0841e8c4d156b8403dc1876c4cbd9011eb583f3/meson.build)
 
 延续[既定交付](../native-runtime.md#delivery)和[许可方向](../../engineering/licensing.md#third-party)：优先满足完整播放要求的实际 LGPL 构建及动态交付。libmpv-node 自己装配匹配的媒体运行库，Kisaki 消费同一份平台包；不借用 Electron 附带的 ANGLE，也不依靠开发机 PATH 或系统安装的另一份媒体库。操作系统图形驱动与平台框架是明确的运行前提，尤其 Linux 的 EGL、GBM、DRM 与驱动组合需要单独列出。
