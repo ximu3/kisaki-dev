@@ -35,7 +35,7 @@ desktop-ui 通过 props、事件与回调接入行为。异步选项、加载结
 
 | 范围       | 公开职责                                                              |
 | ---------- | --------------------------------------------------------------------- |
-| 基础呈现   | 按钮、链接、徽标、分隔、加载、进度、警示、图片与空状态                |
+| 基础呈现   | 按钮、链接、MDI 图标、徽标、分隔、加载、进度、警示、图片与空状态      |
 | 表单与控件 | Form、固定反馈、Field 与字段组、文本、搜索及快捷键输入、复选、开关、单选组、选择器、Combobox 与 Slider |
 | 内容结构   | Tabs、分段选择、Toolbar、List 及重排、折叠、表格与滚动区域 |
 | 浮层与反馈 | Dialog、确认对话框、Popover、下拉菜单、上下文菜单、Tooltip 与 Toast   |
@@ -279,11 +279,11 @@ desktop-appearance 拥有正式视觉变量与[根字号计算](../domains/appea
 
 <a id="icons"></a>
 
-系统与功能图标统一使用 Lucide，版本遵守[固定兼容基线](../engineering/workspace.md#solid)。本体、公共 UI 和官方扩展的本地界面通过 @lucide/solid 具名组件导入，按实际使用裁剪。公共 UI 的内部适配统一装饰语义、槽位和描边，图形替换保持 Solid 响应性；本地内容和工具栏插槽继续采用正常组件组合。
+本体、公共 UI 和官方扩展的系统与功能图标统一使用 Material Design Icons（MDI）。同一操作优先沿用旧 Kisaki 的图形。静态图标从 `@mdi/js` 具名导入路径，由 `@kisaki3/desktop-ui/icon` 的 Icon 呈现。构建按实际使用裁剪图形。[固定版本](../engineering/workspace.md#solid) · [MDI 官方文档](https://pictogrammers.com/docs/library/mdi/getting-started/)
 
-图形使用 currentColor、圆端点与圆连接，24 单位坐标中的默认线宽为 2，随图形和界面尺寸同比缩放。图标在独立槽位内按块绘制，单行内容居中，多行提示对齐首行。只有图标的操作由控件提供可访问名称，装饰图形不重复播报。跨运行端的贡献值遵守[名称与资源合同](../extensions/webview.md#icons)。依据：[Solid 组件接入](https://lucide.dev/guide/solid/getting-started)、[描边缩放](https://lucide.dev/guide/solid/basics/stroke-width)及[可访问性](https://lucide.dev/guide/solid/advanced/accessibility)。
+Icon 在 24 × 24 坐标中用 currentColor 填充 MDI 路径，随图标槽位缩放。单行内容居中，多行提示对齐首行。装饰图形对辅助技术隐藏，纯图标操作由控件提供可访问名称，独立传达信息的图标通过 label 提供名称。跨运行端的贡献值遵守[名称与资源合同](../extensions/webview.md#icons)。
 
-带文案的 Checkbox、Switch 与 Radio 共用选项行。同一 `size` 的单行最小高度和字号与 Input 一致，方框、轨道和圆点随图标度量变化，图形与文字相距 0.5rem。文案换行时整行自然增高，图形对准首行。Spinner 在固定槽位内旋转 Lucide LoaderCircle，减少动效时静止。单值 Slider 从最小值到滑块中心按当前值绘制主色填充，剩余轨道使用中性色。输入、键盘步进和重置同步更新，悬停时颜色稳定。
+带文案的 Checkbox、Switch 与 Radio 共用选项行。同一 `size` 的单行最小高度和字号与 Input 一致，方框、轨道和圆点随图标度量变化，图形与文字相距 0.5rem。文案换行时整行自然增高，图形对准首行。Spinner 在固定槽位内旋转 MDI 的 loading 图标，减少动效时静止。单值 Slider 从最小值到滑块中心按当前值绘制主色填充，剩余轨道使用中性色。输入、键盘步进和重置同步更新，悬停时颜色稳定。
 
 Dialog 使用原生模态约束和透明背景层。Header 与 Footer 使用紧凑留白和分隔线，标题沿用常规控件字号，以字重表达层级。Body 独立滚动。可见弹层共用一层 1px 常规边框。默认主题的输入框、菜单、选择列表、日历、拾色器和 Tooltip 使用 4px 圆角，Dialog 与 Toast 使用 6px 圆角。各自采用所属表面与阴影。普通 Dialog 的 Header 右上角提供具名关闭按钮，带底部取消的编辑器同样提供。Alert Dialog 通过底部文字按钮交付决定，Escape 返回安全选项。标题栏关闭和 Escape 提交同一可阻止的关闭请求。Collapsible 的触发区保留可操作高度，与内容之间只留一处间距。
 

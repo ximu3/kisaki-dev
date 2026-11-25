@@ -1,6 +1,7 @@
 import { createSignal, Show } from 'solid-js'
 import type { JSX } from '@solidjs/web'
-import { Info } from '@lucide/solid'
+import { mdiInformationOutline } from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { Checkbox } from '@kisaki3/desktop-ui/checkbox'
 import { Combobox } from '@kisaki3/desktop-ui/combobox'
@@ -193,7 +194,7 @@ export function Interactions(): JSX.Element {
         <Button onClick={() => setAllowHelpClose(true)}>Allow help dismissal</Button>
         <Tooltip>
           <TooltipTrigger variant="ghost" aria-label="Information">
-            <Info />
+            <Icon path={mdiInformationOutline} />
           </TooltipTrigger>
           <TooltipContent>
             Information about the sample. This text remains readable while hovered.

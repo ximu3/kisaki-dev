@@ -4,11 +4,13 @@
 
 <a id="existing-ui"></a>
 
-## 桌面 UI 的设计参考
+## 桌面 UI 设计基准
 
-旧项目仅作 UI 设计参考。对照其视觉规范、公共部件和对应界面，理解已有的布局、密度、操作位置和交互习惯。当前产品规格定义对象、操作含义、默认值、资源和公开合同，公共库与应用按各自职责实现。
+桌面本体、公共 UI 部件和官方扩展界面沿用旧 Kisaki 的设计。先在 `F:/project/3/kisaki` 阅读 `.agents/skills/kisaki/references/ui-system.md` 和对应部件，再在旧工程根目录运行 `pnpm dev`，用自动加载的开发数据操作对应界面。
 
-桌面界面和公共 UI 库以默认主题、100% 应用缩放核对整体观感。先在[参考工程](../../README.md)阅读 `.agents/skills/kisaki/references/ui-system.md` 和对应部件。在旧工程根目录运行 `pnpm dev` 时，旧 Kisaki 会自动加载已有的开发数据。运行中的界面可直接作为 UI 设计参考。新增界面使用相同视觉语言，支持的缩放边界另按[代表场景](../../verification/scenarios/ui.md#baseline)验证。[外观词表](../domains/appearance.md#tokens)
+已有界面沿用旧版的布局、视觉层次、控件比例、信息密度和常用操作位置。同义操作优先选用旧版对应的 [MDI 图标](package.md#icons)。新增能力按同类页面或部件组织。对象、操作结果、默认值、状态和资源归属遵守当前规格。当前业务要求造成界面差异时，按具体操作说明依据。
+
+以默认主题、100% 应用缩放在新旧窗口核对整体观感和操作流程，再验证最小窗口和支持的缩放边界。[外观词表](../domains/appearance.md#tokens) · [代表场景](../../verification/scenarios/ui.md#baseline)
 
 <a id="native-interaction"></a>
 

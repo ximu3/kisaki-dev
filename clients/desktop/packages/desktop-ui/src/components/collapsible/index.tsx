@@ -2,7 +2,8 @@ import { omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { callHandler } from '../../internal/dom'
 import { createValue } from '../../internal/state'
-import { Icon, ChevronRight } from '../../internal/icon/glyph'
+import { mdiChevronRight } from '@mdi/js'
+import { Icon } from '../icon'
 import styles from './styles.module.css'
 
 const activationTargets =
@@ -79,7 +80,7 @@ export function Collapsible(props: CollapsibleProps): JSX.Element {
         }}
         class={[styles.summary, props.summaryClass]}
       >
-        <Icon icon={ChevronRight} class={styles.chevron} />
+        <Icon path={mdiChevronRight} class={styles.chevron} />
         {props.summary}
       </summary>
       <div class={styles.content}>{props.children}</div>

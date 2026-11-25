@@ -1,6 +1,7 @@
 import { createEffect, createMemo, createSignal, For, Show } from 'solid-js'
 import type { JSX } from '@solidjs/web'
-import { Icon, ChevronLeft, ChevronRight } from '../../../internal/icon/glyph'
+import { mdiChevronLeft, mdiChevronRight } from '@mdi/js'
+import { Icon } from '../../icon'
 import { createPopup } from '../../../internal/popup/controller'
 import { displayedWhileOpen } from '../../../internal/popup/presentation'
 import frame from '../../../internal/popup/surface.module.css'
@@ -168,7 +169,7 @@ export function DatePicker(props: PickerProps): JSX.Element {
             disabled={month().slice(0, 7) <= min().slice(0, 7)}
             onClick={() => browse(addMonths(month(), -1))}
           >
-            <Icon icon={ChevronLeft} />
+            <Icon path={mdiChevronLeft} />
           </button>
           <div class={styles.periods}>
             <For each={periodOrder()}>
@@ -205,7 +206,7 @@ export function DatePicker(props: PickerProps): JSX.Element {
             disabled={month().slice(0, 7) >= max().slice(0, 7)}
             onClick={() => browse(addMonths(month(), 1))}
           >
-            <Icon icon={ChevronRight} />
+            <Icon path={mdiChevronRight} />
           </button>
         </div>
         <div

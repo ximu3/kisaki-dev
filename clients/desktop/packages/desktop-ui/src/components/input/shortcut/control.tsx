@@ -2,7 +2,8 @@ import { createEffect, createSignal, createUniqueId, For, Show } from 'solid-js'
 import { SelectedChips, type ChipLabels } from '../../../internal/chips/control'
 import type { ControlSize } from '../../../internal/control/size'
 import { closeWhenUnavailable, fieldAttributes } from '../../../internal/field'
-import { Icon, Keyboard } from '../../../internal/icon/glyph'
+import { mdiKeyboardOutline } from '@mdi/js'
+import { Icon } from '../../icon'
 import { createPopup } from '../../../internal/popup/controller'
 import { onFormReset } from '../../../internal/state'
 import { Button } from '../../button'
@@ -174,7 +175,7 @@ export function ShortcutInput(props: ShortcutInputProps) {
           toggle()
         }}
       >
-        <Icon icon={Keyboard} />
+        <Icon path={mdiKeyboardOutline} />
       </button>
 
       <div

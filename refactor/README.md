@@ -4,7 +4,7 @@
 
 现代化、简洁、清晰、干净与克制是本目录同等首要的设计标准。实现方式按[判断与取舍](design/engineering/conventions.md#judgment)由产品目标与实际效果决定。讨论、修改和验收时，按[全局设计与一致性](design/engineering/conventions.md#global-design)核对同类功能及所有受影响的入口。所有主题及其限制、验证要求遵守[共用工程规范](design/engineering/conventions.md#quality)，具体产品与技术语义由所属主题定义。
 
-旧项目 `F:/project/3/kisaki` 及其常规 dev 运行界面可作为 [UI 设计参考](design/ui/components.md#existing-ui)。产品行为与资源要求由本仓库的领域、界面和工程规格定义。
+桌面 UI 以旧 Kisaki（`F:/project/3/kisaki`）的实际界面为设计基准，系统与功能图标统一使用 MDI。设计、实现和验收时先对照旧版对应界面，再按本项目规格核对业务行为与资源归属。[桌面 UI 设计基准](design/ui/components.md#existing-ui)
 
 <a id="rewrite"></a>
 
@@ -16,8 +16,6 @@
 
 本轮交付范围包括 clients/desktop 下的桌面本体、八个公共包、33 项官方扩展及四个[独立技术项目](design/projects/README.md#delivery)。[顶层分组](design/engineering/layout.md#workspace)中的 Web 客户端、官网和候选服务端留待后续项目。
 
-桌面界面与公共部件参考旧项目的布局、密度、视觉风格和操作习惯。业务操作、状态归属和组件实现按本项目规格设计。[共同界面](design/ui/components.md#existing-ui)
-
 <a id="reading"></a>
 
 ## 按任务阅读
@@ -25,6 +23,7 @@
 | 要做的事             | 阅读入口                                                                                                                                |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | 理解产品与整体设计   | [产品范围](design/product.md) → [运行架构](design/architecture.md) → [调用与事件](design/communication.md)                              |
+| 设计或审阅桌面界面   | [旧版界面对照](design/ui/components.md#existing-ui) → [公共 UI 与图标](design/ui/package.md) → [代表场景](verification/scenarios/ui.md#baseline) |
 | 编写或审阅代码与示例 | [逻辑分段](design/engineering/conventions.md#logical-sections) → [源码验收](verification/scenarios/engineering.md#source-quality)       |
 | 实现一项本体能力     | [领域规则](design/domains/README.md)、[界面与交互](design/ui/README.md)，再查对应[工作包](implementation/work-packages.md)              |
 | 开发或接入扩展       | [扩展合同](design/extensions/README.md) → [33 项官方目录](design/extensions/catalog.md) → 对应来源或导入器                              |

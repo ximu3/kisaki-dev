@@ -21,9 +21,12 @@
   }
 
   .heading,
-  .description,
-  .icon {
+  .description {
     color: var(--muted-foreground);
+  }
+  .icon {
+    --kui-glyph-size: 3rem;
+    color: color-mix(in srgb, var(--muted-foreground) 50%, transparent);
   }
   .icon:empty,
   .description:empty,

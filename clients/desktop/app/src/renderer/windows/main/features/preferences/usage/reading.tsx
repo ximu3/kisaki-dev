@@ -1,5 +1,6 @@
 import { For, Show } from 'solid-js'
-import { Settings2 } from '@lucide/solid'
+import { mdiTuneVariant } from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@kisaki3/desktop-ui/tooltip'
 import { FieldAction, FieldGroup, FieldLegend } from '@kisaki3/desktop-ui/field'
 import { ColorInput, NumberInput } from '@kisaki3/desktop-ui/input'
@@ -214,7 +215,7 @@ export function ReadingFields(props: {
               aria-label={t('runtime.manageFonts')}
               onClick={props.manageFonts}
             >
-              <Settings2 />
+              <Icon path={mdiTuneVariant} />
             </TooltipTrigger>
             <TooltipContent>{t('runtime.manage')}</TooltipContent>
           </Tooltip>

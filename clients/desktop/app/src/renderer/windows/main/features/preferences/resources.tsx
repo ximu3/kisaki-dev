@@ -1,6 +1,7 @@
 import { createMemo, onCleanup } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
-import { Settings2 } from '@lucide/solid'
+import { mdiTuneVariant } from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import { catalogKey } from '../../../../../shared/catalog-ref'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@kisaki3/desktop-ui/tooltip'
 import { FieldAction } from '@kisaki3/desktop-ui/field'
@@ -46,7 +47,7 @@ export function ThemeField(props: { api: MainClient; draft: PreferenceDraft; man
             aria-label={api.t('runtime.manageThemes')}
             onClick={props.manage}
           >
-            <Settings2 />
+            <Icon path={mdiTuneVariant} />
           </TooltipTrigger>
           <TooltipContent>{api.t('runtime.manage')}</TooltipContent>
         </Tooltip>

@@ -14,7 +14,8 @@ import {
 } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { callHandler } from '../../internal/dom'
-import { Icon, X } from '../../internal/icon/glyph'
+import { mdiClose } from '@mdi/js'
+import { Icon } from '../icon'
 import { createValue } from '../../internal/state'
 import { registerModal } from '../../internal/modal-host'
 import { createPresentation } from '../../internal/popup/presentation'
@@ -263,7 +264,7 @@ export function DialogHeader(props: DialogHeaderProps): JSX.Element {
             class={surface.close}
             aria-label={label()}
           >
-            <Icon icon={X} />
+            <Icon path={mdiClose} />
           </DialogClose>
         )}
       </Show>

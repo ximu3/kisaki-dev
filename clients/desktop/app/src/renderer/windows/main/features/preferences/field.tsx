@@ -1,5 +1,6 @@
 import { createContext, Show, useContext, type ParentProps } from 'solid-js'
-import { RotateCcw } from '@lucide/solid'
+import { mdiRestore } from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import type { PreferenceKey } from '@kisaki3/desktop-contracts/preferences'
 import type { Translate } from '@kisaki3/desktop-localization'
 import {
@@ -78,7 +79,7 @@ export function PreferenceField(
               aria-label={resetLabel()}
               onClick={reset}
             >
-              <RotateCcw />
+              <Icon path={mdiRestore} />
             </TooltipTrigger>
             <TooltipContent>{resetLabel()}</TooltipContent>
           </Tooltip>

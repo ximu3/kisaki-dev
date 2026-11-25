@@ -104,7 +104,7 @@ interface SearchItem<T extends SearchCategory = SearchCategory> {
 }
 
 type SearchIcon =
-  | { type: 'lucide'; name: LucideIconName }
+  | { type: 'mdi'; name: MdiIconName }
   | { type: 'extension'; extensionId: string; path: string }
 
 interface SearchResult<T extends SearchCategory = SearchCategory> {
@@ -119,7 +119,7 @@ category 与 target 分支关联：catalog 只包含 entry、part、collection�
 
 `context` 显示所属作品、配置类别或设置路径，缺少上下文时为 null。导航使用结果中的正式目标。`excerpt` 从命中的已保存纯文本取得，最多 160 个 UTF-16 单元，截断时保留完整的扩展字素簇。正文未命中时为 null。
 
-imageId 为已有正式附件 ID，icon 使用[共同目录](../extensions/webview.md#icons)中的 LucideIconName 或已安装扩展的包内资源；缺席均为 null。扩展图标保留 extensionId 以确定资源归属，path 仅为包内受控相对路径。结果自身不占用图片字节，视图按需沿已有附件或扩展资源入口取得、绑定和释放，过期引用使用共同缺图呈现；查询不返回无释放入口的 ReadResourceRef。展示资源不授予查看隐藏对象或读取任意文件的权限。
+imageId 为已有正式附件 ID，icon 使用[共同目录](../extensions/webview.md#icons)中的 MdiIconName 或已安装扩展的包内资源；缺席均为 null。扩展图标保留 extensionId 以确定资源归属，path 仅为包内受控相对路径。结果自身不占用图片字节，视图按需沿已有附件或扩展资源入口取得、绑定和释放，过期引用使用共同缺图呈现；查询不返回无释放入口的 ReadResourceRef。展示资源不授予查看隐藏对象或读取任意文件的权限。
 
 | 结果字段 | 作用                               |
 | -------- | ---------------------------------- |

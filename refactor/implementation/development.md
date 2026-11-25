@@ -40,7 +40,7 @@ desktop-contracts 按业务子路径导出显式接口、值校验与规范编�
 
 修改 desktop-appearance 的亮暗默认值后，用 `pnpm exec vp run @kisaki3/desktop-appearance#generate:styles` 更新 `src/defaults.generated.css`。打包时核对这份样式与默认值是否一致。
 
-Lucide 名称目录由 desktop-contracts 的 `tools/generate-icon-names.ts` 从固定依赖生成，`pnpm exec vp run @kisaki3/desktop-contracts#generate:icon-names` 更新 `src/ui/icons/names.generated.ts`。普通 build 核对生成一致性；公开纯合同只携带名称和校验，不加载图形目录。desktop-ui 以 @lucide/solid 组件呈现本地图标。
+desktop-contracts 从固定的 `@iconify-json/mdi` 图集生成 MDI 名称和别名。运行 `pnpm exec vp run @kisaki3/desktop-contracts#generate:icon-names` 更新 `src/ui/icons/names.generated.ts`，普通 build 核对生成一致性。公开纯合同只携带名称和校验。本地图标使用 `@mdi/js` 的具名路径与 [desktop-ui 的 Icon](../design/ui/package.md#icons)。
 
 desktop-localization 的英语 ICU 源文位于 src/en，按领域维护并由 index.ts 静态汇总；`pnpm exec vp run @kisaki3/desktop-localization#generate:messages` 更新 src/contracts.generated.ts。普通 build 校验消息声明与英语源文一致，再交接完整构建结果。`createTranslator(locale, catalog)` 创建独立格式化快照；main 的 i18n 管理生效语言与登记寿命，窗口以响应式格式化快照更新文案。生成源由生成器负责排版。
 

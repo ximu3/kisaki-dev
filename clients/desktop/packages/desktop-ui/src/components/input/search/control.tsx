@@ -1,7 +1,8 @@
 import { Show, omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { fieldAttributes } from '../../../internal/field'
-import { Icon, Search, X } from '../../../internal/icon/glyph'
+import { mdiMagnify, mdiClose } from '@mdi/js'
+import { Icon } from '../../icon'
 import { createValue } from '../../../internal/state'
 import { InputFrame } from '../frame'
 import { NativeInput } from '../native'
@@ -43,7 +44,7 @@ export function SearchInput(props: SearchInputProps): JSX.Element {
   return (
     <InputFrame class={props.class} style={props.style} size={props.size}>
       <span class={styles.icon} aria-hidden="true">
-        <Icon icon={Search} />
+        <Icon path={mdiMagnify} />
       </span>
       <NativeInput
         {...rest}
@@ -67,7 +68,7 @@ export function SearchInput(props: SearchInputProps): JSX.Element {
           disabled={props.disabled ?? field.disabled}
           onClick={clear}
         >
-          <Icon icon={X} />
+          <Icon path={mdiClose} />
         </button>
       </Show>
     </InputFrame>

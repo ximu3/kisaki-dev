@@ -1,6 +1,15 @@
 import { createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
-import { Check, Copy, Eye, Palette, Pencil, Plus, Trash2 } from '@lucide/solid'
+import {
+  mdiCheck,
+  mdiContentCopy,
+  mdiEyeOutline,
+  mdiPaletteOutline,
+  mdiPencilOutline,
+  mdiPlus,
+  mdiDeleteOutline,
+} from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import type { Theme, ThemeRef } from '@kisaki3/desktop-contracts/appearance'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { Badge } from '@kisaki3/desktop-ui/badge'
@@ -229,7 +238,7 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
 
               return (
                 <ListItem
-                  icon={<Palette />}
+                  icon={<Icon path={mdiPaletteOutline} />}
                   title={
                     <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
                       <span>{item().name}</span>
@@ -248,7 +257,7 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
                           disabled={busy() || preferences.pending || !!preferences.error}
                           onClick={() => operate(() => useTheme(item().ref))}
                         >
-                          <Check />
+                          <Icon path={mdiCheck} />
                         </ListItemAction>
                       </Show>
                       <ListItemAction
@@ -257,7 +266,7 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
                         aria-label={api.t('runtime.previewItem', { name: item().name })}
                         onClick={() => setPreview(item().ref)}
                       >
-                        <Eye />
+                        <Icon path={mdiEyeOutline} />
                       </ListItemAction>
                       <ListItemAction
                         label={api.t('runtime.duplicate')}
@@ -265,7 +274,7 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
                         disabled={busy()}
                         onClick={() => operate(() => duplicate(item().ref, item().name))}
                       >
-                        <Copy />
+                        <Icon path={mdiContentCopy} />
                       </ListItemAction>
                       <Show when={item().ref.type === 'user' ? item().ref.id : undefined}>
                         {(id) => (
@@ -276,7 +285,7 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
                               disabled={busy()}
                               onClick={() => operate(() => open(item().ref, item().name))}
                             >
-                              <Pencil />
+                              <Icon path={mdiPencilOutline} />
                             </ListItemAction>
                             <ListItemAction
                               label={api.t('actions.delete')}
@@ -285,7 +294,7 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
                               destructive
                               onClick={() => operate(() => remove(id(), item().name))}
                             >
-                              <Trash2 />
+                              <Icon path={mdiDeleteOutline} />
                             </ListItemAction>
                           </>
                         )}
@@ -304,7 +313,7 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
           disabled={busy()}
           onClick={() => operate(() => open(initialTheme, api.t('runtime.newTheme')))}
         >
-          <Plus />
+          <Icon path={mdiPlus} />
           {api.t('runtime.newTheme')}
         </Button>
       </DialogFooter>

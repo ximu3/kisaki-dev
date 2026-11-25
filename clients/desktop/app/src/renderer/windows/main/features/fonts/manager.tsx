@@ -1,6 +1,13 @@
 import { createEffect, createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
-import { CaseSensitive, Eye, Pencil, Plus, Trash2 } from '@lucide/solid'
+import {
+  mdiFormatLetterCase,
+  mdiEyeOutline,
+  mdiPencilOutline,
+  mdiPlus,
+  mdiDeleteOutline,
+} from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import type { Font } from '@kisaki3/desktop-contracts/fonts'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { Button } from '@kisaki3/desktop-ui/button'
@@ -222,7 +229,7 @@ function FontCatalog(props: FontsProps & { visible: boolean }) {
                   const name = () => entries().get(id)!.name
                   return (
                     <ListItem
-                      icon={<CaseSensitive />}
+                      icon={<Icon path={mdiFormatLetterCase} />}
                       title={name()}
                       actions={
                         <>
@@ -232,14 +239,14 @@ function FontCatalog(props: FontsProps & { visible: boolean }) {
                             aria-label={api.t('runtime.previewItem', { name: name() })}
                             onClick={() => setPreview({ id, name: name() })}
                           >
-                            <Eye />
+                            <Icon path={mdiEyeOutline} />
                           </ListItemAction>
                           <ListItemAction
                             label={api.t('actions.edit')}
                             aria-label={api.t('runtime.editItem', { name: name() })}
                             onClick={() => void open(id).catch(reportError)}
                           >
-                            <Pencil />
+                            <Icon path={mdiPencilOutline} />
                           </ListItemAction>
                           <ListItemAction
                             label={api.t('actions.delete')}
@@ -247,7 +254,7 @@ function FontCatalog(props: FontsProps & { visible: boolean }) {
                             destructive
                             onClick={() => void remove(id, name()).catch(reportError)}
                           >
-                            <Trash2 />
+                            <Icon path={mdiDeleteOutline} />
                           </ListItemAction>
                         </>
                       }
@@ -261,7 +268,7 @@ function FontCatalog(props: FontsProps & { visible: boolean }) {
       </DialogBody>
       <DialogFooter class="justify-between">
         <Button variant="outline" onClick={() => start()}>
-          <Plus />
+          <Icon path={mdiPlus} />
           {api.t('runtime.newFont')}
         </Button>
         <Show when={count() > pageSize || offset() > 0}>

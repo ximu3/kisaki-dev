@@ -4,7 +4,8 @@ import type { ControlSize } from '../../internal/control/size'
 import { callHandler } from '../../internal/dom'
 import { fieldAttributes } from '../../internal/field'
 import { bindCheckedControl, type CheckedValueProps } from '../../internal/checked-control'
-import { Icon, Check, Minus } from '../../internal/icon/glyph'
+import { mdiCheck, mdiMinus } from '@mdi/js'
+import { Icon } from '../icon'
 import { ChoiceRow } from '../../internal/choice/row'
 import styles from './styles.module.css'
 
@@ -61,8 +62,8 @@ export function Checkbox(props: CheckboxProps): JSX.Element {
             callHandler(props.onChange, event)
           }}
         />
-        <Icon icon={Check} class={styles.check} />
-        <Icon icon={Minus} class={styles.mixed} />
+        <Icon path={mdiCheck} class={styles.check} />
+        <Icon path={mdiMinus} class={styles.mixed} />
       </span>
     </ChoiceRow>
   )

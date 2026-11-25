@@ -1,6 +1,7 @@
 import { createEffect, createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
 import { createQuery } from '../../../infrastructure/query'
-import { Ellipsis, ListChecks } from '@lucide/solid'
+import { mdiDotsHorizontal, mdiFormatListChecks } from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@kisaki3/desktop-ui/tooltip'
 import { Popover, PopoverContent, PopoverTrigger } from '@kisaki3/desktop-ui/popover'
 import type { PreferencesSnapshot, PreferencesUpdate } from '@kisaki3/desktop-contracts/preferences'
@@ -100,7 +101,7 @@ export function NavigationRail(props: {
                     .some((page) => pageKey(page.ref) === current()) || undefined
                 }
               >
-                <Ellipsis />
+                <Icon path={mdiDotsHorizontal} />
               </TooltipTrigger>
               <TooltipContent placement="right">{api.t('runtime.more')}</TooltipContent>
             </Tooltip>
@@ -128,7 +129,7 @@ export function NavigationRail(props: {
             aria-label={api.t('runtime.tasks')}
             onClick={() => void props.open({ type: 'tasks' })}
           >
-            <ListChecks />
+            <Icon path={mdiFormatListChecks} />
             <Show when={!active.error && active.value?.total}>
               {(n) => (
                 <span

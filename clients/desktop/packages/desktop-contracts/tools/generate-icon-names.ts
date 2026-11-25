@@ -1,27 +1,29 @@
 import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import { lucideIconNames } from '@lucide/icons/dynamic'
+import { icons } from '@iconify-json/mdi'
 import { runCli } from '@kisaki3/tooling/cli'
 
 const destination = join(import.meta.dirname, '../src/ui/icons/names.generated.ts')
 
 export function renderIconNames(): string {
-  const names = lucideIconNames.toSorted().map((name) => `  ${JSON.stringify(name)},`)
+  const names = [...Object.keys(icons.icons), ...Object.keys(icons.aliases ?? {})]
+    .sort()
+    .map((name) => `  ${JSON.stringify(name)},`)
 
-  return `// Generated from the pinned @lucide/icons catalog by generate:icon-names.
+  return `// Generated from the pinned @iconify-json/mdi catalog by generate:icon-names.
 
-export const lucideIconNames = Object.freeze([
+export const mdiIconNames = Object.freeze([
 ${names.join('\n')}
 ] as const)
 
-export type LucideIconName = (typeof lucideIconNames)[number]
+export type MdiIconName = (typeof mdiIconNames)[number]
 `
 }
 
 export async function checkIconNames(): Promise<void> {
   if ((await readFile(destination, 'utf8')) !== renderIconNames()) {
     throw new Error(
-      'Lucide icon names are stale. Run pnpm exec vp run @kisaki3/desktop-contracts#generate:icon-names.',
+      'MDI icon names are stale. Run pnpm exec vp run @kisaki3/desktop-contracts#generate:icon-names.',
     )
   }
 }

@@ -1,7 +1,8 @@
 import { Show, omit, type ParentProps } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { callHandler } from '../../internal/dom'
-import { Icon, Check } from '../../internal/icon/glyph'
+import { mdiCheck } from '@mdi/js'
+import { Icon } from '../icon'
 import { displayedWhileOpen } from '../../internal/popup/presentation'
 import row from '../../internal/list-row.module.css'
 import { Separator } from '../separator'
@@ -77,7 +78,7 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
       <Show when={checked() !== undefined}>
         <span aria-hidden="true" class={row.mark}>
           <Show when={checked() === 'true'}>
-            <Icon icon={Check} />
+            <Icon path={mdiCheck} />
           </Show>
         </span>
       </Show>

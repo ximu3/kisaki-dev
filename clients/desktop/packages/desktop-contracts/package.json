@@ -315,9 +315,9 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "catalog:",
+    "@iconify-json/mdi": "1.2.3",
     "@kisaki3/config": "workspace:*",
     "@kisaki3/tooling": "workspace:*",
-    "@lucide/icons": "1.72.0",
     "@playwright/test": "1.64.1",
     "@types/node": "catalog:",
     "publint": "catalog:",

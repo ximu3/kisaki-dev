@@ -20,4 +20,4 @@ Dedicated subpaths provide CodeMirror Markdown editing, safe previews, Unovis ch
 
 Runtime support follows the desktop Chromium baseline.
 
-System icons use Lucide components with shared sizing, proportional strokes, inherited color and decorative accessibility. Consumers can compose the same Solid icon components in local content and toolbar actions.
+System and action icons use Material Design Icons. The `/icon` component renders named paths from `@mdi/js` with shared sizing, inherited color and an optional accessible label.

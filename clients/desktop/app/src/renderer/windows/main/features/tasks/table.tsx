@@ -8,7 +8,8 @@ import {
   Show,
   Switch,
 } from 'solid-js'
-import { ListChecks, ListTodo } from '@lucide/solid'
+import { mdiArchiveOutline, mdiPlaylistPlay } from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import type { TaskRunSummary } from '@kisaki3/desktop-contracts/tasks'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { EmptyState } from '@kisaki3/desktop-ui/empty-state'
@@ -93,7 +94,7 @@ export function TaskTable(props: TaskTableProps) {
         <Match when={query.total() === 0}>
           <EmptyState
             class="grow"
-            icon={props.active ? <ListTodo /> : <ListChecks />}
+            icon={<Icon path={props.active ? mdiPlaylistPlay : mdiArchiveOutline} />}
             heading={emptyHeading()}
           />
         </Match>

@@ -1,5 +1,5 @@
-import { dynamic } from '@solidjs/web'
-import { ClipboardList, FolderSearch, RefreshCw, ScanLine } from '@lucide/solid'
+import { mdiClipboardListOutline, mdiFolderSearchOutline, mdiRefresh, mdiScanHelper } from '@mdi/js'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import type { TaskRunStatus, TaskRunSummary } from '@kisaki3/desktop-contracts/tasks'
 import type { englishMessages, Translate } from '@kisaki3/desktop-localization'
 import { Badge } from '@kisaki3/desktop-ui/badge'
@@ -18,10 +18,10 @@ const toneByStatus = {
 
 type TaskTypeMessage = `tasks.types.${keyof typeof englishMessages.tasks.types}`
 
-const taskTypes = new Map<string, { message: TaskTypeMessage; icon: typeof ClipboardList }>([
-  ['scanner.scan', { message: 'tasks.types.directoryScan', icon: FolderSearch }],
-  ['library.scan', { message: 'tasks.types.libraryScan', icon: ScanLine }],
-  ['library.refresh', { message: 'tasks.types.libraryRefresh', icon: RefreshCw }],
+const taskTypes = new Map<string, { message: TaskTypeMessage; icon: string }>([
+  ['scanner.scan', { message: 'tasks.types.directoryScan', icon: mdiFolderSearchOutline }],
+  ['library.scan', { message: 'tasks.types.libraryScan', icon: mdiScanHelper }],
+  ['library.refresh', { message: 'tasks.types.libraryRefresh', icon: mdiRefresh }],
 ])
 
 export function taskTypeLabel(t: Translate, type: string): string {
@@ -30,8 +30,12 @@ export function taskTypeLabel(t: Translate, type: string): string {
 }
 
 export function TaskTypeIcon(props: { type?: string | undefined }) {
-  const Glyph = dynamic(() => taskTypes.get(props.type ?? '')?.icon ?? ClipboardList)
-  return <Glyph aria-hidden="true" class="size-4 shrink-0 text-muted-foreground" />
+  return (
+    <Icon
+      path={taskTypes.get(props.type ?? '')?.icon ?? mdiClipboardListOutline}
+      class="size-4 shrink-0 text-muted-foreground"
+    />
+  )
 }
 
 export function TaskStatus(props: { t: Translate; status: TaskRunStatus }) {

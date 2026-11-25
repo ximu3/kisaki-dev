@@ -37,6 +37,8 @@ export async function prepareResources(
   await copyMediaRuntime(join(output, 'media'))
   await cp(join(appRoot, 'drizzle'), join(output, 'drizzle'), { recursive: true })
   await cp(join(appRoot, 'assets', 'licenses'), join(output, 'licenses'), { recursive: true })
+  const mdiRoot = dirname(requireDependency.resolve('@mdi/js/package.json'))
+  await copyFile(join(mdiRoot, 'LICENSE'), join(output, 'licenses', 'material-design-icons.txt'))
   const dequalRoot = dirname(requireDependency.resolve('dequal/package.json'))
   await copyFile(join(dequalRoot, 'license'), join(output, 'licenses', 'dequal.txt'))
 
