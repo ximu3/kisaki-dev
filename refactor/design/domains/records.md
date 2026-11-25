@@ -1,8 +1,8 @@
-# 当前状态、附加时长与完成记录
+# 当前状态、附加次数、附加时长与完成记录
 
 个人记录支持快速管理当前状态，并回顾、修改每次完成的记录。当前状态、作品完成记录、分部完成标记、文件位置和实际活动分别保存，不组成体验轮次或使用过程。
 
-条目当前个人值及附加时长由 library 的 entries 实现，完成历史位于 records/completions；分部标记、文件位置与活动遵守[内部归属](library/write/README.md#personal-regions)。本篇将相关产品含义一起说明，不据此建立统一记录实体或把所有实现放入同一模块。
+条目当前个人值、附加完成次数及附加时长由 library 的 entries 实现，完成历史位于 records/completions；分部标记、文件位置与活动遵守[内部归属](library/write/README.md#personal-regions)。本篇将相关产品含义一起说明，不据此建立统一记录实体或把所有实现放入同一模块。
 
 <a id="model"></a>
 
@@ -10,7 +10,7 @@
 
 游戏、动画、漫画和小说的当前状态只有 planned（计划中）、active（进行中）、onHold（搁置），另以 null 表示未设置。当前状态表达用户现在的安排；新建、收录或发现本地文件都不自动填写 planned。缺少当前记录行时按未设置读取。
 
-每条作品完成记录表示一次已经登记的完成事实，可以没有日期和备注。作品是否完成过及完成次数从这些记录得出，不另存可写的 completed 状态、完成布尔值、完成次数或最近完成日期。没有完成记录只表示尚未登记，不证明用户从未完成。
+每条作品完成记录表示一次可辨认的完成经历，至少提供完整日历日期或非空备注。用户只知道次数时，将其保存为作品的附加完成次数。完成总次数等于明细条数加附加次数，大于零即表示已登记过完成。总数为零只表示尚未登记。
 
 当前状态与完成历史可以同时成立。例如，active 与两条完成记录表示当前在玩、看或读，并且已经登记过两次完成。重新设为 active、planned 或 onHold 不修改历史；清除当前状态也不撤回完成记录。没有当前安排但仍要保留资料或历史时，使用未设置；不再保留条目时执行普通条目删除。
 
@@ -20,7 +20,7 @@
 
 ## 存储与读取值
 
-各媒介的当前记录仍分别保存在 game_records、anime_records、comic_records 和 novel_records，以所属作品为主键。四张表均保存 status 和 additional_duration_ms：前者使用三种当前状态或 null，后者为未包含在实际活动中的附加使用时长，使用非负安全整数毫秒，默认 0。缺少当前记录行时分别按 null 和 0 读取，不强制建立占位行。评分和收藏继续属于条目评价，不放进完成记录。
+各媒介的当前记录仍分别保存在 game_records、anime_records、comic_records 和 novel_records，以所属作品为主键。四张表均保存 status、additional_completion_count 和 additional_duration_ms。状态为三种当前状态或 null，两个附加值均为非负安全整数，默认 0。缺少当前记录行时按这些默认值读取，不强制建立占位行。评分和收藏继续属于条目评价，不放进完成记录。
 
 四类作品共用 work_completion_records。数据库限定 work_type 为四类 Work，并用 (work_id, work_type) 外键核对实际条目身份。completions、条目创建和合并等受控写入在同一事务内核对目标具有对应类型行。
 
@@ -34,11 +34,21 @@
 | created_at     | 本条记录实际建立的 UTC 毫秒时间                               |
 | updated_at     | 本条记录日期或备注实际修改的 UTC 毫秒时间                     |
 
-CalendarDate 的完整分量、编码与校验见[完整日历日期](values.md#calendar-date)。日期未知时整值为 null，不使用 PartialDate，不补齐来源缺少的月日，也不拿创建、编辑或导入时间充当完成日期。没有日期和备注的记录仍然是一条完整的完成事实。
+CalendarDate 的完整分量、编码与校验见[完整日历日期](values.md#calendar-date)。日期未知时整值为 null，不使用 PartialDate，不补齐来源缺少的月日，也不拿创建、编辑或导入时间充当完成日期。无日期时必须保留非空备注。保存前将全空白备注归一为 null，再校验日期和备注至少一项有值。编辑单个字段时按提交后的整条记录判断；两项都为空则拒绝并保留原记录。
 
-记录归属于作品，只有完整条目合并可以迁移归属。日常编辑不改变 id 或 work_id。索引覆盖作品内的日期与稳定补序、work_id 与创建顺序，以及完成日期范围到 work_id 的期间查询。相同日期、相同备注和同时为空都不构成唯一约束。
+记录归属于作品，只有完整条目合并可以迁移归属。日常编辑不改变 id 或 work_id。索引覆盖作品内的日期与稳定补序、work_id 与创建顺序，以及完成日期范围到 work_id 的期间查询。相同日期或相同备注均不构成唯一约束。
 
-读取提供 completionCount、firstCompletedDate 和 lastCompletedDate，与[公共查询值](library/query/contracts.md#projection)使用同一字段名。次数是该作品记录行数；两个日期分别取已知非空日期中的最小值和最大值，没有已知日期时为 null。未知日期的记录仍计入次数，不据此推断实际最早或最后一次完成发生在何时。它们都是只读投影，日期按年、月、日比较，不比较 JSON 编码文字。查询、期间统计和未知日期口径见[完成记录查询](library/query/README.md#completion-records)。
+读取提供 completionCount、firstCompletedDate 和 lastCompletedDate，与[公共查询值](library/query/contracts.md#projection)使用同一字段名。次数是明细条数与附加次数之和；两个日期分别取已知非空日期中的最小值和最大值，没有已知日期时为 null。未知日期的记录仍计入次数，不据此推断实际最早或最后一次完成发生在何时。它们都是只读投影，日期按年、月、日比较，不比较 JSON 编码文字。查询、期间统计和未知日期口径见[完成记录查询](library/query/README.md#completion-records)。
+
+<a id="additional-completions"></a>
+
+## 附加完成次数
+
+游戏、动画、漫画和小说使用同一字段 record.additionalCompletionCount。用户在作品详情分别查看附加次数、逐条明细和总次数，编辑附加次数按绝对值保存，并以 expected.record.additionalCompletionCount 比较原值。新增、修改、删除明细都不改附加次数。例如已有 3 次附加，新增一条备注明细后总数为 4；若这条属于原来的 3 次，用户自行将附加改为 2。两个操作各自保存。
+
+附加次数没有日期、备注或逐条 ID。明细列表的 total 只统计实际行，作品摘要的 completionCount 统计两部分。所有写入和合并都在提交前核对该作品的总数仍是非负安全整数。超限拒绝整个操作。
+
+新建作品可以在同一事务提交附加次数与初始明细。为已有作品首次采用来源历史时，completions.initialize(work, { additionalCompletionCount, records, clearCurrentStatus? }) 在同一事务内核对总数为零、保存附加次数和全部明细，并按明细顺序返回新 ID；只有次数时返回空数组。至少提供一次完成事实。仅在本次还明确采用清除当前状态时传入 clearCurrentStatus。条件变化返回 Conflict，任何一项失败均保留原次数、明细和当前状态。已有总数时，来源快照默认保留本地历史。
 
 <a id="duration"></a>
 
@@ -68,13 +78,13 @@ CalendarDate 的完整分量、编码与校验见[完整日历日期](values.md#
 | 记录本次完成           | 新增一条完成记录，并在同一事务清除当前状态；不要求此前为 active |
 | 补录完成记录           | 新增一条完成记录，保留当前状态                                  |
 | 编辑完成记录           | 按稳定 ID 修改该条的日期或备注，保留其他记录及当前状态          |
-| 清除完成日期           | 将该条日期改为 null，保留完成事实及备注                         |
+| 清除完成日期           | 保留非空备注时可清除日期                         |
 | 删除完成记录           | 删除指定记录，保留当前状态；次数和完成情况按剩余记录计算        |
 | 设置或清除分部完成标记 | 只修改明确分部的已看或已读标记                                  |
 
-“记录本次完成”的界面日期默认今天，用户可以清空；补录默认日期未知。完整操作接收明确日期值或 null，不在主进程、SDK 或来源适配中用调用时刻补出完成日期。两种新增操作共用日期和备注字段，通过入口决定是否清除当前状态，不增加“同时修改状态”的选项。
+“记录本次完成”的界面日期默认今天；有非空备注时可以清空日期。补录可以只写具体备注。完整操作接收明确日期值或 null，不在主进程、SDK 或来源适配中用调用时刻补出完成日期。两种新增操作共用日期和备注字段，通过入口决定是否清除当前状态，不增加“同时修改状态”的选项。
 
-删除最后一条完成记录后，作品不再满足“有完成记录”，但当前状态、评分、分部标记、文件位置和活动不变。以上操作均不生成游玩、观看或阅读时长，不重置文件位置、存档或标注。
+删除最后一条明细后，仅当附加次数也为零时，作品才不再计为已完成；但当前状态、评分、分部标记、文件位置和活动不变。以上操作均不生成游玩、观看或阅读时长，不重置文件位置、存档或标注。
 
 完整操作由 library 拥有，UI、批量入口、SDK 和来源扩展共用。公开能力如下：
 
@@ -84,13 +94,14 @@ CalendarDate 的完整分量、编码与校验见[完整日历日期](values.md#
 | library.entries.setWorkStatus         | WorkRef 与三种状态或 null；完成后返回 void                                                                                                        |
 | library.completions.list、get         | 读取指定作品的有界记录列表及总量，或按作品和 completionId 读取一条；get 未命中返回 null                                                           |
 | library.completions.statistics        | 接收明确 Work 范围及完成日期条件，返回完成次数、去重作品数和日历分组；同一 Work 范围的未知日期数量单独返回，不充当期间次数                        |
+| library.completions.initialize        | 为总次数为零的作品一次采用附加次数和明细，返回按输入顺序排列的明细 ID；见[附加完成次数](#additional-completions) |
 | library.completions.create            | WorkRef、completedDate、note 和可选 expected；新增历史记录并返回 completionId，保留当前状态                                                       |
 | library.completions.createMany        | 明确的完成记录输入数组，每项包含 work（WorkRef）、completedDate、note 和可选 expected；同一作品可以有多项，整个短批次一起提交并按输入返回 ID      |
 | library.completions.recordCurrent     | 与 create 相同的输入；新增记录和清除当前状态一起提交，返回 completionId                                                                           |
 | library.completions.recordCurrentMany | 非空项目数组，每项包含 work（WorkRef）、completedDate、note 和可选 expected；按去重后的每部作品各新增一条并清除当前状态，返回作品与记录 ID 的对应 |
 | library.completions.update、delete    | WorkRef 与 completionId；update 只接受日期、备注及相关 expected，delete 只删除该记录；完成后返回 void                                             |
 
-新增记录的空日期和空备注使用 null；调用方可以明确创建两项都为空的完成事实。recordCurrent 表达“记录本次完成”的明确动作，按传入日期和备注新增完成记录并清除当前状态；存在运行会话或当前安排均非前提。普通历史新增保留当前状态。修改或删除的目标已经不存在时正常失败。
+未提供的日期或备注使用 null，二者至少保留一项。recordCurrent 表达“记录本次完成”的明确动作，按传入日期和备注新增完成记录并清除当前状态；存在运行会话或当前安排均非前提。普通历史新增保留当前状态。修改或删除的目标已经不存在时正常失败。
 
 条目当前个人值使用 entries.update 或相应的即时设置操作。作品状态只适用于 Work，其他 Entry 只接受适用评价字段。完成历史使用 completions 的完整操作，不与评分、收藏和状态组合成另一种个人记录写入接口。创建条目和 writeGraph 可以携带明确的初始完成记录；completionRecords 是逐条事实的输入数组，不是独立完成计数。metadata 候选和资料方案不携带这些个人值。
 
@@ -100,13 +111,13 @@ CalendarDate 的完整分量、编码与校验见[完整日历日期](values.md#
 
 ## 新增记录的历史数量基线
 
-create、createMany、recordCurrent 和 recordCurrentMany 的 expected 只允许 completionCount，取值为非负安全整数，表示本次决定依赖的目标作品完成记录数量。单条与批量项目使用相同的日期、备注和数量基线合同。基线属于本次操作的 WorkRef，不能借此比较其他作品或无关条目字段。已有完成记录的日期与备注编辑，仍按该记录的实际字段基线处理。创建条目时的初始 completionRecords 只提供日期与备注，不携带已有作品的数量基线。
+create、createMany、recordCurrent 和 recordCurrentMany 的 expected 只允许 completionCount，取值为非负安全整数，表示本次决定依赖的作品完成总次数（含附加次数）。单条与批量项目使用相同的日期、备注和数量基线合同。基线属于本次操作的 WorkRef，不能借此比较其他作品或无关条目字段。已有完成记录的日期与备注编辑，仍按该记录的实际字段基线处理。创建条目时的初始 completionRecords 只提供日期与备注，不携带已有作品的数量基线。
 
 来源扩展读取到作品尚无历史，并决定仅在这一前提下初始化时，可以使用：
 
 ```ts
 await library.completions.create(workRef, {
-  completedDate: null,
+  completedDate: { year: 2026, month: 11, day: 25 },
   note: null,
   expected: { completionCount: 0 },
 })
@@ -124,7 +135,7 @@ completionCount 在这里是只读前提，不是可写计数或历史版本。�
 
 批量状态设置只写当前状态。批量“记录本次完成”给每部选中作品各新增一条，并清除其当前状态；批量补录给每部选中作品各新增一条，保留当前状态。已有完成记录不使这两个新增动作跳过目标。
 
-界面说明“为 N 部作品各新增一条完成记录”，将共同日期和备注填入各目标的输入项目，并直接执行普通批量补录。只为尚无历史的作品补录时，先使用“无完成记录”筛选确定目标。
+界面说明“为 N 部作品各新增一条完成记录”，将共同日期和备注填入各目标的输入项目，并直接执行普通批量补录。只为尚无完成事实的作品补录时，先按完成总次数为零筛选目标。
 
 界面批量操作的作品目标遵守[固定目标集合](library/write/README.md#selection)：在开始前固定并按作品身份去重，修改后离开筛选结果的作品仍属于原批次，新进入结果的作品不加入。短数据库批次共同成功或失败，不静默跳过失效或不适用目标。
 
@@ -132,7 +143,7 @@ recordCurrentMany 接收明确的非空项目数组，每项表达对一部作�
 
 createMany 的每项表示一条独立历史事实，允许同一作品出现多项，包括日期和备注相同的记录，返回值仍与输入项目逐项对应。这与按作品去重的完成动作分别处理。再次明确发起任一种新增操作仍会新增记录，除非本次提供的数量基线不成立；不建立跨次防重状态。
 
-批量输入按[容量边界](../engineering/performance.md#results)接纳。合法安全整数不代表能够一次创建同样数量的记录；来源总数须先通过展开预算检查。超限的原子批次整批拒绝，已存在历史保持不变。
+批量明细按[容量边界](../engineering/performance.md#results)接纳。来源只提供总数时保存一个附加值，不分配对应数量的明细。
 
 <a id="parts"></a>
 
@@ -150,12 +161,12 @@ AnimeEpisode、AnimeExtra、NovelVolume、ComicVolume 和 ComicChapter 的个人
 
 ## 来源采用、合并与删除
 
-平台状态快照按[个人记录导入与同步](../extensions/synchronization.md)采用。已完成状态或语义明确的完整完成日期可以为没有历史的作品初始化一条完成记录；来源处于进行中并具有完成日期时，可以同时采用 active 和这条过去的完成事实。本地已有历史时不追加、不覆盖，也不按日期认为两条记录是同一次完成。
+平台状态快照按[个人记录导入与同步](../extensions/synchronization.md)采用。总次数为零时，有完整完成日期可初始化一条明细，只有已完成状态则初始化 1 次附加完成；来源处于进行中并具有完成日期时，可以同时采用 active 和这条过去的完成事实。本地已有历史时不追加、不覆盖，也不按日期认为两条记录是同一次完成。
 
-来源解释、采用字段和操作选择由扩展负责。已有作品的历史初始化通过上述数量基线保证前提，当前值和历史分别调用适用的完整操作；需要新增完成事实并清除当前状态时使用 recordCurrent。各独立操作按实际结果报告，不承诺同一来源项目的全部个人值共同原子提交。
+来源解释、采用字段和操作选择由扩展负责。已有作品首次采用来源历史使用 initialize 保证总次数仍为零；勾选同时采用已完成状态时，该操作一同清除当前状态。普通记录本次完成使用 recordCurrent。各独立操作按实际结果报告，不承诺同一来源项目的全部个人值共同原子提交。
 
 管理软件的真实逐次历史和明确的完成总数按[迁移导入](../extensions/importers/README.md)处理。初始化空历史与明确追加历史分别表达；普通新增不按同日或同备注去重。导入器继续原批次时复用已完成步骤，新建批次的明确追加仍可新增，批次进度不成为完成记录的身份或通用防重状态。
 
-合并作品时，完成记录保留 ID、日期和备注并迁入保留作品；不按同日、相同文字或空日期自动删除记录。当前状态采用保留作品的值，包括 null。作品合并保留各分部身份及标记；用户另行明确合并同一内容的分部时，按[分部合并](library/write/README.md#part-merges)将标记取任一侧为 true。合并不另外产生完成记录，完整规则见[合并与删除](library/write/README.md#identity-operations)。
+合并作品时，完成记录保留 ID、日期和备注并迁入保留作品；不按同日、相同文字或空日期自动删除记录。当前状态、附加时长和附加完成次数沿用保留作品的值，包括 null 或 0。两边的汇总可能重叠，不自动相加。作品合并保留各分部身份及标记；用户另行明确合并同一内容的分部时，按[分部合并](library/write/README.md#part-merges)将标记取任一侧为 true。合并不另外产生完成记录，完整规则见[合并与删除](library/write/README.md#identity-operations)。
 
 删除作品会删除其拥有的完成记录，独立笔记、文件字节及其他数据按各自删除合同处理。作品删除后退出该来源同步范围，不以本地条目缺失为由删除平台收藏。删除文件登记、移除目录或文件暂时失联不删除作品完成历史。

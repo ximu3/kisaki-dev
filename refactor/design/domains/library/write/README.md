@@ -105,13 +105,13 @@ note_entry_links 的 order_in_note 与 order_in_entry，以及其他 order_in_*�
 
 ### 当前个人值：library.entries
 
-setEvaluation 和 setWorkStatus 使用[个人记录合同](../../records.md#operations)；四类作品附加时长按[共同合同](../../records.md#duration)通过 record.additionalDurationMs 写入绝对值；成功返回 void。
+setEvaluation 和 setWorkStatus 使用[个人记录合同](../../records.md#operations)；四类作品附加时长按[共同合同](../../records.md#duration)通过 record.additionalDurationMs 写入绝对值。附加完成次数通过 record.additionalCompletionCount 单独设置。成功返回 void。
 
 当前个人值也可随 entries.update 明确修改；三种当前状态或 null；历史通过 completions 管理，个人值不进入 MetadataCandidate；SDK Node 开放。
 
 ### 作品完成记录：library.completions
 
-list、get、statistics、create、createMany、recordCurrent、recordCurrentMany、update 和 delete 的输入、结果按[完成记录合同](../../records.md#operations)。
+list、get、statistics、initialize、create、createMany、recordCurrent、recordCurrentMany、update 和 delete 的输入、结果按[完成记录合同](../../records.md#operations)。
 
 完成事实有稳定 ID，日期使用 CalendarDate 或 null；记录本次完成与清除当前状态原子提交；不开放计数递增或汇总替换；SDK Node 开放。
 
@@ -341,8 +341,8 @@ Entry 操作按 Entry 去重，关系或成员操作按真实关系 ID 或完整
 | ------------------------------ | ------------------------------------------------------------------------------------------------------ |
 | 名称、简介等普通资料           | 保留 B 已填写的值，只用 A 补充 B 未填写的资料                                                          |
 | 别名、外部身份、标签、合集成员 | 按真实身份整合；已有目标关系保留身份与顺序，新关系追加；关系属性按对应关系合同合并                     |
-| 评分、收藏、当前状态、附加时长 | 保留 B 的值，包括 null、false 和 0；不取较高分、较新状态或两侧时长之和                                 |
-| 作品完成记录                   | 全部保留 ID、日期和备注并迁入 B；次数与日期摘要从合并后的记录计算                                      |
+| 评分、收藏、当前状态、附加时长、附加完成次数 | 保留 B 的值，包括 null、false 和 0；不取较高分、较新状态或两侧时长之和                                 |
+| 作品完成记录                   | 全部保留明细 ID、日期和备注并迁入 B；总次数用合并后明细条数加 B 的附加次数计算                                      |
 | 独立笔记、实际活动             | 笔记保留独立身份并整合条目关联，活动保留身份并迁移归属；不因文字或时间相似自动删除                     |
 | 分部                           | 保留各分部稳定 ID 并迁入 B；同名同号不自动归并，需要时再由用户明确合并同一内容                         |
 | 文件、位置与首选               | 按真实文件身份迁移；保留各自位置，保留 B 已设置的首选；B 没有首选时采用 A 的明确首选，不按文件顺序猜测 |
@@ -398,7 +398,7 @@ entries 集中实现七类条目共用的身份、资料和操作。查询、创
 | query           | 列表、详情、定位、分组与选择范围，以及相应条件、排序和投影 |
 | create.ts       | 条目身份、类型资料及明确初值的完整创建                     |
 | update.ts       | 资料修改、相关基线核对与完整提交                           |
-| personal.ts     | 评价、收藏、作品当前状态与作品附加时长的个人操作           |
+| personal.ts     | 评价、收藏、作品当前状态、附加完成次数与附加时长的个人操作           |
 | external-ids.ts | 外部身份的实际绑定、解除与冲突处理                         |
 | write.ts        | 对 library 内部完整操作提供的同步事务内写入规则            |
 
@@ -431,7 +431,7 @@ records 按具有独立身份和管理操作的个人事实与内容划分，包
 
 Note 的条目关联服务于文章的整理和访问，其主要对象仍是用户保存的独立内容。Annotation 保留对作品实际内容的定位与摘录，源文件不可用不使已保存内容失效。它们分别位于 records/notes 与 records/annotations，不因存在条目关联而归入 organizers 或 relations。
 
-当前属性跟随所属对象管理：评价、收藏、作品当前状态和作品附加时长位于 entries，分部完成标记位于 parts，唯一的文件续读或续播位置位于 holdings 的文件能力。数据库表名不直接决定代码目录。作品使用的运行上下文由 sessions 管理，内部技术资源沿各执行者的合同取得和释放；活动即使由运行会话持续更新，其持久事实仍由 records/activities 管理。
+当前属性跟随所属对象管理：评价、收藏、作品当前状态、附加完成次数和附加时长位于 entries，分部完成标记位于 parts，唯一的文件续读或续播位置位于 holdings 的文件能力。数据库表名不直接决定代码目录。作品使用的运行上下文由 sessions 管理，内部技术资源沿各执行者的合同取得和释放；活动即使由运行会话持续更新，其持久事实仍由 records/activities 管理。
 
 showcase 管理保存的查询、展示配置和排列，不修改条目的真实合集成员或标签关系，保持独立职责区域。界面绘制与临时草稿属于 renderer。
 

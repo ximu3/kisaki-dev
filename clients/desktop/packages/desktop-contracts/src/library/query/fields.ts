@@ -38,6 +38,7 @@ const fieldTypes = {
   hasIcon: ['game'],
 
   additionalDurationMs: workTypes,
+  additionalCompletionCount: workTypes,
   totalDurationMs: workTypes,
   lastActiveAt: workTypes,
   completionCount: workTypes,

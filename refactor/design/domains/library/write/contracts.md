@@ -17,7 +17,7 @@
 | entries.update 的共同资料                                        | name、originalName、sortName、aliases、description、primaryImageId、externalLinks、isNsfw、addedDate；独立标量分别比较，日期、数组、正文各是完整值                                    |
 | entries.update 的作品资料                                        | releaseDate、originalLanguages、backdropImageId、titleLogoId；游戏另有 iconImageId；其他专属字段按[正式类型表](../../catalog.md#work-fields)以 camelCase 同名字段逐项限定             |
 | entries.update 的角色／人物／组织资料                            | [正式资料](../../catalog.md#characters)中适用字段的 camelCase 名称；每个 number/text 身体资料值整体比较，日期整体比较，不开放日期分量 patch                                           |
-| entries.update 的评价与当前记录                                  | evaluation 只含 rating、favorite；record 只含 Work 的 status、additionalDurationMs，各自比较实际修改项；缺行分别读取 null／false／null／0                                             |
+| entries.update 的评价与当前记录                                  | evaluation 只含 rating、favorite；Work 的 record 可比较 status、additionalDurationMs、additionalCompletionCount 中实际修改的字段；缺行时状态为 null，附加时长和次数均为 0                                             |
 | entries.update 的外部身份                                        | externalIdentities 为该条目的完整身份集合，按 source 与完整 sourceId 比较，不按数组顺序；增减显式身份仍核对全库唯一性                                                                 |
 | entries.update 中的标签／手动合集关联                            | 只有 replace 分支接受 expected.tags／expected.collections，标签比较该侧完整成员、关系属性及顺序，合集只比较完整成员及备注；modify 分支不接受这两个整体基线                            |
 | entries.setEvaluation                                            | 仅 rating、favorite 中本次修改的项；参数为 `(ref, { changes, expected? })`，不重复 evaluation 外层                                                                                    |
@@ -26,6 +26,7 @@
 | parts.setCompleted／setCompletedMany                             | 明确 PartRef 或非空去重 PartRef 数组及 completed 布尔值；即时设置不接受 expected，不修改作品完成历史                                                                                  |
 | parts.changeKind                                                 | 原 PartRef 固定原种类；target 给出目标 kind、type 与适用 numberLabel，changes 提交共同资料，expected 只比较实际修改或移除的原字段；不接受整行基线                                     |
 | completions.create／createMany／recordCurrent／recordCurrentMany | 只允许目标作品的 completionCount；其原子性与批量规则见[完成记录](../../records.md#creation-baseline)                                                                                  |
+| completions.initialize | 事务内核对目标 Work 的完成总次数仍为零，初始化该作品的附加次数和明细，条件变化返回 Conflict。 |
 | completions.update                                               | `(work, completionId, { changes, expected? })`；仅 completedDate、note 的相关原值                                                                                                     |
 | relations.*.update                                               | expected.binding 为该类关系的完整事实端点与角色／职责／类型组；另允许 note、isSpoiler 的相关原值。表单保存总带 binding，避免将原事实的说明写给已经更换端点或职责的事实                |
 | collections.update                                               | name、description、primaryImageId、isNsfw 各自比较；dynamicRules 整体比较规则、保存排序与引用名称快照；模式不可通过普通 update 修改                                                   |

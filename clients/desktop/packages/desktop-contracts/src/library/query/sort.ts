@@ -22,6 +22,7 @@ export type EntrySortField =
   | 'releaseDate'
   | 'releaseEndDate'
   | 'additionalDurationMs'
+  | 'additionalCompletionCount'
   | 'totalDurationMs'
   | 'lastActiveAt'
   | 'completionCount'
@@ -69,6 +70,7 @@ export const entrySortFields: readonly EntrySortField[] = Object.freeze([
   'releaseDate',
   'releaseEndDate',
   'additionalDurationMs',
+  'additionalCompletionCount',
   'totalDurationMs',
   'lastActiveAt',
   'completionCount',

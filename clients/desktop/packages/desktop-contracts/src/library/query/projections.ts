@@ -85,6 +85,7 @@ const fieldSchemas: Readonly<Record<Exclude<EntryProjectionField, 'partCounts'>,
     originalLanguages: languagesSchema,
     status: v.nullable(statusSchema),
     additionalDurationMs: nonnegativeInteger,
+    additionalCompletionCount: nonnegativeInteger,
 
     releaseStatus: v.nullable(releaseStatusSchema),
     releaseEndDate: date,
@@ -180,6 +181,7 @@ interface WorkProjection {
   readonly status: WorkStatus | null
 
   readonly additionalDurationMs: number
+  readonly additionalCompletionCount: number
   readonly totalDurationMs: number
   readonly lastActiveAt: number | null
   readonly completionCount: number
@@ -281,6 +283,7 @@ export const entryProjectionFields: readonly EntryProjectionField[] = Object.fre
   'originalLanguages',
   'status',
   'additionalDurationMs',
+  'additionalCompletionCount',
   'releaseStatus',
   'releaseEndDate',
   'declaredDurationMs',

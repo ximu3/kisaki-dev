@@ -68,11 +68,11 @@ Exclusive Shelf 中，to-read 对应 planned，currently-reading 对应 active�
 
 Read Count 包含尚在进行的阅读记录。例如 to-read、Read Count=0 的书改为 currently-reading 后，导出可为 Read Count=1 而 Date Read 仍为空，见[计数核验](../../../verification/evidence/goodreads-importer/live-export.md)。它不能用于完成总数迁移，即使当前书架是 read，也不能由 N 推出此前每条阅读记录都已完成。
 
-Date Read 只导出一个日期，不能恢复全部逐次记录。已读状态或有效非空的完成日期可以说明存在完成事实；本地没有历史且用户选择采用时，至多初始化一条记录，已有历史默认保留。CSV 不提供足以支持逐条历史追加的明细，本扩展不提供“追加 N 次完成”。Part 只采用明确读过的布尔事实，不保存次数或日期，也不由 currently-reading 或正数 Read Count 推出完成。
+Date Read 只导出一个日期，不能恢复全部逐次记录。已读状态或有效非空的完成日期可以说明存在完成事实；本地总次数为零且用户选择采用时，有完整日期便初始化一条明细，只有已读状态则初始化 1 次附加完成，已有历史默认保留。CSV 不提供足以支持逐条历史追加的明细，本扩展不提供“追加 N 次完成”。Part 只采用明确读过的布尔事实，不保存次数或日期，也不由 currently-reading 或正数 Read Count 推出完成。
 
 Date Read 按 CSV 提供的完整年月日解析为 CalendarDate，合法值直接采用，包括每月第一日。缺失或非法日期保持 null，完成事实独立采用；非法值按实际字段格式错误报告。日期采用不生成精度提示、额外确认或记录备注。来源补齐月日的实际行为保留在[核验记录](../../../verification/evidence/goodreads-importer/live-export.md)中。
 
-已有对象采用来源当前个人值需要用户明确选中，0、null 和缺项按各自含义处理。完成初始化沿共同的 expected.completionCount=0 基线提交；来源评分、状态和历史分别采用，不能为迁入历史清除当前状态或覆盖已有记录。
+已有对象采用来源当前个人值需要用户明确选中，0、null 和缺项按各自含义处理。完成初始化由 completions.initialize 在事务内核对总次数为零；来源评分、状态和历史分别采用，不能为迁入历史清除当前状态或覆盖已有记录。
 
 <a id="notes-shelves"></a>
 
