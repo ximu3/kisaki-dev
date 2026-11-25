@@ -1,4 +1,4 @@
-import { createMemo, For, Show, type Component } from 'solid-js'
+import { createMemo, createSignal, For, Show, type Component } from 'solid-js'
 import { dynamic } from '@solidjs/web'
 import { mdiViewDashboardOutline, mdiPinOutline } from '@mdi/js'
 import { Icon } from '@kisaki3/desktop-ui/icon'
@@ -32,6 +32,7 @@ export function PageOrder<T extends NavigationPage>(props: {
   )
   const ids = () => [...byId().keys()]
   const current = () => props.current && pageKey(props.current)
+  const [viewport, setViewport] = createSignal<HTMLElement>()
 
   function adopt(move: ListMove) {
     const next = movePages(arranged(), move)
@@ -52,6 +53,8 @@ export function PageOrder<T extends NavigationPage>(props: {
       }
     >
       <ReorderableList
+        ref={setViewport}
+        viewport={viewport}
         variant="plain"
         class="max-h-[min(28rem,65dvh)] w-full overflow-auto"
         aria-label={t('runtime.fields.order')}
