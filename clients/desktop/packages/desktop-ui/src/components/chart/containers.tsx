@@ -92,7 +92,7 @@ export function XYContainer<Datum>(props: XYContainerProps<Datum>): JSX.Element 
     setHost(node)
     return () => {
       releaseRemoved(active, [])
-      // The engine can finish its fonts-ready callback after disposal. Clear the axes it can render.
+      // Detach the child engines released above before the container destroys its children.
       plot?.updateContainer({ components: [] }, true)
       plot?.destroy()
     }
@@ -163,7 +163,7 @@ export function XYContainer<Datum>(props: XYContainerProps<Datum>): JSX.Element 
       if (samplesChanged) {
         tooltip?.hide()
       }
-      plot.render()
+      void plot.render()
     },
   )
 
@@ -262,7 +262,7 @@ export function SingleContainer<Data>(props: SingleContainerProps<Data>): JSX.El
       if (component.datamodel.data !== next.data) {
         plot.setData(next.data, true)
       }
-      plot.render()
+      void plot.render()
     },
   )
 

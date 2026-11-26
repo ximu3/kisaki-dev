@@ -182,7 +182,6 @@ async function packageCarrier(
       : undefined
   let packaged = false
   try {
-    // electron-builder 26.15.3's API types reference a missing Snap type; use its public CLI.
     await runPnpm(
       [
         'exec',

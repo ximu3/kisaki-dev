@@ -179,13 +179,13 @@ SDK 的 [ui.toast](../extensions/webview.md#toast) 由宿主适配到共同呈�
 
 ### 图表
 
-图表使用 @unovis/ts 1.7.1，以 SVG、CSS 变量和子组件组合接入共同外观。公共入口提供 XY 与单图容器、折线、面积、分组柱、堆叠柱、散点、环图、坐标轴、Tooltip 和 Crosshair。业务统计负责查询、聚合、单位、数据选择和结果解释。
+图表使用 @unovis/ts，以 SVG、CSS 变量和子组件组合接入共同外观。公共入口提供 XY 与单图容器、折线、面积、分组柱、堆叠柱、散点、环图、坐标轴、Tooltip 和 Crosshair。业务统计负责查询、聚合、单位、数据选择和结果解释。
 
 容器按 Solid 子组件顺序组合图层，随配置和数据更新，移除子组件或卸载时释放相应的引擎资源。图层、坐标轴与 Crosshair 可以传入各自的 data，缺省时继承容器数据，空数组表示该部件无数据。容器的 class 和 style 应用于实际绘图区，默认相对定位并占满可用宽度。布局回调提供只读几何快照。
 
 主题容器将 desktop-appearance 的 chart-1 至 chart-5 接到图表系列色，并映射字体、边框与阴影；系列配置选择相应颜色。系统强制配色下，坐标与文字采用系统颜色，图例色样与 SVG 数据标记保持对应。交互图例使用语义按钮，选中状态由调用方提供；提示模板的字符串作为文本显示，自定义结构可返回 HTMLElement，chartTooltipContent 生成具名数据行。显隐使用 Unovis 公开状态，Unovis 负责定位，desktop-ui 管理实例寿命。调用方同时提供名称、数据摘要或适用的文本替代。严格 CSP 的宿主在导入图表前按工具公开方式设置 nonce，由宿主统一维护策略。
 
-配置继续消费工具的公开类型。Unovis 1.7.1 的声明路径面向 bundler；本包汇总实际使用的声明，并显式交付仍被引用的类型依赖，保持 NodeNext 的完整声明检查。实例寿命归 Solid 组合，公共类型不承诺与外部引擎实例互换。
+配置继续消费工具的公开类型。Unovis 的声明路径面向 bundler；本包汇总实际使用的声明，并显式交付仍被引用的类型依赖，保持 NodeNext 的完整声明检查。实例寿命归 Solid 组合，公共类型不承诺与外部引擎实例互换。
 
 依据：[Unovis TypeScript 接入](https://unovis.dev/docs/quick-start/)、[主题变量](https://unovis.dev/docs/guides/theming/)、[CSP](https://unovis.dev/docs/guides/csp/)及[声明依赖处理](https://tsdown.dev/options/dependencies)。
 

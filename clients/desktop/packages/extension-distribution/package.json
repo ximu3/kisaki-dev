@@ -81,18 +81,18 @@
     }
   },
   "dependencies": {
-    "@formatjs/intl-localematcher": "0.10.1",
-    "canonicalize": "5.1.0",
-    "jsonc-parser": "3.3.1",
-    "semver": "7.8.5"
+    "@formatjs/intl-localematcher": "^0.10.2",
+    "canonicalize": "^5.1.0",
+    "jsonc-parser": "^3.3.1",
+    "semver": "^7.8.6"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "catalog:",
     "@kisaki3/config": "workspace:*",
     "@kisaki3/tooling": "workspace:*",
-    "@playwright/test": "1.64.1",
+    "@playwright/test": "catalog:",
     "@types/node": "catalog:",
-    "@types/semver": "7.8.0",
+    "@types/semver": "^7.8.0",
     "publint": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"

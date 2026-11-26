@@ -58,13 +58,19 @@ renderer 的 `createViewQuery` 为独立区块提供读取结果、IPC 取消和
 
 `tools/dev/renderer` 在开发文档的应用入口前加载错误监听。模块入口加载失败的窗口通过 Vite 连接报告文档的源码修订号。如果源码已经变化，该窗口立即重载；否则在下次编辑时重载。正常工作的窗口继续处理常规热更新。
 
+@solidjs/vite-plugin 3.0.1 会在错误发出后的 200 毫秒内丢弃更新和整页重载消息。桌面 renderer 仅在客户端渲染，工作区[补丁](../../config/pnpm/@solidjs__vite-plugin@3.0.1.patch)把这段保护限定到 SSR 或 SolidStart。升级插件时，用原版复验快速修复和延迟连接的窗口，恢复正常后移除补丁。
+
 `tests/fixtures/desktop-app` 是开发工具的可编辑样板，用于 HMR、编译错误恢复和拒绝退出。源码会话与制品启停分别使用正式应用和测试拥有的资料根。
 
 <a id="setup"></a>
 
 ## 准备与协作
 
-使用 `.node-version` 和根 `packageManager` 指定的 Node、pnpm。Rust 由 `clients/desktop/app/native/rust-toolchain.toml` 固定。Windows 需要 Visual Studio C++ 工具链，macOS 需要 Xcode Command Line Tools，Linux 需要系统构建工具及 Fontconfig、FreeType 开发包。开发 Node 与 Electron 内置 Node 分开验证。
+使用 `.node-version` 和根 `packageManager` 指定的 Node 和 pnpm。本地可用 `pnpm vp run <任务>`，已安装全局 Vite+ 时可用 `vp run <任务>`。
+
+安装时允许 esbuild 准备平台二进制。@parcel/watcher 使用平台预构建包；electron-builder-squirrel-windows 满足 app-builder-lib 的必需 peer，Windows 的 NSIS 和 ZIP 打包无需运行 electron-winstaller 的安装脚本。Electron 由桌面任务 `prepare:electron` 准备。
+
+原生构建、rustfmt 和 Clippy 使用[工具链文件](../../clients/desktop/app/native/rust-toolchain.toml)指定的版本。[Cargo 清单](../../clients/desktop/app/native/Cargo.toml)的 `rust-version` 声明这个 crate 支持的最低 Rust 版本。Windows 需要 Visual Studio C++ 工具链，macOS 需要 Xcode Command Line Tools，Linux 需要系统构建工具及 Fontconfig、FreeType 开发包。开发 Node 与 Electron 内置 Node 分开验证。
 
 ```sh
 pnpm install --frozen-lockfile
@@ -104,7 +110,7 @@ pnpm exec vp run @kisaki3/desktop#package:candidate --target windows-x64
 
 ### 存储与生成资源
 
-数据库固定使用 Drizzle ORM／Kit 1.0.0-rc.5、better-sqlite3 13.0.3 和 Electron 45.3.2。`database/initialize` 接收数据库、原生驱动、迁移目录的明确路径及当前完整偏好默认值；路径拥有者先以 `files.assertLocalDataDirectory` 核对实际卷或挂载。初始化核对格式与迁移链，执行迁移、建立或恢复名称排序器，并在缺失时插入偏好首行。返回连接后，应用在开放资料库查询前采用实际生效的语言。业务事务由 worker 的 better-sqlite3 连接同步执行，查询与值映射可以使用同连接的 Drizzle。关闭前先结束数据库消费者。
+数据库使用配套的 Drizzle ORM 与 Kit，better-sqlite3 由桌面 Electron 加载。具体版本见[应用依赖](../../clients/desktop/app/package.json)。`database/initialize` 接收数据库、原生驱动、迁移目录的明确路径及当前完整偏好默认值；路径拥有者先以 `files.assertLocalDataDirectory` 核对实际卷或挂载。初始化核对格式与迁移链，执行迁移、建立或恢复名称排序器，并在缺失时插入偏好首行。返回连接后，应用在开放资料库查询前采用实际生效的语言。业务事务由 worker 的 better-sqlite3 连接同步执行，查询与值映射可以使用同连接的 Drizzle。关闭前先结束数据库消费者。
 
 连接使用 WAL、FULL，以及 macOS 的 fullfsync；页缓存目标为 32 MiB。表、外键、CHECK 和索引由 schema 定义；保存的执行配置、身份与定位值通过 `StoredDefinition` 表达读取问题，普通偏好按独立字段采用默认值。读取投影不会自动写回；后续业务更新须保留未修改的原始字段。
 
@@ -167,7 +173,7 @@ macOS CI 在制作 DMG 期间记录当前输出目录对应的挂载设备、卷
 
 根 TypeScript 项目检查工具、配置和测试。桌面项目按 main、preload、renderer、utility process、shared、native、tools 和 tests 分环境检查。native 项目拥有 Node 绑定源码及生成声明，main 消费其实际入口。正式程序与开发工具样板分别归各自运行环境，Vite 构建配置归 tools 项目。每份自有声明至少由一个 `skipLibCheck: false` 的实际项目完整检查，规则见[类型分工](../design/engineering/workspace.md#declaration-checks)。
 
-`pnpm exec vp run lint` 运行类型感知 Oxlint 和全仓依赖边界检查。`tools/boundaries.ts` 选择工作区成员及根工程输入，`.dependency-cruiser.ts` 定义[包与运行端的导入规则](../design/engineering/workspace.md#tooling)。dependency-cruiser 18 的解析器通过 packageExtensions 使用 TypeScript 6，项目检查和公开声明使用锁定的 TypeScript 7.1。
+`pnpm exec vp run lint` 运行类型感知 Oxlint 和全仓依赖边界检查。`tools/boundaries.ts` 选择工作区成员及根工程输入，`.dependency-cruiser.ts` 定义[包与运行端的导入规则](../design/engineering/workspace.md#tooling)。dependency-cruiser 直接使用工作区的 TypeScript 7.1 解析类型导入。
 
 `pnpm exec vp run --dry-run --json <包名>#<任务名>` 显示任务与依赖。增量类型信息归各包 `.cache/typescript`。
 
@@ -181,7 +187,7 @@ macOS CI 在制作 DMG 期间记录当前输出目录对应的挂载设备、卷
 
 `@kisaki3/tooling` 的 `/cli`、`/errors`、`/output` 与 `/process` 分别处理 CLI 信号与退出状态、错误交付、所属输出清理和命令执行。调用方传入取消信号并等待所属资源结束。Windows 用 Node 启动器和 `@seydx/win-job` 持有本次命令的 Job Object，Unix 使用独立进程组。取消不吞掉独立错误。原始操作与清理同时失败时按此顺序保留两项错误。
 
-`pnpm exec vp run` 启动工作区锁定的 Vite Task。任务内的 `runPnpm` 通过 `npm_execpath` 取得当前 pnpm，普通外部命令由调用方明确提供可执行文件与参数。同时供导入和直接运行的工程脚本使用固定 Node 宿主的 [import.meta.main](https://nodejs.org/api/esm.html#importmetamain) 判断入口，经目录联接启动时同样有效。
+`pnpm exec vp run` 启动工作区锁定的 Vite Task。任务内的 `runPnpm` 在工作区通过 `pnpm exec` 取得项目选定的可执行文件，仓库外的消费者也用它安装。普通外部命令由调用方明确提供可执行文件与参数。同时供导入和直接运行的工程脚本使用固定 Node 宿主的 [import.meta.main](https://nodejs.org/api/esm.html#importmetamain) 判断入口，经目录联接启动时同样有效。
 
 库的 `build` 先校验自身生成源，再用 `vp pack` 生成 JavaScript、声明与所需样式。`pack` 调用 `pnpm pack --out out/package/package.tgz`，`check:package` 用 publint 和 ATTW 检查这份文件。`@kisaki3/tooling/testing/consumer` 在用例作用域内安装和清理独立工程。
 

@@ -48,13 +48,8 @@ export function getMessageParameterContract(message: string): MessageParameterCo
   function visit(elements: readonly MessageFormatElement[]): void {
     for (const element of elements) {
       if (element.type === TYPE.number && element.style) {
-        // FormatJS leaves named and skeleton number options for Intl to check at formatting time.
-        const options =
-          typeof element.style === 'string'
-            ? IntlMessageFormat.formats.number[element.style]
-            : element.style.parsedOptions
         try {
-          new Intl.NumberFormat(undefined, options)
+          new IntlMessageFormat([element]).format({ [element.value]: 0 })
         } catch (cause) {
           throw new DesktopError('InvalidInput', 'Invalid ICU number format', { cause })
         }
