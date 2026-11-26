@@ -1,6 +1,6 @@
 # Using the Solid controls
 
-Import each family from its package subpath and load `@kisaki3/desktop-ui/styles.css` once. This includes the appearance defaults. Supply localized labels and accessible names, including names for icon-only buttons and modal dialogs. The host owns application state, persistence and business validation.
+Install the compatible Solid 2 peers `solid-js` and `@solidjs/web` in the host. Use `@solidjs/web` as the JSX import source. Import each family from its package subpath and load `@kisaki3/desktop-ui/styles.css` once. This includes the appearance defaults. Supply localized labels and accessible names, including names for icon-only buttons and modal dialogs. The host owns application state, persistence and business validation.
 
 ## Icons
 
@@ -8,7 +8,7 @@ Import `Icon` from `@kisaki3/desktop-ui/icon` and a named MDI path from `@mdi/js
 
 ## Form controls
 
-A supplied value is controlled. Adopt a requested change to make it visible. A default initializes local state and supplies the form reset baseline. Checkbox submission follows its checked state. Indeterminate presentation is independent. Numeric editing preserves the native string value, including an empty field. Date editing accepts complete calendar dates. Typed color values keep their CSS color space; picker channel edits produce sRGB hexadecimal.
+A supplied value is controlled. Adopt a requested change to make it visible. Consecutive choices in one update are delivered in order. After a native interaction returns, `FormData` reflects the accepted selection. A default initializes local state and supplies the form reset baseline. Checkbox submission follows its checked state. Indeterminate presentation is independent. Numeric editing preserves the native string value, including an empty field. Date editing accepts complete calendar dates. Typed color values keep their CSS color space; picker channel edits produce sRGB hexadecimal.
 
 Use `createForm` to coordinate native constraints, business issues and submission. An invalid submit locates the first failing field and resolves to false. Concurrent submissions share the pending operation. Success resolves to true after the handler settles. A rejected handler keeps its error visible and rejects the submission. Use the same submission operation for keyboard shortcuts and close confirmation. When a field belongs to an inactive page, supply a location handler that shows the field before focusing it.
 
@@ -18,7 +18,7 @@ A select or combobox can keep committed choices across new search results. An un
 
 ## Dialogs, popups and notifications
 
-Controlled dialogs, popovers and menus request changes through their callbacks. The owner decides whether to adopt a close request or wait for saving. Dialog content remains mounted during its exit. Supply a title or accessible label. Nest submenu content inside the parent menu content. Menu selection normally closes the tree. A prevented click or `closeOnSelect={false}` keeps it open. Tabs keep panels mounted. Manual tab activation uses Enter or Space.
+Controlled dialogs, popovers and menus request changes through their callbacks. The owner decides whether to adopt a close request or wait for saving. Dialog content remains mounted during its exit. Supply a title or accessible label. A child that must finish before the native dialog opens can register its readiness accessor with `deferDialogUntil` during setup. Its owner releases the registration on disposal. A loading fallback can register `() => false` until the content or its error replaces it. Nest submenu content inside the parent menu content. Menu selection normally closes the tree. A prevented click or `closeOnSelect={false}` keeps it open. Tabs keep panels mounted. Manual tab activation uses Enter or Space.
 
 Install one Toaster for the document before calling `toast.show`. Its returned handle can update or dismiss the message. Dismissal ends the handle immediately. Loading suspends automatic dismissal. Updating a loading message to a result starts its display duration unless the message is persistent. The host owns any business action triggered from a notification.
 

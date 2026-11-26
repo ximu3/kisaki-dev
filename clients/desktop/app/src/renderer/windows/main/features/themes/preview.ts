@@ -1,4 +1,4 @@
-import { createEffect, createSignal, onCleanup, type Accessor } from 'solid-js'
+import { createEffect, createSignal, onSettled, type Accessor } from 'solid-js'
 import type { AppearancePreviewInput } from '@kisaki3/desktop-contracts/appearance'
 import type { MainClient } from '../../../../infrastructure/api'
 import { reportError } from '../../../../infrastructure/notifications'
@@ -86,10 +86,12 @@ export function createThemePreview(api: MainClient, input: Accessor<AppearancePr
       setEnabled(false)
     }
   }
-  api.topics.addEventListener('preview.ended', ended)
-  onCleanup(() => {
-    api.topics.removeEventListener('preview.ended', ended)
-    release()
+  onSettled(() => {
+    api.topics.addEventListener('preview.ended', ended)
+    return () => {
+      api.topics.removeEventListener('preview.ended', ended)
+      release()
+    }
   })
 
   return { enabled, change: (value: boolean) => (value ? setEnabled(true) : release()) }

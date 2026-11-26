@@ -50,6 +50,8 @@ desktop-localization 的英语 ICU 源文位于 src/en，按领域维护并由 i
 
 主窗口的 `app/root.tsx` 装配标题栏、侧栏、主内容区与窗口级 Dialog。菜单和系统入口共用 `app/navigation`。切换目标时先协调当前草稿，目标实际呈现后再释放原视图；失败或取消时保留原视图。`features` 各自呈现管理 Dialog，维护本次查询、草稿与提交。偏好中的主题库、字体库由偏好视图直接打开。侧栏重排立即更新导航偏好，偏好表单中的重排随草稿保存。两个入口共用 `domain-ui/navigation` 的排序控件。资料库、展示柜与统计由 W09 接入。
 
+renderer 的 `infrastructure/query` 为独立区块提供派生快照、IPC 取消和尾随刷新。偏好快照由 `domain-ui/preferences` 接入变更通知和写入回包。整块内容一起就绪的视图可直接组合 Solid 的异步计算、加载和错误边界。见[局部查询](../design/ui/state.md#queries)。
+
 应用通过数据库执行线程打开当前基线、读取偏好、采用生效语言并保持连接至退出。存储性能用例通过 Playwright 在 Electron 主进程中启动独立编译的测量 worker。worker 返回完整报告并正常退出后，用例将报告保存为附件。执行失败时，原始错误传回用例。
 
 `tools/dev/session` 拥有编译器、服务器、运行目录与进程。Vite 按公开子路径的 `kisaki-source` 条件直接编译工作区源码，renderer 使用 Solid HMR。非程序资源和原生绑定由各自的准备工具处理。程序编译成功后安排受控重启，配置更新的候选编译和新服务监听成功后才请求旧进程退出。拒绝退出时原进程继续使用原运行目录和 renderer 地址，停止时由会话收回各代服务。

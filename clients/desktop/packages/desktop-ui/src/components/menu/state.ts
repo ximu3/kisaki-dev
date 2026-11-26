@@ -1,3 +1,4 @@
+import type { ValueChange } from '../../internal/state'
 import { createContext, useContext, type Accessor } from 'solid-js'
 import type { createSubmenuHover } from './hover'
 
@@ -7,7 +8,7 @@ export interface MenuState {
 
   open: Accessor<boolean>
   controlled: Accessor<boolean>
-  change: (open: boolean) => void
+  change: ValueChange<boolean>
 
   anchor: Accessor<HTMLElement | undefined>
   bindAnchor: () => (node: HTMLElement) => void

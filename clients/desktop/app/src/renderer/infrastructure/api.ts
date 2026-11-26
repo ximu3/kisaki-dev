@@ -37,7 +37,7 @@ export async function connect<K extends WindowKind>(kind: K) {
   })
 
   const topics = new EventTarget()
-  let confirmClose: (signal: AbortSignal) => boolean | Promise<boolean> = () => true
+  let confirmClose: ((signal: AbortSignal) => boolean | Promise<boolean>) | undefined
   let navigate: ((target: unknown, signal: AbortSignal) => void | Promise<void>) | undefined
   const notifications = Object.fromEntries(
     [
@@ -84,7 +84,7 @@ export async function connect<K extends WindowKind>(kind: K) {
           value.buildId === __KISAKI_BUILD_ID__,
       },
       methods: {
-        'window.confirmClose': (_, signal) => confirmClose(signal),
+        'window.confirmClose': (_, signal) => confirmClose?.(signal) ?? true,
         'window.navigate': ([target], signal) => {
           if (!navigate) {
             throw new DesktopError('NotFound', 'This document has no navigation receiver')
@@ -168,11 +168,21 @@ export async function connect<K extends WindowKind>(kind: K) {
     topics,
     appearanceIssues: appearance.issues,
     t: ((...args) => translate()(...args)) as Translate,
-    onClose(handler: typeof confirmClose) {
+    onClose(handler: NonNullable<typeof confirmClose>) {
       confirmClose = handler
+      return () => {
+        if (confirmClose === handler) {
+          confirmClose = undefined
+        }
+      }
     },
     onNavigate(handler: NonNullable<typeof navigate>) {
       navigate = handler
+      return () => {
+        if (navigate === handler) {
+          navigate = undefined
+        }
+      }
     },
     ready: () => common('window.ready'),
   }

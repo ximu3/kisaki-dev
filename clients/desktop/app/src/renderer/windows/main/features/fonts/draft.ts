@@ -1,4 +1,4 @@
-import { createMemo, createSignal, onCleanup } from 'solid-js'
+import { getOwner, isDisposed, createMemo, createSignal, onCleanup } from 'solid-js'
 import type { Font } from '@kisaki3/desktop-contracts/fonts'
 import type { FontChoice, FontFileChoice } from '../../../../../shared/window-api'
 import type { MainClient } from '../../../../infrastructure/api'
@@ -25,7 +25,7 @@ export function createFontDraft(api: MainClient, initial: Font | null) {
     name() !== (original()?.name ?? '') ||
     kept().length !== (original()?.files.length ?? 0)
 
-  let active = true
+  const owner = getOwner()!
   let nameEdited = false
   let nextKey = 0
   let submitted: readonly FontChoice[] = []
@@ -37,7 +37,6 @@ export function createFontDraft(api: MainClient, initial: Font | null) {
     }
   }
   onCleanup(() => {
-    active = false
     for (const file of owned) {
       if (!submitted.includes(file)) {
         void release(file).catch(reportError)
@@ -48,7 +47,7 @@ export function createFontDraft(api: MainClient, initial: Font | null) {
   function adopt(key: number, result: FontFileChoice) {
     if ('file' in result) {
       owned.add(result.file)
-      if (!active) {
+      if (isDisposed(owner)) {
         void release(result.file).catch(reportError)
         return
       }
@@ -56,7 +55,7 @@ export function createFontDraft(api: MainClient, initial: Font | null) {
         setName((current) => current || result.file.metadata.faces[0].family)
       }
     }
-    if (active) {
+    if (!isDisposed(owner)) {
       const outcome: FileDraft =
         'file' in result
           ? { key, ...result, status: 'ready' }
@@ -77,7 +76,7 @@ export function createFontDraft(api: MainClient, initial: Font | null) {
         adopt(nextKey++, result)
       }
     } finally {
-      if (active) {
+      if (!isDisposed(owner)) {
         setChoosing(false)
       }
     }
@@ -90,13 +89,13 @@ export function createFontDraft(api: MainClient, initial: Font | null) {
       ...work.map(({ file, key }) => ({ key, name: file.name, status: 'pending' as const })),
     ])
     for (const { file, key } of work) {
-      if (!active) {
+      if (isDisposed(owner)) {
         return
       }
       try {
         const input = await fileInput(file)
         try {
-          if (active) {
+          if (!isDisposed(owner)) {
             const prepared = await api.call('fonts.prepareInput', input.id)
             adopt(key, { name: file.name, file: prepared })
           }
@@ -142,7 +141,7 @@ export function createFontDraft(api: MainClient, initial: Font | null) {
         ? await api.call('fonts.editFiles', old.id, sentName, retained, ids, old)
         : await api.call('fonts.import', sentName, ids)
       committed = true
-      if (active) {
+      if (!isDisposed(owner)) {
         setOriginal(result)
         setKept(result.files.map((file) => file.attachmentId))
         setFiles((current) =>
@@ -153,7 +152,7 @@ export function createFontDraft(api: MainClient, initial: Font | null) {
     } finally {
       submitted = []
       const retryable =
-        active && !committed ? new Set(added().map((entry) => entry.file)) : undefined
+        !isDisposed(owner) && !committed ? new Set(added().map((entry) => entry.file)) : undefined
       await Promise.all(
         sent
           .filter((file) => !retryable?.has(file))

@@ -1,4 +1,4 @@
-import { Show, omit, type ParentProps } from 'solid-js'
+import { onSettled, Show, omit, type ParentProps } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { callHandler } from '../../internal/dom'
 import { mdiCheck } from '@mdi/js'
@@ -67,7 +67,7 @@ export function MenuItem(props: MenuItemProps): JSX.Element {
             current = current.parent
           }
         }
-        queueMicrotask(() => {
+        onSettled(() => {
           if (!state.open()) {
             trigger?.focus()
           }

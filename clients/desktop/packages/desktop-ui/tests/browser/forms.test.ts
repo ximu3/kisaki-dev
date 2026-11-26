@@ -12,14 +12,26 @@ test('native controls submit, reset, cancel reset, follow external values and ho
   await page.locator('#notes').fill('new note')
   await page.getByLabel('Include', { exact: true }).uncheck()
   await page.getByLabel('Enabled', { exact: true }).uncheck()
-  await page.getByLabel('Compact', { exact: true }).check()
+  const density = await page
+    .getByLabel('Compact', { exact: true })
+    .evaluate((input: HTMLInputElement) => {
+      input.click()
+      return new FormData(input.form!).get('density')
+    })
+  expect(density).toBe('compact')
   await page.locator('#select').click()
   await page.getByRole('option', { name: 'Beta', exact: true }).click()
   await page.getByRole('button', { name: 'Remove Amber' }).click()
   await browserExpect(page.getByRole('button', { name: 'Remove Coral' })).toBeFocused()
   await page.locator('#multi').click()
   await page.getByRole('option', { name: 'Coral', exact: true }).click()
-  await page.getByRole('option', { name: 'Blue', exact: true }).click()
+  const selected = await page
+    .getByRole('option', { name: 'Blue', exact: true })
+    .evaluate((option: HTMLElement) => {
+      option.click()
+      return new FormData(document.querySelector<HTMLFormElement>('#controls')!).getAll('multi')
+    })
+  expect(selected).toEqual(['b'])
   await page.keyboard.press('Escape')
   await page.getByLabel('Grid', { exact: true }).check()
   await page.locator('#level').focus()
@@ -246,6 +258,15 @@ test('form feedback retains geometry and per-field errors while revealing and lo
   await page.keyboard.press('Escape')
   await browserExpect(detail).toBeHidden()
 
+  const basic = page.getByRole('tab', { name: 'Basic', exact: true })
+  await basic.evaluate((tab: HTMLElement) => {
+    tab
+      .closest('[role="tablist"]')!
+      .querySelector<HTMLElement>('[data-value="long detail"]')!
+      .click()
+    tab.click()
+  })
+  await browserExpect(basic).toHaveAttribute('aria-selected', 'true')
   await page.getByRole('tab', { name: 'Detail', exact: true }).click()
   await browserExpect(page.getByRole('tabpanel', { name: 'Detail', exact: true })).toBeVisible()
   await page.locator('#description').focus()

@@ -1,4 +1,4 @@
-import { createEffect, createSignal, createUniqueId, For, Show } from 'solid-js'
+import { createEffect, createMemo, createUniqueId, For, Show } from 'solid-js'
 import type { FontFileMetadata, FontMetricRange } from '@kisaki3/desktop-contracts/fonts'
 import type { Translate } from '@kisaki3/desktop-localization'
 import { deferDialogUntil } from '@kisaki3/desktop-ui/dialog'
@@ -20,53 +20,43 @@ export function FontSpecimen(props: {
   metadata: FontFileMetadata
   url?: string | undefined
 }) {
-  const [loaded, setLoaded] = createSignal(false)
-  const [failure, setFailure] = createSignal<string>()
   const name = 'Kisaki-preview-' + createUniqueId()
   const face = () => props.metadata.faces[0]
-  deferDialogUntil(() => !props.url || loaded() || failure() !== undefined)
-
-  createEffect(
-    () => [props.url, face()],
-    ([url, current]) => {
-      setLoaded(false)
-      setFailure(undefined)
-      if (!url) {
-        return
+  const sample = createMemo(
+    () => {
+      if (!props.url) {
+        return undefined
       }
-
-      const font = new FontFace(name, 'url(' + JSON.stringify(url) + ')', {
+      const current = face()
+      const font = new FontFace(name, 'url(' + JSON.stringify(props.url) + ')', {
         style: current.style,
         weight: String(current.weight.default),
         stretch: current.width.default + '%',
       })
-      let active = true
+      return font.load().then(
+        (ready) => ({ font: ready, failure: undefined }),
+        (cause: unknown) => ({ font: undefined, failure: errorMessage(cause) }),
+      )
+    },
+    { loadingValue: undefined },
+  )
 
-      void font
-        .load()
-        .then((ready) => {
-          if (active) {
-            document.fonts.add(ready)
-            setLoaded(true)
-          }
-        })
-        .catch((cause: unknown) => {
-          if (active) {
-            setFailure(errorMessage(cause))
-          }
-        })
-
-      // Loading can settle after the selected file's reader releases its URL.
-      return () => {
-        active = false
-        document.fonts.delete(font)
+  deferDialogUntil(() => !props.url || !!sample())
+  createEffect(
+    () => sample()?.font,
+    (font) => {
+      if (font) {
+        document.fonts.add(font)
+        return () => {
+          document.fonts.delete(font)
+        }
       }
     },
   )
 
   return (
     <div class="min-w-0 space-y-2">
-      <Show when={loaded()}>
+      <Show when={sample()?.font}>
         <p
           class="m-0 break-words text-xl leading-snug"
           style={{
@@ -79,7 +69,7 @@ export function FontSpecimen(props: {
           {props.t('runtime.fontSample')}
         </p>
       </Show>
-      <Show when={failure()}>
+      <Show when={sample()?.failure}>
         {(reason) => (
           <p class="m-0 text-xs text-destructive" role="status">
             {props.t('runtime.previewFileFailed', { reason: reason() })}

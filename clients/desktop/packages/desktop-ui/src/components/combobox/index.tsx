@@ -77,7 +77,8 @@ function MultipleCombobox<O extends ComboboxOption>(props: MultipleComboboxProps
     () => props.defaultValue ?? [],
     (next) => props.onValueChange?.(next),
   )
-  const remove = (key: string) => change(values().filter((option) => option.value !== key))
+  const remove = (key: string) =>
+    change((selected) => selected.filter((option) => option.value !== key))
 
   return (
     <SelectionField
@@ -86,13 +87,13 @@ function MultipleCombobox<O extends ComboboxOption>(props: MultipleComboboxProps
       selected={values()}
       chips={merge(props, { remove })}
       defaults={props.defaultValue?.map((option) => option.value) ?? []}
-      onChoose={(option) => {
-        if (values().some((item) => item.value === option.value)) {
-          remove(option.value)
-        } else {
-          change([...values(), option])
-        }
-      }}
+      onChoose={(option) =>
+        change((selected) =>
+          selected.some((item) => item.value === option.value)
+            ? selected.filter((item) => item.value !== option.value)
+            : [...selected, option],
+        )
+      }
       onReset={() => change(props.defaultValue ?? [])}
     />
   )

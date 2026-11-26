@@ -1,5 +1,5 @@
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
-import { createEffect, createSignal, onCleanup, useContext } from 'solid-js'
+import { createEffect, createSignal, getOwner, isDisposed, onCleanup, useContext } from 'solid-js'
 import { reportError } from '../notifications'
 import { WindowEditors } from './editors'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
@@ -45,32 +45,27 @@ export function observeDialogTarget(
   })
 }
 
-export function createLocalDialog<T>(load: () => Promise<T>, ownerOpen: () => boolean) {
-  const [component, setComponent] = createSignal<T>()
-  const [open, setOpen] = createSignal(false)
-  let disposed = false
-  onCleanup(() => {
-    disposed = true
-  })
+export function createLocalDialog(preload: () => Promise<unknown>, ownerOpen: () => boolean) {
+  const [open, setOpen] = createSignal<boolean>()
+  const owner = getOwner()!
 
   async function show() {
     try {
-      const loaded = component() ?? (await load())
-      if (!disposed && ownerOpen()) {
-        setComponent(() => loaded)
+      await preload()
+      if (!isDisposed(owner) && ownerOpen()) {
         setOpen(true)
       }
     } catch (error) {
-      if (!disposed && ownerOpen()) {
+      if (!isDisposed(owner) && ownerOpen()) {
         reportError(error)
       }
     }
   }
 
   return {
-    component,
+    mounted: () => open() !== undefined,
     show: () => void show(),
-    view: { open, close: () => setOpen(false) },
+    view: { open: () => open() === true, close: () => setOpen(false) },
   }
 }
 

@@ -28,7 +28,7 @@ export function MenuTrigger(props: ButtonProps): JSX.Element {
           event.preventDefault()
           state.setPoint(undefined)
           state.last = false
-          state.change(!state.open())
+          state.change((open) => !open)
         }
       }}
       onKeyDown={(event) => {
@@ -131,7 +131,7 @@ export function MenuSubTrigger(props: ButtonProps & Pick<MenuItemProps, 'icon'>)
         if (!event.defaultPrevented) {
           event.preventDefault()
           state.focusOnOpen = true
-          state.change(!state.open())
+          state.change((open) => !open)
         }
       }}
       onKeyDown={(event) => {

@@ -1,5 +1,5 @@
-import { createSignal, For, onCleanup, Show } from 'solid-js'
-import { createQuery } from '../../../../infrastructure/query'
+import { createSignal, For, onSettled, Show } from 'solid-js'
+import { createSnapshot } from '../../../../infrastructure/query'
 import { mdiRefresh, mdiTrashCanOutline } from '@mdi/js'
 import { Icon } from '@kisaki3/desktop-ui/icon'
 import { isTaskTerminal, taskRunStatuses, type TaskRun } from '@kisaki3/desktop-contracts/tasks'
@@ -95,11 +95,11 @@ export function TaskCenter(props: TaskCenterProps) {
 function TaskCenterContent(props: TaskCenterProps & { visible: boolean }) {
   const { api } = props
   const [revision, setRevision] = createSignal(0)
-  const history = createQuery((signal) =>
+  const history = createSnapshot((signal) =>
     api.request(signal, 'tasks.list', { statuses: finishedStatuses }, { offset: 0, limit: 1 }),
   )
-  const types = createQuery((signal) => api.request(signal, 'tasks.types'))
-  const hasFinished = () => !history.error && !!history.value?.total
+  const types = createSnapshot((signal) => api.request(signal, 'tasks.types'))
+  const hasFinished = () => !history.result()?.error && !!history.result()?.value?.total
   const [section, setSection] = createSignal('active')
   const panels = scopes.map((scope) => ({
     ...scope,
@@ -140,8 +140,10 @@ function TaskCenterContent(props: TaskCenterProps & { visible: boolean }) {
     void types.reload()
     setRevision((value) => value + 1)
   }
-  api.topics.addEventListener('tasks.changed', refresh)
-  onCleanup(() => api.topics.removeEventListener('tasks.changed', refresh))
+  onSettled(() => {
+    api.topics.addEventListener('tasks.changed', refresh)
+    return () => api.topics.removeEventListener('tasks.changed', refresh)
+  })
 
   const confirm = createConfirmation(api.t)
   const [clearing, setClearing] = createSignal(false)
@@ -182,14 +184,10 @@ function TaskCenterContent(props: TaskCenterProps & { visible: boolean }) {
                 </For>
               </TabList>
             </ToolbarRow>
-            <TaskFilters
-              t={api.t}
-              query={activeQuery()}
-              types={types.error ? undefined : types.value}
-            />
+            <TaskFilters t={api.t} query={activeQuery()} types={types.result()?.value} />
           </Toolbar>
 
-          <Show when={history.error ?? types.error}>
+          <Show when={history.result()?.error ?? types.result()?.error}>
             {(cause) => (
               <Alert tone="destructive" role="alert" class="m-3">
                 {errorMessage(cause())}

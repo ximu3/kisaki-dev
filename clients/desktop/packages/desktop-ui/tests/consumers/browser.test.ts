@@ -115,6 +115,11 @@ test('Markdown, charts and drag load as complete capabilities and release their 
 
   await page.getByRole('button', { name: 'Release resources' }).click()
   expect(await page.evaluate(() => window.fixture.editorReleased)).toBe(true)
+  expect(
+    await page.evaluate(
+      () => window.fixture.editorSet !== undefined || window.fixture.editorSelect !== undefined,
+    ),
+  ).toBe(false)
   await browserExpect(page.locator('[data-vis-xy-container]')).toHaveCount(0)
   await page.evaluate(() => window.fixture.dispose())
   await browserExpect(page.locator('#app')).toBeEmpty()

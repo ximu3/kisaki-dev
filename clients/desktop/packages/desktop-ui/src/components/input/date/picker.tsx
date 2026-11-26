@@ -1,4 +1,4 @@
-import { createEffect, createMemo, createSignal, For, Show } from 'solid-js'
+import { onSettled, createEffect, createMemo, createSignal, For, Show } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js'
 import { Icon } from '../../icon'
@@ -102,7 +102,7 @@ export function DatePicker(props: PickerProps): JSX.Element {
   const focusDay = (date: string) => {
     browse(date)
     // Focus the day after its month has rendered.
-    queueMicrotask(() => {
+    onSettled(() => {
       if (props.open) {
         calendar.querySelector<HTMLButtonElement>(`[data-date="${active()}"]`)?.focus()
       }

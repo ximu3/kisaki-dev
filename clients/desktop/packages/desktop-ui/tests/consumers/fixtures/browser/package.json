@@ -10,11 +10,11 @@
     "@kisaki3/desktop-appearance": "0.1.0-dev.0",
     "@kisaki3/desktop-ui": "0.1.0-dev.0",
     "@mdi/js": "7.4.47",
-    "@solidjs/web": "2.0.3",
-    "solid-js": "2.0.3"
+    "@solidjs/web": "^2.0.4",
+    "solid-js": "^2.0.4"
   },
   "devDependencies": {
-    "@solidjs/vite-plugin": "3.0.1",
+    "@solidjs/vite-plugin": "^3.0.1",
     "@tailwindcss/cli": "4.3.3",
     "@types/node": "24.19.2",
     "tailwindcss": "4.3.3",

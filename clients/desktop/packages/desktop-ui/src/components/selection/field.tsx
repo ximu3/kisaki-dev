@@ -6,7 +6,7 @@ import { nativeValidityChanged } from '../../internal/form'
 import { fieldAttributes } from '../../internal/field'
 import { mdiChevronDown, mdiUnfoldMoreHorizontal } from '@mdi/js'
 import { Icon } from '../icon'
-import { createValue, onFormReset } from '../../internal/state'
+import { commitNativeValue, createValue, onFormReset } from '../../internal/state'
 import { SelectedChips, type ChipLabels } from '../../internal/chips/control'
 import { createSelection } from './collection'
 import { SelectionList } from './list'
@@ -158,14 +158,14 @@ export function SelectionField<O extends SelectionOption>(
     nativeValidityChanged(submission.form)
   }
   createEffect(nativeSelection, sync)
-  const flushReset = onFormReset(
-    () => submission,
-    () => {
-      props.onReset()
-      queueMicrotask(() => sync(nativeSelection()))
-      setOpen(false)
-    },
-  )
+  const syncSelection = () => sync(nativeSelection())
+  const reset = commitNativeValue(() => {
+    props.onReset()
+    setOpen(false)
+  }, syncSelection)
+  const flushReset = onFormReset(() => submission, reset)
+  const commitChoice = commitNativeValue((option: O) => props.onChoose(option), syncSelection)
+  const removeChip = commitNativeValue((key: string) => props.chips?.remove(key), syncSelection)
 
   const choose = (option: O) => {
     flushReset()
@@ -174,7 +174,7 @@ export function SelectionField<O extends SelectionOption>(
       // Return focus before giving single-choice handlers a chance to remove the popup.
       trigger()?.focus({ preventScroll: true })
     }
-    props.onChoose(option)
+    commitChoice(option)
   }
 
   return (
@@ -237,7 +237,7 @@ export function SelectionField<O extends SelectionOption>(
             scrollNextLabel={chips().scrollNextLabel}
             onRemove={(key) => {
               flushReset()
-              chips().remove(key)
+              removeChip(key)
             }}
             focusTrigger={() => trigger()?.focus({ preventScroll: true })}
           />

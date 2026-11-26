@@ -1,4 +1,4 @@
-import { Show, createSignal, onCleanup } from 'solid-js'
+import { Show, createSignal, onSettled } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { mdiBookOpenOutline } from '@mdi/js'
 import { Icon } from '@kisaki3/desktop-ui/icon'
@@ -101,11 +101,14 @@ export default function Resources(): JSX.Element {
     },
   }))
 
-  window.fixture.editorSet = setText
-  window.fixture.setSourceOnly = setSourceOnly
-
-  onCleanup(() => {
-    document.body.dataset.resourcesReleased = 'true'
+  onSettled(() => {
+    window.fixture.editorSet = setText
+    window.fixture.setSourceOnly = setSourceOnly
+    return () => {
+      delete window.fixture.editorSet
+      delete window.fixture.setSourceOnly
+      document.body.dataset.resourcesReleased = 'true'
+    }
   })
 
   return (
@@ -129,10 +132,15 @@ export default function Resources(): JSX.Element {
           commandLabel={(command) => labels[command]}
           toolbar={(standard) => (sourceOnly() ? [] : [...standard, insertReference])}
           onViewChange={(current) => {
-            window.fixture.editorText = () => current?.state.doc.toString() ?? ''
-            window.fixture.editorSelect = () =>
-              current?.dispatch({ selection: { anchor: 2, head: 8 } })
             window.fixture.editorReleased = current === undefined
+            if (current) {
+              window.fixture.editorText = () => current.state.doc.toString()
+              window.fixture.editorSelect = () =>
+                current.dispatch({ selection: { anchor: 2, head: 8 } })
+            } else {
+              delete window.fixture.editorText
+              delete window.fixture.editorSelect
+            }
           }}
         />
         <div class="grid">
@@ -201,7 +209,7 @@ export default function Resources(): JSX.Element {
           items={[
             { id: 'series', label: 'Sample series', color: 'var(--chart-1)', selected: selected() },
           ]}
-          onToggle={() => setSelected(!selected())}
+          onToggle={() => setSelected((value) => !value)}
         />
         <Chart
           data-segment-class={donutSelectors.segment}

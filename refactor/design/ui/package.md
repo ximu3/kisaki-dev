@@ -27,7 +27,7 @@ desktop-ui 通过 props、事件与回调接入行为。异步选项、加载结
 
 组件创建的监听、观察、计时器、编辑器、图表和 DOM 随实例更新与销毁收尾。宿主传入的资源保持原有所有权，明确转交的句柄按合同释放。主题选择、字体取得与桌面资源由宿主完成。
 
-依据：[HTML 表单](https://html.spec.whatwg.org/multipage/forms.html)、[Dialog](https://html.spec.whatwg.org/multipage/interactive-elements.html#the-dialog-element)、[Popover](https://html.spec.whatwg.org/multipage/popover.html)、[WAI 交互模式](https://www.w3.org/WAI/ARIA/apg/patterns/)及[Solid 生命周期](https://docs.solidjs.com/concepts/effects)。固定 Electron 环境的原生能力记录见[接入依据](../../verification/evidence/native-ui/README.md)。
+依据：[HTML 表单](https://html.spec.whatwg.org/multipage/forms.html)、[Dialog](https://html.spec.whatwg.org/multipage/interactive-elements.html#the-dialog-element)、[Popover](https://html.spec.whatwg.org/multipage/popover.html)、[WAI 交互模式](https://www.w3.org/WAI/ARIA/apg/patterns/)及[Solid 生命周期](https://docs.solidjs.com/reference/solid-js/reactivity/create-effect/)。固定 Electron 环境的原生能力记录见[接入依据](../../verification/evidence/native-ui/README.md)。
 
 <a id="families"></a>
 
@@ -98,7 +98,7 @@ Combobox 打开后保留触发按钮的焦点。方向键移动候选高亮，En
 
 原生表单、受控更新和组合关系通过实际浏览器核对。特殊控件需要自维护交互时，公开合同明确其键盘、焦点、可访问名称与表单结果。
 
-受控控件只在宿主采纳时显示新值。具备本地模式的控件移除受控值后恢复此前的本地值，尚无本地修改时恢复初始默认值。
+受控控件只在宿主采纳时显示新值。连续选择按发起顺序处理。受控开关再次切换时，以宿主实际采纳的状态为起点。原生表单在交互事件返回后即可读取本次采纳的值。具备本地模式的控件移除受控值后恢复此前的本地值，尚无本地修改时恢复初始默认值。
 
 ColorInput 与主题使用相同的独立 CSS 颜色语法。文字编辑保留原表达，色样绘制校验后的 CSS 值。颜色名称、函数名和十六进制中的合法转义按其实际字符检查，无效颜色没有色样。调节拾色器通道时生成 sRGB 十六进制颜色。
 
@@ -167,7 +167,7 @@ show 返回 update 与 dismiss 句柄；update 替换存活提示，dismiss 结�
 
 SDK 的 [ui.toast](../extensions/webview.md#toast) 由宿主适配到共同呈现，传递可序列化消息和句柄操作。本地组件的动作回调留在当前文档，UI 包通过自身 API 接入，不依赖 SDK。字段纠错使用[表单反馈区](components.md#validation)。
 
-依据：[Solid owner 与清理](https://docs.solidjs.com/reference/lifecycle/on-cleanup)、[WAI 状态提示](https://www.w3.org/WAI/ARIA/apg/patterns/alert/)。
+依据：[Solid 挂载与清理](https://docs.solidjs.com/reference/solid-js/lifecycle-actions/on-settled/)、[WAI 状态提示](https://www.w3.org/WAI/ARIA/apg/patterns/alert/)。
 
 ### 变体、内容与状态
 
@@ -256,7 +256,7 @@ desktop-ui/
 
 公开 Props 表达组件自身行为及适用原生元素能力。活跃 props 按 Solid 的响应式语义读取，使用 omit 和 merge 透传属性；真实资源在明确的挂载、更新与清理边界接入。
 
-依据：[Solid props](https://docs.solidjs.com/concepts/components/props)、[Solid 2 迁移说明](https://github.com/solidjs/solid/blob/main/documentation/solid-2.0/MIGRATION.md)与[Node 子路径](https://nodejs.org/api/packages.html#subpath-exports)。
+依据：[Solid 2 的属性与透传](https://github.com/solidjs/solid/blob/main/packages/solid/CHEATSHEET.md#props)与[Node 子路径](https://nodejs.org/api/packages.html#subpath-exports)。
 
 <a id="styles"></a>
 

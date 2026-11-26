@@ -2,7 +2,7 @@ import {
   createEffect,
   createSignal,
   createUniqueId,
-  onCleanup,
+  onSettled,
   useContext,
   type ParentProps,
 } from 'solid-js'
@@ -70,8 +70,12 @@ export function Menu(props: MenuProps): JSX.Element {
     last: false,
     parent: parent ?? undefined,
   }
-  parent?.children.add(state)
-  onCleanup(() => parent?.children.delete(state))
+  onSettled(() => {
+    parent?.children.add(state)
+    return () => {
+      parent?.children.delete(state)
+    }
+  })
   createEffect(open, (shown) => {
     if (shown) {
       parent?.children.forEach((sibling) => {

@@ -1,4 +1,4 @@
-import { createContext, createSignal, onCleanup, omit, useContext } from 'solid-js'
+import { createContext, createSignal, omit, useContext } from 'solid-js'
 import type { ElementEventBasePayload } from '@atlaskit/pragmatic-drag-and-drop/element/adapter'
 import { extractClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge'
 import { createDragAutoScroll, createDragMonitor } from '../../drag/adapter'
@@ -56,7 +56,6 @@ export function ReorderableList(props: ReorderableListProps) {
   const scope = Symbol()
   const handleById = new Map<string, HTMLButtonElement>()
   let list!: HTMLUListElement | HTMLOListElement
-  onCleanup(() => handleById.clear())
 
   function subjects(id: string) {
     const selected = props.selected

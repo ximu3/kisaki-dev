@@ -139,13 +139,14 @@ test('the disclosure follows its owner when a summary activation is declined', a
   await page.keyboard.press('Enter')
   await browserExpect(content).toBeVisible()
 
-  await page.evaluate(() => {
-    window.fixture.requestDisclosure = (open) => {
-      document.body.dataset.requestedOpen = String(open)
-    }
+  const requests = await summary.evaluate((node: HTMLElement) => {
+    const requested: boolean[] = []
+    window.fixture.requestDisclosure = (open) => requested.push(open)
+    node.click()
+    node.click()
+    return requested
   })
-  await summary.click()
-  await browserExpect(page.locator('body')).toHaveAttribute('data-requested-open', 'false')
+  expect(requests).toEqual([false, false])
   await browserExpect(content).toBeVisible()
 })
 

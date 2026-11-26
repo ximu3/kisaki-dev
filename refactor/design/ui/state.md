@@ -69,7 +69,9 @@ await metadata.profiles.update(profileId, {
 
 Solid 实现要明确区分响应式读取与初始化快照、只读结果与编辑草稿、view、dialog 和 window owner，以及窗口投影与主进程权威。模块顶层 signal 不能充当所有窗口共用的当前条目，也不能把全部 UI 状态持久化。
 
-状态使用 Solid 2 的 signal 与 store，异步视图使用派生计算与 Loading。独立查询保留上次结果并显示各自的等待与失败状态。DOM 副作用在 createEffect 的计算阶段读取输入，在应用阶段更新宿主并返回清理函数。按实际查询补充取消与失效重查，不重复维护框架已有的依赖追踪、加载状态或 owner 寿命。简单读取可直接接入，只有共同的实际行为才提取辅助能力。
+单次读取由 `createMemo` 返回请求，局部 `Loading` 和 `Errored` 边界负责等待、失败与重试。独立刷新、需要保持可编辑的区块使用 `createDeferred`。首次等待时保留控件，已有结果在重查期间继续展示；区块通过 `isPending` 读取更新状态。需要同时交付给控件、表单或导航回执的读取结果可以包含错误，由所属视图决定继续展示的内容。
+
+输入变化或卸载时，读取的 owner 取消对应 IPC 请求。连续失效通知合并为一次尾随重查，依赖结果的回焦在重查结束后执行。编辑器采用写入回包时，用已保存快照替换读取来源，迟到的旧回复不能改写保存基线。订阅与 DOM 资源按[组件生命周期](../engineering/conventions.md#tsx-style)释放。
 
 <a id="loading"></a>
 

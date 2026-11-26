@@ -25,31 +25,9 @@
 
 <a id="virtualization"></a>
 
-## 虚拟化的历史选型
+## 虚拟化验证入口
 
-本节记录 Solid 1 与 TanStack Virtual 的试验及当时的选择。当前 Solid 2 工程通过 desktop-ui 的 `/virtualization` 使用自身行几何，见[现行合同](../../../../design/ui/virtualization.md)。下列数据只对应原试件。
-
-[TanStack Solid 适配](https://tanstack.com/virtual/latest/docs/framework/solid/solid-virtual)提供框架接入，[Virtualizer 公共 API](https://tanstack.com/virtual/latest/docs/api/virtualizer)提供数量、尺寸测量、稳定 key、范围提取和滚动能力。使用 @tanstack/solid-virtual 3.13.48、@tanstack/virtual-core 3.19.6、Solid 1.9.16、Vite 8.3.3 和 vite-plugin-solid 2.11.14，实际构建后在 Electron 41.2.0／Chromium 146 中运行。
-
-试件没有构造全量 Entry 数组，按数量及算术行映射提供几何 key。库会计算完整几何索引，页面只呈现所需窗口。查询、分组和真实身份仍需由 Kisaki 提供；几何依赖没有替应用实现这些业务。
-
-| 输入              | 本次同步设置／重测耗时 | 初始／远处挂载行数 | 远处目标 |
-| ----------------- | ---------------------- | ------------------ | -------- |
-| 1,000 行固定高度  | 13.1 ms                | 21／26             | 实际可见 |
-| 10,000 行固定高度 | 4.0 ms                 | 21／26             | 实际可见 |
-| 50,000 行固定高度 | 14.0 ms                | 21／26             | 实际可见 |
-| 50,000 行动态高度 | 18.3 ms                | 21／26             | 实际可见 |
-
-这里是同一页面顺序执行的单次观测，不是多轮分位数或正式性能预算。设置步骤同时包含数量／模式变化与显式 measure，因此 key 和 estimateSize 的调用合计为 2N；不能由此声称库每次初始化必定运行两遍。后续远处跳转没有新增这些估算回调。JS 堆的原始观测随垃圾回收变化，不能作为应用峰值内存或纯索引增量。
-
-另外通过两项交互断言：
-
-- 当前可见锚点之前的一行增高 72 px 后，同一锚点及其行内偏移保持。
-- 含 50 组的合成网格从五列变为三列，逻辑行数分别为 10,050 与 16,750；按明确目标重新映射和滚动后，原目标仍实际可见。仅挂载 17 行，分别为 85 与 51 张合成卡片。
-
-测试用 [virtual-probe.jsx](virtualization/virtual-probe.jsx) 和[运行器](virtual-electron.cjs)，结果见[原始 JSON](virtual-results.json)。试件通过 Electron offscreen 页面运行。运行时关闭硬件加速，没有测量真实显示器上的 FPS、输入延迟或 GPU 性能。
-
-实际视图使用这项几何依赖，普通业务数据保留可见与预取区间。正式卡片、图片、字体、快速滚动、拖拽、读屏、跨窗口数据与查询并发仍需验证。几何通过不等于完整列表已通过验收。
+公共 UI 的行几何、尺寸测量、远处跳转和锚点保持见[现行验证](../../w05-w07/README.md#solid-2)。2026-10-22 的候选适配器、运行环境和测量数据可从[原始实验修订](https://github.com/ximu3/kisaki-dev/tree/29bfe4b0b6d6cd29a1d2a011358b1c2f5de3c3e7/refactor/verification/evidence/technical-tradeoffs/2026-10-22)复现。
 
 <a id="webview"></a>
 
@@ -81,9 +59,9 @@ HTTPS 数据由本次 Session 的协议处理器返回合成响应，证明 CSP 
 
 ## 复现与未覆盖范围
 
-将本目录复制到新的 `.local` 子目录，在 virtualization 内用 `pnpm install --ignore-workspace --ignore-scripts --frozen-lockfile` 安装固定依赖。所有运行从仓库根发起，避免把缓存、Electron profile 和新结果写入维护目录。
+将本目录复制到新的 `.local` 子目录。所有运行从仓库根发起，避免把缓存、Electron profile 和新结果写入维护目录。
 
-使用记录所指的 Electron 和匹配的 SQLite 绑定运行试件。KISAKI_PROBE_APP_PACKAGE 指向隔离依赖项目的绝对 package.json 路径，日期脚本据此加载 better-sqlite3。通过 child_process 启动所选 Electron，设置 windowsHide: true。虚拟化先执行 virtualization/build.mjs，再以 virtual-electron.cjs 运行已构建页面。
+使用记录所指的 Electron 和匹配的 SQLite 绑定运行试件。KISAKI_PROBE_APP_PACKAGE 指向隔离依赖项目的绝对 package.json 路径，日期脚本据此加载 better-sqlite3。通过 child_process 启动所选 Electron，设置 windowsHide: true。
 
 Webview 的四个脚本放在同一隔离目录，以同一 Electron 启动 webview-electron.cjs。普通运行生成 webview-results.json；增加 --broad-resource-policy 重现 Worker 越权反例，生成独立结果且预期退出码为 1。两种运行只改变资源 CSP 的来源范围，不访问真实外部服务。
 

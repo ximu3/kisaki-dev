@@ -184,7 +184,7 @@ export function ColorInput(props: ColorInputProps): JSX.Element {
         disabled={blocked()}
         onClick={(event) => {
           event.preventDefault()
-          setOpen(!open())
+          setOpen((open) => !open)
         }}
       >
         <span style={{ 'background-color': css() }} />

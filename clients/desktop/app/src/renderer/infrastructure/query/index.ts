@@ -1,109 +1,58 @@
-import { createEffect, createSignal, onCleanup } from 'solid-js'
+import { createDeferred, createSignal, isPending, onCleanup, until } from 'solid-js'
 
-type QueryRead<T> = (signal: AbortSignal) => Promise<T>
-
-interface QueryState<T> {
-  value?: T | undefined
-  error?: unknown
-  pending: boolean
+export function requestSignal(): AbortSignal {
+  const controller = new AbortController()
+  onCleanup(() => controller.abort())
+  return controller.signal
 }
 
-interface QueryRequest {
-  controller: AbortController
-  completion: PromiseWithResolvers<void>
-}
+type Snapshot<T> = { value: T; error?: never } | { error: unknown; value?: never }
 
-export function createQuery<T>(source: QueryRead<T> | { prepare: () => QueryRead<T> }) {
-  const [state, setState] = createSignal<QueryState<T>>({ pending: true })
-  let read: QueryRead<T> | undefined
-  let active: QueryRequest | undefined
-  let queued: PromiseWithResolvers<void> | undefined
-  let disposed = false
+export function createSnapshot<T>(read: (signal: AbortSignal, previous?: T) => Promise<T> | T) {
+  const lifetime = requestSignal()
+  const [revision, invalidate] = createSignal(0)
+  const response = createDeferred<Snapshot<T> | undefined>(
+    (previous) => {
+      revision()
+      const answer = read(requestSignal(), previous?.value)
+      if (!(answer instanceof Promise)) {
+        return { value: answer }
+      }
+      return answer.then(
+        (value) => ({ value }),
+        (error: unknown) => ({ error }),
+      )
+    },
+    { loadingValue: undefined },
+  )
 
-  function release() {
-    const waiting = queued
-    queued = undefined
-    active?.controller.abort()
-    active?.completion.resolve()
-    waiting?.resolve()
+  const settled = () => response() !== undefined && !isPending(response)
+  let trailing: Promise<void> | undefined
+
+  function result() {
+    const reply = response()
+    // A trailing read already owns the next error shown to the user.
+    return reply && 'error' in reply && (trailing || isPending(response)) ? undefined : reply
+  }
+  const pending = () => result() === undefined || isPending(response)
+
+  function reload() {
+    trailing ??= Promise.resolve().then(async () => {
+      try {
+        await until(settled, { signal: lifetime })
+        if (!lifetime.aborted) {
+          trailing = undefined
+          const next = invalidate((current) => current + 1)
+          await until(() => revision() >= next && settled(), { signal: lifetime })
+        }
+      } catch (error) {
+        if (!lifetime.aborted) {
+          throw error
+        }
+      }
+    })
+    return trailing
   }
 
-  async function loadNext() {
-    if (active || !queued || !read) {
-      return
-    }
-
-    const completion = queued
-    const controller = new AbortController()
-    const { signal } = controller
-    active = { controller, completion }
-    queued = undefined
-    setState(({ value }) => ({ value, pending: true }))
-
-    try {
-      const value = await read(signal)
-      if (!signal.aborted) {
-        setState({ value, pending: !!queued })
-      }
-    } catch (error) {
-      if (!signal.aborted && !queued) {
-        setState(({ value }) => ({ value, error, pending: false }))
-      }
-    }
-
-    active = undefined
-    if (!signal.aborted) {
-      completion.resolve()
-    }
-    if (queued) {
-      queueMicrotask(() => void loadNext())
-    }
-  }
-
-  function reload(): Promise<void> {
-    if (disposed) {
-      return Promise.resolve()
-    }
-
-    queued ??= Promise.withResolvers<void>()
-    queueMicrotask(() => void loadNext())
-    return queued.promise
-  }
-
-  const prepare = typeof source === 'function' ? () => source : source.prepare
-  createEffect(prepare, (next) => {
-    read = next
-    if (active && !active.controller.signal.aborted) {
-      active.controller.abort()
-      if (queued) {
-        void queued.promise.then(active.completion.resolve)
-      } else {
-        queued = active.completion
-      }
-    }
-    void reload()
-  })
-  onCleanup(() => {
-    disposed = true
-    release()
-  })
-
-  return {
-    get value() {
-      return state().value
-    },
-    get error() {
-      return state().error
-    },
-    get pending() {
-      return state().pending
-    },
-    reload,
-    accept(value: T) {
-      if (!disposed) {
-        setState({ value, pending: false })
-        release()
-      }
-    },
-  }
+  return { result, pending, reload }
 }

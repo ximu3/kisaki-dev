@@ -6,6 +6,14 @@
 
 ## Solid 2 界面与宿主复验
 
+2026-11-26 在 Windows x64 使用 Solid 与 Web 运行时 2.0.4、编译器 2.0.3、Vite 插件 3.0.1，验证了[局部查询和组件寿命](../../../design/ui/state.md#queries)。向运行中的 Electron 注入一次环境读取失败后，「关于 Kisaki」在原对话框内显示错误，禁用复制，重试后展示系统架构并恢复复制。桌面实窗套件 18 项通过，Linux 通知与需要隔离系统身份的 4 项按宿主条件跳过。公共 UI 的 Chromium 工作坊与仓外 Chromium／沙箱 Electron 消费通过。桌面完整验证覆盖 6 项开发会话用例、冷启动、存储负载及 Windows x64 打包制品的外部启停。旧版开发窗口实看了设置和关于的入口。新版关于窗口在默认大小、最小窗口的 100% 缩放以及最小窗口的 75% 和 200% 缩放下均完整位于视口内，无横向溢出。
+
+在同版 Solid 客户端运行时以可控 Promise 检查并发。连续两次失效共享一次尾随读取，已有尾随读取时，前一次失败没有显示。更换查询输入后，旧请求的信号已取消，迟到回包没有覆盖新结果。卸载结束挂起的刷新等待。偏好保存回包先于旧查询返回时，已保存值继续可见，下一次变更通知仍能取得新快照。
+
+本次按工作树核对了 23 份包清单、3 份 JavaScript 依赖锁文件和 842 个 JS／TS 系列源文件的模块引用。122 个 JSX／TSX 文件分别经 Solid 编译器的开发和生产 DOM 模式转换，覆盖 43 个桌面 renderer 文件、67 个公共 UI 文件及 12 个工程与消费样板。仓库内解析到的 Solid 运行时只有 2.0.4。
+
+同一事件轮次中先选择 Detail 再选择 Basic，受控页签最终显示 Basic。点击单选或多选选项后立即构造 `FormData`，分别得到已采纳的单值与完整多值。释放工作坊的 Markdown 编辑器后，外部操作入口同时移除。[浏览器表单](../../../../clients/desktop/packages/desktop-ui/tests/browser/forms.test.ts) · [制品消费者](../../../../clients/desktop/packages/desktop-ui/tests/consumers/browser.test.ts)
+
 2026-11-23 在 Windows x64 使用 `solid-js`、`@solidjs/web` 2.0.3 和 `@solidjs/compiler` 2.0.2。源码工作坊覆盖浏览器原生表单、浮层、焦点与虚拟选择。仓外消费者安装实际 tarball，核对声明、样式、独立图层数据、动态组合与释放，并在 Chromium 和沙箱 Electron 中运行。[公共包入口](../../../design/ui/package.md)
 
 在 Chromium 156 的隔离样本中，50,000 行按 32 CSS px 估计得到 1,600,000 CSS px 的轨道。304 CSS px 高的视口最多挂载 20 行，上方行增高 68 CSS px 后末行仍贴底。隐藏恢复、布局换代和滚出视口的活动选项分别检查了滚动位置、定位与 ARIA 引用。Ryzen 9 7945HX 上各构建 13 次固定行高索引，50,000 行中位为 1.8 ms，500,000 行为 18.1 ms。该计时只覆盖几何索引构建。[虚拟化验收范围](../../scenarios/ui.md#virtualization-adapter)

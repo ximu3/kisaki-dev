@@ -59,7 +59,7 @@ export function Collapsible(props: CollapsibleProps): JSX.Element {
         if (target === summary) {
           // Ask before the browser toggles this disclosure and closes a named sibling.
           event.preventDefault()
-          change(!open())
+          change((open) => !open)
         }
       }}
       onToggle={(event) => {

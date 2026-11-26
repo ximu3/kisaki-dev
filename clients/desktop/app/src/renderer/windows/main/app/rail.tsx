@@ -1,5 +1,5 @@
-import { createEffect, createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
-import { createQuery } from '../../../infrastructure/query'
+import { createEffect, createMemo, createSignal, For, onSettled, Show } from 'solid-js'
+import { createSnapshot } from '../../../infrastructure/query'
 import { mdiDotsHorizontal, mdiFormatListChecks } from '@mdi/js'
 import { Icon } from '@kisaki3/desktop-ui/icon'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@kisaki3/desktop-ui/tooltip'
@@ -24,7 +24,7 @@ export function NavigationRail(props: {
   open: (target: NativeViewTarget) => Promise<boolean>
 }) {
   const { api } = props
-  const active = createQuery((signal) =>
+  const active = createSnapshot((signal) =>
     api.request(
       signal,
       'tasks.list',
@@ -33,11 +33,13 @@ export function NavigationRail(props: {
     ),
   )
   const refresh = () => void active.reload()
-  api.topics.addEventListener('tasks.changed', refresh)
-  onCleanup(() => api.topics.removeEventListener('tasks.changed', refresh))
+  onSettled(() => {
+    api.topics.addEventListener('tasks.changed', refresh)
+    return () => api.topics.removeEventListener('tasks.changed', refresh)
+  })
 
   createEffect(
-    () => active.error,
+    () => active.result()?.error,
     (error) => {
       if (error) {
         reportError(error)
@@ -137,7 +139,7 @@ export function NavigationRail(props: {
             onClick={() => void props.open({ type: 'tasks' })}
           >
             <Icon path={mdiFormatListChecks} />
-            <Show when={!active.error && active.value?.total}>
+            <Show when={!active.result()?.error && active.result()?.value?.total}>
               {(n) => (
                 <span
                   aria-hidden="true"

@@ -1,4 +1,4 @@
-import { createSignal, onCleanup } from 'solid-js'
+import { createSignal, onSettled } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { parseNativeViewTarget, type NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
@@ -158,17 +158,21 @@ export function createNavigation(
     }
   }
 
-  onCleanup(() => {
-    pending?.abort()
-    current?.close()
-  })
-  api.onClose((signal) => {
-    pending?.abort()
-    return editors.canLeave(signal)
-  })
-  api.onNavigate(async (raw, signal) => {
-    if (!(await navigate(parseNativeViewTarget(raw), signal))) {
-      throw new DesktopError('Cancelled', api.t('runtime.keepEditing'))
+  onSettled(() => {
+    const stopClose = api.onClose((signal) => {
+      pending?.abort()
+      return editors.canLeave(signal)
+    })
+    const stopNavigation = api.onNavigate(async (raw, signal) => {
+      if (!(await navigate(parseNativeViewTarget(raw), signal))) {
+        throw new DesktopError('Cancelled', api.t('runtime.keepEditing'))
+      }
+    })
+    return () => {
+      stopClose()
+      stopNavigation()
+      pending?.abort()
+      current?.close()
     }
   })
 

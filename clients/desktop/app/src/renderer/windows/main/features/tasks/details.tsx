@@ -8,7 +8,7 @@ import {
   Switch,
   type ParentProps,
 } from 'solid-js'
-import { createQuery } from '../../../../infrastructure/query'
+import { createSnapshot } from '../../../../infrastructure/query'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
   observeDialogTarget,
@@ -79,11 +79,11 @@ function TaskDetailView(props: {
 }) {
   const { api, selection } = props
   let initial = selection.initial
-  const detail = createQuery((signal) => {
+  const detail = createSnapshot((signal) => {
     if (initial) {
       const task = initial
       initial = undefined
-      return Promise.resolve(task)
+      return task
     }
     return api.request(signal, 'tasks.get', { taskRunId: selection.id })
   })
@@ -92,13 +92,13 @@ function TaskDetailView(props: {
     () => void detail.reload(),
     { defer: true },
   )
-  deferDialogUntil(() => !detail.pending)
-  const record = () => (detail.error ? undefined : detail.value)
+  deferDialogUntil(() => !detail.pending())
+  const record = () => detail.result()?.value
   observeDialogTarget(selection.receipt, () => ({
-    presented: props.visible && !detail.pending && !!record(),
+    presented: props.visible && !detail.pending() && !!record(),
     error:
-      detail.error ??
-      (detail.value === null && !detail.pending
+      detail.result()?.error ??
+      (detail.result()?.value === null && !detail.pending()
         ? new DesktopError('NotFound', api.t('runtime.unavailable'))
         : undefined),
   }))
@@ -112,16 +112,16 @@ function TaskDetailView(props: {
       </DialogHeader>
       <DialogBody class="@container space-y-5 overflow-x-hidden">
         <Switch>
-          <Match when={detail.error}>
+          <Match when={detail.result()?.error}>
             <Alert tone="destructive" role="alert">
-              {errorMessage(detail.error)}{' '}
+              {errorMessage(detail.result()?.error)}{' '}
               <Button variant="outline" onClick={() => void detail.reload()}>
                 {api.t('runtime.retry')}
               </Button>
             </Alert>
           </Match>
           <Match when={record()}>{(item) => <TaskReport api={api} item={item()} />}</Match>
-          <Match when={!detail.pending && !detail.error}>
+          <Match when={!detail.pending() && !detail.result()?.error}>
             <p class="m-0 text-sm text-muted-foreground">{api.t('runtime.unavailable')}</p>
           </Match>
         </Switch>

@@ -1,3 +1,4 @@
+import { onSettled } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { SearchInput } from '../input/search/control'
 import { FieldContext } from '../../internal/field'
@@ -28,7 +29,9 @@ export function ComboboxSearch<O extends SelectionOption>(
 
   function edit(query: string) {
     props.state.change(query)
-    queueMicrotask(() => props.collection.highlight(props.collection.enabled()[0]?.value))
+    onSettled(() => {
+      props.collection.highlight(props.collection.enabled()[0]?.value)
+    })
   }
 
   function navigate(event: KeyboardEvent) {

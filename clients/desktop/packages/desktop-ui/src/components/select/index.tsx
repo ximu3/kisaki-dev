@@ -78,15 +78,15 @@ export function MultiSelect<K extends string = string>(props: MultiSelectProps<K
     <SelectionField
       {...rest}
       chips={merge(props, {
-        remove: (key: string) => change(value().filter((item) => item !== key)),
+        remove: (key: string) => change((values) => values.filter((item) => item !== key)),
       })}
       selected={value().map(resolve)}
       defaults={props.defaultValue ?? []}
       onChoose={(option) =>
-        change(
-          value().includes(option.value)
-            ? value().filter((item) => item !== option.value)
-            : [...value(), option.value],
+        change((values) =>
+          values.includes(option.value)
+            ? values.filter((item) => item !== option.value)
+            : [...values, option.value],
         )
       }
       onReset={() => change(props.defaultValue ?? [])}

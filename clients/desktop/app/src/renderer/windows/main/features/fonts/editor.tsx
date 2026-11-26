@@ -1,4 +1,4 @@
-import { For, onCleanup, onSettled, Show } from 'solid-js'
+import { getOwner, isDisposed, For, onSettled, Show } from 'solid-js'
 import { mdiFileDocumentOutline, mdiPlus, mdiDeleteOutline, mdiRestore } from '@mdi/js'
 import { Icon } from '@kisaki3/desktop-ui/icon'
 import type { Font } from '@kisaki3/desktop-contracts/fonts'
@@ -41,10 +41,7 @@ export function FontEditor(props: FontEditorProps) {
     () => !draft.preparing() && (!draft.original() || !!preview.error() || !!preview.value()),
   )
 
-  let active = true
-  onCleanup(() => {
-    active = false
-  })
+  const owner = getOwner()!
   onSettled(() => {
     if (props.files.length) {
       void draft.receive(props.files)
@@ -53,7 +50,7 @@ export function FontEditor(props: FontEditorProps) {
 
   async function save() {
     const font = await draft.save()
-    if (active && !draft.dirty()) {
+    if (!isDisposed(owner) && !draft.dirty()) {
       props.onSaved(font)
     }
   }

@@ -14,10 +14,10 @@
 
 ## Solid 与控件版本
 
-| 能力           | 版本线                     | 固定兼容基线                                                                      |
+| 能力           | 版本线                     | 工作区接入                                                                      |
 | -------------- | -------------------------- | --------------------------------------------------------------------------------- |
-| Solid          | 2.x | solid-js 与 @solidjs/web 2.0.3 |
-| 编译集成       | Solid 2 原生编译器 | @solidjs/vite-plugin 3.0.1、@solidjs/compiler 2.0.2 |
+| Solid          | 2.x | solid-js 与 @solidjs/web 使用同一条兼容版本线 |
+| 编译集成       | Solid 2 原生编译器 | @solidjs/vite-plugin 3.x、@solidjs/compiler 2.x |
 | 基础控件       | Solid 2 与浏览器原生能力 | 按[UI 合同](../ui/package.md)实现并验证 |
 | 虚拟列表与网格 | desktop-ui | 自研纵向行几何，见[几何边界](../ui/virtualization.md#geometry) |
 | 拖拽排序       | Pragmatic Drag and Drop    | 核心与辅助包的固定版本见 [拖拽实现](../ui/virtualization.md#dependency)          |
@@ -27,7 +27,7 @@
 
 Solid 的活跃属性、快照、派生值和副作用保持区别，不能为统一外观采用会改变其响应性的解构或封装。
 
-运行时、JSX 和编译插件必须相容，并使用同一组锁定版本。JSX 类型与 DOM 渲染来自 @solidjs/web，核心响应式能力来自 solid-js。主窗口按类型化目标和 Solid 视图状态执行[导航](../ui/navigation.md#delivery)，视图持有查询快照。公共 UI 的类型声明、CSS 和组件生命周期均由实际消费者验证。
+工作区选用相容的最新稳定发行，catalog 和公共 UI 的 peer 声明兼容范围，锁文件记录构建和测试实际使用的版本。JSX 类型与 DOM 渲染来自 @solidjs/web，核心响应式能力来自 solid-js。主窗口按类型化目标和 Solid 视图状态执行[导航](../ui/navigation.md#delivery)，视图持有查询快照。公共 UI 的类型声明、CSS 和组件生命周期均由实际消费者验证。
 
 <a id="packages"></a>
 

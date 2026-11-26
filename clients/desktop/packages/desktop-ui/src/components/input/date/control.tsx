@@ -184,7 +184,7 @@ export function DateInput(props: DateInputProps): JSX.Element {
         disabled={blocked()}
         onClick={(event) => {
           event.preventDefault()
-          setOpen(!open())
+          setOpen((open) => !open)
         }}
       >
         <Icon path={mdiCalendarMonthOutline} />

@@ -1,4 +1,4 @@
-import { createEffect, omit, onCleanup } from 'solid-js'
+import { createEffect, createSignal, omit, onSettled } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import {
   XYContainer as XY,
@@ -61,7 +61,8 @@ export type XYContainerProps<Datum> = Omit<
   PlotProps<Datum[]> & { bleed?: Readonly<Spacing> }
 
 export function XYContainer<Datum>(props: XYContainerProps<Datum>): JSX.Element {
-  let host!: HTMLDivElement
+  let node!: HTMLDivElement
+  const [host, setHost] = createSignal<HTMLDivElement>()
   let plot: XY<Datum> | undefined
   let active: ChartPartLifetime[] = []
 
@@ -87,6 +88,16 @@ export function XYContainer<Datum>(props: XYContainerProps<Datum>): JSX.Element 
     })
   }
 
+  onSettled(() => {
+    setHost(node)
+    return () => {
+      releaseRemoved(active, [])
+      // The engine can finish its fonts-ready callback after disposal. Clear the axes it can render.
+      plot?.updateContainer({ components: [] }, true)
+      plot?.destroy()
+    }
+  })
+
   createEffect(
     () => {
       const parts = children()
@@ -100,6 +111,7 @@ export function XYContainer<Datum>(props: XYContainerProps<Datum>): JSX.Element 
       )
 
       return {
+        host: host(),
         series,
         xAxis,
         yAxis,
@@ -111,6 +123,9 @@ export function XYContainer<Datum>(props: XYContainerProps<Datum>): JSX.Element 
       }
     },
     (next) => {
+      if (!next.host) {
+        return
+      }
       let samplesChanged = releaseRemoved(active, next.active)
       active = next.active
 
@@ -132,8 +147,8 @@ export function XYContainer<Datum>(props: XYContainerProps<Datum>): JSX.Element 
       const crosshair = next.crosshair && mount(next.crosshair)
       const tooltip = next.tooltip?.mount()
 
-      attachTooltip(tooltip, host)
-      plot ??= new XY(host)
+      attachTooltip(tooltip, next.host)
+      plot ??= new XY(next.host)
       plot.updateContainer(
         {
           ...next.config,
@@ -151,17 +166,11 @@ export function XYContainer<Datum>(props: XYContainerProps<Datum>): JSX.Element 
       plot.render()
     },
   )
-  onCleanup(() => {
-    releaseRemoved(active, [])
-    // The engine can finish its fonts-ready callback after disposal. Clear the axes it can render.
-    plot?.updateContainer({ components: [] }, true)
-    plot?.destroy()
-  })
 
   return (
     <div
       ref={(element) => {
-        host = element
+        node = element
       }}
       data-vis-xy-container=""
       class={props.class}
@@ -177,7 +186,8 @@ export type SingleContainerProps<Data> = Omit<
   PlotProps<Data>
 
 export function SingleContainer<Data>(props: SingleContainerProps<Data>): JSX.Element {
-  let host!: HTMLDivElement
+  let node!: HTMLDivElement
+  const [host, setHost] = createSignal<HTMLDivElement>()
   let plot: Single<Data | never[]> | undefined
   let active: ChartPartLifetime[] = []
 
@@ -209,6 +219,14 @@ export function SingleContainer<Data>(props: SingleContainerProps<Data>): JSX.El
     })
   }
 
+  onSettled(() => {
+    setHost(node)
+    return () => {
+      releaseRemoved(active, [])
+      disposePlot()
+    }
+  })
+
   createEffect(
     () => {
       const parts = children()
@@ -217,6 +235,7 @@ export function SingleContainer<Data>(props: SingleContainerProps<Data>): JSX.El
       const active = [mark, tooltip].filter((part) => part !== undefined)
 
       return {
+        host: host(),
         mark,
         tooltip,
         active,
@@ -225,6 +244,9 @@ export function SingleContainer<Data>(props: SingleContainerProps<Data>): JSX.El
       }
     },
     (next) => {
+      if (!next.host) {
+        return
+      }
       releaseRemoved(active, next.active)
       active = next.active
       if (!next.mark) {
@@ -234,8 +256,8 @@ export function SingleContainer<Data>(props: SingleContainerProps<Data>): JSX.El
 
       const component = next.mark.mount()
       const tooltip = next.tooltip?.mount()
-      attachTooltip(tooltip, host)
-      plot ??= new Single(host)
+      attachTooltip(tooltip, next.host)
+      plot ??= new Single(next.host)
       plot.updateContainer({ ...next.config, component, ...(tooltip && { tooltip }) }, true)
       if (component.datamodel.data !== next.data) {
         plot.setData(next.data, true)
@@ -243,15 +265,11 @@ export function SingleContainer<Data>(props: SingleContainerProps<Data>): JSX.El
       plot.render()
     },
   )
-  onCleanup(() => {
-    releaseRemoved(active, [])
-    disposePlot()
-  })
 
   return (
     <div
       ref={(element) => {
-        host = element
+        node = element
       }}
       data-vis-single-container=""
       class={props.class}

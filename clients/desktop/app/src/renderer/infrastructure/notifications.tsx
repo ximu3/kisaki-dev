@@ -15,16 +15,14 @@ export function Notifications(props: {
   t: Translate
   appearanceIssues?: Accessor<readonly PresentationIssue[]>
 }) {
-  let previous: readonly PresentationIssue[] = []
   createEffect(
     () => props.appearanceIssues?.() ?? [],
-    (issues) => {
+    (issues, previous = []) => {
       for (const issue of issues) {
         if (!previous.includes(issue)) {
           toast.show({ type: 'warning', message: appearanceIssueMessage(props.t, issue) })
         }
       }
-      previous = issues
     },
   )
   return (

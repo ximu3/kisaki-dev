@@ -30,7 +30,7 @@
 | 存档格式与内容树摘要       | [ZIP 成员、清单与确定编码](contract-closure/2026-10-24/README.md)                                            |
 | 存档恢复、查询与事务     | [文件中断和 Electron／SQLite 试件](storage-contracts/2026-10-22/README.md)                              |
 | Drizzle RC               | [编码、迁移和隔离运行](public-contracts/2026-10-22/README.md)                                           |
-| 日期、虚拟化与界面隔离   | [技术验证](technical-tradeoffs/2026-10-22/README.md)                                                    |
+| 日期、虚拟化与界面隔离   | [日期与 Webview](technical-tradeoffs/2026-10-22/README.md) · [公共 UI 虚拟化](w05-w07/README.md#solid-2)                                                    |
 | 时钟、分部匹配与截图     | [规则及原生探针](contract-closure/2026-10-22/README.md)                                                 |
 | 大集合与扫描报告         | [容量模型](capacity/README.md)                                                                          |
 | 原生工程与平台接口       | [Node-API／工程来源](native-projects/organization-sources.md) · [平台机制](platform-closure/closure.md) |

@@ -80,7 +80,8 @@ export function Dialog(props: DialogProps): JSX.Element {
 }
 
 export function deferDialogUntil(ready: Accessor<boolean>): void {
-  onCleanup(useContext(DialogContext).addReadiness(ready))
+  const unregister = useContext(DialogContext).addReadiness(ready)
+  onCleanup(unregister)
 }
 
 export function DialogTrigger(props: ButtonProps): JSX.Element {

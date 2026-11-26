@@ -1,4 +1,4 @@
-import { createMemo, createSignal, onCleanup } from 'solid-js'
+import { onSettled, getOwner, isDisposed, createMemo, createSignal } from 'solid-js'
 import type { TokenName } from '@kisaki3/desktop-appearance/tokens'
 import {
   parseUserThemeUpdate,
@@ -44,10 +44,7 @@ export function ThemeEditor(props: ThemeEditorProps) {
     colorScheme: scheme(),
     tokens: draft()[scheme()],
   }))
-  let active = true
-  onCleanup(() => {
-    active = false
-  })
+  const owner = getOwner()!
 
   const fieldOrder = () => [
     'name',
@@ -84,7 +81,7 @@ export function ThemeEditor(props: ThemeEditorProps) {
     if (id !== 'name') {
       setScheme(id.startsWith('light/') ? 'light' : 'dark')
     }
-    queueMicrotask(() => document.getElementById('theme-field-' + id)?.focus())
+    onSettled(() => document.getElementById('theme-field-' + id)?.focus())
   }
   function change<K extends TokenName>(key: K, value: UserAppearanceTokens[K]) {
     setDraft((current) => ({ ...current, [scheme()]: { ...current[scheme()], [key]: value } }))
@@ -107,7 +104,7 @@ export function ThemeEditor(props: ThemeEditorProps) {
       const ref = await api.call('themes.create', value)
       id = ref.id
     }
-    if (active) {
+    if (!isDisposed(owner)) {
       setOriginal({ id, definition: value })
     }
 
@@ -133,7 +130,7 @@ export function ThemeEditor(props: ThemeEditorProps) {
       preview.change(false)
     }
 
-    if (active && draft() === value) {
+    if (!isDisposed(owner) && draft() === value) {
       props.onSaved({ type: 'user', id })
     }
   }
