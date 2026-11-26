@@ -118,10 +118,11 @@ async function writeBuilderConfig(context: PackagingContext): Promise<string> {
   config.set('electronVersion', build.electronVersion)
   const identity = applicationIdentities[testOnly ? 'development' : 'production']
   config.set('appId', identity.appId)
+  config.set('productName', identity.name)
   if (build.target.startsWith('linux-')) {
     config.set('extraMetadata', { desktopName: identity.appId + '.desktop' })
   }
-  config.set('protocols', [{ name: 'Kisaki', schemes: [identity.scheme] }])
+  config.set('protocols', [{ name: identity.name, schemes: [identity.scheme] }])
   config.set('directories', {
     app: staging,
     output,

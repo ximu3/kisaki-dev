@@ -180,11 +180,11 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
     ).toBe(`rgb(${index}, 50, 100)`)
   }
 
-  const zeroLengths = await page.evaluate(() => {
-    const { zeroRadius, zeroFontSize } = document.body.dataset
+  const scaledMetrics = await page.evaluate(() => {
+    const { zeroRadius } = document.body.dataset
     const root = document.documentElement
     root.style.setProperty('--radius', zeroRadius!)
-    root.style.setProperty('--text-base-size', zeroFontSize!)
+    root.style.setProperty('--interface-scale', '75')
 
     const sample = document.querySelector<HTMLElement>('#ordinary')!
     sample.style.borderRadius =
@@ -194,5 +194,5 @@ test('Tailwind and plain CSS follow the same live values, zero radii and percent
       radii: getComputedStyle(sample).borderRadius,
     }
   })
-  expect(zeroLengths).toEqual({ fontSize: '0px', radii: '0px 0px 0px 4px' })
+  expect(scaledMetrics).toEqual({ fontSize: '10.5px', radii: '0px 0px 0px 4px' })
 })

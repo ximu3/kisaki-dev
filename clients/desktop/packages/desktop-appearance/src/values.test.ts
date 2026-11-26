@@ -14,7 +14,6 @@ test('parses literal colors, text metrics, font stacks and complete shadow layer
     ['--input', 'transparent'],
     ['--radius', '0'],
     ['--radius', '0.5rem'],
-    ['--text-base-size', '14px'],
     ['--text-base-weight', '450'],
     ['--text-base-weight', 'bold'],
     ['--text-base-line-height', 'normal'],
@@ -39,7 +38,6 @@ test('parses literal colors, text metrics, font stacks and complete shadow layer
     'color(display-p3 1 0 0)',
   )
   expect(parseTokenValue('--radius', '  +0.0 /* base */ ')).toBe('0px')
-  expect(parseTokenValue('--text-base-size', '0e0')).toBe('0px')
   expect(parseTokenValue('--text-base-letter-spacing', '-0')).toBe('0px')
   expect(parseTokenValue('--text-base-line-height', '0')).toBe('0')
 })
@@ -70,7 +68,6 @@ test('rejects formulas, context references, invalid kinds and malformed CSS', ()
     ['--radius', '-1px'],
     ['--radius', '1px 2px'],
     ['--radius', '1px\\9'],
-    ['--text-base-size', '-2px'],
     ['--text-base-weight', '1001'],
     ['--text-base-weight', 'bolder'],
     ['--text-base-line-height', '-1'],

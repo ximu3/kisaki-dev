@@ -16,7 +16,7 @@ Pass cancellation through the operation's call options. The operation owns compl
 
 ## Resources, files and networking
 
-Treat read references, preparations, view URLs and registrations as owned resources. Retain a read while using its contents. Bind references for the actual view that will consume them and dispose of the binding before releasing its backing resources. Persist an attachment reference through the owning write before discarding the preparation. The preparation is transient. A display URL or open handle cannot substitute for a persistent attachment ID.
+Treat read references, preparations, view URLs and registrations as owned resources. Retain a read while using its contents. Bind references for the view that will consume them. Once binding succeeds, you can dispose of the original read. Each view holds its own binding and disposes of it when finished. Persist an attachment reference through the owning write before discarding the preparation. The preparation is transient. A display URL or open handle cannot substitute for a persistent attachment ID.
 
 A credential-bearing HTTP file input must explicitly reject redirects when a nonempty Authorization or Cookie header is present. Use the host networking operation for approved requests and observe the response and body lifetime. Release image and font preparations even if later validation or saving fails. When a theme or translation becomes temporarily unavailable, distinguish the saved choice from the fallback actually presented.
 

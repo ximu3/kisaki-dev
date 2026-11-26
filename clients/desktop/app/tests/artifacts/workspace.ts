@@ -14,7 +14,10 @@ export interface ArtifactWorkspace {
   close(): Promise<void>
 }
 
-export async function prepareArtifactWorkspace(archivePath: string): Promise<ArtifactWorkspace> {
+export async function prepareArtifactWorkspace(
+  archivePath: string,
+  productName: string,
+): Promise<ArtifactWorkspace> {
   const directory = await mkdtemp(join(tmpdir(), 'kisaki-artifact-'))
 
   try {
@@ -31,14 +34,14 @@ export async function prepareArtifactWorkspace(archivePath: string): Promise<Art
         },
       )
 
-      executablePath = join(directory, 'Kisaki.exe')
+      executablePath = join(directory, productName + '.exe')
       resourceDirectory = join(directory, 'resources')
       fusePath = executablePath
     } else if (process.platform === 'darwin') {
       await promisify(execFile)('ditto', ['-x', '-k', archivePath, directory])
 
-      const application = join(directory, 'Kisaki.app')
-      executablePath = join(application, 'Contents', 'MacOS', 'Kisaki')
+      const application = join(directory, productName + '.app')
+      executablePath = join(application, 'Contents', 'MacOS', productName)
       resourceDirectory = join(application, 'Contents', 'Resources')
       fusePath = application
     } else {

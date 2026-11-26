@@ -21,7 +21,7 @@ TMDB 只从标准季提供真实分集清单，不提供附加内容清单，也
 | 英文     | Bangumi、AniList、TMDB、Fanart.tv、Wikidata | 5    |
 | 日文     | Bangumi、AniList、TMDB、Fanart.tv、Wikidata | 5    |
 
-AniList 按[来源范围](../../../extensions/sources/anilist.md#subjects)提供角色、Studio 及已明确主体的档案字段。下表的 personWorks 成员和 note 使用适用的其他来源，organizationWorks 仅采用实际 Studio 参与；混合 Staff 名单、原配关系和整部时长超出本作品上下文的 AniList 能力范围。
+AniList 按[来源范围](../../../extensions/sources/anilist.md#subjects)提供角色、Studio 及已明确主体的档案字段。下表的 personWorks 成员按各语言方案取自 Bangumi、TMDB，人员工作备注默认不采集，organizationWorks 仅采用实际 Studio 参与；混合 Staff 名单、原配关系和整部时长超出本作品上下文的 AniList 能力范围。
 
 <a id="episode-correspondence"></a>
 

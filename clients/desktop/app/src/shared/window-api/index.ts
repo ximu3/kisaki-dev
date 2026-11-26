@@ -66,6 +66,7 @@ export interface ImageChoice {
 }
 
 export interface WindowState {
+  applicationName: string
   startupDeadline: number
   kind: WindowKind
   platform: DesktopPlatform

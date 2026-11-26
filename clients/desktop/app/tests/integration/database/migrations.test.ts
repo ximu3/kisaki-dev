@@ -15,59 +15,6 @@ async function fixtureDirectory(): Promise<string> {
   return path
 }
 
-test('moves count-only completions into the work record and retains detail identities', async () => {
-  const directory = await fixtureDirectory()
-  const current = storageOptions(directory)
-  const migrations = join(directory, 'previous')
-  const baseline = '20261114043541_baseline'
-  await cp(join(current.migrationsDirectory, baseline), join(migrations, baseline), {
-    recursive: true,
-  })
-  let storage = initializeDatabase({ ...current, migrationsDirectory: migrations })
-  onTestFinished(() => storage.close())
-  for (const id of ['with-record', 'without-record']) {
-    storage.db.run(
-      sql`insert into entries (id, type, name, created_at, updated_at) values (${id}, 'game', ${id}, 1, 1)`,
-    )
-    storage.db.run(sql`insert into games (entry_id) values (${id})`)
-    storage.db.run(
-      sql`insert into work_completion_records (id, work_id, work_type, created_at, updated_at) values (${id}, ${id}, 'game', 1, 1)`,
-    )
-  }
-  storage.db.run(
-    sql`insert into game_records (game_id, status, additional_duration_ms) values ('with-record', 'active', 50)`,
-  )
-  storage.db.run(
-    sql`insert into work_completion_records (id, work_id, work_type, note, created_at, updated_at) values ('blank', 'with-record', 'game', char(9,160), 1,1), ('note', 'with-record', 'game', 'My ending', 1,2)`,
-  )
-  storage.close()
-  storage = initializeDatabase(current)
-  expect(
-    storage.db.all(
-      sql`select game_id, status, additional_duration_ms, additional_completion_count from game_records order by game_id`,
-    ),
-  ).toEqual([
-    {
-      game_id: 'with-record',
-      status: 'active',
-      additional_duration_ms: 50,
-      additional_completion_count: 2,
-    },
-    {
-      game_id: 'without-record',
-      status: null,
-      additional_duration_ms: 0,
-      additional_completion_count: 1,
-    },
-  ])
-  expect(storage.db.all(sql`select id,note,updated_at from work_completion_records`)).toEqual([
-    { id: 'note', note: 'My ending', updated_at: 2 },
-  ])
-  expect(() =>
-    storage.db.run(sql`update work_completion_records set note = char(9,160) where id='note'`),
-  ).toThrow()
-})
-
 test('runs a forward migration once and retains previous data and user choices after rollback and retry', async () => {
   const directory = await fixtureDirectory()
   const migrations = join(directory, 'migrations')

@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { join } from 'node:path'
-import { BrowserWindow, session } from 'electron'
+import { app, BrowserWindow, session } from 'electron'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 import type { ApplicationExitApi } from '@kisaki3/desktop-contracts/app'
 import type { WindowKind } from '../../../shared/window-api/protocol'
@@ -66,7 +66,7 @@ export async function createWindow(
   const window = new BrowserWindow({
     ...geometry.options,
     show: false,
-    title: 'Kisaki',
+    title: app.name,
     ...(kind === 'main' && {
       ...(controlsOverlay && { titleBarOverlay: { height: overlayHeight } }),
       titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'hidden',

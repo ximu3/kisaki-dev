@@ -26,7 +26,8 @@ interface SystemPaths {
 const execute = promisify(execFile)
 
 export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
-  const { scheme, appId } = applicationIdentities[paths.isolated ? 'development' : 'production']
+  const { scheme, appId, name } =
+    applicationIdentities[paths.isolated ? 'development' : 'production']
   const args = app.isPackaged ? [] : [join(paths.runtime, 'main', 'entry.js')]
   if (paths.isolated) {
     args.push('--profile=' + paths.data)
@@ -37,6 +38,7 @@ export function systemIntegration(paths: SystemPaths): SystemIntegrationApi {
       ? process.env.APPIMAGE!
       : process.execPath
   const entries = linuxDesktopEntries({
+    name,
     appId,
     scheme,
     executable,

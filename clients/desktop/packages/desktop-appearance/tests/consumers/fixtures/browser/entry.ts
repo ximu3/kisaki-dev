@@ -12,7 +12,6 @@ const properties = {
   radius: 'border-radius',
   shadow: 'box-shadow',
   'font-family': 'font-family',
-  'font-size': 'font-size',
   'font-weight': 'font-weight',
   'line-height': 'line-height',
   'letter-spacing': 'letter-spacing',
@@ -25,4 +24,3 @@ document.body.dataset.validCss = String(
 )
 
 document.body.dataset.zeroRadius = parseTokenValue('--radius', '0')
-document.body.dataset.zeroFontSize = parseTokenValue('--text-base-size', '0')

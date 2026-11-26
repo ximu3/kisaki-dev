@@ -21,7 +21,6 @@ const syntaxes: Readonly<Record<TokenKind, string>> = {
   // An explicit color keeps each layer independent of the element's currentColor.
   shadow: `none | [ [${colorSyntax}] && <length>{2,4} && inset? ]#`,
   'font-family': '[ <family-name> | <generic-family> ]#',
-  'font-size': '<length [0,∞]>',
   'font-weight': 'normal | bold | <number [1,1000]>',
   'line-height': 'normal | <number [0,∞]> | <length-percentage [0,∞]>',
   'letter-spacing': 'normal | <length>',

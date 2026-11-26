@@ -25,6 +25,7 @@ function quoteExecArgument(value: string) {
 }
 
 interface DesktopEntryOptions {
+  name: string
   appId: string
   scheme: string
   executable: string
@@ -33,6 +34,7 @@ interface DesktopEntryOptions {
 }
 
 export function linuxDesktopEntries({
+  name,
   appId,
   scheme,
   executable,
@@ -46,14 +48,14 @@ export function linuxDesktopEntries({
     desktopName,
   )
   const desktopFile = join(
-    process.env.XDG_DATA_HOME ?? join(homedir(), '.local/share'),
+    process.env.XDG_DATA_HOME || join(homedir(), '.local/share'),
     'applications',
     desktopName,
   )
   const launch = [executable, ...args].map(quoteExecArgument).join(' ')
   const owner =
     'X-Kisaki-Owner=' + appId + (profile !== undefined ? '/' + encodeURIComponent(profile) : '')
-  const header = '[Desktop Entry]\nType=Application\nName=Kisaki\n' + owner + '\n'
+  const header = '[Desktop Entry]\nType=Application\nName=' + name + '\n' + owner + '\n'
   const loginContents = header + 'Exec=' + launch + ' --login\n'
   const launcherContents =
     header + 'Exec=' + launch + ' %U\nMimeType=x-scheme-handler/' + scheme + ';\n'
@@ -90,23 +92,33 @@ export function linuxDesktopEntries({
 
   async function hasProtocolHandler() {
     const roots = [
-      process.env.XDG_DATA_HOME ?? join(homedir(), '.local/share'),
-      ...(process.env.XDG_DATA_DIRS ?? '/usr/local/share:/usr/share').split(':'),
+      process.env.XDG_DATA_HOME || join(homedir(), '.local/share'),
+      ...(process.env.XDG_DATA_DIRS || '/usr/local/share:/usr/share').split(':').filter(Boolean),
     ]
     for (const root of roots) {
       const content = await readRegistration(join(root, 'applications', desktopName))
-      if (
-        content?.split(/\r?\n/).some(
-          (line) =>
-            line.startsWith('MimeType=') &&
-            line
-              .slice(9)
-              .split(';')
-              .includes('x-scheme-handler/' + scheme),
-        )
-      ) {
-        return true
+      if (content === null) {
+        continue
       }
+      let mainGroup = false
+      let handlesScheme = false
+      for (const raw of content.split(/\r?\n/)) {
+        const line = raw.trim()
+        if (line.startsWith('[')) {
+          mainGroup = line === '[Desktop Entry]'
+        } else if (mainGroup) {
+          const separator = line.indexOf('=')
+          const key = line.slice(0, separator).trimEnd()
+          const value = line.slice(separator + 1).trimStart()
+          if (key === 'Hidden' && value === 'true') {
+            return false
+          }
+          if (key === 'MimeType') {
+            handlesScheme = value.split(';').includes('x-scheme-handler/' + scheme)
+          }
+        }
+      }
+      return handlesScheme
     }
     return false
   }

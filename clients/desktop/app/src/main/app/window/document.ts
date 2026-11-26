@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto'
-import { MessageChannelMain, type BrowserWindow } from 'electron'
+import { app, MessageChannelMain, type BrowserWindow } from 'electron'
 import { RpcConnection, RpcError, type RpcMethod } from '@kisaki3/desktop-rpc'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type { Disposable } from '@kisaki3/desktop-contracts/operations'
@@ -107,6 +107,7 @@ export function openWindowDocument({
     'window.state': windowMethod('read', () =>
       rpcData({
         startupDeadline: application.presentationDeadline,
+        applicationName: app.name,
         kind,
         platform: process.platform,
         buildId: __KISAKI_BUILD_ID__,

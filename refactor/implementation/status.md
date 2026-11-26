@@ -8,7 +8,7 @@
 
 最终工作树通过全仓检查、六个公共包的独立验证及 Windows x64 桌面综合验证，含隔离打包载体的启动与退出。已在简化后的存储基线验证 13 处可空引用、27 项 Electron Node 用例和完整性能负载。真实窗口用例 15 项通过，另有 3 项按宿主条件跳过。其余五个目标、系统签署与生产服务未取得本轮新结果。[数据库验证](../verification/evidence/w06/README.md#ownership) · [窗口与设置](../verification/evidence/w07/README.md#window-lifetime)
 
-W03 的作品完成合同和 W06 的存储已区分附加次数与逐次明细。Windows x64 已验证旧库迁移：有日期或非空备注的明细保留原 ID，其余旧记录按作品计入附加次数。四类作品的编辑、查询与统计界面归 W09。[完成模型](../design/domains/records.md#additional-completions)
+W03 的作品完成合同和 W06 的存储已区分附加次数与逐次明细。首次发行基线直接包含附加次数与明细约束，只有日期或该次非空备注的经历作为明细保存。四类作品的编辑、查询与统计界面归 W09。[完成模型](../design/domains/records.md#additional-completions)
 
 工作区采用 Vite+，主线编译器锁定为 `7.1.0-beta`。升级到 7.1.x 正式版时重跑全部项目引用，用仓库外消费者检查发布声明，同时确认检查失败会返回非零退出码、类型感知 lint 能检出未等待的 Promise。六个公共包共用 `@kisaki3/config`，CI 按[包和宿主](../design/engineering/workspace.md#ci-selection)独立运行本地任务，制品验收直接读取指定归档。[工具链迁移 PR #39](https://github.com/ximu3/kisaki-dev/pull/39)
 
@@ -31,7 +31,7 @@ W03 的作品完成合同和 W06 的存储已区分附加次数与逐次明细�
 | 工作包                                                        | 当前结果与待完成范围                                                                                                                                                                                                                         |
 | ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [W00 工程与测试入口](work-packages.md#w00)                    | 实现与适用验收已完成，见[实际交付](#w00)与[关闭验证](../verification/evidence/w00/development.md#shutdown)。                                                                                                                                 |
-| [W01 desktop-appearance](work-packages.md#w01)                | 实现与适用验收已完成：43 项视觉词表、纯值解析、默认值、CSS、Tailwind 映射、声明与独立制品消费通过；[验证记录](../verification/evidence/w01/README.md#current-vocabulary)。项目文档待 W23，尚未公开发布。                                                           |
+| [W01 desktop-appearance](work-packages.md#w01)                | 实现与适用验收已完成：42 项视觉词表、纯值解析、默认值、CSS、Tailwind 映射、声明与独立制品消费通过；[验证记录](../verification/evidence/w01/README.md#current-vocabulary)。项目文档待 W23，尚未公开发布。                                                           |
 | [W02 extension-distribution](work-packages.md#w02)            | 实现与适用验收已完成：身份、manifest、registry、本地化、兼容选版、不可变制品和独立 Node 签名入口；25 项行为测试、仓库外 Node／浏览器消费及 CI 通过，[本机及 CI 证据](../verification/evidence/w02/README.md)。项目文档待 W23，尚未公开发布。 |
 | [W03 桌面合同与本地化](work-packages.md#w03) | 实现与适用验收已完成。恢复索引可表达准备时尚未发布清单，详情区分未发布和发布后无效。实际文件恢复由 W15 实现。[恢复设计](../design/domains/backups.md#recovery) 合同包交付接口、值约束与规范编码，展示柜采用单项保存、明确批量创建与共用引导输入；实际业务操作和界面由 W09、W22 实现。本地化包交付英语、关联类型、译本校验与格式化。两个包均通过制品和独立消费验证，见[本机及 CI 证据](../verification/evidence/w03/README.md)。项目文档待 W23，尚未公开发布。 |
 | [W04 desktop-rpc](work-packages.md#w04)                       | 实现与适用验收已完成。环境无关的 RPC 包通过帧与连接机制、制品、独立声明以及 Node 父子 IPC 和 Electron 窗口的真实通道验证，见[验证记录](../verification/evidence/w04/README.md)。项目文档待 W23，尚未公开发布。                               |

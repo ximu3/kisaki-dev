@@ -63,15 +63,22 @@ export function createAppearance(
     theme: builtin.ref,
     interfaceScale: 100,
   }
-  async function get(ref: ThemeRef, options?: CallOptions): Promise<Theme | null> {
+  async function readTheme(
+    ref: ThemeRef,
+    options?: CallOptions,
+  ): Promise<{
+    theme: Theme | null
+    read?: PrivateFontRead
+  }> {
     options?.signal?.throwIfAborted()
     if (ref.type === 'builtin') {
-      return builtin
+      return { theme: builtin }
     }
     if (ref.type === 'user') {
-      return call('getTheme', ref.id)
+      return { theme: await call('getTheme', ref.id) }
     }
-    return extensions.get(catalogKey(ref))?.theme ?? null
+    const source = extensions.get(catalogKey(ref))
+    return source ? { theme: source.theme, read: source.read } : { theme: null }
   }
   async function acquire(font: ThemeFont, read?: PrivateFontRead, options?: CallOptions) {
     options?.signal?.throwIfAborted()
@@ -97,41 +104,54 @@ export function createAppearance(
 
   const documents = new WeakMap<ViewResourcesApi, ReturnType<typeof createDocumentFonts>>()
 
-  async function getState(options?: CallOptions): Promise<AppearanceState> {
+  async function resolveState(options?: CallOptions): Promise<{
+    state: AppearanceState
+    read?: PrivateFontRead | undefined
+  }> {
     options?.signal?.throwIfAborted()
     const prefs = preferences
     const preview = previews.current
     if (preview) {
-      return { theme: null, ...preview.input, interfaceScale: prefs.interfaceScale, issues: [] }
+      return {
+        state: { theme: null, ...preview.input, interfaceScale: prefs.interfaceScale, issues: [] },
+      }
     }
     const systemScheme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
     const scheme = prefs.mode === 'system' ? systemScheme : prefs.mode
     let unavailable = { code: 'NotFound', message: 'The selected theme is unavailable' }
-    let theme: Theme | null
+    let source: Awaited<ReturnType<typeof readTheme>>
     try {
-      theme = await get(prefs.theme)
+      source = await readTheme(prefs.theme, options)
     } catch (cause) {
       if (!(cause instanceof DesktopError)) {
         throw cause
       }
       unavailable = { code: cause.code, message: cause.message }
-      theme = null
+      source = { theme: null }
     }
+    const { theme, read } = source
     return {
-      theme: theme?.ref ?? builtin.ref,
-      colorScheme: scheme,
-      interfaceScale: prefs.interfaceScale,
-      tokens: (theme ?? builtin)[scheme],
-      issues: theme
-        ? []
-        : [
-            {
-              code: 'themeUnavailable',
-              ref: prefs.theme,
-              error: unavailable,
-            },
-          ],
+      read,
+      state: {
+        theme: theme?.ref ?? builtin.ref,
+        colorScheme: scheme,
+        interfaceScale: prefs.interfaceScale,
+        tokens: (theme ?? builtin)[scheme],
+        issues: theme
+          ? []
+          : [
+              {
+                code: 'themeUnavailable',
+                ref: prefs.theme,
+                error: unavailable,
+              },
+            ],
+      },
     }
+  }
+
+  async function getState(options?: CallOptions) {
+    return (await resolveState(options)).state
   }
 
   const systemColorChanged = () => {
@@ -147,7 +167,9 @@ export function createAppearance(
   }
 
   const themes = {
-    get,
+    async get(ref: ThemeRef, options?: CallOptions) {
+      return (await readTheme(ref, options)).theme
+    },
 
     displayName(theme: Pick<Theme, 'ref' | 'name'>, locale: string) {
       return resolveLocalizedText(
@@ -174,11 +196,10 @@ export function createAppearance(
     },
 
     async clone(ref: ThemeRef, input: { name: string }, options?: CallOptions) {
-      const theme = await get(ref, options)
+      const { theme, read: readFont } = await readTheme(ref, options)
       if (!theme) {
         throw new DesktopError('NotFound', 'The selected theme is unavailable')
       }
-      const source = extensions.get(catalogKey(ref))
       const copies = new Map<string, Awaited<ReturnType<typeof fonts.prepareCopy>>>()
       const branches = { light: { ...theme.light }, dark: { ...theme.dark } }
       try {
@@ -188,13 +209,13 @@ export function createAppearance(
             if (selection.type !== 'extension') {
               continue
             }
-            if (!source) {
+            if (!readFont) {
               throw new DesktopError('InstanceExpired', 'The theme provider is unavailable')
             }
             const key = JSON.stringify(selection)
             let copy = copies.get(key)
             if (!copy) {
-              const read = await source.read(selection)
+              const read = await readFont(selection)
               try {
                 copy = await fonts.prepareCopy(
                   read.files.map((file) => ({ type: 'resource', resource: file.resource })),
@@ -277,7 +298,7 @@ export function createAppearance(
     },
 
     async open(ref: ThemeRef, options?: CallOptions): Promise<ThemeRead> {
-      const theme = await get(ref, options)
+      const { theme, read: readFont } = await readTheme(ref, options)
       if (!theme) {
         throw new DesktopError('NotFound', 'The theme is unavailable')
       }
@@ -296,7 +317,7 @@ export function createAppearance(
             const font = theme[scheme][slot]
             const key = JSON.stringify(font)
             if (!reads.has(key)) {
-              reads.set(key, await acquire(font, extensions.get(catalogKey(ref))?.read, options))
+              reads.set(key, await acquire(font, readFont, options))
             }
             const read = reads.get(key)
             if (read) {
@@ -393,7 +414,7 @@ export function createAppearance(
         documents.set(view, bind)
       }
       const preview = previews.current
-      const state = await getState()
+      const { state, read: readFont } = await resolveState(options)
       const css = {
         ...defaults[state.colorScheme],
         ...state.tokens,
@@ -422,9 +443,7 @@ export function createAppearance(
               }
               css[slot] = JSON.stringify(font.family) + ', ' + css[slot]
             } else {
-              const read = state.theme
-                ? await acquire(font, extensions.get(catalogKey(state.theme))?.read, options)
-                : null
+              const read = state.theme ? await acquire(font, readFont, options) : null
               const files = read?.files ?? preview?.resources[slot]
               try {
                 if (!files?.length) {

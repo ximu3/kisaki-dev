@@ -15,8 +15,8 @@ import { parseVersion } from '@kisaki3/extension-distribution/compatibility'
 import { parseWorkRef, type WorkType, type WorkRef } from './library/catalog'
 
 export const applicationIdentities = Object.freeze({
-  production: { appId: 'me.kisaki', scheme: 'kisaki' },
-  development: { appId: 'me.kisaki.dev', scheme: 'kisaki-dev' },
+  production: { name: 'Kisaki', appId: 'me.kisaki', scheme: 'kisaki' },
+  development: { name: 'Kisaki Dev', appId: 'me.kisaki.dev', scheme: 'kisaki-dev' },
 } as const)
 
 export interface ApplicationEnvironment {

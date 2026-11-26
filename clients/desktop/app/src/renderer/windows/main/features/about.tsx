@@ -67,7 +67,7 @@ function AboutContent(props: AboutProps) {
         <div class="flex items-center gap-3">
           <img src="kisaki-app://window/brand/icon.png" alt="" class="size-11 rounded-md" />
           <div>
-            <h3 class="m-0 text-lg font-semibold">{api.t('runtime.appName')}</h3>
+            <h3 class="m-0 text-lg font-semibold">{api.applicationName}</h3>
             <p class="m-0 text-xs text-muted-foreground">AGPL-3.0-only</p>
           </div>
         </div>

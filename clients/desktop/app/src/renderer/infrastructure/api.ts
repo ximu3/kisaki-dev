@@ -120,6 +120,7 @@ export async function connect<K extends WindowKind>(kind: K) {
   async function refreshWindowState() {
     const state = await common('window.state')
     const root = document.documentElement
+    document.title = state.applicationName
     root.lang = state.locale
     if (state.titlebarHeight !== null) {
       root.style.setProperty('--main-titlebar-height', `${state.titlebarHeight}px`)
@@ -132,7 +133,7 @@ export async function connect<K extends WindowKind>(kind: K) {
 
   topics.addEventListener('window.changed', () => void refreshWindowState().catch(console.error))
   window.addEventListener('pagehide', () => rpc.close(), { once: true })
-  const { platform, startupDeadline: deadline } = await refreshWindowState()
+  const { applicationName, platform, startupDeadline: deadline } = await refreshWindowState()
   const appearance = createDocumentAppearance(
     common,
     kind === 'main' && platform !== 'darwin'
@@ -163,6 +164,7 @@ export async function connect<K extends WindowKind>(kind: K) {
     call,
     request,
     platform,
+    applicationName,
     topics,
     appearanceIssues: appearance.issues,
     t: ((...args) => translate()(...args)) as Translate,

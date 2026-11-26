@@ -150,7 +150,6 @@ export const runtimeMessages = {
     'shadow-modal': 'Shadow modal',
     'font-sans': 'Interface font',
     'font-mono': 'Monospace font',
-    'text-base-size': 'Base font size',
     'text-base-weight': 'Base font weight',
     'text-base-line-height': 'Line height',
     'text-base-letter-spacing': 'Letter spacing',
@@ -163,6 +162,7 @@ export const runtimeMessages = {
   previousBindings: 'Scroll to earlier shortcuts',
   nextBindings: 'Scroll to later shortcuts',
   bindingExists: 'Already bound',
+  minutesUnit: 'min',
   foregroundGracePeriodDescription:
     'Time away counts if you return within this period. Applies to reading and games that track foreground time.',
   usageGroups: {
@@ -405,5 +405,4 @@ export const runtimeMessages = {
   data: 'Current data directory',
   quit: 'Quit',
   openMain: 'Open Kisaki',
-  appName: 'Kisaki',
 } as const

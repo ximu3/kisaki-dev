@@ -54,7 +54,7 @@ GNOME 组件直接导出会话服务。KWin 脚本主动连接消费程序内的
 
 组件协议使用 Vantage 自有的 D-Bus 命名空间和明确版本，值只表达窗口事实、有限控制、观察与采集接续。它与 Kisaki RPC、业务条目和账号无关。实际连接身份、同一用户会话范围和组件启用仍遵守[访问边界](#access)。
 
-GNOME 组件使用总线名 dev.ximu.Vantage.Gnome1，在 /dev/ximu/Vantage/Gnome 导出同名接口；Open 创建绑定实际 sender 的会话对象。会话提供当前快照、观察、restore／focus／requestClose 和一次采集目标解析；观察对象先交付初始快照，再通过定向信号通知变化。Close 或 sender 断开只回收相应会话，组件停用回收全部所属资源。具体方法与 D-Bus 类型见[GNOME 协议蓝本](../../../verification/evidence/platform-closure/gnome.xml)；XML 列出接口类型，动态会话和观察分别使用创建操作返回的 object path。
+GNOME 组件使用总线名 dev.ximu.Vantage.Gnome1，在 /dev/ximu/Vantage/Gnome 导出同名接口；Open 创建绑定实际 sender 的会话对象。会话提供当前快照、观察、restore／focus／requestClose 和一次采集目标解析；观察对象先交付初始快照，再通过定向信号通知变化。Close 或 sender 断开只回收相应会话，组件停用回收全部所属资源。具体方法与 D-Bus 类型见[GNOME 接口定义](dbus/gnome.xml)；W10 建立 Vantage 正式工程时将这两份接口定义移至所属 Linux 后端，客户端与组件共用对应 XML，此处链接随之更新。动态会话和观察分别使用创建操作返回的 object path。
 
 KWin 脚本只使用其实际提供的 callDBus、QTimer 和窗口对象能力，不假定它能导出 GNOME 式服务端。消费程序的 Rust 后端在自己的进程内，通过 /dev/ximu/Vantage/KWinClient 导出 dev.ximu.Vantage.KWinClient1；服务名使用 dev.ximu.Vantage.KWinClient.c 加唯一连接后缀。脚本通过会话总线发现相应名称，向实际宿主建立连接；宿主核对 sender 是当前 org.kde.KWin 的拥有者，名称前缀只用于发现。
 
@@ -66,7 +66,7 @@ KWin 脚本只使用其实际提供的 callDBus、QTimer 和窗口对象能力�
 | Complete        | 按 request id 返回处理结果，不把结果丢失后的重发当作恢复                                 |
 | Close           | 结束本连接的等待和资源，其他消费者继续独立运行                                           |
 
-方法类型见[KWin 协议蓝本](../../../verification/evidence/platform-closure/kwin.xml)。请求只含 request id、窗口令牌和既定 action，不携带脚本、命令或文件路径。snapshot 的窗口项及其可用／不可用字段对应已有 WindowInfo／ForegroundInfo；协议只额外携带本连接所需的原生对应值。内部 ID 使用字符串，避免 Qt JavaScript 对整数类型的转换影响身份。
+方法类型见[KWin 接口定义](dbus/kwin.xml)。请求只含 request id、窗口令牌和既定 action，不携带脚本、命令或文件路径。snapshot 的窗口项及其可用／不可用字段对应已有 WindowInfo／ForegroundInfo；协议只额外携带本连接所需的原生对应值。内部 ID 使用字符串，避免 Qt JavaScript 对整数类型的转换影响身份。
 
 Open 的协议值固定为字符串 "1"，不匹配则不建立连接。snapshot 包含窗口列表和同次前台事实，窗口值携带本连接 token、原生对应值、title／visible／minimized 的状态与值，以及待核对的 PID 来源；ProcessRef 不进入总线，Rust 核对后才建立公共引用。PID、原生 ID 和请求 ID 按十进制或各平台的原生字符串表示，不将不透明标识经浮点数中转。request 非空时只含 id、window、action；action 限于 restore、focus、requestClose。Complete 的结果为成功，或已有 Vantage 错误分类，不传播原生说明全文。
 

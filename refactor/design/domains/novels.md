@@ -154,7 +154,7 @@ novel_reading_activity 的每一行保存一段有明确起止时间和有效时
 
 | 表                   | 主键与引用                             | 保存内容                                             |
 | -------------------- | -------------------------------------- | ---------------------------------------------------- |
-| novel_records        | novel_id，主键并引用 novels.entry_id   | 三种作品当前状态或 null，以及 additional_duration_ms |
+| novel_records        | novel_id，主键并引用 novels.entry_id   | [作品当前记录](records.md#schema)，含当前状态、附加完成次数和附加时长 |
 | novel_volume_records | volume_id，主键并引用 novel_volumes.id | is_completed 布尔标记                                |
 
 两张表均为可选的一对一附属记录，以所属对象的 ID 为键。卷记录保存当前完成标记，作品逐次完成记录保存在[work_completion_records](records.md#schema)，评分和收藏属于 Entry。

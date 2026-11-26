@@ -220,9 +220,11 @@ CREATE TABLE `anime_records` (
 	`anime_id` text PRIMARY KEY NOT NULL,
 	`status` text,
 	`additional_duration_ms` integer DEFAULT 0 NOT NULL,
+	`additional_completion_count` integer DEFAULT 0 NOT NULL,
 	CONSTRAINT `fk_anime_records_anime_id_animes_entry_id_fk` FOREIGN KEY (`anime_id`) REFERENCES `animes`(`entry_id`) ON DELETE CASCADE,
 	CONSTRAINT "anime_records_status" CHECK("status" in ('planned', 'active', 'onHold')),
-	CONSTRAINT "anime_records_duration" CHECK("additional_duration_ms" is null or (typeof("additional_duration_ms") = 'integer' and "additional_duration_ms" between 0 and 9007199254740991))
+	CONSTRAINT "anime_records_duration" CHECK("additional_duration_ms" is null or (typeof("additional_duration_ms") = 'integer' and "additional_duration_ms" between 0 and 9007199254740991)),
+	CONSTRAINT "anime_records_completion_count" CHECK("additional_completion_count" is null or (typeof("additional_completion_count") = 'integer' and "additional_completion_count" between 0 and 9007199254740991))
 );
 --> statement-breakpoint
 CREATE TABLE `anime_watch_activity` (
@@ -524,9 +526,11 @@ CREATE TABLE `comic_records` (
 	`comic_id` text PRIMARY KEY NOT NULL,
 	`status` text,
 	`additional_duration_ms` integer DEFAULT 0 NOT NULL,
+	`additional_completion_count` integer DEFAULT 0 NOT NULL,
 	CONSTRAINT `fk_comic_records_comic_id_comics_entry_id_fk` FOREIGN KEY (`comic_id`) REFERENCES `comics`(`entry_id`) ON DELETE CASCADE,
 	CONSTRAINT "comic_records_status" CHECK("status" in ('planned', 'active', 'onHold')),
-	CONSTRAINT "comic_records_duration" CHECK("additional_duration_ms" is null or (typeof("additional_duration_ms") = 'integer' and "additional_duration_ms" between 0 and 9007199254740991))
+	CONSTRAINT "comic_records_duration" CHECK("additional_duration_ms" is null or (typeof("additional_duration_ms") = 'integer' and "additional_duration_ms" between 0 and 9007199254740991)),
+	CONSTRAINT "comic_records_completion_count" CHECK("additional_completion_count" is null or (typeof("additional_completion_count") = 'integer' and "additional_completion_count" between 0 and 9007199254740991))
 );
 --> statement-breakpoint
 CREATE TABLE `comic_volume_chapters` (
@@ -811,9 +815,11 @@ CREATE TABLE `game_records` (
 	`game_id` text PRIMARY KEY NOT NULL,
 	`status` text,
 	`additional_duration_ms` integer DEFAULT 0 NOT NULL,
+	`additional_completion_count` integer DEFAULT 0 NOT NULL,
 	CONSTRAINT `fk_game_records_game_id_games_entry_id_fk` FOREIGN KEY (`game_id`) REFERENCES `games`(`entry_id`) ON DELETE CASCADE,
 	CONSTRAINT "game_records_status" CHECK("status" in ('planned', 'active', 'onHold')),
-	CONSTRAINT "game_records_duration" CHECK("additional_duration_ms" is null or (typeof("additional_duration_ms") = 'integer' and "additional_duration_ms" between 0 and 9007199254740991))
+	CONSTRAINT "game_records_duration" CHECK("additional_duration_ms" is null or (typeof("additional_duration_ms") = 'integer' and "additional_duration_ms" between 0 and 9007199254740991)),
+	CONSTRAINT "game_records_completion_count" CHECK("additional_completion_count" is null or (typeof("additional_completion_count") = 'integer' and "additional_completion_count" between 0 and 9007199254740991))
 );
 --> statement-breakpoint
 CREATE TABLE `game_save_backups` (
@@ -1041,9 +1047,11 @@ CREATE TABLE `novel_records` (
 	`novel_id` text PRIMARY KEY NOT NULL,
 	`status` text,
 	`additional_duration_ms` integer DEFAULT 0 NOT NULL,
+	`additional_completion_count` integer DEFAULT 0 NOT NULL,
 	CONSTRAINT `fk_novel_records_novel_id_novels_entry_id_fk` FOREIGN KEY (`novel_id`) REFERENCES `novels`(`entry_id`) ON DELETE CASCADE,
 	CONSTRAINT "novel_records_status" CHECK("status" in ('planned', 'active', 'onHold')),
-	CONSTRAINT "novel_records_duration" CHECK("additional_duration_ms" is null or (typeof("additional_duration_ms") = 'integer' and "additional_duration_ms" between 0 and 9007199254740991))
+	CONSTRAINT "novel_records_duration" CHECK("additional_duration_ms" is null or (typeof("additional_duration_ms") = 'integer' and "additional_duration_ms" between 0 and 9007199254740991)),
+	CONSTRAINT "novel_records_completion_count" CHECK("additional_completion_count" is null or (typeof("additional_completion_count") = 'integer' and "additional_completion_count" between 0 and 9007199254740991))
 );
 --> statement-breakpoint
 CREATE TABLE `novel_volume_description_attachments` (
@@ -1267,7 +1275,8 @@ CREATE TABLE `work_completion_records` (
 	`created_at` integer NOT NULL,
 	`updated_at` integer NOT NULL,
 	CONSTRAINT `fk_work_completion_records_work_id_work_type_entries_id_type_fk` FOREIGN KEY (`work_id`,`work_type`) REFERENCES `entries`(`id`,`type`) ON DELETE CASCADE,
-	CONSTRAINT "work_completion_records_work_type" CHECK("work_type" in ('game', 'anime', 'comic', 'novel'))
+	CONSTRAINT "work_completion_records_work_type" CHECK("work_type" in ('game', 'anime', 'comic', 'novel')),
+	CONSTRAINT "work_completion_records_detail" CHECK("completed_date" is not null or ("note" is not null and trim("note", char(9,10,11,12,13,32,160,5760,8192,8193,8194,8195,8196,8197,8198,8199,8200,8201,8202,8232,8233,8239,8287,12288,65279)) <> ''))
 );
 --> statement-breakpoint
 CREATE TABLE `work_organization_links` (

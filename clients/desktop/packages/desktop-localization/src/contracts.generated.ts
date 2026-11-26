@@ -232,7 +232,6 @@ export interface MessageArguments {
   readonly "runtime.themeTokens.shadow-modal": never
   readonly "runtime.themeTokens.font-sans": never
   readonly "runtime.themeTokens.font-mono": never
-  readonly "runtime.themeTokens.text-base-size": never
   readonly "runtime.themeTokens.text-base-weight": never
   readonly "runtime.themeTokens.text-base-line-height": never
   readonly "runtime.themeTokens.text-base-letter-spacing": never
@@ -243,6 +242,7 @@ export interface MessageArguments {
   readonly "runtime.previousBindings": never
   readonly "runtime.nextBindings": never
   readonly "runtime.bindingExists": never
+  readonly "runtime.minutesUnit": never
   readonly "runtime.foregroundGracePeriodDescription": never
   readonly "runtime.usageGroups.playback": never
   readonly "runtime.usageGroups.tracks": never
@@ -474,7 +474,6 @@ export interface MessageArguments {
   readonly "runtime.data": never
   readonly "runtime.quit": never
   readonly "runtime.openMain": never
-  readonly "runtime.appName": never
 }
 
 export type MessageKey = keyof MessageArguments

@@ -11,7 +11,7 @@ Game 是长期保存的作品，GameLaunchConfig 是一种本地使用选择，G
 | games               | entry_id 为主键并引用 entries.id                        | 游戏条目的专属资料                             |
 | game_directories    | id；game_id 引用 games.entry_id                         | 独立登记的游戏内容目录                         |
 | game_launch_configs | id；game_id 引用 games.entry_id                         | 启动、监测、目录与存档配置等本地使用选择       |
-| game_records        | game_id 为主键并引用 games.entry_id                     | 游戏当前状态与附加时长；完成历史另存           |
+| game_records        | game_id 为主键并引用 games.entry_id                     | 作品[当前记录](records.md#schema)；逐次完成明细另存           |
 | game_play_activity  | id；game_id 必填；launch_config_id 可空引用启动配置     | 实际游玩区间及已知上下文                       |
 | game_save_backups   | id；game_id 必填；source_config_id 可空引用来源启动配置 | 应用管理的存档归档、创建信息、备注、锁定与来源 |
 
@@ -189,14 +189,7 @@ GameSession 结束时自动关闭对应面板。没有未保存编辑时直接�
 
 ## 当前状态与完成记录
 
-game_records 以 game_id 为主键并引用 games.entry_id，保存以下当前值：
-
-| 字段                   | 含义                                                       |
-| ---------------------- | ---------------------------------------------------------- |
-| status                 | planned、active、onHold 或 null                            |
-| additional_duration_ms | 未包含在实际活动中的附加游玩时长，非负安全整数毫秒，默认 0 |
-
-完成历史、当前值缺省和评价归属见[共同记录模型](records.md#schema)，管理入口不要求存在启动配置。用户按自己的通关标准执行[完成操作](records.md#operations)；全成就、全结局和附加内容均不替代该判断。启动、计时和退出只按[会话规则](sessions.md#personal-status)记录实际使用。
+game_records 以 game_id 为主键并引用 games.entry_id，保存当前状态、附加完成次数与附加时长，字段和缺省值见[共同记录模型](records.md#schema)。管理这些值无需启动配置。用户按自己的通关标准执行[完成操作](records.md#operations)；全成就、全结局和附加内容均不替代该判断。启动、计时和退出只按[会话规则](sessions.md#personal-status)记录实际使用。
 
 <a id="duration"></a>
 

@@ -18,7 +18,7 @@ appearance 负责主题目录、用户主题、扩展主题登记、全应用预
 
 ## 基础 token 与派生样式
 
-AppearanceTokens 使用固定、扁平的 CSS 属性键，共 43 项，覆盖配色、圆角、阴影、字体栈和文字基准。每个主题分别保存完整的亮色与暗色值。下面的节选只用于说明数据形状：
+AppearanceTokens 使用固定、扁平的 CSS 属性键，共 42 项，覆盖配色、圆角、阴影、字体栈和文字基准。每个主题分别保存完整的亮色与暗色值。下面的节选只用于说明数据形状：
 
 ```json
 {
@@ -40,7 +40,7 @@ AppearanceTokens 使用固定、扁平的 CSS 属性键，共 43 项，覆盖配
 | 反馈与边界     | --destructive、--destructive-foreground、--info、--info-foreground、--success、--success-foreground、--warning、--warning-foreground、--border、--ring |
 | 图表系列       | --chart-1、--chart-2、--chart-3、--chart-4、--chart-5 |
 | 圆角与阴影     | --radius、--shadow-raised、--shadow-overlay、--shadow-modal                                                                                                     |
-| 字体与文字基准 | --font-sans、--font-mono、--text-base-size、--text-base-weight、--text-base-line-height、--text-base-letter-spacing                                             |
+| 字体与文字基准 | --font-sans、--font-mono、--text-base-weight、--text-base-line-height、--text-base-letter-spacing                                             |
 
 表中的分组用于编辑呈现，存储使用表列出的扁平 token 键。
 
@@ -56,7 +56,7 @@ chart-1 至 chart-5 是五个可独立编辑的系列色，亮暗分支分别提
 
 主题保存完整、可直接编辑的视觉值，不保存计算表达式或任意上下文引用。颜色接受十六进制、具名颜色、transparent，以及 rgb／rgba、hsl／hsla、hwb、lab、lch、oklab、oklch 和预定义色彩空间的 color 表示；颜色分量仍遵循 CSS 的范围与裁剪语义。calc、min、max、clamp、color-mix、相对颜色，以及 var、env、attr、currentColor、系统颜色和级联关键字不属于主题值。作者可以在代码中计算后提交完整值，公共样式继续使用 CSS 计算完成共同派生。这一边界让编辑器直接修改字段值，无需额外管理引用、公式、循环和上下文失效。
 
-圆角和基础字号使用非负字面长度；文字间距接受 normal 或字面长度，允许负值；行高接受 normal、非负数值、长度或百分比；字重接受 normal、bold 或 1–1000 的数值。长度单位采用 CSS 语义。阴影接受 none 或多层定义，每层显式提供颜色与两个偏移量，可提供非负模糊半径、扩展半径和 inset；省略颜色会依赖 currentColor，因而不接受。纯视觉字体槽接受 CSS 字体栈，字体资源选择仍由桌面合同组合。
+圆角使用非负字面长度。文字间距接受 normal 或字面长度，允许负值；行高接受 normal、非负数值、长度或百分比；字重接受 normal、bold 或 1–1000 的数值。长度单位采用 CSS 语义。阴影接受 none 或多层定义，每层显式提供颜色与两个偏移量，可提供非负模糊半径、扩展半径和 inset；省略颜色会依赖 currentColor，因而不接受。纯视觉字体槽接受 CSS 字体栈，字体资源选择仍由桌面合同组合。
 
 纯规则在 Node 与浏览器中使用同一实现，解析返回规范化的 CSS 值，完整分支要求固定键齐全且没有额外键。作为独立长度解析的无单位零统一输出 `0px`，行高等无单位数值保留其数值语义。直接用 CSS 覆盖时，参与派生计算的零长度采用 `0px`。数值必须有限，非法输入报告失败，不补默认值。语法与值校验不承担字体是否存在、色彩设备表现或主题对比度的保证；实际样式和支持环境通过消费者验证。[CSS 数学函数的类型规则](https://www.w3.org/TR/css-values-4/#calc-type-checking)
 
@@ -112,7 +112,7 @@ AppearanceTokens 表达共同的桌面外观分支。UserAppearanceTokens 使用
 
 ## 界面缩放与采用
 
-interfaceScale 由 AppearancePreferences 统一保存，单位为百分数，默认 100，即以所选主题的原字号和尺寸呈现。--interface-scale 只作为运行投影。最终 rem 基准等于当前 --text-base-size × interfaceScale / 100。主题基础字号决定 rem 尺寸，主窗口标题栏根据界面缩放计算原生尺寸。[主窗口标题栏](../ui/components.md#titlebar)
+interfaceScale 由 AppearancePreferences 统一保存，单位为百分数，默认 100。应用界面以 14 CSS px 为固定基准，最终根字号为 14px × interfaceScale / 100。字号、控件尺寸和间距随这一比例缩放，主窗口标题栏使用同一比例计算原生尺寸。--interface-scale 是运行时投影。[主窗口标题栏](../ui/components.md#titlebar)
 
 preferences 校验并保存缩放，appearance 结合实际明暗策略和预览状态形成有效外观，再由视图宿主交付，文档负责应用 CSS 和字体。系统不提供 appearance.setScale 等平行的持久写入入口。范围及步进见[偏好](preferences.md#fields)。
 

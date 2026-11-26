@@ -16,6 +16,14 @@ export type MarkdownCommand =
   | 'undo'
   | 'redo'
 
+function codeFence(text: string) {
+  let length = 1
+  for (const run of text.matchAll(/`+/g)) {
+    length = Math.max(length, run[0].length + 1)
+  }
+  return '`'.repeat(length)
+}
+
 export function runMarkdownCommand(view: EditorView, command: MarkdownCommand): boolean {
   if (view.state.readOnly) {
     return false
@@ -29,17 +37,23 @@ export function runMarkdownCommand(view: EditorView, command: MarkdownCommand): 
   }
 
   const range = view.state.selection.main
-  const markers = { bold: '**', italic: '*', strike: '~~', code: '`' }
+  const markers = { bold: '**', italic: '*', strike: '~~' }
   if (command === 'bold' || command === 'italic' || command === 'strike' || command === 'code') {
-    const marker = markers[command]
     const text = view.state.sliceDoc(range.from, range.to)
+    const marker = command === 'code' ? codeFence(text) : markers[command]
+    const pad =
+      command === 'code' && (/^`|`$/.test(text) || (/^ .* $/s.test(text) && /[^ ]/.test(text)))
+        ? ' '
+        : ''
+    const opening = marker + pad
+    const closing = pad + marker
     const wrapped =
-      view.state.sliceDoc(Math.max(0, range.from - marker.length), range.from) === marker &&
-      view.state.sliceDoc(range.to, range.to + marker.length) === marker
-    const from = wrapped ? range.from - marker.length : range.from
-    const to = wrapped ? range.to + marker.length : range.to
-    const insert = wrapped ? text : `${marker}${text}${marker}`
-    const start = wrapped ? from : from + marker.length
+      view.state.sliceDoc(Math.max(0, range.from - opening.length), range.from) === opening &&
+      view.state.sliceDoc(range.to, range.to + closing.length) === closing
+    const from = wrapped ? range.from - opening.length : range.from
+    const to = wrapped ? range.to + closing.length : range.to
+    const insert = wrapped ? text : `${opening}${text}${closing}`
+    const start = wrapped ? from : from + opening.length
 
     view.dispatch({
       changes: { from, to, insert },
