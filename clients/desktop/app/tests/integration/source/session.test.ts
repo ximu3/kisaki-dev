@@ -99,7 +99,7 @@ test('the source session styles its native window, opens its migrated library an
     expect(await hasNativeWindow(session.current!.processId)).toBe(true)
     await verifyWindowStyles(port, session.rendererUrl)
     await expect(session.stop()).resolves.toBe('stopped')
-    const db = new Database(join(profile, 'library.sqlite'), { readonly: true })
+    const db = new Database(join(profile, 'kisaki.sqlite'), { readonly: true })
     try {
       expect(db.prepare('select count(*) from __drizzle_migrations').pluck().get()).toBeGreaterThan(
         0,

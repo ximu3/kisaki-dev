@@ -131,7 +131,7 @@ export async function measureStorage({ profile, resources }: StorageMeasurementI
   const directory = join(profile, 'storage-performance')
   await mkdir(directory)
   const options = {
-    path: join(directory, 'library.sqlite'),
+    path: join(directory, 'kisaki.sqlite'),
     nativeBinding: join(resources, 'native/better-sqlite3.node'),
     collationExtension: join(resources, 'native/kisaki-native.node'),
     migrationsDirectory: join(resources, 'drizzle'),

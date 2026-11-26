@@ -19,7 +19,7 @@ import { createImages } from '../infrastructure/images'
 import { createFonts } from '../features/fonts'
 import { createAppearance } from '../features/appearance'
 import type { ApplicationOperations } from './database-worker'
-import type { AppPaths } from './paths'
+import { databasePath, type AppPaths } from './paths'
 import { bindSettings } from './bindings'
 import { developmentTranslation } from './development/translation'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
@@ -40,7 +40,7 @@ export async function compose(
   const database = await openDatabaseExecutor<ApplicationOperations>(
     new URL('./database.js', import.meta.url),
     {
-      path: join(paths.data, 'library.sqlite'),
+      path: databasePath(paths.data),
       nativeBinding: join(paths.resources, 'native', 'better-sqlite3.node'),
       collationExtension: nativePath,
       migrationsDirectory: join(paths.resources, 'drizzle'),
@@ -65,7 +65,7 @@ export async function compose(
           async (root, existing) => {
             await assertLocalDataDirectory(root, native.files)
             if (existing) {
-              await database.call('inspectLibrary', join(root, 'library.sqlite'))
+              await database.call('inspectLibrary', databasePath(root))
             }
           },
           signal,
