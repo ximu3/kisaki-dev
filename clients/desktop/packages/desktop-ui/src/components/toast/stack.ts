@@ -1,4 +1,4 @@
-import { onCleanup, type Accessor } from 'solid-js'
+import { onSettled, type Accessor } from 'solid-js'
 
 export function createStackMotion(track: Accessor<HTMLElement | undefined>) {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)')
@@ -17,10 +17,12 @@ export function createStackMotion(track: Accessor<HTMLElement | undefined>) {
       stop()
     }
   }
-  reduced.addEventListener('change', preferenceChanged)
-  onCleanup(() => {
-    reduced.removeEventListener('change', preferenceChanged)
-    stop()
+  onSettled(() => {
+    reduced.addEventListener('change', preferenceChanged)
+    return () => {
+      reduced.removeEventListener('change', preferenceChanged)
+      stop()
+    }
   })
 
   return (change: () => void): void => {

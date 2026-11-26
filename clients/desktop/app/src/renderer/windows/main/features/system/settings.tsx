@@ -1,5 +1,5 @@
-import { createMemo, createSignal, onCleanup, Show } from 'solid-js'
-import { createQuery } from '../../../../infrastructure/query'
+import { createMemo, createSignal, onSettled, Show } from 'solid-js'
+import { createSnapshot } from '../../../../infrastructure/query'
 import type { ProtocolIntegrationState } from '@kisaki3/desktop-contracts/app'
 import type { Translate } from '@kisaki3/desktop-localization'
 import { Switch } from '@kisaki3/desktop-ui/switch'
@@ -73,11 +73,12 @@ export function SystemSettings(props: SystemSettingsProps) {
 
 function IntegrationSettings(props: { api: MainClient }) {
   const { api } = props
-  const state = createQuery((signal) => api.request(signal, 'system.get'))
-  const current = createMemo((previous: typeof state.value) =>
-    state.error ? previous : state.value,
+  const read = (signal: AbortSignal) => api.request(signal, 'system.get')
+  const state = createSnapshot(read)
+  const current = createMemo<Awaited<ReturnType<typeof read>> | undefined>(
+    (previous) => state.result()?.value ?? previous,
   )
-  deferDialogUntil(() => !!state.error || !!current())
+  deferDialogUntil(() => !!state.result()?.error || !!current())
   const [busy, setBusy] = createSignal(false)
   const [failure, setFailure] = createSignal<{ owner: Operation; text: string }>()
 
@@ -98,8 +99,10 @@ function IntegrationSettings(props: { api: MainClient }) {
   }
 
   const refresh = () => void state.reload()
-  window.addEventListener('focus', refresh)
-  onCleanup(() => window.removeEventListener('focus', refresh))
+  onSettled(() => {
+    window.addEventListener('focus', refresh)
+    return () => window.removeEventListener('focus', refresh)
+  })
 
   function problem(owner: Operation, item: { status: string; error?: { message: string } }) {
     const local = failure()
@@ -125,7 +128,11 @@ function IntegrationSettings(props: { api: MainClient }) {
         <DialogTitle>{api.t('runtime.system')}</DialogTitle>
       </DialogHeader>
       <DialogBody class="grid gap-5">
-        <QueryError error={state.error} retryLabel={api.t('runtime.retry')} retry={refresh} />
+        <QueryError
+          error={state.result()?.error}
+          retryLabel={api.t('runtime.retry')}
+          retry={refresh}
+        />
 
         <Show when={current()}>
           {(snapshot) => (

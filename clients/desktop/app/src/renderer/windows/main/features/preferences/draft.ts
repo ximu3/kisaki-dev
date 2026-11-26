@@ -1,4 +1,5 @@
-import { createMemo, createSignal, onCleanup, type Accessor } from 'solid-js'
+import { createPreferencesSnapshot } from '../../domain-ui/preferences'
+import { getOwner, isDisposed, createMemo, createSignal, type Accessor } from 'solid-js'
 import { dequal as equalValue } from 'dequal/lite'
 import { interfaceScaleRange } from '@kisaki3/desktop-contracts/appearance'
 import { manualProxyIssue, type ProxyCredentials } from '@kisaki3/desktop-contracts/network'
@@ -13,7 +14,7 @@ import {
 } from '@kisaki3/desktop-contracts/preferences'
 import type { FieldIssue } from '@kisaki3/desktop-ui/form'
 import type { MainClient } from '../../../../infrastructure/api'
-import { createQuery } from '../../../../infrastructure/query'
+import { createSnapshot } from '../../../../infrastructure/query'
 
 interface FieldInput {
   readonly input: unknown
@@ -231,24 +232,17 @@ function createPreferenceFields(
 export type PreferenceFields = ReturnType<typeof createPreferenceFields>
 
 export function createPreferenceDraft(api: MainClient) {
-  const snapshot = createQuery((signal) => api.request(signal, 'preferences.get'))
-  const defaultsQuery = createQuery((signal) => api.request(signal, 'preferences.defaults'))
-  const saved = createMemo<PreferencesSnapshot | undefined>((previous) =>
-    snapshot.error ? previous : snapshot.value,
+  const snapshot = createPreferencesSnapshot(api)
+  const defaultsQuery = createSnapshot((signal) => api.request(signal, 'preferences.defaults'))
+  const saved = createMemo<PreferencesSnapshot | undefined>(
+    (previous) => snapshot.result()?.value ?? previous,
   )
-  const defaults = () => (defaultsQuery.error ? undefined : defaultsQuery.value)
+  const defaults = () => defaultsQuery.result()?.value
 
   const [edits, setEdits] = createSignal<FieldEdits>(new Map())
   const lastCommits = new Map<PreferenceKey, { value: unknown }>()
   let saving: FieldEdits | undefined
-  let active = true
-
-  const reload = () => void snapshot.reload()
-  api.topics.addEventListener('window.changed', reload)
-  onCleanup(() => {
-    active = false
-    api.topics.removeEventListener('window.changed', reload)
-  })
+  const owner = getOwner()!
 
   function readInput(key: PreferenceKey) {
     const edit = edits().get(key)
@@ -326,11 +320,11 @@ export function createPreferenceDraft(api: MainClient) {
     saving = submitted
     try {
       const result = await api.call('preferences.update', updateInput(submitted))
-      if (active) {
+      if (!isDisposed(owner)) {
         adoptSave(submitted, result)
       }
     } catch (cause) {
-      if (active) {
+      if (!isDisposed(owner)) {
         setEdits((current) => new Map([...current].filter(([key, edit]) => isChanged(key, edit))))
       }
       throw cause
@@ -394,10 +388,10 @@ export function createPreferenceDraft(api: MainClient) {
   }
 
   function retry() {
-    if (snapshot.error) {
-      void snapshot.reload()
+    if (snapshot.result()?.error) {
+      snapshot.reload()
     }
-    if (defaultsQuery.error) {
+    if (defaultsQuery.result()?.error) {
       void defaultsQuery.reload()
     }
   }
@@ -405,7 +399,7 @@ export function createPreferenceDraft(api: MainClient) {
   return {
     ...fields,
     ready: saved,
-    error: (): unknown => snapshot.error ?? defaultsQuery.error,
+    error: (): unknown => snapshot.result()?.error ?? defaultsQuery.result()?.error,
     retry,
     validate,
     save,

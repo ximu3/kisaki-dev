@@ -1,5 +1,5 @@
-import { createMemo, onCleanup } from 'solid-js'
-import { createQuery } from '../../../../infrastructure/query'
+import { createMemo, onSettled } from 'solid-js'
+import { createSnapshot } from '../../../../infrastructure/query'
 import { mdiTuneVariant } from '@mdi/js'
 import { Icon } from '@kisaki3/desktop-ui/icon'
 import { catalogKey } from '../../../../../shared/catalog-ref'
@@ -17,10 +17,12 @@ function createCatalog<T>(
   topic: string,
   load: (signal: AbortSignal) => Promise<T>,
 ) {
-  const items = createQuery(load)
+  const items = createSnapshot(load)
   const refresh = () => void items.reload()
-  api.topics.addEventListener(topic, refresh)
-  onCleanup(() => api.topics.removeEventListener(topic, refresh))
+  onSettled(() => {
+    api.topics.addEventListener(topic, refresh)
+    return () => api.topics.removeEventListener(topic, refresh)
+  })
   return { items, refresh }
 }
 
@@ -37,9 +39,9 @@ export function ThemeField(props: { api: MainClient; manage: () => void }) {
         <ThemeSelector
           t={t}
           value={draft.read('appearance.theme')}
-          themes={items.value}
-          loading={items.pending}
-          disabled={items.pending || !!items.error}
+          themes={items.result()?.value}
+          loading={items.pending()}
+          disabled={items.pending() || !!items.result()?.error}
           onValueChange={(ref) => draft.write('appearance.theme', ref)}
         />
         <Tooltip>
@@ -53,7 +55,7 @@ export function ThemeField(props: { api: MainClient; manage: () => void }) {
           <TooltipContent>{t('runtime.manage')}</TooltipContent>
         </Tooltip>
       </PreferenceField>
-      <QueryError retryLabel={t('runtime.retry')} error={items.error} retry={refresh} />
+      <QueryError retryLabel={t('runtime.retry')} error={items.result()?.error} retry={refresh} />
     </>
   )
 }
@@ -66,7 +68,7 @@ export function TranslationField(props: { api: MainClient }) {
   )
   const selection = createMemo(() =>
     catalogSelection(
-      items.value?.map((item) => ({ value: catalogKey(item.ref), label: item.name })),
+      items.result()?.value?.map((item) => ({ value: catalogKey(item.ref), label: item.name })),
       draft.read('general.uiTranslation'),
       t,
     ),
@@ -78,20 +80,20 @@ export function TranslationField(props: { api: MainClient }) {
         <Select
           value={selection().value}
           options={selection().options}
-          placeholder={items.pending ? t('runtime.loading') : ''}
-          aria-busy={items.pending ? 'true' : undefined}
-          disabled={items.pending || !!items.error}
+          placeholder={items.pending() ? t('runtime.loading') : ''}
+          aria-busy={items.pending() ? 'true' : undefined}
+          disabled={items.pending() || !!items.result()?.error}
           emptyMessage={t('runtime.noOptions')}
           invalidSelectionMessage={t('runtime.unavailable')}
           onValueChange={(key) => {
-            const item = items.value?.find((entry) => catalogKey(entry.ref) === key)
+            const item = items.result()?.value?.find((entry) => catalogKey(entry.ref) === key)
             if (item) {
               draft.write('general.uiTranslation', item.ref)
             }
           }}
         />
       </PreferenceField>
-      <QueryError retryLabel={t('runtime.retry')} error={items.error} retry={refresh} />
+      <QueryError retryLabel={t('runtime.retry')} error={items.result()?.error} retry={refresh} />
     </>
   )
 }

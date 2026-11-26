@@ -1,5 +1,5 @@
-import { onCleanup } from 'solid-js'
-import { createQuery } from '../../../../infrastructure/query'
+import { onSettled } from 'solid-js'
+import { createSnapshot } from '../../../../infrastructure/query'
 import type { MainClient } from '../../../../infrastructure/api'
 import type { ListOptions, ListResult } from '@kisaki3/desktop-contracts/operations'
 import type { Font } from '@kisaki3/desktop-contracts/fonts'
@@ -20,29 +20,31 @@ async function listFontOptions(
 }
 
 export function createFontOptions(api: MainClient) {
-  const users = createQuery((signal) =>
+  const users = createSnapshot((signal) =>
     listFontOptions((options) => api.request(signal, 'fonts.list', '', options)),
   )
-  const system = createQuery((signal) => api.request(signal, 'fonts.system'))
+  const system = createSnapshot((signal) => api.request(signal, 'fonts.system'))
 
   const refresh = () => void users.reload()
-  api.topics.addEventListener('fonts.changed', refresh)
-  onCleanup(() => api.topics.removeEventListener('fonts.changed', refresh))
+  onSettled(() => {
+    api.topics.addEventListener('fonts.changed', refresh)
+    return () => api.topics.removeEventListener('fonts.changed', refresh)
+  })
 
   function retry() {
-    if (users.error) {
+    if (users.result()?.error) {
       void users.reload()
     }
-    if (system.error) {
+    if (system.result()?.error) {
       void system.reload()
     }
   }
 
   return {
-    users: () => (users.error ? [] : (users.value ?? [])),
-    system: () => (system.error ? [] : (system.value ?? [])),
-    loading: () => users.pending || system.pending,
-    error: (): unknown => users.error ?? system.error,
+    users: () => users.result()?.value ?? [],
+    system: () => system.result()?.value ?? [],
+    loading: () => users.pending() || system.pending(),
+    error: (): unknown => users.result()?.error ?? system.result()?.error,
     retry,
   }
 }

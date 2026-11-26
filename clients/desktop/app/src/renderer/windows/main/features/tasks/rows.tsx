@@ -1,4 +1,4 @@
-import { createSignal, onCleanup, Show } from 'solid-js'
+import { createDeferred, createMemo, from, Show } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { mdiInformationOutline, mdiPause, mdiPlay, mdiTrashCanOutline, mdiStop } from '@mdi/js'
 import { Icon } from '@kisaki3/desktop-ui/icon'
@@ -100,31 +100,39 @@ function TaskTitle(props: { title: string; type: string }) {
 
 function ActiveCells(props: RowProps & { api: MainClient }) {
   const { api } = props
-  const [state, setState] = createSignal<TaskState>()
-  const ref = { taskRunId: props.row.id }
-
-  function update(event: Event) {
-    const value = (event as CustomEvent<TaskState>).detail
-    if (value.taskRunId === ref.taskRunId) {
-      setState(value)
-    }
+  const runId = createMemo(() => props.row.id)
+  const observation = createDeferred(
+    () => {
+      const id = runId()
+      return from<TaskState>((next) => {
+        const update = (event: Event) => {
+          const value = (event as CustomEvent<TaskState>).detail
+          if (value.taskRunId === id) {
+            next(value)
+          }
+        }
+        api.topics.addEventListener('tasks.state', update)
+        const hold = api.call('tasks.observe', { taskRunId: id })
+        void hold.catch(reportError)
+        return () => {
+          api.topics.removeEventListener('tasks.state', update)
+          void hold
+            .then(
+              (key) => api.call('resources.release', key),
+              () => {},
+            )
+            .catch(reportError)
+        }
+      })
+    },
+    { loadingValue: undefined },
+  )
+  const state = () => {
+    const value = observation()
+    return value?.taskRunId === runId() ? value : undefined
   }
-
-  api.topics.addEventListener('tasks.state', update)
-  const hold = api.call('tasks.observe', ref)
-  void hold.catch(reportError)
-  onCleanup(() => {
-    api.topics.removeEventListener('tasks.state', update)
-    void hold
-      .then(
-        (id) => api.call('resources.release', id),
-        () => {},
-      )
-      .catch(reportError)
-  })
-
   const control = (method: 'tasks.pause' | 'tasks.resume' | 'tasks.cancel') =>
-    void api.call(method, ref).catch(reportError)
+    void api.call(method, { taskRunId: props.row.id }).catch(reportError)
   const quantitative = () => {
     const progress = state()?.progress
     return progress && 'completed' in progress ? progress : undefined

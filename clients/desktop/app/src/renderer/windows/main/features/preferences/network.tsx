@@ -1,5 +1,5 @@
-import { onCleanup, Show } from 'solid-js'
-import { createQuery } from '../../../../infrastructure/query'
+import { onSettled, Show } from 'solid-js'
+import { createSnapshot } from '../../../../infrastructure/query'
 import type { ProxyCredentials } from '@kisaki3/desktop-contracts/network'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
@@ -20,12 +20,14 @@ export function NetworkFields(props: {
 }) {
   const { api } = props
   const { draft, t } = usePreferenceFields()
-  const state = createQuery((signal) => api.request(signal, 'network.state'))
+  const state = createSnapshot((signal) => api.request(signal, 'network.state'))
   const refresh = () => void state.reload()
-  api.topics.addEventListener('network.changed', refresh)
-  onCleanup(() => api.topics.removeEventListener('network.changed', refresh))
+  onSettled(() => {
+    api.topics.addEventListener('network.changed', refresh)
+    return () => api.topics.removeEventListener('network.changed', refresh)
+  })
 
-  const adoption = () => (state.error ? undefined : state.value)
+  const adoption = () => state.result()?.value
   const failure = () => {
     const current = adoption()
     return current?.status === 'failed' ? current.error : undefined
@@ -103,7 +105,7 @@ export function NetworkFields(props: {
         </Show>
       </FieldGroup>
 
-      <QueryError error={state.error} retryLabel={t('runtime.retry')} retry={refresh} />
+      <QueryError error={state.result()?.error} retryLabel={t('runtime.retry')} retry={refresh} />
       <Show when={adoption()?.status === 'applying'}>
         <p role="status" class="m-0 text-sm text-muted-foreground">
           {t('runtime.networkApplying')}

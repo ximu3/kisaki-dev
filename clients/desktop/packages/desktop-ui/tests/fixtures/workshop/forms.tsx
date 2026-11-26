@@ -195,7 +195,7 @@ export function Controls(): JSX.Element {
         />
       </Field>
       <div class="row">
-        <Button variant="text" onClick={() => setDisabled(!disabled())}>
+        <Button variant="text" onClick={() => setDisabled((value) => !value)}>
           Toggle fieldset
         </Button>
         <label>

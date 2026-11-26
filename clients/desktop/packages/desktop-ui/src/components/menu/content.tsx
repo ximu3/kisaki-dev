@@ -1,4 +1,4 @@
-import { createEffect, omit } from 'solid-js'
+import { onSettled, createEffect, omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { callHandler } from '../../internal/dom'
 import { createFocusNavigation, focusableItems } from '../../internal/focus'
@@ -54,7 +54,7 @@ export function MenuContent(
     () => state.open(),
     (opened) => {
       if (opened && state.focusOnOpen) {
-        queueMicrotask(() => {
+        onSettled(() => {
           if (state.open()) {
             const options = items()
             ;(state.last ? options.at(-1) : options[0])?.focus()
@@ -105,7 +105,7 @@ export function MenuContent(
           event.preventDefault()
           event.stopPropagation()
           state.change(false)
-          queueMicrotask(() => {
+          onSettled(() => {
             if (!state.open()) {
               state.anchor()?.focus()
             }

@@ -168,7 +168,7 @@ export function SelectedChips(props: SelectedChipsProps): JSX.Element {
                     event.preventDefault()
                     const position = index()
                     props.onRemove(value)
-                    queueMicrotask(() => {
+                    onSettled(() => {
                       if (props.panelId) {
                         props.focusTrigger()
                         return

@@ -1,7 +1,7 @@
 import { createMemo, createSignal } from 'solid-js'
 import type { ListResult } from '@kisaki3/desktop-contracts/operations'
 import type { TaskRunStatus, TaskRunSummary } from '@kisaki3/desktop-contracts/tasks'
-import { createQuery } from '../../../../infrastructure/query'
+import { createSnapshot } from '../../../../infrastructure/query'
 import type { MainClient } from '../../../../infrastructure/api'
 
 const intervalSize = 100
@@ -35,55 +35,50 @@ export function createTaskQuery(
   let revision = 0
   let attemptedKey: string | undefined
 
-  const list = createQuery<TaskInterval | undefined>({
-    prepare() {
-      const queryKey = key()
-      const { search, type, status } = filters()
-      const requested = offset()
-      const shown = visible()
+  const list = createSnapshot<TaskInterval | undefined>(async (signal, previous) => {
+    const queryKey = key()
+    const { search, type, status } = filters()
+    const requested = offset()
+    const shown = visible()
 
-      return async (signal): Promise<TaskInterval | undefined> => {
-        const previous = list.value
-        if (!shown) {
-          return previous
-        }
+    if (!shown) {
+      return previous
+    }
 
-        attemptedKey = queryKey
-        const generation = revision
-        let start = fitOffset(requested, previous?.key === queryKey ? previous.total : undefined)
-        if (
-          previous?.key === queryKey &&
-          previous.revision === generation &&
-          previous.offset === start
-        ) {
-          return previous
-        }
+    attemptedKey = queryKey
+    const generation = revision
+    let start = fitOffset(requested, previous?.key === queryKey ? previous.total : undefined)
+    if (
+      previous?.key === queryKey &&
+      previous.revision === generation &&
+      previous.offset === start
+    ) {
+      return previous
+    }
 
-        const query = {
-          search,
-          statuses: status ? [status] : statuses,
-          ...(type && { types: [type] }),
-        }
-        const read = (offset: number) =>
-          api.request(signal, 'tasks.list', query, { offset, limit: intervalSize })
+    const query = {
+      search,
+      statuses: status ? [status] : statuses,
+      ...(type && { types: [type] }),
+    }
+    const read = (offset: number) =>
+      api.request(signal, 'tasks.list', query, { offset, limit: intervalSize })
 
-        let result = await read(start)
-        // Resolve a shortened tail before changing the track height and clamping its scroll position.
-        while (generation === revision && result.total && start > fitOffset(start, result.total)) {
-          signal.throwIfAborted()
-          start = fitOffset(start, result.total)
-          result = await read(start)
-        }
+    let result = await read(start)
+    // Resolve a shortened tail before changing the track height and clamping its scroll position.
+    while (generation === revision && result.total && start > fitOffset(start, result.total)) {
+      signal.throwIfAborted()
+      start = fitOffset(start, result.total)
+      result = await read(start)
+    }
 
-        return generation === revision
-          ? { key: queryKey, revision: generation, offset: start, ...result }
-          : previous
-      }
-    },
+    return generation === revision
+      ? { key: queryKey, revision: generation, offset: start, ...result }
+      : previous
   })
 
   const snapshot = createMemo(() => {
-    const result = list.value
+    const result = list.result()?.value
     return result?.key === key() ? result : undefined
   })
   const total = createMemo(() => snapshot()?.total)
@@ -140,7 +135,7 @@ export function createTaskQuery(
       return result?.items[index - result.offset]
     },
     requestRange,
-    error: (): unknown => (attemptedKey === key() ? list.error : undefined),
+    error: (): unknown => (attemptedKey === key() ? list.result()?.error : undefined),
     refresh,
   }
 }

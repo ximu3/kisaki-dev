@@ -29,26 +29,30 @@ export function createSelection<O extends SelectionOption>(source: Accessor<read
 
   const move = (step: 1 | -1 | 'first' | 'last') => {
     const items = enabled()
-    const current = items.findIndex((item) => item.value === active())
-    let index: number
-    if (step === 'first') {
-      index = 0
-    } else if (step === 'last') {
-      index = items.length - 1
-    } else if (current < 0) {
-      index = step === 1 ? 0 : items.length - 1
-    } else {
-      index = (current + step + items.length) % items.length
-    }
-    highlight(items[index]?.value)
+    setHighlighted((previous) => {
+      const current = items.findIndex((item) => item.value === previous)
+      let index: number
+      if (step === 'first') {
+        index = 0
+      } else if (step === 'last') {
+        index = items.length - 1
+      } else if (current < 0) {
+        index = step === 1 ? 0 : items.length - 1
+      } else {
+        index = (current + step + items.length) % items.length
+      }
+      return items[index]?.value
+    })
   }
 
   const type = (character: string, control: HTMLElement) => {
     const matches = typeahead(character, control)
     const items = enabled()
-    const start = items.findIndex((option) => option.value === active())
-    const ordered = [...items.slice(start + 1), ...items.slice(0, start + 1)]
-    highlight(ordered.find((item) => matches(item.label))?.value ?? active())
+    setHighlighted((previous) => {
+      const start = items.findIndex((option) => option.value === previous)
+      const ordered = [...items.slice(start + 1), ...items.slice(0, start + 1)]
+      return ordered.find((item) => matches(item.label))?.value ?? items[start]?.value
+    })
   }
 
   return { options, get, positionOf, enabled, active, highlight, move, type }

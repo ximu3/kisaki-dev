@@ -1,4 +1,4 @@
-import { For, onCleanup } from 'solid-js'
+import { For, onSettled } from 'solid-js'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 import type { MainClient } from '../../../infrastructure/api'
 import { createCloseConfirmation } from '../../../infrastructure/dialogs/closing'
@@ -51,8 +51,10 @@ export function MainWindow(props: { api: MainClient }) {
     }
   }
 
-  window.addEventListener('keydown', keydown)
-  onCleanup(() => window.removeEventListener('keydown', keydown))
+  onSettled(() => {
+    window.addEventListener('keydown', keydown)
+    return () => window.removeEventListener('keydown', keydown)
+  })
 
   return (
     <WindowEditors value={editors}>

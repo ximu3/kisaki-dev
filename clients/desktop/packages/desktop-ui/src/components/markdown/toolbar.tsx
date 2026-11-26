@@ -107,13 +107,13 @@ export function MarkdownToolbar<C extends MarkdownCommand>(props: ToolbarProps<C
       result.set(action.id, action)
     }
 
-    return result
+    return [...result.values()]
   })
 
   const [focusedId, setFocusedId] = createSignal<string>()
   const enabled = createMemo(() => {
     const state = props.state
-    return Array.from(buttons().values())
+    return buttons()
       .filter(
         (action) =>
           (!state.readOnly || action.allowReadOnly) && (action.isEnabled?.(state) ?? true),
@@ -128,7 +128,7 @@ export function MarkdownToolbar<C extends MarkdownCommand>(props: ToolbarProps<C
   )
 
   return (
-    <Show when={buttons().size > 0}>
+    <Show when={buttons().length > 0}>
       <div
         ref={(node) => {
           root = node
@@ -138,33 +138,29 @@ export function MarkdownToolbar<C extends MarkdownCommand>(props: ToolbarProps<C
         class={styles.toolbar}
         onKeyDown={navigate}
       >
-        <For each={Array.from(buttons().keys())}>
-          {(id) => {
-            const action = () => buttons().get(id)!
-
-            return (
-              <Tooltip>
-                <TooltipTrigger
-                  class={styles.command}
-                  size="icon"
-                  variant="ghost"
-                  aria-label={action().label}
-                  disabled={!enabled().includes(id)}
-                  tabindex={tabStop() === id ? 0 : -1}
-                  onFocus={() => setFocusedId(id)}
-                  onPointerDown={(event) => event.preventDefault()}
-                  onClick={() => {
-                    const view = props.view
-                    view.focus()
-                    action().run(view)
-                  }}
-                >
-                  {action().icon()}
-                </TooltipTrigger>
-                <TooltipContent>{action().label}</TooltipContent>
-              </Tooltip>
-            )
-          }}
+        <For each={buttons()} keyed={(action) => action.id}>
+          {(action) => (
+            <Tooltip>
+              <TooltipTrigger
+                class={styles.command}
+                size="icon"
+                variant="ghost"
+                aria-label={action().label}
+                disabled={!enabled().includes(action().id)}
+                tabindex={tabStop() === action().id ? 0 : -1}
+                onFocus={() => setFocusedId(action().id)}
+                onPointerDown={(event) => event.preventDefault()}
+                onClick={() => {
+                  const view = props.view
+                  view.focus()
+                  action().run(view)
+                }}
+              >
+                {action().icon()}
+              </TooltipTrigger>
+              <TooltipContent>{action().label}</TooltipContent>
+            </Tooltip>
+          )}
         </For>
       </div>
     </Show>

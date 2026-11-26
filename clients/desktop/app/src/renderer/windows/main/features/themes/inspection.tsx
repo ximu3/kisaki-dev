@@ -1,6 +1,6 @@
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { createMemo, createSignal, Show } from 'solid-js'
-import { createQuery } from '../../../../infrastructure/query'
+import { createSnapshot } from '../../../../infrastructure/query'
 import type { ThemeRef } from '@kisaki3/desktop-contracts/appearance'
 import {
   Dialog,
@@ -64,19 +64,14 @@ function ThemePreview(props: {
   visible: boolean
 }) {
   const { api } = props
-  const theme = createQuery({
-    prepare() {
-      const target = props.target
-      return (signal) => api.request(signal, 'themes.get', target)
-    },
-  })
-  deferDialogUntil(() => !theme.pending)
+  const theme = createSnapshot((signal) => api.request(signal, 'themes.get', props.target))
+  deferDialogUntil(() => !theme.pending())
 
   observeDialogTarget(props.receipt, () => ({
-    presented: props.visible && !theme.pending && !!theme.value,
+    presented: props.visible && !theme.pending() && !!theme.result()?.value,
     error:
-      theme.error ??
-      (theme.value === null && !theme.pending
+      theme.result()?.error ??
+      (theme.result()?.value === null && !theme.pending()
         ? new DesktopError('NotFound', api.t('runtime.unavailable'))
         : undefined),
   }))
@@ -88,14 +83,14 @@ function ThemePreview(props: {
       </DialogHeader>
       <DialogBody>
         <QueryError
-          error={theme.error}
+          error={theme.result()?.error}
           retryLabel={api.t('runtime.retry')}
           retry={() => void theme.reload()}
         />
-        <Show when={!theme.error}>
-          <Show when={!theme.pending} fallback={<Spinner label={api.t('runtime.loading')} />}>
+        <Show when={!theme.result()?.error}>
+          <Show when={!theme.pending()} fallback={<Spinner label={api.t('runtime.loading')} />}>
             <Show
-              when={theme.value}
+              when={theme.result()?.value}
               fallback={<p class="m-0 text-sm">{api.t('runtime.unavailable')}</p>}
             >
               {(value) => <ThemeSamples theme={value()} t={api.t} />}

@@ -1,5 +1,5 @@
-import { Show } from 'solid-js'
-import { createQuery } from '../../../infrastructure/query'
+import { createMemo, Errored, Loading, type ParentProps } from 'solid-js'
+import { requestSignal } from '../../../infrastructure/query'
 import { mdiContentCopy } from '@mdi/js'
 import { Icon } from '@kisaki3/desktop-ui/icon'
 import { Button } from '@kisaki3/desktop-ui/button'
@@ -50,61 +50,75 @@ export function About(props: AboutProps) {
 
 function AboutContent(props: { api: MainClient }) {
   const { api } = props
-  const info = createQuery((signal) => api.request(signal, 'app.environment'))
-  deferDialogUntil(() => !!info.error || !!info.value)
+  const info = createMemo(() => api.request(requestSignal(), 'app.environment'))
 
-  async function copy() {
-    await api.call('app.copyEnvironment')
-    toast.show({ type: 'success', message: api.t('runtime.copied') })
+  function Waiting() {
+    deferDialogUntil(() => false)
+    return (
+      <Layout>
+        <Spinner label={api.t('runtime.loading')} />
+      </Layout>
+    )
+  }
+
+  function Layout(props: ParentProps<{ ready?: boolean }>) {
+    async function copy() {
+      await api.call('app.copyEnvironment')
+      toast.show({ type: 'success', message: api.t('runtime.copied') })
+    }
+
+    return (
+      <>
+        <DialogHeader closeLabel={api.t('actions.close')}>
+          <DialogTitle>{api.t('runtime.about')}</DialogTitle>
+        </DialogHeader>
+        <DialogBody class="flex flex-col gap-4">
+          <div class="flex items-center gap-3">
+            <img src="kisaki-app://window/brand/icon.png" alt="" class="size-11 rounded-md" />
+            <div>
+              <h3 class="m-0 text-lg font-semibold">{api.applicationName}</h3>
+              <p class="m-0 text-xs text-muted-foreground">AGPL-3.0-only</p>
+            </div>
+          </div>
+
+          {props.children}
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            variant="outline"
+            disabled={!props.ready}
+            onClick={() => void copy().catch(reportError)}
+          >
+            <Icon path={mdiContentCopy} />
+            {api.t('runtime.copyEnvironment')}
+          </Button>
+        </DialogFooter>
+      </>
+    )
   }
 
   return (
-    <>
-      <DialogHeader closeLabel={api.t('actions.close')}>
-        <DialogTitle>{api.t('runtime.about')}</DialogTitle>
-      </DialogHeader>
-      <DialogBody class="flex flex-col gap-4">
-        <div class="flex items-center gap-3">
-          <img src="kisaki-app://window/brand/icon.png" alt="" class="size-11 rounded-md" />
-          <div>
-            <h3 class="m-0 text-lg font-semibold">{api.applicationName}</h3>
-            <p class="m-0 text-xs text-muted-foreground">AGPL-3.0-only</p>
-          </div>
-        </div>
-
-        <QueryError
-          error={info.error}
-          retryLabel={api.t('runtime.retry')}
-          retry={() => void info.reload()}
-        />
-        <Show
-          when={!info.error && info.value}
-          fallback={!info.error && <Spinner label={api.t('runtime.loading')} />}
-        >
-          {(value) => (
-            <dl class="m-0 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-1 text-sm">
-              <dt class="text-muted-foreground">{api.t('runtime.appVersion')}</dt>
-              <dd class="m-0 break-words">{value().version}</dd>
-              <dt class="text-muted-foreground">{api.t('runtime.operatingSystem')}</dt>
-              <dd class="m-0 break-words">
-                {value().operatingSystem.name} {value().operatingSystem.version}
-              </dd>
-              <dt class="text-muted-foreground">{api.t('runtime.architecture')}</dt>
-              <dd class="m-0">{value().architecture}</dd>
-            </dl>
-          )}
-        </Show>
-      </DialogBody>
-      <DialogFooter>
-        <Button
-          variant="outline"
-          disabled={!!info.error || info.pending}
-          onClick={() => void copy().catch(reportError)}
-        >
-          <Icon path={mdiContentCopy} />
-          {api.t('runtime.copyEnvironment')}
-        </Button>
-      </DialogFooter>
-    </>
+    <Errored
+      fallback={(error, retry) => (
+        <Layout>
+          <QueryError error={error()} retryLabel={api.t('runtime.retry')} retry={retry} />
+        </Layout>
+      )}
+    >
+      <Loading fallback={<Waiting />}>
+        <Layout ready>
+          <dl class="m-0 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-1 text-sm">
+            <dt class="text-muted-foreground">{api.t('runtime.appVersion')}</dt>
+            <dd class="m-0 break-words">{info().version}</dd>
+            <dt class="text-muted-foreground">{api.t('runtime.operatingSystem')}</dt>
+            <dd class="m-0 break-words">
+              {info().operatingSystem.name} {info().operatingSystem.version}
+            </dd>
+            <dt class="text-muted-foreground">{api.t('runtime.architecture')}</dt>
+            <dd class="m-0">{info().architecture}</dd>
+          </dl>
+        </Layout>
+      </Loading>
+    </Errored>
   )
 }

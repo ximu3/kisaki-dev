@@ -1,5 +1,6 @@
-import { createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
-import { createQuery } from '../../../../infrastructure/query'
+import { createPreferencesSnapshot } from '../../domain-ui/preferences'
+import { getOwner, isDisposed, createSignal, For, onSettled, Show } from 'solid-js'
+import { createSnapshot } from '../../../../infrastructure/query'
 import {
   mdiCheck,
   mdiContentCopy,
@@ -84,19 +85,12 @@ export async function checkThemeTarget(
 
 function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
   const { api } = props
-  const catalog = createQuery((signal) => api.request(signal, 'themes.list'))
-  const preferences = createQuery((signal) => api.request(signal, 'preferences.get'))
-  deferDialogUntil(
-    () => (!!catalog.error || !!catalog.value) && (!!preferences.error || !!preferences.value),
-  )
-  const entries = createMemo(
-    () =>
-      new Map(
-        (catalog.error ? [] : (catalog.value ?? [])).map((item) => [catalogKey(item.ref), item]),
-      ),
-  )
+  const catalog = createSnapshot((signal) => api.request(signal, 'themes.list'))
+  const preferences = createPreferencesSnapshot(api)
+  deferDialogUntil(() => !!catalog.result() && !!preferences.result())
+  const entries = () => catalog.result()?.value
   const current = () => {
-    const value = preferences.error ? undefined : preferences.value?.appearance.theme
+    const value = preferences.result()?.value?.appearance.theme
     return value?.status === 'ready' ? value.value : undefined
   }
   const activeKey = () => {
@@ -107,31 +101,31 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
   const [preview, setPreview] = createSignal(props.target)
   const previewName = () => {
     const ref = preview()
-    return ref ? entries().get(catalogKey(ref))?.name : undefined
+    return ref
+      ? entries()?.find((item) => catalogKey(item.ref) === catalogKey(ref))?.name
+      : undefined
   }
   const [edit, setEdit] = createSignal<ThemeEdit>()
   const [busy, setBusy] = createSignal(false)
   const confirm = createConfirmation(api.t)
-  let alive = true
+  const owner = getOwner()!
   let viewport!: HTMLElement
   let focusFrame: number | undefined
 
   const refresh = () => void catalog.reload()
-  const reloadSelection = () => void preferences.reload()
-  api.topics.addEventListener('themes.changed', refresh)
-  api.topics.addEventListener('window.changed', reloadSelection)
-  onCleanup(() => {
-    alive = false
-    if (focusFrame !== undefined) {
-      cancelAnimationFrame(focusFrame)
+  onSettled(() => {
+    api.topics.addEventListener('themes.changed', refresh)
+    return () => {
+      if (focusFrame !== undefined) {
+        cancelAnimationFrame(focusFrame)
+      }
+      api.topics.removeEventListener('themes.changed', refresh)
     }
-    api.topics.removeEventListener('themes.changed', refresh)
-    api.topics.removeEventListener('window.changed', reloadSelection)
   })
 
   async function open(ref: ThemeRef, name: string) {
     const value = await api.call('themes.get', ref)
-    if (!alive) {
+    if (isDisposed(owner)) {
       return
     }
     if (!value || !editable(value)) {
@@ -152,7 +146,7 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
 
   async function reveal(ref: ThemeRef) {
     await catalog.reload()
-    if (!alive) {
+    if (isDisposed(owner)) {
       return
     }
 
@@ -197,13 +191,13 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
     void reveal(ref).catch(reportError)
   }
 
-  const failure = (): unknown => catalog.error ?? preferences.error
+  const failure = (): unknown => catalog.result()?.error ?? preferences.result()?.error
   function retry() {
-    if (catalog.error) {
+    if (catalog.result()?.error) {
       refresh()
     }
-    if (preferences.error) {
-      reloadSelection()
+    if (preferences.result()?.error) {
+      preferences.reload()
     }
   }
 
@@ -223,13 +217,13 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
           retry={retry}
           class="mb-3"
         />
-        <Show when={catalog.pending && !entries().size}>
+        <Show when={catalog.pending() && !entries()?.length}>
           <Spinner label={api.t('runtime.loading')} />
         </Show>
         <List>
-          <For each={[...entries().keys()]}>
-            {(key) => {
-              const item = () => entries().get(key)!
+          <For each={entries()} keyed={(item) => catalogKey(item.ref)}>
+            {(item) => {
+              const key = () => catalogKey(item().ref)
               const source = () => {
                 const ref = item().ref
                 const name = api.t(themeSource[ref.type])
@@ -242,7 +236,7 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
                   title={
                     <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
                       <span>{item().name}</span>
-                      <Show when={activeKey() === key}>
+                      <Show when={activeKey() === key()}>
                         <Badge tone="outline">{api.t('runtime.currentTheme')}</Badge>
                       </Show>
                     </div>
@@ -250,18 +244,20 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
                   description={source()}
                   actions={
                     <>
-                      <Show when={activeKey() !== key}>
+                      <Show when={activeKey() !== key()}>
                         <ListItemAction
                           label={api.t('runtime.use')}
                           aria-label={api.t('runtime.useThemeItem', { name: item().name })}
-                          disabled={busy() || preferences.pending || !!preferences.error}
+                          disabled={
+                            busy() || preferences.pending() || !!preferences.result()?.error
+                          }
                           onClick={() => operate(() => useTheme(item().ref))}
                         >
                           <Icon path={mdiCheck} />
                         </ListItemAction>
                       </Show>
                       <ListItemAction
-                        id={'theme-preview-' + key}
+                        id={'theme-preview-' + key()}
                         label={api.t('runtime.preview')}
                         aria-label={api.t('runtime.previewItem', { name: item().name })}
                         onClick={() => setPreview(item().ref)}

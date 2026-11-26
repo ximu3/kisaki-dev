@@ -1,5 +1,5 @@
 import { printableKey } from '../../internal/typeahead'
-import { omit } from 'solid-js'
+import { onSettled, omit } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { callHandler } from '../../internal/dom'
 import { closeWhenUnavailable } from '../../internal/field'
@@ -30,9 +30,8 @@ export function SelectionTrigger<O extends SelectionOption>(
     'onKeyDown',
   )
   let trigger!: HTMLButtonElement
-  function show(character?: string) {
-    props.popup.setOpen(true)
-    queueMicrotask(() => {
+  function highlightOnOpen(character?: string) {
+    onSettled(() => {
       if (!props.popup.open()) {
         return
       }
@@ -46,6 +45,10 @@ export function SelectionTrigger<O extends SelectionOption>(
         props.collection.highlight(selected ?? props.collection.enabled()[0]?.value)
       }
     })
+  }
+  function show(character?: string) {
+    props.popup.setOpen(true)
+    highlightOnOpen(character)
   }
   closeWhenUnavailable(
     () => trigger,
@@ -124,10 +127,8 @@ export function SelectionTrigger<O extends SelectionOption>(
         callHandler(props.onClick, event)
         if (!event.defaultPrevented) {
           event.preventDefault()
-          if (props.popup.open()) {
-            props.popup.setOpen(false)
-          } else {
-            show()
+          if (props.popup.setOpen((open) => !open)) {
+            highlightOnOpen()
           }
         }
       }}

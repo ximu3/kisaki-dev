@@ -1,5 +1,5 @@
-import { createEffect, createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
-import { createQuery } from '../../../../infrastructure/query'
+import { createEffect, createSignal, For, onSettled, Show } from 'solid-js'
+import { createSnapshot } from '../../../../infrastructure/query'
 import {
   mdiFormatLetterCase,
   mdiEyeOutline,
@@ -81,25 +81,20 @@ export async function checkFontTarget(
 function FontCatalog(props: FontsProps & { visible: boolean }) {
   const { api } = props
   const [offset, setOffset] = createSignal(0)
-  const list = createQuery({
-    prepare() {
-      const from = offset()
+  const list = createSnapshot(async (signal) => {
+    const from = offset()
 
-      return async (signal) => {
-        const result = await api.request(signal, 'fonts.list', '', {
-          offset: from,
-          limit: pageSize,
-        })
-        return { from, result }
-      }
-    },
+    const result = await api.request(signal, 'fonts.list', '', {
+      offset: from,
+      limit: pageSize,
+    })
+    return { from, result }
   })
   const page = () => {
-    const response = list.error ? undefined : list.value
+    const response = list.result()?.value
     return response?.from === offset() ? response.result : undefined
   }
-  deferDialogUntil(() => !!list.error || !!page())
-  const entries = createMemo(() => new Map(page()?.items.map((item) => [item.id, item])))
+  deferDialogUntil(() => !!list.result()?.error || !!page())
   const count = () => page()?.total ?? 0
   let viewport!: HTMLElement
 
@@ -112,13 +107,15 @@ function FontCatalog(props: FontsProps & { visible: boolean }) {
   let focusFrame: number | undefined
 
   const refresh = () => void list.reload()
-  api.topics.addEventListener('fonts.changed', refresh)
-  onCleanup(() => {
-    editRequest++
-    if (focusFrame !== undefined) {
-      cancelAnimationFrame(focusFrame)
+  onSettled(() => {
+    api.topics.addEventListener('fonts.changed', refresh)
+    return () => {
+      editRequest++
+      if (focusFrame !== undefined) {
+        cancelAnimationFrame(focusFrame)
+      }
+      api.topics.removeEventListener('fonts.changed', refresh)
     }
-    api.topics.removeEventListener('fonts.changed', refresh)
   })
 
   function changePage(next: number) {
@@ -214,53 +211,54 @@ function FontCatalog(props: FontsProps & { visible: boolean }) {
           }
         }}
       >
-        <QueryError error={list.error} retryLabel={api.t('runtime.retry')} retry={refresh} />
+        <QueryError
+          error={list.result()?.error}
+          retryLabel={api.t('runtime.retry')}
+          retry={refresh}
+        />
         <Show
           when={page()}
-          fallback={!list.error && <Spinner label={api.t('runtime.loadingFonts')} />}
+          fallback={!list.result()?.error && <Spinner label={api.t('runtime.loadingFonts')} />}
         >
           <Show
-            when={entries().size}
+            when={page()?.items.length}
             fallback={<EmptyState heading={api.t('runtime.emptyFonts')} />}
           >
             <List>
-              <For each={[...entries().keys()]}>
-                {(id) => {
-                  const name = () => entries().get(id)!.name
-                  return (
-                    <ListItem
-                      icon={<Icon path={mdiFormatLetterCase} />}
-                      title={name()}
-                      actions={
-                        <>
-                          <ListItemAction
-                            id={'font-preview-' + id}
-                            label={api.t('runtime.preview')}
-                            aria-label={api.t('runtime.previewItem', { name: name() })}
-                            onClick={() => setPreview({ id, name: name() })}
-                          >
-                            <Icon path={mdiEyeOutline} />
-                          </ListItemAction>
-                          <ListItemAction
-                            label={api.t('actions.edit')}
-                            aria-label={api.t('runtime.editItem', { name: name() })}
-                            onClick={() => void open(id).catch(reportError)}
-                          >
-                            <Icon path={mdiPencilOutline} />
-                          </ListItemAction>
-                          <ListItemAction
-                            label={api.t('actions.delete')}
-                            aria-label={api.t('runtime.deleteItem', { name: name() })}
-                            destructive
-                            onClick={() => void remove(id, name()).catch(reportError)}
-                          >
-                            <Icon path={mdiDeleteOutline} />
-                          </ListItemAction>
-                        </>
-                      }
-                    />
-                  )
-                }}
+              <For each={page()?.items} keyed={(font) => font.id}>
+                {(font) => (
+                  <ListItem
+                    icon={<Icon path={mdiFormatLetterCase} />}
+                    title={font().name}
+                    actions={
+                      <>
+                        <ListItemAction
+                          id={'font-preview-' + font().id}
+                          label={api.t('runtime.preview')}
+                          aria-label={api.t('runtime.previewItem', { name: font().name })}
+                          onClick={() => setPreview({ id: font().id, name: font().name })}
+                        >
+                          <Icon path={mdiEyeOutline} />
+                        </ListItemAction>
+                        <ListItemAction
+                          label={api.t('actions.edit')}
+                          aria-label={api.t('runtime.editItem', { name: font().name })}
+                          onClick={() => void open(font().id).catch(reportError)}
+                        >
+                          <Icon path={mdiPencilOutline} />
+                        </ListItemAction>
+                        <ListItemAction
+                          label={api.t('actions.delete')}
+                          aria-label={api.t('runtime.deleteItem', { name: font().name })}
+                          destructive
+                          onClick={() => void remove(font().id, font().name).catch(reportError)}
+                        >
+                          <Icon path={mdiDeleteOutline} />
+                        </ListItemAction>
+                      </>
+                    }
+                  />
+                )}
               </For>
             </List>
           </Show>

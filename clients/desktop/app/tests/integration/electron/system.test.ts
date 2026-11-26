@@ -19,6 +19,26 @@ test('system integration reports the selected data root from the actual native a
   await expect(settings.getByText(profile, { exact: true })).toBeVisible()
 })
 
+test('About retries a failed environment read within the open dialog', async ({ desktop }) => {
+  const page = await desktop.firstWindow()
+  await desktop.evaluate(() => {
+    const version = process.getSystemVersion.bind(process)
+    process.getSystemVersion = () => {
+      process.getSystemVersion = version
+      throw new Error('Environment read failed')
+    }
+  })
+  await page.getByRole('button', { name: 'Application menu' }).click()
+  await page.getByRole('menuitem', { name: 'About Kisaki', exact: true }).click()
+  const about = page.getByRole('dialog', { name: 'About Kisaki', exact: true })
+  const copy = about.getByRole('button', { name: 'Copy environment information' })
+  await expect(copy).toBeDisabled()
+  await about.getByRole('alert').getByRole('button', { name: 'Try again' }).click()
+  await expect(copy).toBeEnabled()
+  await expect(about.getByRole('alert')).toHaveCount(0)
+  await expect(about.getByText(process.arch, { exact: true })).toBeVisible()
+})
+
 test('a second launch reveals the hidden draft before navigating to its destination', async ({
   desktop,
   profile,

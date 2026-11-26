@@ -1,6 +1,6 @@
 # W05 公共 UI 包验证
 
-2026-11-11，在 Windows x64、Node 24.11.1、pnpm 11.11.0、Solid 1.9.16 和 TypeScript 6.0.3 下验证 `@kisaki3/desktop-ui@0.1.0-dev.0`。浏览器为 Playwright 1.64.1 的 Chromium 156.0.8078.4；实际 Electron 45.0.0 使用 Chromium 156.0.8078.48、Node 24.22.0。范围为 [W05](../../../implementation/work-packages.md#w05) 的公共组件、独立制品及浏览器交互。
+[W05](../../../implementation/work-packages.md#w05) 的当前复验使用 Solid 2，覆盖公共控件、普通 CSS 和声明，以及仓库外的 Chromium 与沙箱 Electron 消费。[运行环境和结果](../w05-w07/README.md#solid-2)
 
 ## 颜色输入、浮层和粘性表头
 
@@ -8,7 +8,7 @@
 
 ## 交付与检查
 
-组件从 32 个家族子路径导出。家族拥有自己的部件、Props 与交互，`src/internal` 拥有共同度量的使用、输入与动作表面、选项行、选项集合、Tooltip、模态宿主及定位。所有 CSS Modules 的实际类名引用与家族样式归属已逐项核对。
+2026-11-11 首次验收时，组件从 32 个家族子路径导出。家族拥有自己的部件、Props 与交互，`src/internal` 拥有共同度量的使用、输入与动作表面、选项行、选项集合、Tooltip、模态宿主及定位。所有 CSS Modules 的实际类名引用与家族样式归属已逐项核对。
 
 | 范围 | 已交付与实际验证 |
 | --- | --- |
@@ -27,11 +27,7 @@ Unovis 使用的声明汇总进入图表子路径，仍被引用的类型依赖�
 
 ## 复现与材料
 
-以下命令对应 2026-11-11 的验收版本。现行复验入口见[当前工程与开发](../../../implementation/development.md#verification)。
-
-`pnpm check` 执行工作区类型、lint、边界、格式和常规测试。UI 的真实浏览器与 Electron 检查属于独立消费者任务，普通 check 不启动桌面。
-
-`pnpm exec turbo run test:consumers --filter=@kisaki3/desktop-ui --filter=@kisaki3/desktop-appearance` 构建并打包真实制品，经 publint 和 ATTW 的 ESM 检查，再安装到仓库外临时工程。appearance 和 desktop-ui 分别通过 4 与 14 项消费检查。安装、服务器、页面、浏览器和 Electron profile 由测试拥有并释放。
+从仓库根运行 `pnpm exec vp run @kisaki3/desktop-ui#verify`，构建并检查同一份 tarball，在独立工程中验证公开入口。源码工作坊使用 Chromium。安装、服务器、页面和临时资料目录由测试拥有并释放。[当前工程与开发](../../../implementation/development.md#verification)
 
 UI 制品为包内 `out/package/package.tgz`。`test-results/consumers` 保存结果、实际环境与 tarball SHA-256，以及亮暗、窄窗口、专用能力和 Electron 截图。独立审查页核对了亮暗控件、分数像素下的通高分隔线、拾色器通道焦点、滑轨填色、长 Dialog、只读错误详情、图表实际数值与拖拽结果；其他包的报告保留在各自相同用途的输出目录。CI 按对应 PR 的实际运行登记。
 
@@ -41,20 +37,7 @@ UI 制品为包内 `out/package/package.tgz`。`test-results/consumers` 保存�
 
 制品消费者在淡入中段及终态比较菜单、Dialog 和图表提示的文字几何。连续跨图表数据点时沿用同一提示。通知自然退场计入读时，主动关闭使句柄立即失效，跨模态移动保留通知身份和时钟。
 
-构建沿 [tsdown 的 Solid 接入](https://tsdown.dev/recipes/solid-support)和 [CSS Modules 提取](https://tsdown.dev/options/css)，使用固定 tsdown／CSS 0.23.0 与适配 Solid 1.9 的 unplugin-solid 1.0.0。专用工具通过其公开入口接入，声明归集保留 Unovis 的许可材料。
-
-## 图标目录与呈现
-
-2026-11-12，公共 UI、扩展贡献与搜索合同统一到 Lucide 1.72.0。Solid 1.9 使用 lucide-solid；desktop-contracts 从同版 @lucide/icons 的公开目录生成名称类型与校验。图标选择和拥有边界见 [UI 图标](../../../design/ui/package.md#icons)与[贡献图标值](../../../design/extensions/webview.md#icons)。
-
-| 范围 | 实际验证 |
-| --- | --- |
-| 名称与资源 | 上游 2,356 个名称及别名逐项通过值解析；未知名称、组件式拼写、旧 mdi 分支及越界包路径被拒绝。贡献包文件与搜索扩展资源分别保留原有归属。 |
-| 包与裁剪 | pnpm check、desktop-contracts 和 desktop-ui 的制品消费通过，包含 Node、浏览器完整声明及真实 Electron。独立 Spinner 入口的浏览器构建仅保留 LoaderCircle 图形；名称校验入口没有图形模块、动态图库导入或 DOM 接入。 |
-| 视觉与响应 | 实际制品的四种 Alert 状态在同一组件中更新图形。31 个可见图标槽位在亮暗、150% 缩放、亮暗强制颜色和 RTL 下核对；常规槽位从 14px 到 21px，选中标记和工具栏同比缩放，均使用 currentColor 与 2 单位描边。 |
-| 动效与语义 | Spinner 在普通模式旋转，减少动效时静止。内部 SVG 为装饰图形，操作名称由控件提供；日历、选择器、Markdown 工具栏与拖拽手柄沿既有消费检查验证。 |
-
-2026-11-25，Windows x64 制品改用 MDI。固定图集的 7,638 个名称和 6,363 个别名均通过名称解析，扩展贡献和搜索结果接受同一图标值。验证了未知名称、带前缀的名称和越界包路径被拒绝。独立消费者在 Chromium 与 Electron 中加载公共控件。在正式主窗口核对了任务中心、应用菜单和关于入口的 MDI 路径、图标槽位、继承颜色与可访问名称。
+初期构建与图标目录的实测环境、数据和选型见[原始验证记录](https://github.com/ximu3/kisaki-dev/blob/29bfe4b0b6d6cd29a1d2a011358b1c2f5de3c3e7/refactor/verification/evidence/w05/README.md)。现行构建与 MDI 图标合同见[工作区接入](../../../design/engineering/workspace.md#solid)与[公共 UI 图标](../../../design/ui/package.md#icons)。
 
 ## 焦点、错误反馈与合同消费
 

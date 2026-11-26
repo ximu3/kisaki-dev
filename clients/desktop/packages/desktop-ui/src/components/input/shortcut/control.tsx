@@ -52,11 +52,8 @@ export function ShortcutInput(props: ShortcutInputProps) {
   }
 
   function toggle() {
-    if (open()) {
-      close()
-    } else {
+    if (setOpen((open) => !open)) {
       recording.reset()
-      setOpen(true)
     }
   }
 

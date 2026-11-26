@@ -68,13 +68,13 @@ function App(): JSX.Element {
           <Show when={owner()}>
             <ToastOwner />
           </Show>
-          <Button variant="text" onClick={() => setOwner(!owner())}>
+          <Button variant="text" onClick={() => setOwner((value) => !value)}>
             Toggle owner
           </Button>
         </section>
         <section class="wide">
           <h2>Complete capabilities</h2>
-          <Button onClick={() => setResources(!resources())}>
+          <Button onClick={() => setResources((value) => !value)}>
             {resources() ? 'Release resources' : 'Load resources'}
           </Button>
           <Show when={resources()}>

@@ -1,4 +1,5 @@
 import {
+  onSettled,
   createContext,
   createUniqueId,
   omit,
@@ -8,7 +9,7 @@ import {
 } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { callHandler, createAnchor } from '../../internal/dom'
-import { createValue } from '../../internal/state'
+import { createValue, type ValueChange } from '../../internal/state'
 import { createPopup, type PopupPlacement } from '../../internal/popup/controller'
 import { Button, type ButtonProps } from '../button'
 import frame from '../../internal/popup/surface.module.css'
@@ -23,7 +24,7 @@ interface PopoverState {
 
   open: Accessor<boolean>
   controlled: Accessor<boolean>
-  change: (value: boolean) => void
+  change: ValueChange<boolean>
 }
 
 const PopoverContext = createContext<PopoverState>()
@@ -66,7 +67,7 @@ export function PopoverTrigger(props: ButtonProps): JSX.Element {
         callHandler(props.onClick, event)
         if (!event.defaultPrevented) {
           event.preventDefault()
-          state.change(!state.open())
+          state.change((open) => !open)
         }
       }}
     />
@@ -124,7 +125,7 @@ export function PopoverClose(props: ButtonProps): JSX.Element {
         callHandler(props.onClick, event)
         if (!event.defaultPrevented) {
           state.change(false)
-          queueMicrotask(() => {
+          onSettled(() => {
             if (!state.open()) {
               state.anchor()?.focus()
             }

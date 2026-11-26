@@ -1,18 +1,15 @@
-import { createEffect, onCleanup } from 'solid-js'
+import { createPreferencesSnapshot } from '../domain-ui/preferences'
+import { createEffect } from 'solid-js'
 import type { PreferencesUpdate } from '@kisaki3/desktop-contracts/preferences'
 import type { MainClient } from '../../../infrastructure/api'
 import { reportError } from '../../../infrastructure/notifications'
-import { createQuery } from '../../../infrastructure/query'
 
 export function createShellPreferences(api: MainClient) {
-  const preferences = createQuery((signal) => api.request(signal, 'preferences.get'))
-  const current = () => (preferences.error ? undefined : preferences.value)
+  const preferences = createPreferencesSnapshot(api)
+  const current = () => preferences.result()?.value
 
-  const reload = () => void preferences.reload()
-  api.topics.addEventListener('window.changed', reload)
-  onCleanup(() => api.topics.removeEventListener('window.changed', reload))
   createEffect(
-    () => preferences.error,
+    () => preferences.result()?.error,
     (error) => {
       if (error) {
         reportError(error)

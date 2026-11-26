@@ -9,13 +9,13 @@ autoInstallPeers: false
 
 catalog:
   '@arethetypeswrong/cli': 0.18.5
-  '@solidjs/compiler': 2.0.2
-  '@solidjs/vite-plugin': 3.0.1
-  '@solidjs/web': 2.0.3
+  '@solidjs/compiler': ^2.0.3
+  '@solidjs/vite-plugin': ^3.0.1
+  '@solidjs/web': ^2.0.4
   '@types/node': 24.19.2
   electron: 45.3.2
   publint: 0.3.25
-  solid-js: 2.0.3
+  solid-js: ^2.0.4
   typescript: 7.1.0-beta
   vite: npm:@voidzero-dev/vite-plus-core@1.6.0
   vite-plus: 1.6.0

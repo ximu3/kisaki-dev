@@ -1,10 +1,12 @@
 import { createMemo, createSignal, flush, onSettled, untrack, type Accessor } from 'solid-js'
 
+export type ValueChange<T> = (update: T | ((previous: T) => T)) => void
+
 export function createValue<T>(
   value: Accessor<T | undefined>,
   initial: Accessor<T>,
   changed: (value: T) => void,
-): readonly [Accessor<T>, (value: T) => void] {
+): readonly [Accessor<T>, ValueChange<T>] {
   const [local, setLocal] = createSignal<T>(() => untrack(initial))
   const controlled = createMemo(value)
   const current = () => {
@@ -12,25 +14,41 @@ export function createValue<T>(
     return supplied === undefined ? local() : supplied
   }
 
-  return [
-    current,
-    (next) => {
-      // A native event may call this without a Solid owner. Read the already owned prop value.
-      if (Object.is(untrack(current), next)) {
-        return
-      }
+  let requested: { value: T } | undefined
 
-      if (untrack(controlled) === undefined) {
-        setLocal(() => next)
-      }
-      changed(next)
-    },
-  ]
+  const change: ValueChange<T> = (update) => {
+    if (requested && typeof update === 'function' && untrack(controlled) !== undefined) {
+      // A second toggle must see whether the host adopted the first request.
+      flush()
+    }
+    const supplied = untrack(controlled)
+    const previous = requested && supplied === undefined ? requested.value : untrack(current)
+    const next = typeof update === 'function' ? (update as (previous: T) => T)(previous) : update
+    if (Object.is(previous, next) && (!requested || Object.is(requested.value, next))) {
+      return
+    }
+
+    // Compose requests within a Solid update. The host supplies the next settled value.
+    if (!requested) {
+      onSettled(() => {
+        requested = undefined
+      })
+    }
+    requested = { value: next }
+    if (supplied === undefined) {
+      setLocal(() => next)
+    }
+    changed(next)
+  }
+  return [current, change]
 }
 
-export function commitNativeValue<T>(change: (next: T) => void, sync: () => void) {
-  return (next: T) => {
-    change(next)
+export function commitNativeValue<Args extends unknown[]>(
+  change: (...args: Args) => void,
+  sync: () => void,
+) {
+  return (...args: Args) => {
+    change(...args)
     // Native event handlers can read or submit the adopted value in this turn.
     flush()
     sync()

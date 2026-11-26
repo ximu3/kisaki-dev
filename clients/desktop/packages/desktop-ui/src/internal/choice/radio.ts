@@ -1,6 +1,6 @@
 import { createEffect, type Accessor } from 'solid-js'
 import { nativeValidityChanged } from '../form'
-import { createValue, onFormReset } from '../state'
+import { commitNativeValue, createValue, onFormReset } from '../state'
 
 export function bindRadioSelection(
   group: Accessor<HTMLFieldSetElement>,
@@ -21,14 +21,11 @@ export function bindRadioSelection(
     }
   }
 
-  const flushReset = onFormReset(group, () => {
-    request(baseline())
-    sync()
-  })
+  const commit = commitNativeValue(request, sync)
+  const flushReset = onFormReset(group, () => commit(baseline()))
   function change(next: string) {
     flushReset()
-    request(next)
-    sync()
+    commit(next)
   }
 
   createEffect(

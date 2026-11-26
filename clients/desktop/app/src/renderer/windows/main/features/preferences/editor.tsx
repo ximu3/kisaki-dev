@@ -1,5 +1,14 @@
-import { createEffect, createSignal, For, onCleanup, Show, useContext } from 'solid-js'
-import { dynamic, type JSX } from '@solidjs/web'
+import {
+  createEffect,
+  createSignal,
+  For,
+  lazy,
+  onCleanup,
+  onSettled,
+  Show,
+  useContext,
+} from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { preferenceKeys, type PreferenceKey } from '@kisaki3/desktop-contracts/preferences'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { Button } from '@kisaki3/desktop-ui/button'
@@ -45,6 +54,9 @@ import {
 import { UsageEditorFields } from './usage/editor'
 import { UsageFields, usageMedia, type UsageMedium } from './usage/fields'
 import { QueryError } from '../../../../infrastructure/query/error'
+
+const Themes = lazy(() => import('../themes/manager'), { export: 'Themes' })
+const Fonts = lazy(() => import('../fonts/manager'), { export: 'Fonts' })
 
 const sections = [
   'general',
@@ -109,16 +121,8 @@ function PreferenceForm(
   let fieldsViewport!: HTMLDivElement
   let fieldToReveal: string | undefined
   let credentialsDialog: HTMLDialogElement | undefined
-  const themes = createLocalDialog(
-    () => import('../themes/manager').then((module) => module.Themes),
-    props.view.open,
-  )
-  const fonts = createLocalDialog(
-    () => import('../fonts/manager').then((module) => module.Fonts),
-    props.view.open,
-  )
-  const Themes = dynamic(themes.component)
-  const Fonts = dynamic(fonts.component)
+  const themes = createLocalDialog(Themes.preload, props.view.open)
+  const fonts = createLocalDialog(Fonts.preload, props.view.open)
 
   const [stagedEdit, setStagedEdit] = createSignal<
     StagedPreferenceEdit & { medium?: UsageMedium }
@@ -158,7 +162,7 @@ function PreferenceForm(
     const medium = inlineEdit()?.medium
     setStagedEdit(undefined)
     if (medium) {
-      queueMicrotask(() => {
+      onSettled(() => {
         if (section() !== 'usage' || stagedEdit() || !fieldsViewport.isConnected) {
           return
         }
@@ -196,7 +200,7 @@ function PreferenceForm(
     setSection(next)
     setShowProxyDetails(next === 'network' && key !== 'network.mode')
 
-    queueMicrotask(() => {
+    onSettled(() => {
       if (fieldToReveal !== key) {
         return
       }
@@ -285,19 +289,21 @@ function PreferenceForm(
     return form.submit()
   }
 
-  const unregisterEditor = editors.register(
-    {
-      busy: form.busy,
-      dirty: () => draft.dirty() || !!stagedEdit()?.draft.dirty(),
-      save: saveBeforeLeaving,
-      currentFormAction: () => (stagedEdit() ? confirmStagedEdit : undefined),
-    },
-    props.dialog,
-    () => !!credentialsDialog && credentialsDialog === document.activeElement?.closest('dialog'),
-  )
-  onCleanup(() => {
-    fieldToReveal = undefined
-    unregisterEditor()
+  onSettled(() => {
+    const unregisterEditor = editors.register(
+      {
+        busy: form.busy,
+        dirty: () => draft.dirty() || !!stagedEdit()?.draft.dirty(),
+        save: saveBeforeLeaving,
+        currentFormAction: () => (stagedEdit() ? confirmStagedEdit : undefined),
+      },
+      props.dialog,
+      () => !!credentialsDialog && credentialsDialog === document.activeElement?.closest('dialog'),
+    )
+    return () => {
+      fieldToReveal = undefined
+      unregisterEditor()
+    }
   })
 
   const fields: Record<Section, () => JSX.Element> = {
@@ -409,8 +415,12 @@ function PreferenceForm(
         bind={bindStagedForm}
         close={closeStagedEdit}
       />
-      <Themes api={api} view={themes.view} />
-      <Fonts api={api} view={fonts.view} />
+      <Show when={themes.mounted()}>
+        <Themes api={api} view={themes.view} />
+      </Show>
+      <Show when={fonts.mounted()}>
+        <Fonts api={api} view={fonts.view} />
+      </Show>
     </>
   )
 }

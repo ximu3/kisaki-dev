@@ -1,4 +1,4 @@
-import { createEffect, createSignal, For, onCleanup, onSettled, Show, untrack } from 'solid-js'
+import { createEffect, createSignal, For, onSettled, Show, untrack } from 'solid-js'
 import type { JSX } from '@solidjs/web'
 import { createToastController, type ToastEntry } from './controller'
 import { createStackMotion } from './stack'
@@ -174,6 +174,7 @@ function ToastItem(props: {
       stop()
       remaining = props.entry.durationMs
       resume()
+      return stop
     },
   )
   createEffect(
@@ -210,7 +211,6 @@ function ToastItem(props: {
       }
     },
   )
-  onCleanup(stop)
 
   return (
     <div
