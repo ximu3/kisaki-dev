@@ -209,12 +209,7 @@ export function openWindowDocument({
       ),
 
       'themes.list': windowMethod('read', async (_, signal) =>
-        rpcData(
-          (await appearance.themes.list({ signal })).map((theme) => ({
-            ref: theme.ref,
-            name: appearance.themes.displayName(theme, application.i18n.current.locale),
-          })),
-        ),
+        rpcData(await appearance.themes.listForLocale(application.i18n.current.locale, { signal })),
       ),
       'themes.get': windowMethod('read', async ([ref], signal) =>
         rpcData(await appearance.themes.get(parseThemeRef(ref), { signal })),

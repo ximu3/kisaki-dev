@@ -166,26 +166,36 @@ export function createAppearance(
     appearanceChanged.emit()
   }
 
+  async function listThemes<T>(
+    summarize: (theme: Pick<Theme, 'ref' | 'name'>, fallbackLocale: string) => T,
+    options?: CallOptions,
+  ) {
+    options?.signal?.throwIfAborted()
+    const users = await call('listThemes')
+    return [
+      summarize(builtin, 'en'),
+      ...users.map((theme) => summarize(theme, 'en')),
+      ...Array.from(extensions.values(), ({ theme, locale }) => summarize(theme, locale)),
+    ]
+  }
+
   const themes = {
     async get(ref: ThemeRef, options?: CallOptions) {
       return (await readTheme(ref, options)).theme
     },
 
-    displayName(theme: Pick<Theme, 'ref' | 'name'>, locale: string) {
-      return resolveLocalizedText(
-        theme.name,
-        locale,
-        extensions.get(catalogKey(theme.ref))?.locale ?? 'en',
-      )
+    list(options?: CallOptions) {
+      return listThemes(({ ref, name }) => ({ ref, name }), options)
     },
 
-    async list(options?: CallOptions) {
-      options?.signal?.throwIfAborted()
-      return [
-        { ref: builtin.ref, name: builtin.name },
-        ...(await call('listThemes')),
-        ...[...extensions.values()].map(({ theme }) => ({ ref: theme.ref, name: theme.name })),
-      ]
+    listForLocale(locale: string, options?: CallOptions) {
+      return listThemes(
+        ({ ref, name }, fallback) => ({
+          ref,
+          name: resolveLocalizedText(name, locale, fallback),
+        }),
+        options,
+      )
     },
 
     async create(input: UserThemeCreate, options?: CallOptions) {
