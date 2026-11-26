@@ -25,7 +25,7 @@ import {
   useDialogClose,
   type DialogPresentation,
 } from '../../../../infrastructure/dialogs/presentation'
-import { errorMessage } from '../../../../infrastructure/notifications'
+import { errorMessage, reportError } from '../../../../infrastructure/notifications'
 import { DataLocation } from './data-location'
 import { QueryError } from '../../../../infrastructure/query/error'
 
@@ -47,7 +47,6 @@ function describeLinks(
 
 interface SystemSettingsProps {
   api: MainClient
-  report: (error: unknown) => void
   view: DialogPresentation
 }
 
@@ -62,17 +61,17 @@ export function SystemSettings(props: SystemSettingsProps) {
         onCloseRequest={close.onCloseRequest}
         onToggle={(event) => {
           if (event.currentTarget.open) {
-            props.view.presented?.()
+            props.view.receipt?.presented()
           }
         }}
       >
-        <IntegrationSettings {...props} />
+        <IntegrationSettings api={props.api} />
       </DialogContent>
     </Dialog>
   )
 }
 
-function IntegrationSettings(props: SystemSettingsProps) {
+function IntegrationSettings(props: { api: MainClient }) {
   const { api } = props
   const state = createQuery((signal) => api.request(signal, 'system.get'))
   const current = createMemo((previous: typeof state.value) =>
@@ -253,12 +252,12 @@ function IntegrationSettings(props: SystemSettingsProps) {
                 <IntegrationError message={problem('protocol', snapshot().protocol)} />
               </Field>
               <DataLocation
-                api={api}
+                t={api.t}
                 value={snapshot().dataLocation}
                 error={problem('data', snapshot().dataLocation.portable)}
                 busy={busy()}
                 apply={(input) => void perform('data', () => api.call('system.portable', input))}
-                restart={() => void api.call('app.restart').catch(props.report)}
+                restart={() => void api.call('app.restart').catch(reportError)}
               />
             </FieldGroup>
           )}

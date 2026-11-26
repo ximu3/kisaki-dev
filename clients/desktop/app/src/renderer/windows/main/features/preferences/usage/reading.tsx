@@ -6,11 +6,9 @@ import { FieldAction, FieldGroup, FieldLegend } from '@kisaki3/desktop-ui/field'
 import { ColorInput, NumberInput } from '@kisaki3/desktop-ui/input'
 import { Select } from '@kisaki3/desktop-ui/select'
 import { Switch } from '@kisaki3/desktop-ui/switch'
-import type { Translate } from '@kisaki3/desktop-localization'
 import { FontSelector } from '../../../domain-ui/fonts/selector'
 import type { UserFontOption } from '../../../domain-ui/fonts/options'
-import { PreferenceField } from '../field'
-import type { PreferenceFields } from '../draft'
+import { PreferenceField, usePreferenceFields } from '../field'
 
 const pageChoices = [
   { key: 'arrangement', choices: ['single', 'spread'] },
@@ -29,14 +27,12 @@ const textNumbers = [
 
 export function ReadingFields(props: {
   medium: 'comic' | 'novel'
-  draft: PreferenceFields
-  t: Translate
   users: readonly UserFontOption[]
   system: readonly string[]
   loading: boolean
   manageFonts: () => void
 }) {
-  const { draft, t } = props
+  const { draft, t } = usePreferenceFields()
   const prefix = `usage.${props.medium}` as const
   const spacing = () => draft.read(`${prefix}.text.paragraphSpacing`) ?? 'document'
   const colors = () => draft.read(`${prefix}.colors`)

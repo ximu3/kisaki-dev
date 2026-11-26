@@ -1,27 +1,25 @@
 import { onCleanup, Show } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
 import type { ProxyCredentials } from '@kisaki3/desktop-contracts/network'
-import type { Translate } from '@kisaki3/desktop-localization'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { Field, FieldGroup, FieldLabel } from '@kisaki3/desktop-ui/field'
 import { Input } from '@kisaki3/desktop-ui/input'
 import { Select } from '@kisaki3/desktop-ui/select'
 import type { MainClient } from '../../../../infrastructure/api'
-import type { PreferenceDraft, PreferenceFields } from './draft'
-import { focusPreferenceValue, PreferenceField } from './field'
+import { focusPreferenceValue, PreferenceField, usePreferenceFields } from './field'
 import { QueryError } from '../../../../infrastructure/query/error'
 
 export const proxyCredentialsKey = 'network.credentials'
 
 export function NetworkFields(props: {
   api: MainClient
-  draft: PreferenceDraft
   forceDetails: boolean
   clearDetails: () => void
   configureCredentials: () => void
 }) {
-  const { api, draft } = props
+  const { api } = props
+  const { draft, t } = usePreferenceFields()
   const state = createQuery((signal) => api.request(signal, 'network.state'))
   const refresh = () => void state.reload()
   api.topics.addEventListener('network.changed', refresh)
@@ -45,15 +43,15 @@ export function NetworkFields(props: {
   return (
     <div class="space-y-5">
       <FieldGroup>
-        <PreferenceField field="network.mode" label={api.t('runtime.networkMode')}>
+        <PreferenceField field="network.mode" label={t('runtime.networkMode')}>
           <Select
             value={mode()}
             options={(['system', 'direct', 'manual'] as const).map((value) => ({
               value,
-              label: api.t(`runtime.choices.${value}`),
+              label: t(`runtime.choices.${value}`),
             }))}
-            emptyMessage={api.t('runtime.noOptions')}
-            invalidSelectionMessage={api.t('runtime.unavailable')}
+            emptyMessage={t('runtime.noOptions')}
+            invalidSelectionMessage={t('runtime.unavailable')}
             onValueChange={(value) => {
               if (value) {
                 draft.write('network.mode', value)
@@ -63,7 +61,7 @@ export function NetworkFields(props: {
           />
         </PreferenceField>
         <Show when={mode() === 'manual' || props.forceDetails}>
-          <PreferenceField field="network.endpoint" wide label={api.t('runtime.fields.endpoint')}>
+          <PreferenceField field="network.endpoint" wide label={t('runtime.fields.endpoint')}>
             <Input
               placeholder="http://proxy.example:8080"
               value={endpoint()}
@@ -73,8 +71,8 @@ export function NetworkFields(props: {
           <PreferenceField
             field="network.bypassRules"
             wide
-            label={api.t('runtime.fields.bypassRules')}
-            description={api.t('runtime.bypassRulesDescription')}
+            label={t('runtime.fields.bypassRules')}
+            description={t('runtime.bypassRulesDescription')}
           >
             <Input
               placeholder="*.example.com, 192.0.2.10"
@@ -84,12 +82,12 @@ export function NetworkFields(props: {
           </PreferenceField>
           <PreferenceField
             field={proxyCredentialsKey}
-            label={api.t('runtime.fields.credentials')}
+            label={t('runtime.fields.credentials')}
             valueClass="w-fit"
           >
             <Show when={draft.read(proxyCredentialsKey)}>
               <Button variant="outline" onClick={removeCredentials}>
-                {api.t('runtime.remove')}
+                {t('runtime.remove')}
               </Button>
             </Show>
             <Button
@@ -99,22 +97,22 @@ export function NetworkFields(props: {
               disabled={endpoint().toLowerCase().startsWith('socks5:')}
               onClick={props.configureCredentials}
             >
-              {api.t('actions.configure')}
+              {t('actions.configure')}
             </Button>
           </PreferenceField>
         </Show>
       </FieldGroup>
 
-      <QueryError error={state.error} retryLabel={api.t('runtime.retry')} retry={refresh} />
+      <QueryError error={state.error} retryLabel={t('runtime.retry')} retry={refresh} />
       <Show when={adoption()?.status === 'applying'}>
         <p role="status" class="m-0 text-sm text-muted-foreground">
-          {api.t('runtime.networkApplying')}
+          {t('runtime.networkApplying')}
         </p>
       </Show>
       <Show when={failure()}>
         {(error) => (
           <Alert tone="destructive" role="alert">
-            <strong>{api.t('runtime.networkFailed')}</strong>
+            <strong>{t('runtime.networkFailed')}</strong>
             <div>{error().message}</div>
           </Alert>
         )}
@@ -123,8 +121,8 @@ export function NetworkFields(props: {
   )
 }
 
-export function ProxyCredentialFields(props: { t: Translate; draft: PreferenceFields }) {
-  const { t, draft } = props
+export function ProxyCredentialFields() {
+  const { t, draft } = usePreferenceFields()
   const entered = () => {
     const value = draft.read(proxyCredentialsKey)
     return value && 'username' in value ? value : undefined

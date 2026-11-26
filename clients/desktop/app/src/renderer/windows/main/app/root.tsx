@@ -1,4 +1,4 @@
-import { onCleanup, Show } from 'solid-js'
+import { For, onCleanup } from 'solid-js'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 import type { MainClient } from '../../../infrastructure/api'
 import { createCloseConfirmation } from '../../../infrastructure/dialogs/closing'
@@ -9,7 +9,7 @@ import type { NavigationPage } from '../domain-ui/navigation/list'
 import { resolveDestination } from './navigation/destinations'
 import { createNavigation } from './navigation/navigate'
 import { createShellPreferences } from './preferences'
-import { AppShell } from './shell'
+import { NavigationRail } from './rail'
 
 export function MainWindow(props: { api: MainClient }) {
   const { api } = props
@@ -43,7 +43,7 @@ export function MainWindow(props: { api: MainClient }) {
       // The active form displays its rejection in its fixed feedback slot.
       void save().catch(() => {})
     } else if (
-      !navigation.current()?.open() &&
+      !navigation.dialogs().some((dialog) => dialog.open()) &&
       matchesShortcut(event, shortcuts?.['main.preferences'], api.platform)
     ) {
       event.preventDefault()
@@ -57,17 +57,30 @@ export function MainWindow(props: { api: MainClient }) {
   return (
     <WindowEditors value={editors}>
       <Notifications t={api.t} appearanceIssues={api.appearanceIssues} />
-      <AppShell
-        api={api}
-        pages={pages}
-        preferences={preferences.current()}
-        updatePreferences={preferences.update}
-        reorder={preferences.reorder}
-        open={open}
-      />
-      <Show when={navigation.current()} keyed>
-        {(view) => view.render()}
-      </Show>
+      <div class="flex h-dvh flex-col overflow-hidden">
+        <header
+          data-platform={api.platform}
+          class="titlebar flex shrink-0 items-center bg-chrome text-chrome-foreground select-none"
+        >
+          <img
+            src="kisaki-app://window/brand/icon.png"
+            alt="Kisaki"
+            class="titlebar-brand pointer-events-none rounded-md border border-border"
+          />
+        </header>
+
+        <div class="flex min-h-0 grow border-t border-border">
+          <NavigationRail
+            api={api}
+            pages={pages}
+            preferences={preferences.current()}
+            updatePreferences={preferences.update}
+            open={open}
+          />
+          <main class="min-w-0 grow overflow-hidden" />
+        </div>
+      </div>
+      <For each={navigation.dialogs()}>{(dialog) => dialog.render()}</For>
       <confirmation.Content />
     </WindowEditors>
   )

@@ -3,16 +3,16 @@ import type { TaskRunStatus } from '@kisaki3/desktop-contracts/tasks'
 import { SearchInput } from '@kisaki3/desktop-ui/input'
 import { Select } from '@kisaki3/desktop-ui/select'
 import { ToolbarRow } from '@kisaki3/desktop-ui/toolbar'
-import type { MainClient } from '../../../../infrastructure/api'
+import type { Translate } from '@kisaki3/desktop-localization'
 import type { TaskQueryState } from './query'
 import { taskTypeLabel } from './presentation'
 
 export function TaskFilters(props: {
-  api: MainClient
+  t: Translate
   query: TaskQueryState
   types: readonly string[] | undefined
 }) {
-  const { api } = props
+  const { t } = props
   const query = () => props.query
   const types = () => {
     const options = props.types ?? []
@@ -25,15 +25,15 @@ export function TaskFilters(props: {
       <SearchInput
         size="sm"
         class="min-w-28 grow basis-36 max-w-xl"
-        aria-label={api.t('runtime.searchTasks')}
-        placeholder={api.t('runtime.searchTasks')}
-        clearLabel={api.t('runtime.clearSearch')}
+        aria-label={t('runtime.searchTasks')}
+        placeholder={t('runtime.searchTasks')}
+        clearLabel={t('runtime.clearSearch')}
         value={query().search()}
         onValueChange={(value) => query().changeSearch(value)}
       />
       <Show when={query().filtered() && query().total() !== undefined}>
         <span class="text-xs text-muted-foreground">
-          {api.t('runtime.taskCount', { count: query().total()! })}
+          {t('runtime.taskCount', { count: query().total()! })}
         </span>
       </Show>
       <div class="ms-auto flex max-w-full flex-wrap justify-end gap-1.5">
@@ -41,30 +41,30 @@ export function TaskFilters(props: {
           size="sm"
           class="w-32 max-w-full"
           disabled={!props.types}
-          aria-label={api.t('runtime.type')}
+          aria-label={t('runtime.type')}
           value={query().type() ? 'type:' + query().type() : 'all'}
           options={[
-            { value: 'all', label: api.t('runtime.allTypes') },
+            { value: 'all', label: t('runtime.allTypes') },
             ...types().map((value) => ({
               value: 'type:' + value,
-              label: taskTypeLabel(api.t, value),
+              label: taskTypeLabel(t, value),
             })),
           ]}
-          emptyMessage={api.t('runtime.noOptions')}
-          invalidSelectionMessage={api.t('runtime.unavailable')}
+          emptyMessage={t('runtime.noOptions')}
+          invalidSelectionMessage={t('runtime.unavailable')}
           onValueChange={(value) => query().changeType(value === 'all' ? '' : value.slice(5))}
         />
         <Select<TaskRunStatus | 'all'>
           size="sm"
           class="w-32 max-w-full"
-          aria-label={api.t('runtime.filter')}
+          aria-label={t('runtime.filter')}
           value={query().status() || 'all'}
           options={[
-            { value: 'all', label: api.t('runtime.allStatuses') },
-            ...query().statuses.map((value) => ({ value, label: api.t(`tasks.${value}`) })),
+            { value: 'all', label: t('runtime.allStatuses') },
+            ...query().statuses.map((value) => ({ value, label: t(`tasks.${value}`) })),
           ]}
-          emptyMessage={api.t('runtime.noOptions')}
-          invalidSelectionMessage={api.t('runtime.unavailable')}
+          emptyMessage={t('runtime.noOptions')}
+          invalidSelectionMessage={t('runtime.unavailable')}
           onValueChange={(value) => query().changeStatus(value === 'all' ? '' : value)}
         />
       </div>

@@ -9,6 +9,11 @@ import {
   type ParentProps,
 } from 'solid-js'
 import { createQuery } from '../../../../infrastructure/query'
+import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import {
+  observeDialogTarget,
+  type DialogReceipt,
+} from '../../../../infrastructure/dialogs/presentation'
 import type { JsonValue } from '@kisaki3/desktop-contracts/json'
 import { isTaskTerminal, type TaskRun } from '@kisaki3/desktop-contracts/tasks'
 import { Alert } from '@kisaki3/desktop-ui/alert'
@@ -29,7 +34,7 @@ import { TaskStatus, TaskTypeIcon, taskDuration, taskTypeLabel } from './present
 export interface TaskSelection {
   id: string
   initial?: TaskRun
-  presented?: () => void
+  receipt?: DialogReceipt
 }
 
 export function TaskDetails(props: {
@@ -89,14 +94,14 @@ function TaskDetailView(props: {
   )
   deferDialogUntil(() => !detail.pending)
   const record = () => (detail.error ? undefined : detail.value)
-  createEffect(
-    () => props.visible && !!record(),
-    (shown) => {
-      if (shown) {
-        selection.presented?.()
-      }
-    },
-  )
+  observeDialogTarget(selection.receipt, () => ({
+    presented: props.visible && !detail.pending && !!record(),
+    error:
+      detail.error ??
+      (detail.value === null && !detail.pending
+        ? new DesktopError('NotFound', api.t('runtime.unavailable'))
+        : undefined),
+  }))
 
   return (
     <>

@@ -1,18 +1,48 @@
-import { createSignal, onCleanup, useContext } from 'solid-js'
+import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import { createEffect, createSignal, onCleanup, useContext } from 'solid-js'
 import { reportError } from '../notifications'
 import { WindowEditors } from './editors'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 
+export interface DialogReceipt {
+  presented: () => void
+  failed: (error: unknown) => void
+}
+
 export interface DialogPresentation {
   open: () => boolean
   close: () => void
-  presented?: () => void
+  receipt?: DialogReceipt
 }
 
 export interface NavigableDialog extends DialogPresentation {
-  presented: () => void
-  failed: (error: unknown) => void
+  receipt: DialogReceipt
   onNavigate: (handler: (target: NativeViewTarget, signal: AbortSignal) => Promise<boolean>) => void
+}
+
+export function observeDialogTarget(
+  receipt: DialogReceipt | undefined,
+  read: () => { presented: boolean; error: unknown },
+) {
+  if (!receipt) {
+    return
+  }
+  let waiting = true
+  createEffect(read, ({ presented, error }) => {
+    if (waiting && (presented || error !== undefined)) {
+      waiting = false
+      if (error !== undefined) {
+        receipt.failed(error)
+      } else {
+        receipt.presented()
+      }
+    }
+  })
+  onCleanup(() => {
+    if (waiting) {
+      receipt.failed(new DesktopError('Cancelled', 'The requested detail was closed'))
+    }
+  })
 }
 
 export function createLocalDialog<T>(load: () => Promise<T>, ownerOpen: () => boolean) {

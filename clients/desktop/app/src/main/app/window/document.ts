@@ -41,8 +41,7 @@ interface DocumentOptions {
 
   isAccepting: () => boolean
   trackCall: (call: Promise<unknown>) => void
-  onNavigationReady: (navigate: (target: NativeViewTarget) => Promise<void>) => Promise<void>
-  onReady: () => void
+  onReady: (navigate: (target: NativeViewTarget) => Promise<void>) => void
   onStartupError: (cause: unknown) => void
 }
 
@@ -58,7 +57,6 @@ export function openWindowDocument({
   restart,
   isAccepting,
   trackCall,
-  onNavigationReady,
   onReady,
   onStartupError,
 }: DocumentOptions) {
@@ -94,15 +92,14 @@ export function openWindowDocument({
       : undefined
 
   const commonMethods: WindowMethods<keyof WindowApi> = {
-    'window.ready': windowMethod('read', async () => {
+    'window.ready': windowMethod('read', () => {
       void application.log.record('window-ready')
-      await onNavigationReady(async (target) => {
+      onReady(async (target) => {
         await rpc.request('window.navigate', [rpcData(target)])
-        show()
+        if (!revoked) {
+          show()
+        }
       })
-      if (!revoked) {
-        onReady()
-      }
     }),
     'window.state': windowMethod('read', () =>
       rpcData({

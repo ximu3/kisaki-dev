@@ -9,8 +9,7 @@ import { Select } from '@kisaki3/desktop-ui/select'
 import type { MainClient } from '../../../../infrastructure/api'
 import { ThemeSelector } from '../../domain-ui/themes/selector'
 import { catalogSelection } from '../../domain-ui/catalog-selection'
-import type { PreferenceDraft } from './draft'
-import { PreferenceField } from './field'
+import { PreferenceField, usePreferenceFields } from './field'
 import { QueryError } from '../../../../infrastructure/query/error'
 
 function createCatalog<T>(
@@ -25,17 +24,18 @@ function createCatalog<T>(
   return { items, refresh }
 }
 
-export function ThemeField(props: { api: MainClient; draft: PreferenceDraft; manage: () => void }) {
-  const { api, draft } = props
+export function ThemeField(props: { api: MainClient; manage: () => void }) {
+  const { api } = props
+  const { draft, t } = usePreferenceFields()
   const { items, refresh } = createCatalog(api, 'themes.changed', (signal) =>
     api.request(signal, 'themes.list'),
   )
 
   return (
     <>
-      <PreferenceField field="appearance.theme" label={api.t('runtime.fields.theme')}>
+      <PreferenceField field="appearance.theme" label={t('runtime.fields.theme')}>
         <ThemeSelector
-          t={api.t}
+          t={t}
           value={draft.read('appearance.theme')}
           themes={items.value}
           loading={items.pending}
@@ -45,21 +45,22 @@ export function ThemeField(props: { api: MainClient; draft: PreferenceDraft; man
         <Tooltip>
           <TooltipTrigger
             as={FieldAction}
-            aria-label={api.t('runtime.manageThemes')}
+            aria-label={t('runtime.manageThemes')}
             onClick={props.manage}
           >
             <Icon path={mdiTuneVariant} />
           </TooltipTrigger>
-          <TooltipContent>{api.t('runtime.manage')}</TooltipContent>
+          <TooltipContent>{t('runtime.manage')}</TooltipContent>
         </Tooltip>
       </PreferenceField>
-      <QueryError retryLabel={api.t('runtime.retry')} error={items.error} retry={refresh} />
+      <QueryError retryLabel={t('runtime.retry')} error={items.error} retry={refresh} />
     </>
   )
 }
 
-export function TranslationField(props: { api: MainClient; draft: PreferenceDraft }) {
-  const { api, draft } = props
+export function TranslationField(props: { api: MainClient }) {
+  const { api } = props
+  const { draft, t } = usePreferenceFields()
   const { items, refresh } = createCatalog(api, 'translations.changed', (signal) =>
     api.request(signal, 'translations.list'),
   )
@@ -67,21 +68,21 @@ export function TranslationField(props: { api: MainClient; draft: PreferenceDraf
     catalogSelection(
       items.value?.map((item) => ({ value: catalogKey(item.ref), label: item.name })),
       draft.read('general.uiTranslation'),
-      api.t,
+      t,
     ),
   )
 
   return (
     <>
-      <PreferenceField field="general.uiTranslation" label={api.t('runtime.fields.uiTranslation')}>
+      <PreferenceField field="general.uiTranslation" label={t('runtime.fields.uiTranslation')}>
         <Select
           value={selection().value}
           options={selection().options}
-          placeholder={items.pending ? api.t('runtime.loading') : ''}
+          placeholder={items.pending ? t('runtime.loading') : ''}
           aria-busy={items.pending ? 'true' : undefined}
           disabled={items.pending || !!items.error}
-          emptyMessage={api.t('runtime.noOptions')}
-          invalidSelectionMessage={api.t('runtime.unavailable')}
+          emptyMessage={t('runtime.noOptions')}
+          invalidSelectionMessage={t('runtime.unavailable')}
           onValueChange={(key) => {
             const item = items.value?.find((entry) => catalogKey(entry.ref) === key)
             if (item) {
@@ -90,7 +91,7 @@ export function TranslationField(props: { api: MainClient; draft: PreferenceDraf
           }}
         />
       </PreferenceField>
-      <QueryError retryLabel={api.t('runtime.retry')} error={items.error} retry={refresh} />
+      <QueryError retryLabel={t('runtime.retry')} error={items.error} retry={refresh} />
     </>
   )
 }

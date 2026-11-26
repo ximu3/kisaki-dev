@@ -45,6 +45,52 @@ test('a second launch reveals the hidden draft before navigating to its destinat
   await expect(page.getByRole('dialog', { name: 'Task center', exact: true })).toBeVisible()
 })
 
+test('a superseded navigation retains the task center and its selected tab', async ({
+  desktop,
+  profile,
+}) => {
+  const page = await desktop.firstWindow()
+  await page.getByRole('button', { name: 'Task center' }).click()
+  const finished = page.getByRole('tab', { name: 'Finished', exact: true })
+  await finished.click()
+
+  function open(target: string) {
+    return promisify(execFile)(electronExecutable(), [
+      join(buildDirectory(hostTarget()), 'main', 'entry.js'),
+      '--profile=' + profile,
+      'kisaki-dev://view/' + target,
+    ])
+  }
+
+  const [waitingDialog] = await Promise.all([
+    page.evaluate(
+      () =>
+        new Promise<string>((resolve) => {
+          function hold(event: ToggleEvent) {
+            if (event.target instanceof HTMLDialogElement && event.newState === 'open') {
+              event.preventDefault()
+              document.removeEventListener('beforetoggle', hold, true)
+              resolve(event.target.id)
+            }
+          }
+          document.addEventListener('beforetoggle', hold, true)
+        }),
+    ),
+    open('preferences'),
+  ])
+  await open('tasks')
+  await expect
+    .poll(() => page.evaluate((id) => !!document.getElementById(id), waitingDialog))
+    .toBe(false)
+  await expect(finished).toHaveAttribute('aria-selected', 'true')
+  await expect(finished).toBeFocused()
+
+  await open('preferences')
+  const preferences = page.getByRole('dialog', { name: 'Preferences', exact: true })
+  await preferences.getByRole('button', { name: 'Close', exact: true }).click()
+  await expect(page.getByRole('button', { name: 'Task center' })).toBeFocused()
+})
+
 test.describe('disposable OS account', () => {
   test.skip(
     process.platform === 'darwin' || process.env.RUNNER_ENVIRONMENT !== 'github-hosted',

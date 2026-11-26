@@ -16,6 +16,10 @@ import type { PreferenceFields } from './draft'
 
 export const PreferenceFieldsContext = createContext<{ draft: PreferenceFields; t: Translate }>()
 
+export function usePreferenceFields() {
+  return useContext(PreferenceFieldsContext)!
+}
+
 export function focusPreferenceField(panel: HTMLElement, key: string) {
   const field = panel.querySelector<HTMLElement>('[data-field-key="' + CSS.escape(key) + '"]')
   if (field) {
@@ -48,7 +52,7 @@ export function PreferenceField(
     valueClass?: string
   }>,
 ) {
-  const { draft, t } = useContext(PreferenceFieldsContext)!
+  const { draft, t } = usePreferenceFields()
   let field!: HTMLDivElement
   const resetLabel = () => t('runtime.resetField')
   const valueWidth = () => props.valueClass ?? (props.wide ? 'w-full' : 'w-56')
