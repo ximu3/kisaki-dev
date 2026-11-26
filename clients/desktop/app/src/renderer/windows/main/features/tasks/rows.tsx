@@ -11,11 +11,12 @@ import {
   type Virtualizer,
 } from '@kisaki3/desktop-ui/virtualization'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@kisaki3/desktop-ui/tooltip'
+import type { Translate } from '@kisaki3/desktop-localization'
+import { reportError } from '../../../../infrastructure/notifications'
 import type { MainClient } from '../../../../infrastructure/api'
 import { TaskStatus, TaskTypeIcon, taskDuration } from './presentation'
 
 interface RowProps {
-  api: MainClient
   row: TaskRunSummary
   open: () => void
 }
@@ -28,7 +29,6 @@ export function TaskRow(props: {
   row: TaskRunSummary | undefined
   open: (id: string) => void
   remove: (row: TaskRunSummary) => void
-  report: (error: unknown) => void
 }) {
   const layout = createVirtualRow(
     () => props.virtualizer,
@@ -52,15 +52,10 @@ export function TaskRow(props: {
       >
         {(row) =>
           props.active ? (
-            <ActiveCells
-              api={props.api}
-              row={row()}
-              open={() => props.open(row().id)}
-              report={props.report}
-            />
+            <ActiveCells api={props.api} row={row()} open={() => props.open(row().id)} />
           ) : (
             <FinishedCells
-              api={props.api}
+              t={props.api.t}
               row={row()}
               open={() => props.open(row().id)}
               remove={() => props.remove(row())}
@@ -103,7 +98,7 @@ function TaskTitle(props: { title: string; type: string }) {
   )
 }
 
-function ActiveCells(props: RowProps & { report: (error: unknown) => void }) {
+function ActiveCells(props: RowProps & { api: MainClient }) {
   const { api } = props
   const [state, setState] = createSignal<TaskState>()
   const ref = { taskRunId: props.row.id }
@@ -117,7 +112,7 @@ function ActiveCells(props: RowProps & { report: (error: unknown) => void }) {
 
   api.topics.addEventListener('tasks.state', update)
   const hold = api.call('tasks.observe', ref)
-  void hold.catch(props.report)
+  void hold.catch(reportError)
   onCleanup(() => {
     api.topics.removeEventListener('tasks.state', update)
     void hold
@@ -125,11 +120,11 @@ function ActiveCells(props: RowProps & { report: (error: unknown) => void }) {
         (id) => api.call('resources.release', id),
         () => {},
       )
-      .catch(props.report)
+      .catch(reportError)
   })
 
   const control = (method: 'tasks.pause' | 'tasks.resume' | 'tasks.cancel') =>
-    void api.call(method, ref).catch(props.report)
+    void api.call(method, ref).catch(reportError)
   const quantitative = () => {
     const progress = state()?.progress
     return progress && 'completed' in progress ? progress : undefined
@@ -190,7 +185,7 @@ function ActiveCells(props: RowProps & { report: (error: unknown) => void }) {
   )
 }
 
-function FinishedCells(props: RowProps & { remove: () => void }) {
+function FinishedCells(props: RowProps & { t: Translate; remove: () => void }) {
   const locale = () => document.documentElement.lang
   return (
     <>
@@ -201,17 +196,17 @@ function FinishedCells(props: RowProps & { remove: () => void }) {
         {taskDuration(props.row, locale()) ?? '—'}
       </TableCell>
       <TableCell>
-        <TaskStatus t={props.api.t} status={props.row.status} />
+        <TaskStatus t={props.t} status={props.row.status} />
       </TableCell>
       <TableCell align="end">
         <div class="flex items-center justify-end gap-0.5">
           <TaskAction
-            label={props.api.t('runtime.detail')}
+            label={props.t('runtime.detail')}
             icon={<Icon path={mdiInformationOutline} />}
             run={props.open}
           />
           <TaskAction
-            label={props.api.t('runtime.deleteTaskAction')}
+            label={props.t('runtime.deleteTaskAction')}
             icon={<Icon path={mdiTrashCanOutline} />}
             run={props.remove}
             destructive

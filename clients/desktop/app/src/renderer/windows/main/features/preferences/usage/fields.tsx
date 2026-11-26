@@ -6,21 +6,14 @@ import { FieldGroup, FieldLegend } from '@kisaki3/desktop-ui/field'
 import { Input, NumberInput } from '@kisaki3/desktop-ui/input'
 import { List } from '@kisaki3/desktop-ui/list'
 import { Switch } from '@kisaki3/desktop-ui/switch'
-import type { Translate } from '@kisaki3/desktop-localization'
-import type { PreferenceFields } from '../draft'
-import { PreferenceField } from '../field'
+import { PreferenceField, usePreferenceFields } from '../field'
 
 export const usageMedia = ['game', 'anime', 'comic', 'novel'] as const
 
 export type UsageMedium = (typeof usageMedia)[number]
 
-interface UsageFieldsProps {
-  t: Translate
-  draft: PreferenceFields
-}
-
-export function UsageFields(props: UsageFieldsProps & { open: (medium: UsageMedium) => void }) {
-  const { t, draft } = props
+export function UsageFields(props: { open: (medium: UsageMedium) => void }) {
+  const { t, draft } = usePreferenceFields()
 
   return (
     <div class="grid gap-5">
@@ -65,8 +58,8 @@ export function UsageFields(props: UsageFieldsProps & { open: (medium: UsageMedi
   )
 }
 
-export function GameUsageFields(props: UsageFieldsProps) {
-  const { t, draft } = props
+export function GameUsageFields() {
+  const { t, draft } = usePreferenceFields()
 
   return (
     <FieldGroup>
@@ -87,8 +80,8 @@ export function GameUsageFields(props: UsageFieldsProps) {
   )
 }
 
-export function AnimeUsageFields(props: UsageFieldsProps) {
-  const { t, draft } = props
+export function AnimeUsageFields() {
+  const { t, draft } = usePreferenceFields()
 
   function multiplier(name: 'playbackSpeed' | 'subtitleScale') {
     const key = `usage.anime.${name}` as const

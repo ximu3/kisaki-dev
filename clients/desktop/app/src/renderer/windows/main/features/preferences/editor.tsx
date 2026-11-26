@@ -140,9 +140,7 @@ function PreferenceForm(
       located,
       medium,
       title: () => api.t(`runtime.usageTitles.${medium}`),
-      fields: () => (
-        <UsageEditorFields api={api} medium={medium} draft={stage} manageFonts={fonts.show} />
-      ),
+      fields: () => <UsageEditorFields api={api} medium={medium} manageFonts={fonts.show} />,
     })
   }
 
@@ -152,7 +150,7 @@ function PreferenceForm(
     setStagedEdit({
       draft: stage,
       title: () => api.t('runtime.fields.credentials'),
-      fields: () => <ProxyCredentialFields t={api.t} draft={stage} />,
+      fields: () => <ProxyCredentialFields />,
     })
   }
 
@@ -224,12 +222,12 @@ function PreferenceForm(
     key: props.field,
     complete(found) {
       if (found) {
-        props.view.presented()
+        props.view.receipt.presented()
       } else {
-        props.view.failed(new DesktopError('NotFound', api.t('runtime.unavailable')))
+        props.view.receipt.failed(new DesktopError('NotFound', api.t('runtime.unavailable')))
       }
     },
-    failed: props.view.failed,
+    failed: props.view.receipt.failed,
   })
   createEffect(
     () => [requested(), props.visible, draft.ready(), draft.error()] as const,
@@ -303,22 +301,21 @@ function PreferenceForm(
   })
 
   const fields: Record<Section, () => JSX.Element> = {
-    general: () => <GeneralFields api={api} draft={draft} />,
-    appearance: () => <AppearanceFields api={api} draft={draft} manage={themes.show} />,
-    navigation: () => <NavigationFields api={api} draft={draft} pages={props.pages} />,
-    library: () => <LibraryFields api={api} draft={draft} />,
-    usage: () => <UsageFields t={api.t} draft={draft} open={editUsage} />,
-    shortcuts: () => <ShortcutFields draft={draft} t={api.t} platform={api.platform} />,
+    general: () => <GeneralFields api={api} />,
+    appearance: () => <AppearanceFields api={api} manage={themes.show} />,
+    navigation: () => <NavigationFields pages={props.pages} />,
+    library: () => <LibraryFields />,
+    usage: () => <UsageFields open={editUsage} />,
+    shortcuts: () => <ShortcutFields platform={api.platform} />,
     network: () => (
       <NetworkFields
         api={api}
-        draft={draft}
         forceDetails={showProxyDetails()}
         clearDetails={() => setShowProxyDetails(false)}
         configureCredentials={editProxyCredentials}
       />
     ),
-    updates: () => <UpdateFields api={api} draft={draft} />,
+    updates: () => <UpdateFields />,
   }
 
   return (

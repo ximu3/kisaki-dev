@@ -14,6 +14,7 @@ import {
 } from '@kisaki3/desktop-ui/dialog'
 import { Spinner } from '@kisaki3/desktop-ui/spinner'
 import { toast } from '@kisaki3/desktop-ui/toast'
+import { reportError } from '../../../infrastructure/notifications'
 import type { MainClient } from '../../../infrastructure/api'
 import {
   useDialogClose,
@@ -23,7 +24,6 @@ import { QueryError } from '../../../infrastructure/query/error'
 
 interface AboutProps {
   api: MainClient
-  report: (error: unknown) => void
   view: DialogPresentation
 }
 
@@ -38,17 +38,17 @@ export function About(props: AboutProps) {
         onCloseRequest={close.onCloseRequest}
         onToggle={(event) => {
           if (event.currentTarget.open) {
-            props.view.presented?.()
+            props.view.receipt?.presented()
           }
         }}
       >
-        <AboutContent {...props} />
+        <AboutContent api={props.api} />
       </DialogContent>
     </Dialog>
   )
 }
 
-function AboutContent(props: AboutProps) {
+function AboutContent(props: { api: MainClient }) {
   const { api } = props
   const info = createQuery((signal) => api.request(signal, 'app.environment'))
   deferDialogUntil(() => !!info.error || !!info.value)
@@ -99,7 +99,7 @@ function AboutContent(props: AboutProps) {
         <Button
           variant="outline"
           disabled={!!info.error || info.pending}
-          onClick={() => void copy().catch(props.report)}
+          onClick={() => void copy().catch(reportError)}
         >
           <Icon path={mdiContentCopy} />
           {api.t('runtime.copyEnvironment')}

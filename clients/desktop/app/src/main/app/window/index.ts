@@ -15,7 +15,7 @@ const baseTitlebarHeight = 31.5
 interface WindowHost {
   close(): void
   restart(this: void): void
-  ready(navigate: (target: NativeViewTarget) => Promise<void>): Promise<void>
+  ready(navigate: (target: NativeViewTarget) => Promise<void>): void
   disconnected(): void
   unavailable(error: Error): void
 }
@@ -234,9 +234,9 @@ export async function createWindow(
       restart: host.restart,
       isAccepting: () => accepting,
       trackCall,
-      onNavigationReady: (navigate) => host.ready(navigate),
-      onReady: () => {
+      onReady: (navigate) => {
         if (document === endpoint) {
+          host.ready(navigate)
           clearTimeout(startupTimer)
           started = true
           firstReady.resolve('ready')

@@ -3,7 +3,6 @@ import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 import type { MainClient } from '../../../../infrastructure/api'
 import type { NavigationPage } from '../../domain-ui/navigation/list'
-import { reportError } from '../../../../infrastructure/notifications'
 import type { Destination } from './navigate'
 
 export async function resolveDestination(
@@ -15,7 +14,7 @@ export async function resolveDestination(
   if (target.type === 'tasks') {
     const { TaskCenter, readTaskTarget } = await import('../../features/tasks/center')
     const task = await readTaskTarget(api, target.runId, signal)
-    return (view) => createComponent(TaskCenter, { api, task, report: reportError, view })
+    return (view) => createComponent(TaskCenter, { api, task, view })
   }
 
   if (target.type === 'preferences') {
@@ -37,12 +36,12 @@ export async function resolveDestination(
 
   if (target.type === 'systemIntegration') {
     const { SystemSettings } = await import('../../features/system/settings')
-    return (view) => createComponent(SystemSettings, { api, report: reportError, view })
+    return (view) => createComponent(SystemSettings, { api, view })
   }
 
   if (target.type === 'about') {
     const { About } = await import('../../features/about')
-    return (view) => createComponent(About, { api, report: reportError, view })
+    return (view) => createComponent(About, { api, view })
   }
 
   throw new DesktopError('NotFound', api.t('runtime.unavailable'))

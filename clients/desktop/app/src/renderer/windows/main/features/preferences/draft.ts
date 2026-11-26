@@ -414,5 +414,5 @@ export function createPreferenceDraft(api: MainClient) {
   }
 }
 
-export type PreferenceDraft = ReturnType<typeof createPreferenceDraft>
+type PreferenceDraft = ReturnType<typeof createPreferenceDraft>
 export type PreferenceStage = ReturnType<PreferenceDraft['stage']>

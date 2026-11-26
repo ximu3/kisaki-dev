@@ -62,7 +62,7 @@ export function Themes(props: ThemesProps) {
           const open = event.currentTarget.open
           setVisible(open)
           if (open && !props.target) {
-            props.view.presented?.()
+            props.view.receipt?.presented()
           }
         }}
       >
@@ -321,7 +321,7 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
       <ThemeInspection
         api={api}
         target={props.visible ? preview() : undefined}
-        presented={props.view.presented}
+        receipt={props.target ? props.view.receipt : undefined}
         name={previewName()}
         close={() => setPreview(undefined)}
       />

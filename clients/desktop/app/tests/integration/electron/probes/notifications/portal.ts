@@ -4,7 +4,7 @@ import { sessionBus, toPlain, Variant } from 'dbus-native'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 import { createNotifications } from '../../../../../src/main/infrastructure/notifications'
 import { record } from './progress'
-import { createActivation } from '../../../../../src/main/app/activation'
+import { createActivation, type ActivationRequest } from '../../../../../src/main/app/activation'
 
 const appId = 'me.kisaki.dev'
 
@@ -127,12 +127,16 @@ export async function receivePortalAction() {
       await service.ready(true)
       record('Receiver ready, waiting for the saved action')
       await received.promise
-      await activation.ready(async (request) => {
-        assert.equal(request.type, 'native')
-        assert.equal(delivered, undefined, 'The action must be delivered once')
-        delivered = request.target
+      const delivery = Promise.withResolvers<ActivationRequest>()
+      let count = 0
+      activation.ready(async (request) => {
+        count++
+        delivery.resolve(request)
       })
-      assert.ok(delivered)
+      const request = await delivery.promise
+      assert.equal(count, 1, 'The action must be delivered once')
+      assert.equal(request.type, 'native')
+      delivered = request.target
     } finally {
       await service.close()
     }

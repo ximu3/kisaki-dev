@@ -9,6 +9,7 @@ export function createActivation(report: (cause: unknown) => void) {
   const queued = new Map<string, { request: ActivationRequest; timer: NodeJS.Timeout }>()
   let deliver: ((request: ActivationRequest) => Promise<void>) | undefined
   let accepting = true
+  let requested = false
 
   function clearPending() {
     for (const { timer } of queued.values()) {
@@ -27,6 +28,7 @@ export function createActivation(report: (cause: unknown) => void) {
         return
       }
 
+      requested = true
       if (deliver) {
         void deliver(request).catch(report)
         return
@@ -57,11 +59,15 @@ export function createActivation(report: (cause: unknown) => void) {
       timer.unref()
       queued.set(key, { request, timer })
     } catch (error) {
+      requested = true
       report(error)
     }
   }
 
   return {
+    get requested() {
+      return requested
+    },
     receive(this: void, url: string) {
       receive(() => parse(url))
     },
@@ -75,11 +81,13 @@ export function createActivation(report: (cause: unknown) => void) {
       })
     },
 
-    async ready(handler: (request: ActivationRequest) => Promise<void>) {
+    ready(handler: (request: ActivationRequest) => Promise<void>) {
       deliver = handler
       const pending = [...queued.values()]
       clearPending()
-      await Promise.all(pending.map(({ request }) => handler(request).catch(report)))
+      for (const { request } of pending) {
+        void handler(request).catch(report)
+      }
     },
     disconnected(this: void) {
       deliver = undefined

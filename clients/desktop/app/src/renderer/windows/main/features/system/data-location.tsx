@@ -5,17 +5,17 @@ import { Select } from '@kisaki3/desktop-ui/select'
 import { Switch } from '@kisaki3/desktop-ui/switch'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { Alert } from '@kisaki3/desktop-ui/alert'
-import type { MainClient } from '../../../../infrastructure/api'
+import type { Translate } from '@kisaki3/desktop-localization'
 
 export function DataLocation(props: {
-  api: MainClient
+  t: Translate
   value: DataLocationState
   error: string | undefined
   busy: boolean
   apply: (change: DataModeChange) => void
   restart: () => void
 }) {
-  const { api } = props
+  const { t } = props
   const [target, setTarget] = createSignal<DataModeChange['target']>('existing')
   const portable = () => {
     const item = props.value.portable
@@ -25,11 +25,11 @@ export function DataLocation(props: {
   return (
     <>
       <Field>
-        <FieldLabel>{api.t('runtime.data')}</FieldLabel>
+        <FieldLabel>{t('runtime.data')}</FieldLabel>
         <FieldDescription class="wrap-anywhere">
           <Show when={portable()}>
             <span class="block">
-              {api.t(
+              {t(
                 props.value.current.mode === 'portable'
                   ? 'runtime.portableMode'
                   : 'runtime.normalMode',
@@ -48,7 +48,7 @@ export function DataLocation(props: {
           return (
             <>
               <Field orientation="responsive">
-                <FieldLabel>{api.t('runtime.destination')}</FieldLabel>
+                <FieldLabel>{t('runtime.destination')}</FieldLabel>
                 <FieldDescription class="wrap-anywhere">
                   {nextPortable() ? props.value.normalPath : item().path}
                 </FieldDescription>
@@ -58,18 +58,18 @@ export function DataLocation(props: {
                     disabled={props.busy}
                     value={target()}
                     options={[
-                      { value: 'existing', label: api.t('runtime.existing') },
-                      { value: 'empty', label: api.t('runtime.emptyDirectory') },
+                      { value: 'existing', label: t('runtime.existing') },
+                      { value: 'empty', label: t('runtime.emptyDirectory') },
                     ]}
-                    emptyMessage={api.t('runtime.noOptions')}
-                    invalidSelectionMessage={api.t('runtime.unavailable')}
+                    emptyMessage={t('runtime.noOptions')}
+                    invalidSelectionMessage={t('runtime.unavailable')}
                     onValueChange={(value) => setTarget(value || 'existing')}
                   />
                 </FieldContent>
               </Field>
 
               <Field orientation="responsive">
-                <FieldLabel>{api.t('runtime.portable')}</FieldLabel>
+                <FieldLabel>{t('runtime.portable')}</FieldLabel>
                 <FieldContent>
                   <Switch
                     checked={nextPortable()}
@@ -83,13 +83,13 @@ export function DataLocation(props: {
 
               <Show when={pending()}>
                 <Field orientation="responsive">
-                  <FieldLabel>{api.t('runtime.useAtStartup')}</FieldLabel>
+                  <FieldLabel>{t('runtime.useAtStartup')}</FieldLabel>
                   <FieldDescription role="status" class="wrap-anywhere">
                     {nextPortable() ? item().path : props.value.normalPath}
                   </FieldDescription>
                   <FieldContent>
                     <Button variant="outline" disabled={props.busy} onClick={props.restart}>
-                      {api.t('runtime.restartApp')}
+                      {t('runtime.restartApp')}
                     </Button>
                   </FieldContent>
                 </Field>

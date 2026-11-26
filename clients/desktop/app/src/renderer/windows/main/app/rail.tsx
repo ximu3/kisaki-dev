@@ -21,7 +21,6 @@ export function NavigationRail(props: {
   selectPage?: ((ref: PageRef) => Promise<boolean>) | undefined
   preferences: PreferencesSnapshot | undefined
   updatePreferences: (input: PreferencesUpdate) => Promise<void>
-  reorder: (order: readonly PageRef[]) => Promise<void>
   open: (target: NativeViewTarget) => Promise<boolean>
 }) {
   const { api } = props
@@ -50,6 +49,14 @@ export function NavigationRail(props: {
     const saved = props.preferences?.navigation.order
     return saved?.status === 'ready' ? saved.value : []
   }
+  function saveOrder(order: readonly PageRef[]) {
+    const saved = props.preferences?.navigation.order
+    return props.updatePreferences({
+      changes: { navigation: { order } },
+      ...(saved?.status === 'ready' && { expected: { navigation: { order: saved.value } } }),
+    })
+  }
+
   const pages = createMemo(() => arrangePages(props.pages, order()).visible)
   const limit = () => props.preferences?.navigation.visibleLimit ?? pages().length
   const pinned = () => pages().slice(0, limit())
@@ -113,7 +120,7 @@ export function NavigationRail(props: {
                 visibleLimit={limit()}
                 current={props.current}
                 open={(page) => void select(page)}
-                change={props.reorder}
+                change={saveOrder}
               />
             </PopoverContent>
           </Popover>
@@ -145,8 +152,9 @@ export function NavigationRail(props: {
         </Tooltip>
 
         <ApplicationMenu
-          api={api}
-          preferences={props.preferences}
+          t={api.t}
+          mode={props.preferences?.appearance.mode}
+          showSensitive={props.preferences?.library.showNsfw}
           updatePreferences={props.updatePreferences}
           open={props.open}
         />

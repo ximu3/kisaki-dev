@@ -20,7 +20,7 @@ import { Toolbar, ToolbarRow } from '@kisaki3/desktop-ui/toolbar'
 import { createConfirmation } from '../../../../infrastructure/dialogs/confirmation'
 import { waitForDecision } from '../../../../infrastructure/dialogs/closing'
 import type { NavigableDialog } from '../../../../infrastructure/dialogs/presentation'
-import { errorMessage } from '../../../../infrastructure/notifications'
+import { errorMessage, reportError } from '../../../../infrastructure/notifications'
 import type { MainClient } from '../../../../infrastructure/api'
 import { TaskTable } from './table'
 import { TaskDetails, type TaskSelection } from './details'
@@ -60,7 +60,6 @@ export async function readTaskTarget(
 interface TaskCenterProps {
   api: MainClient
   task: TaskRun | null
-  report: (error: unknown) => void
   view: NavigableDialog
 }
 
@@ -83,7 +82,7 @@ export function TaskCenter(props: TaskCenterProps) {
           const open = event.currentTarget.open
           setVisible(open)
           if (open && !props.task) {
-            props.view.presented()
+            props.view.receipt.presented()
           }
         }}
       >
@@ -110,7 +109,7 @@ function TaskCenterContent(props: TaskCenterProps & { visible: boolean }) {
   deferDialogUntil(() => !!activeQuery().error() || activeQuery().total() !== undefined)
   const [selected, select] = createSignal<TaskSelection | undefined>(
     props.task
-      ? { id: props.task.id, initial: props.task, presented: props.view.presented }
+      ? { id: props.task.id, initial: props.task, receipt: props.view.receipt }
       : undefined,
   )
 
@@ -125,7 +124,11 @@ function TaskCenterContent(props: TaskCenterProps & { visible: boolean }) {
       return true
     }
     const shown = Promise.withResolvers<boolean>()
-    select({ id: task.id, initial: task, presented: () => shown.resolve(true) })
+    select({
+      id: task.id,
+      initial: task,
+      receipt: { presented: () => shown.resolve(true), failed: shown.reject },
+    })
     return waitForDecision(shown.promise, signal)
   })
 
@@ -180,7 +183,7 @@ function TaskCenterContent(props: TaskCenterProps & { visible: boolean }) {
               </TabList>
             </ToolbarRow>
             <TaskFilters
-              api={api}
+              t={api.t}
               query={activeQuery()}
               types={types.error ? undefined : types.value}
             />
@@ -206,7 +209,6 @@ function TaskCenterContent(props: TaskCenterProps & { visible: boolean }) {
                   query={scope.query}
                   open={(id) => select({ id })}
                   confirm={confirm.ask}
-                  report={props.report}
                 />
               </TabPanel>
             )}
@@ -218,7 +220,7 @@ function TaskCenterContent(props: TaskCenterProps & { visible: boolean }) {
           variant="outline"
           busy={clearing()}
           disabled={!hasFinished()}
-          onClick={() => void clearHistory().catch(props.report)}
+          onClick={() => void clearHistory().catch(reportError)}
         >
           <Icon path={mdiTrashCanOutline} />
           {api.t('runtime.clear')}

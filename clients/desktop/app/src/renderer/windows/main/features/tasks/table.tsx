@@ -18,7 +18,7 @@ import { ScrollableTable, TableHead, TableRow, TableSpacer } from '@kisaki3/desk
 import { createVirtualizer } from '@kisaki3/desktop-ui/virtualization'
 import type { MainClient } from '../../../../infrastructure/api'
 import type { createConfirmation } from '../../../../infrastructure/dialogs/confirmation'
-import { errorMessage } from '../../../../infrastructure/notifications'
+import { errorMessage, reportError } from '../../../../infrastructure/notifications'
 import type { TaskQueryState } from './query'
 import { TaskRow } from './rows'
 
@@ -29,7 +29,6 @@ interface TaskTableProps {
   query: TaskQueryState
   open: (id: string) => void
   confirm: ReturnType<typeof createConfirmation>['ask']
-  report: (error: unknown) => void
 }
 
 interface FocusedRow {
@@ -101,7 +100,7 @@ export function TaskTable(props: TaskTableProps) {
         <Match when={query.total()}>
           <RunTable
             {...props}
-            remove={(row, viewport) => void remove(row, viewport).catch(props.report)}
+            remove={(row, viewport) => void remove(row, viewport).catch(reportError)}
           />
         </Match>
       </Switch>
@@ -231,7 +230,6 @@ function RunTable(
             row={recordAt(item().index)}
             open={props.open}
             remove={(record) => props.remove(record, viewport())}
-            report={props.report}
           />
         )}
       </For>

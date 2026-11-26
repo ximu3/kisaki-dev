@@ -461,7 +461,6 @@ clients/desktop/app/src/renderer/
 │   │   ├── styles.css
 │   │   ├── app/
 │   │   │   ├── root.tsx
-│   │   │   ├── shell.tsx
 │   │   │   ├── rail.tsx
 │   │   │   ├── menu.tsx
 │   │   │   ├── preferences.ts

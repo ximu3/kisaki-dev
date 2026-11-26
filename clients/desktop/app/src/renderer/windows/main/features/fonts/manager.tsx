@@ -58,7 +58,7 @@ export function Fonts(props: FontsProps) {
           const open = event.currentTarget.open
           setVisible(open)
           if (open && !props.target) {
-            props.view.presented?.()
+            props.view.receipt?.presented()
           }
         }}
       >
@@ -294,7 +294,7 @@ function FontCatalog(props: FontsProps & { visible: boolean }) {
       <FontDetails
         api={api}
         selected={props.visible ? preview() : undefined}
-        presented={props.view.presented}
+        receipt={props.target ? props.view.receipt : undefined}
         close={() => setPreview(undefined)}
       />
       <EditorDialog edit={edit()} size="lg" onClose={() => setEdit(undefined)}>

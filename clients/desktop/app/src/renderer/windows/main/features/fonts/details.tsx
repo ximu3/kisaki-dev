@@ -1,4 +1,4 @@
-import { createMemo, For, Show } from 'solid-js'
+import { createMemo, createSignal, For, Show } from 'solid-js'
 import { mdiFileDocumentOutline } from '@mdi/js'
 import { Icon } from '@kisaki3/desktop-ui/icon'
 import {
@@ -11,6 +11,10 @@ import {
 } from '@kisaki3/desktop-ui/dialog'
 import { List, ListItem } from '@kisaki3/desktop-ui/list'
 import { Spinner } from '@kisaki3/desktop-ui/spinner'
+import {
+  observeDialogTarget,
+  type DialogReceipt,
+} from '../../../../infrastructure/dialogs/presentation'
 import type { MainClient } from '../../../../infrastructure/api'
 import { createFontRead } from './read'
 import { FontSpecimen, fontFaceName } from './specimen'
@@ -25,9 +29,10 @@ export function FontDetails(props: {
   api: MainClient
   selected: FontSelection | undefined
   close: () => void
-  presented?: (() => void) | undefined
+  receipt: DialogReceipt | undefined
 }) {
   const { api } = props
+  const [visible, setVisible] = createSignal(false)
   const displayed = createMemo<FontSelection | undefined>((last) => props.selected ?? last)
 
   return (
@@ -39,28 +44,38 @@ export function FontDetails(props: {
         }
       }}
     >
-      <DialogContent
-        size="lg"
-        onToggle={(event) => {
-          if (event.currentTarget.open) {
-            props.presented?.()
-          }
-        }}
-      >
+      <DialogContent size="lg" onToggle={(event) => setVisible(event.currentTarget.open)}>
         <Show when={displayed()} keyed>
-          {(selection) => <FontPreview api={api} selection={selection} />}
+          {(selection) => (
+            <FontPreview
+              api={api}
+              selection={selection}
+              receipt={props.receipt}
+              visible={visible()}
+            />
+          )}
         </Show>
       </DialogContent>
     </Dialog>
   )
 }
 
-function FontPreview(props: { api: MainClient; selection: FontSelection }) {
+function FontPreview(props: {
+  api: MainClient
+  selection: FontSelection
+  receipt: DialogReceipt | undefined
+  visible: boolean
+}) {
   const { api } = props
   const preview = createFontRead(api, () => props.selection)
   const name = () =>
     preview.value()?.font.name ?? props.selection.name ?? api.t('runtime.fontPreview')
   deferDialogUntil(() => !!preview.error() || !!preview.value())
+
+  observeDialogTarget(props.receipt, () => ({
+    presented: props.visible && !!preview.value(),
+    error: preview.error(),
+  }))
 
   return (
     <>

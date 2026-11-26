@@ -337,10 +337,11 @@ async function run(paths: AppPaths) {
     menuUpdates = application.i18n.onChanged(menus)
     restore = show
     if (
-      focusRequested ||
-      (!process.argv.includes('--login') &&
-        !notificationLaunch(process.argv) &&
-        !(process.platform === 'darwin' && app.getLoginItemSettings().wasOpenedAtLogin))
+      !activation.requested &&
+      (focusRequested ||
+        (!process.argv.includes('--login') &&
+          !notificationLaunch(process.argv) &&
+          !(process.platform === 'darwin' && app.getLoginItemSettings().wasOpenedAtLogin)))
     ) {
       show()
     }
