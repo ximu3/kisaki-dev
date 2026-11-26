@@ -1,5 +1,5 @@
 import { createEffect, createSignal, For, onSettled, Show } from 'solid-js'
-import { createSnapshot } from '../../../../infrastructure/query'
+import { createViewQuery } from '../../../../infrastructure/query'
 import {
   mdiFormatLetterCase,
   mdiEyeOutline,
@@ -81,7 +81,7 @@ export async function checkFontTarget(
 function FontCatalog(props: FontsProps & { visible: boolean }) {
   const { api } = props
   const [offset, setOffset] = createSignal(0)
-  const list = createSnapshot(async (signal) => {
+  const list = createViewQuery(async (signal) => {
     const from = offset()
 
     const result = await api.request(signal, 'fonts.list', '', {

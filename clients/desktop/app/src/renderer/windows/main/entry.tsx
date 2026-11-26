@@ -1,7 +1,7 @@
 import { Errored } from 'solid-js'
 import { render } from '@solidjs/web'
 import { connect } from '../../infrastructure/api'
-import { MainWindow } from './app/root'
+import { MainWindow } from './shell/root'
 
 const api = await connect('main')
 

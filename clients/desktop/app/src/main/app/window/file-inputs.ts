@@ -24,18 +24,25 @@ export function openDocumentFileInputs(contents: WebContents, canReceive: () => 
   }
   contents.ipc.on('kisaki-file-input', receiveInput)
 
-  function take(id: unknown) {
+  async function consume<T>(
+    id: unknown,
+    read: (input: ReturnType<typeof receiveFile>) => Promise<T>,
+  ) {
     const key = textArgument(id)
     const stream = fileInputs.get(key)
     if (!stream) {
       throw new DesktopError('InvalidReference', 'The file input is unavailable')
     }
     fileInputs.delete(key)
-    return stream
+    try {
+      return await read(stream)
+    } finally {
+      stream.destroy()
+    }
   }
 
   return {
-    take,
+    consume,
     close() {
       contents.ipc.off('kisaki-file-input', receiveInput)
       for (const input of fileInputs.values()) {
@@ -45,3 +52,5 @@ export function openDocumentFileInputs(contents: WebContents, canReceive: () => 
     },
   }
 }
+
+export type DocumentFileInputs = ReturnType<typeof openDocumentFileInputs>

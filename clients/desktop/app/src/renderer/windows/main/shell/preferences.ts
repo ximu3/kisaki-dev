@@ -1,11 +1,11 @@
-import { createPreferencesSnapshot } from '../domain-ui/preferences'
+import { createPreferencesQuery } from '../domain-ui/preferences-query'
 import { createEffect } from 'solid-js'
 import type { PreferencesUpdate } from '@kisaki3/desktop-contracts/preferences'
 import type { MainClient } from '../../../infrastructure/api'
 import { reportError } from '../../../infrastructure/notifications'
 
 export function createShellPreferences(api: MainClient) {
-  const preferences = createPreferencesSnapshot(api)
+  const preferences = createPreferencesQuery(api)
   const current = () => preferences.result()?.value
 
   createEffect(

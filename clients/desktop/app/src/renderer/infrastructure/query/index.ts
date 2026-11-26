@@ -6,12 +6,12 @@ export function requestSignal(): AbortSignal {
   return controller.signal
 }
 
-type Snapshot<T> = { value: T; error?: never } | { error: unknown; value?: never }
+type QueryResult<T> = { value: T; error?: never } | { error: unknown; value?: never }
 
-export function createSnapshot<T>(read: (signal: AbortSignal, previous?: T) => Promise<T> | T) {
+export function createViewQuery<T>(read: (signal: AbortSignal, previous?: T) => Promise<T> | T) {
   const lifetime = requestSignal()
   const [revision, invalidate] = createSignal(0)
-  const response = createDeferred<Snapshot<T> | undefined>(
+  const response = createDeferred<QueryResult<T> | undefined>(
     (previous) => {
       revision()
       const answer = read(requestSignal(), previous?.value)

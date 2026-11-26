@@ -1,5 +1,5 @@
 import { createSignal, For, onSettled, Show } from 'solid-js'
-import { createSnapshot } from '../../../../infrastructure/query'
+import { createViewQuery } from '../../../../infrastructure/query'
 import { mdiRefresh, mdiTrashCanOutline } from '@mdi/js'
 import { Icon } from '@kisaki3/desktop-ui/icon'
 import { isTaskTerminal, taskRunStatuses, type TaskRun } from '@kisaki3/desktop-contracts/tasks'
@@ -19,7 +19,7 @@ import { Tabs, TabList, Tab, TabPanel } from '@kisaki3/desktop-ui/tabs'
 import { Toolbar, ToolbarRow } from '@kisaki3/desktop-ui/toolbar'
 import { createConfirmation } from '../../../../infrastructure/dialogs/confirmation'
 import { waitForDecision } from '../../../../infrastructure/dialogs/closing'
-import type { NavigableDialog } from '../../../../infrastructure/dialogs/presentation'
+import type { NavigableDialog } from '../../infrastructure/navigation'
 import { errorMessage, reportError } from '../../../../infrastructure/notifications'
 import type { MainClient } from '../../../../infrastructure/api'
 import { TaskTable } from './table'
@@ -95,10 +95,10 @@ export function TaskCenter(props: TaskCenterProps) {
 function TaskCenterContent(props: TaskCenterProps & { visible: boolean }) {
   const { api } = props
   const [revision, setRevision] = createSignal(0)
-  const history = createSnapshot((signal) =>
+  const history = createViewQuery((signal) =>
     api.request(signal, 'tasks.list', { statuses: finishedStatuses }, { offset: 0, limit: 1 }),
   )
-  const types = createSnapshot((signal) => api.request(signal, 'tasks.types'))
+  const types = createViewQuery((signal) => api.request(signal, 'tasks.types'))
   const hasFinished = () => !history.result()?.error && !!history.result()?.value?.total
   const [section, setSection] = createSignal('active')
   const panels = scopes.map((scope) => ({

@@ -1,6 +1,7 @@
 import { addAbortListener } from 'node:events'
 import { RpcError, type RpcMethod } from '@kisaki3/desktop-rpc'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import type { MainWindowApi } from '../../../shared/window-api'
 
 type WindowAdmission = 'read' | 'control' | 'acquire' | 'write'
 
@@ -10,6 +11,12 @@ interface WindowMethod {
 }
 
 export type WindowMethods<Name extends string> = Record<Name, WindowMethod>
+
+type WindowNamespace = keyof MainWindowApi extends `${infer Name}.${string}` ? Name : never
+
+export type WindowMethodGroup<Group extends WindowNamespace> = WindowMethods<
+  Extract<keyof MainWindowApi, `${Group}.${string}`>
+>
 
 export function windowMethod(admission: WindowAdmission, invoke: RpcMethod): WindowMethod {
   return { admission, invoke }

@@ -1,6 +1,6 @@
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { createMemo, createSignal, Show } from 'solid-js'
-import { createSnapshot } from '../../../../infrastructure/query'
+import { createViewQuery } from '../../../../infrastructure/query'
 import type { ThemeRef } from '@kisaki3/desktop-contracts/appearance'
 import {
   Dialog,
@@ -64,7 +64,7 @@ function ThemePreview(props: {
   visible: boolean
 }) {
   const { api } = props
-  const theme = createSnapshot((signal) => api.request(signal, 'themes.get', props.target))
+  const theme = createViewQuery((signal) => api.request(signal, 'themes.get', props.target))
   deferDialogUntil(() => !theme.pending())
 
   observeDialogTarget(props.receipt, () => ({

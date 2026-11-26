@@ -54,7 +54,7 @@
 
 ```mermaid
 flowchart TD
-  APP["app 装配"]
+  SHELL["窗口 shell"]
   STATS["features/statistics"]
   LIB["features/library"]
   DETAILS["domain-ui / entry-details"]
@@ -62,8 +62,8 @@ flowchart TD
   SUMMARY["domain-ui / entry-summary"]
   HOST["通用窗口弹窗宿主"]
   BASEUI["基础 UI"]
-  APP --> STATS
-  APP --> LIB
+  SHELL --> STATS
+  SHELL --> LIB
   STATS --> DETAILS
   STATS --> PICK
   LIB --> DETAILS
@@ -76,9 +76,9 @@ flowchart TD
   HOST --> BASEUI
 ```
 
-Summary 和 Card 只呈现数据并发出局部意图，不依赖完整详情或编辑器。Picker 可以依赖 Summary，关系字段可以依赖 Picker。Details 需要活动摘要时，使用独立 ActivitySummary，不导入整张统计页。导入与编辑共用字段和选择器，不通过大量模式开关构造万能表单。跨场景组合由 app 或真实上层拥有，不能用 Context、动态 import 或延迟函数掩盖循环依赖。
+Summary 和 Card 只呈现数据并发出局部意图，不依赖完整详情或编辑器。Picker 可以依赖 Summary，关系字段可以依赖 Picker。Details 需要活动摘要时，使用独立 ActivitySummary，不导入整张统计页。导入与编辑共用字段和选择器，不通过大量模式开关构造万能表单。跨场景组合由窗口 shell 或发起场景拥有，不能用 Context、动态 import 或延迟函数掩盖循环依赖。
 
-通用窗口宿主负责挂载、关闭、焦点、嵌套、取消结果和资源释放。业务视图按实际任务拥有查询与交互状态，表单与字段编辑器的草稿遵守[编辑对象与保存边界](state.md#editing-units)；管理列表不承担总保存。发起页卸载时，仍然有效的全窗口交互应继续存在。Context 必须在正确的 Solid owner 内取得，事件工具不能临时脱离 owner 查找实例。真实 URL 和跨窗口入口属于 app，但普通弹窗不必增加 app.inspectX 转发。
+通用窗口宿主负责挂载、关闭、焦点、嵌套、取消结果和资源释放。业务视图按实际任务拥有查询与交互状态，表单与字段编辑器的草稿遵守[编辑对象与保存边界](state.md#editing-units)；管理列表不承担总保存。发起页卸载时，仍然有效的全窗口交互应继续存在。Context 必须在正确的 Solid owner 内取得，事件工具不能临时脱离 owner 查找实例。主进程接收 URL 和跨窗口激活，目标窗口的 shell 协调导航。场景可以直接打开所属的普通弹窗。
 
 <a id="previews"></a>
 

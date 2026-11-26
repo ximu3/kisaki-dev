@@ -1,6 +1,6 @@
 @import '../../styles/tailwind.css';
 @import '../../styles/base.css';
-@import './app/titlebar.css';
-@import './app/rail.css';
+@import './shell/titlebar.css';
+@import './shell/rail.css';
 @source './';
 @source '../../infrastructure/dialogs';

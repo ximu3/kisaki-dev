@@ -1,5 +1,5 @@
 import { createEffect, createMemo, createSignal, For, onSettled, Show } from 'solid-js'
-import { createSnapshot } from '../../../infrastructure/query'
+import { createViewQuery } from '../../../infrastructure/query'
 import { mdiDotsHorizontal, mdiFormatListChecks } from '@mdi/js'
 import { Icon } from '@kisaki3/desktop-ui/icon'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@kisaki3/desktop-ui/tooltip'
@@ -24,7 +24,7 @@ export function NavigationRail(props: {
   open: (target: NativeViewTarget) => Promise<boolean>
 }) {
   const { api } = props
-  const active = createSnapshot((signal) =>
+  const active = createViewQuery((signal) =>
     api.request(
       signal,
       'tasks.list',

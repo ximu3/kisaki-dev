@@ -1,5 +1,5 @@
 import { createMemo, createSignal, onSettled, Show } from 'solid-js'
-import { createSnapshot } from '../../../../infrastructure/query'
+import { createViewQuery } from '../../../../infrastructure/query'
 import type { ProtocolIntegrationState } from '@kisaki3/desktop-contracts/app'
 import type { Translate } from '@kisaki3/desktop-localization'
 import { Switch } from '@kisaki3/desktop-ui/switch'
@@ -74,7 +74,7 @@ export function SystemSettings(props: SystemSettingsProps) {
 function IntegrationSettings(props: { api: MainClient }) {
   const { api } = props
   const read = (signal: AbortSignal) => api.request(signal, 'system.get')
-  const state = createSnapshot(read)
+  const state = createViewQuery(read)
   const current = createMemo<Awaited<ReturnType<typeof read>> | undefined>(
     (previous) => state.result()?.value ?? previous,
   )

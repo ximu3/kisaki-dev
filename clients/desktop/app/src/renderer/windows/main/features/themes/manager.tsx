@@ -1,6 +1,6 @@
-import { createPreferencesSnapshot } from '../../domain-ui/preferences'
+import { createPreferencesQuery } from '../../domain-ui/preferences-query'
 import { getOwner, isDisposed, createSignal, For, onSettled, Show } from 'solid-js'
-import { createSnapshot } from '../../../../infrastructure/query'
+import { createViewQuery } from '../../../../infrastructure/query'
 import {
   mdiCheck,
   mdiContentCopy,
@@ -85,8 +85,8 @@ export async function checkThemeTarget(
 
 function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
   const { api } = props
-  const catalog = createSnapshot((signal) => api.request(signal, 'themes.list'))
-  const preferences = createPreferencesSnapshot(api)
+  const catalog = createViewQuery((signal) => api.request(signal, 'themes.list'))
+  const preferences = createPreferencesQuery(api)
   deferDialogUntil(() => !!catalog.result() && !!preferences.result())
   const entries = () => catalog.result()?.value
   const current = () => {

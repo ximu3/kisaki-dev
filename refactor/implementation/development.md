@@ -16,7 +16,7 @@
 | `clients/desktop/app/tools` | 桌面程序构建、资源准备、原生编译、开发会话与打包 |
 | `clients/desktop/app/src/main/infrastructure/database`    | 正式 schema、逐值 codec、连接、同步事务、初始化与资料库语言排序          |
 | `clients/desktop/app/src/main/infrastructure/files`       | 实际路径比较、本地资料根检查、有限字节准备、不覆盖发布与流式 ZIP                |
-| `clients/desktop/app/src/main/app/window` | 创建与关闭原生窗口，按文档绑定端口、资源和带准入策略的方法 |
+| `clients/desktop/app/src/main/app/window` | 创建与关闭原生窗口；document.ts 装配共同方法与主窗口方法，methods/ 分组接入，file-inputs.ts 和 resources.ts 管理文档的输入与句柄 |
 | `clients/desktop/app/src/main/features/tasks` | 接纳执行，区分业务结果与历史写入，向当前等待者交付终态 |
 | `clients/desktop/app/src/main/features/preferences`       | 按字段保存偏好、并发基线和代理凭据，初始化与恢复默认共用产品值                                   |
 | `clients/desktop/app/drizzle`                            | Drizzle Kit 生成并审阅的 SQL 迁移及 snapshot，随资源原样交付                    |
@@ -48,9 +48,9 @@ desktop-localization 的英语 ICU 源文位于 src/en，按领域维护并由 i
 
 正式程序位于 `clients/desktop/app/src`。main 装配数据库 worker、任务、偏好、外观及资源。四类窗口各有独立文档和沙箱 preload，通过已绑定的 MessagePort 接入 desktop-rpc，并分别装配样式与 Toaster。
 
-主窗口的 `app/root.tsx` 装配标题栏、侧栏、主内容区与窗口级 Dialog。菜单和系统入口共用 `app/navigation`。切换目标时先协调当前草稿，目标实际呈现后再释放原视图；失败或取消时保留原视图。`features` 各自呈现管理 Dialog，维护本次查询、草稿与提交。偏好中的主题库、字体库由偏好视图直接打开。侧栏重排立即更新导航偏好，偏好表单中的重排随草稿保存。两个入口共用 `domain-ui/navigation` 的排序控件。资料库、展示柜与统计由 W09 接入。
+主窗口的 `shell/root.tsx` 装配标题栏、侧栏、主内容区与窗口级 Dialog。菜单和系统入口共用 `shell/navigation`。主窗口的 `infrastructure/navigation.ts` 定义导航与场景共用的弹窗合同。切换目标时先协调当前草稿，目标实际呈现后再释放原视图；失败或取消时保留原视图。`features` 各自呈现管理 Dialog，维护本次查询、草稿与提交。偏好中的主题库、字体库由偏好视图直接打开。侧栏重排立即更新导航偏好，偏好表单中的重排随草稿保存。两个入口共用 `domain-ui/navigation` 的排序控件。资料库、展示柜与统计由 W09 接入。
 
-renderer 的 `infrastructure/query` 为独立区块提供派生快照、IPC 取消和尾随刷新。偏好快照由 `domain-ui/preferences` 接入变更通知和写入回包。整块内容一起就绪的视图可直接组合 Solid 的异步计算、加载和错误边界。见[局部查询](../design/ui/state.md#queries)。
+renderer 的 `createViewQuery` 为独立区块提供读取结果、IPC 取消和尾随刷新。`domain-ui/preferences-query.ts` 为视图接入偏好变更通知和写入回包。整块内容一起就绪的视图可直接组合 Solid 的异步计算、加载和错误边界。见[局部查询](../design/ui/state.md#queries)。
 
 应用通过数据库执行线程打开当前基线、读取偏好、采用生效语言并保持连接至退出。存储性能用例通过 Playwright 在 Electron 主进程中启动独立编译的测量 worker。worker 返回完整报告并正常退出后，用例将报告保存为附件。执行失败时，原始错误传回用例。
 

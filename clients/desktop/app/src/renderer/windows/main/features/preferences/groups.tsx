@@ -9,7 +9,7 @@ import type { MainClient } from '../../../../infrastructure/api'
 import { appearanceIssueMessage } from '../../../../infrastructure/notifications'
 import { PageOrder, type NavigationPage } from '../../domain-ui/navigation/list'
 import { PreferenceField, usePreferenceFields } from './field'
-import { ThemeField, TranslationField } from './resources'
+import { ThemeField, TranslationField } from './catalog-fields'
 
 export function GeneralFields(props: { api: MainClient }) {
   const { draft, t } = usePreferenceFields()

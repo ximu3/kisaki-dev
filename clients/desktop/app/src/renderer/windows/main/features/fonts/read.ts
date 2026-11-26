@@ -1,10 +1,10 @@
 import { onCleanup, type Accessor } from 'solid-js'
 import type { MainClient } from '../../../../infrastructure/api'
 import { reportError } from '../../../../infrastructure/notifications'
-import { createSnapshot } from '../../../../infrastructure/query'
+import { createViewQuery } from '../../../../infrastructure/query'
 
 export function createFontRead(api: MainClient, selection: Accessor<{ id: string } | undefined>) {
-  const opened = createSnapshot((signal) => {
+  const opened = createViewQuery((signal) => {
     const entry = selection()
     if (!entry) {
       return undefined
