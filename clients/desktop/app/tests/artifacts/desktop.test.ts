@@ -58,10 +58,7 @@ test('the exact packaged carrier retains production fuses and starts and closes 
   }
 
   const identity = applicationIdentities[receipt.testOnly ? 'development' : 'production']
-  const workspace = await prepareArtifactWorkspace(
-    join(dirname(receiptPath), file.path),
-    identity.name,
-  )
+  const workspace = await prepareArtifactWorkspace(join(dirname(receiptPath), file.path), identity)
   const { directory, executablePath, resourceDirectory, fusePath } = workspace
   let closeApplication: (() => Promise<void>) | undefined = undefined
   onTestFinished(async () => {
@@ -112,6 +109,7 @@ test('the exact packaged carrier retains production fuses and starts and closes 
     expect(desktopEntries).toEqual([desktopName])
 
     const desktopEntry = await readFile(join(applicationDirectory, desktopEntries[0]!), 'utf8')
+    expect(desktopEntry.match(/^Name=(.*)$/m)?.[1]).toBe(identity.name)
     expect(desktopEntry.match(/^Exec=(.*)$/m)?.[1]).toBe('AppRun %U')
   }
 

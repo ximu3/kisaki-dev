@@ -110,6 +110,7 @@ registry 和应用更新使用隔离测试源，relay 在获授权的隔离环�
 | 显示名称            | Kisaki            | Kisaki Dev            |
 | appId               | me.kisaki         | me.kisaki.dev         |
 | 普通业务 deeplink   | kisaki://         | kisaki-dev://         |
+| Linux 包名与命令 | kisaki | kisaki-dev |
 | Linux .desktop 文件 | me.kisaki.desktop | me.kisaki.dev.desktop |
 
 正式应用身份不随版本、架构或普通与便携模式变化，beta 和 rc 也不自动成为可并行安装的新产品。Windows AppUserModelID 和 macOS CFBundleIdentifier 对应 appId；Linux 的 .desktop 文件名、desktopName、portal 与窗口关联保持一致。身份必须按 [builder 配置](https://www.electron.build/v26/docs/configuration/) 和 [Linux 窗口关联](https://www.electron.build/v26/docs/linux/#window-association-desktopname--syncdesktopname) 实际验证，不能只检查 appId 字段。

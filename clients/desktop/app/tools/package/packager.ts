@@ -121,6 +121,9 @@ async function writeBuilderConfig(context: PackagingContext): Promise<string> {
   config.set('productName', identity.name)
   if (build.target.startsWith('linux-')) {
     config.set('extraMetadata', { desktopName: identity.appId + '.desktop' })
+    config.setIn(['linux', 'executableName'], identity.linuxPackageName)
+    config.setIn(['deb', 'packageName'], identity.linuxPackageName)
+    config.setIn(['rpm', 'packageName'], identity.linuxPackageName)
   }
   config.set('protocols', [{ name: identity.name, schemes: [identity.scheme] }])
   config.set('directories', {

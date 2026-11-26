@@ -35,7 +35,6 @@ linux:
   target: [deb, rpm, AppImage]
   category: Utility
   syncDesktopName: true
-  executableName: kisaki
 appImage:
   # AppRun alone owns the upstream namespace compatibility decision.
   executableArgs: []
