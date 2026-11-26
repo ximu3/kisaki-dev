@@ -29,11 +29,8 @@ import { Spinner } from '@kisaki3/desktop-ui/spinner'
 import type { MainClient } from '../../../../infrastructure/api'
 import { waitForDecision } from '../../../../infrastructure/dialogs/closing'
 import { WindowEditors } from '../../../../infrastructure/dialogs/editors'
-import {
-  createLocalDialog,
-  useDialogClose,
-  type NavigableDialog,
-} from '../../../../infrastructure/dialogs/presentation'
+import { createLocalDialog, useDialogClose } from '../../../../infrastructure/dialogs/presentation'
+import type { NavigableDialog } from '../../infrastructure/navigation'
 import type { NavigationPage } from '../../domain-ui/navigation/list'
 import { createPreferenceDraft } from './draft'
 import { focusPreferenceField, PreferenceFieldsContext } from './field'

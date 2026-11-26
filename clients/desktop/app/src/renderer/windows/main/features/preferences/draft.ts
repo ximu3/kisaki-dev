@@ -1,4 +1,4 @@
-import { createPreferencesSnapshot } from '../../domain-ui/preferences'
+import { createPreferencesQuery } from '../../domain-ui/preferences-query'
 import { getOwner, isDisposed, createMemo, createSignal, type Accessor } from 'solid-js'
 import { dequal as equalValue } from 'dequal/lite'
 import { interfaceScaleRange } from '@kisaki3/desktop-contracts/appearance'
@@ -14,7 +14,7 @@ import {
 } from '@kisaki3/desktop-contracts/preferences'
 import type { FieldIssue } from '@kisaki3/desktop-ui/form'
 import type { MainClient } from '../../../../infrastructure/api'
-import { createSnapshot } from '../../../../infrastructure/query'
+import { createViewQuery } from '../../../../infrastructure/query'
 
 interface FieldInput {
   readonly input: unknown
@@ -232,10 +232,10 @@ function createPreferenceFields(
 export type PreferenceFields = ReturnType<typeof createPreferenceFields>
 
 export function createPreferenceDraft(api: MainClient) {
-  const snapshot = createPreferencesSnapshot(api)
-  const defaultsQuery = createSnapshot((signal) => api.request(signal, 'preferences.defaults'))
+  const preferences = createPreferencesQuery(api)
+  const defaultsQuery = createViewQuery((signal) => api.request(signal, 'preferences.defaults'))
   const saved = createMemo<PreferencesSnapshot | undefined>(
-    (previous) => snapshot.result()?.value ?? previous,
+    (previous) => preferences.result()?.value ?? previous,
   )
   const defaults = () => defaultsQuery.result()?.value
 
@@ -307,7 +307,7 @@ export function createPreferenceDraft(api: MainClient) {
         recordEdit(remaining, key, { ...current, expected })
       }
     }
-    snapshot.accept(result)
+    preferences.accept(result)
     setEdits(remaining)
   }
 
@@ -388,8 +388,8 @@ export function createPreferenceDraft(api: MainClient) {
   }
 
   function retry() {
-    if (snapshot.result()?.error) {
-      snapshot.reload()
+    if (preferences.result()?.error) {
+      preferences.reload()
     }
     if (defaultsQuery.result()?.error) {
       void defaultsQuery.reload()
@@ -399,7 +399,7 @@ export function createPreferenceDraft(api: MainClient) {
   return {
     ...fields,
     ready: saved,
-    error: (): unknown => snapshot.result()?.error ?? defaultsQuery.result()?.error,
+    error: (): unknown => preferences.result()?.error ?? defaultsQuery.result()?.error,
     retry,
     validate,
     save,

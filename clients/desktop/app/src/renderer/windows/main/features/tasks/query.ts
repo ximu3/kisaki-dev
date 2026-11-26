@@ -1,7 +1,7 @@
 import { createMemo, createSignal } from 'solid-js'
 import type { ListResult } from '@kisaki3/desktop-contracts/operations'
 import type { TaskRunStatus, TaskRunSummary } from '@kisaki3/desktop-contracts/tasks'
-import { createSnapshot } from '../../../../infrastructure/query'
+import { createViewQuery } from '../../../../infrastructure/query'
 import type { MainClient } from '../../../../infrastructure/api'
 
 const intervalSize = 100
@@ -35,7 +35,7 @@ export function createTaskQuery(
   let revision = 0
   let attemptedKey: string | undefined
 
-  const list = createSnapshot<TaskInterval | undefined>(async (signal, previous) => {
+  const list = createViewQuery<TaskInterval | undefined>(async (signal, previous) => {
     const queryKey = key()
     const { search, type, status } = filters()
     const requested = offset()

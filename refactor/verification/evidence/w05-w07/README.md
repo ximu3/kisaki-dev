@@ -10,7 +10,7 @@
 
 在同版 Solid 客户端运行时以可控 Promise 检查并发。连续两次失效共享一次尾随读取，已有尾随读取时，前一次失败没有显示。更换查询输入后，旧请求的信号已取消，迟到回包没有覆盖新结果。卸载结束挂起的刷新等待。偏好保存回包先于旧查询返回时，已保存值继续可见，下一次变更通知仍能取得新快照。
 
-本次按工作树核对了 23 份包清单、3 份 JavaScript 依赖锁文件和 842 个 JS／TS 系列源文件的模块引用。122 个 JSX／TSX 文件分别经 Solid 编译器的开发和生产 DOM 模式转换，覆盖 43 个桌面 renderer 文件、67 个公共 UI 文件及 12 个工程与消费样板。仓库内解析到的 Solid 运行时只有 2.0.4。
+在 Solid 2 重构修订 `5529d78d` 核对了 23 份包清单、3 份 JavaScript 依赖锁文件和 842 个 JS／TS 系列源文件的模块引用。122 个 JSX／TSX 文件分别经 Solid 编译器的开发和生产 DOM 模式转换，覆盖 43 个桌面 renderer 文件、67 个公共 UI 文件及 12 个工程与消费样板。仓库内解析到的 Solid 运行时只有 2.0.4。
 
 同一事件轮次中先选择 Detail 再选择 Basic，受控页签最终显示 Basic。点击单选或多选选项后立即构造 `FormData`，分别得到已采纳的单值与完整多值。释放工作坊的 Markdown 编辑器后，外部操作入口同时移除。[浏览器表单](../../../../clients/desktop/packages/desktop-ui/tests/browser/forms.test.ts) · [制品消费者](../../../../clients/desktop/packages/desktop-ui/tests/consumers/browser.test.ts)
 
@@ -69,10 +69,11 @@ W05、W07 上次复核的六项缺口已修正。以下结果来自同一工作�
 | 操作 | 复验结果及层次 |
 | --- | --- |
 | 取消、提交和文档断开 | Electron Node 模式使用实际迁移与独立 SQLite。预取消的主题创建新增零行，预取消的删除保留原行，正常创建与删除成功。原生宿主用例也验证了取消删除后字体仍可读。已接纳的写入由业务操作持有，窗口结束时等待其完成。[窗口接纳表](../../../../clients/desktop/app/src/main/app/window/admission.ts) |
+| 文档资源 | 四个窗口共用 5 个 RPC，主窗口额外开放 50 个。逐项对照方法名称和准入类别。绑定完成前文档失效时，URL 绑定和读取句柄各释放一次，准备结果未进入文档索引。资源在接纳前已取消且清理失败时，主进程同时保留取消原因和清理错误。[文档资源用例](../../../../clients/desktop/app/src/main/app/window/resources.test.ts) |
 | 退出接纳和确认 | 55 个窗口方法逐项声明读取、控制、获取资源或写入。退出收尾期间，新增订阅、字体与外观获取、清理任务历史返回 Busy，已有资源释放和任务取消仍可用。预取消的重启没有进入确认。挂起确认后取消，原请求直接得到 cancelled。确认连接断开时，加入者共享错误，下一次能重新退出。[生命周期用例](../../../../clients/desktop/app/src/main/app/lifecycle.test.ts) |
 | 清理任务历史 | 实窗的搜索只显示 3 条已结束记录中的 1 条。取消和 Escape 均保留全部记录。注入数据库删除失败时，窗口报告错误且 3 条记录仍在。成功确认后，数据库记录数由 3 变为 0，焦点移到刷新。[清理确认实窗](ui/clear-task-history.png) · [任务历史用例](../../../../clients/desktop/app/tests/integration/electron/history.test.ts) |
 | 最终释放失败 | 在隔离 Electron 实例中使 Session 连接清理失败。其余清理仍完成，运行日志写入 closed，原生弹窗只显示连接清理的实际错误，进程退出码为 1。协调器另以重启意图注入两项嵌套清理失败，一次提示按顺序逐行交付两个原因，接纳保持关闭，重启动作调用数为零。[退出合同](../../../design/ui/navigation.md#shutdown) |
-| 文件输入与附件 | 实窗同时选择有效 WOFF2 和失效路径，两行分别保留预览与错误，主进程未捕获异常为零。拖入及粘贴各含有效文件和坏文件，同样逐项交付。缺失的已登记附件仍有元数据，检查为不可用，直接读取和窗口错误编码同为 FileUnavailable。文件流在输出目录就绪前报错也完成清理。[文件接入](../../../../clients/desktop/app/src/main/app/window/files.ts) |
+| 文件输入与附件 | 实窗同时选择有效 WOFF2 和失效路径，两行分别保留预览与错误，主进程未捕获异常为零。拖入及粘贴各含有效文件和坏文件，同样逐项交付。缺失的已登记附件仍有元数据，检查为不可用，直接读取和窗口错误编码同为 FileUnavailable。文件流在输出目录就绪前报错也完成清理。[文档文件输入](../../../../clients/desktop/app/src/main/app/window/file-inputs.ts) · [字体窗口方法](../../../../clients/desktop/app/src/main/app/window/methods/fonts.ts) |
 | 观察、网络与任务结果 | 退出、网络的初次观察失败后不再收到更新。外观监听一次抛错后仍收到下一次缩放。保持真实偏好窗口打开，延迟采用网络配置时显示正在采用，放行后提示消失，注入下一次采用失败则显示网络不可用。发布者随后修改对象时，订阅者保留交付时的原生事实。任务失败可分别交付无部分结果、null、false 和空数组。 |
 | 字体、预览与目录 | 实窗导入 WOFF2 并设为界面字体，缩放从 100 改为 115，原 FontFace 仍在，新增 load 为零。两个内容、三个读者共建立两个绑定，最终各释放一次。450 个候选项在首页返回前卸载，实际只请求 offset 0。预览结束先于创建回包时，开关关闭、迟到的句柄释放一次。主题与译本的同一引用改换字段顺序后仍可查到。[字体绑定](../../../../clients/desktop/app/src/main/features/appearance/document-fonts.ts) · [预览控制器](../../../../clients/desktop/app/src/renderer/windows/main/features/themes/preview.ts) |
 

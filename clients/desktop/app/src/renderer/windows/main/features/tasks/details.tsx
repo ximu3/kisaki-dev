@@ -8,7 +8,7 @@ import {
   Switch,
   type ParentProps,
 } from 'solid-js'
-import { createSnapshot } from '../../../../infrastructure/query'
+import { createViewQuery } from '../../../../infrastructure/query'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
   observeDialogTarget,
@@ -79,7 +79,7 @@ function TaskDetailView(props: {
 }) {
   const { api, selection } = props
   let initial = selection.initial
-  const detail = createSnapshot((signal) => {
+  const detail = createViewQuery((signal) => {
     if (initial) {
       const task = initial
       initial = undefined

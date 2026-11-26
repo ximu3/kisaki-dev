@@ -330,7 +330,7 @@ shared/window-api 中的四个文件从 desktop-contracts 选择对应窗口合�
 
 ## 主进程源码
 
-app 装配并连接实际能力，features 实现产品行为，infrastructure 提供技术设施。[主进程架构](../architecture.md#main)规定依赖与调用范围；具体业务拆分由各功能文档定义。
+app 装配并连接实际能力，features 实现产品行为，infrastructure 提供技术设施。app/window/document.ts 按窗口种类装配 RPC 和调用准入规则。methods/ 按相关操作组织接入；文件输入、已准备资源和订阅的寿命归当前文档。[主进程架构](../architecture.md#main)规定依赖与调用范围；具体业务拆分由各功能文档定义。
 
 ```text
 clients/desktop/app/src/main/
@@ -340,7 +340,23 @@ clients/desktop/app/src/main/
 │   ├── compose.ts
 │   ├── lifecycle.ts
 │   ├── bindings.ts
-│   └── paths.ts
+│   ├── paths.ts
+│   └── window/
+│       ├── index.ts
+│       ├── document.ts
+│       ├── admission.ts
+│       ├── values.ts
+│       ├── file-inputs.ts
+│       ├── resources.ts
+│       └── methods/
+│           ├── appearance.ts
+│           ├── application.ts
+│           ├── settings.ts
+│           ├── tasks.ts
+│           ├── themes.ts
+│           ├── fonts.ts
+│           ├── images.ts
+│           └── system.ts
 ├── features/
 │   ├── library/
 │   │   ├── entries/
@@ -459,7 +475,7 @@ clients/desktop/app/src/renderer/
 │   │   ├── index.html
 │   │   ├── entry.tsx
 │   │   ├── styles.css
-│   │   ├── app/
+│   │   ├── shell/
 │   │   │   ├── root.tsx
 │   │   │   ├── rail.tsx
 │   │   │   ├── menu.tsx
@@ -478,11 +494,13 @@ clients/desktop/app/src/renderer/
 │   │   │   ├── themes/
 │   │   │   ├── fonts/
 │   │   │   ├── preferences/
+│   │   │   │   └── catalog-fields.tsx
 │   │   │   ├── onboarding/
 │   │   │   ├── search/
 │   │   │   └── updates/
 │   │   ├── domain-ui/
 │   │   │   ├── fonts/
+│   │   │   ├── preferences-query.ts
 │   │   │   ├── library/
 │   │   │   │   ├── entry-summary/
 │   │   │   │   ├── entry-picker/
@@ -493,12 +511,13 @@ clients/desktop/app/src/renderer/
 │   │   │   ├── tasks/
 │   │   │   └── extensions/
 │   │   └── infrastructure/
-│   │       └── api.ts
+│   │       ├── api.ts
+│   │       └── navigation.ts
 │   ├── reader/
 │   │   ├── index.html
 │   │   ├── entry.tsx
 │   │   ├── styles.css
-│   │   ├── app/
+│   │   ├── shell/
 │   │   ├── navigation/
 │   │   ├── annotations/
 │   │   └── infrastructure/
@@ -507,7 +526,7 @@ clients/desktop/app/src/renderer/
 │   │   ├── index.html
 │   │   ├── entry.tsx
 │   │   ├── styles.css
-│   │   ├── app/
+│   │   ├── shell/
 │   │   ├── playback/
 │   │   ├── annotations/
 │   │   └── infrastructure/
@@ -515,7 +534,7 @@ clients/desktop/app/src/renderer/
 │       ├── index.html
 │       ├── entry.tsx
 │       ├── styles.css
-│       ├── app/
+│       ├── shell/
 │       ├── session/
 │       ├── annotations/
 │       └── infrastructure/
@@ -535,6 +554,6 @@ clients/desktop/app/src/renderer/
 
 renderer/styles/base.css 保存根容器、通用文字表现、窗口拖拽区域等桌面界面的共同基础规则；styles/tailwind.css 接入应用自己的 Tailwind 4 构建配置与 desktop-appearance 映射。四个窗口从各自 HTML 的头部直接链接 styles.css，组合共同基础、UI 包样式和窗口专属样式。入口样式先声明共同的 CSS 层顺序，组件模块在其后加载，源码 dev 与正式构建均采用这一入口。每个窗口只编译本窗口与实际使用的共享组件，不扫描公共 UI 包源码，也不通过导入主窗口 CSS 获得共同样式。公共包的依赖与交付方式见[视觉基础与桌面资源](workspace.md#visual-packages)。
 
-应用页面与业务组件的常规布局和状态样式使用 Tailwind，必要的专属 CSS 就近放在所属 feature、domain-ui 或呈现模块；公共 UI 包内部采用 [CSS Modules](../ui/package.md#styles)。阅读窗口的外壳与内容容器归 reader/app；reader/infrastructure/kana 按[阅读接入](integrations.md#reading)管理 Reader、转换技术设置并接续宿主资源。正文的固定页面、重排、书内样式和源映射由 Kana 拥有，共同界面样式只作用于窗口外壳。
+应用页面与业务组件的常规布局和状态样式使用 Tailwind，必要的专属 CSS 就近放在所属 feature、domain-ui 或呈现模块；公共 UI 包内部采用 [CSS Modules](../ui/package.md#styles)。阅读窗口的外壳与内容容器归 reader/shell；reader/infrastructure/kana 按[阅读接入](integrations.md#reading)管理 Reader、转换技术设置并接续宿主资源。正文的固定页面、重排、书内样式和源映射由 Kana 拥有，共同界面样式只作用于窗口外壳。
 
 renderer/infrastructure/appearance 为应用界面提供实际主题变量和字体，阅读接入再将所需颜色与字体转换为 Kana 输入。窗口 CSS 使用共同变量；主题变化通过正常外观接入和 Reader 设置采用生效，不重新编译工具类。

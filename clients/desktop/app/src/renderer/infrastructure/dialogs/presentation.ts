@@ -2,7 +2,6 @@ import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { createEffect, createSignal, getOwner, isDisposed, onCleanup, useContext } from 'solid-js'
 import { reportError } from '../notifications'
 import { WindowEditors } from './editors'
-import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 
 export interface DialogReceipt {
   presented: () => void
@@ -13,11 +12,6 @@ export interface DialogPresentation {
   open: () => boolean
   close: () => void
   receipt?: DialogReceipt
-}
-
-export interface NavigableDialog extends DialogPresentation {
-  receipt: DialogReceipt
-  onNavigate: (handler: (target: NativeViewTarget, signal: AbortSignal) => Promise<boolean>) => void
 }
 
 export function observeDialogTarget(

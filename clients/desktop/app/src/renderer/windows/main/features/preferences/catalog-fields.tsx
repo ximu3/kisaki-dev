@@ -1,5 +1,5 @@
 import { createMemo, onSettled } from 'solid-js'
-import { createSnapshot } from '../../../../infrastructure/query'
+import { createViewQuery } from '../../../../infrastructure/query'
 import { mdiTuneVariant } from '@mdi/js'
 import { Icon } from '@kisaki3/desktop-ui/icon'
 import { catalogKey } from '../../../../../shared/catalog-ref'
@@ -17,7 +17,7 @@ function createCatalog<T>(
   topic: string,
   load: (signal: AbortSignal) => Promise<T>,
 ) {
-  const items = createSnapshot(load)
+  const items = createViewQuery(load)
   const refresh = () => void items.reload()
   onSettled(() => {
     api.topics.addEventListener(topic, refresh)

@@ -1,5 +1,5 @@
 import { onSettled } from 'solid-js'
-import { createSnapshot } from '../../../../infrastructure/query'
+import { createViewQuery } from '../../../../infrastructure/query'
 import type { MainClient } from '../../../../infrastructure/api'
 import type { ListOptions, ListResult } from '@kisaki3/desktop-contracts/operations'
 import type { Font } from '@kisaki3/desktop-contracts/fonts'
@@ -20,10 +20,10 @@ async function listFontOptions(
 }
 
 export function createFontOptions(api: MainClient) {
-  const users = createSnapshot((signal) =>
+  const users = createViewQuery((signal) =>
     listFontOptions((options) => api.request(signal, 'fonts.list', '', options)),
   )
-  const system = createSnapshot((signal) => api.request(signal, 'fonts.system'))
+  const system = createViewQuery((signal) => api.request(signal, 'fonts.system'))
 
   const refresh = () => void users.reload()
   onSettled(() => {

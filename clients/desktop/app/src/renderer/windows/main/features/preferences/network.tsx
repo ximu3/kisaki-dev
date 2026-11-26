@@ -1,5 +1,5 @@
 import { onSettled, Show } from 'solid-js'
-import { createSnapshot } from '../../../../infrastructure/query'
+import { createViewQuery } from '../../../../infrastructure/query'
 import type { ProxyCredentials } from '@kisaki3/desktop-contracts/network'
 import { Alert } from '@kisaki3/desktop-ui/alert'
 import { Button } from '@kisaki3/desktop-ui/button'
@@ -20,7 +20,7 @@ export function NetworkFields(props: {
 }) {
   const { api } = props
   const { draft, t } = usePreferenceFields()
-  const state = createSnapshot((signal) => api.request(signal, 'network.state'))
+  const state = createViewQuery((signal) => api.request(signal, 'network.state'))
   const refresh = () => void state.reload()
   onSettled(() => {
     api.topics.addEventListener('network.changed', refresh)

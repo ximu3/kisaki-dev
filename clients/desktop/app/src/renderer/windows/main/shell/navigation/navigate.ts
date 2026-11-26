@@ -4,7 +4,7 @@ import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { parseNativeViewTarget, type NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 import type { MainClient } from '../../../../infrastructure/api'
 import type { createWindowEditors } from '../../../../infrastructure/dialogs/editors'
-import type { NavigableDialog } from '../../../../infrastructure/dialogs/presentation'
+import type { NavigableDialog } from '../../infrastructure/navigation'
 
 export type Destination = (view: NavigableDialog) => JSX.Element
 

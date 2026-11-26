@@ -1,53 +1,32 @@
 import { dialog, type BrowserWindow } from 'electron'
 import { basename } from 'node:path'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
-import { parseListOptions, type Disposable } from '@kisaki3/desktop-contracts/operations'
-import { parseImageTransform, type PreparedImage } from '@kisaki3/desktop-contracts/images'
+import { parseListOptions } from '@kisaki3/desktop-contracts/operations'
 import { parseFontUpdate, type PreparedFontFile } from '@kisaki3/desktop-contracts/fonts'
-import type { ViewResourcesApi, ReadResourceRef } from '@kisaki3/desktop-contracts/resources'
-import { releaseAll, rethrowAfterRelease } from '../../infrastructure/release'
-import { openDocumentFileInputs } from './file-inputs'
-import type { Application } from '../compose'
-import type { FontFileChoice, MainWindowApi } from '../../../shared/window-api'
-import { rpcData } from '../../../shared/window-api/protocol'
-import { textArgument } from './values'
-import { windowMethod, type WindowMethods } from './admission'
+import type { FontFileChoice } from '../../../../shared/window-api'
+import { rpcData } from '../../../../shared/window-api/protocol'
+import { releaseAll, rethrowAfterRelease } from '../../../infrastructure/release'
+import type { Application } from '../../compose'
+import type { DocumentResources } from '../resources'
+import type { DocumentFileInputs } from '../file-inputs'
+import { textArgument } from '../values'
+import { windowMethod, type WindowMethodGroup } from '../admission'
 
-type FileMethodName = Extract<keyof MainWindowApi, `fonts.${string}` | `images.${string}`>
-
-export function createFileMethods(
-  application: Application,
+export function createFontMethods(
+  fonts: Application['fonts'],
   window: BrowserWindow,
-  view: ViewResourcesApi,
-  keep: (hold: Disposable, signal: AbortSignal) => Promise<string>,
-  release: (id: string) => Promise<void>,
-  canReceive: () => boolean,
-) {
-  const { fonts, images } = application
-  const fileInputs = openDocumentFileInputs(window.webContents, canReceive)
+  resources: DocumentResources,
+  fileInputs: DocumentFileInputs,
+): WindowMethodGroup<'fonts'> {
   const preparedFonts = new Map<string, PreparedFontFile>()
-  const preparedImages = new Map<string, PreparedImage>()
-
-  async function bind<K extends string>(
-    read: Disposable,
-    inputs: Readonly<Record<K, ReadResourceRef>>,
-    signal: AbortSignal,
-  ) {
-    const binding = await view
-      .bind(inputs)
-      .catch((cause: unknown) => rethrowAfterRelease(cause, () => read.dispose()))
-    const hold = await keep(
-      {
-        dispose: () => releaseAll([() => binding.dispose(), () => read.dispose()]),
-      },
-      signal,
-    )
-    return { hold, urls: binding.urls }
-  }
 
   async function holdFont(file: PreparedFontFile, signal: AbortSignal) {
-    const { hold, urls } = await bind(file, { font: file.resource }, signal)
-    preparedFonts.set(hold, file)
+    const { hold, urls } = await resources.bind(
+      file,
+      { font: file.resource },
+      signal,
+      preparedFonts,
+    )
     return { id: hold, attachmentId: file.attachmentId, url: urls.font, metadata: file.metadata }
   }
 
@@ -59,21 +38,7 @@ export function createFileMethods(
     return file
   }
 
-  async function holdImage(image: PreparedImage, signal: AbortSignal) {
-    const { hold, urls } = await bind(image, { image: image.resource }, signal)
-    preparedImages.set(hold, image)
-    return rpcData({
-      id: hold,
-      attachmentId: image.attachmentId,
-      width: image.width,
-      height: image.height,
-      frameCount: image.frameCount,
-      format: image.format,
-      url: urls.image,
-    })
-  }
-
-  const methods = {
+  return {
     'fonts.list': windowMethod('read', async ([search, options], signal) =>
       rpcData(
         await fonts.list(
@@ -88,7 +53,7 @@ export function createFileMethods(
     ),
     'fonts.open': windowMethod('acquire', async ([id], signal) => {
       const read = await fonts.open(textArgument(id), { signal })
-      const { hold, urls } = await bind(read, read.resources, signal)
+      const { hold, urls } = await resources.bind(read, read.resources, signal)
       return rpcData({ font: read.font, hold, urls })
     }),
     'fonts.system': windowMethod('read', async (_args, signal) =>
@@ -131,18 +96,17 @@ export function createFileMethods(
         signal.throwIfAborted()
         return rpcData(result)
       } catch (error) {
-        return rethrowAfterRelease(error, () => releaseAll(added.map((id) => () => release(id))))
+        return rethrowAfterRelease(error, () =>
+          releaseAll(added.map((id) => () => resources.release(id))),
+        )
       }
     }),
-    'fonts.prepareInput': windowMethod('acquire', async ([token], signal) => {
-      const input = fileInputs.take(token)
-      try {
+    'fonts.prepareInput': windowMethod('acquire', ([token], signal) =>
+      fileInputs.consume(token, async (input) => {
         const file = await fonts.prepare(input, { signal })
         return rpcData(await holdFont(file, signal))
-      } finally {
-        input.destroy()
-      }
-    }),
+      }),
+    ),
 
     'fonts.import': windowMethod('write', async ([name, ids], signal) => {
       if (!Array.isArray(ids) || !ids.length) {
@@ -203,54 +167,5 @@ export function createFileMethods(
         return rpcData(await fonts.update(textArgument(id), input, { signal }))
       },
     ),
-
-    'images.choose': windowMethod('acquire', async (_args, signal) => {
-      const { canceled, filePaths } = await dialog.showOpenDialog(window, {
-        properties: ['openFile'],
-        filters: [
-          {
-            name: 'Images',
-            extensions: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif', 'svg', 'ico'],
-          },
-        ],
-      })
-      if (canceled) {
-        return null
-      }
-      return holdImage(
-        await images.prepare({ type: 'path', path: filePaths[0]! }, { signal }),
-        signal,
-      )
-    }),
-    'images.prepareInput': windowMethod('acquire', async ([token], signal) => {
-      const input = fileInputs.take(token)
-      try {
-        return await holdImage(await images.prepare(input, { signal }), signal)
-      } finally {
-        input.destroy()
-      }
-    }),
-    'images.transform': windowMethod('acquire', async ([id, input], signal) => {
-      const source = preparedImages.get(textArgument(id))
-      if (!source) {
-        throw new DesktopError('InvalidReference', 'The image preparation has ended')
-      }
-      return holdImage(
-        await images.transform(source.resource, parseImageTransform(input), { signal }),
-        signal,
-      )
-    }),
-  } satisfies WindowMethods<FileMethodName>
-  return {
-    methods,
-    forget(id: string) {
-      preparedFonts.delete(id)
-      preparedImages.delete(id)
-    },
-    close() {
-      fileInputs.close()
-      preparedImages.clear()
-      preparedFonts.clear()
-    },
   }
 }
