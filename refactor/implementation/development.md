@@ -70,7 +70,7 @@ renderer 的 `createViewQuery` 为独立区块提供读取结果、IPC 取消和
 
 安装时允许 esbuild 准备平台二进制。@parcel/watcher 使用平台预构建包；electron-builder-squirrel-windows 满足 app-builder-lib 的必需 peer，Windows 的 NSIS 和 ZIP 打包无需运行 electron-winstaller 的安装脚本。Electron 由桌面任务 `prepare:electron` 准备。
 
-原生构建、rustfmt 和 Clippy 使用[工具链文件](../../clients/desktop/app/native/rust-toolchain.toml)指定的版本。[Cargo 清单](../../clients/desktop/app/native/Cargo.toml)的 `rust-version` 声明这个 crate 支持的最低 Rust 版本。Windows 需要 Visual Studio C++ 工具链，macOS 需要 Xcode Command Line Tools，Linux 需要系统构建工具及 Fontconfig、FreeType 开发包。开发 Node 与 Electron 内置 Node 分开验证。
+原生构建、rustfmt 和 Clippy 使用[工具链文件](../../clients/desktop/app/native/rust-toolchain.toml)指定的版本。Windows 需要 Visual Studio C++ 工具链，macOS 需要 Xcode Command Line Tools，Linux 需要系统构建工具及 Fontconfig、FreeType 开发包。开发 Node 与 Electron 内置 Node 分开验证。
 
 ```sh
 pnpm install --frozen-lockfile
