@@ -55,7 +55,7 @@ Hono、adapter 与编译工具分别由独立仓库的 manifest、packageManager
 
 ## Node 程序构建
 
-独立仓库采用普通 TypeScript 编译到 ESM JavaScript，build 的稳定入口为 pnpm run build，产出 dist/server.js 及其模块和 source maps。类型检查与编译发生在构建阶段，运行镜像不安装编译器、执行安装脚本或从源码临时启动。普通相对导入与 package type 保持 Node ESM 的实际规则。
+独立仓库采用普通 TypeScript 编译到 ESM JavaScript，build 的稳定入口为 `pnpm exec vp run build`，产出 dist/server.js 及其模块和 source maps。类型检查与编译发生在构建阶段，运行镜像不安装编译器、执行安装脚本或从源码临时启动。普通相对导入与 package type 保持 Node ESM 的实际规则。
 
 | 镜像阶段                | 输入与责任                                                                            |
 | ----------------------- | ------------------------------------------------------------------------------------- |

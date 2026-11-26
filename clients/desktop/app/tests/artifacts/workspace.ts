@@ -14,7 +14,10 @@ export interface ArtifactWorkspace {
   close(): Promise<void>
 }
 
-export async function prepareArtifactWorkspace(archivePath: string): Promise<ArtifactWorkspace> {
+export async function prepareArtifactWorkspace(
+  archivePath: string,
+  identity: { name: string; linuxPackageName: string },
+): Promise<ArtifactWorkspace> {
   const directory = await mkdtemp(join(tmpdir(), 'kisaki-artifact-'))
 
   try {
@@ -31,14 +34,14 @@ export async function prepareArtifactWorkspace(archivePath: string): Promise<Art
         },
       )
 
-      executablePath = join(directory, 'Kisaki.exe')
+      executablePath = join(directory, identity.name + '.exe')
       resourceDirectory = join(directory, 'resources')
       fusePath = executablePath
     } else if (process.platform === 'darwin') {
       await promisify(execFile)('ditto', ['-x', '-k', archivePath, directory])
 
-      const application = join(directory, 'Kisaki.app')
-      executablePath = join(application, 'Contents', 'MacOS', 'Kisaki')
+      const application = join(directory, identity.name + '.app')
+      executablePath = join(application, 'Contents', 'MacOS', identity.name)
       resourceDirectory = join(application, 'Contents', 'Resources')
       fusePath = application
     } else {
@@ -48,7 +51,7 @@ export async function prepareArtifactWorkspace(archivePath: string): Promise<Art
       await promisify(execFile)(executablePath, ['--appimage-extract'], { cwd: directory })
 
       resourceDirectory = join(directory, 'squashfs-root', 'resources')
-      fusePath = join(directory, 'squashfs-root', 'kisaki')
+      fusePath = join(directory, 'squashfs-root', identity.linuxPackageName)
     }
 
     return {

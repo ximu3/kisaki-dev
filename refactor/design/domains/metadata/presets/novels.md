@@ -17,7 +17,7 @@
 | 英文     | RanobeDB、Bangumi、NDL Search、Wikidata、AniList | 5    |
 | 日文     | RanobeDB、Bangumi、NDL Search、Wikidata、AniList | 5    |
 
-AniList 按[来源范围](../../../extensions/sources/anilist.md#subjects)补充作品、角色和已明确主体的档案。小说上下文的人物工作成员与 note 使用适用的其他来源；混合 Staff 名单不用于建立人物工作，关联动画的普通单集时长不作为整部 declaredDurationMs。
+AniList 按[来源范围](../../../extensions/sources/anilist.md#subjects)补充作品、角色和已明确主体的档案。小说的人物工作成员来自 Bangumi，人员工作备注默认不采集；混合 Staff 名单不用于建立人物工作，关联动画的普通单集时长不作为整部 declaredDurationMs。
 
 RanobeDB 同样不从混合 Staff 名单发现人物工作；已明确 Person 自身的原作履历由人物预设采用。Series、Book 与 Release 的范围、代表封面及发行选择按[来源方案](../../../extensions/sources/ranobedb.md)执行，卷号不从 sort_order 生成。
 

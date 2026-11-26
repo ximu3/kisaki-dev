@@ -34,7 +34,7 @@ clients/desktop/app/out/<target>/
     ├── fonts/
     ├── kana/
     ├── native/
-    └── database/
+    └── drizzle/
 ```
 
 图标由唯一源稿生成，数据库资源来自受版本控制的 Drizzle 迁移目录，SQL 与运行时所需元数据按[迁移交付规则](database.md#migration-files)保留结构并打包，构建不临时生成迁移。字体来自锁定依赖和处理配置，媒体运行库及其依赖来自已核验的 libmpv-node 制品。app/paths 统一提供实际路径。需要作为程序执行的资源必须外置或解包，不能假定它们可以直接在 asar 中执行。桌面 resources 不包含扩展安装包。

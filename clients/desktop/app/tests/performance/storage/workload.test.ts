@@ -34,10 +34,9 @@ test('worker operation medians meet their budget and the window reaches main dur
     }),
     (async () => {
       while (measuringStorage) {
-        const start = performance.now()
-        await refresh.evaluate((button: HTMLButtonElement) => {
+        const latency = await refresh.evaluate((button: HTMLButtonElement) => {
           // The task center refresh reads available types through the real window endpoint on every OS.
-          return new Promise<void>((resolve, reject) => {
+          return new Promise<number>((resolve, reject) => {
             const send = (
               Object.getOwnPropertyDescriptor(MessagePort.prototype, 'postMessage') as {
                 value: MessagePort['postMessage']
@@ -52,13 +51,14 @@ test('worker operation medians meet their budget and the window reaches main dur
                 'id' in frame
               ) {
                 MessagePort.prototype.postMessage = send
+                const start = performance.now()
                 const reply = (event: MessageEvent<{ id?: number; type: string }>) => {
                   if (event.data.id !== frame.id) {
                     return
                   }
                   this.removeEventListener('message', reply)
                   if (event.data.type === 'success') {
-                    resolve()
+                    resolve(performance.now() - start)
                   } else {
                     reject(new Error('Task type query failed'))
                   }
@@ -70,7 +70,7 @@ test('worker operation medians meet their budget and the window reaches main dur
             button.click()
           })
         })
-        latencies.push(performance.now() - start)
+        latencies.push(latency)
         await setTimeout(100)
       }
     })(),

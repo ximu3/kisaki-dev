@@ -20,11 +20,11 @@ const pageChoices = [
 ] as const
 
 const textNumbers = [
-  { name: 'fontSize', unit: 'px' },
-  { name: 'lineHeight', unit: '×' },
-  { name: 'padding', unit: 'px' },
-  { name: 'maxLineLength', unit: 'em' },
-  { name: 'pagesPerView', unit: undefined },
+  { name: 'fontSize', unit: 'px', bounds: { positive: true } },
+  { name: 'lineHeight', unit: '×', bounds: { positive: true } },
+  { name: 'padding', unit: 'px', bounds: { min: 0 } },
+  { name: 'maxLineLength', unit: 'em', bounds: { positive: true } },
+  { name: 'pagesPerView', unit: undefined, bounds: { min: 1, max: 2, step: 1 } },
 ] as const
 
 export function ReadingFields(props: {
@@ -166,8 +166,8 @@ export function ReadingFields(props: {
                   value={draft.read(key) ?? ''}
                   required
                   min={0}
-                  max={2}
-                  unit="×"
+                  max={200}
+                  unit="%"
                   step="any"
                   onValueChange={(v) => draft.writeNumber(key, v)}
                   increaseLabel={t('runtime.increase')}
@@ -221,17 +221,16 @@ export function ReadingFields(props: {
           </Tooltip>
         </PreferenceField>
         <For each={textNumbers}>
-          {({ name, unit }) => {
+          {({ name, unit, bounds }) => {
             const key = `${prefix}.text.${name}` as const
             return (
               <PreferenceField field={key} label={t(`runtime.fields.${name}`)} valueClass="w-36">
                 <NumberInput
                   required
                   value={draft.read(key) ?? ''}
-                  min={name === 'pagesPerView' ? 1 : 0}
                   unit={unit}
-                  max={name === 'pagesPerView' ? 2 : undefined}
-                  step={name === 'pagesPerView' ? 1 : 'any'}
+                  step="any"
+                  {...bounds}
                   onValueChange={(v) => draft.writeNumber(key, v)}
                   increaseLabel={t('runtime.increase')}
                   decreaseLabel={t('runtime.decrease')}

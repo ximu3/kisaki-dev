@@ -150,7 +150,7 @@ PDF 使用实际物理页序转换为 pageIndex。双页显示、页码标签、
     │   ├── entry.tsx
     │   ├── page.tsx
     │   ├── selection.tsx
-    │   └── result.tsx
+    │   └── results.tsx
     └── shared/
         ├── contracts.ts
         └── values.ts

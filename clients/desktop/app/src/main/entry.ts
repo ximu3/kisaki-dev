@@ -30,13 +30,12 @@ protocol.registerSchemesAsPrivileged([
     },
   },
 ])
-app.setName('Kisaki')
 
 let released = false
 
 const activation = createActivation((error) => {
   if (!(error instanceof DesktopError && error.code === 'Cancelled')) {
-    dialog.showErrorBox('Kisaki', error instanceof Error ? error.message : String(error))
+    dialog.showErrorBox(app.name, error instanceof Error ? error.message : String(error))
   }
 })
 
@@ -68,7 +67,7 @@ app.on('window-all-closed', () => {})
 function failed(error: unknown) {
   console.error(error)
   dialog.showErrorBox(
-    'Kisaki',
+    app.name,
     error instanceof Error ? error.message : 'The application could not start',
   )
   released = true
@@ -168,7 +167,7 @@ async function run(paths: AppPaths) {
     fail(message) {
       released = true
       try {
-        dialog.showErrorBox('Kisaki', message)
+        dialog.showErrorBox(app.name, message)
       } finally {
         setImmediate(() => app.exit(1))
       }
@@ -202,7 +201,7 @@ async function run(paths: AppPaths) {
         const outcome =
           windowFailed && result.outcome === 'cancelled' ? await lifecycle.quit() : result
         if (outcome.outcome === 'failed' && !released) {
-          dialog.showErrorBox('Kisaki', outcome.error.message)
+          dialog.showErrorBox(app.name, outcome.error.message)
         }
       })
       .finally(() => {
@@ -259,7 +258,7 @@ async function run(paths: AppPaths) {
         windowFailed = true
         windowFailure.resolve('wait')
         void application.log.record('failed', error)
-        dialog.showErrorBox('Kisaki', error.message)
+        dialog.showErrorBox(app.name, error.message)
         requestExit('quit')
       },
     })
@@ -268,7 +267,7 @@ async function run(paths: AppPaths) {
     }
 
     tray = new Tray(join(paths.resources, 'icons', 'icon.png'))
-    tray.setToolTip('Kisaki')
+    tray.setToolTip(app.name)
     const { show } = view
     tray.on('click', show)
 
@@ -302,7 +301,7 @@ async function run(paths: AppPaths) {
       }
       tray!.setContextMenu(
         Menu.buildFromTemplate([
-          { label: 'Kisaki', click: show },
+          { label: app.name, click: show },
           restoreTheme,
           { type: 'separator' },
           {
@@ -314,7 +313,7 @@ async function run(paths: AppPaths) {
       Menu.setApplicationMenu(
         Menu.buildFromTemplate([
           {
-            label: 'Kisaki',
+            label: app.name,
             submenu: [
               {
                 label: application.i18n.t('runtime.preferences'),
@@ -360,6 +359,7 @@ async function run(paths: AppPaths) {
 try {
   const paths = selectPaths()
   const identity = applicationIdentities[paths.isolated ? 'development' : 'production']
+  app.setName(identity.name)
   if (process.platform === 'win32') {
     app.setAppUserModelId(identity.appId)
   } else if (process.platform === 'linux') {

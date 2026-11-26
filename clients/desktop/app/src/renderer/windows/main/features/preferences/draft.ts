@@ -80,6 +80,15 @@ function readField(source: PreferencesSnapshot | Preferences | undefined, key: P
   return availableValue(current)
 }
 
+function isPagePercentage(key: PreferenceKey) {
+  return key.endsWith('.pages.brightness') || key.endsWith('.pages.contrast')
+}
+
+function shiftDecimal(value: number, places: number) {
+  const [digits, exponent = '0'] = String(value).split('e')
+  return Number(`${digits}e${Number(exponent) + places}`)
+}
+
 function displayValue(key: PreferenceKey, value: unknown) {
   if (
     (key === 'usage.anime.audioLanguages' || key === 'usage.anime.subtitleLanguages') &&
@@ -87,7 +96,16 @@ function displayValue(key: PreferenceKey, value: unknown) {
   ) {
     return value.join(', ')
   }
-  return typeof value === 'number' ? String(value) : value
+  if (typeof value !== 'number') {
+    return value
+  }
+  if (key === 'usage.foregroundGracePeriodMs') {
+    return String(value / 60_000)
+  }
+  if (isPagePercentage(key)) {
+    return String(shiftDecimal(value, 2))
+  }
+  return String(value)
 }
 
 function numberFromInput(input: string) {
@@ -187,7 +205,14 @@ function createPreferenceFields(
   }
 
   function writeNumber(key: NumericField, input: string) {
-    writeInput(key, { input, value: numberFromInput(input) })
+    let value = numberFromInput(input)
+    if (key === 'usage.foregroundGracePeriodMs') {
+      value *= 60_000
+    }
+    if (isPagePercentage(key)) {
+      value = shiftDecimal(value, -2)
+    }
+    writeInput(key, { input, value })
   }
 
   function canReset(key: PreferenceKey) {

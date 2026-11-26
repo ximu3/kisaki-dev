@@ -124,7 +124,7 @@ library.parts.changeKind(ref, input) 完成这次更正，返回新种类的 Par
 
 | 表                    | 主键与引用                               | 当前记录                                             |
 | --------------------- | ---------------------------------------- | ---------------------------------------------------- |
-| anime_records         | anime_id，主键并引用 animes.entry_id     | 三种作品当前状态或 null，以及 additional_duration_ms |
+| anime_records         | anime_id，主键并引用 animes.entry_id     | [作品当前记录](records.md#schema)，含当前状态、附加完成次数和附加时长 |
 | anime_episode_records | episode_id，主键并引用 anime_episodes.id | is_completed 布尔标记                                |
 | anime_extra_records   | extra_id，主键并引用 anime_extras.id     | is_completed 布尔标记                                |
 

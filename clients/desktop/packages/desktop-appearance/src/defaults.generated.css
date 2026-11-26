@@ -41,7 +41,6 @@
     --shadow-modal: 0 2px 4px 0 oklch(0.13 0.02 258 / 0.1), 0 28px 64px -16px oklch(0.13 0.02 258 / 0.24);
     --font-sans: 'Noto Sans SC Variable', ui-sans-serif, system-ui, sans-serif;
     --font-mono: 'Noto Sans Mono Variable', 'Noto Sans SC Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    --text-base-size: 14px;
     --text-base-weight: 450;
     --text-base-line-height: 1.5;
     --text-base-letter-spacing: normal;
@@ -87,7 +86,6 @@
     --shadow-modal: 0 2px 4px 0 oklch(0 0 0 / 0.5), 0 28px 64px -16px oklch(0 0 0 / 0.65);
     --font-sans: 'Noto Sans SC Variable', ui-sans-serif, system-ui, sans-serif;
     --font-mono: 'Noto Sans Mono Variable', 'Noto Sans SC Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    --text-base-size: 14px;
     --text-base-weight: 450;
     --text-base-line-height: 1.5;
     --text-base-letter-spacing: normal;

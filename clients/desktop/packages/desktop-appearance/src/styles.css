@@ -44,7 +44,6 @@
     --radius-lg: var(--radius);
     --radius-xl: calc(var(--radius) + 4px);
 
-    /* rem sizes follow the document's base text size and host scale. */
     --text-xs: 0.75rem;
     --text-sm: 0.875rem;
     --text-base: 1rem;
@@ -65,7 +64,7 @@
 @layer base {
   :root {
     font-family: var(--font-sans);
-    font-size: calc(var(--text-base-size) * var(--interface-scale, 100) / 100);
+    font-size: calc(14px * var(--interface-scale, 100) / 100);
     font-weight: var(--text-base-weight);
     line-height: var(--text-base-line-height);
     letter-spacing: var(--text-base-letter-spacing);

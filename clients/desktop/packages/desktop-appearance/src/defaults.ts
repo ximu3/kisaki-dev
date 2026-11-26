@@ -49,7 +49,6 @@ export const light: TokenValues = Object.freeze({
   '--font-sans': "'Noto Sans SC Variable', ui-sans-serif, system-ui, sans-serif",
   '--font-mono':
     "'Noto Sans Mono Variable', 'Noto Sans SC Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
-  '--text-base-size': '14px',
   '--text-base-weight': '450',
   '--text-base-line-height': '1.5',
   '--text-base-letter-spacing': 'normal',
@@ -101,7 +100,6 @@ export const dark: TokenValues = Object.freeze({
   '--font-sans': "'Noto Sans SC Variable', ui-sans-serif, system-ui, sans-serif",
   '--font-mono':
     "'Noto Sans Mono Variable', 'Noto Sans SC Variable', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
-  '--text-base-size': '14px',
   '--text-base-weight': '450',
   '--text-base-line-height': '1.5',
   '--text-base-letter-spacing': 'normal',

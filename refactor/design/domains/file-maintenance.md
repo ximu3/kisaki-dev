@@ -71,7 +71,7 @@ Windows 的绝对位置须指明卷或完整的 UNC 服务器与共享名。普�
 
 ## 合并重复文件登记
 
-library.holdings.files.merge(work, { sourceFileId, targetFileId, path }) 用于用户确认两条登记实际描述同一份内容的修正。work 必须为动画、漫画或小说；两份文件都属于该作品，ID 不同，否则为 InvalidInput。targetFileId 是保留身份，path 明确选择两条记录之一的当前访问位置，其他路径为 InvalidInput；仅有新路径而没有重复登记时使用普通重定位。
+library.holdings.files.merge(work, { sourceFileId, targetFileId, path }) 用于用户确认两条登记实际描述同一份内容的修正。work 的输入种类须为动画、漫画或小说，两个文件 ID 须不同，违反这些输入条件返回 InvalidInput。文件的实际种类或作品归属不符返回 InvalidReference。targetFileId 是保留身份，path 明确选择两条记录之一的当前访问位置，其他路径为 InvalidInput；仅有新路径而没有重复登记时使用普通重定位。
 
 操作返回 { fileId, removedFileId, path }，分别为实际保留身份、移除身份和采用位置。它只整理本体登记，不移动、覆盖或删除用户媒体。相同名称、分部、大小或 hash 不自动触发此操作；不同版本和译本仍应保持各自文件。
 

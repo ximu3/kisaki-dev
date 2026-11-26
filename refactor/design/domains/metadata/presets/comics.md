@@ -17,7 +17,7 @@
 | 英文     | Bangumi、MangaUpdates、MangaDex、AniList、NDL Search、Wikidata | 6    |
 | 日文     | Bangumi、MangaUpdates、MangaDex、AniList、NDL Search、Wikidata | 6    |
 
-AniList 按[来源范围](../../../extensions/sources/anilist.md#subjects)补充作品、角色和已明确主体的档案。漫画上下文的人物工作成员与 note 使用适用的其他来源；混合 Staff 名单不用于建立人物工作，关联动画的普通单集时长也不作为整部 declaredDurationMs。
+AniList 按[来源范围](../../../extensions/sources/anilist.md#subjects)补充作品、角色和已明确主体的档案。混合 Staff 名单不用于建立人物工作，关联动画的普通单集时长也不作为整部 declaredDurationMs。
 
 MangaUpdates 的[来源合同](../../../extensions/sources/mangaupdates.md)区分混合 Author 与明确 Publisher。本作品上下文的 personWorks 使用 Bangumi，note 保持不配置；organizationWorks 采用真实原作 Publisher。已明确档案可补充原文名和条件明确的死亡日期，合编别名、当前卷数与翻译完成分别保持来源含义。
 

@@ -15,6 +15,14 @@ const names: Readonly<Record<string, string>> = {
   '+': 'Plus',
 }
 
+const keypadOperators: Readonly<Record<string, string>> = {
+  NumpadAdd: 'numadd',
+  NumpadSubtract: 'numsub',
+  NumpadMultiply: 'nummult',
+  NumpadDivide: 'numdiv',
+  NumpadDecimal: 'numdec',
+}
+
 function eventModifiers(event: KeyboardEvent): string[] {
   const modifiers = []
   if (event.ctrlKey) {
@@ -44,7 +52,13 @@ function eventAccelerator(event: KeyboardEvent) {
 
   const modifiers = eventModifiers(event)
   const shiftedDigit = event.shiftKey && /^Digit[0-9]$/.test(event.code)
-  modifiers.push(shiftedDigit ? event.code.slice(-1) : (names[event.key] ?? event.key))
+  let key = names[event.key] ?? event.key
+  if (shiftedDigit) {
+    key = event.code.slice(-1)
+  } else if (event.location === 3 && event.key !== 'Delete') {
+    key = /^[0-9]$/.test(event.key) ? 'num' + event.key : (keypadOperators[event.code] ?? key)
+  }
+  modifiers.push(key)
 
   try {
     return parseAccelerator(modifiers.join('+'))

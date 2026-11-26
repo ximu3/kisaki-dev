@@ -12,6 +12,7 @@ import styles from './styles.module.css'
 
 export interface NumberInputProps extends Omit<InputProps, 'type' | 'step'> {
   step?: number | 'any'
+  positive?: boolean
   stepCount?: number
   unit?: string | undefined
   increaseLabel: string
@@ -36,6 +37,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
     'defaultValue',
     'onValueChange',
     'stepCount',
+    'positive',
     'unit',
     'aria-describedby',
     'increaseLabel',
@@ -53,7 +55,10 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
     () => props.defaultValue ?? '',
     (next) => props.onValueChange?.(next),
   )
-  const min = createMemo(() => numberBound(props.min, -Infinity))
+  const min = createMemo(() => {
+    const bound = numberBound(props.min, -Infinity)
+    return props.positive ? Math.max(bound, Number.MIN_VALUE) : bound
+  })
   const max = createMemo(() => numberBound(props.max, Infinity))
   let input!: HTMLInputElement
 
@@ -70,6 +75,13 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
     }
     input.dispatchEvent(new Event('input', { bubbles: true }))
   }
+  function canDecrease() {
+    const current = Number(value() || 0)
+    if (props.positive && props.step === 'any' && min() === Number.MIN_VALUE) {
+      return current > (props.stepCount ?? 1)
+    }
+    return value() === '' || current > min()
+  }
   const blocked = () => (props.disabled ?? field.disabled) || props.readonly
 
   return (
@@ -78,6 +90,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
         {...rest}
         class={[frame.editor, styles.editor]}
         type="number"
+        min={props.positive ? min() : props.min}
         aria-describedby={
           [props['aria-describedby'] ?? field['aria-describedby'], props.unit ? unitId : undefined]
             .filter(Boolean)
@@ -113,7 +126,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
           type="button"
           tabindex={-1}
           aria-label={props.decreaseLabel}
-          disabled={blocked() || (value() !== '' && Number(value()) <= min())}
+          disabled={blocked() || !canDecrease()}
           onPointerDown={(event) => event.preventDefault()}
           onClick={() => step(-1)}
         >

@@ -153,7 +153,7 @@ ZIP 读取按需访问中央目录，写入逐成员消费流。拥有者提供�
 
 已知命中条目的零基位置以 `.position` 报告。动画排行按观看时长降序、同分按 ID 排列，分部数合计剧集和附加内容，缺少活动、分部或文件的动画保留零值。作业日志列出查询首读及各项中位数、P95 和最大值，`test-results/performance` 保存全部样本、输入与迁移摘要、SQLite 配置和执行计划。
 
-同一负载期间，窗口到 main 的 IPC 往返按 P95 ≤ 100 ms 验收。主进程单次同步工作的定位要求见[性能预算](../design/engineering/performance.md#measurement)。
+同一负载期间，窗口内从发送请求到收到同一 ID 回复的 IPC 往返按 P95 ≤ 100 ms 验收。主进程单次同步工作的定位要求见[性能预算](../design/engineering/performance.md#measurement)。
 
 desktop-contracts 和 desktop-localization 的独立消费者同时安装所需公共依赖的实际 tarball，由 Vite Task 准备；尚未公开的依赖通过临时消费者的 pnpm-workspace.yaml 指向这些包，不使用源码别名。
 

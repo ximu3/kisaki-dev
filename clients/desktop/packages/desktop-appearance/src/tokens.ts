@@ -3,7 +3,6 @@ export type TokenKind =
   | 'radius'
   | 'shadow'
   | 'font-family'
-  | 'font-size'
   | 'font-weight'
   | 'line-height'
   | 'letter-spacing'
@@ -53,7 +52,6 @@ export const tokens = Object.freeze({
 
   '--font-sans': 'font-family',
   '--font-mono': 'font-family',
-  '--text-base-size': 'font-size',
   '--text-base-weight': 'font-weight',
   '--text-base-line-height': 'line-height',
   '--text-base-letter-spacing': 'letter-spacing',

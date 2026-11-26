@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { homedir } from 'node:os'
-import { dirname, join } from 'node:path'
+import { dirname, isAbsolute, join } from 'node:path'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 
 async function readRegistration(path: string) {
@@ -15,6 +15,35 @@ async function readRegistration(path: string) {
   }
 }
 
+function xdgHome(configured: string | undefined, fallback: string) {
+  return configured && isAbsolute(configured) ? configured : join(homedir(), fallback)
+}
+
+function declaresProtocol(content: string, scheme: string) {
+  let mainGroup = false
+  const fields = new Map<string, string>()
+  for (const raw of content.split('\n')) {
+    const line = raw.trim()
+    if (line.startsWith('[')) {
+      mainGroup = line === '[Desktop Entry]'
+    } else if (mainGroup && !line.startsWith('#')) {
+      const separator = line.indexOf('=')
+      if (separator > 0) {
+        fields.set(line.slice(0, separator).trimEnd(), line.slice(separator + 1).trimStart())
+      }
+    }
+  }
+  return (
+    fields.get('Type') === 'Application' &&
+    fields.get('Hidden') !== 'true' &&
+    (fields
+      .get('MimeType')
+      ?.split(';')
+      .includes('x-scheme-handler/' + scheme) ??
+      false)
+  )
+}
+
 function quoteExecArgument(value: string) {
   const literal = value.replaceAll('%', '%%')
   if (value.length && !/[\s"'\\><~|&;$*?#()`]/u.test(value)) {
@@ -25,6 +54,7 @@ function quoteExecArgument(value: string) {
 }
 
 interface DesktopEntryOptions {
+  name: string
   appId: string
   scheme: string
   executable: string
@@ -33,6 +63,7 @@ interface DesktopEntryOptions {
 }
 
 export function linuxDesktopEntries({
+  name,
   appId,
   scheme,
   executable,
@@ -40,20 +71,13 @@ export function linuxDesktopEntries({
   profile,
 }: DesktopEntryOptions) {
   const desktopName = appId + '.desktop'
-  const autostart = join(
-    process.env.XDG_CONFIG_HOME ?? join(homedir(), '.config'),
-    'autostart',
-    desktopName,
-  )
-  const desktopFile = join(
-    process.env.XDG_DATA_HOME ?? join(homedir(), '.local/share'),
-    'applications',
-    desktopName,
-  )
+  const dataHome = xdgHome(process.env.XDG_DATA_HOME, '.local/share')
+  const autostart = join(xdgHome(process.env.XDG_CONFIG_HOME, '.config'), 'autostart', desktopName)
+  const desktopFile = join(dataHome, 'applications', desktopName)
   const launch = [executable, ...args].map(quoteExecArgument).join(' ')
   const owner =
     'X-Kisaki-Owner=' + appId + (profile !== undefined ? '/' + encodeURIComponent(profile) : '')
-  const header = '[Desktop Entry]\nType=Application\nName=Kisaki\n' + owner + '\n'
+  const header = '[Desktop Entry]\nType=Application\nName=' + name + '\n' + owner + '\n'
   const loginContents = header + 'Exec=' + launch + ' --login\n'
   const launcherContents =
     header + 'Exec=' + launch + ' %U\nMimeType=x-scheme-handler/' + scheme + ';\n'
@@ -90,23 +114,15 @@ export function linuxDesktopEntries({
 
   async function hasProtocolHandler() {
     const roots = [
-      process.env.XDG_DATA_HOME ?? join(homedir(), '.local/share'),
-      ...(process.env.XDG_DATA_DIRS ?? '/usr/local/share:/usr/share').split(':'),
+      dataHome,
+      ...(process.env.XDG_DATA_DIRS || '/usr/local/share:/usr/share').split(':').filter(isAbsolute),
     ]
     for (const root of roots) {
       const content = await readRegistration(join(root, 'applications', desktopName))
-      if (
-        content?.split(/\r?\n/).some(
-          (line) =>
-            line.startsWith('MimeType=') &&
-            line
-              .slice(9)
-              .split(';')
-              .includes('x-scheme-handler/' + scheme),
-        )
-      ) {
-        return true
+      if (content === null) {
+        continue
       }
+      return declaresProtocol(content, scheme)
     }
     return false
   }

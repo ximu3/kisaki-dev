@@ -1,1 +1,1 @@
-Exports 43 base visual tokens, standalone CSS value parsing, light and dark defaults, and an optional Tailwind 4 mapping. Themes store the base values, including five independent chart colors. The stylesheet derives runtime values from those tokens. The host supplies and loads fonts.
+Exports 42 base visual tokens, standalone CSS value parsing, light and dark defaults, and an optional Tailwind 4 mapping. Themes store the base values, including five independent chart colors. The stylesheet derives runtime values from those tokens. The host supplies and loads fonts.

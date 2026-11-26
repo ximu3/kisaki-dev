@@ -49,7 +49,7 @@ interface UsagePreferences {
 | navigation.order / visibleLimit                | 稳定的原生页面引用或 { extensionId, pageId } 的完整顺序；初始取本体导航目录顺序，visibleLimit 默认 7，非负安全整数；以后新页面追加 |
 | library.showNsfw                               | boolean，默认 true；不增加全局剧透开关                                                                                             |
 | library.autoRefreshHoldings                    | boolean，默认 true；不影响用户主动刷新                                                                                             |
-| usage.foregroundGracePeriodMs                  | 非负有限毫秒，默认 600000；适用范围按 [有效使用](sessions.md#timing)，不增加逐 Work 覆盖                                           |
+| usage.foregroundGracePeriodMs                  | 非负有限毫秒，默认 600000；界面以分钟编辑，默认显示 10 分钟，保留非整分钟的精度。适用范围按 [有效使用](sessions.md#timing)，不增加逐 Work 覆盖                                           |
 | usage.game.showPanelOnStart                    | boolean，默认 false                                                                                                                |
 | usage.game.panelAlwaysOnTop                    | boolean，默认 true                                                                                                                 |
 | usage.anime.audioLanguages / subtitleLanguages | 经校验、去重的有序语言标识列表，默认 []                                                                                            |
@@ -207,7 +207,7 @@ document 统一表示跟随文档规则；文档未声明时，原始页推进�
 
 fontSize 与 padding 使用 CSS px，lineHeight 使用倍数，paragraphSpacing 的数值与 maxLineLength 使用正文基准 em。maxLineLength 限制沿文字行方向的长度，横排对应宽度、竖排对应高度，不表示精确字符数量。所有数值均须有限；正文基准字号、行高和行长为正数，留白和明确段距为非负数，亮度及对比度为 0–2。custom 配色只接受合法颜色值，不接受任意 CSS 或 URL。
 
-pages.firstPage 只在缺少明确页位时参与正文路径起始原始页的配对，single 表示首张独立显示，paired 表示从首张参与正常配对。跳转、重新打开和进入中途插图不会重设这项起始规则。显示裁边、亮度和对比度不改变源文件、原始坐标或系统显示器设置。
+pages.firstPage 只在缺少明确页位时参与正文路径起始原始页的配对，single 表示首张独立显示，paired 表示从首张参与正常配对。跳转、重新打开和进入中途插图不会重设这项起始规则。亮度与对比度以 0–200% 显示，默认 100%，每次步进 1 个百分点，允许手工输入小数。显示裁边、亮度和对比度不改变源文件、原始坐标或系统显示器设置。
 
 字体选择采用[FontRef](appearance.md#fonts)和阅读用途的 document 分支。fontSize 调整正文根基准，同时保留标题、小字和 ruby 的相对层次，不保证每个段落都等于该数值；强调、图片、诗歌、表格及必要空白保持自身结构。所选字体用于普通阅读文字，特殊字形及局部结构遵守[内核样式边界](../projects/kana/styles.md)；行高、段距与对齐分别作用于普通正文，不清除其他结构。正文阅读区域留白不直接作为任意源元素的 margin。正文字号独立于应用缩放。
 

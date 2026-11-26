@@ -59,7 +59,6 @@ export const themeGroups = [
     names: [
       'font-sans',
       'font-mono',
-      'text-base-size',
       'text-base-weight',
       'text-base-line-height',
       'text-base-letter-spacing',

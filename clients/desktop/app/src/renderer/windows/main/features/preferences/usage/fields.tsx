@@ -33,7 +33,8 @@ export function UsageFields(props: UsageFieldsProps & { open: (medium: UsageMedi
         >
           <NumberInput
             required
-            unit="ms"
+            unit={t('runtime.minutesUnit')}
+            step="any"
             min={0}
             value={draft.read('usage.foregroundGracePeriodMs') ?? ''}
             increaseLabel={t('runtime.increase')}
@@ -95,7 +96,8 @@ export function AnimeUsageFields(props: UsageFieldsProps) {
       <PreferenceField field={key} label={t(`runtime.fields.${name}`)} valueClass="w-36">
         <NumberInput
           required
-          min={name === 'playbackSpeed' ? 0.01 : 0}
+          min={name === 'playbackSpeed' ? 0.01 : undefined}
+          positive={name === 'subtitleScale'}
           max={100}
           unit="×"
           step="any"
