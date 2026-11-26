@@ -19,7 +19,7 @@ export function storageOptions(
     throw new Error('Unsupported desktop test platform')
   }
   return {
-    path: join(directory, 'library.sqlite'),
+    path: join(directory, 'kisaki.sqlite'),
     migrationsDirectory,
     nativeBinding: join(appRoot, 'out/resources', hostTarget(), 'native/better-sqlite3.node'),
     collationExtension: join(appRoot, 'out/native', hostTarget(), 'kisaki-native.node'),

@@ -23,6 +23,10 @@ export function launchArgument(key: string) {
   return process.argv.find((value) => value.startsWith(prefix))?.slice(prefix.length)
 }
 
+export function databasePath(dataRoot: string) {
+  return join(dataRoot, 'kisaki.sqlite')
+}
+
 function portableMarker(path: string) {
   const info = lstatSync(path, { throwIfNoEntry: false })
   if (!info) {
@@ -40,7 +44,7 @@ function checkPortableRoot(path: string) {
   }
   if (
     readdirSync(path).length &&
-    !lstatSync(join(path, 'library.sqlite'), { throwIfNoEntry: false })?.isFile()
+    !lstatSync(databasePath(path), { throwIfNoEntry: false })?.isFile()
   ) {
     throw new Error('The portable library is incomplete')
   }
@@ -151,9 +155,7 @@ export function selectPaths() {
         if (!lstatSync(destination).isDirectory() || readdirSync(destination).length) {
           throw new DesktopError('Conflict', 'The selected location is not an empty directory')
         }
-      } else if (
-        !lstatSync(join(destination, 'library.sqlite'), { throwIfNoEntry: false })?.isFile()
-      ) {
+      } else if (!lstatSync(databasePath(destination), { throwIfNoEntry: false })?.isFile()) {
         throw new DesktopError('NotFound', 'The selected location has no existing library')
       }
       await verify(destination, target === 'existing')

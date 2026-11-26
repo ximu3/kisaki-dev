@@ -224,7 +224,7 @@ test('the exact packaged carrier retains production fuses and starts and closes 
   // Background residency is the default. End this isolated process before preparing its next launch.
   await closeApplication!()
   expect((await readdir(join(profile, 'browser'))).length).toBeGreaterThan(0)
-  const db = new Database(join(profile, 'library.sqlite'), { fileMustExist: true })
+  const db = new Database(join(profile, 'kisaki.sqlite'), { fileMustExist: true })
   try {
     expect(db.prepare('select count(*) from __drizzle_migrations').pluck().get()).toBeGreaterThan(0)
     expect(db.prepare('select count(*) from preferences where id=1').pluck().get()).toBe(1)
@@ -240,7 +240,7 @@ test('the exact packaged carrier retains production fuses and starts and closes 
   if (receipt.testOnly) {
     const portable = join(directory, portableDirectory)
     await cp(profile, portable, { recursive: true })
-    const normal = new Database(join(profile, 'library.sqlite'), { fileMustExist: true })
+    const normal = new Database(join(profile, 'kisaki.sqlite'), { fileMustExist: true })
     try {
       normal
         .prepare(
