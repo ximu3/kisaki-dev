@@ -108,7 +108,7 @@ libmpv、FFmpeg 及其匹配运行依赖由 libmpv-node 按固定版本、目标
 | Linux RPM      | x64/arm64 各自的 RPM                                                                                 | 普通                 | 应用内下载、校验，经系统授权调用包管理器安装；须完成目标验证 |
 | Linux 免安装   | x64/arm64 各自的 AppImage                                                                            | 默认普通，可启用便携 | 应用检查、下载并沿共同退出流程替换 AppImage 文件             |
 
-基线使用 Electron 45.0.0、electron-builder 26.15.3 和 electron-updater 6.8.9，锁定组合按六目标验收。应用负责版本选择、四语说明、准备安装状态与完整退出；底层工具通过公开接口及其标准更新元数据完成下载、校验和安装。
+构建使用桌面应用声明的 Electron 和 electron-builder，锁定组合按六目标验收。应用负责版本选择、四语说明、准备安装状态和完整退出。electron-updater 读取 electron-builder 生成的更新元数据，负责下载、校验和安装。
 
 各架构分别提供表中制品。Windows 每个架构交付单一 NSIS 安装包和文件夹式 ZIP；macOS 交付 DMG 与更新 ZIP；Linux 交付 DEB、RPM 和 AppImage。交付集合不包含 Universal、MSI、MSIX、web installer、portable.exe、TAR.GZ、Snap 或 Flatpak。
 
@@ -194,7 +194,9 @@ app/paths 在数据库、日志、浏览器 Session、扩展和监听启动前�
 
 Windows ZIP 由用户手动换版，无论当前采用哪种资料模式。完全退出后，将新版解压到干净目录，再带入资料和有效标记，以保持程序文件与版本一致。发行 ZIP 仅包含程序，便携标记与 data 由用户选择产生。NSIS、DEB 和 RPM 按自身安装范围更新。
 
-macOS 更新替换 .app，AppImage 更新替换原文件，外部资料和标记继续保留。electron-updater 6.8.9 的 AppImage 更新可能改变文件名，并且先删除旧文件再移动新文件，不能将其描述为原子替换或完整回滚。AppImage 替换失败后的恢复方式是重新取得并校验本次更新对应版本、同架构的正式制品，放回原程序目录，恢复执行权限后启动；原资料和标记继续使用，不能通过新建空库掩盖程序更新失败。使用文档提供该恢复步骤，验收分别覆盖资料保留与按步骤恢复启动。
+macOS 更新替换 .app。AppImage 更新先删除旧文件，再将新文件移入原程序目录。旧文件名含版本号时，更新器可能采用新版文件名。移动失败时，原目录可能已没有可启动程序，外部资料和便携标记继续保留。[AppImage 安装实现](https://github.com/electron-userland/electron-builder/blob/electron-updater%406.8.11/packages/electron-updater/src/AppImageUpdater.ts)
+
+恢复时，重新取得并校验本次更新对应版本、同架构的正式 AppImage，放回原程序目录，恢复执行权限后启动，沿用原资料和标记。使用文档提供该步骤，验收分别核对资料保留和恢复启动。
 
 各目标的 asset 名称包含系统、架构和格式，latest.yml 等汇总文件不得冲突。区分方式使用工具的官方 provider 和格式，不手写第二份清单。
 

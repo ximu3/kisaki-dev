@@ -36,15 +36,15 @@
     }
   },
   "dependencies": {
-    "@formatjs/icu-messageformat-parser": "3.5.22",
+    "@formatjs/icu-messageformat-parser": "^3.5.23",
     "@kisaki3/desktop-contracts": "workspace:^",
-    "intl-messageformat": "12.1.4"
+    "intl-messageformat": "^12.2.1"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "catalog:",
     "@kisaki3/config": "workspace:*",
     "@kisaki3/tooling": "workspace:*",
-    "@playwright/test": "1.64.1",
+    "@playwright/test": "catalog:",
     "@types/node": "catalog:",
     "publint": "catalog:",
     "typescript": "catalog:",

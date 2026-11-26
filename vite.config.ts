@@ -1,34 +1,37 @@
-import { globSync } from 'node:fs'
-import { dirname } from 'node:path'
-import { defineConfig, normalizePath } from 'vite-plus'
+import { defineConfig } from 'vite-plus'
 
-const installedConsumerInputs = globSync('**/tests/consumers/fixtures/*/package.json', {
-  cwd: import.meta.dirname,
-  exclude: [
-    'refactor/**',
-    '**/{.git,.cache,.local,node_modules,dist,out,target,artifacts,test-results,playwright-report,coverage}/**',
-  ],
-}).map((manifest) => `${normalizePath(dirname(manifest))}/**`)
+const ignoredFiles = [
+  'refactor/**',
+  '**/.cache/**',
+  '**/.local/**',
+  '**/target/**',
+  '**/dist/**',
+  '**/out/**',
+  '**/test-results/**',
+  '**/playwright-report/**',
+  '**/*.generated.ts',
+  '**/binding.d.ts',
+]
 
 export default defineConfig({
   run: {
     tasks: {
-      build: { command: 'vp run --filter "!@kisaki3/workspace" build', cache: false },
+      build: { command: 'vp run -r build', cache: false },
 
       typecheck: {
-        command: ['vp run --filter "!@kisaki3/workspace" typecheck', 'tsc -b'],
+        command: ['vp run -r typecheck', 'tsc -b'],
         cache: false,
       },
       lint: {
         command: [
           'vp run --filter "./clients/desktop/packages/*" build',
           'vp lint',
-          'node tools/boundaries.ts',
+          'pnpm exec node tools/boundaries.ts',
         ],
         cache: false,
       },
       test: {
-        command: ['vp run --filter "!@kisaki3/workspace" test', 'vp test run'],
+        command: ['vp run -r test', 'pnpm exec vp test run'],
         cache: false,
       },
       check: {
@@ -36,7 +39,7 @@ export default defineConfig({
         cache: false,
       },
 
-      clean: { command: 'vp run --filter "!@kisaki3/workspace" clean', cache: false },
+      clean: { command: 'vp run -r clean', cache: false },
     },
   },
 
@@ -45,39 +48,16 @@ export default defineConfig({
     semi: false,
     sortPackageJson: false,
     ignorePatterns: [
-      'refactor/**',
-      'pnpm-lock.yaml',
+      ...ignoredFiles,
       '**/Cargo.{toml,lock}',
-      '**/*.rs',
-      '**/binding.d.ts',
-      '**/*.generated.ts',
       '**/*.generated.css',
       'clients/desktop/app/drizzle/**',
-      '**/.cache/**',
-      '**/.local/**',
-      '**/target/**',
-      '**/out/**',
-      '**/dist/**',
-      '**/test-results/**',
-      '**/playwright-report/**',
     ],
   },
   lint: {
     plugins: ['typescript'],
     options: { typeAware: true },
-    ignorePatterns: [
-      'refactor/**',
-      '**/.local/**',
-      '**/.cache/**',
-      '**/target/**',
-      '**/dist/**',
-      '**/out/**',
-      '**/test-results/**',
-      '**/playwright-report/**',
-      '**/*.generated.ts',
-      '**/binding.d.ts',
-      ...installedConsumerInputs,
-    ],
+    ignorePatterns: [...ignoredFiles, '**/tests/consumers/fixtures/*/**'],
     rules: {
       curly: 'error',
       'no-nested-ternary': 'error',

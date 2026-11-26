@@ -306,19 +306,19 @@
     }
   },
   "dependencies": {
-    "@eslint-community/regexpp": "4.12.2",
+    "@eslint-community/regexpp": "^4.12.3",
     "@kisaki3/desktop-appearance": "workspace:^",
     "@kisaki3/extension-distribution": "workspace:^",
-    "@noble/hashes": "2.4.0",
-    "jsonc-parser": "3.3.1",
-    "valibot": "1.5.0"
+    "@noble/hashes": "^2.4.0",
+    "jsonc-parser": "^3.3.1",
+    "valibot": "^1.5.0"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "catalog:",
     "@iconify-json/mdi": "1.2.3",
     "@kisaki3/config": "workspace:*",
     "@kisaki3/tooling": "workspace:*",
-    "@playwright/test": "1.64.1",
+    "@playwright/test": "catalog:",
     "@types/node": "catalog:",
     "publint": "catalog:",
     "typescript": "catalog:",

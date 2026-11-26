@@ -20,10 +20,10 @@
 | 编译集成       | Solid 2 原生编译器 | @solidjs/vite-plugin 3.x、@solidjs/compiler 2.x |
 | 基础控件       | Solid 2 与浏览器原生能力 | 按[UI 合同](../ui/package.md)实现并验证 |
 | 虚拟列表与网格 | desktop-ui | 自研纵向行几何，见[几何边界](../ui/virtualization.md#geometry) |
-| 拖拽排序       | Pragmatic Drag and Drop    | 核心与辅助包的固定版本见 [拖拽实现](../ui/virtualization.md#dependency)          |
+| 拖拽排序       | Pragmatic Drag and Drop    | 核心与辅助包的职责见 [拖拽实现](../ui/virtualization.md#dependency)          |
 | 系统与功能图标 | Material Design Icons | 静态路径使用 @mdi/js 7.4.47，名称和别名使用 @iconify-json/mdi 1.2.3。[UI 图标值](../extensions/webview.md#icons) |
 
-原生窗口、公共 UI 和官方扩展采用 Solid 2。应用的 Vite 构建使用 @solidjs/vite-plugin，公共 UI 的 vp pack 构建直接调用 @solidjs/compiler。具体版本以工作区 catalog 与锁文件为准。
+原生窗口、公共 UI 和官方扩展采用 Solid 2。应用的 Vite 构建使用 @solidjs/vite-plugin，公共 UI 的 vp pack 构建直接调用 @solidjs/compiler。依赖范围由成员清单与工作区 catalog 声明，实际版本见 pnpm-lock.yaml。
 
 Solid 的活跃属性、快照、派生值和副作用保持区别，不能为统一外观采用会改变其响应性的解构或封装。
 
@@ -174,7 +174,7 @@ workspace 按实际工程登记。根检查运行各项目声明的类型入口�
 
 `packages/config` 按工具导出 TypeScript 预设与共用的 Vite 库配置。根 `vite.config.ts` 拥有全仓任务、lint、格式与暂存文件规则。工程进程、取消、错误交付与输出清理归 `packages/tooling`。
 
-类型感知 lint 使用工作区锁定的 Oxlint 与 tsgolint，按实际类型项目分析源码。桌面工程载体、UI 展示样板和测试宿主随仓库检查。具有独立 package.json 的消费者样板在仓库外安装实际 tarball 后执行类型检查和 lint，使用根配置的完整规则和安装目录中的类型声明。
+类型感知 lint 使用Vite+ 配套的 Oxlint 与 tsrs，按实际类型项目分析源码。桌面工程载体、UI 展示样板和测试宿主随仓库检查。具有独立 package.json 的消费者样板在仓库外安装实际 tarball 后执行类型检查和 lint，使用根配置的完整规则和安装目录中的类型声明。
 
 各项目限定自己的 Node、DOM、Electron、Solid 和测试环境。其他语言工程保留对应工具链与锁文件，不为目录一致而改用 pnpm 管理原生依赖。出现无法在共同工具链中可靠开发与验证的真实约束时，再明确调整工作区边界。
 
@@ -246,7 +246,7 @@ UI 与其他包遵守同一分工，不另设仅为跳过依赖声明的配置�
 
 根工程和每个 pnpm workspace 成员都在自己的 `vite.config.ts` 的 `run.tasks` 中定义全部命名工程任务。全仓 `check`、包内 `test`、单行 `typecheck` 和手动生成命令遵守同一规则。每个任务名在所属工程只定义一次，公共包从 `@kisaki3/config/vite/library` 取得共同任务。
 
-工作区的 `package.json.scripts` 仅用于包管理器自动触发的生命周期钩子，例如 `prepack`。仓库外安装的消费者样板和交付给第三方的作者模板按各自工具链提供命令。
+工作区的 `package.json.scripts` 用于包管理器自动触发的生命周期钩子，例如 `prepack`。Vite Task 要求同一工程中的 script 和配置任务各有唯一名称。仓库外安装的消费者样板和交付给第三方的作者模板按各自工具链提供命令。
 
 用 `pnpm exec vp run <任务>` 调用当前工程的任务，用 `pnpm exec vp run <包名>#<任务>` 指定成员。`--filter` 选择多个成员，`pnpm exec vp run --json` 列出任务及其依赖。根工程提供 `build`、`typecheck`、`lint`、`test`、`check` 和 `clean`。读取公共导出的任务通过 `dependsOn` 先准备所需构建。[Vite+ 任务](https://viteplus.dev/guide/run)
 
@@ -322,6 +322,8 @@ CI 比较基线与完整候选树，删除和改名计入差异两端。根目�
 ## 依赖更新与安全修复
 
 Kisaki 和四个独立项目启用依赖图与安全告警。Dependabot 在支持的情况下创建安全修复 PR，常规升级由维护者或受托 agent 按实际需要处理，不安排固定每周升级、自动合并或自动发行。工具无法生成修复时，维护者仍需处理问题，规则见 [GitHub 安全更新](https://docs.github.com/en/code-security/concepts/supply-chain-security/dependabot-security-updates)。
+
+普通依赖在 manifest 或 catalog 中声明兼容范围，由 pnpm-lock.yaml 和 Cargo.lock 记录实际组合。包管理器、预发布编译器、带源码补丁的版本和需要配套验证的桌面运行时使用精确版本。升级 Vite+ 时从其发行清单读取 Vite core 别名与 Vitest 版本。pnpm 的 `vite@*`、`vitest@*` overrides 让传递依赖使用这组版本，并保留成员自己的 catalog 引用。[Vite+ 项目升级](https://viteplus.dev/guide/upgrade-project)
 
 升级应有明确目的，例如获得所需能力、解决问题或替换停止维护的依赖。manifest、catalog、锁文件和相关代码同步修改，并按影响范围执行检查。Electron、打包、更新或原生依赖即使只升级 patch 版本，也要验证实际平台行为。
 

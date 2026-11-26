@@ -9,7 +9,7 @@
     "@kisaki3/desktop-rpc": "0.1.0-dev.0"
   },
   "devDependencies": {
-    "@types/node": "24.19.2",
+    "@types/node": "24.19.4",
     "typescript": "7.1.0-beta"
   }
 }

@@ -2,53 +2,35 @@ packages:
   - packages/*
   - clients/desktop/app
   - clients/desktop/packages/*
-saveExact: true
+
 engineStrict: true
 strictPeerDependencies: true
 autoInstallPeers: false
 
 catalog:
-  '@arethetypeswrong/cli': 0.18.5
-  '@solidjs/compiler': ^2.0.3
-  '@solidjs/vite-plugin': ^3.0.1
+  '@arethetypeswrong/cli': ^0.18.5
+  '@mdi/js': 7.4.47
+  '@playwright/test': ^1.65.1
+  '@solidjs/vite-plugin': 3.0.1
   '@solidjs/web': ^2.0.4
-  '@types/node': 24.19.2
-  electron: 45.3.2
-  publint: 0.3.25
+  '@tailwindcss/cli': ^4.3.5
+  '@types/node': ^24.19.4
+  publint: ^0.3.25
   solid-js: ^2.0.4
+  tailwindcss: ^4.3.5
   typescript: 7.1.0-beta
-  vite: npm:@voidzero-dev/vite-plus-core@1.6.0
-  vite-plus: 1.6.0
-  vitest: 5.1.0
+  vite: npm:@voidzero-dev/vite-plus-core@8.3.8001
+  vite-plus: 1.8.0
+  vitest: 5.1.1
 
 overrides:
-  '@solidjs/compiler': 'catalog:'
-  vite: 'catalog:'
-  vitest: 'catalog:'
-
-# dependency-cruiser 18 extracts type-only edges using the pre-7 compiler API.
-packageExtensions:
-  dependency-cruiser@18:
-    dependencies:
-      typescript: 6.0.3
-
-peerDependencyRules:
-  # The Vite+ core exposes Vite's APIs under the suite's own version.
-  allowedVersions:
-    vite: 1.6.0
+  vite@*: 'catalog:'
+  vitest@*: 'catalog:'
 
 allowBuilds:
   '@parcel/watcher': false
-  better-sqlite3: false
-  electron: true
   electron-winstaller: false
   esbuild: true
-  sharp: true
 
-minimumReleaseAgeExclude:
-  - '@zip.js/zip.js@2.25.0'
-  - electron@45.3.2
-
-# Limit the SSR error overlay protection to server rendering so desktop HMR receives rapid repairs.
 patchedDependencies:
   '@solidjs/vite-plugin@3.0.1': config/pnpm/@solidjs__vite-plugin@3.0.1.patch

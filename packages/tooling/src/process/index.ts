@@ -1,4 +1,4 @@
-import { spawn } from 'node:child_process'
+import { execSync, spawn } from 'node:child_process'
 import { basename } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { stopProcessGroup } from './unix.ts'
@@ -89,14 +89,15 @@ export async function run(
   }
 }
 
-function pnpmExecutable(): string {
-  const executable = process.env.npm_execpath
-  if (!executable) {
-    throw new Error('Run this workflow with pnpm exec vp run')
-  }
-  return executable
-}
+let pnpm: string | undefined
 
 export async function runPnpm(args: string[], options: ProcessOptions = {}): Promise<void> {
-  await run(pnpmExecutable(), args, options)
+  options.signal?.throwIfAborted()
+  // On Windows, Vite Task can set npm_execpath to pnpm.cmd, which Node cannot spawn directly.
+  pnpm ??= execSync('pnpm exec node -p process.env.npm_execpath', {
+    cwd: import.meta.dirname,
+    encoding: 'utf8',
+    windowsHide: true,
+  }).trim()
+  await run(pnpm, args, options)
 }
