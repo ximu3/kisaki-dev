@@ -14,7 +14,7 @@ import {
 import type { Storage } from '../../infrastructure/database'
 import type { PreferenceRow } from '../../infrastructure/database/executor'
 import {
-  hasStoredDefinition,
+  usesStoredValue,
   readPreferenceField,
   storedPreferencePaths,
 } from '../../infrastructure/database/preference-fields'
@@ -72,7 +72,7 @@ function fieldReplacements(
     }
 
     const baseline = readPreferenceField(expected, path)
-    const current = hasStoredDefinition(group, path)
+    const current = usesStoredValue(group, path)
       ? readPreferenceField(saved, [...path, 'value'])
       : readPreferenceField(saved, path)
     if (baseline !== undefined && !isDeepStrictEqual(current, baseline)) {

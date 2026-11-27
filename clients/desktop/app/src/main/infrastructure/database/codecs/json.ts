@@ -2,7 +2,7 @@ import { customType } from 'drizzle-orm/sqlite-core'
 import { sql } from 'drizzle-orm'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { parseJsonValue, parseStrictJson } from '@kisaki3/desktop-contracts/json'
-import type { StoredDefinition } from '@kisaki3/desktop-contracts/operations'
+import type { StoredValue } from '@kisaki3/desktop-contracts/operations'
 
 export type ValueParser<T> = (input: unknown) => T
 
@@ -44,10 +44,7 @@ export function readWithFallback<T>(source: unknown, parse: ValueParser<T>, fall
   }
 }
 
-export function readStoredDefinition<T>(
-  source: unknown,
-  parse: ValueParser<T>,
-): StoredDefinition<T> {
+export function readStoredValue<T>(source: unknown, parse: ValueParser<T>): StoredValue<T> {
   try {
     return { status: 'ready', value: parse(readJsonText(source)) }
   } catch (error) {
@@ -61,20 +58,20 @@ export function readStoredDefinition<T>(
   }
 }
 
-export function ready<T>(value: T): StoredDefinition<T> {
+export function ready<T>(value: T): StoredValue<T> {
   return { status: 'ready', value }
 }
 
 export function storedJsonColumn<T>(parse: ValueParser<T>) {
-  return customType<{ data: StoredDefinition<T>; driverData: string; jsonData: unknown }>({
+  return customType<{ data: StoredValue<T>; driverData: string; jsonData: unknown }>({
     dataType: () => 'text',
     toDriver(value) {
       if (value.status !== 'ready') {
-        throw new DesktopError('InvalidInput', 'Cannot save an invalid stored definition')
+        throw new DesktopError('InvalidInput', 'Cannot save an invalid stored value')
       }
       return JSON.stringify(parse(value.value))
     },
-    fromDriver: (source) => readStoredDefinition(source, parse),
-    fromJson: (source) => readStoredDefinition(source, parse),
+    fromDriver: (source) => readStoredValue(source, parse),
+    fromJson: (source) => readStoredValue(source, parse),
   })
 }

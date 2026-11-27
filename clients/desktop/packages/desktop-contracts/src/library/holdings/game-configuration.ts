@@ -1,4 +1,4 @@
-import type { StoredDefinition, CallOptions } from '../../operations'
+import type { StoredValue, CallOptions } from '../../operations'
 import type { ReorderInput, MoveInput } from '../ordering'
 import * as v from 'valibot'
 import { parseAbsolutePath } from '../../paths'
@@ -41,7 +41,7 @@ export interface GameLaunchConfig {
   readonly name: string
   readonly note: string | null
 
-  readonly definition: StoredDefinition<GameLaunchDefinition>
+  readonly definition: StoredValue<GameLaunchDefinition>
   readonly isPreferred: boolean
   readonly sortOrder: number
 

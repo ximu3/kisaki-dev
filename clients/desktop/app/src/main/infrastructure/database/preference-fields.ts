@@ -38,7 +38,7 @@ const selectionFields: ReadonlySet<string> = new Set([
   'usage.novel.text.font',
 ])
 
-export function hasStoredDefinition(group: PreferenceGroup, path: readonly string[]) {
+export function usesStoredValue(group: PreferenceGroup, path: readonly string[]) {
   return group === 'shortcuts' || selectionFields.has([group, ...path].join('.'))
 }
 

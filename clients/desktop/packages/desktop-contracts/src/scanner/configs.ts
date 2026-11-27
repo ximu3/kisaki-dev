@@ -1,6 +1,6 @@
 import * as v from 'valibot'
 import { parseAbsolutePath, parsePathFilter, type PathFilter } from '../paths'
-import type { NonEmptyArray, StoredDefinition, CallOptions, Disposable } from '../operations'
+import type { NonEmptyArray, StoredValue, CallOptions, Disposable } from '../operations'
 import type { ReorderInput } from '../library/ordering'
 import {
   parseClueExtractionRuleShape,
@@ -50,7 +50,7 @@ export interface ScanConfig<T extends WorkType = WorkType> {
   readonly workType: T
   readonly rootPath: string
   readonly metadataProfileId: string
-  readonly definition: StoredDefinition<ScanDefinition>
+  readonly definition: StoredValue<ScanDefinition>
   readonly registerExistingContent: boolean
   readonly watchEnabled: boolean
 

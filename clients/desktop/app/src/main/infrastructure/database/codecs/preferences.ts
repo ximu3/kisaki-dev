@@ -9,10 +9,10 @@ import {
   parseNetworkPreferences,
   type NetworkPreferences,
 } from '@kisaki3/desktop-contracts/network'
-import type { StoredDefinition } from '@kisaki3/desktop-contracts/operations'
+import type { StoredValue } from '@kisaki3/desktop-contracts/operations'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
-  hasStoredDefinition,
+  usesStoredValue,
   readPreferenceField,
   setPreferenceField,
   storedPreferencePaths,
@@ -24,7 +24,7 @@ type OrdinaryGroup = Exclude<keyof Preferences, 'network'>
 export type StoredNetworkPreferences = Omit<NetworkPreferences, 'credentials'>
 
 export type StoredPreferences = Omit<PreferencesSnapshot, 'network'> & {
-  readonly network: StoredDefinition<StoredNetworkPreferences>
+  readonly network: StoredValue<StoredNetworkPreferences>
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -44,7 +44,7 @@ function parseField(path: readonly string[], value: unknown): unknown {
 function readGroup<K extends OrdinaryGroup>(group: K, source: unknown, defaults: Preferences[K]) {
   const fields = {}
   for (const path of storedPreferencePaths[group]) {
-    const explicitFailure = hasStoredDefinition(group, path)
+    const explicitFailure = usesStoredValue(group, path)
     let value: unknown
     try {
       value = parseField([group, ...path], readPreferenceField(source, path))
@@ -77,7 +77,7 @@ function unwrapSelections(group: OrdinaryGroup, value: unknown): unknown {
 
   const fields = structuredClone(value)
   for (const path of storedPreferencePaths[group]) {
-    if (!hasStoredDefinition(group, path)) {
+    if (!usesStoredValue(group, path)) {
       continue
     }
 

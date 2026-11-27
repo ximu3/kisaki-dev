@@ -7,7 +7,7 @@ import type {
 import type { FileWorkType, EntryRef, PartRef } from '../catalog'
 
 import type {
-  StoredDefinition,
+  StoredValue,
   ListOptions,
   CallOptions,
   ListResult,
@@ -77,21 +77,21 @@ export type HeldFile<T extends FileWorkType = FileWorkType> = {
     readonly associations: readonly FileAssociation<K>[]
 
     readonly availability: FileAvailability
-    readonly preferences: StoredDefinition<UsageOverride<FilePreferencesByType[K]>> | null
+    readonly preferences: StoredValue<UsageOverride<FilePreferencesByType[K]>> | null
     readonly createdAt: number
     readonly updatedAt: number
   } & FileAssociationState &
     (K extends 'anime'
       ? {
           readonly kind: 'file'
-          readonly metadata: StoredDefinition<AnimeFileMetadata> | null
-          readonly position: StoredDefinition<number> | null
-          readonly playbackChoices: StoredDefinition<FilePlaybackChoices>
+          readonly metadata: StoredValue<AnimeFileMetadata> | null
+          readonly position: StoredValue<number> | null
+          readonly playbackChoices: StoredValue<FilePlaybackChoices>
         }
       : {
           readonly kind: 'file' | 'directory'
-          readonly metadata: StoredDefinition<ReadingFileMetadata> | null
-          readonly position: StoredDefinition<ReadingPosition> | null
+          readonly metadata: StoredValue<ReadingFileMetadata> | null
+          readonly position: StoredValue<ReadingPosition> | null
           readonly progress: number | null
           readonly textEncoding: TextEncoding | null
         })

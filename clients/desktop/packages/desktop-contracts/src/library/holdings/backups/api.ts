@@ -2,7 +2,7 @@ import type {
   ListOptions,
   CallOptions,
   ListResult,
-  StoredDefinition,
+  StoredValue,
   NonEmptyArray,
 } from '../../../operations'
 
@@ -152,7 +152,7 @@ export type GameBackupRecoveryDetail = GameBackupRecovery &
     | { readonly manifestSha256: null; readonly manifest: null }
     | {
         readonly manifestSha256: string
-        readonly manifest: StoredDefinition<GameBackupRecoveryManifest>
+        readonly manifest: StoredValue<GameBackupRecoveryManifest>
       }
   )
 

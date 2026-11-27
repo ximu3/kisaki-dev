@@ -1,4 +1,4 @@
-import type { NonEmptyArray, StoredDefinition, CallOptions } from '../operations'
+import type { NonEmptyArray, StoredValue, CallOptions } from '../operations'
 import type { ReorderInput } from './ordering'
 import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
 import {
@@ -46,7 +46,7 @@ export interface ShowcaseFields {
 
 export interface ShowcaseSection extends Omit<ShowcaseFields, 'query'> {
   readonly id: string
-  readonly query: StoredDefinition<ShowcaseQuery>
+  readonly query: StoredValue<ShowcaseQuery>
   readonly sortOrder: number
   readonly createdAt: number
   readonly updatedAt: number

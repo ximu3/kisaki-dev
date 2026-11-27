@@ -7,7 +7,7 @@ import type {
 } from '../../preferences/usage'
 import type { FileWorkType, PartRef, EntryRef } from '../catalog'
 
-import type { CallOptions, StoredDefinition, NonEmptyArray } from '../../operations'
+import type { CallOptions, StoredValue, NonEmptyArray } from '../../operations'
 import * as v from 'valibot'
 import {
   nonnegativeInteger,
@@ -68,7 +68,7 @@ export interface HoldingsPreferencesApi {
     work: EntryRef<T>,
     target: UsagePreferenceTarget,
     call?: CallOptions,
-  ): Promise<StoredDefinition<UsageOverride<FilePreferencesByType[T]>> | null>
+  ): Promise<StoredValue<UsageOverride<FilePreferencesByType[T]>> | null>
 
   update<
     Args extends {
@@ -98,7 +98,7 @@ export interface FilePlaybackChoicesApi {
     animeId: string,
     fileId: string,
     call?: CallOptions,
-  ): Promise<StoredDefinition<FilePlaybackChoices>>
+  ): Promise<StoredValue<FilePlaybackChoices>>
 
   update(
     animeId: string,

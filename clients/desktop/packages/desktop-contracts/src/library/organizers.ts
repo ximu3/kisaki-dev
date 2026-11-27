@@ -1,6 +1,6 @@
 import { membershipChangeSchema } from './membership'
 import type {
-  StoredDefinition,
+  StoredValue,
   NonEmptyArray,
   ListOptions,
   CallOptions,
@@ -43,7 +43,7 @@ export type Collection = CollectionFields & {
   readonly updatedAt: number
 } & (
     | { readonly membershipMode: 'manual'; readonly dynamicRules: null }
-    | { readonly membershipMode: 'dynamic'; readonly dynamicRules: StoredDefinition<DynamicRules> }
+    | { readonly membershipMode: 'dynamic'; readonly dynamicRules: StoredValue<DynamicRules> }
   )
 
 export interface Tag extends TagFields {
