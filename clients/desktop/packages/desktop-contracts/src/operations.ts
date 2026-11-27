@@ -55,7 +55,7 @@ export type KeyedResult<
         }
     : Partial<Values>
 
-export type StoredDefinition<T> =
+export type StoredValue<T> =
   | { readonly status: 'ready'; readonly value: T }
   | { readonly status: 'invalid'; readonly error: ErrorSummary }
 

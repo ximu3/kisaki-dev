@@ -1,6 +1,6 @@
 import { and, count, desc, eq, inArray, lt, gte, sql, type SQL } from 'drizzle-orm'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
-import type { StoredDefinition, ListOptions } from '@kisaki3/desktop-contracts/operations'
+import type { StoredValue, ListOptions } from '@kisaki3/desktop-contracts/operations'
 import type { JsonValue } from '@kisaki3/desktop-contracts/json'
 import {
   isTaskTerminal,
@@ -17,7 +17,7 @@ import { ready } from '../../infrastructure/database/codecs/json'
 
 const activeStatuses = taskRunStatuses.filter((status) => !isTaskTerminal(status))
 
-function unwrap<T>(value: StoredDefinition<T> | null): T | null {
+function unwrap<T>(value: StoredValue<T> | null): T | null {
   if (value?.status === 'invalid') {
     throw new DesktopError(value.error.code, value.error.message)
   }

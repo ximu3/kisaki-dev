@@ -112,7 +112,7 @@ pnpm exec vp run @kisaki3/desktop#package:candidate --target windows-x64
 
 数据库使用配套的 Drizzle ORM 与 Kit，better-sqlite3 由桌面 Electron 加载。具体版本见[应用依赖](../../clients/desktop/app/package.json)。`database/initialize` 接收数据库、原生驱动、迁移目录的明确路径及当前完整偏好默认值；路径拥有者先以 `files.assertLocalDataDirectory` 核对实际卷或挂载。初始化核对格式与迁移链，执行迁移、建立或恢复名称排序器，并在缺失时插入偏好首行。返回连接后，应用在开放资料库查询前采用实际生效的语言。业务事务由 worker 的 better-sqlite3 连接同步执行，查询与值映射可以使用同连接的 Drizzle。关闭前先结束数据库消费者。
 
-连接使用 WAL、FULL，以及 macOS 的 fullfsync；页缓存目标为 32 MiB。表、外键、CHECK 和索引由 schema 定义；保存的执行配置、身份与定位值通过 `StoredDefinition` 表达读取问题，普通偏好按独立字段采用默认值。读取投影不会自动写回；后续业务更新须保留未修改的原始字段。
+连接使用 WAL、FULL，以及 macOS 的 fullfsync；页缓存目标为 32 MiB。表、外键、CHECK 和索引由 schema 定义；保存的执行配置、身份与定位值通过 `StoredValue` 表达读取问题，普通偏好按独立字段采用默认值。读取投影不会自动写回；后续业务更新须保留未修改的原始字段。
 
 首次发行前，已迁移的开发库按本体标识、迁移名称与摘要识别。基线变更后，用新建的隔离资料目录验证，保留原开发库文件。历史摘要不符时报告格式错误。空库认领与首次迁移中断后的重试见[初始化与版本迁移](../design/engineering/database.md#initialization)。
 

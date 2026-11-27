@@ -1,6 +1,6 @@
 import type { WorkType, EntryRef, WorkRef, FileWorkType } from '../catalog'
 
-import type { StoredDefinition, NonEmptyArray, CallOptions } from '../../operations'
+import type { StoredValue, NonEmptyArray, CallOptions } from '../../operations'
 import * as v from 'valibot'
 import { parseAbsolutePath, parsePathFilter, type PathFilter } from '../../paths'
 import {
@@ -29,7 +29,7 @@ export type ContentDirectory<T extends WorkType = WorkType> = {
     readonly updatedAt: number
   } & (K extends FileWorkType
     ? {
-        readonly definition: StoredDefinition<DirectoryDiscoveryDefinition>
+        readonly definition: StoredValue<DirectoryDiscoveryDefinition>
         readonly recognitionProfileId: string | null
       }
     : object)

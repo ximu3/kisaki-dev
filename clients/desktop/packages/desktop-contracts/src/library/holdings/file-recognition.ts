@@ -1,6 +1,6 @@
 import type { FileWorkType, AnimeEpisodeType, AnimeExtraType, EntryRef, PartRef } from '../catalog'
 
-import type { NonEmptyArray, StoredDefinition, CallOptions } from '../../operations'
+import type { NonEmptyArray, StoredValue, CallOptions } from '../../operations'
 import type { ReorderInput } from '../ordering'
 import * as v from 'valibot'
 import {
@@ -119,7 +119,7 @@ export type FileRecognitionProfile<T extends FileWorkType = FileWorkType> = {
     readonly name: string
     readonly description: string | null
 
-    readonly definition: StoredDefinition<FileRecognitionDefinition<K>>
+    readonly definition: StoredValue<FileRecognitionDefinition<K>>
     readonly sortOrder: number
 
     readonly createdAt: number

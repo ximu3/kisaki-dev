@@ -1,4 +1,4 @@
-import type { StoredDefinition, CallOptions, Disposable } from '../operations'
+import type { StoredValue, CallOptions, Disposable } from '../operations'
 import * as v from 'valibot'
 import { parseUiTranslationRef, type UiTranslationRef } from '../i18n'
 import {
@@ -111,7 +111,7 @@ export interface PreferencesUpdate {
 
 export type ReadingPreferencesSnapshot = Omit<ReadingPreferences, 'text'> & {
   readonly text: Omit<ReadingPreferences['text'], 'font'> & {
-    readonly font: StoredDefinition<ReadingPreferences['text']['font']>
+    readonly font: StoredValue<ReadingPreferences['text']['font']>
   }
 }
 
@@ -120,15 +120,15 @@ export type PreferencesSnapshot = Omit<
   'general' | 'appearance' | 'navigation' | 'usage' | 'shortcuts' | 'network'
 > & {
   readonly general: Omit<GeneralPreferences, 'uiTranslation'> & {
-    readonly uiTranslation: StoredDefinition<UiTranslationRef>
+    readonly uiTranslation: StoredValue<UiTranslationRef>
   }
 
   readonly appearance: Omit<AppearancePreferences, 'theme'> & {
-    readonly theme: StoredDefinition<AppearancePreferences['theme']>
+    readonly theme: StoredValue<AppearancePreferences['theme']>
   }
 
   readonly navigation: Omit<NavigationPreferences, 'order'> & {
-    readonly order: StoredDefinition<readonly PageRef[]>
+    readonly order: StoredValue<readonly PageRef[]>
   }
 
   readonly usage: Omit<UsagePreferences, 'comic' | 'novel'> & {
@@ -136,9 +136,9 @@ export type PreferencesSnapshot = Omit<
     readonly novel: ReadingPreferencesSnapshot
   }
 
-  readonly shortcuts: Readonly<Record<ShortcutKey, StoredDefinition<readonly string[]>>>
+  readonly shortcuts: Readonly<Record<ShortcutKey, StoredValue<readonly string[]>>>
 
-  readonly network: StoredDefinition<NetworkPreferences>
+  readonly network: StoredValue<NetworkPreferences>
 }
 
 export type ReadingPreferenceKey =

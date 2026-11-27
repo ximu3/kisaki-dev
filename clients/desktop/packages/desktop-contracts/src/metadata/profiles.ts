@@ -1,4 +1,4 @@
-import type { NonEmptyArray, StoredDefinition, CallOptions, Disposable } from '../operations'
+import type { NonEmptyArray, StoredValue, CallOptions, Disposable } from '../operations'
 import type { LocalizedText } from '@kisaki3/extension-distribution/metadata'
 import type { ReorderInput } from '../library/ordering'
 import * as v from 'valibot'
@@ -97,7 +97,7 @@ export type MetadataProfile<T extends EntryType = EntryType> = {
     readonly entryType: K
 
     readonly preferredLanguages: readonly string[]
-    readonly definition: StoredDefinition<MetadataProfileDefinition<K>>
+    readonly definition: StoredValue<MetadataProfileDefinition<K>>
 
     readonly isDefault: boolean
     readonly sortOrder: number

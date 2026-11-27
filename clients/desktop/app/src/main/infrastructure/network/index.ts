@@ -7,7 +7,7 @@ import {
   type AuthInfo,
 } from 'electron'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
-import type { CallOptions, StoredDefinition } from '@kisaki3/desktop-contracts/operations'
+import type { CallOptions, StoredValue } from '@kisaki3/desktop-contracts/operations'
 import type {
   NetworkPreferences,
   NetworkFetchOptions,
@@ -99,7 +99,7 @@ export function createNetwork(
   }
 
   return {
-    apply(saved: StoredDefinition<NetworkPreferences>) {
+    apply(saved: StoredValue<NetworkPreferences>) {
       const version = ++generation
       publish({ status: 'applying' })
       routed.clear()
