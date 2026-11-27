@@ -11,7 +11,6 @@ import {
   type Virtualizer,
 } from '@kisaki3/desktop-ui/virtualization'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@kisaki3/desktop-ui/tooltip'
-import type { Translate } from '@kisaki3/desktop-localization'
 import { reportError } from '../../../../infrastructure/notifications'
 import type { MainClient } from '../../../../infrastructure/api'
 import { TaskStatus, TaskTypeIcon, taskDuration } from './presentation'
@@ -55,7 +54,7 @@ export function TaskRow(props: {
             <ActiveCells api={props.api} row={row()} open={() => props.open(row().id)} />
           ) : (
             <FinishedCells
-              t={props.api.t}
+              api={props.api}
               row={row()}
               open={() => props.open(row().id)}
               remove={() => props.remove(row())}
@@ -148,7 +147,7 @@ function ActiveCells(props: RowProps & { api: MainClient }) {
         <Show when={quantitative()}>
           {(progress) => (
             <Progress
-              aria-label={api.t('runtime.progress')}
+              aria-label={api.t('tasks.fields.progress')}
               value={progress().completed}
               max={progress().total}
             />
@@ -162,28 +161,28 @@ function ActiveCells(props: RowProps & { api: MainClient }) {
         <div class="flex items-center justify-end gap-0.5">
           <Show when={state()?.canPause}>
             <TaskAction
-              label={api.t('runtime.pause')}
+              label={api.t('tasks.controls.pause')}
               icon={<Icon path={mdiPause} />}
               run={() => control('tasks.pause')}
             />
           </Show>
           <Show when={state()?.canResume}>
             <TaskAction
-              label={api.t('runtime.resume')}
+              label={api.t('tasks.controls.resume')}
               icon={<Icon path={mdiPlay} />}
               run={() => control('tasks.resume')}
             />
           </Show>
           <Show when={state()?.canCancel}>
             <TaskAction
-              label={api.t('runtime.sendCancel')}
+              label={api.t('tasks.controls.cancel')}
               icon={<Icon path={mdiStop} />}
               run={() => control('tasks.cancel')}
               destructive
             />
           </Show>
           <TaskAction
-            label={api.t('runtime.detail')}
+            label={api.t('tasks.details.title')}
             icon={<Icon path={mdiInformationOutline} />}
             run={props.open}
           />
@@ -193,8 +192,8 @@ function ActiveCells(props: RowProps & { api: MainClient }) {
   )
 }
 
-function FinishedCells(props: RowProps & { t: Translate; remove: () => void }) {
-  const locale = () => document.documentElement.lang
+function FinishedCells(props: RowProps & { api: MainClient; remove: () => void }) {
+  const { t, locale } = props.api
   return (
     <>
       <TableCell>
@@ -204,17 +203,17 @@ function FinishedCells(props: RowProps & { t: Translate; remove: () => void }) {
         {taskDuration(props.row, locale()) ?? '—'}
       </TableCell>
       <TableCell>
-        <TaskStatus t={props.t} status={props.row.status} />
+        <TaskStatus t={t} status={props.row.status} />
       </TableCell>
       <TableCell align="end">
         <div class="flex items-center justify-end gap-0.5">
           <TaskAction
-            label={props.t('runtime.detail')}
+            label={t('tasks.details.title')}
             icon={<Icon path={mdiInformationOutline} />}
             run={props.open}
           />
           <TaskAction
-            label={props.t('runtime.deleteTaskAction')}
+            label={t('tasks.history.delete')}
             icon={<Icon path={mdiTrashCanOutline} />}
             run={props.remove}
             destructive

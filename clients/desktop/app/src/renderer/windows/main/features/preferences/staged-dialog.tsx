@@ -119,7 +119,7 @@ export function StagedPreferenceForm(
             type="button"
             variant="ghost"
             size="icon-sm"
-            aria-label={t('runtime.back')}
+            aria-label={t('actions.back')}
             onClick={props.close}
           >
             <Icon path={mdiArrowLeft} aria-hidden="true" />
@@ -137,7 +137,7 @@ export function StagedPreferenceForm(
         </DialogBody>
 
         <DialogFooter>
-          <FormFeedback summary={(count) => t('runtime.fieldErrors', { count })} />
+          <FormFeedback summary={(count) => t('forms.fieldErrors', { count })} />
           <Button variant="ghost" onClick={props.close}>
             {t('actions.cancel')}
           </Button>

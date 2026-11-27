@@ -25,15 +25,15 @@ export function TaskFilters(props: {
       <SearchInput
         size="sm"
         class="min-w-28 grow basis-36 max-w-xl"
-        aria-label={t('runtime.searchTasks')}
-        placeholder={t('runtime.searchTasks')}
-        clearLabel={t('runtime.clearSearch')}
+        aria-label={t('tasks.search')}
+        placeholder={t('tasks.search')}
+        clearLabel={t('controls.search.clear')}
         value={query().search()}
         onValueChange={(value) => query().changeSearch(value)}
       />
       <Show when={query().filtered() && query().total() !== undefined}>
         <span class="text-xs text-muted-foreground">
-          {t('runtime.taskCount', { count: query().total()! })}
+          {t('tasks.count', { count: query().total()! })}
         </span>
       </Show>
       <div class="ms-auto flex max-w-full flex-wrap justify-end gap-1.5">
@@ -41,30 +41,30 @@ export function TaskFilters(props: {
           size="sm"
           class="w-32 max-w-full"
           disabled={!props.types}
-          aria-label={t('runtime.type')}
+          aria-label={t('tasks.fields.type')}
           value={query().type() ? 'type:' + query().type() : 'all'}
           options={[
-            { value: 'all', label: t('runtime.allTypes') },
+            { value: 'all', label: t('tasks.allTypes') },
             ...types().map((value) => ({
               value: 'type:' + value,
               label: taskTypeLabel(t, value),
             })),
           ]}
-          emptyMessage={t('runtime.noOptions')}
-          invalidSelectionMessage={t('runtime.unavailable')}
+          emptyMessage={t('controls.search.empty')}
+          invalidSelectionMessage={t('controls.feedback.unavailable')}
           onValueChange={(value) => query().changeType(value === 'all' ? '' : value.slice(5))}
         />
         <Select<TaskRunStatus | 'all'>
           size="sm"
           class="w-32 max-w-full"
-          aria-label={t('runtime.filter')}
+          aria-label={t('tasks.fields.status')}
           value={query().status() || 'all'}
           options={[
-            { value: 'all', label: t('runtime.allStatuses') },
-            ...query().statuses.map((value) => ({ value, label: t(`tasks.${value}`) })),
+            { value: 'all', label: t('tasks.allStatuses') },
+            ...query().statuses.map((value) => ({ value, label: t(`tasks.status.${value}`) })),
           ]}
-          emptyMessage={t('runtime.noOptions')}
-          invalidSelectionMessage={t('runtime.unavailable')}
+          emptyMessage={t('controls.search.empty')}
+          invalidSelectionMessage={t('controls.feedback.unavailable')}
           onValueChange={(value) => query().changeStatus(value === 'all' ? '' : value)}
         />
       </div>

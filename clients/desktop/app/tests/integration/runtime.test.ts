@@ -241,8 +241,12 @@ test('prepared images and fonts survive independent holds and only adopted font 
   expect(prepared.metadata.faces[0].weight.max).toBeGreaterThan(
     prepared.metadata.faces[0].weight.min,
   )
-  const user = await fonts.import({ name: 'Test font', files: [prepared] })
+  const user = await fonts.import({ name: 'Été', files: [prepared] })
   await prepared.dispose()
+  expect(await fonts.getName(user.id)).toBe('Été')
+  expect(
+    (await fonts.list({ search: 'ÉTÉ' }, { offset: 0, limit: 1 })).items.map((item) => item.id),
+  ).toEqual([user.id])
   const open = await fonts.open(user.id)
   const previews = createPreviews(
     ['--font-sans', '--font-mono'],

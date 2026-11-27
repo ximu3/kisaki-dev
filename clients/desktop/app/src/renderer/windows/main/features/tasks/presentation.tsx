@@ -39,7 +39,7 @@ export function TaskTypeIcon(props: { type?: string | undefined }) {
 }
 
 export function TaskStatus(props: { t: Translate; status: TaskRunStatus }) {
-  return <Badge tone={toneByStatus[props.status]}>{props.t(`tasks.${props.status}`)}</Badge>
+  return <Badge tone={toneByStatus[props.status]}>{props.t(`tasks.status.${props.status}`)}</Badge>
 }
 
 export function taskDuration(row: TaskRunSummary, locale: string): string | undefined {

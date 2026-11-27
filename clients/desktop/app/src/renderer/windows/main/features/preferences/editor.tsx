@@ -52,8 +52,8 @@ import { UsageEditorFields } from './usage/editor'
 import { UsageFields, usageMedia, type UsageMedium } from './usage/fields'
 import { QueryError } from '../../../../infrastructure/query/error'
 
-const Themes = lazy(() => import('../themes/manager'), { export: 'Themes' })
-const Fonts = lazy(() => import('../fonts/manager'), { export: 'Fonts' })
+const Themes = lazy(() => import('../themes'), { export: 'Themes' })
+const Fonts = lazy(() => import('../fonts'), { export: 'Fonts' })
 
 const sections = [
   'general',
@@ -140,7 +140,7 @@ function PreferenceForm(
       field,
       located,
       medium,
-      title: () => api.t(`runtime.usageTitles.${medium}`),
+      title: () => api.t(`preferences.usage.titles.${medium}`),
       fields: () => <UsageEditorFields api={api} medium={medium} manageFonts={fonts.show} />,
     })
   }
@@ -150,7 +150,7 @@ function PreferenceForm(
     const stage = draft.stage([proxyCredentialsKey])
     setStagedEdit({
       draft: stage,
-      title: () => api.t('runtime.fields.credentials'),
+      title: () => api.t('preferences.network.credentials'),
       fields: () => <ProxyCredentialFields />,
     })
   }
@@ -225,7 +225,9 @@ function PreferenceForm(
       if (found) {
         props.view.receipt.presented()
       } else {
-        props.view.receipt.failed(new DesktopError('NotFound', api.t('runtime.unavailable')))
+        props.view.receipt.failed(
+          new DesktopError('NotFound', api.t('controls.feedback.unavailable')),
+        )
       }
     },
     failed: props.view.receipt.failed,
@@ -259,7 +261,7 @@ function PreferenceForm(
         if (found) {
           positioned.resolve(true)
         } else {
-          positioned.reject(new DesktopError('NotFound', api.t('runtime.unavailable')))
+          positioned.reject(new DesktopError('NotFound', api.t('controls.feedback.unavailable')))
         }
       },
       failed: positioned.reject,
@@ -289,7 +291,7 @@ function PreferenceForm(
   onSettled(() => {
     const unregisterEditor = editors.register(
       {
-        busy: form.busy,
+        pending: () => (form.busy() ? form.submit() : undefined),
         dirty: () => draft.dirty() || !!stagedEdit()?.draft.dirty(),
         save: saveBeforeLeaving,
         currentFormAction: () => (stagedEdit() ? confirmStagedEdit : undefined),
@@ -325,7 +327,7 @@ function PreferenceForm(
     <>
       <Show when={!inlineEdit()}>
         <DialogHeader closeLabel={api.t('actions.close')}>
-          <DialogTitle>{api.t('runtime.preferences')}</DialogTitle>
+          <DialogTitle>{api.t('preferences.title')}</DialogTitle>
         </DialogHeader>
       </Show>
       <Form state={form} style={{ display: inlineEdit() ? 'none' : undefined }}>
@@ -341,10 +343,10 @@ function PreferenceForm(
                   ref={(node) => {
                     tabList = node
                   }}
-                  aria-label={api.t('runtime.section')}
+                  aria-label={api.t('preferences.sectionLabel')}
                 >
                   <For each={sections}>
-                    {(value) => <Tab value={value}>{api.t(`runtime.fields.${value}`)}</Tab>}
+                    {(value) => <Tab value={value}>{api.t(`preferences.sections.${value}`)}</Tab>}
                   </For>
                 </TabList>
               </ToolbarRow>
@@ -359,13 +361,13 @@ function PreferenceForm(
             >
               <QueryError
                 error={draft.error()}
-                retryLabel={api.t('runtime.retry')}
+                retryLabel={api.t('actions.retry')}
                 retry={draft.retry}
                 class="m-4"
               />
               <Show
                 when={draft.ready()}
-                fallback={!draft.error() && <Spinner label={api.t('runtime.loading')} />}
+                fallback={!draft.error() && <Spinner label={api.t('controls.feedback.loading')} />}
               >
                 <PreferenceFieldsContext value={{ draft, t: api.t }}>
                   <For each={sections}>
@@ -384,7 +386,7 @@ function PreferenceForm(
         </DialogBody>
 
         <DialogFooter>
-          <FormFeedback summary={(count) => api.t('runtime.fieldErrors', { count })} />
+          <FormFeedback summary={(count) => api.t('forms.fieldErrors', { count })} />
           <Button type="submit" disabled={!draft.dirty() || form.busy()}>
             {api.t('actions.save')}
           </Button>

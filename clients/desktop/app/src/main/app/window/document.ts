@@ -63,6 +63,11 @@ export function openWindowDocument({
   const { port1, port2 } = new MessageChannelMain()
   let revoked = false
   const resources = createDocumentResources(view, () => revoked)
+  function windowTranslation() {
+    const { locale, messages } = application.i18n.current
+    return { locale, messages }
+  }
+
   const commonMethods: WindowMethods<keyof WindowApi> = {
     'window.ready': windowMethod('read', () => {
       void application.log.record('window-ready')
@@ -81,8 +86,7 @@ export function openWindowDocument({
         platform: process.platform,
         buildId: __KISAKI_BUILD_ID__,
         titlebarHeight: kind === 'main' ? titlebarHeight() : null,
-        locale: application.i18n.current.locale,
-        messages: application.i18n.current.messages,
+        translation: windowTranslation(),
       }),
     ),
     ...createAppearanceMethods(appearance, view, resources),
@@ -192,7 +196,10 @@ export function openWindowDocument({
       }
       void application.log.record('window-connected')
       subscriptions.push(
-        application.onUpdated(() => rpc.notify('window.changed', null)),
+        application.onUpdated(() =>
+          rpc.notify('window.changed', kind === 'main' ? titlebarHeight() : null),
+        ),
+        application.i18n.onChanged(() => rpc.notify('i18n.changed', rpcData(windowTranslation()))),
         appearance.onChanged(() => rpc.notify('appearance.changed', null)),
       )
       if (kind === 'main') {

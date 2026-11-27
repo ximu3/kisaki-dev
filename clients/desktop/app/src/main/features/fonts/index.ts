@@ -240,6 +240,10 @@ export function createFonts(
       context?.signal?.throwIfAborted()
       return call('listFonts', query.search, parseListOptions(options))
     },
+    async getName(id: string, options?: CallOptions) {
+      options?.signal?.throwIfAborted()
+      return call('getFontName', id)
+    },
     async get(id: string, options?: CallOptions) {
       options?.signal?.throwIfAborted()
       return call('getFont', id)

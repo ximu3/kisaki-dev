@@ -13,20 +13,21 @@ type FileDraft = { key: number; name: string } & (
 
 export function createFontDraft(api: MainClient, initial: Font | null) {
   const [original, setOriginal] = createSignal(initial)
-  const [name, setName] = createSignal(initial?.name ?? '')
+  const [enteredName, rename] = createSignal<string>()
   const [kept, setKept] = createSignal(initial?.files.map((file) => file.attachmentId) ?? [])
   const [files, setFiles] = createSignal<readonly FileDraft[]>([])
-  const [choosing, setChoosing] = createSignal(false)
+  const [pendingChoice, setPendingChoice] = createSignal<Promise<void>>()
+  const choosing = () => pendingChoice() !== undefined
   const preparing = () => choosing() || files().some((file) => file.status === 'pending')
   const added = createMemo(() => files().filter((file) => file.status === 'ready'))
+  const name = () =>
+    enteredName() ?? original()?.name ?? added()[0]?.file.metadata.faces[0].family ?? ''
   const dirty = () =>
-    choosing() ||
     files().length > 0 ||
     name() !== (original()?.name ?? '') ||
     kept().length !== (original()?.files.length ?? 0)
 
   const owner = getOwner()!
-  let nameEdited = false
   let nextKey = 0
   let submitted: readonly FontChoice[] = []
   const owned = new Set<FontChoice>()
@@ -51,9 +52,6 @@ export function createFontDraft(api: MainClient, initial: Font | null) {
         void release(result.file).catch(reportError)
         return
       }
-      if (!nameEdited) {
-        setName((current) => current || result.file.metadata.faces[0].family)
-      }
     }
     if (!isDisposed(owner)) {
       const outcome: FileDraft =
@@ -68,18 +66,20 @@ export function createFontDraft(api: MainClient, initial: Font | null) {
     }
   }
 
-  async function choose() {
-    setChoosing(true)
-    try {
-      const selected = await api.call('fonts.choose')
-      for (const result of selected ?? []) {
-        adopt(nextKey++, result)
-      }
-    } finally {
-      if (!isDisposed(owner)) {
-        setChoosing(false)
-      }
+  function choose() {
+    const current = pendingChoice()
+    if (current) {
+      return current
     }
+    const operation = api
+      .call('fonts.choose')
+      .then((selected) => {
+        for (const result of selected ?? []) {
+          adopt(nextKey++, result)
+        }
+      })
+      .finally(() => setPendingChoice(undefined))
+    return setPendingChoice(() => operation)
   }
 
   async function receive(incoming: readonly File[]) {
@@ -116,11 +116,6 @@ export function createFontDraft(api: MainClient, initial: Font | null) {
     }
   }
 
-  function rename(value: string) {
-    nameEdited = true
-    setName(value)
-  }
-
   function toggle(id: string) {
     setKept((ids) => (ids.includes(id) ? ids.filter((key) => key !== id) : [...ids, id]))
   }
@@ -143,6 +138,9 @@ export function createFontDraft(api: MainClient, initial: Font | null) {
       committed = true
       if (!isDisposed(owner)) {
         setOriginal(result)
+        if (enteredName() === sentName) {
+          rename(undefined)
+        }
         setKept(result.files.map((file) => file.attachmentId))
         setFiles((current) =>
           current.filter((entry) => !addedFiles.some(({ key }) => key === entry.key)),
@@ -168,6 +166,7 @@ export function createFontDraft(api: MainClient, initial: Font | null) {
     kept,
     files,
     choosing,
+    pendingChoice,
     preparing,
     dirty,
     count: () => kept().length + added().length,

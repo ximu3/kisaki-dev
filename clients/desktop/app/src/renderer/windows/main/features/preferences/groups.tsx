@@ -17,15 +17,15 @@ export function GeneralFields(props: { api: MainClient }) {
   return (
     <FieldGroup>
       <TranslationField api={props.api} />
-      <PreferenceField field="general.closeMainWindow" label={t('runtime.fields.closeMainWindow')}>
+      <PreferenceField field="general.closeMainWindow">
         <Select
           value={draft.read('general.closeMainWindow') ?? ''}
           options={(['background', 'quit'] as const).map((value) => ({
             value,
-            label: t(`runtime.choices.${value}`),
+            label: t(`preferences.general.closeBehavior.${value}`),
           }))}
-          emptyMessage={t('runtime.noOptions')}
-          invalidSelectionMessage={t('runtime.unavailable')}
+          emptyMessage={t('controls.search.empty')}
+          invalidSelectionMessage={t('controls.feedback.unavailable')}
           onValueChange={(v) => {
             if (v) {
               draft.write('general.closeMainWindow', v)
@@ -46,15 +46,15 @@ export function AppearanceFields(props: { api: MainClient; manage: () => void })
         {(issue) => <Alert tone="warning">{appearanceIssueMessage(t, issue)}</Alert>}
       </For>
       <ThemeField api={props.api} manage={props.manage} />
-      <PreferenceField field="appearance.mode" label={t('runtime.fields.mode')}>
+      <PreferenceField field="appearance.mode">
         <Select
           value={draft.read('appearance.mode') ?? ''}
           options={appearanceModes.map((value) => ({
             value,
-            label: t(`runtime.choices.${value}`),
+            label: t(`appearance.modes.${value}`),
           }))}
-          emptyMessage={t('runtime.noOptions')}
-          invalidSelectionMessage={t('runtime.unavailable')}
+          emptyMessage={t('controls.search.empty')}
+          invalidSelectionMessage={t('controls.feedback.unavailable')}
           onValueChange={(v) => {
             if (v) {
               draft.write('appearance.mode', v)
@@ -62,11 +62,7 @@ export function AppearanceFields(props: { api: MainClient; manage: () => void })
           }}
         />
       </PreferenceField>
-      <PreferenceField
-        field="appearance.interfaceScale"
-        label={t('runtime.fields.interfaceScale')}
-        valueClass="w-36"
-      >
+      <PreferenceField field="appearance.interfaceScale" valueClass="w-36">
         <NumberInput
           required
           unit="%"
@@ -76,8 +72,8 @@ export function AppearanceFields(props: { api: MainClient; manage: () => void })
           step={1}
           value={draft.read('appearance.interfaceScale') ?? ''}
           onValueChange={(v) => draft.writeNumber('appearance.interfaceScale', v)}
-          increaseLabel={t('runtime.increase')}
-          decreaseLabel={t('runtime.decrease')}
+          increaseLabel={t('controls.number.increase')}
+          decreaseLabel={t('controls.number.decrease')}
         />
       </PreferenceField>
     </FieldGroup>
@@ -89,7 +85,7 @@ export function NavigationFields(props: { pages: readonly NavigationPage[] }) {
 
   return (
     <FieldGroup>
-      <PreferenceField field="navigation.order" wide label={t('runtime.fields.order')}>
+      <PreferenceField field="navigation.order" wide>
         <PageOrder
           t={t}
           pages={props.pages}
@@ -98,19 +94,15 @@ export function NavigationFields(props: { pages: readonly NavigationPage[] }) {
           change={(order) => draft.write('navigation.order', order)}
         />
       </PreferenceField>
-      <PreferenceField
-        field="navigation.visibleLimit"
-        label={t('runtime.fields.visibleLimit')}
-        valueClass="w-36"
-      >
+      <PreferenceField field="navigation.visibleLimit" valueClass="w-36">
         <NumberInput
           min={0}
           step={1}
           required
           value={draft.read('navigation.visibleLimit') ?? ''}
           onValueChange={(v) => draft.writeNumber('navigation.visibleLimit', v)}
-          increaseLabel={t('runtime.increase')}
-          decreaseLabel={t('runtime.decrease')}
+          increaseLabel={t('controls.number.increase')}
+          decreaseLabel={t('controls.number.decrease')}
         />
       </PreferenceField>
     </FieldGroup>
@@ -118,7 +110,7 @@ export function NavigationFields(props: { pages: readonly NavigationPage[] }) {
 }
 
 export function LibraryFields() {
-  const { draft, t } = usePreferenceFields()
+  const { draft } = usePreferenceFields()
 
   return (
     <FieldGroup>
@@ -126,7 +118,7 @@ export function LibraryFields() {
         {(name) => {
           const key = `library.${name}` as const
           return (
-            <PreferenceField field={key} label={t(`runtime.fields.${name}`)} valueClass="w-fit">
+            <PreferenceField field={key} valueClass="w-fit">
               <Switch
                 checked={draft.read(key)}
                 onCheckedChange={(value) => draft.write(key, value)}
@@ -140,7 +132,7 @@ export function LibraryFields() {
 }
 
 export function UpdateFields() {
-  const { draft, t } = usePreferenceFields()
+  const { draft } = usePreferenceFields()
 
   return (
     <FieldGroup>
@@ -148,7 +140,7 @@ export function UpdateFields() {
         {(name) => {
           const key = `updates.${name}` as const
           return (
-            <PreferenceField field={key} label={t(`runtime.fields.${name}`)} valueClass="w-fit">
+            <PreferenceField field={key} valueClass="w-fit">
               <Switch
                 checked={draft.read(key)}
                 onCheckedChange={(value) => draft.write(key, value)}

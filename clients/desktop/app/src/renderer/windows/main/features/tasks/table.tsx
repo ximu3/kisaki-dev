@@ -43,17 +43,17 @@ export function TaskTable(props: TaskTableProps) {
 
   function emptyHeading() {
     if (query.filtered()) {
-      return api.t('runtime.noMatches')
+      return api.t('tasks.noMatches')
     }
-    return api.t(props.active ? 'runtime.noActive' : 'runtime.noFinished')
+    return api.t(props.active ? 'tasks.noActive' : 'tasks.noFinished')
   }
 
   async function remove(row: TaskRunSummary, viewport: HTMLDivElement | undefined) {
     if (
       await props.confirm(
-        api.t('runtime.deleteTaskAction'),
+        api.t('tasks.history.delete'),
         api.t('actions.delete'),
-        api.t('runtime.deleteTask', { name: row.title }),
+        api.t('tasks.history.confirmDelete', { name: row.title }),
       )
     ) {
       const last = query.total() === 1
@@ -76,18 +76,18 @@ export function TaskTable(props: TaskTableProps) {
           {(cause) => (
             <EmptyState
               class="grow"
-              heading={api.t('runtime.unavailable')}
+              heading={api.t('controls.feedback.unavailable')}
               description={errorMessage(cause())}
             >
               <Button variant="outline" onClick={query.refresh}>
-                {api.t('runtime.retry')}
+                {api.t('actions.retry')}
               </Button>
             </EmptyState>
           )}
         </Match>
         <Match when={query.total() === undefined}>
           <div class="grid grow place-items-center">
-            <Spinner label={api.t('runtime.loading')} />
+            <Spinner label={api.t('controls.feedback.loading')} />
           </div>
         </Match>
         <Match when={query.total() === 0}>
@@ -195,7 +195,7 @@ function RunTable(
       minWidth={props.active ? '47rem' : '34rem'}
       headerRef={setHeader}
       viewportRef={setViewport}
-      aria-label={api.t('runtime.history')}
+      aria-label={api.t('tasks.history.title')}
       aria-rowcount={(query.total() ?? 0) + 1}
       onFocusIn={focusRow}
       onFocusOut={(event) => {
@@ -205,16 +205,16 @@ function RunTable(
       }}
       header={
         <TableRow class="h-8" aria-rowindex={1}>
-          <TableHead scope="col">{api.t('runtime.task')}</TableHead>
+          <TableHead scope="col">{api.t('tasks.fields.task')}</TableHead>
           <Show when={props.active}>
-            <TableHead scope="col">{api.t('runtime.phase')}</TableHead>
+            <TableHead scope="col">{api.t('tasks.fields.phase')}</TableHead>
           </Show>
           <TableHead align={props.active ? 'start' : 'end'} scope="col">
-            {api.t(props.active ? 'runtime.progress' : 'runtime.duration')}
+            {api.t(props.active ? 'tasks.fields.progress' : 'tasks.fields.duration')}
           </TableHead>
-          <TableHead scope="col">{api.t('runtime.filter')}</TableHead>
+          <TableHead scope="col">{api.t('tasks.fields.status')}</TableHead>
           <TableHead align="end" scope="col">
-            {api.t('runtime.actions')}
+            {api.t('tasks.fields.actions')}
           </TableHead>
         </TableRow>
       }

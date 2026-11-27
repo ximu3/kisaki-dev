@@ -73,6 +73,10 @@ desktop-contracts/i18n 定义通用目录形状、译本引用、登记与语言
 
 英语源文在本地化包内按领域拆分为纯数据模块，由目录内入口静态汇总为完整消息树。同一功能的文案集中维护和审校，文件与子目录按实际职责组织。类型生成、公开作者基准与运行时英语回退使用同一汇总值，模块划分不改变消息的完整路径。
 
+消息键按用户正在操作的对象或共用交互命名。资料库、扫描、展示柜和资源分别拥有对应文案。任务状态、历史、控制和报告同属 `tasks`。主题与字体各自拥有管理、选择和预览文案，`appearance` 维护明暗模式和外观回退提示。`application` 维护窗口、退出和关于信息，`navigation` 与 `systemIntegration` 分别维护侧栏排序和系统登记。
+
+偏好字段按设置路径取得名称。例如 `appearance.mode` 对应 `preferences.appearance.mode`，`network.mode` 对应 `preferences.network.mode`。漫画和小说共用的阅读设置使用 `preferences.reading`。快捷键的动作另由 `shortcuts.commands` 命名。主进程的偏好目录和窗口表单按同一字段合同取得标签。跨领域含义及参数相同的动作使用 `actions`，表单反馈和通用控件文案分别使用 `forms` 和 `controls`。
+
 同一参数的多种用法取允许值域的交集。交集为空时，英语基准构建失败。毫秒范围在运行期校验，生成的 TypeScript 类型仍使用 number。业务值与 PartialDate 先按自身语义格式化，再传给消息。
 
 ICU 格式化使用 [intl-messageformat](https://formatjs.github.io/docs/intl-messageformat/)，语法与复数规则由该库处理；类型生成由本地化包维护。纯格式化接收明确的语言和消息快照，不管理全局选择或扩展登记；本体 i18n 向格式化函数提供当前生效的译本，并在译本变化时更新界面文字。公开值使用 ICU 文本，内部 AST 留在实现中。验收分别覆盖类型生成及 Node、浏览器、Webview 的真实格式化消费。
@@ -80,6 +84,8 @@ ICU 格式化使用 [intl-messageformat](https://formatjs.github.io/docs/intl-me
 解析与格式化统一采用 ignoreTag: true。t 返回普通字符串，标签和插值文本按字面值呈现。链接或其他视觉结构由界面组件提供。
 
 本体提供的 t 每次调用都读取当前有效译本。在 Solid 的响应式位置调用它，语言变化会更新界面。提前保存的字符串是调用时的结果。Node 使用自身环境的有效语言，普通格式化在当前进程内同步完成。
+
+窗口初始化采用有效译本快照，随后在有效译本变更时整体替换语言与格式化函数。同一地区标签可以有不同译本。日期和时长读取窗口的响应式语言，普通偏好更新沿用当前译本及其 ICU 缓存。
 
 <a id="validation"></a>
 

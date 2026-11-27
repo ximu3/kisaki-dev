@@ -25,14 +25,14 @@ export function DataLocation(props: {
   return (
     <>
       <Field>
-        <FieldLabel>{t('runtime.data')}</FieldLabel>
+        <FieldLabel>{t('systemIntegration.data.current')}</FieldLabel>
         <FieldDescription class="wrap-anywhere">
           <Show when={portable()}>
             <span class="block">
               {t(
                 props.value.current.mode === 'portable'
-                  ? 'runtime.portableMode'
-                  : 'runtime.normalMode',
+                  ? 'systemIntegration.data.portable'
+                  : 'systemIntegration.data.standard',
               )}
             </span>
           </Show>
@@ -48,7 +48,7 @@ export function DataLocation(props: {
           return (
             <>
               <Field orientation="responsive">
-                <FieldLabel>{t('runtime.destination')}</FieldLabel>
+                <FieldLabel>{t('systemIntegration.data.destination')}</FieldLabel>
                 <FieldDescription class="wrap-anywhere">
                   {nextPortable() ? props.value.normalPath : item().path}
                 </FieldDescription>
@@ -58,18 +58,18 @@ export function DataLocation(props: {
                     disabled={props.busy}
                     value={target()}
                     options={[
-                      { value: 'existing', label: t('runtime.existing') },
-                      { value: 'empty', label: t('runtime.emptyDirectory') },
+                      { value: 'existing', label: t('systemIntegration.data.existing') },
+                      { value: 'empty', label: t('systemIntegration.data.emptyDirectory') },
                     ]}
-                    emptyMessage={t('runtime.noOptions')}
-                    invalidSelectionMessage={t('runtime.unavailable')}
+                    emptyMessage={t('controls.search.empty')}
+                    invalidSelectionMessage={t('controls.feedback.unavailable')}
                     onValueChange={(value) => setTarget(value || 'existing')}
                   />
                 </FieldContent>
               </Field>
 
               <Field orientation="responsive">
-                <FieldLabel>{t('runtime.portable')}</FieldLabel>
+                <FieldLabel>{t('systemIntegration.data.usePortable')}</FieldLabel>
                 <FieldContent>
                   <Switch
                     checked={nextPortable()}
@@ -83,13 +83,13 @@ export function DataLocation(props: {
 
               <Show when={pending()}>
                 <Field orientation="responsive">
-                  <FieldLabel>{t('runtime.useAtStartup')}</FieldLabel>
+                  <FieldLabel>{t('systemIntegration.data.afterRestart')}</FieldLabel>
                   <FieldDescription role="status" class="wrap-anywhere">
                     {nextPortable() ? item().path : props.value.normalPath}
                   </FieldDescription>
                   <FieldContent>
                     <Button variant="outline" disabled={props.busy} onClick={props.restart}>
-                      {t('runtime.restartApp')}
+                      {t('systemIntegration.restart')}
                     </Button>
                   </FieldContent>
                 </Field>

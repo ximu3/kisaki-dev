@@ -149,10 +149,10 @@ async function run(paths: AppPaths) {
         dialog
           .showMessageBox({
             type: 'question',
-            message: application.i18n.t('runtime.exitPending'),
+            message: application.i18n.t('application.exit.pending'),
             buttons: [
-              application.i18n.t('runtime.continueWaiting'),
-              application.i18n.t('runtime.cancelExit'),
+              application.i18n.t('application.exit.continueWaiting'),
+              application.i18n.t('application.exit.cancel'),
             ],
             defaultId: 0,
             cancelId: 1,
@@ -285,7 +285,7 @@ async function run(paths: AppPaths) {
       })()
         .catch((cause) => {
           dialog.showErrorBox(
-            application.i18n.t('runtime.restoreThemeFailed'),
+            application.i18n.t('themes.restoreFailed'),
             cause instanceof Error ? cause.message : String(cause),
           )
         })
@@ -296,7 +296,7 @@ async function run(paths: AppPaths) {
 
     const menus = () => {
       const restoreTheme = {
-        label: application.i18n.t('runtime.restoreDefaultTheme'),
+        label: application.i18n.t('themes.restoreDefault'),
         click: restoreDefaultTheme,
       }
       tray!.setContextMenu(
@@ -305,7 +305,7 @@ async function run(paths: AppPaths) {
           restoreTheme,
           { type: 'separator' },
           {
-            label: application.i18n.t('runtime.quit'),
+            label: application.i18n.t('application.quit'),
             click: () => app.quit(),
           },
         ]),
@@ -316,13 +316,13 @@ async function run(paths: AppPaths) {
             label: app.name,
             submenu: [
               {
-                label: application.i18n.t('runtime.preferences'),
+                label: application.i18n.t('preferences.title'),
                 click: () => activation.open({ type: 'preferences' }),
               },
               restoreTheme,
               { type: 'separator' },
               {
-                label: application.i18n.t('runtime.quit'),
+                label: application.i18n.t('application.quit'),
                 accelerator: 'CommandOrControl+Q',
                 click: () => app.quit(),
               },

@@ -40,6 +40,8 @@ export interface ChoiceSearchProps<O extends SelectionOption = SelectionOption> 
   onQueryChange?: (query: string) => void
   filter?: false | ((option: O, query: string) => boolean)
   loading?: boolean
+  onOpenChange?: (open: boolean) => void
+  listFooter?: JSX.Element
   loadingMessage: JSX.Element
 }
 
@@ -86,6 +88,7 @@ export function SelectionField<O extends SelectionOption>(
   const attributes = merge(fieldAttributes(props), rest)
   const popup = createSelectionPopup()
   const { id, open, setOpen, present } = popup
+  createEffect(open, (value) => props.search?.onOpenChange?.(value), { defer: true })
   const [query, setQuery] = createValue(
     () => props.search?.query,
     () => '',
@@ -292,6 +295,7 @@ export function SelectionField<O extends SelectionOption>(
         }
         loading={candidates().loading}
         loadingMessage={props.search?.loadingMessage}
+        footer={props.search?.listFooter}
         emptyMessage={props.emptyMessage}
         virtual={props.virtual}
         renderOptions={props.renderOptions}

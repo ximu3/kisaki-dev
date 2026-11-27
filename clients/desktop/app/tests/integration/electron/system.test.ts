@@ -33,7 +33,7 @@ test('About retries a failed environment read within the open dialog', async ({ 
   const about = page.getByRole('dialog', { name: 'About Kisaki', exact: true })
   const copy = about.getByRole('button', { name: 'Copy environment information' })
   await expect(copy).toBeDisabled()
-  await about.getByRole('alert').getByRole('button', { name: 'Try again' }).click()
+  await about.getByRole('alert').getByRole('button', { name: 'Retry' }).click()
   await expect(copy).toBeEnabled()
   await expect(about.getByRole('alert')).toHaveCount(0)
   await expect(about.getByText(process.arch, { exact: true })).toBeVisible()

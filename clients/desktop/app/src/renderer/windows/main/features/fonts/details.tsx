@@ -69,7 +69,7 @@ function FontPreview(props: {
   const { api } = props
   const preview = createFontRead(api, () => props.selection)
   const name = () =>
-    preview.value()?.font.name ?? props.selection.name ?? api.t('runtime.fontPreview')
+    preview.value()?.font.name ?? props.selection.name ?? api.t('fonts.preview.title')
   deferDialogUntil(() => !!preview.error() || !!preview.value())
 
   observeDialogTarget(props.receipt, () => ({
@@ -84,11 +84,11 @@ function FontPreview(props: {
       </DialogHeader>
       <DialogBody>
         <Show when={preview.loading()}>
-          <Spinner label={api.t('runtime.loadingFonts')} />
+          <Spinner label={api.t('fonts.selector.loading')} />
         </Show>
         <QueryError
           error={preview.error()}
-          retryLabel={api.t('runtime.retry')}
+          retryLabel={api.t('actions.retry')}
           retry={preview.retry}
         />
         <Show when={preview.value()}>

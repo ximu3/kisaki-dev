@@ -17,7 +17,7 @@ export function createFontRead(api: MainClient, selection: Accessor<{ id: string
         release(hold)
       }
     })
-    return api.call('fonts.open', entry.id).then((font) => {
+    return api.request(signal, 'fonts.open', entry.id).then((font) => {
       if (signal.aborted) {
         release(font.hold)
       } else {

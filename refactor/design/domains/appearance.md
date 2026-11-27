@@ -159,7 +159,7 @@ type FontRef =
   | { readonly type: 'user'; readonly id: string }
 ```
 
-FontRef 只表示系统字体族或用户字体 id。主题另行提供默认字体和所属扩展文件选项，阅读另行提供 document 选项，不把消费者专属分支放入 FontRef。系统字体、书内字体和扩展私有字体不会自动导入用户库。fonts.list 只列用户字体，listSystem 只列系统字体，选择器分组搜索，再由用途加入默认或文档选项。字体库以单列分页浏览已导入的字体。预览从对应条目打开，展示字体文件、实际样张和字面资料。只为正在查看或编辑的对象取得文档专属读句柄，换项和关闭时释放。未保存的文件草稿明确显示保留、新增、移除和准备失败，移除仍在草稿期间可以恢复。
+FontRef 只表示系统字体族或用户字体 id。主题另行提供默认字体和所属扩展文件选项，阅读另行提供 document 选项，不把消费者专属分支放入 FontRef。系统字体、书内字体和扩展私有字体不会自动导入用户库。fonts.list 只列用户字体，listSystem 只列系统字体，选择器分组搜索，再由用途加入默认或文档选项。打开选择器时读取当前搜索词下的一页用户字体，翻页时替换该页。已选字体单独按身份显示名称，搜索与翻页保留原选择。字体库以单列分页浏览已导入的字体。预览从对应条目打开，展示字体文件、实际样张和字面资料。只为正在查看或编辑的对象取得文档专属读句柄，换项和关闭时释放。未保存的文件草稿明确显示保留、新增、移除和准备失败，移除仍在草稿期间可以恢复。
 
 Font 包含 id、name、files、createdAt 和 updatedAt，files 的每项为 { attachmentId, metadata }。FontFileMetadata.faces 记录文件中从零开始的 index、family、subfamily、可空的 fullName 与 postScriptName、字重和宽度的 min/default/max、normal/italic/oblique 样式，以及 { tag, min, default, max }[] 形式的可变轴。静态属性的最小、默认和最大值相同，axis tag 使用实际四字节 OpenType 标识。技术资料必须由本体解析，不能接受调用方伪造；解析失败也不能编造字体族名或能力。
 

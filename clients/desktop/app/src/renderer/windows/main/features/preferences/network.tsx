@@ -45,15 +45,15 @@ export function NetworkFields(props: {
   return (
     <div class="space-y-5">
       <FieldGroup>
-        <PreferenceField field="network.mode" label={t('runtime.networkMode')}>
+        <PreferenceField field="network.mode">
           <Select
             value={mode()}
             options={(['system', 'direct', 'manual'] as const).map((value) => ({
               value,
-              label: t(`runtime.choices.${value}`),
+              label: t(`preferences.network.modes.${value}`),
             }))}
-            emptyMessage={t('runtime.noOptions')}
-            invalidSelectionMessage={t('runtime.unavailable')}
+            emptyMessage={t('controls.search.empty')}
+            invalidSelectionMessage={t('controls.feedback.unavailable')}
             onValueChange={(value) => {
               if (value) {
                 draft.write('network.mode', value)
@@ -63,7 +63,7 @@ export function NetworkFields(props: {
           />
         </PreferenceField>
         <Show when={mode() === 'manual' || props.forceDetails}>
-          <PreferenceField field="network.endpoint" wide label={t('runtime.fields.endpoint')}>
+          <PreferenceField field="network.endpoint" wide>
             <Input
               placeholder="http://proxy.example:8080"
               value={endpoint()}
@@ -73,8 +73,7 @@ export function NetworkFields(props: {
           <PreferenceField
             field="network.bypassRules"
             wide
-            label={t('runtime.fields.bypassRules')}
-            description={t('runtime.bypassRulesDescription')}
+            description={t('preferences.network.bypassRulesHint')}
           >
             <Input
               placeholder="*.example.com, 192.0.2.10"
@@ -82,14 +81,10 @@ export function NetworkFields(props: {
               onValueChange={(value) => draft.write('network.bypassRules', value)}
             />
           </PreferenceField>
-          <PreferenceField
-            field={proxyCredentialsKey}
-            label={t('runtime.fields.credentials')}
-            valueClass="w-fit"
-          >
+          <PreferenceField field={proxyCredentialsKey} valueClass="w-fit">
             <Show when={draft.read(proxyCredentialsKey)}>
               <Button variant="outline" onClick={removeCredentials}>
-                {t('runtime.remove')}
+                {t('actions.remove')}
               </Button>
             </Show>
             <Button
@@ -105,16 +100,16 @@ export function NetworkFields(props: {
         </Show>
       </FieldGroup>
 
-      <QueryError error={state.result()?.error} retryLabel={t('runtime.retry')} retry={refresh} />
+      <QueryError error={state.result()?.error} retryLabel={t('actions.retry')} retry={refresh} />
       <Show when={adoption()?.status === 'applying'}>
         <p role="status" class="m-0 text-sm text-muted-foreground">
-          {t('runtime.networkApplying')}
+          {t('preferences.network.applying')}
         </p>
       </Show>
       <Show when={failure()}>
         {(error) => (
           <Alert tone="destructive" role="alert">
-            <strong>{t('runtime.networkFailed')}</strong>
+            <strong>{t('preferences.network.failed')}</strong>
             <div>{error().message}</div>
           </Alert>
         )}
@@ -144,7 +139,7 @@ export function ProxyCredentialFields() {
     <FieldGroup data-field-key={proxyCredentialsKey} tabindex={-1}>
       <div data-preference-value class="grid gap-3">
         <Field name={proxyCredentialsKey}>
-          <FieldLabel>{t('runtime.username')}</FieldLabel>
+          <FieldLabel>{t('preferences.network.username')}</FieldLabel>
           <Input
             autofocus
             autocomplete="off"
@@ -153,7 +148,7 @@ export function ProxyCredentialFields() {
           />
         </Field>
         <Field name={proxyCredentialsKey}>
-          <FieldLabel>{t('runtime.password')}</FieldLabel>
+          <FieldLabel>{t('preferences.network.password')}</FieldLabel>
           <Input
             type="password"
             autocomplete="new-password"

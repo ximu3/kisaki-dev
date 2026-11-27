@@ -74,7 +74,7 @@ export function NavigationRail(props: {
 
   return (
     <aside class="app-rail flex w-13 shrink-0 flex-col items-center border-r border-border bg-chrome text-chrome-foreground">
-      <nav class="flex min-h-0 w-full grow flex-col items-center gap-1 overflow-y-auto py-2 [scrollbar-width:none]">
+      <nav class="flex min-h-0 w-full grow flex-col items-center gap-1 overflow-y-auto py-2 scrollbar-none">
         <For each={pinned()}>
           {(route) => (
             <Tooltip>
@@ -102,7 +102,7 @@ export function NavigationRail(props: {
                 }}
                 variant="ghost"
                 size="icon-lg"
-                aria-label={api.t('runtime.more')}
+                aria-label={api.t('actions.more')}
                 class="rail-action size-10"
                 data-current={
                   pages()
@@ -112,9 +112,9 @@ export function NavigationRail(props: {
               >
                 <Icon path={mdiDotsHorizontal} />
               </TooltipTrigger>
-              <TooltipContent placement="right">{api.t('runtime.more')}</TooltipContent>
+              <TooltipContent placement="right">{api.t('actions.more')}</TooltipContent>
             </Tooltip>
-            <PopoverContent placement="right-start" class="w-64" aria-label={api.t('runtime.more')}>
+            <PopoverContent placement="right-start" class="w-64" aria-label={api.t('actions.more')}>
               <PageOrder
                 t={api.t}
                 pages={props.pages}
@@ -135,7 +135,7 @@ export function NavigationRail(props: {
             variant="ghost"
             size="icon-lg"
             class="rail-action size-10"
-            aria-label={api.t('runtime.tasks')}
+            aria-label={api.t('tasks.title')}
             onClick={() => void props.open({ type: 'tasks' })}
           >
             <Icon path={mdiFormatListChecks} />
@@ -150,7 +150,7 @@ export function NavigationRail(props: {
               )}
             </Show>
           </TooltipTrigger>
-          <TooltipContent placement="right">{api.t('runtime.tasks')}</TooltipContent>
+          <TooltipContent placement="right">{api.t('tasks.title')}</TooltipContent>
         </Tooltip>
 
         <ApplicationMenu

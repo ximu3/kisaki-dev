@@ -32,12 +32,12 @@ const finishedStatuses = taskRunStatuses.filter(isTaskTerminal)
 const scopes = [
   {
     id: 'active',
-    label: 'runtime.activeTasks',
+    label: 'tasks.active',
     statuses: taskRunStatuses.filter((status) => !isTaskTerminal(status)),
   },
   {
     id: 'finished',
-    label: 'runtime.finishedTasks',
+    label: 'tasks.finished',
     statuses: finishedStatuses,
   },
 ] as const
@@ -52,7 +52,7 @@ export async function readTaskTarget(
   }
   const task = await api.request(signal, 'tasks.get', { taskRunId: runId })
   if (!task) {
-    throw new DesktopError('NotFound', api.t('runtime.unavailable'))
+    throw new DesktopError('NotFound', api.t('controls.feedback.unavailable'))
   }
   return task
 }
@@ -151,9 +151,9 @@ function TaskCenterContent(props: TaskCenterProps & { visible: boolean }) {
 
   async function clearHistory() {
     const accepted = await confirm.ask(
-      api.t('runtime.clear'),
+      api.t('tasks.history.clear'),
       api.t('actions.clear'),
-      api.t('runtime.clearHistoryDescription'),
+      api.t('tasks.history.confirmClear'),
     )
     if (!accepted) {
       return
@@ -172,13 +172,13 @@ function TaskCenterContent(props: TaskCenterProps & { visible: boolean }) {
   return (
     <>
       <DialogHeader closeLabel={api.t('actions.close')}>
-        <DialogTitle>{api.t('runtime.tasks')}</DialogTitle>
+        <DialogTitle>{api.t('tasks.title')}</DialogTitle>
       </DialogHeader>
       <DialogBody class="flex min-h-0 flex-col overflow-hidden p-0">
         <Tabs class="flex min-h-0 grow flex-col" value={section()} onValueChange={setSection}>
           <Toolbar band>
             <ToolbarRow>
-              <TabList aria-label={api.t('runtime.tasks')}>
+              <TabList aria-label={api.t('tasks.title')}>
                 <For each={scopes}>
                   {(scope) => <Tab value={scope.id}>{api.t(scope.label)}</Tab>}
                 </For>
@@ -221,7 +221,7 @@ function TaskCenterContent(props: TaskCenterProps & { visible: boolean }) {
           onClick={() => void clearHistory().catch(reportError)}
         >
           <Icon path={mdiTrashCanOutline} />
-          {api.t('runtime.clear')}
+          {api.t('tasks.history.clear')}
         </Button>
         <Button
           ref={(element) => {
@@ -231,7 +231,7 @@ function TaskCenterContent(props: TaskCenterProps & { visible: boolean }) {
           onClick={refresh}
         >
           <Icon path={mdiRefresh} />
-          {api.t('runtime.refresh')}
+          {api.t('actions.refresh')}
         </Button>
       </DialogFooter>
 

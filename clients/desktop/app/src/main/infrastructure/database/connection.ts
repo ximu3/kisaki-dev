@@ -1,6 +1,7 @@
 import type Database from 'better-sqlite3'
 
 export function configureConnection(connection: Database.Database): void {
+  connection.function('kisaki_lower', { deterministic: true }, (text: string) => text.toLowerCase())
   connection.pragma('foreign_keys = ON')
   connection.pragma('synchronous = FULL')
   // Bound the page-cache target while keeping the representative working indexes resident.

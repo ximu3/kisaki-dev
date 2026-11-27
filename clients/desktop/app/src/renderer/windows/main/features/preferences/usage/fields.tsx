@@ -20,24 +20,23 @@ export function UsageFields(props: { open: (medium: UsageMedium) => void }) {
       <FieldGroup>
         <PreferenceField
           field="usage.foregroundGracePeriodMs"
-          label={t('runtime.fields.foregroundGracePeriodMs')}
-          description={t('runtime.foregroundGracePeriodDescription')}
+          description={t('preferences.usage.foregroundGracePeriodHint')}
           valueClass="w-36"
         >
           <NumberInput
             required
-            unit={t('runtime.minutesUnit')}
+            unit={t('preferences.usage.minutesUnit')}
             step="any"
             min={0}
             value={draft.read('usage.foregroundGracePeriodMs') ?? ''}
-            increaseLabel={t('runtime.increase')}
-            decreaseLabel={t('runtime.decrease')}
+            increaseLabel={t('controls.number.increase')}
+            decreaseLabel={t('controls.number.decrease')}
             onValueChange={(value) => draft.writeNumber('usage.foregroundGracePeriodMs', value)}
           />
         </PreferenceField>
       </FieldGroup>
 
-      <List variant="plain" class="gap-2" aria-label={t('runtime.fields.usage')}>
+      <List variant="plain" class="gap-2" aria-label={t('preferences.sections.usage')}>
         <For each={usageMedia}>
           {(medium) => (
             <li>
@@ -47,7 +46,7 @@ export function UsageFields(props: { open: (medium: UsageMedium) => void }) {
                 data-usage-medium={medium}
                 onClick={() => props.open(medium)}
               >
-                {t(`runtime.fields.${medium}`)}
+                {t(`preferences.usage.media.${medium}`)}
                 <Icon path={mdiChevronRight} />
               </Button>
             </li>
@@ -59,7 +58,7 @@ export function UsageFields(props: { open: (medium: UsageMedium) => void }) {
 }
 
 export function GameUsageFields() {
-  const { t, draft } = usePreferenceFields()
+  const { draft } = usePreferenceFields()
 
   return (
     <FieldGroup>
@@ -67,7 +66,7 @@ export function GameUsageFields() {
         {(name) => {
           const key = `usage.game.${name}` as const
           return (
-            <PreferenceField field={key} label={t(`runtime.fields.${name}`)} valueClass="w-fit">
+            <PreferenceField field={key} valueClass="w-fit">
               <Switch
                 checked={draft.read(key)}
                 onCheckedChange={(value) => draft.write(key, value)}
@@ -86,7 +85,7 @@ export function AnimeUsageFields() {
   function multiplier(name: 'playbackSpeed' | 'subtitleScale') {
     const key = `usage.anime.${name}` as const
     return (
-      <PreferenceField field={key} label={t(`runtime.fields.${name}`)} valueClass="w-36">
+      <PreferenceField field={key} valueClass="w-36">
         <NumberInput
           required
           min={name === 'playbackSpeed' ? 0.01 : undefined}
@@ -95,8 +94,8 @@ export function AnimeUsageFields() {
           unit="×"
           step="any"
           value={draft.read(key) ?? ''}
-          increaseLabel={t('runtime.increase')}
-          decreaseLabel={t('runtime.decrease')}
+          increaseLabel={t('controls.number.increase')}
+          decreaseLabel={t('controls.number.decrease')}
           onValueChange={(value) => draft.writeNumber(key, value)}
         />
       </PreferenceField>
@@ -105,7 +104,7 @@ export function AnimeUsageFields() {
   function toggle(name: 'subtitlesEnabled' | 'autoAdvance') {
     const key = `usage.anime.${name}` as const
     return (
-      <PreferenceField field={key} label={t(`runtime.fields.${name}`)} valueClass="w-fit">
+      <PreferenceField field={key} valueClass="w-fit">
         <Switch checked={draft.read(key)} onCheckedChange={(value) => draft.write(key, value)} />
       </PreferenceField>
     )
@@ -113,7 +112,7 @@ export function AnimeUsageFields() {
   function languages(name: 'audioLanguages' | 'subtitleLanguages') {
     const key = `usage.anime.${name}` as const
     return (
-      <PreferenceField field={key} label={t(`runtime.fields.${name}`)}>
+      <PreferenceField field={key}>
         <Input value={draft.read(key) ?? ''} onValueChange={(value) => draft.write(key, value)} />
       </PreferenceField>
     )
@@ -122,12 +121,12 @@ export function AnimeUsageFields() {
   return (
     <div class="grid gap-5">
       <FieldGroup>
-        <FieldLegend>{t('runtime.usageGroups.playback')}</FieldLegend>
+        <FieldLegend>{t('preferences.usage.groups.playback')}</FieldLegend>
         {multiplier('playbackSpeed')}
         {toggle('autoAdvance')}
       </FieldGroup>
       <FieldGroup>
-        <FieldLegend>{t('runtime.usageGroups.tracks')}</FieldLegend>
+        <FieldLegend>{t('preferences.usage.groups.tracks')}</FieldLegend>
         {languages('audioLanguages')}
         {toggle('subtitlesEnabled')}
         {languages('subtitleLanguages')}

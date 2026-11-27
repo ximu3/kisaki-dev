@@ -4,7 +4,7 @@ import { Field, FieldContent, FieldGroup, FieldLabel, FieldLegend } from '@kisak
 import { ColorInput, Input } from '@kisaki3/desktop-ui/input'
 import { Textarea } from '@kisaki3/desktop-ui/textarea'
 import type { ColorScheme, UserAppearanceTokens } from '@kisaki3/desktop-contracts/appearance'
-import type { UserFontOption } from '../../domain-ui/fonts/options'
+import type { MainClient } from '../../../../infrastructure/api'
 import { FontSelector } from '../../domain-ui/fonts/selector'
 import { tokens, type TokenName } from '@kisaki3/desktop-appearance/tokens'
 
@@ -73,21 +73,16 @@ export function ThemeFields(props: {
   t: Translate
   scheme: ColorScheme
   values: UserAppearanceTokens
-  users: readonly UserFontOption[]
-  system: readonly string[]
-  loading: boolean
+  api: MainClient
   change: <K extends TokenName>(key: K, value: UserAppearanceTokens[K]) => void
 }) {
   function control(key: TokenName) {
     if (key === '--font-sans' || key === '--font-mono') {
       return (
         <FontSelector
-          t={props.t}
           fallback="default"
           value={props.values[key]}
-          users={props.users}
-          system={props.system}
-          loading={props.loading}
+          api={props.api}
           onValueChange={(v) => props.change(key, v)}
         />
       )
@@ -98,12 +93,12 @@ export function ThemeFields(props: {
           class="w-full"
           value={props.values[key]}
           onValueChange={(v) => props.change(key, v)}
-          pickerLabel={props.t('runtime.picker')}
-          hueLabel={props.t('runtime.hue')}
-          saturationLabel={props.t('runtime.saturation')}
-          brightnessLabel={props.t('runtime.brightness')}
-          alphaLabel={props.t('runtime.alpha')}
-          invalidColorMessage={props.t('runtime.invalidColor')}
+          pickerLabel={props.t('controls.color.choose')}
+          hueLabel={props.t('controls.color.hue')}
+          saturationLabel={props.t('controls.color.saturation')}
+          brightnessLabel={props.t('controls.color.brightness')}
+          alphaLabel={props.t('controls.color.alpha')}
+          invalidColorMessage={props.t('controls.color.invalid')}
         />
       )
     }
@@ -126,7 +121,7 @@ export function ThemeFields(props: {
     <For each={themeGroups}>
       {(group) => (
         <FieldGroup class="gap-x-4 gap-y-3 @min-[30rem]:grid-cols-2">
-          <FieldLegend>{props.t(`runtime.themeGroups.${group.id}`)}</FieldLegend>
+          <FieldLegend>{props.t(`themes.groups.${group.id}`)}</FieldLegend>
           <For each={group.names as readonly (typeof themeGroups)[number]['names'][number][]}>
             {(name) => {
               const key = `--${name}` as const
@@ -138,7 +133,7 @@ export function ThemeFields(props: {
                   name={field()}
                   class={key.startsWith('--shadow-') ? 'col-span-full' : undefined}
                 >
-                  <FieldLabel>{props.t(`runtime.themeTokens.${name}`)}</FieldLabel>
+                  <FieldLabel>{props.t(`themes.tokens.${name}`)}</FieldLabel>
                   <FieldContent class="w-full">{control(key)}</FieldContent>
                 </Field>
               )

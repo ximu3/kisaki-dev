@@ -5,10 +5,10 @@ import type { PresentationIssue } from './appearance'
 
 export function appearanceIssueMessage(t: Translate, issue: PresentationIssue): string {
   if (issue === 'theme') {
-    return t('runtime.themeUnavailable')
+    return t('appearance.themeUnavailable')
   }
   const slot = issue === '--font-sans' ? 'font-sans' : 'font-mono'
-  return t('runtime.fontUnavailable', { slot: t(`runtime.themeTokens.${slot}`) })
+  return t('appearance.fontUnavailable', { slot: t(`themes.tokens.${slot}`) })
 }
 
 export function Notifications(props: {
@@ -26,7 +26,10 @@ export function Notifications(props: {
     },
   )
   return (
-    <Toaster regionLabel={props.t('runtime.notifications')} closeLabel={props.t('actions.close')} />
+    <Toaster
+      regionLabel={props.t('controls.feedback.notifications')}
+      closeLabel={props.t('actions.close')}
+    />
   )
 }
 

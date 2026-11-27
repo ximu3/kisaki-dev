@@ -63,8 +63,15 @@ export function adoptNewFont(tx: Storage['db'], input: NewFont) {
 export function fontStorage({ transaction }: Storage) {
   return {
     getFont: (id: string) => transaction((tx) => readFont(tx, id)),
+    getFontName: (id: string) =>
+      transaction(
+        (tx) =>
+          tx.select({ name: fonts.name }).from(fonts).where(eq(fonts.id, id)).get()?.name ?? null,
+      ),
     listFonts(search: string, options: ListOptions) {
-      const filter = search ? sql`instr(lower(${fonts.name}),lower(${search}))` : undefined
+      const filter = search
+        ? sql`instr(kisaki_lower(${fonts.name}), kisaki_lower(${search}))`
+        : undefined
       return transaction((tx) => ({
         items: tx
           .select()

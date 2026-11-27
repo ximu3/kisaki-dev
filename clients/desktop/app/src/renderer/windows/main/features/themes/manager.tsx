@@ -79,7 +79,7 @@ export async function checkThemeTarget(
   signal: AbortSignal,
 ) {
   if (ref && !(await api.request(signal, 'themes.get', ref))) {
-    throw new DesktopError('NotFound', api.t('runtime.unavailable'))
+    throw new DesktopError('NotFound', api.t('controls.feedback.unavailable'))
   }
 }
 
@@ -129,7 +129,7 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
       return
     }
     if (!value || !editable(value)) {
-      throw new Error(api.t('runtime.unavailable'))
+      throw new Error(api.t('controls.feedback.unavailable'))
     }
     setEdit({
       id: ref.type === 'user' ? ref.id : null,
@@ -161,7 +161,7 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
     })
   }
   async function duplicate(ref: ThemeRef, name: string) {
-    const copy = await api.call('themes.clone', ref, api.t('runtime.copySuffix', { name }))
+    const copy = await api.call('themes.clone', ref, api.t('themes.copyName', { name }))
     await reveal(copy)
   }
 
@@ -177,9 +177,9 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
   async function remove(id: string, name: string) {
     if (
       await confirm.ask(
-        api.t('runtime.deleteThemeTitle'),
+        api.t('themes.delete'),
         api.t('actions.delete'),
-        api.t('runtime.deleteTheme', { name }),
+        api.t('themes.confirmDelete', { name }),
       )
     ) {
       await api.call('themes.delete', id)
@@ -204,7 +204,7 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
   return (
     <>
       <DialogHeader closeLabel={api.t('actions.close')}>
-        <DialogTitle>{api.t('runtime.themes')}</DialogTitle>
+        <DialogTitle>{api.t('themes.title')}</DialogTitle>
       </DialogHeader>
       <DialogBody
         ref={(node) => {
@@ -213,12 +213,12 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
       >
         <QueryError
           error={failure()}
-          retryLabel={api.t('runtime.retry')}
+          retryLabel={api.t('actions.retry')}
           retry={retry}
           class="mb-3"
         />
         <Show when={catalog.pending() && !entries()?.length}>
-          <Spinner label={api.t('runtime.loading')} />
+          <Spinner label={api.t('controls.feedback.loading')} />
         </Show>
         <List>
           <For each={entries()} keyed={(item) => catalogKey(item.ref)}>
@@ -237,7 +237,7 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
                     <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
                       <span>{item().name}</span>
                       <Show when={activeKey() === key()}>
-                        <Badge tone="outline">{api.t('runtime.currentTheme')}</Badge>
+                        <Badge tone="outline">{api.t('themes.current')}</Badge>
                       </Show>
                     </div>
                   }
@@ -246,8 +246,8 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
                     <>
                       <Show when={activeKey() !== key()}>
                         <ListItemAction
-                          label={api.t('runtime.use')}
-                          aria-label={api.t('runtime.useThemeItem', { name: item().name })}
+                          label={api.t('actions.use')}
+                          aria-label={api.t('themes.useNamed', { name: item().name })}
                           disabled={
                             busy() || preferences.pending() || !!preferences.result()?.error
                           }
@@ -258,15 +258,15 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
                       </Show>
                       <ListItemAction
                         id={'theme-preview-' + key()}
-                        label={api.t('runtime.preview')}
-                        aria-label={api.t('runtime.previewItem', { name: item().name })}
+                        label={api.t('actions.preview')}
+                        aria-label={api.t('actions.previewItem', { name: item().name })}
                         onClick={() => setPreview(item().ref)}
                       >
                         <Icon path={mdiEyeOutline} />
                       </ListItemAction>
                       <ListItemAction
-                        label={api.t('runtime.duplicate')}
-                        aria-label={api.t('runtime.duplicateItem', { name: item().name })}
+                        label={api.t('actions.duplicate')}
+                        aria-label={api.t('actions.duplicateItem', { name: item().name })}
                         disabled={busy()}
                         onClick={() => operate(() => duplicate(item().ref, item().name))}
                       >
@@ -277,7 +277,7 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
                           <>
                             <ListItemAction
                               label={api.t('actions.edit')}
-                              aria-label={api.t('runtime.editItem', { name: item().name })}
+                              aria-label={api.t('actions.editItem', { name: item().name })}
                               disabled={busy()}
                               onClick={() => operate(() => open(item().ref, item().name))}
                             >
@@ -285,7 +285,7 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
                             </ListItemAction>
                             <ListItemAction
                               label={api.t('actions.delete')}
-                              aria-label={api.t('runtime.deleteItem', { name: item().name })}
+                              aria-label={api.t('actions.deleteItem', { name: item().name })}
                               disabled={busy()}
                               destructive
                               onClick={() => operate(() => remove(id(), item().name))}
@@ -307,10 +307,10 @@ function ThemeCatalog(props: ThemesProps & { visible: boolean }) {
         <Button
           variant="outline"
           disabled={busy()}
-          onClick={() => operate(() => open(initialTheme, api.t('runtime.newTheme')))}
+          onClick={() => operate(() => open(initialTheme, api.t('themes.create')))}
         >
           <Icon path={mdiPlus} />
-          {api.t('runtime.newTheme')}
+          {api.t('themes.create')}
         </Button>
       </DialogFooter>
 

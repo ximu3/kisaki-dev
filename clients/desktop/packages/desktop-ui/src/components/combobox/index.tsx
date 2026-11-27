@@ -38,6 +38,8 @@ const searchProps = [
   'searchPlaceholder',
   'loading',
   'loadingMessage',
+  'onOpenChange',
+  'listFooter',
 ] as const
 
 function SingleCombobox<O extends ComboboxOption>(props: SingleComboboxProps<O>): JSX.Element {

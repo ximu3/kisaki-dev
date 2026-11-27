@@ -31,10 +31,10 @@ import type { Translate } from '@kisaki3/desktop-localization'
 import { reportError } from '../../../infrastructure/notifications'
 
 const managementEntries = [
-  { type: 'preferences', label: 'preferences', icon: mdiCogOutline },
-  { type: 'themes', label: 'themes', icon: mdiPaletteOutline },
-  { type: 'fonts', label: 'fonts', icon: mdiFormatFont },
-  { type: 'systemIntegration', label: 'system', icon: mdiMonitorEdit },
+  { type: 'preferences', label: 'preferences.title', icon: mdiCogOutline },
+  { type: 'themes', label: 'themes.title', icon: mdiPaletteOutline },
+  { type: 'fonts', label: 'fonts.title', icon: mdiFormatFont },
+  { type: 'systemIntegration', label: 'systemIntegration.title', icon: mdiMonitorEdit },
 ] as const
 
 const modeIcons = { system: mdiLaptop, light: mdiWeatherSunny, dark: mdiWeatherNight }
@@ -89,20 +89,20 @@ export function ApplicationMenu(props: {
           variant="ghost"
           size="icon-lg"
           class="rail-action size-10"
-          aria-label={t('runtime.appMenu')}
+          aria-label={t('application.menu')}
         >
           <Icon path={mdiCogOutline} />
         </TooltipTrigger>
-        <TooltipContent placement="right">{t('runtime.appMenu')}</TooltipContent>
+        <TooltipContent placement="right">{t('application.menu')}</TooltipContent>
       </Tooltip>
 
       <MenuContent class="min-w-48" placement="right-end">
         <Menu>
           <MenuSubTrigger icon={<Icon path={mdiWeatherSunset} />} disabled={choicesDisabled()}>
-            {t('runtime.fields.mode')}
+            {t('preferences.appearance.mode')}
           </MenuSubTrigger>
-          <MenuContent class="min-w-40" aria-label={t('runtime.fields.mode')}>
-            <MenuGroup aria-label={t('runtime.fields.mode')}>
+          <MenuContent class="min-w-40" aria-label={t('preferences.appearance.mode')}>
+            <MenuGroup aria-label={t('preferences.appearance.mode')}>
               <For each={appearanceModes}>
                 {(value) => {
                   const path = modeIcons[value]
@@ -114,7 +114,7 @@ export function ApplicationMenu(props: {
                       disabled={choicesDisabled()}
                       onValueChange={() => changeMode(value)}
                     >
-                      {t(`runtime.choices.${value}`)}
+                      {t(`appearance.modes.${value}`)}
                     </MenuRadioItem>
                   )
                 }}
@@ -128,7 +128,7 @@ export function ApplicationMenu(props: {
           disabled={choicesDisabled()}
           onCheckedChange={changeSensitiveVisibility}
         >
-          {t('runtime.fields.showNsfw')}
+          {t('preferences.library.showNsfw')}
         </MenuCheckboxItem>
 
         <MenuSeparator />
@@ -138,7 +138,7 @@ export function ApplicationMenu(props: {
               icon={<Icon path={item.icon} />}
               onSelect={() => void props.open({ type: item.type })}
             >
-              {t(`runtime.${item.label}`)}
+              {t(item.label)}
             </MenuItem>
           )}
         </For>
@@ -148,7 +148,7 @@ export function ApplicationMenu(props: {
           icon={<Icon path={mdiInformationOutline} />}
           onSelect={() => void props.open({ type: 'about' })}
         >
-          {t('runtime.about')}
+          {t('application.about.title')}
         </MenuItem>
       </MenuContent>
     </Menu>

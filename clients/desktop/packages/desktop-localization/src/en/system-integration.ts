@@ -1,0 +1,36 @@
+export const systemIntegrationMessages = {
+  startup: {
+    needsApproval: 'Allow Kisaki in the system’s startup settings',
+    disabled: 'The system has disabled Kisaki at login',
+    settings: 'Startup settings',
+    title: 'Start at login',
+  },
+  links: {
+    unregistered: 'Register to open {scheme}:// links in Kisaki',
+    defaultUnknown: '{scheme}:// is registered. The system did not report its default app.',
+    defaultApp: 'Kisaki opens {scheme}:// links',
+    otherApp: 'Another app opens {scheme}:// links',
+    settings: 'Default app settings',
+    makeDefault: 'Set as default',
+    title: 'Kisaki links',
+  },
+  restart: 'Restart Kisaki',
+  register: 'Register',
+  desktopEntry: {
+    title: 'Application menu entry',
+    available: 'Launch Kisaki from the system application menu',
+    ready: 'Added to the system application menu',
+    add: 'Add',
+  },
+  data: {
+    standard: 'Standard mode',
+    portable: 'Portable mode',
+    destination: 'Target directory',
+    existing: 'Existing library',
+    emptyDirectory: 'Empty directory',
+    afterRestart: 'Directory after restart',
+    usePortable: 'Use portable mode after restart',
+    current: 'Current data directory',
+  },
+  title: 'System integration',
+} as const

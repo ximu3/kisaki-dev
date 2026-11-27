@@ -8,6 +8,12 @@ A missing message uses the English text **and English formatting rules**. A supp
 
 The English source determines which arguments each call accepts. A translation may omit a source parameter, but callers still supply the complete English argument set. Additional parameters and invalid runtime kinds are rejected. Numeric arguments must be finite and dates must be valid. A numeric timestamp must fall within the ECMAScript date range.
 
+## Message groups
+
+The English catalog groups messages by product domain or shared interaction. For example, `tasks.status.completed` names a task state, `tasks.history.confirmDelete` names the confirmation for a history record, and `actions.delete` labels the shared action. Preference fields use `formatPreferenceField(t, key)` for their label and `formatPreferencePath(t, key)` for the full path of labels. `formatShortcutScope(t, scope)` supplies the heading for a group of bindings.
+
+Catalogs from earlier development builds that use `runtime.*` must move those translations to the corresponding English keys. Complete validation identifies any missing translations.
+
 ## Checking translations
 
 `validateMessageCatalog` checks known leaves against the source, including uses inside nested ICU select and plural branches. Translations can omit parameters but cannot add a name or narrow the source's accepted kinds. Missing leaves are allowed by default. Complete validation requires every source key, including leaves whose translation is empty. Unknown leaves are retained so a catalog can be used across baseline versions.

@@ -1,0 +1,36 @@
+export const systemIntegrationMessages = {
+  startup: {
+    needsApproval: '请在系统启动项中允许 Kisaki',
+    disabled: '系统已禁用 Kisaki 的登录启动',
+    settings: '启动项设置',
+    title: '登录时启动',
+  },
+  links: {
+    unregistered: '注册后可用 {scheme}:// 链接打开 Kisaki',
+    defaultUnknown: '已注册 {scheme}://，系统未返回默认应用',
+    defaultApp: 'Kisaki 会打开 {scheme}:// 链接',
+    otherApp: '当前由其他应用打开 {scheme}:// 链接',
+    settings: '默认应用设置',
+    makeDefault: '设为默认',
+    title: 'Kisaki 链接',
+  },
+  restart: '重启 Kisaki',
+  register: '注册',
+  desktopEntry: {
+    title: '应用菜单入口',
+    available: '从系统应用菜单启动 Kisaki',
+    ready: '已添加到系统应用菜单',
+    add: '添加',
+  },
+  data: {
+    standard: '普通模式',
+    portable: '便携模式',
+    destination: '切换目标目录',
+    existing: '使用现有资料库',
+    emptyDirectory: '使用空目录',
+    afterRestart: '重启后使用',
+    usePortable: '重启后使用便携模式',
+    current: '当前数据目录',
+  },
+  title: '系统集成',
+} as const

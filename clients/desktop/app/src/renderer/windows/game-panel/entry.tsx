@@ -8,8 +8,8 @@ render(
   () => (
     <>
       <Notifications t={client.t} />
-      <main aria-label={client.t('runtime.game-panel')}>
-        <h1>{client.t('runtime.game-panel')}</h1>
+      <main aria-label={client.t('application.windows.gamePanel')}>
+        <h1>{client.t('application.windows.gamePanel')}</h1>
       </main>
     </>
   ),

@@ -165,7 +165,7 @@ export function createNavigation(
     })
     const stopNavigation = api.onNavigate(async (raw, signal) => {
       if (!(await navigate(parseNativeViewTarget(raw), signal))) {
-        throw new DesktopError('Cancelled', api.t('runtime.keepEditing'))
+        throw new DesktopError('Cancelled', api.t('forms.unsaved.keepEditing'))
       }
     })
     return () => {

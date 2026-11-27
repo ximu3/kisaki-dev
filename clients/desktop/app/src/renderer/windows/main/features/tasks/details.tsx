@@ -99,7 +99,7 @@ function TaskDetailView(props: {
     error:
       detail.result()?.error ??
       (detail.result()?.value === null && !detail.pending()
-        ? new DesktopError('NotFound', api.t('runtime.unavailable'))
+        ? new DesktopError('NotFound', api.t('controls.feedback.unavailable'))
         : undefined),
   }))
 
@@ -107,7 +107,7 @@ function TaskDetailView(props: {
     <>
       <DialogHeader closeLabel={api.t('actions.close')} class="flex flex-wrap items-center gap-2">
         <TaskTypeIcon type={record()?.type} />
-        <DialogTitle class="min-w-0">{record()?.title ?? api.t('runtime.detail')}</DialogTitle>
+        <DialogTitle class="min-w-0">{record()?.title ?? api.t('tasks.details.title')}</DialogTitle>
         <Show when={record()}>{(item) => <TaskStatus t={api.t} status={item().status} />}</Show>
       </DialogHeader>
       <DialogBody class="@container space-y-5 overflow-x-hidden">
@@ -116,13 +116,15 @@ function TaskDetailView(props: {
             <Alert tone="destructive" role="alert">
               {errorMessage(detail.result()?.error)}{' '}
               <Button variant="outline" onClick={() => void detail.reload()}>
-                {api.t('runtime.retry')}
+                {api.t('actions.retry')}
               </Button>
             </Alert>
           </Match>
           <Match when={record()}>{(item) => <TaskReport api={api} item={item()} />}</Match>
           <Match when={!detail.pending() && !detail.result()?.error}>
-            <p class="m-0 text-sm text-muted-foreground">{api.t('runtime.unavailable')}</p>
+            <p class="m-0 text-sm text-muted-foreground">
+              {api.t('controls.feedback.unavailable')}
+            </p>
           </Match>
         </Switch>
       </DialogBody>
@@ -136,34 +138,34 @@ function TaskReport(props: { api: MainClient; item: TaskRun }) {
   const date = (time: number | null) =>
     time === null
       ? undefined
-      : new Intl.DateTimeFormat(document.documentElement.lang, {
+      : new Intl.DateTimeFormat(props.api.locale(), {
           dateStyle: 'medium',
           timeStyle: 'short',
         }).format(time)
   const fields = () =>
     [
-      { label: 'runtime.taskRunId', value: item().id },
-      { label: 'runtime.type', value: taskTypeLabel(t, item().type) },
-      { label: 'runtime.taskCreated', value: date(item().createdAt) },
-      { label: 'runtime.taskStarted', value: date(item().startedAt) },
-      { label: 'runtime.taskFinished', value: date(item().finishedAt) },
-      { label: 'runtime.duration', value: taskDuration(item(), document.documentElement.lang) },
+      { label: 'tasks.fields.id', value: item().id },
+      { label: 'tasks.fields.type', value: taskTypeLabel(t, item().type) },
+      { label: 'tasks.fields.createdAt', value: date(item().createdAt) },
+      { label: 'tasks.fields.startedAt', value: date(item().startedAt) },
+      { label: 'tasks.fields.finishedAt', value: date(item().finishedAt) },
+      { label: 'tasks.fields.duration', value: taskDuration(item(), props.api.locale()) },
     ] as const
 
   return (
     <>
       <Show when={isTaskTerminal(item().status) || item().result !== null || item().error}>
-        <DetailSection heading={t('runtime.result')}>
+        <DetailSection heading={t('tasks.fields.result')}>
           <TaskResult api={props.api} item={item()} />
         </DetailSection>
       </Show>
 
-      <DetailSection heading={t('runtime.taskInformation')}>
+      <DetailSection heading={t('tasks.fields.information')}>
         <dl class="m-0 grid gap-x-8 gap-y-3 text-sm @min-[24rem]:grid-cols-2">
           <Show when={item().description}>
             {(description) => (
               <div class="col-span-full min-w-0">
-                <dt class="text-xs text-muted-foreground">{t('runtime.taskDescription')}</dt>
+                <dt class="text-xs text-muted-foreground">{t('tasks.fields.description')}</dt>
                 <dd class="m-0 whitespace-pre-wrap wrap-anywhere">{description()}</dd>
               </div>
             )}
@@ -182,7 +184,7 @@ function TaskReport(props: { api: MainClient; item: TaskRun }) {
       </DetailSection>
 
       <Show when={item().input !== null}>
-        <TaskJson label={t('runtime.input')} value={item().input} />
+        <TaskJson label={t('tasks.fields.input')} value={item().input} />
       </Show>
     </>
   )
@@ -215,11 +217,11 @@ function TaskResult(props: { api: MainClient; item: TaskRun }) {
       </Show>
       <Switch>
         <Match when={result() === null && !props.item.error}>
-          <p class="m-0 text-sm text-muted-foreground">{t('runtime.noResult')}</p>
+          <p class="m-0 text-sm text-muted-foreground">{t('tasks.details.noResult')}</p>
         </Match>
         <Match when={result() !== null}>
           <Show when={props.item.status !== 'completed'}>
-            <p class="m-0 text-sm font-medium">{t('runtime.taskPartialResult')}</p>
+            <p class="m-0 text-sm font-medium">{t('tasks.details.partialResult')}</p>
           </Show>
           <Switch>
             <Match when={values().length}>
@@ -238,13 +240,13 @@ function TaskResult(props: { api: MainClient; item: TaskRun }) {
               <p class="m-0 wrap-anywhere text-sm">{scalar()}</p>
             </Match>
             <Match when={true}>
-              <p class="m-0 text-sm">{t('runtime.taskRecordedResult')}</p>
+              <p class="m-0 text-sm">{t('tasks.details.recordedResult')}</p>
             </Match>
           </Switch>
         </Match>
       </Switch>
       <Show when={result() !== null}>
-        <TaskJson label={t('runtime.taskOutput')} value={result()} />
+        <TaskJson label={t('tasks.fields.output')} value={result()} />
       </Show>
     </div>
   )

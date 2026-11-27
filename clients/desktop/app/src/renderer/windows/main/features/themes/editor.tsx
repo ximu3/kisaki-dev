@@ -18,9 +18,7 @@ import type { MainClient } from '../../../../infrastructure/api'
 import type { EditorGuard } from '../../../../infrastructure/dialogs/closing'
 import { themeUpdate, type ThemeEdit } from './draft'
 import { createThemePreview } from './preview'
-import { createFontOptions } from '../../domain-ui/fonts/options'
 import { ThemeFields, themeGroups } from './fields'
-import { QueryError } from '../../../../infrastructure/query/error'
 
 interface ThemeEditorProps {
   api: MainClient
@@ -36,9 +34,7 @@ export function ThemeEditor(props: ThemeEditorProps) {
   const [original, setOriginal] = createSignal(props.initial)
   const [scheme, setScheme] = createSignal<ColorScheme>('light')
   const update = createMemo(() => themeUpdate(draft(), original().definition))
-  const dirty = () => !original().id || Object.keys(update().changes).length > 0
-
-  const fonts = createFontOptions(api)
+  const dirty = () => Object.keys(update().changes).length > 0
 
   const preview = createThemePreview(api, () => ({
     colorScheme: scheme(),
@@ -56,7 +52,7 @@ export function ThemeEditor(props: ThemeEditorProps) {
     const value = draft()
     const issues: FieldIssue[] = []
     if (!value.name.trim()) {
-      issues.push({ id: 'name', summary: api.t('runtime.enterName') })
+      issues.push({ id: 'name', summary: api.t('forms.enterName') })
     }
     for (const branch of ['light', 'dark'] as const) {
       for (const group of themeGroups) {
@@ -67,8 +63,8 @@ export function ThemeEditor(props: ThemeEditorProps) {
           } catch {
             issues.push({
               id: branch + '/' + key,
-              summary: api.t('runtime.invalidField', {
-                field: api.t(`runtime.themeTokens.${name}`),
+              summary: api.t('forms.invalidField', {
+                field: api.t(`themes.tokens.${name}`),
               }),
             })
           }
@@ -120,8 +116,8 @@ export function ThemeEditor(props: ThemeEditorProps) {
         const conflict = cause instanceof Error && 'code' in cause && cause.code === 'Conflict'
         throw new Error(
           conflict
-            ? api.t('runtime.savedConflict')
-            : api.t('runtime.savedNotApplied', {
+            ? api.t('themes.savedConflict')
+            : api.t('themes.savedNotApplied', {
                 reason: cause instanceof Error ? cause.message : String(cause),
               }),
           { cause },
@@ -136,21 +132,23 @@ export function ThemeEditor(props: ThemeEditorProps) {
   }
 
   const form = createForm({ validate: inspect, locate, order: fieldOrder, onSubmit: save })
-  const guard = { busy: form.busy, dirty, save: () => form.submit() }
-  props.registerEditor(guard)
+  props.registerEditor({
+    pending: () => (form.busy() ? form.submit() : undefined),
+    dirty,
+    save: form.submit,
+    currentFormAction: () => (original().id === null ? form.submit : undefined),
+  })
 
   return (
     <>
       <DialogHeader closeLabel={api.t('actions.close')}>
-        <DialogTitle>
-          {api.t(props.initial.id ? 'runtime.editTheme' : 'runtime.newTheme')}
-        </DialogTitle>
+        <DialogTitle>{api.t(props.initial.id ? 'themes.edit' : 'themes.create')}</DialogTitle>
       </DialogHeader>
       <Form state={form}>
         <Toolbar band>
           <ToolbarRow class="items-end">
             <Field name="name" id="theme-field-name" required class="min-w-40 flex-1">
-              <FieldLabel>{api.t('runtime.name')}</FieldLabel>
+              <FieldLabel>{api.t('forms.name')}</FieldLabel>
               <Input
                 autofocus
                 value={draft().name}
@@ -159,42 +157,35 @@ export function ThemeEditor(props: ThemeEditorProps) {
             </Field>
             <div class="flex flex-wrap items-end gap-x-4">
               <Field>
-                <FieldLabel>{api.t('runtime.themeBranch')}</FieldLabel>
+                <FieldLabel>{api.t('themes.scheme')}</FieldLabel>
                 <SegmentedControl
-                  label={api.t('runtime.themeBranch')}
+                  label={api.t('themes.scheme')}
                   value={scheme()}
                   options={[
-                    { value: 'light', label: api.t('runtime.light') },
-                    { value: 'dark', label: api.t('runtime.dark') },
+                    { value: 'light', label: api.t('appearance.modes.light') },
+                    { value: 'dark', label: api.t('appearance.modes.dark') },
                   ]}
                   onValueChange={(value) => setScheme(value as ColorScheme)}
                 />
               </Field>
               <Field class="flex-row items-center pb-0.5">
-                <FieldLabel>{api.t('runtime.preview')}</FieldLabel>
+                <FieldLabel>{api.t('actions.preview')}</FieldLabel>
                 <Switch checked={preview.enabled()} onCheckedChange={preview.change} />
               </Field>
             </div>
           </ToolbarRow>
         </Toolbar>
         <DialogBody class="@container space-y-5">
-          <QueryError
-            error={fonts.error()}
-            retryLabel={api.t('runtime.retry')}
-            retry={fonts.retry}
-          />
           <ThemeFields
             t={api.t}
             scheme={scheme()}
             values={draft()[scheme()]}
-            users={fonts.users()}
-            system={fonts.system()}
-            loading={fonts.loading()}
+            api={api}
             change={change}
           />
         </DialogBody>
         <DialogFooter>
-          <FormFeedback summary={(count) => api.t('runtime.fieldErrors', { count })} />
+          <FormFeedback summary={(count) => api.t('forms.fieldErrors', { count })} />
           <Button variant="ghost" onClick={props.requestClose}>
             {api.t('actions.cancel')}
           </Button>
@@ -202,7 +193,7 @@ export function ThemeEditor(props: ThemeEditorProps) {
             {api.t('actions.save')}
           </Button>
           <Button type="submit" name="intent" value="use" disabled={form.busy()}>
-            {api.t('runtime.saveUse')}
+            {api.t('themes.saveAndUse')}
           </Button>
         </DialogFooter>
       </Form>

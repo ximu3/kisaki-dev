@@ -11,7 +11,7 @@ export function ThemeSamples(props: { theme: Theme; t: Translate }) {
           return (
             <figure class="m-0 min-w-0 space-y-1.5">
               <figcaption class="text-xs font-medium text-muted-foreground">
-                {props.t(`runtime.${scheme}`)}
+                {props.t(`appearance.modes.${scheme}`)}
               </figcaption>
               <div
                 class="space-y-3 rounded-md border p-3"
@@ -27,7 +27,7 @@ export function ThemeSamples(props: { theme: Theme; t: Translate }) {
                     class="size-2 rounded-full"
                     style={{ background: tokens()['--primary'] }}
                   />
-                  <span class="text-sm font-medium">{props.t('runtime.themeSample')}</span>
+                  <span class="text-sm font-medium">{props.t('themes.preview.sample')}</span>
                 </div>
                 <div aria-hidden="true" class="flex gap-1.5">
                   <span
