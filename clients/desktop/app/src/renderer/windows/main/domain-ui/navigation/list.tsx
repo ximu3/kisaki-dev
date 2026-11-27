@@ -47,7 +47,7 @@ export function PageOrder<T extends NavigationPage>(props: {
       fallback={
         <EmptyState
           class="w-full rounded-md border border-dashed border-border"
-          heading={t('runtime.noPages')}
+          heading={t('navigation.empty')}
           icon={<Icon path={mdiViewDashboardOutline} class="size-5" />}
         />
       }
@@ -57,15 +57,15 @@ export function PageOrder<T extends NavigationPage>(props: {
         viewport={viewport}
         variant="plain"
         class="max-h-[min(28rem,65dvh)] w-full overflow-auto"
-        aria-label={t('runtime.fields.order')}
+        aria-label={t('preferences.navigation.order')}
         order={ids()}
         labels={{
-          first: t('runtime.moveFirst'),
-          previous: t('runtime.moveUp'),
-          next: t('runtime.moveDown'),
-          last: t('runtime.moveLast'),
+          first: t('actions.moveFirst'),
+          previous: t('actions.moveUp'),
+          next: t('actions.moveDown'),
+          last: t('actions.moveLast'),
           moved: (id, position) =>
-            t('runtime.pageMoved', { name: byId().get(id)!.title(t), position }),
+            t('navigation.moved', { name: byId().get(id)!.title(t), position }),
         }}
         onMove={adopt}
         onMoveError={reportError}
@@ -78,7 +78,7 @@ export function PageOrder<T extends NavigationPage>(props: {
             return (
               <ReorderableListItem
                 value={id}
-                moveLabel={t('runtime.movePage', { name: title() })}
+                moveLabel={t('navigation.move', { name: title() })}
                 previewLabel={title()}
                 icon={!props.open && <PageIcon />}
                 title={
@@ -101,7 +101,7 @@ export function PageOrder<T extends NavigationPage>(props: {
                     <Icon
                       path={mdiPinOutline}
                       class="size-3 text-muted-foreground"
-                      label={t('runtime.visiblePage')}
+                      label={t('navigation.visible')}
                     />
                   </Show>
                 }

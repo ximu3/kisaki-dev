@@ -3,7 +3,7 @@ import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { createDocumentAppearance } from './appearance'
 import { createTranslator, type Translate } from '@kisaki3/desktop-localization'
 import { createSignal } from 'solid-js'
-import type { MainWindowApi, WindowApi } from '../../shared/window-api'
+import type { MainWindowApi, WindowApi, WindowTranslation } from '../../shared/window-api'
 import {
   rpcData,
   windowProtocol,
@@ -42,6 +42,7 @@ export async function connect<K extends WindowKind>(kind: K) {
   const notifications = Object.fromEntries(
     [
       'window.changed',
+      'i18n.changed',
       'network.changed',
       'appearance.changed',
       'tasks.changed',
@@ -115,25 +116,39 @@ export async function connect<K extends WindowKind>(kind: K) {
   const common = async <M extends keyof WindowApi>(method: M, ...args: Parameters<WindowApi[M]>) =>
     (await rpc.request(method, rpcData(args))) as ReturnType<WindowApi[M]>
 
-  const [translate, setTranslate] = createSignal<Translate>(() => createTranslator('en'))
-
-  async function refreshWindowState() {
-    const state = await common('window.state')
-    const root = document.documentElement
-    document.title = state.applicationName
-    root.lang = state.locale
-    if (state.titlebarHeight !== null) {
-      root.style.setProperty('--main-titlebar-height', `${state.titlebarHeight}px`)
-    }
-
-    const translate = createTranslator(state.locale, state.messages)
-    setTranslate(() => translate)
-    return state
+  const [translation, setTranslation] = createSignal<{ locale: string; t: Translate }>()
+  function adoptTranslation(value: WindowTranslation) {
+    const t = createTranslator(value.locale, value.messages)
+    document.documentElement.lang = value.locale
+    setTranslation({ locale: value.locale, t })
   }
 
-  topics.addEventListener('window.changed', () => void refreshWindowState().catch(console.error))
+  let height: number | null = null
+  function applyHeight(value: number | null) {
+    if (value !== null && value !== height) {
+      height = value
+      document.documentElement.style.setProperty('--main-titlebar-height', `${value}px`)
+    }
+  }
+  topics.addEventListener('i18n.changed', (event) =>
+    adoptTranslation((event as CustomEvent<WindowTranslation>).detail),
+  )
+  topics.addEventListener('window.changed', (event) =>
+    applyHeight((event as CustomEvent<number | null>).detail),
+  )
   window.addEventListener('pagehide', () => rpc.close(), { once: true })
-  const { applicationName, platform, startupDeadline: deadline } = await refreshWindowState()
+
+  const state = await common('window.state')
+  const { applicationName, platform, startupDeadline: deadline } = state
+  document.title = applicationName
+  // A pushed change can arrive while the initial snapshot is in flight.
+  if (!translation()) {
+    adoptTranslation(state.translation)
+  }
+  if (height === null) {
+    applyHeight(state.titlebarHeight)
+  }
+
   const appearance = createDocumentAppearance(
     common,
     kind === 'main' && platform !== 'darwin'
@@ -167,7 +182,8 @@ export async function connect<K extends WindowKind>(kind: K) {
     applicationName,
     topics,
     appearanceIssues: appearance.issues,
-    t: ((...args) => translate()(...args)) as Translate,
+    locale: () => translation()!.locale,
+    t: ((...args) => translation()!.t(...args)) as Translate,
     onClose(handler: NonNullable<typeof confirmClose>) {
       confirmClose = handler
       return () => {

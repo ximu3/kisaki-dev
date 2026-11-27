@@ -74,7 +74,7 @@ export async function checkFontTarget(
   signal: AbortSignal,
 ) {
   if (id && !(await api.request(signal, 'fonts.get', id))) {
-    throw new DesktopError('NotFound', api.t('runtime.unavailable'))
+    throw new DesktopError('NotFound', api.t('controls.feedback.unavailable'))
   }
 }
 
@@ -143,7 +143,7 @@ function FontCatalog(props: FontsProps & { visible: boolean }) {
       return
     }
     if (!font) {
-      throw new Error(api.t('runtime.unavailable'))
+      throw new Error(api.t('controls.feedback.unavailable'))
     }
     setEdit({ font, files: [] })
   }
@@ -151,9 +151,9 @@ function FontCatalog(props: FontsProps & { visible: boolean }) {
   async function remove(id: string, name: string) {
     if (
       await confirm.ask(
-        api.t('runtime.deleteFontTitle'),
+        api.t('fonts.delete'),
         api.t('actions.delete'),
-        api.t('runtime.deleteFont', { name }),
+        api.t('fonts.confirmDelete', { name }),
       )
     ) {
       await api.call('fonts.delete', id)
@@ -187,7 +187,7 @@ function FontCatalog(props: FontsProps & { visible: boolean }) {
   return (
     <>
       <DialogHeader closeLabel={api.t('actions.close')}>
-        <DialogTitle>{api.t('runtime.fonts')}</DialogTitle>
+        <DialogTitle>{api.t('fonts.title')}</DialogTitle>
       </DialogHeader>
       <DialogBody
         ref={(node) => {
@@ -213,16 +213,16 @@ function FontCatalog(props: FontsProps & { visible: boolean }) {
       >
         <QueryError
           error={list.result()?.error}
-          retryLabel={api.t('runtime.retry')}
+          retryLabel={api.t('actions.retry')}
           retry={refresh}
         />
         <Show
           when={page()}
-          fallback={!list.result()?.error && <Spinner label={api.t('runtime.loadingFonts')} />}
+          fallback={!list.result()?.error && <Spinner label={api.t('fonts.selector.loading')} />}
         >
           <Show
             when={page()?.items.length}
-            fallback={<EmptyState heading={api.t('runtime.emptyFonts')} />}
+            fallback={<EmptyState heading={api.t('fonts.empty')} />}
           >
             <List>
               <For each={page()?.items} keyed={(font) => font.id}>
@@ -234,22 +234,22 @@ function FontCatalog(props: FontsProps & { visible: boolean }) {
                       <>
                         <ListItemAction
                           id={'font-preview-' + font().id}
-                          label={api.t('runtime.preview')}
-                          aria-label={api.t('runtime.previewItem', { name: font().name })}
+                          label={api.t('actions.preview')}
+                          aria-label={api.t('actions.previewItem', { name: font().name })}
                           onClick={() => setPreview({ id: font().id, name: font().name })}
                         >
                           <Icon path={mdiEyeOutline} />
                         </ListItemAction>
                         <ListItemAction
                           label={api.t('actions.edit')}
-                          aria-label={api.t('runtime.editItem', { name: font().name })}
+                          aria-label={api.t('actions.editItem', { name: font().name })}
                           onClick={() => void open(font().id).catch(reportError)}
                         >
                           <Icon path={mdiPencilOutline} />
                         </ListItemAction>
                         <ListItemAction
                           label={api.t('actions.delete')}
-                          aria-label={api.t('runtime.deleteItem', { name: font().name })}
+                          aria-label={api.t('actions.deleteItem', { name: font().name })}
                           destructive
                           onClick={() => void remove(font().id, font().name).catch(reportError)}
                         >
@@ -267,7 +267,7 @@ function FontCatalog(props: FontsProps & { visible: boolean }) {
       <DialogFooter class="justify-between">
         <Button variant="outline" onClick={() => start()}>
           <Icon path={mdiPlus} />
-          {api.t('runtime.newFont')}
+          {api.t('fonts.import')}
         </Button>
         <Show when={count() > pageSize || offset() > 0}>
           <ToolbarRow>
@@ -276,14 +276,14 @@ function FontCatalog(props: FontsProps & { visible: boolean }) {
               disabled={!offset()}
               onClick={() => changePage(offset() - pageSize)}
             >
-              {api.t('runtime.previous')}
+              {api.t('actions.previous')}
             </Button>
             <Button
               variant="outline"
               disabled={offset() + pageSize >= count()}
               onClick={() => changePage(offset() + pageSize)}
             >
-              {api.t('runtime.next')}
+              {api.t('actions.next')}
             </Button>
           </ToolbarRow>
         </Show>

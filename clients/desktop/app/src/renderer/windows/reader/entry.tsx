@@ -8,8 +8,8 @@ render(
   () => (
     <>
       <Notifications t={client.t} />
-      <main aria-label={client.t('runtime.reader')}>
-        <h1>{client.t('runtime.reader')}</h1>
+      <main aria-label={client.t('application.windows.reader')}>
+        <h1>{client.t('application.windows.reader')}</h1>
       </main>
     </>
   ),

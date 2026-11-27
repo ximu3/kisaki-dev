@@ -1,4 +1,5 @@
 - Publish English messages for each domain, generated types for message keys and arguments, and checks for translations.
-- Include task controls, preference fields, proxy status and appearance management in the English message catalog.
+- Group task, preference, theme, font and system messages by domain. Translation authors should use the current English keys.
+- Format preference labels and search paths from the same field keys used by the settings form.
 - Format isolated catalog snapshots with English fallback and literal markup, without application language state.
 - Verify that NodeNext projects, browsers and iframes can use the packed library.

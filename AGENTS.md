@@ -58,7 +58,7 @@
 
 ## 桌面 UI 设计
 
-桌面页面、对话框和公共 UI 部件以旧 Kisaki 的实际界面为视觉基准。在 `F:/project/3/kisaki` 运行 `pnpm dev`，用已有开发数据操作对应界面，核对布局、信息层次、密度和操作位置。新增界面对照同类页面和部件的呈现。系统与功能图标统一使用 Material Design Icons（MDI），同一操作优先沿用旧界面的图标。
+桌面页面、对话框和公共 UI 部件以旧 Kisaki 的实际界面为视觉基准。按 [Playwright 对照流程](refactor/verification/scenarios/ui.md#baseline)操作旧版开发窗口，核对布局、信息层次、密度和操作位置。新增界面对照同类页面和部件的呈现。系统与功能图标统一使用 Material Design Icons（MDI），同一操作优先沿用旧界面的图标。
 
 业务行为、接口和资源归属由本仓库的现行规格定义。交付前在默认主题、100% 应用缩放下，对照新旧窗口走完对应流程，再核对最小窗口和缩放边界。[界面设计基准](refactor/design/ui/components.md#existing-ui) · [代表场景](refactor/verification/scenarios/ui.md#baseline)
 

@@ -2,7 +2,7 @@ import { createContext, Show, useContext, type ParentProps } from 'solid-js'
 import { mdiRestore } from '@mdi/js'
 import { Icon } from '@kisaki3/desktop-ui/icon'
 import type { PreferenceKey } from '@kisaki3/desktop-contracts/preferences'
-import type { Translate } from '@kisaki3/desktop-localization'
+import { formatPreferenceField, type Translate } from '@kisaki3/desktop-localization'
 import {
   Field,
   FieldAction,
@@ -46,7 +46,6 @@ export function focusPreferenceValue(field: HTMLElement) {
 export function PreferenceField(
   props: ParentProps<{
     field: PreferenceKey
-    label: string
     description?: string | undefined
     wide?: boolean
     valueClass?: string
@@ -54,7 +53,7 @@ export function PreferenceField(
 ) {
   const { draft, t } = usePreferenceFields()
   let field!: HTMLDivElement
-  const resetLabel = () => t('runtime.resetField')
+  const resetLabel = () => t('forms.restoreDefault')
   const valueWidth = () => props.valueClass ?? (props.wide ? 'w-full' : 'w-56')
 
   function reset() {
@@ -73,7 +72,7 @@ export function PreferenceField(
       orientation={props.wide ? 'vertical' : 'responsive'}
     >
       <FieldHeader>
-        <FieldLabel>{props.label}</FieldLabel>
+        <FieldLabel>{formatPreferenceField(t, props.field)}</FieldLabel>
         <Show when={draft.canReset(props.field)}>
           <Tooltip>
             <TooltipTrigger

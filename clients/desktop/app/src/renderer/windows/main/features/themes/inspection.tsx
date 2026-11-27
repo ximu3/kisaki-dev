@@ -72,26 +72,29 @@ function ThemePreview(props: {
     error:
       theme.result()?.error ??
       (theme.result()?.value === null && !theme.pending()
-        ? new DesktopError('NotFound', api.t('runtime.unavailable'))
+        ? new DesktopError('NotFound', api.t('controls.feedback.unavailable'))
         : undefined),
   }))
 
   return (
     <>
       <DialogHeader closeLabel={api.t('actions.close')}>
-        <DialogTitle>{props.name ?? api.t('runtime.themePreview')}</DialogTitle>
+        <DialogTitle>{props.name ?? api.t('themes.preview.title')}</DialogTitle>
       </DialogHeader>
       <DialogBody>
         <QueryError
           error={theme.result()?.error}
-          retryLabel={api.t('runtime.retry')}
+          retryLabel={api.t('actions.retry')}
           retry={() => void theme.reload()}
         />
         <Show when={!theme.result()?.error}>
-          <Show when={!theme.pending()} fallback={<Spinner label={api.t('runtime.loading')} />}>
+          <Show
+            when={!theme.pending()}
+            fallback={<Spinner label={api.t('controls.feedback.loading')} />}
+          >
             <Show
               when={theme.result()?.value}
-              fallback={<p class="m-0 text-sm">{api.t('runtime.unavailable')}</p>}
+              fallback={<p class="m-0 text-sm">{api.t('controls.feedback.unavailable')}</p>}
             >
               {(value) => <ThemeSamples theme={value()} t={api.t} />}
             </Show>

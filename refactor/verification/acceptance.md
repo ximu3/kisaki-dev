@@ -103,6 +103,8 @@ macOS／Linux 的平台方案以官方接口、固定版本源码、成熟实现
 | Electron 集成与端到端 | Playwright 的 Electron 能力及真实开发应用      | preload、窗口、进程、协议、生命周期和完整工作流           |
 | 正式制品              | 实际打包应用，普通产品操作与合适的外部验证方式 | 打包路径、原生依赖、fuses、资源、初始化、更新、安装和启动 |
 
+本机有副屏时，浏览器、Electron 和打包应用的可见测试窗口默认放在副屏，常规自动化操作时前台焦点留给当前工作窗口。单屏环境使用当前显示器。涉及前台激活、窗口恢复、跨屏移动或不同 DPI 的用例按场景设置焦点和窗口位置。无窗口测试和 CI 沿用各自的运行环境。
+
 开发 Electron 的 Node 模式只用于不依赖 app 或 BrowserWindow 的原生测试。测试脚本在运行器启动前设置宿主运行条件，按 [Electron Node 模式](https://www.electronjs.org/docs/latest/api/environment-variables#electron_run_as_node)启动匹配版本；fixture 或测试中的环境变量配置不能切换进程 ABI。
 
 真正的 Electron API 在实际应用中验证，实例准备与关闭使用现成运行器的 fixture 及所属 tests/support。正式包保留安全 fuses；开发调试入口与正式限制分别处理，不能关闭 fuses 后把测试包当作原样制品。W00 验证所选运行组合并建立可执行的外部或现场验证路径，W20 对最终文件执行并保存结果。

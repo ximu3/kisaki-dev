@@ -6,9 +6,9 @@ import type { Translate } from '@kisaki3/desktop-localization'
 import { catalogSelection } from '../catalog-selection'
 
 export const themeSource = {
-  builtin: 'runtime.themeBuiltin',
-  user: 'runtime.themeUser',
-  extension: 'runtime.themeExtension',
+  builtin: 'themes.source.builtin',
+  user: 'themes.source.user',
+  extension: 'themes.source.extension',
 } as const
 
 export interface ThemeChoice {
@@ -41,11 +41,11 @@ export function ThemeSelector(props: {
       class="min-w-0 flex-1"
       value={selection().value}
       options={selection().options}
-      placeholder={props.loading ? props.t('runtime.loading') : ''}
+      placeholder={props.loading ? props.t('controls.feedback.loading') : ''}
       aria-busy={props.loading ? 'true' : undefined}
       disabled={props.disabled}
-      emptyMessage={props.t('runtime.noOptions')}
-      invalidSelectionMessage={props.t('runtime.unavailable')}
+      emptyMessage={props.t('controls.search.empty')}
+      invalidSelectionMessage={props.t('controls.feedback.unavailable')}
       onValueChange={(key) => {
         const theme = props.themes?.find(({ ref }) => catalogKey(ref) === key)
         if (theme) {

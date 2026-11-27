@@ -23,13 +23,13 @@ export async function resolveDestination(
   }
 
   if (target.type === 'themes') {
-    const { Themes, checkThemeTarget } = await import('../../features/themes/manager')
+    const { Themes, checkThemeTarget } = await import('../../features/themes')
     await checkThemeTarget(api, target.ref, signal)
     return (view) => createComponent(Themes, { api, target: target.ref, view })
   }
 
   if (target.type === 'fonts') {
-    const { Fonts, checkFontTarget } = await import('../../features/fonts/manager')
+    const { Fonts, checkFontTarget } = await import('../../features/fonts')
     await checkFontTarget(api, target.fontId, signal)
     return (view) => createComponent(Fonts, { api, target: target.fontId, view })
   }
@@ -44,5 +44,5 @@ export async function resolveDestination(
     return (view) => createComponent(About, { api, view })
   }
 
-  throw new DesktopError('NotFound', api.t('runtime.unavailable'))
+  throw new DesktopError('NotFound', api.t('controls.feedback.unavailable'))
 }

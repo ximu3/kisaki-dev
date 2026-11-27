@@ -184,8 +184,8 @@ function validateFields(api: MainClient, edits: FieldEdits): FieldIssue[] {
         id: key,
         summary:
           key === 'appearance.interfaceScale'
-            ? api.t('runtime.scaleRange', interfaceScaleRange)
-            : api.t('runtime.invalidValue'),
+            ? api.t('preferences.appearance.scaleRange', interfaceScaleRange)
+            : api.t('forms.invalidValue'),
       })
     }
   }
@@ -274,7 +274,7 @@ export function createPreferenceDraft(api: MainClient) {
         api.platform,
       )
       for (const key of new Set(conflicts.flatMap(({ first, second }) => [first, second]))) {
-        issues.push({ id: `shortcuts.${key}`, summary: api.t('runtime.shortcutOverlap') })
+        issues.push({ id: `shortcuts.${key}`, summary: api.t('shortcuts.conflict') })
       }
     }
 
@@ -286,7 +286,9 @@ export function createPreferenceDraft(api: MainClient) {
         issues.push({
           id: `network.${key}`,
           summary: api.t(
-            key === 'endpoint' ? 'runtime.proxyAddressNeeded' : 'runtime.socksCredentials',
+            key === 'endpoint'
+              ? 'preferences.network.missingEndpoint'
+              : 'preferences.network.socksCredentials',
           ),
         })
       }

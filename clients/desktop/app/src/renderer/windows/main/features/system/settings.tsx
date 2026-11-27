@@ -37,12 +37,14 @@ function describeLinks(
 ) {
   const { scheme, registered, isDefault } = item
   if (!registered) {
-    return t('runtime.linksUnregistered', { scheme })
+    return t('systemIntegration.links.unregistered', { scheme })
   }
   if (isDefault === null) {
-    return t('runtime.linksDefaultUnknown', { scheme })
+    return t('systemIntegration.links.defaultUnknown', { scheme })
   }
-  return t(isDefault ? 'runtime.linksOpenInKisaki' : 'runtime.linksOpenInOtherApp', { scheme })
+  return t(isDefault ? 'systemIntegration.links.defaultApp' : 'systemIntegration.links.otherApp', {
+    scheme,
+  })
 }
 
 interface SystemSettingsProps {
@@ -125,12 +127,12 @@ function IntegrationSettings(props: { api: MainClient }) {
   return (
     <>
       <DialogHeader closeLabel={api.t('actions.close')}>
-        <DialogTitle>{api.t('runtime.system')}</DialogTitle>
+        <DialogTitle>{api.t('systemIntegration.title')}</DialogTitle>
       </DialogHeader>
       <DialogBody class="grid gap-5">
         <QueryError
           error={state.result()?.error}
-          retryLabel={api.t('runtime.retry')}
+          retryLabel={api.t('actions.retry')}
           retry={refresh}
         />
 
@@ -139,7 +141,7 @@ function IntegrationSettings(props: { api: MainClient }) {
             <FieldGroup>
               <Show when={snapshot().loginItem.status !== 'unsupported'}>
                 <Field orientation="responsive">
-                  <FieldLabel>{api.t('runtime.login')}</FieldLabel>
+                  <FieldLabel>{api.t('systemIntegration.startup.title')}</FieldLabel>
                   <Show when={login()}>
                     {(item) => {
                       const blocked = () =>
@@ -152,8 +154,8 @@ function IntegrationSettings(props: { api: MainClient }) {
                             <FieldDescription>
                               {api.t(
                                 item().permission === 'denied'
-                                  ? 'runtime.startupDisabled'
-                                  : 'runtime.startupNeedsApproval',
+                                  ? 'systemIntegration.startup.disabled'
+                                  : 'systemIntegration.startup.needsApproval',
                               )}
                             </FieldDescription>
                           </Show>
@@ -168,7 +170,7 @@ function IntegrationSettings(props: { api: MainClient }) {
                                   )
                                 }
                               >
-                                {api.t('runtime.startupSettings')}
+                                {api.t('systemIntegration.startup.settings')}
                               </Button>
                             </Show>
                             <Switch
@@ -189,15 +191,15 @@ function IntegrationSettings(props: { api: MainClient }) {
 
               <Show when={snapshot().desktopEntry.status !== 'notApplicable'}>
                 <Field orientation="responsive">
-                  <FieldLabel>{api.t('runtime.desktopEntry')}</FieldLabel>
+                  <FieldLabel>{api.t('systemIntegration.desktopEntry.title')}</FieldLabel>
                   <Show when={launcher()}>
                     {(item) => (
                       <>
                         <FieldDescription>
                           {api.t(
                             item().registered
-                              ? 'runtime.desktopEntryReady'
-                              : 'runtime.desktopEntryAvailable',
+                              ? 'systemIntegration.desktopEntry.ready'
+                              : 'systemIntegration.desktopEntry.available',
                           )}
                         </FieldDescription>
                         <Show when={!item().registered}>
@@ -209,7 +211,7 @@ function IntegrationSettings(props: { api: MainClient }) {
                                 void perform('launcher', () => api.call('system.desktopEntry'))
                               }
                             >
-                              {api.t('runtime.addDesktopEntry')}
+                              {api.t('systemIntegration.desktopEntry.add')}
                             </Button>
                           </FieldContent>
                         </Show>
@@ -220,17 +222,23 @@ function IntegrationSettings(props: { api: MainClient }) {
                 </Field>
               </Show>
 
-              <Field role="group" aria-label={api.t('runtime.protocol')} orientation="responsive">
-                <FieldLabel>{api.t('runtime.protocol')}</FieldLabel>
+              <Field
+                role="group"
+                aria-label={api.t('systemIntegration.links.title')}
+                orientation="responsive"
+              >
+                <FieldLabel>{api.t('systemIntegration.links.title')}</FieldLabel>
                 <Show when={protocol()}>
                   {(item) => {
                     const useSettings = () => item().registered && item().settingsAvailable
                     const label = () => {
                       if (!item().registered) {
-                        return api.t('runtime.register')
+                        return api.t('systemIntegration.register')
                       }
                       return api.t(
-                        useSettings() ? 'runtime.defaultAppSettings' : 'runtime.makeDefaultApp',
+                        useSettings()
+                          ? 'systemIntegration.links.settings'
+                          : 'systemIntegration.links.makeDefault',
                       )
                     }
 

@@ -13,6 +13,112 @@ export interface MessageArguments {
   readonly "actions.edit": never
   readonly "actions.configure": never
   readonly "actions.open": never
+  readonly "actions.previewItem": { readonly "name": string | number }
+  readonly "actions.editItem": { readonly "name": string | number }
+  readonly "actions.deleteItem": { readonly "name": string | number }
+  readonly "actions.duplicateItem": { readonly "name": string | number }
+  readonly "actions.previous": never
+  readonly "actions.next": never
+  readonly "actions.chooseFiles": never
+  readonly "actions.preview": never
+  readonly "actions.remove": never
+  readonly "actions.back": never
+  readonly "actions.more": never
+  readonly "actions.manage": never
+  readonly "actions.duplicate": never
+  readonly "actions.use": never
+  readonly "actions.moveFirst": never
+  readonly "actions.moveLast": never
+  readonly "actions.moveUp": never
+  readonly "actions.moveDown": never
+  readonly "actions.refresh": never
+  readonly "appearance.modes.light": never
+  readonly "appearance.modes.dark": never
+  readonly "appearance.modes.system": never
+  readonly "appearance.themeUnavailable": never
+  readonly "appearance.fontUnavailable": { readonly "slot": string | number }
+  readonly "application.exit.pending": never
+  readonly "application.exit.cancel": never
+  readonly "application.exit.continueWaiting": never
+  readonly "application.windowErrors.startupTimeout": never
+  readonly "application.windowErrors.entryFailed": never
+  readonly "application.windowErrors.documentFailed": { readonly "reason": string | number }
+  readonly "application.windowErrors.closedUnexpectedly": never
+  readonly "application.windowErrors.exited": { readonly "reason": string | number }
+  readonly "application.windows.main": never
+  readonly "application.windows.reader": never
+  readonly "application.windows.player": never
+  readonly "application.windows.gamePanel": never
+  readonly "application.about.title": never
+  readonly "application.about.version": never
+  readonly "application.about.operatingSystem": never
+  readonly "application.about.architecture": never
+  readonly "application.about.copyEnvironment": never
+  readonly "application.menu": never
+  readonly "application.quit": never
+  readonly "controls.feedback.notifications": never
+  readonly "controls.feedback.loading": never
+  readonly "controls.feedback.saved": never
+  readonly "controls.feedback.unavailable": never
+  readonly "controls.feedback.unavailableResource": { readonly "name": string | number }
+  readonly "controls.feedback.copied": never
+  readonly "controls.calendar.label": never
+  readonly "controls.calendar.month": never
+  readonly "controls.calendar.year": never
+  readonly "controls.calendar.nextMonth": never
+  readonly "controls.calendar.previousMonth": never
+  readonly "controls.calendar.invalidDate": never
+  readonly "controls.number.increase": never
+  readonly "controls.number.decrease": never
+  readonly "controls.color.choose": never
+  readonly "controls.color.hue": never
+  readonly "controls.color.saturation": never
+  readonly "controls.color.brightness": never
+  readonly "controls.color.alpha": never
+  readonly "controls.color.invalid": never
+  readonly "controls.search.clear": never
+  readonly "controls.search.empty": never
+  readonly "controls.search.label": never
+  readonly "fonts.edit": never
+  readonly "fonts.selector.range": { readonly "first": number; readonly "last": number; readonly "total": number }
+  readonly "fonts.selector.user": never
+  readonly "fonts.selector.system": never
+  readonly "fonts.selector.loading": never
+  readonly "fonts.selector.empty": never
+  readonly "fonts.selector.document": never
+  readonly "fonts.selector.default": never
+  readonly "fonts.preview.weight": never
+  readonly "fonts.preview.sample": never
+  readonly "fonts.preview.failed": { readonly "reason": string | number }
+  readonly "fonts.preview.title": never
+  readonly "fonts.preview.width": never
+  readonly "fonts.files.add": never
+  readonly "fonts.files.kept": never
+  readonly "fonts.files.added": never
+  readonly "fonts.files.removed": never
+  readonly "fonts.files.restore": never
+  readonly "fonts.files.remove": { readonly "name": string | number }
+  readonly "fonts.files.removeFailed": never
+  readonly "fonts.files.failed": { readonly "name": string | number; readonly "reason": string | number }
+  readonly "fonts.files.preparing": never
+  readonly "fonts.files.required": never
+  readonly "fonts.files.title": never
+  readonly "fonts.import": never
+  readonly "fonts.empty": never
+  readonly "fonts.manage": never
+  readonly "fonts.confirmDelete": { readonly "name": string | number }
+  readonly "fonts.delete": never
+  readonly "fonts.title": never
+  readonly "forms.enterName": never
+  readonly "forms.invalidField": { readonly "field": string | number }
+  readonly "forms.unsaved.discard": never
+  readonly "forms.unsaved.title": never
+  readonly "forms.unsaved.description": never
+  readonly "forms.unsaved.keepEditing": never
+  readonly "forms.name": never
+  readonly "forms.invalidValue": never
+  readonly "forms.fieldErrors": { readonly "count": number }
+  readonly "forms.restoreDefault": never
   readonly "library.types.game": never
   readonly "library.types.anime": never
   readonly "library.types.comic": never
@@ -34,19 +140,107 @@ export interface MessageArguments {
   readonly "library.conflict": never
   readonly "library.completion.recorded": { readonly "name": string | number }
   readonly "library.completion.unknownDate": never
-  readonly "tasks.queued": never
-  readonly "tasks.running": never
-  readonly "tasks.pausing": never
-  readonly "tasks.paused": never
-  readonly "tasks.cancelling": never
-  readonly "tasks.completed": never
-  readonly "tasks.failed": never
-  readonly "tasks.cancelled": never
-  readonly "tasks.interrupted": never
-  readonly "tasks.types.directoryScan": never
-  readonly "tasks.types.libraryScan": never
-  readonly "tasks.types.libraryRefresh": never
-  readonly "tasks.unrecognizedType": { readonly "type": string | number }
+  readonly "navigation.moved": { readonly "name": string | number; readonly "position": number }
+  readonly "navigation.move": { readonly "name": string | number }
+  readonly "navigation.visible": never
+  readonly "navigation.empty": never
+  readonly "preferences.title": never
+  readonly "preferences.sectionLabel": never
+  readonly "preferences.sections.general": never
+  readonly "preferences.sections.appearance": never
+  readonly "preferences.sections.navigation": never
+  readonly "preferences.sections.library": never
+  readonly "preferences.sections.usage": never
+  readonly "preferences.sections.shortcuts": never
+  readonly "preferences.sections.network": never
+  readonly "preferences.sections.updates": never
+  readonly "preferences.general.uiTranslation": never
+  readonly "preferences.general.closeMainWindow": never
+  readonly "preferences.general.closeBehavior.background": never
+  readonly "preferences.general.closeBehavior.quit": never
+  readonly "preferences.appearance.scaleRange": { readonly "max": number; readonly "min": number }
+  readonly "preferences.appearance.theme": never
+  readonly "preferences.appearance.mode": never
+  readonly "preferences.appearance.interfaceScale": never
+  readonly "preferences.navigation.order": never
+  readonly "preferences.navigation.visibleLimit": never
+  readonly "preferences.library.showNsfw": never
+  readonly "preferences.library.autoRefreshHoldings": never
+  readonly "preferences.usage.minutesUnit": never
+  readonly "preferences.usage.foregroundGracePeriodHint": never
+  readonly "preferences.usage.groups.playback": never
+  readonly "preferences.usage.groups.tracks": never
+  readonly "preferences.usage.titles.game": never
+  readonly "preferences.usage.titles.anime": never
+  readonly "preferences.usage.titles.comic": never
+  readonly "preferences.usage.titles.novel": never
+  readonly "preferences.usage.foregroundGracePeriodMs": never
+  readonly "preferences.usage.media.game": never
+  readonly "preferences.usage.media.anime": never
+  readonly "preferences.usage.media.comic": never
+  readonly "preferences.usage.media.novel": never
+  readonly "preferences.usage.game.panelAlwaysOnTop": never
+  readonly "preferences.usage.game.showPanelOnStart": never
+  readonly "preferences.usage.anime.audioLanguages": never
+  readonly "preferences.usage.anime.subtitleLanguages": never
+  readonly "preferences.usage.anime.subtitlesEnabled": never
+  readonly "preferences.usage.anime.playbackSpeed": never
+  readonly "preferences.usage.anime.subtitleScale": never
+  readonly "preferences.usage.anime.autoAdvance": never
+  readonly "preferences.reading.choices.single": never
+  readonly "preferences.reading.choices.spread": never
+  readonly "preferences.reading.choices.document": never
+  readonly "preferences.reading.choices.ltr": never
+  readonly "preferences.reading.choices.rtl": never
+  readonly "preferences.reading.choices.paired": never
+  readonly "preferences.reading.choices.page": never
+  readonly "preferences.reading.choices.width": never
+  readonly "preferences.reading.choices.height": never
+  readonly "preferences.reading.choices.paginated": never
+  readonly "preferences.reading.choices.continuous": never
+  readonly "preferences.reading.choices.theme": never
+  readonly "preferences.reading.choices.custom": never
+  readonly "preferences.reading.choices.start": never
+  readonly "preferences.reading.choices.justify": never
+  readonly "preferences.reading.choices.horizontal-tb": never
+  readonly "preferences.reading.choices.vertical-rl": never
+  readonly "preferences.reading.choices.vertical-lr": never
+  readonly "preferences.reading.flow": never
+  readonly "preferences.reading.colors": never
+  readonly "preferences.reading.pages.arrangement": never
+  readonly "preferences.reading.pages.progression": never
+  readonly "preferences.reading.pages.firstPage": never
+  readonly "preferences.reading.pages.fit": never
+  readonly "preferences.reading.pages.autoCrop": never
+  readonly "preferences.reading.pages.brightness": never
+  readonly "preferences.reading.pages.contrast": never
+  readonly "preferences.reading.pages.title": never
+  readonly "preferences.reading.text.pagesPerView": never
+  readonly "preferences.reading.text.writingMode": never
+  readonly "preferences.reading.text.font": never
+  readonly "preferences.reading.text.fontSize": never
+  readonly "preferences.reading.text.lineHeight": never
+  readonly "preferences.reading.text.paragraphSpacing": never
+  readonly "preferences.reading.text.alignment": never
+  readonly "preferences.reading.text.padding": never
+  readonly "preferences.reading.text.maxLineLength": never
+  readonly "preferences.reading.text.title": never
+  readonly "preferences.network.missingEndpoint": never
+  readonly "preferences.network.socksCredentials": never
+  readonly "preferences.network.failed": never
+  readonly "preferences.network.applying": never
+  readonly "preferences.network.username": never
+  readonly "preferences.network.password": never
+  readonly "preferences.network.mode": never
+  readonly "preferences.network.bypassRulesHint": never
+  readonly "preferences.network.modes.direct": never
+  readonly "preferences.network.modes.manual": never
+  readonly "preferences.network.modes.system": never
+  readonly "preferences.network.endpoint": never
+  readonly "preferences.network.bypassRules": never
+  readonly "preferences.network.credentials": never
+  readonly "preferences.updates.autoCheck": never
+  readonly "preferences.updates.allowPrerelease": never
   readonly "resources.unavailable": never
   readonly "resources.captureUnavailable": never
   readonly "scanner.presets.bracketBoth.name": never
@@ -67,6 +261,38 @@ export interface MessageArguments {
   readonly "scanner.presets.bracketSuffix.description": never
   readonly "scanner.presets.parenSuffix.name": never
   readonly "scanner.presets.parenSuffix.description": never
+  readonly "shortcuts.remove": { readonly "binding": string | number; readonly "name": string | number }
+  readonly "shortcuts.record": { readonly "name": string | number }
+  readonly "shortcuts.unbound": never
+  readonly "shortcuts.previous": never
+  readonly "shortcuts.next": never
+  readonly "shortcuts.duplicate": never
+  readonly "shortcuts.prompt": never
+  readonly "shortcuts.conflict": never
+  readonly "shortcuts.commands.search": never
+  readonly "shortcuts.commands.preferences": never
+  readonly "shortcuts.commands.save": never
+  readonly "shortcuts.commands.find": never
+  readonly "shortcuts.commands.left": never
+  readonly "shortcuts.commands.right": never
+  readonly "shortcuts.commands.up": never
+  readonly "shortcuts.commands.down": never
+  readonly "shortcuts.commands.previous": never
+  readonly "shortcuts.commands.next": never
+  readonly "shortcuts.commands.fullscreen": never
+  readonly "shortcuts.commands.addAnnotation": never
+  readonly "shortcuts.commands.toggleAnnotations": never
+  readonly "shortcuts.commands.toggleTiming": never
+  readonly "shortcuts.commands.viewWork": never
+  readonly "shortcuts.commands.playPause": never
+  readonly "shortcuts.commands.seekBackward": never
+  readonly "shortcuts.commands.seekForward": never
+  readonly "shortcuts.commands.volumeUp": never
+  readonly "shortcuts.commands.volumeDown": never
+  readonly "shortcuts.commands.toggleMute": never
+  readonly "shortcuts.commands.toggleSubtitles": never
+  readonly "shortcuts.commands.togglePanel": never
+  readonly "shortcuts.editor": never
   readonly "showcase.presets.recentlyUsed.name": never
   readonly "showcase.presets.recentlyUsed.description": never
   readonly "showcase.presets.active.name": never
@@ -87,393 +313,151 @@ export interface MessageArguments {
   readonly "showcase.presets.favoriteOrganizations.description": never
   readonly "showcase.presets.collections.name": never
   readonly "showcase.presets.collections.description": never
-  readonly "runtime.notifications": never
-  readonly "runtime.project": never
-  readonly "runtime.loading": never
-  readonly "runtime.retry": never
-  readonly "runtime.copySuffix": { readonly "name": string | number }
-  readonly "runtime.previewItem": { readonly "name": string | number }
-  readonly "runtime.editItem": { readonly "name": string | number }
-  readonly "runtime.deleteItem": { readonly "name": string | number }
-  readonly "runtime.duplicateItem": { readonly "name": string | number }
-  readonly "runtime.enterName": never
-  readonly "runtime.invalidField": { readonly "field": string | number }
-  readonly "runtime.previous": never
-  readonly "runtime.next": never
-  readonly "runtime.reset": never
-  readonly "runtime.discard": never
-  readonly "runtime.discardQuestion": never
-  readonly "runtime.saved": never
-  readonly "runtime.unavailable": never
-  readonly "runtime.unavailableResource": { readonly "name": string | number }
-  readonly "runtime.choose": never
-  readonly "runtime.preview": never
-  readonly "runtime.name": never
-  readonly "runtime.remove": never
-  readonly "runtime.removeConfirm": never
-  readonly "runtime.summary": never
-  readonly "runtime.back": never
-  readonly "runtime.more": never
-  readonly "runtime.manage": never
-  readonly "runtime.edit": never
-  readonly "runtime.duplicate": never
-  readonly "runtime.use": never
-  readonly "runtime.calendar": never
-  readonly "runtime.month": never
-  readonly "runtime.year": never
-  readonly "runtime.nextMonth": never
-  readonly "runtime.previousMonth": never
-  readonly "runtime.invalidDate": never
-  readonly "runtime.increase": never
-  readonly "runtime.decrease": never
-  readonly "runtime.picker": never
-  readonly "runtime.hue": never
-  readonly "runtime.saturation": never
-  readonly "runtime.brightness": never
-  readonly "runtime.alpha": never
-  readonly "runtime.invalidValue": never
-  readonly "runtime.invalidColor": never
-  readonly "runtime.clearSearch": never
-  readonly "runtime.noOptions": never
-  readonly "runtime.fieldErrors": { readonly "count": number }
-  readonly "runtime.editFont": never
-  readonly "runtime.libraryFont": never
-  readonly "runtime.systemFonts": never
-  readonly "runtime.fontWeight": never
-  readonly "runtime.fontSample": never
-  readonly "runtime.addFiles": never
-  readonly "runtime.fontKept": never
-  readonly "runtime.fontAdded": never
-  readonly "runtime.fontRemoved": never
-  readonly "runtime.restoreFile": never
-  readonly "runtime.removeFile": { readonly "name": string | number }
-  readonly "runtime.previewFileFailed": { readonly "reason": string | number }
-  readonly "runtime.removeFailedFiles": never
-  readonly "runtime.fontFileFailed": { readonly "name": string | number; readonly "reason": string | number }
-  readonly "runtime.fontPreview": never
-  readonly "runtime.fontWidth": never
-  readonly "runtime.preparingFonts": never
-  readonly "runtime.loadingFonts": never
-  readonly "runtime.noMatchingFonts": never
-  readonly "runtime.addFontFile": never
-  readonly "runtime.newFont": never
-  readonly "runtime.emptyFonts": never
-  readonly "runtime.file": never
-  readonly "runtime.files": never
-  readonly "runtime.systemFont": never
-  readonly "runtime.documentFont": never
-  readonly "runtime.defaultFont": never
-  readonly "runtime.manageFonts": never
-  readonly "runtime.fileSelection": never
-  readonly "runtime.chooseFont": never
-  readonly "runtime.deleteFont": { readonly "name": string | number }
-  readonly "runtime.deleteFontTitle": never
-  readonly "runtime.themeBuiltin": never
-  readonly "runtime.themeUser": never
-  readonly "runtime.themeExtension": never
-  readonly "runtime.currentTheme": never
-  readonly "runtime.themePreview": never
-  readonly "runtime.useThemeItem": { readonly "name": string | number }
-  readonly "runtime.themeBranch": never
-  readonly "runtime.themeSample": never
-  readonly "runtime.savedNotApplied": { readonly "reason": string | number }
-  readonly "runtime.saveUse": never
-  readonly "runtime.savedConflict": never
-  readonly "runtime.newTheme": never
-  readonly "runtime.editTheme": never
-  readonly "runtime.selectTheme": never
-  readonly "runtime.light": never
-  readonly "runtime.dark": never
-  readonly "runtime.manageThemes": never
-  readonly "runtime.deleteTheme": { readonly "name": string | number }
-  readonly "runtime.deleteThemeTitle": never
-  readonly "runtime.themeGroups.surfaces": never
-  readonly "runtime.themeGroups.actions": never
-  readonly "runtime.themeGroups.feedback": never
-  readonly "runtime.themeGroups.charts": never
-  readonly "runtime.themeGroups.geometry": never
-  readonly "runtime.themeGroups.type": never
-  readonly "runtime.themeTokens.background": never
-  readonly "runtime.themeTokens.foreground": never
-  readonly "runtime.themeTokens.chrome": never
-  readonly "runtime.themeTokens.chrome-foreground": never
-  readonly "runtime.themeTokens.popover": never
-  readonly "runtime.themeTokens.popover-foreground": never
-  readonly "runtime.themeTokens.dialog": never
-  readonly "runtime.themeTokens.dialog-foreground": never
-  readonly "runtime.themeTokens.primary": never
-  readonly "runtime.themeTokens.primary-foreground": never
-  readonly "runtime.themeTokens.secondary": never
-  readonly "runtime.themeTokens.secondary-foreground": never
-  readonly "runtime.themeTokens.muted": never
-  readonly "runtime.themeTokens.muted-foreground": never
-  readonly "runtime.themeTokens.accent": never
-  readonly "runtime.themeTokens.accent-foreground": never
-  readonly "runtime.themeTokens.input": never
-  readonly "runtime.themeTokens.input-foreground": never
-  readonly "runtime.themeTokens.destructive": never
-  readonly "runtime.themeTokens.destructive-foreground": never
-  readonly "runtime.themeTokens.info": never
-  readonly "runtime.themeTokens.info-foreground": never
-  readonly "runtime.themeTokens.success": never
-  readonly "runtime.themeTokens.success-foreground": never
-  readonly "runtime.themeTokens.warning": never
-  readonly "runtime.themeTokens.warning-foreground": never
-  readonly "runtime.themeTokens.border": never
-  readonly "runtime.themeTokens.ring": never
-  readonly "runtime.themeTokens.chart-1": never
-  readonly "runtime.themeTokens.chart-2": never
-  readonly "runtime.themeTokens.chart-3": never
-  readonly "runtime.themeTokens.chart-4": never
-  readonly "runtime.themeTokens.chart-5": never
-  readonly "runtime.themeTokens.radius": never
-  readonly "runtime.themeTokens.shadow-raised": never
-  readonly "runtime.themeTokens.shadow-overlay": never
-  readonly "runtime.themeTokens.shadow-modal": never
-  readonly "runtime.themeTokens.font-sans": never
-  readonly "runtime.themeTokens.font-mono": never
-  readonly "runtime.themeTokens.text-base-weight": never
-  readonly "runtime.themeTokens.text-base-line-height": never
-  readonly "runtime.themeTokens.text-base-letter-spacing": never
-  readonly "runtime.resetField": never
-  readonly "runtime.removeBinding": { readonly "binding": string | number; readonly "name": string | number }
-  readonly "runtime.recordBinding": { readonly "name": string | number }
-  readonly "runtime.unbound": never
-  readonly "runtime.previousBindings": never
-  readonly "runtime.nextBindings": never
-  readonly "runtime.bindingExists": never
-  readonly "runtime.minutesUnit": never
-  readonly "runtime.foregroundGracePeriodDescription": never
-  readonly "runtime.usageGroups.playback": never
-  readonly "runtime.usageGroups.tracks": never
-  readonly "runtime.usageTitles.game": never
-  readonly "runtime.usageTitles.anime": never
-  readonly "runtime.usageTitles.comic": never
-  readonly "runtime.usageTitles.novel": never
-  readonly "runtime.pressShortcut": never
-  readonly "runtime.scaleRange": { readonly "max": number; readonly "min": number }
-  readonly "runtime.shortcutOverlap": never
-  readonly "runtime.proxyAddressNeeded": never
-  readonly "runtime.socksCredentials": never
-  readonly "runtime.networkFailed": never
-  readonly "runtime.networkApplying": never
-  readonly "runtime.username": never
-  readonly "runtime.password": never
-  readonly "runtime.section": never
-  readonly "runtime.setting": never
-  readonly "runtime.networkMode": never
-  readonly "runtime.bypassRulesDescription": never
-  readonly "runtime.pageMoved": { readonly "name": string | number; readonly "position": number }
-  readonly "runtime.movePage": { readonly "name": string | number }
-  readonly "runtime.visiblePage": never
-  readonly "runtime.noPages": never
-  readonly "runtime.moveFirst": never
-  readonly "runtime.moveLast": never
-  readonly "runtime.moveUp": never
-  readonly "runtime.moveDown": never
-  readonly "runtime.fields.general": never
-  readonly "runtime.fields.appearance": never
-  readonly "runtime.fields.navigation": never
-  readonly "runtime.fields.library": never
-  readonly "runtime.fields.usage": never
-  readonly "runtime.fields.game": never
-  readonly "runtime.fields.anime": never
-  readonly "runtime.fields.comic": never
-  readonly "runtime.fields.novel": never
-  readonly "runtime.fields.shortcuts": never
-  readonly "runtime.fields.network": never
-  readonly "runtime.fields.updates": never
-  readonly "runtime.fields.uiTranslation": never
-  readonly "runtime.fields.closeMainWindow": never
-  readonly "runtime.fields.theme": never
-  readonly "runtime.fields.mode": never
-  readonly "runtime.fields.interfaceScale": never
-  readonly "runtime.fields.order": never
-  readonly "runtime.fields.visibleLimit": never
-  readonly "runtime.fields.showNsfw": never
-  readonly "runtime.fields.autoRefreshHoldings": never
-  readonly "runtime.fields.foregroundGracePeriodMs": never
-  readonly "runtime.fields.showPanelOnStart": never
-  readonly "runtime.fields.panelAlwaysOnTop": never
-  readonly "runtime.fields.audioLanguages": never
-  readonly "runtime.fields.subtitleLanguages": never
-  readonly "runtime.fields.subtitlesEnabled": never
-  readonly "runtime.fields.playbackSpeed": never
-  readonly "runtime.fields.subtitleScale": never
-  readonly "runtime.fields.autoAdvance": never
-  readonly "runtime.fields.flow": never
-  readonly "runtime.fields.arrangement": never
-  readonly "runtime.fields.progression": never
-  readonly "runtime.fields.firstPage": never
-  readonly "runtime.fields.fit": never
-  readonly "runtime.fields.autoCrop": never
-  readonly "runtime.fields.brightness": never
-  readonly "runtime.fields.contrast": never
-  readonly "runtime.fields.pagesPerView": never
-  readonly "runtime.fields.writingMode": never
-  readonly "runtime.fields.font": never
-  readonly "runtime.fields.fontSize": never
-  readonly "runtime.fields.lineHeight": never
-  readonly "runtime.fields.paragraphSpacing": never
-  readonly "runtime.fields.alignment": never
-  readonly "runtime.fields.padding": never
-  readonly "runtime.fields.maxLineLength": never
-  readonly "runtime.fields.colors": never
-  readonly "runtime.fields.endpoint": never
-  readonly "runtime.fields.bypassRules": never
-  readonly "runtime.fields.credentials": never
-  readonly "runtime.fields.autoCheck": never
-  readonly "runtime.fields.allowPrerelease": never
-  readonly "runtime.fields.pages": never
-  readonly "runtime.fields.text": never
-  readonly "runtime.fields.search": never
-  readonly "runtime.fields.preferences": never
-  readonly "runtime.fields.save": never
-  readonly "runtime.fields.find": never
-  readonly "runtime.fields.left": never
-  readonly "runtime.fields.right": never
-  readonly "runtime.fields.up": never
-  readonly "runtime.fields.down": never
-  readonly "runtime.fields.previous": never
-  readonly "runtime.fields.next": never
-  readonly "runtime.fields.fullscreen": never
-  readonly "runtime.fields.addAnnotation": never
-  readonly "runtime.fields.toggleAnnotations": never
-  readonly "runtime.fields.toggleTiming": never
-  readonly "runtime.fields.viewWork": never
-  readonly "runtime.fields.playPause": never
-  readonly "runtime.fields.seekBackward": never
-  readonly "runtime.fields.seekForward": never
-  readonly "runtime.fields.volumeUp": never
-  readonly "runtime.fields.volumeDown": never
-  readonly "runtime.fields.toggleMute": never
-  readonly "runtime.fields.toggleSubtitles": never
-  readonly "runtime.fields.togglePanel": never
-  readonly "runtime.choices.background": never
-  readonly "runtime.choices.quit": never
-  readonly "runtime.choices.system": never
-  readonly "runtime.choices.direct": never
-  readonly "runtime.choices.manual": never
-  readonly "runtime.choices.light": never
-  readonly "runtime.choices.dark": never
-  readonly "runtime.choices.single": never
-  readonly "runtime.choices.spread": never
-  readonly "runtime.choices.document": never
-  readonly "runtime.choices.ltr": never
-  readonly "runtime.choices.rtl": never
-  readonly "runtime.choices.paired": never
-  readonly "runtime.choices.page": never
-  readonly "runtime.choices.width": never
-  readonly "runtime.choices.height": never
-  readonly "runtime.choices.paginated": never
-  readonly "runtime.choices.continuous": never
-  readonly "runtime.choices.theme": never
-  readonly "runtime.choices.custom": never
-  readonly "runtime.choices.start": never
-  readonly "runtime.choices.justify": never
-  readonly "runtime.choices.horizontal-tb": never
-  readonly "runtime.choices.vertical-rl": never
-  readonly "runtime.choices.vertical-lr": never
-  readonly "runtime.noMatches": never
-  readonly "runtime.allTypes": never
-  readonly "runtime.allStatuses": never
-  readonly "runtime.task": never
-  readonly "runtime.taskCreated": never
-  readonly "runtime.taskStarted": never
-  readonly "runtime.taskFinished": never
-  readonly "runtime.taskRunId": never
-  readonly "runtime.taskOutput": never
-  readonly "runtime.taskInformation": never
-  readonly "runtime.taskDescription": never
-  readonly "runtime.deleteTaskAction": never
-  readonly "runtime.deleteTask": { readonly "name": string | number }
-  readonly "runtime.activeTasks": never
-  readonly "runtime.finishedTasks": never
-  readonly "runtime.noActive": never
-  readonly "runtime.noFinished": never
-  readonly "runtime.phase": never
-  readonly "runtime.progress": never
-  readonly "runtime.duration": never
-  readonly "runtime.actions": never
-  readonly "runtime.type": never
-  readonly "runtime.refresh": never
-  readonly "runtime.tasks": never
-  readonly "runtime.emptyTasks": never
-  readonly "runtime.searchTasks": never
-  readonly "runtime.clear": never
-  readonly "runtime.clearHistoryDescription": never
-  readonly "runtime.detail": never
-  readonly "runtime.history": never
-  readonly "runtime.input": never
-  readonly "runtime.result": never
-  readonly "runtime.noResult": never
-  readonly "runtime.taskRecordedResult": never
-  readonly "runtime.taskPartialResult": never
-  readonly "runtime.pause": never
-  readonly "runtime.resume": never
-  readonly "runtime.all": never
-  readonly "runtime.filter": never
-  readonly "runtime.taskCount": { readonly "count": number }
-  readonly "runtime.sendCancel": never
-  readonly "runtime.reopen": never
-  readonly "runtime.startupNeedsApproval": never
-  readonly "runtime.startupDisabled": never
-  readonly "runtime.linksUnregistered": { readonly "scheme": string | number }
-  readonly "runtime.linksDefaultUnknown": { readonly "scheme": string | number }
-  readonly "runtime.linksOpenInKisaki": { readonly "scheme": string | number }
-  readonly "runtime.linksOpenInOtherApp": { readonly "scheme": string | number }
-  readonly "runtime.restartApp": never
-  readonly "runtime.unsaved": never
-  readonly "runtime.unsavedDescription": never
-  readonly "runtime.keepEditing": never
-  readonly "runtime.exitPending": never
-  readonly "runtime.windowStartupTimeout": never
-  readonly "runtime.windowEntryFailed": never
-  readonly "runtime.windowDocumentFailed": { readonly "reason": string | number }
-  readonly "runtime.windowClosedUnexpectedly": never
-  readonly "runtime.windowExited": { readonly "reason": string | number }
-  readonly "runtime.cancelExit": never
-  readonly "runtime.continueWaiting": never
-  readonly "runtime.mainWindow": never
-  readonly "runtime.editor": never
-  readonly "runtime.register": never
-  readonly "runtime.startupSettings": never
-  readonly "runtime.defaultAppSettings": never
-  readonly "runtime.makeDefaultApp": never
-  readonly "runtime.desktopEntry": never
-  readonly "runtime.desktopEntryAvailable": never
-  readonly "runtime.desktopEntryReady": never
-  readonly "runtime.addDesktopEntry": never
-  readonly "runtime.normalMode": never
-  readonly "runtime.portableMode": never
-  readonly "runtime.destination": never
-  readonly "runtime.existing": never
-  readonly "runtime.emptyDirectory": never
-  readonly "runtime.about": never
-  readonly "runtime.appVersion": never
-  readonly "runtime.operatingSystem": never
-  readonly "runtime.architecture": never
-  readonly "runtime.useAtStartup": never
-  readonly "runtime.copyEnvironment": never
-  readonly "runtime.copied": never
-  readonly "runtime.appMenu": never
-  readonly "runtime.preferences": never
-  readonly "runtime.themes": never
-  readonly "runtime.restoreDefaultTheme": never
-  readonly "runtime.restoreThemeFailed": never
-  readonly "runtime.themeUnavailable": never
-  readonly "runtime.fontUnavailable": { readonly "slot": string | number }
-  readonly "runtime.fonts": never
-  readonly "runtime.system": never
-  readonly "runtime.reader": never
-  readonly "runtime.player": never
-  readonly "runtime.game-panel": never
-  readonly "runtime.login": never
-  readonly "runtime.protocol": never
-  readonly "runtime.portable": never
-  readonly "runtime.data": never
-  readonly "runtime.quit": never
-  readonly "runtime.openMain": never
+  readonly "systemIntegration.startup.needsApproval": never
+  readonly "systemIntegration.startup.disabled": never
+  readonly "systemIntegration.startup.settings": never
+  readonly "systemIntegration.startup.title": never
+  readonly "systemIntegration.links.unregistered": { readonly "scheme": string | number }
+  readonly "systemIntegration.links.defaultUnknown": { readonly "scheme": string | number }
+  readonly "systemIntegration.links.defaultApp": { readonly "scheme": string | number }
+  readonly "systemIntegration.links.otherApp": { readonly "scheme": string | number }
+  readonly "systemIntegration.links.settings": never
+  readonly "systemIntegration.links.makeDefault": never
+  readonly "systemIntegration.links.title": never
+  readonly "systemIntegration.restart": never
+  readonly "systemIntegration.register": never
+  readonly "systemIntegration.desktopEntry.title": never
+  readonly "systemIntegration.desktopEntry.available": never
+  readonly "systemIntegration.desktopEntry.ready": never
+  readonly "systemIntegration.desktopEntry.add": never
+  readonly "systemIntegration.data.standard": never
+  readonly "systemIntegration.data.portable": never
+  readonly "systemIntegration.data.destination": never
+  readonly "systemIntegration.data.existing": never
+  readonly "systemIntegration.data.emptyDirectory": never
+  readonly "systemIntegration.data.afterRestart": never
+  readonly "systemIntegration.data.usePortable": never
+  readonly "systemIntegration.data.current": never
+  readonly "systemIntegration.title": never
+  readonly "tasks.status.queued": never
+  readonly "tasks.status.running": never
+  readonly "tasks.status.pausing": never
+  readonly "tasks.status.paused": never
+  readonly "tasks.status.cancelling": never
+  readonly "tasks.status.completed": never
+  readonly "tasks.status.failed": never
+  readonly "tasks.status.cancelled": never
+  readonly "tasks.status.interrupted": never
+  readonly "tasks.types.directoryScan": never
+  readonly "tasks.types.libraryScan": never
+  readonly "tasks.types.libraryRefresh": never
+  readonly "tasks.unrecognizedType": { readonly "type": string | number }
+  readonly "tasks.noMatches": never
+  readonly "tasks.allTypes": never
+  readonly "tasks.allStatuses": never
+  readonly "tasks.fields.task": never
+  readonly "tasks.fields.createdAt": never
+  readonly "tasks.fields.startedAt": never
+  readonly "tasks.fields.finishedAt": never
+  readonly "tasks.fields.id": never
+  readonly "tasks.fields.output": never
+  readonly "tasks.fields.information": never
+  readonly "tasks.fields.description": never
+  readonly "tasks.fields.phase": never
+  readonly "tasks.fields.progress": never
+  readonly "tasks.fields.duration": never
+  readonly "tasks.fields.actions": never
+  readonly "tasks.fields.type": never
+  readonly "tasks.fields.input": never
+  readonly "tasks.fields.result": never
+  readonly "tasks.fields.status": never
+  readonly "tasks.history.delete": never
+  readonly "tasks.history.confirmDelete": { readonly "name": string | number }
+  readonly "tasks.history.clear": never
+  readonly "tasks.history.confirmClear": never
+  readonly "tasks.history.title": never
+  readonly "tasks.active": never
+  readonly "tasks.finished": never
+  readonly "tasks.noActive": never
+  readonly "tasks.noFinished": never
+  readonly "tasks.title": never
+  readonly "tasks.search": never
+  readonly "tasks.details.title": never
+  readonly "tasks.details.noResult": never
+  readonly "tasks.details.recordedResult": never
+  readonly "tasks.details.partialResult": never
+  readonly "tasks.controls.pause": never
+  readonly "tasks.controls.resume": never
+  readonly "tasks.controls.cancel": never
+  readonly "tasks.count": { readonly "count": number }
+  readonly "themes.copyName": { readonly "name": string | number }
+  readonly "themes.source.builtin": never
+  readonly "themes.source.user": never
+  readonly "themes.source.extension": never
+  readonly "themes.current": never
+  readonly "themes.preview.title": never
+  readonly "themes.preview.sample": never
+  readonly "themes.useNamed": { readonly "name": string | number }
+  readonly "themes.scheme": never
+  readonly "themes.savedNotApplied": { readonly "reason": string | number }
+  readonly "themes.saveAndUse": never
+  readonly "themes.savedConflict": never
+  readonly "themes.create": never
+  readonly "themes.edit": never
+  readonly "themes.manage": never
+  readonly "themes.confirmDelete": { readonly "name": string | number }
+  readonly "themes.delete": never
+  readonly "themes.groups.surfaces": never
+  readonly "themes.groups.actions": never
+  readonly "themes.groups.feedback": never
+  readonly "themes.groups.charts": never
+  readonly "themes.groups.geometry": never
+  readonly "themes.groups.type": never
+  readonly "themes.tokens.background": never
+  readonly "themes.tokens.foreground": never
+  readonly "themes.tokens.chrome": never
+  readonly "themes.tokens.chrome-foreground": never
+  readonly "themes.tokens.popover": never
+  readonly "themes.tokens.popover-foreground": never
+  readonly "themes.tokens.dialog": never
+  readonly "themes.tokens.dialog-foreground": never
+  readonly "themes.tokens.primary": never
+  readonly "themes.tokens.primary-foreground": never
+  readonly "themes.tokens.secondary": never
+  readonly "themes.tokens.secondary-foreground": never
+  readonly "themes.tokens.muted": never
+  readonly "themes.tokens.muted-foreground": never
+  readonly "themes.tokens.accent": never
+  readonly "themes.tokens.accent-foreground": never
+  readonly "themes.tokens.input": never
+  readonly "themes.tokens.input-foreground": never
+  readonly "themes.tokens.destructive": never
+  readonly "themes.tokens.destructive-foreground": never
+  readonly "themes.tokens.info": never
+  readonly "themes.tokens.info-foreground": never
+  readonly "themes.tokens.success": never
+  readonly "themes.tokens.success-foreground": never
+  readonly "themes.tokens.warning": never
+  readonly "themes.tokens.warning-foreground": never
+  readonly "themes.tokens.border": never
+  readonly "themes.tokens.ring": never
+  readonly "themes.tokens.chart-1": never
+  readonly "themes.tokens.chart-2": never
+  readonly "themes.tokens.chart-3": never
+  readonly "themes.tokens.chart-4": never
+  readonly "themes.tokens.chart-5": never
+  readonly "themes.tokens.radius": never
+  readonly "themes.tokens.shadow-raised": never
+  readonly "themes.tokens.shadow-overlay": never
+  readonly "themes.tokens.shadow-modal": never
+  readonly "themes.tokens.font-sans": never
+  readonly "themes.tokens.font-mono": never
+  readonly "themes.tokens.text-base-weight": never
+  readonly "themes.tokens.text-base-line-height": never
+  readonly "themes.tokens.text-base-letter-spacing": never
+  readonly "themes.title": never
+  readonly "themes.restoreDefault": never
+  readonly "themes.restoreFailed": never
 }
 
 export type MessageKey = keyof MessageArguments

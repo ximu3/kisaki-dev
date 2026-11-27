@@ -16,6 +16,8 @@ export function catalogSelection<T extends { value: string; label: string }>(
   }
 
   const name = saved?.type === 'extension' ? `${saved.extensionId} / ${saved.id}` : saved?.id
-  const label = name ? t('runtime.unavailableResource', { name }) : t('runtime.unavailable')
+  const label = name
+    ? t('controls.feedback.unavailableResource', { name })
+    : t('controls.feedback.unavailable')
   return { value, options: [...options, { value, label }] }
 }

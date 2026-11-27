@@ -48,6 +48,9 @@ export function createFontMethods(
         ),
       ),
     ),
+    'fonts.name': windowMethod('read', ([id], signal) =>
+      fonts.getName(textArgument(id), { signal }),
+    ),
     'fonts.get': windowMethod('read', async ([id], signal) =>
       rpcData(await fonts.get(textArgument(id), { signal })),
     ),

@@ -35,7 +35,7 @@ export function ThemeField(props: { api: MainClient; manage: () => void }) {
 
   return (
     <>
-      <PreferenceField field="appearance.theme" label={t('runtime.fields.theme')}>
+      <PreferenceField field="appearance.theme">
         <ThemeSelector
           t={t}
           value={draft.read('appearance.theme')}
@@ -45,17 +45,13 @@ export function ThemeField(props: { api: MainClient; manage: () => void }) {
           onValueChange={(ref) => draft.write('appearance.theme', ref)}
         />
         <Tooltip>
-          <TooltipTrigger
-            as={FieldAction}
-            aria-label={t('runtime.manageThemes')}
-            onClick={props.manage}
-          >
+          <TooltipTrigger as={FieldAction} aria-label={t('themes.manage')} onClick={props.manage}>
             <Icon path={mdiTuneVariant} />
           </TooltipTrigger>
-          <TooltipContent>{t('runtime.manage')}</TooltipContent>
+          <TooltipContent>{t('actions.manage')}</TooltipContent>
         </Tooltip>
       </PreferenceField>
-      <QueryError retryLabel={t('runtime.retry')} error={items.result()?.error} retry={refresh} />
+      <QueryError retryLabel={t('actions.retry')} error={items.result()?.error} retry={refresh} />
     </>
   )
 }
@@ -76,15 +72,15 @@ export function TranslationField(props: { api: MainClient }) {
 
   return (
     <>
-      <PreferenceField field="general.uiTranslation" label={t('runtime.fields.uiTranslation')}>
+      <PreferenceField field="general.uiTranslation">
         <Select
           value={selection().value}
           options={selection().options}
-          placeholder={items.pending() ? t('runtime.loading') : ''}
+          placeholder={items.pending() ? t('controls.feedback.loading') : ''}
           aria-busy={items.pending() ? 'true' : undefined}
           disabled={items.pending() || !!items.result()?.error}
-          emptyMessage={t('runtime.noOptions')}
-          invalidSelectionMessage={t('runtime.unavailable')}
+          emptyMessage={t('controls.search.empty')}
+          invalidSelectionMessage={t('controls.feedback.unavailable')}
           onValueChange={(key) => {
             const item = items.result()?.value?.find((entry) => catalogKey(entry.ref) === key)
             if (item) {
@@ -93,7 +89,7 @@ export function TranslationField(props: { api: MainClient }) {
           }}
         />
       </PreferenceField>
-      <QueryError retryLabel={t('runtime.retry')} error={items.result()?.error} retry={refresh} />
+      <QueryError retryLabel={t('actions.retry')} error={items.result()?.error} retry={refresh} />
     </>
   )
 }

@@ -57,24 +57,31 @@ export function FontEditor(props: FontEditorProps) {
 
   const form = createForm({
     validate: () => [
-      ...(!draft.name().trim() ? [{ id: 'name', summary: api.t('runtime.enterName') }] : []),
-      ...(draft.preparing() ? [{ id: 'files', summary: api.t('runtime.preparingFonts') }] : []),
-      ...(draft.failed() ? [{ id: 'files', summary: api.t('runtime.removeFailedFiles') }] : []),
+      ...(!draft.name().trim() ? [{ id: 'name', summary: api.t('forms.enterName') }] : []),
+      ...(draft.preparing() ? [{ id: 'files', summary: api.t('fonts.files.preparing') }] : []),
+      ...(draft.failed() ? [{ id: 'files', summary: api.t('fonts.files.removeFailed') }] : []),
       ...(!draft.preparing() && !draft.count()
-        ? [{ id: 'files', summary: api.t('runtime.addFontFile') }]
+        ? [{ id: 'files', summary: api.t('fonts.files.required') }]
         : []),
     ],
     order: () => ['name', 'files'],
     locate: (key) => document.getElementById('font-field-' + key)?.focus(),
     onSubmit: save,
   })
-  const guard = { busy: form.busy, dirty: draft.dirty, save: () => form.submit() }
-  props.registerEditor(guard)
+  props.registerEditor({
+    pending() {
+      const choice = draft.pendingChoice()
+      const saving = form.busy() ? form.submit() : undefined
+      return choice ? Promise.all([choice, saving]).then(([, saved]) => saved ?? true) : saving
+    },
+    dirty: draft.dirty,
+    save: form.submit,
+  })
 
   return (
     <>
       <DialogHeader closeLabel={api.t('actions.close')}>
-        <DialogTitle>{api.t(props.initial ? 'runtime.editFont' : 'runtime.newFont')}</DialogTitle>
+        <DialogTitle>{api.t(props.initial ? 'fonts.edit' : 'fonts.import')}</DialogTitle>
       </DialogHeader>
       <Form
         state={form}
@@ -99,11 +106,11 @@ export function FontEditor(props: FontEditorProps) {
         <DialogBody>
           <FieldGroup>
             <Field name="name" id="font-field-name" required>
-              <FieldLabel>{api.t('runtime.name')}</FieldLabel>
+              <FieldLabel>{api.t('forms.name')}</FieldLabel>
               <Input autofocus value={draft.name()} onValueChange={draft.rename} />
             </Field>
             <Field name="files" id="font-field-files">
-              <FieldLabel>{api.t('runtime.files')}</FieldLabel>
+              <FieldLabel>{api.t('fonts.files.title')}</FieldLabel>
               <FieldContent class="flex-col items-stretch">
                 <Toolbar class="justify-between">
                   <ToolbarRow>
@@ -122,7 +129,7 @@ export function FontEditor(props: FontEditorProps) {
                       onClick={() => void draft.choose().catch(reportError)}
                     >
                       <Icon path={mdiPlus} />
-                      {api.t('runtime.addFiles')}
+                      {api.t('fonts.files.add')}
                     </Button>
                   </ToolbarRow>
                 </Toolbar>
@@ -144,17 +151,17 @@ export function FontEditor(props: FontEditorProps) {
                             <div class="flex flex-wrap items-center gap-2">
                               <span>{name}</span>
                               <Badge tone={kept() ? 'outline' : 'warning'}>
-                                {api.t(kept() ? 'runtime.fontKept' : 'runtime.fontRemoved')}
+                                {api.t(kept() ? 'fonts.files.kept' : 'fonts.files.removed')}
                               </Badge>
                             </div>
                           }
                           actions={
                             <ListItemAction
-                              label={api.t(kept() ? 'runtime.remove' : 'runtime.restoreFile')}
+                              label={api.t(kept() ? 'actions.remove' : 'fonts.files.restore')}
                               aria-label={
                                 kept()
-                                  ? api.t('runtime.removeFile', { name })
-                                  : api.t('runtime.restoreFile')
+                                  ? api.t('fonts.files.remove', { name })
+                                  : api.t('fonts.files.restore')
                               }
                               disabled={form.busy()}
                               destructive={kept()}
@@ -187,7 +194,7 @@ export function FontEditor(props: FontEditorProps) {
                           <div class="flex flex-wrap items-center gap-2">
                             <span>{entry.name}</span>
                             <Show when={entry.status === 'ready'}>
-                              <Badge tone="secondary">{api.t('runtime.fontAdded')}</Badge>
+                              <Badge tone="secondary">{api.t('fonts.files.added')}</Badge>
                             </Show>
                           </div>
                         }
@@ -195,8 +202,8 @@ export function FontEditor(props: FontEditorProps) {
                           <Show when={entry.status !== 'pending'}>
                             <ListItemAction
                               disabled={form.busy()}
-                              label={api.t('runtime.remove')}
-                              aria-label={api.t('runtime.removeFile', { name: entry.name })}
+                              label={api.t('actions.remove')}
+                              aria-label={api.t('fonts.files.remove', { name: entry.name })}
                               destructive
                               onClick={() => draft.remove(entry.key)}
                             >
@@ -207,12 +214,12 @@ export function FontEditor(props: FontEditorProps) {
                       >
                         {entry.status === 'pending' && (
                           <p class="m-0 text-xs text-muted-foreground" role="status">
-                            {api.t('runtime.preparingFonts')}
+                            {api.t('fonts.files.preparing')}
                           </p>
                         )}
                         {entry.status === 'failed' && (
                           <Alert tone="destructive" role="alert">
-                            {api.t('runtime.fontFileFailed', {
+                            {api.t('fonts.files.failed', {
                               name: entry.name,
                               reason: entry.error,
                             })}
@@ -234,7 +241,7 @@ export function FontEditor(props: FontEditorProps) {
           </FieldGroup>
         </DialogBody>
         <DialogFooter>
-          <FormFeedback summary={(count) => api.t('runtime.fieldErrors', { count })} />
+          <FormFeedback summary={(count) => api.t('forms.fieldErrors', { count })} />
           <Button variant="ghost" onClick={props.requestClose}>
             {api.t('actions.cancel')}
           </Button>

@@ -351,12 +351,15 @@ test('saving and selecting a theme preserves the independent preference draft an
   await expect(item.getByText('In use', { exact: true })).toBeVisible()
 
   await themes.getByRole('button', { name: 'New theme', exact: true }).click()
-  await themeEditor.getByRole('button', { name: 'Cancel', exact: true }).click()
-  await page
-    .getByRole('alertdialog')
-    .getByRole('button', { name: 'Discard changes', exact: true })
-    .click()
+  await themeEditor.getByRole('switch', { name: 'Preview', exact: true }).check()
+  await page.keyboard.press('Escape')
   await expect(themeEditor).toBeHidden()
+
+  await themes.getByRole('button', { name: 'New theme', exact: true }).click()
+  await expect(themeEditor.getByLabel('Name', { exact: true })).toBeFocused()
+  await page.keyboard.press('ControlOrMeta+s')
+  await expect(themeEditor).toBeHidden()
+  await expect(themes.getByRole('button', { name: 'Preview New theme', exact: true })).toBeVisible()
   await themes.getByRole('button', { name: 'Close', exact: true }).click()
   await expect(themes).toBeHidden()
   await expect(scale).toHaveValue('115')

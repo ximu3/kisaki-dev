@@ -65,6 +65,11 @@ export interface ImageChoice {
   url: string
 }
 
+export interface WindowTranslation {
+  locale: string
+  messages: MessageCatalog
+}
+
 export interface WindowState {
   applicationName: string
   startupDeadline: number
@@ -73,8 +78,7 @@ export interface WindowState {
   buildId: string
 
   titlebarHeight: number | null
-  locale: string
-  messages: MessageCatalog
+  translation: WindowTranslation
 }
 
 export interface WindowApi {
@@ -130,6 +134,7 @@ export interface MainWindowApi extends WindowApi {
     search: string,
     options: ListOptions,
   ): ListResult<Pick<Font, 'id' | 'name' | 'createdAt' | 'updatedAt'>>
+  'fonts.name'(id: string): string | null
   'fonts.get'(id: string): Font | null
   'fonts.open'(id: string): OpenedFont
   'fonts.system'(): readonly string[]

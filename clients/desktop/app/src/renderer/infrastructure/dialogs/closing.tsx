@@ -12,7 +12,7 @@ import { Button } from '@kisaki3/desktop-ui/button'
 import type { Translate } from '@kisaki3/desktop-localization'
 
 export interface EditorGuard {
-  busy: () => boolean
+  pending: () => Promise<boolean> | undefined
   dirty: () => boolean
   save: () => Promise<boolean>
 
@@ -91,13 +91,13 @@ export function createCloseConfirmation(t: Translate, reveal: () => Promise<void
         return true
       }
 
-      if (!pending && guard.busy()) {
+      const operation = pending ? undefined : guard.pending()
+      if (operation) {
         try {
-          if (!(await waitForDecision(guard.save(), signal))) {
+          if (!(await waitForDecision(operation, signal))) {
             return false
           }
         } catch {
-          // The mounted form retains the failed save and its correction feedback.
           return false
         }
       }
@@ -151,10 +151,10 @@ export function createCloseConfirmation(t: Translate, reveal: () => Promise<void
             }}
           >
             <DialogHeader>
-              <DialogTitle>{t('runtime.unsaved')}</DialogTitle>
+              <DialogTitle>{t('forms.unsaved.title')}</DialogTitle>
             </DialogHeader>
             <DialogBody>
-              <DialogDescription>{t('runtime.unsavedDescription')}</DialogDescription>
+              <DialogDescription>{t('forms.unsaved.description')}</DialogDescription>
               <Show when={error()}>
                 {(message) => (
                   <p role="alert" class="mb-0 text-sm text-destructive">
@@ -165,10 +165,10 @@ export function createCloseConfirmation(t: Translate, reveal: () => Promise<void
             </DialogBody>
             <DialogFooter>
               <Button disabled={busy()} variant="ghost" onClick={() => finish(true)}>
-                {t('runtime.discard')}
+                {t('forms.unsaved.discard')}
               </Button>
               <Button disabled={busy()} variant="outline" onClick={() => finish(false)}>
-                {t('runtime.keepEditing')}
+                {t('forms.unsaved.keepEditing')}
               </Button>
               <Button autofocus disabled={busy()} onClick={() => void save()}>
                 {t('actions.save')}

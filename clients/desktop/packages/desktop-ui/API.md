@@ -14,7 +14,9 @@ Use `createForm` to coordinate native constraints, business issues and submissio
 
 A `NumberInput` with `positive` accepts values greater than zero. With `step="any"`, typing accepts positive fractions and the decrease button stops when the next full step would reach zero.
 
-A select or combobox can keep committed choices across new search results. An unavailable committed choice remains visible and makes the field invalid. Set `filter={false}` for options already filtered by the host. Custom row layouts use the supplied option renderer to preserve keyboard navigation and accessibility. For virtualization, give the viewport a bounded height. Estimates and measurements are positive border-box heights in CSS pixels. The visible range includes overscan and excludes its upper bound. Supply stable keys and retain offscreen rows that still own focus or active interactions. Dispose the observer when unmounting a measured row.
+A select or combobox can keep committed choices across new search results. An unavailable committed choice remains visible and makes the field invalid. Custom row layouts use the supplied option renderer to preserve keyboard navigation and accessibility. For virtualization, give the viewport a bounded height. Estimates and measurements are positive border-box heights in CSS pixels. The visible range includes overscan and excludes its upper bound. Supply stable keys and retain offscreen rows that still own focus or active interactions. Dispose the observer when unmounting a measured row.
+
+A searchable Combobox can load its choices on demand. Use `onOpenChange` to track its open state, `onQueryChange` for the search text, and `filter={false}` for results filtered by the host. Supply pagination or retry controls through `listFooter`, outside the listbox. The selected value carries its own label when it is outside the current page.
 
 ## Dialogs, popups and notifications
 

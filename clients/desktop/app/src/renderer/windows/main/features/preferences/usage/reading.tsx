@@ -7,7 +7,7 @@ import { ColorInput, NumberInput } from '@kisaki3/desktop-ui/input'
 import { Select } from '@kisaki3/desktop-ui/select'
 import { Switch } from '@kisaki3/desktop-ui/switch'
 import { FontSelector } from '../../../domain-ui/fonts/selector'
-import type { UserFontOption } from '../../../domain-ui/fonts/options'
+import type { MainClient } from '../../../../../infrastructure/api'
 import { PreferenceField, usePreferenceFields } from '../field'
 
 const pageChoices = [
@@ -27,9 +27,7 @@ const textNumbers = [
 
 export function ReadingFields(props: {
   medium: 'comic' | 'novel'
-  users: readonly UserFontOption[]
-  system: readonly string[]
-  loading: boolean
+  api: MainClient
   manageFonts: () => void
 }) {
   const { draft, t } = usePreferenceFields()
@@ -44,15 +42,15 @@ export function ReadingFields(props: {
   return (
     <div class="grid gap-5">
       <FieldGroup>
-        <PreferenceField field={`${prefix}.flow`} label={t('runtime.fields.flow')}>
+        <PreferenceField field={`${prefix}.flow`}>
           <Select
             value={draft.read(`${prefix}.flow`) ?? ''}
             options={(['paginated', 'continuous'] as const).map((value) => ({
               value,
-              label: t(`runtime.choices.${value}`),
+              label: t(`preferences.reading.choices.${value}`),
             }))}
-            emptyMessage={t('runtime.noOptions')}
-            invalidSelectionMessage={t('runtime.unavailable')}
+            emptyMessage={t('controls.search.empty')}
+            invalidSelectionMessage={t('controls.feedback.unavailable')}
             onValueChange={(v) => {
               if (v) {
                 draft.write(`${prefix}.flow`, v)
@@ -60,15 +58,15 @@ export function ReadingFields(props: {
             }}
           />
         </PreferenceField>
-        <PreferenceField field={`${prefix}.colors`} label={t('runtime.fields.colors')}>
+        <PreferenceField field={`${prefix}.colors`}>
           <Select
             options={(['document', 'theme', 'custom'] as const).map((value) => ({
               value,
-              label: t(`runtime.choices.${value}`),
+              label: t(`preferences.reading.choices.${value}`),
             }))}
             value={colors()?.type ?? ''}
-            emptyMessage={t('runtime.noOptions')}
-            invalidSelectionMessage={t('runtime.unavailable')}
+            emptyMessage={t('controls.search.empty')}
+            invalidSelectionMessage={t('controls.feedback.unavailable')}
             onValueChange={(v) => {
               if (v) {
                 draft.write(
@@ -86,7 +84,7 @@ export function ReadingFields(props: {
                 <For each={['foreground', 'background'] as const}>
                   {(part) => {
                     const id = 'preference-' + prefix + '.colors-' + part
-                    const label = () => t(`runtime.themeTokens.${part}`)
+                    const label = () => t(`themes.tokens.${part}`)
 
                     return (
                       <div class="flex items-center justify-between gap-2">
@@ -98,12 +96,12 @@ export function ReadingFields(props: {
                           id={id}
                           aria-label={label()}
                           value={current()[part]}
-                          pickerLabel={t('runtime.picker')}
-                          hueLabel={t('runtime.hue')}
-                          saturationLabel={t('runtime.saturation')}
-                          brightnessLabel={t('runtime.brightness')}
-                          alphaLabel={t('runtime.alpha')}
-                          invalidColorMessage={t('runtime.invalidColor')}
+                          pickerLabel={t('controls.color.choose')}
+                          hueLabel={t('controls.color.hue')}
+                          saturationLabel={t('controls.color.saturation')}
+                          brightnessLabel={t('controls.color.brightness')}
+                          alphaLabel={t('controls.color.alpha')}
+                          invalidColorMessage={t('controls.color.invalid')}
                           onValueChange={(value) => {
                             draft.write(`${prefix}.colors`, { ...current(), [part]: value })
                           }}
@@ -119,20 +117,20 @@ export function ReadingFields(props: {
       </FieldGroup>
 
       <FieldGroup>
-        <FieldLegend>{t('runtime.fields.pages')}</FieldLegend>
+        <FieldLegend>{t('preferences.reading.pages.title')}</FieldLegend>
         <For each={pageChoices}>
           {(item) => {
             const key = `${prefix}.pages.${item.key}` as const
             return (
-              <PreferenceField field={key} label={t(`runtime.fields.${item.key}`)}>
+              <PreferenceField field={key}>
                 <Select
                   value={draft.read(key) ?? ''}
                   options={item.choices.map((value) => ({
                     value,
-                    label: t(`runtime.choices.${value}`),
+                    label: t(`preferences.reading.choices.${value}`),
                   }))}
-                  emptyMessage={t('runtime.noOptions')}
-                  invalidSelectionMessage={t('runtime.unavailable')}
+                  emptyMessage={t('controls.search.empty')}
+                  invalidSelectionMessage={t('controls.feedback.unavailable')}
                   onValueChange={(v) => {
                     if (v) {
                       draft.write(key, v)
@@ -143,11 +141,7 @@ export function ReadingFields(props: {
             )
           }}
         </For>
-        <PreferenceField
-          field={`${prefix}.pages.autoCrop`}
-          label={t('runtime.fields.autoCrop')}
-          valueClass="w-fit"
-        >
+        <PreferenceField field={`${prefix}.pages.autoCrop`} valueClass="w-fit">
           <Switch
             checked={draft.read(`${prefix}.pages.autoCrop`)}
             onCheckedChange={(v) => draft.write(`${prefix}.pages.autoCrop`, v)}
@@ -157,7 +151,7 @@ export function ReadingFields(props: {
           {(name) => {
             const key = `${prefix}.pages.${name}` as const
             return (
-              <PreferenceField field={key} label={t(`runtime.fields.${name}`)} valueClass="w-36">
+              <PreferenceField field={key} valueClass="w-36">
                 <NumberInput
                   value={draft.read(key) ?? ''}
                   required
@@ -166,8 +160,8 @@ export function ReadingFields(props: {
                   unit="%"
                   step="any"
                   onValueChange={(v) => draft.writeNumber(key, v)}
-                  increaseLabel={t('runtime.increase')}
-                  decreaseLabel={t('runtime.decrease')}
+                  increaseLabel={t('controls.number.increase')}
+                  decreaseLabel={t('controls.number.decrease')}
                 />
               </PreferenceField>
             )
@@ -176,18 +170,15 @@ export function ReadingFields(props: {
       </FieldGroup>
 
       <FieldGroup>
-        <FieldLegend>{t('runtime.fields.text')}</FieldLegend>
-        <PreferenceField
-          field={`${prefix}.text.writingMode`}
-          label={t('runtime.fields.writingMode')}
-        >
+        <FieldLegend>{t('preferences.reading.text.title')}</FieldLegend>
+        <PreferenceField field={`${prefix}.text.writingMode`}>
           <Select
             options={(['document', 'horizontal-tb', 'vertical-rl', 'vertical-lr'] as const).map(
-              (value) => ({ value, label: t(`runtime.choices.${value}`) }),
+              (value) => ({ value, label: t(`preferences.reading.choices.${value}`) }),
             )}
             value={draft.read(`${prefix}.text.writingMode`) ?? ''}
-            emptyMessage={t('runtime.noOptions')}
-            invalidSelectionMessage={t('runtime.unavailable')}
+            emptyMessage={t('controls.search.empty')}
+            invalidSelectionMessage={t('controls.feedback.unavailable')}
             onValueChange={(v) => {
               if (v) {
                 draft.write(`${prefix}.text.writingMode`, v)
@@ -195,32 +186,29 @@ export function ReadingFields(props: {
             }}
           />
         </PreferenceField>
-        <PreferenceField field={`${prefix}.text.font`} label={t('runtime.fields.font')}>
+        <PreferenceField field={`${prefix}.text.font`}>
           <FontSelector
-            t={t}
             fallback="document"
-            users={props.users}
-            system={props.system}
-            loading={props.loading}
+            api={props.api}
             value={draft.read(`${prefix}.text.font`)}
             onValueChange={(v) => draft.write(`${prefix}.text.font`, v)}
           />
           <Tooltip>
             <TooltipTrigger
               as={FieldAction}
-              aria-label={t('runtime.manageFonts')}
+              aria-label={t('fonts.manage')}
               onClick={props.manageFonts}
             >
               <Icon path={mdiTuneVariant} />
             </TooltipTrigger>
-            <TooltipContent>{t('runtime.manage')}</TooltipContent>
+            <TooltipContent>{t('actions.manage')}</TooltipContent>
           </Tooltip>
         </PreferenceField>
         <For each={textNumbers}>
           {({ name, unit, bounds }) => {
             const key = `${prefix}.text.${name}` as const
             return (
-              <PreferenceField field={key} label={t(`runtime.fields.${name}`)} valueClass="w-36">
+              <PreferenceField field={key} valueClass="w-36">
                 <NumberInput
                   required
                   value={draft.read(key) ?? ''}
@@ -228,27 +216,24 @@ export function ReadingFields(props: {
                   step="any"
                   {...bounds}
                   onValueChange={(v) => draft.writeNumber(key, v)}
-                  increaseLabel={t('runtime.increase')}
-                  decreaseLabel={t('runtime.decrease')}
+                  increaseLabel={t('controls.number.increase')}
+                  decreaseLabel={t('controls.number.decrease')}
                 />
               </PreferenceField>
             )
           }}
         </For>
-        <PreferenceField
-          field={`${prefix}.text.paragraphSpacing`}
-          label={t('runtime.fields.paragraphSpacing')}
-        >
+        <PreferenceField field={`${prefix}.text.paragraphSpacing`}>
           <Select<'document' | 'custom'>
             class="min-w-30 flex-1"
-            aria-label={t('runtime.fields.paragraphSpacing')}
+            aria-label={t('preferences.reading.text.paragraphSpacing')}
             options={[
-              { value: 'document', label: t('runtime.choices.document') },
-              { value: 'custom', label: t('runtime.choices.custom') },
+              { value: 'document', label: t('preferences.reading.choices.document') },
+              { value: 'custom', label: t('preferences.reading.choices.custom') },
             ]}
             value={spacing() === 'document' ? 'document' : 'custom'}
-            emptyMessage={t('runtime.noOptions')}
-            invalidSelectionMessage={t('runtime.unavailable')}
+            emptyMessage={t('controls.search.empty')}
+            invalidSelectionMessage={t('controls.feedback.unavailable')}
             onValueChange={(value) => {
               if (value) {
                 draft.write(`${prefix}.text.paragraphSpacing`, value === 'document' ? value : '0')
@@ -259,27 +244,27 @@ export function ReadingFields(props: {
             <NumberInput
               id={`preference-${prefix}.text.paragraphSpacing-value`}
               class="w-24"
-              aria-label={t('runtime.fields.paragraphSpacing')}
+              aria-label={t('preferences.reading.text.paragraphSpacing')}
               unit="em"
               min={0}
               step="any"
               required
               value={spacing()}
-              increaseLabel={t('runtime.increase')}
-              decreaseLabel={t('runtime.decrease')}
+              increaseLabel={t('controls.number.increase')}
+              decreaseLabel={t('controls.number.decrease')}
               onValueChange={(value) => draft.write(`${prefix}.text.paragraphSpacing`, value)}
             />
           </Show>
         </PreferenceField>
-        <PreferenceField field={`${prefix}.text.alignment`} label={t('runtime.fields.alignment')}>
+        <PreferenceField field={`${prefix}.text.alignment`}>
           <Select
             options={(['document', 'start', 'justify'] as const).map((value) => ({
               value,
-              label: t(`runtime.choices.${value}`),
+              label: t(`preferences.reading.choices.${value}`),
             }))}
             value={draft.read(`${prefix}.text.alignment`) ?? ''}
-            emptyMessage={t('runtime.noOptions')}
-            invalidSelectionMessage={t('runtime.unavailable')}
+            emptyMessage={t('controls.search.empty')}
+            invalidSelectionMessage={t('controls.feedback.unavailable')}
             onValueChange={(v) => {
               if (v) {
                 draft.write(`${prefix}.text.alignment`, v)

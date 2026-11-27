@@ -56,7 +56,7 @@ function AboutContent(props: { api: MainClient }) {
     deferDialogUntil(() => false)
     return (
       <Layout>
-        <Spinner label={api.t('runtime.loading')} />
+        <Spinner label={api.t('controls.feedback.loading')} />
       </Layout>
     )
   }
@@ -64,13 +64,13 @@ function AboutContent(props: { api: MainClient }) {
   function Layout(props: ParentProps<{ ready?: boolean }>) {
     async function copy() {
       await api.call('app.copyEnvironment')
-      toast.show({ type: 'success', message: api.t('runtime.copied') })
+      toast.show({ type: 'success', message: api.t('controls.feedback.copied') })
     }
 
     return (
       <>
         <DialogHeader closeLabel={api.t('actions.close')}>
-          <DialogTitle>{api.t('runtime.about')}</DialogTitle>
+          <DialogTitle>{api.t('application.about.title')}</DialogTitle>
         </DialogHeader>
         <DialogBody class="flex flex-col gap-4">
           <div class="flex items-center gap-3">
@@ -90,7 +90,7 @@ function AboutContent(props: { api: MainClient }) {
             onClick={() => void copy().catch(reportError)}
           >
             <Icon path={mdiContentCopy} />
-            {api.t('runtime.copyEnvironment')}
+            {api.t('application.about.copyEnvironment')}
           </Button>
         </DialogFooter>
       </>
@@ -101,20 +101,20 @@ function AboutContent(props: { api: MainClient }) {
     <Errored
       fallback={(error, retry) => (
         <Layout>
-          <QueryError error={error()} retryLabel={api.t('runtime.retry')} retry={retry} />
+          <QueryError error={error()} retryLabel={api.t('actions.retry')} retry={retry} />
         </Layout>
       )}
     >
       <Loading fallback={<Waiting />}>
         <Layout ready>
           <dl class="m-0 grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-1 text-sm">
-            <dt class="text-muted-foreground">{api.t('runtime.appVersion')}</dt>
-            <dd class="m-0 break-words">{info().version}</dd>
-            <dt class="text-muted-foreground">{api.t('runtime.operatingSystem')}</dt>
-            <dd class="m-0 break-words">
+            <dt class="text-muted-foreground">{api.t('application.about.version')}</dt>
+            <dd class="m-0 wrap-break-word">{info().version}</dd>
+            <dt class="text-muted-foreground">{api.t('application.about.operatingSystem')}</dt>
+            <dd class="m-0 wrap-break-word">
               {info().operatingSystem.name} {info().operatingSystem.version}
             </dd>
-            <dt class="text-muted-foreground">{api.t('runtime.architecture')}</dt>
+            <dt class="text-muted-foreground">{api.t('application.about.architecture')}</dt>
             <dd class="m-0">{info().architecture}</dd>
           </dl>
         </Layout>

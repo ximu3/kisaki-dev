@@ -58,7 +58,7 @@ export function FontSpecimen(props: {
     <div class="min-w-0 space-y-2">
       <Show when={sample()?.font}>
         <p
-          class="m-0 break-words text-xl leading-snug"
+          class="m-0 wrap-break-word text-xl leading-snug"
           style={{
             'font-family': name,
             'font-weight': face().weight.default,
@@ -66,23 +66,23 @@ export function FontSpecimen(props: {
             'font-stretch': face().width.default + '%',
           }}
         >
-          {props.t('runtime.fontSample')}
+          {props.t('fonts.preview.sample')}
         </p>
       </Show>
       <Show when={sample()?.failure}>
         {(reason) => (
           <p class="m-0 text-xs text-destructive" role="status">
-            {props.t('runtime.previewFileFailed', { reason: reason() })}
+            {props.t('fonts.preview.failed', { reason: reason() })}
           </p>
         )}
       </Show>
       <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
         <span>{face().subfamily}</span>
         <span>
-          {props.t('runtime.fontWeight')} {metric(face().weight)}
+          {props.t('fonts.preview.weight')} {metric(face().weight)}
         </span>
         <span>
-          {props.t('runtime.fontWidth')} {metric(face().width, '%')}
+          {props.t('fonts.preview.width')} {metric(face().width, '%')}
         </span>
         <For each={face().axes.filter(({ tag }) => tag !== 'wght' && tag !== 'wdth')}>
           {(axis) => (

@@ -32,6 +32,7 @@ interface ListProps<O extends SelectionOption> extends SelectionListProps<O> {
   loading?: boolean | undefined
   emptyMessage?: JSX.Element
   loadingMessage?: JSX.Element
+  footer?: JSX.Element
   label?: string | undefined
   labelledBy?: string | undefined
   search?: SearchState | undefined
@@ -234,6 +235,7 @@ export function SelectionList<O extends SelectionOption>(props: ListProps<O>): J
             </Show>
           </Show>
         </div>
+        <Show when={present()}>{props.footer}</Show>
       </div>
     </div>
   )

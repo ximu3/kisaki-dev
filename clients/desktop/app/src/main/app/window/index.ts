@@ -162,7 +162,7 @@ export async function createWindow(
   function waitForDocument() {
     clearTimeout(startupTimer)
     startupTimer = setTimeout(
-      () => failWindow(new Error(application.i18n.t('runtime.windowStartupTimeout'))),
+      () => failWindow(new Error(application.i18n.t('application.windowErrors.startupTimeout'))),
       devUrl ? 90_000 : 30_000,
     )
   }
@@ -185,7 +185,9 @@ export async function createWindow(
   contents.on('did-fail-load', (_event, code, reason, url, mainFrame) => {
     // A navigation withdrawn in favor of another document reports ERR_ABORTED.
     if (mainFrame && url === documentUrl && code !== -3) {
-      failLoading(new Error(application.i18n.t('runtime.windowDocumentFailed', { reason })))
+      failLoading(
+        new Error(application.i18n.t('application.windowErrors.documentFailed', { reason })),
+      )
     }
   })
   contents.on('preload-error', (_event, _path, error) => failLoading(error))
@@ -195,11 +197,13 @@ export async function createWindow(
       event.senderFrame === contents.mainFrame &&
       event.senderFrame.url === documentUrl
     ) {
-      failWindow(new Error(application.i18n.t('runtime.windowEntryFailed')))
+      failWindow(new Error(application.i18n.t('application.windowErrors.entryFailed')))
     }
   })
   contents.on('render-process-gone', (_event, details) => {
-    failWindow(new Error(application.i18n.t('runtime.windowExited', { reason: details.reason })))
+    failWindow(
+      new Error(application.i18n.t('application.windowErrors.exited', { reason: details.reason })),
+    )
   })
   window.on('close', (event) => {
     if (!destroying) {
@@ -208,7 +212,7 @@ export async function createWindow(
     }
   })
   window.once('closed', () => {
-    failWindow(new Error(application.i18n.t('runtime.windowClosedUnexpectedly')))
+    failWindow(new Error(application.i18n.t('application.windowErrors.closedUnexpectedly')))
   })
 
   contents.ipc.on('kisaki-connect', (event, requestedKind: unknown) => {
