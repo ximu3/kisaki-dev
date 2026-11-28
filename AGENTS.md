@@ -24,13 +24,13 @@
 
 ### 设计与变更
 
-设计或修改一项功能前，先确认哪些模块维护数据、哪些模块定义规则。比较所有同类对象和入口，统一模型层次、命名、交互、风格和验收标准。遇到共有问题，在定义规则的模块修正，并更新所有受影响的调用方。差异须能由对象语义、资源归属或运行环境解释。具体判断与审查方法见[全局设计与一致性](refactor/design/engineering/conventions.md#global-design)。
+动手实现前，先结合用户要求、项目规范和现有工程，从正式入口推演用户完成操作的全过程。比较同类对象和所有受影响的入口，确定最终的行为、交互、模块职责与源码组织，再按这个设计实现。实现中发现依据有变，及时修正方案和受影响的部分。交付核对用于查证结果、发现遗漏。见[实施前的整体设计](refactor/design/engineering/conventions.md#design-before-implementation)和[全局设计与一致性](refactor/design/engineering/conventions.md#global-design)。
 
 要求或方案与设计原则冲突，或存在正确性、质量或技术问题时，按[整体判断](refactor/design/engineering/conventions.md#judgment)说明依据、影响、选项与建议，由用户决定方向。涉及模型、主要行为、公开合同、架构边界或交付范围的取舍遵守[实施讨论规则](refactor/implementation/work-packages.md#unexpected-issues)。既定合同内的修复与验证由实施者完成。
 
 工作量、工期或返工成本不能作为降低要求、保留已知问题或不一致的理由。运行性能、资源占用和长期维护复杂度仍按成果质量评估，具体遵守[判断与取舍](refactor/design/engineering/conventions.md#judgment)。
 
-以已确认的目标、合同和资源归属为依据制定方案，现有结构与目标冲突时重做受影响的部分。工作包可以分步实施。交付时，正式入口须支持全部约定操作，明确失败后保留的结果，并完成约定的资源清理。见[终态与整体一致](refactor/design/engineering/conventions.md#final-state)和[工作包边界](refactor/implementation/work-packages.md#boundary)。
+工作包可以按依赖分步实施。现有结构与目标冲突时，按终态重做受影响的部分。正式入口须支持全部约定操作，明确失败后保留的结果，并完成约定的资源清理。见[工作包边界](refactor/implementation/work-packages.md#boundary)。
 
 修复问题时，先查明问题源于哪项规则、模型、流程或资源边界，再在负责的模块中修正。同一根因涉及的入口和运行端统一接入，同步调用方、文档和验证，清理临时补救与失去用途的旧路径。见[修正规范](refactor/design/engineering/conventions.md#root-cause)。
 
@@ -58,7 +58,7 @@
 
 ## 桌面 UI 设计
 
-桌面页面、对话框和公共 UI 部件以旧 Kisaki 的实际界面为视觉基准。按 [Playwright 对照流程](refactor/verification/scenarios/ui.md#baseline)操作旧版开发窗口，核对布局、信息层次、密度和操作位置。新增界面对照同类页面和部件的呈现。系统与功能图标统一使用 Material Design Icons（MDI），同一操作优先沿用旧界面的图标。
+桌面页面、对话框和公共 UI 部件沿用旧 Kisaki 的 UI 设计。实施前阅读 `F:/project/3/kisaki` 中对应页面、组件及样式的源码，弄清布局层级、尺寸、交互状态、滚动与响应式规则，再按 [Playwright 对照流程](refactor/verification/scenarios/ui.md#baseline)在旧版开发窗口核实。新增界面从旧版同类页面和部件推导。系统与功能图标统一使用 Material Design Icons（MDI），同一操作优先沿用旧界面的图标。
 
 业务行为、接口和资源归属由本仓库的现行规格定义。交付前在默认主题、100% 应用缩放下，对照新旧窗口走完对应流程，再核对最小窗口和缩放边界。[界面设计基准](refactor/design/ui/components.md#existing-ui) · [代表场景](refactor/verification/scenarios/ui.md#baseline)
 

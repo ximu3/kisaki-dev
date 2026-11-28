@@ -14,6 +14,7 @@ import type { ArtifactReceipt } from '../../tools/package/packager'
 import { sha256 } from '../../tools/lib/sha256'
 import { hasNativeWindow, closeNativeWindow } from '../support/window-observation'
 import { electronExecutable } from '../../tools/dev/electron-executable'
+import { prepareMediaSample, readMediaSample } from './library'
 import { prepareArtifactWorkspace } from './workspace'
 import type { DesktopBuild } from '../../tools/build/manifest'
 import type { DistributionKind, DistributionManifest } from '../../tools/package/distribution'
@@ -234,7 +235,11 @@ test('the exact packaged carrier retains production fuses and starts and closes 
   } finally {
     db.close()
   }
+  const sample = await prepareMediaSample(profile, join(resourceDirectory, 'resources'))
   const second = await launch()
+  await expect
+    .poll(() => readMediaSample(profile, sample), { timeout: 30_000, interval: 250 })
+    .toMatchObject({ width: 160, height: 90, seconds: 1 })
   await closeNativeWindow(second.pid)
   expect(await waitForExit(second.closed, 15_000)).toBe(0)
   if (receipt.testOnly) {

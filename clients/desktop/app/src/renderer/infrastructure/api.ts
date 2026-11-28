@@ -46,6 +46,7 @@ export async function connect<K extends WindowKind>(kind: K) {
       'network.changed',
       'appearance.changed',
       'tasks.changed',
+      'library.invalidated',
       'tasks.state',
       'fonts.changed',
       'themes.changed',

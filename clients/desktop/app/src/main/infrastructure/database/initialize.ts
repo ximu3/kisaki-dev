@@ -5,6 +5,7 @@ import Database from 'better-sqlite3'
 import type { Preferences } from '@kisaki3/desktop-contracts/preferences'
 import { isAbsoluteHostPath } from '#host-path'
 import { configureConnection, enableWal } from './connection'
+import { registerSearchText } from './search-text'
 import { createPreferencesTable } from './schema/preferences'
 import { preparePreferences } from './codecs/preferences'
 import { relations } from './relations'
@@ -101,6 +102,7 @@ export function initializeDatabase(options: DatabaseOptions) {
   const connection = new Database(path, { nativeBinding })
   try {
     configureConnection(connection)
+    registerSearchText(connection)
     const hasBaseline = hasMigrationBaseline(connection, migrationsDirectory, 'initialize')
     connection.loadExtension(collationExtension)
     enableWal(connection)

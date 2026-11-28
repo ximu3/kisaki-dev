@@ -2,6 +2,8 @@
 
 Import the subpath for the capability you use. The package supplies portable values, type contracts, parsers and canonical encodings. The desktop host executes operations. A parsed value establishes its shape and constraints. The host still checks current state, resource ownership and permission when it performs the operation.
 
+`library.holdings.files.testRecognition` tests a registered file against the current parts of its work. Supply `{ definition }` to test a draft. A matching draft rule returns `{ type: 'draft', ruleId }`. Omit the definition to use the saved directory profile, whose matching rule returns `{ type: 'profile', profileId, ruleId }`. A match from the built-in naming rules returns `{ type: 'builtin' }` in either case. The test leaves the file associations and saved profile intact.
+
 `parseJsonValue` from `/json` snapshots ordinary finite JSON data. It accepts shared children and rejects cycles, accessors, sparse arrays, extra array properties, symbols and non-enumerable data. It reads data properties without evaluating getters. Use `parseStrictJson` for JSON text.
 
 For an extension contribution, pass `{ type: 'mdi', name: 'account-circle-outline' }` or a package file icon. The `/ui` subpath exports `MdiIconName` and `parseMdiIconName`. Both use the pinned MDI names and aliases without the `mdi:` prefix. Search results use the same names and carry the owning extension ID for package files.

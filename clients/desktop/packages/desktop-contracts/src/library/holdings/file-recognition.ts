@@ -351,20 +351,24 @@ export type ComicVolumeScopeCondition =
 
 export type FileRecognitionSource =
   | { readonly type: 'builtin' }
+  | { readonly type: 'draft'; readonly ruleId: string }
   | { readonly type: 'profile'; readonly profileId: string; readonly ruleId: string }
 
-export type FileRecognitionResult<T extends FileWorkType = FileWorkType> = {
+export type FileRecognitionResult<
+  T extends FileWorkType = FileWorkType,
+  Source extends FileRecognitionSource = FileRecognitionSource,
+> = {
   [K in T]:
     | {
         readonly outcome: 'matched'
-        readonly source: FileRecognitionSource
+        readonly source: Source
         readonly conditions: NonEmptyArray<FileConditionByType[K]>
         readonly parts: NonEmptyArray<PartRef<FilePartType<K>>>
       }
     | { readonly outcome: 'unmatched' }
     | {
         readonly outcome: 'failed'
-        readonly source: FileRecognitionSource | null
+        readonly source: Source | null
         readonly reason:
           | 'invalidOutput'
           | 'targetMissing'
@@ -381,7 +385,7 @@ export type FileReidentificationResult<T extends FileWorkType = FileWorkType> = 
     readonly work: EntryRef<K>
     readonly files: readonly {
       readonly fileId: string
-      readonly result: FileRecognitionResult<K>
+      readonly result: FileRecognitionResult<K, Exclude<FileRecognitionSource, { type: 'draft' }>>
       readonly changed: boolean
     }[]
   }

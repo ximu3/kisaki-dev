@@ -2,5 +2,6 @@
 @import '../../styles/base.css';
 @import './shell/titlebar.css';
 @import './shell/rail.css';
+@import './features/library/styles.css';
 @source './';
 @source '../../infrastructure/dialogs';

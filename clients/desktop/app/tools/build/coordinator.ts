@@ -76,6 +76,7 @@ export async function buildDesktop(
   for (const required of [
     'main/entry.js',
     'main/database.js',
+    'main/file-rules.js',
     ...(programs.includes('extension-host') ? ['extension-host/entry.js'] : []),
     'preload/main.cjs',
     'preload/reader.cjs',

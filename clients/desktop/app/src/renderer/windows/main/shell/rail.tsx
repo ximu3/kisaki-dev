@@ -1,6 +1,6 @@
 import { createEffect, createMemo, createSignal, For, onSettled, Show } from 'solid-js'
 import { createViewQuery } from '../../../infrastructure/query'
-import { mdiDotsHorizontal, mdiFormatListChecks } from '@mdi/js'
+import { mdiDotsHorizontal, mdiFormatListChecks, mdiPlus } from '@mdi/js'
 import { Icon } from '@kisaki3/desktop-ui/icon'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@kisaki3/desktop-ui/tooltip'
 import { Popover, PopoverContent, PopoverTrigger } from '@kisaki3/desktop-ui/popover'
@@ -16,6 +16,7 @@ import type { NavigationPage } from '../domain-ui/navigation/list'
 
 export function NavigationRail(props: {
   api: MainClient
+  addEntry: () => void
   pages: readonly NavigationPage[]
   current?: PageRef | undefined
   selectPage?: ((ref: PageRef) => Promise<boolean>) | undefined
@@ -130,6 +131,18 @@ export function NavigationRail(props: {
       </nav>
 
       <div class="flex shrink-0 flex-col items-center gap-1 py-2">
+        <Tooltip>
+          <TooltipTrigger
+            variant="ghost"
+            size="icon-lg"
+            class="rail-action size-10"
+            aria-label={api.t('library.detail.createEntry')}
+            onClick={props.addEntry}
+          >
+            <Icon path={mdiPlus} />
+          </TooltipTrigger>
+          <TooltipContent placement="right">{api.t('library.detail.createEntry')}</TooltipContent>
+        </Tooltip>
         <Tooltip>
           <TooltipTrigger
             variant="ghost"

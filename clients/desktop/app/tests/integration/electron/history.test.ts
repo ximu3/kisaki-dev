@@ -236,7 +236,9 @@ test('scrolls and filters complete task history, opens details and clears record
   await expect(table.getByRole('cell', { name: 'Batch task 105', exact: true })).toBeInViewport()
   await expect(taskDetails).toHaveCount(1)
 
-  const search = page.getByRole('searchbox')
+  const search = page
+    .getByRole('dialog', { name: 'Task center', exact: true })
+    .getByRole('searchbox')
   await search.fill('Interrupted')
   await expect(page.getByText('No matching tasks', { exact: true })).toBeVisible()
   await status.click()

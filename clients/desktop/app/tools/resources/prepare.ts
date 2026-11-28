@@ -34,7 +34,8 @@ export async function prepareResources(
 
   await prepareIcons(join(output, 'icons'))
   await copyFonts(fontInputs, join(output, 'fonts'))
-  await copyMediaRuntime(join(output, 'media'))
+  const platform = target.replace('windows', 'win32').replace('macos', 'darwin')
+  await copyMediaRuntime(join(output, 'media'), platform)
   await cp(join(appRoot, 'drizzle'), join(output, 'drizzle'), { recursive: true })
   await cp(join(appRoot, 'assets', 'licenses'), join(output, 'licenses'), { recursive: true })
   const mdiRoot = dirname(requireDependency.resolve('@mdi/js/package.json'))
@@ -44,7 +45,6 @@ export async function prepareResources(
 
   // SQLite 13 provides Node-API prebuilds shared by the development and Electron runtimes.
   const sqliteRoot = dirname(requireDependency.resolve('better-sqlite3/package.json'))
-  const platform = target.replace('windows', 'win32').replace('macos', 'darwin')
   const native = join(output, 'native')
   await mkdir(native, { recursive: true })
   await copyFile(

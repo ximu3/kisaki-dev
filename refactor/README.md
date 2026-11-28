@@ -4,7 +4,7 @@
 
 现代化、简洁、清晰、干净与克制是本目录同等首要的设计标准。实现方式按[判断与取舍](design/engineering/conventions.md#judgment)由产品目标与实际效果决定。讨论、修改和验收时，按[全局设计与一致性](design/engineering/conventions.md#global-design)核对同类功能及所有受影响的入口。所有主题及其限制、验证要求遵守[共用工程规范](design/engineering/conventions.md#quality)，具体产品与技术语义由所属主题定义。
 
-桌面 UI 以旧 Kisaki（`F:/project/3/kisaki`）的实际界面为设计基准，系统与功能图标统一使用 MDI。设计、实现和验收时先对照旧版对应界面，再按本项目规格核对业务行为与资源归属。[桌面 UI 设计基准](design/ui/components.md#existing-ui)
+桌面 UI 沿用旧 Kisaki（`F:/project/3/kisaki`）的设计。阅读对应页面、组件和样式的源码，结合开发窗口中的实际操作确认设计，再用本工程的公共控件与现行合同实现。系统与功能图标统一使用 MDI。[桌面 UI 设计基准](design/ui/components.md#existing-ui)
 
 <a id="rewrite"></a>
 
@@ -13,6 +13,8 @@
 各工作包依据现行设计、公开合同和已交付的正式入口实施。禁止查阅或复用已回退、废弃或未采用的实现，包括暂存副本、旧工作树、历史差异，以及从这些实现提取的代码、探针和报告。
 
 按已确认目标完整设计架构、实现代码并建立工程。目录、命名、分层和抽象从职责与实际约束独立推导，遵守[编码与实现质量](design/engineering/conventions.md#quality)。
+
+旧 Kisaki 对应的桌面 UI 源码用于推导界面设计。业务模型、运行边界和数据写入由本仓库现行规格定义。
 
 本目录定义完整交付的产品与技术合同，能力范围由产品目的、公开职责和实际运行约束决定。每个包与独立项目由所属工作包完成实现与适用验收，本体能力连同对应业务界面验收；[项目文档](implementation/work-packages.md#w23)按对象在整体验收前完成。W24 通过后，W25 统一执行[本轮首次公开发行](design/engineering/releases.md#first-release)。实现、文档、验收和发布分别记录，依赖与验证进度用于安排执行。把尚未解决的设计问题标为未完成。明确要求并补齐必要依据后，再实施受影响的部分。
 

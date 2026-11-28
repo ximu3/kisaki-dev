@@ -24,6 +24,12 @@ catalog:
   vitest: 5.1.1
 
 overrides:
+  '@ximu3/libmpv-node@0.1.0-dev.0>@ximu3/libmpv-node-win32-x64': '-'
+  '@ximu3/libmpv-node@0.1.0-dev.0>@ximu3/libmpv-node-win32-arm64': '-'
+  '@ximu3/libmpv-node@0.1.0-dev.0>@ximu3/libmpv-node-darwin-x64': '-'
+  '@ximu3/libmpv-node@0.1.0-dev.0>@ximu3/libmpv-node-darwin-arm64': '-'
+  '@ximu3/libmpv-node@0.1.0-dev.0>@ximu3/libmpv-node-linux-x64': '-'
+  '@ximu3/libmpv-node@0.1.0-dev.0>@ximu3/libmpv-node-linux-arm64': '-'
   vite@*: 'catalog:'
   vitest@*: 'catalog:'
 

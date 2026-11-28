@@ -6,6 +6,7 @@ import { preferenceStorage } from '../features/preferences/storage'
 import { taskHistory } from '../features/tasks/history'
 import { themeStorage } from '../features/appearance/storage'
 import { fontStorage } from '../features/fonts/storage'
+import { libraryStorage } from '../features/library/storage'
 
 function operations(storage: Storage, options: DatabaseOptions) {
   return {
@@ -17,6 +18,7 @@ function operations(storage: Storage, options: DatabaseOptions) {
     ...taskHistory(storage),
     ...themeStorage(storage),
     ...fontStorage(storage),
+    ...libraryStorage(storage),
   }
 }
 

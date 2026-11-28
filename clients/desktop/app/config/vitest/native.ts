@@ -15,6 +15,7 @@ export default defineConfig({
     include: [
       'tests/integration/runtime.test.ts',
       'tests/integration/database/**/*.test.ts',
+      'tests/integration/library/**/*.test.ts',
       'tests/integration/native/**/*.test.ts',
       'tests/integration/files/**/*.test.ts',
     ],

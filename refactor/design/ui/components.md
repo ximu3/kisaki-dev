@@ -4,9 +4,9 @@
 
 <a id="existing-ui"></a>
 
-## 桌面 UI 设计基准
+## 沿用旧 Kisaki 的 UI 设计
 
-桌面本体、公共 UI 部件和官方扩展以旧 Kisaki 的实际界面为视觉基准。用已有开发数据观察窗口中的呈现与交互，操作步骤见 [Playwright 实机对照](../../verification/scenarios/ui.md#baseline)。实现依据见[重构规格](../../README.md#rewrite)。
+桌面本体、公共 UI 部件和官方扩展沿用旧 Kisaki 的 UI 设计。从旧工程对应的页面入口读到组成它的业务组件、公共控件和样式，确认布局比例、尺寸与间距、各区域滚动归属，以及选择、焦点、展开和窄窗口下的行为。在开发窗口走同一操作，核实这些规则共同形成的实际体验。[Playwright 实机对照](../../verification/scenarios/ui.md#baseline) · [重构规格](../../README.md#rewrite)
 
 已有界面沿用旧版的布局、视觉层次、控件比例、信息密度和常用操作位置。同义操作优先选用旧版对应的 [MDI 图标](package.md#icons)。新增能力按同类页面或部件组织。对象、操作结果、默认值、状态和资源归属遵守当前规格。当前业务要求造成界面差异时，按具体操作说明依据。
 

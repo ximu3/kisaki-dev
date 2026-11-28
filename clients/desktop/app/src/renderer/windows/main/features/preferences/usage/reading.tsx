@@ -28,7 +28,7 @@ const textNumbers = [
 export function ReadingFields(props: {
   medium: 'comic' | 'novel'
   api: MainClient
-  manageFonts: () => void
+  manageFonts?: () => void
 }) {
   const { draft, t } = usePreferenceFields()
   const prefix = `usage.${props.medium}` as const
@@ -193,16 +193,19 @@ export function ReadingFields(props: {
             value={draft.read(`${prefix}.text.font`)}
             onValueChange={(v) => draft.write(`${prefix}.text.font`, v)}
           />
-          <Tooltip>
-            <TooltipTrigger
-              as={FieldAction}
-              aria-label={t('fonts.manage')}
-              onClick={props.manageFonts}
-            >
-              <Icon path={mdiTuneVariant} />
-            </TooltipTrigger>
-            <TooltipContent>{t('actions.manage')}</TooltipContent>
-          </Tooltip>
+          <Show when={props.manageFonts}>
+            {' '}
+            <Tooltip>
+              <TooltipTrigger
+                as={FieldAction}
+                aria-label={t('fonts.manage')}
+                onClick={() => props.manageFonts?.()}
+              >
+                <Icon path={mdiTuneVariant} />
+              </TooltipTrigger>
+              <TooltipContent>{t('actions.manage')}</TooltipContent>
+            </Tooltip>
+          </Show>
         </PreferenceField>
         <For each={textNumbers}>
           {({ name, unit, bounds }) => {

@@ -90,7 +90,7 @@ function shiftDecimal(value: number, places: number) {
   return Number(`${digits}e${Number(exponent) + places}`)
 }
 
-function displayValue(key: PreferenceKey, value: unknown) {
+export function displayValue(key: PreferenceKey, value: unknown) {
   if (
     (key === 'usage.anime.audioLanguages' || key === 'usage.anime.subtitleLanguages') &&
     Array.isArray(value)
@@ -192,7 +192,7 @@ function validateFields(api: MainClient, edits: FieldEdits): FieldIssue[] {
   return issues
 }
 
-function createPreferenceFields(
+export function createPreferenceFields(
   readInput: (key: PreferenceKey) => unknown,
   writeInput: (key: PreferenceKey, input: FieldInput) => void,
   defaults: Accessor<Preferences | undefined>,

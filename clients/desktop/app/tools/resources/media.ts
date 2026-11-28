@@ -4,9 +4,9 @@ import { dirname, join, basename } from 'node:path'
 import { existsSync } from 'node:fs'
 import { appRoot } from '../lib/paths'
 
-export async function copyMediaRuntime(destination: string) {
+export async function copyMediaRuntime(destination: string, platform: string) {
   const packages = new Map<string, string>()
-  const platform = process.platform + '-' + process.arch
+
   async function copyPackage(name: string, from: string) {
     const require = createRequire(join(from, 'package.json'))
     const path = require.resolve
@@ -43,4 +43,7 @@ export async function copyMediaRuntime(destination: string) {
   }
   await copyPackage('sharp', appRoot)
   await copyPackage('fontkit', appRoot)
+  await copyPackage('@ximu3/libmpv-node', appRoot)
+  await copyPackage('@ximu3/libmpv-node-' + platform, appRoot)
+  await cp(join(appRoot, 'assets', 'media', 'player.mjs'), join(destination, 'player.mjs'))
 }

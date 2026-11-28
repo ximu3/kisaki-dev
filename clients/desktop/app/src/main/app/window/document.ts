@@ -25,6 +25,8 @@ import { createTaskMethods } from './methods/tasks'
 import { createThemeMethods } from './methods/themes'
 import { createFontMethods } from './methods/fonts'
 import { createImageMethods } from './methods/images'
+import type { PreparedImage } from '@kisaki3/desktop-contracts/images'
+import { createLibraryMethods } from './methods/library'
 import { createSystemMethods } from './methods/system'
 
 interface DocumentOptions {
@@ -63,6 +65,7 @@ export function openWindowDocument({
   const { port1, port2 } = new MessageChannelMain()
   let revoked = false
   const resources = createDocumentResources(view, () => revoked)
+  const preparedImages = new Map<string, PreparedImage>()
   function windowTranslation() {
     const { locale, messages } = application.i18n.current
     return { locale, messages }
@@ -128,7 +131,8 @@ export function openWindowDocument({
         },
       ),
       ...createFontMethods(fonts, window, resources, fileInputs),
-      ...createImageMethods(application.images, window, resources, fileInputs),
+      ...createImageMethods(application.images, window, resources, fileInputs, preparedImages),
+      ...createLibraryMethods(application, resources, preparedImages, window),
       ...createSystemMethods(system),
     }
   }
@@ -206,6 +210,9 @@ export function openWindowDocument({
         subscriptions.push(
           application.network.observe(() => rpc.notify('network.changed', null)),
           tasks.onInvalidated(() => rpc.notify('tasks.changed', null)),
+          application.library.onInvalidated((value) =>
+            rpc.notify('library.invalidated', rpcData(value)),
+          ),
           application.i18n.onInvalidated(() => rpc.notify('translations.changed', null)),
           fonts.onInvalidated(() => rpc.notify('fonts.changed', null)),
           appearance.themes.onInvalidated(() => rpc.notify('themes.changed', null)),

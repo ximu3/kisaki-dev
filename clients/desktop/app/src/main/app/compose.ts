@@ -1,5 +1,5 @@
 import { releaseAll, rethrowAfterRelease } from '../infrastructure/release'
-import { session } from 'electron'
+import { powerMonitor, session } from 'electron'
 import { join } from 'node:path'
 import type { NativeCapabilities } from '#native'
 import { assertLocalDataDirectory } from '../infrastructure/files'
@@ -17,6 +17,8 @@ import { createResources } from '../infrastructure/resources'
 import { createAttachments } from '../infrastructure/attachments'
 import { createImages } from '../infrastructure/images'
 import { createFonts } from '../features/fonts'
+import { createLibrary } from '../features/library'
+import { createUseTargets } from '../infrastructure/use-targets'
 import { createAppearance } from '../features/appearance'
 import type { ApplicationOperations } from './database-worker'
 import { databasePath, type AppPaths } from './paths'
@@ -108,6 +110,54 @@ export async function compose(
       (locale) => database.adoptLocale(locale),
     )
     teardown.push(bindings.dispose)
+    const useTargets = createUseTargets()
+    const library = createLibrary(
+      database.call,
+      attachments,
+      events.publisher('library.changed'),
+      () => bindings.saved.library.showNsfw,
+      () => ({ locale: i18n.current.locale, t: i18n.t }),
+      native.files,
+      paths.resources,
+      new URL('./file-rules.js', import.meta.url),
+      useTargets.change,
+      () => bindings.saved.usage,
+    )
+    const watch = library.holdings.watch((cause) => void log.record('holdings-watch-failed', cause))
+    let sensitive = bindings.saved.library.showNsfw
+    function monitor() {
+      watch.setEnabled(bindings.saved.library.autoRefreshHoldings)
+      if (sensitive !== bindings.saved.library.showNsfw) {
+        sensitive = bindings.saved.library.showNsfw
+        library.visibilityChanged()
+      }
+    }
+    const observed = [
+      bindings.onUpdated(monitor),
+      library.holdings.onAutomaticEnabled(watch.matchFile),
+      library.holdings.onLocationsChanged(() => void watch.sync()),
+      library.holdings.onRulesChanged((rule) => {
+        if (rule.definition) {
+          watch.rulesChanged(rule.type, rule.id)
+        }
+      }),
+      events.on('library.changed', (event) => watch.libraryChanged(event.changes)),
+      useTargets.onReleased((target) => {
+        if (target.type === 'file') {
+          watch.fileReleased(target.kind, target.id)
+        }
+      }),
+    ]
+    const resume = () => watch.resume()
+    powerMonitor.on('resume', resume)
+    monitor()
+    teardown.push(async () => {
+      powerMonitor.off('resume', resume)
+      for (const subscription of observed) {
+        await subscription.dispose()
+      }
+      await watch.close()
+    })
     const interrupted = await attachments.interruptedStages().catch(async (cause) => {
       await log.record('attachment-cleanup-failed', cause)
       return []
@@ -149,6 +199,8 @@ export async function compose(
       resources,
       attachments,
       recoverAttachments,
+      library,
+      useTargets,
       images,
       fonts,
       appearance,

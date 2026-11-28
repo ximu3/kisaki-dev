@@ -72,7 +72,10 @@ function openDestination(destination: Destination, origin: Element | null) {
 export function createNavigation(
   api: MainClient,
   editors: ReturnType<typeof createWindowEditors>,
-  resolve: (target: NativeViewTarget, signal: AbortSignal) => Promise<Destination>,
+  resolve: (
+    target: NativeViewTarget,
+    signal: AbortSignal,
+  ) => Promise<Destination | { show: (signal: AbortSignal) => Promise<void> }>,
 ) {
   type OpenDialog = ReturnType<typeof openDestination>
   const [dialogs, setDialogs] = createSignal<readonly OpenDialog[]>([])
@@ -145,6 +148,14 @@ export function createNavigation(
         return false
       }
 
+      if (typeof destination !== 'function') {
+        await destination.show(wait)
+        if (wait.aborted) {
+          return false
+        }
+        current?.close()
+        return true
+      }
       return await present(destination, wait)
     } catch (error) {
       if (wait.aborted || (error instanceof DesktopError && error.code === 'Cancelled')) {

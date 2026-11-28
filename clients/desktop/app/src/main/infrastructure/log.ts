@@ -33,10 +33,19 @@ export async function createRuntimeLog(root: string) {
       | 'document-loaded'
       | 'window-connected'
       | 'window-ready'
-      | 'attachment-cleanup-failed',
+      | 'attachment-cleanup-failed'
+      | 'holdings-watch-failed',
     cause?: unknown,
   ) {
-    if (!['failed', 'closing', 'closed', 'attachment-cleanup-failed'].includes(event)) {
+    if (
+      ![
+        'failed',
+        'closing',
+        'closed',
+        'attachment-cleanup-failed',
+        'holdings-watch-failed',
+      ].includes(event)
+    ) {
       if (startupSteps.has(event)) {
         return pending
       }

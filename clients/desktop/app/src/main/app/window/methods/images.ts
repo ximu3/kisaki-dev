@@ -13,9 +13,8 @@ export function createImageMethods(
   window: BrowserWindow,
   resources: DocumentResources,
   fileInputs: DocumentFileInputs,
+  preparedImages: Map<string, PreparedImage>,
 ): WindowMethodGroup<'images'> {
-  const preparedImages = new Map<string, PreparedImage>()
-
   async function holdImage(image: PreparedImage, signal: AbortSignal) {
     const { hold, urls } = await resources.bind(
       image,

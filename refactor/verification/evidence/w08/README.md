@@ -4,6 +4,8 @@
 
 ## W09、W16 联调制品
 
+开发仓库的[固定联调归档](https://github.com/ximu3/libmpv-node-dev/releases/tag/libmpv-node%400.1.0-dev.0)保留同一批七个 npm tarball、六份对应源码与两份摘要清单。归档标签指向下述主线提交。2026-11-27 将全部 15 项远端附件的 SHA-256 与本机交接材料逐项核对。下载端可用 `packages-checksums.json` 和 `sources-checksums.json` 分别校验。该归档用于开发联调，npm 首发仍归 W25。
+
 开发包版本为 `0.1.0-dev.0`，使用 mpv v0.42.0、Client API 2.6 和 Node-API 8。Windows、macOS 和 glibc Linux 各有 x64、arm64 两个平台包。六个目标从同一份主包和各自的平台包安装，在普通 Node 26.13.1 和实际 Electron 45.3.2 中通过消费验证，包括 ASAR 加载和引擎清单不配时的拒绝。[六目标候选与消费记录](https://github.com/ximu3/libmpv-node-dev/actions/runs/45555313839)
 
 这批制品绑定 PR 合并候选 `b3ede2af9bd9a182b708e315217fb4469952314d`，其 Git 树与合并后的[主线提交](https://github.com/ximu3/libmpv-node-dev/commit/4f7356957768695936612afa76f7079d93cbb377)一致。在 Kisaki 工作区的 `.local/w08/b3ede2af9bd9a182b708e315217fb4469952314d/` 下，`packages/` 保存 CI 已验证的归档，`sources/` 保存按同一提交的六份 CI 输入、固定上游源码及摘要装配的对应源码。源码包包含绑定、上游源码、三项 mpv 补丁、构建输入、第三方许可与重链接说明。[构建与重链接](https://github.com/ximu3/libmpv-node-dev/blob/4f7356957768695936612afa76f7079d93cbb377/engine/RELINK.md)

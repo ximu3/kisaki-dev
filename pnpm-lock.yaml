@@ -251,6 +251,12 @@ catalogs:
       version: 1.8.0
 
 overrides:
+  '@ximu3/libmpv-node@0.1.0-dev.0>@ximu3/libmpv-node-win32-x64': '-'
+  '@ximu3/libmpv-node@0.1.0-dev.0>@ximu3/libmpv-node-win32-arm64': '-'
+  '@ximu3/libmpv-node@0.1.0-dev.0>@ximu3/libmpv-node-darwin-x64': '-'
+  '@ximu3/libmpv-node@0.1.0-dev.0>@ximu3/libmpv-node-darwin-arm64': '-'
+  '@ximu3/libmpv-node@0.1.0-dev.0>@ximu3/libmpv-node-linux-x64': '-'
+  '@ximu3/libmpv-node@0.1.0-dev.0>@ximu3/libmpv-node-linux-arm64': '-'
   vite@*: npm:@voidzero-dev/vite-plus-core@8.3.8001
   vitest@*: 5.1.1
 
@@ -303,9 +309,15 @@ importers:
       '@mdi/js':
         specifier: 'catalog:'
         version: 7.4.47
+      '@mdit/plugin-footnote':
+        specifier: 1.3.0
+        version: 1.3.0(markdown-it@15.0.3)
       '@solidjs/web':
         specifier: 'catalog:'
         version: 2.0.4(solid-js@2.0.4)
+      '@ximu3/libmpv-node':
+        specifier: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-0.1.0-dev.0.tgz
+        version: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-0.1.0-dev.0.tgz
       '@zip.js/zip.js':
         specifier: ^2.25.0
         version: 2.25.0
@@ -327,6 +339,9 @@ importers:
       fontkit:
         specifier: ^3.0.0
         version: 3.0.0
+      markdown-it:
+        specifier: 15.0.3
+        version: 15.0.3
       sharp:
         specifier: ^0.35.5
         version: 0.35.5(@types/node@24.19.4)
@@ -421,6 +436,25 @@ importers:
       yaml:
         specifier: ^2.9.1
         version: 2.9.1
+    optionalDependencies:
+      '@ximu3/libmpv-node-darwin-arm64':
+        specifier: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-darwin-arm64-0.1.0-dev.0.tgz
+        version: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-darwin-arm64-0.1.0-dev.0.tgz
+      '@ximu3/libmpv-node-darwin-x64':
+        specifier: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-darwin-x64-0.1.0-dev.0.tgz
+        version: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-darwin-x64-0.1.0-dev.0.tgz
+      '@ximu3/libmpv-node-linux-arm64':
+        specifier: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-linux-arm64-0.1.0-dev.0.tgz
+        version: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-linux-arm64-0.1.0-dev.0.tgz
+      '@ximu3/libmpv-node-linux-x64':
+        specifier: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-linux-x64-0.1.0-dev.0.tgz
+        version: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-linux-x64-0.1.0-dev.0.tgz
+      '@ximu3/libmpv-node-win32-arm64':
+        specifier: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-win32-arm64-0.1.0-dev.0.tgz
+        version: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-win32-arm64-0.1.0-dev.0.tgz
+      '@ximu3/libmpv-node-win32-x64':
+        specifier: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-win32-x64-0.1.0-dev.0.tgz
+        version: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-win32-x64-0.1.0-dev.0.tgz
 
   clients/desktop/packages/desktop-appearance:
     devDependencies:
@@ -3028,6 +3062,48 @@ packages:
     engines: {node: '>=20.0.0'}
     cpu: [x64]
     os: [win32]
+
+  '@ximu3/libmpv-node-darwin-arm64@https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-darwin-arm64-0.1.0-dev.0.tgz':
+    resolution: {integrity: sha512-dBD68x9/EtWA/oFyX2vOuj+IclgDC4O0xmwldTcFgDi0DU39GkWlkzQUp/8EtAOa/YYw0bH84JpYKz/B/0C1hQ==, tarball: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-darwin-arm64-0.1.0-dev.0.tgz}
+    version: 0.1.0-dev.0
+    cpu: [arm64]
+    os: [darwin]
+
+  '@ximu3/libmpv-node-darwin-x64@https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-darwin-x64-0.1.0-dev.0.tgz':
+    resolution: {integrity: sha512-NLUyU6tQ/qQCA3aYf5+vNusMu9/npPaYBiBctPeQb68sbIpJit1ewdp4wECDpgCbwfxbrvW/P6VuSfvNauNbZg==, tarball: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-darwin-x64-0.1.0-dev.0.tgz}
+    version: 0.1.0-dev.0
+    cpu: [x64]
+    os: [darwin]
+
+  '@ximu3/libmpv-node-linux-arm64@https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-linux-arm64-0.1.0-dev.0.tgz':
+    resolution: {integrity: sha512-OjxUuylVMn2KJXm3LRcOw38BuS4iDUCCex5GRJPA0FUdG50354dCn1GOcFNYJ5XJ/wxIPctgbEY4GtCoJM7XTg==, tarball: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-linux-arm64-0.1.0-dev.0.tgz}
+    version: 0.1.0-dev.0
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@ximu3/libmpv-node-linux-x64@https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-linux-x64-0.1.0-dev.0.tgz':
+    resolution: {integrity: sha512-FtpmeGmgGszXzVoTmSrAcXIgnm9OLqV09J8ndsi3JKpi8VwNrTUF2+/Wng+xxzydhOIntetTX9w2Tc5+P7ZQFA==, tarball: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-linux-x64-0.1.0-dev.0.tgz}
+    version: 0.1.0-dev.0
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@ximu3/libmpv-node-win32-arm64@https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-win32-arm64-0.1.0-dev.0.tgz':
+    resolution: {integrity: sha512-3ey/1dNm7IquKTkxRyFS5PI9zocUecV24fiht7TrQBg8pwUdtyh4200TE0B4b/XMEPiVE1apFXVK1Y7fM7gjnQ==, tarball: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-win32-arm64-0.1.0-dev.0.tgz}
+    version: 0.1.0-dev.0
+    cpu: [arm64]
+    os: [win32]
+
+  '@ximu3/libmpv-node-win32-x64@https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-win32-x64-0.1.0-dev.0.tgz':
+    resolution: {integrity: sha512-ZfuIXtjjUhEqKDXifvZKjDqJCE1u/ku+gXHHOu25UeigdIzgWVJcgPxHqzCbQ0S7Fbila9DvYRZlNocJ91AMNQ==, tarball: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-win32-x64-0.1.0-dev.0.tgz}
+    version: 0.1.0-dev.0
+    cpu: [x64]
+    os: [win32]
+
+  '@ximu3/libmpv-node@https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-0.1.0-dev.0.tgz':
+    resolution: {integrity: sha512-rw1OQBWDwWg1mGGOo9KJleIIiTRwzCUB8SXuwfpTDYCzGT/KJHZkxajtoN4peKjMyyv3AIb5ST5IbLmj0amM6w==, tarball: https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-0.1.0-dev.0.tgz}
+    version: 0.1.0-dev.0
 
   '@xmldom/xmldom@0.8.15':
     resolution: {integrity: sha512-/5NV/vDALVFDXgLmfsy9TRCBlKwO2LNBFzpzvb9iIj+jR+eSc6DLYYvVOdivT/jm7MtU6TebYuRmzEOI7w40UA==}
@@ -7175,6 +7251,26 @@ snapshots:
 
   '@voidzero-dev/vite-plus-win32-x64-msvc@1.8.0':
     optional: true
+
+  '@ximu3/libmpv-node-darwin-arm64@https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-darwin-arm64-0.1.0-dev.0.tgz':
+    optional: true
+
+  '@ximu3/libmpv-node-darwin-x64@https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-darwin-x64-0.1.0-dev.0.tgz':
+    optional: true
+
+  '@ximu3/libmpv-node-linux-arm64@https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-linux-arm64-0.1.0-dev.0.tgz':
+    optional: true
+
+  '@ximu3/libmpv-node-linux-x64@https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-linux-x64-0.1.0-dev.0.tgz':
+    optional: true
+
+  '@ximu3/libmpv-node-win32-arm64@https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-win32-arm64-0.1.0-dev.0.tgz':
+    optional: true
+
+  '@ximu3/libmpv-node-win32-x64@https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-win32-x64-0.1.0-dev.0.tgz':
+    optional: true
+
+  '@ximu3/libmpv-node@https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-0.1.0-dev.0.tgz': {}
 
   '@xmldom/xmldom@0.8.15': {}
 

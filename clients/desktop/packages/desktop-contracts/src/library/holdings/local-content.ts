@@ -1,5 +1,5 @@
 import type { NonEmptyArray } from '../../operations'
-import type { FileRecognitionResult } from './file-recognition'
+import type { FileRecognitionResult, FileRecognitionSource } from './file-recognition'
 
 import type { FileAvailability } from './files'
 import { fromParser, parseValue, unique, id } from '../../validation'
@@ -56,7 +56,10 @@ export type HoldingsRefreshResult<T extends FileWorkType = FileWorkType> = {
     readonly files: readonly {
       readonly fileId: string
       readonly availability: FileAvailability
-      readonly recognition: FileRecognitionResult<K> | null
+      readonly recognition: FileRecognitionResult<
+        K,
+        Exclude<FileRecognitionSource, { type: 'draft' }>
+      > | null
       readonly associationOutcome: 'updated' | 'unchanged' | 'notAttempted' | 'waitingForUse'
     }[]
   }

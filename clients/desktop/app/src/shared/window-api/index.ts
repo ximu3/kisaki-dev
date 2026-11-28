@@ -1,4 +1,5 @@
 import type { WindowKind } from './protocol'
+import type { LibraryWindowApi } from './library'
 import type { FontTokenName } from '@kisaki3/desktop-appearance/tokens'
 import type { MessageCatalog, UiTranslation } from '@kisaki3/desktop-contracts/i18n'
 import type {
@@ -96,7 +97,7 @@ export interface WindowApi {
   'resources.release'(id: string): void
 }
 
-export interface MainWindowApi extends WindowApi {
+export interface MainWindowApi extends WindowApi, LibraryWindowApi {
   'window.reveal'(): void
   'window.caption'(background: string, foreground: string): void
   'app.restart'(): void

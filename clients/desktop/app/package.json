@@ -25,7 +25,9 @@
     "@kisaki3/desktop-ui": "workspace:*",
     "@kisaki3/extension-distribution": "workspace:*",
     "@mdi/js": "catalog:",
+    "@mdit/plugin-footnote": "1.3.0",
     "@solidjs/web": "catalog:",
+    "@ximu3/libmpv-node": "https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-0.1.0-dev.0.tgz",
     "@zip.js/zip.js": "^2.25.0",
     "better-sqlite3": "13.2.0",
     "dbus-native": "^0.16.3",
@@ -33,10 +35,19 @@
     "dequal": "^2.0.3",
     "drizzle-orm": "1.0.0-rc.6",
     "fontkit": "^3.0.0",
+    "markdown-it": "15.0.3",
     "sharp": "^0.35.5",
     "solid-js": "catalog:",
     "valibot": "^1.5.0",
     "yauzl": "^3.4.0"
+  },
+  "optionalDependencies": {
+    "@ximu3/libmpv-node-win32-x64": "https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-win32-x64-0.1.0-dev.0.tgz",
+    "@ximu3/libmpv-node-win32-arm64": "https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-win32-arm64-0.1.0-dev.0.tgz",
+    "@ximu3/libmpv-node-darwin-x64": "https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-darwin-x64-0.1.0-dev.0.tgz",
+    "@ximu3/libmpv-node-darwin-arm64": "https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-darwin-arm64-0.1.0-dev.0.tgz",
+    "@ximu3/libmpv-node-linux-x64": "https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-linux-x64-0.1.0-dev.0.tgz",
+    "@ximu3/libmpv-node-linux-arm64": "https://github.com/ximu3/libmpv-node-dev/releases/download/libmpv-node%400.1.0-dev.0/ximu3-libmpv-node-linux-arm64-0.1.0-dev.0.tgz"
   },
   "devDependencies": {
     "@electron/asar": "^4.3.4",
