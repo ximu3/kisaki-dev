@@ -20,7 +20,7 @@
 
 ## 工作原则
 
-现代化、简洁、清晰、干净与克制是同等重要的首要原则，适用于设计、实现、审阅和交付。见[共同原则](refactor/design/engineering/conventions.md#quality)。
+现代化、清晰、干净与克制是同等重要的首要原则，适用于设计、实现、审阅和交付。见[共同原则](refactor/design/engineering/conventions.md#quality)。
 
 ### 设计与变更
 
