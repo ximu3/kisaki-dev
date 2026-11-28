@@ -128,3 +128,23 @@ test('retains a full-query selection when switching between cards and the table'
     'false',
   )
 })
+
+test('refreshing an entry keeps keyboard actions on its visible Explorer row', async ({
+  desktop,
+}) => {
+  const page = await desktop.firstWindow()
+  const tree = page.locator('aside')
+  await tree.getByRole('button', { name: /^Entry types/ }).click()
+  await page.getByRole('button', { name: 'All entries', exact: true }).click()
+  const row = tree.getByRole('button', { name: 'First work', exact: true })
+  await row.click()
+  const favorite = page.getByRole('button', { name: 'Favorite', exact: true })
+  await expect(favorite).toHaveAttribute('aria-pressed', 'true')
+  await row.focus()
+  // Activate the detail action without transferring keyboard focus away from the Explorer.
+  await favorite.dispatchEvent('click')
+  await expect(favorite).toHaveAttribute('aria-pressed', 'false')
+  await expect(row).toBeFocused()
+  await page.keyboard.press('Shift+F10')
+  await expect(page.getByRole('menuitem', { name: 'Set status' })).toBeVisible()
+})

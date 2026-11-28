@@ -23,6 +23,8 @@
 
 在有 1,200 个收藏条目的表格中翻到第二页，从第 80 行打开作品，在详情改名使它排到第十页。返回后按该条目的身份重新定位，原行可见并保持选中。同一个不存在的目录分别经过普通登记和资料图登记准备，均由窗口错误编码器返回 `FileUnavailable`。[窗口返回](../../../../clients/desktop/app/tests/integration/electron/library/navigation.test.ts) · [目录错误](../../../../clients/desktop/app/tests/integration/library/holdings/registration.test.ts)
 
+资料修改触发 Explorer 重读时，相同的分组、数量和折叠状态沿用原布局。将焦点留在作品行，改变该作品的收藏状态后，焦点仍在原行，Shift+F10 可继续打开它的动作菜单。[键盘焦点](../../../../clients/desktop/app/tests/integration/electron/library/selection.test.ts)
+
 合并两个标签，保留标签侧与条目侧各自的排列，在同一事务中把动态合集和展示柜查询中的旧引用改指保留标签，按目标身份去重并保存名称。[标签与保存查询](../../../../clients/desktop/app/tests/integration/library/catalog.test.ts)
 
 ## 目录重新定位

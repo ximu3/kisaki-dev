@@ -1,3 +1,4 @@
+import { dequal } from 'dequal/lite'
 import type {
   EntryGroupKey,
   EntryGroupResult,
@@ -116,21 +117,24 @@ export function ExplorerTree(props: {
     }
   })
 
-  const segments = createMemo(() => {
-    const items: Segment[] = []
-    let count = 0
-    const collapsed = activeFilter() ? filterClosed() : closed()
-    for (const group of snapshot()?.groups ?? []) {
-      if (group.status === 'ready' && group.count === 0) {
-        continue
+  const segments = createMemo(
+    () => {
+      const items: Segment[] = []
+      let count = 0
+      const collapsed = activeFilter() ? filterClosed() : closed()
+      for (const group of snapshot()?.groups ?? []) {
+        if (group.status === 'ready' && group.count === 0) {
+          continue
+        }
+        const expanded = !collapsed.has(groupId(group.key))
+        const size = group.status === 'ready' ? group.count : 0
+        items.push({ group, start: count, count: size, expanded })
+        count += 1 + (expanded ? size : 0)
       }
-      const expanded = !collapsed.has(groupId(group.key))
-      const size = group.status === 'ready' ? group.count : 0
-      items.push({ group, start: count, count: size, expanded })
-      count += 1 + (expanded ? size : 0)
-    }
-    return { items, count }
-  })
+      return { items, count }
+    },
+    { equals: dequal },
+  )
   function expand(group: EntryGroupKey, open: boolean) {
     const change = activeFilter() ? setFilterClosed : setClosed
     change((before) => {
