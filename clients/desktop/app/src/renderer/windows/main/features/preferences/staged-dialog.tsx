@@ -14,7 +14,7 @@ import {
 } from '@kisaki3/desktop-ui/dialog'
 import { createForm, Form, FormFeedback, type FormState } from '@kisaki3/desktop-ui/form'
 import type { PreferenceStage } from './draft'
-import { focusPreferenceField, PreferenceFieldsContext } from './field'
+import { focusPreferenceField, PreferenceFieldsContext } from '../../domain-ui/preferences/field'
 
 export interface StagedPreferenceEdit {
   draft: PreferenceStage

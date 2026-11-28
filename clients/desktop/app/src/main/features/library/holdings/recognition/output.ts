@@ -15,6 +15,7 @@ export interface NumberConversion {
   offset: number
   value: string
 }
+
 type Expand = (
   captures: Readonly<Record<string, string | undefined>>,
   numbers?: NumberConversion[],
@@ -42,6 +43,7 @@ function template(value: string, names: readonly string[]): Expand {
     return output
   }
 }
+
 function label(spec: FileNumberValue, names: readonly string[]): Expand {
   const expand = template(spec.value, names)
   return (groups, numbers) => {
@@ -63,6 +65,7 @@ function label(spec: FileNumberValue, names: readonly string[]): Expand {
     return value
   }
 }
+
 function numberOutput(
   spec: FileNumberOutput,
   names: readonly string[],
@@ -82,6 +85,7 @@ function numberOutput(
     return { kind: 'range', start, end }
   }
 }
+
 export function compileOutput(
   spec: FileTargetByType[FileWorkType],
   names: readonly string[],

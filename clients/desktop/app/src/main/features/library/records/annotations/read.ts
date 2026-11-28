@@ -17,7 +17,7 @@ import { searchText } from '../../../../infrastructure/database/search-text'
 import { readMarkdown } from '../../../../infrastructure/markdown'
 import type { LibraryDatabase } from '../../transaction'
 import { requireEntry } from '../../entries/tables'
-import { fileRow } from '../../holdings/files/storage'
+import { fileRow } from '../../holdings/files/record'
 
 export const tables = {
   game: {

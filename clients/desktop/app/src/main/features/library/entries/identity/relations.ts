@@ -10,7 +10,8 @@ import {
   type Relation,
   type RelationKind,
 } from '../../relations/facts'
-import { savedPositions, saveRelation, type RelationPositions } from '../../relations/write'
+import { savedPositions, saveRelation } from '../../relations/write'
+import { type RelationPositions } from '../../relations/order'
 import type { LibraryWrite } from '../../transaction'
 import { mergeText } from './fields'
 

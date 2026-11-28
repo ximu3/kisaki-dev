@@ -16,7 +16,7 @@ import { createParts } from './parts'
 import { createActivities } from './records/activities'
 import { createHoldings } from './holdings'
 import type { NativeFiles } from '#native'
-import type { ChangeAdmission } from '../../infrastructure/use-targets'
+import type { ChangeAdmission } from './change-admission'
 import type { libraryStorage } from './storage'
 import type { LibraryCommit } from './transaction'
 

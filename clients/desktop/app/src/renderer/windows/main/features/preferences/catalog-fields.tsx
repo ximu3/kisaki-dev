@@ -7,9 +7,9 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@kisaki3/desktop-ui/too
 import { FieldAction } from '@kisaki3/desktop-ui/field'
 import { Select } from '@kisaki3/desktop-ui/select'
 import type { MainClient } from '../../../../infrastructure/api'
-import { ThemeSelector } from '../../domain-ui/themes/selector'
+import { ThemeSelector } from '../../domain-ui/theme-selector'
 import { catalogSelection } from '../../domain-ui/catalog-selection'
-import { PreferenceField, usePreferenceFields } from './field'
+import { PreferenceField, usePreferenceFields } from '../../domain-ui/preferences/field'
 import { QueryError } from '../../../../infrastructure/query/error'
 
 function createCatalog<T>(

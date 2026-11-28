@@ -15,19 +15,20 @@ import type { NativeFiles } from '#native'
 import type { DatabaseCall } from '../../../../infrastructure/database/executor'
 import type { CompleteWrite } from '../../transaction'
 import { fileWork, callSignal } from '../work'
-import type { registration } from '../registration'
-import type { createRefresh } from '../refresh'
+import type { createRegistration } from '../registration/queue'
+import type { createRefresh } from '../maintenance/refresh'
 import type { createRecognition } from '../recognition'
 import type { createProfiles } from '../recognition/profiles'
-import type { createDirectoryRelocation } from './relocate'
-import { discover } from '../discover'
+import { discover } from '../maintenance/discover'
 import type { holdingStorage } from '../storage'
+import type { createDirectoryRelocation } from './relocate'
+
 export function createDirectories(
   call: DatabaseCall<ReturnType<typeof holdingStorage>>,
   native: NativeFiles,
   sensitive: () => boolean,
   complete: CompleteWrite,
-  register: ReturnType<typeof registration>,
+  register: ReturnType<typeof createRegistration>,
   refresh: ReturnType<typeof createRefresh>,
   recognition: ReturnType<typeof createRecognition>,
   profiles: ReturnType<typeof createProfiles>,

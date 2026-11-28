@@ -114,9 +114,9 @@ extensions 的管理入口组织完整管理操作，包处理、更新准备、
 
 外部身份的格式、值和准确比较属于公共纯能力。library 负责实际绑定、归属和冲突处理；provider 只报告来源身份；metadata 只在获取范围内对应来源对象；database 只提供存储机制。
 
-holdings 按 game、anime、comic 和 novel 划分持有实现。游戏分支管理内容目录、启动配置与备份；另外三个分支各自管理文件、分部关联、首选、使用位置、保存的设置与本地维护。各媒介拥有识别语义和方案管理，文本规则执行等同义机制由它们复用，具体见[内部组织](domains/holdings.md#organization)。watch 负责持续观察与自动触发，refresh 提供手动和自动共用的刷新能力，重新识别与重定位各自完成独立操作，见[执行组织](domains/file-maintenance.md#execution)。
+holdings 按媒介维护启动配置、分部识别和已保存的使用选择。目录和文件共用位置核对、维护队列和监听；跨对象修改由发起操作持有事务，调用各对象的写入规则。[持有的内部组织](domains/holdings.md#organization) · [维护操作](domains/file-maintenance.md#execution)
 
-sessions 管理四类 Work 的使用上下文、控制、观察、有效计时和收尾，正式活动由 library 保存。内部按四类产品会话分支，registry.ts 维护实际实例、打开中的目标占用、集合观察与共同接纳关口，app 决定应用退出期间的接纳和等待，具体边界见[会话实现的组织](domains/sessions.md#organization)。游戏持有配置与备份政策位于 library/holdings/game，归档字节的处理属于设施。即使本地绑定已经移除，备份身份和保留规则仍然有效。保存的文件位置与使用设置属于 holdings，正在使用的目标及临时控制属于 sessions。
+sessions 管理四类 Work 的使用上下文、控制、观察、有效计时和收尾，正式活动由 library 保存。内部按四类产品会话分支，registry.ts 维护实际实例、打开中的目标占用、集合观察与共同接纳关口，app 决定应用退出期间的接纳和等待，具体边界见[会话实现的组织](domains/sessions.md#organization)。游戏启动配置与备份政策分别归 `library/holdings/game/configuration` 和 `library/holdings/game/backups`，归档字节的处理属于设施。即使本地绑定已经移除，备份身份和保留规则仍然有效。保存的文件位置与使用设置属于 holdings，正在使用的目标及临时控制属于 sessions。
 
 应用级 search 在主进程组合各模块的只读检索，统一分类、排序和分页；主窗口管理查询、选择与导航。它使用现有主进程和主窗口的接入及数据库连接，合同位于 desktop-contracts/search。设置与页面以纯数据目录参与搜索，普通列表继续使用所属领域查询。应用搜索入口及本体快捷键仅在主窗口提供。
 

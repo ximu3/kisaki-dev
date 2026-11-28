@@ -28,7 +28,7 @@ Note 具有独立身份、正文、附件和零到多个条目关联，由 libra
 
 内部根层按 entries、parts、relations、organizers、records、holdings 和 showcase 这些职责区域组织，各区域内再划分具体能力，保持同级相近的职责粒度。organizers 包含 collections 与 tags，holdings 包含游戏配置和备份。分类目录可以包含规则与生命周期不同的子模块，公共 API 则按完整调用能力组织。
 
-每项公开能力有唯一的实现拥有者，按上表及[公开操作目录](#api)建立直接对应。records 和 organizers 承担内部分类，媒介分支与 query、validation、write 按实现职责拆分。API 装配直接连接相应能力，公开路径按业务含义确定；内部分类调整与公开边界变更分别判断。
+每项公开能力有唯一的实现拥有者，按上表及[公开操作目录](#api)建立直接对应。records 和 organizers 按所属对象归组。类型专属流程及查询、校验和写入归各自的业务能力，见[文件与目录](../../../engineering/conventions.md#source-layout)。API 装配直接连接相应能力，公开路径按业务含义确定；内部分类调整与公开边界变更分别判断。
 
 资料图提交、合并、删除和领域检索分别由 write-graph.ts、merge.ts、delete.ts、search.ts 组织。它们承担跨区域的完整操作或读取，复用区域内部规则；子模块不反向调用这些协调操作来补齐不变量。目录分组不改变事务、资源与提交后通知的责任。
 

@@ -1,5 +1,16 @@
 import { and, count, eq, sql } from 'drizzle-orm'
-import type { PartCreate, PartUpdate, PartQuery, PartRef } from '@kisaki3/desktop-contracts/library'
+import type {
+  PartCreate,
+  PartUpdate,
+  PartQuery,
+  PartRef,
+  PartKindChange,
+  VolumeChapterChange,
+  VolumeChapter,
+  PartOrderScope,
+  MoveInput,
+  ReorderInput,
+} from '@kisaki3/desktop-contracts/library'
 import type { Attachment } from '@kisaki3/desktop-contracts/attachments'
 import type { ListOptions } from '@kisaki3/desktop-contracts/operations'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
@@ -10,21 +21,18 @@ import { searchText } from '../../../infrastructure/database/search-text'
 import { entryWhere } from '../entries/tables'
 import { commit } from '../transaction'
 import { parts } from './tables'
-import { correctAnimeKind, mergeParts, removePart } from './identity'
-import { volumeMembers, editVolumeMembers, orderParts } from './members'
-import type {
-  PartKindChange,
-  VolumeChapterChange,
-  VolumeChapter,
-  PartOrderScope,
-  MoveInput,
-  ReorderInput,
-} from '@kisaki3/desktop-contracts/library'
+import {
+  mergeParts,
+  removePart,
+  partDependents,
+  verifyDependents,
+  type PartDependents,
+} from './identity'
+import { correctAnimeKind } from './anime/change-kind'
+import { volumeMembers, editVolumeMembers, volumeChapterStorage } from './comic/members'
+import { orderParts } from './order'
 import { changePart, insertPart, getPart, completePart } from './write'
 
-import { volumeChapterStorage } from './members'
-
-import { partDependents, verifyDependents, type PartDependents } from './identity'
 export function partStorage(storage: Storage) {
   return {
     ...volumeChapterStorage(storage),

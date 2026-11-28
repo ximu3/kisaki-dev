@@ -13,8 +13,8 @@ import {
   noteEntryLinks,
 } from '../../../../infrastructure/database/schema'
 import type { Storage } from '../../../../infrastructure/database'
-import type { UseTarget } from '../../../../infrastructure/use-targets'
-import { expectPositions } from '../../holdings/positions'
+import type { UseTarget } from '../../change-admission'
+import { expectPositions } from '../../holdings/paths'
 import { commit, type LibraryWrite } from '../../transaction'
 import { snapshot, dependencies, retireEntryImages } from './snapshots'
 import { mergeFields } from './fields'

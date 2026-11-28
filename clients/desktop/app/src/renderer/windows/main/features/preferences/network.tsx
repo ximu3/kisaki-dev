@@ -7,7 +7,11 @@ import { Field, FieldGroup, FieldLabel } from '@kisaki3/desktop-ui/field'
 import { Input } from '@kisaki3/desktop-ui/input'
 import { Select } from '@kisaki3/desktop-ui/select'
 import type { MainClient } from '../../../../infrastructure/api'
-import { focusPreferenceValue, PreferenceField, usePreferenceFields } from './field'
+import {
+  focusPreferenceValue,
+  PreferenceField,
+  usePreferenceFields,
+} from '../../domain-ui/preferences/field'
 import { QueryError } from '../../../../infrastructure/query/error'
 
 export const proxyCredentialsKey = 'network.credentials'

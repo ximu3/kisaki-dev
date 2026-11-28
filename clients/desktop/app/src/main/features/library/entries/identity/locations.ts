@@ -2,9 +2,9 @@ import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { isWorkType, type EntryMergeInput, type WorkRef } from '@kisaki3/desktop-contracts/library'
 import type { NativeFiles } from '#native'
 import type { DatabaseCall } from '../../../../infrastructure/database/executor'
-import { existingPosition, type Position } from '../../holdings/positions'
-import { inspectTarget } from '../../holdings/registration'
-import type { FileFacts } from '../../holdings/files/storage'
+import { existingPosition, type Position } from '../../holdings/paths'
+import { inspectTarget } from '../../holdings/files/inspect'
+import type { FileFacts } from '../../holdings/files/record'
 import type { holdingStorage } from '../../holdings/storage'
 
 export interface DuplicateFile {

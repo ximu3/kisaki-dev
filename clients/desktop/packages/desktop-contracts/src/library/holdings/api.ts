@@ -1,6 +1,6 @@
 import type { ContentDirectoriesApi } from './directories'
 import type { HeldFilesApi } from './files'
-import type { GameLaunchConfigsApi } from './game-configuration'
+import type { GameLaunchConfigsApi } from './launch-configs'
 import type { GameBackupsApi } from './backups/api'
 import type { HoldingsPreferencesApi } from './preferences'
 import type { FileRecognitionProfilesApi } from './file-recognition'

@@ -30,10 +30,10 @@ import { EditorDialog } from '../../../../../../infrastructure/dialogs/editor'
 import type { EditorGuard } from '../../../../../../infrastructure/dialogs/closing'
 import { createViewQuery } from '../../../../../../infrastructure/query'
 import { errorMessage } from '../../../../../../infrastructure/notifications'
-import { createPreferenceFields, displayValue } from '../../../preferences/draft'
-import { PreferenceFieldsContext } from '../../../preferences/field'
-import { AnimeUsageFields } from '../../../preferences/usage/fields'
-import { ReadingFields } from '../../../preferences/usage/reading'
+import { createPreferenceFields, displayValue } from '../../../../domain-ui/preferences/values'
+import { PreferenceFieldsContext } from '../../../../domain-ui/preferences/field'
+import { AnimeUsageFields } from '../../../../domain-ui/preferences/playback-fields'
+import { ReadingFields } from '../../../../domain-ui/preferences/reading-fields'
 
 type Snapshot = ReturnType<HoldingsWindowApi['library.holdings.preferences']>
 type SettingProps = {

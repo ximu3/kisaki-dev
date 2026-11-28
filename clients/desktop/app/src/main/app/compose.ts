@@ -18,7 +18,7 @@ import { createAttachments } from '../infrastructure/attachments'
 import { createImages } from '../infrastructure/images'
 import { createFonts } from '../features/fonts'
 import { createLibrary } from '../features/library'
-import { createUseTargets } from '../infrastructure/use-targets'
+import { createSessionRegistry } from '../features/sessions/registry'
 import { createAppearance } from '../features/appearance'
 import type { ApplicationOperations } from './database-worker'
 import { databasePath, type AppPaths } from './paths'
@@ -110,7 +110,7 @@ export async function compose(
       (locale) => database.adoptLocale(locale),
     )
     teardown.push(bindings.dispose)
-    const useTargets = createUseTargets()
+    const sessions = createSessionRegistry()
     const library = createLibrary(
       database.call,
       attachments,
@@ -120,7 +120,7 @@ export async function compose(
       native.files,
       paths.resources,
       new URL('./file-rules.js', import.meta.url),
-      useTargets.change,
+      sessions.change,
       () => bindings.saved.usage,
     )
     const watch = library.holdings.watch((cause) => void log.record('holdings-watch-failed', cause))
@@ -142,7 +142,7 @@ export async function compose(
         }
       }),
       events.on('library.changed', (event) => watch.libraryChanged(event.changes)),
-      useTargets.onReleased((target) => {
+      sessions.onReleased((target) => {
         if (target.type === 'file') {
           watch.fileReleased(target.kind, target.id)
         }
@@ -200,7 +200,7 @@ export async function compose(
       attachments,
       recoverAttachments,
       library,
-      useTargets,
+      sessions,
       images,
       fonts,
       appearance,

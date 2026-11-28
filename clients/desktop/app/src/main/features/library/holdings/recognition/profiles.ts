@@ -18,6 +18,7 @@ export function fileMedium(raw: unknown): FileWorkType {
   }
   return raw
 }
+
 const codes = {
   'anime-episode-number': 'animeEpisode',
   'anime-title-episode-number': 'animeTitle',

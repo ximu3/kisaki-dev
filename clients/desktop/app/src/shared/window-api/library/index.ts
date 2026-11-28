@@ -58,7 +58,6 @@ import type {
   DynamicRules,
 } from '@kisaki3/desktop-contracts/library'
 import type { ListOptions, ListResult, NonEmptyArray } from '@kisaki3/desktop-contracts/operations'
-
 import type {
   RelationsApi,
   WorkCharacter,
@@ -78,6 +77,15 @@ import type {
   OrganizationWorkCreate,
   WorkRelationCreate,
 } from '@kisaki3/desktop-contracts/library'
+import type { HoldingsWindowApi } from './holdings'
+import type { LibraryWriteGraph, LibraryWriteResult } from '@kisaki3/desktop-contracts/library'
+import type { RecordsWindowApi } from './records'
+import type {
+  VolumeChapter,
+  VolumeChapterChange,
+  MoveInput,
+} from '@kisaki3/desktop-contracts/library'
+import type { OrganizerWindowApi } from './organizers'
 
 export type RelationFamily = keyof RelationsApi
 export type LibraryFact = WorkCharacter | PersonWork | OrganizationWork | WorkRelation
@@ -88,26 +96,17 @@ export type LibraryRelationScope =
   | WorkRelationScope
 type WindowInput<T> = T extends unknown ? Omit<T, 'prepared'> : never
 
-import type { HoldingsWindowApi } from './holdings'
-import type { LibraryWriteGraph, LibraryWriteResult } from '@kisaki3/desktop-contracts/library'
 type WindowGraphValue<T> = T extends readonly unknown[]
   ? { [K in keyof T]: WindowGraphValue<T[K]> }
   : T extends object
     ? { [K in keyof T as Exclude<K, 'prepared'>]: WindowGraphValue<T[K]> }
     : T
-import type { RecordsWindowApi } from './records'
-import type {
-  VolumeChapter,
-  VolumeChapterChange,
-  MoveInput,
-} from '@kisaki3/desktop-contracts/library'
 export interface EntryLocation {
   entry: EntryRef
   parts: readonly PartDetails[]
   file?: HeldFile
   config?: GameLaunchConfig
 }
-import type { OrganizerWindowApi } from './organizers'
 export interface LibraryWindowApi extends HoldingsWindowApi, RecordsWindowApi, OrganizerWindowApi {
   'library.writeGraph'(
     graph: WindowGraphValue<LibraryWriteGraph>,

@@ -5,9 +5,9 @@ import { test, expect } from 'vite-plus/test'
 import { loadNative } from '#native'
 import { initializeDatabase } from '../../../src/main/infrastructure/database'
 import type { DatabaseCall } from '../../../src/main/infrastructure/database/executor'
-import { createUseTargets } from '../../../src/main/infrastructure/use-targets'
+import { createSessionRegistry } from '../../../src/main/features/sessions/registry'
 import { libraryStorage } from '../../../src/main/features/library/storage'
-import { registration } from '../../../src/main/features/library/holdings/registration'
+import { createRegistration } from '../../../src/main/features/library/holdings/registration/queue'
 import { createDirectoryRelocation } from '../../../src/main/features/library/holdings/directories/relocate'
 import { appRoot } from '../../../tools/lib/paths'
 import { hostTarget } from '../../../tools/lib/targets'
@@ -33,9 +33,9 @@ test('a conflicting root blocks the entire relocation; a usable root commits onl
       id: db.createLibraryEntry({ type: 'novel', name: 'Shelf' }, []).value.id,
     }
     const signal = new AbortController().signal
-    const admission = createUseTargets()
+    const admission = createSessionRegistry()
     const take = <T>(r: { value: T }) => r.value
-    const register = registration(call, take, native, fixture, admission.change, () => {})
+    const register = createRegistration(call, take, native, fixture, admission.change, () => {})
     const relocate = createDirectoryRelocation(
       call,
       take,
@@ -102,11 +102,11 @@ test('directory collision retains selected game paths and external subtitles, an
     const db = libraryStorage(storage),
       call = direct(db),
       native = loadNative(options.collationExtension).files,
-      admission = createUseTargets(),
+      admission = createSessionRegistry(),
       signal = new AbortController().signal,
       resourceRoot = join(appRoot, 'out', 'resources', hostTarget())
     const value = <T>(result: { value: T }) => result.value
-    const add = registration(call, value, native, resourceRoot, admission.change, () => {}),
+    const add = createRegistration(call, value, native, resourceRoot, admission.change, () => {}),
       move = createDirectoryRelocation(
         call,
         value,

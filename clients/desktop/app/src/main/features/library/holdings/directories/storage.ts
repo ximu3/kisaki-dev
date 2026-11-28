@@ -41,6 +41,7 @@ export function readDirectories(
       return result as ContentDirectory
     })
 }
+
 function requireProfile(
   db: LibraryDatabase,
   type: keyof typeof profiles,
@@ -54,6 +55,7 @@ function requireProfile(
     throw new DesktopError('InvalidReference', 'Choose a recognition profile for this kind of work')
   }
 }
+
 export function addDirectory(write: LibraryWrite, work: WorkRef, input: DirectoryCreateFields) {
   requireEntry(write.db, work)
   const id = randomUUID(),
@@ -95,6 +97,7 @@ export function addDirectory(write: LibraryWrite, work: WorkRef, input: Director
   >)
   return id
 }
+
 export function editDirectory(
   write: LibraryWrite,
   work: WorkRef,

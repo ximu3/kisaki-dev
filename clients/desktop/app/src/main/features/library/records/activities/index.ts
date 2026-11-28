@@ -13,7 +13,7 @@ import type { CompleteWrite } from '../../transaction'
 import { activityQuery } from './query'
 import type { activityStorage } from './storage'
 
-import type { ChangeAdmission } from '../../../../infrastructure/use-targets'
+import type { ChangeAdmission } from '../../change-admission'
 export function createActivities(
   call: DatabaseCall<ReturnType<typeof activityStorage>>,
   complete: CompleteWrite,

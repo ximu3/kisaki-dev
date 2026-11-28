@@ -57,9 +57,9 @@ flowchart TD
   SHELL["窗口 shell"]
   STATS["features/statistics"]
   LIB["features/library"]
-  DETAILS["domain-ui / entry-details"]
-  PICK["domain-ui / entry-picker"]
-  SUMMARY["domain-ui / entry-summary"]
+  DETAILS["library/entries/details"]
+  PICK["library/entries/picker"]
+  SUMMARY["条目摘要"]
   HOST["通用窗口弹窗宿主"]
   BASEUI["基础 UI"]
   SHELL --> STATS

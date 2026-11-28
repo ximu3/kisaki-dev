@@ -1,17 +1,12 @@
 import { isDeepStrictEqual } from 'node:util'
-import { and, eq, max, sql } from 'drizzle-orm'
+import { and, eq, sql } from 'drizzle-orm'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
-import {
-  parsePartCreate,
-  parsePartUpdate,
-  type PartRef,
-  type PartKindChange,
-  type PartDetails,
-} from '@kisaki3/desktop-contracts/library'
-import { comicVolumeChapters as chapters } from '../../../infrastructure/database/schema'
-import { expectFields, type LibraryWrite, type LibraryDatabase } from '../transaction'
+import { parsePartUpdate, type PartRef } from '@kisaki3/desktop-contracts/library'
+import type { LibraryWrite, LibraryDatabase } from '../transaction'
+import { mergeChapterMemberships } from './comic/merge'
+import { releasePartImages } from './images'
 import { parts } from './tables'
-import { getPart, requirePart, changePart, completePart, insertPart } from './write'
+import { getPart, requirePart, changePart, completePart } from './write'
 
 export function partDependents(db: LibraryDatabase, refs: readonly PartRef[]) {
   return refs.map((ref) => {
@@ -30,6 +25,7 @@ export function partDependents(db: LibraryDatabase, refs: readonly PartRef[]) {
     return { ref, work: part.work, files }
   })
 }
+
 export type PartDependents = ReturnType<typeof partDependents>
 export function verifyDependents(db: LibraryDatabase, expected: PartDependents) {
   if (
@@ -45,79 +41,15 @@ export function verifyDependents(db: LibraryDatabase, expected: PartDependents) 
   }
 }
 
-function releaseImages(write: LibraryWrite, row: PartDetails) {
-  if (row.data.primaryImageId) {
-    write.released.add(row.data.primaryImageId)
-  }
-  const links = parts[row.ref.type].images
-  for (const image of write.db
-    .select({ id: links.attachmentId })
-    .from(links)
-    .where(eq(links.ownerId, row.ref.id))
-    .all()) {
-    write.released.add(image.id)
-  }
-}
-
 export function removePart(write: LibraryWrite, ref: PartRef) {
   const row = requirePart(write.db, ref)
-  releaseImages(write, row)
+  releasePartImages(write, row)
   const schema = parts[ref.type]
   write.db.delete(schema.table).where(eq(schema.table.id, ref.id)).run()
   write.changes.push({ type: 'partDeleted', part: ref, work: row.work } as Extract<
     LibraryWrite['changes'][number],
     { type: 'partCreated' | 'partUpdated' | 'partDeleted' | 'partRecordChanged' }
   >)
-}
-
-export function correctAnimeKind(
-  write: LibraryWrite,
-  ref: PartRef<'animeEpisode' | 'animeExtra'>,
-  input: PartKindChange,
-) {
-  const current = requirePart(write.db, ref)
-  const from = parts[ref.type],
-    to = parts[input.target.kind]
-  expectFields(current.data, input.expected)
-  const data: Record<string, unknown> = {
-    ...current.data,
-    ...input.changes,
-    type: input.target.type,
-  }
-  delete data.numberLabel
-  if (input.target.kind === 'animeEpisode') {
-    data.numberLabel = input.target.numberLabel
-  }
-
-  const firstEvent = write.changes.length
-  if (getPart(write.db, { id: ref.id, type: input.target.kind })) {
-    throw new DesktopError('Conflict', 'The destination kind already contains this identity')
-  }
-  const create = parsePartCreate({
-    type: input.target.kind,
-    work: current.work,
-    data,
-    completed: current.completed,
-  })
-  insertPart(write, create, ref.id, current.createdAt)
-  const links = write.db.select().from(from.files).where(eq(from.files.partId, ref.id)).all()
-  for (const link of links) {
-    write.db.insert(to.files).values(link).run()
-  }
-  write.db.run(
-    sql`update ${from.activity} set ${sql.identifier(from.activityPart.name)}=null,${sql.identifier(to.activityPart.name)}=${ref.id} where ${from.activityPart}=${ref.id}`,
-  )
-  releaseImages(write, current)
-  write.db.delete(from.table).where(eq(from.table.id, ref.id)).run()
-  write.changes.splice(firstEvent)
-  const next = { type: input.target.kind, id: ref.id }
-  write.changes.push({
-    type: 'partKindChanged',
-    fromPart: ref,
-    toPart: next,
-    work: { type: 'anime', id: current.work.id },
-  })
-  return next
 }
 
 export function mergeParts(write: LibraryWrite, source: PartRef, target: PartRef) {
@@ -176,43 +108,13 @@ export function mergeParts(write: LibraryWrite, source: PartRef, target: PartRef
         .run()
     }
   }
-  if (target.type === 'comicVolume') {
-    const sourceRows = db
-      .select()
-      .from(chapters)
-      .where(eq(chapters.volumeId, source.id))
-      .orderBy(chapters.sortOrder, chapters.chapterId)
-      .all()
-    let order =
-      (db
-        .select({ n: max(chapters.sortOrder) })
-        .from(chapters)
-        .where(eq(chapters.volumeId, target.id))
-        .get()!.n ?? -1) + 1
-    for (const row of sourceRows) {
-      if (
-        db
-          .insert(chapters)
-          .values({ ...row, volumeId: target.id, sortOrder: order })
-          .onConflictDoNothing()
-          .run().changes
-      ) {
-        order++
-      }
-    }
-  } else if (target.type === 'comicChapter') {
-    const sourceRows = db.select().from(chapters).where(eq(chapters.chapterId, source.id)).all()
-    for (const row of sourceRows) {
-      db.insert(chapters)
-        .values({ ...row, chapterId: target.id })
-        .onConflictDoNothing()
-        .run()
-    }
+  if (target.type === 'comicVolume' || target.type === 'comicChapter') {
+    mergeChapterMemberships(db, source, { type: target.type, id: target.id })
   }
   db.run(
     sql`update ${schema.activity} set ${sql.identifier(schema.activityPart.name)}=${target.id} where ${schema.activityPart}=${source.id}`,
   )
-  releaseImages(write, old)
+  releasePartImages(write, old)
   db.delete(schema.table).where(eq(schema.table.id, source.id)).run()
   write.changes.push({
     type: 'partMerged',

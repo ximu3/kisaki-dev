@@ -5,7 +5,8 @@ import { ready } from '../../../../infrastructure/database/codecs/json'
 import { parts } from '../../parts/tables'
 import type { LibraryWrite } from '../../transaction'
 import { mediaFiles } from '../tables'
-import { fileRow, directLinks, storeFileFacts, type FileWork, type FileFacts } from './storage'
+import { directLinks } from './associations'
+import { fileRow, storeFileFacts, type FileWork, type FileFacts } from './record'
 
 export function mergeFile(
   write: LibraryWrite,

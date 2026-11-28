@@ -20,8 +20,8 @@ import {
 } from '@kisaki3/desktop-contracts/library'
 import type { MainClient } from '../../../../infrastructure/api'
 import { PageBar } from '../../domain-ui/library/chrome'
-import { EntryPicker } from '../../domain-ui/library/picker'
-import { browseQuery } from '../../domain-ui/library/query'
+import { EntryPicker } from '../../domain-ui/library/entries/picker'
+import { browseQuery } from '../../domain-ui/library/entries/query'
 import type { CardItem } from '../../domain-ui/library/cards'
 import { LibraryPanes } from './pane-width'
 import type { LibraryNavigation, LibraryPage, LibraryVisit } from './navigation'
@@ -29,7 +29,7 @@ import { LibraryExplorer } from './explorer'
 import { Showcase } from './showcase'
 import { BrowseEntries } from './browse'
 import { Organizers } from './organizers'
-import { EntryDetail } from './entry'
+import { EntryPage } from './entry-page'
 
 export function Library(props: {
   api: MainClient
@@ -119,7 +119,7 @@ export function Library(props: {
         return <Showcase api={api} visit={visit} open={openCard} all={all} />
       case 'entry':
         return (
-          <EntryDetail
+          <EntryPage
             visit={visit}
             api={api}
             openOrganizer={(type, id, title) =>

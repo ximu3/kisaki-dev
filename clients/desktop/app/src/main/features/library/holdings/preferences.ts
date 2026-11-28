@@ -11,24 +11,20 @@ import {
   type PlaybackOverrideChange,
   type ReadingOverrideChange,
 } from '@kisaki3/desktop-contracts/preferences'
-import {
-  parseFilePlaybackChoicesUpdate,
-  type FileWorkType,
-  type FilePreferencesByType,
-  type UsagePreferenceTarget,
-  type HoldingsPreferencesApi,
-  type FilePlaybackChoicesApi,
-  type WorkRef,
-  type FilePreferenceChangeByType,
+import type {
+  FileWorkType,
+  FilePreferencesByType,
+  UsagePreferenceTarget,
+  HoldingsPreferencesApi,
+  WorkRef,
+  FilePreferenceChangeByType,
 } from '@kisaki3/desktop-contracts/library'
 import type { StoredValue, CallOptions } from '@kisaki3/desktop-contracts/operations'
 import type { Storage } from '../../../infrastructure/database'
-import { ready } from '../../../infrastructure/database/codecs/json'
 import {
   animePlaybackPreferences,
   comicReadingPreferences,
   novelReadingPreferences,
-  animeFiles,
 } from '../../../infrastructure/database/schema'
 import type { DatabaseCall } from '../../../infrastructure/database/executor'
 import { requireEntry } from '../entries/tables'
@@ -39,14 +35,16 @@ import {
   type LibraryDatabase,
   type LibraryWrite,
 } from '../transaction'
+import { playbackChoiceStorage } from './anime/playback-choices'
 import { mediaFiles } from './tables'
-import { fileChange, fileRow, type FileWork } from './files/storage'
+import { fileChange, fileRow, type FileWork } from './files/record'
 
 const overrides = {
   anime: animePlaybackPreferences,
   comic: comicReadingPreferences,
   novel: novelReadingPreferences,
 }
+
 type Settings = FilePreferencesByType[FileWorkType]
 type Change = PlaybackOverrideChange | ReadingOverrideChange
 function target(raw: UsagePreferenceTarget): UsagePreferenceTarget {
@@ -63,6 +61,7 @@ function target(raw: UsagePreferenceTarget): UsagePreferenceTarget {
   }
   throw new DesktopError('InvalidInput', 'Choose work or file settings')
 }
+
 function get(
   db: LibraryDatabase,
   work: FileWork,
@@ -78,12 +77,14 @@ function get(
       ?.value ?? null
   )
 }
+
 function unpack<T>(value: StoredValue<T>) {
   if (value.status === 'invalid') {
     throw new DesktopError('DataIntegrityError', value.error.message)
   }
   return value.value
 }
+
 function overlay(
   original: Settings,
   change: NonNullable<Extract<Change, { type: 'update' }>['changes']['settings']>,
@@ -97,6 +98,7 @@ function overlay(
   }
   return value
 }
+
 function save(
   current: StoredValue<UsageOverride<Settings>> | null,
   change: Change,
@@ -129,6 +131,7 @@ function save(
       medium === 'anime' ? parseAnimePlaybackPreferences(merged) : parseReadingPreferences(merged),
   }
 }
+
 export function preferenceStorage(storage: Storage) {
   return {
     getHoldingPreferences: (work: FileWork, at: UsagePreferenceTarget) =>
@@ -173,33 +176,10 @@ export function preferenceStorage(storage: Storage) {
         }
         return value
       }),
-    playbackChoices: (id: string, file: string) => {
-      const row = fileRow(storage.db, { type: 'anime', id }, file)
-      return (row as typeof animeFiles.$inferSelect).playbackChoices
-    },
-    updatePlaybackChoices: (
-      id: string,
-      file: string,
-      input: ReturnType<typeof parseFilePlaybackChoicesUpdate>,
-    ) =>
-      commit(storage, (write) => {
-        const work = { type: 'anime' as const, id },
-          row = fileRow(write.db, work, file) as typeof animeFiles.$inferSelect
-        const before = unpack(row.playbackChoices)
-        expectFields(before, input.expected)
-        const after = { ...before, ...input.changes }
-        if (isDeepStrictEqual(before, after)) {
-          return
-        }
-        write.db
-          .update(animeFiles)
-          .set({ playbackChoices: ready(after), updatedAt: write.now })
-          .where(eq(animeFiles.id, file))
-          .run()
-        fileChange(write, work, [file])
-      }),
+    ...playbackChoiceStorage(storage),
   }
 }
+
 export function holdingPreferences(
   call: DatabaseCall<ReturnType<typeof preferenceStorage>>,
   complete: CompleteWrite,
@@ -244,13 +224,6 @@ export function holdingPreferences(
       }
     },
   }
-  const playbackChoices: FilePlaybackChoicesApi = {
-    get: (id, file) => call('playbackChoices', id, file),
-    async update(id, file, raw, options) {
-      options?.signal?.throwIfAborted()
-      complete(await call('updatePlaybackChoices', id, file, parseFilePlaybackChoicesUpdate(raw)))
-    },
-  }
   async function inherited(work: FileWork, at: UsagePreferenceTarget) {
     if (at.type === 'file') {
       const parent = await preferences.get(work, { type: 'work' })
@@ -263,5 +236,5 @@ export function holdingPreferences(
     }
     return defaults(work.type)
   }
-  return { preferences, playbackChoices, inherited }
+  return { preferences, inherited }
 }

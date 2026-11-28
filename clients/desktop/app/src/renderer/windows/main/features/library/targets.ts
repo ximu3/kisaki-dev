@@ -1,7 +1,7 @@
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 import type { MainClient } from '../../../../infrastructure/api'
-import { browseQuery } from '../../domain-ui/library/query'
+import { browseQuery } from '../../domain-ui/library/entries/query'
 import type { LibraryPage } from './navigation'
 
 export async function libraryTarget(

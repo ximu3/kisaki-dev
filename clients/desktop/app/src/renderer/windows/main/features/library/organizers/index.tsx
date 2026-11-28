@@ -6,7 +6,7 @@ import type { CollectionQuery, TagQuery, EntryQuery } from '@kisaki3/desktop-con
 import type { MainClient } from '../../../../../infrastructure/api'
 import { PageBar } from '../../../domain-ui/library/chrome'
 import { readCards, locateCard, CardShelf } from '../../../domain-ui/library/cards'
-import { browseQuery } from '../../../domain-ui/library/query'
+import { browseQuery } from '../../../domain-ui/library/entries/query'
 import { OrganizerEditor, type OrganizerEdit } from './editor'
 
 import { OrganizerManager } from './manager'

@@ -2,12 +2,12 @@ import type { Storage } from '../../infrastructure/database'
 import { entryStorage } from './entries/storage'
 import { completionStorage } from './records/completions/storage'
 import { showcaseStorage } from './showcase/storage'
-import { organizerStorage } from './organizers/catalog'
+import { organizerStorage } from './organizers/storage'
 import { relationStorage } from './relations/storage'
 import { partStorage } from './parts/storage'
 import { activityStorage } from './records/activities/storage'
 import { holdingStorage } from './holdings/storage'
-import { configStorage } from './holdings/game/configurations'
+import { launchConfigStorage } from './holdings/game/configuration/storage'
 import { recognitionStorage } from './holdings/recognition/storage'
 import { relocationStorage } from './holdings/directories/relocate'
 
@@ -33,7 +33,7 @@ export function libraryStorage(storage: Storage) {
     ...activityStorage(storage),
     ...preferenceStorage(storage),
     ...holdingStorage(storage),
-    ...configStorage(storage),
+    ...launchConfigStorage(storage),
     ...recognitionStorage(storage),
     ...relocationStorage(storage),
   }

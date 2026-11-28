@@ -5,7 +5,7 @@ import {
   type ShowcasePreset,
   type ShowcaseSection,
 } from '@kisaki3/desktop-contracts/library'
-import { browseQuery } from '../../../domain-ui/library/query'
+import { browseQuery } from '../../../domain-ui/library/entries/query'
 
 export function initialSection(): ShowcaseFields {
   return {

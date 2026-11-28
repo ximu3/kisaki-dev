@@ -12,7 +12,7 @@ export function PageBar(props: {
   children?: JSX.Element
 }) {
   return (
-    <header class="catalog-bar flex h-12 shrink-0 items-center gap-3 border-b border-border bg-chrome px-4">
+    <header class="flex h-12 shrink-0 items-center gap-3 border-b border-border bg-chrome px-4">
       <div class="flex min-w-0 grow items-center gap-3">
         <Icon path={props.icon} class="size-5 shrink-0" />
         <Show

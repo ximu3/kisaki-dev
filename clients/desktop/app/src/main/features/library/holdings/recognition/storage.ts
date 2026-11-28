@@ -14,8 +14,10 @@ import { ready } from '../../../../infrastructure/database/codecs/json'
 import { commit, expectFields, type LibraryDatabase } from '../../transaction'
 import { orderedIds } from '../../ordering'
 import { profiles, directories } from '../tables'
-import { fileRow, directLinks, editAssociations, type FileWork } from '../files/storage'
-import { candidates, matchParts } from './match'
+import { directLinks, editAssociations } from '../files/associations'
+import { fileRow, type FileWork } from '../files/record'
+import { matchParts } from './match'
+import { candidates } from './candidates'
 
 export function recognitionInput(db: LibraryDatabase, work: FileWork, id: string) {
   const row = fileRow(db, work, id),
@@ -41,15 +43,18 @@ export function recognitionInput(db: LibraryDatabase, work: FileWork, id: string
     roots,
   }
 }
+
 export function partSet(refs: readonly { type: string; id: string }[]) {
   return new Set(refs.map((ref) => JSON.stringify([ref.type, ref.id])))
 }
+
 export interface RecognitionPlan {
   baseline: ReturnType<typeof recognitionInput>
   profileId: string | null
   definition: FileRecognitionDefinition | null
   result: FileRecognitionResult
 }
+
 type Fields = FileRecognitionProfileFields<FileWorkType>
 export function recognitionStorage(storage: Storage) {
   return {

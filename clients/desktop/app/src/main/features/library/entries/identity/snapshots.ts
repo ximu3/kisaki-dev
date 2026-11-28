@@ -7,7 +7,7 @@ import {
 } from '@kisaki3/desktop-contracts/library'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import * as s from '../../../../infrastructure/database/schema'
-import type { UseTarget } from '../../../../infrastructure/use-targets'
+import type { UseTarget } from '../../change-admission'
 import { readIdentities } from '../identities'
 import { catalogTables, entryWhere, activityTables } from '../tables'
 import { imageIds } from '../../attachments'

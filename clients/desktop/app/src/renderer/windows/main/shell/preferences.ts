@@ -1,4 +1,4 @@
-import { createPreferencesQuery } from '../domain-ui/preferences-query'
+import { createPreferencesQuery } from '../domain-ui/preferences/query'
 import { createEffect } from 'solid-js'
 import type { PreferencesUpdate } from '@kisaki3/desktop-contracts/preferences'
 import type { MainClient } from '../../../infrastructure/api'

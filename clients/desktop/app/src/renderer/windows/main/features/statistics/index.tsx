@@ -25,7 +25,7 @@ import type { MainClient } from '../../../../infrastructure/api'
 import { errorMessage } from '../../../../infrastructure/notifications'
 import { PageBar } from '../../domain-ui/library/chrome'
 import { libraryRead } from '../../domain-ui/library/read'
-import { Activities } from '../library/records/activities'
+import { Activities } from '../../domain-ui/library/activities'
 import { periodRange, shift, dayValue, type Period } from './period'
 
 export function Statistics(props: { api: MainClient; openWork: (ref: WorkRef) => void }) {

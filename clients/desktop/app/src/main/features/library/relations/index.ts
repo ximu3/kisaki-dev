@@ -4,7 +4,7 @@ import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type { DatabaseCall } from '../../../infrastructure/database/executor'
 import type { CompleteWrite } from '../transaction'
 import { readScope, type relationStorage } from './storage'
-import { relationTables, type RelationKind } from './facts'
+import { relationTables, type RelationKind, type Relation } from './facts'
 
 export function relationKind(value: unknown): RelationKind {
   if (typeof value !== 'string' || !Object.hasOwn(relationTables, value)) {
@@ -12,7 +12,7 @@ export function relationKind(value: unknown): RelationKind {
   }
   return value as RelationKind
 }
-import type { Relation } from './facts'
+
 export function createRelations(
   call: DatabaseCall<ReturnType<typeof relationStorage>>,
   sensitive: () => boolean,

@@ -1,4 +1,3 @@
-import * as v from 'valibot'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
   parseFileCreateFields,
@@ -21,20 +20,22 @@ import {
   type CallOptions,
   type ListResult,
 } from '@kisaki3/desktop-contracts/operations'
+import * as v from 'valibot'
 import type { NativeFiles } from '#native'
 import type { DatabaseCall } from '../../../../infrastructure/database/executor'
 import { normalizeAbsolutePath } from '../../../../infrastructure/files'
 import { registeredRelation } from '../../../../infrastructure/files/registered-path'
 import { inspectVideo } from '../../../../infrastructure/media/inspect'
-import type { ChangeAdmission } from '../../../../infrastructure/use-targets'
+import type { ChangeAdmission } from '../../change-admission'
 import type { CompleteWrite } from '../../transaction'
 import { fileWork, callSignal } from '../work'
-import type { registration } from '../registration'
-import { inspectTarget } from '../registration'
+import type { createRegistration } from '../registration/queue'
 import type { createRecognition } from '../recognition'
-import { existingPosition } from '../positions'
-import type { createFileRelocation } from './relocate'
+import { existingPosition } from '../paths'
 import type { holdingStorage } from '../storage'
+import { inspectTarget } from './inspect'
+import type { createFileRelocation } from './relocate'
+
 export function createFiles(
   call: DatabaseCall<ReturnType<typeof holdingStorage>>,
   native: NativeFiles,
@@ -42,7 +43,7 @@ export function createFiles(
   sensitive: () => boolean,
   complete: CompleteWrite,
   admit: ChangeAdmission,
-  register: ReturnType<typeof registration>,
+  register: ReturnType<typeof createRegistration>,
   recognition: ReturnType<typeof createRecognition>,
   relocateFile: ReturnType<typeof createFileRelocation>,
   playbackChoices: FilePlaybackChoicesApi,

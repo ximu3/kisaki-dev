@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { isDeepStrictEqual } from 'node:util'
-import { and, eq, max } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 import {
   partWorkType,
   type PartRef,
@@ -13,6 +13,10 @@ import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import { checkImages, imageIds, inlineImages } from '../attachments'
 import { requireEntry } from '../entries/tables'
 import { expectFields, type LibraryDatabase, type LibraryWrite } from '../transaction'
+import { newPartRow } from './creation'
+import { insertNovelPart } from './novel'
+import { insertComicPart } from './comic/parts'
+import { insertAnimePart } from './anime/parts'
 import { parts } from './tables'
 
 export function getPart(db: LibraryDatabase, ref: PartRef): PartDetails | null {
@@ -46,6 +50,7 @@ export function getPart(db: LibraryDatabase, ref: PartRef): PartDetails | null {
     updatedAt: row.updatedAt,
   } as PartDetails
 }
+
 export function requirePart(db: LibraryDatabase, ref: PartRef) {
   const row = getPart(db, ref)
   if (!row) {
@@ -53,6 +58,7 @@ export function requirePart(db: LibraryDatabase, ref: PartRef) {
   }
   return row
 }
+
 function identitiesFor(write: LibraryWrite, ref: PartRef, values: readonly ExternalIdentity[]) {
   const table = parts[ref.type].identities
   const known = write.db.select().from(table).where(eq(table.ownerId, ref.id)).all()
@@ -82,6 +88,7 @@ function identitiesFor(write: LibraryWrite, ref: PartRef, values: readonly Exter
     }
   }
 }
+
 function markdownImages(write: LibraryWrite, ref: PartRef, text: string | null) {
   const table = parts[ref.type].images
   const taken = new Set(inlineImages(text))
@@ -99,6 +106,7 @@ function markdownImages(write: LibraryWrite, ref: PartRef, text: string | null) 
     write.db.insert(table).values({ ownerId: ref.id, attachmentId: id }).run()
   }
 }
+
 export function completePart(write: LibraryWrite, ref: PartRef, completed: boolean) {
   const part = requirePart(write.db, ref)
   if (part.completed === completed) {
@@ -126,42 +134,18 @@ export function insertPart(
   checkImages(write.db, imageIds(input.data))
   const ref = { type: input.type, id }
   const schema = parts[input.type]
-  const maximum = write.db
-    .select({ n: max(schema.table.sortOrder) })
-    .from(schema.table)
-    .where(eq(schema.owner, input.work.id))
-    .get()!.n
-  const common = { id, sortOrder: (maximum ?? -1) + 1, createdAt, updatedAt: write.now }
+  const common = newPartRow(write, schema, input.work.id, id, createdAt)
   switch (input.type) {
     case 'animeEpisode':
-      write.db
-        .insert(parts.animeEpisode.table)
-        .values({ ...common, ...input.data, animeId: input.work.id })
-        .run()
-      break
     case 'animeExtra':
-      write.db
-        .insert(parts.animeExtra.table)
-        .values({ ...common, ...input.data, animeId: input.work.id })
-        .run()
+      insertAnimePart(write.db, input, common)
       break
     case 'comicChapter':
-      write.db
-        .insert(parts.comicChapter.table)
-        .values({ ...common, ...input.data, comicId: input.work.id })
-        .run()
-      break
     case 'comicVolume':
-      write.db
-        .insert(parts.comicVolume.table)
-        .values({ ...common, ...input.data, comicId: input.work.id })
-        .run()
+      insertComicPart(write.db, input, common)
       break
     case 'novelVolume':
-      write.db
-        .insert(parts.novelVolume.table)
-        .values({ ...common, ...input.data, novelId: input.work.id })
-        .run()
+      insertNovelPart(write.db, input, common)
       break
   }
   if (input.data.externalIdentities) {

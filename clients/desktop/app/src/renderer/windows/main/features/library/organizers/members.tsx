@@ -25,7 +25,7 @@ import { EditorDialog } from '../../../../../infrastructure/dialogs/editor'
 import type { EditorGuard } from '../../../../../infrastructure/dialogs/closing'
 import { errorMessage, reportError } from '../../../../../infrastructure/notifications'
 import { libraryRead } from '../../../domain-ui/library/read'
-import { EntryPicker } from '../../../domain-ui/library/picker'
+import { EntryPicker } from '../../../domain-ui/library/entries/picker'
 type Member = CollectionMember | TagEntry
 interface Owner {
   kind: 'tag' | 'collection'

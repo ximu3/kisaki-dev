@@ -10,7 +10,7 @@ import {
 import { loadNative } from '#native'
 import { initializeDatabase } from '../../../src/main/infrastructure/database'
 import type { DatabaseCall } from '../../../src/main/infrastructure/database/executor'
-import { entryTagsInOrder } from '../../../src/main/features/library/organizers/entry-memberships'
+import { entryTagsInOrder } from '../../../src/main/features/library/organizers/tags/applications'
 import { libraryStorage } from '../../../src/main/features/library/storage'
 import { graphIds, references } from '../../../src/main/features/library/graph/references'
 import { prepareRegistrations } from '../../../src/main/features/library/graph/holdings'

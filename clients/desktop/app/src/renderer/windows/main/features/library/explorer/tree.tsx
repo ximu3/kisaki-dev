@@ -1,6 +1,6 @@
 import { createEffect, createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
 import { Menu, MenuTrigger, MenuContent } from '@kisaki3/desktop-ui/menu'
-import { createEntryActions } from '../../../domain-ui/library/entry-actions'
+import { createEntryActions } from '../../../domain-ui/library/entries/actions'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { Icon } from '@kisaki3/desktop-ui/icon'
 import { VirtualRow, createVirtualizer } from '@kisaki3/desktop-ui/virtualization'
@@ -24,9 +24,9 @@ import { createViewQuery } from '../../../../../infrastructure/query'
 import { libraryRead } from '../../../domain-ui/library/read'
 import { catalogIcon } from '../../../domain-ui/library/icons'
 import { LibraryImage } from '../../../domain-ui/library/image'
-import { browseQuery, selectedTypes } from '../../../domain-ui/library/query'
+import { browseQuery, selectedTypes } from '../../../domain-ui/library/entries/query'
 import type { LibraryNavigation } from '../navigation'
-import type { createEntrySelection } from '../../../domain-ui/library/selection'
+import type { createEntrySelection } from '../../../domain-ui/library/entries/selection'
 
 const groupId = (group: EntryGroupKey) => (group.type === 'collection' ? group.id : null)
 interface Segment {
@@ -390,7 +390,7 @@ export function ExplorerTree(props: {
                               >
                                 <button
                                   type="button"
-                                  class="catalog-row"
+                                  class="flex h-6 w-full cursor-pointer items-center gap-1.5 rounded-e-md ps-4 pe-2 text-start text-xs text-muted-foreground hover:bg-accent/70 hover:text-foreground [&[data-selected=true]:not([aria-current=true])]:text-foreground aria-[current=true]:bg-accent aria-[current=true]:text-accent-foreground aria-[current=true]:shadow-raised focus-visible:outline focus-visible:outline-1 focus-visible:-outline-offset-1 focus-visible:outline-ring"
                                   aria-current={
                                     currentInstance(entry(), segment().group.key)
                                       ? 'true'

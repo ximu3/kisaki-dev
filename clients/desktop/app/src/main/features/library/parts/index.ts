@@ -7,6 +7,12 @@ import {
   parsePartKindChange,
   parseMoveInput,
   parseReorderInput,
+  type PartRef,
+  type PartDetails,
+  type PartQuery,
+  type PartType,
+  type PartCreate,
+  type PartsApi,
 } from '@kisaki3/desktop-contracts/library'
 import {
   parseListOptions,
@@ -17,19 +23,11 @@ import type { DatabaseCall } from '../../../infrastructure/database/executor'
 import type { createAttachments } from '../../../infrastructure/attachments'
 import type { CompleteWrite } from '../transaction'
 import { imageIds, prepareImages } from '../attachments'
+import type { ChangeAdmission, UseTarget } from '../change-admission'
 import type { partStorage } from './storage'
-import { volumeChapters } from './volume-chapters'
-import type { ChangeAdmission } from '../../../infrastructure/use-targets'
+import { volumeChapters } from './comic/volume-chapters'
 import type { PartDependents } from './identity'
-import type {
-  PartRef,
-  PartDetails,
-  PartQuery,
-  PartType,
-  PartCreate,
-  PartsApi,
-} from '@kisaki3/desktop-contracts/library'
-import type { UseTarget } from '../../../infrastructure/use-targets'
+
 export function createParts(
   call: DatabaseCall<ReturnType<typeof partStorage>>,
   attachments: ReturnType<typeof createAttachments>,

@@ -32,6 +32,10 @@ test('recognition preserves episode precision, extra titles and reading scopes f
       volume: { number: '02' },
     },
   ])
+  expect(builtin('comic', 'Vol.2 Ch.01', 'Vol.02/Vol.2 Ch.01.cbz')).toEqual(
+    builtin('comic', 'Vol.2 Ch.01', 'Vol.2/Vol.2 Ch.01.cbz'),
+  )
+  expect(() => builtin('comic', 'Vol.2 Ch.01', 'Vol.3/Vol.2 Ch.01.cbz')).toThrow()
   expect(builtin('comic', 'c012 (v02)')).toEqual([
     { kind: 'chapter', numberBasis: 'work', number: { kind: 'single', value: '012' } },
   ])

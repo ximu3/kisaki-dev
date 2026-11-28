@@ -7,7 +7,7 @@ import {
 import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
 import type { NativeFiles } from '#native'
 import type { DatabaseCall } from '../../../../infrastructure/database/executor'
-import type { ChangeAdmission } from '../../../../infrastructure/use-targets'
+import type { ChangeAdmission } from '../../change-admission'
 import type { CompleteWrite } from '../../transaction'
 import type { holdingStorage } from '../../holdings/storage'
 import type { identityStorage } from './storage'

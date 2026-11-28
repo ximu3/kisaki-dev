@@ -4,7 +4,7 @@ import {
   collectionMembers as collections,
   noteEntryLinks as notes,
 } from '../../../../infrastructure/database/schema'
-import { editEntryTags, entryTagsInOrder } from '../../organizers/entry-memberships'
+import { editEntryTags, entryTagsInOrder } from '../../organizers/tags/applications'
 import type { LibraryWrite } from '../../transaction'
 import { mergeText } from './fields'
 export function mergeMembers(write: LibraryWrite, source: EntryRef, target: EntryRef) {

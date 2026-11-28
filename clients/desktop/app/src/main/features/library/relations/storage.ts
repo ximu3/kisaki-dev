@@ -1,3 +1,4 @@
+import { isDeepStrictEqual } from 'node:util'
 import { sql } from 'drizzle-orm'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
@@ -8,32 +9,26 @@ import {
   type MoveInput,
 } from '@kisaki3/desktop-contracts/library'
 import type { ListOptions } from '@kisaki3/desktop-contracts/operations'
-import { isDeepStrictEqual } from 'node:util'
 import type { Storage } from '../../../infrastructure/database'
 import { commit, type LibraryDatabase } from '../transaction'
 import { requireEntry } from '../entries/tables'
-import { binding, readFact, relationTables, type RelationKind } from './facts'
+import { families, binding, readFact, relationTables, type RelationKind } from './facts'
 import { createRelation, editRelation, removeRelation } from './write'
 
-const sides = {
-  workCharacter: ['work', 'character'],
-  personWork: ['work', 'person', 'character'],
-  organizationWork: ['work', 'organization'],
-  workRelation: ['from', 'to'],
-} as const
 type Side = 'work' | 'person' | 'character' | 'organization' | 'from' | 'to'
 export interface RelationScope {
   kind: RelationKind
   side: Side
   entry: EntryRef
 }
+
 export function readScope(kind: RelationKind, raw: unknown): RelationScope {
   if (
     !raw ||
     typeof raw !== 'object' ||
     !('side' in raw) ||
     typeof raw.side !== 'string' ||
-    !(sides[kind] as readonly string[]).includes(raw.side) ||
+    !(families[kind].sides as readonly string[]).includes(raw.side) ||
     Object.keys(raw).length !== 2
   ) {
     throw new DesktopError('InvalidInput', 'Invalid relationship scope')
@@ -52,7 +47,7 @@ function visibility(kind: RelationKind, sensitive: boolean, spoilers: boolean) {
     clauses.push(sql`not l.is_spoiler`)
   }
   if (!sensitive) {
-    for (const side of sides[kind]) {
+    for (const side of families[kind].sides) {
       const id = sql`l.${sql.identifier(side + '_id')}`
       clauses.push(
         sql`not exists(select 1 from entries other where other.id=${id} and other.is_nsfw)`,
@@ -74,6 +69,7 @@ function sideRows(scope: RelationScope) {
     position: sql.identifier('order_in_' + scope.side),
   }
 }
+
 export function listFacts(
   db: LibraryDatabase,
   scope: RelationScope,

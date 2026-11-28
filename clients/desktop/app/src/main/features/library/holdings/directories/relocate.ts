@@ -6,47 +6,36 @@ import {
   parseDirectoryRelocationInput,
   parseWorkRef,
   type WorkRef,
-  type GameLaunchDefinition,
-  type FilePlaybackChoices,
   type HoldingsRelocationResult,
   type RelocatedPathTarget,
 } from '@kisaki3/desktop-contracts/library'
-import { gameLaunchConfigs, animeFiles } from '../../../../infrastructure/database/schema'
-import { ready } from '../../../../infrastructure/database/codecs/json'
+import type { NativeFiles } from '#native'
+import { prepareSubtitleMoves, applySubtitleMoves, type SubtitleMove } from '../anime/subtitles'
+import { prepareConfigMoves, applyConfigMoves, type ConfigMove } from '../game/configuration/paths'
 import type { Storage } from '../../../../infrastructure/database'
 import type { DatabaseCall } from '../../../../infrastructure/database/executor'
 import { normalizeAbsolutePath } from '../../../../infrastructure/files'
 import { suffixBelow } from '../../../../infrastructure/files/registered-path'
-import type { NativeFiles } from '#native'
-import type { ChangeAdmission, UseTarget } from '../../../../infrastructure/use-targets'
+import type { ChangeAdmission, UseTarget } from '../../change-admission'
 import { commit, type CompleteWrite } from '../../transaction'
 import { directories } from '../tables'
-import { expectPositions, existingPosition, type Position } from '../positions'
-import { moveFile, type holdingStorage } from '../storage'
-import { fileChange, type FileFacts } from '../files/storage'
-import { inspectTarget } from '../registration'
-import { fileError } from '../discover'
+import { expectPositions, existingPosition, type Position } from '../paths'
+import type { holdingStorage } from '../storage'
+import { moveFile } from '../files/storage'
+import type { FileFacts } from '../files/record'
+import { inspectTarget } from '../files/inspect'
+import { fileError } from '../files/error'
 import { relocationStatus } from '../files/relocate'
-import type { configStorage } from '../game/configurations'
+import type { launchConfigStorage } from '../game/configuration/storage'
 
-type ConfigField = Extract<RelocatedPathTarget, { type: 'launchConfig' }>['field']
 type FileMove = { id: string; from: string; to: string; facts: FileFacts }
-interface ConfigMove {
-  id: string
-  field: ConfigField
-  from: string
-  to: string
-}
-interface SubtitleMove {
-  id: string
-  from: string
-  to: string
-}
+
 interface RootMove {
   id: string
   from: string
   to: string
 }
+
 interface PreparedMove {
   root: RootMove
   baseline: readonly Position[]
@@ -54,48 +43,9 @@ interface PreparedMove {
   configs: ConfigMove[]
   subtitles: SubtitleMove[]
 }
+
 type PlanIssue = HoldingsRelocationResult['issues'][number]
 type Applied = HoldingsRelocationResult['updated'][number]
-function configPath(def: GameLaunchDefinition, key: ConfigField) {
-  switch (key) {
-    case 'launchPath':
-      return def.launch.type === 'file' ? { path: def.launch.path, kind: 'file' as const } : null
-    case 'workingDirectory':
-      return def.launch.type === 'command'
-        ? { path: def.launch.workingDirectory, kind: 'directory' as const }
-        : null
-    case 'monitorPath':
-      return def.monitor.type !== 'process'
-        ? { path: def.monitor.path, kind: def.monitor.type }
-        : null
-    case 'savePath':
-      return { path: def.savePath, kind: 'either' as const }
-  }
-}
-function setConfigPath(def: GameLaunchDefinition, change: ConfigMove): GameLaunchDefinition {
-  const previous = configPath(def, change.field)
-  if (previous?.path !== change.from) {
-    throw new DesktopError('Conflict', 'A selected configuration path changed')
-  }
-  switch (change.field) {
-    case 'launchPath':
-      return { ...def, launch: { type: 'file', path: change.to } }
-    case 'workingDirectory': {
-      if (def.launch.type !== 'command') {
-        throw new DesktopError('Conflict', 'The launch method changed')
-      }
-      return { ...def, launch: { ...def.launch, workingDirectory: change.to } }
-    }
-    case 'monitorPath': {
-      if (def.monitor.type === 'process') {
-        throw new DesktopError('Conflict', 'The monitor changed')
-      }
-      return { ...def, monitor: { ...def.monitor, path: change.to } }
-    }
-    case 'savePath':
-      return { ...def, savePath: change.to }
-  }
-}
 export function relocationStorage(storage: Storage) {
   return {
     applyDirectoryMove: (work: WorkRef, plan: PreparedMove) =>
@@ -132,64 +82,10 @@ export function relocationStorage(storage: Storage) {
           }
         }
         if (work.type === 'game') {
-          const ids = new Set<string>()
-          for (const change of plan.configs) {
-            const where = and(
-              eq(gameLaunchConfigs.id, change.id),
-              eq(gameLaunchConfigs.gameId, work.id),
-            )
-            const row = write.db
-              .select({ definition: gameLaunchConfigs.definition })
-              .from(gameLaunchConfigs)
-              .where(where)
-              .get()
-            if (row?.definition.status !== 'ready') {
-              throw new DesktopError('Conflict', 'A selected configuration is no longer available')
-            }
-            write.db
-              .update(gameLaunchConfigs)
-              .set({
-                definition: ready(setConfigPath(row.definition.value, change)),
-                updatedAt: write.now,
-              })
-              .where(where)
-              .run()
-            ids.add(change.id)
-          }
-          if (ids.size) {
-            write.changes.push({
-              type: 'holdingsChanged',
-              work: { type: 'game', id: work.id },
-              launchConfigIds: [...ids],
-            })
-          }
+          applyConfigMoves(write, work.id, plan.configs)
         }
         if (work.type === 'anime') {
-          for (const change of plan.subtitles) {
-            const where = and(eq(animeFiles.id, change.id), eq(animeFiles.animeId, work.id))
-            const row = write.db
-              .select({ choices: animeFiles.playbackChoices })
-              .from(animeFiles)
-              .where(where)
-              .get()
-            if (row?.choices.status !== 'ready') {
-              throw new DesktopError('Conflict', 'The saved subtitle choice changed')
-            }
-            const choice = row.choices.value.subtitleTrack
-            if (choice?.type !== 'external' || choice.path !== change.from) {
-              throw new DesktopError('Conflict', 'The saved subtitle path changed')
-            }
-            const next: FilePlaybackChoices = {
-              ...row.choices.value,
-              subtitleTrack: { ...choice, path: change.to },
-            }
-            write.db
-              .update(animeFiles)
-              .set({ playbackChoices: ready(next), updatedAt: write.now })
-              .where(where)
-              .run()
-            fileChange(write, { type: 'anime', id: work.id }, [change.id])
-          }
+          applySubtitleMoves(write, work.id, plan.subtitles)
         }
       }),
   }
@@ -198,7 +94,7 @@ export function relocationStorage(storage: Storage) {
 export function createDirectoryRelocation(
   call: DatabaseCall<
     ReturnType<typeof holdingStorage> &
-      ReturnType<typeof configStorage> &
+      ReturnType<typeof launchConfigStorage> &
       ReturnType<typeof relocationStorage>
   >,
   complete: CompleteWrite,
@@ -340,78 +236,40 @@ export function createDirectoryRelocation(
       } while (rejected)
     }
     if (work.type === 'game') {
-      const requested = new Set<string>()
-      for (const selection of request.gameConfigFields ?? []) {
-        const config = await call('getGameConfig', work.id, selection.launchConfigId, true)
-        if (config?.definition.status !== 'ready') {
-          throw new DesktopError(
-            'InvalidReference',
-            'A selected launch configuration cannot be read',
-          )
-        }
-        for (const field of selection.fields) {
-          const target = { type: 'launchConfig' as const, id: config.id, field }
-          const key = JSON.stringify(target)
-          if (requested.has(key)) {
-            continue
-          }
-          requested.add(key)
-          const original = configPath(config.definition.value, field)
-          if (!original?.path) {
-            throw new DesktopError(
-              'InvalidInput',
-              'The requested configuration field has no saved file path',
-            )
-          }
-          try {
-            const to = await verified(original.path, original.kind)
-            if (to) {
-              plan.configs.push({ id: config.id, field, from: original.path, to })
-            }
-          } catch (cause) {
-            issue(target, original.path, cause)
-          }
-        }
-      }
+      plan.configs = await prepareConfigMoves(
+        call,
+        work.id,
+        request.gameConfigFields ?? [],
+        verified,
+        issue,
+      )
     }
     if (work.type === 'anime') {
-      const selected = new Set<string>()
-      for (const selection of request.subtitlePaths ?? []) {
-        const file = await call(
-          'readWorkFile',
-          { type: 'anime', id: work.id },
-          selection.fileId,
-          true,
-        )
-        if (!file || !('playbackChoices' in file) || file.playbackChoices.status !== 'ready') {
-          throw new DesktopError('InvalidReference', 'The selected subtitle file is unavailable')
-        }
-        for (const original of selection.paths) {
-          const choice = file.playbackChoices.value.subtitleTrack
-          if (choice?.type !== 'external' || choice.path !== original) {
-            throw new DesktopError('Conflict', 'The chosen path is no longer the saved subtitle')
-          }
-          if (selected.has(file.id)) {
-            continue
-          }
-          selected.add(file.id)
-          try {
-            const to = await verified(original, 'file')
-            if (to) {
-              plan.subtitles.push({ id: file.id, from: original, to })
-            }
-          } catch (cause) {
-            issue({ type: 'subtitle', fileId: file.id, path: original }, original, cause)
-          }
-        }
-      }
+      plan.subtitles = await prepareSubtitleMoves(
+        call,
+        work.id,
+        request.subtitlePaths ?? [],
+        verified,
+        issue,
+      )
     }
     signal.throwIfAborted()
-    const uses: UseTarget[] = [
-      ...plan.files.map((f) => ({ type: 'file' as const, kind: work.type, id: f.id })),
-      ...plan.subtitles.map((f) => ({ type: 'file' as const, kind: 'anime', id: f.id })),
-      ...plan.configs.map((c) => ({ type: 'configuration' as const, kind: 'game', id: c.id })),
-    ]
+    const kind = work.type
+    const uses: UseTarget[] =
+      kind === 'game'
+        ? plan.configs.map((config) => ({ type: 'configuration', kind: 'game', id: config.id }))
+        : [
+            ...plan.files.map<UseTarget>((file) => ({
+              type: 'file',
+              kind,
+              id: file.id,
+            })),
+            ...plan.subtitles.map<UseTarget>((file) => ({
+              type: 'file',
+              kind: 'anime',
+              id: file.id,
+            })),
+          ]
     complete(await admit(uses, () => call('applyDirectoryMove', work, plan)))
     if (path !== old.path) {
       updated.push({ target: { type: 'directory', id }, from: old.path, to: path })

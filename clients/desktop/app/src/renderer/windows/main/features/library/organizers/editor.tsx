@@ -20,8 +20,8 @@ import {
 import type { MainClient } from '../../../../../infrastructure/api'
 import { EditorDialog } from '../../../../../infrastructure/dialogs/editor'
 import type { EditorGuard } from '../../../../../infrastructure/dialogs/closing'
-import { EntryPicker } from '../../../domain-ui/library/picker'
-import { RuleGroups } from '../../../domain-ui/library/filters/rules'
+import { EntryPicker } from '../../../domain-ui/library/entries/picker'
+import { RuleGroups } from '../../../domain-ui/library/entries/filters/rules'
 
 export interface OrganizerEdit {
   kind: 'collection' | 'tag'

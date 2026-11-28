@@ -10,7 +10,7 @@ import { parseDirectoryCreateFields, type DirectoryCreateFields } from '../holdi
 import {
   parseGameLaunchConfigCreate,
   type GameLaunchConfigCreate,
-} from '../holdings/game-configuration'
+} from '../holdings/launch-configs'
 
 export type GraphFileCreate<T extends FileWorkType> = Omit<FileCreateFields<T>, 'associations'> & {
   readonly associations?: readonly {

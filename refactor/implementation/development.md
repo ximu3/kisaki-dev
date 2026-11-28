@@ -48,11 +48,13 @@ desktop-localization 的英语 ICU 源文位于 src/en，按领域维护并由 i
 
 正式程序位于 `clients/desktop/app/src`。main 装配数据库 worker、任务、偏好、外观及资源。四类窗口各有独立文档和沙箱 preload，通过已绑定的 MessagePort 接入 desktop-rpc，并分别装配样式与 Toaster。
 
-主窗口的 `shell/root.tsx` 装配标题栏、侧栏、主内容区与窗口级 Dialog。菜单和系统入口共用 `shell/navigation`。主窗口的 `infrastructure/navigation.ts` 定义导航与场景共用的弹窗合同。切换目标时先协调当前草稿，目标实际呈现后再释放原视图；失败或取消时保留原视图。`features` 各自呈现管理 Dialog，维护本次查询、草稿与提交。偏好中的主题库、字体库由偏好视图直接打开。侧栏重排立即更新导航偏好，偏好表单中的重排随草稿保存。两个入口共用 `domain-ui/navigation` 的排序控件。资料库位于 `windows/main/features/library`，展示柜与资料浏览共用区块查询、卡片和定位。统计位于 `windows/main/features/statistics`，通过活动和完成记录接口读取范围，按原查询下钻。
+主窗口的 `shell/root.tsx` 装配标题栏、侧栏、主内容区与窗口级 Dialog。菜单和系统入口共用 `shell/navigation`。主窗口的 `infrastructure/navigation.ts` 定义导航与场景共用的弹窗合同。切换目标时先协调当前草稿，目标实际呈现后再释放原视图；失败或取消时保留原视图。`features` 各自呈现管理 Dialog，维护本次查询、草稿与提交。偏好中的主题库、字体库由偏好视图直接打开。侧栏重排立即更新导航偏好，偏好表单中的重排随草稿保存。两个入口共用 `domain-ui/navigation` 的排序控件。资料库位于 `windows/main/features/library`，展示柜与资料浏览共用区块查询、卡片和定位。统计位于 `windows/main/features/statistics`，通过活动和完成记录接口读取范围，与资料库详情复用 `domain-ui/library/activities` 的活动列表和编辑器。
 
-本地资料库的公开操作由 `main/features/library` 装配。图写入、条目身份变更及持有操作在事务外准备资源和文件事实，数据库 worker 在短事务中核对归属、基线与实际引用后写入。文件识别的正则只在专用 worker 中运行；资料变更事实与功能读取失效分别交付。主窗口通过 `main/app/window/methods/library` 使用私有窗口合同。目录监听和定时回退在应用关闭时随持有域结束。[本地验证场景](../verification/evidence/w09/README.md)
+条目详情的页面入口是 `features/library/entry-page.tsx`，负责返回位置、持有面板与个人记录的接入。主窗口的 `domain-ui/library/entries/details` 拥有详情查询、摘要、概览与字段编辑入口，同一 `entries` 目录中的 `picker.tsx` 和 `fields.ts` 分别拥有选择器和共用字段表现。
 
-renderer 的 `createViewQuery` 为独立区块提供读取结果、IPC 取消和尾随刷新。`domain-ui/preferences-query.ts` 为视图接入偏好变更通知和写入回包。整块内容一起就绪的视图可直接组合 Solid 的异步计算、加载和错误边界。见[局部查询](../design/ui/state.md#queries)。
+本地资料库的公开操作由 `main/features/library` 装配。合集和标签的专属操作与存储分别归 `organizers/collections`、`organizers/tags`。游戏启动配置归 `holdings/game/configuration`。目录重定位由 `holdings/directories/relocate.ts` 持有事务，游戏配置和动画字幕在各自模块准备并写入所选映射。识别由各媒介解释与匹配；刷新与监听归 `holdings/maintenance`。分部的动画种类更正和漫画卷话收录分别归 `parts/anime`、`parts/comic`。四类资料关系各自维护端点、写入和顺序规则。会话域的 `sessions/registry.ts` 负责活跃使用、待保存引用及排他修改，app 将 `library/change-admission.ts` 定义的修改回调注入资料库。图写入、条目身份变更及持有操作在事务外准备资源和文件事实，数据库 worker 在短事务中核对归属、基线与实际引用后写入。文件识别的正则只在专用 worker 中运行；资料变更事实与功能读取失效分别交付。主窗口通过 `main/app/window/methods/library` 使用私有窗口合同。目录监听和定时回退在应用关闭时随持有域结束。[本地验证场景](../verification/evidence/w09/README.md)
+
+renderer 的 `createViewQuery` 为独立区块提供读取结果、IPC 取消和尾随刷新。`domain-ui/preferences/query.ts` 为视图接入偏好变更通知和写入回包。该目录的字段、播放和阅读设置控件供全局偏好与作品、文件设置共用，各入口持有自己的草稿和保存操作。整块内容一起就绪的视图可直接组合 Solid 的异步计算、加载和错误边界。见[局部查询](../design/ui/state.md#queries)。
 
 应用通过数据库执行线程打开当前基线、读取偏好、采用生效语言并保持连接至退出。存储性能用例通过 Playwright 在 Electron 主进程中启动独立编译的测量 worker。worker 返回完整报告并正常退出后，用例将报告保存为附件。执行失败时，原始错误传回用例。
 

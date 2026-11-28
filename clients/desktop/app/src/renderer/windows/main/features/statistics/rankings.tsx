@@ -10,7 +10,7 @@ import {
 import type { MainClient } from '../../../../infrastructure/api'
 import { libraryRead } from '../../domain-ui/library/read'
 import { LibraryImage } from '../../domain-ui/library/image'
-import { browseQuery } from '../../domain-ui/library/query'
+import { browseQuery } from '../../domain-ui/library/entries/query'
 import { catalogIcon } from '../../domain-ui/library/icons'
 import { errorMessage } from '../../../../infrastructure/notifications'
 import type { WorkLabels } from './hero'

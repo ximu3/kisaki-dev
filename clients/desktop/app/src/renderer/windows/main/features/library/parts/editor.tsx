@@ -1,3 +1,4 @@
+import type { PartialDate } from '@kisaki3/desktop-contracts/date'
 import { createSignal, For, Show } from 'solid-js'
 import { dequal } from 'dequal'
 import { Button } from '@kisaki3/desktop-ui/button'
@@ -22,8 +23,8 @@ import type { MainClient } from '../../../../../infrastructure/api'
 import type { EditorGuard } from '../../../../../infrastructure/dialogs/closing'
 import { createImageDraft } from '../../../domain-ui/library/images/draft'
 import { ImageField, MarkdownField } from '../../../domain-ui/library/images/fields'
-import { LinkFields, IdentityFields } from '../../../domain-ui/library/entry-editor/references'
-import { DateParts } from '../../../domain-ui/library/filters/controls'
+import { LinkFields, IdentityFields } from '../../../domain-ui/library/fields/references'
+import { DateParts } from '../../../domain-ui/library/fields/date-parts'
 export interface PartEdit {
   work: WorkRef<FileWorkType>
   kind: PartType
@@ -220,7 +221,7 @@ export function PartEditor(props: {
             <DateParts
               t={t}
               label={t('library.fields.releaseDate')}
-              value={fields().releaseDate}
+              value={fields().releaseDate as PartialDate | null}
               change={(v) => field('releaseDate', v ?? null)}
             />
             <LinkFields

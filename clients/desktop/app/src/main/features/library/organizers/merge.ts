@@ -5,7 +5,12 @@ import type { Storage } from '../../../infrastructure/database'
 import { commit } from '../transaction'
 import { redirectQueries } from '../entries/identity/queries'
 import { mergeText } from '../entries/identity/fields'
-import { organizerMembers, replaceMembers, requireOrganizer, type Organizer } from './members'
+import {
+  organizerMembers,
+  replaceMembers,
+  requireOrganizer,
+  type Organizer,
+} from './members/storage'
 import { storeDescription } from './description'
 
 export function organizerMergeStorage(storage: Storage) {

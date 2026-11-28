@@ -33,7 +33,7 @@ import { createLocalDialog, useDialogClose } from '../../../../infrastructure/di
 import type { NavigableDialog } from '../../infrastructure/navigation'
 import type { NavigationPage } from '../../domain-ui/navigation/list'
 import { createPreferenceDraft } from './draft'
-import { focusPreferenceField, PreferenceFieldsContext } from './field'
+import { focusPreferenceField, PreferenceFieldsContext } from '../../domain-ui/preferences/field'
 import { NetworkFields, ProxyCredentialFields, proxyCredentialsKey } from './network'
 import {
   GeneralFields,

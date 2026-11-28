@@ -3,13 +3,13 @@ import type { HoldingsRelocationResult, FileWorkType } from '@kisaki3/desktop-co
 import type { NativeFiles } from '#native'
 import type { DatabaseCall } from '../../../../infrastructure/database/executor'
 import { normalizeAbsolutePath } from '../../../../infrastructure/files'
-import type { ChangeAdmission } from '../../../../infrastructure/use-targets'
+import type { ChangeAdmission } from '../../change-admission'
 import type { CompleteWrite } from '../../transaction'
-import { existingPosition } from '../positions'
-import { inspectTarget } from '../registration'
-import type { FileWork } from './storage'
-import { fileError } from '../discover'
+import { existingPosition } from '../paths'
 import type { holdingStorage } from '../storage'
+import { inspectTarget } from './inspect'
+import type { FileWork } from './record'
+import { fileError } from './error'
 
 export function relocationStatus(cause: unknown): 'unverified' | 'unavailable' | 'conflict' {
   if (cause instanceof DesktopError && cause.code === 'PathConflict') {
@@ -25,6 +25,7 @@ export function relocationStatus(cause: unknown): 'unverified' | 'unavailable' |
   }
   return 'unavailable'
 }
+
 export function createFileRelocation(
   call: DatabaseCall<ReturnType<typeof holdingStorage>>,
   complete: CompleteWrite,

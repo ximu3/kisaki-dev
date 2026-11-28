@@ -8,6 +8,12 @@ import type {
   CollectionQuery,
   TagQuery,
 } from '@kisaki3/desktop-contracts/library'
+import type { CardAnchor } from '../../domain-ui/library/cards'
+import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import {
+  observeDialogTarget,
+  type DialogReceipt,
+} from '../../../../infrastructure/dialogs/presentation'
 
 export type LibraryPage =
   | { kind: 'showcase' }
@@ -23,12 +29,6 @@ export type LibraryPage =
       group?: EntryGroupKey
     }
 
-import type { CardAnchor } from '../../domain-ui/library/cards'
-import { DesktopError } from '@kisaki3/desktop-contracts/errors'
-import {
-  observeDialogTarget,
-  type DialogReceipt,
-} from '../../../../infrastructure/dialogs/presentation'
 export function observeVisit(
   receipt: DialogReceipt | undefined,
   read: () => { presented: boolean; error: unknown },

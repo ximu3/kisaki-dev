@@ -106,7 +106,7 @@ test('retains a full-query selection when switching between cards and the table'
 }) => {
   const page = await desktop.firstWindow()
   await page.locator('aside').getByRole('button', { name: 'Favorites', exact: true }).click()
-  const browse = page.locator('.catalog-browse')
+  const browse = page.getByRole('region', { name: 'Favorites', exact: true })
   const card = browse.getByRole('button', { name: /First work/ })
   await card.focus()
   await page.keyboard.press(process.platform === 'darwin' ? 'Meta+a' : 'Control+a')

@@ -1,47 +1,42 @@
-import { DesktopError, type ErrorSummary } from '@kisaki3/desktop-contracts/errors'
-import {
-  parseWorkRef,
-  parseLocalContentInput,
-  parseLocalContentRegistrationOptions,
-  type FileWorkType,
-  type WorkType,
-  type WorkRef,
-  type HoldingsRefreshResult,
-  type LocalContentRegistrationResult,
+import type {
+  FileWorkType,
+  WorkRef,
+  HoldingsRefreshResult,
 } from '@kisaki3/desktop-contracts/library'
 import type { Translate } from '@kisaki3/desktop-localization'
+import type { PreferencesSnapshot } from '@kisaki3/desktop-contracts/preferences'
+import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
 import type { NativeFiles } from '#native'
 import type { DatabaseCall } from '../../../infrastructure/database/executor'
 import { createSignal } from '../../../infrastructure/events'
-import type { ChangeAdmission } from '../../../infrastructure/use-targets'
+import type { ChangeAdmission } from '../change-admission'
 import type { CompleteWrite } from '../transaction'
+import { localContentRegistration } from './registration'
+import { createRegistration } from './registration/queue'
+import { createPlaybackChoices } from './anime/playback-choices'
 import { createRecognition } from './recognition'
 import { createProfiles } from './recognition/profiles'
 import type { recognitionStorage } from './recognition/storage'
-import { createGameConfigs } from './game'
-import type { configStorage } from './game/configurations'
-import { registration } from './registration'
-import { watchHoldings } from './watch'
-import { createRefresh } from './refresh'
+import { createLaunchConfigs } from './game/configuration'
+import type { launchConfigStorage } from './game/configuration/storage'
+import { watchHoldings } from './maintenance/watch'
+import { createRefresh } from './maintenance/refresh'
 import { createFileRelocation } from './files/relocate'
 import { createDirectoryRelocation, type relocationStorage } from './directories/relocate'
-import { fileError } from './discover'
 import type { holdingStorage } from './storage'
-
 import { fileWork, callSignal } from './work'
-export { fileWork } from './work'
 import { createFiles } from './files'
 import { createDirectories } from './directories'
 import { holdingPreferences, type preferenceStorage } from './preferences'
-import type { PreferencesSnapshot } from '@kisaki3/desktop-contracts/preferences'
+import { profileCatalog } from './recognition/catalog'
+
+export { fileWork } from './work'
 
 type Operations = ReturnType<typeof preferenceStorage> &
   ReturnType<typeof holdingStorage> &
-  ReturnType<typeof configStorage> &
+  ReturnType<typeof launchConfigStorage> &
   ReturnType<typeof recognitionStorage> &
   ReturnType<typeof relocationStorage>
-import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
-import { profileCatalog } from './recognition/catalog'
 export function createHoldings(
   call: DatabaseCall<Operations>,
   complete: CompleteWrite,
@@ -57,7 +52,7 @@ export function createHoldings(
   const automatic = createSignal<{ work: WorkRef<FileWorkType>; id: string }>()
   const locations = createSignal<void>(),
     rulesChanged = createSignal<{ type: FileWorkType; id: string | null; definition: boolean }>()
-  const register = registration(call, complete, native, resources, admit, locations.emit)
+  const register = createRegistration(call, complete, native, resources, admit, locations.emit)
   const recognition = createRecognition(call, native, complete, admit, worker)
   const profiles = createProfiles(call, worker, language, (type, id, definition) => {
     rulesChanged.emit({ type, id, definition })
@@ -72,7 +67,8 @@ export function createHoldings(
     admit,
     locations.emit,
   )
-  const { preferences, playbackChoices, inherited } = holdingPreferences(call, complete, usage)
+  const { preferences, inherited } = holdingPreferences(call, complete, usage)
+  const playbackChoices = createPlaybackChoices(call, complete)
   const relocateDirectory = createDirectoryRelocation(
     call,
     complete,
@@ -81,7 +77,7 @@ export function createHoldings(
     admit,
     locations.emit,
   )
-  const launchConfigs = createGameConfigs(call, complete, sensitive, admit)
+  const launchConfigs = createLaunchConfigs(call, complete, sensitive, admit)
   return {
     watch: (report: (cause: unknown) => void) =>
       watchHoldings(() => call('watchTargets'), refresh, recognition, native, report),
@@ -128,65 +124,6 @@ export function createHoldings(
       locations.emit,
       automatic.emit,
     ),
-    async registerLocalContent<T extends WorkType>(
-      raw: WorkRef<T>,
-      input: unknown,
-      options: unknown = {},
-      context?: CallOptions,
-    ): Promise<LocalContentRegistrationResult<T>> {
-      const signal = callSignal(context)
-      const work = parseWorkRef(raw),
-        value = parseLocalContentInput(input),
-        { expectedIdentities } = parseLocalContentRegistrationOptions(options ?? {})
-      if (work.type === 'game' && value.type === 'file') {
-        return register.game(
-          { type: 'game', id: work.id },
-          value.path,
-          signal,
-          expectedIdentities,
-        ) as Promise<LocalContentRegistrationResult<T>>
-      }
-      const saved =
-        value.type === 'directory'
-          ? await register.directory(work, { path: value.path }, signal, expectedIdentities)
-          : await register.file(fileWork(work), { path: value.path }, signal, expectedIdentities)
-      const issues: { code: 'initialRefreshFailed'; error: ErrorSummary }[] = []
-      const result = {
-        work,
-        registrations: [
-          {
-            type: value.type,
-            id: saved.id,
-            outcome: saved.created ? 'registered' : 'alreadyRegistered',
-          },
-        ],
-        issues,
-      } as LocalContentRegistrationResult
-      if (saved.created && work.type !== 'game') {
-        const target = { type: work.type, id: work.id }
-        try {
-          if (value.type === 'directory') {
-            const report = await refresh(target, signal)
-            for (const issue of report.discovery.issues) {
-              issues.push({ code: 'initialRefreshFailed', error: issue.error })
-            }
-          } else {
-            const report = await recognition.automatic(target, saved.id, signal)
-            if (report.recognition?.outcome === 'failed') {
-              issues.push({ code: 'initialRefreshFailed', error: report.recognition.error })
-            }
-          }
-        } catch (cause) {
-          if (signal.aborted) {
-            throw new DesktopError('Cancelled', 'Initial content checking was cancelled', {
-              cause,
-              partialResult: result,
-            })
-          }
-          issues.push({ code: 'initialRefreshFailed', error: fileError(cause) })
-        }
-      }
-      return result as LocalContentRegistrationResult<T>
-    },
+    registerLocalContent: localContentRegistration(register, refresh, recognition),
   }
 }

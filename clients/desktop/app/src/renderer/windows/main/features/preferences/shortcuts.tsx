@@ -4,7 +4,7 @@ import { FieldGroup, FieldLegend } from '@kisaki3/desktop-ui/field'
 import { ShortcutInput } from '@kisaki3/desktop-ui/input'
 import { formatPreferenceField, formatShortcutScope } from '@kisaki3/desktop-localization'
 import { captureShortcut, shortcutKeycaps } from '../../../../infrastructure/shortcuts'
-import { PreferenceField, usePreferenceFields } from './field'
+import { PreferenceField, usePreferenceFields } from '../../domain-ui/preferences/field'
 
 const scopes = ['main', 'editor', 'reader', 'player', 'game'] as const
 

@@ -1,19 +1,10 @@
 import { randomUUID } from 'node:crypto'
-import { isDeepStrictEqual } from 'node:util'
 import { and, count, eq, sql } from 'drizzle-orm'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type {
-  FileWorkType,
-  WorkRef,
-  PartRef,
   FileCreateFields,
-  FileAssociation,
-  FileAssociationEdit,
-  PreferredFileInput,
   FileQuery,
   HeldFile,
-  AnimeFileMetadata,
-  ReadingFileMetadata,
   FileAvailability,
 } from '@kisaki3/desktop-contracts/library'
 import type { ListOptions } from '@kisaki3/desktop-contracts/operations'
@@ -24,64 +15,9 @@ import { requirePart } from '../../parts/write'
 import { requireEntry } from '../../entries/tables'
 import type { LibraryDatabase, LibraryWrite } from '../../transaction'
 import { mediaFiles } from '../tables'
+import { type FileFacts, type FileWork, fileRow, fileChange, storeFileFacts } from './record'
+import { directLinks, editAssociations, preferFile } from './associations'
 
-export type FileFacts =
-  | { kind: 'file'; video: AnimeFileMetadata }
-  | { kind: 'file' | 'directory'; book: ReadingFileMetadata }
-export type FileWork = WorkRef<FileWorkType>
-export function storeFileFacts(db: LibraryDatabase, work: FileWork, id: string, facts: FileFacts) {
-  if ('video' in facts) {
-    if (work.type !== 'anime') {
-      throw new DesktopError('InvalidReference', 'Video metadata belongs to an anime file')
-    }
-    const table = mediaFiles.anime.table
-    db.update(table)
-      .set({ metadata: ready(facts.video) })
-      .where(eq(table.id, id))
-      .run()
-  } else {
-    if (work.type === 'anime') {
-      throw new DesktopError('InvalidReference', 'Reading metadata belongs to a reading file')
-    }
-    const table = mediaFiles[work.type].table
-    db.update(table)
-      .set({ metadata: ready(facts.book) })
-      .where(eq(table.id, id))
-      .run()
-  }
-}
-export function fileChange(write: LibraryWrite, work: FileWork, ids: readonly string[]) {
-  if (ids.length) {
-    write.changes.push({ type: 'holdingsChanged', work, fileIds: ids } as Extract<
-      LibraryWrite['changes'][number],
-      { type: 'holdingsChanged' }
-    >)
-  }
-}
-export function fileRow(db: LibraryDatabase, work: FileWork, id: string) {
-  const { table, owner } = mediaFiles[work.type]
-  const row = db
-    .select()
-    .from(table)
-    .where(and(eq(owner, work.id), eq(table.id, id)))
-    .get()
-  if (!row) {
-    throw new DesktopError('InvalidReference', 'The file is not registered for this work')
-  }
-  return row
-}
-export function directLinks(db: LibraryDatabase, work: FileWork, id: string): FileAssociation[] {
-  return mediaFiles[work.type].parts.flatMap((kind) => {
-    const table = parts[kind].files
-    return db
-      .select({ id: table.partId, isPreferred: table.isPreferred })
-      .from(table)
-      .where(and(eq(table.workId, work.id), eq(table.fileId, id)))
-      .orderBy(table.partId)
-      .all()
-      .map((row) => ({ part: { type: kind, id: row.id }, isPreferred: row.isPreferred }))
-  })
-}
 export function readFile(db: LibraryDatabase, work: FileWork, id: string): HeldFile {
   const row = fileRow(db, work, id),
     values = { ...row }
@@ -103,6 +39,7 @@ export function readFile(db: LibraryDatabase, work: FileWork, id: string): HeldF
       : { code: 'DataIntegrityError', message: 'The saved association mode is invalid' },
   } as HeldFile
 }
+
 export function listFiles(
   db: LibraryDatabase,
   work: FileWork,
@@ -161,170 +98,6 @@ export function listFiles(
   }
 }
 
-export function preferFile(write: LibraryWrite, work: FileWork, input: PreferredFileInput) {
-  const { table: files, owner } = mediaFiles[work.type]
-  if (input.fileId) {
-    fileRow(write.db, work, input.fileId)
-  }
-  let old: string | null = null
-  if (input.scope.type === 'work') {
-    old =
-      write.db
-        .select({ id: files.id })
-        .from(files)
-        .where(and(eq(owner, work.id), eq(files.isPreferred, true)))
-        .get()?.id ?? null
-    if (input.expected && input.expected.preferredFileId !== old) {
-      throw new DesktopError('Conflict', 'The preferred file changed')
-    }
-    if (old === input.fileId) {
-      return
-    }
-    if (old) {
-      write.db
-        .update(files)
-        .set({ isPreferred: false, updatedAt: write.now })
-        .where(eq(files.id, old))
-        .run()
-    }
-    if (input.fileId) {
-      write.db
-        .update(files)
-        .set({ isPreferred: true, updatedAt: write.now })
-        .where(eq(files.id, input.fileId))
-        .run()
-    }
-  } else {
-    const part = requirePart(write.db, input.scope.part)
-    if (part.work.id !== work.id) {
-      throw new DesktopError('InvalidReference', 'The part belongs to another work')
-    }
-    const links = parts[part.ref.type].files,
-      where = eq(links.partId, part.ref.id)
-    old =
-      write.db
-        .select({ id: links.fileId })
-        .from(links)
-        .where(and(where, eq(links.isPreferred, true)))
-        .get()?.id ?? null
-    if (input.expected && old !== input.expected.preferredFileId) {
-      throw new DesktopError('Conflict', 'The preferred part file changed')
-    }
-    if (old === input.fileId) {
-      return
-    }
-    if (old) {
-      write.db
-        .update(links)
-        .set({ isPreferred: false })
-        .where(and(where, eq(links.fileId, old)))
-        .run()
-    }
-    if (
-      input.fileId &&
-      !write.db
-        .update(links)
-        .set({ isPreferred: true })
-        .where(and(where, eq(links.fileId, input.fileId)))
-        .run().changes
-    ) {
-      throw new DesktopError('InvalidReference', 'The file is not associated with this part')
-    }
-  }
-  fileChange(
-    write,
-    work,
-    [old, input.fileId].filter((value): value is string => value !== null),
-  )
-}
-
-export function editAssociations(
-  write: LibraryWrite,
-  work: FileWork,
-  id: string,
-  input: FileAssociationEdit,
-  manual: boolean,
-  admitted = true,
-) {
-  const { db } = write
-  const old = fileRow(db, work, id),
-    before = directLinks(db, work, id)
-  if (
-    input.expected &&
-    (input.expected.associationMode !== old.associationMode ||
-      !isDeepStrictEqual(new Set(before), new Set(input.expected.associations)))
-  ) {
-    throw new DesktopError('Conflict', 'The saved file associations changed')
-  }
-  const change = input.change
-  const add = change.type === 'replace' ? change.items : (change.add ?? [])
-  const remove = change.type === 'replace' ? [] : (change.remove ?? [])
-  for (const part of [...add.map((item) => item.part), ...remove]) {
-    if (requirePart(db, part).work.id !== work.id) {
-      throw new DesktopError('InvalidReference', 'Select parts of the same work')
-    }
-  }
-  const key = (ref: PartRef) => ref.type + ':' + ref.id
-  const keep = new Map((change.type === 'replace' ? [] : before).map((row) => [key(row.part), row]))
-  for (const ref of remove) {
-    keep.delete(key(ref))
-  }
-  for (const link of add) {
-    if (!keep.has(key(link.part))) {
-      keep.set(key(link.part), {
-        part: link.part,
-        isPreferred:
-          link.isPreferred ??
-          (manual
-            ? false
-            : (before.find((row) => key(row.part) === key(link.part))?.isPreferred ?? false)),
-      })
-    }
-  }
-  if (
-    !admitted &&
-    (before.length !== keep.size || before.some((link) => !keep.has(key(link.part))))
-  ) {
-    return false
-  }
-  for (const row of before) {
-    if (!keep.has(key(row.part))) {
-      const table = parts[row.part.type].files
-      db.delete(table)
-        .where(and(eq(table.fileId, id), eq(table.partId, row.part.id)))
-        .run()
-    }
-  }
-  for (const link of keep.values()) {
-    if (before.some((row) => isDeepStrictEqual(row, link))) {
-      continue
-    }
-    const table = parts[link.part.type].files
-    db.insert(table)
-      .values({ workId: work.id, fileId: id, partId: link.part.id, isPreferred: false })
-      .onConflictDoNothing()
-      .run()
-    if (link.isPreferred) {
-      preferFile(write, work, { scope: { type: 'part', part: link.part }, fileId: id })
-    } else {
-      db.update(table)
-        .set({ isPreferred: false })
-        .where(and(eq(table.fileId, id), eq(table.partId, link.part.id)))
-        .run()
-    }
-  }
-  const mode = manual ? 'manual' : old.associationMode
-  if (mode !== old.associationMode || !isDeepStrictEqual(new Set(before), new Set(keep.values()))) {
-    const table = mediaFiles[work.type].table
-    db.update(table)
-      .set({ associationMode: mode, updatedAt: write.now })
-      .where(eq(table.id, id))
-      .run()
-    fileChange(write, work, [id])
-  }
-  return true
-}
-
 export function addFile(
   write: LibraryWrite,
   work: FileWork,
@@ -381,4 +154,32 @@ export function addFile(
   }
   fileChange(write, work, [id])
   return id
+}
+
+export function moveFile(
+  write: LibraryWrite,
+  work: FileWork,
+  id: string,
+  path: string,
+  facts: FileFacts,
+) {
+  const row = fileRow(write.db, work, id)
+  if (('kind' in row ? row.kind : 'file') !== facts.kind) {
+    throw new DesktopError('InvalidReference', 'The destination must be the same content type')
+  }
+  if (row.path === path) {
+    return
+  }
+  const table = mediaFiles[work.type].table
+  write.db
+    .update(table)
+    .set({
+      path,
+      availability: ready<FileAvailability>({ status: 'accessible', checkedAt: write.now }),
+      updatedAt: write.now,
+    })
+    .where(eq(table.id, id))
+    .run()
+  storeFileFacts(write.db, work, id, facts)
+  fileChange(write, work, [id])
 }

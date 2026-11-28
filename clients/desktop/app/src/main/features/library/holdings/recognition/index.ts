@@ -11,16 +11,17 @@ import {
 } from '@kisaki3/desktop-contracts/library'
 import type { NativeFiles } from '#native'
 import { registeredRelation as comparePaths } from '../../../../infrastructure/files/registered-path'
-import type { ChangeAdmission } from '../../../../infrastructure/use-targets'
+import type { ChangeAdmission } from '../../change-admission'
 import type { DatabaseCall } from '../../../../infrastructure/database/executor'
 import type { CompleteWrite } from '../../transaction'
-import type { FileWork } from '../files/storage'
+import type { FileWork } from '../files/record'
+import type { Position } from '../paths'
 import { openEvaluator, RecognitionOutputError } from './evaluator'
 import { builtin } from './builtin'
-import { matchParts, type Candidate } from './match'
+import { matchParts } from './match'
+import type { Candidate } from './lookup'
 import { partSet, type RecognitionPlan, type recognitionStorage } from './storage'
 import type { Condition } from './output'
-import type { Position } from '../positions'
 
 type Failure = Extract<FileRecognitionResult, { outcome: 'failed' }>
 function failed(
@@ -38,6 +39,7 @@ function failed(
     },
   }
 }
+
 export function createRecognition(
   call: DatabaseCall<ReturnType<typeof recognitionStorage>>,
   native: NativeFiles,

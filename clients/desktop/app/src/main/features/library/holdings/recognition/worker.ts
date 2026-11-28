@@ -22,6 +22,7 @@ function compile(medium: FileWorkType, input: unknown) {
     }
   })
 }
+
 const port = parentPort!
 let rules: ReturnType<typeof compile> = []
 port.on('message', (message: Message) => {

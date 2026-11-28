@@ -10,6 +10,7 @@ interface RuleHit {
   numbers: NumberConversion[]
   conditions: Condition[]
 }
+
 export class RecognitionOutputError extends DesktopError {
   constructor(
     readonly ruleId: string,
@@ -18,6 +19,7 @@ export class RecognitionOutputError extends DesktopError {
     super('InvalidInput', message)
   }
 }
+
 type WorkerReply =
   | { ready: true }
   | { ok: true; value: RuleHit | null }

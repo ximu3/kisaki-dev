@@ -1,10 +1,10 @@
-import { createMemo, createSignal, Show } from 'solid-js'
+import { createMemo, createSignal, For, Show } from 'solid-js'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { Icon } from '@kisaki3/desktop-ui/icon'
 import { Popover, PopoverContent, PopoverTrigger } from '@kisaki3/desktop-ui/popover'
 import { SearchInput } from '@kisaki3/desktop-ui/input'
-import { FilterDialog } from '../../../domain-ui/library/filters'
-import { QuerySort } from '../../../domain-ui/library/filters/sort'
+import { EntryFilterDialog } from '../../../domain-ui/library/entries/filters'
+import { QuerySort } from '../../../domain-ui/library/entries/filters/sort'
 import { errorMessage } from '../../../../../infrastructure/notifications'
 import {
   mdiViewDashboardOutline,
@@ -21,10 +21,10 @@ import {
   type EntrySort,
 } from '@kisaki3/desktop-contracts/library'
 import type { MainClient } from '../../../../../infrastructure/api'
-import { browseQuery } from '../../../domain-ui/library/query'
-import { TypeRange } from '../../../domain-ui/library/types'
+import { browseQuery } from '../../../domain-ui/library/entries/query'
+import { EntryTypeRange } from '../../../domain-ui/library/entries/type-range'
 import type { LibraryNavigation } from '../navigation'
-import { createEntrySelection } from '../../../domain-ui/library/selection'
+import { createEntrySelection } from '../../../domain-ui/library/entries/selection'
 import { ExplorerTree } from './tree'
 
 export function LibraryExplorer(props: { api: MainClient; navigation: LibraryNavigation }) {
@@ -83,40 +83,40 @@ export function LibraryExplorer(props: { api: MainClient; navigation: LibraryNav
   }
 
   return (
-    <aside class="catalog-explorer flex h-full flex-col border-e border-border bg-background">
+    <aside class="@container flex h-full flex-col border-e border-border bg-background">
       <nav
         class="flex h-12 shrink-0 items-center gap-1 border-b border-border px-2 py-1.5"
         aria-label={t('library.pages.library')}
       >
-        <button
-          class="catalog-route grow justify-start"
-          aria-current={active() === 'showcase' ? 'page' : undefined}
-          onClick={() => go('showcase')}
-        >
-          <Icon class="size-4" path={mdiViewDashboardOutline} />
-          {t('library.pages.showcase')}
-        </button>
-        <button
-          class="catalog-route size-7 justify-center"
-          aria-current={active() === 'collections' ? 'page' : undefined}
-          aria-label={t('library.pages.collections')}
-          title={t('library.pages.collections')}
-          onClick={() => go('collections')}
-        >
-          <Icon path={mdiFolderOutline} class="size-4" />
-        </button>
-        <button
-          class="catalog-route size-7 justify-center"
-          aria-current={active() === 'favorites' ? 'page' : undefined}
-          aria-label={t('library.pages.favorites')}
-          title={t('library.pages.favorites')}
-          onClick={() => go('favorites')}
-        >
-          <Icon path={mdiHeartOutline} class="size-4" />
-        </button>
+        <For each={['showcase', 'collections', 'favorites'] as const}>
+          {(page) => (
+            <button
+              class={[
+                'flex h-7 items-center gap-1.5 rounded-md text-xs text-muted-foreground hover:bg-accent/50 hover:text-foreground aria-[current=page]:bg-accent aria-[current=page]:text-foreground aria-[current=page]:shadow-raised',
+                page === 'showcase' ? 'grow justify-start px-2.5' : 'w-7 justify-center px-1.5',
+              ]}
+              aria-current={active() === page ? 'page' : undefined}
+              aria-label={t(`library.pages.${page}`)}
+              title={page === 'showcase' ? undefined : t(`library.pages.${page}`)}
+              onClick={() => go(page)}
+            >
+              <Icon
+                class="size-4"
+                path={
+                  {
+                    showcase: mdiViewDashboardOutline,
+                    collections: mdiFolderOutline,
+                    favorites: mdiHeartOutline,
+                  }[page]
+                }
+              />
+              <Show when={page === 'showcase'}>{t('library.pages.showcase')}</Show>
+            </button>
+          )}
+        </For>
       </nav>
       <div class="space-y-2 border-b border-border bg-chrome px-2 py-2">
-        <TypeRange t={t} value={types()} change={setTypes} />
+        <EntryTypeRange t={t} value={types()} change={setTypes} />
         <div class="flex flex-wrap items-center gap-1.5">
           <SearchInput
             class="min-w-20 flex-1"
@@ -173,7 +173,7 @@ export function LibraryExplorer(props: { api: MainClient; navigation: LibraryNav
       </Show>
       <ExplorerTree api={api} query={query()} navigation={navigation} selection={selection} />
       <Show when={filterOpen()}>
-        <FilterDialog
+        <EntryFilterDialog
           api={api}
           rule={{ enabled: true, types: types(), filter: filter() }}
           apply={setFilter}

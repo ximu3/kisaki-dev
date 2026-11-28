@@ -21,7 +21,7 @@ import { adoptAttachments } from '../../../../infrastructure/attachments/storage
 import { commit, expectFields, type LibraryWrite } from '../../transaction'
 import { checkImages, inlineImages } from '../../attachments'
 import { requireEntry } from '../../entries/tables'
-import { fileRow } from '../../holdings/files/storage'
+import { fileRow } from '../../holdings/files/record'
 import { annotationWork, readAnnotation, listAnnotations, locations, tables } from './read'
 
 export function annotationImages(content: string | undefined, image: string | null | undefined) {

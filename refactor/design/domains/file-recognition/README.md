@@ -30,7 +30,7 @@
 | ComicFileRecognitionProfile | comic_file_recognition_profiles | comic_directories.recognition_profile_id |
 | NovelFileRecognitionProfile | novel_file_recognition_profiles | novel_directories.recognition_profile_id |
 
-三张方案表分别由 library.holdings 的对应媒介管理，目录字段使用真实外键，只能引用同类方案。一个方案可以供多个同类作品的目录共同使用，不属于某个作品，也不会随某个引用作品删除。它们不进入 Entry、MetadataProfile 或 scanner.recognizers，不建立 Game 文件识别方案。
+持有域的 recognition 模块按媒介管理三张方案表，目录字段使用真实外键，只能引用同类方案。一个方案可以供多个同类作品的目录共同使用，不属于某个作品，也不会随某个引用作品删除。它们不进入 Entry、MetadataProfile 或 scanner.recognizers，不建立 Game 文件识别方案。
 
 | 共同字段    | 类型与约束                                                  |
 | ----------- | ----------------------------------------------------------- |

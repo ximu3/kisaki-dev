@@ -13,13 +13,8 @@ import {
   type Relation,
   type RelationKind,
 } from '../relations/facts'
-import {
-  editedRelation,
-  removeRelation,
-  savedPositions,
-  saveRelation,
-  type RelationPositions,
-} from '../relations/write'
+import { editedRelation, removeRelation, savedPositions, saveRelation } from '../relations/write'
+import { type RelationPositions } from '../relations/order'
 import type { GraphReferences } from './references'
 
 function snapshot(row: Relation) {

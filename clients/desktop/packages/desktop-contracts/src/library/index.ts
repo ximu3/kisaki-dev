@@ -450,13 +450,13 @@ export type {
   GameLaunchConfigCreate,
   GameLaunchConfigUpdate,
   GameLaunchConfigsApi,
-} from './holdings/game-configuration'
+} from './holdings/launch-configs'
 
 export {
   parseGameLaunchDefinition,
   parseGameLaunchConfigCreate,
   parseGameLaunchConfigUpdate,
-} from './holdings/game-configuration'
+} from './holdings/launch-configs'
 
 export type {
   GameBackupSource,

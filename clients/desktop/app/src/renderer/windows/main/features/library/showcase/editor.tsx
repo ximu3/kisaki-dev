@@ -17,7 +17,7 @@ import {
 import type { MainClient } from '../../../../../infrastructure/api'
 import type { EditorGuard } from '../../../../../infrastructure/dialogs/closing'
 import { PresetButton, PresetPicker } from '../../../domain-ui/library/presets'
-import { RuleGroups, ScopeField } from '../../../domain-ui/library/filters/rules'
+import { RuleGroups, ScopeField } from '../../../domain-ui/library/entries/filters/rules'
 import { initialSection, presetChoices, type SectionEdit } from './model'
 
 export function SectionEditor(props: {

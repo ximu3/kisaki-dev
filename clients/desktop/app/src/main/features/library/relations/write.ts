@@ -1,7 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { isDeepStrictEqual } from 'node:util'
-import { and, eq, sql } from 'drizzle-orm'
-import type { AnySQLiteColumn } from 'drizzle-orm/sqlite-core'
+import { eq, sql } from 'drizzle-orm'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
   parseWorkCharacterUpdate,
@@ -9,38 +8,24 @@ import {
   parseOrganizationWorkUpdate,
   parseWorkRelationUpdate,
 } from '@kisaki3/desktop-contracts/library'
-import {
-  workCharacterLinks as cast,
-  workPersonLinks as credits,
-  workOrganizationLinks as organizations,
-  workRelations as related,
-} from '../../../infrastructure/database/schema'
-import { requireEntry } from '../entries/tables'
 import { expectFields, type LibraryDatabase, type LibraryWrite } from '../transaction'
-import { binding, fact, readFact, relationTables, type Relation, type RelationKind } from './facts'
+import {
+  binding,
+  fact,
+  readFact,
+  relationTables,
+  type Relation,
+  type RelationKind,
+  families,
+} from './facts'
+import { relationOrder, type RelationPositions } from './order'
+import * as workCharacters from './work-characters'
+import * as personWorks from './person-works'
+import * as organizationWorks from './organization-works'
+import * as workRelations from './work-relations'
 
-function nextPosition(
-  db: LibraryDatabase,
-  table: typeof cast | typeof credits | typeof organizations | typeof related,
-  order: AnySQLiteColumn,
-  scope: AnySQLiteColumn,
-  id: string,
-) {
-  return Number(
-    db.get<{ n: number | bigint }>(
-      sql`select coalesce(max(${order}),-1)+1 n from ${table} where ${scope}=${id}`,
-    )!.n,
-  )
-}
-
-export type RelationPositions = Record<string, { owner: string; position: number }>
 export function savedPositions(db: LibraryDatabase, row: Relation): RelationPositions {
-  const sides = {
-    workCharacter: ['work', 'character'],
-    personWork: ['work', 'person', 'character'],
-    organizationWork: ['work', 'organization'],
-    workRelation: ['from', 'to'],
-  }[row.kind]
+  const sides = families[row.kind].sides
   const table = relationTables[row.kind]
   const values = db.get<Record<string, string | number | bigint | null>>(
     sql`select * from ${table} where id=${row.value.id}`,
@@ -55,146 +40,25 @@ export function savedPositions(db: LibraryDatabase, row: Relation): RelationPosi
   }
   return result
 }
+
 function persist(
   write: LibraryWrite,
   row: Relation,
   update: boolean,
   original?: RelationPositions,
 ) {
-  const { db } = write
-  function order(
-    table: typeof cast | typeof credits | typeof organizations | typeof related,
-    field: AnySQLiteColumn,
-    owner: AnySQLiteColumn,
-    id: string,
-  ) {
-    const saved = original?.[field.name]
-    if (saved?.owner === id) {
-      return saved.position
-    }
-    if (update) {
-      const existing = db.get<{ position: bigint | number; owner: string }>(
-        sql`select ${field} position,${owner} owner from ${table} where ${table.id}=${row.value.id}`,
-      )
-      if (existing?.owner === id) {
-        return Number(existing.position)
-      }
-    }
-    return nextPosition(db, table, field, owner, id)
-  }
+  const order = relationOrder(write.db, row.value.id, update, original)
   switch (row.kind) {
-    case 'workCharacter': {
-      const { work, character, id, role, note, isSpoiler } = row.value
-      requireEntry(db, work)
-      requireEntry(db, character)
-      const fields = {
-        workId: work.id,
-        workType: work.type,
-        characterId: character.id,
-        role,
-        note,
-        isSpoiler,
-        orderInWork: order(cast, cast.orderInWork, cast.workId, work.id),
-        orderInCharacter: order(cast, cast.orderInCharacter, cast.characterId, character.id),
-      }
-      if (update) {
-        db.update(cast).set(fields).where(eq(cast.id, id)).run()
-      } else {
-        db.insert(cast)
-          .values({ id, ...fields })
-          .run()
-      }
-      break
-    }
-    case 'personWork': {
-      const { work, person, character, id, role, note, isSpoiler } = row.value
-      requireEntry(db, work)
-      requireEntry(db, person)
-      if (character) {
-        requireEntry(db, character)
-        const exists = db
-          .select({ id: cast.id })
-          .from(cast)
-          .where(and(eq(cast.workId, work.id), eq(cast.characterId, character.id)))
-          .get()
-        if (!exists) {
-          createRelation(write, 'workCharacter', { work, character, role: null })
-        }
-      }
-      const fields = {
-        workId: work.id,
-        workType: work.type,
-        personId: person.id,
-        characterId: character?.id ?? null,
-        role,
-        note,
-        isSpoiler,
-        orderInWork: order(credits, credits.orderInWork, credits.workId, work.id),
-        orderInPerson: order(credits, credits.orderInPerson, credits.personId, person.id),
-        orderInCharacter: character
-          ? order(credits, credits.orderInCharacter, credits.characterId, character.id)
-          : null,
-      }
-      if (update) {
-        db.update(credits).set(fields).where(eq(credits.id, id)).run()
-      } else {
-        db.insert(credits)
-          .values({ id, ...fields })
-          .run()
-      }
-      break
-    }
-    case 'organizationWork': {
-      const { work, organization, id, role, note, isSpoiler } = row.value
-      requireEntry(db, work)
-      requireEntry(db, organization)
-      const fields = {
-        workId: work.id,
-        workType: work.type,
-        organizationId: organization.id,
-        role,
-        note,
-        isSpoiler,
-        orderInWork: order(organizations, organizations.orderInWork, organizations.workId, work.id),
-        orderInOrganization: order(
-          organizations,
-          organizations.orderInOrganization,
-          organizations.organizationId,
-          organization.id,
-        ),
-      }
-      if (update) {
-        db.update(organizations).set(fields).where(eq(organizations.id, id)).run()
-      } else {
-        db.insert(organizations)
-          .values({ id, ...fields })
-          .run()
-      }
-      break
-    }
-    case 'workRelation': {
-      const { from, to, type, id, note } = row.value
-      requireEntry(db, from)
-      requireEntry(db, to)
-      const fields = {
-        fromId: from.id,
-        fromType: from.type,
-        toId: to.id,
-        toType: to.type,
-        type,
-        note,
-        orderInFrom: order(related, related.orderInFrom, related.fromId, from.id),
-        orderInTo: order(related, related.orderInTo, related.toId, to.id),
-      }
-      if (update) {
-        db.update(related).set(fields).where(eq(related.id, id)).run()
-      } else {
-        db.insert(related)
-          .values({ id, ...fields })
-          .run()
-      }
-      break
-    }
+    case 'workCharacter':
+      return workCharacters.persist(write, row.value, update, order)
+    case 'personWork':
+      return personWorks.persist(write, row.value, update, order, (work, character) => {
+        createRelation(write, 'workCharacter', { work, character, role: null })
+      })
+    case 'organizationWork':
+      return organizationWorks.persist(write, row.value, update, order)
+    case 'workRelation':
+      return workRelations.persist(write, row.value, update, order)
   }
 }
 
@@ -264,29 +128,8 @@ export function editRelation(write: LibraryWrite, kind: RelationKind, id: string
     return
   }
 
-  if (
-    original.kind === 'workCharacter' &&
-    next.kind === 'workCharacter' &&
-    (original.value.work.id !== next.value.work.id ||
-      original.value.character.id !== next.value.character.id)
-  ) {
-    const depends = write.db
-      .select({ id: credits.id })
-      .from(credits)
-      .where(
-        and(
-          eq(credits.workId, original.value.work.id),
-          eq(credits.characterId, original.value.character.id),
-        ),
-      )
-      .limit(1)
-      .get()
-    if (depends) {
-      throw new DesktopError(
-        'Conflict',
-        'Move or remove the dependent character credits explicitly',
-      )
-    }
+  if (original.kind === 'workCharacter' && next.kind === 'workCharacter') {
+    workCharacters.checkCreditBindings(write.db, original.value, next.value)
   }
   saveRelation(write, next, true)
 }
@@ -297,17 +140,7 @@ export function removeRelation(write: LibraryWrite, kind: RelationKind, id: stri
     throw new DesktopError('NotFound', 'The relationship does not exist')
   }
   if (row.kind === 'workCharacter') {
-    const work = write.db
-      .select({ id: credits.id })
-      .from(credits)
-      .where(
-        and(eq(credits.workId, row.value.work.id), eq(credits.characterId, row.value.character.id)),
-      )
-      .all()
-    for (const item of work) {
-      const lost = readFact(write.db, 'personWork', item.id)!
-      write.changes.push({ type: 'relationDeleted', relation: binding(lost) })
-    }
+    personWorks.recordRemovedCredits(write, row.value)
   }
   const table = relationTables[kind]
   write.db.delete(table).where(eq(table.id, id)).run()

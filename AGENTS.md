@@ -24,7 +24,7 @@
 
 ### 设计与变更
 
-动手实现前，先结合用户要求、项目规范和现有工程，从正式入口推演用户完成操作的全过程。比较同类对象和所有受影响的入口，确定最终的行为、交互、模块职责与源码组织，再按这个设计实现。实现中发现依据有变，及时修正方案和受影响的部分。交付核对用于查证结果、发现遗漏。见[实施前的整体设计](refactor/design/engineering/conventions.md#design-before-implementation)和[全局设计与一致性](refactor/design/engineering/conventions.md#global-design)。
+动手实现前，先结合用户要求、项目规范和现有工程，从正式入口推演用户完成操作的全过程。每次修改都要查明全项目哪些入口、模块和交付物处理同一件事，按共同规范确定行为、命名、源码组织、界面与文案，再同步所有受影响的位置。保留差异时，应能说明相应的业务或平台依据。实现中发现依据有变，及时修正方案和受影响的部分。交付核对用于查证结果、发现遗漏。见[实施前的整体设计](refactor/design/engineering/conventions.md#design-before-implementation)和[全局设计与一致性](refactor/design/engineering/conventions.md#global-design)。
 
 要求或方案与设计原则冲突，或存在正确性、质量或技术问题时，按[整体判断](refactor/design/engineering/conventions.md#judgment)说明依据、影响、选项与建议，由用户决定方向。涉及模型、主要行为、公开合同、架构边界或交付范围的取舍遵守[实施讨论规则](refactor/implementation/work-packages.md#unexpected-issues)。既定合同内的修复与验证由实施者完成。
 
@@ -54,11 +54,13 @@
 
 文档、注释和界面文案用自然、直接的语言说明具体做法、条件和结果。标题写明主题或操作，省去口号、刻意的比喻和重复正文的开场句。会影响选择的差异、取舍依据和失败后果应就近说明。见[写作要求](refactor/design/engineering/documentation.md#writing)和[界面文案](refactor/design/ui/components.md#copy)。
 
-实施和审阅时，检查代码、测试和文档是否位于对应的功能目录，文件名和目录名是否与内容相符。入口遵循语言和工具的原生规则。普通 TypeScript 多文件主题和成篇文档按主题集中，所需入口与内容放在同一目录，不以同级前缀文件模拟内部层级。收尾时核对[组织与命名](refactor/design/engineering/conventions.md#source-layout)和[导入与公开入口](refactor/design/engineering/conventions.md#module-imports)。
+先分清交付单位与运行边界，再按业务能力确定模块归属。类型有独立的操作流程、约束或资源寿命时，在该能力内按类型拆分。查询、存储与呈现等技术分工归相应能力；跨业务的技术设施按其管理的资源组织。实施和审阅时，沿实际操作核对源码、测试和文档的位置与命名。入口遵循语言和工具的原生规则。普通 TypeScript 多文件主题和成篇文档按主题集中，所需入口与内容放在同一目录，不以同级前缀文件模拟内部层级。文件名只保留当前目录中区分对象与操作所需的词。普通单文件功能直接按用途命名，目录入口含 JSX 时使用 `index.tsx`。收尾时核对[组织与命名](refactor/design/engineering/conventions.md#source-layout)和[导入与公开入口](refactor/design/engineering/conventions.md#module-imports)。
 
 ## 桌面 UI 设计
 
 桌面页面、对话框和公共 UI 部件沿用旧 Kisaki 的 UI 设计。实施前阅读 `F:/project/3/kisaki` 中对应页面、组件及样式的源码，弄清布局层级、尺寸、交互状态、滚动与响应式规则，再按 [Playwright 对照流程](refactor/verification/scenarios/ui.md#baseline)在旧版开发窗口核实。新增界面从旧版同类页面和部件推导。系统与功能图标统一使用 Material Design Icons（MDI），同一操作优先沿用旧界面的图标。
+
+应用视图的常规布局、交互状态与容器断点默认在 JSX 中使用 Tailwind。窗口基础样式、平台专属样式及公共 UI 包样式遵守[窗口样式](refactor/design/engineering/layout.md#renderer-styles)。
 
 业务行为、接口和资源归属由本仓库的现行规格定义。交付前在默认主题、100% 应用缩放下，对照新旧窗口走完对应流程，再核对最小窗口和缩放边界。[界面设计基准](refactor/design/ui/components.md#existing-ui) · [代表场景](refactor/verification/scenarios/ui.md#baseline)
 
