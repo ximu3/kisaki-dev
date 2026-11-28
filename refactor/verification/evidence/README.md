@@ -19,7 +19,7 @@
 | W06 存储与原生基础 | [正式 schema、迁移、文件资源和完整负载查询](w06/README.md) |
 | W07 应用运行与设置 | [窗口操作、任务、网络、资源和打包候选](w07/README.md) |
 | W05 与 W07 合同核查 | [同类入口、故障分支、错误界面与制品验证](w05-w07/README.md) |
-| W09 本地资料库 | [资料图、合并与删除、持有维护、图片和正式窗口](w09/README.md) |
+| W09 本地资料库 | [资料图、持有维护、混合选择、正式窗口与六目标候选制品](w09/README.md) |
 | 原生 UI 能力             | [固定 Electron 环境的表单与浮层行为](native-ui/README.md)                                               |
 | UI 包接入                | [CSS Modules、表单提交与模态提示范围](desktop-ui/README.md)                                             |
 | 构建与开发               | [编译、输出与开发编排](w00/README.md#engineering-workflows) · [开发会话的失败与关闭](w00/development.md#shutdown) |

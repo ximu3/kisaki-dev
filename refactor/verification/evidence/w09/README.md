@@ -1,4 +1,21 @@
-# 本地资料库的 Windows x64 验证
+# 本地资料库、持有与个人记录验收
+
+<a id="six-targets"></a>
+
+## 桌面六目标与候选制品
+
+2026-11-28，开发分支的提交 `139e7c97` 在 Windows、macOS 和 Linux 的 x64、arm64 宿主分别通过 `@kisaki3/desktop#verify`。每个目标运行原生与数据库测试、源码开发会话、真实 Electron 窗口、性能场景及打包应用。表中的 SHA-256 对应实际启动并读回动画分集和媒体信息的归档。[六目标 CI](https://github.com/ximu3/kisaki-dev/actions/runs/46108758739) · [实施提交](https://github.com/ximu3/kisaki-dev/commit/139e7c97c6eb35d55f227d551c65346e64fb3575)
+
+| 目标与运行日志 | 实际运行制品 | 窗口用例（通过 / 按宿主条件跳过） | 制品 SHA-256 |
+| --- | --- | ---: | --- |
+| [Windows x64](https://github.com/ximu3/kisaki-dev/actions/runs/46108758739/job/140867424381) | ZIP 中的程序 | 30 / 2 | `e9c2a597a6513818ed7f27f826ca8d8fcfc216e9f3bbb0c38ef9f7a70cc293bf` |
+| [Windows arm64](https://github.com/ximu3/kisaki-dev/actions/runs/46108758739/job/140867424352) | ZIP 中的程序 | 30 / 2 | `ca060bd9df719688200fba1b3f4917eefcaf2aaedbdd756086ec24f18c4845f2` |
+| [macOS x64](https://github.com/ximu3/kisaki-dev/actions/runs/46108758739/job/140867424299) | ZIP 中的 .app | 27 / 5 | `e9f0a6fe4cafae75e6dc9cae44bbe803ead5221672632a713c57350418ea1715` |
+| [macOS arm64](https://github.com/ximu3/kisaki-dev/actions/runs/46108758739/job/140867424292) | ZIP 中的 .app | 27 / 5 | `5f27e4d1c7512d5516d90329a58b789bea5629cbdd31e09274400cb3d58ef735` |
+| [Linux x64](https://github.com/ximu3/kisaki-dev/actions/runs/46108758739/job/140867424340) | AppImage | 30 / 2 | `54706c3b96ad216d39c09ae0cbe340d6c9154188dfabdf63e1d3c84eeb238edf` |
+| [Linux arm64](https://github.com/ximu3/kisaki-dev/actions/runs/46108758739/job/140867424343) | AppImage | 30 / 2 | `b1ae4d3e9070e05b76593920fcd0b1f459db2ffc7774d03ad5f736228286808a` |
+
+本机使用 Windows 10 x64。全仓检查 45 项通过，桌面完整验证 20 项通过。其中原生与数据库 37 项、源码开发会话 6 项、真实窗口 28 项、性能场景 2 项和候选制品 1 项通过。另有 4 项窗口用例按宿主条件跳过。桌面合同包与本地化包的独立验证分别通过 12 项和 15 项。
 
 ## 目录重新定位
 
@@ -18,7 +35,7 @@
 
 在 Explorer 中打开游戏，再用 Ctrl 或 Cmd 加选人物。右键人物后菜单仍显示两项，可以为两项添加同一标签，作品状态动作禁用。右键尚未选中的小说后只选中小说，详情仍显示游戏。选中游戏和小说后，用键盘打开菜单，记录本次完成；重读数据库，两部作品各有一条完成明细，当前状态均已清除。另在收藏页全选三种类型的条目，切换到表格后对勾和右键菜单仍对应原来的三项。[实际窗口与落盘结果](../../../../clients/desktop/app/tests/integration/electron/library-batch.test.ts)
 
-旧版 `features/library/components/explorer/explorer-list-item.vue` 将行导航与右键菜单分开，`components/shared/entity/menus/batch-menu-items.vue` 将选择数量、合集、收藏及删除动作分段显示。本版沿用该布局和对应的 MDI 图标。菜单打开时固定去重后的条目集合，按现行合同判定各动作的适用类型。
+旧版 `features/library/components/explorer/explorer-list-item.vue` 将行导航与右键菜单分开，`components/shared/entity/menus/batch-menu-items.vue` 将选择数量、合集、收藏及删除动作分段显示。在旧版开发窗口选中两项后打开菜单，依次看到选择数量、合集、收藏和删除动作。两个版本的窗口中，菜单均使用 14 CSS 像素的基准字号、分隔线和 MDI 图标。新版增加的标签、作品状态和合并按现行资料模型显示。菜单打开时固定去重后的条目集合，按现行合同判定各动作的适用类型。
 
 ## 动画媒体信息
 
@@ -31,6 +48,8 @@
 ## 远处定位与返回
 
 专用资料库内有 1,200 个游戏。滚动到展示柜末尾，打开最后一张卡片；Explorer 随当前查询定位到第 1,200 项，在可见区显示且只标记一个当前实例。返回后，展示柜按条目 ID 重新定位原卡片，首屏区间外的旧卡片没有一并挂载。[真实窗口与资料库](../../../../clients/desktop/app/tests/integration/electron/library-navigation.test.ts)
+
+在同一份 1,200 项样本的 Windows x64 窗口中，选中首项，用 End 将焦点移到末项，再 Shift 点击末项，页脚显示选中 1,200 项。清除后折叠整组，在组头全选，仍取得 1,200 个真实条目。随后输入新的检索词，旧选择清空。
 
 ## 作品合并、删除与私人记录
 
