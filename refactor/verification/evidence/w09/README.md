@@ -4,18 +4,18 @@
 
 ## 桌面六目标与候选制品
 
-2026-11-28，开发分支的提交 `46a699a9` 在 Windows、macOS 和 Linux 的 x64、arm64 宿主分别通过 `@kisaki3/desktop#verify`。每个目标运行原生与数据库测试、源码开发会话、真实 Electron 窗口、性能场景及打包应用。表中的 SHA-256 对应实际启动并读回动画分集和媒体信息的归档。[六目标 CI](https://github.com/ximu3/kisaki-dev/actions/runs/46115849143) · [实施提交](https://github.com/ximu3/kisaki-dev/commit/46a699a90850b06c6f71df878eda0cd1c0e85661)
+2026-11-28，开发分支的提交 `9ac124ff` 在 Windows、macOS 和 Linux 的 x64、arm64 宿主分别通过 `@kisaki3/desktop#verify`。每个目标均完成原生与数据库、开发会话、真实窗口、性能与打包应用验证。校验值来自实际启动并读回分集及视频信息的候选制品。[六目标 CI](https://github.com/ximu3/kisaki-dev/actions/runs/46127069454) · [验收提交](https://github.com/ximu3/kisaki-dev/commit/9ac124ff5a9957b1259f75598ba9a173741c15f8)
 
 | 目标与运行日志 | 实际运行制品 | 窗口用例（通过 / 按宿主条件跳过） | 制品 SHA-256 |
 | --- | --- | ---: | --- |
-| [Windows x64](https://github.com/ximu3/kisaki-dev/actions/runs/46115849143/job/140889442765) | ZIP 中的程序 | 30 / 2 | `bc8d337027948ec6a3c733017e761f903d2a0c6c7ea7b21851744d4d3bece12f` |
-| [Windows arm64](https://github.com/ximu3/kisaki-dev/actions/runs/46115849143/job/140889442829) | ZIP 中的程序 | 30 / 2 | `13bd382c9844b5f7572f600a954438cd6042a2d557fc730a481ba1ab6c12ae10` |
-| [macOS x64](https://github.com/ximu3/kisaki-dev/actions/runs/46115849143/job/140889442783) | ZIP 中的 .app | 27 / 5 | `19e01c0a0ed6c9e5b602b4a190ea53104f4e7947f3ddb18debc78b3c199bd413` |
-| [macOS arm64](https://github.com/ximu3/kisaki-dev/actions/runs/46115849143/job/140889442781) | ZIP 中的 .app | 27 / 5 | `caedb5a6459cf38fc23e62ac40a3da0af9591d9c1a280756e451f8044b9cfe9f` |
-| [Linux x64](https://github.com/ximu3/kisaki-dev/actions/runs/46115849143/job/140889442778) | AppImage | 30 / 2 | `dd7c0c66670c6473335cd4be7a35642b0c9dd816ba72696f7c7e232b3bcace7c` |
-| [Linux arm64](https://github.com/ximu3/kisaki-dev/actions/runs/46115849143/job/140889442756) | AppImage | 30 / 2 | `03bc73793a63d6b995fdb77f4e77d24566513ffb5de31303d2a73b45c676f3e8` |
+| [Windows x64](https://github.com/ximu3/kisaki-dev/actions/runs/46127069454/job/140924086127) | ZIP 中的程序 | 33 / 2 | `c6e415ee9dc6c8cec9aff953ccad62542ac3318b2057489bf8b7446f60a450e7` |
+| [Windows arm64](https://github.com/ximu3/kisaki-dev/actions/runs/46127069454/job/140924086149) | ZIP 中的程序 | 33 / 2 | `4f754718395537313da5ae7093454387531d98eac5d0ab6e7d3186777da98210` |
+| [macOS x64](https://github.com/ximu3/kisaki-dev/actions/runs/46127069454/job/140924086120) | ZIP 中的 .app | 30 / 5 | `0caed3a96f89d88e4584cbff299c58ee8debda99f1ed0d3d049fc0e33d039049` |
+| [macOS arm64](https://github.com/ximu3/kisaki-dev/actions/runs/46127069454/job/140924086095) | ZIP 中的 .app | 30 / 5 | `c938ef707f81291d038f1dbbdd6fe1b0257fa22a9027b61aa069c1c17bdc9014` |
+| [Linux x64](https://github.com/ximu3/kisaki-dev/actions/runs/46127069454/job/140924086132) | AppImage | 33 / 2 | `e966682871573e7389c93ec5ebd0056e81360e2ad5618dafb46e9de97753ee57` |
+| [Linux arm64](https://github.com/ximu3/kisaki-dev/actions/runs/46127069454/job/140924086114) | AppImage | 33 / 2 | `c38f1eca6bce6100a2608f1f788509bfc422c724b6b113d422205e38d1f40b84` |
 
-本机使用 Windows 10 x64。全仓检查 45 项通过，桌面完整验证 20 项通过。其中原生与数据库 38 项、源码开发会话 6 项、真实窗口 28 项、性能场景 2 项和候选制品 1 项通过。另有 4 项窗口用例按宿主条件跳过。桌面合同包、公共 UI 包与本地化包的独立验证分别通过 12、9 和 15 项。
+本机 Windows 10 x64 的全仓检查 45 项和桌面完整验证 20 项均通过。桌面验证包含 40 项原生与数据库用例、6 项开发会话用例、31 项真实窗口用例、2 项性能用例和 1 项打包应用用例。另有 4 项窗口用例按宿主条件跳过。
 
 ## 详情外壳、返回位置与关联写入
 
