@@ -1,8 +1,16 @@
 import { createEffect, createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
+import { Menu, MenuTrigger, MenuContent } from '@kisaki3/desktop-ui/menu'
+import { createEntryActions } from '../../../domain-ui/library/entry-actions'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { Icon } from '@kisaki3/desktop-ui/icon'
 import { VirtualRow, createVirtualizer } from '@kisaki3/desktop-ui/virtualization'
-import { mdiChevronRight, mdiCrosshairsGps, mdiCheck, mdiChevronUp } from '@mdi/js'
+import {
+  mdiChevronRight,
+  mdiCrosshairsGps,
+  mdiCheck,
+  mdiChevronUp,
+  mdiDotsHorizontal,
+} from '@mdi/js'
 import type {
   EntryGroupKey,
   EntryGroupResult,
@@ -11,14 +19,14 @@ import type {
   EntryQuery,
 } from '@kisaki3/desktop-contracts/library'
 import type { MainClient } from '../../../../../infrastructure/api'
-import { errorMessage, reportError } from '../../../../../infrastructure/notifications'
+import { errorMessage } from '../../../../../infrastructure/notifications'
 import { createViewQuery } from '../../../../../infrastructure/query'
 import { libraryRead } from '../../../domain-ui/library/read'
 import { catalogIcon } from '../../../domain-ui/library/icons'
 import { LibraryImage } from '../../../domain-ui/library/image'
 import { browseQuery, selectedTypes } from '../../../domain-ui/library/query'
 import type { LibraryNavigation } from '../navigation'
-import type { createExplorerSelection } from './selection'
+import type { createEntrySelection } from '../../../domain-ui/library/selection'
 
 const groupId = (group: EntryGroupKey) => (group.type === 'collection' ? group.id : null)
 interface Segment {
@@ -68,14 +76,11 @@ function GroupHeader(props: {
   )
 }
 
-import { Menu, MenuTrigger, MenuContent } from '@kisaki3/desktop-ui/menu'
-import { mdiDotsHorizontal } from '@mdi/js'
-import { createEntryActions } from '../../../domain-ui/library/entry-actions'
 export function ExplorerTree(props: {
   api: MainClient
   query: EntryQuery
   navigation: LibraryNavigation
-  selection: ReturnType<typeof createExplorerSelection>
+  selection: ReturnType<typeof createEntrySelection>
 }) {
   const { api, navigation, selection } = props
   const actions = createEntryActions(
@@ -307,31 +312,24 @@ export function ExplorerTree(props: {
   }
   function activate(event: MouseEvent, item: EntryListItem, group: EntryGroupKey) {
     const ref: EntryRef = { type: item.type, id: item.id }
-    if (event.shiftKey) {
-      void selection
-        .range(
-          { ref, group },
-          segments()
-            .items.filter((s) => s.expanded)
-            .map((s) => s.group.key),
-        )
-        .catch(reportError)
-    } else if (event.ctrlKey || event.metaKey) {
-      selection.toggle({ ref, group })
-    } else {
-      selection.single({ ref, group })
+    if (
+      selection.activate(
+        event,
+        { ref, group },
+        segments()
+          .items.filter((s) => s.expanded)
+          .map((s) => s.group.key),
+      )
+    ) {
       navigation.open({ kind: 'entry', entry: ref, group })
     }
   }
   function keys(e: KeyboardEvent) {
-    if (e.key === 'Escape') {
-      e.preventDefault()
-      selection.clear()
+    if (e.defaultPrevented) {
       return
     }
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') {
-      e.preventDefault()
-      void selection.all().catch(reportError)
+    selection.keys(e)
+    if (e.defaultPrevented) {
       return
     }
     const row = e.target instanceof Element ? e.target.closest<HTMLElement>('[data-index]') : null
@@ -380,52 +378,68 @@ export function ExplorerTree(props: {
                         fallback={
                           <Show when={itemAt(item().index)}>
                             {(entry) => (
-                              <button
-                                type="button"
-                                class="catalog-row"
-                                aria-current={
-                                  currentInstance(entry(), segment().group.key) ? 'true' : undefined
-                                }
-                                data-selected={selection.items().has(entry().id)}
-                                onClick={(e) => activate(e, entry(), segment().group.key)}
-                                onKeyDown={(e) => {
-                                  if (e.key === ' ') {
-                                    e.preventDefault()
-                                    selection.toggle({
+                              <actions.RowMenu
+                                prepare={() =>
+                                  actions.capture(
+                                    selection.context({
                                       ref: { type: entry().type, id: entry().id },
                                       group: segment().group.key,
-                                    })
-                                  }
-                                }}
+                                    }),
+                                  )
+                                }
                               >
-                                <Show
-                                  when={entry().primaryImageId}
-                                  fallback={
+                                <button
+                                  type="button"
+                                  class="catalog-row"
+                                  aria-current={
+                                    currentInstance(entry(), segment().group.key)
+                                      ? 'true'
+                                      : undefined
+                                  }
+                                  data-selected={selection.items().has(entry().id)}
+                                  onClick={(e) => activate(e, entry(), segment().group.key)}
+                                  onKeyDown={(e) => {
+                                    if (e.key === ' ') {
+                                      e.preventDefault()
+                                      selection.toggle({
+                                        ref: { type: entry().type, id: entry().id },
+                                        group: segment().group.key,
+                                      })
+                                    }
+                                  }}
+                                >
+                                  <Show
+                                    when={entry().primaryImageId}
+                                    fallback={
+                                      <Icon
+                                        class="size-4 shrink-0 text-muted-foreground/50"
+                                        path={catalogIcon[entry().type]}
+                                      />
+                                    }
+                                  >
+                                    {(id) => (
+                                      <LibraryImage
+                                        api={api}
+                                        id={id()}
+                                        alt=""
+                                        class="size-4 shrink-0 rounded-sm border border-border object-cover shadow-raised"
+                                      />
+                                    )}
+                                  </Show>
+                                  <span class="min-w-0 grow truncate">{entry().name}</span>
+                                  <Show when={selectedTypes(props.query).size > 1}>
                                     <Icon
-                                      class="size-4 shrink-0 text-muted-foreground/50"
+                                      class="size-3 shrink-0"
                                       path={catalogIcon[entry().type]}
                                     />
-                                  }
-                                >
-                                  {(id) => (
-                                    <LibraryImage
-                                      api={api}
-                                      id={id()}
-                                      alt=""
-                                      class="size-4 shrink-0 rounded-sm border border-border object-cover shadow-raised"
-                                    />
-                                  )}
-                                </Show>
-                                <span class="min-w-0 grow truncate">{entry().name}</span>
-                                <Show when={selectedTypes(props.query).size > 1}>
-                                  <Icon class="size-3 shrink-0" path={catalogIcon[entry().type]} />
-                                </Show>
-                                <span class="inline-flex w-3.5 shrink-0">
-                                  <Show when={selection.items().has(entry().id)}>
-                                    <Icon class="size-3.5" path={mdiCheck} />
                                   </Show>
-                                </span>
-                              </button>
+                                  <span class="inline-flex w-3.5 shrink-0">
+                                    <Show when={selection.items().has(entry().id)}>
+                                      <Icon class="size-3.5" path={mdiCheck} />
+                                    </Show>
+                                  </span>
+                                </button>
+                              </actions.RowMenu>
                             )}
                           </Show>
                         }
@@ -470,7 +484,7 @@ export function ExplorerTree(props: {
             : t('library.browse.count', { count: snapshot()?.total ?? 0 })}
         </span>
         <Show when={selection.items().size}>
-          <Menu>
+          <Menu onOpenChange={actions.openMenu}>
             <MenuTrigger size="icon-sm" variant="ghost" aria-label={t('actions.more')}>
               <Icon path={mdiDotsHorizontal} />
             </MenuTrigger>

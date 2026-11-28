@@ -243,6 +243,9 @@ export interface LibraryWindowApi extends HoldingsWindowApi, RecordsWindowApi, O
   'library.completions.get'(work: WorkRef, id: string): WorkCompletion | null
   'library.completions.create'(work: WorkRef, input: CompletionCreate): string
   'library.completions.recordCurrent'(work: WorkRef, input: CompletionCreate): string
+  'library.completions.recordCurrentMany'(
+    input: NonEmptyArray<CompletionCreateItem>,
+  ): readonly { readonly work: WorkRef; readonly completionId: string }[]
   'library.completions.createMany'(input: NonEmptyArray<CompletionCreateItem>): readonly string[]
   'library.completions.update'(work: WorkRef, id: string, input: CompletionUpdate): void
   'library.completions.delete'(work: WorkRef, id: string): void

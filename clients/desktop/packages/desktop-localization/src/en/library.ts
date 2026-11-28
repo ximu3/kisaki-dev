@@ -48,6 +48,10 @@ export const libraryMessages = {
     addTarget: 'Register a launcher',
   },
   entryActions: {
+    addCollections: 'Add to collections',
+    removeCollections: 'Remove from collections',
+    addTags: 'Add tags',
+    removeTags: 'Remove tags',
     merge: 'Merge entries',
     survivor: 'Entry to keep',
     mergeDetail: 'The selected entries and their personal history will be combined in this entry.',

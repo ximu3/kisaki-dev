@@ -1,6 +1,7 @@
 import {
   parseAnnotationCreate,
   parseWorkRef,
+  parseCompletionCreateMany,
   parseAnnotationQuery,
   parseAnnotationRef,
   parseAnnotationUpdate,
@@ -54,6 +55,9 @@ export function recordMethods(
     ),
     'library.completions.recordCurrent': windowMethod('write', ([work, input], signal) =>
       completions.recordCurrent(work, input, { signal }),
+    ),
+    'library.completions.recordCurrentMany': windowMethod('write', async ([input], signal) =>
+      rpcData(await completions.recordCurrentMany(parseCompletionCreateMany(input), { signal })),
     ),
     'library.completions.createMany': windowMethod('write', async ([input], signal) =>
       rpcData(await completions.createMany(input, { signal })),

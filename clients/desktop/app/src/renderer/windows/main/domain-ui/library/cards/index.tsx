@@ -1,10 +1,14 @@
 import { createEffect, createMemo, createSignal, For, onSettled, Show } from 'solid-js'
 import { Icon } from '@kisaki3/desktop-ui/icon'
 import { Button } from '@kisaki3/desktop-ui/button'
-import { mdiChevronLeft, mdiChevronRight } from '@mdi/js'
+import { mdiCheck, mdiChevronLeft, mdiChevronRight } from '@mdi/js'
 import type { ShowcaseFields } from '@kisaki3/desktop-contracts/library'
 import type { ListOptions, ListResult } from '@kisaki3/desktop-contracts/operations'
 import type { MainClient } from '../../../../../infrastructure/api'
+import {
+  observeDialogTarget,
+  type DialogReceipt,
+} from '../../../../../infrastructure/dialogs/presentation'
 import { errorMessage } from '../../../../../infrastructure/notifications'
 import { libraryRead } from '../read'
 import { LibraryImage } from '../image'
@@ -18,7 +22,8 @@ export function CatalogCard(props: {
   api: MainClient
   item: CardItem
   showType: boolean
-  open: (item: CardItem, button: HTMLElement) => void
+  selected?: boolean | undefined
+  open: (item: CardItem, button: HTMLElement, event: MouseEvent) => void
 }) {
   const type = () => props.item.target.type
   const typeLabel = () => {
@@ -34,7 +39,10 @@ export function CatalogCard(props: {
       type="button"
       class="group block w-full min-w-0 rounded-lg text-center focus-visible:outline-2 focus-visible:outline-ring"
       aria-label={props.showType ? props.item.name + ' · ' + typeLabel() : props.item.name}
-      onClick={(e) => props.open(props.item, e.currentTarget)}
+      data-entry-id={props.item.target.id}
+      data-entry-type={props.item.target.type}
+      aria-pressed={props.selected === undefined ? undefined : `${props.selected}`}
+      onClick={(e) => props.open(props.item, e.currentTarget, e)}
     >
       <span
         class={`relative grid w-full place-items-center overflow-hidden rounded-lg border border-border/40 bg-muted shadow-raised ${square() ? 'aspect-square' : 'aspect-[3/4]'}`}
@@ -54,6 +62,11 @@ export function CatalogCard(props: {
             />
           )}
         </Show>
+        <Show when={props.selected}>
+          <span class="absolute start-1 top-1 rounded-sm bg-accent p-0.5 text-accent-foreground">
+            <Icon path={mdiCheck} class="size-4" />
+          </span>
+        </Show>
         <Show when={props.showType}>
           <span
             class="absolute end-1 bottom-1 grid place-items-center rounded-sm bg-background/90 p-0.5"
@@ -70,10 +83,6 @@ export function CatalogCard(props: {
   )
 }
 
-import {
-  observeDialogTarget,
-  type DialogReceipt,
-} from '../../../../../infrastructure/dialogs/presentation'
 export function CardShelf(props: {
   receipt?: DialogReceipt | undefined
   api: MainClient
@@ -86,6 +95,8 @@ export function CardShelf(props: {
   source: string
   read: (range: ListOptions, signal: AbortSignal) => Promise<ListResult<CardItem>>
   showType: boolean
+  select?: (item: CardItem, event: MouseEvent) => boolean
+  selected?: (item: CardItem) => boolean
   open: (item: CardItem) => void
   restore?:
     | { anchor: CardAnchor; locate: (signal: AbortSignal) => Promise<number | null> }
@@ -270,7 +281,10 @@ export function CardShelf(props: {
       element.removeEventListener('keydown', stop)
     }
   })
-  function remember(item: CardItem, button: HTMLElement) {
+  function remember(item: CardItem, button: HTMLElement, event: MouseEvent) {
+    if (props.select && !props.select(item, event)) {
+      return
+    }
     const card = button.getBoundingClientRect()
     props.remember?.({
       target: item.target,
@@ -372,7 +386,13 @@ export function CardShelf(props: {
                     transform: `translate(${(horizontal() ? at() : at() % columns()) * stride()}px,${horizontal() ? 0 : Math.floor(at() / columns()) * rowHeight()}px)`,
                   }}
                 >
-                  <CatalogCard api={api} item={item()} showType={props.showType} open={remember} />
+                  <CatalogCard
+                    api={api}
+                    item={item()}
+                    showType={props.showType}
+                    selected={props.selected?.(item())}
+                    open={remember}
+                  />
                 </div>
               )
             }}

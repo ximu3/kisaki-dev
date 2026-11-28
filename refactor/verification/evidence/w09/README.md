@@ -14,6 +14,12 @@
 
 实际 Electron 窗口从侧栏添加游戏，在详情中编辑原名，通过状态菜单记录一次完成和备注，再从展示柜管理器选择最近添加预设。重载后从展示柜打开作品，原名、完成次数和备注均可读回。[正式窗口场景](../../../../clients/desktop/app/tests/integration/electron/library.test.ts)
 
+## 混合选择与批量操作
+
+在 Explorer 中打开游戏，再用 Ctrl 或 Cmd 加选人物。右键人物后菜单仍显示两项，可以为两项添加同一标签，作品状态动作禁用。右键尚未选中的小说后只选中小说，详情仍显示游戏。选中游戏和小说后，用键盘打开菜单，记录本次完成；重读数据库，两部作品各有一条完成明细，当前状态均已清除。另在收藏页全选三种类型的条目，切换到表格后对勾和右键菜单仍对应原来的三项。[实际窗口与落盘结果](../../../../clients/desktop/app/tests/integration/electron/library-batch.test.ts)
+
+旧版 `features/library/components/explorer/explorer-list-item.vue` 将行导航与右键菜单分开，`components/shared/entity/menus/batch-menu-items.vue` 将选择数量、合集、收藏及删除动作分段显示。本版沿用该布局和对应的 MDI 图标。菜单打开时固定去重后的条目集合，按现行合同判定各动作的适用类型。
+
 ## 动画媒体信息
 
 在 Electron Node 模式下以独立 libmpv 实例打开专用 Matroska 样本，可读出 FFV1 视频的 160 × 90 分辨率、一秒时长、PCM 音轨及 0 和 0.5 秒的章节起点。[媒体读取场景](../../../../clients/desktop/app/tests/integration/library/video.test.ts) · [固定制品](../w08/README.md#handoff)

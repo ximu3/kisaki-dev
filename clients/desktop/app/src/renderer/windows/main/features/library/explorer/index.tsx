@@ -1,4 +1,4 @@
-import { createEffect, createMemo, createSignal, Show } from 'solid-js'
+import { createMemo, createSignal, Show } from 'solid-js'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { Icon } from '@kisaki3/desktop-ui/icon'
 import { Popover, PopoverContent, PopoverTrigger } from '@kisaki3/desktop-ui/popover'
@@ -24,7 +24,7 @@ import type { MainClient } from '../../../../../infrastructure/api'
 import { browseQuery } from '../../../domain-ui/library/query'
 import { TypeRange } from '../../../domain-ui/library/types'
 import type { LibraryNavigation } from '../navigation'
-import { createExplorerSelection } from './selection'
+import { createEntrySelection } from '../../../domain-ui/library/selection'
 import { ExplorerTree } from './tree'
 
 export function LibraryExplorer(props: { api: MainClient; navigation: LibraryNavigation }) {
@@ -50,11 +50,7 @@ export function LibraryExplorer(props: { api: MainClient; navigation: LibraryNav
     }
   })
   const query = () => current().value,
-    selection = createExplorerSelection(api, query)
-  createEffect(
-    () => JSON.stringify([query().rules, query().search]),
-    () => selection.clear(),
-  )
+    selection = createEntrySelection(api, query)
   const [sortOpen, setSortOpen] = createSignal(false),
     [filterOpen, setFilterOpen] = createSignal(false)
   let filterButton!: HTMLButtonElement

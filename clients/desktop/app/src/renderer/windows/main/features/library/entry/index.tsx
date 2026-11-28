@@ -12,6 +12,11 @@ import {
 } from '@kisaki3/desktop-ui/menu'
 import { Tabs, TabList, Tab, TabPanel } from '@kisaki3/desktop-ui/tabs'
 import {
+  mdiCogOutline,
+  mdiPlaylistPlay,
+  mdiBookmarkOutline,
+  mdiClockOutline,
+  mdiNoteTextOutline,
   mdiInformationOutline,
   mdiGhostOutline,
   mdiAccountCircleOutline,
@@ -32,22 +37,23 @@ import { PageBar } from '../../../domain-ui/library/chrome'
 import { catalogIcon } from '../../../domain-ui/library/icons'
 import { EntryEditorDialog } from '../../../domain-ui/library/entry-editor'
 import type { EntryEdit, EditField } from '../../../domain-ui/library/entry-editor/model'
+import { observeVisit, type LibraryVisit } from '../navigation'
 import { DirectoryMenu } from '../holdings/directories'
 import { GameConfigs } from '../holdings/game'
-import { mdiCogOutline } from '@mdi/js'
 import { WorkParts } from '../parts'
-import { mdiPlaylistPlay } from '@mdi/js'
 import { Annotations } from '../records/annotations'
-import { mdiBookmarkOutline } from '@mdi/js'
 import { Activities } from '../records/activities'
 import { Notes } from '../records/notes'
-import { mdiClockOutline, mdiNoteTextOutline } from '@mdi/js'
 import { createEntryActions } from '../../../domain-ui/library/entry-actions'
 import { EntryHero } from './hero'
 import { EntryOverview } from './overview'
 import { relationTabs } from '../relations/views'
 import { RelationSection } from '../relations/section'
-import { CompletionHistory, CompletionEditor, type CompletionEdit } from '../records/completions'
+import { CompletionHistory } from '../records/completions'
+import {
+  CompletionEditor,
+  type CompletionEdit,
+} from '../../../domain-ui/library/completions/editor'
 
 const icons = {
   annotations: mdiBookmarkOutline,
@@ -62,7 +68,6 @@ const icons = {
   related: mdiLinkVariant,
   works: mdiBookshelf,
 }
-import { observeVisit, type LibraryVisit } from '../navigation'
 export function EntryDetail(props: {
   api: MainClient
   target: EntryRef
@@ -274,7 +279,7 @@ export function EntryDetail(props: {
               >
                 <Icon path={spoilers() ? mdiEyeOutline : mdiEyeOffOutline} />
               </Button>
-              <Menu>
+              <Menu onOpenChange={actions.openMenu}>
                 <MenuTrigger size="icon-sm" variant="secondary" aria-label={t('actions.more')}>
                   <Icon path={mdiDotsHorizontal} />
                 </MenuTrigger>

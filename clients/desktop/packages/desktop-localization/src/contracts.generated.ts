@@ -163,6 +163,10 @@ export interface MessageArguments {
   readonly "library.launchConfig.autoBackup": never
   readonly "library.launchConfig.retention": never
   readonly "library.launchConfig.addTarget": never
+  readonly "library.entryActions.addCollections": never
+  readonly "library.entryActions.removeCollections": never
+  readonly "library.entryActions.addTags": never
+  readonly "library.entryActions.removeTags": never
   readonly "library.entryActions.merge": never
   readonly "library.entryActions.survivor": never
   readonly "library.entryActions.mergeDetail": never

@@ -1,4 +1,4 @@
-import { createSignal, For, Show } from 'solid-js'
+import { createMemo, createSignal, For, Show } from 'solid-js'
 import { Button } from '@kisaki3/desktop-ui/button'
 import {
   Dialog,
@@ -13,10 +13,11 @@ import { SearchInput } from '@kisaki3/desktop-ui/input'
 import { mdiCheck } from '@mdi/js'
 import type { EntryRef, EntryRule } from '@kisaki3/desktop-contracts/library'
 import type { MainClient } from '../../../../infrastructure/api'
-import { errorMessage } from '../../../../infrastructure/notifications'
+import { errorMessage, reportError } from '../../../../infrastructure/notifications'
 import { catalogIcon } from './icons'
 import { libraryRead } from './read'
 import { browseQuery } from './query'
+import { createEntrySelection } from './selection'
 
 export function EntryPicker(props: {
   api: MainClient
@@ -31,32 +32,25 @@ export function EntryPicker(props: {
     t = api.t
   const [search, setSearch] = createSignal(''),
     [offset, setOffset] = createSignal(0)
-  const [chosen, setChosen] = createSignal(
-    new Map((props.initial ?? []).map((ref) => [ref.id, ref])),
-  )
+  const query = createMemo(() => ({
+    ...browseQuery({ type: 'library' }, props.types),
+    search: search(),
+  }))
+  const selection = createEntrySelection(api, query, props.initial)
   const result = libraryRead(api, ['entries'], (signal) =>
-    api.request(
-      signal,
-      'library.entries.list',
-      { ...browseQuery({ type: 'library' }, props.types), search: search() },
-      { offset: offset(), limit: 50 },
-    ),
+    api.request(signal, 'library.entries.list', query(), { offset: offset(), limit: 50 }),
   )
-  function pick(ref: EntryRef) {
+  function pick(event: MouseEvent, ref: EntryRef) {
     if (!props.multiple) {
       props.choose([ref])
       props.close()
       return
     }
-    setChosen((rows) => {
-      const next = new Map(rows)
-      if (next.has(ref.id)) {
-        next.delete(ref.id)
-      } else {
-        next.set(ref.id, ref)
-      }
-      return next
-    })
+    if (event.shiftKey) {
+      void selection.range({ ref }).catch(reportError)
+    } else {
+      selection.toggle({ ref })
+    }
   }
   return (
     <Dialog
@@ -88,7 +82,14 @@ export function EntryPicker(props: {
           <Show when={result.result()?.value}>
             {(page) => (
               <>
-                <div class="max-h-72 overflow-auto">
+                <div
+                  class="max-h-72 overflow-auto"
+                  onKeyDown={(event) => {
+                    if (props.multiple) {
+                      selection.keys(event)
+                    }
+                  }}
+                >
                   <For
                     each={page().items}
                     fallback={
@@ -99,11 +100,14 @@ export function EntryPicker(props: {
                       <Button
                         class="w-full justify-start"
                         variant="ghost"
-                        onClick={() => pick({ type: row.type, id: row.id })}
+                        aria-pressed={
+                          props.multiple ? `${selection.items().has(row.id)}` : undefined
+                        }
+                        onClick={(event) => pick(event, { type: row.type, id: row.id })}
                       >
                         <Icon path={catalogIcon[row.type]} />
                         <span class="me-auto truncate">{row.name}</span>
-                        <Show when={chosen().has(row.id)}>
+                        <Show when={selection.items().has(row.id)}>
                           <Icon path={mdiCheck} />
                         </Show>
                       </Button>
@@ -136,7 +140,9 @@ export function EntryPicker(props: {
         </DialogBody>
         <DialogFooter>
           <Show when={props.multiple}>
-            <span class="me-auto text-xs">{t('library.selection', { count: chosen().size })}</span>
+            <span class="me-auto text-xs">
+              {t('library.selection', { count: selection.items().size })}
+            </span>
           </Show>
           <Button variant="ghost" onClick={props.close}>
             {t('actions.cancel')}
@@ -144,7 +150,7 @@ export function EntryPicker(props: {
           <Show when={props.multiple}>
             <Button
               onClick={() => {
-                props.choose([...chosen().values()])
+                props.choose([...selection.items().values()])
                 props.close()
               }}
             >

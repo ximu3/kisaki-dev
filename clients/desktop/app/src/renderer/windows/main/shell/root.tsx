@@ -4,12 +4,9 @@ import { mdiBookshelf, mdiChartBoxOutline } from '@mdi/js'
 import { Icon } from '@kisaki3/desktop-ui/icon'
 import { libraryTarget } from '../features/library/targets'
 import { createLibraryNavigation } from '../features/library/navigation'
+import { LibraryVisibility } from '../domain-ui/library/selection'
 import { EntryEditorDialog } from '../domain-ui/library/entry-editor'
 import type { EntryEdit } from '../domain-ui/library/entry-editor/model'
-const Statistics = lazy(async () => ({
-  default: (await import('../features/statistics')).Statistics,
-}))
-const Library = lazy(async () => ({ default: (await import('../features/library')).Library }))
 import type { NativeViewTarget } from '@kisaki3/desktop-contracts/ui'
 import type { MainClient } from '../../../infrastructure/api'
 import { createCloseConfirmation } from '../../../infrastructure/dialogs/closing'
@@ -21,6 +18,10 @@ import { resolveDestination } from './navigation/destinations'
 import { createNavigation } from './navigation/navigate'
 import { createShellPreferences } from './preferences'
 import { NavigationRail } from './rail'
+const Statistics = lazy(async () => ({
+  default: (await import('../features/statistics')).Statistics,
+}))
+const Library = lazy(async () => ({ default: (await import('../features/library')).Library }))
 
 export function MainWindow(props: { api: MainClient }) {
   const { api } = props
@@ -116,66 +117,68 @@ export function MainWindow(props: { api: MainClient }) {
   })
 
   return (
-    <WindowEditors value={editors}>
-      <Notifications t={api.t} appearanceIssues={api.appearanceIssues} />
-      <div class="flex h-dvh flex-col overflow-hidden">
-        <header
-          data-platform={api.platform}
-          class="titlebar flex shrink-0 items-center bg-chrome text-chrome-foreground select-none"
-        >
-          <img
-            src="kisaki-app://window/brand/icon.png"
-            alt="Kisaki"
-            class="titlebar-brand pointer-events-none rounded-md border border-border"
-          />
-        </header>
+    <LibraryVisibility value={() => preferences.current()?.library.showNsfw}>
+      <WindowEditors value={editors}>
+        <Notifications t={api.t} appearanceIssues={api.appearanceIssues} />
+        <div class="flex h-dvh flex-col overflow-hidden">
+          <header
+            data-platform={api.platform}
+            class="titlebar flex shrink-0 items-center bg-chrome text-chrome-foreground select-none"
+          >
+            <img
+              src="kisaki-app://window/brand/icon.png"
+              alt="Kisaki"
+              class="titlebar-brand pointer-events-none rounded-md border border-border"
+            />
+          </header>
 
-        <div class="flex min-h-0 grow border-t border-border">
-          <NavigationRail
-            api={api}
-            pages={pages}
-            current={{ type: 'native', id: section() }}
-            selectPage={async (ref) => {
-              if (!(await editors.canLeave())) {
-                return false
-              }
-              if (ref.type !== 'native' || (ref.id !== 'statistics' && ref.id !== 'library')) {
-                return false
-              }
-              if (ref.id === 'library' && section() === 'library') {
-                library.open({ kind: 'showcase' })
-              }
-              selectSection(ref.id)
-              return true
-            }}
-            addEntry={() => setEdit({ field: 'create', type: 'game' })}
-            preferences={preferences.current()}
-            updatePreferences={preferences.update}
-            open={open}
-          />
-          <main class="min-w-0 grow overflow-hidden">
-            <div class="h-full" hidden={section() !== 'library'}>
-              <Library api={api} navigation={library} active={section() === 'library'} />
-            </div>
-            <Show when={visitedStats()}>
-              <div class="h-full" hidden={section() !== 'statistics'}>
-                <Statistics api={api} openWork={showEntry} />
+          <div class="flex min-h-0 grow border-t border-border">
+            <NavigationRail
+              api={api}
+              pages={pages}
+              current={{ type: 'native', id: section() }}
+              selectPage={async (ref) => {
+                if (!(await editors.canLeave())) {
+                  return false
+                }
+                if (ref.type !== 'native' || (ref.id !== 'statistics' && ref.id !== 'library')) {
+                  return false
+                }
+                if (ref.id === 'library' && section() === 'library') {
+                  library.open({ kind: 'showcase' })
+                }
+                selectSection(ref.id)
+                return true
+              }}
+              addEntry={() => setEdit({ field: 'create', type: 'game' })}
+              preferences={preferences.current()}
+              updatePreferences={preferences.update}
+              open={open}
+            />
+            <main class="min-w-0 grow overflow-hidden">
+              <div class="h-full" hidden={section() !== 'library'}>
+                <Library api={api} navigation={library} active={section() === 'library'} />
               </div>
-            </Show>
-          </main>
+              <Show when={visitedStats()}>
+                <div class="h-full" hidden={section() !== 'statistics'}>
+                  <Statistics api={api} openWork={showEntry} />
+                </div>
+              </Show>
+            </main>
+          </div>
         </div>
-      </div>
-      <For each={navigation.dialogs()}>{(dialog) => dialog.render()}</For>
-      <EntryEditorDialog
-        api={api}
-        edit={edit()}
-        close={() => setEdit(undefined)}
-        saved={(entry) => {
-          setEdit(undefined)
-          showEntry(entry)
-        }}
-      />
-      <confirmation.Content />
-    </WindowEditors>
+        <For each={navigation.dialogs()}>{(dialog) => dialog.render()}</For>
+        <EntryEditorDialog
+          api={api}
+          edit={edit()}
+          close={() => setEdit(undefined)}
+          saved={(entry) => {
+            setEdit(undefined)
+            showEntry(entry)
+          }}
+        />
+        <confirmation.Content />
+      </WindowEditors>
+    </LibraryVisibility>
   )
 }

@@ -48,6 +48,10 @@ export const libraryMessages = {
     addTarget: '登记启动文件',
   },
   entryActions: {
+    addCollections: '加入合集',
+    removeCollections: '从合集中移出',
+    addTags: '添加标签',
+    removeTags: '移除标签',
     merge: '合并条目',
     survivor: '保留的条目',
     mergeDetail: '将所选条目的资料和个人历史合并到这个条目。',
