@@ -1,17 +1,17 @@
-import { isDeepStrictEqual } from 'node:util'
-import { and, eq } from 'drizzle-orm'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type {
-  PartRef,
   FileAssociation,
   FileAssociationEdit,
+  PartRef,
   PreferredFileInput,
 } from '@kisaki3/desktop-contracts/library'
+import { and, eq } from 'drizzle-orm'
+import { isDeepStrictEqual } from 'node:util'
 import { parts } from '../../parts/tables'
 import { requirePart } from '../../parts/write'
 import type { LibraryDatabase, LibraryWrite } from '../../transaction'
-import { mediaFiles } from '../tables'
 import { type FileWork, fileChange, fileRow } from './record'
+import { mediaFiles } from './tables'
 
 export function directLinks(db: LibraryDatabase, work: FileWork, id: string): FileAssociation[] {
   return mediaFiles[work.type].parts.flatMap((kind) => {
@@ -188,4 +188,38 @@ export function editAssociations(
     fileChange(write, work, [id])
   }
   return true
+}
+
+export function mergePartLinks(db: LibraryDatabase, source: PartRef, target: PartRef) {
+  const table = parts[target.type].files
+  const found = db.select().from(table).where(eq(table.partId, target.id)).all()
+  const existing = new Set(found.map((link) => link.fileId))
+  const hasPreferred = found.some((link) => link.isPreferred)
+  const moving = db.select().from(table).where(eq(table.partId, source.id)).all()
+  for (const link of moving) {
+    const preferred = link.isPreferred && !hasPreferred
+    if (!existing.has(link.fileId)) {
+      db.insert(table)
+        .values({ ...link, partId: target.id, isPreferred: preferred })
+        .run()
+    } else if (preferred) {
+      db.update(table)
+        .set({ isPreferred: true })
+        .where(and(eq(table.fileId, link.fileId), eq(table.partId, target.id)))
+        .run()
+    }
+  }
+}
+
+export function changePartLinkKind(
+  write: LibraryWrite,
+  ref: PartRef<'animeEpisode' | 'animeExtra'>,
+  kind: 'animeEpisode' | 'animeExtra',
+) {
+  const from = parts[ref.type],
+    to = parts[kind]
+  const links = write.db.select().from(from.files).where(eq(from.files.partId, ref.id)).all()
+  for (const link of links) {
+    write.db.insert(to.files).values(link).run()
+  }
 }

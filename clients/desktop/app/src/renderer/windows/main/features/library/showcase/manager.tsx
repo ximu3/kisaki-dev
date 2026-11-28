@@ -1,34 +1,34 @@
-import { createSignal, For, Show } from 'solid-js'
+import type { ShowcasePreset, ShowcaseSection } from '@kisaki3/desktop-contracts/library'
 import { Button } from '@kisaki3/desktop-ui/button'
-import { Icon } from '@kisaki3/desktop-ui/icon'
 import {
   Dialog,
+  DialogBody,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogBody,
-  DialogFooter,
 } from '@kisaki3/desktop-ui/dialog'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import {
+  moveListItems,
   ReorderableList,
   ReorderableListItem,
-  moveListItems,
   type ListMove,
 } from '@kisaki3/desktop-ui/list'
 import {
-  mdiPlus,
-  mdiViewDashboardOutline,
-  mdiEyeOutline,
   mdiEyeOffOutline,
+  mdiEyeOutline,
   mdiPencilOutline,
+  mdiPlus,
   mdiTrashCanOutline,
+  mdiViewDashboardOutline,
 } from '@mdi/js'
-import type { ShowcasePreset, ShowcaseSection } from '@kisaki3/desktop-contracts/library'
+import { createSignal, For, Show } from 'solid-js'
 import type { MainClient } from '../../../../../infrastructure/api'
 import { createConfirmation } from '../../../../../infrastructure/dialogs/confirmation'
 import { reportError } from '../../../../../infrastructure/notifications'
 import { catalogIcon } from '../../../domain-ui/library/icons'
-import { PresetButton, PresetPicker } from '../../../domain-ui/library/presets'
+import { PresetButton, PresetPicker } from '../../../domain-ui/preset-picker'
 import { presetChoices, type SectionEdit } from './model'
 
 function sectionIcon(row: ShowcaseSection) {
@@ -43,6 +43,7 @@ function sectionIcon(row: ShowcaseSection) {
   const type = types.values().next().value
   return types.size === 1 && type ? catalogIcon[type] : mdiViewDashboardOutline
 }
+
 export function SectionManager(props: {
   api: MainClient
   sections: readonly ShowcaseSection[]

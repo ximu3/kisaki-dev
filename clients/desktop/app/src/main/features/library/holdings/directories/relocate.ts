@@ -1,32 +1,36 @@
-import { opendir, stat } from 'node:fs/promises'
-import { join } from 'node:path'
-import { and, eq } from 'drizzle-orm'
+import type { NativeFiles } from '#native'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
   parseDirectoryRelocationInput,
   parseWorkRef,
-  type WorkRef,
   type HoldingsRelocationResult,
   type RelocatedPathTarget,
+  type WorkRef,
 } from '@kisaki3/desktop-contracts/library'
-import type { NativeFiles } from '#native'
-import { prepareSubtitleMoves, applySubtitleMoves, type SubtitleMove } from '../anime/subtitles'
-import { prepareConfigMoves, applyConfigMoves, type ConfigMove } from '../game/configuration/paths'
+import { and, eq } from 'drizzle-orm'
+import { opendir, stat } from 'node:fs/promises'
+import { join } from 'node:path'
 import type { Storage } from '../../../../infrastructure/database'
 import type { DatabaseCall } from '../../../../infrastructure/database/executor'
 import { normalizeAbsolutePath } from '../../../../infrastructure/files'
 import { suffixBelow } from '../../../../infrastructure/files/registered-path'
 import type { ChangeAdmission, UseTarget } from '../../change-admission'
 import { commit, type CompleteWrite } from '../../transaction'
-import { directories } from '../tables'
-import { expectPositions, existingPosition, type Position } from '../paths'
-import type { holdingStorage } from '../storage'
-import { moveFile } from '../files/storage'
-import type { FileFacts } from '../files/record'
+import { fileError } from '../errors'
+import {
+  applySubtitleMoves,
+  prepareSubtitleMoves,
+  type SubtitleMove,
+} from '../files/anime/subtitles'
 import { inspectTarget } from '../files/inspect'
-import { fileError } from '../files/error'
+import type { FileFacts } from '../files/record'
 import { relocationStatus } from '../files/relocate'
-import type { launchConfigStorage } from '../game/configuration/storage'
+import { moveFile } from '../files/write'
+import { applyConfigMoves, prepareConfigMoves, type ConfigMove } from '../game/launch-configs/paths'
+import type { launchConfigStorage } from '../game/launch-configs/storage'
+import { existingPosition, expectPositions, type Position } from '../paths'
+import type { holdingStorage } from '../storage'
+import { directories } from './tables'
 
 type FileMove = { id: string; from: string; to: string; facts: FileFacts }
 
@@ -45,7 +49,9 @@ interface PreparedMove {
 }
 
 type PlanIssue = HoldingsRelocationResult['issues'][number]
+
 type Applied = HoldingsRelocationResult['updated'][number]
+
 export function relocationStorage(storage: Storage) {
   return {
     applyDirectoryMove: (work: WorkRef, plan: PreparedMove) =>

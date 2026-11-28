@@ -1,17 +1,56 @@
-import { isDeepStrictEqual } from 'node:util'
-import { and, eq, max } from 'drizzle-orm'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type {
   EntryRef,
+  MoveInput,
   NoteEntryChange,
   NoteOrderScope,
   ReorderInput,
-  MoveInput,
 } from '@kisaki3/desktop-contracts/library'
-import { entries, noteEntryLinks as links, notes } from '../../../../infrastructure/database/schema'
+import { and, eq, max } from 'drizzle-orm'
+import { isDeepStrictEqual } from 'node:util'
+import {
+  entries,
+  noteEntryLinks as links,
+  noteEntryLinks,
+  notes,
+} from '../../../../infrastructure/database/schema'
 import { requireEntry } from '../../entries/tables'
 import { orderedIds } from '../../ordering'
 import type { LibraryDatabase, LibraryWrite } from '../../transaction'
+
+export function moveNoteLinks(write: LibraryWrite, source: EntryRef, target: EntryRef) {
+  const { db } = write
+  let next =
+    (db
+      .select({ n: max(links.orderInEntry) })
+      .from(links)
+      .where(eq(links.entryId, target.id))
+      .get()!.n ?? -1) + 1
+  for (const row of db
+    .select()
+    .from(links)
+    .where(eq(links.entryId, source.id))
+    .orderBy(links.orderInEntry, links.noteId)
+    .all()) {
+    const where = and(eq(links.noteId, row.noteId), eq(links.entryId, target.id))
+    if (!db.select({ id: links.noteId }).from(links).where(where).get()) {
+      db.insert(links)
+        .values({ ...row, entryId: target.id, orderInEntry: next++ })
+        .run()
+    }
+    write.changes.push({ type: 'noteUpdated', noteId: row.noteId, entries: [source, target] })
+  }
+}
+
+export function unlinkEntryNotes(write: LibraryWrite, ref: EntryRef) {
+  for (const row of write.db
+    .select({ id: noteEntryLinks.noteId })
+    .from(noteEntryLinks)
+    .where(eq(noteEntryLinks.entryId, ref.id))
+    .all()) {
+    write.changes.push({ type: 'noteUpdated', noteId: row.id, entries: [ref] })
+  }
+}
 
 export function requireNote(db: LibraryDatabase, id: string) {
   const note = db.select().from(notes).where(eq(notes.id, id)).get()
@@ -20,6 +59,7 @@ export function requireNote(db: LibraryDatabase, id: string) {
   }
   return note
 }
+
 export function noteEntries(db: LibraryDatabase, id: string) {
   return db
     .select({ type: entries.type, id: entries.id })
@@ -29,6 +69,7 @@ export function noteEntries(db: LibraryDatabase, id: string) {
     .orderBy(links.orderInNote, links.entryId)
     .all()
 }
+
 export function setNoteEntries(
   write: LibraryWrite,
   id: string,
@@ -86,6 +127,7 @@ export function setNoteEntries(
   }
   return true
 }
+
 export function orderNoteLinks(
   write: LibraryWrite,
   scope: NoteOrderScope,

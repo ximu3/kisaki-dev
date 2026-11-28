@@ -1,13 +1,13 @@
-import { sql } from 'drizzle-orm'
 import {
-  partWorkType,
   partTypes,
-  type WorkRef,
+  partWorkType,
   type FileWorkType,
+  type WorkRef,
 } from '@kisaki3/desktop-contracts/library'
-import type { LibraryDatabase } from '../../transaction'
+import { sql } from 'drizzle-orm'
+import { chapterNumbers } from '../../parts/comic/volume-chapters/storage'
 import { parts } from '../../parts/tables'
-import { chapterNumbers } from '../comic/chapter-numbers'
+import type { LibraryDatabase } from '../../transaction'
 import type { Candidate } from './lookup'
 
 export function candidates(db: LibraryDatabase, work: WorkRef<FileWorkType>) {

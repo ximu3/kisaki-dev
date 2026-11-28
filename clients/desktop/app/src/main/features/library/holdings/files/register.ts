@@ -1,14 +1,15 @@
-import type { ExternalIdentity, FileCreateFields } from '@kisaki3/desktop-contracts/library'
 import type { NativeFiles } from '#native'
+import type { ExternalIdentity, FileCreateFields } from '@kisaki3/desktop-contracts/library'
 import type { DatabaseCall } from '../../../../infrastructure/database/executor'
 import { normalizeAbsolutePath } from '../../../../infrastructure/files'
 import type { ChangeAdmission } from '../../change-admission'
-import { existingPosition } from '../paths'
 import type { CompleteWrite } from '../../transaction'
+import type { Position } from '../paths'
+import { existingPosition } from '../paths'
 import type { holdingStorage } from '../storage'
-import type { FileWork } from './record'
-import type { fileCommands } from './commands'
 import { inspectTarget } from './inspect'
+import type { FileWork } from './record'
+import type { fileCommands } from './storage'
 
 export function createFileRegistration(
   call: DatabaseCall<
@@ -27,17 +28,15 @@ export function createFileRegistration(
     identities?: readonly ExternalIdentity[],
     discovery?: { id: string; path: string; definition: unknown },
   ) {
-    const path = normalizeAbsolutePath(input.path)
     const baseline = await call('libraryPositions', work)
-    const facts = await inspectTarget(work.type, path, resources, signal)
-    const found = await existingPosition(
-      baseline,
+    const { path, facts, found } = await prepareFileRegistration(
       work,
-      { kind: facts.kind === 'directory' ? 'pages' : 'file', path },
+      input.path,
+      baseline,
       native,
+      resources,
       signal,
     )
-    signal.throwIfAborted()
     const save = () =>
       call('registerFile', work, { ...input, path }, facts, baseline, found, identities, discovery)
     const result = complete(
@@ -50,4 +49,25 @@ export function createFileRegistration(
     }
     return result
   }
+}
+
+export async function prepareFileRegistration(
+  work: FileWork,
+  raw: string,
+  baseline: readonly Position[],
+  native: NativeFiles,
+  resources: string,
+  signal: AbortSignal,
+) {
+  const path = normalizeAbsolutePath(raw)
+  const facts = await inspectTarget(work.type, path, resources, signal)
+  const found = await existingPosition(
+    baseline,
+    work,
+    { kind: facts.kind === 'directory' ? 'pages' : 'file', path },
+    native,
+    signal,
+  )
+  signal.throwIfAborted()
+  return { path, facts, found }
 }

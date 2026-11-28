@@ -1,10 +1,10 @@
-import { createContext, createEffect, createSignal, onCleanup, useContext } from 'solid-js'
 import type {
   EntryGroupKey,
   EntryQuery,
   EntryRef,
   EntrySelection,
 } from '@kisaki3/desktop-contracts/library'
+import { createContext, createEffect, createSignal, onCleanup, useContext } from 'solid-js'
 import type { MainClient } from '../../../../../infrastructure/api'
 import { reportError } from '../../../../../infrastructure/notifications'
 
@@ -14,6 +14,7 @@ interface Instance {
   ref: EntryRef
   group?: EntryGroupKey
 }
+
 export function createEntrySelection(
   api: MainClient,
   query: () => EntryQuery,
@@ -128,5 +129,5 @@ export function createEntrySelection(
     e.preventDefault()
     e.stopPropagation()
   }
-  return { items, toggle, clear, range, context, activate, keys }
+  return { items, single, toggle, clear, range, context, activate, keys }
 }

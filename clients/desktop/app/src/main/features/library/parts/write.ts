@@ -1,22 +1,22 @@
-import { randomUUID } from 'node:crypto'
-import { isDeepStrictEqual } from 'node:util'
-import { and, eq } from 'drizzle-orm'
+import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
   partWorkType,
-  type PartRef,
-  type PartCreate,
-  type PartUpdate,
-  type PartDetails,
   type ExternalIdentity,
+  type PartCreate,
+  type PartDetails,
+  type PartRef,
+  type PartUpdate,
 } from '@kisaki3/desktop-contracts/library'
-import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import { and, eq } from 'drizzle-orm'
+import { randomUUID } from 'node:crypto'
+import { isDeepStrictEqual } from 'node:util'
 import { checkImages, imageIds, inlineImages } from '../attachments'
 import { requireEntry } from '../entries/tables'
 import { expectFields, type LibraryDatabase, type LibraryWrite } from '../transaction'
+import { insertAnimePart } from './anime/write'
+import { insertComicPart } from './comic/write'
 import { newPartRow } from './creation'
 import { insertNovelPart } from './novel'
-import { insertComicPart } from './comic/parts'
-import { insertAnimePart } from './anime/parts'
 import { parts } from './tables'
 
 export function getPart(db: LibraryDatabase, ref: PartRef): PartDetails | null {

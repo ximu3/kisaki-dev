@@ -1,5 +1,5 @@
-import { animeParts } from './anime/parts'
-import { comicParts } from './comic/parts'
+import { animeParts } from './anime/write'
+import { comicParts } from './comic/write'
 import { novelParts } from './novel'
 
 export const parts = { ...animeParts, ...comicParts, ...novelParts } as const

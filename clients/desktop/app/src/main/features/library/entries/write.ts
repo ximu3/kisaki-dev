@@ -1,6 +1,4 @@
-import { randomUUID } from 'node:crypto'
-import { isDeepStrictEqual } from 'node:util'
-import { eq, getTableColumns } from 'drizzle-orm'
+import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
   isWorkType,
   type EntryCreate,
@@ -9,21 +7,23 @@ import {
   type Evaluation,
   type ExternalIdentity,
 } from '@kisaki3/desktop-contracts/library'
-import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import { eq, getTableColumns } from 'drizzle-orm'
+import { randomUUID } from 'node:crypto'
+import { isDeepStrictEqual } from 'node:util'
 import {
   entries,
-  entryEvaluations,
   entryDescriptionAttachments,
+  entryEvaluations,
 } from '../../../infrastructure/database/schema'
 import { checkImages, imageIds, inlineImages } from '../attachments'
-import { expectFields, type LibraryWrite } from '../transaction'
 import { editEntryCollections } from '../organizers/collections/memberships'
 import { editEntryTags } from '../organizers/tags/applications'
-import { readWorkRecord, saveWorkRecord } from '../records/work'
 import { addCompletion } from '../records/completions/write'
-import { bindIdentity, readIdentities, unbindIdentity } from './identities'
-import { catalogTables, entryWhere, requireEntry } from './tables'
-import { readEvaluation } from './details'
+import { expectFields, type LibraryWrite } from '../transaction'
+import { bindIdentity, readIdentities, unbindIdentity } from './external-ids'
+import { readWorkRecord, saveWorkRecord } from './personal'
+import { readEvaluation } from './query/details'
+import { catalogTables, entryWhere } from './tables'
 
 function valuesFor(columns: object, values: object) {
   return Object.fromEntries(
@@ -215,21 +215,5 @@ export function updateEntry(write: LibraryWrite, input: EntryUpdate) {
   }
   if (changes.collections) {
     editEntryCollections(write, ref, changes.collections, expected?.collections)
-  }
-}
-
-export function changeBinding(
-  write: LibraryWrite,
-  ref: EntryRef,
-  identity: ExternalIdentity,
-  bind: boolean,
-) {
-  requireEntry(write.db, ref)
-  const changed = bind
-    ? bindIdentity(write.db, ref.id, identity)
-    : unbindIdentity(write.db, ref.id, identity)
-  if (changed) {
-    write.db.update(entries).set({ updatedAt: write.now }).where(eq(entries.id, ref.id)).run()
-    write.changes.push({ type: 'entryUpdated', entry: ref })
   }
 }

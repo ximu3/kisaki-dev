@@ -1,34 +1,37 @@
-import { and, eq, sql } from 'drizzle-orm'
+import type { Attachment } from '@kisaki3/desktop-contracts/attachments'
 import type {
   EntryCreate,
-  EntryUpdate,
-  EntryRef,
-  ExternalIdentity,
-  EntryQuery,
-  EntrySelection,
+  EntryGroupKey,
   EntryListOptions,
   EntryLocateOptions,
+  EntryQuery,
+  EntryRef,
+  EntrySelection,
+  EntryUpdate,
+  ExternalIdentity,
 } from '@kisaki3/desktop-contracts/library'
-import type { Attachment } from '@kisaki3/desktop-contracts/attachments'
-import type { Storage } from '../../../infrastructure/database'
+import { and, eq, sql } from 'drizzle-orm'
 import { adoptAttachments } from '../../../infrastructure/attachments/storage'
+import type { Storage } from '../../../infrastructure/database'
+import type { DatabaseCall } from '../../../infrastructure/database/executor'
 import {
-  entries,
-  tags,
-  entryTags,
-  collections,
   collectionMembers,
+  collections,
+  entries,
+  entryTags,
+  tags,
 } from '../../../infrastructure/database/schema'
 import { commit } from '../transaction'
-import { createEntry, updateEntry, changeBinding } from './write'
-import { findIdentity } from './identities'
-import { entryWhere } from './tables'
-import { readDetails } from './details'
-import { readInterval, locate, locateInGroups, groupCounts, selectEntries } from './query/read'
-import type { EntryGroupKey } from '@kisaki3/desktop-contracts/library'
+import { changeBinding, findIdentity } from './external-ids'
+import { readDetails } from './query/details'
+import { navigationStorage } from './query/locate-target'
+import { groupCounts, locate, locateInGroups, readInterval, selectEntries } from './query/read'
 import type { Visibility } from './query/relations'
+import { entryWhere } from './tables'
+import { createEntry, updateEntry } from './write'
 
-import { navigationStorage } from './navigation'
+export type EntryCall = DatabaseCall<ReturnType<typeof entryStorage>>
+
 export function entryStorage(storage: Storage) {
   return {
     ...navigationStorage(storage),

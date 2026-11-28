@@ -1,13 +1,15 @@
+import type { NativeFiles } from '#native'
+import type { FileWorkType, LibraryChange, WorkRef } from '@kisaki3/desktop-contracts/library'
 import { watch, type FSWatcher } from 'node:fs'
 import { dirname, join } from 'node:path'
-import type { FileWorkType, WorkRef, LibraryChange } from '@kisaki3/desktop-contracts/library'
-import type { NativeFiles } from '#native'
 import { registeredRelation } from '../../../../../infrastructure/files/registered-path'
-import type { createRefresh } from '../refresh'
+import type { UseTarget } from '../../../change-admission'
 import type { createRecognition } from '../../recognition'
+import type { createRefresh } from '../refresh'
 import type { WatchTarget } from './targets'
 
 type Work = WorkRef<FileWorkType>
+
 interface Binding {
   target: WatchTarget
   release?: () => void
@@ -376,8 +378,16 @@ export function watchHoldings(
     sync,
     libraryChanged,
     matchFile: ({ work, id }: { work: Work; id: string }) => schedule(work, id, 'recognition'),
-    rulesChanged,
-    fileReleased(type: string, id: string) {
+    rulesChanged(rule: { type: FileWorkType; id: string | null; definition: boolean }) {
+      if (rule.definition) {
+        rulesChanged(rule.type, rule.id)
+      }
+    },
+    released(ref: UseTarget) {
+      if (ref.type !== 'file') {
+        return
+      }
+      const { kind: type, id } = ref
       const target = watched.get(id)?.target
       if (target && target.work.type === type && recognition.consumeWaiting(id)) {
         schedule(target.work, id, 'recognition')

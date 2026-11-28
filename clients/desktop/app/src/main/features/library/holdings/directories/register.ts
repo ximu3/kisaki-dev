@@ -1,17 +1,16 @@
-import { stat } from 'node:fs/promises'
-import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import type { NativeFiles } from '#native'
 import type {
-  WorkRef,
   DirectoryCreateFields,
   ExternalIdentity,
+  WorkRef,
 } from '@kisaki3/desktop-contracts/library'
-import type { NativeFiles } from '#native'
 import type { DatabaseCall } from '../../../../infrastructure/database/executor'
-import { normalizeAbsolutePath } from '../../../../infrastructure/files'
-import { existingPosition } from '../paths'
 import type { CompleteWrite } from '../../transaction'
+import type { Position } from '../paths'
+import { existingPosition } from '../paths'
 import type { holdingStorage } from '../storage'
-import type { directoryCommands } from './commands'
+import { inspectDirectory } from './inspect'
+import type { directoryCommands } from './storage'
 
 export function createDirectoryRegistration(
   call: DatabaseCall<
@@ -28,24 +27,9 @@ export function createDirectoryRegistration(
     signal: AbortSignal,
     identities?: readonly ExternalIdentity[],
   ) {
-    const path = normalizeAbsolutePath(input.path)
-    const info = await stat(path).catch((cause: unknown) => {
-      throw new DesktopError('FileUnavailable', 'The selected directory could not be opened', {
-        cause,
-      })
-    })
-    if (!info.isDirectory()) {
-      throw new DesktopError('InvalidInput', 'Choose a directory')
-    }
+    const path = await inspectDirectory(input.path)
     const baseline = await call('libraryPositions', work)
-    const found = await existingPosition(
-      baseline,
-      work,
-      { kind: 'directory', path },
-      native,
-      signal,
-    )
-    signal.throwIfAborted()
+    const found = await findRegisteredDirectory(work, path, baseline, native, signal)
     const result = complete(
       await call('registerDirectory', work, { ...input, path }, baseline, found, identities),
     )
@@ -54,4 +38,16 @@ export function createDirectoryRegistration(
     }
     return result
   }
+}
+
+export async function findRegisteredDirectory(
+  work: WorkRef,
+  path: string,
+  baseline: readonly Position[],
+  native: NativeFiles,
+  signal: AbortSignal,
+) {
+  const found = await existingPosition(baseline, work, { kind: 'directory', path }, native, signal)
+  signal.throwIfAborted()
+  return found
 }

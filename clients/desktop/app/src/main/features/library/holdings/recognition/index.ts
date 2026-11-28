@@ -1,6 +1,4 @@
-import { basename, extname, relative, sep } from 'node:path'
-import { stat } from 'node:fs/promises'
-import { isDeepStrictEqual } from 'node:util'
+import type { NativeFiles } from '#native'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
   parseFileRecognitionDefinitionShape,
@@ -9,21 +7,23 @@ import {
   type FileRecognitionSource,
   type FileWorkType,
 } from '@kisaki3/desktop-contracts/library'
-import type { NativeFiles } from '#native'
+import { stat } from 'node:fs/promises'
+import { basename, extname, relative, sep } from 'node:path'
+import { isDeepStrictEqual } from 'node:util'
+import type { DatabaseCall } from '../../../../infrastructure/database/executor'
 import { registeredRelation as comparePaths } from '../../../../infrastructure/files/registered-path'
 import type { ChangeAdmission } from '../../change-admission'
-import type { DatabaseCall } from '../../../../infrastructure/database/executor'
 import type { CompleteWrite } from '../../transaction'
 import type { FileWork } from '../files/record'
 import type { Position } from '../paths'
-import { openEvaluator, RecognitionOutputError } from './evaluator'
-import { builtin } from './builtin'
-import { matchParts } from './match'
 import type { Candidate } from './lookup'
+import { builtin, matchParts } from './match'
+import { openEvaluator, RecognitionOutputError } from './rules/evaluate'
+import type { Condition } from './rules/output'
 import { partSet, type RecognitionPlan, type recognitionStorage } from './storage'
-import type { Condition } from './output'
 
 type Failure = Extract<FileRecognitionResult, { outcome: 'failed' }>
+
 function failed(
   reason: Failure['reason'],
   source: FileRecognitionSource | null,

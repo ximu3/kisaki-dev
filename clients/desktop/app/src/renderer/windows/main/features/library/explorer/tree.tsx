@@ -1,40 +1,42 @@
-import { createEffect, createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
-import { Menu, MenuTrigger, MenuContent } from '@kisaki3/desktop-ui/menu'
-import { createEntryActions } from '../../../domain-ui/library/entries/actions'
-import { Button } from '@kisaki3/desktop-ui/button'
-import { Icon } from '@kisaki3/desktop-ui/icon'
-import { VirtualRow, createVirtualizer } from '@kisaki3/desktop-ui/virtualization'
-import {
-  mdiChevronRight,
-  mdiCrosshairsGps,
-  mdiCheck,
-  mdiChevronUp,
-  mdiDotsHorizontal,
-} from '@mdi/js'
 import type {
   EntryGroupKey,
   EntryGroupResult,
   EntryListItem,
-  EntryRef,
   EntryQuery,
+  EntryRef,
 } from '@kisaki3/desktop-contracts/library'
+import { Button } from '@kisaki3/desktop-ui/button'
+import { Icon } from '@kisaki3/desktop-ui/icon'
+import { Menu, MenuContent, MenuTrigger } from '@kisaki3/desktop-ui/menu'
+import { createVirtualizer, VirtualRow } from '@kisaki3/desktop-ui/virtualization'
+import {
+  mdiCheck,
+  mdiChevronRight,
+  mdiChevronUp,
+  mdiCrosshairsGps,
+  mdiDotsHorizontal,
+} from '@mdi/js'
+import { createEffect, createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
 import type { MainClient } from '../../../../../infrastructure/api'
 import { errorMessage } from '../../../../../infrastructure/notifications'
 import { createViewQuery } from '../../../../../infrastructure/query'
-import { libraryRead } from '../../../domain-ui/library/read'
-import { catalogIcon } from '../../../domain-ui/library/icons'
-import { LibraryImage } from '../../../domain-ui/library/image'
+import { createEntryActions } from '../../../domain-ui/library/entries/actions'
 import { browseQuery, selectedTypes } from '../../../domain-ui/library/entries/query'
-import type { LibraryNavigation } from '../navigation'
 import type { createEntrySelection } from '../../../domain-ui/library/entries/selection'
+import { catalogIcon } from '../../../domain-ui/library/icons'
+import { LibraryImage } from '../../../domain-ui/library/images/image'
+import { libraryRead } from '../../../domain-ui/library/read'
+import type { LibraryNavigation } from '../navigation'
 
 const groupId = (group: EntryGroupKey) => (group.type === 'collection' ? group.id : null)
+
 interface Segment {
   group: EntryGroupResult
   start: number
   count: number
   expanded: boolean
 }
+
 function GroupHeader(props: {
   api: MainClient
   segment: Segment

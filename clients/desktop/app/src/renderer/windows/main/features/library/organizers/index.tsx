@@ -1,16 +1,16 @@
-import { createSignal, Show } from 'solid-js'
+import type { CollectionQuery, EntryQuery, TagQuery } from '@kisaki3/desktop-contracts/library'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { Icon } from '@kisaki3/desktop-ui/icon'
-import { mdiPlus, mdiFolderOutline, mdiTagOutline } from '@mdi/js'
-import type { CollectionQuery, TagQuery, EntryQuery } from '@kisaki3/desktop-contracts/library'
+import { mdiFolderOutline, mdiPlus, mdiTagOutline } from '@mdi/js'
+import { createSignal, Show } from 'solid-js'
 import type { MainClient } from '../../../../../infrastructure/api'
-import { PageBar } from '../../../domain-ui/library/chrome'
-import { readCards, locateCard, CardShelf } from '../../../domain-ui/library/cards'
+import { CardShelf, locateCard, readCards } from '../../../domain-ui/library/cards'
 import { browseQuery } from '../../../domain-ui/library/entries/query'
-import { OrganizerEditor, type OrganizerEdit } from './editor'
-
-import { OrganizerManager } from './manager'
+import { PageBar } from '../../../domain-ui/page-bar'
 import type { LibraryVisit } from '../navigation'
+import { OrganizerEditor, type OrganizerEdit } from './editor'
+import { OrganizerManager } from './manager'
+
 export function Organizers(props: {
   api: MainClient
   visit?: LibraryVisit | undefined

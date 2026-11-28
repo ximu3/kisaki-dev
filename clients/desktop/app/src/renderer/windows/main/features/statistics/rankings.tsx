@@ -1,20 +1,21 @@
-import { createMemo, createSignal, For, Show } from 'solid-js'
-import { Icon } from '@kisaki3/desktop-ui/icon'
-import { mdiFolderOutline } from '@mdi/js'
 import {
   workTypes,
-  type ActivityStatistics,
   type ActivityQuery,
+  type ActivityStatistics,
   type WorkRef,
 } from '@kisaki3/desktop-contracts/library'
+import { Icon } from '@kisaki3/desktop-ui/icon'
+import { mdiFolderOutline } from '@mdi/js'
+import { createMemo, createSignal, For, Show } from 'solid-js'
 import type { MainClient } from '../../../../infrastructure/api'
-import { libraryRead } from '../../domain-ui/library/read'
-import { LibraryImage } from '../../domain-ui/library/image'
+import { errorMessage } from '../../../../infrastructure/notifications'
 import { browseQuery } from '../../domain-ui/library/entries/query'
 import { catalogIcon } from '../../domain-ui/library/icons'
-import { errorMessage } from '../../../../infrastructure/notifications'
+import { LibraryImage } from '../../domain-ui/library/images/image'
+import { libraryRead } from '../../domain-ui/library/read'
 import type { WorkLabels } from './hero'
 import { Segment } from './series'
+
 interface Ranked {
   name: string
   image: string | null
@@ -23,6 +24,7 @@ interface Ranked {
   activityCount: number
   open: () => void
 }
+
 export function Rankings(props: {
   api: MainClient
   stats: ActivityStatistics

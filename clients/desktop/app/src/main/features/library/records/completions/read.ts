@@ -1,13 +1,14 @@
-import { and, count, desc, eq, sql } from 'drizzle-orm'
-import type { ListOptions } from '@kisaki3/desktop-contracts/operations'
-import type { WorkCompletion, WorkRef } from '@kisaki3/desktop-contracts/library'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import type { WorkCompletion, WorkRef } from '@kisaki3/desktop-contracts/library'
+import type { ListOptions } from '@kisaki3/desktop-contracts/operations'
+import { and, count, desc, eq, sql } from 'drizzle-orm'
 import {
   entries,
   workCompletionRecords as records,
+  workCompletionRecords,
 } from '../../../../infrastructure/database/schema'
-import type { LibraryDatabase } from '../../transaction'
 import { entryWhere } from '../../entries/tables'
+import type { LibraryDatabase } from '../../transaction'
 
 function owner(db: LibraryDatabase, work: WorkRef, showSensitive: boolean) {
   return db
@@ -73,4 +74,17 @@ export function listCompletions(
     items: rows.map((row) => saved(work, row)),
     total: db.select({ n: count() }).from(records).where(where).get()!.n,
   }
+}
+
+export function completionTotal(db: LibraryDatabase, id: string, additional: number) {
+  const { detailed } = db
+    .select({ detailed: count() })
+    .from(workCompletionRecords)
+    .where(eq(workCompletionRecords.workId, id))
+    .get()!
+  const total = detailed + additional
+  if (!Number.isSafeInteger(total)) {
+    throw new DesktopError('InvalidInput', 'Completion total exceeds the supported integer range')
+  }
+  return total
 }

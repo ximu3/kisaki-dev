@@ -1,17 +1,23 @@
-import { and, eq, inArray, min } from 'drizzle-orm'
 import { tagNameKey, type OrganizerMerge } from '@kisaki3/desktop-contracts/library'
-import { collections, tags, entryTags } from '../../../infrastructure/database/schema'
+import { and, eq } from 'drizzle-orm'
 import type { Storage } from '../../../infrastructure/database'
+import { collections, tags } from '../../../infrastructure/database/schema'
+import { redirectShowcaseQueries } from '../showcase/queries'
+import { mergeText } from '../text'
 import { commit } from '../transaction'
-import { redirectQueries } from '../entries/identity/queries'
-import { mergeText } from '../entries/identity/fields'
 import {
-  organizerMembers,
-  replaceMembers,
-  requireOrganizer,
-  type Organizer,
-} from './members/storage'
+  changeCollectionMembers,
+  readCollectionMembers,
+  requireManualCollection,
+} from './collections/memberships'
+import { redirectCollectionRules } from './collections/rules'
 import { storeDescription } from './description'
+import {
+  changeTagEntries,
+  keepMergedTagPositions,
+  readTagEntries,
+  requireTag,
+} from './tags/applications'
 
 export function organizerMergeStorage(storage: Storage) {
   return {
@@ -23,24 +29,24 @@ export function organizerMergeStorage(storage: Storage) {
           and(eq(tags.nameKey, tagNameKey(name)), sensitive ? undefined : eq(tags.isNsfw, false)),
         )
         .get() ?? null,
-    mergeOrganizers: (kind: Organizer, input: OrganizerMerge) =>
+    mergeOrganizers: (kind: 'tag' | 'collection', input: OrganizerMerge) =>
       commit(storage, (write) => {
-        const { db } = write,
-          { sourceIds, targetId } = input,
-          kept = requireOrganizer(db, kind, targetId)
-        const sources = sourceIds.map((id) => requireOrganizer(db, kind, id))
+        const { db } = write
+        const requireOrganizer = kind === 'collection' ? requireManualCollection : requireTag
+        const readMembers = kind === 'collection' ? readCollectionMembers : readTagEntries
+        const { sourceIds, targetId } = input,
+          kept = requireOrganizer(db, targetId)
+        const sources = sourceIds.map((id) => requireOrganizer(db, id))
         let desc = kept.description,
           cover = 'primaryImageId' in kept ? kept.primaryImageId : null
-        const desired = new Map(
-          organizerMembers(db, kind, targetId).items.map((row) => [row.entry.id, row]),
-        )
+        const desired = new Map(readMembers(db, targetId).items.map((row) => [row.entry.id, row]))
         const original = new Set(desired.keys())
         for (const source of sources) {
           desc ||= source.description
           if (!cover && 'primaryImageId' in source) {
             cover = source.primaryImageId
           }
-          for (const row of organizerMembers(db, kind, source.id).items) {
+          for (const row of readMembers(db, source.id).items) {
             const before = desired.get(row.entry.id)
             desired.set(
               row.entry.id,
@@ -55,24 +61,14 @@ export function organizerMergeStorage(storage: Storage) {
             )
           }
         }
-        replaceMembers(write, kind, targetId, { type: 'replace', items: [...desired.values()] })
+        const change = { type: 'replace', items: [...desired.values()] } as const
+        if (kind === 'collection') {
+          changeCollectionMembers(write, targetId, change)
+        } else {
+          changeTagEntries(write, targetId, change)
+        }
         if (kind === 'tag') {
-          for (const entryId of desired.keys()) {
-            if (!original.has(entryId)) {
-              const where = eq(entryTags.entryId, entryId),
-                slot = db
-                  .select({ order: min(entryTags.orderInEntry) })
-                  .from(entryTags)
-                  .where(and(where, inArray(entryTags.tagId, sourceIds)))
-                  .get()!.order
-              if (slot !== null) {
-                db.update(entryTags)
-                  .set({ orderInEntry: slot })
-                  .where(and(where, eq(entryTags.tagId, targetId)))
-                  .run()
-              }
-            }
-          }
+          keepMergedTagPositions(db, sourceIds, targetId, desired.keys(), original)
         }
         if (desc !== kept.description) {
           storeDescription(write, kind, targetId, desc)
@@ -95,7 +91,13 @@ export function organizerMergeStorage(storage: Storage) {
         }
         const table = kind === 'tag' ? tags : collections
         for (const row of sources) {
-          redirectQueries(
+          redirectCollectionRules(
+            write,
+            { type: kind, id: row.id },
+            { type: kind, id: targetId },
+            kept.name,
+          )
+          redirectShowcaseQueries(
             write,
             { type: kind, id: row.id },
             { type: kind, id: targetId },

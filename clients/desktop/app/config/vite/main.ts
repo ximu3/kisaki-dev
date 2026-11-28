@@ -8,7 +8,7 @@ export default defineConfig({
       entry: {
         entry: 'src/main/entry.ts',
         database: 'src/main/app/database-worker.ts',
-        'file-rules': 'src/main/features/library/holdings/recognition/worker.ts',
+        'file-rules': 'src/main/features/library/holdings/recognition/rules/worker.ts',
       },
       formats: ['es'],
     },

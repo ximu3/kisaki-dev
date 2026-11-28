@@ -1,25 +1,25 @@
-import { createMemo, createSignal, For, Show } from 'solid-js'
-import { Icon } from '@kisaki3/desktop-ui/icon'
+import type { EntryRef } from '@kisaki3/desktop-contracts/library'
 import { Button } from '@kisaki3/desktop-ui/button'
 import {
   Dialog,
+  DialogBody,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogBody,
-  DialogFooter,
 } from '@kisaki3/desktop-ui/dialog'
-import { mdiPlus, mdiPencilOutline, mdiTrashCanOutline } from '@mdi/js'
-import type { EntryRef } from '@kisaki3/desktop-contracts/library'
-import type { MainClient } from '../../../../../infrastructure/api'
-import { reportError, errorMessage } from '../../../../../infrastructure/notifications'
-import { createConfirmation } from '../../../../../infrastructure/dialogs/confirmation'
-import { libraryRead } from '../read'
-import { FieldSection } from '../chrome'
-import { CatalogCard } from '../cards'
+import { Icon } from '@kisaki3/desktop-ui/icon'
+import { mdiPencilOutline, mdiPlus, mdiTrashCanOutline } from '@mdi/js'
+import { createMemo, createSignal, For, Show } from 'solid-js'
 import type { LibraryFact } from '../../../../../../shared/window-api/library'
-import { relationViews, roleOf, relatedRef, type RelationTab, type RelationView } from './views'
+import type { MainClient } from '../../../../../infrastructure/api'
+import { createConfirmation } from '../../../../../infrastructure/dialogs/confirmation'
+import { errorMessage, reportError } from '../../../../../infrastructure/notifications'
+import { CatalogCard } from '../cards'
+import { FieldSection } from '../fields/section'
+import { libraryRead } from '../read'
 import { RelationEditor, type RelationEdit } from './editor'
+import { relatedRef, relationViews, roleOf, type RelationTab, type RelationView } from './views'
 
 export function RelationSection(props: {
   api: MainClient

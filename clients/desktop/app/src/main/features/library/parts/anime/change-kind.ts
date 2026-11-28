@@ -1,14 +1,16 @@
-import { eq, sql } from 'drizzle-orm'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
   parsePartCreate,
-  type PartRef,
   type PartKindChange,
+  type PartRef,
 } from '@kisaki3/desktop-contracts/library'
+import { eq } from 'drizzle-orm'
+import { changePartLinkKind } from '../../holdings/files/associations'
+import { movePartActivities } from '../../records/activities/references'
 import { expectFields, type LibraryWrite } from '../../transaction'
-import { parts } from '../tables'
-import { getPart, requirePart, insertPart } from '../write'
 import { releasePartImages } from '../images'
+import { parts } from '../tables'
+import { getPart, insertPart, requirePart } from '../write'
 
 export function correctAnimeKind(
   write: LibraryWrite,
@@ -16,8 +18,7 @@ export function correctAnimeKind(
   input: PartKindChange,
 ) {
   const current = requirePart(write.db, ref)
-  const from = parts[ref.type],
-    to = parts[input.target.kind]
+  const from = parts[ref.type]
   expectFields(current.data, input.expected)
   const data: Record<string, unknown> = {
     ...current.data,
@@ -40,13 +41,8 @@ export function correctAnimeKind(
     completed: current.completed,
   })
   insertPart(write, create, ref.id, current.createdAt)
-  const links = write.db.select().from(from.files).where(eq(from.files.partId, ref.id)).all()
-  for (const link of links) {
-    write.db.insert(to.files).values(link).run()
-  }
-  write.db.run(
-    sql`update ${from.activity} set ${sql.identifier(from.activityPart.name)}=null,${sql.identifier(to.activityPart.name)}=${ref.id} where ${from.activityPart}=${ref.id}`,
-  )
+  changePartLinkKind(write, ref, input.target.kind)
+  movePartActivities(write, ref, { type: input.target.kind, id: ref.id })
   releasePartImages(write, current)
   write.db.delete(from.table).where(eq(from.table.id, ref.id)).run()
   write.changes.splice(firstEvent)

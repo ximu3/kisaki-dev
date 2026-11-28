@@ -1,19 +1,21 @@
-import { eq } from 'drizzle-orm'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import { eq } from 'drizzle-orm'
 import type { Storage } from '../../../infrastructure/database'
 import { collections, tags } from '../../../infrastructure/database/schema'
 import { commit } from '../transaction'
+import { collectionMembersStorage } from './collections/memberships'
 import { collectionStorage } from './collections/storage'
-import { tagStorage } from './tags/storage'
 import { storeDescription } from './description'
-import { organizerMemberStorage } from './members/storage'
 import { organizerMergeStorage } from './merge'
+import { tagEntriesStorage } from './tags/applications'
+import { tagStorage } from './tags/storage'
 
 export function organizerStorage(storage: Storage) {
   return {
     ...collectionStorage(storage),
     ...tagStorage(storage),
-    ...organizerMemberStorage(storage),
+    ...collectionMembersStorage(storage),
+    ...tagEntriesStorage(storage),
     ...organizerMergeStorage(storage),
     deleteOrganizer(kind: 'collection' | 'tag', id: string) {
       return commit(storage, (write) => {

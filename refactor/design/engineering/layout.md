@@ -385,19 +385,24 @@ clients/desktop/app/src/main/
 │   │   │   └── annotations/
 │   │   ├── holdings/
 │   │   │   ├── game/
-│   │   │   │   ├── configuration/
-│   │   │   │   └── backups/
-│   │   │   ├── anime/
-│   │   │   ├── comic/
-│   │   │   ├── novel/
-│   │   │   ├── reading/
+│   │   │   │   ├── launch-configs/
+│   │   │   │   └── backups.ts
 │   │   │   ├── directories/
 │   │   │   ├── files/
+│   │   │   │   ├── anime/
+│   │   │   │   └── inspect/
 │   │   │   ├── recognition/
-│   │   │   └── maintenance/
+│   │   │   │   ├── anime.ts
+│   │   │   │   ├── comic.ts
+│   │   │   │   ├── novel.ts
+│   │   │   │   ├── profiles/
+│   │   │   │   └── rules/
+│   │   │   ├── registration/
+│   │   │   ├── maintenance/
+│   │   │   └── preferences.ts
 │   │   ├── showcase/
-│   │   ├── write-graph.ts
-│   │   ├── merge.ts
+│   │   ├── write-graph/
+│   │   ├── merge/
 │   │   ├── delete.ts
 │   │   └── search.ts
 │   ├── metadata/
@@ -515,9 +520,10 @@ clients/desktop/app/src/renderer/
 │   │   │   │   │   ├── picker.tsx
 │   │   │   │   │   ├── query.ts
 │   │   │   │   │   └── selection.ts
-│   │   │   │   ├── activities/
+│   │   │   │   ├── parts/
+│   │   │   │   ├── holdings/
+│   │   │   │   ├── records/
 │   │   │   │   ├── cards/
-│   │   │   │   ├── completions/
 │   │   │   │   ├── fields/
 │   │   │   │   └── relations/
 │   │   │   ├── tasks/

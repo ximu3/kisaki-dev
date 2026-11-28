@@ -1,21 +1,37 @@
 import type {
-  Note,
-  NoteSummary,
-  NoteQuery,
-  NoteCreate,
-  NoteUpdate,
+  ActivitiesApi,
+  Activity,
+  ActivityCreate,
+  ActivityQuery,
+  ActivityStatistics,
+  ActivityUpdate,
+  CompletionCreate,
+  CompletionCreateItem,
+  CompletionsApi,
+  CompletionStatistics,
+  CompletionUpdate,
   EntryRef,
-  AnnotationRef,
+  ReorderInput,
+  WorkCompletion,
+  WorkRef,
+} from '@kisaki3/desktop-contracts/library'
+import type { ListOptions, ListResult, NonEmptyArray } from '@kisaki3/desktop-contracts/operations'
+
+import type {
   Annotation,
+  AnnotationCreate,
   AnnotationQuery,
+  AnnotationRef,
   AnnotationSummary,
   AnnotationUpdate,
-  AnnotationCreate,
-  WorkType,
-  ReorderInput,
+  Note,
+  NoteCreate,
   NoteOrderScope,
+  NoteQuery,
+  NoteSummary,
+  NoteUpdate,
+  WorkType,
 } from '@kisaki3/desktop-contracts/library'
-import type { ListOptions, ListResult } from '@kisaki3/desktop-contracts/operations'
 
 export interface RecordsWindowApi {
   'library.notes.list'(input: NoteQuery, range: ListOptions): ListResult<NoteSummary>
@@ -46,4 +62,25 @@ export interface RecordsWindowApi {
     images: readonly string[],
   ): void
   'library.annotations.delete'(ref: AnnotationRef): void
+  'library.activities.list'(query: ActivityQuery, range: ListOptions): ListResult<Activity>
+  'library.activities.get'(work: WorkRef, id: string): Activity | null
+  'library.activities.statistics'(
+    query: Parameters<ActivitiesApi['statistics']>[0],
+  ): ActivityStatistics
+  'library.activities.create'(input: ActivityCreate): string
+  'library.activities.update'(work: WorkRef, id: string, input: ActivityUpdate): void
+  'library.activities.delete'(work: WorkRef, ids: readonly string[]): void
+  'library.completions.statistics'(
+    query: Parameters<CompletionsApi['statistics']>[0],
+  ): CompletionStatistics
+  'library.completions.list'(work: WorkRef, options: ListOptions): ListResult<WorkCompletion>
+  'library.completions.get'(work: WorkRef, id: string): WorkCompletion | null
+  'library.completions.create'(work: WorkRef, input: CompletionCreate): string
+  'library.completions.recordCurrent'(work: WorkRef, input: CompletionCreate): string
+  'library.completions.recordCurrentMany'(
+    input: NonEmptyArray<CompletionCreateItem>,
+  ): readonly { readonly work: WorkRef; readonly completionId: string }[]
+  'library.completions.createMany'(input: NonEmptyArray<CompletionCreateItem>): readonly string[]
+  'library.completions.update'(work: WorkRef, id: string, input: CompletionUpdate): void
+  'library.completions.delete'(work: WorkRef, id: string): void
 }

@@ -2,11 +2,11 @@ import type { NativeFiles } from '#native'
 import type { DatabaseCall } from '../../../../infrastructure/database/executor'
 import type { ChangeAdmission } from '../../change-admission'
 import type { CompleteWrite } from '../../transaction'
-import type { holdingStorage } from '../storage'
-import type { launchConfigStorage } from '../game/configuration/storage'
 import { createDirectoryRegistration } from '../directories/register'
 import { createFileRegistration } from '../files/register'
-import { createGameRegistration } from '../game/configuration/register'
+import { createGameRegistration } from '../game/launch-configs/register'
+import type { launchConfigStorage } from '../game/launch-configs/storage'
+import type { holdingStorage } from '../storage'
 
 export function createRegistration(
   call: DatabaseCall<ReturnType<typeof holdingStorage> & ReturnType<typeof launchConfigStorage>>,

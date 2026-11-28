@@ -1,12 +1,12 @@
-import { readdir, realpath } from 'node:fs/promises'
-import { join, relative, sep, extname } from 'node:path'
+import type { NativeFiles } from '#native'
 import { DesktopError, type ErrorSummary } from '@kisaki3/desktop-contracts/errors'
 import type { DirectoryDiscoveryDefinition, FileWorkType } from '@kisaki3/desktop-contracts/library'
-import type { NativeFiles } from '#native'
-import { fileError } from '../files/error'
-import { registeredRelation as comparePaths } from '../../../../infrastructure/files/registered-path'
+import { readdir, realpath } from 'node:fs/promises'
+import { extname, join, relative, sep } from 'node:path'
 import { matchesFilters } from '../../../../infrastructure/files/matching'
-import { pictureName } from '../reading/inspect'
+import { registeredRelation as comparePaths } from '../../../../infrastructure/files/registered-path'
+import { fileError } from '../errors'
+import { pictureName } from '../files/inspect/book'
 import type { Position } from '../paths'
 
 const videos = new Set(
@@ -14,7 +14,9 @@ const videos = new Set(
     ' ',
   ),
 )
+
 const books = new Set('.epub .fb2 .pdf .mobi .azw .azw3 .txt .zip .cbz .rar .cbr'.split(' '))
+
 export async function discover(
   type: FileWorkType,
   root: string,

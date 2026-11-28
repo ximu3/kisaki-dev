@@ -1,32 +1,33 @@
-import { isDeepStrictEqual } from 'node:util'
-import { eq, sql } from 'drizzle-orm'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import type {
+  FilePreferenceChangeByType,
+  FilePreferencesByType,
+  FileWorkType,
+  HoldingsPreferencesApi,
+  UsagePreferenceTarget,
+  WorkRef,
+} from '@kisaki3/desktop-contracts/library'
+import type { CallOptions, StoredValue } from '@kisaki3/desktop-contracts/operations'
 import {
   parseAnimePlaybackPreferences,
-  parseReadingPreferences,
   parsePlaybackOverrideChange,
   parseReadingOverrideChange,
-  type PreferencesSnapshot,
-  type UsageOverride,
+  parseReadingPreferences,
   type PlaybackOverrideChange,
+  type PreferencesSnapshot,
   type ReadingOverrideChange,
+  type UsageOverride,
 } from '@kisaki3/desktop-contracts/preferences'
-import type {
-  FileWorkType,
-  FilePreferencesByType,
-  UsagePreferenceTarget,
-  HoldingsPreferencesApi,
-  WorkRef,
-  FilePreferenceChangeByType,
-} from '@kisaki3/desktop-contracts/library'
-import type { StoredValue, CallOptions } from '@kisaki3/desktop-contracts/operations'
+import { eq, sql } from 'drizzle-orm'
+import { isDeepStrictEqual } from 'node:util'
 import type { Storage } from '../../../infrastructure/database'
+import type { DatabaseCall } from '../../../infrastructure/database/executor'
+import * as s from '../../../infrastructure/database/schema'
 import {
   animePlaybackPreferences,
   comicReadingPreferences,
   novelReadingPreferences,
 } from '../../../infrastructure/database/schema'
-import type { DatabaseCall } from '../../../infrastructure/database/executor'
 import { requireEntry } from '../entries/tables'
 import {
   commit,
@@ -35,9 +36,21 @@ import {
   type LibraryDatabase,
   type LibraryWrite,
 } from '../transaction'
-import { playbackChoiceStorage } from './anime/playback-choices'
-import { mediaFiles } from './tables'
+import { playbackChoiceStorage } from './files/anime/playback-choices'
 import { fileChange, fileRow, type FileWork } from './files/record'
+import { mediaFiles } from './files/tables'
+
+export function movePreferences(write: LibraryWrite, source: FileWork, target: FileWork) {
+  const { db } = write
+  const table = {
+    anime: s.animePlaybackPreferences,
+    comic: s.comicReadingPreferences,
+    novel: s.novelReadingPreferences,
+  }[target.type]
+  if (!db.select({ id: table.ownerId }).from(table).where(eq(table.ownerId, target.id)).get()) {
+    db.update(table).set({ ownerId: target.id }).where(eq(table.ownerId, source.id)).run()
+  }
+}
 
 const overrides = {
   anime: animePlaybackPreferences,
@@ -46,7 +59,9 @@ const overrides = {
 }
 
 type Settings = FilePreferencesByType[FileWorkType]
+
 type Change = PlaybackOverrideChange | ReadingOverrideChange
+
 function target(raw: UsagePreferenceTarget): UsagePreferenceTarget {
   if (raw?.type === 'work' && Object.keys(raw).length === 1) {
     return raw

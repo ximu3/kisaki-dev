@@ -1,17 +1,17 @@
 import { DesktopError, type ErrorSummary } from '@kisaki3/desktop-contracts/errors'
 import {
-  parseWorkRef,
   parseLocalContentInput,
   parseLocalContentRegistrationOptions,
-  type WorkType,
-  type WorkRef,
+  parseWorkRef,
   type LocalContentRegistrationResult,
+  type WorkRef,
+  type WorkType,
 } from '@kisaki3/desktop-contracts/library'
 import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
-import type { createRecognition } from '../recognition'
+import { fileError } from '../errors'
 import type { createRefresh } from '../maintenance/refresh'
-import { fileError } from '../files/error'
-import { fileWork, callSignal } from '../work'
+import type { createRecognition } from '../recognition'
+import { callSignal, fileWork } from '../work'
 import type { createRegistration } from './queue'
 
 export function localContentRegistration(

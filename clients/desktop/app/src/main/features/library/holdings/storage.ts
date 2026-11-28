@@ -1,10 +1,10 @@
 import type { WorkRef } from '@kisaki3/desktop-contracts/library'
 import type { Storage } from '../../../infrastructure/database'
-import { gameBackupRecoveries } from '../../../infrastructure/database/schema'
-import { positions } from './paths'
+import { directoryCommands } from './directories/storage'
+import { fileCommands } from './files/storage'
+import { recoveryPaths } from './game/backups'
 import { watchTargets } from './maintenance/watch/targets'
-import { directoryCommands } from './directories/commands'
-import { fileCommands } from './files/commands'
+import { positions } from './paths'
 
 export function holdingStorage(storage: Storage) {
   return {
@@ -12,11 +12,6 @@ export function holdingStorage(storage: Storage) {
     ...fileCommands(storage),
     watchTargets: () => storage.transaction(watchTargets),
     libraryPositions: (work: WorkRef) => storage.transaction((db) => positions(db, work)),
-    recoveryPaths: () =>
-      storage.db
-        .select({ path: gameBackupRecoveries.workspacePath })
-        .from(gameBackupRecoveries)
-        .all()
-        .map((row) => row.path),
+    recoveryPaths: () => recoveryPaths(storage.db),
   }
 }

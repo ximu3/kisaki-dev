@@ -1,52 +1,38 @@
-import { createSignal, For, Show } from 'solid-js'
-import type { JSX } from '@solidjs/web'
-import { Button } from '@kisaki3/desktop-ui/button'
+import type { EntryRef } from '@kisaki3/desktop-contracts/library'
+import { isWorkType } from '@kisaki3/desktop-contracts/library'
 import { Icon } from '@kisaki3/desktop-ui/icon'
+import { Tab, TabList, TabPanel, Tabs } from '@kisaki3/desktop-ui/tabs'
 import {
-  Menu,
-  MenuContent,
-  MenuItem,
-  MenuRadioItem,
-  MenuSeparator,
-  MenuTrigger,
-} from '@kisaki3/desktop-ui/menu'
-import { Tabs, TabList, Tab, TabPanel } from '@kisaki3/desktop-ui/tabs'
-import {
-  mdiCogOutline,
-  mdiPlaylistPlay,
-  mdiBookmarkOutline,
-  mdiClockOutline,
-  mdiNoteTextOutline,
-  mdiInformationOutline,
-  mdiGhostOutline,
   mdiAccountCircleOutline,
-  mdiOfficeBuildingOutline,
-  mdiLinkVariant,
+  mdiBookmarkOutline,
   mdiBookshelf,
-  mdiDotsHorizontal,
-  mdiEyeOutline,
-  mdiEyeOffOutline,
-  mdiHeart,
-  mdiHeartOutline,
+  mdiClockOutline,
+  mdiCogOutline,
+  mdiGhostOutline,
+  mdiInformationOutline,
+  mdiLinkVariant,
+  mdiNoteTextOutline,
+  mdiOfficeBuildingOutline,
+  mdiPlaylistPlay,
 } from '@mdi/js'
-import type { EntryRef, WorkRef } from '@kisaki3/desktop-contracts/library'
+import type { JSX } from '@solidjs/web'
+import { createSignal, For, Show } from 'solid-js'
 import type { EntryLocation } from '../../../../../../../shared/window-api/library'
 import type { MainClient } from '../../../../../../infrastructure/api'
-import { errorMessage, reportError } from '../../../../../../infrastructure/notifications'
-import { libraryRead } from '../../read'
-import { PageBar } from '../../chrome'
-import { catalogIcon } from '../../icons'
-import { EntryEditorDialog } from '../editor'
-import type { EntryEdit, EditField } from '../editor/model'
 import {
   observeDialogTarget,
   type DialogReceipt,
 } from '../../../../../../infrastructure/dialogs/presentation'
-import { createEntryActions } from '../actions'
-import { relationTabs } from '../../relations/views'
+import { errorMessage } from '../../../../../../infrastructure/notifications'
+import { LaunchConfigs } from '../../holdings/game/launch-configs'
+import { WorkParts } from '../../parts'
+import { libraryRead } from '../../read'
+import { Activities } from '../../records/activities'
+import { Annotations } from '../../records/annotations'
+import { Notes } from '../../records/notes'
 import { RelationSection } from '../../relations/section'
-import { CompletionHistory } from '../../completions/history'
-import { CompletionEditor, type CompletionEdit } from '../../completions/editor'
+import { relationTabs } from '../../relations/views'
+import { createDetailControls } from './controls'
 import { EntryHero } from './hero'
 import { EntryOverview } from './overview'
 
@@ -63,31 +49,32 @@ const icons = {
   related: mdiLinkVariant,
   works: mdiBookshelf,
 }
+
 export type EntryPanel = 'configs' | 'parts' | 'activity' | 'annotations' | 'notes'
 
-export function EntryDetails(props: {
+export interface EntryDetailsProps {
   api: MainClient
   target: EntryRef
   receipt?: DialogReceipt | undefined
   initialTab?: string | undefined
-  tabChanged: (tab: string) => void
-  workActions: (work: WorkRef) => JSX.Element
-  panel: (tab: EntryPanel) => JSX.Element
+  tabChanged?: (tab: string) => void
   location?: EntryLocation
   openOrganizer: (kind: 'tag' | 'collection', id: string, name: string) => void
   open: (ref: EntryRef) => void
-}) {
+}
+
+export interface DetailLayout {
+  title: string
+  status: JSX.Element
+  actions: JSX.Element
+  content: JSX.Element
+}
+
+export function EntryDetails(
+  props: EntryDetailsProps & { layout: (view: DetailLayout) => JSX.Element },
+) {
   const { api } = props,
     t = api.t
-  const actions = createEntryActions(
-    api,
-    () => [props.target],
-    (ref) => {
-      if (ref) {
-        props.open(ref)
-      }
-    },
-  )
   const result = libraryRead(api, ['entries'], async (signal) => {
     const [entry, description] = await Promise.all([
       api.request(signal, 'library.entries.get', props.target),
@@ -125,19 +112,8 @@ export function EntryDetails(props: {
   }
   const [tab, selectTab] = createSignal<DetailTab>(initialTab())
   function setTab(value: DetailTab) {
-    props.tabChanged(value)
+    props.tabChanged?.(value)
     selectTab(value)
-  }
-  const [edit, setEdit] = createSignal<EntryEdit>()
-  const [spoilers, setSpoilers] = createSignal(false)
-  const [history, setHistory] = createSignal(false)
-  const [completion, setCompletion] = createSignal<CompletionEdit>()
-  let statusButton: HTMLButtonElement | undefined
-  function editField(field: EditField) {
-    const data = result.result()?.value
-    if (data) {
-      setEdit({ field, entry: data.entry, description: data.description })
-    }
   }
   function tabs(): DetailTab[] {
     const values: DetailTab[] = ['overview', ...relationTabs(props.target)]
@@ -166,148 +142,64 @@ export function EntryDetails(props: {
     }
     return t(`library.detail.${key}`)
   }
-  function statusLabel() {
-    const entry = record()
-    if (!entry) {
-      return ''
+  function panel(tab: EntryPanel) {
+    const entry = props.target
+    if (tab === 'notes') {
+      return <Notes api={api} entry={entry} openEntry={props.open} />
     }
-    const values: string[] = []
-    if (entry.record.status) {
-      values.push(t(`library.workStatus.${entry.type}.${entry.record.status}`))
+    if (!isWorkType(entry.type)) {
+      return null
     }
-    if (entry.completionCount > 0) {
-      values.push(t('library.detail.completed', { count: entry.completionCount }))
+    const work = { type: entry.type, id: entry.id }
+    switch (tab) {
+      case 'configs':
+        return (
+          work.type === 'game' && (
+            <LaunchConfigs
+              api={api}
+              game={work.id}
+              {...(props.location?.config && { initial: props.location.config })}
+            />
+          )
+        )
+      case 'parts':
+        return (
+          work.type !== 'game' && (
+            <WorkParts
+              api={api}
+              work={{ type: work.type, id: work.id }}
+              {...(props.location && { location: props.location })}
+            />
+          )
+        )
+      case 'activity':
+        return (
+          <Activities api={api} query={{ scope: { type: 'works', refs: [work] } }} work={work} />
+        )
+      case 'annotations':
+        return <Annotations api={api} scope={{ type: 'work', work }} />
     }
-    return values.join(' · ') || t('library.detail.setStatus')
   }
-  async function status(value: 'active' | 'planned' | 'onHold' | null) {
-    const saved = record(),
-      ref = work()
-    if (saved && ref) {
-      await api.call('library.entries.setWorkStatus', ref, {
-        status: value,
-        expected: { status: saved.record.status },
-      })
-    }
-  }
-  function statusControl() {
+
+  const controls = createDetailControls(props, () => result.result()?.value)
+  function content() {
     return (
-      <Show when={record()}>
-        {(saved) => (
-          <Menu>
-            <MenuTrigger
-              ref={(node) => {
-                statusButton = node
-              }}
-              variant="secondary"
-              size="sm"
-              class="h-5 px-1.5 text-xs"
-              aria-label={t('library.detail.setStatus')}
-            >
-              {statusLabel()}
-            </MenuTrigger>
-            <MenuContent placement="bottom-start">
-              <For each={['planned', 'active', 'onHold'] as const}>
-                {(value) => (
-                  <MenuRadioItem
-                    value={value}
-                    selectedValue={saved().record.status ?? ''}
-                    onValueChange={() => void status(value).catch(reportError)}
-                  >
-                    {t(`library.workStatus.${saved().type}.${value}`)}
-                  </MenuRadioItem>
-                )}
-              </For>
-              <MenuItem onSelect={() => void status(null).catch(reportError)}>
-                {t('actions.clear')}
-              </MenuItem>
-              <MenuSeparator />
-              <MenuItem onSelect={() => setCompletion({ mode: 'current', work: work()! })}>
-                {t('library.detail.recordCurrent')}
-              </MenuItem>
-              <MenuItem onSelect={() => setHistory(true)}>{t('library.detail.history')}</MenuItem>
-            </MenuContent>
-          </Menu>
-        )}
-      </Show>
-    )
-  }
-  return (
-    <article class="flex h-full min-h-0 flex-col bg-background">
-      <Show when={result.result()?.error}>
-        {(cause) => <p role="alert">{errorMessage(cause())}</p>}
-      </Show>
-      <Show when={result.result()?.value === null}>
-        <p class="p-4 text-sm">{t('library.noMatch')}</p>
-      </Show>
-      <Show when={result.result()?.value}>
-        {(saved) => (
-          <>
-            <PageBar
-              title={saved().entry.name}
-              icon={catalogIcon[props.target.type]}
-              afterTitle={statusControl()}
-            >
-              <Show when={work()}>{(ref) => props.workActions(ref())}</Show>
-              <Button
-                size="icon-sm"
-                variant="secondary"
-                aria-label={t('library.fields.favorite')}
-                aria-pressed={saved().entry.evaluation.favorite ? 'true' : 'false'}
-                onClick={() => {
-                  const before = saved().entry.evaluation.favorite
-                  void api
-                    .call('library.entries.setEvaluation', props.target, {
-                      changes: { favorite: !before },
-                      expected: { favorite: before },
-                    })
-                    .catch(reportError)
-                }}
-              >
-                <Icon
-                  path={saved().entry.evaluation.favorite ? mdiHeart : mdiHeartOutline}
-                  class={saved().entry.evaluation.favorite ? 'size-4 text-destructive' : 'size-4'}
-                />
-              </Button>
-              <Button
-                size="icon-sm"
-                variant="secondary"
-                aria-label={t('library.relation.showSpoilers')}
-                aria-pressed={spoilers() ? 'true' : 'false'}
-                onClick={() => setSpoilers((v) => !v)}
-              >
-                <Icon path={spoilers() ? mdiEyeOutline : mdiEyeOffOutline} />
-              </Button>
-              <Menu onOpenChange={actions.openMenu}>
-                <MenuTrigger size="icon-sm" variant="secondary" aria-label={t('actions.more')}>
-                  <Icon path={mdiDotsHorizontal} />
-                </MenuTrigger>
-                <MenuContent placement="bottom-end">
-                  <MenuItem onSelect={() => editField('images')}>
-                    {t('library.fields.primaryImageId')}
-                  </MenuItem>
-                  <MenuItem onSelect={() => editField('identities')}>
-                    {t('library.fields.id')}
-                  </MenuItem>
-                  <MenuItem
-                    onSelect={() =>
-                      void api.call('library.entries.copyLink', props.target).catch(reportError)
-                    }
-                  >
-                    {t('library.detail.copyLink')}
-                  </MenuItem>
-                  <MenuSeparator />
-                  <actions.Items />
-                </MenuContent>
-              </Menu>
-            </PageBar>
-            <div class="@container min-h-0 grow overflow-y-auto p-4">
+      <>
+        <Show when={result.result()?.error}>
+          {(cause) => <p role="alert">{errorMessage(cause())}</p>}
+        </Show>
+        <Show when={result.result()?.value === null}>
+          <p class="p-4 text-sm">{t('library.noMatch')}</p>
+        </Show>
+        <Show when={result.result()?.value}>
+          {(saved) => (
+            <>
               <EntryHero
                 api={api}
                 entry={saved().entry}
-                edit={editField}
+                edit={controls.editField}
                 activity={() => setTab('activity')}
-                status={() => statusButton?.click()}
+                status={controls.openStatus}
               />
               <Tabs
                 value={tab()}
@@ -319,14 +211,19 @@ export function EntryDetails(props: {
                 }}
               >
                 <TabList
-                  class="w-full justify-start overflow-x-auto"
+                  class="w-full justify-start overflow-x-auto [scrollbar-width:none]"
                   aria-label={saved().entry.name}
                 >
                   <For each={tabs()}>
                     {(key) => (
-                      <Tab value={key}>
+                      <Tab
+                        value={key}
+                        class="gap-1.5"
+                        aria-label={tabLabel(key)}
+                        title={tabLabel(key)}
+                      >
                         <Icon path={icons[key]} class="size-3.5" />
-                        {tabLabel(key)}
+                        <span class="@max-2xl:hidden">{tabLabel(key)}</span>
                       </Tab>
                     )}
                   </For>
@@ -338,17 +235,26 @@ export function EntryDetails(props: {
                       api={api}
                       entry={saved().entry}
                       description={saved().description}
-                      edit={editField}
+                      edit={controls.editField}
                       open={props.open}
-                      spoilers={spoilers()}
+                      spoilers={controls.spoilers()}
                       tab={setTab}
                     />
                   </Show>
                 </TabPanel>
-                <For each={['configs', 'parts', 'activity', 'annotations', 'notes'] as const}>
+                <For
+                  each={tabs().filter(
+                    (key): key is EntryPanel =>
+                      key === 'configs' ||
+                      key === 'parts' ||
+                      key === 'activity' ||
+                      key === 'annotations' ||
+                      key === 'notes',
+                  )}
+                >
                   {(key) => (
                     <TabPanel value={key} class="pt-4">
-                      <Show when={tab() === key}>{props.panel(key)}</Show>
+                      <Show when={tab() === key}>{panel(key)}</Show>
                     </TabPanel>
                   )}
                 </For>
@@ -361,7 +267,7 @@ export function EntryDetails(props: {
                           owner={props.target}
                           tab={key}
                           mode="list"
-                          spoilers={spoilers()}
+                          spoilers={controls.spoilers()}
                           open={props.open}
                           all={() => setTab(key)}
                         />
@@ -370,28 +276,29 @@ export function EntryDetails(props: {
                   )}
                 </For>
               </Tabs>
-            </div>
-          </>
-        )}
-      </Show>
-      <actions.Dialogs />
-      <EntryEditorDialog
-        api={api}
-        edit={edit()}
-        close={() => setEdit(undefined)}
-        saved={() => setEdit(undefined)}
-      />
-      <Show when={history() && work()}>
-        {(ref) => (
-          <CompletionHistory
-            api={api}
-            work={ref()}
-            close={() => setHistory(false)}
-            edit={setCompletion}
-          />
-        )}
-      </Show>
-      <CompletionEditor api={api} edit={completion()} close={() => setCompletion(undefined)} />
-    </article>
+            </>
+          )}
+        </Show>
+      </>
+    )
+  }
+  return (
+    <>
+      {props.layout({
+        get title() {
+          return result.result()?.value?.entry.name ?? t('library.pages.library')
+        },
+        get status() {
+          return controls.status()
+        },
+        get actions() {
+          return controls.toolbar()
+        },
+        get content() {
+          return content()
+        },
+      })}
+      <controls.dialogs />
+    </>
   )
 }

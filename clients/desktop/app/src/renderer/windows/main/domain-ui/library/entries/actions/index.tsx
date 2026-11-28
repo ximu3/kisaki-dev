@@ -1,4 +1,14 @@
-import { createSignal, For, Show, type ParentProps } from 'solid-js'
+import {
+  isWorkType,
+  parseEntryMergeInput,
+  parseEntryUpdate,
+  type EntryChanges,
+  type EntryRef,
+  type WorkRef,
+  type WorkStatus,
+  type WorkType,
+} from '@kisaki3/desktop-contracts/library'
+import { Icon } from '@kisaki3/desktop-ui/icon'
 import {
   ContextMenuTrigger,
   Menu,
@@ -8,31 +18,21 @@ import {
   MenuSubTrigger,
 } from '@kisaki3/desktop-ui/menu'
 import {
-  isWorkType,
-  type WorkRef,
-  type WorkType,
-  type EntryChanges,
-  type WorkStatus,
-  parseEntryMergeInput,
-  parseEntryUpdate,
-  type EntryRef,
-} from '@kisaki3/desktop-contracts/library'
-import { Icon } from '@kisaki3/desktop-ui/icon'
-import {
   mdiDeleteOutline,
   mdiFolderPlusOutline,
   mdiFolderRemoveOutline,
-  mdiHeartOutline,
   mdiHeartOffOutline,
-  mdiTagPlusOutline,
-  mdiTagMinusOutline,
+  mdiHeartOutline,
   mdiPlaylistCheck,
+  mdiTagMinusOutline,
+  mdiTagPlusOutline,
 } from '@mdi/js'
+import { createSignal, For, Show, type ParentProps } from 'solid-js'
 import type { MainClient } from '../../../../../../infrastructure/api'
 import { createConfirmation } from '../../../../../../infrastructure/dialogs/confirmation'
 import { reportError } from '../../../../../../infrastructure/notifications'
+import { CompletionEditor, type CompletionEdit } from '../../records/completions/editor'
 import { EntryPicker } from '../picker'
-import { CompletionEditor, type CompletionEdit } from '../../completions/editor'
 import { MembershipEditor, membershipLabels, type MembershipEdit } from './membership'
 
 const membershipIcons = {

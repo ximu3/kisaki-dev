@@ -1,18 +1,18 @@
-import { Show } from 'solid-js'
-import type { JSX } from '@solidjs/web'
-import { Icon } from '@kisaki3/desktop-ui/icon'
-import { Button } from '@kisaki3/desktop-ui/button'
-import {
-  mdiPencilOutline,
-  mdiCalendarClockOutline,
-  mdiTimerOutline,
-  mdiDecagramOutline,
-  mdiBookmarkOutline,
-} from '@mdi/js'
 import type { EntryDetails, WorkType } from '@kisaki3/desktop-contracts/library'
+import { Button } from '@kisaki3/desktop-ui/button'
+import { Icon } from '@kisaki3/desktop-ui/icon'
+import {
+  mdiBookmarkOutline,
+  mdiCalendarClockOutline,
+  mdiDecagramOutline,
+  mdiPencilOutline,
+  mdiTimerOutline,
+} from '@mdi/js'
+import type { JSX } from '@solidjs/web'
+import { Show } from 'solid-js'
 import type { MainClient } from '../../../../../../infrastructure/api'
-import { LibraryImage } from '../../image'
 import { catalogIcon } from '../../icons'
+import { LibraryImage } from '../../images/image'
 import type { EditField } from '../editor/model'
 
 function EditableTitle(props: { label: string; action: () => void; children: JSX.Element }) {
@@ -31,6 +31,7 @@ function EditableTitle(props: { label: string; action: () => void; children: JSX
     </div>
   )
 }
+
 function Fact(props: {
   icon: string
   label: string
@@ -67,12 +68,14 @@ function Fact(props: {
     </div>
   )
 }
+
 const recentLabel = {
   game: 'library.fields.lastPlayed',
   anime: 'library.fields.lastWatched',
   comic: 'library.fields.lastRead',
   novel: 'library.fields.lastRead',
 } as const
+
 const timeLabel = {
   game: 'library.fields.gameTime',
   anime: 'library.fields.animeTime',

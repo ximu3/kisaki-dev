@@ -1,35 +1,35 @@
-import { createSignal, Show, onSettled } from 'solid-js'
-import { Button } from '@kisaki3/desktop-ui/button'
-import { Icon } from '@kisaki3/desktop-ui/icon'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogBody,
-} from '@kisaki3/desktop-ui/dialog'
-import { Annotations } from './records/annotations'
-import { Notes } from './records/notes'
-import { Menu, MenuContent, MenuItem, MenuTrigger } from '@kisaki3/desktop-ui/menu'
-import { mdiBookshelf, mdiMagnify, mdiArrowLeft, mdiDotsHorizontal } from '@mdi/js'
 import {
   entryTypes,
   type EntryRef,
   type ShowcaseFields,
   type ShowcaseQuery,
 } from '@kisaki3/desktop-contracts/library'
+import { Button } from '@kisaki3/desktop-ui/button'
+import {
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@kisaki3/desktop-ui/dialog'
+import { Icon } from '@kisaki3/desktop-ui/icon'
+import { Menu, MenuContent, MenuItem, MenuTrigger } from '@kisaki3/desktop-ui/menu'
+import { mdiArrowLeft, mdiBookshelf, mdiDotsHorizontal, mdiMagnify } from '@mdi/js'
+import { createSignal, onSettled, Show } from 'solid-js'
 import type { MainClient } from '../../../../infrastructure/api'
-import { PageBar } from '../../domain-ui/library/chrome'
+import type { CardItem } from '../../domain-ui/library/cards'
 import { EntryPicker } from '../../domain-ui/library/entries/picker'
 import { browseQuery } from '../../domain-ui/library/entries/query'
-import type { CardItem } from '../../domain-ui/library/cards'
-import { LibraryPanes } from './pane-width'
-import type { LibraryNavigation, LibraryPage, LibraryVisit } from './navigation'
-import { LibraryExplorer } from './explorer'
-import { Showcase } from './showcase'
+import { PageBar } from '../../domain-ui/page-bar'
 import { BrowseEntries } from './browse'
+import { EntryDialog } from './entries/dialog'
+import { EntryPage } from './entries/page'
+import { LibraryExplorer } from './explorer'
+import type { LibraryNavigation, LibraryPage, LibraryVisit } from './navigation'
 import { Organizers } from './organizers'
-import { EntryPage } from './entry-page'
+import { LibraryPanes } from './panes'
+import { RecordPage } from './records'
+import { Showcase } from './showcase'
 
 export function Library(props: {
   api: MainClient
@@ -88,39 +88,20 @@ export function Library(props: {
   function display(page: LibraryPage, open: (next: LibraryPage) => void, visit?: LibraryVisit) {
     switch (page.kind) {
       case 'annotations':
-        return (
-          <div class="flex h-full flex-col">
-            <PageBar title={t('library.pages.annotations')} icon={mdiBookshelf} />
-            <div class="min-h-0 grow overflow-auto p-4">
-              <Annotations
-                receipt={visit?.receipt}
-                api={api}
-                scope={{ type: 'library' }}
-                {...(page.ref && { initial: page.ref })}
-              />
-            </div>
-          </div>
-        )
       case 'notes':
-        return (
-          <div class="flex h-full flex-col">
-            <PageBar title={t('library.pages.notes')} icon={mdiBookshelf} />
-            <div class="min-h-0 grow overflow-auto p-4">
-              <Notes
-                receipt={visit?.receipt}
-                api={api}
-                openEntry={openEntry}
-                {...(page.id && { initialId: page.id })}
-              />
-            </div>
-          </div>
-        )
+        return <RecordPage api={api} page={page} receipt={visit?.receipt} open={openEntry} />
       case 'showcase':
         return <Showcase api={api} visit={visit} open={openCard} all={all} />
       case 'entry':
         return (
           <EntryPage
-            visit={visit}
+            receipt={visit?.receipt}
+            initialTab={visit?.tab}
+            tabChanged={(tab) => {
+              if (visit) {
+                visit.tab = tab
+              }
+            }}
             api={api}
             openOrganizer={(type, id, title) =>
               open({ kind: 'entries', query: browseQuery({ type, id }), title })
@@ -243,16 +224,30 @@ export function Library(props: {
           }
         }}
       >
-        <DialogContent size="lg">
-          <DialogHeader closeLabel={t('actions.close')}>
-            <DialogTitle>{t('library.pages.library')}</DialogTitle>
-          </DialogHeader>
-          <DialogBody class="h-[65dvh] overflow-hidden p-0">
-            <Show when={dialog()} keyed>
-              {(page) => display(page, setDialog)}
-            </Show>
-          </DialogBody>
-        </DialogContent>
+        <Show when={dialog()} keyed>
+          {(page) =>
+            page.kind === 'entry' ? (
+              <EntryDialog
+                api={api}
+                target={page.entry}
+                {...(page.location && { location: page.location })}
+                open={(entry) => setDialog({ kind: 'entry', entry })}
+                openOrganizer={(type, id, title) =>
+                  setDialog({ kind: 'entries', query: browseQuery({ type, id }), title })
+                }
+              />
+            ) : (
+              <DialogContent size="lg">
+                <DialogHeader closeLabel={t('actions.close')}>
+                  <DialogTitle>{t('library.pages.library')}</DialogTitle>
+                </DialogHeader>
+                <DialogBody class="h-[65dvh] overflow-hidden p-0">
+                  {display(page, setDialog)}
+                </DialogBody>
+              </DialogContent>
+            )
+          }
+        </Show>
       </Dialog>
     </div>
   )

@@ -1,12 +1,51 @@
-import { and, eq } from 'drizzle-orm'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
-import type { FileMergeInput, FileAvailability } from '@kisaki3/desktop-contracts/library'
+import type { FileAvailability, FileMergeInput } from '@kisaki3/desktop-contracts/library'
+import { and, eq, sql } from 'drizzle-orm'
 import { ready } from '../../../../infrastructure/database/codecs/json'
 import { parts } from '../../parts/tables'
+import { moveFileActivities } from '../../records/activities/references'
+import { moveFileAnnotations } from '../../records/annotations/references'
+import { mergeText } from '../../text'
 import type { LibraryWrite } from '../../transaction'
-import { mediaFiles } from '../tables'
 import { directLinks } from './associations'
-import { fileRow, storeFileFacts, type FileWork, type FileFacts } from './record'
+import { fileRow, storeFileFacts, type FileFacts, type FileWork } from './record'
+import { mediaFiles } from './tables'
+
+export interface DuplicateFile {
+  sourceWork: string
+  sourceFileId: string
+  targetFileId: string
+  path: string
+  facts: FileFacts
+}
+
+export function moveWorkFiles(
+  write: LibraryWrite,
+  source: FileWork,
+  target: FileWork,
+  duplicates: readonly DuplicateFile[],
+) {
+  const { db } = write
+  const f = mediaFiles[target.type],
+    preference = db
+      .select({ id: f.table.id })
+      .from(f.table)
+      .where(and(eq(f.owner, target.id), eq(f.table.isPreferred, true)))
+      .get()
+  if (preference) {
+    db.update(f.table).set({ isPreferred: false }).where(eq(f.owner, source.id)).run()
+  }
+  for (const pair of duplicates.filter((p) => p.sourceWork === source.id)) {
+    mergeFile(write, target, pair, pair.facts, source)
+  }
+  db.run(
+    sql`update ${f.table} set ${sql.identifier(f.owner.name)}=${target.id} where ${f.owner}=${source.id}`,
+  )
+  for (const kind of f.parts) {
+    const table = parts[kind].files
+    db.update(table).set({ workId: target.id }).where(eq(table.workId, source.id)).run()
+  }
+}
 
 export function mergeFile(
   write: LibraryWrite,
@@ -46,23 +85,10 @@ export function mergeFile(
       add.onConflictDoNothing().run()
     }
   }
-  db.update(schema.activity)
-    .set({ fileId: target.id })
-    .where(eq(schema.activity.fileId, source.id))
-    .run()
-  db.update(schema.annotation)
-    .set({ fileId: target.id })
-    .where(eq(schema.annotation.fileId, source.id))
-    .run()
+  moveFileActivities(write, work.type, source.id, target.id)
+  moveFileAnnotations(write, work.type, source.id, target.id)
   db.delete(schema.table).where(eq(schema.table.id, source.id)).run()
-  const note =
-    [
-      ...new Set(
-        [target.note, source.note].filter(
-          (value): value is string => value !== null && !!value.trim(),
-        ),
-      ),
-    ].join('\n\n') || null
+  const note = mergeText(target.note, source.note)
   storeFileFacts(db, work, target.id, facts)
   db.update(schema.table)
     .set({

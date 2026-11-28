@@ -1,26 +1,26 @@
+import type { NativeFiles } from '#native'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
+  type ContentDirectoriesApi,
+  type ContentDirectory,
+  type HoldingsRelocationResult,
+  parseDirectoryCreateFields,
+  parseDirectoryDiscoveryDefinition,
+  parseDirectoryUpdate,
   parseWorkRef,
   type WorkRef,
   type WorkType,
-  type ContentDirectory,
-  type ContentDirectoriesApi,
-  type HoldingsRelocationResult,
-  parseDirectoryCreateFields,
-  parseDirectoryUpdate,
-  parseDirectoryDiscoveryDefinition,
 } from '@kisaki3/desktop-contracts/library'
 import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
-import type { NativeFiles } from '#native'
 import type { DatabaseCall } from '../../../../infrastructure/database/executor'
 import type { CompleteWrite } from '../../transaction'
-import { fileWork, callSignal } from '../work'
-import type { createRegistration } from '../registration/queue'
+import { discover } from '../maintenance/discover'
 import type { createRefresh } from '../maintenance/refresh'
 import type { createRecognition } from '../recognition'
 import type { createProfiles } from '../recognition/profiles'
-import { discover } from '../maintenance/discover'
+import type { createRegistration } from '../registration/queue'
 import type { holdingStorage } from '../storage'
+import { callSignal, fileWork } from '../work'
 import type { createDirectoryRelocation } from './relocate'
 
 export function createDirectories(

@@ -1,18 +1,19 @@
-import type { BrowserWindow } from 'electron'
 import type { PreparedImage } from '@kisaki3/desktop-contracts/images'
 import { parseEntryMergeInput, type LibraryWriteGraph } from '@kisaki3/desktop-contracts/library'
+import type { BrowserWindow } from 'electron'
 import { rpcData } from '../../../../../shared/window-api/protocol'
 import type { Application } from '../../../compose'
-import type { DocumentResources } from '../../resources'
 import { windowMethod, type WindowMethodGroup } from '../../admission'
+import type { DocumentResources } from '../../resources'
 import { entryMethods } from './entries'
-import { organizerMethods } from './organizers'
-import { recordMethods } from './records'
 import { createHoldingMethods } from './holdings'
 import { imageMethods, preparedInput } from './images'
+import { organizerMethods } from './organizers'
 import { partMethods } from './parts'
+import { recordMethods } from './records'
 import { relationMethods } from './relations'
 import { showcaseMethods } from './showcase'
+
 export function createLibraryMethods(
   app: Application,
   resources: DocumentResources,

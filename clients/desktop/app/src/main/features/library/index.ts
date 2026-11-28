@@ -1,27 +1,27 @@
-import type { LibraryApi, HoldingsApi } from '@kisaki3/desktop-contracts/library'
+import type { NativeFiles } from '#native'
+import type { NativeEventPublisher } from '@kisaki3/desktop-contracts/events'
+import type { HoldingsApi, LibraryApi } from '@kisaki3/desktop-contracts/library'
 import type { PreferencesSnapshot } from '@kisaki3/desktop-contracts/preferences'
 import type { Translate } from '@kisaki3/desktop-localization'
-import type { NativeEventPublisher } from '@kisaki3/desktop-contracts/events'
 import type { createAttachments } from '../../infrastructure/attachments'
 import type { DatabaseCall } from '../../infrastructure/database/executor'
-import { createAnnotations } from './records/annotations'
-import { createNotes } from './records/notes'
-import { createGraphWriter } from './graph'
+import type { ChangeAdmission } from './change-admission'
+import { entryDeletion } from './delete'
 import { createEntries } from './entries'
-import { createCompletions } from './records/completions'
-import { createShowcase } from './showcase'
+import { createHoldings } from './holdings'
+import { libraryInvalidation } from './invalidation'
+import { entryMerge } from './merge'
 import { createOrganizers } from './organizers'
-import { createRelations } from './relations'
 import { createParts } from './parts'
 import { createActivities } from './records/activities'
-import { createHoldings } from './holdings'
-import type { NativeFiles } from '#native'
-import type { ChangeAdmission } from './change-admission'
+import { createAnnotations } from './records/annotations'
+import { createCompletions } from './records/completions'
+import { createNotes } from './records/notes'
+import { createRelations } from './relations'
+import { createShowcase } from './showcase'
 import type { libraryStorage } from './storage'
 import type { LibraryCommit } from './transaction'
-
-import { libraryInvalidation } from './invalidation'
-import { identityOperations } from './entries/identity'
+import { createGraphWriter } from './write-graph'
 
 export function createLibrary(
   call: DatabaseCall<ReturnType<typeof libraryStorage>>,
@@ -63,7 +63,8 @@ export function createLibrary(
   const library = {
     onInvalidated: invalidation.on,
     visibilityChanged: invalidation.all,
-    ...identityOperations(call, native, resources, admit, complete),
+    merge: entryMerge(call, native, resources, admit, complete),
+    delete: entryDeletion(call, admit, complete),
     annotations: createAnnotations(call, attachments, complete, sensitive),
     notes: createNotes(call, attachments, complete, sensitive),
     writeGraph: createGraphWriter(

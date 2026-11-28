@@ -1,15 +1,16 @@
-import { mkdtemp, rm } from 'node:fs/promises'
-import { tmpdir } from 'node:os'
-import { join } from 'node:path'
-import { afterEach, beforeEach, expect, test } from 'vite-plus/test'
 import {
   parseEntryCreate,
   parseEntryQuery,
   parseEntryUpdate,
   parseShowcaseFields,
 } from '@kisaki3/desktop-contracts/library'
-import { initializeDatabase, type Storage } from '../../../src/main/infrastructure/database'
+import { mkdtemp, rm } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { afterEach, beforeEach, expect, test } from 'vite-plus/test'
+import { entryTagsInOrder } from '../../../src/main/features/library/organizers/tags/applications'
 import { libraryStorage } from '../../../src/main/features/library/storage'
+import { initializeDatabase, type Storage } from '../../../src/main/infrastructure/database'
 import { storageOptions } from '../database/sample'
 
 let root: string
@@ -157,4 +158,77 @@ test('saving a showcase fills the referenced name and independent edits compare 
       true,
     ).value,
   ).toMatchObject({ name: 'Spring', isVisible: false })
+})
+
+test('merging tags preserves independent orders and redirects both saved query owners', () => {
+  const first = library.createLibraryEntry({ type: 'novel', name: 'First' }, []).value
+  const second = library.createLibraryEntry({ type: 'novel', name: 'Second' }, []).value
+  const old = library.addLibraryTag({ name: 'Old' }, []).value
+  const kept = library.addLibraryTag({ name: 'Kept' }, []).value
+  const other = library.addLibraryTag({ name: 'Other' }, []).value
+  const edges = (tag: string, items: readonly (typeof first)[]) =>
+    library.editTagEntries(tag, { type: 'modify', add: items.map((entry) => ({ entry })) })
+  edges(old, [first, second])
+  edges(other, [first])
+  edges(kept, [second])
+  library.orderTagEntries(
+    old,
+    { order: [second.id, first.id], expected: { order: [first.id, second.id] } },
+    [first, second],
+  )
+  const rules = [
+    {
+      types: ['novel'],
+      enabled: true,
+      filter: { match: 'all', conditions: [{ field: 'tags', op: 'any', values: [old, kept] }] },
+    },
+  ] as const
+  const sort = { type: 'field', field: 'name', direction: 'asc' } as const
+  const list = library.addLibraryCollection(
+    {
+      name: 'Dynamic',
+      membershipMode: 'dynamic',
+      dynamicRules: { search: '', rules, sort, referenceLabels: [] },
+    },
+    [],
+    true,
+  ).value
+  const section = library.addSections(
+    [
+      parseShowcaseFields({
+        name: 'Saved',
+        query: {
+          kind: 'entry',
+          scope: { type: 'tag', id: old },
+          rules,
+          sort,
+          search: '',
+          referenceLabels: [],
+        },
+        layout: 'grid',
+        itemSize: 'md',
+        limit: null,
+        isVisible: true,
+        openMode: 'page',
+      }),
+    ],
+    true,
+  ).value[0]!
+  library.mergeOrganizers('tag', { sourceIds: [old], targetId: kept })
+  expect(
+    library.listTagEntries(kept, { offset: 0, limit: 20 }, true).items.map((r) => r.entry.id),
+  ).toEqual([second.id, first.id])
+  expect(entryTagsInOrder(storage.db, first.id).map((t) => t.tagId)).toEqual([kept, other])
+  const rule = { filter: { conditions: [{ field: 'tags', values: [kept] }] } }
+  expect(library.getShowcase(section.id)?.query).toMatchObject({
+    status: 'ready',
+    value: {
+      scope: { type: 'tag', id: kept },
+      rules: [rule],
+      referenceLabels: [{ target: { type: 'tag', id: kept }, name: 'Kept' }],
+    },
+  })
+  expect(library.readLibraryCollection(list, true)).toMatchObject({
+    dynamicRules: { status: 'ready', value: { rules: [rule] } },
+  })
 })

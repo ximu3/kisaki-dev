@@ -1,19 +1,20 @@
+import type { NativeFiles } from '#native'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
-  parseFileCreateFields,
-  parseFileQuery,
-  parseFileMergeInput,
   parseFileAssociationEdit,
   parseFileAssociationModeChange,
+  parseFileCreateFields,
+  parseFileMergeInput,
+  parseFileQuery,
   parsePreferredFileInput,
   parsePreferredPartFiles,
   type FilePlaybackChoicesApi,
-  type FileWorkType,
-  type WorkRef,
-  type HeldFile,
   type FileRecognitionResult,
   type FileReidentificationResult,
+  type FileWorkType,
+  type HeldFile,
   type HoldingsRelocationResult,
+  type WorkRef,
 } from '@kisaki3/desktop-contracts/library'
 import {
   parseListOptions,
@@ -21,18 +22,17 @@ import {
   type ListResult,
 } from '@kisaki3/desktop-contracts/operations'
 import * as v from 'valibot'
-import type { NativeFiles } from '#native'
 import type { DatabaseCall } from '../../../../infrastructure/database/executor'
 import { normalizeAbsolutePath } from '../../../../infrastructure/files'
 import { registeredRelation } from '../../../../infrastructure/files/registered-path'
 import { inspectVideo } from '../../../../infrastructure/media/inspect'
 import type { ChangeAdmission } from '../../change-admission'
 import type { CompleteWrite } from '../../transaction'
-import { fileWork, callSignal } from '../work'
-import type { createRegistration } from '../registration/queue'
-import type { createRecognition } from '../recognition'
 import { existingPosition } from '../paths'
+import type { createRecognition } from '../recognition'
+import type { createRegistration } from '../registration/queue'
 import type { holdingStorage } from '../storage'
+import { callSignal, fileWork } from '../work'
 import { inspectTarget } from './inspect'
 import type { createFileRelocation } from './relocate'
 

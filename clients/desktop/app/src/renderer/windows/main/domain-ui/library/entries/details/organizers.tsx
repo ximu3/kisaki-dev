@@ -1,12 +1,12 @@
-import { createSignal, For, Show } from 'solid-js'
+import { parseEntryUpdate, type EntryRef } from '@kisaki3/desktop-contracts/library'
 import { Button } from '@kisaki3/desktop-ui/button'
 import { DialogBody, DialogFooter, DialogHeader, DialogTitle } from '@kisaki3/desktop-ui/dialog'
-import { parseEntryUpdate, type EntryRef } from '@kisaki3/desktop-contracts/library'
-import { Form, FormFeedback, createForm } from '@kisaki3/desktop-ui/form'
+import { createForm, Form, FormFeedback } from '@kisaki3/desktop-ui/form'
+import { createSignal, For, Show } from 'solid-js'
 import type { MainClient } from '../../../../../../infrastructure/api'
-import { EditorDialog } from '../../../../../../infrastructure/dialogs/editor'
 import type { EditorGuard } from '../../../../../../infrastructure/dialogs/closing'
-import { FieldSection } from '../../chrome'
+import { EditorDialog } from '../../../../../../infrastructure/dialogs/editor'
+import { FieldSection } from '../../fields/section'
 import { libraryRead } from '../../read'
 import { LibraryReferencePicker } from '../../reference-picker'
 
@@ -14,6 +14,7 @@ interface OrganizerEdit {
   kind: 'tag' | 'collection'
   ids: readonly string[]
 }
+
 export function EntryOrganizers(props: {
   api: MainClient
   entry: EntryRef
@@ -87,6 +88,7 @@ export function EntryOrganizers(props: {
     </>
   )
 }
+
 function MembershipForm(props: {
   api: MainClient
   entry: EntryRef

@@ -1,13 +1,15 @@
-import { isDeepStrictEqual } from 'node:util'
-import { eq, sql } from 'drizzle-orm'
-import { DesktopError } from '@kisaki3/desktop-contracts/errors'
-import type { WorkRef, RelocatedPathTarget } from '@kisaki3/desktop-contracts/library'
 import type { NativeFiles } from '#native'
+import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import type { RelocatedPathTarget, WorkRef } from '@kisaki3/desktop-contracts/library'
+import { eq, sql } from 'drizzle-orm'
+import { isDeepStrictEqual } from 'node:util'
 import { registeredRelation as comparePaths } from '../../../infrastructure/files/registered-path'
 import type { LibraryDatabase } from '../transaction'
-import { directories, mediaFiles } from './tables'
+import { directories } from './directories/tables'
+import { mediaFiles } from './files/tables'
 
 export type PositionKind = 'directory' | 'file' | 'pages'
+
 export interface Position {
   id: string
   path: string
@@ -87,4 +89,5 @@ export type VerifyPath = (
   path: string,
   kind: 'file' | 'directory' | 'either',
 ) => Promise<string | null>
+
 export type ReportPathIssue = (target: RelocatedPathTarget, path: string, cause: unknown) => void

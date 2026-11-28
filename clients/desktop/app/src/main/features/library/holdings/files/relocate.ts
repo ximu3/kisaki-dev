@@ -1,15 +1,15 @@
-import { DesktopError } from '@kisaki3/desktop-contracts/errors'
-import type { HoldingsRelocationResult, FileWorkType } from '@kisaki3/desktop-contracts/library'
 import type { NativeFiles } from '#native'
+import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import type { FileWorkType, HoldingsRelocationResult } from '@kisaki3/desktop-contracts/library'
 import type { DatabaseCall } from '../../../../infrastructure/database/executor'
 import { normalizeAbsolutePath } from '../../../../infrastructure/files'
 import type { ChangeAdmission } from '../../change-admission'
 import type { CompleteWrite } from '../../transaction'
+import { fileError } from '../errors'
 import { existingPosition } from '../paths'
 import type { holdingStorage } from '../storage'
 import { inspectTarget } from './inspect'
 import type { FileWork } from './record'
-import { fileError } from './error'
 
 export function relocationStatus(cause: unknown): 'unverified' | 'unavailable' | 'conflict' {
   if (cause instanceof DesktopError && cause.code === 'PathConflict') {

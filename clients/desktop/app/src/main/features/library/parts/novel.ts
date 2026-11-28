@@ -1,6 +1,6 @@
 import type { PartCreate } from '@kisaki3/desktop-contracts/library'
-import type { LibraryDatabase } from '../transaction'
 import * as s from '../../../infrastructure/database/schema'
+import type { LibraryDatabase } from '../transaction'
 import type { PartRow } from './creation'
 
 export const novelParts = {

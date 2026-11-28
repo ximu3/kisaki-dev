@@ -1,14 +1,25 @@
 import type {
-  FileWorkType,
   FileRecognitionResult,
   FileRecognitionSource,
+  FileWorkType,
   PartRef,
 } from '@kisaki3/desktop-contracts/library'
-import { matchAnime } from '../anime/recognition'
-import { matchComic } from '../comic/recognition'
-import { matchNovel } from '../novel/recognition'
-import type { Condition } from './output'
+import { animeConditions, matchAnime } from './anime'
+import { comicConditions, matchComic } from './comic'
 import { LookupFailure, type Candidate } from './lookup'
+import { matchNovel, novelConditions } from './novel'
+import type { Condition } from './rules/output'
+
+export function builtin(type: FileWorkType, baseName: string, path?: string): Condition[] {
+  switch (type) {
+    case 'anime':
+      return animeConditions(baseName)
+    case 'comic':
+      return comicConditions(baseName, path)
+    case 'novel':
+      return novelConditions(baseName, path)
+  }
+}
 
 export function matchParts(
   type: FileWorkType,

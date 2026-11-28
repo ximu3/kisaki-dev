@@ -1,35 +1,36 @@
-import { randomUUID } from 'node:crypto'
-import { basename } from 'node:path'
-import { isDeepStrictEqual } from 'node:util'
-import { and, eq, sql } from 'drizzle-orm'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
   parseActivityContextNames,
   workTypes,
   type Activity,
   type ActivityCreate,
-  type ActivityUpdate,
   type ActivityStatistics,
+  type ActivityUpdate,
   type PartRef,
   type WorkRef,
   type WorkType,
 } from '@kisaki3/desktop-contracts/library'
 import type { ListOptions } from '@kisaki3/desktop-contracts/operations'
+import { and, eq, sql } from 'drizzle-orm'
+import { randomUUID } from 'node:crypto'
+import { basename } from 'node:path'
+import { isDeepStrictEqual } from 'node:util'
 import type { Storage } from '../../../../infrastructure/database'
-import { ready, readStoredValue } from '../../../../infrastructure/database/codecs/json'
+import { readStoredValue, ready } from '../../../../infrastructure/database/codecs/json'
 import {
+  animeWatchActivity,
+  comicReadingActivity,
   entries,
   gameLaunchConfigs,
   gamePlayActivity,
-  animeWatchActivity,
-  comicReadingActivity,
   novelReadingActivity,
 } from '../../../../infrastructure/database/schema'
-import { requireEntry, entryWhere, activityTables } from '../../entries/tables'
+import { entryWhere, requireEntry } from '../../entries/tables'
 import { requirePart } from '../../parts/write'
 import { commit, type LibraryDatabase, type LibraryWrite } from '../../transaction'
 import { activityWhere, type ActivityStatsQuery } from './query'
-import { summarize } from './summary'
+import { summarize } from './statistics'
+import { activityTables } from './tables'
 
 type RawRow = {
   id: string
@@ -44,6 +45,7 @@ type RawRow = {
   partId: string | null
   partType: PartRef['type'] | null
 }
+
 function activity(row: RawRow): Activity {
   const contextNames = readStoredValue(row.names, parseActivityContextNames)
   if (contextNames.status === 'invalid') {
@@ -60,11 +62,13 @@ function activity(row: RawRow): Activity {
     context: row.type === 'game' ? { launchConfigId: row.configId } : { fileId: row.fileId, part },
   } as Activity
 }
+
 function current(db: LibraryDatabase, work: WorkRef, id: string, sensitive: boolean) {
   const { cte } = activityWhere(db, { scope: { type: 'works', refs: [work] } }, sensitive)
   const row = db.get<RawRow>(sql`${cte} select * from events where id=${id} and type=${work.type}`)
   return row ? activity(row) : null
 }
+
 function add(write: LibraryWrite, input: ActivityCreate) {
   requireEntry(write.db, input.work)
   const { work, startedAt, endedAt, durationMs } = input
@@ -154,6 +158,7 @@ function add(write: LibraryWrite, input: ActivityCreate) {
   write.changes.push({ type: 'activityCreated', work, activityId: id })
   return id
 }
+
 export function activityStorage(storage: Storage) {
   return {
     addActivity: (input: ActivityCreate) => commit(storage, (write) => add(write, input)),

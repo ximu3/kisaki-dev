@@ -1,12 +1,3 @@
-import { createSignal, Show } from 'solid-js'
-import { dequal } from 'dequal'
-import { Button } from '@kisaki3/desktop-ui/button'
-import { DialogHeader, DialogTitle, DialogBody, DialogFooter } from '@kisaki3/desktop-ui/dialog'
-import { Field, FieldGroup, FieldLabel } from '@kisaki3/desktop-ui/field'
-import { Form, FormFeedback, createForm } from '@kisaki3/desktop-ui/form'
-import { Input, NumberInput } from '@kisaki3/desktop-ui/input'
-import { Select } from '@kisaki3/desktop-ui/select'
-import { Switch } from '@kisaki3/desktop-ui/switch'
 import {
   parseShowcaseFields,
   type ShowcaseFields,
@@ -14,10 +5,19 @@ import {
   type ShowcaseQuery,
   type ShowcaseUpdate,
 } from '@kisaki3/desktop-contracts/library'
+import { Button } from '@kisaki3/desktop-ui/button'
+import { DialogBody, DialogFooter, DialogHeader, DialogTitle } from '@kisaki3/desktop-ui/dialog'
+import { Field, FieldGroup, FieldLabel } from '@kisaki3/desktop-ui/field'
+import { createForm, Form, FormFeedback } from '@kisaki3/desktop-ui/form'
+import { Input, NumberInput } from '@kisaki3/desktop-ui/input'
+import { Select } from '@kisaki3/desktop-ui/select'
+import { Switch } from '@kisaki3/desktop-ui/switch'
+import { dequal } from 'dequal'
+import { createSignal, Show } from 'solid-js'
 import type { MainClient } from '../../../../../infrastructure/api'
 import type { EditorGuard } from '../../../../../infrastructure/dialogs/closing'
-import { PresetButton, PresetPicker } from '../../../domain-ui/library/presets'
 import { RuleGroups, ScopeField } from '../../../domain-ui/library/entries/filters/rules'
+import { PresetButton, PresetPicker } from '../../../domain-ui/preset-picker'
 import { initialSection, presetChoices, type SectionEdit } from './model'
 
 export function SectionEditor(props: {

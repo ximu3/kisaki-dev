@@ -1,19 +1,21 @@
-import { and, eq } from 'drizzle-orm'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type {
-  FileWorkType,
-  WorkRef,
   AnimeFileMetadata,
+  FileWorkType,
   ReadingFileMetadata,
+  WorkRef,
 } from '@kisaki3/desktop-contracts/library'
+import { and, eq } from 'drizzle-orm'
 import { ready } from '../../../../infrastructure/database/codecs/json'
 import type { LibraryDatabase, LibraryWrite } from '../../transaction'
-import { mediaFiles } from '../tables'
+import { mediaFiles } from './tables'
 
 export type FileFacts =
   | { kind: 'file'; video: AnimeFileMetadata }
   | { kind: 'file' | 'directory'; book: ReadingFileMetadata }
+
 export type FileWork = WorkRef<FileWorkType>
+
 export function storeFileFacts(db: LibraryDatabase, work: FileWork, id: string, facts: FileFacts) {
   if ('video' in facts) {
     if (work.type !== 'anime') {

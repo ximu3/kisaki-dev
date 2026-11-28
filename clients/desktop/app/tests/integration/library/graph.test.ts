@@ -1,19 +1,19 @@
-import { mkdtemp, rm, writeFile } from 'node:fs/promises'
-import { tmpdir } from 'node:os'
-import { join } from 'node:path'
-import { test, expect } from 'vite-plus/test'
+import { loadNative } from '#native'
 import {
   parseLibraryWriteGraph,
   parseLibraryWriteResult,
   type WorkRef,
 } from '@kisaki3/desktop-contracts/library'
-import { loadNative } from '#native'
-import { initializeDatabase } from '../../../src/main/infrastructure/database'
-import type { DatabaseCall } from '../../../src/main/infrastructure/database/executor'
+import { mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+import { expect, test } from 'vite-plus/test'
 import { entryTagsInOrder } from '../../../src/main/features/library/organizers/tags/applications'
 import { libraryStorage } from '../../../src/main/features/library/storage'
-import { graphIds, references } from '../../../src/main/features/library/graph/references'
-import { prepareRegistrations } from '../../../src/main/features/library/graph/holdings'
+import { prepareRegistrations } from '../../../src/main/features/library/write-graph/local-content'
+import { graphIds, references } from '../../../src/main/features/library/write-graph/references'
+import { initializeDatabase } from '../../../src/main/infrastructure/database'
+import type { DatabaseCall } from '../../../src/main/infrastructure/database/executor'
 import { storageOptions } from '../database/sample'
 
 test('changing cast endpoints requires explicit migration or removal of each existing credit, preserving the cast and credit IDs', async () => {

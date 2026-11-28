@@ -1,34 +1,33 @@
+import type { NativeFiles } from '#native'
 import type {
   FileWorkType,
-  WorkRef,
   HoldingsRefreshResult,
+  WorkRef,
 } from '@kisaki3/desktop-contracts/library'
-import type { Translate } from '@kisaki3/desktop-localization'
-import type { PreferencesSnapshot } from '@kisaki3/desktop-contracts/preferences'
 import type { CallOptions } from '@kisaki3/desktop-contracts/operations'
-import type { NativeFiles } from '#native'
+import type { PreferencesSnapshot } from '@kisaki3/desktop-contracts/preferences'
+import type { Translate } from '@kisaki3/desktop-localization'
 import type { DatabaseCall } from '../../../infrastructure/database/executor'
 import { createSignal } from '../../../infrastructure/events'
 import type { ChangeAdmission } from '../change-admission'
 import type { CompleteWrite } from '../transaction'
+import { createDirectories } from './directories'
+import { createDirectoryRelocation, type relocationStorage } from './directories/relocate'
+import { createFiles } from './files'
+import { createPlaybackChoices } from './files/anime/playback-choices'
+import { createFileRelocation } from './files/relocate'
+import { createLaunchConfigs } from './game/launch-configs'
+import type { launchConfigStorage } from './game/launch-configs/storage'
+import { createRefresh } from './maintenance/refresh'
+import { watchHoldings } from './maintenance/watch'
+import { holdingPreferences, type preferenceStorage } from './preferences'
+import { createRecognition } from './recognition'
+import { createProfiles, profileCatalog } from './recognition/profiles'
+import type { recognitionStorage } from './recognition/storage'
 import { localContentRegistration } from './registration'
 import { createRegistration } from './registration/queue'
-import { createPlaybackChoices } from './anime/playback-choices'
-import { createRecognition } from './recognition'
-import { createProfiles } from './recognition/profiles'
-import type { recognitionStorage } from './recognition/storage'
-import { createLaunchConfigs } from './game/configuration'
-import type { launchConfigStorage } from './game/configuration/storage'
-import { watchHoldings } from './maintenance/watch'
-import { createRefresh } from './maintenance/refresh'
-import { createFileRelocation } from './files/relocate'
-import { createDirectoryRelocation, type relocationStorage } from './directories/relocate'
 import type { holdingStorage } from './storage'
-import { fileWork, callSignal } from './work'
-import { createFiles } from './files'
-import { createDirectories } from './directories'
-import { holdingPreferences, type preferenceStorage } from './preferences'
-import { profileCatalog } from './recognition/catalog'
+import { callSignal, fileWork } from './work'
 
 export { fileWork } from './work'
 
@@ -37,6 +36,7 @@ type Operations = ReturnType<typeof preferenceStorage> &
   ReturnType<typeof launchConfigStorage> &
   ReturnType<typeof recognitionStorage> &
   ReturnType<typeof relocationStorage>
+
 export function createHoldings(
   call: DatabaseCall<Operations>,
   complete: CompleteWrite,

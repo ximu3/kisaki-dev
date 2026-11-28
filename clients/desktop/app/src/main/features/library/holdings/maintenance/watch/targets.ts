@@ -1,7 +1,8 @@
-import { sql } from 'drizzle-orm'
 import type { FileWorkType, WorkRef } from '@kisaki3/desktop-contracts/library'
+import { sql } from 'drizzle-orm'
 import type { LibraryDatabase } from '../../../transaction'
-import { directories, mediaFiles } from '../../tables'
+import { directories } from '../../directories/tables'
+import { mediaFiles } from '../../files/tables'
 
 export interface WatchTarget {
   work: WorkRef<FileWorkType>

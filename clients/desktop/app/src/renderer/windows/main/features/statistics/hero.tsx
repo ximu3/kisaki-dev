@@ -1,16 +1,17 @@
-import { For, Show } from 'solid-js'
-import { Icon } from '@kisaki3/desktop-ui/icon'
-import { mdiBookshelf } from '@mdi/js'
 import {
   workTypes,
   type ActivityStatistics,
   type CompletionStatistics,
   type WorkRef,
 } from '@kisaki3/desktop-contracts/library'
+import { Icon } from '@kisaki3/desktop-ui/icon'
+import { mdiBookshelf } from '@mdi/js'
+import { For, Show } from 'solid-js'
 import type { MainClient } from '../../../../infrastructure/api'
-import { LibraryImage } from '../../domain-ui/library/image'
+import { LibraryImage } from '../../domain-ui/library/images/image'
 
 export type WorkLabels = Map<string, { name: string; primaryImageId: string | null }>
+
 export function StatsHero(props: {
   api: MainClient
   activity: ActivityStatistics

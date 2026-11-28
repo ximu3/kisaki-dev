@@ -1,32 +1,32 @@
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import {
-  parsePartCreate,
-  parsePartUpdate,
-  parsePartRef,
-  parsePartQuery,
-  parsePartKindChange,
   parseMoveInput,
+  parsePartCreate,
+  parsePartKindChange,
+  parsePartQuery,
+  parsePartRef,
+  parsePartUpdate,
   parseReorderInput,
-  type PartRef,
+  type PartCreate,
   type PartDetails,
   type PartQuery,
-  type PartType,
-  type PartCreate,
+  type PartRef,
   type PartsApi,
+  type PartType,
 } from '@kisaki3/desktop-contracts/library'
 import {
   parseListOptions,
   type CallOptions,
   type ListResult,
 } from '@kisaki3/desktop-contracts/operations'
-import type { DatabaseCall } from '../../../infrastructure/database/executor'
 import type { createAttachments } from '../../../infrastructure/attachments'
-import type { CompleteWrite } from '../transaction'
+import type { DatabaseCall } from '../../../infrastructure/database/executor'
 import { imageIds, prepareImages } from '../attachments'
 import type { ChangeAdmission, UseTarget } from '../change-admission'
-import type { partStorage } from './storage'
+import type { CompleteWrite } from '../transaction'
 import { volumeChapters } from './comic/volume-chapters'
-import type { PartDependents } from './identity'
+import type { PartDependents } from './dependencies'
+import type { partStorage } from './storage'
 
 export function createParts(
   call: DatabaseCall<ReturnType<typeof partStorage>>,

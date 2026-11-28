@@ -1,37 +1,37 @@
-import { and, count, eq, sql } from 'drizzle-orm'
+import type { Attachment } from '@kisaki3/desktop-contracts/attachments'
+import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type {
+  MoveInput,
   PartCreate,
-  PartUpdate,
+  PartKindChange,
+  PartOrderScope,
   PartQuery,
   PartRef,
-  PartKindChange,
-  VolumeChapterChange,
-  VolumeChapter,
-  PartOrderScope,
-  MoveInput,
+  PartUpdate,
   ReorderInput,
+  VolumeChapter,
+  VolumeChapterChange,
 } from '@kisaki3/desktop-contracts/library'
-import type { Attachment } from '@kisaki3/desktop-contracts/attachments'
 import type { ListOptions } from '@kisaki3/desktop-contracts/operations'
-import { DesktopError } from '@kisaki3/desktop-contracts/errors'
-import type { Storage } from '../../../infrastructure/database'
+import { and, count, eq, sql } from 'drizzle-orm'
 import { adoptAttachments } from '../../../infrastructure/attachments/storage'
+import type { Storage } from '../../../infrastructure/database'
 import { entries } from '../../../infrastructure/database/schema'
 import { searchText } from '../../../infrastructure/database/search-text'
 import { entryWhere } from '../entries/tables'
 import { commit } from '../transaction'
-import { parts } from './tables'
-import {
-  mergeParts,
-  removePart,
-  partDependents,
-  verifyDependents,
-  type PartDependents,
-} from './identity'
 import { correctAnimeKind } from './anime/change-kind'
-import { volumeMembers, editVolumeMembers, volumeChapterStorage } from './comic/members'
+import {
+  editVolumeMembers,
+  volumeChapterStorage,
+  volumeMembers,
+} from './comic/volume-chapters/storage'
+import { removePart } from './delete'
+import { partDependents, verifyDependents, type PartDependents } from './dependencies'
+import { mergeParts } from './merge'
 import { orderParts } from './order'
-import { changePart, insertPart, getPart, completePart } from './write'
+import { parts } from './tables'
+import { changePart, completePart, getPart, insertPart } from './write'
 
 export function partStorage(storage: Storage) {
   return {

@@ -1,6 +1,3 @@
-import { randomUUID } from 'node:crypto'
-import { isDeepStrictEqual } from 'node:util'
-import { and, eq } from 'drizzle-orm'
 import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type {
   CompletionCreateItem,
@@ -9,10 +6,23 @@ import type {
   CompletionUpdate,
   WorkRef,
 } from '@kisaki3/desktop-contracts/library'
+import { and, eq } from 'drizzle-orm'
+import { randomUUID } from 'node:crypto'
+import { isDeepStrictEqual } from 'node:util'
+import * as s from '../../../../infrastructure/database/schema'
 import { workCompletionRecords as records } from '../../../../infrastructure/database/schema'
-import { expectFields, type LibraryWrite } from '../../transaction'
+import { readWorkRecord, saveWorkRecord } from '../../entries/personal'
 import { requireEntry } from '../../entries/tables'
-import { readWorkRecord, saveWorkRecord, completionTotal } from '../work'
+import { type LibraryWrite, expectFields } from '../../transaction'
+import { completionTotal } from './read'
+
+export function moveCompletions(write: LibraryWrite, source: WorkRef, target: WorkRef) {
+  const { db } = write
+  db.update(s.workCompletionRecords)
+    .set({ workId: target.id })
+    .where(eq(s.workCompletionRecords.workId, source.id))
+    .run()
+}
 
 export function addCompletion({ db, now }: LibraryWrite, work: WorkRef, value: CompletionFields) {
   const id = randomUUID()

@@ -2,8 +2,7 @@ import type { createAttachments } from '../../../infrastructure/attachments'
 import type { CompleteWrite } from '../transaction'
 import { createCollections } from './collections'
 import { createTags } from './tags'
-import { memberships } from './members'
-import { organizerWrites, type OrganizerCall } from './writes'
+import { organizerWrites, type OrganizerCall } from './write'
 
 export function createOrganizers(
   call: OrganizerCall,
@@ -12,9 +11,8 @@ export function createOrganizers(
   complete: CompleteWrite,
 ) {
   const writes = organizerWrites(call, attachments, complete)
-  const { members, entries } = memberships(call, complete, sensitive)
   return {
-    collections: createCollections(call, writes, sensitive, complete, members),
-    tags: createTags(call, writes, sensitive, entries),
+    collections: createCollections(call, writes, sensitive, complete),
+    tags: createTags(call, writes, sensitive, complete),
   }
 }

@@ -1,19 +1,19 @@
-import type { AnnotationRef } from '@kisaki3/desktop-contracts/library'
-import type { EntryLocation } from '../../../../../shared/window-api/library'
-import { createSignal } from 'solid-js'
+import { DesktopError } from '@kisaki3/desktop-contracts/errors'
 import type {
+  AnnotationRef,
+  CollectionQuery,
   EntryGroupKey,
   EntryQuery,
   EntryRef,
-  CollectionQuery,
   TagQuery,
 } from '@kisaki3/desktop-contracts/library'
-import type { CardAnchor } from '../../domain-ui/library/cards'
-import { DesktopError } from '@kisaki3/desktop-contracts/errors'
+import { createSignal } from 'solid-js'
+import type { EntryLocation } from '../../../../../shared/window-api/library'
 import {
   observeDialogTarget,
   type DialogReceipt,
 } from '../../../../infrastructure/dialogs/presentation'
+import type { CardAnchor } from '../../domain-ui/library/cards'
 
 export type LibraryPage =
   | { kind: 'showcase' }
@@ -35,15 +35,22 @@ export function observeVisit(
 ) {
   observeDialogTarget(receipt, read)
 }
+
 export interface LibraryVisit {
   receipt?: DialogReceipt
   page: LibraryPage
   section?: string
   card?: CardAnchor
   tab?: string
-  browse?: { query: EntryQuery; grid: boolean; offset: number }
+  browse?: {
+    query: EntryQuery
+    grid: boolean
+    offset: number
+    anchor?: { ref: EntryRef; top: number }
+  }
   returnTo?: () => void
 }
+
 export function createLibraryNavigation() {
   const [visits, setVisits] = createSignal<readonly LibraryVisit[]>([
     { page: { kind: 'showcase' } },
@@ -91,4 +98,5 @@ export function createLibraryNavigation() {
   }
   return { current, open, present, back, canGoBack: () => visits().length > 1 }
 }
+
 export type LibraryNavigation = ReturnType<typeof createLibraryNavigation>

@@ -1,6 +1,6 @@
 import { eq, max } from 'drizzle-orm'
-import type { LibraryWrite } from '../transaction'
 import type { AnySQLiteColumn, SQLiteTable } from 'drizzle-orm/sqlite-core'
+import { type LibraryWrite } from '../transaction'
 
 export function newPartRow(
   write: LibraryWrite,

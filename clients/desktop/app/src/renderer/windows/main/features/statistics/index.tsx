@@ -1,32 +1,31 @@
-import { createSignal, For, Show } from 'solid-js'
-import { Button } from '@kisaki3/desktop-ui/button'
-import { Icon } from '@kisaki3/desktop-ui/icon'
-import { StatsHero, type WorkLabels } from './hero'
-import { ActivityCharts } from './series'
-import { Rankings } from './rankings'
-import { catalogIcon } from '../../domain-ui/library/icons'
-
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogBody,
-  DialogTitle,
-  DialogFooter,
-} from '@kisaki3/desktop-ui/dialog'
-import { mdiChartBoxOutline, mdiChevronLeft, mdiChevronRight, mdiViewGridOutline } from '@mdi/js'
 import {
   workTypes,
+  type ActivityQuery,
   type WorkRef,
   type WorkType,
-  type ActivityQuery,
 } from '@kisaki3/desktop-contracts/library'
+import { Button } from '@kisaki3/desktop-ui/button'
+import {
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@kisaki3/desktop-ui/dialog'
+import { Icon } from '@kisaki3/desktop-ui/icon'
+import { mdiChartBoxOutline, mdiChevronLeft, mdiChevronRight, mdiViewGridOutline } from '@mdi/js'
+import { createSignal, For, Show } from 'solid-js'
 import type { MainClient } from '../../../../infrastructure/api'
 import { errorMessage } from '../../../../infrastructure/notifications'
-import { PageBar } from '../../domain-ui/library/chrome'
+import { catalogIcon } from '../../domain-ui/library/icons'
 import { libraryRead } from '../../domain-ui/library/read'
-import { Activities } from '../../domain-ui/library/activities'
-import { periodRange, shift, dayValue, type Period } from './period'
+import { Activities } from '../../domain-ui/library/records/activities'
+import { PageBar } from '../../domain-ui/page-bar'
+import { StatsHero, type WorkLabels } from './hero'
+import { dayValue, periodRange, shift, type Period } from './period'
+import { Rankings } from './rankings'
+import { ActivityCharts } from './series'
 
 export function Statistics(props: { api: MainClient; openWork: (ref: WorkRef) => void }) {
   const { api } = props,
