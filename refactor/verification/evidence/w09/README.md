@@ -4,18 +4,18 @@
 
 ## 桌面六目标与候选制品
 
-2026-11-28，开发分支的提交 `139e7c97` 在 Windows、macOS 和 Linux 的 x64、arm64 宿主分别通过 `@kisaki3/desktop#verify`。每个目标运行原生与数据库测试、源码开发会话、真实 Electron 窗口、性能场景及打包应用。表中的 SHA-256 对应实际启动并读回动画分集和媒体信息的归档。[六目标 CI](https://github.com/ximu3/kisaki-dev/actions/runs/46108758739) · [实施提交](https://github.com/ximu3/kisaki-dev/commit/139e7c97c6eb35d55f227d551c65346e64fb3575)
+2026-11-28，开发分支的提交 `46a699a9` 在 Windows、macOS 和 Linux 的 x64、arm64 宿主分别通过 `@kisaki3/desktop#verify`。每个目标运行原生与数据库测试、源码开发会话、真实 Electron 窗口、性能场景及打包应用。表中的 SHA-256 对应实际启动并读回动画分集和媒体信息的归档。[六目标 CI](https://github.com/ximu3/kisaki-dev/actions/runs/46115849143) · [实施提交](https://github.com/ximu3/kisaki-dev/commit/46a699a90850b06c6f71df878eda0cd1c0e85661)
 
 | 目标与运行日志 | 实际运行制品 | 窗口用例（通过 / 按宿主条件跳过） | 制品 SHA-256 |
 | --- | --- | ---: | --- |
-| [Windows x64](https://github.com/ximu3/kisaki-dev/actions/runs/46108758739/job/140867424381) | ZIP 中的程序 | 30 / 2 | `e9c2a597a6513818ed7f27f826ca8d8fcfc216e9f3bbb0c38ef9f7a70cc293bf` |
-| [Windows arm64](https://github.com/ximu3/kisaki-dev/actions/runs/46108758739/job/140867424352) | ZIP 中的程序 | 30 / 2 | `ca060bd9df719688200fba1b3f4917eefcaf2aaedbdd756086ec24f18c4845f2` |
-| [macOS x64](https://github.com/ximu3/kisaki-dev/actions/runs/46108758739/job/140867424299) | ZIP 中的 .app | 27 / 5 | `e9f0a6fe4cafae75e6dc9cae44bbe803ead5221672632a713c57350418ea1715` |
-| [macOS arm64](https://github.com/ximu3/kisaki-dev/actions/runs/46108758739/job/140867424292) | ZIP 中的 .app | 27 / 5 | `5f27e4d1c7512d5516d90329a58b789bea5629cbdd31e09274400cb3d58ef735` |
-| [Linux x64](https://github.com/ximu3/kisaki-dev/actions/runs/46108758739/job/140867424340) | AppImage | 30 / 2 | `54706c3b96ad216d39c09ae0cbe340d6c9154188dfabdf63e1d3c84eeb238edf` |
-| [Linux arm64](https://github.com/ximu3/kisaki-dev/actions/runs/46108758739/job/140867424343) | AppImage | 30 / 2 | `b1ae4d3e9070e05b76593920fcd0b1f459db2ffc7774d03ad5f736228286808a` |
+| [Windows x64](https://github.com/ximu3/kisaki-dev/actions/runs/46115849143/job/140889442765) | ZIP 中的程序 | 30 / 2 | `bc8d337027948ec6a3c733017e761f903d2a0c6c7ea7b21851744d4d3bece12f` |
+| [Windows arm64](https://github.com/ximu3/kisaki-dev/actions/runs/46115849143/job/140889442829) | ZIP 中的程序 | 30 / 2 | `13bd382c9844b5f7572f600a954438cd6042a2d557fc730a481ba1ab6c12ae10` |
+| [macOS x64](https://github.com/ximu3/kisaki-dev/actions/runs/46115849143/job/140889442783) | ZIP 中的 .app | 27 / 5 | `19e01c0a0ed6c9e5b602b4a190ea53104f4e7947f3ddb18debc78b3c199bd413` |
+| [macOS arm64](https://github.com/ximu3/kisaki-dev/actions/runs/46115849143/job/140889442781) | ZIP 中的 .app | 27 / 5 | `caedb5a6459cf38fc23e62ac40a3da0af9591d9c1a280756e451f8044b9cfe9f` |
+| [Linux x64](https://github.com/ximu3/kisaki-dev/actions/runs/46115849143/job/140889442778) | AppImage | 30 / 2 | `dd7c0c66670c6473335cd4be7a35642b0c9dd816ba72696f7c7e232b3bcace7c` |
+| [Linux arm64](https://github.com/ximu3/kisaki-dev/actions/runs/46115849143/job/140889442756) | AppImage | 30 / 2 | `03bc73793a63d6b995fdb77f4e77d24566513ffb5de31303d2a73b45c676f3e8` |
 
-本机使用 Windows 10 x64。全仓检查 45 项通过，桌面完整验证 20 项通过。其中原生与数据库 37 项、源码开发会话 6 项、真实窗口 28 项、性能场景 2 项和候选制品 1 项通过。另有 4 项窗口用例按宿主条件跳过。桌面合同包与本地化包的独立验证分别通过 12 项和 15 项。
+本机使用 Windows 10 x64。全仓检查 45 项通过，桌面完整验证 20 项通过。其中原生与数据库 38 项、源码开发会话 6 项、真实窗口 28 项、性能场景 2 项和候选制品 1 项通过。另有 4 项窗口用例按宿主条件跳过。桌面合同包、公共 UI 包与本地化包的独立验证分别通过 12、9 和 15 项。
 
 ## 目录重新定位
 
@@ -23,9 +23,17 @@
 
 随后把 A 移到 C，再把一本读物移出 C。重试后，根目录和仍在 C 中的读物一起提交，读物的 ID 与笔记得以保留。缺失文件仍以原 ID 登记在 A，报告给出未能核实的目标。另在真实游戏配置与动画外部字幕上核对了同一边界。新根冲突时两个对象均保持完整原值；重试成功后，字幕延迟和未选中的游戏存档路径保持原值。实际 Electron 窗口从作品详情打开目录管理，依次选取 B、C，分别显示冲突和部分成功。自动化仅替代系统文件选择框返回选择的路径。[数据库与文件系统](../../../../clients/desktop/app/tests/integration/library/relocation.test.ts) · [正式窗口](../../../../clients/desktop/app/tests/integration/electron/directory-relocation.test.ts)
 
+## 启动配置与文件识别
+
+登记不存在的游戏启动文件时，窗口错误编码保留 `FileUnavailable`。在 Windows x64 的隔离窗口创建启动配置并设为首选，重载后仍可从原游戏读回配置及首选状态。[登记错误](../../../../clients/desktop/app/tests/integration/library/registration.test.ts)
+
+在漫画下建立编号为 2 的卷，将作品话号 13 的话收录为卷内话号 01。登记包含 `Vol.02/Vol.2 Ch.01.txt` 的内容目录后，内置规则匹配到这一个话 ID，文件保存的直接关联也指向它。换成不同卷号时仍报告冲突。[编号比较用例](../../../../clients/desktop/app/tests/integration/library/recognition.test.ts)
+
 ## 资料图与署名
 
 同一个图创建作品、人物、角色和配音署名。单独更换有配音署名的作品角色端点时，数据库拒绝提交，同图较早的作品改名也回滚。显式迁移后，角色关联和署名的 ID 及署名说明均保留。显式删除署名后再更正角色也可提交。另一份图创建小说、卷、标签以及真实 TXT 文件，卷的完成状态和该文件的首选关联同次保存。[数据库场景](../../../../clients/desktop/app/tests/integration/library/graph.test.ts)
+
+在 Windows x64 的独立数据库中，动画分集改为附加内容后保留原 ID、名称和完成状态。漫画卷合并后，卷内话号 01 仍指向作品话号 13 的同一话。游戏的开发组织署名可按原关系 ID 读回；录入反向作品关系后，从规范方向读取、按原 ID 修改备注均成功。
 
 ## 作品详情、完成记录与展示柜
 
