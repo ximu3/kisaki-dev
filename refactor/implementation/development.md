@@ -171,6 +171,8 @@ Linux CI 准备浏览器系统依赖、Xvfb、窗口管理器、wmctrl 与 AppIm
 
 macOS CI 在制作 DMG 期间记录当前输出目录对应的挂载设备、卷路径和打开该卷的进程。打包失败时可在同一作业的诊断附件中查阅 `test-results/packaging/dmg.log`，按时间与打包器报告的设备号核对。在 macOS 本地设置 `KISAKI_DMG_DIAGNOSTICS=1` 后运行同一打包任务，可取得相同记录。
 
+Linux 候选使用 W08 平台包声明的系统库。Ubuntu 22.04 构建与验证环境安装 `libegl1`、`libasound2`、`libdrm2`、`libpulse0`、`libva2`、`libva-drm2` 和 `libvulkan1`。即使只读取媒体信息，动态加载器仍须能够解析这些库。DEB 和 RPM 的安装依赖覆盖同一组库，AppImage 由目标系统提供。见[媒体制品合同](../design/projects/libmpv-node/distribution.md)。
+
 对已打包制品，运行 `pnpm exec vp run @kisaki3/desktop#test:artifacts`。设置 `KISAKI_ARTIFACT_RECEIPT` 指定收据，默认读取 `dist/<target>/artifacts.json`。用例核对归档摘要、包内构建身份、安全 fuses 和实际启停。Windows 使用窗口句柄，macOS 使用系统辅助功能，Linux X11 使用窗口管理器观察。
 
 根 TypeScript 项目检查工具、配置和测试。桌面项目按 main、preload、renderer、utility process、shared、native、tools 和 tests 分环境检查。native 项目拥有 Node 绑定源码及生成声明，main 消费其实际入口。正式程序与开发工具样板分别归各自运行环境，Vite 构建配置归 tools 项目。每份自有声明至少由一个 `skipLibCheck: false` 的实际项目完整检查，规则见[类型分工](../design/engineering/workspace.md#declaration-checks)。

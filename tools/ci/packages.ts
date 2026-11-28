@@ -67,6 +67,16 @@ function libraryChecks(project: Project, nodeRange?: string): PackageChecks {
   }
 }
 
+const linuxMediaRuntime = [
+  'libegl1',
+  'libasound2',
+  'libdrm2',
+  'libpulse0',
+  'libva2',
+  'libva-drm2',
+  'libvulkan1',
+]
+
 const linuxPackaging = ['wmctrl', 'libfuse2', 'rpm']
 
 const linuxIntegration = ['xdg-utils', 'dbus-daemon', 'dunst', 'xdotool']
@@ -84,7 +94,7 @@ const packageChecks: Readonly<Record<string, PackageChecks>> = {
   '@kisaki3/desktop': {
     defaultTask: 'verify',
     targets: nativeTargets,
-    linuxPackages: ['libfontconfig1-dev', 'libfreetype-dev'],
+    linuxPackages: ['libfontconfig1-dev', 'libfreetype-dev', ...linuxMediaRuntime],
     tasks: {
       verify: {
         chromium: true,

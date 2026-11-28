@@ -35,6 +35,43 @@ linux:
   target: [deb, rpm, AppImage]
   category: Utility
   syncDesktopName: true
+deb:
+  depends:
+    - libgtk-3-0
+    - libnotify4
+    - libnss3
+    - libxss1
+    - libxtst6
+    - xdg-utils
+    - libatspi2.0-0
+    - libuuid1
+    - libsecret-1-0
+    - libc6 (>= 2.35)
+    - libegl1
+    - libasound2 | libasound2t64
+    - libdrm2
+    - libpulse0
+    - libva2
+    - libva-drm2
+    - libvulkan1
+rpm:
+  depends:
+    - gtk3
+    - libnotify
+    - nss
+    - libXScrnSaver
+    - (libXtst or libXtst6)
+    - xdg-utils
+    - at-spi2-core
+    - (libuuid or libuuid1)
+    - libc.so.6(GLIBC_2.35)(64bit)
+    - libEGL.so.1()(64bit)
+    - libasound.so.2()(64bit)
+    - libdrm.so.2()(64bit)
+    - libpulse.so.0()(64bit)
+    - libva.so.2()(64bit)
+    - libva-drm.so.2()(64bit)
+    - libvulkan.so.1()(64bit)
 appImage:
   # AppRun alone owns the upstream namespace compatibility decision.
   executableArgs: []
