@@ -2,7 +2,7 @@
 
 验收检查真实产品行为、完整调用、持久化、界面、性能和最终制品。纯逻辑、技术原型、真实应用和发行文件各自提供对应范围的证据，不能互相替代。本篇规定设计验证与实现验收的要求。设计验证证据随对应设计记录，实施验收结果记录在实施状态中。
 
-[现代化、简洁、清晰、干净与克制](../design/engineering/conventions.md#quality)具有同等首要地位，并与[终态实现与整体一致性](../design/engineering/conventions.md#final-state)共同约束质量判断。先判断机制、限制和验证投入是否必要且相称，再按完整职责与相关场景核对模型、接口、实现、测试和说明；既有规范与检查方式同样接受复核。
+[现代化、清晰、干净与克制](../design/engineering/conventions.md#quality)具有同等首要地位，并与[终态实现与整体一致性](../design/engineering/conventions.md#final-state)共同约束质量判断。先判断机制、限制和验证投入是否必要且相称，再按完整职责与相关场景核对模型、接口、实现、测试和说明；既有规范与检查方式同样接受复核。
 
 审查源码及对应的测试、配置和设计示例时，从调用入口核对实现。检查操作成功时的返回值、失败或取消时保留的数据，以及资源释放的位置。[可读性](../design/engineering/conventions.md#readability) · [逻辑分段](../design/engineering/conventions.md#logical-sections)
 
@@ -12,7 +12,7 @@
 
 ## 验证范围与投入
 
-验证投入遵守[简洁与克制](../design/engineering/conventions.md#proportionality)。自动 CI 按[包及其依赖](../design/engineering/workspace.md#ci-selection)选择受影响的包和宿主。单项复现和人工验收按实际行为、合同与宿主条件取证。本篇场景规定完整交付的覆盖要求，各次修改按影响取得或复用证据。
+验证投入遵守[边界与投入](../design/engineering/conventions.md#proportionality)。自动 CI 按[包及其依赖](../design/engineering/workspace.md#ci-selection)选择受影响的包和宿主。单项复现和人工验收按实际行为、合同与宿主条件取证。本篇场景规定完整交付的覆盖要求，各次修改按影响取得或复用证据。
 
 文档、注释和等价组织调整通常核对内容、链接、解析与适用的静态检查；运行输入或宿主行为改变时再执行相关运行验证。构建身份或文件摘要变化本身不是全量回归的充分理由。先核对本次的实现、依赖和运行环境，再说明上一次的验证结果还能用于哪些部分。旧记录保留当时的输入和实测结果。
 

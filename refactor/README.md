@@ -2,7 +2,7 @@
 
 本目录规定 Kisaki 的产品范围、数据模型、接口、运行行为、界面和工程交付。设计正文说明系统应如何工作，[工作包](implementation/work-packages.md)安排实施依赖，[验收标准](verification/acceptance.md)规定完成条件，[实施状态](implementation/status.md)记录实际进度与证据。
 
-现代化、简洁、清晰、干净与克制是本目录同等首要的设计标准。实现方式按[判断与取舍](design/engineering/conventions.md#judgment)由产品目标与实际效果决定。讨论、修改和验收时，按[全局设计与一致性](design/engineering/conventions.md#global-design)核对同类功能及所有受影响的入口。所有主题及其限制、验证要求遵守[共用工程规范](design/engineering/conventions.md#quality)，具体产品与技术语义由所属主题定义。
+现代化、清晰、干净与克制是本目录同等首要的设计标准。实现方式按[判断与取舍](design/engineering/conventions.md#judgment)由产品目标与实际效果决定。讨论、修改和验收时，按[全局设计与一致性](design/engineering/conventions.md#global-design)核对同类功能及所有受影响的入口。所有主题及其限制、验证要求遵守[共用工程规范](design/engineering/conventions.md#quality)，具体产品与技术语义由所属主题定义。
 
 桌面 UI 以旧 Kisaki（`F:/project/3/kisaki`）的实际界面为设计基准，系统与功能图标统一使用 MDI。设计、实现和验收时先对照旧版对应界面，再按本项目规格核对业务行为与资源归属。[桌面 UI 设计基准](design/ui/components.md#existing-ui)
 
