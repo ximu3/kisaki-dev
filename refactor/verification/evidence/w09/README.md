@@ -21,7 +21,7 @@
 
 在 Windows x64 的旧 Kisaki 开发窗口从现有游戏打开角色，再从角色的相关作品打开游戏弹窗。页面和弹窗共用封面、概览和标签正文，页面操作在页头，弹窗操作在固定底部。新窗口用隔离资料库从展示柜的弹窗区块打开游戏，切换笔记并关闭后仍回到原区块。两端采用默认主题和 100% 应用缩放，游戏弹窗测得的客户区均为 782 × 670 CSS 像素。新窗口在最小尺寸、75%、100% 和 200% 缩放下均可切换标签并使用底部操作。[页面与弹窗](../../../../clients/desktop/app/tests/integration/electron/library/navigation.test.ts)
 
-在有 1,200 个收藏条目的表格中翻到第二页，从第 80 行打开作品。返回后按该条目的身份重新定位，原行可见并保持选中。同一个不存在的目录分别经过普通登记和资料图登记准备，均由窗口错误编码器返回 `FileUnavailable`。[窗口返回](../../../../clients/desktop/app/tests/integration/electron/library/navigation.test.ts) · [目录错误](../../../../clients/desktop/app/tests/integration/library/holdings/registration.test.ts)
+在有 1,200 个收藏条目的表格中翻到第二页，从第 80 行打开作品，在详情改名使它排到第十页。返回后按该条目的身份重新定位，原行可见并保持选中。同一个不存在的目录分别经过普通登记和资料图登记准备，均由窗口错误编码器返回 `FileUnavailable`。[窗口返回](../../../../clients/desktop/app/tests/integration/electron/library/navigation.test.ts) · [目录错误](../../../../clients/desktop/app/tests/integration/library/holdings/registration.test.ts)
 
 合并两个标签，保留标签侧与条目侧各自的排列，在同一事务中把动态合集和展示柜查询中的旧引用改指保留标签，按目标身份去重并保存名称。[标签与保存查询](../../../../clients/desktop/app/tests/integration/library/catalog.test.ts)
 
