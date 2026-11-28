@@ -24,7 +24,7 @@
 
 ### 设计与变更
 
-动手实现前，先结合用户要求、项目规范和现有工程，从正式入口推演用户完成操作的全过程。每次修改都要查明全项目哪些入口、模块和交付物处理同一件事，按共同规范确定行为、命名、源码组织、界面与文案，再同步所有受影响的位置。保留差异时，应能说明相应的业务或平台依据。实现中发现依据有变，及时修正方案和受影响的部分。交付核对用于查证结果、发现遗漏。见[实施前的整体设计](refactor/design/engineering/conventions.md#design-before-implementation)和[全局设计与一致性](refactor/design/engineering/conventions.md#global-design)。
+动手实现前，先结合用户要求、项目规范和现有工程，从正式入口推演用户完成操作的全过程。每次修改都要查明全项目哪些入口、模块和交付物处理同一件事，按共同规范确定行为、命名、源码组织、界面与文案，再同步所有受影响的位置。实现中发现依据有变，及时修正方案和受影响的部分。交付核对用于查证结果、发现遗漏。见[实施前的整体设计](refactor/design/engineering/conventions.md#design-before-implementation)和[全局设计与一致性](refactor/design/engineering/conventions.md#global-design)。
 
 要求或方案与设计原则冲突，或存在正确性、质量或技术问题时，按[整体判断](refactor/design/engineering/conventions.md#judgment)说明依据、影响、选项与建议，由用户决定方向。涉及模型、主要行为、公开合同、架构边界或交付范围的取舍遵守[实施讨论规则](refactor/implementation/work-packages.md#unexpected-issues)。既定合同内的修复与验证由实施者完成。
 
